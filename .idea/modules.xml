@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/AppPOS/AppPOS.iml" filepath="$PROJECT_DIR$/AppPOS/AppPOS.iml" />
+      <module fileurl="file://$PROJECT_DIR$/LibMagestore/LibMagestore.iml" filepath="$PROJECT_DIR$/LibMagestore/LibMagestore.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Magestore Project.iml" filepath="$PROJECT_DIR$/Magestore Project.iml" />
+    </modules>
+  </component>
+</project>
