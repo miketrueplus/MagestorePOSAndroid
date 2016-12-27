@@ -1,0 +1,43 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion "25.0.0"
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 19
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField  "String", "REST_BASE_URL", '"http://demo-magento2.magestore.com/webpos"'
+            buildConfigField  "String", "REST_USER_NAME", '""'
+            buildConfigField  "String", "REST_PASSWORD", '""'
+        }
+
+        debug {
+            buildConfigField  "String", "REST_BASE_URL", '"http://demo-magento2.magestore.com/webpos"'
+            buildConfigField  "String", "REST_USER_NAME", '""'
+            buildConfigField  "String", "REST_PASSWORD", '""'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    testCompile 'junit:junit:4.12'
+    compile 'org.apache:apache:18'
+    compile 'com.google.code.gson:gson:2.8.0'
+    compile 'sax:sax:2.0.1'
+    compile files('libs/odata-client-android-4.0.0-beta-01-RC01.jar')
+}
