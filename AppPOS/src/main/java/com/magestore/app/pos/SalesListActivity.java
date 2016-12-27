@@ -408,7 +408,7 @@ public class SalesListActivity extends AbstractActivity
             holder.mDelButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     mOrderUseCase.delOrderItem(position);
-                    mOrderListRecycleView.getAdapter().notifyDataSetChanged();
+//                    mOrderListRecycleView.getAdapter().notifyDataSetChanged();
                 }
             });
 
