@@ -54,7 +54,7 @@ public class POSProductGateway extends POSAbstractGateway implements ProductGate
             // Khởi tạo connection và khởi tạo truy vấn
             connection = MagestoreConnection.getConnection(POSGatewaySession.REST_BASE_URL, POSGatewaySession.REST_USER_NAME, POSGatewaySession.REST_PASSWORD);
             statement = connection.createStatement();
-            statement.prepareQuery(POSAPI.REST_GET_PRODUCT_LISTING);
+            statement.prepareQuery(POSAPI.REST_PRODUCT_GET_LISTING);
             statement.setParam(POSAPI.PARAM_CURRENT_PAGE, currentPage);
             statement.setParam(POSAPI.PARAM_PAGE_SIZE, pageSize);
             statement.setParam(POSAPI.PARAM_SESSION_ID, POSGatewaySession.REST_SESSION_ID);

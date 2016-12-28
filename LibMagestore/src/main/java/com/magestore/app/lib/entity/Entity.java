@@ -10,4 +10,5 @@ public interface Entity {
     Object getRefer(String key);
     boolean setValue(String key, Object value);
     Object getValue(String key);
+    Object getValue(String key, Object defaultValue);
 }

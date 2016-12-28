@@ -75,7 +75,8 @@ public class POSOrderUseCase extends AbstractUseCase implements OrderUseCase {
 
         float total = 0;
         for (OrderItem item : listOrderItem) {
-            total += item.getQuantity() * item.getPrice();
+            item.setPrice(item.getQuantity() * item.getProduct().getPrice());
+            total += item.getPrice();
         }
         return total;
     }

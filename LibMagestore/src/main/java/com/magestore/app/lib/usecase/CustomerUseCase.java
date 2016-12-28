@@ -14,7 +14,7 @@ import java.util.List;
  * TODO: Add a class header comment!
  */
 
-public interface CustomerUseCase {
+public interface CustomerUseCase extends UseCase {
     /**
      * Đặt biến tham chiếu customer để thực hiện các nghiệp vụ liên quan customer
      * @param customer

@@ -2,6 +2,7 @@ package com.magestore.app.lib.usecase.pos;
 
 import android.util.Log;
 
+import com.magestore.app.lib.entity.Config;
 import com.magestore.app.lib.entity.User;
 import com.magestore.app.lib.entity.pos.PosUser;
 import com.magestore.app.lib.gateway.GatewayFactory;
@@ -9,7 +10,9 @@ import com.magestore.app.lib.gateway.UserGateway;
 import com.magestore.app.lib.gateway.pos.POSAPI;
 import com.magestore.app.lib.gateway.pos.POSGatewayFactory;
 import com.magestore.app.lib.gateway.pos.POSGatewaySession;
+import com.magestore.app.lib.usecase.ConfigUseCase;
 import com.magestore.app.lib.usecase.UseCase;
+import com.magestore.app.lib.usecase.UseCaseFactory;
 import com.magestore.app.lib.usecase.UserUseCase;
 
 import java.io.IOException;
@@ -48,8 +51,9 @@ public class POSUserUseCase extends AbstractUseCase implements UserUseCase {
             session.REST_SESSION_ID = str.trim().replace("\"", "");
             session.REST_BASE_URL = strBaseURL;
 
-            //TODO: remov khi release
-            Log.d("Login", session.REST_SESSION_ID);
+            // Lấy config hệ thống và lưu lại
+            ConfigUseCase configUseCase = UseCaseFactory.generateConfigUseCase(null, null);
+            configUseCase.retrieveConfig();
         }
 
         // Nếu username về đúng, login thành công

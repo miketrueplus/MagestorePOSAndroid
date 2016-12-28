@@ -1,5 +1,6 @@
 package com.magestore.app.lib.gateway.pos;
 
+import com.magestore.app.lib.gateway.ConfigGateway;
 import com.magestore.app.lib.gateway.CustomerGateway;
 import com.magestore.app.lib.gateway.GatewayFactory;
 import com.magestore.app.lib.gateway.OrderGateway;
@@ -33,5 +34,10 @@ public class POSGatewayFactory extends GatewayFactory {
     @Override
     public CustomerGateway generateCustomerGateway() {
         return new POSCustomerGateway();
+    }
+
+    @Override
+    public ConfigGateway generateConfigGateway() {
+        return new POSConfigGateway();
     }
 }

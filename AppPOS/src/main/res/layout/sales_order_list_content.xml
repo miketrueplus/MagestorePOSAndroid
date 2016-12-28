@@ -11,7 +11,7 @@
         android:id="@+id/sales_order_swipe_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        swipe:clickToClose="false"
+        swipe:clickToClose="true"
         swipe:leftEdgeSwipeOffset="0dp"
         swipe:rightEdgeSwipeOffset="0dp">
 

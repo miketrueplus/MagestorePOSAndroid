@@ -1,5 +1,6 @@
 package com.magestore.app.lib.gateway;
 
+import com.magestore.app.lib.entity.Config;
 import com.magestore.app.lib.gateway.pos.POSGatewayFactory;
 
 /**
@@ -14,6 +15,7 @@ public abstract class GatewayFactory {
     public abstract UserGateway generateUserGateway();
     public abstract OrderGateway generateOrderGateway();
     public abstract CustomerGateway generateCustomerGateway();
+    public abstract ConfigGateway generateConfigGateway();
 
 
     /**

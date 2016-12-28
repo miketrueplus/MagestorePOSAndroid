@@ -25,7 +25,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.chauthai.swipereveallayout.SwipeRevealLayout;
 import com.chauthai.swipereveallayout.ViewBinderHelper;
 
 
@@ -36,6 +35,7 @@ import com.magestore.app.lib.entity.Order;
 import com.magestore.app.lib.entity.OrderItem;
 import com.magestore.app.lib.entity.Product;
 import com.magestore.app.lib.entity.pos.PosOrder;
+import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.lib.usecase.OrderUseCase;
 import com.magestore.app.lib.usecase.UseCaseFactory;
 import com.magestore.app.pos.controller.LoadProductController;
@@ -191,6 +191,14 @@ public class SalesListActivity extends AbstractActivity
             {
                 mLoadImageTask.execute();
             }
+    }
+
+    private void updateTotalPrice() {
+        // cập nhật tổng lên cuối order
+        mSubTotalView.setText(ConfigUtil.formatPrice(mOrderUseCase.calculateSubTotalOrderItems()));
+        mDiscountTotalView.setText(ConfigUtil.formatPrice(mOrderUseCase.calculateDiscountTotalOrderItems()));
+        mTaxTotalView.setText(ConfigUtil.formatPrice((mOrderUseCase.calculateTaxOrderItems())));
+        mCheckoutButton.setText(getString(R.string.checkout) + ": " + ConfigUtil.formatPrice(mOrderUseCase.calculateLastTotalOrderItems()));
     }
 
 //    @Override
@@ -378,7 +386,7 @@ public class SalesListActivity extends AbstractActivity
 
             // Đặt các trường text vào danh sách
             holder.mNameView.setText(product.getName());
-            holder.mPriceView.setText(String.format("%.2f", product.getPrice() * item.getQuantity()));
+            holder.mPriceView.setText(ConfigUtil.formatPrice(product.getPrice() * item.getQuantity()));
             holder.mSKUView.setText(product.getSKU());
             holder.mQuantityView.setText("" + item.getQuantity());
             holder.mQuantitySwipe.setText(holder.mQuantityView.getText());
@@ -399,6 +407,7 @@ public class SalesListActivity extends AbstractActivity
             // Xử lý sự kiện ấn nút giảm trên swipe
             holder.mDesButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
+                    if (item.getQuantity() <= 1) return;
                     mOrderUseCase.subtructOrderItem(product, 1);
                     holder.mQuantitySwipe.setText("" + item.getQuantity());
                 }
@@ -408,7 +417,8 @@ public class SalesListActivity extends AbstractActivity
             holder.mDelButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     mOrderUseCase.delOrderItem(position);
-//                    mOrderListRecycleView.getAdapter().notifyDataSetChanged();
+                    mOrderListRecycleView.getAdapter().notifyDataSetChanged();
+                    updateTotalPrice();
                 }
             });
 
@@ -431,6 +441,7 @@ public class SalesListActivity extends AbstractActivity
                 @Override
                 public void onClose(SwipeLayout swipeLayout) {
                     mOrderListRecycleView.getAdapter().notifyDataSetChanged();
+                    updateTotalPrice();
                 }
 
                 @Override
@@ -532,7 +543,7 @@ public class SalesListActivity extends AbstractActivity
 
             // Đặt các trường text vào danh sách
             holder.mNameView.setText(product.getName());
-            holder.mPriceView.setText(String.format("%.2f", product.getPrice()));
+            holder.mPriceView.setText(ConfigUtil.formatPrice(product.getPrice()));
             holder.mSKUView.setText(product.getSKU());
             holder.mAvaibleView.setText(R.string.avaibles);
 
@@ -549,10 +560,7 @@ public class SalesListActivity extends AbstractActivity
                     mOrderItemListAdapter.notifyDataSetChanged();
 
                     // cập nhật tổng lên cuối order
-                    mSubTotalView.setText(String.format("%.2f", mOrderUseCase.calculateSubTotalOrderItems()));
-                    mDiscountTotalView.setText(String.format("%.2f", mOrderUseCase.calculateDiscountTotalOrderItems()));
-                    mTaxTotalView.setText(String.format("%.2f", mOrderUseCase.calculateTaxOrderItems()));
-                    mCheckoutButton.setText(getString(R.string.checkout) + ": " + String.format("%.2f", mOrderUseCase.calculateLastTotalOrderItems()));
+                    updateTotalPrice();
                 }
             });
         }

@@ -1,5 +1,6 @@
 package com.magestore.app.lib.usecase;
 
+import com.magestore.app.lib.usecase.pos.POSConfigUseCase;
 import com.magestore.app.lib.usecase.pos.POSCustomerUseCase;
 import com.magestore.app.lib.usecase.pos.POSOrderUseCase;
 import com.magestore.app.lib.usecase.pos.POSUserUseCase;
@@ -28,5 +29,9 @@ public class UseCaseFactory {
 
     public static CustomerUseCase generateCustomerUseCase(UseCaseContext context, UseCaseProgress progress) {
         return new POSCustomerUseCase();
+    }
+
+    public static ConfigUseCase generateConfigUseCase(UseCaseContext context, UseCaseProgress progress) {
+        return new POSConfigUseCase();
     }
 }

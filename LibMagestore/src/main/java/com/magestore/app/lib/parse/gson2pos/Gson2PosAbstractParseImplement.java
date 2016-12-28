@@ -52,15 +52,20 @@ public class Gson2PosAbstractParseImplement extends DefaultHandler implements Pa
         prepareParse(input, (Type) cl);
     }
 
+    protected Gson createGson() {
+        GsonBuilder builder = new GsonBuilder();
+//        GsonBuilder builder = new GsonBuilder();
+//        builder.registerTypeAdapter(mtypeOf, new Gson2PosInstance());
+//        builder.registerTypeAdapter(mtypeOf, new Gson2PosDeserializer((Gson2PosListProduct) mParseEntity));
+//        mGSON = builder.create();
+        return builder.create();
+    }
+
     @Override
     public void prepareParse(InputStream input, Type typeOf) throws ParseException {
         mReader =  new BufferedReader(new InputStreamReader(input));
         mtypeOf = typeOf;
-
-        GsonBuilder builder = new GsonBuilder();
-//        builder.registerTypeAdapter(mtypeOf, new Gson2PosInstance());
-//        builder.registerTypeAdapter(mtypeOf, new Gson2PosDeserializer((Gson2PosListProduct) mParseEntity));
-        mGSON = builder.create();
+        mGSON = createGson();
     }
 
     @Override

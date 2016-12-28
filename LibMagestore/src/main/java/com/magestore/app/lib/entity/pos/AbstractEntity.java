@@ -68,4 +68,11 @@ public class AbstractEntity implements Entity, ParseEntity {
         }
         return null;
     }
+
+    @Override
+    public Object getValue(String key, Object defaultValue) {
+        Object value = getValue(key);
+        if (value == null) return defaultValue;
+        else return value;
+    }
 }
