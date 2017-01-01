@@ -1,5 +1,9 @@
 package com.magestore.app.lib.entity.pos;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.google.gson.Gson;
 import com.magestore.app.lib.entity.Entity;
 import com.magestore.app.lib.parse.ParseEntity;
 
@@ -75,4 +79,49 @@ public class AbstractEntity implements Entity, ParseEntity {
         if (value == null) return defaultValue;
         else return value;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    /**
+     * Viết ra chuỗi json của object lên parcel
+     * @param parcel
+     * @param i
+     */
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        Gson gson = new Gson();
+        String str = gson.toJson(this);
+        parcel.writeString(str);
+    }
+
+    /**
+     * Đọc chuỗi json của object từ parcel, chuyển thành object
+     * @param parcel
+     */
+    public void readFromParcel(Parcel parcel) {
+        Gson gson = new Gson();
+        String str = parcel.readString();
+        gson.fromJson(str, this.getClass());
+    }
+
+    /**
+     * Khởi tạo json của object
+     */
+    public static final Parcelable.Creator<AbstractEntity> CREATOR =
+            new Parcelable.Creator<AbstractEntity>() {
+                @Override
+                public AbstractEntity createFromParcel(Parcel source) {
+                    AbstractEntity entity = new AbstractEntity();
+                    entity.readFromParcel(source);
+                    return entity;
+                }
+
+                @Override
+                public AbstractEntity[] newArray(int size) {
+                    return new AbstractEntity[size];
+                }
+            };
 }

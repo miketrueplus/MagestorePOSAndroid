@@ -1,5 +1,7 @@
 package com.magestore.app.lib.usecase;
 
+import android.graphics.Bitmap;
+
 import com.magestore.app.lib.entity.Product;
 
 import java.io.IOException;
@@ -26,5 +28,21 @@ public interface ProductUseCase extends UseCase {
      */
     Product getProduct();
 
+    /**
+     * Lấy danh mục product
+     * @param size
+     * @return
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     * @throws IOException
+     * @throws ParseException
+     */
     List<Product> retrieveProductList(int size) throws InstantiationException, IllegalAccessException, IOException, ParseException;
+
+    /**
+     * Load ảnh bitmap
+     * @param product
+     * @return
+     */
+    public Bitmap retrieveBitmap(Product product);
 }

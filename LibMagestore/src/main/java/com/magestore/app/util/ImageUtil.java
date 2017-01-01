@@ -1,5 +1,16 @@
 package com.magestore.app.util;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Rect;
+
+import com.magestore.app.lib.entity.Entity;
+
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 /**
  * Các lệnh tiện ích liên quan đến xử lý ảnh
  * Created by Mike on 12/22/2016.
@@ -8,6 +19,65 @@ package com.magestore.app.util;
  */
 
 public class ImageUtil {
+    /**
+     * Trả về bmp ảnh từ trên mạng, kiểm tra cache trong RAM và Storage trước
+     * @param entity
+     * @param remotePath
+     * @return
+     */
+    public static Bitmap getBitmap(Entity entity, String remotePath, int width, int height) {
+        // Nếu chưa, khởi tạo các biến để load ảnh từ mạng
+        URL url = null;
+        BufferedInputStream is = null;
+        HttpURLConnection con = null;
+        Rect pad = new Rect();
+
+        // Trước hết lấy kích thước của ảnh xem trước
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        try {
+            url = new URL(remotePath);
+            con = (HttpURLConnection)url.openConnection();
+            is = new BufferedInputStream(con.getInputStream());
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeStream(is, pad, options);
+            options.inSampleSize = ImageUtil.calculateInSampleSize(options.outWidth, options.outHeight, width, height);
+            options.inJustDecodeBounds = false;
+        } catch (IOException e) {
+        }
+        finally {
+            try {
+                is.close();
+            } catch (IOException e) {
+
+            }
+            is = null;
+            con.disconnect();
+            con = null;
+        }
+
+        // Nếu ảnh quá to thì lấy kích thước bé hơn, đặt lại sample size
+        try {
+            url = new URL(remotePath);
+            con = (HttpURLConnection)url.openConnection();
+            is = new BufferedInputStream(con.getInputStream());
+            options.inJustDecodeBounds = false;
+            return BitmapFactory.decodeStream(is, pad, options);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                is.close();
+            } catch (IOException e) {
+
+            }
+            is = null;
+            con.disconnect();
+            con = null;
+        }
+        return null;
+    }
     /**
      * Tính toánh sample sizes của bitmap để điểu chỉnh thu nhỏ kích thước nếu ảnh quá to
      * @param outWidth

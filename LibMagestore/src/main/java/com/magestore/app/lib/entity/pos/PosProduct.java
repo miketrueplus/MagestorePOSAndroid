@@ -1,5 +1,7 @@
 package com.magestore.app.lib.entity.pos;
 
+import android.graphics.Bitmap;
+
 import com.magestore.app.lib.entity.Entity;
 import com.magestore.app.lib.entity.Product;
 import com.magestore.app.lib.parse.ParseEntity;
@@ -23,6 +25,7 @@ public class PosProduct extends AbstractEntity implements Product {
     private String name;
     private String status;
     private String image;
+    private Bitmap bitmap;
 
     private float special_price;
     private String special_from_date;
@@ -95,4 +98,14 @@ public class PosProduct extends AbstractEntity implements Product {
 
     @Override
     public String getName() {return name; }
+
+    @Override
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
+
+    @Override
+    public void setBitmap(Bitmap bmp) {
+        bitmap = bmp;
+    }
 }

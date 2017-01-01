@@ -7,5 +7,8 @@ package com.magestore.app.lib.entity;
 public interface Customer extends Entity {
     String getName();
     String getEmail();
+    String getFirstName();
+    String getLastName();
     String getTelephone();
+    String getGroupID();
 }

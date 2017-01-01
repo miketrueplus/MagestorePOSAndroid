@@ -1,5 +1,7 @@
 package com.magestore.app.lib.entity;
 
+import android.graphics.Bitmap;
+
 import com.magestore.app.lib.parse.ParseEntity;
 
 import java.util.Date;
@@ -23,4 +25,6 @@ public interface Product extends Entity, ParseEntity {
     String getImage();
     float getStock();
     String getBarcodeString();
+    Bitmap getBitmap();
+    void setBitmap(Bitmap bmp);
 }
