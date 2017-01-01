@@ -39,68 +39,24 @@ public class LoadProductImageController extends AsyncTaskAbstractController<Void
     @Override
     protected Void doInBackground(Void... params) {
         if (mListProduct == null) return null;
-        Rect pad = new Rect();
 
         // Duyệt danh mục product
         for (Product product: mListProduct) {
             // Kiểm tra xem đã load bitmap trước đó của product chưa
             Bitmap bmp = null;
-            bmp = (Bitmap) product.getRefer(KEY_BITMAP);
+            bmp = product.getBitmap();
             if (bmp != null && !bmp.isRecycled()) continue;
             if (product.getImage() == null) continue;
 
-            // Nếu chưa, khởi tạo các biến để load ảnh từ mạng
-            URL url = null;
-            BufferedInputStream is = null;
-            HttpURLConnection con = null;
+            // ảnh chưa được load vào product, load ảnh về
+            bmp = ImageUtil.getBitmap(product, product.getImage(), 200, 200);
+            if (bmp == null) continue;
 
-            // Trước hết lấy kích thước của ảnh xem trước
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            try {
-                url = new URL(product.getImage());
-                con = (HttpURLConnection)url.openConnection();
-                is = new BufferedInputStream(con.getInputStream());
-                options.inJustDecodeBounds = true;
-                BitmapFactory.decodeStream(is, pad, options);
-                options.inSampleSize = ImageUtil.calculateInSampleSize(options.outWidth, options.outHeight, 200, 200);
-                options.inJustDecodeBounds = false;
-            } catch (IOException e) {
-            }
-            finally {
-                try {
-                    is.close();
-                } catch (IOException e) {
+            // đặt tham chiếu ảnh với bitmap
+            product.setBitmap(bmp);
 
-                }
-                is = null;
-                con.disconnect();
-                con = null;
-            }
-
-            // Nếu ảnh quá to thì lấy kích thước bé hơn, đặt lại sample size
-            try {
-                url = new URL(product.getImage());
-                con = (HttpURLConnection)url.openConnection();
-                is = new BufferedInputStream(con.getInputStream());
-                options.inJustDecodeBounds = false;
-                bmp = BitmapFactory.decodeStream(is, pad, options);
-                product.setRefer(KEY_BITMAP, bmp);
-
-                // Báo hiệu đã load ảnh xong
-                publishProgress(product);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            finally {
-                try {
-                    is.close();
-                } catch (IOException e) {
-
-                }
-                is = null;
-                con.disconnect();
-                con = null;
-            }
+            // Báo hiệu đã load ảnh xong
+            publishProgress(product);
         }
 
 

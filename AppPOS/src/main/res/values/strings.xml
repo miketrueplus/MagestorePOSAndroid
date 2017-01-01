@@ -12,7 +12,7 @@
     <string name="error_incorrect_password">This user name or password is incorrect</string>
     <string name="error_field_required">This field is required</string>
 
-    <string name="search_here">Search name, SKU, category</string>
+    <string name="search_product_here">Search name, SKU, category</string>
     <string name="title_sales_list">Items</string>
     <string name="title_sales_detail">Sales Detail</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -20,7 +20,11 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_menu">MenuActivity</string>
 
-    <string name="err_no_network_connection">No network connection, Pls check yout network settings</string>
+    <string name="search_customer_here">Search name, email, telephone</string>
+    <string name="title_customer_list">Customer</string>
+    <string name="title_customer_detail">Customer Detail</string>
+    <string name="title_order_list">Order</string>
+    <string name="title_order_detail">Order Detail</string>
 
     <string name="avaibles">Avaibles</string>
     <string name="category">Categories</string>
@@ -28,9 +32,13 @@
     <string name="customer">Customer</string>
     <string name="dashboard">Customer</string>
     <string name="discount">Discount</string>
+    <string name="email">Email</string>
+    <string name="first_name">First Name</string>
+    <string name="group">Group</string>
     <string name="history">History</string>
     <string name="hold">Hold</string>
     <string name="item">Item</string>
+    <string name="last_name">Last Name</string>
     <string name="on_hold">OnHold</string>
     <string name="order">Order</string>
     <string name="payment">Payment</string>
@@ -42,11 +50,8 @@
     <string name="shopping_cart">Shopping card</string>
     <string name="tax">Tax</string>
 
+    <string name="err_no_network_connection">No network connection, Pls check yout network settings</string>
 
-    <string name="title_customer_list">Items</string>
-    <string name="title_customer_detail">Customer Detail</string>
-    <string name="title_order_list">Items</string>
-    <string name="title_order_detail">Order Detail</string>
 
     <string-array name="dogs_list">
         <item>Bichon Frise</item>
@@ -58,5 +63,7 @@
         <item>Golden Retriever</item>
         <item>Greyhound</item>
     </string-array>
+    <string name="title_testitem_list">Items</string>
+    <string name="title_testitem_detail">TestItem Detail</string>
 
 </resources>

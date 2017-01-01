@@ -15,5 +15,4 @@ import java.util.List;
 public interface SalesUI extends PosUI {
     void setProductList(List<Product> listProduct);
     List<Product> getProductList();
-    void loadListProductImage();
 }

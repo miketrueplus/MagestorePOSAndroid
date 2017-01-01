@@ -23,41 +23,10 @@
             android:layout_weight="0.65"
             android:orientation="vertical">
 
-            <android.support.design.widget.AppBarLayout
+            <com.magestore.app.pos.panel.ProductListPanel
+                android:id="@+id/product_list_panel"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:theme="@style/AppTheme.AppBarOverlay">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <android.support.v7.widget.Toolbar
-                        android:id="@+id/toolbar_category"
-                        android:layout_width="wrap_content"
-                        android:layout_height="?attr/actionBarSize"
-                        android:layout_alignParentLeft="true"
-                        app:popupTheme="@style/AppTheme.PopupOverlay">
-
-                        <include layout="@layout/toolbar_product_category" />
-                    </android.support.v7.widget.Toolbar>
-
-
-                    <android.support.v7.widget.Toolbar
-                        android:id="@+id/toolbar_search_product"
-                        android:layout_width="wrap_content"
-                        android:layout_height="?attr/actionBarSize"
-                        android:layout_alignParentRight="true"
-                        android:layout_toRightOf="@+id/toolbar_category"
-                        android:layout_weight="1">
-
-                        <include layout="@layout/toolbar_search_product" />
-                    </android.support.v7.widget.Toolbar>
-                </LinearLayout>
-            </android.support.design.widget.AppBarLayout>
-
-            <include layout="@layout/sales_product_list" />
+                android:layout_height="match_parent" />
         </LinearLayout>
 
         <LinearLayout
@@ -84,7 +53,10 @@
                 </android.support.v7.widget.Toolbar>
             </android.support.design.widget.AppBarLayout>
 
-            <include layout="@layout/sales_order_list"/>
+            <com.magestore.app.pos.panel.OrderItemPanel
+                android:id="@+id/order_item_panel"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
         </LinearLayout>
 
     </LinearLayout>

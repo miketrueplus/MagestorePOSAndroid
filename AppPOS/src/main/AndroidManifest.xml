@@ -24,16 +24,8 @@
         <activity
             android:name=".SalesListActivity"
             android:label="@string/title_sales_list"
+            android:configChanges="orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".SalesDetailActivity"
-            android:label="@string/title_sales_detail"
-            android:parentActivityName=".SalesListActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.magestore.app.pos.SalesListActivity" />
-        </activity>
         <activity
             android:name=".MenuActivity"
             android:label="@string/title_activity_menu"
@@ -41,20 +33,14 @@
         <activity
             android:name=".CustomerListActivity"
             android:label="@string/title_customer_list"
+            android:configChanges="orientation|screenSize"
+            android:parentActivityName=".LoginActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".CustomerDetailActivity"
-            android:label="@string/title_customer_detail"
-            android:parentActivityName=".CustomerListActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.magestore.app.pos.CustomerListActivity" />
-        </activity>
         <activity
             android:name=".OrderListActivity"
             android:label="@string/title_order_list"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".OrderDetailActivity"
             android:label="@string/title_order_detail"

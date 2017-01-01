@@ -41,7 +41,7 @@ public class OrderListActivity extends AbstractActivity {
         setContentView(R.layout.order_menu);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
+        setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
         initToolbarMenu(toolbar);
 
@@ -93,26 +93,26 @@ public class OrderListActivity extends AbstractActivity {
             holder.mIdView.setText(mValues.get(position).id);
             holder.mContentView.setText(mValues.get(position).content);
 
-//            holder.mView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    if (mTwoPane) {
-//                        Bundle arguments = new Bundle();
-//                        arguments.putString(OrderDetailFragment.ARG_ITEM_ID, holder.mItem.id);
-//                        OrderDetailFragment fragment = new OrderDetailFragment();
-//                        fragment.setArguments(arguments);
-//                        getSupportFragmentManager().beginTransaction()
-//                                .replace(R.id.order_detail_container, fragment)
-//                                .commit();
-//                    } else {
-//                        Context context = v.getContext();
-//                        Intent intent = new Intent(context, OrderDetailActivity.class);
-//                        intent.putExtra(OrderDetailFragment.ARG_ITEM_ID, holder.mItem.id);
-//
-//                        context.startActivity(intent);
-//                    }
-//                }
-//            });
+            holder.mView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mTwoPane) {
+                        Bundle arguments = new Bundle();
+                        arguments.putString(OrderDetailFragment.ARG_ITEM_ID, holder.mItem.id);
+                        OrderDetailFragment fragment = new OrderDetailFragment();
+                        fragment.setArguments(arguments);
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.order_detail_container, fragment)
+                                .commit();
+                    } else {
+                        Context context = v.getContext();
+                        Intent intent = new Intent(context, OrderDetailActivity.class);
+                        intent.putExtra(OrderDetailFragment.ARG_ITEM_ID, holder.mItem.id);
+
+                        context.startActivity(intent);
+                    }
+                }
+            });
         }
 
         @Override

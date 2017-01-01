@@ -32,34 +32,11 @@
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.AppBarLayout>
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar_search_product"
+        <com.magestore.app.pos.panel.ProductListPanel
+            android:id="@+id/product_list_panel"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/toolbar_menu">
+            android:layout_height="match_parent" />
 
-            <include layout="@layout/toolbar_search_product" />
-        </android.support.v7.widget.Toolbar>
-
-
-        <FrameLayout
-            android:id="@+id/frameLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-            <android.support.v7.widget.RecyclerView
-                xmlns:tools="http://schemas.android.com/tools"
-                android:id="@+id/sales_list"
-                android:name="com.magestore.app.pos.SalesListFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                app:layoutManager="GridLayoutManager"
-                android:columnCount="1"
-                tools:context="com.magestore.app.pos.SalesListActivity"
-                tools:listitem="@layout/sales_list_content" />
-        </FrameLayout>
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
