@@ -11,15 +11,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Các nghiệp vụ xoay quanh đơn hàng
  * Created by Mike on 12/26/2016.
  * Magestore
  * mike@trueplus.vn
- * TODO: Add a class header comment!
  */
 
 public class POSOrderUseCase extends AbstractUseCase implements OrderUseCase {
     private Order mOrder;
     private List<Order> mOnHoldOrders;
+
+    /**
+     * Khởi tạo 1 đơn hàng mới để bán hàng và lưu đơn đang có vào OnHold
+     * @return
+     */
+    @Override
+    public void newSales() {
+        Order order = new PosOrder();
+        newSales(order);
+    }
 
 
     @Override
@@ -30,6 +40,16 @@ public class POSOrderUseCase extends AbstractUseCase implements OrderUseCase {
     @Override
     public Order getOrder() {
         return mOrder;
+    }
+
+    @Override
+    public void newOrder() {
+        setOrder(createOrder());
+    }
+
+    @Override
+    public Order createOrder() {
+        return new PosOrder();
     }
 
     /**

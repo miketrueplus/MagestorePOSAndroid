@@ -22,6 +22,9 @@ public interface OrderUseCase {
      * @param order
      */
     void newSales(Order order);
+    void newSales();
+    void newOrder();
+    public Order createOrder();
 
     /**
      * Thêm 1 item vào đơn hàng

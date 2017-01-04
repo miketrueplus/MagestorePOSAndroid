@@ -24,4 +24,14 @@ public class AbstractUseCase implements UseCase {
     public void setProgress(UseCaseProgress progress) {
         mProgress = progress;
     }
+
+    @Override
+    public void commit() {
+
+    }
+
+    @Override
+    public void rollback() {
+
+    }
 }

@@ -116,7 +116,6 @@ public abstract class POSAbstractGateway implements Gateway {
             statement.setParams(params);
             statement.setParam(objParam);
             rp = statement.execute();
-//            String str = rp.readResult2String();
 
             // parse kết quả thành object
             rp.setParseImplement(getClassParseImplement());

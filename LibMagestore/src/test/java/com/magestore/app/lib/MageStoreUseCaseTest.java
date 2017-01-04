@@ -35,7 +35,7 @@ import java.util.Map;
 
 public class MageStoreUseCaseTest {
     @Test
-    public void test_customer_gateway_isCorrect() throws Exception {
+    public void test_config_usecase_isCorrect() throws Exception {
         // Đăng nhập
         UserUseCase userUseCase = UseCaseFactory.generateUserUseCase(null, null);
         userUseCase.doLogin("demo-magento2.magestore.com", "demo", "demo123");

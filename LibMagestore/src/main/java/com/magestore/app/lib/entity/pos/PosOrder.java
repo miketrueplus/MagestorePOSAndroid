@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Quảng lý các thông tin của order
  * Created by Mike on 12/22/2016.
  * Magestore
  * mike@trueplus.vn
- * TODO: Add a class header comment!
  */
 
 public class PosOrder extends AbstractEntity implements Order {

@@ -10,4 +10,6 @@ package com.magestore.app.lib.usecase;
 public interface UseCase {
     void setContext(UseCaseContext context);
     void setProgress(UseCaseProgress progress);
+    void commit();
+    void rollback();
 }

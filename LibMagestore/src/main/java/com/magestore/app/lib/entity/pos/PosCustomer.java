@@ -3,8 +3,11 @@ package com.magestore.app.lib.entity.pos;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.magestore.app.lib.entity.Address;
 import com.magestore.app.lib.entity.Customer;
+import com.magestore.app.lib.entity.Product;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -63,22 +66,14 @@ public class PosCustomer extends AbstractEntity implements Customer {
         return group_id;
     }
 
-//    public void writeToParcel(Parcel out, int flags) {
-//out.
-//    }
-//
-//    public static final Parcelable.Creator<PosCustomer> CREATOR
-//            = new Parcelable.Creator<PosCustomer>() {
-//        public PosCustomer createFromParcel(Parcel in) {
-//            return new PosCustomer(in);
-//        }
-//
-//        public PosCustomer[] newArray(int size) {
-//            return new PosCustomer[size];
-//        }
-//    };
-//
-//    private PosCustomer(Parcel in) {
-////        mData = in.readInt();
-//    }
+    @Override
+    public List<Address> getAddress() {
+        return (List<Address>)(List<?>) addresses;
+    }
+
+    @Override
+    public List<Address> newAddressList() {
+        addresses = new ArrayList<PosAddress>();
+        return getAddress();
+    }
 }

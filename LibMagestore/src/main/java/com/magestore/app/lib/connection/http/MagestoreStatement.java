@@ -1,5 +1,7 @@
 package com.magestore.app.lib.connection.http;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.magestore.app.lib.connection.Connection;
 import com.magestore.app.lib.connection.ConnectionException;

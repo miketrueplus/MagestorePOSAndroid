@@ -30,7 +30,7 @@ import java.util.Vector;
 
 public class MagestoreGatewayTest {
     @Test
-    public void gateway_isCorrect() throws Exception {
+    public void test_product_gateway_isCorrect() throws Exception {
         // Khởi tạo product gateway factory
         GatewayFactory factory = GatewayFactory.getFactory(POSGatewayFactory.class);
         ProductGateway product = factory.generateProductGateway();
@@ -48,14 +48,16 @@ public class MagestoreGatewayTest {
     public void test_customer_gateway_isCorrect() throws Exception {
         // Khởi tạo product gateway factory
         GatewayFactory factory = GatewayFactory.getFactory(POSGatewayFactory.class);
-        CustomerGateway customer = factory.generateCustomerGateway();
+        CustomerGateway customerGateway = factory.generateCustomerGateway();
         UserGateway user = factory.generateUserGateway();
 
         // Lấy list 30 customer đầu tiên
         String strSession = user.login("http://demo-magento2.magestore.com/webpos", "demo", "demo123");
         POSUserUseCase.session = new POSGatewaySession();
         POSUserUseCase.session.REST_SESSION_ID = strSession.trim().replace("\"", "");
-        List<Customer> list = customer.getCustomers(20, 1);
+        List<Customer> list = customerGateway.getCustomers(20, 1);
         return;
     }
+
+
 }
