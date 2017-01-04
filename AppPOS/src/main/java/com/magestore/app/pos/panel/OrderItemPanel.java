@@ -2,7 +2,6 @@ package com.magestore.app.pos.panel;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -15,7 +14,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.chauthai.swipereveallayout.ViewBinderHelper;
 import com.daimajia.swipe.SwipeLayout;
 import com.magestore.app.lib.entity.Order;
 import com.magestore.app.lib.entity.OrderItem;
@@ -24,10 +22,7 @@ import com.magestore.app.lib.entity.pos.PosOrder;
 import com.magestore.app.lib.usecase.OrderUseCase;
 import com.magestore.app.lib.usecase.UseCaseFactory;
 import com.magestore.app.pos.R;
-import com.magestore.app.pos.SalesListActivity;
 import com.magestore.app.util.ConfigUtil;
-
-import java.util.List;
 
 /**
  * Created by Mike on 12/30/2016.
@@ -103,8 +98,9 @@ public class OrderItemPanel extends FrameLayout {
 
     private void initControlValue() {
         // Lập một đơn hàng mới
+        // TODO: cần nghiệp vụ đúng hơn, cứ new panel là lập đơn hàng mới thì chưa phù hợp
         mOrderUseCase = UseCaseFactory.generateOrderUseCase(null, null);
-        mOrderUseCase.newSales(new PosOrder());
+        mOrderUseCase.newSales();
 
         mOrderItemListAdapter
                 = new OrderItemPanel.OrderItemListRecyclerViewAdapter(mOrderUseCase.getOrder());
@@ -157,7 +153,7 @@ public class OrderItemPanel extends FrameLayout {
         @Override
         public OrderItemListRecyclerViewAdapter.OrderItemListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.sales_order_list_content, parent, false);
+                    .inflate(R.layout.card_sales_order_list_content, parent, false);
             return new OrderItemListRecyclerViewAdapter.OrderItemListViewHolder(view);
         }
 

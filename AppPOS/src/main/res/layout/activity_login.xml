@@ -38,7 +38,7 @@
                     android:id="@+id/domain"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/domain"
+                    android:hint="@string/login_domain"
                     android:inputType="text"
                     android:maxLines="1"
                     android:singleLine="true" />
@@ -52,7 +52,7 @@
                     android:id="@+id/user_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/user_name"
+                    android:hint="@string/login_user_name"
                     android:inputType="text"
                     android:maxLines="1"
                     android:singleLine="true" />
@@ -67,9 +67,9 @@
                     android:id="@+id/password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/password"
+                    android:hint="@string/login_password"
                     android:imeActionId="@+id/login"
-                    android:imeActionLabel="@string/action_sign_in_short"
+                    android:imeActionLabel="@string/login_action_sign_in_short"
                     android:imeOptions="actionUnspecified"
                     android:inputType="textPassword"
                     android:maxLines="1"
@@ -83,7 +83,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/action_sign_in"
+                android:text="@string/login_action_sign_in"
                 android:textStyle="bold" />
 
         </LinearLayout>

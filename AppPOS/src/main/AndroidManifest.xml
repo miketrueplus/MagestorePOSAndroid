@@ -23,27 +23,28 @@
         </activity>
         <activity
             android:name=".SalesListActivity"
-            android:label="@string/title_sales_list"
             android:configChanges="orientation|screenSize"
+            android:label="@string/sales_title_sales_list"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MenuActivity"
-            android:label="@string/title_activity_menu"
+            android:label="@string/sales_title_activity_menu"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".CustomerListActivity"
-            android:label="@string/title_customer_list"
             android:configChanges="orientation|screenSize"
+            android:label="@string/customer_title_customer_list"
             android:parentActivityName=".LoginActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".OrderListActivity"
-            android:label="@string/title_order_list"
             android:configChanges="orientation|screenSize"
+            android:label="@string/customer_title_order_list"
+            android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".OrderDetailActivity"
-            android:label="@string/title_order_detail"
+            android:label="@string/customer_title_order_detail"
             android:parentActivityName=".OrderListActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data

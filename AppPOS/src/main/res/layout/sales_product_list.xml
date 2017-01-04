@@ -10,4 +10,4 @@
     android:columnCount="4"
     app:layoutManager="GridLayoutManager"
     tools:context="com.magestore.app.pos.SalesListActivity"
-    tools:listitem="@layout/product_list_content" />
+    tools:listitem="@layout/card_product_list_content" />

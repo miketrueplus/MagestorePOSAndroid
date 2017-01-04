@@ -129,14 +129,14 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
 
         // Kiểm tra đã nhập domain chưa
         if (TextUtils.isEmpty(domain)) {
-            mDomainView.setError(getString(R.string.error_field_required));
+            mDomainView.setError(getString(R.string.err_field_required));
             mDomainView.requestFocus();
             return false;
         }
 
         // Kiểm tra đã nhập user name chưa
         else if (TextUtils.isEmpty(username)) {
-            mUserNameView.setError(getString(R.string.error_field_required));
+            mUserNameView.setError(getString(R.string.err_field_required));
             mUserNameView.requestFocus();
             ;
             return false;
@@ -144,7 +144,7 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
 
         // Kiểm tra đã nhập password chưa
         else if (TextUtils.isEmpty(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
+            mPasswordView.setError(getString(R.string.login_error_invalid_password));
             mPasswordView.requestFocus();
             return false;
         }
@@ -248,7 +248,7 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
                 finish();
             } else {
                 // Đăng nhập không thành công, báo lỗi và yêu cầu nhập lại
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
+                mPasswordView.setError(getString(R.string.login_error_incorrect_password));
                 mPasswordView.requestFocus();
 
             }

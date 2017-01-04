@@ -267,7 +267,7 @@ public class ProductListPanel extends FrameLayout {
         @Override
         public ProductListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.product_list_content, parent, false);
+                    .inflate(R.layout.card_product_list_content, parent, false);
             return new ProductListViewHolder(view);
         }
 

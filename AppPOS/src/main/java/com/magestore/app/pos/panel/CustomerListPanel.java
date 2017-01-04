@@ -177,7 +177,7 @@ public class CustomerListPanel extends FrameLayout {
     }
 
     /**
-     * Adapter map CustomerList sang view
+     * Adapter2Entity map CustomerList sang view
      */
     public class CustomerListRecyclerViewAdapter
             extends RecyclerView.Adapter<CustomerListPanel.CustomerListRecyclerViewAdapter.CustomerListViewHolder> {
@@ -202,7 +202,7 @@ public class CustomerListPanel extends FrameLayout {
         @Override
         public CustomerListPanel.CustomerListRecyclerViewAdapter.CustomerListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.customer_list_content, parent, false);
+                    .inflate(R.layout.card_customer_list_content, parent, false);
             return new CustomerListPanel.CustomerListRecyclerViewAdapter.CustomerListViewHolder(view);
         }
 

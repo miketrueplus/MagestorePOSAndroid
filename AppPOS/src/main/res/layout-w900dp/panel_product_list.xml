@@ -53,7 +53,7 @@
             android:layout_gravity="center"
             android:columnCount="1"
             app:layoutManager="GridLayoutManager"
-            tools:listitem="@layout/product_list_content" />
+            tools:listitem="@layout/card_product_list_content" />
     </LinearLayout>
 
 </FrameLayout>

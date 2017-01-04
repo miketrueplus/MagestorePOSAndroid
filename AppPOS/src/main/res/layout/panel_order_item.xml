@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:columnCount="1"
-            tools:listitem="@layout/sales_order_list_content"/>
+            tools:listitem="@layout/card_sales_order_list_content"/>
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"

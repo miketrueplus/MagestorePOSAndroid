@@ -128,21 +128,32 @@
                 app:title="Address">
 
                 <ImageButton
+                    android:id="@+id/btn_new_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:background="@drawable/ic_add_new" />
             </android.support.v7.widget.Toolbar>
 
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="5dp"
                 android:orientation="vertical">
 
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/customer_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.0"
+                    app:layoutManager="LinearLayoutManager"
+                    app:spanCount="1"
+                    tools:context="com.magestore.app.pos.CustomerListActivity"
+                    tools:listitem="@layout/card_customer_address_content"
+                    android:scrollbars="vertical" />
 
-            </LinearLayout>
+            </FrameLayout>
         </LinearLayout>
 
         <LinearLayout
