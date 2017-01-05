@@ -4,9 +4,12 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.Gson;
+import com.magestore.app.lib.adapterview.AdapterViewAnnotiation;
 import com.magestore.app.lib.entity.Entity;
 import com.magestore.app.lib.parse.ParseEntity;
+import com.magestore.app.util.NotFoundObject;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 
@@ -41,6 +44,7 @@ public class AbstractEntity implements Entity, ParseEntity {
     @Override
     public boolean setValue(String key, Object value) {
         Class clazz = this.getClass();
+        Annotation[] ann = clazz.getDeclaredAnnotations();
         if (clazz != null) {
             try {
                 Field field = clazz.getDeclaredField(key);
@@ -48,7 +52,7 @@ public class AbstractEntity implements Entity, ParseEntity {
                 field.set(this, value);
                 return true;
             } catch (NoSuchFieldException e) {
-                clazz = clazz.getSuperclass();
+                return false;
             } catch (Exception e) {
                 throw new IllegalStateException(e);
             }
@@ -59,13 +63,18 @@ public class AbstractEntity implements Entity, ParseEntity {
     @Override
     public Object getValue(String key) {
         Class clazz = this.getClass();
+        Annotation ann = clazz.getAnnotation(AdapterViewAnnotiation.class);
+//        AdapterViewAnnotiation ann = clazz.getAnnotation(AdapterViewAnnotiation.class);
+        Annotation[] ann2 = clazz.getAnnotations();
+//        clazz.getDe
         if (clazz != null) {
             try {
                 Field field = clazz.getDeclaredField(key);
+                AdapterViewAnnotiation ann3 = field.getAnnotation(AdapterViewAnnotiation.class);
                 field.setAccessible(true);
                 return field.get(this);
             } catch (NoSuchFieldException e) {
-                clazz = clazz.getSuperclass();
+                return NotFoundObject.getInstance();
             } catch (Exception e) {
                 throw new IllegalStateException(e);
             }

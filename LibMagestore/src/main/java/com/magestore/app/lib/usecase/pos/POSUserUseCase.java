@@ -38,7 +38,7 @@ public class POSUserUseCase extends AbstractUseCase implements UserUseCase {
      */
     public boolean doLogin(String domain, String username, String password) throws InstantiationException, IllegalAccessException, IOException, ParseException {
         // Gọi user gateway
-        GatewayFactory factory = GatewayFactory.getFactory(POSGatewayFactory.class);
+        GatewayFactory factory = GatewayFactory.getFactory(getContext());
         UserGateway userGateway = factory.generateUserGateway();
         String strBaseURL = userGateway.buildPOSBaseURL(domain);
 

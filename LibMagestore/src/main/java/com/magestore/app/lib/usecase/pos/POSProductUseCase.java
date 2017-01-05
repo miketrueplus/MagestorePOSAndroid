@@ -61,7 +61,7 @@ public class POSProductUseCase extends AbstractUseCase implements ProductUseCase
      */
     public List<Product> retrieveProductList(int size) throws InstantiationException, IllegalAccessException, IOException, ParseException {
         // Khởi tạo product gateway factory
-        GatewayFactory factory = GatewayFactory.getFactory(POSGatewayFactory.class);
+        GatewayFactory factory = GatewayFactory.getFactory(getContext());
         ProductGateway productGateway = factory.generateProductGateway();
 
         // Lấy list 30 products đầu tiên

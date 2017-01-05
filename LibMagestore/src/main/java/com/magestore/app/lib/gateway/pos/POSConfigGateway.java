@@ -1,6 +1,7 @@
 package com.magestore.app.lib.gateway.pos;
 
 import com.magestore.app.lib.connection.ConnectionException;
+import com.magestore.app.lib.context.MagestoreContext;
 import com.magestore.app.lib.entity.Config;
 import com.magestore.app.lib.entity.pos.PosConfig;
 import com.magestore.app.lib.gateway.ConfigGateway;
@@ -18,6 +19,7 @@ import java.io.IOException;
  */
 
 public class POSConfigGateway extends POSAbstractGateway implements ConfigGateway {
+
     /**
      * Trả lại 1 danh sách các config
      * @return

@@ -1,5 +1,8 @@
 package com.magestore.app.lib.gateway;
 
+import android.content.Context;
+
+import com.magestore.app.lib.context.MagestoreContext;
 import com.magestore.app.lib.entity.Config;
 import com.magestore.app.lib.gateway.pos.POSGatewayFactory;
 
@@ -11,21 +14,28 @@ import com.magestore.app.lib.gateway.pos.POSGatewayFactory;
  */
 
 public abstract class GatewayFactory {
+    private MagestoreContext mContext;
+
     public abstract ProductGateway generateProductGateway();
     public abstract UserGateway generateUserGateway();
     public abstract OrderGateway generateOrderGateway();
     public abstract CustomerGateway generateCustomerGateway();
     public abstract ConfigGateway generateConfigGateway();
 
+    public MagestoreContext getContext() {
+        return mContext;
+    }
 
     /**
      * Khởi tạo Gateway factory để kết nối, gọi các API đến GatewayFactory
-     * @param cl
+     * @param
      * @return
      * @throws IllegalAccessException
      * @throws InstantiationException
      */
-    public static GatewayFactory getFactory(Class cl) throws IllegalAccessException, InstantiationException {
-        return (GatewayFactory) cl.newInstance();
+    public static GatewayFactory getFactory(MagestoreContext context) throws IllegalAccessException, InstantiationException {
+        GatewayFactory gatewayFactory = (GatewayFactory) POSGatewayFactory.class.newInstance();
+        gatewayFactory.mContext = context;
+        return gatewayFactory;
     }
 }

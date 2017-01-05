@@ -223,7 +223,7 @@ public class CustomerDetailPanel extends FrameLayout {
     }
 
     /**
-     * Adapter2Entity map Customer Address sang view
+     * AdapterView2Entity map Customer Address sang view
      */
     public class CustomerAddressRecyclerViewAdapter
             extends RecyclerView.Adapter<CustomerDetailPanel.CustomerAddressRecyclerViewAdapter.CustomerAddressViewHolder> {

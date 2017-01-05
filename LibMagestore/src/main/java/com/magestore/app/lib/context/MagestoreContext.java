@@ -1,4 +1,4 @@
-package com.magestore.app.lib.usecase;
+package com.magestore.app.lib.context;
 
 /**
  * Created by Mike on 12/21/2016.
@@ -7,5 +7,5 @@ package com.magestore.app.lib.usecase;
  * TODO: Add a class header comment!
  */
 
-public interface UseCaseContext {
+public interface MagestoreContext {
 }

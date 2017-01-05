@@ -25,7 +25,7 @@
             android:layout_height="wrap_content">
 
             <EditText
-                android:id="@+id/txt_address_last_name"
+                android:id="@+id/lastname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/last_name" />
@@ -36,7 +36,7 @@
             android:layout_height="wrap_content">
 
             <EditText
-                android:id="@+id/txt_address_company"
+                android:id="@+id/company"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/company" />
@@ -47,7 +47,7 @@
             android:layout_height="wrap_content">
 
             <EditText
-                android:id="@+id/txt_address_phone"
+                android:id="@+id/telephone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/phone" />
@@ -58,7 +58,7 @@
             android:layout_height="wrap_content">
 
             <EditText
-                android:id="@+id/txt_address_street1"
+                android:id="@+id/street1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/street" />
@@ -69,7 +69,7 @@
             android:layout_height="wrap_content">
 
             <EditText
-                android:id="@+id/txt_address_street2"
+                android:id="@+id/street2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/street" />
@@ -80,7 +80,7 @@
             android:layout_height="wrap_content">
 
             <EditText
-                android:id="@+id/txt_address_city"
+                android:id="@+id/city"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/city" />
@@ -92,7 +92,7 @@
             android:layout_height="wrap_content">
 
             <EditText
-                android:id="@+id/txt_address_zip_code"
+                android:id="@+id/postcode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/zip_code" />
@@ -103,7 +103,7 @@
             android:layout_height="wrap_content">
 
             <EditText
-                android:id="@+id/txt_address_country"
+                android:id="@+id/country_id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/country" />
@@ -114,7 +114,7 @@
             android:layout_height="wrap_content">
 
             <EditText
-                android:id="@+id/txt_address_state"
+                android:id="@+id/state"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/state_or_province" />
@@ -125,7 +125,7 @@
             android:layout_height="wrap_content">
 
             <EditText
-                android:id="@+id/txt_address_vat"
+                android:id="@+id/vat"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/vat" />

@@ -5,6 +5,7 @@ import com.magestore.app.lib.connection.ConnectionException;
 import com.magestore.app.lib.connection.ResultReading;
 import com.magestore.app.lib.connection.Statement;
 import com.magestore.app.lib.connection.http.MagestoreConnection;
+import com.magestore.app.lib.context.MagestoreContext;
 import com.magestore.app.lib.entity.Product;
 import com.magestore.app.lib.gateway.Gateway;
 import com.magestore.app.lib.gateway.GatewayException;
@@ -25,15 +26,18 @@ import java.util.List;
  * mike@trueplus.vn
  */
 
-public abstract class POSAbstractGateway implements Gateway {
+public class POSAbstractGateway implements Gateway {
     private Class mclParseImplement;
     private Class mclParseEntity;
     private POSGatewaySession mSession;
+    private MagestoreContext mContext;
 
     public POSAbstractGateway() {
         setParseImplement(Gson2PosAbstractParseImplement.class);
         setSession(new POSGatewaySession());
     }
+
+
 
     @Override
     public void setSession(GatewaySession session) {
@@ -43,6 +47,16 @@ public abstract class POSAbstractGateway implements Gateway {
     @Override
     public void setParseEntity(Class clParseEntity) {
         mclParseEntity = clParseEntity;
+    }
+
+    @Override
+    public void setContext(MagestoreContext context) {
+        mContext = context;
+    }
+
+    @Override
+    public MagestoreContext getContext() {
+        return mContext;
     }
 
     @Override

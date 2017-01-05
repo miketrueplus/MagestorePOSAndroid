@@ -1,8 +1,9 @@
 package com.magestore.app.lib.entity.pos;
 
+import com.google.gson.annotations.SerializedName;
+import com.magestore.app.lib.adapterview.AdapterViewAnnotiation;
 import com.magestore.app.lib.entity.Address;
 import com.magestore.app.lib.entity.Region;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +23,7 @@ public class PosAddress extends AbstractEntity implements Address {
     String telephone;
     String postcode;
     String city;
+    @AdapterViewAnnotiation(resName = "fullname")
     String firstname;
     String lastname;
     String vat_id;

@@ -1,4 +1,4 @@
-package com.magestore.app.lib.usecase;
+package com.magestore.app.lib.context;
 
 /**
  * Quản lý các event, progress của use case, mô tả quá trình của use case
@@ -7,5 +7,5 @@ package com.magestore.app.lib.usecase;
  * mike@trueplus.vn
  */
 
-public interface UseCaseProgress {
+public interface MagestoreProgress {
 }

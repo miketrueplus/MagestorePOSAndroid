@@ -30,7 +30,7 @@ public class POSConfigUseCase extends AbstractUseCase implements ConfigUseCase {
     @Override
     public Config retrieveConfig() throws InstantiationException, IllegalAccessException, IOException, ParseException {
         // Khởi tạo customer gateway factory
-        GatewayFactory factory = GatewayFactory.getFactory(POSGatewayFactory.class);
+        GatewayFactory factory = GatewayFactory.getFactory(getContext());
         ConfigGateway configGateway = factory.generateConfigGateway();
 
         // Lấy list config đầu tiên

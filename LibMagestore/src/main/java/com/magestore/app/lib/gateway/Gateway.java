@@ -1,5 +1,6 @@
 package com.magestore.app.lib.gateway;
 
+import com.magestore.app.lib.context.MagestoreContext;
 import com.magestore.app.lib.parse.ParseImplement;
 
 /**
@@ -10,6 +11,8 @@ import com.magestore.app.lib.parse.ParseImplement;
  */
 
 public interface Gateway {
+    void setContext(MagestoreContext context);
+    MagestoreContext getContext();
     void setParseImplement(Class clParseImplement);
     void setParseEntity(Class clParseEntity);
     void setSession(GatewaySession session);

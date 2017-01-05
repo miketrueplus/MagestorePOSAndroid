@@ -1,15 +1,9 @@
 package com.magestore.app.pos.controller;
 
-import android.os.AsyncTask;
-import android.support.v7.widget.RecyclerView;
-
 import com.magestore.app.lib.controller.ControllerListener;
 import com.magestore.app.lib.entity.Product;
 import com.magestore.app.lib.usecase.ProductUseCase;
 import com.magestore.app.lib.usecase.UseCaseFactory;
-import com.magestore.app.lib.usecase.UseCaseProgress;
-import com.magestore.app.pos.SalesListActivity;
-import com.magestore.app.pos.ui.SalesUI;
 
 import java.util.List;
 

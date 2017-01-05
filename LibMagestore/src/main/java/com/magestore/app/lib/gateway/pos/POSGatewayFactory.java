@@ -8,10 +8,10 @@ import com.magestore.app.lib.gateway.ProductGateway;
 import com.magestore.app.lib.gateway.UserGateway;
 
 /**
+ * Khởi tạo các gateway factory
  * Created by Mike on 12/14/2016.
  * Magestore
  * mike@trueplus.vn
- * TODO: Add a class header comment!
  */
 
 public class POSGatewayFactory extends GatewayFactory {

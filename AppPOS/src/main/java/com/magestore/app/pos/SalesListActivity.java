@@ -2,53 +2,27 @@ package com.magestore.app.pos;
 
 
 import android.annotation.TargetApi;
-import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.chauthai.swipereveallayout.ViewBinderHelper;
 
 
-import com.daimajia.swipe.SwipeLayout;
-import com.magestore.app.lib.controller.Controller;
-import com.magestore.app.lib.controller.ControllerListener;
-import com.magestore.app.lib.entity.Order;
-import com.magestore.app.lib.entity.OrderItem;
 import com.magestore.app.lib.entity.Product;
-import com.magestore.app.lib.entity.pos.PosOrder;
-import com.magestore.app.pos.panel.CustomerListPanel;
 import com.magestore.app.pos.panel.OrderItemPanel;
 import com.magestore.app.pos.panel.OrderItemPanelListener;
 import com.magestore.app.pos.panel.ProductListPanel;
 import com.magestore.app.pos.panel.ProductListPanelListener;
-import com.magestore.app.util.ConfigUtil;
-import com.magestore.app.lib.usecase.OrderUseCase;
-import com.magestore.app.lib.usecase.UseCaseFactory;
-import com.magestore.app.pos.controller.LoadProductController;
-import com.magestore.app.pos.controller.LoadProductImageController;
 import com.magestore.app.pos.ui.AbstractActivity;
 import com.magestore.app.pos.ui.SalesUI;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**

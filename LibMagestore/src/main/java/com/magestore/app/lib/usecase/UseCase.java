@@ -1,5 +1,8 @@
 package com.magestore.app.lib.usecase;
 
+import com.magestore.app.lib.context.MagestoreContext;
+import com.magestore.app.lib.context.MagestoreProgress;
+
 /**
  * Created by Mike on 12/14/2016.
  * Magestore
@@ -8,8 +11,10 @@ package com.magestore.app.lib.usecase;
  */
 
 public interface UseCase {
-    void setContext(UseCaseContext context);
-    void setProgress(UseCaseProgress progress);
+    void setContext(MagestoreContext context);
+    void setProgress(MagestoreProgress progress);
+    MagestoreContext getContext();
+    MagestoreProgress getProgress();
     void commit();
     void rollback();
 }

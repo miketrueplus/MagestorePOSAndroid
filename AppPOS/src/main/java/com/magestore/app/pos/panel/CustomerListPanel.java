@@ -177,7 +177,7 @@ public class CustomerListPanel extends FrameLayout {
     }
 
     /**
-     * Adapter2Entity map CustomerList sang view
+     * AdapterView2Entity map CustomerList sang view
      */
     public class CustomerListRecyclerViewAdapter
             extends RecyclerView.Adapter<CustomerListPanel.CustomerListRecyclerViewAdapter.CustomerListViewHolder> {

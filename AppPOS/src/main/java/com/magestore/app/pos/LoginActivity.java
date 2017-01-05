@@ -5,8 +5,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
 
-import android.support.v7.app.AlertDialog;
-
 import android.os.AsyncTask;
 
 import android.os.Build;
@@ -23,9 +21,6 @@ import android.widget.TextView;
 
 import com.magestore.app.lib.controller.Controller;
 import com.magestore.app.lib.controller.ControllerListener;
-import com.magestore.app.lib.usecase.UseCaseFactory;
-import com.magestore.app.lib.usecase.UseCaseProgress;
-import com.magestore.app.lib.usecase.pos.POSUserUseCase;
 import com.magestore.app.pos.controller.LoginController;
 import com.magestore.app.pos.ui.AbstractActivity;
 import com.magestore.app.pos.ui.LoginUI;

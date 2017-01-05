@@ -11,7 +11,7 @@ import com.magestore.app.lib.entity.Entity;
  * TODO: Add a class header comment!
  */
 
-public interface Adapter {
+public interface AdapterView {
     void fromView(View view, Entity entity);
     void toView(View view, Entity entity);
 }
