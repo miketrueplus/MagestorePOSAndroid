@@ -22,13 +22,13 @@ public class Adapter2Entity implements Adapter {
     public void fromView(View view, Entity entity) {
         mEntity = entity;
         mintParseFromView = PARSE_FROM_VIEW;
-        debugViewIds(view);
+//        debugViewIds(view);
     }
 
     public void toView(View view, Entity entity) {
         mEntity = entity;
         mintParseFromView = PARSE_TO_VIEW;
-        debugViewIds(view);
+//        debugViewIds(view);
     }
 
     private View debugViewIds(View view) {
