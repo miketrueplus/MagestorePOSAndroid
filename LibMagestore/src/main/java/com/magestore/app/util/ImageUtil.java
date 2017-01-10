@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 
-import com.magestore.app.lib.entity.Entity;
+import com.magestore.app.lib.model.Model;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -21,11 +21,11 @@ import java.net.URL;
 public class ImageUtil {
     /**
      * Trả về bmp ảnh từ trên mạng, kiểm tra cache trong RAM và Storage trước
-     * @param entity
+     * @param model
      * @param remotePath
      * @return
      */
-    public static Bitmap getBitmap(Entity entity, String remotePath, int width, int height) {
+    public static Bitmap getBitmap(Model model, String remotePath, int width, int height) {
         // Nếu chưa, khởi tạo các biến để load ảnh từ mạng
         URL url = null;
         BufferedInputStream is = null;

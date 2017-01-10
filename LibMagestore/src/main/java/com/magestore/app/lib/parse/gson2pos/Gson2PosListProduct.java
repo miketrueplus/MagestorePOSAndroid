@@ -1,10 +1,6 @@
 package com.magestore.app.lib.parse.gson2pos;
 
-import com.magestore.app.lib.entity.Product;
-import com.magestore.app.lib.entity.pos.PosProduct;
-
-import java.util.List;
-import java.util.Vector;
+import com.magestore.app.pos.model.catalog.PosProduct;
 
 /**
  * Created by Mike on 12/19/2016.

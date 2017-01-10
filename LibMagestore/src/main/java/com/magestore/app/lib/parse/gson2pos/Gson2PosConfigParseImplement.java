@@ -17,10 +17,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * Chuyển đổi Gson sang config
  * Created by Mike on 12/28/2016.
  * Magestore
  * mike@trueplus.vn
- * TODO: Add a class header comment!
  */
 
 public class Gson2PosConfigParseImplement extends Gson2PosAbstractParseImplement {

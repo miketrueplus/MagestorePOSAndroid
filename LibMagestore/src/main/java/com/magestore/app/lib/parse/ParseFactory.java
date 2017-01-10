@@ -1,25 +1,32 @@
 package com.magestore.app.lib.parse;
 
-import com.magestore.app.lib.entity.Entity;
-import com.magestore.app.lib.entity.Product;
-import com.magestore.app.lib.entity.pos.PosProduct;
-
-import org.apache.olingo.client.api.edm.xml.EntityType;
-import org.xml.sax.SAXException;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.text.*;
-import java.util.Collection;
-import java.util.Map;
+import com.magestore.app.lib.context.MagestoreContext;
+import com.magestore.app.lib.parse.gson2pos.Gson2PosAbstractParseImplement;
 
 /**
+ * Tạo các object parse implement và entity để thực hiện chuyển đổi dữ liệu sang các entity
  * Created by Mike on 12/15/2016.
  * Magestore
  * mike@trueplus.vn
  */
 
 public class ParseFactory {
+    /**
+     * Khởi tạo parse implement
+     * @param context
+     * @return
+     * @throws java.text.ParseException
+     */
+    public static ParseImplement generateParseImplement(MagestoreContext context) throws java.text.ParseException {
+        return generateParseImplement(Gson2PosAbstractParseImplement.class);
+    }
+
+    /**
+     * Khởi tạo entity
+     * @param cl
+     * @return
+     * @throws java.text.ParseException
+     */
     public static ParseImplement generateParseImplement(Class cl) throws java.text.ParseException {
         try {
             return (ParseImplement) cl.newInstance();

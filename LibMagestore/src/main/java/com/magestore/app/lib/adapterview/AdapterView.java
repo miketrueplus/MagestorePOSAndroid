@@ -1,17 +1,18 @@
 package com.magestore.app.lib.adapterview;
 
-import android.view.View;
+import com.magestore.app.lib.model.Model;
 
-import com.magestore.app.lib.entity.Entity;
+import java.lang.reflect.InvocationTargetException;
 
 /**
+ * Chuyển đổi từ Model sang 1 view và ngược lại
  * Created by Mike on 1/3/2017.
  * Magestore
  * mike@trueplus.vn
- * TODO: Add a class header comment!
  */
 
 public interface AdapterView {
-    void fromView(View view, Entity entity);
-    void toView(View view, Entity entity);
+    void setModel(Model model);
+    void fromView() throws InvocationTargetException, IllegalAccessException;
+    void toView() throws InvocationTargetException, IllegalAccessException;
 }

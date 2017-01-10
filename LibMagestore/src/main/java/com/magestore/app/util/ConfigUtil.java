@@ -1,6 +1,6 @@
 package com.magestore.app.util;
 
-import com.magestore.app.lib.entity.Config;
+import com.magestore.app.lib.model.config.Config;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -37,6 +37,15 @@ public class ConfigUtil {
     }
 
     /**
+     * Trả lại format price
+     * @param quantity
+     * @return
+     */
+    public static String formatPrice(CharSequence quantity) {
+        return formatPrice(Float.parseFloat(quantity.toString()));
+    }
+
+    /**
      * Trả lại format số lượng
      * @param quantity
      * @return
@@ -61,6 +70,15 @@ public class ConfigUtil {
      */
     public static String formatQuantity(String quantity) {
         return formatNumber(Float.parseFloat(quantity));
+    }
+
+    /**
+     * Trả lại format số lượng
+     * @param quantity
+     * @return
+     */
+    public static String formatQuantity(CharSequence quantity) {
+        return formatNumber(Float.parseFloat(quantity.toString()));
     }
 
     /**

@@ -14,5 +14,11 @@ import java.lang.annotation.Target;
 @Target({ElementType.FIELD, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface AdapterViewAnnotiation {
+    public enum MethodType {
+        SET,
+        GET
+    }
+
     String resName();
+    MethodType methodType();
 }

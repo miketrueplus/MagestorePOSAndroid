@@ -18,7 +18,4 @@ import java.util.Vector;
 
 public class Gson2PosGenericParseEntity<T> implements ParseEntity {
     public T items;
-//    public Gson2PosGenericParseEntity(T pitem) {
-//        items = pitem;
-//    }
 }

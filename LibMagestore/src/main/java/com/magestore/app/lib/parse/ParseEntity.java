@@ -1,7 +1,5 @@
 package com.magestore.app.lib.parse;
 
-import com.magestore.app.lib.entity.Entity;
-
 /**
  * Created by Mike on 12/15/2016.
  * Magestore
