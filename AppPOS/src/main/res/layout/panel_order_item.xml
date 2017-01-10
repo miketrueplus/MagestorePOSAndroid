@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:magestore_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+
     android:id="@+id/sales_order_list"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -19,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:columnCount="1"
-            tools:listitem="@layout/card_sales_order_list_content"/>
+            tools:listitem="@layout/card_sales_order_list_content" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"
@@ -33,81 +35,92 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp">
 
-        <TextView
+        <com.magestore.app.view.MagestoreTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/sub_total"
             android:textSize="24sp" />
-        <TextView
+
+        <com.magestore.app.view.MagestoreTextView
             android:id="@+id/text_sales_order_subtotal"
-            android:layout_weight="1"
-            android:layout_gravity="right"
-            android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="right"
+            android:layout_weight="1"
             android:text="0.00"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            magestore_view:data_type="currency" />
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp">
 
-        <TextView
+        <com.magestore.app.view.MagestoreTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/discount"
             android:textSize="24sp" />
-        <TextView
+
+        <com.magestore.app.view.MagestoreTextView
             android:id="@+id/text_sales_order_discount"
-            android:layout_weight="1"
-            android:layout_gravity="right"
-            android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="right"
+            android:layout_weight="1"
             android:text="0.00"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            magestore_view:data_type="currency" />
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp">
 
-        <TextView
+        <com.magestore.app.view.MagestoreTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/tax"
             android:textSize="24sp" />
 
-        <TextView
+        <com.magestore.app.view.MagestoreTextView
             android:id="@+id/text_sales_order_tax"
-            android:layout_weight="1"
-            android:layout_gravity="right"
-            android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="right"
+            android:layout_weight="1"
             android:text="0.00"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            magestore_view:data_type="currency" />
     </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="5dp"
         android:orientation="horizontal">
+
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.7"
             android:text="Hold"
             android:textSize="18sp" />
+
         <Button
             android:id="@+id/btn_sales_order_checkout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Check out"
             android:layout_weight="0.3"
+            android:text="Check out"
             android:textColorHighlight="@color/colorAccent"
             android:textSize="18sp" />
     </LinearLayout>

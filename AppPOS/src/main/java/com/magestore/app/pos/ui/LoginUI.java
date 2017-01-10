@@ -1,6 +1,6 @@
 package com.magestore.app.pos.ui;
 
-import com.magestore.app.lib.ui.PosUI;
+import com.magestore.app.view.ui.PosUI;
 
 /**
  * Created by Mike on 12/24/2016.

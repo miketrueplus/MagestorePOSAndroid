@@ -15,7 +15,7 @@ import android.view.View;
 import android.widget.AutoCompleteTextView;
 
 
-import com.magestore.app.lib.entity.Product;
+import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.pos.panel.OrderItemPanel;
 import com.magestore.app.pos.panel.OrderItemPanelListener;
 import com.magestore.app.pos.panel.ProductListPanel;
@@ -29,7 +29,7 @@ import java.util.List;
  * Quản lý các hoạt động salé
  * Tạo sales mới, hold và check out thanh toán
  */
-public class SalesListActivity extends AbstractActivity
+public class SalesActivity extends AbstractActivity
         implements
         ProductListPanelListener,
         OrderItemPanelListener,
@@ -95,8 +95,8 @@ public class SalesListActivity extends AbstractActivity
 
     @Override
     protected void initTask() {
-//        mLoadProduct = new LoadProductController(new LoadProductListener());
-//        mLoadImageTask = new LoadProductImageController(mListProduct);
+//        mLoadProduct = new LoadProductTask(new LoadProductListener());
+//        mLoadImageTask = new LoadProductImageTask(mListProduct);
     }
 
     @Override

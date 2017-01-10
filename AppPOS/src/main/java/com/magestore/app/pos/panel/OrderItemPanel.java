@@ -15,14 +15,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.daimajia.swipe.SwipeLayout;
-import com.magestore.app.lib.entity.Order;
-import com.magestore.app.lib.entity.OrderItem;
-import com.magestore.app.lib.entity.Product;
-import com.magestore.app.lib.entity.pos.PosOrder;
-import com.magestore.app.lib.usecase.OrderUseCase;
-import com.magestore.app.lib.usecase.UseCaseFactory;
+import com.magestore.app.lib.adapterview.adapter2pos.AdapterView2Model;
+import com.magestore.app.lib.model.sales.Order;
+import com.magestore.app.lib.model.checkout.cart.Items;
+import com.magestore.app.lib.model.catalog.Product;
+import com.magestore.app.lib.service.checkout.CartService;
+import com.magestore.app.lib.service.ServiceFactory;
 import com.magestore.app.pos.R;
 import com.magestore.app.util.ConfigUtil;
+import com.magestore.app.view.MagestoreTextView;
 
 /**
  * Created by Mike on 12/30/2016.
@@ -36,15 +37,16 @@ public class OrderItemPanel extends FrameLayout {
     private RecyclerView mOrderItemRecycleView;
 
     // Xử lý các nghiệp vụ của order
-    private OrderUseCase mOrderUseCase;
+    private CartService mOrderUseCase;
 
     // Listner xử lý các sự kiện
     private OrderItemPanelListener mOrderItemPanelListener;
 
     // các text view hiện thị tổng giá
-    private TextView mSubTotalView;
-    private TextView mTaxTotalView;
-    private TextView mDiscountTotalView;
+    AdapterView2Model mAdapter2View = new AdapterView2Model();
+    private MagestoreTextView mSubTotalView;
+    private MagestoreTextView mTaxTotalView;
+    private MagestoreTextView mDiscountTotalView;
 
     // button checkout
     private Button mCheckoutButton;
@@ -53,22 +55,22 @@ public class OrderItemPanel extends FrameLayout {
     OrderItemPanel.OrderItemListRecyclerViewAdapter mOrderItemListAdapter;
 
 
-    public OrderItemPanel(Context context) {
+    public OrderItemPanel(Context context) throws InstantiationException, IllegalAccessException {
         super(context);
         init();
     }
 
-    public OrderItemPanel(Context context, AttributeSet attrs) {
+    public OrderItemPanel(Context context, AttributeSet attrs) throws InstantiationException, IllegalAccessException {
         super(context, attrs);
         init();
     }
 
-    public OrderItemPanel(Context context, AttributeSet attrs, int defStyleAttr) {
+    public OrderItemPanel(Context context, AttributeSet attrs, int defStyleAttr) throws InstantiationException, IllegalAccessException {
         super(context, attrs, defStyleAttr);
         init();
     }
 
-    private void init() {
+    private void init() throws IllegalAccessException, InstantiationException {
         initControlLayout();
         initControlValue();
         initTask();
@@ -88,18 +90,19 @@ public class OrderItemPanel extends FrameLayout {
             mOrderItemRecycleView.setLayoutManager(new GridLayoutManager(getContext(), 1));
 
         // Tham chiếu các text view tổng và button
-        mSubTotalView = (TextView) findViewById(R.id.text_sales_order_subtotal);
-        mTaxTotalView = (TextView) findViewById(R.id.text_sales_order_tax);
-        mDiscountTotalView = (TextView) findViewById(R.id.text_sales_order_discount);
+        mSubTotalView = (MagestoreTextView) findViewById(R.id.text_sales_order_subtotal);
+        mTaxTotalView = (MagestoreTextView) findViewById(R.id.text_sales_order_tax);
+        mDiscountTotalView = (MagestoreTextView) findViewById(R.id.text_sales_order_discount);
 
         // Button
         mCheckoutButton = (Button) findViewById(R.id.btn_sales_order_checkout);
     }
 
-    private void initControlValue() {
+    private void initControlValue() throws InstantiationException, IllegalAccessException {
         // Lập một đơn hàng mới
         // TODO: cần nghiệp vụ đúng hơn, cứ new panel là lập đơn hàng mới thì chưa phù hợp
-        mOrderUseCase = UseCaseFactory.generateOrderUseCase(null, null);
+        ServiceFactory serviceFactory = ServiceFactory.getFactory(null);
+        mOrderUseCase = serviceFactory.generateOrderService();
         mOrderUseCase.newSales();
 
         mOrderItemListAdapter
@@ -135,9 +138,9 @@ public class OrderItemPanel extends FrameLayout {
         if (mSubTotalView == null || mDiscountTotalView == null) return;
 
         // cập nhật tổng lên cuối order
-        mSubTotalView.setText(ConfigUtil.formatPrice(mOrderUseCase.calculateSubTotalOrderItems()));
-        mDiscountTotalView.setText(ConfigUtil.formatPrice(mOrderUseCase.calculateDiscountTotalOrderItems()));
-        mTaxTotalView.setText(ConfigUtil.formatPrice((mOrderUseCase.calculateTaxOrderItems())));
+        mSubTotalView.setRawText(mOrderUseCase.calculateSubTotalOrderItems());
+        mDiscountTotalView.setRawText(mOrderUseCase.calculateDiscountTotalOrderItems());
+        mTaxTotalView.setRawText(mOrderUseCase.calculateTaxOrderItems());
         mCheckoutButton.setText(getContext().getString(R.string.checkout) + ": " + ConfigUtil.formatPrice(mOrderUseCase.calculateLastTotalOrderItems()));
     }
 
@@ -159,7 +162,7 @@ public class OrderItemPanel extends FrameLayout {
 
         @Override
         public void onBindViewHolder(final OrderItemListRecyclerViewAdapter.OrderItemListViewHolder holder, final int position) {
-            final OrderItem item = mOrder.getOrderItems().get(position);
+            final Items item = mOrder.getOrderItems().get(position);
             holder.mItem = item;
 
             // Giữ tham chiếu imageview theo product
@@ -167,7 +170,7 @@ public class OrderItemPanel extends FrameLayout {
 
             // Đặt các trường text vào danh sách
             holder.mNameView.setText(product.getName());
-            holder.mPriceView.setText(ConfigUtil.formatPrice(product.getPrice() * item.getQuantity()));
+            holder.mPriceView.setRawText(product.getPrice() * item.getQuantity());
             holder.mSKUView.setText(product.getSKU());
             holder.mQuantityView.setText("" + item.getQuantity());
             holder.mQuantitySwipe.setText(holder.mQuantityView.getText());
@@ -249,14 +252,14 @@ public class OrderItemPanel extends FrameLayout {
 
             public final TextView mNameView;
             public final ImageView mImageView;
-            public final TextView mPriceView;
+            public final MagestoreTextView mPriceView;
             public final TextView mSKUView;
             public final TextView mQuantityView;
             public final TextView mQuantitySwipe;
             public final Button mIncButton;
             public final Button mDesButton;
             public final ImageButton mDelButton;
-            public OrderItem mItem;
+            public Items mItem;
             public View mView;
 
             public OrderItemListViewHolder(View view) {
@@ -266,7 +269,7 @@ public class OrderItemPanel extends FrameLayout {
                 mImageView = (ImageView) view.findViewById(R.id.sales_order_image);
                 mNameView = (TextView) view.findViewById(R.id.sales_order_name);
                 mSKUView = (TextView) view.findViewById(R.id.sales_order_sku);
-                mPriceView = (TextView) view.findViewById(R.id.sales_order_price);
+                mPriceView = (MagestoreTextView) view.findViewById(R.id.sales_order_price);
                 mQuantityView = (TextView) view.findViewById(R.id.sales_order_quantity);
                 mView = view.findViewById(R.id.sales_order_card_view);
 

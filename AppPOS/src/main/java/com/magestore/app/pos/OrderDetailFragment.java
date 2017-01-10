@@ -1,7 +1,6 @@
 package com.magestore.app.pos;
 
 import android.app.Activity;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,7 +12,7 @@ import com.magestore.app.pos.ui.dummy.DummyContent;
 
 /**
  * A fragment representing a single Order detail screen.
- * This fragment is either contained in a {@link OrderListActivity}
+ * This fragment is either contained in a {@link OrderActivity}
  * in two-pane mode (on tablets) or a {@link OrderDetailActivity}
  * on handsets.
  */
@@ -59,7 +58,7 @@ public class OrderDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.order_detail, container, false);
 
-        // Show the dummy content as text in a TextView.
+        // Show the dummy content as text in a MagestoreTextView.
         if (mItem != null) {
             ((TextView) rootView.findViewById(R.id.order_detail)).setText(mItem.details);
         }

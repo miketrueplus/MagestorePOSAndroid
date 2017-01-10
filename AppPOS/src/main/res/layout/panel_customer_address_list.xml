@@ -2,12 +2,11 @@
 <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/order_list"
-    android:name="com.magestore.app.pos.ui.OrderListFragment"
+    android:id="@+id/customer_address_list"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
+    android:layout_weight="1.0"
+    android:scrollbars="vertical"
     app:layoutManager="LinearLayoutManager"
-    tools:context="com.magestore.app.pos.OrderActivity"
-    tools:listitem="@layout/order_list_content" />
+    app:spanCount="1"
+    tools:listitem="@layout/card_customer_address_content" />

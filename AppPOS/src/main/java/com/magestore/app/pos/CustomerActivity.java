@@ -1,31 +1,30 @@
 package com.magestore.app.pos;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
 
-import com.magestore.app.lib.entity.Customer;
+import com.magestore.app.lib.service.ServiceFactory;
+import com.magestore.app.lib.service.customer.CustomerService;
+import com.magestore.app.pos.controller.CustomerListController;
 import com.magestore.app.pos.panel.CustomerDetailPanel;
-import com.magestore.app.pos.panel.CustomerDetailPanelListener;
 import com.magestore.app.pos.panel.CustomerListPanel;
-import com.magestore.app.pos.panel.CustomerListPanelListener;
 import com.magestore.app.pos.ui.AbstractActivity;
-
-import java.util.List;
 
 /**
  *
  */
-public class CustomerListActivity extends AbstractActivity
-        implements
-        CustomerListPanelListener, CustomerDetailPanelListener {
+public class CustomerActivity extends AbstractActivity {
+
+    // View và controller tương ứng
     private CustomerListPanel mCustomerListPanel = null;
+    private CustomerListController mCustomerListController = null;
+
     private CustomerDetailPanel mCustomerDetailPanel = null;
+//    private CustomerDetailController mCustomerDetailController = null;
     private boolean mblnTwoPane;
     private Toolbar mToolbar;
 
@@ -45,7 +44,7 @@ public class CustomerListActivity extends AbstractActivity
         initTask();
 
         // load danh sách khách hàng
-        mCustomerListPanel.loadCustomerList();
+        mCustomerListController.doLoadData();
     }
 
     @Override
@@ -58,14 +57,29 @@ public class CustomerListActivity extends AbstractActivity
         mToolbar.setTitle(getTitle());
         initToolbarMenu(mToolbar);
 
-        // chuẩn bị panel danh sách khách hàng
-        mCustomerListPanel = (CustomerListPanel) findViewById(R.id.customer_list_panel);
-        mCustomerListPanel.setListener(this);
+        // chuẩn bị service
+        ServiceFactory factory;
+        CustomerService service = null;
+        try {
+            factory = ServiceFactory.getFactory(null);
+            service = factory.generateCustomerService();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        }
 
-        // chuẩn bị panel thông tin khách hàng chi tiết
+        // chuẩn bị panel view và controller danh sách khách hàng
+        mCustomerListController = new CustomerListController();
+        mCustomerListController.setCustomerService(service);
+
+        mCustomerListPanel = (CustomerListPanel) findViewById(R.id.customer_list_panel);
+        mCustomerListPanel.setController(mCustomerListController);
+
         mCustomerDetailPanel = (CustomerDetailPanel) findViewById(R.id.customer_detail_panel);
-        if (mCustomerDetailPanel != null)
-            mCustomerDetailPanel.setListener(this);
+
+        mCustomerListController.setView(mCustomerListPanel);
+        mCustomerListController.setDetailPanel(mCustomerDetailPanel);
 
         // xem giao diện 2 pane hay 1 pane
         mblnTwoPane = findViewById(R.id.two_pane) != null;
@@ -82,32 +96,6 @@ public class CustomerListActivity extends AbstractActivity
     }
 
     @Override
-    public void onSelectCustomer(Customer customer) {
-        mCustomerDetailPanel.setCustomer(customer);
-        if (!mblnTwoPane) {
-            mCustomerDetailPanel.setVisibility(View.VISIBLE);
-            mCustomerListPanel.setVisibility(View.INVISIBLE);
-
-            // Show the Up button in the action bar.
-            ActionBar actionBar = getSupportActionBar();
-            if (actionBar != null) {
-                actionBar.setDisplayHomeAsUpEnabled(true);
-                mToolbar.getMenu().clear();
-                setSupportActionBar(mToolbar);
-//                actionBar.get
-//                actionBar.set`
-            }
-        }
-
-
-    }
-
-    @Override
-    public void onSuccessLoadCustomer(List<Customer> customerList) {
-
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
@@ -120,4 +108,28 @@ public class CustomerListActivity extends AbstractActivity
         }
         return super.onOptionsItemSelected(item);
     }
+
+//    @Override
+//    public void onSelectItemInList(Customer item) {
+//        mCustomerDetailPanel.setCustomer(item);
+//        if (!mblnTwoPane) {
+//            mCustomerDetailPanel.setVisibility(View.VISIBLE);
+//            mCustomerListPanel.setVisibility(View.INVISIBLE);
+//
+//            // Show the Up button in the action bar.
+//            ActionBar actionBar = getSupportActionBar();
+//            if (actionBar != null) {
+//                actionBar.setDisplayHomeAsUpEnabled(true);
+//                mToolbar.getMenu().clear();
+//                setSupportActionBar(mToolbar);
+////                actionBar.get
+////                actionBar.set`
+//            }
+//        }
+//    }
+
+//    @Override
+//    public void onSuccessLoadList(List<Customer> list) {
+//
+//    }
 }

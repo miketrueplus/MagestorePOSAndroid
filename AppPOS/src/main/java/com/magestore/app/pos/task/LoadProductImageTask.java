@@ -1,23 +1,12 @@
-package com.magestore.app.pos.controller;
+package com.magestore.app.pos.task;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Rect;
-import android.os.AsyncTask;
-import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 
 import com.magestore.app.lib.controller.ControllerListener;
-import com.magestore.app.lib.entity.Product;
-import com.magestore.app.pos.SalesListActivity;
-import com.magestore.app.pos.ui.SalesUI;
+import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.util.ImageUtil;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.List;
 
 /**
@@ -26,12 +15,12 @@ import java.util.List;
  * mike@trueplus.vn
  * TODO: Add a class header comment!
  */
-public class LoadProductImageController extends AsyncTaskAbstractController<Void, Product, Void> {
+public class LoadProductImageTask extends AsyncTaskAbstractTask<Void, Product, Void> {
     private final List<Product> mListProduct;
     public static final String KEY_BITMAP = "LoadProductImageBitmap";
     public static final String KEY_IMAGEVIEW = "LoadProductImageImageview";
 
-    public LoadProductImageController(ControllerListener listener, List<Product> listProduct) {
+    public LoadProductImageTask(ControllerListener listener, List<Product> listProduct) {
         super(listener);
         mListProduct = listProduct;
     }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:magestore_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -68,22 +69,26 @@
                     android:orientation="vertical">
 
 
-                    <TextView
-                        android:id="@+id/txt_first_name"
+                    <com.magestore.app.view.MagestoreTextView
+                        android:id="@+id/firstname"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="18sp"
                         android:hint="@string/first_name"
-                        android:text="@string/first_name" />
+                        android:text="@string/first_name"
+                        android:textSize="18sp"
+                        magestore_view:prefix="@string/first_name"
+                        magestore_view:prefix_char=":"/>
 
 
-                    <TextView
-                        android:id="@+id/txt_last_name"
+                    <com.magestore.app.view.MagestoreTextView
+                        android:id="@+id/lastname"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="18sp"
                         android:hint="@string/last_name"
-                        android:text="@string/last_name" />
+                        android:text="@string/last_name"
+                        android:textSize="18sp"
+                        magestore_view:prefix="@string/last_name"
+                        magestore_view:prefix_char=":" />
 
                 </LinearLayout>
 
@@ -95,21 +100,25 @@
                     android:orientation="vertical">
 
 
-                    <TextView
-                        android:id="@+id/txt_email"
+                    <com.magestore.app.view.MagestoreTextView
+                        android:id="@+id/email"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="18sp"
                         android:hint="@string/email"
-                        android:text="@string/email" />
+                        android:text="@string/email"
+                        magestore_view:prefix="@string/email"
+                        magestore_view:prefix_char=":"
+                        android:textSize="18sp" />
 
-                    <TextView
-                        android:id="@+id/txt_group"
+                    <com.magestore.app.view.MagestoreTextView
+                        android:id="@+id/group_id"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="18sp"
                         android:hint="@string/group"
-                        android:text="@string/group" />
+                        android:text="@string/group"
+                        android:textSize="18sp"
+                        magestore_view:prefix="@string/group"
+                        magestore_view:prefix_char=":" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
@@ -142,16 +151,11 @@
                 android:layout_margin="5dp"
                 android:orientation="vertical">
 
-                <android.support.v7.widget.RecyclerView
+                <com.magestore.app.pos.panel.CustomerAddressListPanel
                     android:id="@+id/customer_address"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1.0"
-                    app:layoutManager="LinearLayoutManager"
-                    app:spanCount="1"
-                    tools:context="com.magestore.app.pos.CustomerListActivity"
-                    tools:listitem="@layout/card_customer_address_content"
-                    android:scrollbars="vertical" />
+                    android:layout_weight="1.0" />
 
             </FrameLayout>
         </LinearLayout>
@@ -230,8 +234,6 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="5dp"
                 android:orientation="vertical">
-
-
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

@@ -18,10 +18,10 @@ import android.widget.TextView;
 
 import com.magestore.app.lib.controller.Controller;
 import com.magestore.app.lib.controller.ControllerListener;
-import com.magestore.app.lib.entity.Product;
+import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.pos.R;
-import com.magestore.app.pos.controller.LoadProductController;
-import com.magestore.app.pos.controller.LoadProductImageController;
+import com.magestore.app.pos.task.LoadProductTask;
+import com.magestore.app.pos.task.LoadProductImageTask;
 import com.magestore.app.util.ConfigUtil;
 
 import java.util.Arrays;
@@ -41,8 +41,8 @@ public class ProductListPanel extends FrameLayout {
     AutoCompleteTextView mSearchProductTxt;
 
     // Task load danh sách khách hàng
-    LoadProductController mLoadProductTask;
-    LoadProductImageController mLoadImageTask;
+    LoadProductTask mLoadProductTask;
+    LoadProductImageTask mLoadImageTask;
 
     // Data Danh sách khách hàng
     List<Product> mListProduct;
@@ -119,7 +119,7 @@ public class ProductListPanel extends FrameLayout {
      */
     protected void initTask() {
 //        super.initTask();
-        mLoadProductTask = new LoadProductController(new ProductListPanel.LoadProductListener());
+        mLoadProductTask = new LoadProductTask(new ProductListPanel.LoadProductListener());
     }
 
     /**
@@ -166,7 +166,7 @@ public class ProductListPanel extends FrameLayout {
      * Load ảnh các sản phẩm
      */
     public void loadProductImage() {
-        mLoadImageTask = new LoadProductImageController(new ProductListPanel.LoadProductImageListener(), mListProduct);
+        mLoadImageTask = new LoadProductImageTask(new ProductListPanel.LoadProductImageListener(), mListProduct);
         if (mLoadImageTask != null)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) // Above Api Level 13
             {
@@ -277,7 +277,7 @@ public class ProductListPanel extends FrameLayout {
             holder.mItem = product;
 
             // Giữ tham chiếu imageview theo product
-            product.setRefer(LoadProductImageController.KEY_IMAGEVIEW, holder.mImageView);
+            product.setRefer(LoadProductImageTask.KEY_IMAGEVIEW, holder.mImageView);
 
             // Đặt các trường text vào danh sách
             holder.mNameView.setText(product.getName());

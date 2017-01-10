@@ -1,9 +1,9 @@
-package com.magestore.app.pos.controller;
+package com.magestore.app.pos.task;
 
 import com.magestore.app.lib.controller.ControllerListener;
-import com.magestore.app.lib.entity.Product;
-import com.magestore.app.lib.usecase.ProductUseCase;
-import com.magestore.app.lib.usecase.UseCaseFactory;
+import com.magestore.app.lib.model.catalog.Product;
+import com.magestore.app.lib.service.catalog.ProductService;
+import com.magestore.app.lib.service.ServiceFactory;
 
 import java.util.List;
 
@@ -14,8 +14,8 @@ import java.util.List;
  * TODO: Add a class header comment!
  */
 
-public class LoadProductController extends AsyncTaskAbstractController<Void, Void, List<Product>> {
-    public LoadProductController(ControllerListener listener) {
+public class LoadProductTask extends AsyncTaskAbstractTask<Void, Void, List<Product>> {
+    public LoadProductTask(ControllerListener listener) {
         super(listener);
     }
 
@@ -27,7 +27,8 @@ public class LoadProductController extends AsyncTaskAbstractController<Void, Voi
     @Override
     protected List<Product> doInBackground(Void... params) {
         try {
-            ProductUseCase productUseCase = UseCaseFactory.generateProductUseCase(null, null);
+            ServiceFactory serviceFactory = ServiceFactory.getFactory(null);
+            ProductService productUseCase = serviceFactory.generateProductService();
             List<Product> listProduct = productUseCase.retrieveProductList(30);
             return listProduct;
         } catch (Exception e) {

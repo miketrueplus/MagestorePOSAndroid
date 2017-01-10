@@ -1,6 +1,5 @@
 package com.magestore.app.pos.ui;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,11 +13,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.magestore.app.lib.ui.PosUI;
-import com.magestore.app.pos.CustomerListActivity;
-import com.magestore.app.pos.OrderListActivity;
+import com.magestore.app.view.ui.PosUI;
+import com.magestore.app.pos.CustomerActivity;
+import com.magestore.app.pos.OrderActivity;
 import com.magestore.app.pos.R;
-import com.magestore.app.pos.SalesListActivity;
+import com.magestore.app.pos.SalesActivity;
 
 /**
  * Created by Mike on 12/24/2016.
@@ -124,19 +123,19 @@ public abstract class AbstractActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_customers) {
-            Intent intent = new Intent(getContext(), CustomerListActivity.class);
+            Intent intent = new Intent(getContext(), CustomerActivity.class);
             startActivity(intent);
         }
         else if (id == R.id.nav_sales) {
-            Intent intent = new Intent(getContext(), SalesListActivity.class);
+            Intent intent = new Intent(getContext(), SalesActivity.class);
             startActivity(intent);
         }
         else if (id == R.id.nav_orders_history) {
-            Intent intent = new Intent(getContext(), OrderListActivity.class);
+            Intent intent = new Intent(getContext(), OrderActivity.class);
             startActivity(intent);
         }
         else if (id == R.id.nav_onhold_orders) {
-            Intent intent = new Intent(getContext(), OrderListActivity.class);
+            Intent intent = new Intent(getContext(), OrderActivity.class);
             startActivity(intent);
         }
 

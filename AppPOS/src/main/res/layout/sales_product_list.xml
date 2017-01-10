@@ -9,5 +9,5 @@
     android:layout_gravity="center"
     android:columnCount="4"
     app:layoutManager="GridLayoutManager"
-    tools:context="com.magestore.app.pos.SalesListActivity"
+    tools:context="com.magestore.app.pos.SalesActivity"
     tools:listitem="@layout/card_product_list_content" />

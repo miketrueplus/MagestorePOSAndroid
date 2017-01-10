@@ -27,9 +27,12 @@
     <string name="customer_title_customer_detail">Customer Detail</string>
     <string name="customer_title_order_list">Order</string>
     <string name="customer_title_order_detail">Order Detail</string>
+    <string name="customer_update_address">Update address</string>
+    <string name="customer_delete_address">Delete address</string>
+
 
     <!-- Strings related to single words -->
-    <string name="address">Address</string>
+    <string name="customerAddress">Address</string>
     <string name="avaibles">Avaibles</string>
     <string name="category">Categories</string>
     <string name="cancel">Cancel</string>
@@ -48,6 +51,7 @@
     <string name="hold">Hold</string>
     <string name="item">Item</string>
     <string name="last_name">Last Name</string>
+    <string name="ok">OK</string>
     <string name="on_hold">OnHold</string>
     <string name="order">Order</string>
     <string name="no">No</string>
@@ -57,6 +61,7 @@
     <string name="province">Province</string>
     <string name="quantity">Quantity</string>
     <string name="revenue">Revenue</string>
+    <string name="save">Save</string>
     <string name="search">Search</string>
     <string name="state">State</string>
     <string name="state_or_province">State or Province</string>

@@ -1,4 +1,4 @@
-package com.magestore.app.pos.controller;
+package com.magestore.app.pos.task;
 
 import android.os.AsyncTask;
 
@@ -12,7 +12,7 @@ import com.magestore.app.lib.controller.ControllerListener;
  * mike@trueplus.vn
  */
 
-public abstract class AsyncTaskAbstractController<Params, Progress, Result> extends
+public abstract class AsyncTaskAbstractTask<Params, Progress, Result> extends
         AsyncTask<Params, Progress, Result>
         implements Controller<Params, Progress, Result> {
 
@@ -26,7 +26,7 @@ public abstract class AsyncTaskAbstractController<Params, Progress, Result> exte
      * Khởi tạo với listener
      * @param listener
      */
-    public AsyncTaskAbstractController(ControllerListener<Params, Progress, Result> listener) {
+    public AsyncTaskAbstractTask(ControllerListener<Params, Progress, Result> listener) {
         setListener(listener);
     }
 
@@ -94,4 +94,5 @@ public abstract class AsyncTaskAbstractController<Params, Progress, Result> exte
         super.onCancelled();
         if (mListner != null) mListner.onCancelController(this, mException);
     }
+
 }

@@ -1,6 +1,6 @@
 package com.magestore.app.pos.panel;
 
-import com.magestore.app.lib.entity.Product;
+import com.magestore.app.lib.model.catalog.Product;
 
 import java.util.List;
 

@@ -19,7 +19,7 @@
         android:divider="?android:attr/dividerHorizontal"
         android:orientation="horizontal"
         android:showDividers="middle"
-        tools:context="com.magestore.app.pos.CustomerListActivity">
+        tools:context="com.magestore.app.pos.CustomerActivity">
 
         <!--
         This layout is a two-pane layout for the Items

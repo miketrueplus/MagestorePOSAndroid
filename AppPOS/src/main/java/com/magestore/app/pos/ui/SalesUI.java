@@ -1,7 +1,7 @@
 package com.magestore.app.pos.ui;
 
-import com.magestore.app.lib.entity.Product;
-import com.magestore.app.lib.ui.PosUI;
+import com.magestore.app.lib.model.catalog.Product;
+import com.magestore.app.view.ui.PosUI;
 
 import java.util.List;
 

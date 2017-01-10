@@ -21,7 +21,7 @@ import android.widget.TextView;
 
 import com.magestore.app.lib.controller.Controller;
 import com.magestore.app.lib.controller.ControllerListener;
-import com.magestore.app.pos.controller.LoginController;
+import com.magestore.app.pos.task.LoginTask;
 import com.magestore.app.pos.ui.AbstractActivity;
 import com.magestore.app.pos.ui.LoginUI;
 import com.magestore.app.util.AndroidNetworkUtil;
@@ -33,7 +33,7 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
     /**
      * Tác vụ để login
      */
-    private LoginController mAuthTask = null;
+    private LoginTask mAuthTask = null;
 
     // UI references.
     private AutoCompleteTextView mDomainView;
@@ -174,7 +174,7 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
             String password = mPasswordView.getText().toString().trim();
 
             // Bắt đầu login task
-            mAuthTask = new LoginController(new LoginListener(), domain, username, password);
+            mAuthTask = new LoginTask(new LoginListener(), domain, username, password);
 //            mAuthTask.execute();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) // Above Api Level 13
             {
@@ -238,7 +238,7 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
                 saveSharedValue("login_activity_domain", mDomainView.getText().toString().trim());
 
                 // Đăng nhập thành công, mở sẵn form sales
-                Intent intent = new Intent(getContext(), SalesListActivity.class);
+                Intent intent = new Intent(getContext(), SalesActivity.class);
                 startActivity(intent);
                 finish();
             } else {
