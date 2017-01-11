@@ -1,32 +1,31 @@
-package com.magestore.app.pos.controller;
+package com.magestore.app.lib.controller;
 
 import android.os.AsyncTask;
 import android.os.Build;
-import android.view.View;
 
-import com.magestore.app.lib.model.customer.CustomerAddress;
-import com.magestore.app.lib.service.customer.CustomerService;
-import com.magestore.app.pos.panel.AbstractDetailPanel;
-import com.magestore.app.pos.panel.AbstractListPanel;
-import com.magestore.app.pos.task.AsyncTaskAbstractTask;
+import com.magestore.app.lib.model.Model;
+import com.magestore.app.lib.panel.AbstractDetailPanel;
+import com.magestore.app.lib.panel.AbstractListPanel;
 
 import java.util.List;
 
 /**
- * Controller quản lý việc hiển thị một List và một View
+ * Task quản lý việc hiển thị một List và một View
  * Created by Mike on 1/9/2017.
  * Magestore
  * mike@trueplus.vn
  */
-public abstract class AbstractPosListController<TModel>
-        extends AbstractPosController<AbstractListPanel<TModel>> implements ListController<TModel> {
-    AbstractDetailPanel<TModel> mDetailView;
+public abstract class AbstractListController<TModel extends Model>
+        extends AbstractController<TModel, AbstractListPanel<TModel>>
+        implements ListController<TModel> {
+
+    // view chi tiết
+    protected AbstractDetailPanel<TModel> mDetailView;
 
     /**
      * Danh sách dữ liệu chứa Model
      */
-    List<TModel> mList;
-    TModel mItem;
+    protected List<TModel> mList;
 
     /**
      * Thiết lập danh sách, cho hiển thị lên view
@@ -36,7 +35,7 @@ public abstract class AbstractPosListController<TModel>
         mList = list;
         mView.bindList(mList);
         if (mList != null && mDetailView != null && mList.size() > 0)
-            mDetailView.bindItem(mList.get(0));
+            bindItem(mList.get(0));
     }
 
     /**
@@ -92,7 +91,6 @@ public abstract class AbstractPosListController<TModel>
 
     /**
      * Load data từ background ngầm, các lớp con sẽ nạp chồng hàm này
-//     * @param params
      * @return
      * @throws Exception
      */
@@ -128,8 +126,9 @@ public abstract class AbstractPosListController<TModel>
      * Sự kiện lúc chọn được data
      * @param item
      */
-    public void onSelectItem(TModel item) {
-        mItem = item;
+    @Override
+    public void bindItem(TModel item) {
+        super.bindItem(item);
         if (mDetailView != null)
             mDetailView.bindItem(item);
     }
@@ -139,6 +138,7 @@ public abstract class AbstractPosListController<TModel>
      */
     public void setDetailPanel(AbstractDetailPanel<TModel> detailPanel) {
         mDetailView = detailPanel;
+        detailPanel.setController(this);
     }
 
     public void setListPanel(AbstractListPanel<TModel> view) {

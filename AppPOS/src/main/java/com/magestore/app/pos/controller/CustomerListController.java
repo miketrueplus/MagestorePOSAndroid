@@ -1,12 +1,8 @@
 package com.magestore.app.pos.controller;
 
-import android.view.View;
-
+import com.magestore.app.lib.controller.AbstractListController;
 import com.magestore.app.lib.model.customer.Customer;
-import com.magestore.app.lib.service.ServiceFactory;
 import com.magestore.app.lib.service.customer.CustomerService;
-import com.magestore.app.pos.panel.CustomerListPanel;
-import com.magestore.app.pos.ui.AbstractActivity;
 
 import java.util.List;
 
@@ -17,7 +13,7 @@ import java.util.List;
  * TODO: Add a class header comment!
  */
 
-public class CustomerListController extends AbstractPosListController<Customer> {
+public class CustomerListController extends AbstractListController<Customer> {
     /**
      * Service xử lý các vấn đề liên quan đến customer
      */
@@ -31,6 +27,13 @@ public class CustomerListController extends AbstractPosListController<Customer> 
         mCustomerService = service;
     }
 
+    /**
+     * Trả lại customer service
+     * @return
+     */
+    public CustomerService getCustomerService() {
+        return mCustomerService;
+    }
     /**
      * Thực hiện load danh sách khách hàng
 //     * @param params

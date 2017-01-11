@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.magestore.app.lib.model.customer.CustomerAddress;
+import com.magestore.app.lib.panel.AbstractListPanel;
 import com.magestore.app.pos.R;
 import com.magestore.app.util.DialogUtil;
 
@@ -40,8 +41,7 @@ public class CustomerAddressListPanel extends AbstractListPanel<CustomerAddress>
      * Chuẩn bị layout
      */
     @Override
-    protected void initControlLayout() {
-        super.initControlLayout();
+    public void initLayout() {
 
         // Load layout view danh sách địa chỉ của khách hàng
         View v = inflate(getContext(), R.layout.panel_customer_address_list, null);
@@ -67,7 +67,7 @@ public class CustomerAddressListPanel extends AbstractListPanel<CustomerAddress>
         ((ImageButton) view.findViewById(R.id.btn_adrress_edit)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showEditItem(item);
+                showUpdateItem(item);
             }
         });
 
@@ -84,7 +84,7 @@ public class CustomerAddressListPanel extends AbstractListPanel<CustomerAddress>
      * Hiển thị dialog confirm trước khi delete
      * @param item
      */
-    public void showDeleteItem(CustomerAddress item) {
+    public void showDeleteItem(final CustomerAddress item) {
         final Context context = getContext();
         // Tạo dialog và hiển thị
         DialogUtil.confirm(context,
@@ -94,7 +94,8 @@ public class CustomerAddressListPanel extends AbstractListPanel<CustomerAddress>
                 R.string.no,
                 new DialogInterface.OnClickListener(){
                     public void onClick(DialogInterface dialog, int which) {
-
+                        mController.doDeleteItem(item);
+                        notifyDatasetChanged();
                     }
                 });
     }
@@ -103,7 +104,7 @@ public class CustomerAddressListPanel extends AbstractListPanel<CustomerAddress>
      * Hiển thị dialog edit địa chỉ
      * @param item
      */
-    public void showEditItem(CustomerAddress item) {
+    public void showUpdateItem(final CustomerAddress item) {
         // Chuẩn bị layout cho dialog customerAddress
         final CustomerAddressDetailPanel panelAddress = new CustomerAddressDetailPanel(getContext());
         panelAddress.bindItem(item);
@@ -116,14 +117,9 @@ public class CustomerAddressListPanel extends AbstractListPanel<CustomerAddress>
                 .setView(panelAddress)
                 .setPositiveButton(context.getString(R.string.save), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-//                        try {
-//                            mCustomerUsecase.updateAddress(panelAddress.getAddress());
-//                        } catch (InvocationTargetException e) {
-//                            e.printStackTrace();
-//                        } catch (IllegalAccessException e) {
-//                            e.printStackTrace();
-//                        }
-//                        mCustomerAddressRecyclerView.getAdapter().notifyDataSetChanged();
+                        panelAddress.bind2Item();
+                        mController.doUpdateItem(item);
+                        notifyDatasetChanged();
                     }
                 })
                 .setNegativeButton(context.getString(R.string.cancel), new DialogInterface.OnClickListener() {

@@ -1,8 +1,7 @@
 package com.magestore.app.pos.controller;
 
-import android.location.Address;
-import android.view.View;
-
+import com.magestore.app.lib.controller.AbstractListController;
+import com.magestore.app.lib.controller.ListController;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.service.customer.CustomerService;
@@ -10,19 +9,20 @@ import com.magestore.app.lib.service.customer.CustomerService;
 import java.util.List;
 
 /**
- * Controller cho danh sách địa chỉ khách hàng
+ * Task cho danh sách địa chỉ khách hàng
  * Magestore
  * mike@trueplus.vn
  */
 
 public class CustomerAddressListController
-        extends AbstractPosListController<CustomerAddress>
+        extends AbstractListController<CustomerAddress>
         implements ListController<CustomerAddress> {
     /**
-     * Controller xử lý các vấn đề liên quan đến customer
+     * Task xử lý các vấn đề liên quan đến customer
      */
     CustomerListController mCustomerListController;
     CustomerService mCustomerService;
+    Customer mSelectedCustomer;
 
     /**
      * Thiết lập service
@@ -31,6 +31,7 @@ public class CustomerAddressListController
      */
     public void setCustomerListController(CustomerListController controller) {
         mCustomerListController = controller;
+        setParentController(controller);
     }
 
     /**
@@ -53,6 +54,7 @@ public class CustomerAddressListController
      * @param customer
      */
     public void doSelectCustomer(Customer customer) {
+        mSelectedCustomer = customer;
         mList = customer.getAddress();
         mView.bindList(mList);
     }
@@ -60,10 +62,12 @@ public class CustomerAddressListController
     @Override
     public void doDeleteItem(CustomerAddress item) {
         super.doDeleteItem(item);
+        if (mCustomerService != null) mCustomerService.deleteAddress(mSelectedCustomer, item);
     }
 
     @Override
     public void doUpdateItem(CustomerAddress item) {
         super.doUpdateItem(item);
+        if (mCustomerService != null) mCustomerService.updateAddress(mSelectedCustomer, item);
     }
 }

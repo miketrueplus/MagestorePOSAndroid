@@ -37,7 +37,7 @@ public class ParseFactory {
         }
     }
 
-    public static ParseEntity generateParseEntity(Class cl) throws IllegalAccessException, InstantiationException {
-        return (ParseEntity) cl.newInstance();
+    public static ParseModel generateParseEntity(Class cl) throws IllegalAccessException, InstantiationException {
+        return (ParseModel) cl.newInstance();
     }
 }

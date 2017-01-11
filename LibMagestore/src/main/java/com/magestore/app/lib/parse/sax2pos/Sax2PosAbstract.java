@@ -1,6 +1,6 @@
 package com.magestore.app.lib.parse.sax2pos;
 
-import com.magestore.app.lib.parse.ParseEntity;
+import com.magestore.app.lib.parse.ParseModel;
 import com.magestore.app.lib.parse.ParseException;
 import com.magestore.app.lib.parse.ParseImplement;
 
@@ -28,14 +28,14 @@ import javax.xml.parsers.SAXParserFactory;
 public class Sax2PosAbstract extends DefaultHandler implements ParseImplement {
     private SAXParser msaxParser;
     private InputStream mInput;
-    private Class<ParseEntity> mClassEntntiy;
-    protected Collection<ParseEntity> mCollectionEntity;
-    protected Map<String, ParseEntity> mMapEntity;
+    private Class<ParseModel> mClassEntntiy;
+    protected Collection<ParseModel> mCollectionEntity;
+    protected Map<String, ParseModel> mMapEntity;
     protected Sax2PosAbstract() {
     }
 
     @Override
-    public void prepareParse(InputStream input, ParseEntity parseEntity) throws ParseException, IOException {
+    public void prepareParse(InputStream input, ParseModel parseModel) throws ParseException, IOException {
 
     }
 
@@ -45,7 +45,7 @@ public class Sax2PosAbstract extends DefaultHandler implements ParseImplement {
      * @throws SAXException
      * @throws IOException
      */
-    public void prepareParse(InputStream input, Class<ParseEntity> classEntntiy) throws ParseException, IOException {
+    public void prepareParse(InputStream input, Class<ParseModel> classEntntiy) throws ParseException, IOException {
         SAXParserFactory factory = SAXParserFactory.newInstance();
         try {
             msaxParser = factory.newSAXParser();
@@ -75,7 +75,7 @@ public class Sax2PosAbstract extends DefaultHandler implements ParseImplement {
     }
 
     @Override
-    public ParseEntity getParseEntity() {
+    public ParseModel getParseEntity() {
         return null;
     }
 
@@ -83,16 +83,16 @@ public class Sax2PosAbstract extends DefaultHandler implements ParseImplement {
      *
      * @return
      */
-    protected ParseEntity newParseEntity() {
+    protected ParseModel newParseEntity() {
         try {
-            return (ParseEntity) mClassEntntiy.newInstance();
+            return (ParseModel) mClassEntntiy.newInstance();
         } catch (Exception ex) {
             return null;
         }
     }
 
     private byte mbyteArrageOrder = 0;
-    private ParseEntity mParseEntity = null;
+    private ParseModel mParseModel = null;
     private String mstrQName = null;
     private StringBuilder mStrBuilder;
     @Override
@@ -101,7 +101,7 @@ public class Sax2PosAbstract extends DefaultHandler implements ParseImplement {
             throws SAXException {
         if ("item".equalsIgnoreCase(qName) && mbyteArrageOrder == 2) {
             // Check nếu đang ở node sản phẩm, khởi tạo entity mới,
-            mParseEntity = newParseEntity();
+            mParseModel = newParseEntity();
             mstrQName = qName;
 
             // Chuẩn bị nếu node này toàn XML
@@ -127,13 +127,13 @@ public class Sax2PosAbstract extends DefaultHandler implements ParseImplement {
             mStrBuilder.append("/>");
 
             // Đặt giá trị chuỗi XML của node con vào
-            if (mParseEntity != null) {
-//                mParseEntity.setValue(this, mstrQName, mStrBuilder.toString());
+            if (mParseModel != null) {
+//                mParseModel.setValue(this, mstrQName, mStrBuilder.toString());
             }
         }
 //        else if (mbyteArrageOrder == 3) {
-//            if (mCollectionEntity != null && mParseEntity!= null) mCollectionEntity.add(mParseEntity);
-//            if (mMapEntity != null && mParseEntity!= null && mParseEntity.getEntityKey() != null) mMapEntity.put(mParseEntity.getEntityKey(), mParseEntity);
+//            if (mCollectionEntity != null && mParseModel!= null) mCollectionEntity.add(mParseModel);
+//            if (mMapEntity != null && mParseModel!= null && mParseModel.getEntityKey() != null) mMapEntity.put(mParseModel.getEntityKey(), mParseModel);
 //        }
         // Đếm xem đang ở node độ sâu mấy
         mbyteArrageOrder--;
@@ -152,8 +152,8 @@ public class Sax2PosAbstract extends DefaultHandler implements ParseImplement {
         // Nếu đang ở node sản phẩm
         if (mbyteArrageOrder == 3)
             // Nếu ở note product đầu tiên,
-            if (mParseEntity != null) {
-//                mParseEntity.setValue(this, mstrQName, new String(ch, start, length));
+            if (mParseModel != null) {
+//                mParseModel.setValue(this, mstrQName, new String(ch, start, length));
             }
             else if (mbyteArrageOrder > 3) {
                 // Nếu đang k0 ở node product, lưu cả chuỗi XML lại

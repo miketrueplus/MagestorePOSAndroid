@@ -15,8 +15,8 @@ public interface PosUI {
     void showUI(PosUI ui);
     void close();
 
-//    void onPreController(Controller controller);
-//    void onPostController(Controller controller);
-//    void onCancelController(Controller controller);
-//    void onProgressController(Controller controller);
+//    void onPreController(Task controller);
+//    void onPostController(Task controller);
+//    void onCancelController(Task controller);
+//    void onProgressController(Task controller);
 }

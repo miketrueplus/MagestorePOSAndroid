@@ -2,8 +2,8 @@ package com.magestore.app.pos.task;
 
 import android.os.AsyncTask;
 
-import com.magestore.app.lib.controller.Controller;
-import com.magestore.app.lib.controller.ControllerListener;
+import com.magestore.app.lib.task.Task;
+import com.magestore.app.lib.task.TaskListener;
 
 /**
  * Các tiến trình load, xử lý dữ liệu và phản hổi với UI
@@ -14,10 +14,10 @@ import com.magestore.app.lib.controller.ControllerListener;
 
 public abstract class AsyncTaskAbstractTask<Params, Progress, Result> extends
         AsyncTask<Params, Progress, Result>
-        implements Controller<Params, Progress, Result> {
+        implements Task<Params, Progress, Result> {
 
     // Listener nắm giữ các tương tác với UI
-    protected ControllerListener<Params, Progress, Result> mListner;
+    protected TaskListener<Params, Progress, Result> mListner;
 
     // Lỗi khi thao tác với dữ liệu
     protected Exception mException;
@@ -26,7 +26,7 @@ public abstract class AsyncTaskAbstractTask<Params, Progress, Result> extends
      * Khởi tạo với listener
      * @param listener
      */
-    public AsyncTaskAbstractTask(ControllerListener<Params, Progress, Result> listener) {
+    public AsyncTaskAbstractTask(TaskListener<Params, Progress, Result> listener) {
         setListener(listener);
     }
 
@@ -35,7 +35,7 @@ public abstract class AsyncTaskAbstractTask<Params, Progress, Result> extends
      * @param listener
      */
     @Override
-    public void setListener(ControllerListener<Params, Progress, Result> listener) {
+    public void setListener(TaskListener<Params, Progress, Result> listener) {
         mListner = listener;
     }
 
@@ -43,7 +43,7 @@ public abstract class AsyncTaskAbstractTask<Params, Progress, Result> extends
      * Get tham chiếu listener
      * @return
      */
-    public ControllerListener<Params, Progress, Result> getListner() {
+    public TaskListener<Params, Progress, Result> getListner() {
         return mListner;
     }
 

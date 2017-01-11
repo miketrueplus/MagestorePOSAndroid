@@ -1,6 +1,6 @@
 package com.magestore.app.pos.task;
 
-import com.magestore.app.lib.controller.ControllerListener;
+import com.magestore.app.lib.task.TaskListener;
 import com.magestore.app.lib.service.ServiceFactory;
 import com.magestore.app.lib.service.user.UserService;
 
@@ -23,7 +23,7 @@ public class LoginTask extends AsyncTaskAbstractTask<Void, Void, Boolean> {
      * @param username
      * @param password
      */
-    public LoginTask(ControllerListener listener, String domain, String username, String password) {
+    public LoginTask(TaskListener listener, String domain, String username, String password) {
         super(listener);
         mDomain = domain;
         mUserName = username;

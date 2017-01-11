@@ -9,5 +9,5 @@ import com.magestore.app.pos.model.customer.PosCustomer;
  * mike@trueplus.vn
  */
 
-public class Gson2PosListCustomer extends Gson2PosListParseEntity<PosCustomer> {
+public class Gson2PosListCustomer extends Gson2PosListParseModel<PosCustomer> {
 }

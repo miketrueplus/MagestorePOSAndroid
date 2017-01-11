@@ -1,6 +1,6 @@
 package com.magestore.app.lib.connection;
 
-import com.magestore.app.lib.parse.ParseEntity;
+import com.magestore.app.lib.parse.ParseModel;
 import com.magestore.app.lib.parse.ParseImplement;
 
 import java.io.IOException;
@@ -74,7 +74,7 @@ public interface ResultReading {
      * @throws ConnectionException
      * @throws IOException
      */
-    ParseEntity doParse() throws IOException, ParseException;
+    ParseModel doParse() throws IOException, ParseException;
 
     /**
      * Parse inputstream sang result
@@ -83,7 +83,7 @@ public interface ResultReading {
      * @throws ConnectionException
      * @throws IOException
      */
-    ParseEntity doParse(Class clParseEntity) throws IOException, ParseException;
+    ParseModel doParse(Class clParseEntity) throws IOException, ParseException;
 
     /**
      * Parse inputstream sang result
@@ -93,5 +93,5 @@ public interface ResultReading {
      * @throws ConnectionException
      * @throws IOException
      */
-    ParseEntity doParse(ParseImplement parseImplement, Class clParseEntity) throws IOException, ParseException;
+    ParseModel doParse(ParseImplement parseImplement, Class clParseEntity) throws IOException, ParseException;
 }

@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import com.google.gson.Gson;
 import com.magestore.app.lib.adapterview.AdapterViewAnnotiation;
 import com.magestore.app.lib.model.Model;
-import com.magestore.app.lib.parse.ParseEntity;
+import com.magestore.app.lib.parse.ParseModel;
 import com.magestore.app.util.NotFoundObject;
 
 import java.lang.reflect.Field;
@@ -19,7 +19,7 @@ import java.util.HashMap;
  * TODO: Add a class header comment!
  */
 
-public class AbstractModel implements Model, ParseEntity {
+public class AbstractModel implements Model, ParseModel {
     protected String id;
     protected HashMap<String, Object> mRefer;
 

@@ -3,7 +3,7 @@ package com.magestore.app.lib.model.catalog;
 import android.graphics.Bitmap;
 
 import com.magestore.app.lib.model.Model;
-import com.magestore.app.lib.parse.ParseEntity;
+import com.magestore.app.lib.parse.ParseModel;
 
 import java.util.Date;
 
@@ -11,7 +11,7 @@ import java.util.Date;
  * Created by Mike on 12/11/2016.
  */
 
-public interface Product extends Model, ParseEntity {
+public interface Product extends Model, ParseModel {
     String getID();
     String getName();
     String getTypeID();

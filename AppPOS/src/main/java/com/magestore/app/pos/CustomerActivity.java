@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 
+import com.magestore.app.lib.context.MagestoreContext;
 import com.magestore.app.lib.service.ServiceFactory;
 import com.magestore.app.lib.service.customer.CustomerService;
 import com.magestore.app.pos.controller.CustomerListController;
@@ -22,8 +23,8 @@ public class CustomerActivity extends AbstractActivity {
     // View và controller tương ứng
     private CustomerListPanel mCustomerListPanel = null;
     private CustomerListController mCustomerListController = null;
-
     private CustomerDetailPanel mCustomerDetailPanel = null;
+
 //    private CustomerDetailController mCustomerDetailController = null;
     private boolean mblnTwoPane;
     private Toolbar mToolbar;
@@ -39,29 +40,38 @@ public class CustomerActivity extends AbstractActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.customer_menu);
 
-        initControlLayout();
-        initControlValue();
-        initTask();
-
-        // load danh sách khách hàng
-        mCustomerListController.doLoadData();
+        initLayout();
+        initModel();
+        initValue();
     }
 
     @Override
-    protected void initControlLayout() {
-        super.initControlLayout();
-
+    protected void initLayout() {
         // chuẩn bị tool bar
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         mToolbar.setTitle(getTitle());
         initToolbarMenu(mToolbar);
 
+        // panel danh sách khách hàng và thông tin khách hàng chi tiết
+        mCustomerListPanel = (CustomerListPanel) findViewById(R.id.customer_list_panel);
+        mCustomerDetailPanel = (CustomerDetailPanel) findViewById(R.id.customer_detail_panel);
+
+        // xem giao diện 2 pane hay 1 pane
+        mblnTwoPane = findViewById(R.id.two_pane) != null;
+    }
+
+    @Override
+    protected void initModel() {
+        // Context sử dụng xuyên suốt hệ thống
+        MagestoreContext magestoreContext = new MagestoreContext();
+        magestoreContext.setActivity(this);
+
         // chuẩn bị service
         ServiceFactory factory;
         CustomerService service = null;
         try {
-            factory = ServiceFactory.getFactory(null);
+            factory = ServiceFactory.getFactory(magestoreContext);
             service = factory.generateCustomerService();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
@@ -69,30 +79,22 @@ public class CustomerActivity extends AbstractActivity {
             e.printStackTrace();
         }
 
-        // chuẩn bị panel view và controller danh sách khách hàng
+        // Tạo list controller
         mCustomerListController = new CustomerListController();
+        mCustomerListController.setMagestoreContext(magestoreContext);
         mCustomerListController.setCustomerService(service);
-
-        mCustomerListPanel = (CustomerListPanel) findViewById(R.id.customer_list_panel);
-        mCustomerListPanel.setController(mCustomerListController);
-
-        mCustomerDetailPanel = (CustomerDetailPanel) findViewById(R.id.customer_detail_panel);
-
-        mCustomerListController.setView(mCustomerListPanel);
+        mCustomerListController.setListPanel(mCustomerListPanel);
         mCustomerListController.setDetailPanel(mCustomerDetailPanel);
 
-        // xem giao diện 2 pane hay 1 pane
-        mblnTwoPane = findViewById(R.id.two_pane) != null;
+        // chuẩn bị model cho các panel
+        mCustomerListPanel.initModel();
+        mCustomerDetailPanel.initModel();
     }
 
     @Override
-    protected void initControlValue() {
-        super.initControlValue();
-    }
-
-    @Override
-    protected void initTask() {
-        super.initTask();
+    protected void initValue() {
+        // load danh sách khách hàng
+        mCustomerListController.doLoadData();
     }
 
     @Override

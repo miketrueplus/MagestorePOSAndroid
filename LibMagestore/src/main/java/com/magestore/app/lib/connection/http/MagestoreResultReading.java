@@ -2,7 +2,7 @@ package com.magestore.app.lib.connection.http;
 
 import com.magestore.app.lib.connection.ConnectionException;
 import com.magestore.app.lib.connection.ResultReading;
-import com.magestore.app.lib.parse.ParseEntity;
+import com.magestore.app.lib.parse.ParseModel;
 import com.magestore.app.lib.parse.ParseFactory;
 import com.magestore.app.lib.parse.ParseImplement;
 import com.magestore.app.util.StringUtil;
@@ -94,8 +94,8 @@ public class MagestoreResultReading implements ResultReading {
      * @throws ParseException
      * @throws IOException
      */
-//    public ParseEntity readResult(Class<ParseImplement> cl, Class<ParseEntity> clEntity) throws ConnectionException, ParseException, IOException {
-////        Type type = new TypeToken<Gson2PosListParseEntity<PosProduct>>(){}.getType();
+//    public ParseModel readResult(Class<ParseImplement> cl, Class<ParseModel> clEntity) throws ConnectionException, ParseException, IOException {
+////        Type type = new TypeToken<Gson2PosListParseModel<PosProduct>>(){}.getType();
 //        ParseImplement jsonParse = (ParseImplement) ParseFactory.generateParseImplement(cl);
 //        jsonParse.prepareParse(getInputStream(), clEntity);
 //        jsonParse.doParse();
@@ -152,7 +152,7 @@ public class MagestoreResultReading implements ResultReading {
      * @throws IOException
      */
     @Override
-    public ParseEntity doParse() throws ParseException, IOException {
+    public ParseModel doParse() throws ParseException, IOException {
         // Thực thi parse
         mParseImplement.prepareParse(getInputStream(), mclParseEntity);
         mParseImplement.doParse();
@@ -169,7 +169,7 @@ public class MagestoreResultReading implements ResultReading {
      * @throws IOException
      */
     @Override
-    public ParseEntity doParse(Class parseEntity) throws IOException, ParseException {
+    public ParseModel doParse(Class parseEntity) throws IOException, ParseException {
         setParseEntity(parseEntity);
         return doParse();
     }
@@ -183,7 +183,7 @@ public class MagestoreResultReading implements ResultReading {
      * @throws IOException
      */
     @Override
-    public ParseEntity doParse(ParseImplement parseImplement, Class parseEntity) throws IOException, ParseException {
+    public ParseModel doParse(ParseImplement parseImplement, Class parseEntity) throws IOException, ParseException {
         setParseImplement(parseImplement);
         setParseEntity(parseEntity);
         return doParse();

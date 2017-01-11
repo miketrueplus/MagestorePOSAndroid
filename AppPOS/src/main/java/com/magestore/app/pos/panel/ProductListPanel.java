@@ -16,8 +16,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.magestore.app.lib.controller.Controller;
-import com.magestore.app.lib.controller.ControllerListener;
+import com.magestore.app.lib.task.Task;
+import com.magestore.app.lib.task.TaskListener;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.task.LoadProductTask;
@@ -180,14 +180,14 @@ public class ProductListPanel extends FrameLayout {
     /**
      * Xử lý các sự kiện khi load danh sách product lần đầu
      */
-    public class LoadProductListener implements ControllerListener<Void, Void, List<Product>> {
+    public class LoadProductListener implements TaskListener<Void, Void, List<Product>> {
         @Override
-        public void onPreController(Controller controller) {
+        public void onPreController(Task task) {
             showProgress(true);
         }
 
         @Override
-        public void onPostController(Controller controller, List<Product> productList) {
+        public void onPostController(Task task, List<Product> productList) {
             // Tất progress đi
             mLoadProductTask = null;
             showProgress(false);
@@ -202,13 +202,13 @@ public class ProductListPanel extends FrameLayout {
         }
 
         @Override
-        public void onCancelController(Controller controller, Exception exp) {
+        public void onCancelController(Task task, Exception exp) {
             mLoadProductTask = null;
             showProgress(false);
         }
 
         @Override
-        public void onProgressController(Controller controller, Void... progress) {
+        public void onProgressController(Task task, Void... progress) {
 
         }
     }
@@ -216,25 +216,25 @@ public class ProductListPanel extends FrameLayout {
     /**
      * Bắt các sự kiện load ảnh
      */
-    public class LoadProductImageListener implements ControllerListener<Void, Product, Void> {
+    public class LoadProductImageListener implements TaskListener<Void, Product, Void> {
 
         @Override
-        public void onPreController(Controller controller) {
+        public void onPreController(Task task) {
 
         }
 
         @Override
-        public void onPostController(Controller controller, Void aVoid) {
+        public void onPostController(Task task, Void aVoid) {
 
         }
 
         @Override
-        public void onCancelController(Controller controller, Exception exp) {
+        public void onCancelController(Task task, Exception exp) {
 
         }
 
         @Override
-        public void onProgressController(Controller controller, Product... progress) {
+        public void onProgressController(Task task, Product... progress) {
 
         }
     }

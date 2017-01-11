@@ -45,7 +45,7 @@ public class POSCustomerService extends AbstractService implements CustomerServi
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         CustomerDataAccess customerGateway = factory.generateCustomerDataAccess();
 
-        // Lấy list 30 products đầu tiên
+        // lấy danh sách khách hàng
         return customerGateway.getCustomers(size, 1);
     }
 

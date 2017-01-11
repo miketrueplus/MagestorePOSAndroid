@@ -1,12 +1,25 @@
 package com.magestore.app.lib.controller;
 
+import com.magestore.app.lib.context.MagestoreContext;
+import com.magestore.app.lib.model.Model;
+import com.magestore.app.lib.view.MagestoreView;
+
 /**
- * Created by Mike on 12/24/2016.
+ * Task quản lý model, dùng service để xử lý
+ * và ra lệnh update view
+ * Created by Mike on 1/9/2017.
  * Magestore
  * mike@trueplus.vn
- * TODO: Add a class header comment!
  */
 
-public interface Controller<Params, Progress, Result> {
-    void setListener(ControllerListener<Params, Progress, Result> listener);
+public interface Controller<TView extends MagestoreView> {
+    void setMagestoreContext(MagestoreContext context);
+
+    MagestoreContext getMagestoreContext();
+
+    void setParentController(Controller controller);
+    void setView(TView view);
+    void doShowErrorMsg(Exception exp);
+    void doShowProgress(boolean blnShow);
+
 }

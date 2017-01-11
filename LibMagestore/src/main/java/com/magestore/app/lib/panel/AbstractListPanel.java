@@ -1,9 +1,7 @@
-package com.magestore.app.pos.panel;
+package com.magestore.app.lib.panel;
 
 import android.content.Context;
 
-import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -12,10 +10,11 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 
-import com.magestore.app.pos.R;
-import com.magestore.app.pos.controller.AbstractPosListController;
-import com.magestore.app.pos.controller.ListController;
-import com.magestore.app.util.DialogUtil;
+import com.magestore.app.lib.controller.AbstractListController;
+import com.magestore.app.lib.controller.Controller;
+import com.magestore.app.lib.controller.ListController;
+import com.magestore.app.lib.model.Model;
+import com.magestore.app.lib.view.MagestoreView;
 
 import java.util.List;
 
@@ -26,17 +25,19 @@ import java.util.List;
  * mike@trueplus.vn
  */
 
-public abstract class AbstractListPanel<TModel> extends FrameLayout {
-    // Controller điều khiển danh sách trong list
-    ListController<TModel> mController;
+public abstract class AbstractListPanel<TModel extends Model>
+        extends FrameLayout
+        implements MagestoreView<ListController<TModel>> {
+    // Task điều khiển danh sách trong list
+    protected ListController<TModel> mController;
 
     // Model chứa data danh sách
-    List<TModel> mList;
+    protected List<TModel> mList;
 
     // Các control nắm view
-    RecyclerView mRecycleView;
-    int mLayoutItem;
-    int mLayoutRecycleView;
+    protected RecyclerView mRecycleView;
+    protected int mLayoutItem;
+    protected int mLayoutRecycleView;
 
     /**
      * Khởi tạo
@@ -45,7 +46,7 @@ public abstract class AbstractListPanel<TModel> extends FrameLayout {
      */
     public AbstractListPanel(Context context) {
         super(context);
-        init();
+        initLayout();
     }
 
     /**
@@ -56,7 +57,7 @@ public abstract class AbstractListPanel<TModel> extends FrameLayout {
      */
     public AbstractListPanel(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
+        initLayout();
     }
 
     /**
@@ -68,23 +69,17 @@ public abstract class AbstractListPanel<TModel> extends FrameLayout {
      */
     public AbstractListPanel(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init();
+        initLayout();
     }
 
-    /**
-     * Khởi tạo
-     */
-    protected void init() {
-        initControlLayout();
-        initControlValue();
+
+    public void initLayout() {
     }
 
-    protected void initControlLayout() {
-
+    public void initModel() {
     }
 
-    protected void initControlValue() {
-
+    public void initValue() {
     }
 
     /**
@@ -116,10 +111,18 @@ public abstract class AbstractListPanel<TModel> extends FrameLayout {
 
     /**
      * Đặt controller điều khiển
+     *
      * @param controller
      */
-    public void setController(AbstractPosListController<TModel> controller) {
+    public void setController(ListController<TModel> controller) {
         mController = controller;
+    }
+
+    /**
+     * Trả lại controller
+     */
+    public ListController<TModel> getController() {
+        return mController;
     }
 
     /**
@@ -141,6 +144,8 @@ public abstract class AbstractListPanel<TModel> extends FrameLayout {
      * @param item
      */
     protected abstract void bindItem(View view, TModel item);
+
+
 
     /**
      * Adapter map từ danh sách sang recycleview
@@ -197,7 +202,7 @@ public abstract class AbstractListPanel<TModel> extends FrameLayout {
 
                     // Thông báo sự kiện khi đã chọn 1 item trên danh sách
                     if (mController != null)
-                        mController.onSelectItem(item);
+                        mController.bindItem(item);
                 }
             });
         }
@@ -233,14 +238,17 @@ public abstract class AbstractListPanel<TModel> extends FrameLayout {
     }
 
     /**
-     *
      * @param item
      */
     public void showDeleteItem(TModel item) {
 
     }
 
-    public void showEditItem(TModel item) {
+    public void showUpdateItem(TModel item) {
 
+    }
+
+    public void notifyDatasetChanged() {
+        mRecycleView.getAdapter().notifyDataSetChanged();
     }
 }

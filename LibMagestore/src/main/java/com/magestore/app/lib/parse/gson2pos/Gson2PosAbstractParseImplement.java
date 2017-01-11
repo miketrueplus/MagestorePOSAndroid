@@ -2,7 +2,7 @@ package com.magestore.app.lib.parse.gson2pos;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.magestore.app.lib.parse.ParseEntity;
+import com.magestore.app.lib.parse.ParseModel;
 import com.magestore.app.lib.parse.ParseException;
 import com.magestore.app.lib.parse.ParseImplement;
 
@@ -26,7 +26,7 @@ public class Gson2PosAbstractParseImplement extends DefaultHandler implements Pa
     private Gson mGSON;
     private Reader mReader;
     private Type mtypeOf;
-    private ParseEntity mParseEntity;
+    private ParseModel mParseModel;
 
     /**
      * Khởi tạo gson
@@ -44,14 +44,14 @@ public class Gson2PosAbstractParseImplement extends DefaultHandler implements Pa
     /**
      * Khởi tạo parse đầu vào là inputstream và entity
      * @param input
-     * @param parseEntity
+     * @param parseModel
      * @throws ParseException
      * @throws IOException
      */
     @Override
-    public void prepareParse(InputStream input, ParseEntity parseEntity) throws ParseException, IOException {
-        mParseEntity = parseEntity;
-        prepareParse(input, parseEntity.getClass());
+    public void prepareParse(InputStream input, ParseModel parseModel) throws ParseException, IOException {
+        mParseModel = parseModel;
+        prepareParse(input, parseModel.getClass());
     }
 
     /**
@@ -61,7 +61,7 @@ public class Gson2PosAbstractParseImplement extends DefaultHandler implements Pa
      * @throws ParseException
      */
     @Override
-    public void prepareParse(InputStream input, Class<ParseEntity> cl) throws ParseException {
+    public void prepareParse(InputStream input, Class<ParseModel> cl) throws ParseException {
         prepareParse(input, (Type) cl);
     }
 
@@ -81,7 +81,7 @@ public class Gson2PosAbstractParseImplement extends DefaultHandler implements Pa
      */
     @Override
     public void doParse() throws ParseException, IOException {
-        mParseEntity = mGSON.fromJson(mReader, mtypeOf);
+        mParseModel = mGSON.fromJson(mReader, mtypeOf);
         close();
     }
 
@@ -120,7 +120,7 @@ public class Gson2PosAbstractParseImplement extends DefaultHandler implements Pa
      * @return
      */
     @Override
-    public ParseEntity getParseEntity() {
-        return mParseEntity;
+    public ParseModel getParseEntity() {
+        return mParseModel;
     }
 }

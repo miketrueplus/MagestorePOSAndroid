@@ -8,12 +8,13 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import com.magestore.app.lib.adapterview.adapter2pos.AdapterView2Model;
-import com.magestore.app.lib.model.customer.CustomerAddress;
+import com.magestore.app.lib.controller.Controller;
 import com.magestore.app.lib.model.customer.Customer;
+import com.magestore.app.lib.panel.AbstractDetailPanel;
 import com.magestore.app.pos.controller.CustomerAddressListController;
+import com.magestore.app.pos.controller.CustomerListController;
 import com.magestore.app.pos.model.customer.PosCustomer;
 import com.magestore.app.pos.R;
-import com.magestore.app.pos.util.DialogUtil;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -49,21 +50,14 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
     }
 
 
-
-    protected void initControlLayout() {
+    @Override
+    protected void initLayout() {
         // Load layout view thông tin khách hàng chi tiết
         View v = inflate(getContext(), R.layout.panel_customer_detail, null);
         addView(v);
 
-        // chuẩn bị panel view và controller danh sách khách hàng
-        mCustomerAddressListController = new CustomerAddressListController();
+        // chuẩn bị panel view danh sách địa chỉ khách hàng
         mCustomerAddressListPanel = (CustomerAddressListPanel) findViewById(R.id.customer_address);
-//        mCustomerAddressListController.setCustomerService(service);
-//        mCustomerListController.setDetailControl(mCustomerDetailController);
-
-        // Tham chiếu view và controller
-        mCustomerAddressListPanel.setController(mCustomerAddressListController);
-        mCustomerAddressListController.setView(mCustomerAddressListPanel);
 
         // load các control vào các biến
 //        mbtnCheckOut = (ImageButton) findViewById(R.id.btn_check_out);
@@ -90,15 +84,26 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
     }
 
     /**
-     * Khởi tạo các value cho các control
+     * Chuẩn bị các model, controller
      */
-    protected void initControlValue() {
+    @Override
+    public void initModel() {
+        // Lấy lại customer service từ controller của panel này và đặt cho controlller địa chỉ
+        Controller controller = getController();
+
+        // Chuẩn bị controller quản lý danh sách địa chỉ khách hàng
+        mCustomerAddressListController = new CustomerAddressListController();
+        mCustomerAddressListController.setView(mCustomerAddressListPanel);
+        mCustomerAddressListController.setMagestoreContext(controller.getMagestoreContext());
+
+        if (controller instanceof CustomerListController)
+            mCustomerAddressListController.setCustomerService(((CustomerListController) controller).getCustomerService());
+
         // Khởi tạo customer use case
         mAdapter2View = new AdapterView2Model();
         mAdapter2View.setModelClass(PosCustomer.class);
         mAdapter2View.setView(this);
     }
-
 
     /**
      * Sự kiện khi ấn nút checkout

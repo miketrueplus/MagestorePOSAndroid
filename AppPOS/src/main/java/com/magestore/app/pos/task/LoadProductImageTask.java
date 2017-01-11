@@ -3,7 +3,7 @@ package com.magestore.app.pos.task;
 import android.graphics.Bitmap;
 import android.widget.ImageView;
 
-import com.magestore.app.lib.controller.ControllerListener;
+import com.magestore.app.lib.task.TaskListener;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.util.ImageUtil;
 
@@ -20,7 +20,7 @@ public class LoadProductImageTask extends AsyncTaskAbstractTask<Void, Product, V
     public static final String KEY_BITMAP = "LoadProductImageBitmap";
     public static final String KEY_IMAGEVIEW = "LoadProductImageImageview";
 
-    public LoadProductImageTask(ControllerListener listener, List<Product> listProduct) {
+    public LoadProductImageTask(TaskListener listener, List<Product> listProduct) {
         super(listener);
         mListProduct = listProduct;
     }

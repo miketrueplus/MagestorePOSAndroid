@@ -7,6 +7,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.magestore.app.lib.model.sales.Order;
+import com.magestore.app.lib.panel.AbstractListPanel;
 import com.magestore.app.pos.R;
 
 import java.util.List;
@@ -50,7 +51,7 @@ public class OrderListPanel extends AbstractListPanel<Order> {
     }
 
     @Override
-    protected void initControlLayout() {
+    public void initLayout() {
         // Load layout view danh sách đơn hàng
         View v = inflate(getContext(), R.layout.panel_order_list, null);
         addView(v);
@@ -64,11 +65,6 @@ public class OrderListPanel extends AbstractListPanel<Order> {
                         .setAction("Action", null).show();
             }
         });
-    }
-
-    @Override
-    protected void initControlValue() {
-
     }
 
     @Override

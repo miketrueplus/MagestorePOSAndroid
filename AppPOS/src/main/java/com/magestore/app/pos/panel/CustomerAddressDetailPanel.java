@@ -3,10 +3,10 @@ package com.magestore.app.pos.panel;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.FrameLayout;
 
 import com.magestore.app.lib.adapterview.adapter2pos.AdapterView2Model;
 import com.magestore.app.lib.model.customer.CustomerAddress;
+import com.magestore.app.lib.panel.AbstractDetailPanel;
 import com.magestore.app.pos.model.customer.PosCustomerAddress;
 import com.magestore.app.pos.R;
 
@@ -69,7 +69,15 @@ public class CustomerAddressDetailPanel extends AbstractDetailPanel<CustomerAddr
         }
     }
 
-    public void getAddress() throws InvocationTargetException, IllegalAccessException {
-        adapterView2Model.fromView();
+    @Override
+    public CustomerAddress bind2Item() {
+        try {
+            adapterView2Model.fromView();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return mItem;
     }
 }

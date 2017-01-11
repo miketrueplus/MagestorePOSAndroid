@@ -19,8 +19,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.magestore.app.lib.controller.Controller;
-import com.magestore.app.lib.controller.ControllerListener;
+import com.magestore.app.lib.task.Task;
+import com.magestore.app.lib.task.TaskListener;
 import com.magestore.app.pos.task.LoginTask;
 import com.magestore.app.pos.ui.AbstractActivity;
 import com.magestore.app.pos.ui.LoginUI;
@@ -222,15 +222,15 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
         }
     }
 
-    public class LoginListener implements ControllerListener<Void, Void, Boolean> {
+    public class LoginListener implements TaskListener<Void, Void, Boolean> {
 
         @Override
-        public void onPreController(Controller controller) {
+        public void onPreController(Task task) {
             showProgress(true);
         }
 
         @Override
-        public void onPostController(Controller controller, Boolean success) {
+        public void onPostController(Task task, Boolean success) {
             mAuthTask = null;
             showProgress(false);
             if (success) {
@@ -250,14 +250,14 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
         }
 
         @Override
-        public void onCancelController(Controller controller, Exception exp) {
+        public void onCancelController(Task task, Exception exp) {
             mAuthTask = null;
             showProgress(false);
             if (exp != null) showErrorMsg(exp);
         }
 
         @Override
-        public void onProgressController(Controller controller, Void... progress) {
+        public void onProgressController(Task task, Void... progress) {
 
         }
     }

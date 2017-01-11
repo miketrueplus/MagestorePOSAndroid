@@ -47,9 +47,9 @@ public class OrderActivity extends AbstractActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.order_menu);
 
-        initControlLayout();
-        initControlValue();
-        initTask();
+        initLayout();
+        initModel();
+        initValue();
 
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
@@ -79,7 +79,7 @@ public class OrderActivity extends AbstractActivity {
     }
 
     @Override
-    protected void initControlLayout() {
+    protected void initLayout() {
         // chuẩn bị tool bar
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
@@ -97,16 +97,6 @@ public class OrderActivity extends AbstractActivity {
 
         // xem giao diện 2 pane hay 1 pane
         mblnTwoPane = findViewById(R.id.two_pane) != null;
-    }
-
-    @Override
-    protected void initControlValue() {
-        super.initControlValue();
-    }
-
-    @Override
-    protected void initTask() {
-        super.initTask();
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {

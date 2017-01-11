@@ -10,9 +10,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.magestore.app.lib.model.customer.Customer;
+import com.magestore.app.lib.panel.AbstractListPanel;
 import com.magestore.app.pos.R;
-
-import java.util.List;
 
 /**
  * Panel giao diện quản lý danh sách khách hàng
@@ -56,7 +55,7 @@ public class CustomerListPanel extends AbstractListPanel<Customer> {
     }
 
     @Override
-    protected void initControlLayout() {
+    public void initLayout() {
 //        super.initControlLayout();
 
         // Load layout view danh sách khách hàng

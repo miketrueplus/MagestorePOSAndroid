@@ -9,7 +9,7 @@ import com.magestore.app.lib.context.MagestoreContext;
 import com.magestore.app.lib.resourcemodel.DataAccess;
 import com.magestore.app.lib.resourcemodel.DataAccessException;
 import com.magestore.app.lib.resourcemodel.DataAccessSession;
-import com.magestore.app.lib.parse.ParseEntity;
+import com.magestore.app.lib.parse.ParseModel;
 import com.magestore.app.lib.parse.gson2pos.Gson2PosAbstractParseImplement;
 
 import java.io.IOException;
@@ -111,7 +111,7 @@ public class POSAbstractDataAccess implements DataAccess {
         }
     }
 
-    protected ParseEntity doAPI(Class parseEntity, String pstrQuery, Object objParam, String ...params) throws ParseException, ConnectionException, DataAccessException, IOException {
+    protected ParseModel doAPI(Class parseEntity, String pstrQuery, Object objParam, String ...params) throws ParseException, ConnectionException, DataAccessException, IOException {
         Connection connection = null;
         Statement statement = null;
         ResultReading rp = null;

@@ -1,6 +1,6 @@
 package com.magestore.app.pos.task;
 
-import com.magestore.app.lib.controller.ControllerListener;
+import com.magestore.app.lib.task.TaskListener;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.service.customer.CustomerService;
 import com.magestore.app.lib.service.ServiceFactory;
@@ -15,7 +15,7 @@ import java.util.List;
  */
 
 public class LoadCustomerTask extends AsyncTaskAbstractTask<Void, Void, List<Customer>> {
-    public LoadCustomerTask(ControllerListener listener) {
+    public LoadCustomerTask(TaskListener listener) {
         super(listener);
     }
 

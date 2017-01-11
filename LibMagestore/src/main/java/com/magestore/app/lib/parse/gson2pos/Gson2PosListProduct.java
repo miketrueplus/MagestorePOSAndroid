@@ -9,7 +9,7 @@ import com.magestore.app.pos.model.catalog.PosProduct;
  * TODO: Add a class header comment!
  */
 
-public class Gson2PosListProduct extends Gson2PosListParseEntity<PosProduct> {
+public class Gson2PosListProduct extends Gson2PosListParseModel<PosProduct> {
 //    public Gson2PosListProduct() {
 //        items = new Vector<Product>();
 //    }

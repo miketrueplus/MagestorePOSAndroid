@@ -15,11 +15,11 @@ public interface ParseImplement {
     /**
      *
      * @param input
-     * @param parseEntity
+     * @param parseModel
      * @throws ParseException
      * @throws IOException
      */
-    void prepareParse(InputStream input, ParseEntity parseEntity) throws ParseException, IOException;
+    void prepareParse(InputStream input, ParseModel parseModel) throws ParseException, IOException;
 
     /**
      *
@@ -28,7 +28,7 @@ public interface ParseImplement {
      * @throws ParseException
      * @throws IOException
      */
-    void prepareParse(InputStream input, Class<ParseEntity> cl) throws ParseException, IOException;
+    void prepareParse(InputStream input, Class<ParseModel> cl) throws ParseException, IOException;
 
     /**
      *
@@ -67,5 +67,5 @@ public interface ParseImplement {
      * Nhận kết quả trả về
      * @return
      */
-    ParseEntity getParseEntity();
+    ParseModel getParseEntity();
 }

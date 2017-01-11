@@ -52,19 +52,20 @@ public class SalesActivity extends AbstractActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sales_menu);
         // chuẩn bị control layout
-        initControlLayout();
+        initLayout();
+
+        // chuẩn bị các model
+        initModel();
 
         // chuản bị các value trong layout
-        initControlValue();
+        initValue();
 
-        // chuẩn bị các task
-        initTask();
 
         mProductListPanel.loadProductList();
     }
 
     @Override
-    protected void initControlLayout() {
+    protected void initLayout() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_category);
         if (toolbar == null) toolbar = (Toolbar) findViewById(R.id.toolbar_order);
         initToolbarMenu(toolbar);
@@ -94,12 +95,6 @@ public class SalesActivity extends AbstractActivity
     }
 
     @Override
-    protected void initTask() {
-//        mLoadProduct = new LoadProductTask(new LoadProductListener());
-//        mLoadImageTask = new LoadProductImageTask(mListProduct);
-    }
-
-    @Override
     public List<Product> getProductList() {
         return mProductListPanel.getProductList();
     }
@@ -107,11 +102,6 @@ public class SalesActivity extends AbstractActivity
     @Override
     public void setProductList(List<Product> listProduct) {
         mProductListPanel.setProductList(listProduct);
-    }
-
-    @Override
-    protected void initControlValue() {
-        super.initControlValue();
     }
 
     @Override

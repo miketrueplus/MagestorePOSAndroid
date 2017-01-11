@@ -33,41 +33,22 @@ public abstract class AbstractActivity
     /**
      * Cấu hình lại các control layout
      */
-    protected void initControlLayout() {
+    protected void initLayout() {
+
+    }
+
+    /**
+     * Cấu hình lại các model
+     */
+    protected void initModel() {
 
     }
 
     /**
      * Tự động điền giá trị cho các trường trong form
      */
-    protected void initControlValue() {
+    protected void initValue() {
 
-    }
-
-    protected void initTask() {
-
-    }
-
-    /**
-     * Hiển thị thông báo lỗi
-     * @param strMsg
-     */
-    public void showErrorMsg(String strMsg) {
-        new AlertDialog.Builder(this)
-                .setMessage(strMsg)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show();
-    }
-
-    /**
-     * Hiển thị thông báo lỗi
-     * @param ex
-     */
-    public void showErrorMsg(Exception ex) {
-        new AlertDialog.Builder(this)
-                .setMessage(ex.getLocalizedMessage())
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show();
     }
 
     /**
@@ -110,6 +91,25 @@ public abstract class AbstractActivity
     @Override
     public void showUI(PosUI ui) {
 
+    }
+
+    /**
+     * Hiển thị thông báo lỗi
+     * @param strMsg
+     */
+    public void showErrorMsg(String strMsg) {
+        new AlertDialog.Builder(this)
+                .setMessage(strMsg)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
+
+    @Override
+    public void showErrorMsg(Exception exp) {
+        new AlertDialog.Builder(this)
+                .setMessage(exp.getLocalizedMessage())
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
     @Override
