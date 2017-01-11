@@ -7,7 +7,7 @@ package com.magestore.app.pos.model;
  * TODO: Add a class header comment!
  */
 
-public class PosStock extends AbstractModel {
+public class PosStock extends PosAbstractModel {
     private String item_id;
     private String product_id;
 }

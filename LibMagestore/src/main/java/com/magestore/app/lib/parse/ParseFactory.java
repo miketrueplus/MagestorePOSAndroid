@@ -1,7 +1,7 @@
 package com.magestore.app.lib.parse;
 
 import com.magestore.app.lib.context.MagestoreContext;
-import com.magestore.app.lib.parse.gson2pos.Gson2PosAbstractParseImplement;
+import com.magestore.app.pos.parse.gson2pos.Gson2PosAbstractParseImplement;
 
 /**
  * Tạo các object parse implement và entity để thực hiện chuyển đổi dữ liệu sang các entity

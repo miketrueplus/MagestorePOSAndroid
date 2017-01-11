@@ -19,7 +19,7 @@ import java.util.HashMap;
  * TODO: Add a class header comment!
  */
 
-public class AbstractModel implements Model, ParseModel {
+public class PosAbstractModel implements Model, ParseModel {
     protected String id;
     protected HashMap<String, Object> mRefer;
 
@@ -113,18 +113,18 @@ public class AbstractModel implements Model, ParseModel {
     /**
      * Khởi tạo json của object
      */
-    public static final Parcelable.Creator<AbstractModel> CREATOR =
-            new Parcelable.Creator<AbstractModel>() {
+    public static final Parcelable.Creator<PosAbstractModel> CREATOR =
+            new Parcelable.Creator<PosAbstractModel>() {
                 @Override
-                public AbstractModel createFromParcel(Parcel source) {
-                    AbstractModel entity = new AbstractModel();
+                public PosAbstractModel createFromParcel(Parcel source) {
+                    PosAbstractModel entity = new PosAbstractModel();
                     entity.readFromParcel(source);
                     return entity;
                 }
 
                 @Override
-                public AbstractModel[] newArray(int size) {
-                    return new AbstractModel[size];
+                public PosAbstractModel[] newArray(int size) {
+                    return new PosAbstractModel[size];
                 }
             };
 }

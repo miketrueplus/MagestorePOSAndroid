@@ -2,7 +2,7 @@ package com.magestore.app.pos.model.customer;
 
 import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.model.customer.Customer;
-import com.magestore.app.pos.model.AbstractModel;
+import com.magestore.app.pos.model.PosAbstractModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
  * mike@trueplus.vn
  */
 
-public class PosCustomer extends AbstractModel implements Customer {
+public class PosCustomer extends PosAbstractModel implements Customer {
     String group_id;
     String default_billing;
     String default_shipping;

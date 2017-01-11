@@ -2,7 +2,7 @@ package com.magestore.app.pos.model.config;
 
 import com.magestore.app.lib.model.config.Config;
 import com.magestore.app.lib.parse.ParseModel;
-import com.magestore.app.pos.model.AbstractModel;
+import com.magestore.app.pos.model.PosAbstractModel;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,7 +14,7 @@ import java.util.Map;
  * mike@trueplus.vn
  */
 
-public class PosConfig extends AbstractModel implements Config, ParseModel {
+public class PosConfig extends PosAbstractModel implements Config, ParseModel {
     Map<String, Object> items;
 
     @Override

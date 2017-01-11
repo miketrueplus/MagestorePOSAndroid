@@ -3,7 +3,7 @@ package com.magestore.app.pos.model.catalog;
 import android.graphics.Bitmap;
 
 import com.magestore.app.lib.model.catalog.Product;
-import com.magestore.app.pos.model.AbstractModel;
+import com.magestore.app.pos.model.PosAbstractModel;
 import com.magestore.app.pos.model.PosStock;
 import com.magestore.app.pos.model.PosTierPrice;
 
@@ -16,7 +16,7 @@ import java.util.Date;
  * TODO: Add a class header comment!
  */
 
-public class PosProduct extends AbstractModel implements Product {
+public class PosProduct extends PosAbstractModel implements Product {
     private String type_id;
     private String sku;
     private float price;

@@ -5,7 +5,7 @@ import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.resourcemodel.customer.CustomerDataAccess;
 import com.magestore.app.lib.resourcemodel.DataAccessException;
 import com.magestore.app.lib.parse.ParseException;
-import com.magestore.app.lib.parse.gson2pos.Gson2PosListCustomer;
+import com.magestore.app.pos.parse.gson2pos.Gson2PosListCustomer;
 import com.magestore.app.pos.api.m2.POSAPI;
 import com.magestore.app.pos.api.m2.POSAbstractDataAccess;
 import com.magestore.app.pos.api.m2.POSDataAccessSession;

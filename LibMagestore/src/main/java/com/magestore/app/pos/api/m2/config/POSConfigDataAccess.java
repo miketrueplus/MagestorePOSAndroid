@@ -9,7 +9,7 @@ import com.magestore.app.pos.api.m2.POSAbstractDataAccess;
 import com.magestore.app.pos.api.m2.POSDataAccessSession;
 import com.magestore.app.pos.model.config.PosConfig;
 import com.magestore.app.lib.parse.ParseException;
-import com.magestore.app.lib.parse.gson2pos.Gson2PosConfigParseImplement;
+import com.magestore.app.pos.parse.gson2pos.Gson2PosConfigParseImplement;
 
 import java.io.IOException;
 

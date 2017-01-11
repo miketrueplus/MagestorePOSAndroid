@@ -10,7 +10,7 @@ import com.magestore.app.lib.resourcemodel.DataAccess;
 import com.magestore.app.lib.resourcemodel.DataAccessException;
 import com.magestore.app.lib.resourcemodel.DataAccessSession;
 import com.magestore.app.lib.parse.ParseModel;
-import com.magestore.app.lib.parse.gson2pos.Gson2PosAbstractParseImplement;
+import com.magestore.app.pos.parse.gson2pos.Gson2PosAbstractParseImplement;
 
 import java.io.IOException;
 import java.text.ParseException;

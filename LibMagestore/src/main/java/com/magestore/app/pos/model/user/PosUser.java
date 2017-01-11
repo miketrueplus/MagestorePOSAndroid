@@ -1,7 +1,7 @@
 package com.magestore.app.pos.model.user;
 
 import com.magestore.app.lib.model.user.User;
-import com.magestore.app.pos.model.AbstractModel;
+import com.magestore.app.pos.model.PosAbstractModel;
 
 /**
  * Quản lý các thông tin user
@@ -10,7 +10,7 @@ import com.magestore.app.pos.model.AbstractModel;
  * mike@trueplus.vn
  */
 
-public class PosUser extends AbstractModel implements User {
+public class PosUser extends PosAbstractModel implements User {
     private String username;
     private String password;
     private String firstname;

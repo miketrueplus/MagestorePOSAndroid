@@ -7,5 +7,5 @@ package com.magestore.app.pos.model;
  * TODO: Add a class header comment!
  */
 
-public class PosTierPrice extends AbstractModel {
+public class PosTierPrice extends PosAbstractModel {
 }

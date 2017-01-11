@@ -2,7 +2,7 @@ package com.magestore.app.pos.model.checkout.cart;
 
 import com.magestore.app.lib.model.checkout.cart.Items;
 import com.magestore.app.lib.model.catalog.Product;
-import com.magestore.app.pos.model.AbstractModel;
+import com.magestore.app.pos.model.PosAbstractModel;
 
 /**
  * Created by Mike on 12/26/2016.
@@ -11,7 +11,7 @@ import com.magestore.app.pos.model.AbstractModel;
  * TODO: Add a class header comment!
  */
 
-public class PosItems extends AbstractModel implements Items {
+public class PosItems extends PosAbstractModel implements Items {
     Product product;
     int qty;
     String child_id;

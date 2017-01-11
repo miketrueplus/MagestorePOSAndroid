@@ -1,7 +1,7 @@
 package com.magestore.app.pos.model.catalog;
 
 import com.magestore.app.lib.model.catalog.Category;
-import com.magestore.app.pos.model.AbstractModel;
+import com.magestore.app.pos.model.PosAbstractModel;
 
 /**
  * Quản lý thông tin category
@@ -10,7 +10,7 @@ import com.magestore.app.pos.model.AbstractModel;
  * mike@trueplus.vn
  */
 
-public class PosCategory extends AbstractModel implements Category {
+public class PosCategory extends PosAbstractModel implements Category {
     private String id;
     private String name;
     private String image;

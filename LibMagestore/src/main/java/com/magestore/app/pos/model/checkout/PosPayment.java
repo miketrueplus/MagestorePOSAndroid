@@ -1,7 +1,7 @@
 package com.magestore.app.pos.model.checkout;
 
 import com.magestore.app.lib.model.checkout.Payment;
-import com.magestore.app.pos.model.AbstractModel;
+import com.magestore.app.pos.model.PosAbstractModel;
 
 /**
  * Created by Mike on 1/6/2017.
@@ -10,5 +10,5 @@ import com.magestore.app.pos.model.AbstractModel;
  * TODO: Add a class header comment!
  */
 
-public class PosPayment extends AbstractModel implements Payment {
+public class PosPayment extends PosAbstractModel implements Payment {
 }

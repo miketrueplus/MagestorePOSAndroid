@@ -3,7 +3,7 @@ package com.magestore.app.pos.model.customer;
 import com.magestore.app.lib.adapterview.AdapterViewAnnotiation;
 import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.model.directory.Region;
-import com.magestore.app.pos.model.AbstractModel;
+import com.magestore.app.pos.model.PosAbstractModel;
 import com.magestore.app.pos.model.directory.PosRegion;
 
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ import java.util.List;
  * mike@trueplus.vn
  */
 
-public class PosCustomerAddress extends AbstractModel implements CustomerAddress {
+public class PosCustomerAddress extends PosAbstractModel implements CustomerAddress {
     String customer_id;
     String region_id;
     String country_id;

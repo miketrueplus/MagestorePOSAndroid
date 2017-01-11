@@ -1,7 +1,7 @@
 package com.magestore.app.pos.model.directory;
 
 import com.magestore.app.lib.model.directory.Region;
-import com.magestore.app.pos.model.AbstractModel;
+import com.magestore.app.pos.model.PosAbstractModel;
 
 /**
  * Quản lý region của Magestore
@@ -10,7 +10,7 @@ import com.magestore.app.pos.model.AbstractModel;
  * mike@trueplus.vn
  */
 
-public class PosRegion extends AbstractModel implements Region {
+public class PosRegion extends PosAbstractModel implements Region {
     String region_code;
     String region;
     String region_id;

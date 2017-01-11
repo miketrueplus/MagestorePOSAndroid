@@ -1,4 +1,4 @@
-package com.magestore.app.lib.parse.gson2pos;
+package com.magestore.app.pos.parse.gson2pos;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -7,11 +7,7 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.internal.$Gson$Types;
 import com.google.gson.reflect.TypeToken;
-import com.magestore.app.lib.parse.ParseException;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;

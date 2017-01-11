@@ -1,4 +1,4 @@
-package com.magestore.app.lib.parse.gson2pos;
+package com.magestore.app.pos.parse.gson2pos;
 
 /**
  * Created by Mike on 12/19/2016.

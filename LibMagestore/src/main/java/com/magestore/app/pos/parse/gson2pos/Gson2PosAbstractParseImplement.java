@@ -1,4 +1,4 @@
-package com.magestore.app.lib.parse.gson2pos;
+package com.magestore.app.pos.parse.gson2pos;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

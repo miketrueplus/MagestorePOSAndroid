@@ -1,4 +1,4 @@
-package com.magestore.app.lib.parse.sax2pos;
+package com.magestore.app.pos.parse.sax2pos;
 
 import com.magestore.app.lib.parse.ParseModel;
 import com.magestore.app.lib.parse.ParseException;

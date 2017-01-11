@@ -2,7 +2,7 @@ package com.magestore.app.pos.model.sales;
 
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.model.checkout.cart.Items;
-import com.magestore.app.pos.model.AbstractModel;
+import com.magestore.app.pos.model.PosAbstractModel;
 import com.magestore.app.pos.model.checkout.cart.PosItems;
 
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import java.util.List;
  * mike@trueplus.vn
  */
 
-public class PosOrder extends AbstractModel implements Order {
+public class PosOrder extends PosAbstractModel implements Order {
     private String webpos_staff_id;
     private String webpos_staff_name;
     private String entnty_name;

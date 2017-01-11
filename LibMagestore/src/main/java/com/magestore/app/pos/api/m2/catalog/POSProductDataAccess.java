@@ -8,7 +8,7 @@ import com.magestore.app.lib.connection.http.MagestoreConnection;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.resourcemodel.DataAccessException;
 import com.magestore.app.lib.resourcemodel.catalog.ProductDataAccess;
-import com.magestore.app.lib.parse.gson2pos.Gson2PosListProduct;
+import com.magestore.app.pos.parse.gson2pos.Gson2PosListProduct;
 import com.magestore.app.pos.api.m2.POSAPI;
 import com.magestore.app.pos.api.m2.POSAbstractDataAccess;
 import com.magestore.app.pos.api.m2.POSDataAccessSession;
