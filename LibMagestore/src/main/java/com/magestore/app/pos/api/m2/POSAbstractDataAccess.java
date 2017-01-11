@@ -2,6 +2,7 @@ package com.magestore.app.pos.api.m2;
 
 import com.magestore.app.lib.connection.Connection;
 import com.magestore.app.lib.connection.ConnectionException;
+import com.magestore.app.lib.connection.ConnectionFactory;
 import com.magestore.app.lib.connection.ResultReading;
 import com.magestore.app.lib.connection.Statement;
 import com.magestore.app.lib.connection.http.MagestoreConnection;
@@ -75,7 +76,8 @@ public class POSAbstractDataAccess implements DataAccess {
 
         try {
             // Khởi tạo connection và khởi tạo truy vấn
-            connection = MagestoreConnection.getConnection(POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
+//            connection = MagestoreConnection.getConnection(POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
 
             // Xử lý truy vấn
             statement = connection.createStatement();
@@ -118,7 +120,8 @@ public class POSAbstractDataAccess implements DataAccess {
 
         try {
             // Khởi tạo connection và khởi tạo truy vấn
-            connection = MagestoreConnection.getConnection(POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
+//            connection = MagestoreConnection.getConnection(POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
 
             // Xử lý truy vấn
             statement = connection.createStatement();

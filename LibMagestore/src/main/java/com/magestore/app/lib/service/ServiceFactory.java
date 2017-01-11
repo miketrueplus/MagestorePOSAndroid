@@ -20,7 +20,7 @@ public abstract class ServiceFactory {
 
     public abstract UserService generateUserService();
     public abstract ProductService generateProductService();
-    public abstract CartService generateOrderService();
+    public abstract CartService generateCartService();
     public abstract CustomerService generateCustomerService();
     public abstract ConfigService generateConfigService();
 

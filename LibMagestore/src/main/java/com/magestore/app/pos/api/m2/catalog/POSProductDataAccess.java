@@ -2,6 +2,7 @@ package com.magestore.app.pos.api.m2.catalog;
 
 import com.magestore.app.lib.connection.Connection;
 import com.magestore.app.lib.connection.ConnectionException;
+import com.magestore.app.lib.connection.ConnectionFactory;
 import com.magestore.app.lib.connection.ResultReading;
 import com.magestore.app.lib.connection.Statement;
 import com.magestore.app.lib.connection.http.MagestoreConnection;
@@ -47,7 +48,7 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
 
         try {
             // Khởi tạo connection và khởi tạo truy vấn
-            connection = MagestoreConnection.getConnection(POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
             statement = connection.createStatement();
             statement.prepareQuery(POSAPI.REST_PRODUCT_GET_LISTING);
             statement.setParam(POSAPI.PARAM_CURRENT_PAGE, currentPage);

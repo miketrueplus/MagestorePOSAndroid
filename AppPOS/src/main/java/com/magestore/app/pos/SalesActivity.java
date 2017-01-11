@@ -15,8 +15,16 @@ import android.view.View;
 import android.widget.AutoCompleteTextView;
 
 
+import com.magestore.app.lib.context.MagestoreContext;
 import com.magestore.app.lib.model.catalog.Product;
-import com.magestore.app.pos.panel.OrderItemPanel;
+import com.magestore.app.lib.model.sales.Order;
+import com.magestore.app.lib.service.ServiceFactory;
+import com.magestore.app.lib.service.catalog.ProductService;
+import com.magestore.app.lib.service.checkout.CartService;
+import com.magestore.app.lib.service.sales.OrderService;
+import com.magestore.app.pos.controller.OrderItemListController;
+import com.magestore.app.pos.controller.ProductListController;
+import com.magestore.app.pos.panel.OrderItemListPanel;
 import com.magestore.app.pos.panel.OrderItemPanelListener;
 import com.magestore.app.pos.panel.ProductListPanel;
 import com.magestore.app.pos.panel.ProductListPanelListener;
@@ -45,7 +53,11 @@ public class SalesActivity extends AbstractActivity
 
     // Panel chứa danh sách mặt hàng và đơn hàng
     private ProductListPanel mProductListPanel;
-    private OrderItemPanel mOrderItemPanel;
+    private OrderItemListPanel mOrderItemListPanel;
+
+    // controller cho danh sách mặt hàng và đơn hàng
+    private ProductListController mProductListController;
+    private OrderItemListController mOrderItemListController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,9 +71,6 @@ public class SalesActivity extends AbstractActivity
 
         // chuản bị các value trong layout
         initValue();
-
-
-        mProductListPanel.loadProductList();
     }
 
     @Override
@@ -87,11 +96,50 @@ public class SalesActivity extends AbstractActivity
 
         mProductListPanel = (ProductListPanel) findViewById(R.id.product_list_panel);
         mProductListPanel.setColumn(mTwoPane ? 4 : 1);
-        mProductListPanel.setListener(this);
+//        mProductListPanel.setListener(this);
 
-        mOrderItemPanel = (OrderItemPanel) findViewById(R.id.order_item_panel);
-        if (mOrderItemPanel == null) return;
-        mOrderItemPanel.setListener(this);
+        mOrderItemListPanel = (OrderItemListPanel) findViewById(R.id.order_item_panel);
+        if (mOrderItemListPanel == null) return;
+//        mOrderItemListPanel.setListener(this);
+    }
+
+    protected void initModel() {
+        // Context sử dụng xuyên suốt hệ thống
+        MagestoreContext magestoreContext = new MagestoreContext();
+        magestoreContext.setActivity(this);
+
+        // chuẩn bị service
+        ServiceFactory factory;
+        ProductService productService = null;
+        CartService cartService = null;
+
+        try {
+            factory = ServiceFactory.getFactory(magestoreContext);
+            productService = factory.generateProductService();
+            cartService = factory.generateCartService();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        }
+
+        // controller quản lý đơn hàng
+        mOrderItemListController = new OrderItemListController();
+        mOrderItemListController.setMagestoreContext(magestoreContext);
+        mOrderItemListController.setCartService(cartService);
+        mOrderItemListController.setListPanel(mOrderItemListPanel);
+
+        // controller quản lý danh sách khách hàng
+        mProductListController = new ProductListController();
+        mProductListController.setMagestoreContext(magestoreContext);
+        mProductListController.setProdcutService(productService);
+        mProductListController.setListPanel(mProductListPanel);
+        mProductListController.setOrderItemListController(mOrderItemListController);
+    }
+
+    @Override
+    protected void initValue() {
+        mProductListController.doLoadData();;
     }
 
     @Override
@@ -111,7 +159,7 @@ public class SalesActivity extends AbstractActivity
 
     @Override
     public void onSelectProduct(Product product) {
-        mOrderItemPanel.addOrderItem(product);
+        mOrderItemListPanel.addOrderItem(product);
     }
 
     @Override

@@ -9,6 +9,7 @@ import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.view.MagestoreView;
 
 /**
+ * Quản lý 1 panel hiển thị thông tin chi tiết
  * Created by Mike on 1/9/2017.
  * Magestore
  * mike@trueplus.vn
