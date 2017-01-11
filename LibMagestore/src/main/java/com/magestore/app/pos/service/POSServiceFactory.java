@@ -20,30 +20,35 @@ import com.magestore.app.pos.service.user.POSUserService;
  */
 
 public class POSServiceFactory extends ServiceFactory {
+    @Override
     public UserService generateUserService() {
         UserService useCase = new POSUserService();
         useCase.setContext(getContext());
         return useCase;
     }
 
+    @Override
     public ProductService generateProductService() {
         ProductService useCase = new POSProductService();
         useCase.setContext(getContext());
         return useCase;
     }
 
-    public CartService generateOrderService() {
+    @Override
+    public CartService generateCartService() {
         CartService useCase = new POSOrderService();
         useCase.setContext(getContext());
         return useCase;
     }
 
+    @Override
     public CustomerService generateCustomerService() {
         CustomerService useCase = new POSCustomerService();
         useCase.setContext(getContext());
         return useCase;
     }
 
+    @Override
     public ConfigService generateConfigService() {
         ConfigService useCase = new POSConfigService();
         useCase.setContext(getContext());
