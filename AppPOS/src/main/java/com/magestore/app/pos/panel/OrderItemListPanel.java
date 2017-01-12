@@ -23,6 +23,7 @@ import com.magestore.app.lib.panel.AbstractListPanel;
 import com.magestore.app.lib.service.checkout.CartService;
 import com.magestore.app.lib.service.ServiceFactory;
 import com.magestore.app.pos.R;
+import com.magestore.app.pos.controller.OrderItemListController;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.view.MagestoreTextView;
 
@@ -76,10 +77,11 @@ public class OrderItemListPanel extends AbstractListPanel<Items> {
         View v = inflate(getContext(), R.layout.panel_order_item, null);
         addView(v);
 
+        // Chuẩn bị layout từng item trong danh sách khách hàng
+        setLayoutItem(R.layout.card_sales_order_list_content);
+
         // View chưa danh sách các mặt hàng trong đơn
-        mRecycleView = (RecyclerView) findViewById(R.id.sales_order_container);
-        if (mRecycleView != null)
-            mRecycleView.setLayoutManager(new GridLayoutManager(getContext(), 1));
+        initRecycleView(R.id.sales_order_container, new GridLayoutManager(getContext(), 1));
 
         // Tham chiếu các text view tổng và button
         mSubTotalView = (MagestoreTextView) findViewById(R.id.text_sales_order_subtotal);
@@ -90,207 +92,104 @@ public class OrderItemListPanel extends AbstractListPanel<Items> {
         mCheckoutButton = (Button) findViewById(R.id.btn_sales_order_checkout);
     }
 
-    public void initValue() {
-        // Lập một đơn hàng mới
-        // TODO: cần nghiệp vụ đúng hơn, cứ new panel là lập đơn hàng mới thì chưa phù hợp
-//        ServiceFactory serviceFactory = ServiceFactory.getFactory(null);
-//        mOrderUseCase = serviceFactory.generateOrderService();
-//        mOrderUseCase.newSales();
-//
-//        mOrderItemListAdapter
-//                = new OrderItemListPanel.OrderItemListRecyclerViewAdapter(mOrderUseCase.getOrder());
-//        mOrderItemRecycleView.setAdapter(mOrderItemListAdapter);
-    }
-
     @Override
-    public void initModel() {
-
-    }
-
-    @Override
-    protected void bindItem(View view, Items item) {
+    protected void bindItem(View view, final Items item) {
 //        mImageView = (ImageView) view.findViewById(R.id.sales_order_image);
-//        ((TextView) view.findViewById(R.id.sales_order_name)).setText(item.getName());
-//        ((TextView) view.findViewById(R.id.sales_order_sku)).setText(item.getSKU());
-//        ((MagestoreTextView) view.findViewById(R.id.sales_order_price));
-//        ((TextView) view.findViewById(R.id.sales_order_quantity));
-//        mView = view.findViewById(R.id.sales_order_card_view);
+        final Product product = item.getProduct();
 
-//            holder.mNameView.setText(product.getName());
-//            holder.mPriceView.setRawText(product.getPrice() * item.getQuantity());
-//            holder.mSKUView.setText(product.getSKU());
-//            holder.mQuantityView.setText("" + item.getQuantity());
-//            holder.mQuantitySwipe.setText(holder.mQuantityView.getText());
-    }
+        // Điền tên, và SKU của product
+        ((TextView) view.findViewById(R.id.sales_order_name)).setText(product.getName());
+        ((TextView) view.findViewById(R.id.sales_order_sku)).setText(product.getSKU());
 
-    public void addOrderItem(Product product) {
-//        if (mOrderUseCase == null || mOrderItemListAdapter == null) return;
-//        mOrderUseCase.addOrderItem(product, 1, product.getPrice());
-//        mOrderItemListAdapter.notifyDataSetChanged();
+        // Điền giá và số lượng
+        final MagestoreTextView txtPrice = ((MagestoreTextView) view.findViewById(R.id.sales_order_price));
+        final TextView txtQuantity = ((TextView) view.findViewById(R.id.sales_order_quantity));
+        txtPrice.setRawText(product.getPrice() * item.getQuantity());
+        txtQuantity.setText("" + item.getQuantity());
+
+        // Điền giá và số lượng cho swipe
+        final SwipeLayout swipeLayout = (SwipeLayout) view.findViewById(R.id.sales_order_swipe_layout);
+        final TextView quantitySwipe = (TextView) swipeLayout.findViewById(R.id.sales_order_swipe_textview);
+        quantitySwipe.setText(txtQuantity.getText());
+        swipeLayout.addDrag(SwipeLayout.DragEdge.Left, swipeLayout.findViewById(R.id.sales_order_swipe_delete_layout));
+
+        Button mIncButton = (Button) swipeLayout.findViewById(R.id.sales_order_swipe_inc_quantity);
+        Button mDesButton = (Button) swipeLayout.findViewById(R.id.sales_order_swipe_des_quantity);
+        ImageButton mDelButton = (ImageButton) swipeLayout.findViewById(R.id.sales_order_swipe_del_button);
+
+        // Xử lý sự kiện ấn nút tăng trên swipe
+        mIncButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                getOrderItemListController().addProduct(item.getProduct(), 1);
+                quantitySwipe.setText("" + item.getQuantity());
+            }
+        });
 //
-//        // cập nhật tổng lên cuối order
-//        updateTotalPrice();
-    }
+//
+        // Xử lý sự kiện ấn nút giảm trên swipe
+        mDesButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (item.getQuantity() <= 1) return;
+                getOrderItemListController().substructProduct(item.getProduct(), 1);
+                quantitySwipe.setText("" + item.getQuantity());
+            }
+        });
+//
+        // Xử lý sự kiện xóa trên swipe
+        mDelButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                getOrderItemListController().deleteProduct(item.getProduct());
+            }
+        });
 
-    /**
-     * Đặt sự kiện xử lý khi load Product
-     * @param orderItemPanelListener
-     */
-//    public void setListener(OrderItemPanelListener orderItemPanelListener) {
-//        mOrderItemPanelListener = orderItemPanelListener;
-//    }
+        // Sự kiện khi swipe in
+        swipeLayout.addSwipeListener(new SwipeLayout.SwipeListener() {
+            @Override
+            public void onStartOpen(SwipeLayout layout) {
+
+            }
+
+            @Override
+            public void onOpen(SwipeLayout layout) {
+
+            }
+
+            @Override
+            public void onStartClose(SwipeLayout layout) {
+
+            }
+
+            @Override
+            public void onClose(SwipeLayout swipeLayout) {
+                OrderItemListPanel.this.notifyDatasetChanged();
+            }
+
+            @Override
+            public void onUpdate(SwipeLayout layout, int leftOffset, int topOffset) {
+
+            }
+
+            @Override
+            public void onHandRelease(SwipeLayout layout, float xvel, float yvel) {
+
+            }
+        });
+    }
 
     /**
      * Cập nhật bảng giá tổng
      */
-    private void updateTotalPrice() {
+    public void updateTotalPrice(Order order) {
         if (mSubTotalView == null || mDiscountTotalView == null) return;
 
         // cập nhật tổng lên cuối order
-//        mSubTotalView.setRawText(mOrderUseCase.calculateSubTotalOrderItems());
-//        mDiscountTotalView.setRawText(mOrderUseCase.calculateDiscountTotalOrderItems());
-//        mTaxTotalView.setRawText(mOrderUseCase.calculateTaxOrderItems());
-//        mCheckoutButton.setText(getContext().getString(R.string.checkout) + ": " + ConfigUtil.formatPrice(mOrderUseCase.calculateLastTotalOrderItems()));
+        mSubTotalView.setRawText(order.getSubTotal());
+        mDiscountTotalView.setRawText(order.getDiscountTotal());
+        mTaxTotalView.setRawText(order.getTaxTotal());
+        mCheckoutButton.setText(getContext().getString(R.string.checkout) + ": " + ConfigUtil.formatPrice(order.getLastTotal()));
     }
 
-//    public class OrderItemListRecyclerViewAdapter
-//            extends RecyclerView.Adapter<OrderItemListRecyclerViewAdapter.OrderItemListViewHolder> {
-//        Order mOrder;
-//
-//
-//        public OrderItemListRecyclerViewAdapter(Order order) {
-//            mOrder = order;
-//        }
-//
-//        @Override
-//        public OrderItemListRecyclerViewAdapter.OrderItemListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//            View view = LayoutInflater.from(parent.getContext())
-//                    .inflate(R.layout.card_sales_order_list_content, parent, false);
-//            return new OrderItemListRecyclerViewAdapter.OrderItemListViewHolder(view);
-//        }
-//
-//        @Override
-//        public void onBindViewHolder(final OrderItemListRecyclerViewAdapter.OrderItemListViewHolder holder, final int position) {
-//            final Items item = mOrder.getOrderItems().get(position);
-//            holder.mItem = item;
-//
-//            // Giữ tham chiếu imageview theo product
-//            final Product product = item.getProduct();
-//
-//            // Đặt các trường text vào danh sách
-//            holder.mNameView.setText(product.getName());
-//            holder.mPriceView.setRawText(product.getPrice() * item.getQuantity());
-//            holder.mSKUView.setText(product.getSKU());
-//            holder.mQuantityView.setText("" + item.getQuantity());
-//            holder.mQuantitySwipe.setText(holder.mQuantityView.getText());
-//
-//            // Gán ảnh cho view
-//            Bitmap bmp = product.getBitmap();
-//            if (bmp != null && !bmp.isRecycled()) holder.mImageView.setImageBitmap(bmp);
-//
-//            // Xử lý sự kiện ấn nút tăng trên swipe
-//            holder.mIncButton.setOnClickListener(new View.OnClickListener() {
-//                public void onClick(View v) {
-//                    mOrderUseCase.addOrderItem(product, 1, product.getPrice());
-//                    holder.mQuantitySwipe.setText("" + item.getQuantity());
-//                }
-//            });
-//
-//
-//            // Xử lý sự kiện ấn nút giảm trên swipe
-//            holder.mDesButton.setOnClickListener(new View.OnClickListener() {
-//                public void onClick(View v) {
-//                    if (item.getQuantity() <= 1) return;
-//                    mOrderUseCase.subtructOrderItem(product, 1);
-//                    holder.mQuantitySwipe.setText("" + item.getQuantity());
-//                }
-//            });
-//
-//            // Xử lý sự kiện xóa trên swipe
-//            holder.mDelButton.setOnClickListener(new View.OnClickListener() {
-//                public void onClick(View v) {
-//                    mOrderUseCase.delOrderItem(position);
-//                    mOrderItemRecycleView.getAdapter().notifyDataSetChanged();
-//                    updateTotalPrice();
-//                }
-//            });
-//
-//            holder.mSwipeLayout.addSwipeListener(new SwipeLayout.SwipeListener() {
-//                @Override
-//                public void onStartOpen(SwipeLayout layout) {
-//
-//                }
-//
-//                @Override
-//                public void onOpen(SwipeLayout layout) {
-//
-//                }
-//
-//                @Override
-//                public void onStartClose(SwipeLayout layout) {
-//
-//                }
-//
-//                @Override
-//                public void onClose(SwipeLayout swipeLayout) {
-//                    mOrderItemRecycleView.getAdapter().notifyDataSetChanged();
-//                    updateTotalPrice();
-//                }
-//
-//                @Override
-//                public void onUpdate(SwipeLayout layout, int leftOffset, int topOffset) {
-//
-//                }
-//
-//                @Override
-//                public void onHandRelease(SwipeLayout layout, float xvel, float yvel) {
-//
-//                }
-//            });
-//        }
-//
-//        @Override
-//        public int getItemCount() {
-//            if (mOrder == null) return 0;
-//            if (mOrder.getOrderItems() == null) return 0;
-//            return mOrder.getOrderItems().size();
-//        }
-//
-//        public class OrderItemListViewHolder extends RecyclerView.ViewHolder {
-//            public SwipeLayout mSwipeLayout = null;
-//
-//            public final TextView mNameView;
-//            public final ImageView mImageView;
-//            public final MagestoreTextView mPriceView;
-//            public final TextView mSKUView;
-//            public final TextView mQuantityView;
-//            public final TextView mQuantitySwipe;
-//            public final Button mIncButton;
-//            public final Button mDesButton;
-//            public final ImageButton mDelButton;
-//            public Items mItem;
-//            public View mView;
-//
-//            public OrderItemListViewHolder(View view) {
-//                super(view);
-////                swipeLayout = (SwipeRevealLayout) itemView.findViewById(R.id.sales_order_swipe_layout);
-//
-//                mImageView = (ImageView) view.findViewById(R.id.sales_order_image);
-//                mNameView = (TextView) view.findViewById(R.id.sales_order_name);
-//                mSKUView = (TextView) view.findViewById(R.id.sales_order_sku);
-//                mPriceView = (MagestoreTextView) view.findViewById(R.id.sales_order_price);
-//                mQuantityView = (TextView) view.findViewById(R.id.sales_order_quantity);
-//                mView = view.findViewById(R.id.sales_order_card_view);
-//
-//                mIncButton = (Button) view.findViewById(R.id.sales_order_swipe_inc_quantity);
-//                mDesButton = (Button) view.findViewById(R.id.sales_order_swipe_des_quantity);
-//                mDelButton = (ImageButton) view.findViewById(R.id.sales_order_swipe_del_button);
-//
-//
-//                mSwipeLayout = (SwipeLayout) view.findViewById(R.id.sales_order_swipe_layout);
-//                mQuantitySwipe = (TextView) mSwipeLayout.findViewById(R.id.sales_order_swipe_textview);
-//                mSwipeLayout.addDrag(SwipeLayout.DragEdge.Left, mSwipeLayout.findViewById(R.id.sales_order_swipe_delete_layout));
-//            }
-//        }
-//    }
+    public OrderItemListController getOrderItemListController() {
+        return (OrderItemListController) getController();
+    }
 }

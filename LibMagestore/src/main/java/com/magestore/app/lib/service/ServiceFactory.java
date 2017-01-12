@@ -5,6 +5,7 @@ import com.magestore.app.lib.service.catalog.ProductService;
 import com.magestore.app.lib.service.checkout.CartService;
 import com.magestore.app.lib.service.config.ConfigService;
 import com.magestore.app.lib.service.customer.CustomerService;
+import com.magestore.app.lib.service.sales.OrderService;
 import com.magestore.app.lib.service.user.UserService;
 import com.magestore.app.pos.service.POSServiceFactory;
 
@@ -21,6 +22,7 @@ public abstract class ServiceFactory {
     public abstract UserService generateUserService();
     public abstract ProductService generateProductService();
     public abstract CartService generateCartService();
+    public abstract OrderService generateOrderService();
     public abstract CustomerService generateCustomerService();
     public abstract ConfigService generateConfigService();
 

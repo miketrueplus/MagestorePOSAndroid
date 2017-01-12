@@ -22,6 +22,11 @@ public class PosOrder extends PosAbstractModel implements Order {
 
     private List<PosItems> items;
 
+    float sub_total = 0;
+    float tax_total = 0;
+    float discount_total = 0;
+    float last_total = 0;
+
     @Override
     public Order newInstance() {
         return new PosOrder();
@@ -31,6 +36,26 @@ public class PosOrder extends PosAbstractModel implements Order {
     public List<Items> getOrderItems() {
         return (List<Items>)(List<?>) items;
 
+    }
+
+    @Override
+    public float getSubTotal() {
+        return sub_total;
+    }
+
+    @Override
+    public float getDiscountTotal() {
+        return discount_total;
+    }
+
+    @Override
+    public float getLastTotal() {
+        return last_total;
+    }
+
+    @Override
+    public float getTaxTotal() {
+        return tax_total;
     }
 
     @Override

@@ -94,12 +94,7 @@ public class ProductListPanel extends AbstractListPanel<Product> {
         setLayoutItem(R.layout.card_product_list_content);
 
         // Chuẩn bị list danh sách khách hàng
-        mRecycleView = (RecyclerView) findViewById(R.id.product_list);
-        mRecycleView.setLayoutManager(new GridLayoutManager(this.getContext(), 1));
-
-        // Chuẩn bị list danh sách khách hàng
-//        mProductListRecyclerView = (RecyclerView) findViewById(R.id.product_list);
-//        mProductListRecyclerView.setLayoutManager(new GridLayoutManager(this.getContext(), 1));
+        initRecycleView(R.id.product_list, new GridLayoutManager(this.getContext(), 1));
 
         mSearchProductTxt = (AutoCompleteTextView) findViewById(R.id.text_search_product);
         int layoutItemId = android.R.layout.simple_dropdown_item_1line;

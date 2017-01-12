@@ -7,10 +7,10 @@ import com.magestore.app.lib.controller.RootController;
 import com.magestore.app.lib.model.config.Config;
 
 /**
+ * Chứa ngữ cảnh, tùy thuộc theo context mà factory sẽ xử lý tương ứng
  * Created by Mike on 12/21/2016.
  * Magestore
  * mike@trueplus.vn
- * TODO: Add a class header comment!
  */
 
 public class MagestoreContext {

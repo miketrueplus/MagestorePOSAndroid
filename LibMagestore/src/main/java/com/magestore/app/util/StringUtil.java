@@ -6,10 +6,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 /**
+ * Tiện ích xử lý chuỗi
  * Created by Mike on 12/13/2016.
  * Magestore
  * mike@trueplus.vn
- * TODO: Add a class header comment!
  */
 
 public class StringUtil {

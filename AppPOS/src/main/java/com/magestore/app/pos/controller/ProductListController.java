@@ -54,12 +54,22 @@ public class ProductListController extends AbstractListController<Product> {
     }
 
 
+    /**
+     * Load danh mục sản phẩm
+     * @param params
+     * @return
+     * @throws Exception
+     */
     @Override
     protected List<Product> loadDataBackground(Void... params) throws Exception {
         List<Product> listProduct = mProductService.retrieveProductList(30);
         return listProduct;
     }
 
+    /**
+     * Bind 1 sản phẩm vào controller để xử lý
+     * @param item
+     */
     @Override
     public void bindItem(Product item) {
         super.bindItem(item);

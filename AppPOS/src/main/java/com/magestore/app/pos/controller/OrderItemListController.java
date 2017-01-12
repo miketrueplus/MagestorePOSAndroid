@@ -6,6 +6,7 @@ import com.magestore.app.lib.model.checkout.cart.Items;
 import com.magestore.app.lib.service.catalog.ProductService;
 import com.magestore.app.lib.service.checkout.CartService;
 import com.magestore.app.lib.service.sales.OrderService;
+import com.magestore.app.pos.panel.OrderItemListPanel;
 
 import java.util.List;
 
@@ -34,16 +35,87 @@ public class OrderItemListController extends AbstractListController<Items> {
         return null;
     }
 
+    /**
+     * Bind 1 sản
+     * @param product
+     */
     public void bindItem(Product product) {
-//        super.bindItem(item);
-//        if (mOrderItemListController != null) mOrderItemListController.bindItem(item);
-
         if (mCartService == null) return;
+
+        // Bổ sung thêm product vào cart
         mCartService.addOrderItem(product, 1, product.getPrice());
         mView.notifyDatasetChanged();
-//        mOrderItemListAdapter.notifyDataSetChanged();
+
 //
-//        // cập nhật tổng lên cuối order
-//        updateTotalPrice();
+        // cập nhật tổng lên cuối order
+        updateTotalPrice();
+    }
+
+    /**
+     * Tạo một phiên bán hàng mới
+     */
+    public void newSales() {
+        mCartService.newSales();
+        super.bindList(mCartService.getOrder().getOrderItems());
+    }
+
+    /**
+     * Cập nhật lại phần tính giá tiền, discount và tax
+     */
+    public void updateTotalPrice() {
+        mCartService.calculateLastTotalOrderItems();
+        ((OrderItemListPanel) mView).updateTotalPrice(mCartService.getOrder());
+    }
+
+    /**
+     * Xóa 1 sản phẩm khỏi đơn hàng
+     * @param product
+     */
+    public void deleteProduct(Product product) {
+        mCartService.delOrderItem(product);
+        mView.notifyDatasetChanged();
+        updateTotalPrice();
+    }
+
+    /**
+     * Thêm 1 sản phẩm vào đơn hàng
+     * @param product
+     * @param quantity
+     * @param price
+     */
+    public void addProduct(Product product, int quantity, float price) {
+        mCartService.addOrderItem(product, quantity, price);
+//        mView.notifyDatasetChanged();
+        updateTotalPrice();
+    }
+
+    /**
+     * Thêm 1 sản phẩm vào đơn hàng
+     * @param product
+     * @param quantity
+     */
+    public void addProduct(Product product, int quantity) {
+        addProduct(product, quantity, product.getPrice());
+    }
+
+    /**
+     * Thêm 1 sản phẩm vào đơn hàng
+     * @param product
+     * @param quantity
+     * @param price
+     */
+    public void substructProduct(Product product, int quantity, float price) {
+        mCartService.subtructOrderItem(product, quantity);
+//        mView.notifyDatasetChanged();
+        updateTotalPrice();
+    }
+
+    /**
+     * Thêm 1 sản phẩm vào đơn hàng
+     * @param product
+     * @param quantity
+     */
+    public void substructProduct(Product product, int quantity) {
+        substructProduct(product, quantity, product.getPrice());
     }
 }

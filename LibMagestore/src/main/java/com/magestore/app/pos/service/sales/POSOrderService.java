@@ -3,6 +3,7 @@ package com.magestore.app.pos.service.sales;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.model.checkout.cart.Items;
 import com.magestore.app.lib.model.catalog.Product;
+import com.magestore.app.lib.service.sales.OrderService;
 import com.magestore.app.pos.model.sales.PosOrder;
 import com.magestore.app.pos.model.checkout.cart.PosItems;
 import com.magestore.app.lib.service.checkout.CartService;
@@ -18,7 +19,7 @@ import java.util.List;
  * mike@trueplus.vn
  */
 
-public class POSOrderService extends AbstractService implements CartService {
+public class POSOrderService extends AbstractService implements OrderService {
     private Order mOrder;
     private List<Order> mOnHoldOrders;
 
@@ -81,6 +82,7 @@ public class POSOrderService extends AbstractService implements CartService {
     @Override
     public void newSales(Order order) {
         holdOrder();
+        order.newOrderItems();
         setOrder(order);
     }
 
@@ -89,7 +91,7 @@ public class POSOrderService extends AbstractService implements CartService {
      * @return
      */
     @Override
-    public float calculateSubTotalOrderItems() {
+    public synchronized float calculateSubTotalOrderItems() {
         // Khởi tạo danh sách order items
         List<Items> listItems =  mOrder.getOrderItems();
         if (listItems == null) return 0;
@@ -99,6 +101,7 @@ public class POSOrderService extends AbstractService implements CartService {
             item.setPrice(item.getQuantity() * item.getProduct().getPrice());
             total += item.getPrice();
         }
+        mOrder.setValue("sub_total", total);
         return total;
     }
 
@@ -107,8 +110,11 @@ public class POSOrderService extends AbstractService implements CartService {
      * @return
      */
     @Override
-    public float calculateTaxOrderItems() {
-        return calculateSubTotalOrderItems() * (float) 0.1;
+    public synchronized float calculateTaxOrderItems() {
+        float sub_total = calculateSubTotalOrderItems();
+        float tax_total = sub_total * (float) 0.1;
+        mOrder.setValue("tax_total", tax_total);
+        return tax_total;
     }
 
     /**
@@ -116,7 +122,8 @@ public class POSOrderService extends AbstractService implements CartService {
      * @return
      */
     @Override
-    public float calculateDiscountTotalOrderItems() {
+    public synchronized float calculateDiscountTotalOrderItems() {
+        mOrder.setValue("discount_total", (float) 0);
         return 0;
     }
 
@@ -125,8 +132,10 @@ public class POSOrderService extends AbstractService implements CartService {
      * @return
      */
     @Override
-    public float calculateLastTotalOrderItems() {
-        return calculateSubTotalOrderItems() + calculateTaxOrderItems() - calculateDiscountTotalOrderItems() ;
+    public synchronized float calculateLastTotalOrderItems() {
+        float last_total = calculateSubTotalOrderItems() + calculateTaxOrderItems() - calculateDiscountTotalOrderItems() ;
+        mOrder.setValue("last_total", last_total);
+        return last_total;
     }
 
 

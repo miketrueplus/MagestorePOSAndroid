@@ -5,8 +5,10 @@ import com.magestore.app.lib.service.customer.CustomerService;
 import com.magestore.app.lib.service.checkout.CartService;
 import com.magestore.app.lib.service.catalog.ProductService;
 import com.magestore.app.lib.service.ServiceFactory;
+import com.magestore.app.lib.service.sales.OrderService;
 import com.magestore.app.lib.service.user.UserService;
 import com.magestore.app.pos.service.catalog.POSProductService;
+import com.magestore.app.pos.service.checkout.POSCartService;
 import com.magestore.app.pos.service.config.POSConfigService;
 import com.magestore.app.pos.service.customer.POSCustomerService;
 import com.magestore.app.pos.service.sales.POSOrderService;
@@ -36,7 +38,14 @@ public class POSServiceFactory extends ServiceFactory {
 
     @Override
     public CartService generateCartService() {
-        CartService useCase = new POSOrderService();
+        CartService useCase = new POSCartService();
+        useCase.setContext(getContext());
+        return useCase;
+    }
+
+    @Override
+    public OrderService generateOrderService() {
+        OrderService useCase = new POSOrderService();
         useCase.setContext(getContext());
         return useCase;
     }

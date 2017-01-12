@@ -13,4 +13,8 @@ public interface Order extends Model {
     Order newInstance();
     List<Items> newOrderItems();
     List<Items> getOrderItems();
+    float getSubTotal();
+    float getDiscountTotal();
+    float getLastTotal();
+    float getTaxTotal();
 }

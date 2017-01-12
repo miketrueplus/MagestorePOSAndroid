@@ -76,7 +76,6 @@ public class CustomerListPanel extends AbstractListPanel<Customer> {
         setLayoutItem(R.layout.card_customer_list_content);
 
         // Chuẩn bị list danh sách khách hàng
-        mRecycleView = (RecyclerView) findViewById(R.id.customer_list);
-        mRecycleView.setLayoutManager(new GridLayoutManager(this.getContext(), 1));
+        initRecycleView(R.id.customer_list, new GridLayoutManager(this.getContext(), 1));
     }
 }

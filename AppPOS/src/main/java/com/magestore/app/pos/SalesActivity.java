@@ -17,19 +17,16 @@ import android.widget.AutoCompleteTextView;
 
 import com.magestore.app.lib.context.MagestoreContext;
 import com.magestore.app.lib.model.catalog.Product;
-import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.service.ServiceFactory;
 import com.magestore.app.lib.service.catalog.ProductService;
 import com.magestore.app.lib.service.checkout.CartService;
-import com.magestore.app.lib.service.sales.OrderService;
 import com.magestore.app.pos.controller.OrderItemListController;
 import com.magestore.app.pos.controller.ProductListController;
 import com.magestore.app.pos.panel.OrderItemListPanel;
-import com.magestore.app.pos.panel.OrderItemPanelListener;
 import com.magestore.app.pos.panel.ProductListPanel;
-import com.magestore.app.pos.panel.ProductListPanelListener;
 import com.magestore.app.pos.ui.AbstractActivity;
 import com.magestore.app.pos.ui.SalesUI;
+import com.magestore.app.view.ui.PosUI;
 
 import java.util.List;
 
@@ -39,17 +36,9 @@ import java.util.List;
  */
 public class SalesActivity extends AbstractActivity
         implements
-        ProductListPanelListener,
-        OrderItemPanelListener,
-        SalesUI {
+        PosUI {
     // 2 pane
     private boolean mTwoPane;
-
-    // Recycle view nắm list
-//    private RecyclerView mOrderListRecycleView;
-//    private List<Product> mListProduct;
-
-    private AutoCompleteTextView mSearchProductView;
 
     // Panel chứa danh sách mặt hàng và đơn hàng
     private ProductListPanel mProductListPanel;
@@ -139,28 +128,32 @@ public class SalesActivity extends AbstractActivity
 
     @Override
     protected void initValue() {
-        mProductListController.doLoadData();;
+        // Load danh sách sản phẩm, không tự động chọn sản phẩm đầu tiên
+        mProductListController.doLoadData(false);
+
+        // TODO: Tạm thời new activity thì tạo checkout mới luôn
+        mOrderItemListController.newSales();
     }
 
-    @Override
-    public List<Product> getProductList() {
-        return mProductListPanel.getProductList();
-    }
+//    @Override
+//    public List<Product> getProductList() {
+//        return mProductListPanel.getProductList();
+//    }
+//
+//    @Override
+//    public void setProductList(List<Product> listProduct) {
+//        mProductListPanel.setProductList(listProduct);
+//    }
 
-    @Override
-    public void setProductList(List<Product> listProduct) {
-        mProductListPanel.setProductList(listProduct);
-    }
-
-    @Override
-    public void onSuccessLoadProduct(List<Product> productList) {
-
-    }
-
-    @Override
-    public void onSelectProduct(Product product) {
-        mOrderItemListPanel.addOrderItem(product);
-    }
+//    @Override
+//    public void onSuccessLoadProduct(List<Product> productList) {
+//
+//    }
+//
+//    @Override
+//    public void onSelectProduct(Product product) {
+//        mOrderItemListPanel.addOrderItem(product);
+//    }
 
     @Override
     public void onBackPressed() {

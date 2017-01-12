@@ -2,6 +2,7 @@ package com.magestore.app.lib.panel;
 
 import android.content.Context;
 
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -37,7 +38,7 @@ public abstract class AbstractListPanel<TModel extends Model>
     // Các control nắm view
     protected RecyclerView mRecycleView;
     protected int mLayoutItem;
-    protected int mLayoutRecycleView;
+//    protected int mLayoutRecycleView;
 
     /**
      * Khởi tạo
@@ -82,14 +83,21 @@ public abstract class AbstractListPanel<TModel extends Model>
     public void initValue() {
     }
 
+    protected void initRecycleView(int resID, GridLayoutManager layoutManager) {
+        // View chưa danh sách các mặt hàng trong đơn
+        mRecycleView = (RecyclerView) findViewById(resID);
+        if (mRecycleView != null)
+            mRecycleView.setLayoutManager(layoutManager);
+    }
+
     /**
      * Đặt recycle view layout quản lý danh sách
      *
      * @param layout
      */
-    public void setmLayoutRecycleView(int layout) {
-        mLayoutRecycleView = layout;
-    }
+//    public void setLayoutRecycleView(int layout) {
+//        mLayoutRecycleView = layout;
+//    }
 
     /**
      * Đặt item layout quản lý item trong danh sách
@@ -152,7 +160,7 @@ public abstract class AbstractListPanel<TModel extends Model>
      */
     public class ListRecyclerViewAdapter
             extends RecyclerView.Adapter<AbstractListPanel<TModel>.ListRecyclerViewAdapter.ListViewHolder> {
-        private int mLayoutRecycleView;
+//        private int mLayoutRecycleView;
 
         // đánh dấu vị trí đã chọn
         private int selectedPos = 0;
@@ -249,6 +257,8 @@ public abstract class AbstractListPanel<TModel extends Model>
     }
 
     public void notifyDatasetChanged() {
-        mRecycleView.getAdapter().notifyDataSetChanged();
+        RecyclerView.Adapter adapter = mRecycleView.getAdapter();
+        if (adapter != null)
+            adapter.notifyDataSetChanged();
     }
 }

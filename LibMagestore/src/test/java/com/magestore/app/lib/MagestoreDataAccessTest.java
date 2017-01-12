@@ -1,5 +1,6 @@
 package com.magestore.app.lib;
 
+import com.magestore.app.lib.context.MagestoreContext;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.resourcemodel.customer.CustomerDataAccess;
@@ -39,7 +40,7 @@ public class MagestoreDataAccessTest {
     @Test
     public void test_customer_gateway_isCorrect() throws Exception {
         // Khởi tạo product gateway factory
-        DataAccessFactory factory = DataAccessFactory.getFactory(null);
+        DataAccessFactory factory = DataAccessFactory.getFactory(new MagestoreContext());
         CustomerDataAccess customerResourceModel = factory.generateCustomerDataAccess();
         UserDataAccess user = factory.generateUserDataAccess();
 
@@ -48,6 +49,8 @@ public class MagestoreDataAccessTest {
         POSUserService.session = new POSDataAccessSession();
         POSUserService.session.REST_SESSION_ID = strSession.trim().replace("\"", "");
         List<Customer> list = customerResourceModel.getCustomers(20, 1);
+        assert(list != null);
+        assert(list.size() == 20);
         return;
     }
 

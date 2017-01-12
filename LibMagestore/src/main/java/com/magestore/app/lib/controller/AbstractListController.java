@@ -19,6 +19,9 @@ public abstract class AbstractListController<TModel extends Model>
         extends AbstractController<TModel, AbstractListPanel<TModel>>
         implements ListController<TModel> {
 
+    // tự động chọn item đầu tiên trong danh sách
+    boolean mblnAutoChooseFirstItem = true;
+
     // view chi tiết
     protected AbstractDetailPanel<TModel> mDetailView;
 
@@ -34,9 +37,17 @@ public abstract class AbstractListController<TModel extends Model>
     public void bindList(List<TModel> list) {
         mList = list;
         mView.bindList(mList);
-        if (mList != null && mDetailView != null && mList.size() > 0)
-            bindItem(mList.get(0));
     }
+
+    /**
+     * Thực hiện tải dữ liệu, xác định xem có tự động chọn item đầu tiên không
+     * @param blnAutoChooseFirstItem
+     */
+    public void doLoadData(boolean blnAutoChooseFirstItem) {
+        mblnAutoChooseFirstItem = blnAutoChooseFirstItem;
+        doLoadData();
+    }
+//    public void doLoadData()
 
     /**
      * Thực hiện load dữ liệu lúc đầu mở view
@@ -106,7 +117,12 @@ public abstract class AbstractListController<TModel extends Model>
      * @param list
      */
     protected void onPostExecuteLoadData(List<TModel> list) {
+        // Map danh sách nhận được với view
         bindList(list);
+
+        // Chọn item đầu tiên
+        if (mblnAutoChooseFirstItem && mList != null && mDetailView != null && mList.size() > 0)
+            bindItem(mList.get(0));
     }
 
     /**
