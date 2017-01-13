@@ -149,15 +149,15 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
     @Override
     public void bindItem(Customer item) {
         super.bindItem(item);
-        mAdapter2View.setModel(mItem);
-        // gán các text box
-        try {
-            mAdapter2View.toView();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
+//        mAdapter2View.setModel(mItem);
+//        // gán các text box
+//        try {
+//            mAdapter2View.toView();
+//        } catch (InvocationTargetException e) {
+//            e.printStackTrace();
+//        } catch (IllegalAccessException e) {
+//            e.printStackTrace();
+//        }
 
         mCustomerAddressListController.doSelectCustomer(item);
     }
