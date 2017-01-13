@@ -12,15 +12,15 @@ import android.widget.EditText;
  * mike@trueplus.vn
  */
 
-public class MagestoreTextEdit extends EditText {
+public class FormatTextEdit extends EditText {
     // Quản lý mapp từ attr trong layout sang các thuộc tính của view
-    MagestoreViewAttr attr = null;
+    FormatViewAttr attr = null;
 
     /**
      * Khởi tạo
      * @param context
      */
-    public MagestoreTextEdit(Context context) {
+    public FormatTextEdit(Context context) {
         super(context);
     }
 
@@ -29,9 +29,9 @@ public class MagestoreTextEdit extends EditText {
      * @param context
      * @param attrs
      */
-    public MagestoreTextEdit(Context context, AttributeSet attrs) {
+    public FormatTextEdit(Context context, AttributeSet attrs) {
         super(context, attrs);
-        attr = new MagestoreViewAttr(context, attrs);
+        attr = new FormatViewAttr(context, attrs);
     }
 
     /**
@@ -40,9 +40,9 @@ public class MagestoreTextEdit extends EditText {
      * @param attrs
      * @param defStyle
      */
-    public MagestoreTextEdit(Context context, AttributeSet attrs, int defStyle) {
+    public FormatTextEdit(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        attr = new MagestoreViewAttr(context, attrs);
+        attr = new FormatViewAttr(context, attrs);
     }
 
 

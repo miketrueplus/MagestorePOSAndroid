@@ -1,11 +1,8 @@
 package com.magestore.app.view;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.widget.TextView;
-
-import com.magestore.app.lib.R;
 
 /**
  * TextView với các xử lý đặc thù riêng
@@ -14,22 +11,22 @@ import com.magestore.app.lib.R;
  * mike@trueplus.vn
  */
 
-public class MagestoreTextView extends TextView {
+public class FormatTextView extends TextView {
     // Quản lý mapp từ attr trong layout sang các thuộc tính của view
-    MagestoreViewAttr attr = null;
+    FormatViewAttr attr = null;
 
-    public MagestoreTextView(Context context) {
+    public FormatTextView(Context context) {
         super(context);
     }
 
-    public MagestoreTextView(Context context, AttributeSet attrs) {
+    public FormatTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        attr = new MagestoreViewAttr(context, attrs);
+        attr = new FormatViewAttr(context, attrs);
     }
 
-    public MagestoreTextView(Context context, AttributeSet attrs, int defStyle) {
+    public FormatTextView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        attr = new MagestoreViewAttr(context, attrs);
+        attr = new FormatViewAttr(context, attrs);
     }
 
     /**

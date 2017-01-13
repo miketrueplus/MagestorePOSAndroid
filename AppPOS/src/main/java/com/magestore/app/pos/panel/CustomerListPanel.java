@@ -48,7 +48,7 @@ public class CustomerListPanel extends AbstractListPanel<Customer> {
     }
 
     @Override
-    protected void bindItem(View view, Customer item) {
+    protected void bindItem(View view, Customer item, int position) {
         ((TextView) view.findViewById(R.id.customer_name)).setText(item.getName());
         ((TextView) view.findViewById(R.id.customer_email)).setText(item.getEmail());
         ((TextView) view.findViewById(R.id.customer_telephone)).setText(item.getTelephone());

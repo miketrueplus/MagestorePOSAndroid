@@ -1,12 +1,16 @@
 package com.magestore.app.pos.panel;
 
+import android.app.Activity;
 import android.content.Context;
+import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.util.AttributeSet;
 import android.view.View;
 
 import com.magestore.app.lib.adapterview.adapter2pos.AdapterView2Model;
 import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
+import com.magestore.app.pos.databinding.PanelCustomerAddressDetailBinding;
 import com.magestore.app.pos.model.customer.PosCustomerAddress;
 import com.magestore.app.pos.R;
 
@@ -19,65 +23,56 @@ import java.lang.reflect.InvocationTargetException;
  * mike@trueplus.vn
  */
 public class CustomerAddressDetailPanel extends AbstractDetailPanel<CustomerAddress> {
-    AdapterView2Model adapterView2Model;
+//    AdapterView2Model adapterView2Model;
+    PanelCustomerAddressDetailBinding mBinding;
 
     public CustomerAddressDetailPanel(Context context) {
         super(context);
-        init();
+//        init();
     }
 
     public CustomerAddressDetailPanel(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
+//        init();
     }
 
     public CustomerAddressDetailPanel(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init();
+//        init();
     }
 
-    private void init() {
-        initControlLayout();
-        initControlValue();
-    }
 
     /**
      * Chuẩn bị layout
      */
-    protected void initControlLayout() {
+    public void initLayout() {
         // Load layout view thông tin khách hàng chi tiết
         View v = inflate(getContext(), R.layout.panel_customer_address_detail, null);
         addView(v);
-    }
 
-    protected void initControlValue() {
-        adapterView2Model = new AdapterView2Model();
-        adapterView2Model.setView(this);
-        adapterView2Model.setModelClass(PosCustomerAddress.class);
+        // Bind view sang object
+        mBinding = DataBindingUtil.bind(v);
     }
 
     @Override
     public void bindItem(CustomerAddress item) {
+        // Bind từ object sang view
         if (item == null) return;
-        adapterView2Model.setModel(item);
-        try {
-            adapterView2Model.toView();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
+        super.bindItem(item);
+        mBinding.setCustomerAddress(item);
     }
 
     @Override
     public CustomerAddress bind2Item() {
-        try {
-            adapterView2Model.fromView();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
+        CustomerAddress a = mBinding.getCustomerAddress();
+        a.setFirstName(mBinding.firstname.getText().toString());
+//        try {
+//            adapterView2Model.fromView();
+//        } catch (InvocationTargetException e) {
+//            e.printStackTrace();
+//        } catch (IllegalAccessException e) {
+//            e.printStackTrace();
+//        }
         return mItem;
     }
 }

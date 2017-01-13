@@ -10,9 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-
-import com.magestore.app.lib.controller.AbstractListController;
-import com.magestore.app.lib.controller.Controller;
 import com.magestore.app.lib.controller.ListController;
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.view.MagestoreView;
@@ -151,7 +148,7 @@ public abstract class AbstractListPanel<TModel extends Model>
      * @param view
      * @param item
      */
-    protected abstract void bindItem(View view, TModel item);
+    protected abstract void bindItem(View view, TModel item, int position);
 
 
 
@@ -195,7 +192,7 @@ public abstract class AbstractListPanel<TModel extends Model>
         @Override
         public void onBindViewHolder(final AbstractListPanel<TModel>.ListRecyclerViewAdapter.ListViewHolder holder, final int position) {
             final TModel item = mList.get(position);
-            holder.setItem(item);
+            holder.setItem(item, position);
 
             // highlight vị trí đã chọn
             holder.itemView.setSelected(selectedPos == position);
@@ -238,9 +235,9 @@ public abstract class AbstractListPanel<TModel extends Model>
                 mView = view;
             }
 
-            public void setItem(TModel item) {
+            public void setItem(TModel item, int position) {
                 mItem = item;
-                bindItem(mView, item);
+                bindItem(mView, item, position);
             }
         }
     }

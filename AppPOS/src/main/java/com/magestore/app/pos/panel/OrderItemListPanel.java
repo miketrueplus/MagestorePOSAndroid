@@ -1,31 +1,22 @@
 package com.magestore.app.pos.panel;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.daimajia.swipe.SwipeLayout;
-import com.magestore.app.lib.adapterview.adapter2pos.AdapterView2Model;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.model.checkout.cart.Items;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.panel.AbstractListPanel;
-import com.magestore.app.lib.service.checkout.CartService;
-import com.magestore.app.lib.service.ServiceFactory;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.OrderItemListController;
 import com.magestore.app.util.ConfigUtil;
-import com.magestore.app.view.MagestoreTextView;
+import com.magestore.app.view.FormatTextView;
 
 /**
  * Created by Mike on 12/30/2016.
@@ -46,9 +37,9 @@ public class OrderItemListPanel extends AbstractListPanel<Items> {
 
     // các text view hiện thị tổng giá
 //    AdapterView2Model mAdapter2View = new AdapterView2Model();
-    private MagestoreTextView mSubTotalView;
-    private MagestoreTextView mTaxTotalView;
-    private MagestoreTextView mDiscountTotalView;
+    private FormatTextView mSubTotalView;
+    private FormatTextView mTaxTotalView;
+    private FormatTextView mDiscountTotalView;
 
     // button checkout
     private Button mCheckoutButton;
@@ -84,16 +75,16 @@ public class OrderItemListPanel extends AbstractListPanel<Items> {
         initRecycleView(R.id.sales_order_container, new GridLayoutManager(getContext(), 1));
 
         // Tham chiếu các text view tổng và button
-        mSubTotalView = (MagestoreTextView) findViewById(R.id.text_sales_order_subtotal);
-        mTaxTotalView = (MagestoreTextView) findViewById(R.id.text_sales_order_tax);
-        mDiscountTotalView = (MagestoreTextView) findViewById(R.id.text_sales_order_discount);
+        mSubTotalView = (FormatTextView) findViewById(R.id.text_sales_order_subtotal);
+        mTaxTotalView = (FormatTextView) findViewById(R.id.text_sales_order_tax);
+        mDiscountTotalView = (FormatTextView) findViewById(R.id.text_sales_order_discount);
 
         // Button
         mCheckoutButton = (Button) findViewById(R.id.btn_sales_order_checkout);
     }
 
     @Override
-    protected void bindItem(View view, final Items item) {
+    protected void bindItem(View view, final Items item, int position) {
 //        mImageView = (ImageView) view.findViewById(R.id.sales_order_image);
         final Product product = item.getProduct();
 
@@ -102,7 +93,7 @@ public class OrderItemListPanel extends AbstractListPanel<Items> {
         ((TextView) view.findViewById(R.id.sales_order_sku)).setText(product.getSKU());
 
         // Điền giá và số lượng
-        final MagestoreTextView txtPrice = ((MagestoreTextView) view.findViewById(R.id.sales_order_price));
+        final FormatTextView txtPrice = ((FormatTextView) view.findViewById(R.id.sales_order_price));
         final TextView txtQuantity = ((TextView) view.findViewById(R.id.sales_order_quantity));
         txtPrice.setRawText(product.getPrice() * item.getQuantity());
         txtQuantity.setText("" + item.getQuantity());

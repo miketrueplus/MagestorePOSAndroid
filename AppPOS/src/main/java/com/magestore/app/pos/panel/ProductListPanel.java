@@ -1,6 +1,8 @@
 package com.magestore.app.pos.panel;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -22,6 +24,7 @@ import com.magestore.app.lib.task.Task;
 import com.magestore.app.lib.task.TaskListener;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.pos.R;
+import com.magestore.app.pos.databinding.CardProductListContentBinding;
 import com.magestore.app.pos.task.LoadProductTask;
 import com.magestore.app.pos.task.LoadProductImageTask;
 import com.magestore.app.util.ConfigUtil;
@@ -36,9 +39,6 @@ import java.util.List;
  * mike@trueplus.vn
  */
 public class ProductListPanel extends AbstractListPanel<Product> {
-    // View quản lý danh sách khách hàng
-//    RecyclerView mProductListRecyclerView;
-
     // Textbox search product
     AutoCompleteTextView mSearchProductTxt;
 
@@ -46,11 +46,6 @@ public class ProductListPanel extends AbstractListPanel<Product> {
 //    LoadProductTask mLoadProductTask;
 //    LoadProductImageTask mLoadImageTask;
 
-    // Data Danh sách khách hàng
-//    List<Product> mListProduct;
-
-    // Bắt các sự kiện
-//    ProductListPanelListener mProductListPanelListener;
 
     public ProductListPanel(Context context) {
         super(context);
@@ -118,37 +113,10 @@ public class ProductListPanel extends AbstractListPanel<Product> {
     }
 
     @Override
-    protected void bindItem(View view, Product item) {
-//               (ImageView) view.findViewById(R.id.product_image);
-        ((TextView) view.findViewById(R.id.name)).setText(item.getName());
-        ((TextView) view.findViewById(R.id.sku)).setText(item.getSKU());
-        ((TextView) view.findViewById(R.id.price)).setText(ConfigUtil.formatPrice(item.getPrice()));
-        ((TextView) view.findViewById(R.id.avaiable)).setText(R.string.avaibles);
-//                mView = view.findViewById(R.id.sales_product_list_card_view);
-
-//            // Đặt các trường text vào danh sách
-//            holder.mNameView.setText(product.getName());
-//            holder.mPriceView.setText(ConfigUtil.formatPrice(product.getPrice()));
-//            holder.mSKUView.setText(product.getSKU());
-//            holder.mAvaibleView.setText(R.string.avaibles);
+    protected void bindItem(View view, Product item, int position) {
+        final CardProductListContentBinding binding = DataBindingUtil.bind(view);
+        binding.setProduct(item);
     }
-
-    /**
-     * Chuẩn bị layout
-     */
-//    protected void initTask() {
-//        super.initTask();
-//        mLoadProductTask = new LoadProductTask(new ProductListPanel.LoadProductListener());
-//    }
-
-    /**
-     * Hiển thị tiến trình
-     *
-     * @param show
-     */
-//    public void showProgress(boolean show) {
-
-//    }
 
     /**
      * Trả lại danh sách khách hàng

@@ -69,7 +69,7 @@
                     android:orientation="vertical">
 
 
-                    <com.magestore.app.view.MagestoreTextView
+                    <com.magestore.app.view.FormatTextView
                         android:id="@+id/firstname"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -80,7 +80,7 @@
                         magestore_view:prefix_char=":"/>
 
 
-                    <com.magestore.app.view.MagestoreTextView
+                    <com.magestore.app.view.FormatTextView
                         android:id="@+id/lastname"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -100,7 +100,7 @@
                     android:orientation="vertical">
 
 
-                    <com.magestore.app.view.MagestoreTextView
+                    <com.magestore.app.view.FormatTextView
                         android:id="@+id/email"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -110,7 +110,7 @@
                         magestore_view:prefix_char=":"
                         android:textSize="18sp" />
 
-                    <com.magestore.app.view.MagestoreTextView
+                    <com.magestore.app.view.FormatTextView
                         android:id="@+id/group_id"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

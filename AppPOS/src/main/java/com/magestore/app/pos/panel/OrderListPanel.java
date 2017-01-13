@@ -68,7 +68,7 @@ public class OrderListPanel extends AbstractListPanel<Order> {
     }
 
     @Override
-    protected void bindItem(View view, Order item) {
+    protected void bindItem(View view, Order item, int position) {
 
     }
 

@@ -15,7 +15,7 @@ import com.magestore.app.util.ConfigUtil;
  * mike@trueplus.vn
  */
 
-public class MagestoreViewAttr {
+public class FormatViewAttr {
     public static final int TYPE_TEXT = 0;
     public static final int TYPE_CURRENCY = 1;
     public static final int TYPE_QUANTITY = 2;
@@ -32,7 +32,7 @@ public class MagestoreViewAttr {
      * @param context
      * @param attrs
      */
-    public MagestoreViewAttr(Context context, AttributeSet attrs) {
+    public FormatViewAttr(Context context, AttributeSet attrs) {
         processAttributeSet(context, attrs);
     }
 

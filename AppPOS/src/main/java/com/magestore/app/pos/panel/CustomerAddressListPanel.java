@@ -56,7 +56,7 @@ public class CustomerAddressListPanel extends AbstractListPanel<CustomerAddress>
     }
 
     @Override
-    protected void bindItem(View view, final CustomerAddress item) {
+    protected void bindItem(View view, final CustomerAddress item, int position) {
         // Đặt các trường text vào danh sách
         ((TextView) view.findViewById(R.id.txt_adrress_name)).setText(item.getName());
         ((TextView) view.findViewById(R.id.txt_adrress_full)).setText(item.getFullAddress());
