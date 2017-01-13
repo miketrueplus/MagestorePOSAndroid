@@ -1,8 +1,12 @@
 package com.magestore.app.pos.controller;
 
+import android.os.AsyncTask;
+import android.os.Build;
+
 import com.magestore.app.lib.controller.AbstractListController;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.service.catalog.ProductService;
+import com.magestore.app.pos.task.LoadProductImageTask;
 
 import java.util.List;
 
@@ -17,8 +21,29 @@ public class ProductListController extends AbstractListController<Product> {
     // Service xử lý các vấn đề liên quan đến product
     ProductService mProductService;
 
+    @Override
+    protected void onPostExecuteLoadData(List<Product> list) {
+        super.onPostExecuteLoadData(list);
+        doLoadProductsImage();
+    }
+
     // Tham chiếu đến CartItemListController
     CartItemListController mCartItemListController;
+
+    public void doLoadProductsImage() {
+        LoadProductImageTask task = new LoadProductImageTask(mProductService, null, mList);
+        //    public void loadProductImage() {
+//        mLoadImageTask = new LoadProductImageTask(new ProductListPanel.LoadProductImageListener(), mListProduct);
+        if (task != null)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) // Above Api Level 13
+            {
+                task.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+            } else // Below Api Level 13
+            {
+                task.execute();
+            }
+//    }
+    }
 
     /**
      * Đặt product service

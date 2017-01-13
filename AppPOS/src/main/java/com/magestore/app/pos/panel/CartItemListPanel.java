@@ -2,11 +2,13 @@ package com.magestore.app.pos.panel;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.graphics.Bitmap;
 import android.support.v7.widget.GridLayoutManager;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.daimajia.swipe.SwipeLayout;
 import com.magestore.app.lib.model.sales.Order;
@@ -70,12 +72,14 @@ public class CartItemListPanel extends AbstractListPanel<Items> {
 
     @Override
     protected void bindItem(View view, final Items item, int position) {
-
-        final CardCartListContentBinding binding = DataBindingUtil.bind(view);
         // map dữ liệu của item vào
+        final CardCartListContentBinding binding = DataBindingUtil.bind(view);
         binding.setCartItem(item);
-//        mImageView = (ImageView) view.findViewById(R.id.sales_order_image);
-        final Product product = item.getProduct();
+
+        // Hiển thị ảnh
+        ImageView imageView = (ImageView) view.findViewById(R.id.sales_order_image);
+        Bitmap bmp = item.getProduct().getBitmap();
+        if (bmp != null && !bmp.isRecycled() && imageView != null) imageView.setImageBitmap(bmp);
 
         // Cho phép swipe drag
         final SwipeLayout swipeLayout = (SwipeLayout) view.findViewById(R.id.sales_order_swipe_layout);

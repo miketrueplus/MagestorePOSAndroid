@@ -45,4 +45,5 @@ public class CustomerListController extends AbstractListController<Customer> {
         List<Customer> listCustomer = mCustomerService.retrieveCustomerList(30);
         return listCustomer;
     }
+
 }

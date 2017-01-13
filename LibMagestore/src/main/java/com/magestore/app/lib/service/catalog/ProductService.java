@@ -45,5 +45,5 @@ public interface ProductService extends Service {
      * @param product
      * @return
      */
-    public Bitmap retrieveBitmap(Product product);
+    public Bitmap retrieveBitmap(Product product, int sizeWidth, int sizeHeight);
 }

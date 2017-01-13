@@ -22,6 +22,7 @@ import com.magestore.app.lib.panel.AbstractListPanel;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.databinding.CardProductListContentBinding;
+import com.magestore.app.pos.task.LoadProductImageTask;
 
 
 import java.util.Arrays;
@@ -111,6 +112,14 @@ public class ProductListPanel extends AbstractListPanel<Product> {
     protected void bindItem(View view, Product item, int position) {
         final CardProductListContentBinding binding = DataBindingUtil.bind(view);
         binding.setProduct(item);
+
+        // Hiện ảnh vào product nếu đã load được ảnh
+        ImageView imageView = (ImageView) view.findViewById(R.id.product_image);
+        Bitmap bmp = item.getBitmap();
+        if (bmp != null && !bmp.isRecycled() && imageView != null) imageView.setImageBitmap(bmp);
+
+        // Đặt tham chiếu imageview sang product
+        item.setRefer(LoadProductImageTask.KEY_IMAGEVIEW, imageView);
     }
 
     /**

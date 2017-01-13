@@ -68,14 +68,14 @@ public class POSProductService extends AbstractService implements ProductService
      * @return
      */
     @Override
-    public Bitmap retrieveBitmap(Product product) {
+    public Bitmap retrieveBitmap(Product product, int sizeWidth, int sizeHeight) {
         Bitmap bmp = null;
         bmp = (Bitmap) product.getBitmap();
         if (bmp != null && !bmp.isRecycled()) return bmp;
         if (product.getImage() == null) return null;
 
         // ảnh chưa được load vào product, load ảnh về
-        bmp = ImageUtil.getBitmap(product, product.getImage(), 200, 200);
+        bmp = ImageUtil.getBitmap(product, product.getImage(), sizeWidth, sizeWidth);
 
         // Đặt biến bitmap cho ảnh
         product.setBitmap(bmp);

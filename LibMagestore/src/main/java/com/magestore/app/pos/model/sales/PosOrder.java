@@ -104,9 +104,9 @@ public class PosOrder extends PosAbstractModel implements Order {
     String updated_at;
     String weight;
     String total_count;
-    PosOrderBillingAddress billing_address;
+//    PosOrderBillingAddress billing_address;
     PosOrderPayment payment;
-    PosOrderAttributes extension_attributes;
+//    PosOrderAttributes extension_attributes;
 
     @Override
     public Order newInstance() {
@@ -141,12 +141,14 @@ public class PosOrder extends PosAbstractModel implements Order {
 
     @Override
     public PosOrderAttributes getExtensionAttributes() {
-        return extension_attributes;
+        return null;
+//        return extension_attributes;
     }
 
     @Override
     public PosOrderBillingAddress getBillingAddress() {
-        return billing_address;
+        return null;
+//        return billing_address;
     }
 
     @Override

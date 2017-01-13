@@ -3,6 +3,7 @@ package com.magestore.app.pos.task;
 import android.graphics.Bitmap;
 import android.widget.ImageView;
 
+import com.magestore.app.lib.service.catalog.ProductService;
 import com.magestore.app.lib.task.TaskListener;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.util.ImageUtil;
@@ -13,16 +14,16 @@ import java.util.List;
  * Created by Mike on 12/24/2016.
  * Magestore
  * mike@trueplus.vn
- * TODO: Add a class header comment!
  */
 public class LoadProductImageTask extends AsyncTaskAbstractTask<Void, Product, Void> {
     private final List<Product> mListProduct;
-    public static final String KEY_BITMAP = "LoadProductImageBitmap";
+    private final ProductService mProductService;
     public static final String KEY_IMAGEVIEW = "LoadProductImageImageview";
 
-    public LoadProductImageTask(TaskListener listener, List<Product> listProduct) {
+    public LoadProductImageTask(ProductService productService, TaskListener listener, List<Product> listProduct) {
         super(listener);
         mListProduct = listProduct;
+        mProductService = productService;
     }
 
     @Override
@@ -32,17 +33,8 @@ public class LoadProductImageTask extends AsyncTaskAbstractTask<Void, Product, V
         // Duyệt danh mục product
         for (Product product: mListProduct) {
             // Kiểm tra xem đã load bitmap trước đó của product chưa
-            Bitmap bmp = null;
-            bmp = product.getBitmap();
-            if (bmp != null && !bmp.isRecycled()) continue;
-            if (product.getImage() == null) continue;
-
-            // ảnh chưa được load vào product, load ảnh về
-            bmp = ImageUtil.getBitmap(product, product.getImage(), 200, 200);
+            Bitmap bmp = mProductService.retrieveBitmap(product, 200, 200);
             if (bmp == null) continue;
-
-            // đặt tham chiếu ảnh với bitmap
-            product.setBitmap(bmp);
 
             // Báo hiệu đã load ảnh xong
             publishProgress(product);
@@ -63,7 +55,7 @@ public class LoadProductImageTask extends AsyncTaskAbstractTask<Void, Product, V
         // Với mỗi sản phẩm
         for (Product product: values) {
             // Truy vấn vào bitmap
-            Bitmap bmp = (Bitmap) product.getRefer(KEY_BITMAP);
+            Bitmap bmp = product.getBitmap();
 
             // Lấy ImageView của sản phẩm
             ImageView imgView = (ImageView) product.getRefer(KEY_IMAGEVIEW);
