@@ -1,7 +1,6 @@
 package com.magestore.app.pos.api.m2.customer;
 
 
-import android.util.Log;
 
 import com.magestore.app.lib.connection.ConnectionException;
 import com.magestore.app.lib.model.customer.Customer;
@@ -45,7 +44,6 @@ public class POSCustomerDataAccess extends POSAbstractDataAccess implements Cust
                 POSAPI.PARAM_SESSION_ID, POSDataAccessSession.REST_SESSION_ID
         );
         List<Customer> list = (List<Customer>) (List<?>) (listCustomer.items);
-        Log.e("Customer list", list.size() + "");
         return list;
     }
 }
