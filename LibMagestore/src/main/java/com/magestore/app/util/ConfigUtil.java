@@ -20,6 +20,7 @@ public class ConfigUtil {
 
     /**
      * Trả lại format price
+     *
      * @param number
      * @return
      */
@@ -29,6 +30,7 @@ public class ConfigUtil {
 
     /**
      * Trả lại format price
+     *
      * @param quantity
      * @return
      */
@@ -38,6 +40,7 @@ public class ConfigUtil {
 
     /**
      * Trả lại format price
+     *
      * @param quantity
      * @return
      */
@@ -47,6 +50,7 @@ public class ConfigUtil {
 
     /**
      * Trả lại format số lượng
+     *
      * @param quantity
      * @return
      */
@@ -56,6 +60,7 @@ public class ConfigUtil {
 
     /**
      * Trả lại format số lượng
+     *
      * @param quantity
      * @return
      */
@@ -65,6 +70,7 @@ public class ConfigUtil {
 
     /**
      * Trả lại format số lượng
+     *
      * @param quantity
      * @return
      */
@@ -74,6 +80,7 @@ public class ConfigUtil {
 
     /**
      * Trả lại format số lượng
+     *
      * @param quantity
      * @return
      */
@@ -83,6 +90,7 @@ public class ConfigUtil {
 
     /**
      * Format tiền
+     *
      * @param number
      * @return
      */
@@ -101,6 +109,7 @@ public class ConfigUtil {
 
     /**
      * Format con số
+     *
      * @param nummber
      * @return
      */
@@ -118,6 +127,7 @@ public class ConfigUtil {
 
     /**
      * Format con số
+     *
      * @param number
      * @return
      */
@@ -131,5 +141,14 @@ public class ConfigUtil {
             mIntegerFormat = new DecimalFormat(pattern, symbols);
         }
         return mIntegerFormat.format(number);
+    }
+
+    /**
+     * Format date
+     * @param date
+     * @return
+     */
+    public static String formatDate(String date) {
+        return date;
     }
 }

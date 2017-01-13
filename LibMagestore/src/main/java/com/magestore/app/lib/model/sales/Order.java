@@ -23,4 +23,9 @@ public interface Order extends Model {
     PosOrderAttributes getExtensionAttributes();
     PosOrderBillingAddress getBillingAddress();
     PosOrderPayment getPayment();
+    String getIncrementId();
+    String getCustomerFirstname();
+    String getCustomerLastname();
+    float getGrandTotal();
+    String getCreatedAt();
 }

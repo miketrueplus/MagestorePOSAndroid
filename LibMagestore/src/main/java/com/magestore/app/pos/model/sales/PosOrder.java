@@ -70,7 +70,7 @@ public class PosOrder extends PosAbstractModel implements Order {
     float discount_invoiced;
     String email_sent;
     String global_currency_code;
-    float grand_total;
+    float grand_total = 0;
     float discount_tax_compensation_amount;
     float discount_tax_compensation_invoiced;
     float discount_tax_compensation_refunded;
@@ -152,6 +152,31 @@ public class PosOrder extends PosAbstractModel implements Order {
     @Override
     public PosOrderPayment getPayment() {
         return payment;
+    }
+
+    @Override
+    public String getIncrementId() {
+        return increment_id;
+    }
+
+    @Override
+    public String getCustomerFirstname() {
+        return customer_firstname;
+    }
+
+    @Override
+    public String getCustomerLastname() {
+        return customer_lastname;
+    }
+
+    @Override
+    public float getGrandTotal() {
+        return grand_total;
+    }
+
+    @Override
+    public String getCreatedAt() {
+        return created_at;
     }
 
     @Override

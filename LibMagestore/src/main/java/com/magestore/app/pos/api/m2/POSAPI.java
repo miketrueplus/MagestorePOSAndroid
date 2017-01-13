@@ -29,7 +29,7 @@ public class POSAPI {
 
     // API order
     public static final String REST_ORDER_GET_DETAIL = "/rest/default/V1/webpos/orders/${orderID}?session=${sessionID}";
-    protected static final String REST_ORDER_GET_LISTING = "/rest/default/V1/webpos/orders?searchCriteria[current_page]=${currentPage}&searchCriteria[page_size]=${pageSize}&session=${sessionID}";
+    public static final String REST_ORDER_GET_LISTING = "/rest/default/V1/webpos/orders?searchCriteria[current_page]=${currentPage}&searchCriteria[page_size]=${pageSize}&session=${sessionID}";
     public static final String REST_ORDER_CANCEL = "/rest/default/V1/webpos/orders/${orderID}/cancel?session=${sessionID}";
     public static final String REST_ORDER_EMAIL = "/rest/default/V1/webpos/orders/${orderID}/email?session=${sessionID}";
     public static final String REST_ORDER_COMMENTS = "/rest/default/V1/webpos/orders/${orderID}/comments?session=${sessionID}";

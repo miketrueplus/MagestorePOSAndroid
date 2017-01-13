@@ -1,5 +1,7 @@
 package com.magestore.app.pos.api.m2.sales;
 
+import android.util.Log;
+
 import com.magestore.app.lib.connection.ConnectionException;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.parse.ParseException;
@@ -34,12 +36,13 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
     @Override
     public List<Order> getOrders(int pageSize, int currentPage) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
         Gson2PosListOrder listOrder = (Gson2PosListOrder) doAPI(Gson2PosListOrder.class,
-                POSAPI.REST_ORDER_GET_DETAIL,
+                POSAPI.REST_ORDER_GET_LISTING,
                 null,
                 POSAPI.PARAM_CURRENT_PAGE, "" + currentPage,
                 POSAPI.PARAM_PAGE_SIZE, "" + pageSize,
                 POSAPI.PARAM_SESSION_ID, POSDataAccessSession.REST_SESSION_ID);
         List<Order> list  = (List<Order>)(List<?>)(listOrder.items);
+        Log.e("Order list size", list.size() + "");
         return list;
     }
 }

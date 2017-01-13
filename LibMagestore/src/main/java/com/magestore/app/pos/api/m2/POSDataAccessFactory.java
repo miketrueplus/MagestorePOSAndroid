@@ -9,6 +9,7 @@ import com.magestore.app.lib.resourcemodel.catalog.ProductDataAccess;
 import com.magestore.app.pos.api.m2.catalog.POSProductDataAccess;
 import com.magestore.app.pos.api.m2.config.POSConfigDataAccess;
 import com.magestore.app.pos.api.m2.customer.POSCustomerDataAccess;
+import com.magestore.app.pos.api.m2.sales.POSOrderDataAccess;
 import com.magestore.app.pos.api.m2.user.POSUserDataAccess;
 
 /**
@@ -32,7 +33,7 @@ public class POSDataAccessFactory extends DataAccessFactory {
 
     @Override
     public OrderDataAccess generateOrderDataAccess() {
-        return null;
+        return new POSOrderDataAccess();
     }
 
     @Override

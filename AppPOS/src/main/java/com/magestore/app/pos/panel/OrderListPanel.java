@@ -1,14 +1,17 @@
 package com.magestore.app.pos.panel;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.GridLayoutManager;
 import android.util.AttributeSet;
 import android.view.View;
 
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.panel.AbstractListPanel;
 import com.magestore.app.pos.R;
+import com.magestore.app.pos.databinding.CardOrderHistoryListContentBinding;
 
 import java.util.List;
 
@@ -65,12 +68,30 @@ public class OrderListPanel extends AbstractListPanel<Order> {
                         .setAction("Action", null).show();
             }
         });
+
+        // Chuẩn bị layout từng order trong danh sách khách hàng
+        setLayoutItem(R.layout.card_order_history_list_content);
+
+        // Chuẩn bị list danh sách đơn hàng
+        initRecycleView(R.id.order_list, new GridLayoutManager(this.getContext(), 1));
     }
 
     @Override
     protected void bindItem(View view, Order item, int position) {
+        CardOrderHistoryListContentBinding biding = DataBindingUtil.bind(view);
+        biding.setOrder(item);
+    }
+
+    /**
+     * Chuẩn bị layout giá trị
+     */
+    @Override
+    public void initValue() {
 
     }
 
+    @Override
+    public void initModel() {
 
+    }
 }

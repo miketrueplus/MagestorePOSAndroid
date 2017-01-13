@@ -5,6 +5,8 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.magestore.app.lib.model.sales.Order;
+import com.magestore.app.lib.panel.AbstractDetailPanel;
 import com.magestore.app.pos.R;
 
 /**
@@ -14,7 +16,8 @@ import com.magestore.app.pos.R;
  * TODO: Add a class header comment!
  */
 
-public class OrderDetailPanel extends FrameLayout {
+public class OrderDetailPanel extends AbstractDetailPanel<Order> {
+
     public OrderDetailPanel(Context context) {
         super(context);
         init();
