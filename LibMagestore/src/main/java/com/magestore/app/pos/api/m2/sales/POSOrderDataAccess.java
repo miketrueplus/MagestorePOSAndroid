@@ -1,10 +1,10 @@
-package com.magestore.app.pos.api.m2.order;
+package com.magestore.app.pos.api.m2.sales;
 
 import com.magestore.app.lib.connection.ConnectionException;
-import com.magestore.app.lib.model.order.Order;
+import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.parse.ParseException;
 import com.magestore.app.lib.resourcemodel.DataAccessException;
-import com.magestore.app.lib.resourcemodel.order.OrderDataAccess;
+import com.magestore.app.lib.resourcemodel.sales.OrderDataAccess;
 import com.magestore.app.pos.api.m2.POSAPI;
 import com.magestore.app.pos.api.m2.POSAbstractDataAccess;
 import com.magestore.app.pos.api.m2.POSDataAccessSession;

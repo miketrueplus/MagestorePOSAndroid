@@ -1,6 +1,6 @@
-package com.magestore.app.pos.model.order;
+package com.magestore.app.pos.model.sales;
 
-import com.magestore.app.lib.model.order.OrderPayment;
+import com.magestore.app.lib.model.sales.OrderPayment;
 import com.magestore.app.pos.model.PosAbstractModel;
 
 import java.util.List;

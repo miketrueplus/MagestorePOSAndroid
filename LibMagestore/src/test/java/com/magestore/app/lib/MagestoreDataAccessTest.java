@@ -1,11 +1,15 @@
 package com.magestore.app.lib;
 
+import android.util.Log;
+
 import com.magestore.app.lib.context.MagestoreContext;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.catalog.Product;
+import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.resourcemodel.customer.CustomerDataAccess;
 import com.magestore.app.lib.resourcemodel.DataAccessFactory;
 import com.magestore.app.lib.resourcemodel.catalog.ProductDataAccess;
+import com.magestore.app.lib.resourcemodel.sales.OrderDataAccess;
 import com.magestore.app.lib.resourcemodel.user.UserDataAccess;
 import com.magestore.app.pos.api.m2.POSDataAccessSession;
 import com.magestore.app.pos.service.user.POSUserService;
@@ -54,5 +58,20 @@ public class MagestoreDataAccessTest {
         return;
     }
 
+    @Test
+    public void test_order_gateway_isCorrect() throws Exception {
+        // Khởi tạo order gateway factory
+        DataAccessFactory factory = DataAccessFactory.getFactory(new MagestoreContext());
+        OrderDataAccess orderResourceModel = factory.generateOrderDataAccess();
+        UserDataAccess user = factory.generateUserDataAccess();
 
+        // Lấy list 30 order đầu tiên
+        String strSession = user.login("http://demo-magento2.magestore.com/webpos", "demo", "demo123");
+        POSUserService.session = new POSDataAccessSession();
+        POSUserService.session.REST_SESSION_ID = strSession.trim().replace("\"", "");
+        List<Order> list = orderResourceModel.getOrders(20, 1);
+        assert(list != null);
+        assert(list.size() == 20);
+        return;
+    }
 }

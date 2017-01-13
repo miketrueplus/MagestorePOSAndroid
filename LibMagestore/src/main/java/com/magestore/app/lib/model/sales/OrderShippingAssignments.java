@@ -1,7 +1,9 @@
-package com.magestore.app.lib.model.order;
+package com.magestore.app.lib.model.sales;
 
 import com.magestore.app.lib.model.Model;
-import com.magestore.app.pos.model.order.PosOrderShipping;
+import com.magestore.app.pos.model.sales.PosOrderShipping;
+
+import java.util.List;
 
 /**
  * Created by Johan on 1/12/17.
@@ -10,5 +12,5 @@ import com.magestore.app.pos.model.order.PosOrderShipping;
  */
 
 public interface OrderShippingAssignments extends Model {
-    PosOrderShipping getShipping();
+    List<PosOrderShipping> getShipping();
 }

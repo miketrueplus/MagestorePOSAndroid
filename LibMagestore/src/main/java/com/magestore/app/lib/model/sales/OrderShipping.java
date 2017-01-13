@@ -1,7 +1,7 @@
-package com.magestore.app.lib.model.order;
+package com.magestore.app.lib.model.sales;
 
 import com.magestore.app.lib.model.Model;
-import com.magestore.app.pos.model.order.PosOrderShippingAddress;
+import com.magestore.app.pos.model.sales.PosOrderShippingAddress;
 
 /**
  * Created by Johan on 1/12/17.

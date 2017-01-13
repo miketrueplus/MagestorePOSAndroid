@@ -1,18 +1,19 @@
-package com.magestore.app.pos.model.order;
+package com.magestore.app.pos.model.sales;
 
-import com.magestore.app.lib.model.order.OrderShippingAddress;
+import com.magestore.app.lib.model.sales.OrderBillingAddress;
 import com.magestore.app.pos.model.customer.PosCustomerAddress;
 import com.magestore.app.pos.model.directory.PosRegion;
 
 import java.util.List;
 
 /**
+ * Quản lý order billing address
  * Created by Johan on 1/12/17.
  * Magestore
  * dong.le@trueplus.vn
  */
 
-public class PosOrderShippingAddress extends PosCustomerAddress implements OrderShippingAddress {
+public class PosOrderBillingAddress extends PosCustomerAddress implements OrderBillingAddress {
     String address_type;
     String city;
     String country_id;

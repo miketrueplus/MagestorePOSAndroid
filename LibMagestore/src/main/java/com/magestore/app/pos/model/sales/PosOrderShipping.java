@@ -1,6 +1,6 @@
-package com.magestore.app.pos.model.order;
+package com.magestore.app.pos.model.sales;
 
-import com.magestore.app.lib.model.order.OrderShipping;
+import com.magestore.app.lib.model.sales.OrderShipping;
 import com.magestore.app.pos.model.PosAbstractModel;
 
 /**
