@@ -18,16 +18,11 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.panel.AbstractListPanel;
-import com.magestore.app.lib.task.Task;
-import com.magestore.app.lib.task.TaskListener;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.databinding.CardProductListContentBinding;
-import com.magestore.app.pos.task.LoadProductTask;
-import com.magestore.app.pos.task.LoadProductImageTask;
-import com.magestore.app.util.ConfigUtil;
+
 
 import java.util.Arrays;
 import java.util.List;
@@ -139,15 +134,7 @@ public class ProductListPanel extends AbstractListPanel<Product> {
     /**
      * Load danh sách sản phẩm
      */
-//    public void loadProductList() {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) // Above Api Level 13
-//        {
-//            mLoadProductTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-//        } else // Below Api Level 13
-//        {
-//            mLoadProductTask.execute();
-//        }
-//    }
+
 //
 //    /**
 //     * Load ảnh các sản phẩm

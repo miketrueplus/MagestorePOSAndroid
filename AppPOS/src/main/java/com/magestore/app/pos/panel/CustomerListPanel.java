@@ -1,6 +1,7 @@
 package com.magestore.app.pos.panel;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.GridLayoutManager;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.panel.AbstractListPanel;
 import com.magestore.app.pos.R;
+import com.magestore.app.pos.databinding.CardCustomerListContentBinding;
 
 /**
  * Panel giao diện quản lý danh sách khách hàng
@@ -49,9 +51,8 @@ public class CustomerListPanel extends AbstractListPanel<Customer> {
 
     @Override
     protected void bindItem(View view, Customer item, int position) {
-        ((TextView) view.findViewById(R.id.customer_name)).setText(item.getName());
-        ((TextView) view.findViewById(R.id.customer_email)).setText(item.getEmail());
-        ((TextView) view.findViewById(R.id.customer_telephone)).setText(item.getTelephone());
+        CardCustomerListContentBinding binding = DataBindingUtil.bind(view);
+        binding.setCustomer(item);
     }
 
     @Override

@@ -1,44 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/sales_customer_list_card_view"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:layout_margin="5dp"
-    card_view:cardCornerRadius="4dp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <import type="com.magestore.app.util.ConfigUtil" />
+        <variable
+            name="customer"
+            type="com.magestore.app.lib.model.customer.Customer" />
+    </data>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/sales_customer_list_card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/list_item_selector"
-        android:orientation="vertical">
+        android:layout_gravity="center"
+        android:layout_margin="5dp"
+        card_view:cardCornerRadius="4dp">
 
-        <TextView
-            android:id="@+id/customer_name"
-            android:layout_width="wrap_content"
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:maxLines="2"
-            android:textStyle="bold"
-            android:textAppearance="?attr/textAppearanceListItem" />
+            android:background="@drawable/list_item_selector"
 
-        <TextView
-            android:id="@+id/customer_email"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:textStyle="italic"
-            android:textAppearance="?attr/textAppearanceListItem" />
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/customer_telephone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:textStyle="italic"
-            android:textAppearance="?attr/textAppearanceListItem" />
-    </LinearLayout>
-</android.support.v7.widget.CardView>
+            <TextView
+                android:id="@+id/customer_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:maxLines="2"
+                android:text="@{customer.getName()}"
+                android:textAppearance="?attr/textAppearanceListItem"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/customer_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text="@{customer.getEmail()}"
+                android:textAppearance="?attr/textAppearanceListItem"
+                android:textStyle="italic" />
+
+            <TextView
+                android:id="@+id/customer_telephone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text="@{customer.getTelephone()}"
+                android:textAppearance="?attr/textAppearanceListItem"
+                android:textStyle="italic" />
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+</layout>
