@@ -3,10 +3,8 @@ package com.magestore.app.pos.controller;
 import com.magestore.app.lib.controller.AbstractListController;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.model.checkout.cart.Items;
-import com.magestore.app.lib.service.catalog.ProductService;
 import com.magestore.app.lib.service.checkout.CartService;
-import com.magestore.app.lib.service.sales.OrderService;
-import com.magestore.app.pos.panel.OrderItemListPanel;
+import com.magestore.app.pos.panel.CartItemListPanel;
 
 import java.util.List;
 
@@ -16,7 +14,7 @@ import java.util.List;
  * mike@trueplus.vn
  */
 
-public class OrderItemListController extends AbstractListController<Items> {
+public class CartItemListController extends AbstractListController<Items> {
     /**
      * Service xử lý các vấn đề liên quan đến customer
      */
@@ -64,7 +62,7 @@ public class OrderItemListController extends AbstractListController<Items> {
      */
     public void updateTotalPrice() {
         mCartService.calculateLastTotalOrderItems();
-        ((OrderItemListPanel) mView).updateTotalPrice(mCartService.getOrder());
+        ((CartItemListPanel) mView).updateTotalPrice(mCartService.getOrder());
     }
 
     /**

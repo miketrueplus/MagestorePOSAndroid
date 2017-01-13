@@ -2,6 +2,7 @@ package com.magestore.app.pos.panel;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.databinding.DataBindingUtil;
 import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
 import android.view.View;
@@ -13,6 +14,8 @@ import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
 import com.magestore.app.pos.controller.CustomerAddressListController;
 import com.magestore.app.pos.controller.CustomerListController;
+import com.magestore.app.pos.databinding.PanelCustomerAddressDetailBinding;
+import com.magestore.app.pos.databinding.PanelCustomerDetailBinding;
 import com.magestore.app.pos.model.customer.PosCustomer;
 import com.magestore.app.pos.R;
 
@@ -34,8 +37,10 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
     ImageButton mbtnCheckOut;
     ImageButton mbtnNewAddress;
 
+    PanelCustomerDetailBinding mBinding;
+
     // Map từ entity sang view
-    AdapterView2Model mAdapter2View;
+//    AdapterView2Model mAdapter2View;
 
     public CustomerDetailPanel(Context context) throws InstantiationException, IllegalAccessException {
         super(context);
@@ -55,6 +60,7 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
         // Load layout view thông tin khách hàng chi tiết
         View v = inflate(getContext(), R.layout.panel_customer_detail, null);
         addView(v);
+        mBinding = DataBindingUtil.bind(v);
 
         // chuẩn bị panel view danh sách địa chỉ khách hàng
         mCustomerAddressListPanel = (CustomerAddressListPanel) findViewById(R.id.customer_address);
@@ -98,11 +104,6 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
 
         if (controller instanceof CustomerListController)
             mCustomerAddressListController.setCustomerService(((CustomerListController) controller).getCustomerService());
-
-        // Khởi tạo customer use case
-        mAdapter2View = new AdapterView2Model();
-        mAdapter2View.setModelClass(PosCustomer.class);
-        mAdapter2View.setView(this);
     }
 
     /**
@@ -149,16 +150,7 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
     @Override
     public void bindItem(Customer item) {
         super.bindItem(item);
-//        mAdapter2View.setModel(mItem);
-//        // gán các text box
-//        try {
-//            mAdapter2View.toView();
-//        } catch (InvocationTargetException e) {
-//            e.printStackTrace();
-//        } catch (IllegalAccessException e) {
-//            e.printStackTrace();
-//        }
-
+        mBinding.setCustomerDetail(item);
         mCustomerAddressListController.doSelectCustomer(item);
     }
 }

@@ -1,12 +1,12 @@
 package com.magestore.app.pos.panel;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
 import android.support.v7.widget.GridLayoutManager;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.TextView;
 
 import com.daimajia.swipe.SwipeLayout;
 import com.magestore.app.lib.model.sales.Order;
@@ -14,32 +14,21 @@ import com.magestore.app.lib.model.checkout.cart.Items;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.panel.AbstractListPanel;
 import com.magestore.app.pos.R;
-import com.magestore.app.pos.controller.OrderItemListController;
-import com.magestore.app.util.ConfigUtil;
+import com.magestore.app.pos.controller.CartItemListController;
+import com.magestore.app.pos.databinding.CardCartListContentBinding;
+import com.magestore.app.pos.databinding.PanelCartListBinding;
 import com.magestore.app.view.FormatTextView;
 
 /**
+ * Quản lý hiển thị danh sách các hàng chọn trong cart
  * Created by Mike on 12/30/2016.
  * Magestore
  * mike@trueplus.vn
- * TODO: Add a class header comment!
  */
 
-public class OrderItemListPanel extends AbstractListPanel<Items> {
-    // Chứa danh sách order item
-//    private RecyclerView mOrderItemRecycleView;
-
-    // Xử lý các nghiệp vụ của order
-//    private CartService mOrderUseCase;
-
-    // Listner xử lý các sự kiện
-//    private OrderItemPanelListener mOrderItemPanelListener;
-
-    // các text view hiện thị tổng giá
-//    AdapterView2Model mAdapter2View = new AdapterView2Model();
-    private FormatTextView mSubTotalView;
-    private FormatTextView mTaxTotalView;
-    private FormatTextView mDiscountTotalView;
+public class CartItemListPanel extends AbstractListPanel<Items> {
+    // Binding dữ liệu
+    PanelCartListBinding mBinding;
 
     // button checkout
     private Button mCheckoutButton;
@@ -48,15 +37,15 @@ public class OrderItemListPanel extends AbstractListPanel<Items> {
 //    OrderItemListPanel.OrderItemListRecyclerViewAdapter mOrderItemListAdapter;
 
 
-    public OrderItemListPanel(Context context) throws InstantiationException, IllegalAccessException {
+    public CartItemListPanel(Context context) throws InstantiationException, IllegalAccessException {
         super(context);
     }
 
-    public OrderItemListPanel(Context context, AttributeSet attrs) throws InstantiationException, IllegalAccessException {
+    public CartItemListPanel(Context context, AttributeSet attrs) throws InstantiationException, IllegalAccessException {
         super(context, attrs);
     }
 
-    public OrderItemListPanel(Context context, AttributeSet attrs, int defStyleAttr) throws InstantiationException, IllegalAccessException {
+    public CartItemListPanel(Context context, AttributeSet attrs, int defStyleAttr) throws InstantiationException, IllegalAccessException {
         super(context, attrs, defStyleAttr);
     }
 
@@ -65,19 +54,15 @@ public class OrderItemListPanel extends AbstractListPanel<Items> {
      */
     public void initLayout() {
         // Load layout view các mặt hàng trong 1 đơn hàng
-        View v = inflate(getContext(), R.layout.panel_order_item, null);
+        View v = inflate(getContext(), R.layout.panel_cart_list, null);
         addView(v);
+        mBinding = DataBindingUtil.bind(v);
 
         // Chuẩn bị layout từng item trong danh sách khách hàng
-        setLayoutItem(R.layout.card_sales_order_list_content);
+        setLayoutItem(R.layout.card_cart_list_content);
 
         // View chưa danh sách các mặt hàng trong đơn
         initRecycleView(R.id.sales_order_container, new GridLayoutManager(getContext(), 1));
-
-        // Tham chiếu các text view tổng và button
-        mSubTotalView = (FormatTextView) findViewById(R.id.text_sales_order_subtotal);
-        mTaxTotalView = (FormatTextView) findViewById(R.id.text_sales_order_tax);
-        mDiscountTotalView = (FormatTextView) findViewById(R.id.text_sales_order_discount);
 
         // Button
         mCheckoutButton = (Button) findViewById(R.id.btn_sales_order_checkout);
@@ -85,25 +70,18 @@ public class OrderItemListPanel extends AbstractListPanel<Items> {
 
     @Override
     protected void bindItem(View view, final Items item, int position) {
+
+        final CardCartListContentBinding binding = DataBindingUtil.bind(view);
+        // map dữ liệu của item vào
+        binding.setCartItem(item);
 //        mImageView = (ImageView) view.findViewById(R.id.sales_order_image);
         final Product product = item.getProduct();
 
-        // Điền tên, và SKU của product
-        ((TextView) view.findViewById(R.id.sales_order_name)).setText(product.getName());
-        ((TextView) view.findViewById(R.id.sales_order_sku)).setText(product.getSKU());
-
-        // Điền giá và số lượng
-        final FormatTextView txtPrice = ((FormatTextView) view.findViewById(R.id.sales_order_price));
-        final TextView txtQuantity = ((TextView) view.findViewById(R.id.sales_order_quantity));
-        txtPrice.setRawText(product.getPrice() * item.getQuantity());
-        txtQuantity.setText("" + item.getQuantity());
-
-        // Điền giá và số lượng cho swipe
+        // Cho phép swipe drag
         final SwipeLayout swipeLayout = (SwipeLayout) view.findViewById(R.id.sales_order_swipe_layout);
-        final TextView quantitySwipe = (TextView) swipeLayout.findViewById(R.id.sales_order_swipe_textview);
-        quantitySwipe.setText(txtQuantity.getText());
         swipeLayout.addDrag(SwipeLayout.DragEdge.Left, swipeLayout.findViewById(R.id.sales_order_swipe_delete_layout));
 
+        // các button trên swipe
         Button mIncButton = (Button) swipeLayout.findViewById(R.id.sales_order_swipe_inc_quantity);
         Button mDesButton = (Button) swipeLayout.findViewById(R.id.sales_order_swipe_des_quantity);
         ImageButton mDelButton = (ImageButton) swipeLayout.findViewById(R.id.sales_order_swipe_del_button);
@@ -112,20 +90,19 @@ public class OrderItemListPanel extends AbstractListPanel<Items> {
         mIncButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 getOrderItemListController().addProduct(item.getProduct(), 1);
-                quantitySwipe.setText("" + item.getQuantity());
+                binding.salesOrderSwipeTextview.setText(Integer.toString(item.getQuantity()));
             }
         });
-//
-//
+
         // Xử lý sự kiện ấn nút giảm trên swipe
         mDesButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (item.getQuantity() <= 1) return;
                 getOrderItemListController().substructProduct(item.getProduct(), 1);
-                quantitySwipe.setText("" + item.getQuantity());
+                binding.salesOrderSwipeTextview.setText(Integer.toString(item.getQuantity()));
             }
         });
-//
+
         // Xử lý sự kiện xóa trên swipe
         mDelButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -150,9 +127,13 @@ public class OrderItemListPanel extends AbstractListPanel<Items> {
 
             }
 
+            /**
+             * Khi close swipe
+             * @param swipeLayout
+             */
             @Override
             public void onClose(SwipeLayout swipeLayout) {
-                OrderItemListPanel.this.notifyDatasetChanged();
+                CartItemListPanel.this.notifyDatasetChanged();
             }
 
             @Override
@@ -171,16 +152,14 @@ public class OrderItemListPanel extends AbstractListPanel<Items> {
      * Cập nhật bảng giá tổng
      */
     public void updateTotalPrice(Order order) {
-        if (mSubTotalView == null || mDiscountTotalView == null) return;
-
-        // cập nhật tổng lên cuối order
-        mSubTotalView.setRawText(order.getSubTotal());
-        mDiscountTotalView.setRawText(order.getDiscountTotal());
-        mTaxTotalView.setRawText(order.getTaxTotal());
-        mCheckoutButton.setText(getContext().getString(R.string.checkout) + ": " + ConfigUtil.formatPrice(order.getLastTotal()));
+        mBinding.setOrder(order);
     }
 
-    public OrderItemListController getOrderItemListController() {
-        return (OrderItemListController) getController();
+    /**
+     * Trả về controller
+     * @return
+     */
+    public CartItemListController getOrderItemListController() {
+        return (CartItemListController) getController();
     }
 }

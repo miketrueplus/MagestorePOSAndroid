@@ -12,23 +12,18 @@ import android.support.design.widget.Snackbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AutoCompleteTextView;
 
 
 import com.magestore.app.lib.context.MagestoreContext;
-import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.service.ServiceFactory;
 import com.magestore.app.lib.service.catalog.ProductService;
 import com.magestore.app.lib.service.checkout.CartService;
-import com.magestore.app.pos.controller.OrderItemListController;
+import com.magestore.app.pos.controller.CartItemListController;
 import com.magestore.app.pos.controller.ProductListController;
-import com.magestore.app.pos.panel.OrderItemListPanel;
+import com.magestore.app.pos.panel.CartItemListPanel;
 import com.magestore.app.pos.panel.ProductListPanel;
 import com.magestore.app.pos.ui.AbstractActivity;
-import com.magestore.app.pos.ui.SalesUI;
 import com.magestore.app.view.ui.PosUI;
-
-import java.util.List;
 
 /**
  * Quản lý các hoạt động salé
@@ -42,11 +37,11 @@ public class SalesActivity extends AbstractActivity
 
     // Panel chứa danh sách mặt hàng và đơn hàng
     private ProductListPanel mProductListPanel;
-    private OrderItemListPanel mOrderItemListPanel;
+    private CartItemListPanel mCartItemListPanel;
 
     // controller cho danh sách mặt hàng và đơn hàng
     private ProductListController mProductListController;
-    private OrderItemListController mOrderItemListController;
+    private CartItemListController mCartItemListController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,8 +82,8 @@ public class SalesActivity extends AbstractActivity
         mProductListPanel.setColumn(mTwoPane ? 4 : 1);
 //        mProductListPanel.setListener(this);
 
-        mOrderItemListPanel = (OrderItemListPanel) findViewById(R.id.order_item_panel);
-        if (mOrderItemListPanel == null) return;
+        mCartItemListPanel = (CartItemListPanel) findViewById(R.id.order_item_panel);
+        if (mCartItemListPanel == null) return;
 //        mOrderItemListPanel.setListener(this);
     }
 
@@ -113,17 +108,17 @@ public class SalesActivity extends AbstractActivity
         }
 
         // controller quản lý đơn hàng
-        mOrderItemListController = new OrderItemListController();
-        mOrderItemListController.setMagestoreContext(magestoreContext);
-        mOrderItemListController.setCartService(cartService);
-        mOrderItemListController.setListPanel(mOrderItemListPanel);
+        mCartItemListController = new CartItemListController();
+        mCartItemListController.setMagestoreContext(magestoreContext);
+        mCartItemListController.setCartService(cartService);
+        mCartItemListController.setListPanel(mCartItemListPanel);
 
         // controller quản lý danh sách khách hàng
         mProductListController = new ProductListController();
         mProductListController.setMagestoreContext(magestoreContext);
         mProductListController.setProdcutService(productService);
         mProductListController.setListPanel(mProductListPanel);
-        mProductListController.setOrderItemListController(mOrderItemListController);
+        mProductListController.setOrderItemListController(mCartItemListController);
     }
 
     @Override
@@ -132,7 +127,7 @@ public class SalesActivity extends AbstractActivity
         mProductListController.doLoadData(false);
 
         // TODO: Tạm thời new activity thì tạo checkout mới luôn
-        mOrderItemListController.newSales();
+        mCartItemListController.newSales();
     }
 
 //    @Override

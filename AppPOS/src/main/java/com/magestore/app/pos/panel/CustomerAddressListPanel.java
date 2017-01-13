@@ -2,6 +2,7 @@ package com.magestore.app.pos.panel;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.databinding.DataBindingUtil;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.panel.AbstractListPanel;
 import com.magestore.app.pos.R;
+import com.magestore.app.pos.databinding.CardCustomerAddressContentBinding;
 import com.magestore.app.util.DialogUtil;
 
 /**
@@ -58,10 +60,8 @@ public class CustomerAddressListPanel extends AbstractListPanel<CustomerAddress>
     @Override
     protected void bindItem(View view, final CustomerAddress item, int position) {
         // Đặt các trường text vào danh sách
-        ((TextView) view.findViewById(R.id.txt_adrress_name)).setText(item.getName());
-        ((TextView) view.findViewById(R.id.txt_adrress_full)).setText(item.getFullAddress());
-        ((TextView) view.findViewById(R.id.txt_adrress_postcode)).setText(item.getPostCode());
-        ((TextView) view.findViewById(R.id.txt_adrress_telephone)).setText(item.getTelephone());
+        CardCustomerAddressContentBinding binding = DataBindingUtil.bind(view);
+        binding.setCustomerAddress(item);
 
         // bắt sự kiện ấn nút edit customerAddress
         ((ImageButton) view.findViewById(R.id.btn_adrress_edit)).setOnClickListener(new View.OnClickListener() {

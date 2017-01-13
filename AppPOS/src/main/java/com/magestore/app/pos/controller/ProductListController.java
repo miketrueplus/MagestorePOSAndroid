@@ -2,9 +2,7 @@ package com.magestore.app.pos.controller;
 
 import com.magestore.app.lib.controller.AbstractListController;
 import com.magestore.app.lib.model.catalog.Product;
-import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.service.catalog.ProductService;
-import com.magestore.app.lib.service.customer.CustomerService;
 
 import java.util.List;
 
@@ -19,8 +17,8 @@ public class ProductListController extends AbstractListController<Product> {
     // Service xử lý các vấn đề liên quan đến product
     ProductService mProductService;
 
-    // Tham chiếu đến OrderItemListController
-    OrderItemListController mOrderItemListController;
+    // Tham chiếu đến CartItemListController
+    CartItemListController mCartItemListController;
 
     /**
      * Đặt product service
@@ -42,15 +40,15 @@ public class ProductListController extends AbstractListController<Product> {
      * Get 1 order item controller
      * @return
      */
-    public OrderItemListController getOrderItemListController() {
-        return mOrderItemListController;
+    public CartItemListController getOrderItemListController() {
+        return mCartItemListController;
     }
 
     /**
      * Đặt 1 order item controller
      */
-    public void setOrderItemListController(OrderItemListController controller) {
-        this.mOrderItemListController = controller;
+    public void setOrderItemListController(CartItemListController controller) {
+        this.mCartItemListController = controller;
     }
 
 
@@ -73,6 +71,6 @@ public class ProductListController extends AbstractListController<Product> {
     @Override
     public void bindItem(Product item) {
         super.bindItem(item);
-        if (mOrderItemListController != null) mOrderItemListController.bindItem(item);
+        if (mCartItemListController != null) mCartItemListController.bindItem(item);
     }
 }
