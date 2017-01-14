@@ -9,4 +9,6 @@ import com.magestore.app.lib.model.Model;
  */
 
 public interface ConfigRegion extends Model {
+    String getCode();
+    String getName();
 }

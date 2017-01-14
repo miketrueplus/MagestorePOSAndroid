@@ -9,4 +9,11 @@ import com.magestore.app.lib.model.Model;
  */
 
 public interface ConfigPriceFormat extends Model {
+    String getPattern();
+    int getPrecision();
+    int getRequirePrecision();
+    char getDecimalSymbol();
+    char getGroupSymbol();
+    int getGroupLength();
+    int getIntegerRequired();
 }

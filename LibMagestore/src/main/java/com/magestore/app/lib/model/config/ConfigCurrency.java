@@ -9,4 +9,9 @@ import com.magestore.app.lib.model.Model;
  */
 
 public interface ConfigCurrency extends Model {
+    String getCode();
+    String getName();
+    String getSymbol();
+    boolean isDefault();
+    float getRate();
 }
