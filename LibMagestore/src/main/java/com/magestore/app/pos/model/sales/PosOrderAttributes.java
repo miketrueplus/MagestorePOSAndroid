@@ -16,6 +16,6 @@ public class PosOrderAttributes extends PosAbstractModel implements OrderAttribu
 
     @Override
     public List<PosOrderShippingAssignments> getShippingAssignments() {
-        return shipping_assignments;
+        return (List<PosOrderShippingAssignments>)(List<?>)shipping_assignments;
     }
 }

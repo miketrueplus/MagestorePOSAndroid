@@ -29,4 +29,13 @@ public interface Order extends Model {
     float getGrandTotal();
     String getCreatedAt();
     String getCustomerEmail();
+    String getStatus();
+    String getWebposStaffName();
+    String getBillingAddressName();
+    String getBillingAddressFullAddress();
+    String getBillingAddressTelephone();
+    String getShippingAddressName();
+    String getShippingFullAddress();
+    String getShippingTelePhone();
+    String getShippingDescription();
 }

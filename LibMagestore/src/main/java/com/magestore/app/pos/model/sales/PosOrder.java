@@ -106,7 +106,7 @@ public class PosOrder extends PosAbstractModel implements Order {
     String total_count;
     PosOrderBillingAddress billing_address;
     PosOrderPayment payment;
-//    PosOrderAttributes extension_attributes;
+    PosOrderAttributes extension_attributes;
 
     @Override
     public Order newInstance() {
@@ -115,7 +115,7 @@ public class PosOrder extends PosAbstractModel implements Order {
 
     @Override
     public List<Items> getOrderItems() {
-        return (List<Items>)(List<?>) items;
+        return (List<Items>) (List<?>) items;
 
     }
 
@@ -141,14 +141,12 @@ public class PosOrder extends PosAbstractModel implements Order {
 
     @Override
     public PosOrderAttributes getExtensionAttributes() {
-        return null;
-//        return extension_attributes;
+        return extension_attributes;
     }
 
     @Override
     public PosOrderBillingAddress getBillingAddress() {
-        return null;
-//        return billing_address;
+        return billing_address;
     }
 
     @Override
@@ -187,8 +185,89 @@ public class PosOrder extends PosAbstractModel implements Order {
     }
 
     @Override
+    public String getStatus() {
+        return status;
+    }
+
+    @Override
+    public String getWebposStaffName() {
+        return webpos_staff_name;
+    }
+
+    @Override
+    public String getBillingAddressName() {
+        if (billing_address != null) {
+            return billing_address.getName();
+        }
+        return "";
+    }
+
+    @Override
+    public String getBillingAddressFullAddress() {
+        if (billing_address != null) {
+            return billing_address.getFullAddress();
+        }
+        return "";
+    }
+
+    @Override
+    public String getBillingAddressTelephone() {
+        if (billing_address != null) {
+            return billing_address.getTelephone();
+        }
+        return "";
+    }
+
+    @Override
+    public String getShippingAddressName() {
+        PosOrderShippingAddress shippingAddress = getShippingAddress();
+        if(shippingAddress != null){
+            return shippingAddress.getName();
+        }
+        return "";
+    }
+
+    @Override
+    public String getShippingFullAddress() {
+        PosOrderShippingAddress shippingAddress = getShippingAddress();
+        if(shippingAddress != null){
+            return shippingAddress.getFullAddress();
+        }
+        return "";
+    }
+
+    @Override
+    public String getShippingTelePhone() {
+        PosOrderShippingAddress shippingAddress = getShippingAddress();
+        if(shippingAddress != null){
+            return shippingAddress.getTelephone();
+        }
+        return "";
+    }
+
+    @Override
+    public String getShippingDescription() {
+        return shipping_description;
+    }
+
+    @Override
     public List<Items> newOrderItems() {
         items = new ArrayList<PosItems>();
-        return (List<Items>)(List<?>) items;
+        return (List<Items>) (List<?>) items;
+    }
+
+    private PosOrderShippingAddress getShippingAddress(){
+        PosOrderShippingAddress shippingAddress = null;
+        if(extension_attributes != null){
+            List<PosOrderShippingAssignments> shipping_assignments = extension_attributes.getShippingAssignments();
+            if(shipping_assignments != null && shipping_assignments.size() > 0){
+                if(shipping_assignments.size() >= 2){
+                    shippingAddress = shipping_assignments.get(shipping_assignments.size() - 1).getShipping().getAddress();
+                }else{
+                    shippingAddress = shipping_assignments.get(0).getShipping().getAddress();
+                }
+            }
+        }
+        return shippingAddress;
     }
 }

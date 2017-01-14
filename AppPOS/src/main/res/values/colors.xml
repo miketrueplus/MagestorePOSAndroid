@@ -4,4 +4,9 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#ff4081</color>
     <color name="colorGrey">#ffededed</color>
+
+
+    <!--Order Detail-->
+    <color name="order_detail_top_background">#ffffff</color>
+    <color name="order_detail_content_card_background">#ffffff</color>
 </resources>

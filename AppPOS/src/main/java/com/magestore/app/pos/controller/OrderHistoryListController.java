@@ -1,7 +1,5 @@
 package com.magestore.app.pos.controller;
 
-import android.util.Log;
-
 import com.magestore.app.lib.controller.AbstractListController;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.service.order.OrderHistoryService;
@@ -41,7 +39,6 @@ public class OrderHistoryListController extends AbstractListController<Order> {
     @Override
     protected List<Order> loadDataBackground(Void... params) throws Exception {
         List<Order> listOrder = mOrderService.retrieveOrderList(30);
-        Log.e("Order list", listOrder.size() + "");
         return listOrder;
     }
 

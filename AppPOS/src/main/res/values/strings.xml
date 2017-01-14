@@ -30,6 +30,14 @@
     <string name="customer_update_address">Update address</string>
     <string name="customer_delete_address">Delete address</string>
 
+    <!-- Strings related to order detail -->
+    <string name="order_detail_top_status">Status:</string>
+    <string name="order_detail_top_create_at">Created Date:</string>
+    <string name="order_detail_top_staff_name">Served by:</string>
+    <string name="order_detail_content_billing_address">BILLING ADDRESS</string>
+    <string name="order_detail_content_shipping_address">SHIPPING ADDRESS</string>
+    <string name="order_detail_content_payment_method">PAYMENT METHOD</string>
+    <string name="order_detail_content_shipping_method">SHIPPING METHOD</string>
 
     <!-- Strings related to single words -->
     <string name="customerAddress">Address</string>
@@ -93,7 +101,6 @@
     <string name="title_confirm_update">Please confirm update</string>
     <string name="title_confirm_remove">Please confirm remove</string>
     <string name="title_confirm_cancel">Please confirm cancel</string>
-
 
 
     <string-array name="dogs_list">

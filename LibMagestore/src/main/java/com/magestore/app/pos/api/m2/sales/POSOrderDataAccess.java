@@ -1,7 +1,5 @@
 package com.magestore.app.pos.api.m2.sales;
 
-import android.util.Log;
-
 import com.magestore.app.lib.connection.ConnectionException;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.parse.ParseException;
@@ -42,7 +40,6 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
                 POSAPI.PARAM_PAGE_SIZE, "" + pageSize,
                 POSAPI.PARAM_SESSION_ID, POSDataAccessSession.REST_SESSION_ID);
         List<Order> list  = (List<Order>)(List<?>)(listOrder.items);
-//        Log.e("Order list size", list.size() + "");
         return list;
     }
 }
