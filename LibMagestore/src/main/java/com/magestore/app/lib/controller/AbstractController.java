@@ -44,7 +44,12 @@ public abstract class AbstractController<TModel extends Model, TView extends Mag
 
     @Override
     public void doShowErrorMsg(Exception exp) {
+        if (mView != null) mView.showErrorMsg(exp);
+    }
 
+    @Override
+    public void doShowErrorMsg(String msg) {
+        if (mView != null) mView.showErrorMsg(msg);
     }
 
     @Override

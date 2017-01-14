@@ -11,6 +11,7 @@ import com.magestore.app.lib.connection.Statement;
 import java.io.IOException;
 import org.apache.commons.lang3.text.StrSubstitutor;
 
+import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.util.HashMap;
@@ -192,7 +193,7 @@ public class MagestoreStatement implements Statement {
             mHttpConnection.setRequestProperty("Accept", "application/json");
             mHttpConnection.setRequestMethod(METHOD_POST);
 
-            // Viết nội dung của object thành dạng json
+            // Viết nội dung của object thành dạng json cho input
             Gson gson = new Gson();
             OutputStreamWriter wr = new OutputStreamWriter(mHttpConnection.getOutputStream());
             gson.toJson(mobjPrepareParam, wr);
@@ -201,7 +202,13 @@ public class MagestoreStatement implements Statement {
         }
 
         // Chạy query, lấy resultset về
-        return new MagestoreResultReading(mHttpConnection.getInputStream());
+        int statusCode = mHttpConnection.getResponseCode();
+        InputStream is = null;
+        if (statusCode == 200)
+            return new MagestoreResultReading(mHttpConnection.getInputStream());
+        else
+            return new MagestoreResultReadingException(mHttpConnection.getErrorStream(), statusCode);
+
     }
 
     /**

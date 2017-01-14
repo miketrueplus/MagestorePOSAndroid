@@ -1,5 +1,6 @@
 package com.magestore.app.lib.panel;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
@@ -97,5 +98,24 @@ public abstract class AbstractDetailPanel<TModel extends Model>
      */
     public ListController<TModel> getController() {
         return mController;
+    }
+
+    /**
+     * Hiển thị thông báo lỗi
+     * @param strMsg
+     */
+    public void showErrorMsg(String strMsg) {
+        new AlertDialog.Builder(getContext())
+                .setMessage(strMsg)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
+
+    @Override
+    public void showErrorMsg(Exception exp) {
+        new AlertDialog.Builder(getContext())
+                .setMessage(exp.getLocalizedMessage())
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 }

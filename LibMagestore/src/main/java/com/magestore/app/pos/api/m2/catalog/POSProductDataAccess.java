@@ -57,7 +57,6 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
 
             // thực thi truy vấn và parse kết quả thành object
             rp = statement.execute();
-//            String str = rp.readResult2String();
             rp.setParseImplement(getClassParseImplement());
             rp.setParseEntity(Gson2PosListProduct.class);
             Gson2PosListProduct listProduct = (Gson2PosListProduct) rp.doParse();
