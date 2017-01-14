@@ -1,8 +1,7 @@
 package com.magestore.app.pos.model.sales;
 
 import com.magestore.app.lib.model.sales.OrderShippingAddress;
-import com.magestore.app.pos.model.customer.PosCustomerAddress;
-import com.magestore.app.pos.model.directory.PosRegion;
+import com.magestore.app.pos.model.PosAbstractModel;
 
 import java.util.List;
 
@@ -13,20 +12,22 @@ import java.util.List;
  * dong.le@trueplus.vn
  */
 
-public class PosOrderShippingAddress extends PosCustomerAddress implements OrderShippingAddress {
+public class PosOrderShippingAddress extends PosAbstractModel implements OrderShippingAddress {
     String address_type;
-//    String city;
-//    String country_id;
-//    String customer_address_id;
+    String city;
+    String country_id;
+    String customer_address_id;
     String email;
     String entity_id;
-//    String firstname;
-//    String lastname;
-//    String parent_id;
-//    String postcode;
-//    List<String> street;
-//    PosRegion region;
-//    String telephone;
+    String firstname;
+    String lastname;
+    String parent_id;
+    String postcode;
+    List<String> street;
+    String region;
+    String region_code;
+    String region_id;
+    String telephone;
 
     @Override
     public String getID() {

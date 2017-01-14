@@ -28,4 +28,5 @@ public interface Order extends Model {
     String getCustomerLastname();
     float getGrandTotal();
     String getCreatedAt();
+    String getCustomerEmail();
 }

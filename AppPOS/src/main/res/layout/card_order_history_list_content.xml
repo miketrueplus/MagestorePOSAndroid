@@ -20,8 +20,9 @@
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="@drawable/list_item_selector"
+            android:padding="5dp"
             android:orientation="horizontal">
 
             <ImageView
@@ -36,9 +37,8 @@
                 android:layout_height="wrap_content">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
                     android:orientation="vertical">
 
                     <TextView
@@ -46,20 +46,20 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
+                        android:text="@{order.getIncrementId()}"
                         android:textAppearance="?attr/textAppearanceListItem"
-                        android:textStyle="bold"
-                        android:text="@{order.getIncrementId()}"/>
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?attr/textAppearanceListItem"
-                        android:text='@{order.getCustomerFirstname + " " + order.getCustomerLastname()}'/>
+                        android:text='@{order.getCustomerFirstname() != null ? order.getCustomerFirstname() + " " + order.getCustomerLastname() : order.getCustomerEmail()}'
+                        android:textAppearance="?attr/textAppearanceListItem" />
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:orientation="vertical">
@@ -69,16 +69,16 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
-                        android:textAppearance="?attr/textAppearanceListItem"
                         android:text="@{ConfigUtil.formatPrice(order.getGrandTotal())}"
+                        android:textAppearance="?attr/textAppearanceListItem"
                         android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/created_at"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?attr/textAppearanceListItem"
-                        android:text="@{ConfigUtil.formatDate(order.getCreatedAt())}"/>
+                        android:text="@{ConfigUtil.formatDate(order.getCreatedAt())}"
+                        android:textAppearance="?attr/textAppearanceListItem" />
                 </LinearLayout>
             </RelativeLayout>
         </LinearLayout>

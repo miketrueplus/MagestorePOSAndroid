@@ -1,7 +1,6 @@
 package com.magestore.app.lib.model.sales;
 
 import com.magestore.app.lib.model.Model;
-import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.model.directory.Region;
 
 /**
@@ -11,7 +10,7 @@ import com.magestore.app.lib.model.directory.Region;
  * dong.le@trueplus.vn
  */
 
-public interface OrderBillingAddress extends CustomerAddress {
+public interface OrderBillingAddress extends Model {
     String getAddressType();
 
     String getEmail();
