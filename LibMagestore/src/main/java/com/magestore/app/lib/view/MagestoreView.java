@@ -11,4 +11,6 @@ import com.magestore.app.lib.controller.Controller;
 public interface MagestoreView<TController extends Controller> {
     void setController(TController controller);
     TController getController();
+    void showErrorMsg(String msg);
+    void showErrorMsg(Exception exp);
 }

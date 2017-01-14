@@ -1,5 +1,6 @@
 package com.magestore.app.lib.panel;
 
+import android.app.AlertDialog;
 import android.content.Context;
 
 import android.support.v7.widget.GridLayoutManager;
@@ -253,9 +254,31 @@ public abstract class AbstractListPanel<TModel extends Model>
 
     }
 
+    /**
+     * Có sự thay đổi số liệu, cập nhật lại giao diện
+     */
     public void notifyDatasetChanged() {
         RecyclerView.Adapter adapter = mRecycleView.getAdapter();
         if (adapter != null)
             adapter.notifyDataSetChanged();
+    }
+
+    /**
+     * Hiển thị thông báo lỗi
+     * @param strMsg
+     */
+    public void showErrorMsg(String strMsg) {
+        new AlertDialog.Builder(getContext())
+                .setMessage(strMsg)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
+
+    @Override
+    public void showErrorMsg(Exception exp) {
+        new AlertDialog.Builder(getContext())
+                .setMessage(exp.getMessage())
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 }

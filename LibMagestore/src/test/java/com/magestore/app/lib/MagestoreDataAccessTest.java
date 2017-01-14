@@ -36,7 +36,7 @@ public class MagestoreDataAccessTest {
         // Lấy list 30 products đầu tiên
         String strSession = user.login("http://demo-magento2.magestore.com/webpos", "demo", "demo123");
         POSUserService.session = new POSDataAccessSession();
-        POSUserService.session.REST_SESSION_ID = strSession.trim().replace("\"", "");
+//        POSUserService.session.REST_SESSION_ID = strSession.trim().replace("\"", "");
         List<Product> list = product.getProducts(1, 1);
         return;
     }
@@ -51,7 +51,7 @@ public class MagestoreDataAccessTest {
         // Lấy list 30 customer đầu tiên
         String strSession = user.login("http://demo-magento2.magestore.com/webpos", "demo", "demo123");
         POSUserService.session = new POSDataAccessSession();
-        POSUserService.session.REST_SESSION_ID = strSession.trim().replace("\"", "");
+//        POSUserService.session.REST_SESSION_ID = strSession.trim().replace("\"", "");
         List<Customer> list = customerResourceModel.getCustomers(20, 1);
         assert(list != null);
         assert(list.size() == 20);
@@ -68,7 +68,7 @@ public class MagestoreDataAccessTest {
         // Lấy list 30 order đầu tiên
         String strSession = user.login("http://demo-magento2.magestore.com/webpos", "demo", "demo123");
         POSUserService.session = new POSDataAccessSession();
-        POSUserService.session.REST_SESSION_ID = strSession.trim().replace("\"", "");
+//        POSUserService.session.REST_SESSION_ID = strSession.trim().replace("\"", "");
         List<Order> list = orderResourceModel.getOrders(20, 1);
         assert(list != null);
         assert(list.size() == 20);

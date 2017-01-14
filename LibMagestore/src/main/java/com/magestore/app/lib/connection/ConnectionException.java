@@ -8,6 +8,9 @@ package com.magestore.app.lib.connection;
  */
 
 public class ConnectionException extends RuntimeException {
+    public ConnectionException(Connection connection, Statement statement, ResultReading resultReading) {
+
+    }
     public ConnectionException(String message) {
         super(message);
     }

@@ -5,13 +5,14 @@ import com.magestore.app.lib.connection.ConnectionException;
 import com.magestore.app.lib.connection.ConnectionFactory;
 import com.magestore.app.lib.connection.ResultReading;
 import com.magestore.app.lib.connection.Statement;
-import com.magestore.app.lib.connection.http.MagestoreConnection;
 import com.magestore.app.lib.context.MagestoreContext;
+import com.magestore.app.lib.model.exception.MessageException;
 import com.magestore.app.lib.resourcemodel.DataAccess;
 import com.magestore.app.lib.resourcemodel.DataAccessException;
 import com.magestore.app.lib.resourcemodel.DataAccessSession;
 import com.magestore.app.lib.parse.ParseModel;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosAbstractParseImplement;
+import com.magestore.app.pos.parse.gson2pos.Gson2PosMesssageExceptionImplement;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -33,8 +34,6 @@ public class POSAbstractDataAccess implements DataAccess {
         setParseImplement(Gson2PosAbstractParseImplement.class);
         setSession(new POSDataAccessSession());
     }
-
-
 
     @Override
     public void setSession(DataAccessSession session) {
@@ -63,6 +62,10 @@ public class POSAbstractDataAccess implements DataAccess {
 
     protected Class getClassParseImplement() {
         return mclParseImplement;
+    }
+
+    protected Class getClassExceptionParseImplement() {
+        return Gson2PosMesssageExceptionImplement.class;
     }
 
     protected Class getClassParseEntity() {
@@ -154,5 +157,19 @@ public class POSAbstractDataAccess implements DataAccess {
             if (connection != null) connection.close();
             connection = null;
         }
+    }
+
+    /**
+     * Đọc hiểu 1 message từ server khi có exception
+     * @param rp
+     * @return
+     * @throws IOException
+     * @throws ParseException
+     */
+    protected MessageException processException(ResultReading rp) throws IOException, ParseException {
+        // parse kết quả thành object
+        rp.setParseImplement(getClassExceptionParseImplement());
+        rp.setParseEntity(MessageException.class);
+        return (MessageException) rp.doParse();
     }
 }

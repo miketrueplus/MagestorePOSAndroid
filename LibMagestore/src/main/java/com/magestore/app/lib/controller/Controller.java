@@ -20,6 +20,7 @@ public interface Controller<TView extends MagestoreView> {
     void setParentController(Controller controller);
     void setView(TView view);
     void doShowErrorMsg(Exception exp);
+    void doShowErrorMsg(String msg);
     void doShowProgress(boolean blnShow);
 
 }
