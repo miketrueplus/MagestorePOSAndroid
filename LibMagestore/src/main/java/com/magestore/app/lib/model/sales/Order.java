@@ -40,4 +40,6 @@ public interface Order extends Model {
     String getShippingTelePhone();
     String getShippingDescription();
     List<OrderWebposPayment> getWebposOrderPayments();
+    List<OrderStatus> getOrderStatus();
+    boolean checkComment();
 }

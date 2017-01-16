@@ -9,6 +9,7 @@ import com.magestore.app.lib.controller.Controller;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
 import com.magestore.app.pos.R;
+import com.magestore.app.pos.controller.OrderCommentHistoryController;
 import com.magestore.app.pos.controller.OrderHistoryListController;
 import com.magestore.app.pos.controller.OrderPaymentListController;
 import com.magestore.app.pos.databinding.PanelOrderDetailBinding;
@@ -24,8 +25,9 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
 
     PanelOrderDetailBinding mBinding;
     OrderPaymentListPanel mOrderPaymentListPanel;
+    OrderCommentHistoryListPanel mOrderCommentHistoryListPanel;
     OrderPaymentListController mOrderPaymentListController;
-
+    OrderCommentHistoryController mOrderCommentHistoryController;
 
     public OrderDetailPanel(Context context) {
         super(context);
@@ -48,6 +50,9 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
 
         // chuẩn bị panel view danh sách payment
         mOrderPaymentListPanel = (OrderPaymentListPanel) findViewById(R.id.order_payment);
+
+        // chuẩn bị panel view danh sách comment
+        mOrderCommentHistoryListPanel = (OrderCommentHistoryListPanel) findViewById(R.id.order_comment);
     }
 
     /**
@@ -62,8 +67,13 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         mOrderPaymentListController.setView(mOrderPaymentListPanel);
         mOrderPaymentListController.setMagestoreContext(controller.getMagestoreContext());
 
+        mOrderCommentHistoryController = new OrderCommentHistoryController();
+        mOrderCommentHistoryController.setView(mOrderCommentHistoryListPanel);
+        mOrderCommentHistoryController.setMagestoreContext(controller.getMagestoreContext());
+
         if (controller instanceof OrderHistoryListController) {
             mOrderPaymentListController.setOrderService(((OrderHistoryListController) controller).getOrderService());
+            mOrderCommentHistoryController.setOrderService(((OrderHistoryListController) controller).getOrderService());
         }
     }
 
@@ -80,5 +90,6 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         super.bindItem(item);
         mBinding.setOrderDetail(item);
         mOrderPaymentListController.doSelectOrder(item);
+        mOrderCommentHistoryController.doSelectOrder(item);
     }
 }

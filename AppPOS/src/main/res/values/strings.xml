@@ -38,6 +38,7 @@
     <string name="order_detail_content_shipping_address">SHIPPING ADDRESS</string>
     <string name="order_detail_content_payment_method">PAYMENT METHOD</string>
     <string name="order_detail_content_shipping_method">SHIPPING METHOD</string>
+    <string name="order_detail_content_comment_history">COMMENT HISTORY</string>
 
     <!-- Strings related to single words -->
     <string name="customerAddress">Address</string>
