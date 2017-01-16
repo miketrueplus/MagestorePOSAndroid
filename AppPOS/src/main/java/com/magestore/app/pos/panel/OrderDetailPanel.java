@@ -9,7 +9,8 @@ import com.magestore.app.lib.controller.Controller;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
 import com.magestore.app.pos.R;
-import com.magestore.app.pos.controller.OrderCommentHistoryController;
+import com.magestore.app.pos.controller.OrderCommentListController;
+import com.magestore.app.pos.controller.OrderHistoryItemsListController;
 import com.magestore.app.pos.controller.OrderHistoryListController;
 import com.magestore.app.pos.controller.OrderPaymentListController;
 import com.magestore.app.pos.databinding.PanelOrderDetailBinding;
@@ -25,9 +26,11 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
 
     PanelOrderDetailBinding mBinding;
     OrderPaymentListPanel mOrderPaymentListPanel;
-    OrderCommentHistoryListPanel mOrderCommentHistoryListPanel;
     OrderPaymentListController mOrderPaymentListController;
-    OrderCommentHistoryController mOrderCommentHistoryController;
+    OrderCommentHistoryListPanel mOrderCommentHistoryListPanel;
+    OrderCommentListController mOrderCommentHistoryController;
+    OrderHistoryItemsListPanel mOrderHistoryItemsListPanel;
+    OrderHistoryItemsListController mOrderHistoryItemsListController;
 
     public OrderDetailPanel(Context context) {
         super(context);
@@ -53,6 +56,9 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
 
         // chuẩn bị panel view danh sách comment
         mOrderCommentHistoryListPanel = (OrderCommentHistoryListPanel) findViewById(R.id.order_comment);
+
+        // chuẩn bị panel view danh sách items
+        mOrderHistoryItemsListPanel = (OrderHistoryItemsListPanel) findViewById(R.id.order_items);
     }
 
     /**
@@ -60,20 +66,28 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
      */
     @Override
     public void initModel() {
-        // Lấy lại customer service từ controller của panel này và đặt cho controlller payment
+        // Lấy lại customer service từ controller của panel
         Controller controller = getController();
 
+        // Controller Payment
         mOrderPaymentListController = new OrderPaymentListController();
         mOrderPaymentListController.setView(mOrderPaymentListPanel);
         mOrderPaymentListController.setMagestoreContext(controller.getMagestoreContext());
 
-        mOrderCommentHistoryController = new OrderCommentHistoryController();
+        // Controller Comment
+        mOrderCommentHistoryController = new OrderCommentListController();
         mOrderCommentHistoryController.setView(mOrderCommentHistoryListPanel);
         mOrderCommentHistoryController.setMagestoreContext(controller.getMagestoreContext());
+
+        // Controller Items
+        mOrderHistoryItemsListController = new OrderHistoryItemsListController();
+        mOrderHistoryItemsListController.setView(mOrderHistoryItemsListPanel);
+        mOrderHistoryItemsListController.setMagestoreContext(controller.getMagestoreContext());
 
         if (controller instanceof OrderHistoryListController) {
             mOrderPaymentListController.setOrderService(((OrderHistoryListController) controller).getOrderService());
             mOrderCommentHistoryController.setOrderService(((OrderHistoryListController) controller).getOrderService());
+            mOrderHistoryItemsListController.setOrderService(((OrderHistoryListController) controller).getOrderService());
         }
     }
 
@@ -91,5 +105,6 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         mBinding.setOrderDetail(item);
         mOrderPaymentListController.doSelectOrder(item);
         mOrderCommentHistoryController.doSelectOrder(item);
+        mOrderHistoryItemsListController.doSelectOrder(item);
     }
 }

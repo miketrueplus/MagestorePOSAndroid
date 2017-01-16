@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="com.magestore.app.util.ConfigUtil" />
+
+        <variable
+            name="orderItem"
+            type="com.magestore.app.lib.model.checkout.cart.Items" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:shrinkColumns="0"
+            android:stretchColumns="1">
+
+            <TableRow
+                android:id="@+id/table_row_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{orderItem.getName()}" />
+
+                    <TextView
+                        android:id="@+id/sku"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{orderItem.getSku()}"
+                        android:textStyle="italic" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/original_price"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@{ConfigUtil.formatPrice(orderItem.getOriginalPrice())}" />
+
+                <TextView
+                    android:id="@+id/price"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@{ConfigUtil.formatPrice(orderItem.getPrice())}" />
+
+                <TextView
+                    android:id="@+id/quantity"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text='@{@string/order_detail_content_item_row_qty + String.valueOf(orderItem.getQuantity())}' />
+
+                <TextView
+                    android:id="@+id/subtotal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@{ConfigUtil.formatPrice(orderItem.getSubtotal())}" />
+
+                <TextView
+                    android:id="@+id/tax_amount"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@{ConfigUtil.formatPrice(orderItem.getTaxAmount())}" />
+
+                <TextView
+                    android:id="@+id/discount_amount"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@{ConfigUtil.formatPrice(orderItem.getDiscountAmount())}" />
+
+                <TextView
+                    android:id="@+id/row_total"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@{ConfigUtil.formatPrice(orderItem.getRowTotal())}" />
+            </TableRow>
+        </TableLayout>
+    </LinearLayout>
+</layout>

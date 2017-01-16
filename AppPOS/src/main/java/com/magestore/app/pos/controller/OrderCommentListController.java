@@ -14,7 +14,7 @@ import java.util.List;
  * dong.le@trueplus.vn
  */
 
-public class OrderCommentHistoryController extends AbstractListController<OrderStatus> implements ListController<OrderStatus> {
+public class OrderCommentListController extends AbstractListController<OrderStatus> implements ListController<OrderStatus> {
     Order mSelectedOrder;
     OrderHistoryListController mOrderHistoryListController;
     OrderHistoryService mOrderService;

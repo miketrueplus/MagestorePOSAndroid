@@ -24,6 +24,14 @@ public class PosItems extends PosAbstractModel implements Items {
     float original_price;
     float base_original_price;
 
+    // Order history
+    String name;
+    String sku;
+    float row_total = 0;
+    float row_total_incl_tax = 0;
+    float tax_amount = 0;
+    float discount_amount = 0;
+
     @Override
     public void setQuantity(int param_quantity) {
         qty = param_quantity;
@@ -62,5 +70,36 @@ public class PosItems extends PosAbstractModel implements Items {
     @Override
     public float getOriginalPrice() {
         return original_price;
+    }
+
+    // Order history
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String getSku() {
+        return sku;
+    }
+
+    @Override
+    public float getSubtotal() {
+        return row_total;
+    }
+
+    @Override
+    public float getRowTotal() {
+        return row_total_incl_tax;
+    }
+
+    @Override
+    public float getTaxAmount() {
+        return tax_amount;
+    }
+
+    @Override
+    public float getDiscountAmount() {
+        return discount_amount;
     }
 }
