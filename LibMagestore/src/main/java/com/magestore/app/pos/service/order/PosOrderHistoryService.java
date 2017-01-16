@@ -24,6 +24,8 @@ public class PosOrderHistoryService extends AbstractService implements OrderHist
         // Khởi tạo customer gateway factory
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         OrderDataAccess orderGateway = factory.generateOrderDataAccess();
-        return orderGateway.getOrders(size, 1);
+        // TODO: test order có webpos_payments
+        return orderGateway.getOrders(size, 32);
+//        return orderGateway.getOrders(size, 1);
     }
 }

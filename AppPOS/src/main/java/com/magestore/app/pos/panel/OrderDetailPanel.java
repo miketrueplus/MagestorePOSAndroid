@@ -4,11 +4,13 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.FrameLayout;
 
+import com.magestore.app.lib.controller.Controller;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
 import com.magestore.app.pos.R;
+import com.magestore.app.pos.controller.OrderHistoryListController;
+import com.magestore.app.pos.controller.OrderPaymentListController;
 import com.magestore.app.pos.databinding.PanelOrderDetailBinding;
 
 /**
@@ -21,34 +23,48 @@ import com.magestore.app.pos.databinding.PanelOrderDetailBinding;
 public class OrderDetailPanel extends AbstractDetailPanel<Order> {
 
     PanelOrderDetailBinding mBinding;
+    OrderPaymentListPanel mOrderPaymentListPanel;
+    OrderPaymentListController mOrderPaymentListController;
 
 
     public OrderDetailPanel(Context context) {
         super(context);
-        init();
     }
 
     public OrderDetailPanel(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
     }
 
     public OrderDetailPanel(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init();
     }
 
-    private void init() {
-        initControlLayout();
-        initControlValue();
-        initTask();
-    }
-
-    private void initControlLayout() {
+    @Override
+    protected void initLayout() {
         // Load layout view danh sách khách hàng
         View v = inflate(getContext(), R.layout.panel_order_detail, null);
         addView(v);
         mBinding = DataBindingUtil.bind(v);
+
+        // chuẩn bị panel view danh sách payment
+        mOrderPaymentListPanel = (OrderPaymentListPanel) findViewById(R.id.order_payment);
+    }
+
+    /**
+     * Chuẩn bị các model, controller
+     */
+    @Override
+    public void initModel() {
+        // Lấy lại customer service từ controller của panel này và đặt cho controlller payment
+        Controller controller = getController();
+
+        mOrderPaymentListController = new OrderPaymentListController();
+        mOrderPaymentListController.setView(mOrderPaymentListPanel);
+        mOrderPaymentListController.setMagestoreContext(controller.getMagestoreContext());
+
+        if (controller instanceof OrderHistoryListController) {
+            mOrderPaymentListController.setOrderService(((OrderHistoryListController) controller).getOrderService());
+        }
     }
 
     private void initControlValue() {
@@ -63,5 +79,6 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
     public void bindItem(Order item) {
         super.bindItem(item);
         mBinding.setOrderDetail(item);
+        mOrderPaymentListController.doSelectOrder(item);
     }
 }

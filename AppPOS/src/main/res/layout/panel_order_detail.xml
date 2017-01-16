@@ -36,6 +36,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:text="@{ConfigUtil.formatPrice(orderDetail.getGrandTotal())}"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
 
                 <LinearLayout
@@ -108,189 +109,207 @@
                 android:layout_above="@+id/rl_order_detail_bottom"
                 android:layout_below="@+id/rl_order_detail_top">
 
-                <LinearLayout
+                <ScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
+                        android:orientation="vertical">
 
-                        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_margin="5dp"
-                            android:layout_weight="1"
-                            card_view:cardCornerRadius="4dp">
+                            android:orientation="horizontal"
+                            android:weightSum="2">
 
-                            <LinearLayout
+                            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:background="@color/order_detail_content_card_background"
-                                android:orientation="vertical">
+                                android:layout_gravity="center"
+                                android:layout_margin="5dp"
+                                android:layout_weight="1"
+                                card_view:cardCornerRadius="4dp">
 
-                                <TextView
-                                    android:id="@+id/billing_address"
+                                <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_margin="5dp"
-                                    android:text="@string/order_detail_content_billing_address" />
+                                    android:background="@color/order_detail_content_card_background"
+                                    android:orientation="vertical">
 
-                                <View
+                                    <TextView
+                                        android:id="@+id/billing_address"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_margin="5dp"
+                                        android:text="@string/order_detail_content_billing_address" />
+
+                                    <View
+                                        android:layout_width="match_parent"
+                                        android:layout_height="1dp" />
+
+
+                                    <TextView
+                                        android:id="@+id/txt_billing_adrress_name"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_margin="5dp"
+                                        android:text="@{orderDetail.getBillingAddressName()}" />
+
+                                    <TextView
+                                        android:id="@+id/txt_billing_adrress_full"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_margin="5dp"
+                                        android:text="@{orderDetail.getBillingAddressFullAddress()}" />
+
+                                    <TextView
+                                        android:id="@+id/txt_billing_adrress_telephone"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_margin="5dp"
+                                        android:text="@{orderDetail.getBillingAddressTelephone()}" />
+
+                                </LinearLayout>
+                            </android.support.v7.widget.CardView>
+
+                            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_margin="5dp"
+                                android:layout_weight="1"
+                                card_view:cardCornerRadius="4dp">
+
+                                <LinearLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="1dp" />
-
-
-                                <TextView
-                                    android:id="@+id/txt_billing_adrress_name"
-                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_margin="5dp"
-                                    android:text="@{orderDetail.getBillingAddressName()}" />
+                                    android:background="@color/order_detail_content_card_background"
+                                    android:orientation="vertical">
 
-                                <TextView
-                                    android:id="@+id/txt_billing_adrress_full"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="5dp"
-                                    android:text="@{orderDetail.getBillingAddressFullAddress()}" />
+                                    <TextView
+                                        android:id="@+id/shipping_address"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_margin="5dp"
+                                        android:text="@string/order_detail_content_shipping_address" />
 
-                                <TextView
-                                    android:id="@+id/txt_billing_adrress_telephone"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="5dp"
-                                    android:text="@{orderDetail.getBillingAddressTelephone()}" />
+                                    <View
+                                        android:layout_width="match_parent"
+                                        android:layout_height="1dp" />
 
-                            </LinearLayout>
-                        </android.support.v7.widget.CardView>
+                                    <TextView
+                                        android:id="@+id/txt_shipping_adrress_name"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_margin="5dp"
+                                        android:text="@{orderDetail.getShippingAddressName()}" />
 
-                        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                                    <TextView
+                                        android:id="@+id/txt_shipping_adrress_full"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_margin="5dp"
+                                        android:text="@{orderDetail.getShippingFullAddress()}" />
+
+                                    <TextView
+                                        android:id="@+id/txt_shipping_adrress_telephone"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_margin="5dp"
+                                        android:text="@{orderDetail.getShippingTelePhone()}" />
+
+                                </LinearLayout>
+                            </android.support.v7.widget.CardView>
+                        </LinearLayout>
+
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_margin="5dp"
-                            android:layout_weight="1"
-                            card_view:cardCornerRadius="4dp">
+                            android:orientation="horizontal"
+                            android:weightSum="2">
 
-                            <LinearLayout
+                            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:background="@color/order_detail_content_card_background"
-                                android:orientation="vertical">
+                                android:layout_gravity="center"
+                                android:layout_margin="5dp"
+                                android:layout_weight="1"
+                                card_view:cardCornerRadius="4dp">
 
-                                <TextView
-                                    android:id="@+id/shipping_address"
+                                <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_margin="5dp"
-                                    android:text="@string/order_detail_content_shipping_address" />
+                                    android:background="@color/order_detail_content_card_background"
+                                    android:orientation="vertical">
 
-                                <View
+                                    <TextView
+                                        android:id="@+id/payment_method"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_margin="5dp"
+                                        android:text="@string/order_detail_content_payment_method" />
+
+                                    <View
+                                        android:layout_width="match_parent"
+                                        android:layout_height="1dp" />
+
+                                    <FrameLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_horizontal"
+                                        android:layout_margin="5dp"
+                                        android:orientation="vertical">
+
+                                        <com.magestore.app.pos.panel.OrderPaymentListPanel
+                                            android:id="@+id/order_payment"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="1.0" />/>
+
+                                    </FrameLayout>
+                                </LinearLayout>
+
+                            </android.support.v7.widget.CardView>
+
+                            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_margin="5dp"
+                                android:layout_weight="1"
+                                card_view:cardCornerRadius="4dp">
+
+                                <LinearLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="1dp" />
-
-                                <TextView
-                                    android:id="@+id/txt_shipping_adrress_name"
-                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_margin="5dp"
-                                    android:text="@{orderDetail.getShippingAddressName()}" />
+                                    android:background="@color/order_detail_content_card_background"
+                                    android:orientation="vertical">
 
-                                <TextView
-                                    android:id="@+id/txt_shipping_adrress_full"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="5dp"
-                                    android:text="@{orderDetail.getShippingFullAddress()}" />
+                                    <TextView
+                                        android:id="@+id/shipping_method"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_margin="5dp"
+                                        android:text="@string/order_detail_content_shipping_method" />
 
-                                <TextView
-                                    android:id="@+id/txt_shipping_adrress_telephone"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="5dp"
-                                    android:text="@{orderDetail.getShippingTelePhone()}" />
+                                    <View
+                                        android:layout_width="match_parent"
+                                        android:layout_height="1dp" />
 
-                            </LinearLayout>
-                        </android.support.v7.widget.CardView>
+                                    <TextView
+                                        android:id="@+id/txt_shipping_method"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_margin="5dp"
+                                        android:text="@{orderDetail.getShippingDescription()}" />
+                                </LinearLayout>
+
+                            </android.support.v7.widget.CardView>
+                        </LinearLayout>
                     </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-
-                        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_margin="5dp"
-                            android:layout_weight="1"
-                            card_view:cardCornerRadius="4dp">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@color/order_detail_content_card_background"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:id="@+id/payment_method"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="5dp"
-                                    android:text="@string/order_detail_content_payment_method" />
-
-                                <View
-                                    android:layout_width="match_parent"
-                                    android:layout_height="1dp" />
-                            </LinearLayout>
-
-                        </android.support.v7.widget.CardView>
-
-                        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_margin="5dp"
-                            android:layout_weight="1"
-                            card_view:cardCornerRadius="4dp">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@color/order_detail_content_card_background"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:id="@+id/shipping_method"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="5dp"
-                                    android:text="@string/order_detail_content_shipping_method" />
-
-                                <View
-                                    android:layout_width="match_parent"
-                                    android:layout_height="1dp" />
-
-                                <TextView
-                                    android:id="@+id/txt_shipping_method"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="5dp"
-                                    android:text="@{orderDetail.getShippingDescription()}" />
-                            </LinearLayout>
-
-                        </android.support.v7.widget.CardView>
-                    </LinearLayout>
-
-                </LinearLayout>
-
+                </ScrollView>
             </RelativeLayout>
 
             <RelativeLayout

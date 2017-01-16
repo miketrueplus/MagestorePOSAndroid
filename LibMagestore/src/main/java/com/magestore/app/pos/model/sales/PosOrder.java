@@ -2,6 +2,7 @@ package com.magestore.app.pos.model.sales;
 
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.model.checkout.cart.Items;
+import com.magestore.app.lib.model.sales.OrderWebposPayment;
 import com.magestore.app.pos.model.PosAbstractModel;
 import com.magestore.app.pos.model.checkout.cart.PosItems;
 
@@ -107,6 +108,7 @@ public class PosOrder extends PosAbstractModel implements Order {
     PosOrderBillingAddress billing_address;
     PosOrderPayment payment;
     PosOrderAttributes extension_attributes;
+    List<PosOrderWebposPayment> webpos_order_payments;
 
     @Override
     public Order newInstance() {
@@ -248,6 +250,11 @@ public class PosOrder extends PosAbstractModel implements Order {
     @Override
     public String getShippingDescription() {
         return shipping_description;
+    }
+
+    @Override
+    public List<OrderWebposPayment> getWebposOrderPayments() {
+        return (List<OrderWebposPayment>)(List<?>) webpos_order_payments;
     }
 
     @Override

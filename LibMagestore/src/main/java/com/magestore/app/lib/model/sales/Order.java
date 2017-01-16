@@ -5,6 +5,7 @@ import com.magestore.app.lib.model.checkout.cart.Items;
 import com.magestore.app.pos.model.sales.PosOrderAttributes;
 import com.magestore.app.pos.model.sales.PosOrderBillingAddress;
 import com.magestore.app.pos.model.sales.PosOrderPayment;
+import com.magestore.app.pos.model.sales.PosOrderWebposPayment;
 
 import java.util.List;
 
@@ -38,4 +39,5 @@ public interface Order extends Model {
     String getShippingFullAddress();
     String getShippingTelePhone();
     String getShippingDescription();
+    List<OrderWebposPayment> getWebposOrderPayments();
 }
