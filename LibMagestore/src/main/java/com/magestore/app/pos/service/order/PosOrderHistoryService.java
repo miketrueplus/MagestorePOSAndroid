@@ -2,6 +2,7 @@ package com.magestore.app.pos.service.order;
 
 import android.util.Log;
 
+import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.resourcemodel.DataAccessFactory;
 import com.magestore.app.lib.resourcemodel.sales.OrderDataAccess;
@@ -25,5 +26,10 @@ public class PosOrderHistoryService extends AbstractService implements OrderHist
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         OrderDataAccess orderGateway = factory.generateOrderDataAccess();
         return orderGateway.getOrders(size, 1);
+    }
+
+    @Override
+    public List<Order> retrieveOrderLastMonth(Customer customer) throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        return retrieveOrderList(3);
     }
 }

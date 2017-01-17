@@ -19,7 +19,7 @@ public class POSAPI {
 
 
     // API get product
-    public static final String REST_PRODUCT_GET_LISTING = "/rest/default/V1/webpos/products/?searchCriteria[current_page]=${currentPage}&searchCriteria[page_size]=${pageSize}&session=${sessionID}";
+    public static final String REST_PRODUCT_GET_LISTING = "/rest/default/V1/webpos/products/?session=${sessionID}";
 
     // API get category
     public static final String REST_GET_CATEGORY_LISTING = "/rest/default/V1/webpos/categories/?searchCriteria[current_page]=${currentPage}&searchCriteria[page_size]=${pageSize}&session=${sessionID}";

@@ -3,6 +3,7 @@ package com.magestore.app.pos.api.m2.catalog;
 import com.magestore.app.lib.connection.Connection;
 import com.magestore.app.lib.connection.ConnectionException;
 import com.magestore.app.lib.connection.ConnectionFactory;
+import com.magestore.app.lib.connection.ParamBuilder;
 import com.magestore.app.lib.connection.ResultReading;
 import com.magestore.app.lib.connection.Statement;
 import com.magestore.app.lib.connection.http.MagestoreConnection;
@@ -51,9 +52,13 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
             connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
             statement = connection.createStatement();
             statement.prepareQuery(POSAPI.REST_PRODUCT_GET_LISTING);
-            statement.setParam(POSAPI.PARAM_CURRENT_PAGE, currentPage);
-            statement.setParam(POSAPI.PARAM_PAGE_SIZE, pageSize);
-            statement.setParam(POSAPI.PARAM_SESSION_ID, POSDataAccessSession.REST_SESSION_ID);
+
+            // Xây dựng tham số
+            ParamBuilder paramBuilder = statement.getParamBuilder();
+            paramBuilder.setPage(currentPage);
+            paramBuilder.setPageSize(pageSize);
+            paramBuilder.setSessionID(POSDataAccessSession.REST_SESSION_ID);
+//            paramBuilder.setFilterEqual("name", "Joust Duffle Bag");
 
             // thực thi truy vấn và parse kết quả thành object
             rp = statement.execute();

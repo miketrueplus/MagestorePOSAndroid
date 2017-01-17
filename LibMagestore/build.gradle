@@ -41,4 +41,5 @@ dependencies {
     compile 'sax:sax:2.0.1'
     compile files('libs/odata-client-android-4.0.0-beta-01-RC01.jar')
     compile 'com.android.support:recyclerview-v7:24.2.1'
+    compile 'com.google.guava:guava:17.0'
 }

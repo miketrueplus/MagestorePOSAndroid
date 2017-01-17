@@ -1,5 +1,6 @@
 package com.magestore.app.lib.service.order;
 
+import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.service.Service;
 
@@ -15,4 +16,5 @@ import java.util.List;
 
 public interface OrderHistoryService extends Service {
     List<Order> retrieveOrderList(int size) throws InstantiationException, IllegalAccessException, IOException, ParseException;
+    List<Order> retrieveOrderLastMonth(Customer customer) throws InstantiationException, IllegalAccessException, IOException, ParseException;
 }

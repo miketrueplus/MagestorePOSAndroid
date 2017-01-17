@@ -93,8 +93,6 @@ public interface Statement {
      */
     ResultReading execute() throws ConnectionException, IOException;
 
-
-
     /**
      * Thực thi truy vấn, cập nhật dữ liệu trên server
      */
@@ -112,4 +110,10 @@ public interface Statement {
      * @return
      */
     Connection getConnection();
+
+    /**
+     * Quản lý thây dựng tham số cho query param builder
+     * @return
+     */
+    ParamBuilder getParamBuilder();
 }

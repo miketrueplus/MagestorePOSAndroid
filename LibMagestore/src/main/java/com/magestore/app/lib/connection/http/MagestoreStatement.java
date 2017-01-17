@@ -5,6 +5,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.magestore.app.lib.connection.Connection;
 import com.magestore.app.lib.connection.ConnectionException;
+import com.magestore.app.lib.connection.ParamBuilder;
 import com.magestore.app.lib.connection.ResultReading;
 import com.magestore.app.lib.connection.Statement;
 
@@ -32,6 +33,20 @@ import java.util.Map;
  */
 
 public class MagestoreStatement implements Statement {
+    // Param builder
+    MagestoreParamBuilder mParambuilder;
+
+    // String builder excuteQuery
+    StringBuilder mstrPreparedQuery;
+
+    // http header
+    private static final String CONTENT_TYPE = "Content-Type";
+    private static final String APPLICATION_JSON = "application/json";
+    private static final String ACCEPT = "Accept";
+    private static final String SLASH = "/";
+
+    private static final int HTTP_CODE_RESPONSE_SUCCESS = 200;
+
     // mặc định là GET
     private static final String METHOD_GET = "GET";
     private static final String METHOD_POST = "POST";
@@ -46,7 +61,7 @@ public class MagestoreStatement implements Statement {
     //   BaseURL = "http://api.androidhive.info/"
     //   query = "/contacts/name/${name}/age/${age}"
     //   thì chuỗi kết quả = "http://api.androidhive.info/contacts/name/${name}/age/${age}"
-    private String mstrPreparedQuery;
+//    private String mstrPreparedQuery;
     private Object mobjPrepareParam;
 
     // Bảng map chứa các tham số của truy vấn
@@ -71,6 +86,20 @@ public class MagestoreStatement implements Statement {
     }
 
     /**
+     * Class xử lý vấn đề xây dựng tham số theo GET
+     * @return
+     */
+    @Override
+    public ParamBuilder getParamBuilder() {
+        if (mParambuilder == null) {
+            if (mValuesMap == null)
+                mValuesMap = new HashMap<String, String>();
+            mParambuilder = new MagestoreParamBuilder(this, mValuesMap);
+        }
+        return mParambuilder;
+    }
+
+    /**
      * Chuẩn bị câu truy vấn
      * Nếu truy vấn có tham số thì các tham số được đặt them mẫu ${tên_tham_số}
      * @param pstrQuery là chuỗi truy vấn, không bao gồm base url, ví dụ "/contacts/name/${name}/age/${age}"
@@ -84,12 +113,14 @@ public class MagestoreStatement implements Statement {
         //   query = "/contacts/name/${name}/age/${age}"
         //   thì chuỗi kết quả = "http://api.androidhive.info/contacts/name/${name}/age/${age}"
         String strBaseURL = ((MagestoreConnection)getConnection()).getBaseURL();
-        if (!pstrQuery.startsWith("/") && !strBaseURL.endsWith("/"))
-            mstrPreparedQuery = strBaseURL + "/" + pstrQuery;
-        else if (pstrQuery.startsWith("/") && strBaseURL.endsWith("/"))
-            mstrPreparedQuery = strBaseURL + pstrQuery.replaceFirst("/", "");
-        else
-            mstrPreparedQuery = strBaseURL + pstrQuery;
+        mstrPreparedQuery = new StringBuilder(strBaseURL);
+        if (!pstrQuery.startsWith(SLASH) && !strBaseURL.endsWith(SLASH)) {
+            mstrPreparedQuery.append(SLASH);
+        }
+        else if (pstrQuery.startsWith(SLASH) && strBaseURL.endsWith(SLASH)) {
+            mstrPreparedQuery.deleteCharAt(mstrPreparedQuery.length() - 1);
+        }
+        mstrPreparedQuery.append(pstrQuery);
 
         // Clear map tham số
         if (mValuesMap != null) mValuesMap.clear();
@@ -144,15 +175,22 @@ public class MagestoreStatement implements Statement {
     /**
      * Trả lại excutequery trên url
      * @return
+     * TODO: cần cải thiện thuật toán tránh build lại query nhiều lần
      */
     private String buildFinalQuery() {
         String excuteQuery = null;
+        StringBuilder strFinalBuilderQuery = mstrPreparedQuery;
+        if (mParambuilder != null) {
+            strFinalBuilderQuery = new StringBuilder(mstrPreparedQuery);
+            strFinalBuilderQuery.append(mParambuilder.buidQuery());
+        }
         if (mValuesMap != null) {
             StrSubstitutor sub = new StrSubstitutor(mValuesMap);
-            excuteQuery = sub.replace(mstrPreparedQuery);
+            excuteQuery = sub.replace(strFinalBuilderQuery);
         }
         else
-            excuteQuery =  mstrPreparedQuery;
+            excuteQuery = strFinalBuilderQuery.toString();
+
         return excuteQuery;
     }
 
@@ -189,8 +227,8 @@ public class MagestoreStatement implements Statement {
             // Đặt lại các tham số cho HTTP Connection
             mHttpConnection.setDoOutput(true);
             mHttpConnection.setDoInput(true);
-            mHttpConnection.setRequestProperty("Content-Type", "application/json");
-            mHttpConnection.setRequestProperty("Accept", "application/json");
+            mHttpConnection.setRequestProperty(CONTENT_TYPE, APPLICATION_JSON);
+            mHttpConnection.setRequestProperty(ACCEPT, APPLICATION_JSON);
             mHttpConnection.setRequestMethod(METHOD_POST);
 
             // Viết nội dung của object thành dạng json cho input
@@ -204,7 +242,7 @@ public class MagestoreStatement implements Statement {
         // Chạy query, lấy resultset về
         int statusCode = mHttpConnection.getResponseCode();
         InputStream is = null;
-        if (statusCode == 200)
+        if (statusCode == HTTP_CODE_RESPONSE_SUCCESS)
             return new MagestoreResultReading(mHttpConnection.getInputStream());
         else
             return new MagestoreResultReadingException(mHttpConnection.getErrorStream(), statusCode);
@@ -317,6 +355,7 @@ public class MagestoreStatement implements Statement {
      */
     @Override
     public void close() {
+        if (mParambuilder != null) mParambuilder.clear();
         if (mValuesMap != null) mValuesMap.clear();
         mValuesMap = null;
         mstrPreparedQuery = null;
