@@ -22,15 +22,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/list_item_selector"
-            android:padding="5dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="5dp">
 
             <ImageView
-                android:id="@+id/order_status"
+                android:id="@+id/im_status"
                 android:layout_width="10dp"
                 android:layout_height="10dp"
-                android:layout_gravity="center"
-                android:layout_marginRight="5dp" />
+                android:layout_gravity="top"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp" />
 
             <RelativeLayout
                 android:layout_width="match_parent"

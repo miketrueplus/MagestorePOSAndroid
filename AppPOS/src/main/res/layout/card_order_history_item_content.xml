@@ -64,8 +64,8 @@
                     android:id="@+id/quantity"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text='@{@string/order_detail_content_item_row_qty + String.valueOf(orderItem.getQuantity())}' />
+                    android:layout_weight="1.2"
+                    android:text='@{@string/order_detail_content_item_row_qty + " " + String.valueOf(orderItem.getQuantity())}' />
 
                 <TextView
                     android:id="@+id/subtotal"

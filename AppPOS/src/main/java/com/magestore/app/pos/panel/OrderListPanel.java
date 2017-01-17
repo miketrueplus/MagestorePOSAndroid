@@ -7,6 +7,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.widget.GridLayoutManager;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.panel.AbstractListPanel;
@@ -28,6 +29,7 @@ public class OrderListPanel extends AbstractListPanel<Order> {
 
     /**
      * Khởi tạo
+     *
      * @param context
      */
     public OrderListPanel(Context context) {
@@ -36,6 +38,7 @@ public class OrderListPanel extends AbstractListPanel<Order> {
 
     /**
      * Khởi tạo
+     *
      * @param context
      * @param attrs
      */
@@ -45,6 +48,7 @@ public class OrderListPanel extends AbstractListPanel<Order> {
 
     /**
      * Khởi tạo
+     *
      * @param context
      * @param attrs
      * @param defStyleAttr
@@ -80,6 +84,24 @@ public class OrderListPanel extends AbstractListPanel<Order> {
     protected void bindItem(View view, Order item, int position) {
         CardOrderHistoryListContentBinding biding = DataBindingUtil.bind(view);
         biding.setOrder(item);
+
+        ImageView im_status = (ImageView) view.findViewById(R.id.im_status);
+        im_status.setImageResource(R.drawable.ic_order_status);
+
+        String status = item.getStatus().toLowerCase();
+        if (status.equals("pending")) {
+            im_status.setColorFilter(this.getContext().getResources().getColor(R.color.order_status_pending));
+        } else if (status.equals("processing")) {
+            im_status.setColorFilter(this.getContext().getResources().getColor(R.color.order_status_processing));
+        } else if (status.equals("complete")) {
+            im_status.setColorFilter(this.getContext().getResources().getColor(R.color.order_status_complete));
+        } else if (status.equals("cancelled")) {
+            im_status.setColorFilter(this.getContext().getResources().getColor(R.color.order_status_cancelled));
+        } else if (status.equals("closed")) {
+            im_status.setColorFilter(this.getContext().getResources().getColor(R.color.order_status_closed));
+        } else if (status.equals("not_sync")) {
+            im_status.setColorFilter(this.getContext().getResources().getColor(R.color.order_status_notsync));
+        }
     }
 
     /**
