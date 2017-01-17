@@ -38,7 +38,9 @@ public class OrderHistoryListController extends AbstractListController<Order> {
 
     @Override
     protected List<Order> loadDataBackground(Void... params) throws Exception {
-        List<Order> listOrder = mOrderService.retrieveOrderList(30);
+        // TODO: test lấy webpos_payments
+        List<Order> listOrder = mOrderService.retrieveOrderList(50);
+//        List<Order> listOrder = mOrderService.retrieveOrderList(30);
         return listOrder;
     }
 

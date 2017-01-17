@@ -20,4 +20,12 @@ public interface Items extends Model {
     int getQuantity();
     float getPrice();
     float getOriginalPrice();
+
+    // Order history
+    String getName();
+    String getSku();
+    float getSubtotal();
+    float getRowTotal();
+    float getTaxAmount();
+    float getDiscountAmount();
 }

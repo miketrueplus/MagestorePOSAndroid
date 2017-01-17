@@ -2,6 +2,8 @@ package com.magestore.app.pos.model.sales;
 
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.model.checkout.cart.Items;
+import com.magestore.app.lib.model.sales.OrderStatus;
+import com.magestore.app.lib.model.sales.OrderWebposPayment;
 import com.magestore.app.pos.model.PosAbstractModel;
 import com.magestore.app.pos.model.checkout.cart.PosItems;
 
@@ -107,6 +109,8 @@ public class PosOrder extends PosAbstractModel implements Order {
     PosOrderBillingAddress billing_address;
     PosOrderPayment payment;
     PosOrderAttributes extension_attributes;
+    List<PosOrderWebposPayment> webpos_order_payments;
+    List<PosOrderStatus> status_histories;
 
     @Override
     public Order newInstance() {
@@ -221,7 +225,7 @@ public class PosOrder extends PosAbstractModel implements Order {
     @Override
     public String getShippingAddressName() {
         PosOrderShippingAddress shippingAddress = getShippingAddress();
-        if(shippingAddress != null){
+        if (shippingAddress != null) {
             return shippingAddress.getName();
         }
         return "";
@@ -230,7 +234,7 @@ public class PosOrder extends PosAbstractModel implements Order {
     @Override
     public String getShippingFullAddress() {
         PosOrderShippingAddress shippingAddress = getShippingAddress();
-        if(shippingAddress != null){
+        if (shippingAddress != null) {
             return shippingAddress.getFullAddress();
         }
         return "";
@@ -239,7 +243,7 @@ public class PosOrder extends PosAbstractModel implements Order {
     @Override
     public String getShippingTelePhone() {
         PosOrderShippingAddress shippingAddress = getShippingAddress();
-        if(shippingAddress != null){
+        if (shippingAddress != null) {
             return shippingAddress.getTelephone();
         }
         return "";
@@ -251,19 +255,54 @@ public class PosOrder extends PosAbstractModel implements Order {
     }
 
     @Override
+    public List<OrderWebposPayment> getWebposOrderPayments() {
+        return (List<OrderWebposPayment>) (List<?>) webpos_order_payments;
+    }
+
+    @Override
+    public List<OrderStatus> getOrderStatus() {
+        List<OrderStatus> list_status = new ArrayList<OrderStatus>();
+        if (status_histories != null && status_histories.size() > 0) {
+            for (OrderStatus status : status_histories) {
+                if (status.getComment() != null && !status.getComment().equals("")) {
+                    list_status.add(status);
+                }
+            }
+        }
+        return (List<OrderStatus>) (List<?>) list_status;
+    }
+
+    @Override
+    public boolean checkComment() {
+        String mStatus = "";
+        if (status_histories != null && status_histories.size() > 0) {
+            for (OrderStatus status : status_histories) {
+                if (status.getComment() != null && !status.getComment().equals("")) {
+                    mStatus = mStatus + status.getComment();
+                }
+            }
+        }
+
+        if (!mStatus.equals("")) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public List<Items> newOrderItems() {
         items = new ArrayList<PosItems>();
         return (List<Items>) (List<?>) items;
     }
 
-    private PosOrderShippingAddress getShippingAddress(){
+    private PosOrderShippingAddress getShippingAddress() {
         PosOrderShippingAddress shippingAddress = null;
-        if(extension_attributes != null){
+        if (extension_attributes != null) {
             List<PosOrderShippingAssignments> shipping_assignments = extension_attributes.getShippingAssignments();
-            if(shipping_assignments != null && shipping_assignments.size() > 0){
-                if(shipping_assignments.size() >= 2){
+            if (shipping_assignments != null && shipping_assignments.size() > 0) {
+                if (shipping_assignments.size() >= 2) {
                     shippingAddress = shipping_assignments.get(shipping_assignments.size() - 1).getShipping().getAddress();
-                }else{
+                } else {
                     shippingAddress = shipping_assignments.get(0).getShipping().getAddress();
                 }
             }

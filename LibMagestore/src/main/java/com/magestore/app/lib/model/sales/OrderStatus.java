@@ -10,4 +10,6 @@ import com.magestore.app.lib.model.Model;
  */
 
 public interface OrderStatus extends Model {
+    String getComment();
+    String getCreatedAt();
 }
