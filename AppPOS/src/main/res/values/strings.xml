@@ -48,6 +48,14 @@
     <string name="order_detail_content_item_discount_amount">Discount Amount</string>
     <string name="order_detail_content_item_row_total">Row Total</string>
     <string name="order_detail_content_item_row_qty">Ordered: </string>
+    <string name="order_detail_bottom_tb_subtotal">Subtotal</string>
+    <string name="order_detail_bottom_tb_shipping">Shipping</string>
+    <string name="order_detail_bottom_tb_tax">Tax</string>
+    <string name="order_detail_bottom_tb_discount">Discount</string>
+    <string name="order_detail_bottom_tb_grand_total">Grand Total</string>
+    <string name="order_detail_bottom_tb_total_paid">Total Paid</string>
+    <string name="order_detail_bottom_btn_print">PRINT</string>
+    <string name="order_detail_bottom_btn_invoice">INVOICE</string>
 
     <!-- Strings related to single words -->
     <string name="customerAddress">Address</string>

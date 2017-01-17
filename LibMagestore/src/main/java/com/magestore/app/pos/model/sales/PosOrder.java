@@ -290,6 +290,31 @@ public class PosOrder extends PosAbstractModel implements Order {
     }
 
     @Override
+    public float getTaxAmount() {
+        return tax_amount;
+    }
+
+    @Override
+    public float getShippingAmount() {
+        return shipping_amount;
+    }
+
+    @Override
+    public float getDiscountAmount() {
+        return discount_amount;
+    }
+
+    @Override
+    public float getTotalPaid() {
+        return total_paid;
+    }
+
+    @Override
+    public float getOrderHistorySubtotal() {
+        return subtotal;
+    }
+
+    @Override
     public List<Items> newOrderItems() {
         items = new ArrayList<PosItems>();
         return (List<Items>) (List<?>) items;

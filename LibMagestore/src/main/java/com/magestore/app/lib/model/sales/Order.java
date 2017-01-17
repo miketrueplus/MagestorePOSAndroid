@@ -42,4 +42,9 @@ public interface Order extends Model {
     List<OrderWebposPayment> getWebposOrderPayments();
     List<OrderStatus> getOrderStatus();
     boolean checkComment();
+    float getTaxAmount();
+    float getShippingAmount();
+    float getDiscountAmount();
+    float getTotalPaid();
+    float getOrderHistorySubtotal();
 }

@@ -9,4 +9,5 @@
     <!--Order Detail-->
     <color name="order_detail_top_background">#ffffff</color>
     <color name="order_detail_content_card_background">#ffffff</color>
+    <color name="order_detail_bottom_background">#ffffff</color>
 </resources>
