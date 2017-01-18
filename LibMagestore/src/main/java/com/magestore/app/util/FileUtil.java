@@ -15,6 +15,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
+import java.util.Scanner;
 
 /**
  * Các hàm tiện ích về file
@@ -123,7 +124,7 @@ public class FileUtil {
      * @param str
      * @throws Exception
      */
-    public static void writeString(File file, String str) throws Exception {
+    public static void writeString(File file, String str) throws IOException {
         // chuẩn bị tham chiếu
         FileOutputStream fOut = null;
         OutputStreamWriter myOutWriter = null;
@@ -140,7 +141,7 @@ public class FileUtil {
             myOutWriter.append(str);
 
             fOut.flush();
-        } catch (Exception e) {
+        } catch (IOException e) {
             throw e;
         }
         finally {
@@ -192,5 +193,10 @@ public class FileUtil {
      */
     public static InputStream readFile(File file) throws Exception {
         return new FileInputStream(file);
+    }
+
+    public static String readFileToString(File file) throws  Exception {
+        String content = new Scanner(file).useDelimiter("\\Z").next();
+        return content;
     }
 }

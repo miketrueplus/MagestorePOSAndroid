@@ -125,4 +125,9 @@ public interface Statement {
      * @return
      */
     ParamBuilder getParamBuilder();
+
+    /**
+     * Build trước final query
+     */
+    void buildFinalQuery();
 }

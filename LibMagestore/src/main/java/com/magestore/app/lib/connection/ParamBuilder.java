@@ -68,7 +68,7 @@ public interface ParamBuilder {
      * Dựng câu querry
      * @return
      */
-    StringBuffer buildQuery();
+    StringBuilder buildQuery();
 
     // giải phóng
     ParamBuilder clear();

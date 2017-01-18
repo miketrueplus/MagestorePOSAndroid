@@ -84,7 +84,7 @@ public class MagestoreParamBuilder implements ParamBuilder {
     String mstrSessionID;
 
     // chứa chuỗi đã được build, chưa thêm tham số
-    StringBuffer mstrBuilderQuery;
+    StringBuilder mstrBuilderQuery;
 
     /**
      * Khởi tạo với map key value có sẵn
@@ -290,7 +290,7 @@ public class MagestoreParamBuilder implements ParamBuilder {
         boolean hasMoreParams = false;
 
         // đặt thên tham số trên url
-        StringBuffer strBuilder = new StringBuffer();
+        StringBuilder strBuilder = new StringBuilder();
         strBuilder.append(strGroupName);
         strBuilder.append(UNDERLINE_SYMBOL);
         strBuilder.append(strConditionType);
@@ -334,9 +334,9 @@ public class MagestoreParamBuilder implements ParamBuilder {
      * @return
      */
     @Override
-    public StringBuffer buildQuery() {
+    public StringBuilder buildQuery() {
         // String builderKey
-        mstrBuilderQuery = new StringBuffer();
+        mstrBuilderQuery = new StringBuilder();
 
         // quét session
         if (mstrSessionID != null) {

@@ -28,6 +28,7 @@ public class MagestoreCacheConnection<TParseImplement extends ParseImplement, TP
 
     // tên file cache
     String cacheFileName;
+    String cacheFileNameInfo;
 
     // class để convert thành model
     Class<TParseImplement> clazzParseImplement;
@@ -42,8 +43,19 @@ public class MagestoreCacheConnection<TParseImplement extends ParseImplement, TP
     // nếu hết hạn cached thì chờ load lại luôn hay cho lên 1 thread
     boolean isReloadCacheLater = true;
 
-    // thời hạn lưu cache bằng giờ
-    int expireHour = 300;
+    // Đánh dấu cache đã được ghi lại hết chưa, chỉ khi cờ này bật, các thread khác mới được giải phóng tài nguyên
+    boolean isFinishBackgroud = false;
+
+    // thời hạn lưu cache bằng giờ, mặc định là 1 ngày
+    int expireMilisecond = 86400000;
+
+    /**
+     * Báo hiệu đã hoàn thành việc cache, các thread khác có thể giải phóng tài nguyên
+     * @return
+     */
+    public boolean isFinishBackgroud() {
+        return isFinishBackgroud;
+    }
 
     /**
      * Xác định load cache ngay và luôn không
@@ -81,8 +93,13 @@ public class MagestoreCacheConnection<TParseImplement extends ParseImplement, TP
      * @param hours
      * @return
      */
-    public MagestoreCacheConnection setTimeOutOfDate(int hours) {
-        this.expireHour = hours;
+    public MagestoreCacheConnection setHourCacheOutOfDate(int hours) {
+        this.expireMilisecond = hours * 60 * 60 * 1000;
+        return this;
+    }
+
+    public MagestoreCacheConnection setDayCacheOutOfDate(int day) {
+        this.expireMilisecond = day * 24 * 60 * 60 * 1000;
         return this;
     }
 
@@ -103,6 +120,7 @@ public class MagestoreCacheConnection<TParseImplement extends ParseImplement, TP
      */
     public MagestoreCacheConnection setCacheName(String cacheName) {
         this.cacheFileName = CACHE_DIR + cacheName;
+        this.cacheFileNameInfo = this.cacheFileName + ".info";
         return this;
     }
 
@@ -148,7 +166,17 @@ public class MagestoreCacheConnection<TParseImplement extends ParseImplement, TP
      * @throws IOException
      */
     private boolean isCacheOutOfDate() throws IOException {
-        return isForceOutOfDate;
+        // nếu buộc hết hạn cache luôn
+        if (isForceOutOfDate) return true;
+
+        // Lấy thời gian tạo cache và so sánh với thời gian hiện tại
+        File fileCached = FileUtil.getCachedFile(cacheFileName);
+        long timeCached = fileCached.lastModified();
+        long timeCurrent = System.currentTimeMillis();
+
+        // nếu chênh nhau thì cache đã hết hạn
+        return  (Math.abs(timeCached - timeCurrent) > expireMilisecond);
+
     }
 
     /**
@@ -168,7 +196,7 @@ public class MagestoreCacheConnection<TParseImplement extends ParseImplement, TP
      * @return
      * @throws IOException
      */
-    public ParseModel excute() throws ParseException, IOException {
+    public synchronized ParseModel excute() throws ParseException, IOException {
         ResultReading rp = null;
         // Load trước từ cache
         // điều kiện: cho phép cache, có thể cache, có cache
@@ -185,8 +213,10 @@ public class MagestoreCacheConnection<TParseImplement extends ParseImplement, TP
                         model = rp.doParse();
                     }
                     // nếu cache đã hết hạn, cho load lại cache trên thread
-                    if (isCacheOutOfDate())
+                    if (isCacheOutOfDate()) {
+                        isFinishBackgroud = false;
                         runLoadToCacheThread();
+                    }
 
                     // đọc cache thuận lợi return luôn
                     return model;
@@ -243,13 +273,21 @@ public class MagestoreCacheConnection<TParseImplement extends ParseImplement, TP
     /**
      * Chạy API và lưu vào cached
      */
-    private void runLoadToCacheThread() {
+    private synchronized void runLoadToCacheThread() {
         Thread thread = new Thread() {
             public void run() {
+                isFinishBackgroud = false;
                 try {
                     loadToCache();
+
+                    // giải phóng nếu tiến trình local đã xử lý xong,
+
                 } catch (IOException e) {
                     e.printStackTrace();
+                }
+                finally {
+                    // đánh dấu kết thúc để giải phóng tài nguyên
+                    isFinishBackgroud = true;
                 }
             }
         };
@@ -296,7 +334,10 @@ public class MagestoreCacheConnection<TParseImplement extends ParseImplement, TP
         try {
             rp = statement.execute();
             // lưu vào cache
-            rp.writeToFile(FileUtil.getCachedFile(cacheFileName));
+            File fileCached = FileUtil.getCachedFile(cacheFileName);
+            rp.writeToFile(fileCached);
+            // đánh dấu thời gian lưu cache
+            fileCached.setLastModified(System.currentTimeMillis());
         } catch (IOException e) {
             throw e;
         } finally {

@@ -13,7 +13,6 @@ import org.junit.Test;
  * Created by Mike on 12/12/2016.
  * Magestore
  * mike@trueplus.vn
- * TODO: Add a class header comment!
  */
 
 public class MagestoreConnectionTest {

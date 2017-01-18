@@ -1,5 +1,6 @@
 package com.magestore.app.pos.api.m2.config;
 
+import com.google.common.util.concurrent.Service;
 import com.magestore.app.lib.connection.Connection;
 import com.magestore.app.lib.connection.ConnectionException;
 import com.magestore.app.lib.connection.ConnectionFactory;
@@ -25,7 +26,6 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- *
  * Created by Mike on 12/28/2016.
  * Magestore
  * mike@trueplus.vn
@@ -35,6 +35,7 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
 
     /**
      * Trả lại 1 danh sách các config
+     *
      * @return
      * @throws DataAccessException
      * @throws ConnectionException
@@ -50,6 +51,7 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         Connection connection = null;
         Statement statement = null;
         ParamBuilder paramBuilder = null;
+        Thread thread = null;
 
         try {
             // Khởi tạo connection và khởi tạo truy vấn
@@ -62,39 +64,69 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
 
             // load cache
-            MagestoreCacheConnection cache = new MagestoreCacheConnection<Gson2PosConfigParseImplement, PosConfig>()
+            final MagestoreCacheConnection cache = new MagestoreCacheConnection<Gson2PosConfigParseImplement, PosConfig>()
                     .setCacheName("POSConfigDataAccess.getConfig")
                     .setStatement(statement)
                     .setForceOutOfDate(false)
-                    .setReloadCacheLater(false)
+                    .setReloadCacheLater(true)
                     .setParseImplement(Gson2PosConfigParseImplement.class)
                     .setParseModel(PosConfig.class);
-            Config config = (Config)cache.excute();
+            Config config = (Config) cache.excute();
+
+//            thread = new Thread() {
+//                public ParamBuilder paramBuilder;
+//                public Connection connection;
+//                public Statement statement;
+//                @Override
+//                public void run() {
+//                    if (cache != null)
+//                        while (!cache.isFinishBackgroud()) {
+//                            try {
+//                                sleep(1000);
+//                            } catch (InterruptedException e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                    // đóng param builder
+//                    if (paramBuilder != null) paramBuilder.clear();
+//                    paramBuilder = null;
+//
+////                     đóng statement
+//                    if (statement != null) statement.close();
+//                    statement = null;
+//
+////                     đóng connection
+//                    if (connection != null) connection.close();
+//                    connection = null;
+//                }
+//            };
+//            thread.
+
             return config;
-        }
-        catch (ConnectionException ex) {
+        } catch (ConnectionException ex) {
             throw ex;
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             throw ex;
-        }
-        finally {
+        } finally {
+            if (thread != null)
+                thread.start();
             // đóng param builder
-            if (paramBuilder != null) paramBuilder.clear();
-            paramBuilder = null;
+//            if (paramBuilder != null) paramBuilder.clear();
+//            paramBuilder = null;
 
             // đóng statement
-            if (statement != null)statement.close();
-            statement = null;
+//            if (statement != null)statement.close();
+//            statement = null;
 
             // đóng connection
-            if (connection != null) connection.close();
-            connection = null;
+//            if (connection != null) connection.close();
+//            connection = null;
         }
     }
 
     /**
      * Trả lại 1 config dưới dạng 1 string
+     *
      * @param configPath
      * @return
      * @throws DataAccessException

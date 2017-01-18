@@ -37,8 +37,9 @@ public class MagestoreStatement implements Statement {
     ParamBuilder mParambuilder;
 
     // String builder excuteQuery
-    StringBuffer mstrPreparedQuery;
+    StringBuilder mstrPreparedQuery;
     String mstrLastPreparedQuery;
+    String mstrExecuteQuery;
 
     // http header
     private static final String CONTENT_TYPE = "Content-Type";
@@ -115,7 +116,7 @@ public class MagestoreStatement implements Statement {
         //   thì chuỗi kết quả = "http://api.androidhive.info/contacts/name/${name}/age/${age}"
         mstrLastPreparedQuery = pstrQuery;
         String strBaseURL = ((MagestoreConnection)getConnection()).getBaseURL();
-        mstrPreparedQuery = new StringBuffer(strBaseURL);
+        mstrPreparedQuery = new StringBuilder(strBaseURL);
         if (!pstrQuery.startsWith(SLASH) && !strBaseURL.endsWith(SLASH)) {
             mstrPreparedQuery.append(SLASH);
         }
@@ -191,22 +192,40 @@ public class MagestoreStatement implements Statement {
      * @return
      * TODO: cần cải thiện thuật toán tránh build lại query nhiều lần
      */
-    private String buildFinalQuery() {
-        String excuteQuery = null;
+    public void buildFinalQuery() {
+        mstrExecuteQuery = null;
         if (mstrPreparedQuery == null) prepareQuery(mstrLastPreparedQuery);
-        StringBuffer strFinalBuilderQuery = mstrPreparedQuery;
+        StringBuilder strFinalBuilderQuery = mstrPreparedQuery;
         if (mParambuilder != null) {
-            strFinalBuilderQuery = new StringBuffer(mstrPreparedQuery);
+            strFinalBuilderQuery = new StringBuilder(mstrPreparedQuery);
             strFinalBuilderQuery.append(mParambuilder.buildQuery());
         }
         if (mValuesMap != null) {
             StrSubstitutor sub = new StrSubstitutor(mValuesMap);
-            excuteQuery = sub.replace(strFinalBuilderQuery);
+            mstrExecuteQuery = sub.replace(strFinalBuilderQuery);
         }
         else
-            excuteQuery = strFinalBuilderQuery.toString();
+            mstrExecuteQuery = strFinalBuilderQuery.toString();
 
-        return excuteQuery;
+//        return mstrExecuteQuery;
+    }
+
+    public String abuildFinalQuery() {
+        mstrExecuteQuery = null;
+        if (mstrPreparedQuery == null) prepareQuery(mstrLastPreparedQuery);
+        StringBuilder strFinalBuilderQuery = mstrPreparedQuery;
+        if (mParambuilder != null) {
+            strFinalBuilderQuery = new StringBuilder(mstrPreparedQuery);
+            strFinalBuilderQuery.append(mParambuilder.buildQuery());
+        }
+        if (mValuesMap != null) {
+            StrSubstitutor sub = new StrSubstitutor(mValuesMap);
+            mstrExecuteQuery = sub.replace(strFinalBuilderQuery);
+        }
+        else
+            mstrExecuteQuery = strFinalBuilderQuery.toString();
+
+        return mstrExecuteQuery;
     }
 
     /**
@@ -227,7 +246,8 @@ public class MagestoreStatement implements Statement {
     @Override
     public ResultReading execute() throws ConnectionException, IOException {
         // Chuẩn bị chuỗi URL truy vấn, thay các tham số bằng các giá trị tương ứng
-        String excuteQuery = buildFinalQuery();
+//        buildFinalQuery();
+        String strExecuteQuery = abuildFinalQuery();
 
         // Tham chiếu đến connection
         MagestoreConnection magestoreConnection = (MagestoreConnection) getConnection();
@@ -235,7 +255,7 @@ public class MagestoreStatement implements Statement {
             magestoreConnection.open();
 
         // Khởi tạo HTTP Connection với query, giao thức GET
-        mHttpConnection = magestoreConnection.openHTTPConnection(excuteQuery, mstrMethod);
+        mHttpConnection = magestoreConnection.openHTTPConnection(strExecuteQuery, mstrMethod);
 
         // Nếu có object làm tham số. ghi json vào http body
         if (mobjPrepareParam != null) {
