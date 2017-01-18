@@ -26,6 +26,7 @@
     <string name="customer_title_customer_list">Customer</string>
     <string name="customer_title_customer_detail">Customer Detail</string>
     <string name="customer_title_order_list">Order</string>
+    <string name="customer_title_register_shifts">Register Shifts</string>
     <string name="customer_title_order_detail">Order Detail</string>
     <string name="customer_update_address">Update address</string>
     <string name="customer_delete_address">Delete address</string>
@@ -37,6 +38,7 @@
     <string name="order_detail_content_billing_address">BILLING ADDRESS</string>
     <string name="order_detail_content_shipping_address">SHIPPING ADDRESS</string>
     <string name="order_detail_content_payment_method">PAYMENT METHOD</string>
+    <string name="order_detail_content_payment_paid">PAID</string>
     <string name="order_detail_content_shipping_method">SHIPPING METHOD</string>
     <string name="order_detail_content_comment_history">COMMENT HISTORY</string>
     <string name="order_detail_content_item_title_product">Product</string>

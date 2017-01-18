@@ -16,8 +16,6 @@ public class POSAPI {
     public static final String PARAM_CONFIG_ID = "configID";
     public static final String PARAM_CONFIG_PATH = "configPath";
 
-
-
     // API get product
     public static final String REST_PRODUCT_GET_LISTING = "/rest/default/V1/webpos/products/?session=${sessionID}";
 
@@ -33,10 +31,14 @@ public class POSAPI {
     public static final String REST_ORDER_CANCEL = "/rest/default/V1/webpos/orders/${orderID}/cancel?session=${sessionID}";
     public static final String REST_ORDER_EMAIL = "/rest/default/V1/webpos/orders/${orderID}/email?session=${sessionID}";
     public static final String REST_ORDER_COMMENTS = "/rest/default/V1/webpos/orders/${orderID}/comments?session=${sessionID}";
+    public static final String REST_ORDER_INVOICE = "/rest/default/V1/webpos/invoices?session=${sessionID}";
     public static final String PARAM_ORDER_ID = "orderID";
 
     // API customer
     public static final String REST_CUSOMTER_GET_LISTING = "/rest/default/V1/webpos/customers/search?searchCriteria[current_page]=${currentPage}&searchCriteria[page_size]=${pageSize}&session=${sessionID}";
+
+    // API register shifts
+    public static final String REST_REGISTER_SHIFTS_GET_LISTING = "/rest/default/V1/webpos/shifts/getlist?session=${sessionID}";
 
     // API config
     public static final String REST_CONFIG_GET_LISTING = "/rest/default/V1/webpos/configurations?session=${sessionID}";

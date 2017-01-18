@@ -3,8 +3,11 @@ package com.magestore.app.pos;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+
 import com.magestore.app.lib.context.MagestoreContext;
 import com.magestore.app.lib.service.ServiceFactory;
 import com.magestore.app.lib.service.order.OrderHistoryService;
@@ -13,7 +16,7 @@ import com.magestore.app.pos.panel.OrderDetailPanel;
 import com.magestore.app.pos.panel.OrderListPanel;
 import com.magestore.app.pos.ui.AbstractActivity;
 
- /**
+/**
  * An activity representing a list of Items. This activity
  * has different presentations for handset and tablet-size devices. On
  * handsets, the activity presents a list of items, which when touched,
@@ -97,6 +100,13 @@ public class OrderActivity extends AbstractActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_order, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
@@ -106,6 +116,9 @@ public class OrderActivity extends AbstractActivity {
             actionBar.setDisplayHomeAsUpEnabled(false);
             initToolbarMenu(mToolbar);
             return true;
+        }
+        if (id == R.id.order_action) {
+
         }
         return super.onOptionsItemSelected(item);
     }

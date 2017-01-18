@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.magestore.app.pos.RegisterShiftActivity;
 import com.magestore.app.view.ui.PosUI;
 import com.magestore.app.pos.CustomerActivity;
 import com.magestore.app.pos.OrderActivity;
@@ -136,6 +137,10 @@ public abstract class AbstractActivity
         }
         else if (id == R.id.nav_onhold_orders) {
             Intent intent = new Intent(getContext(), OrderActivity.class);
+            startActivity(intent);
+        }
+        else if (id == R.id.nav_register_shift) {
+            Intent intent = new Intent(getContext(), RegisterShiftActivity.class);
             startActivity(intent);
         }
 

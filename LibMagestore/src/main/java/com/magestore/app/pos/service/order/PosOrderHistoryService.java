@@ -22,7 +22,7 @@ import java.util.List;
 public class PosOrderHistoryService extends AbstractService implements OrderHistoryService {
     @Override
     public List<Order> retrieveOrderList(int size) throws InstantiationException, IllegalAccessException, IOException, ParseException {
-        // Khởi tạo customer gateway factory
+        // Khởi tạo order gateway factory
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         OrderDataAccess orderGateway = factory.generateOrderDataAccess();
         // TODO: test order có webpos_payments
