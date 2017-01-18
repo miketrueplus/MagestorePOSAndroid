@@ -44,6 +44,12 @@
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".RegisterShiftActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/customer_title_register_shifts"
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".OrderDetailActivity"
             android:label="@string/customer_title_order_detail"
             android:parentActivityName=".OrderActivity"
