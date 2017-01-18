@@ -34,10 +34,11 @@ import java.util.Map;
 
 public class MagestoreStatement implements Statement {
     // Param builder
-    MagestoreParamBuilder mParambuilder;
+    ParamBuilder mParambuilder;
 
     // String builder excuteQuery
-    StringBuilder mstrPreparedQuery;
+    StringBuffer mstrPreparedQuery;
+    String mstrLastPreparedQuery;
 
     // http header
     private static final String CONTENT_TYPE = "Content-Type";
@@ -112,8 +113,9 @@ public class MagestoreStatement implements Statement {
         //   BaseURL = "http://api.androidhive.info/"
         //   query = "/contacts/name/${name}/age/${age}"
         //   thì chuỗi kết quả = "http://api.androidhive.info/contacts/name/${name}/age/${age}"
+        mstrLastPreparedQuery = pstrQuery;
         String strBaseURL = ((MagestoreConnection)getConnection()).getBaseURL();
-        mstrPreparedQuery = new StringBuilder(strBaseURL);
+        mstrPreparedQuery = new StringBuffer(strBaseURL);
         if (!pstrQuery.startsWith(SLASH) && !strBaseURL.endsWith(SLASH)) {
             mstrPreparedQuery.append(SLASH);
         }
@@ -125,6 +127,18 @@ public class MagestoreStatement implements Statement {
         // Clear map tham số
         if (mValuesMap != null) mValuesMap.clear();
         mValuesMap = null;
+    }
+
+    @Override
+    public void setParamBuilder(ParamBuilder paramBuilder) throws ConnectionException {
+        mParambuilder = paramBuilder;
+        if (mValuesMap == null)
+            mValuesMap = paramBuilder.getValueMap();
+        else {
+            paramBuilder.getValueMap().putAll(mValuesMap);
+            mValuesMap.clear();
+            mValuesMap = paramBuilder.getValueMap();
+        }
     }
 
     /**
@@ -179,10 +193,11 @@ public class MagestoreStatement implements Statement {
      */
     private String buildFinalQuery() {
         String excuteQuery = null;
-        StringBuilder strFinalBuilderQuery = mstrPreparedQuery;
+        if (mstrPreparedQuery == null) prepareQuery(mstrLastPreparedQuery);
+        StringBuffer strFinalBuilderQuery = mstrPreparedQuery;
         if (mParambuilder != null) {
-            strFinalBuilderQuery = new StringBuilder(mstrPreparedQuery);
-            strFinalBuilderQuery.append(mParambuilder.buidQuery());
+            strFinalBuilderQuery = new StringBuffer(mstrPreparedQuery);
+            strFinalBuilderQuery.append(mParambuilder.buildQuery());
         }
         if (mValuesMap != null) {
             StrSubstitutor sub = new StrSubstitutor(mValuesMap);
@@ -242,11 +257,11 @@ public class MagestoreStatement implements Statement {
         // Chạy query, lấy resultset về
         int statusCode = mHttpConnection.getResponseCode();
         InputStream is = null;
+
         if (statusCode == HTTP_CODE_RESPONSE_SUCCESS)
             return new MagestoreResultReading(mHttpConnection.getInputStream());
         else
             return new MagestoreResultReadingException(mHttpConnection.getErrorStream(), statusCode);
-
     }
 
     /**
@@ -355,8 +370,8 @@ public class MagestoreStatement implements Statement {
      */
     @Override
     public void close() {
-        if (mParambuilder != null) mParambuilder.clear();
-        if (mValuesMap != null) mValuesMap.clear();
+        // clear value map nếu không sử dụng param builder
+        if (mValuesMap != null && mParambuilder == null) mValuesMap.clear();
         mValuesMap = null;
         mstrPreparedQuery = null;
         mHttpConnection = null;

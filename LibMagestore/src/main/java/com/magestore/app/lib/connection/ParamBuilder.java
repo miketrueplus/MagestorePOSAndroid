@@ -2,6 +2,8 @@ package com.magestore.app.lib.connection;
 
 import com.magestore.app.lib.model.Model;
 
+import java.util.Map;
+
 /**
  * Xây dựng câu truy vấn
  * Created by Mike on 1/16/2017.
@@ -26,42 +28,51 @@ public interface ParamBuilder {
      * @param strFieldValue
      * @return
      */
-    boolean setFilter(String strGroupName, String strFieldName, String strConditionType, String strFieldValue);
-    boolean setFilter(String strFieldName, String strConditionType, String strFieldValue);
-    boolean setFilterEqual(String strFieldName, String strValue);
-    boolean setFilterGreater(String strFieldName, String strValue);
-    boolean setFilterLess(String strFieldName, String strValue);
-    boolean setFilterLike(String strFieldName, String strValue);
-    boolean setFilter(String strFieldName, String strValue);
+    ParamBuilder setFilter(String strGroupName, String strFieldName, String strConditionType, String strFieldValue);
+    ParamBuilder setFilter(String strFieldName, String strConditionType, String strFieldValue);
+    ParamBuilder setFilterEqual(String strFieldName, String strValue);
+    ParamBuilder setFilterGreater(String strFieldName, String strValue);
+    ParamBuilder setFilterLess(String strFieldName, String strValue);
+    ParamBuilder setFilterLike(String strFieldName, String strValue);
+    ParamBuilder setFilter(String strFieldName, String strValue);
 
     /**
      * Dành cho sắp xếp
      */
-    boolean setSortOrder(String strFieldName, String strDirection);
-    boolean setSortOrderASC(String strFieldName);
-    boolean setSortOrderDESC(String strFieldName);
+    ParamBuilder setSortOrder(String strFieldName, String strDirection);
+    ParamBuilder setSortOrderASC(String strFieldName);
+    ParamBuilder setSortOrderDESC(String strFieldName);
 
     /**
      * Phân trang
      */
-    boolean setPageSize(int pageSize);
-    boolean setPage(int page);
+    ParamBuilder setPageSize(int pageSize);
+    ParamBuilder setPage(int page);
 
     /**
      * Đặt session
      * @param strSessionID
      * @return
      */
-    boolean setSessionID(String strSessionID);
+    ParamBuilder setSessionID(String strSessionID);
 
     /**
      * Truyền tham số và giá trị
      * @param pstrName
      * @param pstrValue
      */
-    void setParam(String pstrName, String pstrValue);
-    void setParam(String pstrName, int pintValue);
+    ParamBuilder setParam(String pstrName, String pstrValue);
+    ParamBuilder setParam(String pstrName, int pintValue);
+
+    /**
+     * Dựng câu querry
+     * @return
+     */
+    StringBuffer buildQuery();
 
     // giải phóng
-    void clear();
+    ParamBuilder clear();
+
+    // trả lại
+    Map getValueMap();
 }

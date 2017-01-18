@@ -2,11 +2,12 @@ package com.magestore.app.lib.connection;
 
 import com.magestore.app.lib.parse.ParseModel;
 import com.magestore.app.lib.parse.ParseImplement;
+import com.magestore.app.lib.parse.ParseException;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.ParseException;
-
+import java.io.OutputStream;
 /**
  * Quản lý đọc kết quả sau mỗi truy vấn
  * Created by Mike on 12/12/2016.
@@ -49,10 +50,10 @@ public interface ResultReading {
     boolean isClosed() throws ConnectionException, IOException;
 
     /**
-     * Chỉ định parse entity sẽ sử dụng
-     * @param parseEntity
+     * Chỉ định parse model sẽ sử dụng
+     * @param parseModel
      */
-    void setParseEntity(Class parseEntity) throws ConnectionException, IOException;
+    void setParseModel(Class parseModel) throws ConnectionException, IOException;
 
     /**
      * Chỉ định class xử lý implement
@@ -78,20 +79,37 @@ public interface ResultReading {
 
     /**
      * Parse inputstream sang result
-     * @param clParseEntity
+     * @param clParsemodel
      * @return
      * @throws ConnectionException
      * @throws IOException
      */
-    ParseModel doParse(Class clParseEntity) throws IOException, ParseException;
+    ParseModel doParse(Class clParsemodel) throws IOException, ParseException;
 
     /**
      * Parse inputstream sang result
-     * @param clParseEntity
+     * @param clParseModel
      * @param parseImplement
      * @return
      * @throws ConnectionException
      * @throws IOException
      */
-    ParseModel doParse(ParseImplement parseImplement, Class clParseEntity) throws IOException, ParseException;
+    ParseModel doParse(ParseImplement parseImplement, Class clParseModel) throws IOException, ParseException;
+
+    /**
+     * Ghi kết quả ra output stream
+     * @param out
+     * @throws ParseException
+     * @throws ConnectionException
+     * @throws IOException
+     */
+    void writeOutputStream(OutputStream out) throws ParseException, ConnectionException, IOException;
+
+    /**
+     * Ghi kết quả ra file
+     * @throws ParseException
+     * @throws ConnectionException
+     * @throws IOException
+     */
+    void writeToFile(File file) throws ParseException, ConnectionException, IOException;
 }

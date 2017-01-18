@@ -7,7 +7,9 @@ import com.magestore.app.lib.resourcemodel.DataAccessFactory;
 import com.magestore.app.lib.service.config.ConfigService;
 import com.magestore.app.pos.service.AbstractService;
 import com.magestore.app.util.ConfigUtil;
+import com.magestore.app.util.FileUtil;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 
@@ -19,8 +21,11 @@ import java.text.ParseException;
  */
 
 public class POSConfigService extends AbstractService implements ConfigService {
+    private static final String FILE_CONFIG_PATH = "/MagestorePOS/Config/config.json";
+
     /**
      * Trả lại config chung từ server
+     *
      * @return
      * @throws InstantiationException
      * @throws IllegalAccessException
@@ -29,17 +34,18 @@ public class POSConfigService extends AbstractService implements ConfigService {
      */
     @Override
     public Config retrieveConfig() throws InstantiationException, IllegalAccessException, IOException, ParseException {
-        // Khởi tạo customer gateway factory
+        // Nếu chưa khởi tạo customer gateway factory
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
-        ConfigDataAccess configGateway = factory.generateConfigDataAccess();
+        ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
 
         // Lấy list config đầu tiên
-        ConfigUtil.mConfig = configGateway.getConfig();
+        ConfigUtil.mConfig = configDataAccess.getConfig();
         return ConfigUtil.mConfig;
     }
 
     /**
      * Trả lại config đã được lưu trên hệ thống
+     *
      * @return
      */
     @Override

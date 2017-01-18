@@ -67,5 +67,5 @@ public interface ParseImplement {
      * Nhận kết quả trả về
      * @return
      */
-    ParseModel getParseEntity();
+    ParseModel getParseModel();
 }

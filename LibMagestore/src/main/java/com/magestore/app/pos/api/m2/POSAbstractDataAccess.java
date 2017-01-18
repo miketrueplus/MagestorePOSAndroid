@@ -3,8 +3,10 @@ package com.magestore.app.pos.api.m2;
 import com.magestore.app.lib.connection.Connection;
 import com.magestore.app.lib.connection.ConnectionException;
 import com.magestore.app.lib.connection.ConnectionFactory;
+import com.magestore.app.lib.connection.ParamBuilder;
 import com.magestore.app.lib.connection.ResultReading;
 import com.magestore.app.lib.connection.Statement;
+import com.magestore.app.lib.connection.http.MagestoreParamBuilder;
 import com.magestore.app.lib.context.MagestoreContext;
 import com.magestore.app.lib.model.exception.MessageException;
 import com.magestore.app.lib.resourcemodel.DataAccess;
@@ -72,6 +74,7 @@ public class POSAbstractDataAccess implements DataAccess {
         return mclParseEntity;
     }
 
+
     protected String doApi2String(String pstrQuery, Object objParam, String ...params) throws ParseException, ConnectionException, DataAccessException, IOException {
         Connection connection = null;
         Statement statement = null;
@@ -80,7 +83,6 @@ public class POSAbstractDataAccess implements DataAccess {
         try {
             // Khởi tạo connection và khởi tạo truy vấn
             connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
-//            connection = MagestoreConnection.getConnection(POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
 
             // Xử lý truy vấn
             statement = connection.createStatement();
@@ -124,7 +126,6 @@ public class POSAbstractDataAccess implements DataAccess {
         try {
             // Khởi tạo connection và khởi tạo truy vấn
             connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
-//            connection = MagestoreConnection.getConnection(POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
 
             // Xử lý truy vấn
             statement = connection.createStatement();
@@ -135,7 +136,7 @@ public class POSAbstractDataAccess implements DataAccess {
 
             // parse kết quả thành object
             rp.setParseImplement(getClassParseImplement());
-            rp.setParseEntity(parseEntity);
+            rp.setParseModel(parseEntity);
             return rp.doParse();
         }
         catch (ConnectionException ex) {
@@ -169,7 +170,7 @@ public class POSAbstractDataAccess implements DataAccess {
     protected MessageException processException(ResultReading rp) throws IOException, ParseException {
         // parse kết quả thành object
         rp.setParseImplement(getClassExceptionParseImplement());
-        rp.setParseEntity(MessageException.class);
+        rp.setParseModel(MessageException.class);
         return (MessageException) rp.doParse();
     }
 }

@@ -5,13 +5,17 @@ import com.magestore.app.lib.connection.ResultReading;
 import com.magestore.app.lib.parse.ParseModel;
 import com.magestore.app.lib.parse.ParseFactory;
 import com.magestore.app.lib.parse.ParseImplement;
+import com.magestore.app.lib.parse.ParseException;
+import com.magestore.app.util.FileUtil;
 import com.magestore.app.util.StringUtil;
 
 import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.text.ParseException;
 
 /**
  * Parsing kết quả response trả về từ server
@@ -21,12 +25,13 @@ import java.text.ParseException;
  */
 public class MagestoreResultReading implements ResultReading {
     private InputStream mInputStream;
-    private Class mclParseEntity;
+    private Class mclParseModel;
     private ParseImplement mParseImplement;
     private HttpURLConnection mHttpConnection;
 
     /**
      * Nhận kết quả từ inputstream và chuyển thành chuỗi JSON
+     *
      * @param inputStream
      * @throws IOException
      */
@@ -36,6 +41,7 @@ public class MagestoreResultReading implements ResultReading {
 
     /**
      * Lưu lại http connection để đóng cùng với input stream
+     *
      * @param connection
      */
     protected void setHttpConnection(HttpURLConnection connection) {
@@ -44,13 +50,14 @@ public class MagestoreResultReading implements ResultReading {
 
     /**
      * Đóng stream đọc kết quả
+     *
      * @throws ConnectionException
      */
     @Override
     public void close() {
         // đóng parse
         if (mParseImplement != null) mParseImplement.close();
-            mParseImplement = null;
+        mParseImplement = null;
 
         // Đóng input stream
         if (mInputStream != null)
@@ -76,6 +83,7 @@ public class MagestoreResultReading implements ResultReading {
 
     /**
      * Đọc kết quả từ result sang string
+     *
      * @return
      * @throws ConnectionException
      * @throws IOException
@@ -104,6 +112,7 @@ public class MagestoreResultReading implements ResultReading {
 
     /**
      * Trả lại input stream
+     *
      * @return
      */
     @Override
@@ -112,18 +121,20 @@ public class MagestoreResultReading implements ResultReading {
     }
 
     /**
-     * Đặt parse entity class
-     * @param parseEntity
+     * Đặt parse Model class
+     *
+     * @param parseModel
      * @throws ConnectionException
      * @throws IOException
      */
     @Override
-    public void setParseEntity(Class parseEntity) throws ConnectionException, IOException {
-        mclParseEntity = parseEntity;
+    public void setParseModel(Class parseModel) throws ConnectionException, IOException {
+        mclParseModel = parseModel;
     }
 
     /**
      * Đặt parse implement để chuyển đổi kết quả thành đối tượng
+     *
      * @param parseImplement
      * @throws ConnectionException
      * @throws IOException
@@ -136,6 +147,7 @@ public class MagestoreResultReading implements ResultReading {
 
     /**
      * Đặt parse implement để chuyển dodỏi kết quả thành đối tượng
+     *
      * @param parseImplement
      * @throws ConnectionException
      * @throws IOException
@@ -147,6 +159,7 @@ public class MagestoreResultReading implements ResultReading {
 
     /**
      * Parse kết quả trả về parse entity
+     *
      * @return
      * @throws ConnectionException
      * @throws IOException
@@ -154,38 +167,74 @@ public class MagestoreResultReading implements ResultReading {
     @Override
     public ParseModel doParse() throws ParseException, IOException {
         // Thực thi parse
-        mParseImplement.prepareParse(getInputStream(), mclParseEntity);
+        mParseImplement.prepareParse(getInputStream(), mclParseModel);
         mParseImplement.doParse();
 
-        // Trả về parse entity
-        return mParseImplement.getParseEntity();
+        // Trả về parse Model
+        return mParseImplement.getParseModel();
     }
 
     /**
-     * Parse kết quả trả về parse entity
-     * @param parseEntity
+     * Parse kết quả trả về parse Model
+     *
+     * @param parseModel
      * @return
      * @throws ConnectionException
      * @throws IOException
      */
     @Override
-    public ParseModel doParse(Class parseEntity) throws IOException, ParseException {
-        setParseEntity(parseEntity);
+    public ParseModel doParse(Class parseModel) throws IOException, ParseException {
+        setParseModel(parseModel);
         return doParse();
     }
 
     /**
-     * Parse kết quả trả về parse entity
+     * Parse kết quả trả về parse Model
+     *
      * @param parseImplement
-     * @param parseEntity
+     * @param parseModel
      * @return
      * @throws ConnectionException
      * @throws IOException
      */
     @Override
-    public ParseModel doParse(ParseImplement parseImplement, Class parseEntity) throws IOException, ParseException {
+    public ParseModel doParse(ParseImplement parseImplement, Class parseModel) throws IOException, ParseException {
         setParseImplement(parseImplement);
-        setParseEntity(parseEntity);
+        setParseModel(parseModel);
         return doParse();
+    }
+
+    /**
+     * Ghi nội dung ra output stream
+     * @param out
+     * @throws ConnectionException
+     * @throws IOException
+     */
+    @Override
+    public void writeOutputStream(OutputStream out) throws ConnectionException, IOException {
+        final int BUFFER_SIZE = 2048;
+        byte[] buf = new byte[BUFFER_SIZE];
+        InputStream is = getInputStream();
+
+        // ghi chuỗi ra file
+        int n;
+        while ((n = is.read(buf)) > 0) {
+            out.write(buf, 0, n);
+        }
+
+        // flush
+        out.flush();
+
+    }
+
+    /**
+     * Ghi nội dung ra file
+     * @param file
+     * @throws ConnectionException
+     * @throws IOException
+     */
+    @Override
+    public void writeToFile(File file) throws ConnectionException, IOException {
+        FileUtil.writeInputStream(file, getInputStream());
     }
 }

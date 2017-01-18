@@ -1,6 +1,9 @@
 package com.magestore.app.lib.connection;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * Thực hiện các statement và tham số truy vấn
@@ -15,6 +18,12 @@ public interface Statement {
      * @param pstrQuery
      */
     void prepareQuery(String pstrQuery) throws ConnectionException;
+
+    /**
+     * Truyền tham số cho Query
+     * @param paramBuilder
+     */
+    void setParamBuilder(ParamBuilder paramBuilder) throws ConnectionException;
 
     /**
      * Truyền tham số cho Query

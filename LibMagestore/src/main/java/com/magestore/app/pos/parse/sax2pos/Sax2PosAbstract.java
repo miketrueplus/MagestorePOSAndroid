@@ -29,8 +29,8 @@ public class Sax2PosAbstract extends DefaultHandler implements ParseImplement {
     private SAXParser msaxParser;
     private InputStream mInput;
     private Class<ParseModel> mClassEntntiy;
-    protected Collection<ParseModel> mCollectionEntity;
-    protected Map<String, ParseModel> mMapEntity;
+    protected Collection<ParseModel> mCollectionModel;
+    protected Map<String, ParseModel> mMapModel;
     protected Sax2PosAbstract() {
     }
 
@@ -54,8 +54,8 @@ public class Sax2PosAbstract extends DefaultHandler implements ParseImplement {
                 throw new ParseException(ex);
         }
         mClassEntntiy = classEntntiy;
-//        mMapEntity = mapEntity;
-//        mCollectionEntity = mCollectionEntity;
+//        mMapModel = mapModel;
+//        mCollectionModel = mCollectionModel;
 
         mInput = input;
     }
@@ -75,7 +75,7 @@ public class Sax2PosAbstract extends DefaultHandler implements ParseImplement {
     }
 
     @Override
-    public ParseModel getParseEntity() {
+    public ParseModel getParseModel() {
         return null;
     }
 
@@ -83,7 +83,7 @@ public class Sax2PosAbstract extends DefaultHandler implements ParseImplement {
      *
      * @return
      */
-    protected ParseModel newParseEntity() {
+    protected ParseModel newParseModel() {
         try {
             return (ParseModel) mClassEntntiy.newInstance();
         } catch (Exception ex) {
@@ -101,14 +101,14 @@ public class Sax2PosAbstract extends DefaultHandler implements ParseImplement {
             throws SAXException {
         if ("item".equalsIgnoreCase(qName) && mbyteArrageOrder == 2) {
             // Check nếu đang ở node sản phẩm, khởi tạo entity mới,
-            mParseModel = newParseEntity();
+            mParseModel = newParseModel();
             mstrQName = qName;
 
             // Chuẩn bị nếu node này toàn XML
             mStrBuilder = new StringBuilder();
         }
         else if (mbyteArrageOrder >= 3) {
-            // Kể từ các node dưới, lưu lại cả chuỗi XML vào entity
+            // Kể từ các node dưới, lưu lại cả chuỗi XML vào Model
             mStrBuilder.append("<");
             mStrBuilder.append(qName);
             mStrBuilder.append(">");
@@ -132,8 +132,8 @@ public class Sax2PosAbstract extends DefaultHandler implements ParseImplement {
             }
         }
 //        else if (mbyteArrageOrder == 3) {
-//            if (mCollectionEntity != null && mParseModel!= null) mCollectionEntity.add(mParseModel);
-//            if (mMapEntity != null && mParseModel!= null && mParseModel.getEntityKey() != null) mMapEntity.put(mParseModel.getEntityKey(), mParseModel);
+//            if (mCollectionModel != null && mParseModel!= null) mCollectionModel.add(mParseModel);
+//            if (mMapModel != null && mParseModel!= null && mParseModel.getEntityKey() != null) mMapEntity.put(mParseModel.getEntityKey(), mParseModel);
 //        }
         // Đếm xem đang ở node độ sâu mấy
         mbyteArrageOrder--;

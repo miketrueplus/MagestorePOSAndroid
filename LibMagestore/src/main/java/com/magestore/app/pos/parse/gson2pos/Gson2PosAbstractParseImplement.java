@@ -42,7 +42,7 @@ public class Gson2PosAbstractParseImplement extends DefaultHandler implements Pa
     }
 
     /**
-     * Khởi tạo parse đầu vào là inputstream và entity
+     * Khởi tạo parse đầu vào là inputstream và model
      * @param input
      * @param parseModel
      * @throws ParseException
@@ -55,7 +55,7 @@ public class Gson2PosAbstractParseImplement extends DefaultHandler implements Pa
     }
 
     /**
-     * Khởi tạo parse đầu vào là inputstream/gson và entity/class
+     * Khởi tạo parse đầu vào là inputstream/gson và model/class
      * @param input
      * @param cl
      * @throws ParseException
@@ -120,7 +120,7 @@ public class Gson2PosAbstractParseImplement extends DefaultHandler implements Pa
      * @return
      */
     @Override
-    public ParseModel getParseEntity() {
+    public ParseModel getParseModel() {
         return mParseModel;
     }
 }

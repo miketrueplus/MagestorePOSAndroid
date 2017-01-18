@@ -8,7 +8,6 @@ import com.magestore.app.lib.connection.Statement;
 import com.magestore.app.lib.model.Model;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -85,7 +84,7 @@ public class MagestoreParamBuilder implements ParamBuilder {
     String mstrSessionID;
 
     // chứa chuỗi đã được build, chưa thêm tham số
-    StringBuilder mstrBuilderQuery;
+    StringBuffer mstrBuilderQuery;
 
     /**
      * Khởi tạo với map key value có sẵn
@@ -112,10 +111,10 @@ public class MagestoreParamBuilder implements ParamBuilder {
      * @param pageSize
      * @return
      */
-    public boolean setPageSize(int pageSize) {
+    public ParamBuilder setPageSize(int pageSize) {
         mintPageSize = pageSize;
         mMapKeyValue.put(PAGE_SIZE, mintPageSize);
-        return true;
+        return this;
     }
 
     /**
@@ -124,22 +123,23 @@ public class MagestoreParamBuilder implements ParamBuilder {
      * @param page
      * @return
      */
-    public boolean setPage(int page) {
+    public ParamBuilder setPage(int page) {
         mintPage = page;
         mMapKeyValue.put(CURRENT_PAGE, mintPage);
-        return true;
+        return this;
     }
 
     @Override
-    public boolean setSessionID(String strSessionID) {
+    public ParamBuilder setSessionID(String strSessionID) {
         mstrSessionID = strSessionID;
         mMapKeyValue.put(SESSION, mstrSessionID);
-        return true;
+        return this;
     }
 
     @Override
-    public void setParam(String pstrName, String pstrValue) {
+    public ParamBuilder setParam(String pstrName, String pstrValue) {
         mMapKeyValue.put(pstrName, pstrValue);
+        return this;
     }
 
     /**
@@ -150,16 +150,23 @@ public class MagestoreParamBuilder implements ParamBuilder {
      * @throws ConnectionException
      */
     @Override
-    public void setParam(String pstrName, int pintValue) {
+    public ParamBuilder setParam(String pstrName, int pintValue) {
         mMapKeyValue.put(pstrName, pintValue);
+        return this;
     }
 
     @Override
-    public void clear() {
+    public ParamBuilder clear() {
         if (mMapKeyValue != null) mMapKeyValue.clear();
         if (mapSortOrder != null) mapSortOrder.clear();
         if (mapFilterGroup != null) mapFilterGroup.clear();
         mstrBuilderQuery = null;
+        return this;
+    }
+
+    @Override
+    public Map getValueMap() {
+        return mMapKeyValue;
     }
 
     /**
@@ -170,10 +177,10 @@ public class MagestoreParamBuilder implements ParamBuilder {
      * @return
      */
     @Override
-    public boolean setSortOrder(String strFieldName, String strDirection) {
+    public ParamBuilder setSortOrder(String strFieldName, String strDirection) {
         boolean blnHasMoreParam = !mapSortOrder.containsKey(strFieldName);
         mapSortOrder.put(strFieldName, strDirection);
-        return blnHasMoreParam;
+        return this;
     }
 
     /**
@@ -183,7 +190,7 @@ public class MagestoreParamBuilder implements ParamBuilder {
      * @return
      */
     @Override
-    public boolean setSortOrderASC(String strFieldName) {
+    public ParamBuilder setSortOrderASC(String strFieldName) {
         return setSortOrder(strFieldName, ASC);
     }
 
@@ -194,7 +201,7 @@ public class MagestoreParamBuilder implements ParamBuilder {
      * @return
      */
     @Override
-    public boolean setSortOrderDESC(String strFieldName) {
+    public ParamBuilder setSortOrderDESC(String strFieldName) {
         return setSortOrder(strFieldName, DESC);
     }
 
@@ -208,7 +215,7 @@ public class MagestoreParamBuilder implements ParamBuilder {
      * @return
      */
     @Override
-    public boolean setFilter(String strFieldName, String strConditionType, String strFieldValue) {
+    public ParamBuilder setFilter(String strFieldName, String strConditionType, String strFieldValue) {
         return setFilter(SEARCH_DEFAULT_GROUP_NAME, strFieldName, strConditionType, strFieldValue);
     }
 
@@ -220,7 +227,7 @@ public class MagestoreParamBuilder implements ParamBuilder {
      * @return
      */
     @Override
-    public boolean setFilterEqual(String strFieldName, String strValue) {
+    public ParamBuilder setFilterEqual(String strFieldName, String strValue) {
         return setFilter(SEARCH_DEFAULT_GROUP_NAME, strFieldName, SEARCH_CONDITION_EQUAL, strValue);
     }
 
@@ -232,7 +239,7 @@ public class MagestoreParamBuilder implements ParamBuilder {
      * @return
      */
     @Override
-    public boolean setFilterGreater(String strFieldName, String strValue) {
+    public ParamBuilder setFilterGreater(String strFieldName, String strValue) {
         return setFilter(SEARCH_DEFAULT_GROUP_NAME, strFieldName, SEARCH_CONDITION_GREATER, strValue);
     }
 
@@ -244,7 +251,7 @@ public class MagestoreParamBuilder implements ParamBuilder {
      * @return
      */
     @Override
-    public boolean setFilterLess(String strFieldName, String strValue) {
+    public ParamBuilder setFilterLess(String strFieldName, String strValue) {
         return setFilter(SEARCH_DEFAULT_GROUP_NAME, strFieldName, SEARCH_CONDITION_LESS, strValue);
     }
 
@@ -256,7 +263,7 @@ public class MagestoreParamBuilder implements ParamBuilder {
      * @return
      */
     @Override
-    public boolean setFilterLike(String strFieldName, String strValue) {
+    public ParamBuilder setFilterLike(String strFieldName, String strValue) {
         return setFilter(SEARCH_DEFAULT_GROUP_NAME, strFieldName, SEARCH_CONDITION_LIKE, strValue);
     }
 
@@ -268,7 +275,7 @@ public class MagestoreParamBuilder implements ParamBuilder {
      * @return
      */
     @Override
-    public boolean setFilter(String strFieldName, String strValue) {
+    public ParamBuilder setFilter(String strFieldName, String strValue) {
         return setFilterEqual(strFieldName, strValue);
     }
 
@@ -279,11 +286,11 @@ public class MagestoreParamBuilder implements ParamBuilder {
      * @param strFieldName
      * @param strFieldValue
      */
-    public boolean setFilter(String strGroupName, String strFieldName, String strConditionType, String strFieldValue) {
+    public ParamBuilder setFilter(String strGroupName, String strFieldName, String strConditionType, String strFieldValue) {
         boolean hasMoreParams = false;
 
         // đặt thên tham số trên url
-        StringBuilder strBuilder = new StringBuilder();
+        StringBuffer strBuilder = new StringBuffer();
         strBuilder.append(strGroupName);
         strBuilder.append(UNDERLINE_SYMBOL);
         strBuilder.append(strConditionType);
@@ -299,7 +306,7 @@ public class MagestoreParamBuilder implements ParamBuilder {
             mMapKeyValue.put(strKey, strFieldValue);
             mapFilterGroup.put(strGroupName, filter);
             hasMoreParams = true;
-            return hasMoreParams;
+            return this;
         }
 
         // đã có group thì đưa nội dung vào filter
@@ -309,7 +316,7 @@ public class MagestoreParamBuilder implements ParamBuilder {
         mMapKeyValue.put(strKey, strFieldValue);
 
         // trả về true nếu có tham số mới, false nếu ngược lại
-        return hasMoreParams;
+        return this;
     }
 
     /**
@@ -326,9 +333,10 @@ public class MagestoreParamBuilder implements ParamBuilder {
      *
      * @return
      */
-    public StringBuilder buidQuery() {
+    @Override
+    public StringBuffer buildQuery() {
         // String builderKey
-        mstrBuilderQuery = new StringBuilder();
+        mstrBuilderQuery = new StringBuffer();
 
         // quét session
         if (mstrSessionID != null) {

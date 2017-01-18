@@ -46,6 +46,7 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
         Connection connection = null;
         Statement statement = null;
         ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
 
         try {
             // Khởi tạo connection và khởi tạo truy vấn
@@ -54,16 +55,16 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
             statement.prepareQuery(POSAPI.REST_PRODUCT_GET_LISTING);
 
             // Xây dựng tham số
-            ParamBuilder paramBuilder = statement.getParamBuilder();
-            paramBuilder.setPage(currentPage);
-            paramBuilder.setPageSize(pageSize);
-            paramBuilder.setSessionID(POSDataAccessSession.REST_SESSION_ID);
-//            paramBuilder.setFilterEqual("name", "Joust Duffle Bag");
+            paramBuilder = statement.getParamBuilder()
+                .setPage(currentPage)
+                .setPageSize(pageSize)
+                .setSessionID(POSDataAccessSession.REST_SESSION_ID);
+//                .setFilterEqual("name", "Joust Duffle Bag");
 
             // thực thi truy vấn và parse kết quả thành object
             rp = statement.execute();
             rp.setParseImplement(getClassParseImplement());
-            rp.setParseEntity(Gson2PosListProduct.class);
+            rp.setParseModel(Gson2PosListProduct.class);
             Gson2PosListProduct listProduct = (Gson2PosListProduct) rp.doParse();
             List<Product> list = (List<Product>)(List<?>) (listProduct.items);
 
@@ -80,6 +81,9 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
             // đóng result reading
             if (rp != null) rp.close();
             rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
 
             // đóng statement
             if (statement != null)statement.close();
