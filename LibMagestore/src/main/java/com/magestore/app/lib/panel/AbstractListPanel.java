@@ -3,13 +3,17 @@ package com.magestore.app.lib.panel;
 import android.app.AlertDialog;
 import android.content.Context;
 
+import android.content.res.TypedArray;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+
+import com.magestore.app.lib.R;
 
 import com.magestore.app.lib.controller.ListController;
 import com.magestore.app.lib.model.Model;
@@ -35,8 +39,23 @@ public abstract class AbstractListPanel<TModel extends Model>
 
     // Các control nắm view
     protected RecyclerView mRecycleView;
-    protected int mLayoutItem;
 //    protected int mLayoutRecycleView;
+
+    // tham chiếu của cả panel
+    private int mintPanelLayout;
+
+    // tham chiếu layout của mỗi item trong list
+    private int mintItemLayout;
+
+    // tham chiếu layout của cả danh sách
+    private int mintListLayout;
+
+    private int mintSpanCount = 1;
+
+    private int mintOrientation = LinearLayoutManager.VERTICAL;
+
+    // tham chiếu view của layout
+    View mView;
 
     /**
      * Khởi tạo
@@ -56,6 +75,7 @@ public abstract class AbstractListPanel<TModel extends Model>
      */
     public AbstractListPanel(Context context, AttributeSet attrs) {
         super(context, attrs);
+        loadAttrs(context, attrs);
         initLayout();
     }
 
@@ -68,11 +88,57 @@ public abstract class AbstractListPanel<TModel extends Model>
      */
     public AbstractListPanel(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        loadAttrs(context, attrs);
         initLayout();
     }
 
+    /**
+     * Đọc attributes
+     * @param context
+     * @param attrs
+     */
+    private void loadAttrs(Context context, AttributeSet attrs) {
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.magestore_view);
+        mintPanelLayout = a.getResourceId(R.styleable.magestore_view_layout_panel, -1);
+        mintItemLayout = a.getResourceId(R.styleable.magestore_view_layout_item, -1);
+        mintListLayout = a.getResourceId(R.styleable.magestore_view_layout_list, -1);
+        mintOrientation = a.getInteger(R.styleable.magestore_view_layout_orientation, LinearLayoutManager.VERTICAL);
+        mintSpanCount = a.getInteger(R.styleable.magestore_view_layout_span_count, 1);
+        a.recycle();
+
+        if (mintPanelLayout > -1) setLayoutPanel(mintPanelLayout);
+        if (mintItemLayout > -1) setLayoutItem(mintItemLayout);
+
+        if (mintListLayout > -1) {
+            mRecycleView = (RecyclerView) findViewById(mintListLayout);
+            mRecycleView.setLayoutManager(new GridLayoutManager(this.getContext(), mintSpanCount, mintOrientation, false));
+//            ((GridLayoutManager)(mRecycleView.getLayoutManager())).setSpanCount(mintSpanCount);
+            // Chuẩn bị list danh sách khách hàng
+//            mRecycleView = (RecyclerView) findViewById(getListLayout());
+//            mRecycleView.setLayoutManager(new GridLayoutManager(this.getContext(), 1, LinearLayoutManager.HORIZONTAL, false));
+        }
+
+    }
+
+    public int getListLayout() {
+        return mintListLayout;
+    }
+    /**
+     * Thiết lập layout cho panel
+     * @param layoutPanel
+     */
+    public void setLayoutPanel(int layoutPanel) {
+        mintPanelLayout = layoutPanel;
+        mView = inflate(getContext(), mintPanelLayout, null);
+        addView(mView);
+    }
+
+    protected View getView() {
+        return mView;
+    }
 
     public void initLayout() {
+
     }
 
     public void initModel() {
@@ -103,7 +169,7 @@ public abstract class AbstractListPanel<TModel extends Model>
      * @param layout
      */
     public void setLayoutItem(int layout) {
-        mLayoutItem = layout;
+        mintItemLayout = layout;
     }
 
     /**
@@ -180,7 +246,7 @@ public abstract class AbstractListPanel<TModel extends Model>
         @Override
         public AbstractListPanel<TModel>.ListRecyclerViewAdapter.ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext())
-                    .inflate(mLayoutItem, parent, false);
+                    .inflate(mintItemLayout, parent, false);
             return new AbstractListPanel<TModel>.ListRecyclerViewAdapter.ListViewHolder(view);
         }
 

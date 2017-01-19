@@ -72,7 +72,9 @@ public abstract class AbstractSimpleListView<TModel extends Model>
      */
     private void loadAttrs(Context context, AttributeSet attrs) {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.magestore_view);
-        mListLayout = a.getResourceId(R.styleable.magestore_view_layout_row, -1);
+        mListLayout = a.getResourceId(R.styleable.magestore_view_layout_item, -1);
+        if (mListLayout == -1)
+            mListLayout = a.getResourceId(R.styleable.magestore_view_layout_row, -1);
         mNoScroll = a.getBoolean(R.styleable.magestore_view_layout_no_scroll, true);
         a.recycle();
     }

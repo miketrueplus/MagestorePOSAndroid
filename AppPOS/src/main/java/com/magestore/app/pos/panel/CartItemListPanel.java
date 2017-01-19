@@ -56,15 +56,13 @@ public class CartItemListPanel extends AbstractListPanel<Items> {
      */
     public void initLayout() {
         // Load layout view các mặt hàng trong 1 đơn hàng
-        View v = inflate(getContext(), R.layout.panel_cart_list, null);
-        addView(v);
-        mBinding = DataBindingUtil.bind(v);
+        mBinding = DataBindingUtil.bind(getView());
 
         // Chuẩn bị layout từng item trong danh sách khách hàng
-        setLayoutItem(R.layout.card_cart_list_content);
+//        setLayoutItem(R.layout.card_cart_list_content);
 
         // View chưa danh sách các mặt hàng trong đơn
-        initRecycleView(R.id.sales_order_container, new GridLayoutManager(getContext(), 1));
+//        initRecycleView(getListLayout(), new GridLayoutManager(getContext(), 1));
 
         // Button
         mCheckoutButton = (Button) findViewById(R.id.btn_sales_order_checkout);

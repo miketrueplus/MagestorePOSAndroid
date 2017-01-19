@@ -80,11 +80,9 @@ public class SalesActivity extends AbstractActivity
 
         mProductListPanel = (ProductListPanel) findViewById(R.id.product_list_panel);
         mProductListPanel.setColumn(mTwoPane ? 4 : 1);
-//        mProductListPanel.setListener(this);
 
         mCartItemListPanel = (CartItemListPanel) findViewById(R.id.order_item_panel);
         if (mCartItemListPanel == null) return;
-//        mOrderItemListPanel.setListener(this);
     }
 
     protected void initModel() {
@@ -129,26 +127,6 @@ public class SalesActivity extends AbstractActivity
         // TODO: Tạm thời new activity thì tạo checkout mới luôn
         mCartItemListController.newSales();
     }
-
-//    @Override
-//    public List<Product> getProductList() {
-//        return mProductListPanel.getProductList();
-//    }
-//
-//    @Override
-//    public void setProductList(List<Product> listProduct) {
-//        mProductListPanel.setProductList(listProduct);
-//    }
-
-//    @Override
-//    public void onSuccessLoadProduct(List<Product> productList) {
-//
-//    }
-//
-//    @Override
-//    public void onSelectProduct(Product product) {
-//        mOrderItemListPanel.addOrderItem(product);
-//    }
 
     @Override
     public void onBackPressed() {

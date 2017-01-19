@@ -3,6 +3,7 @@
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:magestore_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <FrameLayout
         android:id="@+id/two_pane"
@@ -37,7 +38,12 @@
             <com.magestore.app.pos.panel.CustomerListPanel
                 android:id="@+id/customer_list_panel"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                magestore_view:layout_item="@layout/card_customer_list_content"
+                magestore_view:layout_list="@+id/customer_list"
+                magestore_view:layout_panel="@layout/panel_customer_list"
+                magestore_view:layout_orientation="vertical"
+                magestore_view:layout_span_count="1"/>
 
         </LinearLayout>
 
@@ -49,7 +55,8 @@
             <com.magestore.app.pos.panel.CustomerDetailPanel
                 android:id="@+id/customer_detail_panel"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                magestore_view:layout_panel="@layout/panel_customer_detail" />
         </FrameLayout>
     </LinearLayout>
 </FrameLayout>

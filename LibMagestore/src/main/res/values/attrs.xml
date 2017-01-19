@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="magestore_view">
-        <attr name="layout_cell" format="reference" />
+        <attr name="layout_span_count" format="integer" />
+        <attr name="layout_item" format="reference" />
+        <attr name="layout_list" format="reference" />
+        <attr name="layout_panel" format="reference" />
         <attr name="layout_row" format="reference" />
         <attr name="layout_header" format="reference" />
         <attr name="layout_footer" format="reference" />
         <attr name="layout_no_scroll" format="boolean" />
         <attr name="layout_auto_height" format="boolean" />
-        <attr name="prefix" format="string"/>
+        <attr name="layout_orientation" format="integer" >
+            <enum name="horizontal" value="0" />
+            <enum name="vertical" value="1" />
+        </attr>
         <attr name="data_type" format="integer">
             <enum name="text" value="0" />
             <enum name="currency" value="1" />

@@ -2,7 +2,9 @@ package com.magestore.app.lib.panel;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.FrameLayout;
 
 import com.magestore.app.lib.controller.ListController;
@@ -22,8 +24,14 @@ public abstract class AbstractDetailPanel<TModel extends Model>
     // controller của danh sách
     protected ListController<TModel> mController;
 
+    // tham chiếu layout của panel
+    protected int mintPanelLayout;
+
     // Model chính
     protected TModel mItem;
+
+    // view chính của panel
+    View mView;
 
     /**
      * Khởi tạo panel
@@ -40,6 +48,7 @@ public abstract class AbstractDetailPanel<TModel extends Model>
      */
     public AbstractDetailPanel(Context context, AttributeSet attrs) {
         super(context, attrs);
+        loadAttrs(context, attrs);
         initLayout();
     }
 
@@ -49,7 +58,35 @@ public abstract class AbstractDetailPanel<TModel extends Model>
      */
     public AbstractDetailPanel(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        loadAttrs(context, attrs);
         initLayout();
+    }
+
+    /**
+     * Đọc attributes
+     * @param context
+     * @param attrs
+     */
+    private void loadAttrs(Context context, AttributeSet attrs) {
+        TypedArray a = context.obtainStyledAttributes(attrs, com.magestore.app.lib.R.styleable.magestore_view);
+        mintPanelLayout = a.getResourceId(com.magestore.app.lib.R.styleable.magestore_view_layout_panel, -1);
+        a.recycle();
+
+        if (mintPanelLayout > -1) setLayoutPanel(mintPanelLayout);
+    }
+
+    /**
+     * Thiết lập layout cho panel
+     * @param layoutPanel
+     */
+    public void setLayoutPanel(int layoutPanel) {
+        mintPanelLayout = layoutPanel;
+        mView = inflate(getContext(), mintPanelLayout, null);
+        addView(mView);
+    }
+
+    protected View getView() {
+        return mView;
     }
 
     protected void initLayout() {

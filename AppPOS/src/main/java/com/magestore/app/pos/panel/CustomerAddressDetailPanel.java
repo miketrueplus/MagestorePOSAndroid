@@ -22,17 +22,14 @@ public class CustomerAddressDetailPanel extends AbstractDetailPanel<CustomerAddr
 
     public CustomerAddressDetailPanel(Context context) {
         super(context);
-//        init();
     }
 
     public CustomerAddressDetailPanel(Context context, AttributeSet attrs) {
         super(context, attrs);
-//        init();
     }
 
     public CustomerAddressDetailPanel(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-//        init();
     }
 
 
@@ -40,12 +37,9 @@ public class CustomerAddressDetailPanel extends AbstractDetailPanel<CustomerAddr
      * Chuẩn bị layout
      */
     public void initLayout() {
-        // Load layout view thông tin khách hàng chi tiết
-        View v = inflate(getContext(), R.layout.panel_customer_address_detail, null);
-        addView(v);
-
         // Bind view sang object
-        mBinding = DataBindingUtil.bind(v);
+        if (getView() != null)
+            mBinding = DataBindingUtil.bind(getView());
     }
 
     @Override
@@ -53,6 +47,7 @@ public class CustomerAddressDetailPanel extends AbstractDetailPanel<CustomerAddr
         // Bind từ object sang view
         if (item == null) return;
         super.bindItem(item);
+        if (mBinding == null) mBinding = DataBindingUtil.bind(getView());
         mBinding.setCustomerAddress(item);
     }
 

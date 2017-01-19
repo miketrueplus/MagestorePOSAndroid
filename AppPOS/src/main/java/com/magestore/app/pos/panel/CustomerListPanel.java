@@ -57,12 +57,6 @@ public class CustomerListPanel extends AbstractListPanel<Customer> {
 
     @Override
     public void initLayout() {
-//        super.initControlLayout();
-
-        // Load layout view danh sách khách hàng
-        View v = inflate(getContext(), R.layout.panel_customer_list, null);
-        addView(v);
-
         // Xử lý sự kiện floating action bar
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -72,11 +66,5 @@ public class CustomerListPanel extends AbstractListPanel<Customer> {
                         .setAction("Action", null).show();
             }
         });
-
-        // Chuẩn bị layout từng item trong danh sách khách hàng
-        setLayoutItem(R.layout.card_customer_list_content);
-
-        // Chuẩn bị list danh sách khách hàng
-        initRecycleView(R.id.customer_list, new GridLayoutManager(this.getContext(), 1));
     }
 }

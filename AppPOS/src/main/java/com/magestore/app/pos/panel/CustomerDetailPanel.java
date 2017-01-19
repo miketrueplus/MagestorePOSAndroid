@@ -54,9 +54,7 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
     @Override
     protected void initLayout() {
         // Load layout view thông tin khách hàng chi tiết
-        View v = inflate(getContext(), R.layout.panel_customer_detail, null);
-        addView(v);
-        mBinding = DataBindingUtil.bind(v);
+        mBinding = DataBindingUtil.bind(getView());
 
         // chuẩn bị panel view danh sách địa chỉ khách hàng
         mCustomerAddressListPanel = (CustomerAddressListPanel) findViewById(R.id.customer_address);
@@ -120,7 +118,7 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
     public void onClickNewAddress(View v) {
         // Chuẩn bị layout cho dialog customerAddress
         final CustomerAddressDetailPanel panelAddress = new CustomerAddressDetailPanel(getContext());
-
+        panelAddress.setLayoutPanel(R.layout.panel_customer_address_detail);
         // Khởi tạo sẵn customerAddress mới
 //        CustomerAddress customerAddress = mCustomerUsecase.createAddress();
 //        panelAddress.setAddress(customerAddress);

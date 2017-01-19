@@ -160,7 +160,12 @@
                             android:id="@+id/customer_address"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_weight="1.0" />
+                            android:layout_weight="1.0"
+                            magestore_view:layout_item="@layout/card_customer_address_content"
+                            magestore_view:layout_list="@+id/customer_address_list"
+                            magestore_view:layout_panel="@layout/panel_customer_address_list"
+                            magestore_view:layout_orientation="horizontal"
+                            magestore_view:layout_span_count="1"/>
 
                     </FrameLayout>
                 </LinearLayout>
