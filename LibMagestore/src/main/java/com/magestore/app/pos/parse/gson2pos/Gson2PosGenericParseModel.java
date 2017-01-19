@@ -11,4 +11,5 @@ import com.magestore.app.lib.parse.ParseModel;
 
 public class Gson2PosGenericParseModel<T> implements ParseModel {
     public T items;
+    public int total_count;
 }
