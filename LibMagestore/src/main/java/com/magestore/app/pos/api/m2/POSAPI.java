@@ -17,7 +17,7 @@ public class POSAPI {
     public static final String PARAM_CONFIG_PATH = "configPath";
 
     // API get product
-    public static final String REST_PRODUCT_GET_LISTING = "/rest/default/V1/webpos/products/?session=${sessionID}";
+    public static final String REST_PRODUCT_GET_LISTING = "/rest/default/V1/webpos/products/?";
 
     // API get category
     public static final String REST_GET_CATEGORY_LISTING = "/rest/default/V1/webpos/categories/?searchCriteria[current_page]=${currentPage}&searchCriteria[page_size]=${pageSize}&session=${sessionID}";
@@ -35,7 +35,21 @@ public class POSAPI {
     public static final String PARAM_ORDER_ID = "orderID";
 
     // API customer
-    public static final String REST_CUSOMTER_GET_LISTING = "/rest/default/V1/webpos/customers/search?searchCriteria[current_page]=${currentPage}&searchCriteria[page_size]=${pageSize}&session=${sessionID}";
+    public static final String REST_CUSOMTER_GET_LISTING = "/rest/default/V1/webpos/customers/search?";
+    public static final String REST_CUSOMTER_GET_DETAIL = "/rest/default/V1/webpos/customers/customerId?customerId=${customerID}";
+    public static final String REST_CUSOMTER_UPDATE = "/rest/default/V1/webpos/customers/${customerID}?";
+    public static final String REST_CUSOMTER_ADD = "/rest/default/V1/webpos/customers?";
+    public static final String REST_CUSOMTER_ADDRESS_GET_LISTING = "/rest/default/V1/webpos/customers/addresses/${customerID}?";
+    public static final String REST_ADDRESS_GET_LISTING = "/rest/default/V1/webpos/customers/addresses/?";
+    public static final String REST_ADDRESS_UPDATE = "/rest/default/V1/webpos/customers/addresses/?";
+    public static final String REST_ADDRESS_ADD = "/rest/default/V1/webpos/customers/addresses/?";
+    public static final String REST_CUSOMTER_COMPLAIN_GET_LISTING = "/rest/default/V1/webpos/customers/complain/search?$searchCriteria";
+    public static final String REST_COMPLAIN_GET_LISTING = "/rest/default/V1/webpos/customers/complain/search?$searchCriteria";
+    public static final String REST_CUSOMTER_COMPLAIN_UPDATE = "/rest/default/V1/webpos/customers/complain/${customerID}?";
+    public static final String REST_CUSOMTER_COMPLAIN_ADD = "/rest/default/V1/webpos/customers/complain/${customerID}?";
+    public static final String PARAM_CUSTOMER_ID = "customerID";
+
+
 
     // API register shifts
     public static final String REST_REGISTER_SHIFTS_GET_LISTING = "/rest/default/V1/webpos/shifts/getlist?session=${sessionID}";
