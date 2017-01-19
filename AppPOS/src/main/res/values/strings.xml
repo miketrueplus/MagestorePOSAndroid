@@ -70,6 +70,12 @@
     <string name="register_shift_bottom_print">Print</string>
     <string name="register_shift_bottom_make_adjustment">Make Adjustment</string>
     <string name="register_shift_bottom_close_shift">Close Shift</string>
+    <string name="register_shift_dialog_make_adjustment_title">Make Adjustment</string>
+    <string name="register_shift_dialog_make_adjustment_balance">The current balance of your shift:</string>
+    <string name="register_shift_dialog_make_adjustment_add">Add</string>
+    <string name="register_shift_dialog_make_adjustment_remove">Remove</string>
+    <string name="register_shift_dialog_make_adjustment_amount">Amount</string>
+    <string name="register_shift_dialog_make_adjustment_note">Note</string>
 
     <!-- Strings related to single words -->
     <string name="customerAddress">Address</string>
@@ -133,6 +139,8 @@
     <string name="title_confirm_update">Please confirm update</string>
     <string name="title_confirm_remove">Please confirm remove</string>
     <string name="title_confirm_cancel">Please confirm cancel</string>
+    <string name="dialog_cancel">Cancel</string>
+    <string name="dialog_save">Save</string>
 
 
     <string-array name="dogs_list">

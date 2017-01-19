@@ -1,9 +1,11 @@
 package com.magestore.app.pos.util;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-
+import android.view.View;
 import com.magestore.app.pos.R;
+import com.magestore.app.pos.view.MagestoreDialog;
 
 /**
  * Created by Mike on 1/3/2017.
@@ -15,6 +17,7 @@ import com.magestore.app.pos.R;
 public class DialogUtil {
     /**
      * Confirm delete
+     *
      * @param context
      * @param strMsgDetail
      * @param listener
@@ -30,6 +33,7 @@ public class DialogUtil {
 
     /**
      * Confirm save
+     *
      * @param context
      * @param strMsgDetail
      * @param listener
@@ -45,6 +49,7 @@ public class DialogUtil {
 
     /**
      * Confirm update
+     *
      * @param context
      * @param strMsgDetail
      * @param listener
@@ -60,6 +65,7 @@ public class DialogUtil {
 
     /**
      * Confirm remove
+     *
      * @param context
      * @param strMsgDetail
      * @param listener
@@ -75,6 +81,7 @@ public class DialogUtil {
 
     /**
      * Confirm cancel
+     *
      * @param context
      * @param strMsgDetail
      * @param listener
@@ -86,6 +93,13 @@ public class DialogUtil {
                 R.string.yes,
                 R.string.no,
                 listener);
+    }
+
+    public static Dialog dialog(Context context, String title, View panel) {
+        MagestoreDialog dialog = new MagestoreDialog(context);
+        dialog.setDialogTitle(title);
+        dialog.setDialogContent(panel);
+        return dialog;
     }
 }
 
