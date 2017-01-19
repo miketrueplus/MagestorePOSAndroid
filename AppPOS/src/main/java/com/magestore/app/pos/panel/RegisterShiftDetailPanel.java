@@ -1,9 +1,11 @@
 package com.magestore.app.pos.panel;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.Button;
 
 import com.magestore.app.lib.controller.Controller;
 import com.magestore.app.lib.model.registershift.RegisterShift;
@@ -13,6 +15,7 @@ import com.magestore.app.pos.controller.RegisterShiftCashListController;
 import com.magestore.app.pos.controller.RegisterShiftListController;
 import com.magestore.app.pos.controller.RegisterShiftSaleListController;
 import com.magestore.app.pos.databinding.PanelRegisterShiftDetailBinding;
+import com.magestore.app.pos.util.DialogUtil;
 
 /**
  * Created by Johan on 1/18/17.
@@ -21,6 +24,7 @@ import com.magestore.app.pos.databinding.PanelRegisterShiftDetailBinding;
  */
 
 public class RegisterShiftDetailPanel extends AbstractDetailPanel<RegisterShift> {
+    View v;
     PanelRegisterShiftDetailBinding mBinding;
     RegisterShiftSaleListPanel mRegisterShiftSaleListPanel;
     RegisterShiftSaleListController mRegisterShiftSaleListController;
@@ -42,7 +46,7 @@ public class RegisterShiftDetailPanel extends AbstractDetailPanel<RegisterShift>
     @Override
     protected void initLayout() {
         // Load layout view danh sách register shift
-        View v = inflate(getContext(), R.layout.panel_register_shift_detail, null);
+        v = inflate(getContext(), R.layout.panel_register_shift_detail, null);
         addView(v);
         mBinding = DataBindingUtil.bind(v);
 
@@ -51,6 +55,7 @@ public class RegisterShiftDetailPanel extends AbstractDetailPanel<RegisterShift>
 
         // chuẩn bị panel view danh sách cash transaction
         mRegisterShiftCashListPanel = (RegisterShiftCashListPanel) findViewById(R.id.register_shift_cash);
+
     }
 
     @Override
@@ -74,11 +79,27 @@ public class RegisterShiftDetailPanel extends AbstractDetailPanel<RegisterShift>
     }
 
     @Override
-    public void bindItem(RegisterShift item) {
+    public void bindItem(final RegisterShift item) {
         super.bindItem(item);
         mBinding.setRegisterShift(item);
         mRegisterShiftSaleListController.doSelectRegisterShift(item);
         mRegisterShiftCashListController.doSelectRegisterShift(item);
         mRegisterShiftCashListPanel.setRegisterShift(item);
+
+        ((Button) v.findViewById(R.id.make_adjustment)).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showMakeAdjustment(item);
+            }
+        });
+    }
+
+    private void showMakeAdjustment(RegisterShift item) {
+        RegisterShiftMakeAdjustmentPanel panelMakeAdjustment = new RegisterShiftMakeAdjustmentPanel(getContext());
+        panelMakeAdjustment.setLayoutPanel(R.layout.panel_register_shift_make_adjustment);
+        panelMakeAdjustment.bindItem(item);
+        panelMakeAdjustment.setController(mController);
+        Dialog dialog = DialogUtil.dialog(getContext(), getContext().getString(R.string.register_shift_dialog_make_adjustment_title), panelMakeAdjustment);
+        dialog.show();
     }
 }

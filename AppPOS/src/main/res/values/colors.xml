@@ -4,7 +4,11 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#ff4081</color>
     <color name="colorGrey">#ffededed</color>
+    <color name="white">#ffffff</color>
+    <color name="line">#e1e1e1</color>
 
+    <!--Dialog-->
+    <color name="dialog_background_color">#ffffff</color>
 
     <!--Order Detail-->
     <color name="order_detail_top_background">#ffffff</color>
@@ -16,4 +20,10 @@
     <color name="order_status_cancelled">#c2c2c2</color>
     <color name="order_status_closed">#5c5c5c</color>
     <color name="order_status_notsync">#ff0000</color>
+
+    <!--Register Shift-->
+    <color name="register_shift_dialog_make_adjustment_bg_select">#00a679</color>
+    <color name="register_shift_dialog_make_adjustment_text_select">#ffffff</color>
+    <color name="register_shift_dialog_make_adjustment_bg_not_select">#e1e1e1</color>
+    <color name="register_shift_dialog_make_adjustment_text_not_select">#48586c</color>
 </resources>

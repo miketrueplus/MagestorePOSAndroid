@@ -2,6 +2,7 @@ package com.magestore.app.pos.panel;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -113,17 +114,17 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
 
         String status = item.getStatus().toLowerCase();
         if (status.equals("pending")) {
-            im_status.setColorFilter(this.getContext().getResources().getColor(R.color.order_status_pending));
+            im_status.setColorFilter(ContextCompat.getColor(getContext(), R.color.order_status_pending));
         } else if (status.equals("processing")) {
-            im_status.setColorFilter(this.getContext().getResources().getColor(R.color.order_status_processing));
+            im_status.setColorFilter(ContextCompat.getColor(getContext(), R.color.order_status_processing));
         } else if (status.equals("complete")) {
-            im_status.setColorFilter(this.getContext().getResources().getColor(R.color.order_status_complete));
+            im_status.setColorFilter(ContextCompat.getColor(getContext(), R.color.order_status_complete));
         } else if (status.equals("cancelled")) {
-            im_status.setColorFilter(this.getContext().getResources().getColor(R.color.order_status_cancelled));
+            im_status.setColorFilter(ContextCompat.getColor(getContext(), R.color.order_status_cancelled));
         } else if (status.equals("closed")) {
-            im_status.setColorFilter(this.getContext().getResources().getColor(R.color.order_status_closed));
+            im_status.setColorFilter(ContextCompat.getColor(getContext(), R.color.order_status_closed));
         } else if (status.equals("not_sync")) {
-            im_status.setColorFilter(this.getContext().getResources().getColor(R.color.order_status_notsync));
+            im_status.setColorFilter(ContextCompat.getColor(getContext(), R.color.order_status_notsync));
         }
     }
 }
