@@ -29,7 +29,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginRight="5dp"
             android:layout_weight="1"
-            android:text="@{registerShiftCash.getCheckOpenShift() ? registerShiftCash.getOpenShiftTitle() : ConfigUtil.fomatBalance(registerShiftCash.getValue())}" />
+            android:text="@{registerShiftCash.getCheckOpenShift() ? registerShiftCash.getOpenShiftTitle() : registerShiftCash.getCheckTypeValue()}" />
 
         <RelativeLayout
             android:layout_width="0dp"

@@ -2,6 +2,7 @@ package com.magestore.app.pos.model.registershift;
 
 import com.magestore.app.lib.model.registershift.CashTransaction;
 import com.magestore.app.pos.model.PosAbstractModel;
+import com.magestore.app.util.ConfigUtil;
 
 /**
  * Created by Johan on 1/18/17.
@@ -29,6 +30,7 @@ public class PosCashTransaction extends PosAbstractModel implements CashTransact
     float float_amount;
     boolean check_open_shift;
     String balance_title;
+    String check_type_value;
 
     @Override
     public String getID() {
@@ -106,5 +108,13 @@ public class PosCashTransaction extends PosAbstractModel implements CashTransact
             return true;
         }
         return false;
+    }
+
+    @Override
+    public String getCheckTypeValue() {
+        if (type.toLowerCase().equals("remove")) {
+            return "- " + ConfigUtil.formatPrice(value);
+        }
+        return "+ " + ConfigUtil.formatPrice(value);
     }
 }

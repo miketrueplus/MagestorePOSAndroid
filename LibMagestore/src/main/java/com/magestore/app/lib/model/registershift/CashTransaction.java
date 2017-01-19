@@ -23,4 +23,5 @@ public interface CashTransaction extends Model {
     void setCheckOpenShift(boolean checkOpenShift);
     float getValue();
     boolean getCheckNote();
+    String getCheckTypeValue();
 }

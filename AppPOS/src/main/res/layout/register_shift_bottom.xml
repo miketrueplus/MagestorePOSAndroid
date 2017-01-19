@@ -39,6 +39,7 @@
                 android:layout_marginRight="5dp"
                 android:layout_weight="1"
                 android:text="@string/register_shift_bottom_print"
+                android:textAllCaps="false"
                 android:textSize="18sp" />
 
             <FrameLayout
@@ -62,6 +63,7 @@
                 android:layout_marginRight="5dp"
                 android:layout_weight="1"
                 android:text="@string/register_shift_bottom_make_adjustment"
+                android:textAllCaps="false"
                 android:textSize="18sp" />
 
             <Button
@@ -72,6 +74,7 @@
                 android:layout_marginRight="5dp"
                 android:layout_weight="1"
                 android:text="@string/register_shift_bottom_close_shift"
+                android:textAllCaps="false"
                 android:textSize="18sp" />
         </LinearLayout>
     </LinearLayout>

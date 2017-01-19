@@ -215,14 +215,4 @@ public class ConfigUtil {
         }
         return DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.SHORT).format(dateFormat);
     }
-
-    /**
-     * Format balance in register shift
-     *
-     * @param number
-     * @return
-     */
-    public static String fomatBalance(float number) {
-        return "+ " + formatCurrency(number);
-    }
 }
