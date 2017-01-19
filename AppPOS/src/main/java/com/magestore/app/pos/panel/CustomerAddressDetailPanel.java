@@ -1,20 +1,14 @@
 package com.magestore.app.pos.panel;
 
-import android.app.Activity;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.magestore.app.lib.adapterview.adapter2pos.AdapterView2Model;
 import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
 import com.magestore.app.pos.databinding.PanelCustomerAddressDetailBinding;
-import com.magestore.app.pos.model.customer.PosCustomerAddress;
 import com.magestore.app.pos.R;
-
-import java.lang.reflect.InvocationTargetException;
 
 /**
  * Dialog quản lý địa chỉ của customer

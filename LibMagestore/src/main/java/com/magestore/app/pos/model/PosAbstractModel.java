@@ -4,7 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.Gson;
-import com.magestore.app.lib.adapterview.AdapterViewAnnotiation;
+import com.magestore.app.lib.adapter.AdapterViewAnnotiation;
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.parse.ParseModel;
 import com.magestore.app.util.NotFoundObject;

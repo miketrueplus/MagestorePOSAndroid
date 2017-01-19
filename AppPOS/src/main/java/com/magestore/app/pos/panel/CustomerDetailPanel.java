@@ -8,18 +8,14 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageButton;
 
-import com.magestore.app.lib.adapterview.adapter2pos.AdapterView2Model;
 import com.magestore.app.lib.controller.Controller;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
 import com.magestore.app.pos.controller.CustomerAddressListController;
 import com.magestore.app.pos.controller.CustomerListController;
-import com.magestore.app.pos.databinding.PanelCustomerAddressDetailBinding;
 import com.magestore.app.pos.databinding.PanelCustomerDetailBinding;
-import com.magestore.app.pos.model.customer.PosCustomer;
 import com.magestore.app.pos.R;
-
-import java.lang.reflect.InvocationTargetException;
+import com.magestore.app.pos.view.CustomerComplainListView;
 
 /**
  * Hiển thị và quản lý các thông tin chi tiết của 1 customer
@@ -33,14 +29,14 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
     CustomerAddressListPanel mCustomerAddressListPanel;
     CustomerAddressListController mCustomerAddressListController;
 
+    // complain của khách hàng
+    CustomerComplainListView mCustomerComplainListView;
+
     // các control
     ImageButton mbtnCheckOut;
     ImageButton mbtnNewAddress;
 
     PanelCustomerDetailBinding mBinding;
-
-    // Map từ entity sang view
-//    AdapterView2Model mAdapter2View;
 
     public CustomerDetailPanel(Context context) throws InstantiationException, IllegalAccessException {
         super(context);
@@ -64,6 +60,9 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
 
         // chuẩn bị panel view danh sách địa chỉ khách hàng
         mCustomerAddressListPanel = (CustomerAddressListPanel) findViewById(R.id.customer_address);
+
+        // chuẩn bị panel complain của khách hàng
+        mCustomerComplainListView = (CustomerComplainListView)  findViewById(R.id.complain_list_panel);
 
         // load các control vào các biến
 //        mbtnCheckOut = (ImageButton) findViewById(R.id.btn_check_out);
@@ -150,7 +149,14 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
     @Override
     public void bindItem(Customer item) {
         super.bindItem(item);
+
+        // map thông tin customer lên panel
         mBinding.setCustomerDetail(item);
+
+        // chỉ định adress controller hiển thị các address lên
         mCustomerAddressListController.doSelectCustomer(item);
+
+        // chỉ định complain list cho hiển thị
+        if (item.getComplain() != null) mCustomerComplainListView.bindList(item.getComplain());
     }
 }

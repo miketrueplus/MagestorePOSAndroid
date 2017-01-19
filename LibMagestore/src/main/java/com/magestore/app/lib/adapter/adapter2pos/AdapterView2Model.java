@@ -1,15 +1,13 @@
-package com.magestore.app.lib.adapterview.adapter2pos;
+package com.magestore.app.lib.adapter.adapter2pos;
 
-import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.magestore.app.lib.adapterview.AdapterView;
-import com.magestore.app.lib.adapterview.AdapterViewAnnotiation;
+import com.magestore.app.lib.adapter.AdapterView;
+import com.magestore.app.lib.adapter.AdapterViewAnnotiation;
 import com.magestore.app.lib.model.Model;
-import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.NotFoundObject;
 
 import java.lang.reflect.Field;

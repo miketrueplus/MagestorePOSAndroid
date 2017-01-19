@@ -1,4 +1,4 @@
-package com.magestore.app.lib.adapterview;
+package com.magestore.app.lib.adapter;
 
 import com.magestore.app.lib.model.Model;
 

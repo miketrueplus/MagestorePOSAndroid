@@ -1,8 +1,10 @@
 package com.magestore.app.pos.service.customer;
 
+import com.magestore.app.lib.model.customer.Complain;
 import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.resourcemodel.DataAccessFactory;
+import com.magestore.app.pos.model.customer.PosComplain;
 import com.magestore.app.pos.model.customer.PosCustomerAddress;
 import com.magestore.app.pos.model.customer.PosCustomer;
 import com.magestore.app.lib.resourcemodel.customer.CustomerDataAccess;
@@ -11,6 +13,7 @@ import com.magestore.app.pos.service.AbstractService;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -104,5 +107,31 @@ public class POSCustomerService extends AbstractService implements CustomerServi
     @Override
     public CustomerAddress createAddress() {
         return new PosCustomerAddress();
+    }
+
+    @Override
+    public List<Complain> getComplain(String customerID) {
+        Complain complain1 = new PosComplain();
+        complain1.setContent("hello");
+        complain1.setCustomerID(customerID);
+        complain1.setCreateAt("now");
+        complain1.setComplainID("1");
+
+        Complain complain2 = new PosComplain();
+        complain2.setContent("hello 2");
+        complain2.setCustomerID(customerID);
+        complain2.setCreateAt("now 2");
+        complain2.setComplainID("2");
+
+        List<Complain> list = new ArrayList<Complain>();
+        list.add(complain1);
+        list.add(complain2);
+
+        return list;
+    }
+
+    @Override
+    public void addComplain(Complain complain) {
+
     }
 }

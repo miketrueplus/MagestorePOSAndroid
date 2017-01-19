@@ -1,4 +1,4 @@
-package com.magestore.app.lib.adapterview;
+package com.magestore.app.lib.adapter;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

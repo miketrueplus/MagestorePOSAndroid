@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="magestore_view">
-        <attr name="prefix" format="string" />
-        <attr name="prefix_char" format="string" />
-        <attr name="postfix" format="string" />
+        <attr name="layout_cell" format="reference" />
+        <attr name="layout_row" format="reference" />
+        <attr name="layout_header" format="reference" />
+        <attr name="layout_footer" format="reference" />
+        <attr name="prefix" format="string"/>
         <attr name="data_type" format="integer">
             <enum name="text" value="0" />
             <enum name="currency" value="1" />

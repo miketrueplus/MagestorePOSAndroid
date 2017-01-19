@@ -65,7 +65,6 @@ public abstract class AbstractActivity
      * @param strKey
      * @param strValue
      */
-    @Override
     public void saveSharedValue(String strKey, String strValue) {
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
@@ -73,7 +72,6 @@ public abstract class AbstractActivity
         editor.commit();
     }
 
-    @Override
     public String getSharedValue(String strKey, String strDefault) {
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
@@ -84,12 +82,10 @@ public abstract class AbstractActivity
         return this;
     }
 
-    @Override
     public void showProgress(boolean show) {
 
     }
 
-    @Override
     public void showUI(PosUI ui) {
 
     }
@@ -105,7 +101,6 @@ public abstract class AbstractActivity
                 .show();
     }
 
-    @Override
     public void showErrorMsg(Exception exp) {
         new AlertDialog.Builder(this)
                 .setMessage(exp.getLocalizedMessage())
@@ -113,7 +108,6 @@ public abstract class AbstractActivity
                 .show();
     }
 
-    @Override
     public void close() {
         finish();
     }

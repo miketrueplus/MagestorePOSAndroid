@@ -1,5 +1,6 @@
 package com.magestore.app.pos.model.customer;
 
+import com.magestore.app.lib.model.customer.Complain;
 import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.pos.model.PosAbstractModel;
@@ -32,6 +33,7 @@ public class PosCustomer extends PosAbstractModel implements Customer {
     String telephone;
     String disable_auto_group_change;
     List<PosCustomerAddress> addresses;
+    List<Complain> complains;
 
     @Override
     public String getName() {
@@ -72,5 +74,15 @@ public class PosCustomer extends PosAbstractModel implements Customer {
     public List<CustomerAddress> newAddressList() {
         addresses = new ArrayList<PosCustomerAddress>();
         return getAddress();
+    }
+
+    @Override
+    public List<Complain> getComplain() {
+        return (List<Complain>) (List<?>) complains;
+    }
+
+    @Override
+    public void setComplain(List<Complain> complains) {
+        this.complains = complains;
     }
 }

@@ -1,6 +1,7 @@
 package com.magestore.app.pos.controller;
 
 import com.magestore.app.lib.controller.AbstractListController;
+import com.magestore.app.lib.model.customer.Complain;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.service.customer.CustomerService;
 
@@ -10,7 +11,6 @@ import java.util.List;
  * Created by Mike on 1/9/2017.
  * Magestore
  * mike@trueplus.vn
- * TODO: Add a class header comment!
  */
 
 public class CustomerListController extends AbstractListController<Customer> {
@@ -34,9 +34,9 @@ public class CustomerListController extends AbstractListController<Customer> {
     public CustomerService getCustomerService() {
         return mCustomerService;
     }
+
     /**
      * Thực hiện load danh sách khách hàng
-//     * @param params
      * @return
      * @throws Exception
      */
@@ -46,4 +46,11 @@ public class CustomerListController extends AbstractListController<Customer> {
         return listCustomer;
     }
 
+    @Override
+    public void bindItem(Customer item) {
+        List<Complain> complains = mCustomerService.getComplain(item.getID());
+        item.setComplain(complains);
+
+        super.bindItem(item);
+    }
 }

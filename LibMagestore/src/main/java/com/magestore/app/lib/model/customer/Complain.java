@@ -10,4 +10,15 @@ import com.magestore.app.lib.model.Model;
  */
 
 public interface Complain extends Model {
+    String getCustomerID();
+    String getComplainID();
+    String getContent();
+    String getCreateAt();
+    Customer getCustomer();
+
+    void setCustomerID(String cusID);
+    void setCustomer(Customer customer);
+    void setContent(String content);
+    void setCreateAt(String createAt);
+    void setComplainID(String complainID);
 }

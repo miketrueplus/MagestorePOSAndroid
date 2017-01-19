@@ -1,6 +1,6 @@
 package com.magestore.app.pos.model.customer;
 
-import com.magestore.app.lib.adapterview.AdapterViewAnnotiation;
+import com.magestore.app.lib.adapter.AdapterViewAnnotiation;
 import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.model.directory.Region;
 import com.magestore.app.pos.model.PosAbstractModel;

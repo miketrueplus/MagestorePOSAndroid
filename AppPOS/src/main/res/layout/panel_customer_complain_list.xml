@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="com.magestore.app.util.ConfigUtil" />
+
+        <variable
+            name="complain"
+            type="com.magestore.app.lib.model.customer.Complain" />
+    </data>
+
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/list_content1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dip"
+                    android:layout_weight="0.5"
+                    android:clickable="false"
+                    android:gravity="left"
+                    android:longClickable="false"
+                    android:paddingBottom="1dip"
+                    android:paddingTop="1dip"
+                    android:text="@{ConfigUtil.formatDate(complain.getCreateAt())}"
+                    android:textColor="#ff7f1d"
+                    android:textSize="17dip"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/list_content2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dip"
+                    android:layout_weight="0.5"
+                    android:clickable="false"
+                    android:gravity="left"
+                    android:longClickable="false"
+                    android:paddingBottom="1dip"
+                    android:paddingTop="1dip"
+                    android:text="@{complain.getContent()}"
+                    android:textColor="#ff7f1d"
+                    android:textSize="17dip"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+</layout>

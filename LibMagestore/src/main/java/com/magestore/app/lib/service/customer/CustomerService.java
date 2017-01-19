@@ -1,5 +1,6 @@
 package com.magestore.app.lib.service.customer;
 
+import com.magestore.app.lib.model.customer.Complain;
 import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.service.Service;
@@ -65,4 +66,12 @@ public interface CustomerService extends Service {
      * Khởi tạo địa chỉ mới
      */
     public CustomerAddress createAddress();
+
+    /**
+     * Cập nhật complain khách hàng
+     * @param customerID
+     * @return
+     */
+    List<Complain> getComplain(String customerID);
+    void addComplain(Complain complain);
 }

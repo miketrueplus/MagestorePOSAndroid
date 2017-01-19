@@ -149,6 +149,10 @@ public abstract class AbstractListController<TModel extends Model>
             mDetailView.bindItem(item);
     }
 
+    public void onSelectRow(TModel item, int position) {
+
+    }
+
     /**
      * Xác định controller xử lý detail
      */
