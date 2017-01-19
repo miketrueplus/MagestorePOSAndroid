@@ -39,24 +39,6 @@ public class CustomerAddressListPanel extends AbstractListPanel<CustomerAddress>
     }
     public CustomerAddressListPanel(Context context, AttributeSet attrs, int defStyleAttr) {super(context, attrs, defStyleAttr);}
 
-    /**
-     * Chuẩn bị layout
-     */
-    @Override
-    public void initLayout() {
-
-        // Load layout view danh sách địa chỉ của khách hàng
-//        View v = inflate(getContext(), R.layout.panel_customer_address_list, null);
-//        addView(v);
-
-        // Chuẩn bị layout từng item trong danh sách khách hàng
-//        setLayoutItem(R.layout.card_customer_address_content);
-
-        // Chuẩn bị list danh sách khách hàng
-//        mRecycleView = (RecyclerView) findViewById(getListLayout());
-//        mRecycleView.setLayoutManager(new GridLayoutManager(this.getContext(), 1, LinearLayoutManager.HORIZONTAL, false));
-    }
-
     @Override
     protected void bindItem(View view, final CustomerAddress item, int position) {
         // Đặt các trường text vào danh sách
