@@ -240,7 +240,8 @@
                         android:id="@+id/complain_list_panel"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        magestore_view:layout_row="@layout/panel_customer_complain_list" />
+                        magestore_view:layout_row="@layout/panel_customer_complain_list"
+                        magestore_view:layout_no_scroll="true"/>
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>

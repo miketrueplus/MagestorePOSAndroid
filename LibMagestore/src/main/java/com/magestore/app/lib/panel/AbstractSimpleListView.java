@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.FrameLayout;
 import android.widget.ListView;
 
 import com.magestore.app.lib.R;
@@ -25,11 +24,12 @@ import java.util.List;
  * mike@trueplus.vn
  */
 
-public abstract class AbstractSimpleListPanel<TModel extends Model>
+public abstract class AbstractSimpleListView<TModel extends Model>
         extends ListView
         implements MagestoreView<ListController<TModel>> {
     // ID Layout của rowview
     int mListLayout;
+    boolean mNoScroll;
 
     // Task điều khiển danh sách trong list
     protected ListController<TModel> mController;
@@ -37,24 +37,20 @@ public abstract class AbstractSimpleListPanel<TModel extends Model>
     // Model chứa data danh sách
     protected List<TModel> mList;
 
-    public AbstractSimpleListPanel(Context context) {
+    public AbstractSimpleListView(Context context) {
         super(context);
         initLayout();
     }
 
-    public AbstractSimpleListPanel(Context context, AttributeSet attrs) {
+    public AbstractSimpleListView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.magestore_view);
-        mListLayout = a.getResourceId(R.styleable.magestore_view_layout_row, -1);
-        a.recycle();
+        loadAttrs(context, attrs);
         initLayout();
     }
 
-    public AbstractSimpleListPanel(Context context, AttributeSet attrs, int defStyle) {
+    public AbstractSimpleListView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.magestore_view);
-        mListLayout = a.getResourceId(R.styleable.magestore_view_layout_row, -1);
-        a.recycle();
+        loadAttrs(context, attrs);
         initLayout();
     }
 
@@ -67,6 +63,18 @@ public abstract class AbstractSimpleListPanel<TModel extends Model>
     @Override
     public ListController<TModel> getController() {
         return mController;
+    }
+
+    /**
+     * Đọc các thuộc tính của layout
+     * @param context
+     * @param attrs
+     */
+    private void loadAttrs(Context context, AttributeSet attrs) {
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.magestore_view);
+        mListLayout = a.getResourceId(R.styleable.magestore_view_layout_row, -1);
+        mNoScroll = a.getBoolean(R.styleable.magestore_view_layout_no_scroll, true);
+        a.recycle();
     }
 
     public void initLayout() {
@@ -88,7 +96,7 @@ public abstract class AbstractSimpleListPanel<TModel extends Model>
     public void bindList(List<TModel> list) {
         mList = list;
         if (mList != null) {
-            this.setAdapter(new AbstractSimpleListPanel<TModel>.SimpleListAdapter(getContext(), mListLayout, mList));
+            this.setAdapter(new AbstractSimpleListView<TModel>.SimpleListAdapter(getContext(), mListLayout, mList));
 //            mRecycleView.setAdapter(new AbstractListPanel<TModel>.ListRecyclerViewAdapter(mList));
         }
     }
@@ -197,5 +205,20 @@ public abstract class AbstractSimpleListPanel<TModel extends Model>
             // return view
             return v;
         }
+    }
+
+    @Override
+    public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        // Nếu k0 tự động thay đổi chiều cao
+        if (!mNoScroll) {
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+            return;
+        }
+
+        int heightMeasureSpec_custom = MeasureSpec.makeMeasureSpec(
+                Integer.MAX_VALUE >> 2, MeasureSpec.AT_MOST);
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec_custom);
+        ViewGroup.LayoutParams params = getLayoutParams();
+        params.height = getMeasuredHeight();
     }
 }

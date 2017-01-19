@@ -6,8 +6,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.magestore.app.lib.model.customer.Complain;
-import com.magestore.app.lib.panel.AbstractSimpleListPanel;
-import com.magestore.app.pos.R;
+import com.magestore.app.lib.panel.AbstractSimpleListView;
 import com.magestore.app.pos.databinding.PanelCustomerComplainListBinding;
 
 /**
@@ -16,7 +15,7 @@ import com.magestore.app.pos.databinding.PanelCustomerComplainListBinding;
  * mike@trueplus.vn
  */
 
-public class CustomerComplainListView extends AbstractSimpleListPanel<Complain> {
+public class CustomerComplainListView extends AbstractSimpleListView<Complain> {
     public CustomerComplainListView(Context context) {
         super(context);
     }
@@ -33,12 +32,5 @@ public class CustomerComplainListView extends AbstractSimpleListPanel<Complain> 
     protected void bindItem(View view, Complain item, int position) {
         PanelCustomerComplainListBinding binding = DataBindingUtil.bind(view);
         binding.setComplain(item);
-    }
-
-    @Override
-    public void initLayout() {
-        // Load layout view danh sách khách hàng
-//        View v = inflate(getContext(), R.layout.panel_customer_complain_list, null);
-//        addView(v);
     }
 }
