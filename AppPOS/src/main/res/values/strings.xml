@@ -59,6 +59,14 @@
     <string name="order_detail_bottom_btn_print">PRINT</string>
     <string name="order_detail_bottom_btn_invoice">INVOICE</string>
 
+    <!--Strings related to register shift-->
+    <string name="register_shift_top_payment_sale">Sale</string>
+    <string name="register_shift_content_activities">Activitites</string>
+    <string name="register_shift_content_balance">Balance:</string>
+    <string name="register_shift_content_open_shift">Open Shift</string>
+    <string name="register_shift_content_item_float">Float</string>
+    <string name="register_shift_content_item_balance">Balance</string>
+
     <!-- Strings related to single words -->
     <string name="customerAddress">Address</string>
     <string name="avaibles">Avaibles</string>

@@ -145,10 +145,21 @@ public class ConfigUtil {
 
     /**
      * Format date
+     *
      * @param date
      * @return
      */
     public static String formatDate(String date) {
         return date;
+    }
+
+    /**
+     * Format balance in register shift
+     *
+     * @param number
+     * @return
+     */
+    public static String fomatBalance(float number){
+        return "+ " + formatCurrency(number);
     }
 }

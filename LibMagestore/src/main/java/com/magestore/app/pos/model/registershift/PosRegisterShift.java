@@ -1,7 +1,12 @@
 package com.magestore.app.pos.model.registershift;
 
+import com.magestore.app.lib.model.registershift.CashTransaction;
 import com.magestore.app.lib.model.registershift.RegisterShift;
+import com.magestore.app.lib.model.registershift.SaleSummary;
+import com.magestore.app.lib.model.registershift.ZreportSalesSummary;
 import com.magestore.app.pos.model.PosAbstractModel;
+
+import java.util.List;
 
 /**
  * Created by Johan on 1/18/17.
@@ -40,6 +45,9 @@ public class PosRegisterShift extends PosAbstractModel implements RegisterShift 
     String indexeddb_id;
     String updated_at;
     String staff_name;
+    List<PosSaleSummary> sale_summary;
+    List<PosCashTransaction> cash_transaction;
+    PosZreportSalesSummary zreport_sales_summary;
 
     @Override
     public String getID() {
@@ -68,6 +76,70 @@ public class PosRegisterShift extends PosAbstractModel implements RegisterShift 
 
     @Override
     public String getOpenAndClose() {
-        return opened_at + "-" + closed_at;
+        return opened_at + " - " + closed_at;
+    }
+
+    @Override
+    public List<SaleSummary> getSalesSummary() {
+        return (List<SaleSummary>) (List<?>) sale_summary;
+    }
+
+    @Override
+    public List<CashTransaction> getCashTransaction() {
+        return (List<CashTransaction>) (List<?>) cash_transaction;
+    }
+
+    @Override
+    public ZreportSalesSummary getZrepostSalesSummary() {
+        return zreport_sales_summary;
+    }
+
+    @Override
+    public String getOpenedNote() {
+        return opened_note;
+    }
+
+    @Override
+    public String getClosedNote() {
+        return closed_note;
+    }
+
+    @Override
+    public float getBalance() {
+        return balance;
+    }
+
+    @Override
+    public String getStaffName() {
+        return staff_name;
+    }
+
+    @Override
+    public float getFloatAmount() {
+        return float_amount;
+    }
+
+    @Override
+    public boolean checkSaleSummary() {
+        if (sale_summary != null && sale_summary.size() > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean checkOpenNote() {
+        if (opened_note != null && !opened_note.equals("")) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean checkCloseNote() {
+        if (closed_note != null && !closed_note.equals("")) {
+            return true;
+        }
+        return false;
     }
 }

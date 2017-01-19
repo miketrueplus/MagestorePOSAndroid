@@ -1,10 +1,18 @@
 package com.magestore.app.pos.panel;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
 import android.util.AttributeSet;
+import android.view.View;
 
+import com.magestore.app.lib.controller.Controller;
 import com.magestore.app.lib.model.registershift.RegisterShift;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
+import com.magestore.app.pos.R;
+import com.magestore.app.pos.controller.RegisterShiftCashListController;
+import com.magestore.app.pos.controller.RegisterShiftListController;
+import com.magestore.app.pos.controller.RegisterShiftSaleListController;
+import com.magestore.app.pos.databinding.PanelRegisterShiftDetailBinding;
 
 /**
  * Created by Johan on 1/18/17.
@@ -13,6 +21,12 @@ import com.magestore.app.lib.panel.AbstractDetailPanel;
  */
 
 public class RegisterShiftDetailPanel extends AbstractDetailPanel<RegisterShift> {
+    PanelRegisterShiftDetailBinding mBinding;
+    RegisterShiftSaleListPanel mRegisterShiftSaleListPanel;
+    RegisterShiftSaleListController mRegisterShiftSaleListController;
+    RegisterShiftCashListPanel mRegisterShiftCashListPanel;
+    RegisterShiftCashListController mRegisterShiftCashListController;
+
     public RegisterShiftDetailPanel(Context context) {
         super(context);
     }
@@ -23,5 +37,48 @@ public class RegisterShiftDetailPanel extends AbstractDetailPanel<RegisterShift>
 
     public RegisterShiftDetailPanel(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+    }
+
+    @Override
+    protected void initLayout() {
+        // Load layout view danh sách register shift
+        View v = inflate(getContext(), R.layout.panel_register_shift_detail, null);
+        addView(v);
+        mBinding = DataBindingUtil.bind(v);
+
+        // chuẩn bị panel view danh sách payment
+        mRegisterShiftSaleListPanel = (RegisterShiftSaleListPanel) findViewById(R.id.register_shift_sales);
+
+        // chuẩn bị panel view danh sách cash transaction
+        mRegisterShiftCashListPanel = (RegisterShiftCashListPanel) findViewById(R.id.register_shift_cash);
+    }
+
+    @Override
+    public void initModel() {
+        // Lấy lại customer service từ controller của panel
+        Controller controller = getController();
+
+        // Controller Payment
+        mRegisterShiftSaleListController = new RegisterShiftSaleListController();
+        mRegisterShiftSaleListController.setView(mRegisterShiftSaleListPanel);
+        mRegisterShiftSaleListController.setMagestoreContext(controller.getMagestoreContext());
+
+        mRegisterShiftCashListController = new RegisterShiftCashListController();
+        mRegisterShiftCashListController.setView(mRegisterShiftCashListPanel);
+        mRegisterShiftCashListController.setMagestoreContext(controller.getMagestoreContext());
+
+        if (controller instanceof RegisterShiftListController) {
+            mRegisterShiftSaleListController.setRegisterShiftService(((RegisterShiftListController) controller).getRegisterShiftService());
+            mRegisterShiftCashListController.setRegisterShiftService(((RegisterShiftListController) controller).getRegisterShiftService());
+        }
+    }
+
+    @Override
+    public void bindItem(RegisterShift item) {
+        super.bindItem(item);
+        mBinding.setRegisterShift(item);
+        mRegisterShiftSaleListController.doSelectRegisterShift(item);
+        mRegisterShiftCashListController.doSelectRegisterShift(item);
+        mRegisterShiftCashListPanel.setRegisterShift(item);
     }
 }

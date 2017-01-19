@@ -22,31 +22,30 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/list_item_selector"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:padding="5dp">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:orientation="horizontal">
+                android:layout_marginBottom="5dp">
 
                 <TextView
                     android:id="@+id/update_at"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:text="@{registerShift.getUpdateAt()}"
+                    android:layout_alignParentLeft="true"
+                    android:text="@{ConfigUtil.formatDate(registerShift.getOpenedAt())}"
                     android:textAppearance="?attr/textAppearanceListItem" />
 
                 <TextView
                     android:id="@+id/total_sales"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
+                    android:layout_alignParentRight="true"
                     android:text="@{ConfigUtil.formatPrice(registerShift.getTotalSales())}"
                     android:textAppearance="?attr/textAppearanceListItem" />
-            </LinearLayout>
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/open_close_time"

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="com.magestore.app.util.ConfigUtil" />
+
+        <variable
+            name="registerShift"
+            type="com.magestore.app.lib.model.registershift.RegisterShift" />
+
+    </data>
+
+    <FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <include
+                android:id="@+id/rl_register_shift_top"
+                layout="@layout/register_shift_top"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginBottom="5dp"
+                bind:registerShift="@{registerShift}" />
+
+            <include
+                android:id="@+id/rl_register_shift_content"
+                layout="@layout/register_shift_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/rl_register_shift_bottom"
+                android:layout_below="@+id/rl_register_shift_top"
+                bind:registerShift="@{registerShift}" />
+
+            <include
+                android:id="@+id/rl_register_shift_bottom"
+                layout="@layout/register_shift_bottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="5dp"
+                />
+        </RelativeLayout>
+    </FrameLayout>
+</layout>

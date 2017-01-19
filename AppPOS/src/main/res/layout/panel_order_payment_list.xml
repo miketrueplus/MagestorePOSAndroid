@@ -9,4 +9,4 @@
     android:scrollbars="vertical"
     app:layoutManager="LinearLayoutManager"
     app:spanCount="1"
-    tools:listitem="@layout/card_customer_address_content" />
+    tools:listitem="@layout/card_order_payment_content" />
