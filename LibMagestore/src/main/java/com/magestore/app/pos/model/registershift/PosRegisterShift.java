@@ -5,6 +5,7 @@ import com.magestore.app.lib.model.registershift.RegisterShift;
 import com.magestore.app.lib.model.registershift.SaleSummary;
 import com.magestore.app.lib.model.registershift.ZreportSalesSummary;
 import com.magestore.app.pos.model.PosAbstractModel;
+import com.magestore.app.util.ConfigUtil;
 
 import java.util.List;
 
@@ -76,7 +77,7 @@ public class PosRegisterShift extends PosAbstractModel implements RegisterShift 
 
     @Override
     public String getOpenAndClose() {
-        return opened_at + " - " + closed_at;
+        return ConfigUtil.formatTime(opened_at) + " - " + ConfigUtil.formatTime(closed_at);
     }
 
     @Override
@@ -138,6 +139,14 @@ public class PosRegisterShift extends PosAbstractModel implements RegisterShift 
     @Override
     public boolean checkCloseNote() {
         if (closed_note != null && !closed_note.equals("")) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean checkStatus() {
+        if (status.equals("0")) {
             return true;
         }
         return false;

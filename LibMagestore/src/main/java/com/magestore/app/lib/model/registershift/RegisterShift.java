@@ -27,4 +27,5 @@ public interface RegisterShift extends Model {
     boolean checkSaleSummary();
     boolean checkOpenNote();
     boolean checkCloseNote();
+    boolean checkStatus();
 }

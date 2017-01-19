@@ -52,7 +52,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:text="@{registerShift.getOpenAndClose()}"
+                android:text='@{registerShift.checkStatus() ? ConfigUtil.formatTime(registerShift.getOpenedAt()) + " " + @string/register_shift_list_open : registerShift.getOpenAndClose()}'
                 android:textAppearance="?attr/textAppearanceListItem" />
         </LinearLayout>
     </android.support.v7.widget.CardView>

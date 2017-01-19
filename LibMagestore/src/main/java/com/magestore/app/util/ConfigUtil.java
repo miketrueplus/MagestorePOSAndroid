@@ -2,8 +2,12 @@ package com.magestore.app.util;
 
 import com.magestore.app.lib.model.config.Config;
 
+import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Các tiện ích cấu hình hệ thống, các format
@@ -150,7 +154,66 @@ public class ConfigUtil {
      * @return
      */
     public static String formatDate(String date) {
-        return date;
+        if (date == null) {
+            return "";
+        }
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        Date dateFormat = null;
+        try {
+            dateFormat = format.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if (dateFormat == null) {
+            return date;
+        }
+        return DateFormat.getDateInstance().format(dateFormat);
+    }
+
+    /**
+     * Format time
+     *
+     * @param date
+     * @return
+     */
+    public static String formatTime(String date) {
+        if (date == null) {
+            return "";
+        }
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        Date dateFormat = null;
+        try {
+            dateFormat = format.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if (dateFormat == null) {
+            return date;
+        }
+        return DateFormat.getTimeInstance(DateFormat.SHORT).format(dateFormat);
+    }
+
+    /**
+     * Format date and time
+     *
+     * @param date
+     * @return
+     */
+    public static String formatDateTime(String date) {
+        if (date == null) {
+            return "";
+        }
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        Date dateFormat = null;
+        try {
+            dateFormat = format.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if (dateFormat == null) {
+            return date;
+        }
+        return DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.SHORT).format(dateFormat);
     }
 
     /**
@@ -159,7 +222,7 @@ public class ConfigUtil {
      * @param number
      * @return
      */
-    public static String fomatBalance(float number){
+    public static String fomatBalance(float number) {
         return "+ " + formatCurrency(number);
     }
 }
