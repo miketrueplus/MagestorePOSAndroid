@@ -50,6 +50,9 @@ public class PosRegisterShift extends PosAbstractModel implements RegisterShift 
     List<PosCashTransaction> cash_transaction;
     PosZreportSalesSummary zreport_sales_summary;
 
+    // param request
+    PosCashTransaction param_cash;
+
     @Override
     public String getID() {
         return entity_id;
@@ -111,6 +114,11 @@ public class PosRegisterShift extends PosAbstractModel implements RegisterShift 
     }
 
     @Override
+    public float getBaseBalance() {
+        return base_balance;
+    }
+
+    @Override
     public String getStaffName() {
         return staff_name;
     }
@@ -118,6 +126,11 @@ public class PosRegisterShift extends PosAbstractModel implements RegisterShift 
     @Override
     public float getFloatAmount() {
         return float_amount;
+    }
+
+    @Override
+    public String getBaseCurrencyCode() {
+        return base_currency_code;
     }
 
     @Override
@@ -150,5 +163,25 @@ public class PosRegisterShift extends PosAbstractModel implements RegisterShift 
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void setParamCash(CashTransaction cashTransaction) {
+        param_cash = (PosCashTransaction) cashTransaction;
+    }
+
+    @Override
+    public CashTransaction getParamCash() {
+        return param_cash;
+    }
+
+    @Override
+    public String getLocationId() {
+        return location_id;
+    }
+
+    @Override
+    public String getShiftId() {
+        return shift_id;
     }
 }

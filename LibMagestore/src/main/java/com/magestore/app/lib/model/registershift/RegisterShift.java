@@ -22,10 +22,16 @@ public interface RegisterShift extends Model {
     String getOpenedNote();
     String getClosedNote();
     float getBalance();
+    float getBaseBalance();
     String getStaffName();
     float getFloatAmount();
+    String getBaseCurrencyCode();
     boolean checkSaleSummary();
     boolean checkOpenNote();
     boolean checkCloseNote();
     boolean checkStatus();
+    void setParamCash(CashTransaction cashTransaction);
+    CashTransaction getParamCash();
+    String getLocationId();
+    String getShiftId();
 }

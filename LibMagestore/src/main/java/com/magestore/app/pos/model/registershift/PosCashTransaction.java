@@ -78,6 +78,21 @@ public class PosCashTransaction extends PosAbstractModel implements CashTransact
     }
 
     @Override
+    public void setBalance(float balance) {
+        this.balance = balance;
+    }
+
+    @Override
+    public void setBaseBalance(float baseBalance) {
+        base_balance = baseBalance;
+    }
+
+    @Override
+    public void setBaseValue(float baseValue) {
+        base_value = baseValue;
+    }
+
+    @Override
     public String getBalanceTitle() {
         return balance_title;
     }
@@ -100,6 +115,46 @@ public class PosCashTransaction extends PosAbstractModel implements CashTransact
     @Override
     public float getValue() {
         return value;
+    }
+
+    @Override
+    public void setValue(float value) {
+        this.value = value;
+    }
+
+    @Override
+    public void setLocationId(String locationId) {
+        location_id = locationId;
+    }
+
+    @Override
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    @Override
+    public void setShiftId(String shiftId) {
+        shift_id = shiftId;
+    }
+
+    @Override
+    public void setTransactionCurrencyCode(String transactionCurrencyCode) {
+        transaction_currency_code = transactionCurrencyCode;
+    }
+
+    @Override
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    @Override
+    public String getType() {
+        return type;
+    }
+
+    @Override
+    public void setBaseCurrencyCode(String baseCurrencyCode) {
+        base_currency_code = baseCurrencyCode;
     }
 
     @Override
