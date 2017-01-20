@@ -71,9 +71,9 @@ public class POSRegisterShiftDataAccess extends POSAbstractDataAccess implements
             List<RegisterShift> list = (List<RegisterShift>) (List<?>) listRegisterShift;
             return list;
         } catch (ConnectionException ex) {
-            throw ex;
+            throw new DataAccessException(ex);
         } catch (IOException ex) {
-            throw ex;
+            throw new DataAccessException(ex);
         } finally {
             // đóng result reading
             if (rp != null) rp.close();

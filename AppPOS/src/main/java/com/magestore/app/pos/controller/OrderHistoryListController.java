@@ -1,9 +1,14 @@
 package com.magestore.app.pos.controller;
 
+import android.os.AsyncTask;
+import android.os.Build;
+
 import com.magestore.app.lib.controller.AbstractListController;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.service.order.OrderHistoryService;
 
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -44,5 +49,37 @@ public class OrderHistoryListController extends AbstractListController<Order> {
         return listOrder;
     }
 
+    public String sendEmail(final String email, final String orderId){
+        final AsyncTask<Void, Void, String> task = new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                try {
+                    return mOrderService.sendEmail(email, orderId);
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
 
+                return "";
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+            }
+        };
+
+        // chạy task load data
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) // Above Api Level 13
+            task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        else // Below Api Level 13
+            task.execute();
+
+        return "";
+    }
 }

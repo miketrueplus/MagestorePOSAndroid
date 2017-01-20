@@ -18,6 +18,7 @@ import java.util.List;
  */
 
 public class PosOrder extends PosAbstractModel implements Order {
+    String entity_id;
     float rewardpoints_earn = 0;
     float rewardpoints_spent = 0;
     float rewardpoints_discount = 0;
@@ -111,6 +112,11 @@ public class PosOrder extends PosAbstractModel implements Order {
     PosOrderAttributes extension_attributes;
     List<PosOrderWebposPayment> webpos_order_payments;
     List<PosOrderStatus> status_histories;
+
+    @Override
+    public String getID() {
+        return entity_id;
+    }
 
     @Override
     public Order newInstance() {

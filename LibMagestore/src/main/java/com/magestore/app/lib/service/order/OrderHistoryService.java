@@ -17,4 +17,5 @@ import java.util.List;
 public interface OrderHistoryService extends Service {
     List<Order> retrieveOrderList(int size) throws InstantiationException, IllegalAccessException, IOException, ParseException;
     List<Order> retrieveOrderLastMonth(Customer customer) throws InstantiationException, IllegalAccessException, IOException, ParseException;
+    String sendEmail(String email, String orderId) throws InstantiationException, IllegalAccessException, IOException, ParseException;
 }

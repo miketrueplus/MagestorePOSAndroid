@@ -6,6 +6,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.PopupMenu;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -32,6 +33,7 @@ import com.magestore.app.pos.view.MagestoreDialog;
 public class OrderDetailPanel extends AbstractDetailPanel<Order> {
     View v;
     Order mOrder;
+    MagestoreDialog dialog;
     PanelOrderDetailBinding mBinding;
     OrderPaymentListPanel mOrderPaymentListPanel;
     OrderPaymentListController mOrderPaymentListController;
@@ -147,7 +149,7 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
     }
 
     public void showPopupMenu(View view) {
-        if(mOrder == null){
+        if (mOrder == null) {
             return;
         }
         View menuItemView = view.findViewById(R.id.order_action);
@@ -195,11 +197,11 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         popupMenu.getMenu().findItem(id).setVisible(check);
     }
 
-    private void onClickSendEmail(){
+    private void onClickSendEmail() {
         final OrderSendEmailPanel mOrderSendEmailPanel = new OrderSendEmailPanel(getContext());
         mOrderSendEmailPanel.bindItem(mOrder);
         mOrderSendEmailPanel.setController(mController);
-        MagestoreDialog dialog = DialogUtil.dialog(getContext(), getContext().getString(R.string.order_send_email_title), mOrderSendEmailPanel);
+        dialog = DialogUtil.dialog(getContext(), getContext().getString(R.string.order_send_email_title), mOrderSendEmailPanel);
         dialog.show();
 
         dialog.getButtonSave().setOnClickListener(new OnClickListener() {
@@ -207,9 +209,18 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
             public void onClick(View view) {
                 Order order = mOrderSendEmailPanel.bind2Item();
                 String email = order.getCustomerEmail();
-                if(TextUtils.isEmpty(email)){
+                String orderId = order.getID();
+                // TODO: thiếu check có phải là kiểu email hay không
+                if (TextUtils.isEmpty(email)) {
                     mOrderSendEmailPanel.showAlertEmail();
+                    return;
                 }
+
+                // TODO: thiếu check respone và show dialog thông báo
+                String reponseStatus = ((OrderHistoryListController) mController).sendEmail(email, orderId);
+                Log.e("OrderDetailPanel", "Send Email Respone: " + reponseStatus);
+
+                dialog.dismiss();
             }
         });
     }
