@@ -61,4 +61,10 @@ public interface CustomerAddress extends Model {
 
     Region getRegion();
     String getRegionCode();
+
+    void setCustomer(String strCustomerID);
+    void setCustomer(Customer customer);
+
+    String getCustomerID();
+    Customer getCustomer();
 }

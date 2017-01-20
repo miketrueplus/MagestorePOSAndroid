@@ -16,8 +16,7 @@ public interface Customer extends Model {
     String getTelephone();
     String getGroupID();
     List<CustomerAddress> getAddress();
-    List<CustomerAddress> newAddressList();
+    void setAddressList(List<CustomerAddress> addresses);
     List<Complain> getComplain();
-
     void setComplain(List<Complain> complains);
 }

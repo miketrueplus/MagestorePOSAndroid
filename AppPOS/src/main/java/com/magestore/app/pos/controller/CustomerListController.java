@@ -4,7 +4,9 @@ import com.magestore.app.lib.controller.AbstractListController;
 import com.magestore.app.lib.model.customer.Complain;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.service.customer.CustomerService;
+import com.magestore.app.pos.model.customer.PosComplain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -48,7 +50,12 @@ public class CustomerListController extends AbstractListController<Customer> {
 
     @Override
     public void bindItem(Customer item) {
-        List<Complain> complains = mCustomerService.getComplain(item.getID());
+//        List<Complain> complains = mCustomerService.retrieveComplain(item.getID());
+        List<Complain> complains = new ArrayList<Complain>();
+        complains.add(new PosComplain());
+        complains.get(0).setContent("123");
+        complains.add(new PosComplain());
+        complains.get(1).setContent("456");
         item.setComplain(complains);
 
         super.bindItem(item);

@@ -41,7 +41,7 @@ public interface CustomerDataAccess extends DataAccess {
      * @throws IOException
      * @throws java.text.ParseException
      */
-    List<Customer> getCustomers(int pageSize, int currentPage) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
+    List<Customer> retrieveCustomers(int pageSize, int currentPage) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
 
     /**
      * Trả về 1 customer chi tiết theo id
@@ -53,7 +53,7 @@ public interface CustomerDataAccess extends DataAccess {
      * @throws IOException
      * @throws java.text.ParseException
      */
-    Customer getCustomer(String customerID) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
+    Customer retrieveCustomer(String customerID) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
 
     /**
      * Cập nhật thông tin 1 customer
@@ -75,7 +75,7 @@ public interface CustomerDataAccess extends DataAccess {
      * @throws IOException
      * @throws java.text.ParseException
      */
-    void addCustomer(Customer customer) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
+    void insertCustomer(Customer customer) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
 
     /**
      * Đếm số address của customer trong hệ thống
@@ -99,7 +99,7 @@ public interface CustomerDataAccess extends DataAccess {
      * @throws IOException
      * @throws java.text.ParseException
      */
-    List<CustomerAddress> getCustomerAddress(int pageSize, int currentPage) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
+    List<CustomerAddress> retrieveCustomerAddress(int pageSize, int currentPage) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
 
     /**
      * Trả về danh sách địa chỉ của 1 customer
@@ -111,7 +111,7 @@ public interface CustomerDataAccess extends DataAccess {
      * @throws IOException
      * @throws java.text.ParseException
      */
-    List<CustomerAddress> getCustomerAddress(String customerID)
+    List<CustomerAddress> retrieveCustomerAddress(String customerID)
             throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
 
     /**
@@ -124,7 +124,7 @@ public interface CustomerDataAccess extends DataAccess {
      * @throws IOException
      * @throws java.text.ParseException
      */
-    List<CustomerAddress> getCustomerAddress(Customer customer) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
+    List<CustomerAddress> retrieveCustomerAddress(Customer customer) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
 
     /**
      * Cập nhật địa chỉ của customer
@@ -148,7 +148,9 @@ public interface CustomerDataAccess extends DataAccess {
      * @throws IOException
      * @throws java.text.ParseException
      */
-    void addCustomerAddress(Customer customer, CustomerAddress address) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
+    void insertCustomerAddress(Customer customer, CustomerAddress address) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
+
+    void deleteCustomerAddress(Customer pcustomer, CustomerAddress address) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
 
     /**
      * Đếm số complain của toàn hệ thống
@@ -172,7 +174,7 @@ public interface CustomerDataAccess extends DataAccess {
      * @throws IOException
      * @throws java.text.ParseException
      */
-    List<Complain> getCustomerComplain(int pageSize, int currentPage) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
+    List<Complain> retrieveCustomerComplain(int pageSize, int currentPage) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
 
     /**
      * Trả về complain của 1 customer
@@ -184,7 +186,7 @@ public interface CustomerDataAccess extends DataAccess {
      * @throws IOException
      * @throws java.text.ParseException
      */
-    List<Complain> getCustomerComplain(String strCustomerID) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
+    List<Complain> retrieveCustomerComplain(String strCustomerID) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
 
     /**
      * Trả về complain của 1 customer
@@ -196,7 +198,7 @@ public interface CustomerDataAccess extends DataAccess {
      * @throws IOException
      * @throws java.text.ParseException
      */
-    List<Complain> getCustomerComplain(Customer customer) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
+    List<Complain> retrieveCustomerComplain(Customer customer) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
 
     /**
      * Cập nhật complain cho 1 customer
@@ -220,5 +222,5 @@ public interface CustomerDataAccess extends DataAccess {
      * @throws IOException
      * @throws java.text.ParseException
      */
-    void addCustomerComplain(Customer customer, Complain complain) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
+    void insertCustomerComplain(Customer customer, Complain complain) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
 }

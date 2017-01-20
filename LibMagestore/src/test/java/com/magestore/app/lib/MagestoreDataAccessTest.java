@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.magestore.app.lib.context.MagestoreContext;
 import com.magestore.app.lib.model.config.Config;
+import com.magestore.app.lib.model.customer.Complain;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.model.registershift.RegisterShift;
@@ -49,14 +50,14 @@ public class MagestoreDataAccessTest {
     public void test_customer_gateway_isCorrect() throws Exception {
         // Khởi tạo product gateway factory
         DataAccessFactory factory = DataAccessFactory.getFactory(new MagestoreContext());
-        CustomerDataAccess customerResourceModel = factory.generateCustomerDataAccess();
+        CustomerDataAccess customerGateway = factory.generateCustomerDataAccess();
         UserDataAccess user = factory.generateUserDataAccess();
 
         // Lấy list 30 customer đầu tiên
         String strSession = user.login("http://demo-magento2.magestore.com/webpos", "demo", "demo123");
         POSUserService.session = new POSDataAccessSession();
         POSUserService.session.REST_SESSION_ID = strSession.trim().replace("\"", "");
-        List<Customer> list = customerResourceModel.getCustomers(20, 1);
+        List<Customer> list = customerGateway.retrieveCustomers(20, 1);
         assert (list != null);
         assert (list.size() == 20);
         return;
@@ -80,23 +81,23 @@ public class MagestoreDataAccessTest {
         return;
     }
 
-    @Test
-    public void test_config_gateway_isCorrect() throws Exception {
+//    @Test
+//    public void test_config_gateway_isCorrect() throws Exception {
         // Khởi tạo order gateway factory
-        DataAccessFactory factory = DataAccessFactory.getFactory(new MagestoreContext());
-        ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
+//        DataAccessFactory factory = DataAccessFactory.getFactory(new MagestoreContext());
+//        ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
 
-        UserDataAccess user = factory.generateUserDataAccess();
+//        UserDataAccess user = factory.generateUserDataAccess();
 
         // Lấy list 30 order đầu tiên
-        String strSession = user.login("http://demo-magento2.magestore.com/webpos", "demo", "demo123");
-        POSUserService.session = new POSDataAccessSession();
-        POSUserService.session.REST_SESSION_ID = strSession.trim().replace("\"", "");
+//        String strSession = user.login("http://demo-magento2.magestore.com/webpos", "demo", "demo123");
+//        POSUserService.session = new POSDataAccessSession();
+//        POSUserService.session.REST_SESSION_ID = strSession.trim().replace("\"", "");
 
-        Config config = configDataAccess.getConfig();
-        assert (config != null);
-        return;
-    }
+//        Config config = configDataAccess.getConfig();
+//        assert (config != null);
+//        return;
+//    }
 
     @Test
     public void test_register_shift_gateway_isCorrect() throws Exception {
@@ -111,6 +112,40 @@ public class MagestoreDataAccessTest {
         POSUserService.session.REST_SESSION_ID = strSession.trim().replace("\"", "");
 
         List<RegisterShift> list = registerShiftDataAccess.getRegisterShifts();
+        assert (list != null);
+        return;
+    }
+
+    @Test
+    public void test_complain_listing_is_correct() throws Exception {
+        // Khởi tạo order gateway factory
+        DataAccessFactory factory = DataAccessFactory.getFactory(new MagestoreContext());
+        CustomerDataAccess customerDataAccess = factory.generateCustomerDataAccess();
+        UserDataAccess user = factory.generateUserDataAccess();
+
+        // Lấy list 30 order đầu tiên
+        String strSession = user.login("http://demo-magento2.magestore.com/webpos", "demo", "demo123");
+        POSUserService.session = new POSDataAccessSession();
+        POSUserService.session.REST_SESSION_ID = strSession.trim().replace("\"", "");
+
+        List<Complain> list = customerDataAccess.retrieveCustomerComplain(10, 1);
+        assert (list != null);
+        return;
+    }
+
+    @Test
+    public void test_complain_listing_customer_is_correct() throws Exception {
+        // Khởi tạo order gateway factory
+        DataAccessFactory factory = DataAccessFactory.getFactory(new MagestoreContext());
+        CustomerDataAccess customerDataAccess = factory.generateCustomerDataAccess();
+        UserDataAccess user = factory.generateUserDataAccess();
+
+        // Lấy list 30 order đầu tiên
+        String strSession = user.login("http://demo-magento2.magestore.com/webpos", "demo", "demo123");
+        POSUserService.session = new POSDataAccessSession();
+        POSUserService.session.REST_SESSION_ID = strSession.trim().replace("\"", "");
+
+        List<Complain> list = customerDataAccess.retrieveCustomerComplain("1");
         assert (list != null);
         return;
     }

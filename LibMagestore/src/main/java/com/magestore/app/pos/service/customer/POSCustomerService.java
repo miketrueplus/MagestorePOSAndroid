@@ -1,8 +1,10 @@
 package com.magestore.app.pos.service.customer;
 
+import com.magestore.app.lib.connection.ConnectionException;
 import com.magestore.app.lib.model.customer.Complain;
 import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.model.customer.Customer;
+import com.magestore.app.lib.resourcemodel.DataAccessException;
 import com.magestore.app.lib.resourcemodel.DataAccessFactory;
 import com.magestore.app.pos.model.customer.PosComplain;
 import com.magestore.app.pos.model.customer.PosCustomerAddress;
@@ -27,16 +29,6 @@ public class POSCustomerService extends AbstractService implements CustomerServi
     Customer mCustomer;
 
     @Override
-    public void setCustomer(Customer customer) {
-        mCustomer = customer;
-    }
-
-    @Override
-    public Customer getCustomer() {
-        return mCustomer;
-    }
-
-    @Override
     public Customer createCustomer() {
         return new PosCustomer();
     }
@@ -46,92 +38,223 @@ public class POSCustomerService extends AbstractService implements CustomerServi
     public List<Customer> retrieveCustomerList(int size) throws InstantiationException, IllegalAccessException, IOException, ParseException {
         // Khởi tạo customer gateway factory
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
-        CustomerDataAccess customerGateway = factory.generateCustomerDataAccess();
+        CustomerDataAccess customerDataAccess = factory.generateCustomerDataAccess();
 
         // lấy danh sách khách hàng
-        return customerGateway.getCustomers(size, 1);
+        return customerDataAccess.retrieveCustomers(size, 1);
     }
 
+    /**
+     * Cập nhật API danh sách khách hàng
+     * @param customer
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     * @throws IOException
+     * @throws ParseException
+     */
     @Override
-    public void deleteAddress(Customer customer, CustomerAddress customerAddress) {
-        // Tìm customerAddress
-        if (customer != null && customerAddress != null & customer.getAddress() != null)
-            customer.getAddress().remove(customerAddress);
+    public void updateCustomer(Customer customer) throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        // Khởi tạo customer gateway factory
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        CustomerDataAccess customerDataAccess = factory.generateCustomerDataAccess();
+
+        // lấy danh sách khách hàng
+        customerDataAccess.updateCustomer(customer);
     }
 
+    /**
+     * Cập nhật API thêm mới 1 customer
+     * @param customer
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     * @throws IOException
+     * @throws ParseException
+     */
     @Override
-    public void deleteAddress(CustomerAddress customerAddress) {
-        deleteAddress(mCustomer, customerAddress);
+    public void insertCustomer(Customer customer) throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        // Khởi tạo customer gateway factory
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        CustomerDataAccess customerDataAccess = factory.generateCustomerDataAccess();
+
+        // lấy danh sách khách hàng
+        customerDataAccess.insertCustomer(customer);
     }
 
-    @Override
-    public void updateAddress(Customer customer, CustomerAddress customerAddress) {
-
-    }
-
-    @Override
-    public void updateAddress(CustomerAddress customerAddress) {
-        updateAddress(mCustomer, customerAddress);
-    }
-
-    @Override
-    public void newAddress(CustomerAddress customerAddress) {
-        newAddress(mCustomer, customerAddress);
-    }
-
-    @Override
-    public CustomerAddress newAddress() {
-        return newAddress(mCustomer);
-    }
-
-    @Override
-    public CustomerAddress newAddress(Customer customer) {
-        CustomerAddress customerAddress = new PosCustomerAddress();
-        newAddress(customer, customerAddress);
-        return customerAddress;
-    }
-
-    @Override
-    public void newAddress(Customer customer, CustomerAddress customerAddress) {
-        // Kiểm tra danh sách địa chỉ
-        List<CustomerAddress> customerAddressList = customer.getAddress();
-
-        // Nếu chưa có địa chỉ, khởi tạo danh sách
-        if (customerAddressList == null)
-            customerAddressList = customer.newAddressList();
-
-        // Thêm địa chỉ mới vào
-        customerAddressList.add(customerAddress);
-    }
-
+    /**
+     * Khởi tạo 1 address trống
+     * @return
+     */
     @Override
     public CustomerAddress createAddress() {
         return new PosCustomerAddress();
     }
 
+    /**
+     * Khởi tạo 1 address cho customer
+     * @param customer
+     * @param customerAddress
+     * @return
+     */
     @Override
-    public List<Complain> getComplain(String customerID) {
-        Complain complain1 = new PosComplain();
-        complain1.setContent("hello");
-        complain1.setCustomerID(customerID);
-        complain1.setCreateAt("now");
-        complain1.setComplainID("1");
+    public CustomerAddress createAddress(Customer customer, CustomerAddress customerAddress) {
+        // cho address tham chiếu đến customer
+        customerAddress.setCustomer(customer);
 
-        Complain complain2 = new PosComplain();
-        complain2.setContent("hello 2");
-        complain2.setCustomerID(customerID);
-        complain2.setCreateAt("now 2");
-        complain2.setComplainID("2");
+        // Kiểm tra danh sách địa chỉ, Nếu chưa có địa chỉ, khởi tạo danh sách
+        List<CustomerAddress> customerAddressList = customer.getAddress();
+        if (customerAddressList == null)
+            customerAddressList = new ArrayList<CustomerAddress>();
+        customer.setAddressList(customerAddressList);
 
-        List<Complain> list = new ArrayList<Complain>();
-        list.add(complain1);
-        list.add(complain2);
-
-        return list;
+        // Thêm địa chỉ mới vào
+        customerAddressList.add(customerAddress);
+        return customerAddress;
     }
 
+    /**
+     * Khởi tạo 1 address trống cho customer
+     * @param customer
+     * @return
+     */
     @Override
-    public void addComplain(Complain complain) {
+    public CustomerAddress createAddress(Customer customer) {
+        CustomerAddress customerAddress = createAddress();
+        return createAddress(customer, customerAddress);
+    }
+
+    /**
+     * Gỡ 1 address ra khỏi customer, không cập nhật API
+     * @param customer
+     * @param customerAddress
+     */
+    @Override
+    public void removeAddress(Customer customer, CustomerAddress customerAddress) {
+        // Tìm customerAddress
+        if (customer != null && customerAddress != null & customer.getAddress() != null)
+            customer.getAddress().remove(customerAddress);
+    }
+
+    /**
+     * Xóa 1 address khỏi customer, cập nhật API
+     * @param customer
+     * @param customerAddress
+     * @throws IOException
+     * @throws InstantiationException
+     * @throws ParseException
+     * @throws IllegalAccessException
+     */
+    @Override
+    public void deleteAddress(Customer customer, CustomerAddress customerAddress) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+        // Xóa address trong danh sách
+        removeAddress(customer, customerAddress);
+
+        // cập nhật customer
+        updateCustomer(customer);
+    }
+
+    /**
+     * Cập nhật 1 address vào customer, cập nhật API
+     * @param customer
+     * @param customerAddress
+     */
+    @Override
+    public void updateAddress(Customer customer, CustomerAddress customerAddress) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+        // cập nhật customer trên API
+        updateCustomer(customer);
+    }
+
+    /**
+     * Thêm 1 address cho customer, cập nhật API
+     * @param customer
+     * @param customerAddress
+     */
+    @Override
+    public void insertAddress(Customer customer, CustomerAddress customerAddress) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+        createAddress(customer, customerAddress);
+        updateCustomer(customer);
+    }
+
+    /**
+     * Khởi tạo 1 complain trống
+     * @return
+     */
+    @Override
+    public Complain createComplain() {
+        return new PosComplain();
+    }
+
+    /**
+     * Khởi tạo 1 complain cho customer
+     * @param customer
+     * @return
+     */
+    @Override
+    public Complain createComplain(Customer customer) {
+        Complain complain = createComplain();
+        return createComplain(customer, complain);
+    }
+
+    /**
+     * Khởi tạo 1 complain cho customer
+     * @param customer
+     * @param complain
+     * @return
+     */
+    @Override
+    public Complain createComplain(Customer customer, Complain complain) {
+        // cho complain tham chiếu đến customer
+        complain.setCustomerID(customer.getID());
+
+        // kiểm tra nếu complain list của customer đang trống thì khởi tạo
+        List<Complain> complainList = customer.getComplain();
+        if (complainList == null) complainList = new ArrayList<Complain>();
+        customer.setComplain(complainList);
+
+        // thêm một complain vào cho customer
+        complainList.add(complain);
+        return complain;
+    }
+
+    /**
+     * Gọi API Trả về danh sách complain của 1 customer
+     * @param customerID
+     * @return
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     * @throws IOException
+     * @throws ParseException
+     */
+    @Override
+    public List<Complain> retrieveComplain(String customerID) throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        // Khởi tạo customer gateway factory
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        CustomerDataAccess customerDataAccess = factory.generateCustomerDataAccess();
+
+        // lấy danh sách khách hàng
+        return customerDataAccess.retrieveCustomerComplain(customerID);
 
     }
+
+    /**
+     * Gọi API, lưu complain vào cho khách hàng
+     * @param customer
+     * @param complain
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     * @throws IOException
+     * @throws ParseException
+     */
+    @Override
+    public void insertComplain(Customer customer, Complain complain) throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        // chèn complain vào customer
+        createComplain(customer, complain);
+
+        // Khởi tạo customer gateway factory
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        CustomerDataAccess customerDataAccess = factory.generateCustomerDataAccess();
+
+        // lấy danh sách khách hàng
+        customerDataAccess.insertCustomerComplain(customer, complain);
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.magestore.app.pos.model.customer;
 
 import com.magestore.app.lib.adapter.AdapterViewAnnotiation;
+import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.model.directory.Region;
 import com.magestore.app.pos.model.PosAbstractModel;
@@ -17,6 +18,7 @@ import java.util.List;
  */
 
 public class PosCustomerAddress extends PosAbstractModel implements CustomerAddress {
+    Customer customer;
     String customer_id;
     String region_id;
     String country_id;
@@ -107,6 +109,27 @@ public class PosCustomerAddress extends PosAbstractModel implements CustomerAddr
     public String getRegionCode() {
         if (region == null) return null;
         return region.getRegionCode();
+    }
+
+    @Override
+    public void setCustomer(String strCustomerID) {
+        customer_id = strCustomerID;
+    }
+
+    @Override
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+        setCustomer(customer.getID());
+    }
+
+    @Override
+    public String getCustomerID() {
+        return customer_id;
+    }
+
+    @Override
+    public Customer getCustomer() {
+        return customer;
     }
 
     @Override

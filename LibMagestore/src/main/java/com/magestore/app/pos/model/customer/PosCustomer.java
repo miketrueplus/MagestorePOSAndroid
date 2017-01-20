@@ -71,10 +71,10 @@ public class PosCustomer extends PosAbstractModel implements Customer {
     }
 
     @Override
-    public List<CustomerAddress> newAddressList() {
-        addresses = new ArrayList<PosCustomerAddress>();
-        return getAddress();
+    public void setAddressList(List<CustomerAddress> addresses) {
+        this.addresses = (List<PosCustomerAddress>)(List<?>) addresses;
     }
+
 
     @Override
     public List<Complain> getComplain() {

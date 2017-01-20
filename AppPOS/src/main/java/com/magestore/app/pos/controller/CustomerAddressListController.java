@@ -62,12 +62,12 @@ public class CustomerAddressListController
     @Override
     public void doDeleteItem(CustomerAddress item) {
         super.doDeleteItem(item);
-        if (mCustomerService != null) mCustomerService.deleteAddress(mSelectedCustomer, item);
+        if (mCustomerService != null) mCustomerService.removeAddress(mSelectedCustomer, item);
     }
 
     @Override
     public void doUpdateItem(CustomerAddress item) {
         super.doUpdateItem(item);
-        if (mCustomerService != null) mCustomerService.updateAddress(mSelectedCustomer, item);
+//        if (mCustomerService != null) mCustomerService.Address(mSelectedCustomer, item);
     }
 }
