@@ -189,6 +189,11 @@ public class PosOrder extends PosAbstractModel implements Order {
     }
 
     @Override
+    public void setCustomerEmail(String strEmail) {
+        customer_email = strEmail;
+    }
+
+    @Override
     public String getStatus() {
         return status;
     }

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_send_email"
+        android:showAsAction="always|withText"
+        android:title="@string/order_menu_send_email" />
+
+    <item
+        android:id="@+id/action_ship"
+        android:showAsAction="always|withText"
+        android:title="@string/order_menu_ship" />
+
+    <item
+        android:id="@+id/action_cancel"
+        android:showAsAction="always|withText"
+        android:title="@string/order_menu_cancel" />
+
+    <item
+        android:id="@+id/action_add_comment"
+        android:showAsAction="always|withText"
+        android:title="@string/order_menu_add_comment" />
+
+    <item
+        android:id="@+id/action_re_order"
+        android:showAsAction="always|withText"
+        android:title="@string/order_menu_re_order" />
+
+    <item
+        android:id="@+id/action_refund"
+        android:showAsAction="always|withText"
+        android:title="@string/order_menu_refund" />
+</menu>

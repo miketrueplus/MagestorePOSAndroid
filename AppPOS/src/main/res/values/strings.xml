@@ -31,7 +31,7 @@
     <string name="customer_update_address">Update address</string>
     <string name="customer_delete_address">Delete address</string>
 
-    <!-- Strings related to order detail -->
+    <!-- Strings related to order -->
     <string name="order_detail_top_status">Status:</string>
     <string name="order_detail_top_create_at">Created Date:</string>
     <string name="order_detail_top_staff_name">Served by:</string>
@@ -58,6 +58,14 @@
     <string name="order_detail_bottom_tb_total_paid">Total Paid</string>
     <string name="order_detail_bottom_btn_print">PRINT</string>
     <string name="order_detail_bottom_btn_invoice">INVOICE</string>
+    <string name="order_menu_send_email">Send Email</string>
+    <string name="order_menu_ship">Ship</string>
+    <string name="order_menu_cancel">Cancel</string>
+    <string name="order_menu_add_comment">Add comment</string>
+    <string name="order_menu_re_order">Re-order</string>
+    <string name="order_menu_refund">Refund</string>
+    <string name="order_send_email_title">Send email</string>
+    <string name="order_send_email_hint">Enter your email</string>
 
     <!--Strings related to register shift-->
     <string name="register_shift_list_open"> - OPEN</string>

@@ -90,18 +90,29 @@ public class OrderListPanel extends AbstractListPanel<Order> {
         im_status.setImageResource(R.drawable.ic_order_status);
 
         String status = item.getStatus().toLowerCase();
-        if (status.equals("pending")) {
-            im_status.setColorFilter(ContextCompat.getColor(getContext(), R.color.order_status_pending));
-        } else if (status.equals("processing")) {
-            im_status.setColorFilter(ContextCompat.getColor(getContext(), R.color.order_status_processing));
-        } else if (status.equals("complete")) {
-            im_status.setColorFilter(ContextCompat.getColor(getContext(), R.color.order_status_complete));
-        } else if (status.equals("cancelled")) {
-            im_status.setColorFilter(ContextCompat.getColor(getContext(), R.color.order_status_cancelled));
-        } else if (status.equals("closed")) {
-            im_status.setColorFilter(ContextCompat.getColor(getContext(), R.color.order_status_closed));
-        } else if (status.equals("not_sync")) {
-            im_status.setColorFilter(ContextCompat.getColor(getContext(), R.color.order_status_notsync));
+        changeColorStatusOrder(status, im_status);
+    }
+
+    private void changeColorStatusOrder(String status, ImageView im_status) {
+        switch (status) {
+            case "pending":
+                im_status.setColorFilter(ContextCompat.getColor(getContext(), R.color.order_status_pending));
+                break;
+            case "processing":
+                im_status.setColorFilter(ContextCompat.getColor(getContext(), R.color.order_status_processing));
+                break;
+            case "complete":
+                im_status.setColorFilter(ContextCompat.getColor(getContext(), R.color.order_status_complete));
+                break;
+            case "cancelled":
+                im_status.setColorFilter(ContextCompat.getColor(getContext(), R.color.order_status_cancelled));
+                break;
+            case "closed":
+                im_status.setColorFilter(ContextCompat.getColor(getContext(), R.color.order_status_closed));
+                break;
+            case "not_sync":
+                im_status.setColorFilter(ContextCompat.getColor(getContext(), R.color.order_status_notsync));
+                break;
         }
     }
 

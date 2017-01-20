@@ -2,6 +2,7 @@ package com.magestore.app.pos;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -118,7 +119,9 @@ public class OrderActivity extends AbstractActivity {
             return true;
         }
         if (id == R.id.order_action) {
-
+            View rootView = getWindow().getDecorView().getRootView();
+            mOrderDetailPanel.showPopupMenu(rootView);
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

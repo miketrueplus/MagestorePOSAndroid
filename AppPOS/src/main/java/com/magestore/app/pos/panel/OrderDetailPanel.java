@@ -3,7 +3,10 @@ package com.magestore.app.pos.panel;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.PopupMenu;
+import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -16,6 +19,8 @@ import com.magestore.app.pos.controller.OrderHistoryItemsListController;
 import com.magestore.app.pos.controller.OrderHistoryListController;
 import com.magestore.app.pos.controller.OrderPaymentListController;
 import com.magestore.app.pos.databinding.PanelOrderDetailBinding;
+import com.magestore.app.pos.util.DialogUtil;
+import com.magestore.app.pos.view.MagestoreDialog;
 
 /**
  * Created by Mike on 1/9/2017.
@@ -26,6 +31,7 @@ import com.magestore.app.pos.databinding.PanelOrderDetailBinding;
 
 public class OrderDetailPanel extends AbstractDetailPanel<Order> {
     View v;
+    Order mOrder;
     PanelOrderDetailBinding mBinding;
     OrderPaymentListPanel mOrderPaymentListPanel;
     OrderPaymentListController mOrderPaymentListController;
@@ -104,6 +110,7 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
     @Override
     public void bindItem(Order item) {
         super.bindItem(item);
+        mOrder = item;
         mBinding.setOrderDetail(item);
         mOrderPaymentListController.doSelectOrder(item);
         mOrderCommentHistoryController.doSelectOrder(item);
@@ -113,18 +120,97 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         im_status.setImageResource(R.drawable.ic_order_status);
 
         String status = item.getStatus().toLowerCase();
-        if (status.equals("pending")) {
-            im_status.setColorFilter(ContextCompat.getColor(getContext(), R.color.order_status_pending));
-        } else if (status.equals("processing")) {
-            im_status.setColorFilter(ContextCompat.getColor(getContext(), R.color.order_status_processing));
-        } else if (status.equals("complete")) {
-            im_status.setColorFilter(ContextCompat.getColor(getContext(), R.color.order_status_complete));
-        } else if (status.equals("cancelled")) {
-            im_status.setColorFilter(ContextCompat.getColor(getContext(), R.color.order_status_cancelled));
-        } else if (status.equals("closed")) {
-            im_status.setColorFilter(ContextCompat.getColor(getContext(), R.color.order_status_closed));
-        } else if (status.equals("not_sync")) {
-            im_status.setColorFilter(ContextCompat.getColor(getContext(), R.color.order_status_notsync));
+        changeColorStatusOrder(status, im_status);
+    }
+
+    private void changeColorStatusOrder(String status, ImageView im_status) {
+        switch (status) {
+            case "pending":
+                im_status.setColorFilter(ContextCompat.getColor(getContext(), R.color.order_status_pending));
+                break;
+            case "processing":
+                im_status.setColorFilter(ContextCompat.getColor(getContext(), R.color.order_status_processing));
+                break;
+            case "complete":
+                im_status.setColorFilter(ContextCompat.getColor(getContext(), R.color.order_status_complete));
+                break;
+            case "cancelled":
+                im_status.setColorFilter(ContextCompat.getColor(getContext(), R.color.order_status_cancelled));
+                break;
+            case "closed":
+                im_status.setColorFilter(ContextCompat.getColor(getContext(), R.color.order_status_closed));
+                break;
+            case "not_sync":
+                im_status.setColorFilter(ContextCompat.getColor(getContext(), R.color.order_status_notsync));
+                break;
         }
+    }
+
+    public void showPopupMenu(View view) {
+        if(mOrder == null){
+            return;
+        }
+        View menuItemView = view.findViewById(R.id.order_action);
+        PopupMenu popupMenu = new PopupMenu(getContext(), menuItemView);
+        popupMenu.inflate(R.menu.order_action);
+        String status = mOrder.getStatus().toLowerCase();
+        checkShowItemMenu(status, popupMenu);
+        popupMenu.show();
+
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                int id = item.getItemId();
+                switch (id) {
+                    case R.id.action_send_email:
+                        onClickSendEmail();
+                        return true;
+                    case R.id.action_ship:
+                        return true;
+                    case R.id.action_cancel:
+                        return true;
+                    case R.id.action_add_comment:
+                        return true;
+                    case R.id.action_re_order:
+                        return true;
+                    case R.id.action_refund:
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
+    }
+
+    private void checkShowItemMenu(String status, PopupMenu popupMenu) {
+        checkVisibleItemMenu(popupMenu, R.id.action_send_email, "pending".equals(status) | "processing".equals(status) | "complete".equals(status) | "not_sync".equals(status));
+        checkVisibleItemMenu(popupMenu, R.id.action_ship, "pending".equals(status) | "processing".equals(status) | "not_sync".equals(status));
+        checkVisibleItemMenu(popupMenu, R.id.action_cancel, "pending".equals(status) | "processing".equals(status) | "not_sync".equals(status));
+        checkVisibleItemMenu(popupMenu, R.id.action_add_comment, "pending".equals(status) | "processing".equals(status) | "complete".equals(status) | "cancelled".equals(status) | "not_sync".equals(status));
+        checkVisibleItemMenu(popupMenu, R.id.action_re_order, "pending".equals(status) | "processing".equals(status) | "complete".equals(status) | "cancelled".equals(status) | "closed".equals(status) | "not_sync".equals(status));
+        checkVisibleItemMenu(popupMenu, R.id.action_refund, "pending".equals(status) | "processing".equals(status) | "complete".equals(status) | "not_sync".equals(status));
+    }
+
+    private void checkVisibleItemMenu(PopupMenu popupMenu, int id, boolean check) {
+        popupMenu.getMenu().findItem(id).setVisible(check);
+    }
+
+    private void onClickSendEmail(){
+        final OrderSendEmailPanel mOrderSendEmailPanel = new OrderSendEmailPanel(getContext());
+        mOrderSendEmailPanel.bindItem(mOrder);
+        mOrderSendEmailPanel.setController(mController);
+        MagestoreDialog dialog = DialogUtil.dialog(getContext(), getContext().getString(R.string.order_send_email_title), mOrderSendEmailPanel);
+        dialog.show();
+
+        dialog.getButtonSave().setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Order order = mOrderSendEmailPanel.bind2Item();
+                String email = order.getCustomerEmail();
+                if(TextUtils.isEmpty(email)){
+                    mOrderSendEmailPanel.showAlertEmail();
+                }
+            }
+        });
     }
 }
