@@ -6,6 +6,7 @@ import android.os.Build;
 import com.magestore.app.lib.controller.AbstractListController;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.service.order.OrderHistoryService;
+import com.magestore.app.pos.panel.OrderSendEmailPanel;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -18,6 +19,8 @@ import java.util.List;
  */
 
 public class OrderHistoryListController extends AbstractListController<Order> {
+    OrderSendEmailPanel mOrderSendEmailPanel;
+
     /**
      * Service xử lý các vấn đề liên quan đến order
      */
@@ -41,6 +44,10 @@ public class OrderHistoryListController extends AbstractListController<Order> {
         return mOrderService;
     }
 
+    public void setOrderSendEmailPanel(OrderSendEmailPanel mOrderSendEmailPanel) {
+        this.mOrderSendEmailPanel = mOrderSendEmailPanel;
+    }
+
     @Override
     protected List<Order> loadDataBackground(Void... params) throws Exception {
         // TODO: test lấy webpos_payments
@@ -49,7 +56,7 @@ public class OrderHistoryListController extends AbstractListController<Order> {
         return listOrder;
     }
 
-    public String sendEmail(final String email, final String orderId){
+    public void sendEmail(final String email, final String orderId){
         final AsyncTask<Void, Void, String> task = new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... voids) {
@@ -71,6 +78,7 @@ public class OrderHistoryListController extends AbstractListController<Order> {
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
+                mOrderSendEmailPanel.showAlertRespone(s);
             }
         };
 
@@ -79,7 +87,5 @@ public class OrderHistoryListController extends AbstractListController<Order> {
             task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         else // Below Api Level 13
             task.execute();
-
-        return "";
     }
 }

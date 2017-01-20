@@ -57,4 +57,23 @@ public class DialogUtil {
                 .create();
         confirmDialogBox.show();
     }
+
+    /**
+     * Dialog confirm show message thông báo
+     * @param context
+     * @param strMsgDetail
+     * @param intYes
+     */
+    public static void confirm(Context context,  String strMsgDetail, int intYes) {
+        AlertDialog confirmDialogBox = new AlertDialog.Builder(context)
+                .setTitle(null)
+                .setMessage(strMsgDetail)
+                .setPositiveButton(intYes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create();
+        confirmDialogBox.show();
+    }
 }

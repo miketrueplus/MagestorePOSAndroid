@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-
 import com.magestore.app.lib.controller.Controller;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
@@ -216,9 +215,8 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
                     return;
                 }
 
-                // TODO: thiếu check respone và show dialog thông báo
-                String reponseStatus = ((OrderHistoryListController) mController).sendEmail(email, orderId);
-                Log.e("OrderDetailPanel", "Send Email Respone: " + reponseStatus);
+                ((OrderHistoryListController) mController).setOrderSendEmailPanel(mOrderSendEmailPanel);
+                ((OrderHistoryListController) mController).sendEmail(email, orderId);
 
                 dialog.dismiss();
             }

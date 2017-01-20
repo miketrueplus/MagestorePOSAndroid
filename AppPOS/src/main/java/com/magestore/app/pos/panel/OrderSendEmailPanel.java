@@ -1,6 +1,7 @@
 package com.magestore.app.pos.panel;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.util.AttributeSet;
 import android.view.View;
@@ -10,6 +11,7 @@ import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.databinding.PanelOrderSendEmailBinding;
+import com.magestore.app.util.DialogUtil;
 
 /**
  * Created by Johan on 1/20/17.
@@ -58,7 +60,26 @@ public class OrderSendEmailPanel extends AbstractDetailPanel<Order> {
         return mOrder;
     }
 
-    public void showAlertEmail(){
+    public void showAlertEmail() {
         edt_email.setError(getContext().getString(R.string.err_field_required));
+    }
+
+    public void showAlertRespone(String statusRespone) {
+        boolean checkStatus = false;
+        try {
+            checkStatus = Boolean.parseBoolean(statusRespone);
+        } catch (Exception e) {
+            checkStatus = false;
+        }
+
+        String message = "";
+        if (checkStatus) {
+            message = getContext().getString(R.string.order_send_email_success);
+        } else {
+            message = getContext().getString(R.string.order_send_email_success);
+        }
+
+        // Tạo dialog và hiển thị
+        DialogUtil.confirm(getContext(), message, R.string.done);
     }
 }
