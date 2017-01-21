@@ -95,6 +95,7 @@ public class RegisterShiftMakeAdjustmentPanel extends AbstractDetailPanel<Regist
             note = edt_note.getText().toString().trim();
         }
 
+        // TODO: thiếu setCreateAt() lấy theo h máy hiệnt tại
         CashTransaction cashTransaction = ((RegisterShiftListController) mController).createCashTransaction();
         cashTransaction.setType(selectMakeAdjustment);
         cashTransaction.setValue(value);

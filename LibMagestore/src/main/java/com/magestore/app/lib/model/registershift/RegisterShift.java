@@ -30,8 +30,10 @@ public interface RegisterShift extends Model {
     boolean checkOpenNote();
     boolean checkCloseNote();
     boolean checkStatus();
-    void setParamCash(CashTransaction cashTransaction);
-    CashTransaction getParamCash();
     String getLocationId();
     String getShiftId();
+
+    // param add cash transaction
+    void setParamCash(CashTransaction cashTransaction);
+    CashTransaction getParamCash();
 }

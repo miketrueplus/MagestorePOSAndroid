@@ -50,7 +50,7 @@ public class PosRegisterShift extends PosAbstractModel implements RegisterShift 
     List<PosCashTransaction> cash_transaction;
     PosZreportSalesSummary zreport_sales_summary;
 
-    // param request
+    // param request add cash transaction
     PosCashTransaction param_cash;
 
     @Override

@@ -171,6 +171,7 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
                     case R.id.action_cancel:
                         return true;
                     case R.id.action_add_comment:
+                        onClickAddComment();
                         return true;
                     case R.id.action_re_order:
                         return true;
@@ -206,20 +207,54 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         dialog.getButtonSave().setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Order order = mOrderSendEmailPanel.bind2Item();
-                String email = order.getCustomerEmail();
-                String orderId = order.getID();
-                // TODO: thiếu check có phải là kiểu email hay không
-                if (TextUtils.isEmpty(email)) {
-                    mOrderSendEmailPanel.showAlertEmail();
-                    return;
-                }
-
-                ((OrderHistoryListController) mController).setOrderSendEmailPanel(mOrderSendEmailPanel);
-                ((OrderHistoryListController) mController).sendEmail(email, orderId);
-
+                actionSendEmail(mOrderSendEmailPanel);
                 dialog.dismiss();
             }
         });
+    }
+
+    private void actionSendEmail(OrderSendEmailPanel mOrderSendEmailPanel){
+        Order order = mOrderSendEmailPanel.bind2Item();
+        String email = order.getCustomerEmail();
+        String orderId = order.getID();
+
+        // TODO: thiếu check có phải là kiểu email hay không
+        if (TextUtils.isEmpty(email)) {
+            mOrderSendEmailPanel.showAlertEmail();
+            return;
+        }
+
+        ((OrderHistoryListController) mController).setOrderSendEmailPanel(mOrderSendEmailPanel);
+        ((OrderHistoryListController) mController).sendEmail(email, orderId);
+    }
+
+    private void onClickAddComment() {
+        final OrderAddCommentPanel mOrderAddCommentPanel = new OrderAddCommentPanel(getContext());
+        mOrderAddCommentPanel.bindItem(mOrder);
+        mOrderAddCommentPanel.setController(mController);
+        dialog = DialogUtil.dialog(getContext(), getContext().getString(R.string.order_add_comment_title), mOrderAddCommentPanel);
+        dialog.show();
+
+        dialog.getButtonSave().setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                actionAddComment(mOrderAddCommentPanel);
+                dialog.dismiss();
+            }
+        });
+    }
+
+    private void actionAddComment(OrderAddCommentPanel mOrderAddCommentPanel){
+        Order order = mOrderAddCommentPanel.bind2Item();
+        String comment = order.getParamStatus().getComment();
+
+        if (TextUtils.isEmpty(comment)) {
+            mOrderAddCommentPanel.showAlertComment();
+            return;
+        }
+
+        ((OrderHistoryListController) mController).setOrderAddCommentPanel(mOrderAddCommentPanel);
+        ((OrderHistoryListController) mController).setOrderCommentListController(mOrderCommentHistoryController);
+        ((OrderHistoryListController) mController).insertOrderStatus(order);
     }
 }

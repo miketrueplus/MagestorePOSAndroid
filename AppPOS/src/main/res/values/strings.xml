@@ -67,6 +67,9 @@
     <string name="order_send_email_title">Send email</string>
     <string name="order_send_email_hint">Enter your email</string>
     <string name="order_send_email_success">An email has been sent for this order!</string>
+    <string name="order_add_comment_title">Comment</string>
+    <string name="order_add_comment_hint">Enter your comment</string>
+    <string name="order_add_comment_success">Add order comment successfully!</string>
 
     <!--Strings related to register shift-->
     <string name="register_shift_list_open"> - OPEN</string>

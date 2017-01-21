@@ -113,6 +113,9 @@ public class PosOrder extends PosAbstractModel implements Order {
     List<PosOrderWebposPayment> webpos_order_payments;
     List<PosOrderStatus> status_histories;
 
+    // param request add comment history;
+    PosOrderStatus param_status;
+
     @Override
     public String getID() {
         return entity_id;
@@ -323,6 +326,16 @@ public class PosOrder extends PosAbstractModel implements Order {
     @Override
     public float getOrderHistorySubtotal() {
         return subtotal;
+    }
+
+    @Override
+    public OrderStatus getParamStatus() {
+        return param_status;
+    }
+
+    @Override
+    public void setParamStatus(OrderStatus orderStatus) {
+        param_status = (PosOrderStatus) orderStatus;
     }
 
     @Override
