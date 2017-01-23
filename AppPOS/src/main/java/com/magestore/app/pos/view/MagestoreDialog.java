@@ -30,6 +30,11 @@ public class MagestoreDialog extends Dialog {
 
     private View dialog_content;
 
+    boolean goneButtonSave = false;
+    boolean goneButtonCancel = false;
+    boolean goneDialogTextTitle = false;
+    boolean goneDialogTitle = false;
+
     String dialogTitle;
     String dialogCancel;
     String dialogSave;
@@ -39,6 +44,18 @@ public class MagestoreDialog extends Dialog {
     int dialogSaveColor = -1;
     int dialogBackground = -1;
     int dialogTitleBackground = -1;
+
+    public void setGoneDialogTextTitle(boolean goneDialogTextTitle) {
+        this.goneDialogTextTitle = goneDialogTextTitle;
+    }
+
+    public void setGoneButtonCancel(boolean goneButtonCancel) {
+        this.goneButtonCancel = goneButtonCancel;
+    }
+
+    public void setGoneButtonSave(boolean goneButtonSave) {
+        this.goneButtonSave = goneButtonSave;
+    }
 
     public void setDialogBackground(int dialogBackground) {
         this.dialogBackground = dialogBackground;
@@ -108,6 +125,23 @@ public class MagestoreDialog extends Dialog {
 
         // add panel vào dialog
         root_dialog_content.addView(dialog_content);
+
+        // ẩn button save, cancel, title
+        if (goneButtonSave) {
+            dialog_save.setVisibility(View.GONE);
+        }
+
+        if (goneButtonCancel) {
+            dialog_cancel.setVisibility(View.GONE);
+        }
+
+        if (goneDialogTextTitle) {
+            dialog_title.setVisibility(View.GONE);
+        }
+
+        if (goneDialogTitle) {
+            rl_dialog_title.setVisibility(View.GONE);
+        }
 
         // thay đổi tên hiển thị title, cancel, save
         if (!TextUtils.isEmpty(dialogTitle)) {
