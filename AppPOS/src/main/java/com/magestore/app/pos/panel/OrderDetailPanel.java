@@ -167,6 +167,7 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
                         onClickSendEmail();
                         return true;
                     case R.id.action_ship:
+                        onClickShipment();
                         return true;
                     case R.id.action_cancel:
                         return true;
@@ -256,5 +257,15 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         ((OrderHistoryListController) mController).setOrderAddCommentPanel(mOrderAddCommentPanel);
         ((OrderHistoryListController) mController).setOrderCommentListController(mOrderCommentHistoryController);
         ((OrderHistoryListController) mController).insertOrderStatus(order);
+    }
+
+    private void onClickShipment() {
+        final OrderShipmentPanel mOrderShipmentPanel = new OrderShipmentPanel(getContext());
+        mOrderShipmentPanel.bindItem(mOrder);
+        mOrderShipmentPanel.setController(mController);
+        mOrderShipmentPanel.initModel();
+        dialog = DialogUtil.dialog(getContext(), getContext().getString(R.string.order_shipment_title), mOrderShipmentPanel);
+        dialog.setGoneButtonSave(true);
+        dialog.show();
     }
 }

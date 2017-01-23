@@ -42,14 +42,19 @@
     <string name="order_detail_content_shipping_method">SHIPPING METHOD</string>
     <string name="order_detail_content_comment_history">COMMENT HISTORY</string>
     <string name="order_detail_content_item_title_product">Product</string>
+    <string name="order_detail_content_item_title_sku">Sku</string>
     <string name="order_detail_content_item_original_price">O.Price</string>
     <string name="order_detail_content_item_price">Price</string>
     <string name="order_detail_content_item_qty">Qty</string>
+    <string name="order_detail_content_item_qty_to_ship">Qty to ship</string>
     <string name="order_detail_content_item_subtotal">Subtotal</string>
     <string name="order_detail_content_item_tax_amount">Tax</string>
     <string name="order_detail_content_item_discount_amount">Discount</string>
     <string name="order_detail_content_item_row_total">Row Total</string>
-    <string name="order_detail_content_item_row_qty">Ordered:</string>
+    <string name="order_detail_content_item_row_qty_ordered">Ordered:</string>
+    <string name="order_detail_content_item_row_qty_invoiced">Invoiced:</string>
+    <string name="order_detail_content_item_row_qty_shipped">Shipped:</string>
+    <string name="order_detail_content_item_row_qty_refunded">Refunded:</string>
     <string name="order_detail_bottom_tb_subtotal">Subtotal</string>
     <string name="order_detail_bottom_tb_shipping">Shipping</string>
     <string name="order_detail_bottom_tb_tax">Tax</string>
@@ -70,6 +75,11 @@
     <string name="order_add_comment_title">Comment</string>
     <string name="order_add_comment_hint">Enter your comment</string>
     <string name="order_add_comment_success">Add order comment successfully!</string>
+    <string name="order_shipment_title">Shipment</string>
+    <string name="order_shipment_comment_title">Shipment Comment</string>
+    <string name="order_shipment_track_number_title">Track number</string>
+    <string name="order_shipment_send_email">Send email</string>
+    <string name="order_shipment_btn_submit">SUBMIT SHIPMENT</string>
 
     <!--Strings related to register shift-->
     <string name="register_shift_list_open"> - OPEN</string>

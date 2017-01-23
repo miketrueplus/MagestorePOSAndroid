@@ -3,6 +3,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <import type="com.magestore.app.util.ConfigUtil" />
 
         <variable
@@ -15,9 +17,16 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="5dp"
+            android:background="@color/line" />
+
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
             android:shrinkColumns="0"
             android:stretchColumns="1">
 
@@ -60,12 +69,39 @@
                     android:layout_weight="1"
                     android:text="@{ConfigUtil.formatPrice(orderItem.getPrice())}" />
 
-                <TextView
-                    android:id="@+id/quantity"
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.2"
-                    android:text='@{@string/order_detail_content_item_row_qty + " " + String.valueOf(orderItem.getQuantity())}' />
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/qty_ordered"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text='@{@string/order_detail_content_item_row_qty_ordered + " " + String.valueOf(orderItem.getQtyOrdered())}' />
+
+                    <TextView
+                        android:id="@+id/qty_invoiced"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text='@{@string/order_detail_content_item_row_qty_invoiced + " " + String.valueOf(orderItem.getQtyInvoiced())}'
+                        android:visibility="@{orderItem.getQtyInvoiced() > 0 ? View.VISIBLE : View.GONE}" />
+
+                    <TextView
+                        android:id="@+id/qty_shipped"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text='@{@string/order_detail_content_item_row_qty_shipped + " " + String.valueOf(orderItem.getQtyShipped())}'
+                        android:visibility="@{orderItem.getQtyShipped() > 0 ? View.VISIBLE : View.GONE}" />
+
+                    <TextView
+                        android:id="@+id/qty_refunded"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text='@{@string/order_detail_content_item_row_qty_refunded + " " + String.valueOf(orderItem.getQtyRefunded())}'
+                        android:visibility="@{orderItem.getQtyRefunded() > 0 ? View.VISIBLE : View.GONE}" />
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/subtotal"
