@@ -19,6 +19,7 @@ public class ActionTask<TModel extends Model> extends AsyncTask<TModel, Void, Bo
     int mActionType;
     String mActionCode;
     Exception mException = null;
+    TModel[] models;
 
     public ActionTask(AbstractController controller, int actionType, String actionCode) {
         super();
@@ -38,6 +39,7 @@ public class ActionTask<TModel extends Model> extends AsyncTask<TModel, Void, Bo
     }
 
     public void doExcute(TModel... models) {
+        this.models = models;
         // chạy task load data
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) // Above Api Level 13
             super.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, models);
@@ -55,5 +57,10 @@ public class ActionTask<TModel extends Model> extends AsyncTask<TModel, Void, Bo
     protected void onCancelled() {
         super.onCancelled();
         mController.onCancelledBackground(mException);
+    }
+
+    @Override
+    protected void onPostExecute(Boolean aBoolean) {
+        mController.onActionPostExecute(aBoolean, mActionType, mActionCode, this.models);
     }
 }

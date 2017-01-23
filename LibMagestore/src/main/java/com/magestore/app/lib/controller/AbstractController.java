@@ -92,7 +92,7 @@ public abstract class AbstractController<TModel extends Model, TView extends Mag
      * @param actionCode
      * @param models
      */
-    public void onActionPostExecute(int actionType, String actionCode, TModel... models) {
+    public void onActionPostExecute(boolean success, int actionType, String actionCode, TModel... models) {
 
     }
 

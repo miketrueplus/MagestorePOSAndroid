@@ -16,6 +16,8 @@ import java.util.List;
  */
 
 public class CustomerListController extends AbstractListController<Customer> {
+    static final int ACTION_CODE_GET_COMPLAIN = 0;
+
     /**
      * Service xử lý các vấn đề liên quan đến customer
      */
@@ -50,15 +52,18 @@ public class CustomerListController extends AbstractListController<Customer> {
 
     @Override
     public void bindItem(Customer item) {
+        doAction(ACTION_CODE_GET_COMPLAIN, null, item);
+    }
 
-//        List<Complain> complains = mCustomerService.retrieveComplain(item.getID());
-        List<Complain> complains = new ArrayList<Complain>();
-        complains.add(new PosComplain());
-        complains.get(0).setContent("123");
-        complains.add(new PosComplain());
-        complains.get(1).setContent("456");
-        item.setComplain(complains);
+    @Override
+    public Boolean doActionBackround(int actionType, String actionCode, Customer... models) throws Exception {
+        List<Complain> complains = mCustomerService.retrieveComplain(models[0].getID());
+        models[0].setComplain(complains);
+        return false;
+    }
 
-        super.bindItem(item);
+    @Override
+    public void onActionPostExecute(boolean success, int actionType, String actionCode, Customer... models) {
+        super.bindItem(models[0]);
     }
 }

@@ -43,7 +43,7 @@ public class POSAPI {
     public static final String REST_ADDRESS_GET_LISTING = "/rest/default/V1/webpos/customers/addresses/?";
     public static final String REST_ADDRESS_UPDATE = "/rest/default/V1/webpos/customers/addresses/?";
     public static final String REST_ADDRESS_ADD = "/rest/default/V1/webpos/customers/addresses/?";
-    public static final String REST_CUSOMTER_COMPLAIN_GET_LISTING = "/rest/default/V1/webpos/customers/complain/search?$searchCriteria";
+    public static final String REST_CUSOMTER_COMPLAIN_GET_LISTING = "/rest/default/V1/webpos/customers/complain/?customerId=${customerID}";
     public static final String REST_COMPLAIN_GET_LISTING = "/rest/default/V1/webpos/customers/complain/search?$searchCriteria";
     public static final String REST_CUSOMTER_COMPLAIN_UPDATE = "/rest/default/V1/webpos/customers/complain/${customerID}?";
     public static final String REST_CUSOMTER_COMPLAIN_ADD = "/rest/default/V1/webpos/customers/complain/${customerID}?";
