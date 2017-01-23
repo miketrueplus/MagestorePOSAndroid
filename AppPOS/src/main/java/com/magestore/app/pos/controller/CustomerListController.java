@@ -50,6 +50,7 @@ public class CustomerListController extends AbstractListController<Customer> {
 
     @Override
     public void bindItem(Customer item) {
+
 //        List<Complain> complains = mCustomerService.retrieveComplain(item.getID());
         List<Complain> complains = new ArrayList<Complain>();
         complains.add(new PosComplain());

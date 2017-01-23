@@ -32,7 +32,6 @@ public abstract class AbstractListController<TModel extends Model>
      */
     protected List<TModel> mList;
     protected TModel mSelectedItem;
-    protected TModel mBackupSelectedItem;
 
     /**
      * Thiết lập danh sách, cho hiển thị lên view
