@@ -70,7 +70,7 @@ public abstract class AbstractController<TModel extends Model, TView extends Mag
      * @param actionCode
      * @param models
      */
-    void doAction(int actionType, String actionCode, TModel... models) {
+    public void doAction(int actionType, String actionCode, TModel... models) {
         ActionTask<TModel> actionTask = new ActionTask<TModel>(this, actionType, actionCode);
         actionTask.doExcute(models);
     }
@@ -82,7 +82,7 @@ public abstract class AbstractController<TModel extends Model, TView extends Mag
      * @param models
      * @return
      */
-    Boolean doActionBackround(int actionType, String actionCode, TModel... models) throws Exception {
+    public Boolean doActionBackround(int actionType, String actionCode, TModel... models) throws Exception {
         return false;
     }
 
@@ -92,7 +92,7 @@ public abstract class AbstractController<TModel extends Model, TView extends Mag
      * @param actionCode
      * @param models
      */
-    void onActionPostExecute(int actionType, String actionCode, TModel... models) {
+    public void onActionPostExecute(int actionType, String actionCode, TModel... models) {
 
     }
 
