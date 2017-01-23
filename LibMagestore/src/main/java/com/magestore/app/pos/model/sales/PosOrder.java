@@ -18,6 +18,7 @@ import java.util.List;
  */
 
 public class PosOrder extends PosAbstractModel implements Order {
+    String entity_id;
     float rewardpoints_earn = 0;
     float rewardpoints_spent = 0;
     float rewardpoints_discount = 0;
@@ -112,6 +113,14 @@ public class PosOrder extends PosAbstractModel implements Order {
     List<PosOrderWebposPayment> webpos_order_payments;
     List<PosOrderStatus> status_histories;
 
+    // param request add comment history;
+    PosOrderStatus param_status;
+
+    @Override
+    public String getID() {
+        return entity_id;
+    }
+
     @Override
     public Order newInstance() {
         return new PosOrder();
@@ -186,6 +195,11 @@ public class PosOrder extends PosAbstractModel implements Order {
     @Override
     public String getCustomerEmail() {
         return customer_email;
+    }
+
+    @Override
+    public void setCustomerEmail(String strEmail) {
+        customer_email = strEmail;
     }
 
     @Override
@@ -312,6 +326,16 @@ public class PosOrder extends PosAbstractModel implements Order {
     @Override
     public float getOrderHistorySubtotal() {
         return subtotal;
+    }
+
+    @Override
+    public OrderStatus getParamStatus() {
+        return param_status;
+    }
+
+    @Override
+    public void setParamStatus(OrderStatus orderStatus) {
+        param_status = (PosOrderStatus) orderStatus;
     }
 
     @Override

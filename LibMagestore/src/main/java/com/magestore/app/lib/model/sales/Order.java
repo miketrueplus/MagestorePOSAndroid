@@ -30,6 +30,7 @@ public interface Order extends Model {
     float getGrandTotal();
     String getCreatedAt();
     String getCustomerEmail();
+    void setCustomerEmail(String strEmail);
     String getStatus();
     String getWebposStaffName();
     String getBillingAddressName();
@@ -47,4 +48,8 @@ public interface Order extends Model {
     float getDiscountAmount();
     float getTotalPaid();
     float getOrderHistorySubtotal();
+
+    // param add comment history
+    OrderStatus getParamStatus();
+    void setParamStatus(OrderStatus orderStatus);
 }

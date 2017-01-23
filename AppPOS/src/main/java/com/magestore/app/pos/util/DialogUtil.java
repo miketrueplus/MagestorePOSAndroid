@@ -1,6 +1,5 @@
 package com.magestore.app.pos.util;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.view.View;
@@ -95,7 +94,7 @@ public class DialogUtil {
                 listener);
     }
 
-    public static Dialog dialog(Context context, String title, View panel) {
+    public static MagestoreDialog dialog(Context context, String title, View panel) {
         MagestoreDialog dialog = new MagestoreDialog(context);
         dialog.setDialogTitle(title);
         dialog.setDialogContent(panel);

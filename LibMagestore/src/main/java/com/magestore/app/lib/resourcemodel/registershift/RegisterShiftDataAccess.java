@@ -1,6 +1,7 @@
 package com.magestore.app.lib.resourcemodel.registershift;
 
 import com.magestore.app.lib.connection.ConnectionException;
+import com.magestore.app.lib.model.registershift.CashTransaction;
 import com.magestore.app.lib.model.registershift.RegisterShift;
 import com.magestore.app.lib.parse.ParseException;
 import com.magestore.app.lib.resourcemodel.DataAccessException;
@@ -16,4 +17,6 @@ import java.util.List;
 
 public interface RegisterShiftDataAccess {
     List<RegisterShift> getRegisterShifts() throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
+
+    List<RegisterShift> insertMakeAdjustment(CashTransaction cashTransaction) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
 }

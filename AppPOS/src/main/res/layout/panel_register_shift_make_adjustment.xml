@@ -19,7 +19,8 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -43,5 +44,83 @@
             </LinearLayout>
         </RelativeLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/add"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/register_shift_dialog_make_adjustment_bg_select"
+                android:gravity="center_horizontal"
+                android:padding="10dp"
+                android:text="@string/register_shift_dialog_make_adjustment_add"
+                android:textColor="@color/register_shift_dialog_make_adjustment_text_select"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/remove"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/register_shift_dialog_make_adjustment_bg_not_select"
+                android:gravity="center_horizontal"
+                android:padding="10dp"
+                android:text="@string/register_shift_dialog_make_adjustment_remove"
+                android:textColor="@color/register_shift_dialog_make_adjustment_text_not_select"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/boder_linear_layout"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/txt_amount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/register_shift_dialog_make_adjustment_amount" />
+
+            <com.magestore.app.view.FormatTextEdit
+                android:id="@+id/amount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:gravity="right"
+                android:hint='@{ConfigUtil.formatPrice(0)}'
+                android:inputType="numberDecimal" />
+        </LinearLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
+
+            <com.magestore.app.view.FormatTextEdit
+                android:id="@+id/note"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/register_shift_dialog_make_adjustment_note"
+                android:inputType="textMultiLine"
+                android:minLines="3" />
+        </android.support.design.widget.TextInputLayout>
+
+        <TextView
+            android:id="@+id/staff_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@{registerShift.getStaffName()}"
+            android:textSize="18sp" />
     </LinearLayout>
 </layout>

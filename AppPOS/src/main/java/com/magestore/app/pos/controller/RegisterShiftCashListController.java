@@ -57,18 +57,10 @@ public class RegisterShiftCashListController extends AbstractListController<Cash
     }
 
     private List<CashTransaction> addOpenShift(RegisterShift registerShift, List<CashTransaction> listCash) {
-        PosCashTransaction posCashTransaction = new PosCashTransaction();
-        posCashTransaction.setCreateAt(registerShift.getOpenedAt());
-        posCashTransaction.setOpenShiftTitle(mMagestoreContext.getActivity().getString(R.string.register_shift_content_open_shift));
-        posCashTransaction.setBalanceTitle(mMagestoreContext.getActivity().getString(R.string.register_shift_content_item_float));
-        posCashTransaction.setFloatAmount(registerShift.getFloatAmount());
-        posCashTransaction.setCheckOpenShift(true);
-
-        List<CashTransaction> nListCash = new ArrayList<>();
-        nListCash.add(posCashTransaction);
-
+        String openShift = mMagestoreContext.getActivity().getString(R.string.register_shift_content_open_shift);
+        String balance = mMagestoreContext.getActivity().getString(R.string.register_shift_content_item_float);
+        List<CashTransaction> nListCash = mRegisterShiftService.createListCashTransaction(registerShift, openShift, balance);
         nListCash.addAll(listCash);
-
         return nListCash;
     }
 }

@@ -1,12 +1,10 @@
 package com.magestore.app.pos.panel;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
-
 import com.magestore.app.lib.controller.Controller;
 import com.magestore.app.lib.model.registershift.RegisterShift;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
@@ -16,6 +14,7 @@ import com.magestore.app.pos.controller.RegisterShiftListController;
 import com.magestore.app.pos.controller.RegisterShiftSaleListController;
 import com.magestore.app.pos.databinding.PanelRegisterShiftDetailBinding;
 import com.magestore.app.pos.util.DialogUtil;
+import com.magestore.app.pos.view.MagestoreDialog;
 
 /**
  * Created by Johan on 1/18/17.
@@ -95,11 +94,17 @@ public class RegisterShiftDetailPanel extends AbstractDetailPanel<RegisterShift>
     }
 
     private void showMakeAdjustment(RegisterShift item) {
-        RegisterShiftMakeAdjustmentPanel panelMakeAdjustment = new RegisterShiftMakeAdjustmentPanel(getContext());
-        panelMakeAdjustment.setLayoutPanel(R.layout.panel_register_shift_make_adjustment);
+        final RegisterShiftMakeAdjustmentPanel panelMakeAdjustment = new RegisterShiftMakeAdjustmentPanel(getContext());
         panelMakeAdjustment.bindItem(item);
         panelMakeAdjustment.setController(mController);
-        Dialog dialog = DialogUtil.dialog(getContext(), getContext().getString(R.string.register_shift_dialog_make_adjustment_title), panelMakeAdjustment);
+        MagestoreDialog dialog = DialogUtil.dialog(getContext(), getContext().getString(R.string.register_shift_dialog_make_adjustment_title), panelMakeAdjustment);
         dialog.show();
+
+        dialog.getButtonSave().setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((RegisterShiftListController) mController).makeAdjustment(panelMakeAdjustment.bind2Item());
+            }
+        });
     }
 }

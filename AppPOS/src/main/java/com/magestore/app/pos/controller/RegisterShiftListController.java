@@ -1,9 +1,12 @@
 package com.magestore.app.pos.controller;
 
 import com.magestore.app.lib.controller.AbstractListController;
+import com.magestore.app.lib.model.registershift.CashTransaction;
 import com.magestore.app.lib.model.registershift.RegisterShift;
 import com.magestore.app.lib.service.registershift.RegisterShiftService;
 
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -41,5 +44,23 @@ public class RegisterShiftListController extends AbstractListController<Register
     protected List<RegisterShift> loadDataBackground(Void... params) throws Exception {
         List<RegisterShift> listRegisterShift = mRegisterShiftService.retrieveRegisterShiftList();
         return listRegisterShift;
+    }
+
+    public void makeAdjustment(RegisterShift registerShift)  {
+        if (mRegisterShiftService != null) try {
+            mRegisterShiftService.insertMakeAdjustment(registerShift);
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public CashTransaction createCashTransaction(){
+        return mRegisterShiftService.createCashTransaction();
     }
 }

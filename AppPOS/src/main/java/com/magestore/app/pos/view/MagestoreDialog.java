@@ -48,6 +48,10 @@ public class MagestoreDialog extends Dialog {
         this.dialogTitleBackground = dialogTitleBackground;
     }
 
+    public TextView getButtonSave() {
+        return dialog_save;
+    }
+
     public void setDialogTitle(String dialogTitle) {
         this.dialogTitle = dialogTitle;
     }

@@ -1,13 +1,20 @@
 package com.magestore.app.pos.api.m2.sales;
 
+import com.magestore.app.lib.connection.Connection;
 import com.magestore.app.lib.connection.ConnectionException;
+import com.magestore.app.lib.connection.ConnectionFactory;
+import com.magestore.app.lib.connection.ParamBuilder;
+import com.magestore.app.lib.connection.ResultReading;
+import com.magestore.app.lib.connection.Statement;
 import com.magestore.app.lib.model.sales.Order;
+import com.magestore.app.lib.model.sales.OrderStatus;
 import com.magestore.app.lib.parse.ParseException;
 import com.magestore.app.lib.resourcemodel.DataAccessException;
 import com.magestore.app.lib.resourcemodel.sales.OrderDataAccess;
 import com.magestore.app.pos.api.m2.POSAPI;
 import com.magestore.app.pos.api.m2.POSAbstractDataAccess;
 import com.magestore.app.pos.api.m2.POSDataAccessSession;
+import com.magestore.app.pos.model.sales.PosOrder;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListOrder;
 
 import java.io.IOException;
@@ -20,9 +27,16 @@ import java.util.List;
  */
 
 public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDataAccess {
+    private class OrderEntity {
+        String email = null;
+
+        OrderStatus statusHistory;
+    }
+
     /**
      * Trả về list order
-     * @param pageSize Số customer trên 1 page
+     *
+     * @param pageSize    Số customer trên 1 page
      * @param currentPage Trang hiện lại
      * @return Danh sách order
      * @throws DataAccessException
@@ -39,7 +53,107 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
                 POSAPI.PARAM_CURRENT_PAGE, "" + currentPage,
                 POSAPI.PARAM_PAGE_SIZE, "" + pageSize,
                 POSAPI.PARAM_SESSION_ID, POSDataAccessSession.REST_SESSION_ID);
-        List<Order> list  = (List<Order>)(List<?>)(listOrder.items);
+        List<Order> list = (List<Order>) (List<?>) (listOrder.items);
         return list;
+    }
+
+    /**
+     * Trả về boolean thành công hay không
+     *
+     * @param email
+     * @return boolean thành công hay không
+     * @throws DataAccessException
+     * @throws ConnectionException
+     * @throws ParseException
+     * @throws IOException
+     * @throws java.text.ParseException
+     */
+    @Override
+    public String sendEmail(String email, String orderId) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+
+        try {
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPI.REST_ORDER_EMAIL);
+            statement.setParam(POSAPI.PARAM_ORDER_ID, orderId);
+
+            // Xây dựng tham số
+            paramBuilder = statement.getParamBuilder()
+                    .setSessionID(POSDataAccessSession.REST_SESSION_ID)
+                    .setParam(POSAPI.PARAM_ORDER_ID, orderId);
+
+            OrderEntity orderEntity = new OrderEntity();
+            orderEntity.email = email;
+
+            rp = statement.execute(orderEntity);
+
+            return rp.readResult2String();
+        } catch (Exception e) {
+            throw new DataAccessException(e);
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
+    }
+
+    @Override
+    public Order insertOrderStatus(OrderStatus orderStatus, String orderId) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+
+        try {
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPI.REST_ORDER_COMMENTS);
+            statement.setParam(POSAPI.PARAM_ORDER_ID, orderId);
+
+            // Xây dựng tham số
+            paramBuilder = statement.getParamBuilder()
+                    .setSessionID(POSDataAccessSession.REST_SESSION_ID)
+                    .setParam(POSAPI.PARAM_ORDER_ID, orderId);
+
+            OrderEntity orderEntity = new OrderEntity();
+            orderEntity.statusHistory = orderStatus;
+
+            rp = statement.execute(orderEntity);
+            rp.setParseImplement(getClassParseImplement());
+            rp.setParseModel(PosOrder.class);
+            return (Order) rp.doParse();
+        } catch (Exception e) {
+            throw new DataAccessException(e);
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
     }
 }

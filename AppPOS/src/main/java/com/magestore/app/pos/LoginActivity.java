@@ -133,7 +133,6 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
         else if (TextUtils.isEmpty(username)) {
             mUserNameView.setError(getString(R.string.err_field_required));
             mUserNameView.requestFocus();
-            ;
             return false;
         }
 
