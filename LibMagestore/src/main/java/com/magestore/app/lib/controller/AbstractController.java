@@ -64,4 +64,44 @@ public abstract class AbstractController<TModel extends Model, TView extends Mag
         mItem = item;
     }
 
+    /**
+     * Thực hiện action
+     * @param actionType
+     * @param actionCode
+     * @param models
+     */
+    void doAction(int actionType, String actionCode, TModel... models) {
+        ActionTask<TModel> actionTask = new ActionTask<TModel>(this, actionType, actionCode);
+        actionTask.doExcute(models);
+    }
+
+    /**
+     * Thực hiện action, trả về true nếu thành công
+     * @param actionType
+     * @param actionCode
+     * @param models
+     * @return
+     */
+    Boolean doActionBackround(int actionType, String actionCode, TModel... models) throws Exception {
+        return false;
+    }
+
+    /**
+     * Trả về sự kiện khi action thành công
+     * @param actionType
+     * @param actionCode
+     * @param models
+     */
+    void onActionPostExecute(int actionType, String actionCode, TModel... models) {
+
+    }
+
+    /**
+     * Sự kiện lúc canceled load data
+     */
+    public void onCancelledBackground(Exception exp) {
+        if (exp != null)
+            doShowErrorMsg(exp);
+    }
+
 }

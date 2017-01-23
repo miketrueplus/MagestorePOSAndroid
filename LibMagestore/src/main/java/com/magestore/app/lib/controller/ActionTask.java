@@ -1,6 +1,9 @@
 package com.magestore.app.lib.controller;
 
 import android.os.AsyncTask;
+import android.os.Build;
+
+import com.magestore.app.lib.model.Model;
 
 import java.util.List;
 
@@ -11,15 +14,46 @@ import java.util.List;
  * mike@trueplus.vn
  */
 
-public class ActionTask<TModel> extends AsyncTask<TModel, Void, TModel> {
-    Controller mController;
-    public ActionTask(Controller controller) {
+public class ActionTask<TModel extends Model> extends AsyncTask<TModel, Void, Boolean> {
+    AbstractController mController;
+    int mActionType;
+    String mActionCode;
+    Exception mException = null;
+
+    public ActionTask(AbstractController controller, int actionType, String actionCode) {
         super();
         mController = controller;
+        mActionCode = actionCode;
     }
 
     @Override
-    protected TModel doInBackground(TModel... models) {
-        return null;
+    protected Boolean doInBackground(TModel... models) {
+        try {
+            return mController.doActionBackround(mActionType, mActionCode, models);
+        } catch (Exception exp) {
+            mException = exp;
+            cancel(true);
+            return false;
+        }
+    }
+
+    public void doExcute(TModel... models) {
+        // chạy task load data
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) // Above Api Level 13
+            super.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, models);
+        else // Below Api Level 13
+            super.execute(models);
+    }
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        mController.doShowProgress(true);
+    }
+
+    @Override
+    protected void onCancelled() {
+        super.onCancelled();
+        mController.onCancelledBackground(mException);
     }
 }

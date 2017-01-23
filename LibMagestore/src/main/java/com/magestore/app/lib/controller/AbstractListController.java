@@ -246,16 +246,9 @@ public abstract class AbstractListController<TModel extends Model>
      * Sự kiện lúc canceled load data
      */
     public void onCancelledLoadData(Exception exp) {
-        onCancelledLoadData(exp);
+        onCancelledBackground(exp);
     }
 
-    /**
-     * Sự kiện lúc canceled load data
-     */
-    public void onCancelledBackground(Exception exp) {
-        if (exp != null)
-            doShowErrorMsg(exp);
-    }
 
     /**
      * Chỉ định 1 item được chọn về mặt dataset, k0 có update view
