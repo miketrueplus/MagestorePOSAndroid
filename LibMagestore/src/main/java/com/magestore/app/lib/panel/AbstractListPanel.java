@@ -342,6 +342,7 @@ public abstract class AbstractListPanel<TModel extends Model>
 
     @Override
     public void showErrorMsg(Exception exp) {
+        exp.printStackTrace();
         new AlertDialog.Builder(getContext())
                 .setMessage(exp.getMessage())
                 .setIcon(android.R.drawable.ic_dialog_alert)

@@ -15,6 +15,9 @@ public abstract class AbstractController<TModel extends Model, TView extends Mag
     protected TModel mItem;
     protected TView mView;
 
+    // task chung quản lý các hoạt động
+    protected ActionTask<TModel> mActionTask;
+
     // Controller chủ
     protected Controller mParrentController;
 

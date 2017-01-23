@@ -64,7 +64,7 @@ public interface CustomerDataAccess extends DataAccess {
      * @throws IOException
      * @throws java.text.ParseException
      */
-    void updateCustomer(Customer customer) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
+    boolean updateCustomer(Customer customer) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
 
     /**
      * Thêm 1 customer
@@ -75,7 +75,7 @@ public interface CustomerDataAccess extends DataAccess {
      * @throws IOException
      * @throws java.text.ParseException
      */
-    void insertCustomer(Customer customer) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
+    boolean insertCustomer(Customer customer) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
 
     /**
      * Đếm số address của customer trong hệ thống
@@ -136,7 +136,7 @@ public interface CustomerDataAccess extends DataAccess {
      * @throws IOException
      * @throws java.text.ParseException
      */
-    void updateCustomerAddress(Customer customer, CustomerAddress address) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
+    boolean updateCustomerAddress(Customer customer, CustomerAddress address) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
 
     /**
      * Thêm địa chỉ cho 1 customer
@@ -148,9 +148,9 @@ public interface CustomerDataAccess extends DataAccess {
      * @throws IOException
      * @throws java.text.ParseException
      */
-    void insertCustomerAddress(Customer customer, CustomerAddress address) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
+    boolean insertCustomerAddress(Customer customer, CustomerAddress address) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
 
-    void deleteCustomerAddress(Customer pcustomer, CustomerAddress address) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
+    boolean deleteCustomerAddress(Customer pcustomer, CustomerAddress address) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
 
     /**
      * Đếm số complain của toàn hệ thống
@@ -210,7 +210,7 @@ public interface CustomerDataAccess extends DataAccess {
      * @throws IOException
      * @throws java.text.ParseException
      */
-    void updateCustomerComplain(Customer customer, Complain complain) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
+    boolean updateCustomerComplain(Customer customer, Complain complain) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
 
     /**
      * Thêm complain cho 1 customer
@@ -222,5 +222,5 @@ public interface CustomerDataAccess extends DataAccess {
      * @throws IOException
      * @throws java.text.ParseException
      */
-    void insertCustomerComplain(Customer customer, Complain complain) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
+    boolean insertCustomerComplain(Customer customer, Complain complain) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
 }

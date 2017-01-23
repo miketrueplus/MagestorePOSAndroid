@@ -1,5 +1,6 @@
 package com.magestore.app.pos.api.m2.user;
 
+import com.google.gson.Gson;
 import com.magestore.app.lib.BuildConfig;
 import com.magestore.app.lib.connection.Connection;
 import com.magestore.app.lib.connection.ConnectionException;
@@ -7,6 +8,7 @@ import com.magestore.app.lib.connection.ConnectionFactory;
 import com.magestore.app.lib.connection.ResultReading;
 import com.magestore.app.lib.connection.Statement;
 import com.magestore.app.lib.connection.http.MagestoreConnection;
+import com.magestore.app.lib.model.user.User;
 import com.magestore.app.lib.resourcemodel.DataAccessException;
 import com.magestore.app.lib.resourcemodel.user.UserDataAccess;
 import com.magestore.app.pos.api.m2.POSAPI;
@@ -15,6 +17,7 @@ import com.magestore.app.pos.api.m2.POSDataAccessSession;
 import com.magestore.app.pos.model.user.PosUser;
 
 import java.io.IOException;
+import java.io.ObjectInput;
 import java.text.ParseException;
 
 /**
@@ -22,13 +25,11 @@ import java.text.ParseException;
  * Created by Mike on 12/14/2016.
  * Magestore
  * mike@trueplus.vn
- * TODO: Add a class header comment!
  */
 
 public class POSUserDataAccess extends POSAbstractDataAccess implements UserDataAccess {
-    private class LoginEntity {
-        PosUser staff = new PosUser();
-    }
+    // wrap object lại và chuyênr thành json
+    private class Wrap {User staff;};
 
     public POSUserDataAccess() {
 
@@ -59,8 +60,6 @@ public class POSUserDataAccess extends POSAbstractDataAccess implements UserData
      * URL =
      * Param =
      * @param domain
-     * @param username
-     * @param password
      * @return
      * @throws ParseException
      * @throws ConnectionException
@@ -68,7 +67,7 @@ public class POSUserDataAccess extends POSAbstractDataAccess implements UserData
      * @throws IOException
      */
     @Override
-    public String login(String domain, String username, String password) throws ParseException, ConnectionException, DataAccessException, IOException {
+    public String login(String domain, final User user) throws ParseException, ConnectionException, DataAccessException, IOException {
         Connection connection = null;
         Statement statement = null;
         ResultReading rp = null;
@@ -79,10 +78,9 @@ public class POSUserDataAccess extends POSAbstractDataAccess implements UserData
             statement = connection.createStatement();
             statement.prepareQuery(POSAPI.REST_LOGIN);
 
-            LoginEntity loginEntity = new LoginEntity();
-            loginEntity.staff.setUserName(username);
-            loginEntity.staff.setPasswords(password);
-            rp = statement.execute(loginEntity);
+            Wrap wrap = new Wrap();
+            wrap.staff = user;
+            rp = statement.execute(wrap);
             return rp.readResult2String();
         }
         catch (Exception ex) {
@@ -102,12 +100,4 @@ public class POSUserDataAccess extends POSAbstractDataAccess implements UserData
             connection = null;
         }
     }
-
-//    @Override
-//    public String login(String domain, String username, String password) throws ParseException, ConnectionException, DataAccessException, IOException {
-//        LoginEntity loginEntity = new LoginEntity();
-//        loginEntity.staff.setUserName(username);
-//        loginEntity.staff.setPasswords(password);
-//        return doApi2String(POSDataAccessSession.REST_LOGIN, loginEntity);
-//    }
 }

@@ -129,5 +129,5 @@ public interface Statement {
     /**
      * Build trước final query
      */
-    void buildFinalQuery();
+    String buildFinalQuery();
 }

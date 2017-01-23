@@ -13,4 +13,8 @@ public interface User extends Model {
     String getLastName();
     String getEmail();
     String getHandPhoneNumber();
+
+    void setUserName(String name);
+
+    void setPasswords(String ppass);
 }

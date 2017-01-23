@@ -1,11 +1,13 @@
 package com.magestore.app.pos.service.user;
 
+import com.magestore.app.lib.model.user.User;
 import com.magestore.app.lib.resourcemodel.DataAccessFactory;
 import com.magestore.app.lib.resourcemodel.user.UserDataAccess;
 import com.magestore.app.pos.api.m2.POSDataAccessSession;
 import com.magestore.app.lib.service.config.ConfigService;
 import com.magestore.app.lib.service.ServiceFactory;
 import com.magestore.app.lib.service.user.UserService;
+import com.magestore.app.pos.model.user.PosUser;
 import com.magestore.app.pos.service.AbstractService;
 
 import java.io.IOException;
@@ -36,7 +38,10 @@ public class POSUserService extends AbstractService implements UserService {
         String strBaseURL = userGateway.buildPOSBaseURL(domain);
 
         // Thực hiện đăng nhập
-        String str = userGateway.login(strBaseURL, username, password);
+        User user = new PosUser();
+        user.setUserName(username);
+        user.setPasswords(password);
+        String str = userGateway.login(strBaseURL, user);
         boolean success = (str != null && (!strfalse.equals(str)));
 
         // Lưu lại session ID

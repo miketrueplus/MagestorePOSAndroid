@@ -1,7 +1,9 @@
 package com.magestore.app.pos.controller;
 
 import com.magestore.app.lib.controller.AbstractListController;
+import com.magestore.app.lib.controller.DeleteListTask;
 import com.magestore.app.lib.controller.ListController;
+import com.magestore.app.lib.controller.UpdateListTask;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.service.customer.CustomerService;
@@ -17,6 +19,7 @@ import java.util.List;
 public class CustomerAddressListController
         extends AbstractListController<CustomerAddress>
         implements ListController<CustomerAddress> {
+
     /**
      * Task xử lý các vấn đề liên quan đến customer
      */
@@ -60,14 +63,25 @@ public class CustomerAddressListController
     }
 
     @Override
-    public void doDeleteItem(CustomerAddress item) {
-        super.doDeleteItem(item);
-        if (mCustomerService != null) mCustomerService.removeAddress(mSelectedCustomer, item);
+    public void onInsertPostExecute(Boolean success, CustomerAddress... addresses) {
+        super.onInsertPostExecute(success);
     }
 
     @Override
-    public void doUpdateItem(CustomerAddress item) {
-        super.doUpdateItem(item);
-//        if (mCustomerService != null) mCustomerService.Address(mSelectedCustomer, item);
+    public void onUpdatePostExecute(Boolean success, CustomerAddress... addresses) {
+        super.onUpdatePostExecute(success);
+    }
+
+    @Override
+    public void onDeletePostExecute(Boolean success) {
+        mView.notifyDatasetChanged();
+    }
+
+    @Override
+    public boolean onDeleteDataBackGround(CustomerAddress... params) throws Exception {
+        for (CustomerAddress address: params) {
+            if (mCustomerService != null) mCustomerService.deleteAddress(mSelectedCustomer, address);
+        }
+        return true;
     }
 }

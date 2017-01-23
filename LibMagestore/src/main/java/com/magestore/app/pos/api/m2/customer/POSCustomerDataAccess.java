@@ -3,6 +3,7 @@ package com.magestore.app.pos.api.m2.customer;
 
 import android.location.Address;
 
+import com.google.gson.Gson;
 import com.magestore.app.lib.connection.Connection;
 import com.magestore.app.lib.connection.ConnectionException;
 import com.magestore.app.lib.connection.ConnectionFactory;
@@ -12,6 +13,7 @@ import com.magestore.app.lib.connection.Statement;
 import com.magestore.app.lib.model.customer.Complain;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.customer.CustomerAddress;
+import com.magestore.app.lib.model.user.User;
 import com.magestore.app.lib.resourcemodel.customer.CustomerDataAccess;
 import com.magestore.app.lib.resourcemodel.DataAccessException;
 import com.magestore.app.lib.parse.ParseException;
@@ -34,6 +36,8 @@ import java.util.List;
  */
 
 public class POSCustomerDataAccess extends POSAbstractDataAccess implements CustomerDataAccess {
+    // wrap object lại và chuyênr thành json
+    private class Wrap {Customer customer;};
     /**
      * Tổng số customer trong hệ thống
      *
@@ -232,7 +236,7 @@ public class POSCustomerDataAccess extends POSAbstractDataAccess implements Cust
      * @throws java.text.ParseException
      */
     @Override
-    public void updateCustomer(final Customer pcustomer) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
+    public boolean updateCustomer(final Customer pcustomer) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
         Connection connection = null;
         Statement statement = null;
         ResultReading rp = null;
@@ -250,8 +254,12 @@ public class POSCustomerDataAccess extends POSAbstractDataAccess implements Cust
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
 
             // thực thi truy vấn và parse kết quả thành object
-            Object wrapCustomer = new Object() {public Customer customer = pcustomer;};
+            Wrap wrapCustomer = new Wrap();
+            wrapCustomer.customer = pcustomer;
             rp = statement.execute(wrapCustomer);
+            String strJson = (new Gson()).toJson(wrapCustomer);
+            String result = rp.readResult2String();
+            return true;
         } catch (ConnectionException ex) {
             throw ex;
         } catch (IOException ex) {
@@ -285,7 +293,7 @@ public class POSCustomerDataAccess extends POSAbstractDataAccess implements Cust
      * @throws java.text.ParseException
      */
     @Override
-    public void insertCustomer(final Customer pcustomer) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
+    public boolean insertCustomer(final Customer pcustomer) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
         Connection connection = null;
         Statement statement = null;
         ResultReading rp = null;
@@ -303,8 +311,11 @@ public class POSCustomerDataAccess extends POSAbstractDataAccess implements Cust
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
 
             // thực thi truy vấn và parse kết quả thành object
-            Object wrapCustomer = new Object() {public Customer customer = pcustomer;};
+            Wrap wrapCustomer = new Wrap();
+            wrapCustomer.customer = pcustomer;
             rp = statement.execute(wrapCustomer);
+            String result = rp.readResult2String();
+            return true;
         } catch (ConnectionException ex) {
             throw ex;
         } catch (IOException ex) {
@@ -537,50 +548,53 @@ public class POSCustomerDataAccess extends POSAbstractDataAccess implements Cust
      * @throws java.text.ParseException
      */
     @Override
-    public void updateCustomerAddress(final Customer pcustomer, CustomerAddress address) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
-        Connection connection = null;
-        Statement statement = null;
-        ResultReading rp = null;
-        ParamBuilder paramBuilder = null;
+    public boolean updateCustomerAddress(final Customer pcustomer, CustomerAddress address) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
+        return updateCustomer(pcustomer);
 
-        try {
-            // Khởi tạo connection và khởi tạo truy vấn
-            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
-            statement = connection.createStatement();
-            statement.prepareQuery(POSAPI.REST_ADDRESS_UPDATE);
-            statement.setParam(POSAPI.PARAM_CUSTOMER_ID, pcustomer.getID());
-
-            // Xây dựng tham số
-            paramBuilder = statement.getParamBuilder()
-                    .setSessionID(POSDataAccessSession.REST_SESSION_ID)
-                    .setParam(POSAPI.PARAM_CUSTOMER_ID, pcustomer.getID());
-
-            // thực thi truy vấn và parse kết quả thành object
-            Object wrapCustomer = new Object() {public Customer customer = pcustomer;};
-            rp = statement.execute(wrapCustomer);
-
-            // return
-            return;
-        } catch (ConnectionException ex) {
-            throw ex;
-        } catch (IOException ex) {
-            throw ex;
-        } finally {
-            // đóng result reading
-            if (rp != null) rp.close();
-            rp = null;
-
-            if (paramBuilder != null) paramBuilder.clear();
-            paramBuilder = null;
-
-            // đóng statement
-            if (statement != null) statement.close();
-            statement = null;
-
-            // đóng connection
-            if (connection != null) connection.close();
-            connection = null;
-        }
+//        Connection connection = null;
+//        Statement statement = null;
+//        ResultReading rp = null;
+//        ParamBuilder paramBuilder = null;
+//
+//        try {
+//            // Khởi tạo connection và khởi tạo truy vấn
+//            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
+//            statement = connection.createStatement();
+//            statement.prepareQuery(POSAPI.REST_ADDRESS_UPDATE);
+//            statement.setParam(POSAPI.PARAM_CUSTOMER_ID, pcustomer.getID());
+//
+//            // Xây dựng tham số
+//            paramBuilder = statement.getParamBuilder()
+//                    .setSessionID(POSDataAccessSession.REST_SESSION_ID)
+//                    .setParam(POSAPI.PARAM_CUSTOMER_ID, pcustomer.getID());
+//
+//            // thực thi truy vấn và parse kết quả thành object
+//            Wrap wrapCustomer = new Wrap();
+//            wrapCustomer.customer = pcustomer;
+//            rp = statement.execute(wrapCustomer);
+//            String result = rp.readResult2String();
+//            // return
+//            return;
+//        } catch (ConnectionException ex) {
+//            throw ex;
+//        } catch (IOException ex) {
+//            throw ex;
+//        } finally {
+//            // đóng result reading
+//            if (rp != null) rp.close();
+//            rp = null;
+//
+//            if (paramBuilder != null) paramBuilder.clear();
+//            paramBuilder = null;
+//
+//            // đóng statement
+//            if (statement != null) statement.close();
+//            statement = null;
+//
+//            // đóng connection
+//            if (connection != null) connection.close();
+//            connection = null;
+//        }
     }
 
     /**
@@ -595,7 +609,7 @@ public class POSCustomerDataAccess extends POSAbstractDataAccess implements Cust
      * @throws java.text.ParseException
      */
     @Override
-    public void insertCustomerAddress(final Customer pcustomer, CustomerAddress address) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
+    public boolean insertCustomerAddress(final Customer pcustomer, CustomerAddress address) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
         Connection connection = null;
         Statement statement = null;
         ResultReading rp = null;
@@ -614,8 +628,11 @@ public class POSCustomerDataAccess extends POSAbstractDataAccess implements Cust
                     .setParam(POSAPI.PARAM_CUSTOMER_ID, pcustomer.getID());
 
             // thực thi truy vấn và parse kết quả thành object
-            Object wrapCustomer = new Object() {public Customer customer = pcustomer;};
+            Wrap wrapCustomer = new Wrap();
+            wrapCustomer.customer = pcustomer;
             rp = statement.execute(wrapCustomer);
+            String result = rp.readResult2String();
+            return true;
         } catch (ConnectionException ex) {
             throw ex;
         } catch (IOException ex) {
@@ -639,8 +656,8 @@ public class POSCustomerDataAccess extends POSAbstractDataAccess implements Cust
     }
 
     @Override
-    public void deleteCustomerAddress(final Customer pcustomer, CustomerAddress address) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
-        updateCustomer(pcustomer);
+    public boolean deleteCustomerAddress(final Customer pcustomer, CustomerAddress address) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
+        return updateCustomer(pcustomer);
     }
 
 
@@ -850,7 +867,7 @@ public class POSCustomerDataAccess extends POSAbstractDataAccess implements Cust
      * @throws java.text.ParseException
      */
     @Override
-    public void updateCustomerComplain(final Customer pcustomer, Complain complain) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
+    public boolean updateCustomerComplain(final Customer pcustomer, Complain complain) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
         Connection connection = null;
         Statement statement = null;
         ResultReading rp = null;
@@ -869,11 +886,12 @@ public class POSCustomerDataAccess extends POSAbstractDataAccess implements Cust
                     .setParam(POSAPI.PARAM_CUSTOMER_ID, pcustomer.getID());
 
             // thực thi truy vấn và parse kết quả thành object
-            Object wrapCustomer = new Object() {public Customer customer = pcustomer;};
+            Wrap wrapCustomer = new Wrap();
+            wrapCustomer.customer = pcustomer;
             rp = statement.execute(wrapCustomer);
-
+            String result = rp.readResult2String();
             // return
-            return;
+            return true;
         } catch (ConnectionException ex) {
             throw ex;
         } catch (IOException ex) {
@@ -906,7 +924,7 @@ public class POSCustomerDataAccess extends POSAbstractDataAccess implements Cust
      * @throws java.text.ParseException
      */
     @Override
-    public void insertCustomerComplain(final Customer pcustomer, Complain complain) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
+    public boolean insertCustomerComplain(final Customer pcustomer, Complain complain) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
         Connection connection = null;
         Statement statement = null;
         ResultReading rp = null;
@@ -925,11 +943,13 @@ public class POSCustomerDataAccess extends POSAbstractDataAccess implements Cust
                     .setParam(POSAPI.PARAM_CUSTOMER_ID, pcustomer.getID());
 
             // thực thi truy vấn và parse kết quả thành object
-            Object wrapCustomer = new Object() {public Customer customer = pcustomer;};
+            Wrap wrapCustomer = new Wrap();
+            wrapCustomer.customer = pcustomer;
             rp = statement.execute(wrapCustomer);
+            String result = rp.readResult2String();
 
             // return
-            return;
+            return true;
         } catch (ConnectionException ex) {
             throw ex;
         } catch (IOException ex) {

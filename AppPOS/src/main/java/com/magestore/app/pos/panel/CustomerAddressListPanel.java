@@ -77,7 +77,6 @@ public class CustomerAddressListPanel extends AbstractListPanel<CustomerAddress>
                 new DialogInterface.OnClickListener(){
                     public void onClick(DialogInterface dialog, int which) {
                         mController.doDeleteItem(item);
-                        notifyDatasetChanged();
                     }
                 });
     }

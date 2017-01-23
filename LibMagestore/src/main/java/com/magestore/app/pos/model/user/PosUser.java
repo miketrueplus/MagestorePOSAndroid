@@ -51,8 +51,11 @@ public class PosUser extends PosAbstractModel implements User {
         return username;
     }
 
+    @Override
     public void setUserName(String name) {
         username = name;
     }
+
+    @Override
     public void setPasswords(String ppass) { password = ppass; }
 }

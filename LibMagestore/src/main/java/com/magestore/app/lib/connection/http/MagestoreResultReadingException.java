@@ -55,4 +55,12 @@ public class MagestoreResultReadingException extends MagestoreResultReading {
     public void writeToFile(File file) throws ParseException, ConnectionException, IOException {
         doParse();
     }
+
+    @Override
+    public String readResult2String() throws ConnectionException, IOException {
+        super.setParseImplement(Gson2PosMesssageExceptionImplement.class);
+        super.setParseModel(PosMessagException.class);
+        doParse();
+        return null;
+    }
 }

@@ -192,25 +192,7 @@ public class MagestoreStatement implements Statement {
      * @return
      * TODO: cần cải thiện thuật toán tránh build lại query nhiều lần
      */
-    public void buildFinalQuery() {
-        mstrExecuteQuery = null;
-        if (mstrPreparedQuery == null) prepareQuery(mstrLastPreparedQuery);
-        StringBuilder strFinalBuilderQuery = mstrPreparedQuery;
-        if (mParambuilder != null) {
-            strFinalBuilderQuery = new StringBuilder(mstrPreparedQuery);
-            strFinalBuilderQuery.append(mParambuilder.buildQuery());
-        }
-        if (mValuesMap != null) {
-            StrSubstitutor sub = new StrSubstitutor(mValuesMap);
-            mstrExecuteQuery = sub.replace(strFinalBuilderQuery);
-        }
-        else
-            mstrExecuteQuery = strFinalBuilderQuery.toString();
-
-//        return mstrExecuteQuery;
-    }
-
-    public String abuildFinalQuery() {
+    public String buildFinalQuery() {
         mstrExecuteQuery = null;
         if (mstrPreparedQuery == null) prepareQuery(mstrLastPreparedQuery);
         StringBuilder strFinalBuilderQuery = mstrPreparedQuery;
@@ -227,6 +209,24 @@ public class MagestoreStatement implements Statement {
 
         return mstrExecuteQuery;
     }
+//
+//    public String abuildFinalQuery() {
+//        mstrExecuteQuery = null;
+//        if (mstrPreparedQuery == null) prepareQuery(mstrLastPreparedQuery);
+//        StringBuilder strFinalBuilderQuery = mstrPreparedQuery;
+//        if (mParambuilder != null) {
+//            strFinalBuilderQuery = new StringBuilder(mstrPreparedQuery);
+//            strFinalBuilderQuery.append(mParambuilder.buildQuery());
+//        }
+//        if (mValuesMap != null) {
+//            StrSubstitutor sub = new StrSubstitutor(mValuesMap);
+//            mstrExecuteQuery = sub.replace(strFinalBuilderQuery);
+//        }
+//        else
+//            mstrExecuteQuery = strFinalBuilderQuery.toString();
+//
+//        return mstrExecuteQuery;
+//    }
 
     /**
      * Chuẩn bị HTTP connection với method post và object
@@ -247,7 +247,7 @@ public class MagestoreStatement implements Statement {
     public ResultReading execute() throws ConnectionException, IOException {
         // Chuẩn bị chuỗi URL truy vấn, thay các tham số bằng các giá trị tương ứng
 //        buildFinalQuery();
-        String strExecuteQuery = abuildFinalQuery();
+        String strExecuteQuery = buildFinalQuery();
 
         // Tham chiếu đến connection
         MagestoreConnection magestoreConnection = (MagestoreConnection) getConnection();

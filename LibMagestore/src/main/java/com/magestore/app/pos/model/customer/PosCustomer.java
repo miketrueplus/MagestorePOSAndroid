@@ -33,7 +33,7 @@ public class PosCustomer extends PosAbstractModel implements Customer {
     String telephone;
     String disable_auto_group_change;
     List<PosCustomerAddress> addresses;
-    List<Complain> complains;
+    List<Complain> complainsa;
 
     @Override
     public String getName() {
@@ -78,11 +78,12 @@ public class PosCustomer extends PosAbstractModel implements Customer {
 
     @Override
     public List<Complain> getComplain() {
-        return (List<Complain>) (List<?>) complains;
+//        return (List<Complain>) (List<?>) complainsa;
+        return null;
     }
 
     @Override
     public void setComplain(List<Complain> complains) {
-        this.complains = complains;
+//        this.complainsa = complains;
     }
 }

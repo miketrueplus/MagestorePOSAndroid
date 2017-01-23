@@ -7,6 +7,7 @@ import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
 import com.magestore.app.lib.panel.AbstractListPanel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,6 +20,7 @@ public abstract class AbstractListController<TModel extends Model>
         extends AbstractController<TModel, AbstractListPanel<TModel>>
         implements ListController<TModel> {
 
+
     // tự động chọn item đầu tiên trong danh sách
     boolean mblnAutoChooseFirstItem = true;
 
@@ -29,6 +31,8 @@ public abstract class AbstractListController<TModel extends Model>
      * Danh sách dữ liệu chứa Model
      */
     protected List<TModel> mList;
+    protected TModel mSelectedItem;
+    protected TModel mBackupSelectedItem;
 
     /**
      * Thiết lập danh sách, cho hiển thị lên view
@@ -40,6 +44,36 @@ public abstract class AbstractListController<TModel extends Model>
     }
 
     /**
+     * Sự kiện lúc chọn được data, cập nhật cả view và dữ liệu
+     * @param item
+     */
+    @Override
+    public void bindItem(TModel item) {
+        super.bindItem(item);
+        setSelectedItem(item);
+        if (mDetailView != null)
+            mDetailView.bindItem(item);
+    }
+
+    /**
+     * Xác định controller xử lý detail
+     */
+    public void setDetailPanel(AbstractDetailPanel<TModel> detailPanel) {
+        mDetailView = detailPanel;
+        detailPanel.setController(this);
+    }
+
+    /**
+     * Đặt list panel để quản lý hiển thị cho panel
+     * @param view
+     */
+    public void setListPanel(AbstractListPanel<TModel> view) {
+        setView(view);
+    }
+
+    //////////////////////////////////////////////////////////
+
+    /**
      * Thực hiện tải dữ liệu, xác định xem có tự động chọn item đầu tiên không
      * @param blnAutoChooseFirstItem
      */
@@ -47,57 +81,34 @@ public abstract class AbstractListController<TModel extends Model>
         mblnAutoChooseFirstItem = blnAutoChooseFirstItem;
         doLoadData();
     }
-//    public void doLoadData()
 
     /**
      * Thực hiện load dữ liệu lúc đầu mở view
      */
-    public void doLoadData(){
+    @Override
+    public void doLoadData() {
+        RetrieveListTask<TModel> task = new RetrieveListTask<TModel>(this);
+        task.doExecute(0, 30);
+    }
+
+    /**
+     * Thực hiện load dữ liệu lúc đầu mở view
+     */
+    @Override
+    public void doRetrieveItem(){
         // chuẩn bị task load data
-        final AsyncTask<Void, Void, List<TModel>> task = new AsyncTask<Void, Void, List<TModel>>() {
-             private Exception mException;
-            @Override
-            protected List<TModel> doInBackground(Void... params) {
-                try {
-                    return loadDataBackground();
-                } catch (Exception exp) {
-                    mException = exp;
-                    cancel(true);
-                    return null;
-                }
-            }
+        RetrieveListTask<TModel> task = new RetrieveListTask<TModel>(this);
+        task.doExecute(0, 30);
+    }
 
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                doShowProgress(true);
-                onPreExcuteLoadData();
-            }
-
-            @Override
-            protected void onPostExecute(List<TModel> ts) {
-                super.onPostExecute(ts);
-                onPostExecuteLoadData(ts);
-                doShowProgress(false);
-            }
-
-            @Override
-            protected void onProgressUpdate(Void... values) {
-                super.onProgressUpdate(values);
-            }
-
-            @Override
-            protected void onCancelled() {
-                super.onCancelled();
-                onCancelledLoadData(mException);
-            }
-        };
-
-        // chạy task load data
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) // Above Api Level 13
-            task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        else // Below Api Level 13
-            task.execute();
+    /**
+     * Thực hiện load dữ liệu lúc đầu mở view
+     */
+    @Override
+    public void doRetrieveItem(int page, int pageSize){
+        // chuẩn bị task load data
+        RetrieveListTask<TModel> task = new RetrieveListTask<TModel>(this);
+        task.doExecute(page, pageSize);
     }
 
     /**
@@ -105,12 +116,20 @@ public abstract class AbstractListController<TModel extends Model>
      * @return
      * @throws Exception
      */
-    protected abstract List<TModel> loadDataBackground(Void... params) throws Exception;
+    @Override
+    public List<TModel> onRetrieveDataBackground(int page, int pageSize) throws Exception {
+        return loadDataBackground();
+    }
 
     /**
-     * Sự kiện trước khi load dữ liệu
+     * Sự kiện sau khi load dữ liệu
+     * @param list
      */
-    protected void onPreExcuteLoadData() {}
+    @Override
+    public void onRetrievePostExecute(List<TModel> list) {
+        // gọi lại method đặt tên theo phiên bản cũ
+        onPostExecuteLoadData(list);
+    }
 
     /**
      * Sự kiện sau khi load dữ liệu
@@ -126,54 +145,149 @@ public abstract class AbstractListController<TModel extends Model>
     }
 
     /**
-     * Sự kiện trong quá trình progress dữ liệu
+     * Load data từ background ngầm, các lớp con sẽ nạp chồng hàm này
+     * Bản cũ không dùng nữa
+     * @return
+     * @throws Exception
      */
-    protected void onProgressUpdateLoadData() {}
+    protected List<TModel> loadDataBackground(Void... params) throws Exception {
+        return null;
+    }
+
+    /**
+     * Kích hoạt update model trong list
+     * @param models
+     */
+    @Override
+    public void doUpdateItem(TModel... models) {
+        // chuẩn bị task load data
+        UpdateListTask<TModel> task = new UpdateListTask<TModel>(this);
+        task.execute(models);
+    }
+
+    /**
+     * Overider hàm này để xử lý nghiệp vụ update trên một thread khác
+     * @param params
+     * @throws Exception
+     */
+    @Override
+    public boolean onUpdateDataBackGround(TModel... params) throws Exception
+    { return false;}
+
+    /**
+     * Cập nhật thành công
+     * @param success
+     */
+    @Override
+    public void onUpdatePostExecute(Boolean success, TModel... models) {
+
+    }
+
+    /**
+     * Kích hoạt việc xóa 1 item
+     */
+    @Override
+    public void doDeleteItem(TModel... models) {
+        // chuẩn bị task load data
+        DeleteListTask<TModel> task = new DeleteListTask<TModel>(this);
+        task.doExecute(models);
+    }
+
+    /**
+     * Overider hàm này để xử lý nghiệp vụ insert
+     * @throws Exception
+     */
+    @Override
+    public boolean onDeleteDataBackGround(TModel... models) throws Exception
+    {
+        return false;
+    }
+
+    /**
+     * Xóa thành công
+     * @param success
+     */
+    @Override
+    public void onDeletePostExecute(Boolean success) {
+        if (success) mView.notifyDatasetChanged();
+    }
+
+    /**
+     * Kích hoạt Thực hiện chèn, tạo mới 1 item
+     */
+    @Override
+    public void doInsertItem(TModel... models) {
+        // chuẩn bị task load data
+        InsertListTask<TModel> task = new InsertListTask<TModel>(this);
+        task.doExecute(models);
+    }
+
+    /**
+     * Overider hàm này để xử lý nghiệp vụ insert
+     * @param params
+     * @throws Exception
+     */
+    @Override
+    public boolean onInsertDataBackground(TModel... params)
+            throws Exception
+    { return false;}
+
+    /**
+     * Insert thành công
+     * @param success
+     */
+    @Override
+    public void onInsertPostExecute(Boolean success, TModel... models) {
+        if (success) mView.notifyDatasetChanged();
+    }
+
 
     /**
      * Sự kiện lúc canceled load data
      */
-    protected void onCancelledLoadData(Exception exp) {
+    public void onCancelledLoadData(Exception exp) {
+        onCancelledLoadData(exp);
+    }
+
+    /**
+     * Sự kiện lúc canceled load data
+     */
+    public void onCancelledBackground(Exception exp) {
         if (exp != null)
             doShowErrorMsg(exp);
     }
 
     /**
-     * Sự kiện lúc chọn được data
-     * @param item
+     * Chỉ định 1 item được chọn về mặt dataset, k0 có update view
+     * @param model
      */
-    @Override
-    public void bindItem(TModel item) {
-        super.bindItem(item);
-        if (mDetailView != null)
-            mDetailView.bindItem(item);
-    }
-
-    public void onSelectRow(TModel item, int position) {
-
+    public void setSelectedItem(TModel model) {
+        mSelectedItem = model;
     }
 
     /**
-     * Xác định controller xử lý detail
+     * Trả về item đã được chọn trên danh sách
+     * @return
      */
-    public void setDetailPanel(AbstractDetailPanel<TModel> detailPanel) {
-        mDetailView = detailPanel;
-        detailPanel.setController(this);
+    public TModel getSelectedItem() {
+        return mSelectedItem;
     }
 
-    public void setListPanel(AbstractListPanel<TModel> view) {
-        setView(view);
+    /**
+     * Trả lại danh sách nhiều item được chọn
+     * @return
+     */
+    public List<TModel> getSelectedItems() {
+        List<TModel> models = new ArrayList<TModel>();
+        models.add(mSelectedItem);
+        return models;
     }
 
-
-    @Override
-    public void doDeleteItem(TModel item) {
-
+    /**
+     * Chỉ định tập hợp các item được chọn, k0 thay đổi view, chỉ về mặt dữ liệu
+     * @param models
+     */
+    public void setSelectedItem(List<TModel> models) {
+        setSelectedItem(models.get(0));
     }
-
-    @Override
-    public void doUpdateItem(TModel item) {
-    }
-
-
 }

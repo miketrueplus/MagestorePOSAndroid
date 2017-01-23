@@ -23,9 +23,9 @@ public interface CustomerService extends Service {
 
     List<Customer> retrieveCustomerList(int size) throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
-    void updateCustomer(Customer customer) throws InstantiationException, IllegalAccessException, IOException, ParseException;
+    boolean updateCustomer(Customer customer) throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
-    void insertCustomer(Customer customer) throws InstantiationException, IllegalAccessException, IOException, ParseException;
+    boolean insertCustomer(Customer customer) throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
     CustomerAddress createAddress();
 
@@ -33,13 +33,13 @@ public interface CustomerService extends Service {
 
     CustomerAddress createAddress(Customer customer);
 
-    void removeAddress(Customer customer, CustomerAddress customerAddress);
+    boolean removeAddress(Customer customer, CustomerAddress customerAddress);
 
-    void deleteAddress(Customer customer, CustomerAddress customerAddress) throws IOException, InstantiationException, ParseException, IllegalAccessException;
+    boolean deleteAddress(Customer customer, CustomerAddress customerAddress) throws IOException, InstantiationException, ParseException, IllegalAccessException;
 
-    void updateAddress(Customer customer, CustomerAddress customerAddress) throws IOException, InstantiationException, ParseException, IllegalAccessException;
+    boolean updateAddress(Customer customer, CustomerAddress customerAddress) throws IOException, InstantiationException, ParseException, IllegalAccessException;
 
-    void insertAddress(Customer customer, CustomerAddress customerAddress) throws IOException, InstantiationException, ParseException, IllegalAccessException;
+    boolean insertAddress(Customer customer, CustomerAddress customerAddress) throws IOException, InstantiationException, ParseException, IllegalAccessException;
 
     Complain createComplain();
 
@@ -49,5 +49,5 @@ public interface CustomerService extends Service {
 
     List<Complain> retrieveComplain(String customerID) throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
-    void insertComplain(Customer customer, Complain complain) throws InstantiationException, IllegalAccessException, IOException, ParseException;
+    boolean insertComplain(Customer customer, Complain complain) throws InstantiationException, IllegalAccessException, IOException, ParseException;
 }
