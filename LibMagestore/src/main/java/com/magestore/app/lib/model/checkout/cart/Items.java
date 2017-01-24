@@ -28,4 +28,10 @@ public interface Items extends Model {
     float getRowTotal();
     float getTaxAmount();
     float getDiscountAmount();
+    int getQtyOrdered();
+    int getQtyCanceled();
+    int getQtyInvoiced();
+    int getQtyRefunded();
+    int getQtyShipped();
+    int QtyShip();
 }

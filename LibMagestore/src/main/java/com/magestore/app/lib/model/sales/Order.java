@@ -48,6 +48,7 @@ public interface Order extends Model {
     float getDiscountAmount();
     float getTotalPaid();
     float getOrderHistorySubtotal();
+    boolean checkListShipment();
 
     // param add comment history
     OrderStatus getParamStatus();

@@ -31,6 +31,11 @@ public class PosItems extends PosAbstractModel implements Items {
     float row_total_incl_tax = 0;
     float tax_amount = 0;
     float discount_amount = 0;
+    int qty_ordered;
+    int qty_canceled;
+    int qty_invoiced;
+    int qty_refunded;
+    int qty_shipped;
 
     @Override
     public void setQuantity(int param_quantity) {
@@ -101,5 +106,35 @@ public class PosItems extends PosAbstractModel implements Items {
     @Override
     public float getDiscountAmount() {
         return discount_amount;
+    }
+
+    @Override
+    public int getQtyOrdered() {
+        return qty_ordered;
+    }
+
+    @Override
+    public int getQtyCanceled() {
+        return qty_canceled;
+    }
+
+    @Override
+    public int getQtyInvoiced() {
+        return qty_invoiced;
+    }
+
+    @Override
+    public int getQtyRefunded() {
+        return qty_refunded;
+    }
+
+    @Override
+    public int getQtyShipped() {
+        return qty_shipped;
+    }
+
+    @Override
+    public int QtyShip() {
+        return qty_ordered - qty_shipped;
     }
 }

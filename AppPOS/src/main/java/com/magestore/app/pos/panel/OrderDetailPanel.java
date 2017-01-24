@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+
 import com.magestore.app.lib.controller.Controller;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
@@ -167,6 +168,7 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
                         onClickSendEmail();
                         return true;
                     case R.id.action_ship:
+                        onClickShipment();
                         return true;
                     case R.id.action_cancel:
                         return true;
@@ -176,6 +178,7 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
                     case R.id.action_re_order:
                         return true;
                     case R.id.action_refund:
+                        onClickRefund();
                         return true;
                     default:
                         return false;
@@ -213,7 +216,7 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         });
     }
 
-    private void actionSendEmail(OrderSendEmailPanel mOrderSendEmailPanel){
+    private void actionSendEmail(OrderSendEmailPanel mOrderSendEmailPanel) {
         Order order = mOrderSendEmailPanel.bind2Item();
         String email = order.getCustomerEmail();
         String orderId = order.getID();
@@ -244,7 +247,7 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         });
     }
 
-    private void actionAddComment(OrderAddCommentPanel mOrderAddCommentPanel){
+    private void actionAddComment(OrderAddCommentPanel mOrderAddCommentPanel) {
         Order order = mOrderAddCommentPanel.bind2Item();
         String comment = order.getParamStatus().getComment();
 
@@ -256,5 +259,25 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         ((OrderHistoryListController) mController).setOrderAddCommentPanel(mOrderAddCommentPanel);
         ((OrderHistoryListController) mController).setOrderCommentListController(mOrderCommentHistoryController);
         ((OrderHistoryListController) mController).insertOrderStatus(order);
+    }
+
+    private void onClickShipment() {
+        final OrderShipmentPanel mOrderShipmentPanel = new OrderShipmentPanel(getContext());
+        mOrderShipmentPanel.bindItem(mOrder);
+        mOrderShipmentPanel.setController(mController);
+        mOrderShipmentPanel.initModel();
+        dialog = DialogUtil.dialog(getContext(), getContext().getString(R.string.order_shipment_title), mOrderShipmentPanel);
+        dialog.setGoneButtonSave(true);
+        dialog.show();
+    }
+
+    private void onClickRefund() {
+        final OrderRefundPanel mOrderRefundPanel = new OrderRefundPanel(getContext());
+        mOrderRefundPanel.bindItem(mOrder);
+        mOrderRefundPanel.setController(mController);
+        mOrderRefundPanel.initModel();
+        dialog = DialogUtil.dialog(getContext(), getContext().getString(R.string.order_refund_title), mOrderRefundPanel);
+        dialog.setDialogSave(getContext().getString(R.string.order_refund_btn_save));
+        dialog.show();
     }
 }
