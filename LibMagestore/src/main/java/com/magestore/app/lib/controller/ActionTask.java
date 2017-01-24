@@ -31,7 +31,7 @@ public class ActionTask<TModel extends Model> extends AsyncTask<TModel, Void, Bo
     @Override
     protected Boolean doInBackground(TModel... models) {
         try {
-            return mController.doActionBackround(mActionType, mActionCode, models);
+            return mController.doActionBackround(mActionType, mActionCode, null, models);
         } catch (Exception exp) {
             mException = exp;
             cancel(true);
@@ -62,6 +62,6 @@ public class ActionTask<TModel extends Model> extends AsyncTask<TModel, Void, Bo
 
     @Override
     protected void onPostExecute(Boolean aBoolean) {
-        mController.onActionPostExecute(aBoolean, mActionType, mActionCode, this.models);
+        mController.onActionPostExecute(aBoolean, mActionType, mActionCode, null, this.models);
     }
 }

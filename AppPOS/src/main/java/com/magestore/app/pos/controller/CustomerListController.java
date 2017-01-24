@@ -9,6 +9,7 @@ import com.magestore.app.pos.model.customer.PosComplain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Mike on 1/9/2017.
@@ -57,17 +58,17 @@ public class CustomerListController extends AbstractListController<Customer> {
     }
 
     public void doLoadComplain(Customer customer) {
-        doAction(ACTION_CODE_GET_COMPLAIN, null, customer);
+        doAction(ACTION_CODE_GET_COMPLAIN, null, null, customer);
     }
 
     public void doInputNewComplain(String newComplain) {
         Complain complain = mCustomerService.createComplain();
         complain.setContent(newComplain);
-        doAction(ACTION_CODE_INPUT_COMPLAIN, null, mItem, complain);
+        doAction(ACTION_CODE_INPUT_COMPLAIN, null, null, mItem, complain);
     }
 
     @Override
-    public Boolean doActionBackround(int actionType, String actionCode, Model... models) throws Exception {
+    public Boolean doActionBackround(int actionType, String actionCode, Map<String, Object> wrapper, Model... models) throws Exception {
         if (actionType == ACTION_CODE_GET_COMPLAIN) {
             mCustomerService.retrieveComplain(((Customer) models[0]));
             return true;
@@ -80,7 +81,7 @@ public class CustomerListController extends AbstractListController<Customer> {
     }
 
     @Override
-    public void onActionPostExecute(boolean success, int actionType, String actionCode, Model... models) {
+    public void onActionPostExecute(boolean success, int actionType, String actionCode, Map<String, Object> wrapper, Model... models) {
         if (success && actionType == ACTION_CODE_GET_COMPLAIN) {
             super.bindItem((Customer) models[0]);
         }
@@ -92,6 +93,6 @@ public class CustomerListController extends AbstractListController<Customer> {
     @Override
     public void bindItem(Customer item) {
         super.bindItem(item);
-        doAction(ACTION_CODE_GET_COMPLAIN, null, item);
+        doAction(ACTION_CODE_GET_COMPLAIN, null, null, item);
     }
 }
