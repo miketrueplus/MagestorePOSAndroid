@@ -55,7 +55,8 @@
 
                             <View
                                 android:layout_width="match_parent"
-                                android:layout_height="1dp" />
+                                android:layout_height="1dp"
+                                android:background="@color/line" />
 
                             <TextView
                                 android:id="@+id/txt_billing_adrress_name"
@@ -104,7 +105,8 @@
 
                             <View
                                 android:layout_width="match_parent"
-                                android:layout_height="1dp" />
+                                android:layout_height="1dp"
+                                android:background="@color/line" />
 
                             <TextView
                                 android:id="@+id/txt_shipping_adrress_name"
@@ -160,7 +162,8 @@
 
                             <View
                                 android:layout_width="match_parent"
-                                android:layout_height="1dp" />
+                                android:layout_height="1dp"
+                                android:background="@color/line" />
 
                             <TextView
                                 android:id="@+id/payment_paid"
@@ -213,7 +216,8 @@
 
                             <View
                                 android:layout_width="match_parent"
-                                android:layout_height="1dp" />
+                                android:layout_height="1dp"
+                                android:background="@color/line" />
 
                             <TextView
                                 android:id="@+id/txt_shipping_method"
@@ -350,7 +354,8 @@
 
                         <View
                             android:layout_width="match_parent"
-                            android:layout_height="1dp" />
+                            android:layout_height="1dp"
+                            android:background="@color/line" />
 
                         <FrameLayout
                             android:layout_width="match_parent"

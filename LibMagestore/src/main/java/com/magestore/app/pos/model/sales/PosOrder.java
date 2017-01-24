@@ -329,6 +329,23 @@ public class PosOrder extends PosAbstractModel implements Order {
     }
 
     @Override
+    public boolean checkListShipment() {
+        boolean ischeck = false;
+        if (items != null && items.size() > 0) {
+            for (Items item : items) {
+                if (item.QtyShip() > 0) {
+                    ischeck = true;
+                }
+            }
+        }
+        if (ischeck) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
     public OrderStatus getParamStatus() {
         return param_status;
     }

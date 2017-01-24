@@ -47,6 +47,8 @@
     <string name="order_detail_content_item_price">Price</string>
     <string name="order_detail_content_item_qty">Qty</string>
     <string name="order_detail_content_item_qty_to_ship">Qty to ship</string>
+    <string name="order_detail_content_item_qty_to_refund">Qty to refund</string>
+    <string name="order_detail_content_item_return_stock">Return to stock</string>
     <string name="order_detail_content_item_subtotal">Subtotal</string>
     <string name="order_detail_content_item_tax_amount">Tax</string>
     <string name="order_detail_content_item_discount_amount">Discount</string>
@@ -80,6 +82,13 @@
     <string name="order_shipment_track_number_title">Track number</string>
     <string name="order_shipment_send_email">Send email</string>
     <string name="order_shipment_btn_submit">SUBMIT SHIPMENT</string>
+    <string name="order_refund_title">Refund</string>
+    <string name="order_refund_btn_save">Refund Offline</string>
+    <string name="order_adjust_refund_title">Adjust refund</string>
+    <string name="order_adjust_fee_title">Adjust fee</string>
+    <string name="order_store_credit_title">Store Credit</string>
+    <string name="order_refund_comment_title">Refund Comment</string>
+    <string name="order_refund_btn_submit">SUBMIT REFUND</string>
 
     <!--Strings related to register shift-->
     <string name="register_shift_list_open"> - OPEN</string>
