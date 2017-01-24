@@ -179,8 +179,16 @@ public class POSCustomerService extends AbstractService implements CustomerServi
      */
     @Override
     public boolean insertAddress(Customer customer, CustomerAddress customerAddress) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+        // Khởi tạo customer gateway factory
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        CustomerDataAccess customerDataAccess = factory.generateCustomerDataAccess();
+
+        // chèn address vào customer
         createAddress(customer, customerAddress);
-        return updateCustomer(customer);
+
+        // lấy danh sách khách hàng
+        boolean success = customerDataAccess.insertCustomerAddress(customer, customerAddress);
+        return success;
     }
 
     /**
@@ -245,6 +253,22 @@ public class POSCustomerService extends AbstractService implements CustomerServi
     }
 
     /**
+     * Gọi API Trả về danh sách complain của 1 customer
+     * @return
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     * @throws IOException
+     * @throws ParseException
+     */
+    @Override
+    public List<Complain> retrieveComplain(Customer customer) throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        // lấy danh sách khách hàng
+        List<Complain> complainList = retrieveComplain(customer.getID());
+        customer.setComplain(complainList);
+        return complainList;
+    }
+
+    /**
      * Gọi API, lưu complain vào cho khách hàng
      * @param customer
      * @param complain
@@ -255,15 +279,16 @@ public class POSCustomerService extends AbstractService implements CustomerServi
      */
     @Override
     public boolean insertComplain(Customer customer, Complain complain) throws InstantiationException, IllegalAccessException, IOException, ParseException {
-        // chèn complain vào customer
-        createComplain(customer, complain);
-
         // Khởi tạo customer gateway factory
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         CustomerDataAccess customerDataAccess = factory.generateCustomerDataAccess();
 
+        // chèn complain vào customer trước
+        createComplain(customer, complain);
+
         // lấy danh sách khách hàng
-        return customerDataAccess.insertCustomerComplain(customer, complain);
+        boolean success = customerDataAccess.insertCustomerComplain(customer, complain);
+        return success;
     }
 
 }

@@ -49,5 +49,7 @@ public interface CustomerService extends Service {
 
     List<Complain> retrieveComplain(String customerID) throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
+    List<Complain> retrieveComplain(Customer customer) throws InstantiationException, IllegalAccessException, IOException, ParseException;
+
     boolean insertComplain(Customer customer, Complain complain) throws InstantiationException, IllegalAccessException, IOException, ParseException;
 }

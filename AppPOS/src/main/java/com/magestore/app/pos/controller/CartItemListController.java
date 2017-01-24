@@ -42,7 +42,7 @@ public class CartItemListController extends AbstractListController<Items> {
 
         // Bổ sung thêm product vào cart
         mCartService.addOrderItem(product, 1, product.getPrice());
-        mView.notifyDatasetChanged();
+        mView.notifyDataSetChanged();
 
 //
         // cập nhật tổng lên cuối order
@@ -71,7 +71,7 @@ public class CartItemListController extends AbstractListController<Items> {
      */
     public void deleteProduct(Product product) {
         mCartService.delOrderItem(product);
-        mView.notifyDatasetChanged();
+        mView.notifyDataSetChanged();
         updateTotalPrice();
     }
 

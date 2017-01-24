@@ -36,8 +36,10 @@ public interface CustomerAddress extends Model {
     void setCity(String strCity);
 
     String getState();
+    void setState(String strState);
 
     String getProvince();
+    void setProvince(String strProvince);
 
     String getVAT();
     void setVAT(String strState);

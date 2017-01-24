@@ -7,15 +7,21 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.panel.AbstractListPanel;
 import com.magestore.app.pos.R;
+import com.magestore.app.pos.controller.CustomerAddressListController;
+import com.magestore.app.pos.controller.CustomerListController;
 import com.magestore.app.pos.databinding.CardCustomerAddressContentBinding;
+import com.magestore.app.pos.view.MagestoreDialog;
 import com.magestore.app.util.DialogUtil;
 
 /**
@@ -62,6 +68,8 @@ public class CustomerAddressListPanel extends AbstractListPanel<CustomerAddress>
         });
     }
 
+
+
     /**
      * Hiển thị dialog confirm trước khi delete
      * @param item
@@ -82,31 +90,58 @@ public class CustomerAddressListPanel extends AbstractListPanel<CustomerAddress>
     }
 
     /**
+     * Hiển thị dialog tạo mới địa chỉ
+     */
+    public void showNewItem() {
+        // Chuẩn bị layout cho dialog
+        final CustomerAddressDetailPanel panelAddress = new CustomerAddressDetailPanel(getContext());
+        panelAddress.setLayoutPanel(R.layout.panel_customer_address_detail);
+        panelAddress.setController(mController);
+        if (mController instanceof CustomerAddressListController)
+            panelAddress.bindItem(((CustomerAddressListController) mController).createNewCustomerAddress());
+
+        // khởi tạo và hiển thị dialog
+        final MagestoreDialog dialog = com.magestore.app.pos.util.DialogUtil.dialog(getContext(),
+                getContext().getString(R.string.customer_update_address),
+                panelAddress);
+        dialog.show();
+
+        // Xử lý khi nhấn save trên dialog
+        dialog.getButtonSave().setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomerAddress item = panelAddress.bind2Item();
+                mController.doInsertItem(item);
+                dialog.dismiss();
+            }
+        });
+    }
+
+    /**
      * Hiển thị dialog edit địa chỉ
      * @param item
      */
-    public void showUpdateItem(final CustomerAddress item) {
+    public void showUpdateItem(CustomerAddress item) {
         // Chuẩn bị layout cho dialog customerAddress
         final CustomerAddressDetailPanel panelAddress = new CustomerAddressDetailPanel(getContext());
         panelAddress.setLayoutPanel(R.layout.panel_customer_address_detail);
         panelAddress.bindItem(item);
         panelAddress.setController(mController);
 
-        final Context context = getContext();
-        // Tạo dialog và hiển thị
-        final AlertDialog dialog = new AlertDialog.Builder(getContext())
-                .setTitle(context.getString(R.string.customer_update_address))
-                .setView(panelAddress)
-                .setPositiveButton(context.getString(R.string.save), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        panelAddress.bind2Item();
-                        mController.doUpdateItem(item);
-                        notifyDatasetChanged();
-                    }
-                })
-                .setNegativeButton(context.getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {}
-                }).create();
+        // khởi tạo dialog
+        final MagestoreDialog dialog = com.magestore.app.pos.util.DialogUtil.dialog(getContext(),
+                getContext().getString(R.string.customer_update_address),
+                panelAddress);
         dialog.show();
+
+        // Xử lý khi nhấn save trên dialog
+        dialog.getButtonSave().setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomerAddress item = panelAddress.bind2Item();
+                mController.doUpdateItem(item);
+                dialog.dismiss();
+            }
+        });
     }
 }

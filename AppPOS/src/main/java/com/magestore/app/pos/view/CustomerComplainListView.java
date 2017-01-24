@@ -33,4 +33,5 @@ public class CustomerComplainListView extends AbstractSimpleListView<Complain> {
         PanelCustomerComplainListBinding binding = DataBindingUtil.bind(view);
         binding.setComplain(item);
     }
+
 }

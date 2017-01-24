@@ -62,26 +62,76 @@ public class CustomerAddressListController
         mView.bindList(mList);
     }
 
-    @Override
-    public void onInsertPostExecute(Boolean success, CustomerAddress... addresses) {
-        super.onInsertPostExecute(success);
-    }
 
+    @Override
+    public boolean onUpdateDataBackGround(CustomerAddress... params) throws Exception {
+        for (CustomerAddress address: params) {
+            if (mCustomerService != null) mCustomerService.updateAddress(mSelectedCustomer, address);
+        }
+        return true;    }
+
+    /**
+     * Cập nhật address thành công
+     * @param success
+     * @param addresses
+     */
     @Override
     public void onUpdatePostExecute(Boolean success, CustomerAddress... addresses) {
-        super.onUpdatePostExecute(success);
+        if (success) mView.notifyDataSetChanged();
     }
 
+    /**
+     * Tạo mới address trên tiến trnihf
+     * @param params
+     * @return
+     * @throws Exception
+     */
     @Override
-    public void onDeletePostExecute(Boolean success) {
-        mView.notifyDatasetChanged();
+    public boolean onInsertDataBackground(CustomerAddress... params) throws Exception {
+        for (CustomerAddress address: params) {
+            if (mCustomerService != null) mCustomerService.insertAddress(mSelectedCustomer, address);
+        }
+        return true;
     }
 
+    /**
+     * Tạo mới address thành công
+     * @param success
+     * @param addresses
+     */
+    @Override
+    public void onInsertPostExecute(Boolean success, CustomerAddress... addresses) {
+        if (success) mView.notifyDataSetChanged();
+    }
+
+    /**
+     * Thực hiện xóa trên tiến trình
+     * @param params
+     * @return
+     * @throws Exception
+     */
     @Override
     public boolean onDeleteDataBackGround(CustomerAddress... params) throws Exception {
         for (CustomerAddress address: params) {
             if (mCustomerService != null) mCustomerService.deleteAddress(mSelectedCustomer, address);
         }
         return true;
+    }
+
+    /**
+     * Xóa thành công
+     * @param success
+     */
+    @Override
+    public void onDeletePostExecute(Boolean success) {
+        if (success) mView.notifyDataSetChanged();
+    }
+
+    /**
+     * Khởi tạo 1 customer address để thực hiện tạo mới
+     * @return
+     */
+    public CustomerAddress createNewCustomerAddress() {
+        return mCustomerService.createAddress();
     }
 }

@@ -323,7 +323,7 @@ public abstract class AbstractListPanel<TModel extends Model>
     /**
      * Có sự thay đổi số liệu, cập nhật lại giao diện
      */
-    public void notifyDatasetChanged() {
+    public void notifyDataSetChanged() {
         RecyclerView.Adapter adapter = mRecycleView.getAdapter();
         if (adapter != null)
             adapter.notifyDataSetChanged();

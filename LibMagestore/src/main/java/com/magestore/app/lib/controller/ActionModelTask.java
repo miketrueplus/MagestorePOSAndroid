@@ -5,23 +5,20 @@ import android.os.Build;
 
 import com.magestore.app.lib.model.Model;
 
-import java.util.List;
-
 /**
- * Task thực hiện các action nói chung
- * Created by Mike on 1/20/2017.
+ * Created by Mike on 1/23/2017.
  * Magestore
  * mike@trueplus.vn
  */
 
-public class ActionTask<TModel extends Model> extends AsyncTask<TModel, Void, Boolean> {
+public class ActionModelTask extends AsyncTask<Model, Void, Boolean> {
     AbstractController mController;
     int mActionType;
     String mActionCode;
     Exception mException = null;
-    TModel[] models;
+    Model[] models;
 
-    public ActionTask(AbstractController controller, int actionType, String actionCode) {
+    public ActionModelTask(AbstractController controller, int actionType, String actionCode) {
         super();
         mController = controller;
         mActionType = actionType;
@@ -29,7 +26,7 @@ public class ActionTask<TModel extends Model> extends AsyncTask<TModel, Void, Bo
     }
 
     @Override
-    protected Boolean doInBackground(TModel... models) {
+    protected Boolean doInBackground(Model... models) {
         try {
             return mController.doActionBackround(mActionType, mActionCode, models);
         } catch (Exception exp) {
@@ -39,7 +36,7 @@ public class ActionTask<TModel extends Model> extends AsyncTask<TModel, Void, Bo
         }
     }
 
-    public void doExcute(TModel... models) {
+    public void doExcute(Model... models) {
         this.models = models;
         // chạy task load data
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) // Above Api Level 13
@@ -64,4 +61,6 @@ public class ActionTask<TModel extends Model> extends AsyncTask<TModel, Void, Bo
     protected void onPostExecute(Boolean aBoolean) {
         mController.onActionPostExecute(aBoolean, mActionType, mActionCode, this.models);
     }
+
+
 }

@@ -634,8 +634,10 @@ public class POSCustomerDataAccess extends POSAbstractDataAccess implements Cust
             String result = rp.readResult2String();
             return true;
         } catch (ConnectionException ex) {
+            pcustomer.getAddress().remove(address);
             throw ex;
         } catch (IOException ex) {
+            pcustomer.getAddress().remove(address);
             throw ex;
         } finally {
             // đóng result reading
@@ -951,8 +953,10 @@ public class POSCustomerDataAccess extends POSAbstractDataAccess implements Cust
             // return
             return true;
         } catch (ConnectionException ex) {
+            pcustomer.getComplain().remove(complain);
             throw ex;
         } catch (IOException ex) {
+            pcustomer.getComplain().remove(complain);
             throw ex;
         } finally {
             // đóng result reading

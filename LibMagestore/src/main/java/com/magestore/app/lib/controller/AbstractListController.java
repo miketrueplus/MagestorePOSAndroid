@@ -208,7 +208,7 @@ public abstract class AbstractListController<TModel extends Model>
      */
     @Override
     public void onDeletePostExecute(Boolean success) {
-        if (success) mView.notifyDatasetChanged();
+        if (success) mView.notifyDataSetChanged();
     }
 
     /**
@@ -237,7 +237,7 @@ public abstract class AbstractListController<TModel extends Model>
      */
     @Override
     public void onInsertPostExecute(Boolean success, TModel... models) {
-        if (success) mView.notifyDatasetChanged();
+        if (success) mView.notifyDataSetChanged();
     }
 
 

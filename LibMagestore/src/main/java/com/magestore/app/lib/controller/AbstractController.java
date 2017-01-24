@@ -15,9 +15,6 @@ public abstract class AbstractController<TModel extends Model, TView extends Mag
     protected TModel mItem;
     protected TView mView;
 
-    // task chung quản lý các hoạt động
-    protected ActionTask<TModel> mActionTask;
-
     // Controller chủ
     protected Controller mParrentController;
 
@@ -70,8 +67,8 @@ public abstract class AbstractController<TModel extends Model, TView extends Mag
      * @param actionCode
      * @param models
      */
-    public void doAction(int actionType, String actionCode, TModel... models) {
-        ActionTask<TModel> actionTask = new ActionTask<TModel>(this, actionType, actionCode);
+    public void doAction(int actionType, String actionCode, Model... models) {
+        ActionModelTask actionTask = new ActionModelTask(this, actionType, actionCode);
         actionTask.doExcute(models);
     }
 
@@ -82,7 +79,7 @@ public abstract class AbstractController<TModel extends Model, TView extends Mag
      * @param models
      * @return
      */
-    public Boolean doActionBackround(int actionType, String actionCode, TModel... models) throws Exception {
+    public Boolean doActionBackround(int actionType, String actionCode, Model... models) throws Exception {
         return false;
     }
 
@@ -92,7 +89,7 @@ public abstract class AbstractController<TModel extends Model, TView extends Mag
      * @param actionCode
      * @param models
      */
-    public void onActionPostExecute(boolean success, int actionType, String actionCode, TModel... models) {
+    public void onActionPostExecute(boolean success, int actionType, String actionCode, Model... models) {
 
     }
 

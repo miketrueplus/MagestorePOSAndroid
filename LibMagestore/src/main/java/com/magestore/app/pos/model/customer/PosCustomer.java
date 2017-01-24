@@ -78,12 +78,11 @@ public class PosCustomer extends PosAbstractModel implements Customer {
 
     @Override
     public List<Complain> getComplain() {
-//        return (List<Complain>) (List<?>) complainsa;
-        return null;
+        return (List<Complain>) (List<?>) complainsa;
     }
 
     @Override
     public void setComplain(List<Complain> complains) {
-//        this.complainsa = complains;
+        this.complainsa = complains;
     }
 }

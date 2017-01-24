@@ -99,7 +99,6 @@ public abstract class AbstractSimpleListView<TModel extends Model>
         mList = list;
         if (mList != null) {
             this.setAdapter(new AbstractSimpleListView<TModel>.SimpleListAdapter(getContext(), mListLayout, mList));
-//            mRecycleView.setAdapter(new AbstractListPanel<TModel>.ListRecyclerViewAdapter(mList));
         }
     }
 
@@ -144,6 +143,15 @@ public abstract class AbstractSimpleListView<TModel extends Model>
                 .setMessage(exp.getMessage())
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
+    }
+
+    /**
+     * Thay đổi dữ liệu, refresh lại
+     */
+    public void notifyDataSetChanged() {
+        if (getAdapter() == null) return;
+        if (getAdapter() instanceof ArrayAdapter)
+            ((ArrayAdapter) getAdapter()).notifyDataSetChanged();;
     }
 
     public class SimpleListAdapter extends ArrayAdapter<TModel> {

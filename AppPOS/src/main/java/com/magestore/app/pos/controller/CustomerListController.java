@@ -1,6 +1,7 @@
 package com.magestore.app.pos.controller;
 
 import com.magestore.app.lib.controller.AbstractListController;
+import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.customer.Complain;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.service.customer.CustomerService;
@@ -16,12 +17,17 @@ import java.util.List;
  */
 
 public class CustomerListController extends AbstractListController<Customer> {
+    // đánh dấu actrion
     static final int ACTION_CODE_GET_COMPLAIN = 0;
+    static final int ACTION_CODE_INPUT_COMPLAIN = 1;
 
     /**
      * Service xử lý các vấn đề liên quan đến customer
      */
     CustomerService mCustomerService;
+
+    // input complain được input
+    Complain mInputComplain;
 
     /**
      * Thiết lập service
@@ -50,20 +56,42 @@ public class CustomerListController extends AbstractListController<Customer> {
         return listCustomer;
     }
 
-    @Override
-    public void bindItem(Customer item) {
-        doAction(ACTION_CODE_GET_COMPLAIN, null, item);
+    public void doLoadComplain(Customer customer) {
+        doAction(ACTION_CODE_GET_COMPLAIN, null, customer);
+    }
+
+    public void doInputNewComplain(String newComplain) {
+        Complain complain = mCustomerService.createComplain();
+        complain.setContent(newComplain);
+        doAction(ACTION_CODE_INPUT_COMPLAIN, null, mItem, complain);
     }
 
     @Override
-    public Boolean doActionBackround(int actionType, String actionCode, Customer... models) throws Exception {
-        List<Complain> complains = mCustomerService.retrieveComplain(models[0].getID());
-        models[0].setComplain(complains);
+    public Boolean doActionBackround(int actionType, String actionCode, Model... models) throws Exception {
+        if (actionType == ACTION_CODE_GET_COMPLAIN) {
+            mCustomerService.retrieveComplain(((Customer) models[0]));
+            return true;
+        }
+        if (actionType == ACTION_CODE_INPUT_COMPLAIN) {
+            mCustomerService.insertComplain((Customer) models[0], (Complain) models[1]);
+            return true;
+        }
         return false;
     }
 
     @Override
-    public void onActionPostExecute(boolean success, int actionType, String actionCode, Customer... models) {
-        super.bindItem(models[0]);
+    public void onActionPostExecute(boolean success, int actionType, String actionCode, Model... models) {
+        if (success && actionType == ACTION_CODE_GET_COMPLAIN) {
+            super.bindItem((Customer) models[0]);
+        }
+        if (success && actionType == ACTION_CODE_INPUT_COMPLAIN) {
+            super.bindItem((Customer) models[0]);
+        }
+    }
+
+    @Override
+    public void bindItem(Customer item) {
+        super.bindItem(item);
+        doAction(ACTION_CODE_GET_COMPLAIN, null, item);
     }
 }

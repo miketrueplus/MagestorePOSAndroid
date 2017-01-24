@@ -135,7 +135,7 @@ public class CartItemListPanel extends AbstractListPanel<Items> {
              */
             @Override
             public void onClose(SwipeLayout swipeLayout) {
-                CartItemListPanel.this.notifyDatasetChanged();
+                CartItemListPanel.this.notifyDataSetChanged();
             }
 
             @Override

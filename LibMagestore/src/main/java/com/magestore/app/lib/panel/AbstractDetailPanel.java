@@ -111,6 +111,7 @@ public abstract class AbstractDetailPanel<TModel extends Model>
      */
     public void bindItem(TModel item) {
         mItem = item;
+        notifyDataSetChanged();
     }
 
     /**
@@ -154,5 +155,9 @@ public abstract class AbstractDetailPanel<TModel extends Model>
                 .setMessage(exp.getLocalizedMessage())
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
+    }
+
+    public void notifyDataSetChanged() {
+
     }
 }

@@ -147,8 +147,18 @@ public class PosCustomerAddress extends PosAbstractModel implements CustomerAddr
     }
 
     @Override
+    public void setState(String strState) {
+//        this.region_id = strState;
+    }
+
+    @Override
     public String getProvince() {
         return getRegionCode();
+    }
+
+    @Override
+    public void setProvince(String strProvince) {
+//        this.region_id = strProvince;
     }
 
     @Override
