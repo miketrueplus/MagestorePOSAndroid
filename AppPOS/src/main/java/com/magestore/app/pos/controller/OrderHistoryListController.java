@@ -4,7 +4,11 @@ import android.os.AsyncTask;
 import android.os.Build;
 
 import com.magestore.app.lib.controller.AbstractListController;
+import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.sales.Order;
+import com.magestore.app.lib.model.sales.OrderCommentParams;
+import com.magestore.app.lib.model.sales.OrderShipmentParams;
+import com.magestore.app.lib.model.sales.OrderShipmentTrackParams;
 import com.magestore.app.lib.model.sales.OrderStatus;
 import com.magestore.app.lib.service.order.OrderHistoryService;
 import com.magestore.app.pos.panel.OrderAddCommentPanel;
@@ -13,6 +17,7 @@ import com.magestore.app.pos.panel.OrderSendEmailPanel;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Johan on 1/13/17.
@@ -25,6 +30,10 @@ public class OrderHistoryListController extends AbstractListController<Order> {
 
     OrderAddCommentPanel mOrderAddCommentPanel;
     OrderCommentListController mOrderCommentListController;
+    OrderHistoryItemsListController mOrderHistoryItemsListController;
+
+    public static int CREATE_SHIPMENT_TYPE = 3;
+    public static String CREATE_SHIPMENT_CODE = "create_shipment";
 
     /**
      * Service xử lý các vấn đề liên quan đến order
@@ -59,6 +68,10 @@ public class OrderHistoryListController extends AbstractListController<Order> {
 
     public void setOrderCommentListController(OrderCommentListController mOrderCommentListController) {
         this.mOrderCommentListController = mOrderCommentListController;
+    }
+
+    public void setOrderHistoryItemsListController(OrderHistoryItemsListController mOrderHistoryItemsListController) {
+        this.mOrderHistoryItemsListController = mOrderHistoryItemsListController;
     }
 
     @Override
@@ -138,7 +151,51 @@ public class OrderHistoryListController extends AbstractListController<Order> {
             task.execute();
     }
 
+
+    @Override
+    public Boolean doActionBackround(int actionType, String actionCode, Map<String, Object> wraper, Model... models) throws Exception {
+        if (actionType == CREATE_SHIPMENT_TYPE) {
+            Order order = mOrderService.createShipment((Order) models[0]);
+            if (order != null) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void onActionPostExecute(boolean success, int actionType, String actionCode, Map<String, Object> wraper, Model... models) {
+        super.onActionPostExecute(success, actionType, actionCode, wraper, models);
+
+        if (actionType == CREATE_SHIPMENT_TYPE) {
+            if (success) {
+                Order order = (Order) models[0];
+                mOrderHistoryItemsListController.doSelectOrder(order);
+            }
+        }
+    }
+
     public OrderStatus createOrderStatus() {
         return mOrderService.createOrderStatus();
+    }
+
+    public OrderShipmentParams createOrderShipmentParams() {
+        return mOrderService.createOrderShipmentParams();
+    }
+
+    public OrderShipmentTrackParams createOrderShipmentTrackParams() {
+        return mOrderService.createOrderShipmentTrackParams();
+    }
+
+    public List<OrderShipmentTrackParams> createListTrack() {
+        return mOrderService.createListTrack();
+    }
+
+    public OrderCommentParams createCommentParams() {
+        return mOrderService.createCommentParams();
+    }
+
+    public List<OrderCommentParams> createListComment() {
+        return mOrderService.createListComment();
     }
 }

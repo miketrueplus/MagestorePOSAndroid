@@ -4,6 +4,7 @@ import com.magestore.app.lib.controller.AbstractListController;
 import com.magestore.app.lib.controller.ListController;
 import com.magestore.app.lib.model.checkout.cart.Items;
 import com.magestore.app.lib.model.sales.Order;
+import com.magestore.app.lib.model.sales.OrderShipmentItemParams;
 import com.magestore.app.lib.service.order.OrderHistoryService;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import java.util.List;
 public class OrderShipmentItemsListController extends AbstractListController<Items> implements ListController<Items> {
     Order mSelectedOrder;
     OrderHistoryListController mOrderHistoryListController;
+    OrderHistoryService mOrderService;
 
     /**
      * Thiết lập controller
@@ -27,6 +29,15 @@ public class OrderShipmentItemsListController extends AbstractListController<Ite
     public void setOrderHistoryListController(OrderHistoryListController mOrderHistoryListController) {
         this.mOrderHistoryListController = mOrderHistoryListController;
         setParentController(mOrderHistoryListController);
+    }
+
+    /**
+     * Thiết lập service
+     *
+     * @param mOrderService
+     */
+    public void setOrderService(OrderHistoryService mOrderService) {
+        this.mOrderService = mOrderService;
     }
 
     @Override
@@ -56,5 +67,9 @@ public class OrderShipmentItemsListController extends AbstractListController<Ite
         }
 
         return nListItem;
+    }
+
+    public OrderShipmentItemParams createOrderShipmentItemParams() {
+        return mOrderService.createOrderShipmentItemParams();
     }
 }

@@ -34,4 +34,10 @@ public interface Items extends Model {
     int getQtyRefunded();
     int getQtyShipped();
     int QtyShip();
+
+    void setId(String strID);
+
+    // Param Order Shipment
+    void setOrderItemId(String strOrderItemId);
+    String getOrderItemId();
 }

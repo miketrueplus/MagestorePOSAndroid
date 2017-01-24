@@ -122,7 +122,7 @@
             android:visibility="@{order.checkListShipment() ? View.GONE : View.VISIBLE}">
 
             <include
-                android:id="@+id/ll_refund_bottom_with_no_item"
+                android:id="@+id/ll_shipment_bottom_with_no_item"
                 layout="@layout/order_shipment_bottom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

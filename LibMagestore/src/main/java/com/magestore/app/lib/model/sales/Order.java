@@ -15,42 +15,82 @@ import java.util.List;
 
 public interface Order extends Model {
     Order newInstance();
+
     List<Items> newOrderItems();
+
     List<Items> getOrderItems();
+
     float getSubTotal();
+
     float getDiscountTotal();
+
     float getLastTotal();
+
     float getTaxTotal();
+
     PosOrderAttributes getExtensionAttributes();
+
     PosOrderBillingAddress getBillingAddress();
+
     PosOrderPayment getPayment();
+
     String getIncrementId();
+
     String getCustomerFirstname();
+
     String getCustomerLastname();
+
     float getGrandTotal();
+
     String getCreatedAt();
+
     String getCustomerEmail();
+
     void setCustomerEmail(String strEmail);
+
     String getStatus();
+
     String getWebposStaffName();
+
     String getBillingAddressName();
+
     String getBillingAddressFullAddress();
+
     String getBillingAddressTelephone();
+
     String getShippingAddressName();
+
     String getShippingFullAddress();
+
     String getShippingTelePhone();
+
     String getShippingDescription();
+
     List<OrderWebposPayment> getWebposOrderPayments();
+
     List<OrderStatus> getOrderStatus();
+
     boolean checkComment();
+
     float getTaxAmount();
+
     float getShippingAmount();
+
     float getDiscountAmount();
+
     float getTotalPaid();
+
     float getOrderHistorySubtotal();
+
     boolean checkListShipment();
 
     // param add comment history
     OrderStatus getParamStatus();
+
     void setParamStatus(OrderStatus orderStatus);
+
+    // param create shipment
+    OrderShipmentParams getParamShipment();
+
+    void setParamShipment(OrderShipmentParams paramShipment);
 }

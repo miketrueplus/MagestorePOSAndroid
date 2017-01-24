@@ -2,6 +2,7 @@ package com.magestore.app.pos.model.sales;
 
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.model.checkout.cart.Items;
+import com.magestore.app.lib.model.sales.OrderShipmentParams;
 import com.magestore.app.lib.model.sales.OrderStatus;
 import com.magestore.app.lib.model.sales.OrderWebposPayment;
 import com.magestore.app.pos.model.PosAbstractModel;
@@ -115,6 +116,9 @@ public class PosOrder extends PosAbstractModel implements Order {
 
     // param request add comment history;
     PosOrderStatus param_status;
+
+    // param request create shipment
+    PosOrderShipmentParams param_shipment;
 
     @Override
     public String getID() {
@@ -353,6 +357,16 @@ public class PosOrder extends PosAbstractModel implements Order {
     @Override
     public void setParamStatus(OrderStatus orderStatus) {
         param_status = (PosOrderStatus) orderStatus;
+    }
+
+    @Override
+    public OrderShipmentParams getParamShipment() {
+        return param_shipment;
+    }
+
+    @Override
+    public void setParamShipment(OrderShipmentParams paramShipment) {
+        param_shipment = (PosOrderShipmentParams) paramShipment;
     }
 
     @Override

@@ -9,6 +9,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import com.magestore.app.lib.controller.Controller;
@@ -269,6 +270,17 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         dialog = DialogUtil.dialog(getContext(), getContext().getString(R.string.order_shipment_title), mOrderShipmentPanel);
         dialog.setGoneButtonSave(true);
         dialog.show();
+
+        Button btn_submit_shipment = (Button) dialog.findViewById(R.id.btn_submit_shipment);
+        btn_submit_shipment.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Order order = mOrderShipmentPanel.bind2Item();
+                ((OrderHistoryListController) mController).setOrderHistoryItemsListController(mOrderHistoryItemsListController);
+                ((OrderHistoryListController) mController).doAction(OrderHistoryListController.CREATE_SHIPMENT_TYPE, OrderHistoryListController.CREATE_SHIPMENT_CODE, null, order);
+                dialog.dismiss();
+            }
+        });
     }
 
     private void onClickRefund() {
