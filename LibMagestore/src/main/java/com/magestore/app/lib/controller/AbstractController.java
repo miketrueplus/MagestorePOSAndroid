@@ -4,6 +4,8 @@ import com.magestore.app.lib.context.MagestoreContext;
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.view.MagestoreView;
 
+import java.util.Map;
+
 /**
  * Task abstract cho các controller phổ biến của MageStorePOS
  * Created by Mike on 1/9/2017.
@@ -67,9 +69,9 @@ public abstract class AbstractController<TModel extends Model, TView extends Mag
      * @param actionCode
      * @param models
      */
-    public void doAction(int actionType, String actionCode, Model... models) {
-        ActionModelTask actionTask = new ActionModelTask(this, actionType, actionCode);
-        actionTask.doExcute(models);
+    public void doAction(int actionType, String actionCode, Map<String, Object> wraper, Model... models) {
+        ActionModelTask actionTask = new ActionModelTask(this, actionType, actionCode, wraper);
+        actionTask.doExcute(wraper, models);
     }
 
     /**
@@ -79,7 +81,7 @@ public abstract class AbstractController<TModel extends Model, TView extends Mag
      * @param models
      * @return
      */
-    public Boolean doActionBackround(int actionType, String actionCode, Model... models) throws Exception {
+    public Boolean doActionBackround(int actionType, String actionCode, Map<String, Object> wraper, Model... models) throws Exception {
         return false;
     }
 
@@ -89,7 +91,7 @@ public abstract class AbstractController<TModel extends Model, TView extends Mag
      * @param actionCode
      * @param models
      */
-    public void onActionPostExecute(boolean success, int actionType, String actionCode, Model... models) {
+    public void onActionPostExecute(boolean success, int actionType, String actionCode, Map<String, Object> wraper, Model... models) {
 
     }
 
