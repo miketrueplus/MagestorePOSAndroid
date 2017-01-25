@@ -16,6 +16,8 @@ import java.util.List;
 public class UpdateListTask<TModel extends Model>
         extends AbstractListTask<AbstractListController<TModel>, TModel, Void, Boolean> {
 
+    TModel[] models;
+
     /**
      * Khởi tạo với controller
      * @param controller
@@ -26,8 +28,9 @@ public class UpdateListTask<TModel extends Model>
 
     @Override
     protected Boolean doInBackground(TModel... models) {
+        this.models = models;
         try {
-            return mListController.onUpdateDataBackGround(models);
+            return mListController.onUpdateDataBackGround(models[0], models[1]);
         } catch (Exception exp) {
             mException = exp;
             cancel(true);
@@ -37,7 +40,7 @@ public class UpdateListTask<TModel extends Model>
 
     @Override
     protected void onPostExecute(Boolean aBoolean) {
-        mListController.onUpdatePostExecute(aBoolean);
+        mListController.onUpdatePostExecute(aBoolean, models[0], models[1]);
         mListController.doShowProgress(false);
     }
 }

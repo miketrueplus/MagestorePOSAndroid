@@ -136,8 +136,7 @@ public class MagestoreParamBuilder implements ParamBuilder {
         return this;
     }
 
-    @Override
-    public ParamBuilder setParam(String pstrName, String pstrValue) {
+    protected ParamBuilder setParam(String pstrName, String pstrValue) {
         mMapKeyValue.put(pstrName, pstrValue);
         return this;
     }
@@ -149,8 +148,7 @@ public class MagestoreParamBuilder implements ParamBuilder {
      * @param pintValue
      * @throws ConnectionException
      */
-    @Override
-    public ParamBuilder setParam(String pstrName, int pintValue) {
+    protected ParamBuilder setParam(String pstrName, int pintValue) {
         mMapKeyValue.put(pstrName, pintValue);
         return this;
     }

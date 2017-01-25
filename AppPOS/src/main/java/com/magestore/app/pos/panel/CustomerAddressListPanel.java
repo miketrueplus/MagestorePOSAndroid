@@ -121,7 +121,7 @@ public class CustomerAddressListPanel extends AbstractListPanel<CustomerAddress>
      * Hiển thị dialog edit địa chỉ
      * @param item
      */
-    public void showUpdateItem(CustomerAddress item) {
+    public void showUpdateItem(final CustomerAddress item) {
         // Chuẩn bị layout cho dialog customerAddress
         final CustomerAddressDetailPanel panelAddress = new CustomerAddressDetailPanel(getContext());
         panelAddress.setLayoutPanel(R.layout.panel_customer_address_detail);
@@ -138,8 +138,8 @@ public class CustomerAddressListPanel extends AbstractListPanel<CustomerAddress>
         dialog.getButtonSave().setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomerAddress item = panelAddress.bind2Item();
-                mController.doUpdateItem(item);
+                CustomerAddress newitem = panelAddress.bind2Item();
+                mController.doUpdateItem(item, newitem);
                 dialog.dismiss();
             }
         });

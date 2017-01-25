@@ -5,6 +5,7 @@ import com.magestore.app.lib.model.customer.Complain;
 import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.resourcemodel.DataAccessException;
+import com.magestore.app.lib.service.ListService;
 import com.magestore.app.lib.service.Service;
 
 import java.io.IOException;
@@ -17,11 +18,11 @@ import java.util.List;
  * mike@trueplus.vn
  */
 
-public interface CustomerService extends Service {
+public interface CustomerService extends ListService<Customer> {
 
     Customer createCustomer();
 
-    List<Customer> retrieveCustomerList(int size) throws InstantiationException, IllegalAccessException, IOException, ParseException;
+    List<Customer> retrieveCustomerList(int page, int pageSize) throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
     boolean updateCustomer(Customer customer) throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
@@ -37,7 +38,7 @@ public interface CustomerService extends Service {
 
     boolean deleteAddress(Customer customer, CustomerAddress customerAddress) throws IOException, InstantiationException, ParseException, IllegalAccessException;
 
-    boolean updateAddress(Customer customer, CustomerAddress customerAddress) throws IOException, InstantiationException, ParseException, IllegalAccessException;
+    boolean updateAddress(Customer customer, CustomerAddress oldCustomerAddress, CustomerAddress customerAddress) throws IOException, InstantiationException, ParseException, IllegalAccessException;
 
     boolean insertAddress(Customer customer, CustomerAddress customerAddress) throws IOException, InstantiationException, ParseException, IllegalAccessException;
 
@@ -47,9 +48,8 @@ public interface CustomerService extends Service {
 
     Complain createComplain(Customer customer, Complain complain);
 
-    List<Complain> retrieveComplain(String customerID) throws InstantiationException, IllegalAccessException, IOException, ParseException;
-
     List<Complain> retrieveComplain(Customer customer) throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
     boolean insertComplain(Customer customer, Complain complain) throws InstantiationException, IllegalAccessException, IOException, ParseException;
+
 }

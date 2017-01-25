@@ -64,19 +64,16 @@ public class CustomerAddressListController
 
 
     @Override
-    public boolean onUpdateDataBackGround(CustomerAddress... params) throws Exception {
-        for (CustomerAddress address: params) {
-            if (mCustomerService != null) mCustomerService.updateAddress(mSelectedCustomer, address);
-        }
+    public boolean onUpdateDataBackGround(CustomerAddress oldAddress, CustomerAddress newAddress) throws Exception {
+        if (mCustomerService != null) mCustomerService.updateAddress(mSelectedCustomer, oldAddress, newAddress);
         return true;    }
 
     /**
      * Cập nhật address thành công
      * @param success
-     * @param addresses
      */
     @Override
-    public void onUpdatePostExecute(Boolean success, CustomerAddress... addresses) {
+    public void onUpdatePostExecute(Boolean success, CustomerAddress oldAddress, CustomerAddress newAddress) {
         if (success) mView.notifyDataSetChanged();
     }
 

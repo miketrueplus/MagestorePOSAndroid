@@ -14,7 +14,6 @@ import com.magestore.app.lib.view.MagestoreView;
 
 public interface Controller<TView extends MagestoreView> {
     void setMagestoreContext(MagestoreContext context);
-
     MagestoreContext getMagestoreContext();
 
     void setParentController(Controller controller);

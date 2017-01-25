@@ -150,6 +150,7 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
 //                    .setParam(POSAPI.PARAM_ORDER_ID, orderId);
 
+
             OrderEntity orderEntity = new OrderEntity();
             orderEntity.statusHistory = orderStatus;
 

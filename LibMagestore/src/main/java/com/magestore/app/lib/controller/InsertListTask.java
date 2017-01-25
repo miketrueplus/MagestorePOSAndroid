@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class InsertListTask<TModel extends Model>
         extends AbstractListTask<AbstractListController<TModel>, TModel, Void, Boolean> {
-
+    TModel[] paramsModel;
     /**
      * Khởi tạo với controller
      * @param controller
@@ -25,6 +25,7 @@ public class InsertListTask<TModel extends Model>
 
     @Override
     protected Boolean doInBackground(TModel... models) {
+        paramsModel = models;
         try {
             return mListController.onInsertDataBackground(models);
         } catch (Exception exp) {
@@ -36,7 +37,7 @@ public class InsertListTask<TModel extends Model>
 
     @Override
     protected void onPostExecute(Boolean aBoolean) {
-        mListController.onInsertPostExecute(aBoolean);
+        mListController.onInsertPostExecute(aBoolean, paramsModel);
         mListController.doShowProgress(false);
     }
 }

@@ -17,6 +17,7 @@ public class PosComplain extends PosAbstractModel implements Complain {
     String customer_id;
     String content;
     String create_at;
+    String customer_email;
 
     @Override
     public String getCustomerID() {
@@ -73,5 +74,13 @@ public class PosComplain extends PosAbstractModel implements Complain {
         return this.complain_id;
     }
 
+    @Override
+    public String getCustomerEmail() {
+        return customer_email;
+    }
 
+    @Override
+    public void setCustomerEmail(String strEmail) {
+        customer_email = strEmail;
+    }
 }

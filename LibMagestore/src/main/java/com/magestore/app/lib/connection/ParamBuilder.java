@@ -61,8 +61,8 @@ public interface ParamBuilder {
      * @param pstrName
      * @param pstrValue
      */
-    ParamBuilder setParam(String pstrName, String pstrValue);
-    ParamBuilder setParam(String pstrName, int pintValue);
+//    ParamBuilder setParam(String pstrName, String pstrValue);
+//    ParamBuilder setParam(String pstrName, int pintValue);
 
     /**
      * Dựng câu querry

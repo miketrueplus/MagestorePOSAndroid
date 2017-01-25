@@ -136,7 +136,7 @@ public interface CustomerDataAccess extends DataAccess {
      * @throws IOException
      * @throws java.text.ParseException
      */
-    boolean updateCustomerAddress(Customer customer, CustomerAddress address) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
+    boolean updateCustomerAddress(Customer customer, CustomerAddress oldAddress, CustomerAddress address) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
 
     /**
      * Thêm địa chỉ cho 1 customer
@@ -178,18 +178,6 @@ public interface CustomerDataAccess extends DataAccess {
 
     /**
      * Trả về complain của 1 customer
-     * @param strCustomerID
-     * @return
-     * @throws DataAccessException
-     * @throws ConnectionException
-     * @throws ParseException
-     * @throws IOException
-     * @throws java.text.ParseException
-     */
-    List<Complain> retrieveCustomerComplain(String strCustomerID) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
-
-    /**
-     * Trả về complain của 1 customer
      * @param customer
      * @return
      * @throws DataAccessException
@@ -223,4 +211,6 @@ public interface CustomerDataAccess extends DataAccess {
      * @throws java.text.ParseException
      */
     boolean insertCustomerComplain(Customer customer, Complain complain) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
+
+    boolean deleteCustomerComplain(Customer pcustomer, Complain complain) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
 }

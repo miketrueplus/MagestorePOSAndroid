@@ -53,7 +53,7 @@ public class CustomerListController extends AbstractListController<Customer> {
      */
     @Override
     protected List<Customer> loadDataBackground(Void... params) throws Exception {
-        List<Customer> listCustomer = mCustomerService.retrieveCustomerList(30);
+        List<Customer> listCustomer = mCustomerService.retrieveCustomerList(1, 30);
         return listCustomer;
     }
 
