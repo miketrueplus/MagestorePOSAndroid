@@ -64,16 +64,9 @@ public class OrderSendEmailPanel extends AbstractDetailPanel<Order> {
         edt_email.setError(getContext().getString(R.string.err_field_required));
     }
 
-    public void showAlertRespone(String statusRespone) {
-        boolean checkStatus = false;
-        try {
-            checkStatus = Boolean.parseBoolean(statusRespone);
-        } catch (Exception e) {
-            checkStatus = false;
-        }
-
+    public void showAlertRespone(boolean statusRespone) {
         String message = "";
-        if (checkStatus) {
+        if (statusRespone) {
             message = getContext().getString(R.string.order_send_email_success);
         } else {
             message = getContext().getString(R.string.order_send_email_success);

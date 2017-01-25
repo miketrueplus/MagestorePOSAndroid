@@ -32,6 +32,10 @@ public class OrderHistoryListController extends AbstractListController<Order> {
     OrderCommentListController mOrderCommentListController;
     OrderHistoryItemsListController mOrderHistoryItemsListController;
 
+    public static int SENT_EMAIL_TYPE = 1;
+    public static String SENT_EMAIL_CODE = "send_email";
+    public static int INSERT_STATUS_TYPE = 2;
+    public static String INSERT_STATUS_CODE = "insert_status";
     public static int CREATE_SHIPMENT_TYPE = 3;
     public static String CREATE_SHIPMENT_CODE = "create_shipment";
 
@@ -82,80 +86,19 @@ public class OrderHistoryListController extends AbstractListController<Order> {
         return listOrder;
     }
 
-    public void sendEmail(final String email, final String orderId) {
-        final AsyncTask<Void, Void, String> task = new AsyncTask<Void, Void, String>() {
-            @Override
-            protected String doInBackground(Void... voids) {
-                try {
-                    return mOrderService.sendEmail(email, orderId);
-                } catch (InstantiationException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-
-                return "";
-            }
-
-            @Override
-            protected void onPostExecute(String s) {
-                super.onPostExecute(s);
-                mOrderSendEmailPanel.showAlertRespone(s);
-            }
-        };
-
-        // chạy task load data
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) // Above Api Level 13
-            task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        else // Below Api Level 13
-            task.execute();
-    }
-
-    public void insertOrderStatus(final Order order) {
-        final AsyncTask<Void, Void, Order> task = new AsyncTask<Void, Void, Order>() {
-            @Override
-            protected Order doInBackground(Void... voids) {
-                try {
-                    return mOrderService.insertOrderStatus(order);
-                } catch (InstantiationException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Order order) {
-                super.onPostExecute(order);
-                if (order != null) {
-                    mOrderAddCommentPanel.showAlertRespone();
-                    mOrderCommentListController.doSelectOrder(order);
-                }
-            }
-        };
-
-        // chạy task load data
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) // Above Api Level 13
-            task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        else // Below Api Level 13
-            task.execute();
-    }
-
-
     @Override
     public Boolean doActionBackround(int actionType, String actionCode, Map<String, Object> wraper, Model... models) throws Exception {
-        if (actionType == CREATE_SHIPMENT_TYPE) {
+        if (actionType == SENT_EMAIL_TYPE) {
+            String email = (String) wraper.get("email");
+            String orderId = (String) wraper.get("order_id");
+            return Boolean.parseBoolean(mOrderService.sendEmail(email, orderId).trim());
+        } else if (actionType == CREATE_SHIPMENT_TYPE) {
             Order order = mOrderService.createShipment((Order) models[0]);
+            if (order != null) {
+                return true;
+            }
+        } else if (actionType == INSERT_STATUS_TYPE) {
+            Order order = mOrderService.insertOrderStatus((Order) models[0]);
             if (order != null) {
                 return true;
             }
@@ -166,11 +109,19 @@ public class OrderHistoryListController extends AbstractListController<Order> {
     @Override
     public void onActionPostExecute(boolean success, int actionType, String actionCode, Map<String, Object> wraper, Model... models) {
         super.onActionPostExecute(success, actionType, actionCode, wraper, models);
-
-        if (actionType == CREATE_SHIPMENT_TYPE) {
+        if (actionType == SENT_EMAIL_TYPE) {
+            mOrderSendEmailPanel.showAlertRespone(success);
+        } else if (actionType == CREATE_SHIPMENT_TYPE) {
             if (success) {
                 Order order = (Order) models[0];
                 mOrderHistoryItemsListController.doSelectOrder(order);
+                mOrderCommentListController.doSelectOrder(order);
+            }
+        } else if (actionType == INSERT_STATUS_TYPE) {
+            if (success) {
+                Order order = (Order) models[0];
+                mOrderAddCommentPanel.showAlertRespone();
+                mOrderCommentListController.doSelectOrder(order);
             }
         }
     }
