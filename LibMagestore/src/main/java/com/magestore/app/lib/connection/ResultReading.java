@@ -23,6 +23,7 @@ public interface ResultReading {
      * @throws IOException
      */
     String readResult2String() throws ConnectionException, IOException;
+    String readResult2String(String strDefault) throws ConnectionException, IOException;
 
     /**
      * Trả về input stream

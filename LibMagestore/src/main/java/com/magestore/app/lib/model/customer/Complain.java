@@ -21,4 +21,7 @@ public interface Complain extends Model {
     void setContent(String content);
     void setCreateAt(String createAt);
     void setComplainID(String complainID);
+
+    String getCustomerEmail();
+    void setCustomerEmail(String strEmail);
 }

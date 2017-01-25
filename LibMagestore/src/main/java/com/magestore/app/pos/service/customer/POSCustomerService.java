@@ -37,17 +37,18 @@ public class POSCustomerService extends AbstractService implements CustomerServi
 
 
     @Override
-    public List<Customer> retrieveCustomerList(int size) throws InstantiationException, IllegalAccessException, IOException, ParseException {
+    public List<Customer> retrieveCustomerList(int page, int pageSize) throws InstantiationException, IllegalAccessException, IOException, ParseException {
         // Khởi tạo customer gateway factory
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         CustomerDataAccess customerDataAccess = factory.generateCustomerDataAccess();
 
         // lấy danh sách khách hàng
-        return customerDataAccess.retrieveCustomers(size, 1);
+        return customerDataAccess.retrieveCustomers(pageSize, page);
     }
 
     /**
      * Cập nhật API danh sách khách hàng
+     *
      * @param customer
      * @throws InstantiationException
      * @throws IllegalAccessException
@@ -62,16 +63,17 @@ public class POSCustomerService extends AbstractService implements CustomerServi
 
         // kiểm tra có complains không, không thì phải tạo mới
         if (customer.getComplain() == null) {
-            List<Complain> listComplain = (List<Complain>)(List<?>) new ArrayList<PosComplain>();
+            List<Complain> listComplain = (List<Complain>) (List<?>) new ArrayList<PosComplain>();
             customer.setComplain(listComplain);
         }
 
         // cập nhật d.sách
-        return  customerDataAccess.updateCustomer(customer);
+        return customerDataAccess.updateCustomer(customer);
     }
 
     /**
      * Cập nhật API thêm mới 1 customer
+     *
      * @param customer
      * @throws InstantiationException
      * @throws IllegalAccessException
@@ -90,6 +92,7 @@ public class POSCustomerService extends AbstractService implements CustomerServi
 
     /**
      * Khởi tạo 1 address trống
+     *
      * @return
      */
     @Override
@@ -99,6 +102,7 @@ public class POSCustomerService extends AbstractService implements CustomerServi
 
     /**
      * Khởi tạo 1 address cho customer
+     *
      * @param customer
      * @param customerAddress
      * @return
@@ -121,6 +125,7 @@ public class POSCustomerService extends AbstractService implements CustomerServi
 
     /**
      * Khởi tạo 1 address trống cho customer
+     *
      * @param customer
      * @return
      */
@@ -132,6 +137,7 @@ public class POSCustomerService extends AbstractService implements CustomerServi
 
     /**
      * Gỡ 1 address ra khỏi customer, không cập nhật API
+     *
      * @param customer
      * @param customerAddress
      */
@@ -145,6 +151,7 @@ public class POSCustomerService extends AbstractService implements CustomerServi
 
     /**
      * Xóa 1 address khỏi customer, cập nhật API
+     *
      * @param customer
      * @param customerAddress
      * @throws IOException
@@ -154,15 +161,20 @@ public class POSCustomerService extends AbstractService implements CustomerServi
      */
     @Override
     public boolean deleteAddress(Customer customer, CustomerAddress customerAddress) throws IOException, InstantiationException, ParseException, IllegalAccessException {
-        // cập nhật customer
-        updateCustomer(customer);
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        CustomerDataAccess customerDataAccess = factory.generateCustomerDataAccess();
+
+        // Thực hiện xóa
+        boolean success = customerDataAccess.deleteCustomerAddress(customer, customerAddress);
 
         // Xóa address trong danh sách
-        return removeAddress(customer, customerAddress);
+        if (success) removeAddress(customer, customerAddress);
+        return success;
     }
 
     /**
      * Cập nhật 1 address vào customer, cập nhật API
+     *
      * @param customer
      * @param customerAddress
      */
@@ -174,6 +186,7 @@ public class POSCustomerService extends AbstractService implements CustomerServi
 
     /**
      * Thêm 1 address cho customer, cập nhật API
+     *
      * @param customer
      * @param customerAddress
      */
@@ -183,16 +196,20 @@ public class POSCustomerService extends AbstractService implements CustomerServi
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         CustomerDataAccess customerDataAccess = factory.generateCustomerDataAccess();
 
-        // chèn address vào customer
-        createAddress(customer, customerAddress);
-
         // lấy danh sách khách hàng
         boolean success = customerDataAccess.insertCustomerAddress(customer, customerAddress);
+
+        if (success) {
+            // chèn address vào customer
+            createAddress(customer, customerAddress);
+        }
+
         return success;
     }
 
     /**
      * Khởi tạo 1 complain trống
+     *
      * @return
      */
     @Override
@@ -202,6 +219,7 @@ public class POSCustomerService extends AbstractService implements CustomerServi
 
     /**
      * Khởi tạo 1 complain cho customer
+     *
      * @param customer
      * @return
      */
@@ -213,6 +231,7 @@ public class POSCustomerService extends AbstractService implements CustomerServi
 
     /**
      * Khởi tạo 1 complain cho customer
+     *
      * @param customer
      * @param complain
      * @return
@@ -234,26 +253,7 @@ public class POSCustomerService extends AbstractService implements CustomerServi
 
     /**
      * Gọi API Trả về danh sách complain của 1 customer
-     * @param customerID
-     * @return
-     * @throws InstantiationException
-     * @throws IllegalAccessException
-     * @throws IOException
-     * @throws ParseException
-     */
-    @Override
-    public List<Complain> retrieveComplain(String customerID) throws InstantiationException, IllegalAccessException, IOException, ParseException {
-        // Khởi tạo customer gateway factory
-        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
-        CustomerDataAccess customerDataAccess = factory.generateCustomerDataAccess();
-
-        // lấy danh sách khách hàng
-        return customerDataAccess.retrieveCustomerComplain(customerID);
-
-    }
-
-    /**
-     * Gọi API Trả về danh sách complain của 1 customer
+     *
      * @return
      * @throws InstantiationException
      * @throws IllegalAccessException
@@ -263,13 +263,17 @@ public class POSCustomerService extends AbstractService implements CustomerServi
     @Override
     public List<Complain> retrieveComplain(Customer customer) throws InstantiationException, IllegalAccessException, IOException, ParseException {
         // lấy danh sách khách hàng
-        List<Complain> complainList = retrieveComplain(customer.getID());
-        customer.setComplain(complainList);
-        return complainList;
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        CustomerDataAccess customerDataAccess = factory.generateCustomerDataAccess();
+
+        // lấy danh sách khách hàng
+        customer.setComplain(customerDataAccess.retrieveCustomerComplain(customer));
+        return customer.getComplain();
     }
 
     /**
      * Gọi API, lưu complain vào cho khách hàng
+     *
      * @param customer
      * @param complain
      * @throws InstantiationException
@@ -283,12 +287,48 @@ public class POSCustomerService extends AbstractService implements CustomerServi
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         CustomerDataAccess customerDataAccess = factory.generateCustomerDataAccess();
 
-        // chèn complain vào customer trước
-        createComplain(customer, complain);
-
         // lấy danh sách khách hàng
         boolean success = customerDataAccess.insertCustomerComplain(customer, complain);
+
+        // nếu thành, chèn vào
+        if (success) createComplain(customer, complain);
         return success;
     }
 
+    @Override
+    public int count() throws ParseException, InstantiationException, IllegalAccessException, IOException {
+        // Khởi tạo customer gateway factory
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        CustomerDataAccess customerDataAccess = factory.generateCustomerDataAccess();
+        return customerDataAccess.countCustomer();
+    }
+
+    @Override
+    public List<Customer> retrieve(int page, int pageSize) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+        return retrieveCustomerList(page, pageSize);
+    }
+
+    @Override
+    public boolean update(Customer... models) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+        for (Customer customer : models) {
+            updateCustomer(customer);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean insert(Customer... models) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+        for (Customer customer : models) {
+            insertCustomer(customer);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean delete(Customer... models) {
+        for (Customer customer : models) {
+//            deleteCustomer(customer);
+        }
+        return true;
+    }
 }

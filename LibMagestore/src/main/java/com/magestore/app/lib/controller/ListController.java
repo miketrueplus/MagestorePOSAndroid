@@ -16,15 +16,11 @@ import java.util.List;
 public interface ListController<TModel extends Model>
         extends Controller<AbstractListPanel<TModel>> {
 
-
-
     void doLoadData();
     void doRetrieveItem();
     void doRetrieveItem(int page, int pageSize);
     void onRetrievePostExecute(List<TModel> models);
     List<TModel> onRetrieveDataBackground(int page, int pageSize) throws Exception;
-
-
 
     /**
      * Kích hoạt cập nhật số liệu trong list

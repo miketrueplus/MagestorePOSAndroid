@@ -94,6 +94,20 @@ public class MagestoreResultReading implements ResultReading {
     }
 
     /**
+     * Đọc kết quả từ result sang string
+     *
+     * @return
+     * @throws ConnectionException
+     * @throws IOException
+     */
+    @Override
+    public String readResult2String(String strDefault) throws ConnectionException, IOException {
+        String strReturn = readResult2String();
+        if (strReturn == null) return strDefault;
+        return strReturn;
+    }
+
+    /**
      * Đọc kết quả từ result sang object
      * @param cl
      * @param clEntity
