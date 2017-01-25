@@ -9,6 +9,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import com.magestore.app.lib.controller.Controller;
@@ -22,6 +23,9 @@ import com.magestore.app.pos.controller.OrderPaymentListController;
 import com.magestore.app.pos.databinding.PanelOrderDetailBinding;
 import com.magestore.app.pos.util.DialogUtil;
 import com.magestore.app.pos.view.MagestoreDialog;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Mike on 1/9/2017.
@@ -228,7 +232,10 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         }
 
         ((OrderHistoryListController) mController).setOrderSendEmailPanel(mOrderSendEmailPanel);
-        ((OrderHistoryListController) mController).sendEmail(email, orderId);
+        Map<String, Object> paramSendEmail = new HashMap<>();
+        paramSendEmail.put("email", email);
+        paramSendEmail.put("order_id", orderId);
+        ((OrderHistoryListController) mController).doAction(OrderHistoryListController.SENT_EMAIL_TYPE, OrderHistoryListController.SENT_EMAIL_CODE, paramSendEmail, null);
     }
 
     private void onClickAddComment() {
@@ -258,7 +265,7 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
 
         ((OrderHistoryListController) mController).setOrderAddCommentPanel(mOrderAddCommentPanel);
         ((OrderHistoryListController) mController).setOrderCommentListController(mOrderCommentHistoryController);
-        ((OrderHistoryListController) mController).insertOrderStatus(order);
+        ((OrderHistoryListController) mController).doAction(OrderHistoryListController.INSERT_STATUS_TYPE, OrderHistoryListController.INSERT_STATUS_CODE, null, order);
     }
 
     private void onClickShipment() {
@@ -269,6 +276,18 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         dialog = DialogUtil.dialog(getContext(), getContext().getString(R.string.order_shipment_title), mOrderShipmentPanel);
         dialog.setGoneButtonSave(true);
         dialog.show();
+
+        Button btn_submit_shipment = (Button) dialog.findViewById(R.id.btn_submit_shipment);
+        btn_submit_shipment.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Order order = mOrderShipmentPanel.bind2Item();
+                ((OrderHistoryListController) mController).setOrderCommentListController(mOrderCommentHistoryController);
+                ((OrderHistoryListController) mController).setOrderHistoryItemsListController(mOrderHistoryItemsListController);
+                ((OrderHistoryListController) mController).doAction(OrderHistoryListController.CREATE_SHIPMENT_TYPE, OrderHistoryListController.CREATE_SHIPMENT_CODE, null, order);
+                dialog.dismiss();
+            }
+        });
     }
 
     private void onClickRefund() {

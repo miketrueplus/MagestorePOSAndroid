@@ -2,6 +2,7 @@ package com.magestore.app.lib.resourcemodel.sales;
 
 import com.magestore.app.lib.connection.ConnectionException;
 import com.magestore.app.lib.model.sales.Order;
+import com.magestore.app.lib.model.sales.OrderShipmentParams;
 import com.magestore.app.lib.model.sales.OrderStatus;
 import com.magestore.app.lib.parse.ParseException;
 import com.magestore.app.lib.resourcemodel.DataAccess;
@@ -23,4 +24,6 @@ public interface OrderDataAccess extends DataAccess {
     String sendEmail(String email, String orderId) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
 
     Order insertOrderStatus(OrderStatus orderStatus, String orderId) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
+
+    Order createShipment(OrderShipmentParams shipmentParams) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
 }

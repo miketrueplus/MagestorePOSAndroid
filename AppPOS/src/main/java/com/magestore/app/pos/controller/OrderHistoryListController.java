@@ -4,7 +4,11 @@ import android.os.AsyncTask;
 import android.os.Build;
 
 import com.magestore.app.lib.controller.AbstractListController;
+import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.sales.Order;
+import com.magestore.app.lib.model.sales.OrderCommentParams;
+import com.magestore.app.lib.model.sales.OrderShipmentParams;
+import com.magestore.app.lib.model.sales.OrderShipmentTrackParams;
 import com.magestore.app.lib.model.sales.OrderStatus;
 import com.magestore.app.lib.service.order.OrderHistoryService;
 import com.magestore.app.pos.panel.OrderAddCommentPanel;
@@ -13,6 +17,7 @@ import com.magestore.app.pos.panel.OrderSendEmailPanel;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Johan on 1/13/17.
@@ -25,6 +30,14 @@ public class OrderHistoryListController extends AbstractListController<Order> {
 
     OrderAddCommentPanel mOrderAddCommentPanel;
     OrderCommentListController mOrderCommentListController;
+    OrderHistoryItemsListController mOrderHistoryItemsListController;
+
+    public static int SENT_EMAIL_TYPE = 1;
+    public static String SENT_EMAIL_CODE = "send_email";
+    public static int INSERT_STATUS_TYPE = 2;
+    public static String INSERT_STATUS_CODE = "insert_status";
+    public static int CREATE_SHIPMENT_TYPE = 3;
+    public static String CREATE_SHIPMENT_CODE = "create_shipment";
 
     /**
      * Service xử lý các vấn đề liên quan đến order
@@ -61,6 +74,10 @@ public class OrderHistoryListController extends AbstractListController<Order> {
         this.mOrderCommentListController = mOrderCommentListController;
     }
 
+    public void setOrderHistoryItemsListController(OrderHistoryItemsListController mOrderHistoryItemsListController) {
+        this.mOrderHistoryItemsListController = mOrderHistoryItemsListController;
+    }
+
     @Override
     protected List<Order> loadDataBackground(Void... params) throws Exception {
         // TODO: test lấy webpos_payments
@@ -69,76 +86,67 @@ public class OrderHistoryListController extends AbstractListController<Order> {
         return listOrder;
     }
 
-    public void sendEmail(final String email, final String orderId) {
-        final AsyncTask<Void, Void, String> task = new AsyncTask<Void, Void, String>() {
-            @Override
-            protected String doInBackground(Void... voids) {
-                try {
-                    return mOrderService.sendEmail(email, orderId);
-                } catch (InstantiationException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-
-                return "";
+    @Override
+    public Boolean doActionBackround(int actionType, String actionCode, Map<String, Object> wraper, Model... models) throws Exception {
+        if (actionType == SENT_EMAIL_TYPE) {
+            String email = (String) wraper.get("email");
+            String orderId = (String) wraper.get("order_id");
+            return Boolean.parseBoolean(mOrderService.sendEmail(email, orderId).trim());
+        } else if (actionType == CREATE_SHIPMENT_TYPE) {
+            Order order = mOrderService.createShipment((Order) models[0]);
+            if (order != null) {
+                return true;
             }
-
-            @Override
-            protected void onPostExecute(String s) {
-                super.onPostExecute(s);
-                mOrderSendEmailPanel.showAlertRespone(s);
+        } else if (actionType == INSERT_STATUS_TYPE) {
+            Order order = mOrderService.insertOrderStatus((Order) models[0]);
+            if (order != null) {
+                return true;
             }
-        };
-
-        // chạy task load data
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) // Above Api Level 13
-            task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        else // Below Api Level 13
-            task.execute();
+        }
+        return false;
     }
 
-    public void insertOrderStatus(final Order order) {
-        final AsyncTask<Void, Void, Order> task = new AsyncTask<Void, Void, Order>() {
-            @Override
-            protected Order doInBackground(Void... voids) {
-                try {
-                    return mOrderService.insertOrderStatus(order);
-                } catch (InstantiationException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-
-                return null;
+    @Override
+    public void onActionPostExecute(boolean success, int actionType, String actionCode, Map<String, Object> wraper, Model... models) {
+        super.onActionPostExecute(success, actionType, actionCode, wraper, models);
+        if (actionType == SENT_EMAIL_TYPE) {
+            mOrderSendEmailPanel.showAlertRespone(success);
+        } else if (actionType == CREATE_SHIPMENT_TYPE) {
+            if (success) {
+                Order order = (Order) models[0];
+                mOrderHistoryItemsListController.doSelectOrder(order);
+                mOrderCommentListController.doSelectOrder(order);
             }
-
-            @Override
-            protected void onPostExecute(Order order) {
-                super.onPostExecute(order);
-                if (order != null) {
-                    mOrderAddCommentPanel.showAlertRespone();
-                    mOrderCommentListController.doSelectOrder(order);
-                }
+        } else if (actionType == INSERT_STATUS_TYPE) {
+            if (success) {
+                Order order = (Order) models[0];
+                mOrderAddCommentPanel.showAlertRespone();
+                mOrderCommentListController.doSelectOrder(order);
             }
-        };
-
-        // chạy task load data
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) // Above Api Level 13
-            task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        else // Below Api Level 13
-            task.execute();
+        }
     }
 
     public OrderStatus createOrderStatus() {
         return mOrderService.createOrderStatus();
+    }
+
+    public OrderShipmentParams createOrderShipmentParams() {
+        return mOrderService.createOrderShipmentParams();
+    }
+
+    public OrderShipmentTrackParams createOrderShipmentTrackParams() {
+        return mOrderService.createOrderShipmentTrackParams();
+    }
+
+    public List<OrderShipmentTrackParams> createListTrack() {
+        return mOrderService.createListTrack();
+    }
+
+    public OrderCommentParams createCommentParams() {
+        return mOrderService.createCommentParams();
+    }
+
+    public List<OrderCommentParams> createListComment() {
+        return mOrderService.createListComment();
     }
 }

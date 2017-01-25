@@ -23,6 +23,7 @@ public class PosItems extends PosAbstractModel implements Items {
     float base_unit_price;
     float original_price;
     float base_original_price;
+    String item_id;
 
     // Order history
     String name;
@@ -36,6 +37,19 @@ public class PosItems extends PosAbstractModel implements Items {
     int qty_invoiced;
     int qty_refunded;
     int qty_shipped;
+
+    // Params Order Shipment
+    String orderItemId;
+
+    @Override
+    public String getID() {
+        return item_id;
+    }
+
+    @Override
+    public void setId(String strId) {
+        item_id = strId;
+    }
 
     @Override
     public void setQuantity(int param_quantity) {
@@ -136,5 +150,15 @@ public class PosItems extends PosAbstractModel implements Items {
     @Override
     public int QtyShip() {
         return qty_ordered - qty_shipped;
+    }
+
+    @Override
+    public void setOrderItemId(String strOrderItemId) {
+        orderItemId = strOrderItemId;
+    }
+
+    @Override
+    public String getOrderItemId() {
+        return orderItemId;
     }
 }
