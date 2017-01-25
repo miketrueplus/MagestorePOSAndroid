@@ -549,7 +549,7 @@ public class POSCustomerDataAccess extends POSAbstractDataAccess implements Cust
      * @throws java.text.ParseException
      */
     @Override
-    public boolean updateCustomerAddress(final Customer pcustomer, CustomerAddress address) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
+    public boolean updateCustomerAddress(final Customer pcustomer, CustomerAddress oldCustomerAddress, CustomerAddress address) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
         Connection connection = null;
         Statement statement = null;
         ResultReading rp = null;
@@ -557,10 +557,13 @@ public class POSCustomerDataAccess extends POSAbstractDataAccess implements Cust
 
         // Lưu address hiện tại tạm vào
         if (pcustomer.getAddress() == null) return false;
-        if (!pcustomer.getAddress().contains(address)) return false;
-        int indexAddress = pcustomer.getAddress().indexOf(address);
-        CustomerAddress backupAddress = pcustomer.getAddress().get(indexAddress);
+        if (!pcustomer.getAddress().contains(oldCustomerAddress)) return false;
+        int indexAddress = pcustomer.getAddress().indexOf(oldCustomerAddress);
         pcustomer.getAddress().set(indexAddress, address);
+
+        // gỡ tạm complain ra
+        List<Complain> backupComplain = pcustomer.getComplain();
+        pcustomer.setComplain(null);
 
         try {
             // Khởi tạo connection và khởi tạo truy vấn
@@ -588,7 +591,9 @@ public class POSCustomerDataAccess extends POSAbstractDataAccess implements Cust
             throw ex;
         } finally {
             // cập nhật trả lại address
-            pcustomer.getAddress().set(indexAddress, backupAddress);
+            pcustomer.getAddress().set(indexAddress, oldCustomerAddress);
+            // khôi phục lại complain
+            pcustomer.setComplain(backupComplain);
 
             // đóng result reading
             if (rp != null) rp.close();

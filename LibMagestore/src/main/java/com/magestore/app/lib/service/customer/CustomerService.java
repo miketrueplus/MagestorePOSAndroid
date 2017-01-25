@@ -38,7 +38,7 @@ public interface CustomerService extends ListService<Customer> {
 
     boolean deleteAddress(Customer customer, CustomerAddress customerAddress) throws IOException, InstantiationException, ParseException, IllegalAccessException;
 
-    boolean updateAddress(Customer customer, CustomerAddress customerAddress) throws IOException, InstantiationException, ParseException, IllegalAccessException;
+    boolean updateAddress(Customer customer, CustomerAddress oldCustomerAddress, CustomerAddress customerAddress) throws IOException, InstantiationException, ParseException, IllegalAccessException;
 
     boolean insertAddress(Customer customer, CustomerAddress customerAddress) throws IOException, InstantiationException, ParseException, IllegalAccessException;
 

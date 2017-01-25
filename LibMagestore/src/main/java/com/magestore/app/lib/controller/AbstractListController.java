@@ -155,22 +155,20 @@ public abstract class AbstractListController<TModel extends Model>
 
     /**
      * Kích hoạt update model trong list
-     * @param models
      */
     @Override
-    public void doUpdateItem(TModel... models) {
+    public void doUpdateItem(TModel oldModel, TModel newModels) {
         // chuẩn bị task load data
         UpdateListTask<TModel> task = new UpdateListTask<TModel>(this);
-        task.execute(models);
+        task.execute(oldModel, newModels);
     }
 
     /**
      * Overider hàm này để xử lý nghiệp vụ update trên một thread khác
-     * @param params
      * @throws Exception
      */
     @Override
-    public boolean onUpdateDataBackGround(TModel... params) throws Exception
+    public boolean onUpdateDataBackGround(TModel oldModel, TModel newModels) throws Exception
     { return false;}
 
     /**
@@ -178,7 +176,7 @@ public abstract class AbstractListController<TModel extends Model>
      * @param success
      */
     @Override
-    public void onUpdatePostExecute(Boolean success, TModel... models) {
+    public void onUpdatePostExecute(Boolean success, TModel oldModel, TModel newModels) {
 
     }
 

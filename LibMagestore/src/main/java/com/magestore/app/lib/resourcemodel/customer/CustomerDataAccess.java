@@ -136,7 +136,7 @@ public interface CustomerDataAccess extends DataAccess {
      * @throws IOException
      * @throws java.text.ParseException
      */
-    boolean updateCustomerAddress(Customer customer, CustomerAddress address) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
+    boolean updateCustomerAddress(Customer customer, CustomerAddress oldAddress, CustomerAddress address) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
 
     /**
      * Thêm địa chỉ cho 1 customer

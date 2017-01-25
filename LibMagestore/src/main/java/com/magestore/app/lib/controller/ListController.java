@@ -25,19 +25,18 @@ public interface ListController<TModel extends Model>
     /**
      * Kích hoạt cập nhật số liệu trong list
      */
-    void doUpdateItem(TModel... models);
+    void doUpdateItem(TModel oldModel, TModel newModel);
 
     /**
      * Thực hiện cập nhật item trên background
      */
-    boolean onUpdateDataBackGround(TModel... params) throws Exception;
+    boolean onUpdateDataBackGround(TModel oldModel, TModel newModel) throws Exception;
 
     /**
      * Thực hiện cập nhật xong
      * @param success
-     * @param models
      */
-    void onUpdatePostExecute(Boolean success, TModel... models);
+    void onUpdatePostExecute(Boolean success, TModel oldModel, TModel newModel);
 
     /**
      * Kích hoạt xóa 1 item trên danh sách

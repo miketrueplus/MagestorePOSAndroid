@@ -179,9 +179,23 @@ public class POSCustomerService extends AbstractService implements CustomerServi
      * @param customerAddress
      */
     @Override
-    public boolean updateAddress(Customer customer, CustomerAddress customerAddress) throws IOException, InstantiationException, ParseException, IllegalAccessException {
-        // cập nhật customer trên API
-        return updateCustomer(customer);
+    public boolean updateAddress(Customer customer, CustomerAddress oldCustomerAddress, CustomerAddress customerAddress) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+        // Khởi tạo customer gateway factory
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        CustomerDataAccess customerDataAccess = factory.generateCustomerDataAccess();
+
+        // lấy danh sách khách hàng
+        boolean success = customerDataAccess.updateCustomerAddress(customer, oldCustomerAddress, customerAddress);
+
+        if (success) {
+            // thay bằng address mới
+            int oldIndex = customer.getAddress().indexOf(oldCustomerAddress);
+            customerAddress.setCustomer(customer);
+            customerAddress.setCustomer(customer.getID());
+            customer.getAddress().set(oldIndex, customerAddress);
+        }
+
+        return success;
     }
 
     /**
