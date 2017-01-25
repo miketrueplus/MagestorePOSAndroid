@@ -8,7 +8,7 @@ import com.magestore.app.lib.model.Model;
  * dong.le@trueplus.vn
  */
 
-public interface OrderShipmentItemParams extends Model {
+public interface OrderItemParams extends Model {
     void setOrderItemId(String strOrderItemId);
 
     String getOrderItemId();
@@ -16,4 +16,8 @@ public interface OrderShipmentItemParams extends Model {
     int getQty();
 
     void setQty(int strQty);
+
+    String getAdditionalData();
+
+    void setAdditionalData(String strAdditionalData);
 }

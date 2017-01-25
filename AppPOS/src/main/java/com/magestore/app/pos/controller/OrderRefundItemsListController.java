@@ -7,16 +7,13 @@ import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.model.sales.OrderItemParams;
 import com.magestore.app.lib.service.order.OrderHistoryService;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
- * Created by Johan on 1/23/17.
+ * Created by Johan on 1/25/17.
  * Magestore
  * dong.le@trueplus.vn
  */
 
-public class OrderShipmentItemsListController extends AbstractListController<Items> implements ListController<Items> {
+public class OrderRefundItemsListController extends AbstractListController<Items> implements ListController<Items> {
     Order mSelectedOrder;
     OrderHistoryListController mOrderHistoryListController;
     OrderHistoryService mOrderService;
@@ -47,24 +44,11 @@ public class OrderShipmentItemsListController extends AbstractListController<Ite
      */
     public void doSelectOrder(Order order) {
         mSelectedOrder = order;
-        mList = checkListShipment(order);
+        mList = order.getOrderItems();
         mView.bindList(mList);
     }
 
-    private List<Items> checkListShipment(Order order) {
-        List<Items> listItem = order.getOrderItems();
-        List<Items> nListItem = new ArrayList<>();
-
-        for (Items item : listItem) {
-            if (item.QtyShip() > 0) {
-                nListItem.add(item);
-            }
-        }
-
-        return nListItem;
-    }
-
-    public OrderItemParams createOrderShipmentItemParams() {
+    public OrderItemParams createOrderRefundItemParams() {
         return mOrderService.createOrderItemParams();
     }
 }

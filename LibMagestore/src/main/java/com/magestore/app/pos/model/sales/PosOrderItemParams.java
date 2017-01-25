@@ -1,6 +1,6 @@
 package com.magestore.app.pos.model.sales;
 
-import com.magestore.app.lib.model.sales.OrderShipmentItemParams;
+import com.magestore.app.lib.model.sales.OrderItemParams;
 import com.magestore.app.pos.model.PosAbstractModel;
 
 /**
@@ -9,10 +9,10 @@ import com.magestore.app.pos.model.PosAbstractModel;
  * dong.le@trueplus.vn
  */
 
-public class PosOrderShipmentItemParams extends PosAbstractModel implements OrderShipmentItemParams {
+public class PosOrderItemParams extends PosAbstractModel implements OrderItemParams {
     String orderItemId;
     int qty;
-
+    String additionalData;
 
     @Override
     public void setOrderItemId(String strOrderItemId) {
@@ -32,5 +32,15 @@ public class PosOrderShipmentItemParams extends PosAbstractModel implements Orde
     @Override
     public void setQty(int strQty) {
         qty = strQty;
+    }
+
+    @Override
+    public String getAdditionalData() {
+        return additionalData;
+    }
+
+    @Override
+    public void setAdditionalData(String strAdditionalData) {
+        additionalData = strAdditionalData;
     }
 }

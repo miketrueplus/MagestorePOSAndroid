@@ -11,7 +11,6 @@ import android.widget.EditText;
 import com.magestore.app.lib.controller.Controller;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.model.sales.OrderCommentParams;
-import com.magestore.app.lib.model.sales.OrderShipmentItemParams;
 import com.magestore.app.lib.model.sales.OrderShipmentParams;
 import com.magestore.app.lib.model.sales.OrderShipmentTrackParams;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
@@ -19,7 +18,7 @@ import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.OrderHistoryListController;
 import com.magestore.app.pos.controller.OrderShipmentItemsListController;
 import com.magestore.app.pos.databinding.PanelOrderShipmentBinding;
-import com.magestore.app.pos.model.sales.PosOrderShipmentItemParams;
+import com.magestore.app.util.DialogUtil;
 
 import java.util.List;
 
@@ -70,7 +69,6 @@ public class OrderShipmentPanel extends AbstractDetailPanel<Order> {
 
     @Override
     public void initModel() {
-        // Lấy lại customer service từ controller của panel này và đặt cho controlller địa chỉ
         Controller controller = getController();
 
         mOrderShipmentItemsListController = new OrderShipmentItemsListController();
@@ -125,5 +123,12 @@ public class OrderShipmentPanel extends AbstractDetailPanel<Order> {
         mOrder.setParamShipment(shipmentParams);
 
         return mOrder;
+    }
+
+    public void showAlertRespone() {
+        String message = getContext().getString(R.string.order_shipment_success);
+
+        // Tạo dialog và hiển thị
+        DialogUtil.confirm(getContext(), message, R.string.done);
     }
 }
