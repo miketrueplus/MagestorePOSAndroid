@@ -5,15 +5,25 @@ import com.magestore.app.lib.model.Model;
 import java.util.List;
 
 /**
- * Created by Johan on 1/24/17.
+ * Created by Johan on 1/25/17.
  * Magestore
  * dong.le@trueplus.vn
  */
 
-public interface OrderShipmentParams extends Model {
+public interface OrderRefundParams extends Model {
     void setOrderId(String strOrderId);
 
     String getOrderId();
+
+    void setAdjustmentNegative(float adjustmentNegative);
+
+    void setAdjustmentPositive(float adjustmentPositive);
+
+    void setBaseCurrencyCode(String baseCurrencyCode);
+
+    void setShippingAmount(float shippingAmount);
+
+    void setStoreCurrencyCode(String strStoreCurrencyCode);
 
     void setEmailSent(String strEmailSent);
 
@@ -22,10 +32,6 @@ public interface OrderShipmentParams extends Model {
     List<OrderItemParams> getItems();
 
     void setItems(List<OrderItemParams> items);
-
-    List<OrderShipmentTrackParams> getTracks();
-
-    void setTracks(List<OrderShipmentTrackParams> tracks);
 
     List<OrderCommentParams> getComments();
 

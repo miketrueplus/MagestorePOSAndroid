@@ -82,6 +82,7 @@
     <string name="order_shipment_track_number_title">Track number</string>
     <string name="order_shipment_send_email">Send email</string>
     <string name="order_shipment_btn_submit">SUBMIT SHIPMENT</string>
+    <string name="order_shipment_success">The shipment has been created successfully.</string>
     <string name="order_refund_title">Refund</string>
     <string name="order_refund_btn_save">Refund Offline</string>
     <string name="order_adjust_refund_title">Adjust refund</string>
@@ -89,6 +90,7 @@
     <string name="order_store_credit_title">Store Credit</string>
     <string name="order_refund_comment_title">Refund Comment</string>
     <string name="order_refund_btn_submit">SUBMIT REFUND</string>
+    <string name="order_refund_success">A creditmemo has been created!</string>
 
     <!--Strings related to register shift-->
     <string name="register_shift_list_open"> - OPEN</string>

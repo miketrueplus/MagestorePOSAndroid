@@ -86,43 +86,60 @@
             </TableRow>
         </LinearLayout>
 
-        <ScrollView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/ll_refund_bottom_with_item"
+            android:layout_above="@+id/fr_refund_bottom_with_item"
             android:layout_below="@+id/ll_refund_table_title"
-            android:visibility="@{order.checkListShipment() ? View.VISIBLE : View.GONE}">
+            android:orientation="vertical"
+            android:visibility="@{order.checkListRefund() ? View.VISIBLE : View.GONE}">
 
-            <FrameLayout
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="5dp"
-                android:orientation="vertical">
+                android:layout_height="match_parent">
 
-                <com.magestore.app.pos.panel.OrderShipmentItemsListPanel
-                    android:id="@+id/order_shipment_items"
+                <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.0" />
-            </FrameLayout>
-        </ScrollView>
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="5dp"
+                    android:orientation="vertical">
 
-        <include
-            android:id="@+id/ll_refund_bottom_with_item"
-            layout="@layout/order_refund_bottom"
+                    <com.magestore.app.pos.panel.OrderRefundItemsListPanel
+                        android:id="@+id/order_refund_items"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.0" />
+                </FrameLayout>
+            </ScrollView>
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/fr_refund_bottom_with_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:visibility="@{order.checkListShipment() ? View.VISIBLE : View.GONE}" />
+            android:visibility="@{order.checkListRefund() ? View.VISIBLE : View.GONE}">
 
-        <include
-            android:id="@+id/ll_refund_bottom_with_no_item"
-            layout="@layout/order_refund_bottom"
+            <include
+                android:id="@+id/ll_refund_bottom_with_item"
+                layout="@layout/order_refund_bottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </FrameLayout>
+
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/ll_refund_table_title"
             android:layout_marginTop="10dp"
-            android:visibility="@{order.checkListShipment() ? View.VISIBLE : View.GONE}" />
+            android:visibility="@{order.checkListRefund() ? View.GONE : View.VISIBLE}">
+
+            <include
+                android:id="@+id/ll_refund_bottom_with_no_item"
+                layout="@layout/order_refund_bottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </FrameLayout>
     </RelativeLayout>
 </layout>

@@ -2,6 +2,7 @@ package com.magestore.app.pos.model.sales;
 
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.model.checkout.cart.Items;
+import com.magestore.app.lib.model.sales.OrderRefundParams;
 import com.magestore.app.lib.model.sales.OrderShipmentParams;
 import com.magestore.app.lib.model.sales.OrderStatus;
 import com.magestore.app.lib.model.sales.OrderWebposPayment;
@@ -119,6 +120,9 @@ public class PosOrder extends PosAbstractModel implements Order {
 
     // param request create shipment
     PosOrderShipmentParams param_shipment;
+
+    // Param request refund
+    PosOrderRefundParams param_refund;
 
     @Override
     public String getID() {
@@ -350,6 +354,33 @@ public class PosOrder extends PosAbstractModel implements Order {
     }
 
     @Override
+    public boolean checkListRefund() {
+        boolean ischeck = false;
+        if (items != null && items.size() > 0) {
+            for (Items item : items) {
+                if (item.QtyRefund() > 0) {
+                    ischeck = true;
+                }
+            }
+        }
+        if (ischeck) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public String getBaseCurrencyCode() {
+        return base_currency_code;
+    }
+
+    @Override
+    public String getStoreCurrencyCode() {
+        return store_currency_code;
+    }
+
+    @Override
     public OrderStatus getParamStatus() {
         return param_status;
     }
@@ -367,6 +398,16 @@ public class PosOrder extends PosAbstractModel implements Order {
     @Override
     public void setParamShipment(OrderShipmentParams paramShipment) {
         param_shipment = (PosOrderShipmentParams) paramShipment;
+    }
+
+    @Override
+    public OrderRefundParams getParamRefund() {
+        return param_refund;
+    }
+
+    @Override
+    public void setParamRefund(OrderRefundParams paramRefund) {
+        param_refund = (PosOrderRefundParams) paramRefund;
     }
 
     @Override

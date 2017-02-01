@@ -3,7 +3,8 @@ package com.magestore.app.pos.service.order;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.model.sales.OrderCommentParams;
-import com.magestore.app.lib.model.sales.OrderShipmentItemParams;
+import com.magestore.app.lib.model.sales.OrderItemParams;
+import com.magestore.app.lib.model.sales.OrderRefundParams;
 import com.magestore.app.lib.model.sales.OrderShipmentParams;
 import com.magestore.app.lib.model.sales.OrderShipmentTrackParams;
 import com.magestore.app.lib.model.sales.OrderStatus;
@@ -11,7 +12,8 @@ import com.magestore.app.lib.resourcemodel.DataAccessFactory;
 import com.magestore.app.lib.resourcemodel.sales.OrderDataAccess;
 import com.magestore.app.lib.service.order.OrderHistoryService;
 import com.magestore.app.pos.model.sales.PosOrderCommentParams;
-import com.magestore.app.pos.model.sales.PosOrderShipmentItemParams;
+import com.magestore.app.pos.model.sales.PosOrderItemParams;
+import com.magestore.app.pos.model.sales.PosOrderRefundParams;
 import com.magestore.app.pos.model.sales.PosOrderShipmentParams;
 import com.magestore.app.pos.model.sales.PosOrderShipmentTrackParams;
 import com.magestore.app.pos.model.sales.PosOrderStatus;
@@ -85,6 +87,16 @@ public class PosOrderHistoryService extends AbstractService implements OrderHist
     }
 
     @Override
+    public Order orderRefund(Order order) throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        OrderRefundParams refundParams = order.getParamRefund();
+
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        OrderDataAccess orderGateway = factory.generateOrderDataAccess();
+
+        return orderGateway.orderRefund(refundParams);
+    }
+
+    @Override
     public OrderStatus createOrderStatus() {
         PosOrderStatus orderStatus = new PosOrderStatus();
         return orderStatus;
@@ -121,8 +133,14 @@ public class PosOrderHistoryService extends AbstractService implements OrderHist
     }
 
     @Override
-    public OrderShipmentItemParams createOrderShipmentItemParams() {
-        OrderShipmentItemParams param = new PosOrderShipmentItemParams();
+    public OrderItemParams createOrderItemParams() {
+        OrderItemParams param = new PosOrderItemParams();
         return param;
+    }
+
+    @Override
+    public OrderRefundParams createOrderRefundParams() {
+        PosOrderRefundParams orderRefundParams = new PosOrderRefundParams();
+        return orderRefundParams;
     }
 }

@@ -2,23 +2,28 @@ package com.magestore.app.pos.model.sales;
 
 import com.magestore.app.lib.model.sales.OrderCommentParams;
 import com.magestore.app.lib.model.sales.OrderItemParams;
-import com.magestore.app.lib.model.sales.OrderShipmentParams;
-import com.magestore.app.lib.model.sales.OrderShipmentTrackParams;
+import com.magestore.app.lib.model.sales.OrderRefundParams;
 import com.magestore.app.pos.model.PosAbstractModel;
+
 import java.util.List;
 
 /**
- * Created by Johan on 1/24/17.
+ * Created by Johan on 1/25/17.
  * Magestore
  * dong.le@trueplus.vn
  */
 
-public class PosOrderShipmentParams extends PosAbstractModel implements OrderShipmentParams {
+public class PosOrderRefundParams extends PosAbstractModel implements OrderRefundParams {
     String orderId;
+    float adjustmentNegative;
+    float adjustmentPositive;
+    String baseCurrencyCode;
+    List<OrderCommentParams> comments;
     String emailSent;
     List<OrderItemParams> items;
-    List<OrderShipmentTrackParams> tracks;
-    List<OrderCommentParams> comments;
+    float shippingAmount;
+    String storeCurrencyCode;
+
 
     @Override
     public void setOrderId(String strOrderId) {
@@ -28,6 +33,31 @@ public class PosOrderShipmentParams extends PosAbstractModel implements OrderShi
     @Override
     public String getOrderId() {
         return orderId;
+    }
+
+    @Override
+    public void setAdjustmentNegative(float adjustmentNegative) {
+        this.adjustmentNegative = adjustmentNegative;
+    }
+
+    @Override
+    public void setAdjustmentPositive(float adjustmentPositive) {
+        this.adjustmentPositive = adjustmentPositive;
+    }
+
+    @Override
+    public void setBaseCurrencyCode(String baseCurrencyCode) {
+        this.baseCurrencyCode = baseCurrencyCode;
+    }
+
+    @Override
+    public void setShippingAmount(float shippingAmount) {
+        this.shippingAmount = shippingAmount;
+    }
+
+    @Override
+    public void setStoreCurrencyCode(String strStoreCurrencyCode) {
+        this.storeCurrencyCode = strStoreCurrencyCode;
     }
 
     @Override
@@ -51,18 +81,8 @@ public class PosOrderShipmentParams extends PosAbstractModel implements OrderShi
     }
 
     @Override
-    public List<OrderShipmentTrackParams> getTracks() {
-        return (List<OrderShipmentTrackParams>) (List<?>) tracks;
-    }
-
-    @Override
-    public void setTracks(List<OrderShipmentTrackParams> tracks) {
-        this.tracks = tracks;
-    }
-
-    @Override
     public List<OrderCommentParams> getComments() {
-        return (List<OrderCommentParams>) (List<?>) comments;
+        return comments;
     }
 
     @Override

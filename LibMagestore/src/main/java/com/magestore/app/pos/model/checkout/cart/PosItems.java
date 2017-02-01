@@ -41,6 +41,9 @@ public class PosItems extends PosAbstractModel implements Items {
     // Params Order Shipment
     String orderItemId;
 
+    // Params Order Refund
+    String return_to_stock;
+
     @Override
     public String getID() {
         return item_id;
@@ -153,6 +156,11 @@ public class PosItems extends PosAbstractModel implements Items {
     }
 
     @Override
+    public int QtyRefund() {
+        return qty_ordered - qty_refunded;
+    }
+
+    @Override
     public void setOrderItemId(String strOrderItemId) {
         orderItemId = strOrderItemId;
     }
@@ -160,5 +168,15 @@ public class PosItems extends PosAbstractModel implements Items {
     @Override
     public String getOrderItemId() {
         return orderItemId;
+    }
+
+    @Override
+    public void setReturnToStock(String strReturnToStock) {
+        return_to_stock = strReturnToStock;
+    }
+
+    @Override
+    public String getReturnToStock() {
+        return return_to_stock;
     }
 }

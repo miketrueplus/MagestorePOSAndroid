@@ -33,6 +33,7 @@ public class POSAPI {
     public static final String REST_ORDER_COMMENTS = "/rest/default/V1/webpos/orders/${orderID}/comments?session=${sessionID}";
     public static final String REST_ORDER_INVOICE = "/rest/default/V1/webpos/invoices?session=${sessionID}";
     public static final String REST_ORDER_SHIPMENT = "/rest/default/V1/webpos/shipment/create?session=${sessionID}";
+    public static final String REST_ORDER_REFUND = "/rest/default/V1/webpos/creditmemo/create?session=${sessionID}";
     public static final String PARAM_ORDER_ID = "orderID";
 
     // API customer

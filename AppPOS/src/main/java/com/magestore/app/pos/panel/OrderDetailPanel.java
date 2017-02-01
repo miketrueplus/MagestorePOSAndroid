@@ -282,6 +282,7 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
             @Override
             public void onClick(View view) {
                 Order order = mOrderShipmentPanel.bind2Item();
+                ((OrderHistoryListController) mController).setOrderShipmentPanel(mOrderShipmentPanel);
                 ((OrderHistoryListController) mController).setOrderCommentListController(mOrderCommentHistoryController);
                 ((OrderHistoryListController) mController).setOrderHistoryItemsListController(mOrderHistoryItemsListController);
                 ((OrderHistoryListController) mController).doAction(OrderHistoryListController.CREATE_SHIPMENT_TYPE, OrderHistoryListController.CREATE_SHIPMENT_CODE, null, order);
@@ -298,5 +299,17 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         dialog = DialogUtil.dialog(getContext(), getContext().getString(R.string.order_refund_title), mOrderRefundPanel);
         dialog.setDialogSave(getContext().getString(R.string.order_refund_btn_save));
         dialog.show();
+
+        Button btn_submit_refund = (Button) dialog.findViewById(R.id.btn_submit_refund);
+        btn_submit_refund.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Order order = mOrderRefundPanel.bind2Item();
+                ((OrderHistoryListController) mController).setOrderRefundPanel(mOrderRefundPanel);
+                ((OrderHistoryListController) mController).setOrderCommentListController(mOrderCommentHistoryController);
+                ((OrderHistoryListController) mController).setOrderHistoryItemsListController(mOrderHistoryItemsListController);
+                ((OrderHistoryListController) mController).doAction(OrderHistoryListController.ORDER_REFUND_TYPE, OrderHistoryListController.ORDER_REFUND_CODE, null, order);
+            }
+        });
     }
 }

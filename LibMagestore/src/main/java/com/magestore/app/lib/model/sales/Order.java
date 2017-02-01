@@ -84,6 +84,12 @@ public interface Order extends Model {
 
     boolean checkListShipment();
 
+    boolean checkListRefund();
+
+    String getBaseCurrencyCode();
+
+    String getStoreCurrencyCode();
+
     // param add comment history
     OrderStatus getParamStatus();
 
@@ -93,4 +99,9 @@ public interface Order extends Model {
     OrderShipmentParams getParamShipment();
 
     void setParamShipment(OrderShipmentParams paramShipment);
+
+    // param refund
+    OrderRefundParams getParamRefund();
+
+    void setParamRefund(OrderRefundParams paramRefund);
 }
