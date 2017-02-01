@@ -1,9 +1,12 @@
 package com.magestore.app.lib.service;
 
 import com.magestore.app.lib.context.MagestoreContext;
+import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.service.catalog.ProductService;
 import com.magestore.app.lib.service.checkout.CartService;
 import com.magestore.app.lib.service.config.ConfigService;
+import com.magestore.app.lib.service.customer.CustomerAddressService;
+import com.magestore.app.lib.service.customer.CustomerComplainService;
 import com.magestore.app.lib.service.customer.CustomerService;
 import com.magestore.app.lib.service.order.OrderHistoryService;
 import com.magestore.app.lib.service.registershift.RegisterShiftService;
@@ -28,6 +31,8 @@ public abstract class ServiceFactory {
     public abstract OrderHistoryService generateOrderHistoryService();
     public abstract RegisterShiftService generateRegisterShiftService();
     public abstract CustomerService generateCustomerService();
+    public abstract CustomerAddressService generateCustomerAddressService();
+    public abstract CustomerComplainService generateCustomerComplainService();
     public abstract ConfigService generateConfigService();
 
     /**

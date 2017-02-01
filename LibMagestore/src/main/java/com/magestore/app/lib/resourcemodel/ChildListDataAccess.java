@@ -3,7 +3,7 @@ package com.magestore.app.lib.resourcemodel;
 import com.magestore.app.lib.model.Model;
 
 import java.io.IOException;
-import java.text.ParseException;
+import com.magestore.app.lib.parse.ParseException;
 import java.util.List;
 
 /**
@@ -11,10 +11,12 @@ import java.util.List;
  * Magestore
  * mike@trueplus.vn
  */
-public interface ChildListDataAccess<TModel extends Model, TChild extends Model> extends DataAccess {
-    int count(TModel parent) throws ParseException, InstantiationException, IllegalAccessException, IOException;
-    List<TChild> retrieve(TModel parent, int page, int pageSize) throws IOException, InstantiationException, ParseException, IllegalAccessException;
-    boolean update(TModel parent, TChild... childs) throws IOException, InstantiationException, ParseException, IllegalAccessException;
-    boolean insert(TModel parent, TChild... childs) throws IOException, InstantiationException, ParseException, IllegalAccessException;
-    boolean delete(TModel parent, TChild... models) throws IOException, InstantiationException, ParseException, IllegalAccessException;
+public interface ChildListDataAccess<TParent extends Model, TModel extends Model> extends DataAccess {
+    int count(TParent parent) throws ParseException, InstantiationException, IllegalAccessException, IOException;
+    TModel retrieve(TParent parent, String strID) throws ParseException, InstantiationException, IllegalAccessException, IOException;
+    List<TModel> retrieve(TParent parent) throws ParseException, InstantiationException, IllegalAccessException, IOException;
+    List<TModel> retrieve(TParent parent, int page, int pageSize) throws ParseException, InstantiationException, IllegalAccessException, IOException;
+    boolean update(TParent parent, TModel oldChild, TModel newChild) throws ParseException, InstantiationException, IllegalAccessException, IOException;
+    boolean insert(TParent parent, TModel... childs) throws ParseException, InstantiationException, IllegalAccessException, IOException;
+    boolean delete(TParent parent, TModel... childs) throws ParseException, InstantiationException, IllegalAccessException, IOException;
 }

@@ -1,11 +1,12 @@
 package com.magestore.app.lib.controller;
 
-import android.os.AsyncTask;
-import android.os.Build;
-
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
 import com.magestore.app.lib.panel.AbstractListPanel;
+import com.magestore.app.lib.task.DeleteListTask;
+import com.magestore.app.lib.task.InsertListTask;
+import com.magestore.app.lib.task.RetrieveListTask;
+import com.magestore.app.lib.task.UpdateListTask;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,8 @@
 package com.magestore.app.pos.api.m2;
 
 import com.magestore.app.lib.resourcemodel.config.ConfigDataAccess;
+import com.magestore.app.lib.resourcemodel.customer.CustomerAddressDataAccess;
+import com.magestore.app.lib.resourcemodel.customer.CustomerComplainDataAccess;
 import com.magestore.app.lib.resourcemodel.customer.CustomerDataAccess;
 import com.magestore.app.lib.resourcemodel.DataAccessFactory;
 import com.magestore.app.lib.resourcemodel.registershift.RegisterShiftDataAccess;
@@ -9,6 +11,8 @@ import com.magestore.app.lib.resourcemodel.user.UserDataAccess;
 import com.magestore.app.lib.resourcemodel.catalog.ProductDataAccess;
 import com.magestore.app.pos.api.m2.catalog.POSProductDataAccess;
 import com.magestore.app.pos.api.m2.config.POSConfigDataAccess;
+import com.magestore.app.pos.api.m2.customer.POSCustomerAddressDataAccess;
+import com.magestore.app.pos.api.m2.customer.POSCustomerComplainDataAccess;
 import com.magestore.app.pos.api.m2.customer.POSCustomerDataAccess;
 import com.magestore.app.pos.api.m2.registershift.POSRegisterShiftDataAccess;
 import com.magestore.app.pos.api.m2.sales.POSOrderDataAccess;
@@ -41,6 +45,16 @@ public class POSDataAccessFactory extends DataAccessFactory {
     @Override
     public CustomerDataAccess generateCustomerDataAccess() {
         return new POSCustomerDataAccess();
+    }
+
+    @Override
+    public CustomerAddressDataAccess generateCustomerAddressDataAccess() {
+        return new POSCustomerAddressDataAccess();
+    }
+
+    @Override
+    public CustomerComplainDataAccess generateCustomerComplainDataAccess() {
+        return new POSCustomerComplainDataAccess();
     }
 
     @Override

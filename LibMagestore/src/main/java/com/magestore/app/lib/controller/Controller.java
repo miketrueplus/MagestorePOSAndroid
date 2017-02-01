@@ -16,7 +16,6 @@ public interface Controller<TView extends MagestoreView> {
     void setMagestoreContext(MagestoreContext context);
     MagestoreContext getMagestoreContext();
 
-    void setParentController(Controller controller);
     void setView(TView view);
     void doShowErrorMsg(Exception exp);
     void doShowErrorMsg(String msg);

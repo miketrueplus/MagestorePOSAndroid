@@ -1,8 +1,11 @@
 package com.magestore.app.lib.resourcemodel;
 
 import com.magestore.app.lib.context.MagestoreContext;
+import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.resourcemodel.catalog.ProductDataAccess;
 import com.magestore.app.lib.resourcemodel.config.ConfigDataAccess;
+import com.magestore.app.lib.resourcemodel.customer.CustomerAddressDataAccess;
+import com.magestore.app.lib.resourcemodel.customer.CustomerComplainDataAccess;
 import com.magestore.app.lib.resourcemodel.customer.CustomerDataAccess;
 import com.magestore.app.lib.resourcemodel.registershift.RegisterShiftDataAccess;
 import com.magestore.app.lib.resourcemodel.sales.OrderDataAccess;
@@ -22,7 +25,12 @@ public abstract class DataAccessFactory {
     public abstract ProductDataAccess generateProductDataAccess();
     public abstract UserDataAccess generateUserDataAccess();
     public abstract OrderDataAccess generateOrderDataAccess();
+
+    // factory khởi tạo customer data access
     public abstract CustomerDataAccess generateCustomerDataAccess();
+    public abstract CustomerAddressDataAccess generateCustomerAddressDataAccess();
+    public abstract CustomerComplainDataAccess generateCustomerComplainDataAccess();
+
     public abstract RegisterShiftDataAccess generateRegisterShiftDataAccess();
     public abstract ConfigDataAccess generateConfigDataAccess();
 

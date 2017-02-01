@@ -1,5 +1,6 @@
 package com.magestore.app.lib.task;
 
+import com.magestore.app.lib.controller.AbstractChildListController;
 import com.magestore.app.lib.controller.AbstractListController;
 import com.magestore.app.lib.model.Model;
 
@@ -12,8 +13,8 @@ import java.util.List;
  * mike@trueplus.vn
  */
 
-public class RetrieveChildListTask<TModel extends Model>
-        extends AbstractListTask<AbstractListController<TModel>, Integer, Void, List<TModel>> {
+public class RetrieveChildListTask<TParent extends Model, TModel extends Model>
+        extends AbstractChildListTask<AbstractChildListController<TParent, TModel>, Integer, Void, List<TModel>> {
 
 
     /**
@@ -21,7 +22,7 @@ public class RetrieveChildListTask<TModel extends Model>
      *
      * @param controller
      */
-    public RetrieveChildListTask(AbstractListController<TModel> controller)
+    public RetrieveChildListTask(AbstractChildListController<TParent, TModel> controller)
     {
         super(controller);
     }
@@ -29,7 +30,8 @@ public class RetrieveChildListTask<TModel extends Model>
     @Override
     protected List<TModel> doInBackground(Integer... params) {
         try {
-            return mListController.onRetrieveDataBackground(params[0], params[1]);
+            return null;
+            //mListController.onRetrieveBackground(params[0], params[1]);
         } catch (Exception exp) {
             mException = exp;
             cancel(true);

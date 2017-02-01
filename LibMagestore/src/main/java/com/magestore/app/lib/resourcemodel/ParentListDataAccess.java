@@ -3,7 +3,7 @@ package com.magestore.app.lib.resourcemodel;
 import com.magestore.app.lib.model.Model;
 
 import java.io.IOException;
-import java.text.ParseException;
+import com.magestore.app.lib.parse.ParseException;
 import java.util.List;
 
 /**
@@ -11,10 +11,10 @@ import java.util.List;
  * Magestore
  * mike@trueplus.vn
  */
-public interface ParentListDataAccess<TModel extends Model> extends DataAccess {
-    int count() throws ParseException, InstantiationException, IllegalAccessException, IOException;
-    List<TModel> retrieve(int page, int pageSize) throws IOException, InstantiationException, ParseException, IllegalAccessException;
-    boolean update(TModel... models) throws IOException, InstantiationException, ParseException, IllegalAccessException;
-    boolean insert(TModel... models) throws IOException, InstantiationException, ParseException, IllegalAccessException;
-    boolean delete(TModel... models) throws IOException, InstantiationException, ParseException, IllegalAccessException;
+public interface ParentListDataAccess<TModel extends Model, TChild extends Model> extends DataAccess {
+    int count(TModel parent, TChild child) throws ParseException, InstantiationException, IllegalAccessException, IOException;
+    List<TChild> retrieve(TModel parent, int page, int pageSize) throws ParseException, InstantiationException, IllegalAccessException, IOException;
+    boolean update(TModel parent, TChild oldChild, TChild newChild) throws ParseException, InstantiationException, IllegalAccessException, IOException;
+    boolean insert(TModel parent, TChild... childs) throws ParseException, InstantiationException, IllegalAccessException, IOException;
+    boolean delete(TModel parent, TChild... models) throws ParseException, InstantiationException, IllegalAccessException, IOException;
 }

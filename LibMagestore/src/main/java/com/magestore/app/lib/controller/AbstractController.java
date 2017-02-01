@@ -2,6 +2,7 @@ package com.magestore.app.lib.controller;
 
 import com.magestore.app.lib.context.MagestoreContext;
 import com.magestore.app.lib.model.Model;
+import com.magestore.app.lib.task.ActionModelTask;
 import com.magestore.app.lib.view.MagestoreView;
 
 import java.util.Map;
@@ -38,7 +39,6 @@ public abstract class AbstractController<TModel extends Model, TView extends Mag
         return mMagestoreContext;
     }
 
-    @Override
     public void setParentController(Controller controller) {
         mParrentController = controller;
     }

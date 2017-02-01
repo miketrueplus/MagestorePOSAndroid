@@ -1,5 +1,6 @@
 package com.magestore.app.pos.model.customer;
 
+import com.google.gson.annotations.Expose;
 import com.magestore.app.lib.adapter.AdapterViewAnnotiation;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.customer.CustomerAddress;
@@ -18,7 +19,9 @@ import java.util.List;
  */
 
 public class PosCustomerAddress extends PosAbstractModel implements CustomerAddress {
+    @Expose(serialize = false, deserialize = false)
     Customer customer;
+
     String customer_id;
     String region_id;
     String country_id;

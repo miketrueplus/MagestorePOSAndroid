@@ -3,6 +3,7 @@ package com.magestore.app.lib.task;
 import android.os.AsyncTask;
 import android.os.Build;
 
+import com.magestore.app.lib.controller.AbstractChildListController;
 import com.magestore.app.lib.controller.AbstractListController;
 
 /**
@@ -12,7 +13,7 @@ import com.magestore.app.lib.controller.AbstractListController;
  * mike@trueplus.vn
  */
 
-public abstract class AbstractChildListTask<TController extends AbstractListController, TTaskParam, TTaskProgress, TResult>
+public abstract class AbstractChildListTask<TController extends AbstractChildListController, TTaskParam, TTaskProgress, TResult>
         extends AsyncTask<TTaskParam, TTaskProgress, TResult> {
     protected TController mListController;
     protected Exception mException;

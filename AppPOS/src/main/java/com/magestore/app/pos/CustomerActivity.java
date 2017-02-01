@@ -8,7 +8,10 @@ import android.view.View;
 
 
 import com.magestore.app.lib.context.MagestoreContext;
+import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.service.ServiceFactory;
+import com.magestore.app.lib.service.customer.CustomerAddressService;
+import com.magestore.app.lib.service.customer.CustomerComplainService;
 import com.magestore.app.lib.service.customer.CustomerService;
 import com.magestore.app.pos.controller.CustomerListController;
 import com.magestore.app.pos.panel.CustomerDetailPanel;
@@ -70,6 +73,9 @@ public class CustomerActivity extends AbstractActivity {
         // chuẩn bị service
         ServiceFactory factory;
         CustomerService service = null;
+        CustomerAddressService addressService = null;
+        CustomerComplainService complainService = null;
+
         try {
             factory = ServiceFactory.getFactory(magestoreContext);
             service = factory.generateCustomerService();
@@ -94,7 +100,7 @@ public class CustomerActivity extends AbstractActivity {
     @Override
     protected void initValue() {
         // load danh sách khách hàng
-        mCustomerListController.doLoadData();
+        mCustomerListController.doRetrieveItem(1, 30);
     }
 
     @Override

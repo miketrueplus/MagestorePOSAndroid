@@ -1,6 +1,8 @@
 package com.magestore.app.pos.service;
 
 import com.magestore.app.lib.service.config.ConfigService;
+import com.magestore.app.lib.service.customer.CustomerAddressService;
+import com.magestore.app.lib.service.customer.CustomerComplainService;
 import com.magestore.app.lib.service.customer.CustomerService;
 import com.magestore.app.lib.service.checkout.CartService;
 import com.magestore.app.lib.service.catalog.ProductService;
@@ -12,6 +14,8 @@ import com.magestore.app.lib.service.user.UserService;
 import com.magestore.app.pos.service.catalog.POSProductService;
 import com.magestore.app.pos.service.checkout.POSCartService;
 import com.magestore.app.pos.service.config.POSConfigService;
+import com.magestore.app.pos.service.customer.POSCustomerAddressService;
+import com.magestore.app.pos.service.customer.POSCustomerComplainService;
 import com.magestore.app.pos.service.customer.POSCustomerService;
 import com.magestore.app.pos.service.order.PosOrderHistoryService;
 import com.magestore.app.pos.service.registershift.POSRegisterShiftService;
@@ -76,9 +80,23 @@ public class POSServiceFactory extends ServiceFactory {
     }
 
     @Override
+    public CustomerAddressService generateCustomerAddressService() {
+        CustomerAddressService useCase = new POSCustomerAddressService();
+        useCase.setContext(getContext());
+        return useCase;    }
+
+    @Override
     public ConfigService generateConfigService() {
         ConfigService useCase = new POSConfigService();
         useCase.setContext(getContext());
         return useCase;
     }
+
+    @Override
+    public CustomerComplainService generateCustomerComplainService() {
+        CustomerComplainService useCase = new POSCustomerComplainService();
+        useCase.setContext(getContext());
+        return useCase;
+    }
+
 }

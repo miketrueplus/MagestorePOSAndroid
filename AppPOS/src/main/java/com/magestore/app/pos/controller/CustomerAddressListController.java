@@ -1,13 +1,15 @@
 package com.magestore.app.pos.controller;
 
 import com.magestore.app.lib.controller.AbstractListController;
-import com.magestore.app.lib.controller.DeleteListTask;
 import com.magestore.app.lib.controller.ListController;
-import com.magestore.app.lib.controller.UpdateListTask;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.customer.CustomerAddress;
+import com.magestore.app.lib.service.ServiceFactory;
+import com.magestore.app.lib.service.customer.CustomerAddressService;
 import com.magestore.app.lib.service.customer.CustomerService;
 
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -24,7 +26,11 @@ public class CustomerAddressListController
      * Task xử lý các vấn đề liên quan đến customer
      */
     CustomerListController mCustomerListController;
+
+    // service xử lý
     CustomerService mCustomerService;
+    CustomerAddressService mCustomerAddressService;
+
     Customer mSelectedCustomer;
 
     /**
@@ -44,6 +50,13 @@ public class CustomerAddressListController
      */
     public void setCustomerService(CustomerService service) {
         mCustomerService = service;
+        try {
+            mCustomerAddressService = ServiceFactory.getFactory(getMagestoreContext()).generateCustomerAddressService();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -65,7 +78,7 @@ public class CustomerAddressListController
 
     @Override
     public boolean onUpdateDataBackGround(CustomerAddress oldAddress, CustomerAddress newAddress) throws Exception {
-        if (mCustomerService != null) mCustomerService.updateAddress(mSelectedCustomer, oldAddress, newAddress);
+        if (mCustomerAddressService != null) mCustomerAddressService.update(mSelectedCustomer, oldAddress, newAddress);
         return true;    }
 
     /**
@@ -86,7 +99,7 @@ public class CustomerAddressListController
     @Override
     public boolean onInsertDataBackground(CustomerAddress... params) throws Exception {
         for (CustomerAddress address: params) {
-            if (mCustomerService != null) mCustomerService.insertAddress(mSelectedCustomer, address);
+            if (mCustomerAddressService != null) mCustomerAddressService.insert(mSelectedCustomer, address);
         }
         return true;
     }
@@ -110,7 +123,7 @@ public class CustomerAddressListController
     @Override
     public boolean onDeleteDataBackGround(CustomerAddress... params) throws Exception {
         for (CustomerAddress address: params) {
-            if (mCustomerService != null) mCustomerService.deleteAddress(mSelectedCustomer, address);
+            if (mCustomerAddressService != null) mCustomerAddressService.delete(mSelectedCustomer, address);
         }
         return true;
     }
@@ -129,6 +142,17 @@ public class CustomerAddressListController
      * @return
      */
     public CustomerAddress createNewCustomerAddress() {
-        return mCustomerService.createAddress();
+        try {
+            return mCustomerAddressService.create(mSelectedCustomer);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

@@ -13,80 +13,101 @@ import java.util.List;
  * mike@trueplus.vn
  */
 
-public interface ChildListController<TModel extends Model>
+public interface ChildListController<TParent extends Model, TModel extends Model>
         extends Controller<AbstractListPanel<TModel>> {
 
-    void doLoadData();
-    void doRetrieveItem();
-    void doRetrieveItem(int page, int pageSize);
-    void onRetrievePostExecute(List<TModel> models);
-    List<TModel> onRetrieveDataBackground(int page, int pageSize) throws Exception;
+    /**
+     * Lấy full danh sách
+     */
+    void doRetrieve();
+
+    /**
+     * Lấy danh sách theo phân trang
+     * @param page
+     * @param pageSize
+     */
+    void doRetrieve(int page, int pageSize);
+
+    /**
+     * Lấy sanh sách thành công
+     * @param models
+     */
+    void onRetrievePostExecute(TParent parent, List<TModel> models);
+
+    /**
+     * Lấy danh sách theo background
+     * @param parent
+     * @param page
+     * @param pageSize
+     * @return
+     * @throws Exception
+     */
+    List<TModel> onRetrieveBackground(TParent parent, int page, int pageSize) throws Exception;
 
     /**
      * Kích hoạt cập nhật số liệu trong list
      */
-    void doUpdateItem(TModel oldModel, TModel newModel);
+    void doUpdate(TParent parent, TModel oldModel, TModel newModel);
 
     /**
      * Thực hiện cập nhật item trên background
      */
-    boolean onUpdateDataBackGround(TModel oldModel, TModel newModel) throws Exception;
+    boolean onUpdateBackGround(TParent parent, TModel oldModel, TModel newModel) throws Exception;
 
     /**
      * Thực hiện cập nhật xong
      * @param success
      */
-    void onUpdatePostExecute(Boolean success, TModel oldModel, TModel newModel);
+    void onUpdatePostExecute(Boolean success, TParent parent, TModel oldItem, TModel newModel);
 
     /**
      * Kích hoạt xóa 1 item trên danh sách
-     * @param item
+     * @param models
      */
-    void doDeleteItem(TModel... item);
+    void doDelete(TParent parent, TModel... models);
 
     /**
      * Thực thi xóa item trên danh sách trên background
      * @param models
      */
-    boolean onDeleteDataBackGround(TModel... models) throws Exception;
+    boolean onDeleteBackGround(TParent parent, TModel... models) throws Exception;
 
     /**
      * Thực thi sau khi xóa item thành công trên api
      * @param success
      */
-    void onDeletePostExecute(Boolean success);
+    void onDeletePostExecute(Boolean success, TParent parent, TModel... models);
 
 
     /**
      * Chèn 1 model vào danh sách
-     * @param item
+     * @param models
      */
-    void doInsertItem(TModel... item);
+    void doInsert(TParent parent, TModel... models);
 
     /**
      * Thực thi insert trên tiến trình background
      * @param models
      */
-    boolean onInsertDataBackground(TModel... models) throws Exception;
+    boolean onInsertBackground(TParent parent, TModel... models) throws Exception;
 
     /**
      * Thực thi insert khi đã thành công
      * @param success
      * @param models
      */
-    void onInsertPostExecute(Boolean success, TModel... models);
+    void onInsertPostExecute(Boolean success, TParent parent, TModel... models);
 
     /**
      * Gán 1 list vào danh sách
      * @param list
      */
-    void bindList(List<TModel> list);
+    void bindList(TParent parent, List<TModel> list);
 
     /**
      * Gán cho chọn 1 item trên list
-     * @param item
      */
-    void bindItem(TModel item);
+    void bindModel(TParent parent, TModel item);
 
     /**
      * Chỉ định panel list master
@@ -104,8 +125,16 @@ public interface ChildListController<TModel extends Model>
      * Xác định item nào đang được chọn và xử lý
      * @param model
      */
-    void setSelectedItem(TModel model);
-    TModel getSelectedItem();
-    List<TModel> getSelectedItems();
-    void setSelectedItem(List<TModel> models);
+    void setSelectedModel(TModel model);
+    TModel getSelectedModel();
+
+    List<TModel> getSelectedList();
+    void setSelectedList(List<TModel> models);
+
+    /**
+     * Xác định parent
+     * @param parent
+     */
+    void setParentModel(TParent parent);
+    TParent getParentModel();
 }

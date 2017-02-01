@@ -1,5 +1,6 @@
 package com.magestore.app.pos.model.customer;
 
+import com.google.gson.annotations.Expose;
 import com.magestore.app.lib.model.customer.Complain;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.pos.model.PosAbstractModel;
@@ -12,7 +13,9 @@ import com.magestore.app.pos.model.PosAbstractModel;
  */
 
 public class PosComplain extends PosAbstractModel implements Complain {
+    @Expose(serialize = false, deserialize = false)
     Customer ref_customer;
+
     String complain_id;
     String customer_id;
     String content;
