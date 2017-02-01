@@ -3,6 +3,7 @@ package com.magestore.app.lib.controller;
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
 import com.magestore.app.lib.panel.AbstractListPanel;
+import com.magestore.app.lib.service.ListService;
 import com.magestore.app.lib.task.DeleteListTask;
 import com.magestore.app.lib.task.InsertListTask;
 import com.magestore.app.lib.task.RetrieveListTask;
@@ -32,7 +33,16 @@ public abstract class AbstractListController<TModel extends Model>
      * Danh sách dữ liệu chứa Model
      */
     protected List<TModel> mList;
+
+    /**
+     * Item được chọn trên danh sách
+     */
     protected TModel mSelectedItem;
+
+    /**
+     * Service xử lý
+     */
+    protected ListService<TModel> mListService;
 
     /**
      * Thiết lập danh sách, cho hiển thị lên view
@@ -79,23 +89,14 @@ public abstract class AbstractListController<TModel extends Model>
      */
     public void doLoadData(boolean blnAutoChooseFirstItem) {
         mblnAutoChooseFirstItem = blnAutoChooseFirstItem;
-        doLoadData();
+        doRetrieve();
     }
 
     /**
      * Thực hiện load dữ liệu lúc đầu mở view
      */
     @Override
-    public void doLoadData() {
-        RetrieveListTask<TModel> task = new RetrieveListTask<TModel>(this);
-        task.doExecute(0, 30);
-    }
-
-    /**
-     * Thực hiện load dữ liệu lúc đầu mở view
-     */
-    @Override
-    public void doRetrieveItem(){
+    public void doRetrieve(){
         // chuẩn bị task load data
         RetrieveListTask<TModel> task = new RetrieveListTask<TModel>(this);
         task.doExecute(0, 30);
@@ -105,7 +106,7 @@ public abstract class AbstractListController<TModel extends Model>
      * Thực hiện load dữ liệu lúc đầu mở view
      */
     @Override
-    public void doRetrieveItem(int page, int pageSize){
+    public void doRetrieve(int page, int pageSize){
         // chuẩn bị task load data
         RetrieveListTask<TModel> task = new RetrieveListTask<TModel>(this);
         task.doExecute(page, pageSize);
@@ -117,7 +118,9 @@ public abstract class AbstractListController<TModel extends Model>
      * @throws Exception
      */
     @Override
-    public List<TModel> onRetrieveDataBackground(int page, int pageSize) throws Exception {
+    public List<TModel> onRetrieveBackground(int page, int pageSize) throws Exception {
+        if (mListService != null)
+            return mListService.retrieve(page, pageSize);
         return loadDataBackground();
     }
 
@@ -128,15 +131,6 @@ public abstract class AbstractListController<TModel extends Model>
     @Override
     public void onRetrievePostExecute(List<TModel> list) {
         // gọi lại method đặt tên theo phiên bản cũ
-        onPostExecuteLoadData(list);
-    }
-
-    /**
-     * Sự kiện sau khi load dữ liệu
-     * @param list
-     */
-    protected void onPostExecuteLoadData(List<TModel> list) {
-        // Map danh sách nhận được với view
         bindList(list);
 
         // Chọn item đầu tiên
@@ -158,7 +152,7 @@ public abstract class AbstractListController<TModel extends Model>
      * Kích hoạt update model trong list
      */
     @Override
-    public void doUpdateItem(TModel oldModel, TModel newModels) {
+    public void doUpdate(TModel oldModel, TModel newModels) {
         // chuẩn bị task load data
         UpdateListTask<TModel> task = new UpdateListTask<TModel>(this);
         task.execute(oldModel, newModels);
@@ -169,8 +163,12 @@ public abstract class AbstractListController<TModel extends Model>
      * @throws Exception
      */
     @Override
-    public boolean onUpdateDataBackGround(TModel oldModel, TModel newModels) throws Exception
-    { return false;}
+    public boolean onUpdateBackGround(TModel oldModel, TModel newModels) throws Exception
+    {
+        if (mListService != null)
+            return mListService.update(oldModel, newModels);
+        return false;
+    }
 
     /**
      * Cập nhật thành công
@@ -185,7 +183,7 @@ public abstract class AbstractListController<TModel extends Model>
      * Kích hoạt việc xóa 1 item
      */
     @Override
-    public void doDeleteItem(TModel... models) {
+    public void doDelete(TModel... models) {
         // chuẩn bị task load data
         DeleteListTask<TModel> task = new DeleteListTask<TModel>(this);
         task.doExecute(models);
@@ -196,8 +194,10 @@ public abstract class AbstractListController<TModel extends Model>
      * @throws Exception
      */
     @Override
-    public boolean onDeleteDataBackGround(TModel... models) throws Exception
+    public boolean onDeleteBackGround(TModel... models) throws Exception
     {
+        if (mListService != null)
+            return mListService.delete(models);
         return false;
     }
 
@@ -214,7 +214,7 @@ public abstract class AbstractListController<TModel extends Model>
      * Kích hoạt Thực hiện chèn, tạo mới 1 item
      */
     @Override
-    public void doInsertItem(TModel... models) {
+    public void doInsert(TModel... models) {
         // chuẩn bị task load data
         InsertListTask<TModel> task = new InsertListTask<TModel>(this);
         task.doExecute(models);
@@ -226,9 +226,13 @@ public abstract class AbstractListController<TModel extends Model>
      * @throws Exception
      */
     @Override
-    public boolean onInsertDataBackground(TModel... params)
+    public boolean onInsertBackground(TModel... params)
             throws Exception
-    { return false;}
+    {
+        if (mListService != null)
+            return mListService.insert(params);
+        return false;
+    }
 
     /**
      * Insert thành công
@@ -280,5 +284,15 @@ public abstract class AbstractListController<TModel extends Model>
      */
     public void setSelectedItem(List<TModel> models) {
         setSelectedItem(models.get(0));
+    }
+
+    @Override
+    public void setListService(ListService<TModel> service) {
+        mListService = service;
+    }
+
+    @Override
+    public ListService<TModel> getListService() {
+        return mListService;
     }
 }

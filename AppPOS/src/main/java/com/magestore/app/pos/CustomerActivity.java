@@ -73,8 +73,6 @@ public class CustomerActivity extends AbstractActivity {
         // chuẩn bị service
         ServiceFactory factory;
         CustomerService service = null;
-        CustomerAddressService addressService = null;
-        CustomerComplainService complainService = null;
 
         try {
             factory = ServiceFactory.getFactory(magestoreContext);
@@ -100,7 +98,7 @@ public class CustomerActivity extends AbstractActivity {
     @Override
     protected void initValue() {
         // load danh sách khách hàng
-        mCustomerListController.doRetrieveItem(1, 30);
+        mCustomerListController.doRetrieve();
     }
 
     @Override

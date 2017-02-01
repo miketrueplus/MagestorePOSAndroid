@@ -44,7 +44,7 @@ public class POSCustomerComplainService extends AbstractService implements Custo
      * @param complain
      * @return
      */
-    @Override
+//    @Override
     public void add(Customer customer, Complain... complain) throws ParseException, InstantiationException, IllegalAccessException, IOException {
         // cho complain tham chiếu đến customer
         complain[0].setCustomer(customer);
@@ -60,7 +60,7 @@ public class POSCustomerComplainService extends AbstractService implements Custo
         complainList.add(complain[0]);
     }
 
-    @Override
+//    @Override
     public boolean remove(Customer customer, Complain... model) {
         return false;
     }

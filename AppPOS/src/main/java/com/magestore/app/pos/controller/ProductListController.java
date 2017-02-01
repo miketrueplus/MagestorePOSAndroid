@@ -21,9 +21,16 @@ public class ProductListController extends AbstractListController<Product> {
     // Service xử lý các vấn đề liên quan đến product
     ProductService mProductService;
 
+//    @Override
+//    protected void onPostExecuteLoadData(List<Product> list) {
+//        super.onPostExecuteLoadData(list);
+//        doLoadProductsImage();
+//    }
+
     @Override
-    protected void onPostExecuteLoadData(List<Product> list) {
-        super.onPostExecuteLoadData(list);
+    public void onRetrievePostExecute(List<Product> list) {
+        super.onRetrievePostExecute(list);
+        // load ảnh
         doLoadProductsImage();
     }
 

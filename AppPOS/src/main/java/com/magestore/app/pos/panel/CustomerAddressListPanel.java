@@ -84,7 +84,7 @@ public class CustomerAddressListPanel extends AbstractListPanel<CustomerAddress>
                 R.string.no,
                 new DialogInterface.OnClickListener(){
                     public void onClick(DialogInterface dialog, int which) {
-                        mController.doDeleteItem(item);
+                        mController.doDelete(item);
                     }
                 });
     }
@@ -111,7 +111,7 @@ public class CustomerAddressListPanel extends AbstractListPanel<CustomerAddress>
             @Override
             public void onClick(View view) {
                 CustomerAddress item = panelAddress.bind2Item();
-                mController.doInsertItem(item);
+                mController.doInsert(item);
                 dialog.dismiss();
             }
         });
@@ -139,7 +139,7 @@ public class CustomerAddressListPanel extends AbstractListPanel<CustomerAddress>
             @Override
             public void onClick(View view) {
                 CustomerAddress newitem = panelAddress.bind2Item();
-                mController.doUpdateItem(item, newitem);
+                mController.doUpdate(item, newitem);
                 dialog.dismiss();
             }
         });

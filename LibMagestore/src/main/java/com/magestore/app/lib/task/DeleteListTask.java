@@ -24,7 +24,7 @@ public class DeleteListTask<TModel extends Model>
     @Override
     protected Boolean doInBackground(TModel... models) {
         try {
-            return mListController.onDeleteDataBackGround(models);
+            return mListController.onDeleteBackGround(models);
         } catch (Exception exp) {
             mException = exp;
             cancel(true);

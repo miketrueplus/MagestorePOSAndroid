@@ -97,7 +97,7 @@ public class OrderActivity extends AbstractActivity {
     @Override
     protected void initValue() {
         // load danh sách order
-        mOrderListController.doLoadData();
+        mOrderListController.doRetrieve();
     }
 
     @Override

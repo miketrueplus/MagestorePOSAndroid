@@ -57,7 +57,7 @@ public class POSCustomerAddressService extends AbstractService implements Custom
      * @param customer
      * @return
      */
-    @Override
+//    @Override
     public void add(Customer customer, CustomerAddress... customerAddress) {
         // cho address tham chiếu đến customer
         customerAddress[0].setCustomer(customer);
@@ -95,7 +95,7 @@ public class POSCustomerAddressService extends AbstractService implements Custom
      * @param customer
      * @param customerAddress
      */
-    @Override
+//    @Override
     public boolean remove(Customer customer, CustomerAddress... customerAddress) {
         // Tìm customerAddress
         if (customer != null && customerAddress[0] != null & customer.getAddress() != null)
@@ -173,6 +173,4 @@ public class POSCustomerAddressService extends AbstractService implements Custom
         // return
         return success;
     }
-
-
 }

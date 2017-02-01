@@ -89,7 +89,7 @@ public class RegisterShiftActivity extends AbstractActivity {
     @Override
     protected void initValue() {
         // load danh sách register shift
-        mRegisterShiftListController.doLoadData();
+        mRegisterShiftListController.doRetrieve();
     }
 
     @Override

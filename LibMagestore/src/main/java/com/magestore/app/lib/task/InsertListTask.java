@@ -24,7 +24,7 @@ public class InsertListTask<TModel extends Model>
     protected Boolean doInBackground(TModel... models) {
         paramsModel = models;
         try {
-            return mListController.onInsertDataBackground(models);
+            return mListController.onInsertBackground(models);
         } catch (Exception exp) {
             mException = exp;
             cancel(true);

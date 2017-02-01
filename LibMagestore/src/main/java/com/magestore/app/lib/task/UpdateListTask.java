@@ -27,7 +27,7 @@ public class UpdateListTask<TModel extends Model>
     protected Boolean doInBackground(TModel... models) {
         this.models = models;
         try {
-            return mListController.onUpdateDataBackGround(models[0], models[1]);
+            return mListController.onUpdateBackGround(models[0], models[1]);
         } catch (Exception exp) {
             mException = exp;
             cancel(true);

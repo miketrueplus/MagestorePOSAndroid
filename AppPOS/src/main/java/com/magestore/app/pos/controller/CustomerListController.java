@@ -40,7 +40,7 @@ public class CustomerListController extends AbstractListController<Customer> {
      * @param service
      */
     public void setCustomerService(CustomerService service) {
-
+        setListService(service);
         mCustomerService = service;
         try {
             mCustomerComplainService = ServiceFactory.getFactory(getMagestoreContext()).generateCustomerComplainService();
@@ -64,11 +64,11 @@ public class CustomerListController extends AbstractListController<Customer> {
      * @return
      * @throws Exception
      */
-    @Override
-    protected List<Customer> loadDataBackground(Void... params) throws Exception {
-        List<Customer> listCustomer = mCustomerService.retrieve(1, 30);
-        return listCustomer;
-    }
+//    @Override
+//    protected List<Customer> loadDataBackground(Void... params) throws Exception {
+//        List<Customer> listCustomer = mCustomerService.retrieve(1, 30);
+//        return listCustomer;
+//    }
 
     public void doLoadComplain(Customer customer) {
         doAction(ACTION_CODE_GET_COMPLAIN, null, null, customer);

@@ -29,7 +29,7 @@ public class RetrieveListTask<TModel extends Model>
     @Override
     protected List<TModel> doInBackground(Integer... params) {
         try {
-            return mListController.onRetrieveDataBackground(params[0], params[1]);
+            return mListController.onRetrieveBackground(params[0], params[1]);
         } catch (Exception exp) {
             mException = exp;
             cancel(true);

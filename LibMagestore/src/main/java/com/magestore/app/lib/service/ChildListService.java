@@ -16,10 +16,6 @@ import java.util.List;
 
 public interface ChildListService<TParent extends Model, TModel extends Model> extends Service {
     TModel create(TParent parent) throws ParseException, InstantiationException, IllegalAccessException, IOException;
-
-    void add(TParent parent, TModel... model) throws ParseException, InstantiationException, IllegalAccessException, IOException;
-    boolean remove(TParent parent, TModel... model);
-
     int count(TParent parent) throws ParseException, InstantiationException, IllegalAccessException, IOException;
     TModel retrieve(TParent parent, String strID) throws ParseException, InstantiationException, IllegalAccessException, IOException;
     List<TModel> retrieve(TParent parent, int page, int pageSize) throws IOException, InstantiationException, ParseException, IllegalAccessException;
