@@ -195,7 +195,7 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
         mBinding.setCustomerDetail(item);
 
         // chỉ định adress controller hiển thị các address lên
-        mCustomerAddressListController.doSelectCustomer(item);
+        mCustomerAddressListController.bindCustomer(item);
 
         // chỉ định complain list cho hiển thị
         if (item.getComplain() != null) mCustomerComplainListView.bindList(item.getComplain());
