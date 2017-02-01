@@ -1,11 +1,9 @@
-package com.magestore.app.lib.controller;
+package com.magestore.app.lib.task;
 
 import android.os.AsyncTask;
 import android.os.Build;
 
-import com.magestore.app.lib.model.Model;
-
-import java.util.List;
+import com.magestore.app.lib.controller.AbstractListController;
 
 /**
  * Class abstract quản lý các hoạt động task liên quan đến list như thêm xóa sửa
@@ -14,7 +12,7 @@ import java.util.List;
  * mike@trueplus.vn
  */
 
-public abstract class AbstractListTask <TController extends AbstractListController, TTaskParam, TTaskProgress, TResult>
+public abstract class AbstractChildListTask<TController extends AbstractListController, TTaskParam, TTaskProgress, TResult>
         extends AsyncTask<TTaskParam, TTaskProgress, TResult> {
     protected TController mListController;
     protected Exception mException;
@@ -23,7 +21,7 @@ public abstract class AbstractListTask <TController extends AbstractListControll
      * Khởi tạo với list controller
      * @param controller
      */
-    public AbstractListTask(TController controller) {
+    public AbstractChildListTask(TController controller) {
         super();
         mListController = controller;
     }

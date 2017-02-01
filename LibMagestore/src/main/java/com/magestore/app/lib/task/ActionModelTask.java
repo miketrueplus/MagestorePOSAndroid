@@ -1,8 +1,9 @@
-package com.magestore.app.lib.controller;
+package com.magestore.app.lib.task;
 
 import android.os.AsyncTask;
 import android.os.Build;
 
+import com.magestore.app.lib.controller.AbstractController;
 import com.magestore.app.lib.model.Model;
 
 import java.util.Map;

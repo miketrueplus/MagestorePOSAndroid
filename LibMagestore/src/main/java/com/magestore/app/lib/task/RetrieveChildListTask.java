@@ -1,7 +1,6 @@
-package com.magestore.app.lib.controller;
+package com.magestore.app.lib.task;
 
-import android.os.AsyncTask;
-
+import com.magestore.app.lib.controller.AbstractListController;
 import com.magestore.app.lib.model.Model;
 
 import java.util.List;
@@ -13,7 +12,7 @@ import java.util.List;
  * mike@trueplus.vn
  */
 
-public class RetrieveListTask<TModel extends Model>
+public class RetrieveChildListTask<TModel extends Model>
         extends AbstractListTask<AbstractListController<TModel>, Integer, Void, List<TModel>> {
 
 
@@ -22,7 +21,7 @@ public class RetrieveListTask<TModel extends Model>
      *
      * @param controller
      */
-    public RetrieveListTask(AbstractListController<TModel> controller)
+    public RetrieveChildListTask(AbstractListController<TModel> controller)
     {
         super(controller);
     }

@@ -1,10 +1,7 @@
-package com.magestore.app.lib.controller;
+package com.magestore.app.lib.task;
 
-import android.os.AsyncTask;
-
+import com.magestore.app.lib.controller.AbstractListController;
 import com.magestore.app.lib.model.Model;
-
-import java.util.List;
 
 /**
  * Async task thực hiện insert dữ liệu
