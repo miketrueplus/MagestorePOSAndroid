@@ -1,5 +1,6 @@
 package com.magestore.app.pos.service.config;
 
+import com.google.gson.internal.LinkedTreeMap;
 import com.magestore.app.lib.model.config.Config;
 import com.magestore.app.lib.resourcemodel.config.ConfigDataAccess;
 import com.magestore.app.pos.model.config.PosConfigDefault;
@@ -12,6 +13,7 @@ import com.magestore.app.util.FileUtil;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.Map;
 
 /**
  * Trả lại config chung của hệ thống
@@ -37,20 +39,14 @@ public class POSConfigService extends AbstractService implements ConfigService {
         // Nếu chưa khởi tạo customer gateway factory
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
-
-        // Lấy list config đầu tiên
-        ConfigUtil.mConfig = configDataAccess.getConfig();
-        return ConfigUtil.mConfig;
+        return configDataAccess.retrieveConfig();
     }
 
-    /**
-     * Trả lại config đã được lưu trên hệ thống
-     *
-     * @return
-     */
     @Override
-    public Config getConfig() {
-        if (ConfigUtil.mConfig == null) ConfigUtil.mConfig = new PosConfigDefault();
-        return ConfigUtil.mConfig;
+    public Map<String, String> getCustomerGroup() throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        // Nếu chưa khởi tạo customer gateway factory
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
+        return configDataAccess.getCustomerGroup();
     }
 }

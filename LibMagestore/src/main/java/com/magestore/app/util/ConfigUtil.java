@@ -1,5 +1,6 @@
 package com.magestore.app.util;
 
+import com.google.gson.internal.LinkedTreeMap;
 import com.magestore.app.lib.model.config.Config;
 
 import java.text.DateFormat;
@@ -7,6 +8,7 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -17,7 +19,7 @@ import java.util.Date;
  */
 
 public class ConfigUtil {
-    public static Config mConfig;
+//    public static Config mConfig;
     private static DecimalFormat mCurrencyFormat;
     private static DecimalFormat mFloatFormat;
     private static DecimalFormat mIntegerFormat;

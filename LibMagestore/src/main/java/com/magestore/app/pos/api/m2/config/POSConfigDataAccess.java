@@ -1,6 +1,8 @@
 package com.magestore.app.pos.api.m2.config;
 
+import com.google.common.math.DoubleMath;
 import com.google.common.util.concurrent.Service;
+import com.google.gson.internal.LinkedTreeMap;
 import com.magestore.app.lib.connection.Connection;
 import com.magestore.app.lib.connection.ConnectionException;
 import com.magestore.app.lib.connection.ConnectionFactory;
@@ -18,12 +20,17 @@ import com.magestore.app.pos.api.m2.POSAbstractDataAccess;
 import com.magestore.app.pos.api.m2.POSDataAccessSession;
 import com.magestore.app.pos.model.config.PosConfig;
 import com.magestore.app.lib.parse.ParseException;
+import com.magestore.app.pos.model.config.PosConfigDefault;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosConfigParseImplement;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListOrder;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListProduct;
+import com.magestore.app.util.ConfigUtil;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Mike on 12/28/2016.
@@ -32,6 +39,8 @@ import java.util.List;
  */
 
 public class POSConfigDataAccess extends POSAbstractDataAccess implements ConfigDataAccess {
+    // Cache config đầu tiên
+    private static Config mConfig;
 
     /**
      * Trả lại 1 danh sách các config
@@ -44,7 +53,7 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
      * @throws java.text.ParseException
      */
     @Override
-    public Config getConfig() throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
+    public Config retrieveConfig() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
         Class oldImplement = getClassParseImplement();
         setParseImplement(Gson2PosConfigParseImplement.class);
 
@@ -71,38 +80,9 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
                     .setReloadCacheLater(true)
                     .setParseImplement(Gson2PosConfigParseImplement.class)
                     .setParseModel(PosConfig.class);
-            Config config = (Config) cache.excute();
+            mConfig = (Config) cache.excute();
 
-//            thread = new Thread() {
-//                public ParamBuilder paramBuilder;
-//                public Connection connection;
-//                public Statement statement;
-//                @Override
-//                public void run() {
-//                    if (cache != null)
-//                        while (!cache.isFinishBackgroud()) {
-//                            try {
-//                                sleep(1000);
-//                            } catch (InterruptedException e) {
-//                                e.printStackTrace();
-//                            }
-//                        }
-//                    // đóng param builder
-//                    if (paramBuilder != null) paramBuilder.clear();
-//                    paramBuilder = null;
-//
-////                     đóng statement
-//                    if (statement != null) statement.close();
-//                    statement = null;
-//
-////                     đóng connection
-//                    if (connection != null) connection.close();
-//                    connection = null;
-//                }
-//            };
-//            thread.
-
-            return config;
+            return mConfig;
         } catch (ConnectionException ex) {
             throw ex;
         } catch (IOException ex) {
@@ -136,18 +116,35 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
      * @throws java.text.ParseException
      */
     @Override
-    public String getConfig(String configPath) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
-//        String value = doApi2String(POSAPI.REST_CONFIG_GET_,
-//                null,
-//                POSAPI.PARAM_CONFIG_PATH, configPath,
-//                POSAPI.PARAM_CONFIG_ID, id,
-//                POSAPI.PARAM_SESSION_ID, POSDataAccessSession.REST_SESSION_ID
-//        );
-//        return value;        }
+    public String getConfig(String configPath) throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        // nếu chưa load config, cần khởi tạo chế độ default
+        if (mConfig == null) mConfig = new PosConfigDefault();
 
-        String str = doApi2String(POSAPI.REST_CONFIG_GET_LISTING,
-                null,
-                POSAPI.PARAM_SESSION_ID, POSDataAccessSession.REST_SESSION_ID);
-        return str;
+        // trả lại giá trị
+        return mConfig.getValue(configPath).toString();
+    }
+
+    /**
+     * Lấy customer group trong config
+     * @return
+     * @throws DataAccessException
+     * @throws ConnectionException
+     * @throws ParseException
+     * @throws IOException
+     * @throws ParseException
+     */
+    @Override
+    public Map<String, String> getCustomerGroup() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        // nếu chưa load config, cần khởi tạo chế độ default
+        if (mConfig == null) mConfig = new PosConfigDefault();
+
+        // Chuyển đối custome
+        ArrayList<LinkedTreeMap> customerGroupList = (ArrayList) mConfig.getValue("customerGroup");
+        LinkedTreeMap<String, String> returnCustomerGroup = new LinkedTreeMap<String, String>();
+        for (LinkedTreeMap customerGroup: customerGroupList) {
+            Double id = (Double) customerGroup.get("id");
+            returnCustomerGroup.put(String.format("%.0f", id), customerGroup.get("code").toString());
+        }
+        return returnCustomerGroup;
     }
 }

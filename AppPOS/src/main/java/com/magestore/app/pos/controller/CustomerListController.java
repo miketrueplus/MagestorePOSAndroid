@@ -1,13 +1,17 @@
 package com.magestore.app.pos.controller;
 
+import com.google.gson.internal.LinkedTreeMap;
 import com.magestore.app.lib.controller.AbstractListController;
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.customer.Complain;
 import com.magestore.app.lib.model.customer.Customer;
+import com.magestore.app.lib.service.Service;
 import com.magestore.app.lib.service.ServiceFactory;
+import com.magestore.app.lib.service.config.ConfigService;
 import com.magestore.app.lib.service.customer.CustomerComplainService;
 import com.magestore.app.lib.service.customer.CustomerService;
 import com.magestore.app.pos.model.customer.PosComplain;
+import com.magestore.app.pos.panel.CustomerDetailPanel;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -31,9 +35,12 @@ public class CustomerListController extends AbstractListController<Customer> {
      */
     CustomerService mCustomerService;
     CustomerComplainService mCustomerComplainService;
+    ConfigService mConfigService;
 
-    // input complain được input
-    Complain mInputComplain;
+    /**
+     * Chứa customer group
+     */
+    Map<String, String> customerGroupList;
 
     /**
      * Thiết lập service xử lý các nghiệp vụ liên quan customer
@@ -43,12 +50,27 @@ public class CustomerListController extends AbstractListController<Customer> {
         setListService(service);
         mCustomerService = service;
         try {
+            mConfigService = ServiceFactory.getFactory(getMagestoreContext()).generateConfigService();
             mCustomerComplainService = ServiceFactory.getFactory(getMagestoreContext()).generateCustomerComplainService();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InstantiationException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public List<Customer> onRetrieveBackground(int page, int pageSize) throws Exception {
+        List<Customer> customers = super.onRetrieveBackground(page, pageSize);
+        customerGroupList = mConfigService.getCustomerGroup();
+        return customers;
+    }
+
+    @Override
+    public void onRetrievePostExecute(List<Customer> list) {
+        super.onRetrievePostExecute(list);
+        if (mDetailView instanceof CustomerDetailPanel && mDetailView != null)
+            ((CustomerDetailPanel) mDetailView).setCustomerGroupDataSet(customerGroupList);
     }
 
     /**

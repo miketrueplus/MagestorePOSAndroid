@@ -34,8 +34,6 @@
                     android:paddingBottom="1dip"
                     android:paddingTop="1dip"
                     android:text="@{ConfigUtil.formatDate(complain.getCreateAt())}"
-                    android:textColor="#ff7f1d"
-                    android:textSize="17dip"
                     android:textStyle="bold" />
 
                 <TextView
@@ -50,8 +48,6 @@
                     android:paddingBottom="1dip"
                     android:paddingTop="1dip"
                     android:text="@{complain.getContent()}"
-                    android:textColor="#ff7f1d"
-                    android:textSize="17dip"
                     android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>

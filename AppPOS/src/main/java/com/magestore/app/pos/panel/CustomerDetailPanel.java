@@ -7,13 +7,19 @@ import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 
+import com.google.gson.internal.LinkedTreeMap;
 import com.magestore.app.lib.controller.Controller;
+import com.magestore.app.lib.model.config.Config;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
+import com.magestore.app.lib.panel.SimpleSpinner;
 import com.magestore.app.pos.controller.CustomerAddressListController;
 import com.magestore.app.pos.controller.CustomerListController;
 import com.magestore.app.pos.databinding.PanelCustomerDetailBinding;
@@ -21,6 +27,11 @@ import com.magestore.app.pos.R;
 import com.magestore.app.pos.util.DialogUtil;
 import com.magestore.app.pos.view.CustomerComplainListView;
 import com.magestore.app.pos.view.MagestoreDialog;
+import com.magestore.app.util.ConfigUtil;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Hiển thị và quản lý các thông tin chi tiết của 1 customer
@@ -48,7 +59,7 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
     EditText mtxtFirstName;
     EditText mtxtLastName;
     EditText mtxtEmail;
-    EditText mtxtGroup;
+    SimpleSpinner mspinGroupID;
 
     EditText mtxtComplain;
 
@@ -56,6 +67,7 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
 
     /**
      * Khởi tạo
+     *
      * @param context
      * @throws InstantiationException
      * @throws IllegalAccessException
@@ -66,6 +78,7 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
 
     /**
      * Khởi tạo
+     *
      * @param context
      * @throws InstantiationException
      * @throws IllegalAccessException
@@ -76,6 +89,7 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
 
     /**
      * Khởi tạo
+     *
      * @param context
      * @throws InstantiationException
      * @throws IllegalAccessException
@@ -96,13 +110,13 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
         mCustomerAddressListPanel = (CustomerAddressListPanel) findViewById(R.id.customer_address);
 
         // chuẩn bị panel complain của khách hàng
-        mCustomerComplainListView = (CustomerComplainListView)  findViewById(R.id.complain_list_panel);
+        mCustomerComplainListView = (CustomerComplainListView) findViewById(R.id.complain_list_panel);
 
         // các edit text
         mtxtFirstName = (EditText) findViewById(R.id.firstname);
         mtxtLastName = (EditText) findViewById(R.id.lastname);
         mtxtEmail = (EditText) findViewById(R.id.email);
-        mtxtGroup = (EditText) findViewById(R.id.group_id);
+        mspinGroupID = (SimpleSpinner) findViewById(R.id.spinner_group_id);
 
         // các button
         mbtnSaveCustomer = (Button) findViewById(R.id.btn_edit_save_customer);
@@ -126,7 +140,7 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
                 mtxtFirstName.setEnabled(true);
                 mtxtLastName.setEnabled(true);
                 mtxtEmail.setEnabled(true);
-                mtxtGroup.setEnabled(true);
+                mspinGroupID.setEnabled(true);
 
 //                onClickNewAddress(v);
             }
@@ -143,7 +157,7 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
                 mtxtFirstName.setEnabled(false);
                 mtxtLastName.setEnabled(false);
                 mtxtEmail.setEnabled(false);
-                mtxtGroup.setEnabled(false);
+                mspinGroupID.setEnabled(false);
 
 //                Customer customer = mController.createItem();
                 bind2Item(mController.getSelectedItem());
@@ -196,6 +210,7 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
 
     /**
      * Sự kiện khi ấn nút checkout
+     *
      * @param v
      */
     public void onClickCheckout(View v) {
@@ -204,6 +219,7 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
 
     /**
      * Sự kiện thêm 1 complain mới
+     *
      * @param v
      */
     public void onClickNewComplain(View v) {
@@ -226,8 +242,7 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
                     CustomerListController controller = (CustomerListController) CustomerDetailPanel.this.getController();
                     controller.doInputNewComplain(strComplain);
                     dialog.dismiss();
-                }
-                else {
+                } else {
                     txtComplain.setError(getContext().getString(R.string.err_field_required));
                 }
             }
@@ -236,6 +251,7 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
 
     /**
      * Sự kiện khi ấn nút new address
+     *
      * @param v
      */
     public void onClickNewAddress(View v) {
@@ -244,7 +260,16 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
     }
 
     /**
+     * Gán giá trị customer group cho spinner
+     * @param customerGroupDataSet
+     */
+    public void setCustomerGroupDataSet(Map<String, String> customerGroupDataSet) {
+        mspinGroupID.bind(customerGroupDataSet);
+    }
+
+    /**
      * Chỉ định customer được chọn, cập nhật view
+     *
      * @param item
      */
     @Override
@@ -253,6 +278,7 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
 
         // map thông tin customer lên panel
         mBinding.setCustomerDetail(item);
+        mspinGroupID.setSelection(item.getGroupID());
 
         // chỉ định adress controller hiển thị các address lên
         mCustomerAddressListController.bindCustomer(item);
@@ -276,6 +302,6 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
         item.setEmail(mtxtEmail.getText().toString().trim());
         item.setFirstName(mtxtFirstName.getText().toString().trim());
         item.setLastName(mtxtLastName.getText().toString().trim());
-        item.setGroupID(mtxtGroup.getText().toString().trim());
+        item.setGroupID(mspinGroupID.getSelection());
     }
 }
