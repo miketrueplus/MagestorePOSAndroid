@@ -16,7 +16,6 @@ import java.util.HashMap;
  * Created by Mike on 12/22/2016.
  * Magestore
  * mike@trueplus.vn
- * TODO: Add a class header comment!
  */
 
 public class PosAbstractModel implements Model, ParseModel {
@@ -25,6 +24,11 @@ public class PosAbstractModel implements Model, ParseModel {
 
     @Override
     public String getID() {
+        return id;
+    }
+
+    @Override
+    public String getDisplayContent() {
         return id;
     }
 

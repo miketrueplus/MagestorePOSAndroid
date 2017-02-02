@@ -8,12 +8,15 @@ import android.widget.Spinner;
 
 import com.google.gson.internal.LinkedTreeMap;
 import com.magestore.app.lib.R;
+import com.magestore.app.lib.model.Model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
+ * Spinner đơn giản, cho phép set luôn nội dung dưới dạng chuỗi String hoặc Map
  * Created by Mike on 2/2/2017.
  * Magestore
  * mike@trueplus.vn
@@ -81,10 +84,30 @@ public class SimpleSpinner extends Spinner {
      * @param values
      */
     public void bind(String... values) {
-        mListKeys =  values;
+        mListKeys = values;
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), mListLayout, values);
         setAdapter(adapter);
     }
+
+    /**
+     * Sử dụng một mảng model để hiển thị trên spinner
+     * @param models
+     */
+    public void bind(Model... models) {
+        Map<String, String> mapModel = new HashMap<String, String>();
+        for (Model model: models)
+            mapModel.put(model.getID(), model.getDisplayContent());
+        bind(mapModel);
+    }
+
+    /**
+     * Sử dụng 1 list models để hiển thị trên spinner
+     * @param models
+     */
+    public void bind(List<Model> models) {
+        bind(models.toArray(new Model[0]));
+    }
+
 
     /**
      * Sử dụng 1 map làm

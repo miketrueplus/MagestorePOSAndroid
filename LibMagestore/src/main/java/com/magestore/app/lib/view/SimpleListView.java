@@ -8,8 +8,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.magestore.app.lib.R;
+import com.magestore.app.lib.model.Model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -106,6 +109,25 @@ public class SimpleListView extends ListView  {
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), mListLayout, values);
         setAdapter(adapter);
+    }
+
+    /**
+     * Sử dụng một mảng model để hiển thị trên spinner
+     * @param models
+     */
+    public void bind(Model... models) {
+        Map<String, String> mapModel = new HashMap<String, String>();
+        for (Model model: models)
+            mapModel.put(model.getID(), model.getDisplayContent());
+        bind(mapModel);
+    }
+
+    /**
+     * Sử dụng 1 list models để hiển thị trên spinner
+     * @param models
+     */
+    public void bind(List<Model> models) {
+        bind(models.toArray(new Model[0]));
     }
 
     /**

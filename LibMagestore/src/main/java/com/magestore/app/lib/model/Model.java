@@ -8,6 +8,7 @@ import android.os.Parcelable;
 
 public interface Model extends Parcelable {
     String getID();
+    String getDisplayContent();
     void setRefer(String key, Object value);
     Object getRefer(String key);
     boolean setValue(String key, Object value);
