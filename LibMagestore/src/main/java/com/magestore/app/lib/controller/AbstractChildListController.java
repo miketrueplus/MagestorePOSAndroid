@@ -28,27 +28,49 @@ public abstract class AbstractChildListController<TParent extends Model, TModel 
     // model parent
     protected TParent mParentModel;
 
+    /**
+     * Chỉ định parent model
+     * @return
+     */
     @Override
     public void bindParent(TParent parent) {
         mParentModel = parent;
         doRetrieve();
     }
 
+    /**
+     * Trả lại parent model
+     * @return
+     */
     @Override
     public TParent getParent() {
         return mParentModel;
     }
 
+    /**
+     * Chỉ định child list service xử lý
+     * @param service
+     */
     @Override
     public void setChildListService(ChildListService<TParent, TModel> service) {
         mChildListService = service;
     }
 
+    /**
+     * Trả lại danh sách child list service xử lý
+     * @return
+     */
     @Override
     public ChildListService<TParent, TModel> getChildListService() {
         return mChildListService;
     }
 
+    /**
+     * Tiến trình ngầm thực hiện retrrieve lâ, trên background
+     * @param page
+     * @return
+     * @throws Exception
+     */
     @Override
     public List<TModel> onRetrieveBackground(int page, int pageSize) throws Exception {
         if (mChildListService != null && mParentModel != null)
@@ -56,6 +78,12 @@ public abstract class AbstractChildListController<TParent extends Model, TModel 
         return null;
     }
 
+    /**
+     * Tiến trình ngầm thực hiện insert, trên background
+     * @param models
+     * @return
+     * @throws Exception
+     */
     @Override
     public boolean onInsertBackground(TModel... models) throws Exception {
         if (mChildListService != null && mParentModel != null)
@@ -63,12 +91,24 @@ public abstract class AbstractChildListController<TParent extends Model, TModel 
         return false;
     }
 
+    /**
+     * Tiến trình ngầm thực hiện update, trên background
+     * @param oldModel
+     * @return
+     * @throws Exception
+     */
     @Override
     public boolean onUpdateBackGround(TModel oldModel, TModel newModel) throws Exception {
         if (mChildListService != null && mParentModel != null)
             return mChildListService.update(mParentModel, oldModel, newModel);
         return false;       }
 
+    /**
+     * Tiến trình ngầm thực hiện delete, trên background
+     * @param models
+     * @return
+     * @throws Exception
+     */
     @Override
     public boolean onDeleteBackGround(TModel... models) throws Exception {
         if (mChildListService != null && mParentModel != null)

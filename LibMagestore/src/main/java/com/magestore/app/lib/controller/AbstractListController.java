@@ -286,13 +286,30 @@ public abstract class AbstractListController<TModel extends Model>
         setSelectedItem(models.get(0));
     }
 
+    /**
+     * Chỉ định list service
+     * @param service
+     */
     @Override
     public void setListService(ListService<TModel> service) {
         mListService = service;
     }
 
+    /**
+     * Trả về list service xử lý thao tác
+     * @return
+     */
     @Override
     public ListService<TModel> getListService() {
         return mListService;
+    }
+
+    /**
+     * Khởi tạo mới 1 model
+     * @return
+     */
+    @Override
+    public TModel createItem() {
+        return getListService().create();
     }
 }

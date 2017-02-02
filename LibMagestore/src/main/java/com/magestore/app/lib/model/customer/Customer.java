@@ -11,10 +11,14 @@ import java.util.List;
 public interface Customer extends Model {
     String getName();
     String getEmail();
+    void setEmail(String email);
     String getFirstName();
+    void setFirstName(String firstName);
     String getLastName();
+    void setLastName(String lastName);
     String getTelephone();
     String getGroupID();
+    void setGroupID(String groupID);
     List<CustomerAddress> getAddress();
     void setAddressList(List<CustomerAddress> addresses);
     List<Complain> getComplain();

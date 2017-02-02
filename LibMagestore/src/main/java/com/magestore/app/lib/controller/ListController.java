@@ -18,11 +18,36 @@ public interface ListController<TModel extends Model>
         extends Controller<AbstractListPanel<TModel>> {
 
     /**
-     * Lấy dữ liệu về
+     * Tạo mới 1 model
+     * @return
+     */
+    TModel createItem();
+
+    /**
+     * Lấy dữ liệu về, full không phân trang
      */
     void doRetrieve();
+
+    /**
+     * Lấy dữ liệu về, phân trang
+     * @param page
+     * @param pageSize
+     */
     void doRetrieve(int page, int pageSize);
+
+    /**
+     * Xử lý sau khi lấy dữ liệu về thành công
+     * @param models
+     */
     void onRetrievePostExecute(List<TModel> models);
+
+    /**
+     * Tiến trình lấy dữ liệu về
+     * @param page
+     * @param pageSize
+     * @return
+     * @throws Exception
+     */
     List<TModel> onRetrieveBackground(int page, int pageSize) throws Exception;
 
     /**
@@ -108,6 +133,11 @@ public interface ListController<TModel extends Model>
      * @param service
      */
     void setListService(ListService<TModel> service);
+
+    /**
+     * Trả lại danh sách đang quản lý
+     * @return
+     */
     ListService<TModel> getListService();
 
     /**
@@ -115,11 +145,21 @@ public interface ListController<TModel extends Model>
      * @param model
      */
     void setSelectedItem(TModel model);
+
+    /**
+     * Trả lại models được chọn trên danh sách
+     * @return
+     */
     TModel getSelectedItem();
 
     /**
      * Chỉ định nhiều item được chọn về mặt dataset, k0 có update view
      */
     List<TModel> getSelectedItems();
+
+    /**
+     * Chỉ định model được chọn, k0 cập nhật view
+     * @param models
+     */
     void setSelectedItem(List<TModel> models);
 }

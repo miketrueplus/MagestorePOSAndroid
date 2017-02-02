@@ -123,6 +123,14 @@ public abstract class AbstractDetailPanel<TModel extends Model>
     }
 
     /**
+     * Bind dữ liệu từ giao diện vào item
+     * @param item
+     */
+    public void bind2Item(TModel item) {
+
+    }
+
+    /**
      * Đặt controller điều khiển
      * @param controller
      */

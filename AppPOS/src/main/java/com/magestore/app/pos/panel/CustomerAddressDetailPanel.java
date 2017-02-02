@@ -80,20 +80,25 @@ public class CustomerAddressDetailPanel extends AbstractDetailPanel<CustomerAddr
     public CustomerAddress bind2Item() {
         if (mController instanceof CustomerAddressListController) {
             //  khởi tạo customer address
-            CustomerAddress address = (((CustomerAddressListController) mController).createNewCustomerAddress());
-            address.setFirstName(((EditText) findViewById(R.id.firstname)).getText().toString().trim());
-            address.setLastName(((EditText) findViewById(R.id.lastname)).getText().toString().trim());
-            address.setStreet1(((EditText) findViewById(R.id.street1)).getText().toString().trim());
-            address.setStreet2(((EditText) findViewById(R.id.street2)).getText().toString().trim());
-            address.setCompany(((EditText) findViewById(R.id.company)).getText().toString().trim());
-            address.setTelephone(((EditText) findViewById(R.id.telephone)).getText().toString().trim());
-            address.setCity(((EditText) findViewById(R.id.city)).getText().toString().trim());
-            address.setPostCode(((EditText) findViewById(R.id.postcode)).getText().toString().trim());
-            address.setCountry(((EditText) findViewById(R.id.postcode)).getText().toString().trim());
-            address.setState(((EditText) findViewById(R.id.state)).getText().toString().trim());
-            address.setVAT(((EditText) findViewById(R.id.vat_id)).getText().toString().trim());
+
+            CustomerAddress address = mController.getListService().create();
+            bindItem(address);
             return address;
         }
         return null;
     }
+
+    @Override
+    public void bind2Item(CustomerAddress address) {
+        address.setFirstName(((EditText) findViewById(R.id.firstname)).getText().toString().trim());
+        address.setLastName(((EditText) findViewById(R.id.lastname)).getText().toString().trim());
+        address.setStreet1(((EditText) findViewById(R.id.street1)).getText().toString().trim());
+        address.setStreet2(((EditText) findViewById(R.id.street2)).getText().toString().trim());
+        address.setCompany(((EditText) findViewById(R.id.company)).getText().toString().trim());
+        address.setTelephone(((EditText) findViewById(R.id.telephone)).getText().toString().trim());
+        address.setCity(((EditText) findViewById(R.id.city)).getText().toString().trim());
+        address.setPostCode(((EditText) findViewById(R.id.postcode)).getText().toString().trim());
+        address.setCountry(((EditText) findViewById(R.id.postcode)).getText().toString().trim());
+        address.setState(((EditText) findViewById(R.id.state)).getText().toString().trim());
+        address.setVAT(((EditText) findViewById(R.id.vat_id)).getText().toString().trim());    }
 }

@@ -52,6 +52,14 @@ public class CustomerListController extends AbstractListController<Customer> {
     }
 
     /**
+     * Tạo mới customer
+     * @return
+     */
+    public Customer createNewCustomer() {
+        return getListService().create();
+    }
+
+    /**
      * Trả lại customer service xử lý các nghiệp vụ liên quan customer
      * @return
      */
@@ -59,38 +67,29 @@ public class CustomerListController extends AbstractListController<Customer> {
         return mCustomerService;
     }
 
-    /**
-     * Thực hiện load danh sách khách hàng trên background
-     * @return
-     * @throws Exception
-     */
-//    @Override
-//    protected List<Customer> loadDataBackground(Void... params) throws Exception {
-//        List<Customer> listCustomer = mCustomerService.retrieve(1, 30);
-//        return listCustomer;
-//    }
-
     public void doLoadComplain(Customer customer) {
         doAction(ACTION_CODE_GET_COMPLAIN, null, null, customer);
     }
 
+    /**
+     * Tạo mới 1 complain
+     * @param newComplain
+     */
     public void doInputNewComplain(String newComplain) {
-        Complain complain = null;
-        try {
-            complain = mCustomerComplainService.create(mSelectedItem);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Complain complain =  mCustomerComplainService.create(mSelectedItem);
         complain.setContent(newComplain);
         doAction(ACTION_CODE_INPUT_COMPLAIN, null, null, mItem, complain);
     }
 
+    /**
+     * Thực hiện các action trên background
+     * @param actionType
+     * @param actionCode
+     * @param wrapper
+     * @param models
+     * @return
+     * @throws Exception
+     */
     @Override
     public Boolean doActionBackround(int actionType, String actionCode, Map<String, Object> wrapper, Model... models) throws Exception {
         if (actionType == ACTION_CODE_GET_COMPLAIN) {
@@ -104,6 +103,14 @@ public class CustomerListController extends AbstractListController<Customer> {
         return false;
     }
 
+    /**
+     * Sau khi hoàn thành các action
+     * @param success
+     * @param actionType
+     * @param actionCode
+     * @param wrapper
+     * @param models
+     */
     @Override
     public void onActionPostExecute(boolean success, int actionType, String actionCode, Map<String, Object> wrapper, Model... models) {
         if (success && actionType == ACTION_CODE_GET_COMPLAIN) {
@@ -114,6 +121,10 @@ public class CustomerListController extends AbstractListController<Customer> {
         }
     }
 
+    /**
+     * Bind item, cập nhật giao diện
+     * @param item
+     */
     @Override
     public void bindItem(Customer item) {
         super.bindItem(item);

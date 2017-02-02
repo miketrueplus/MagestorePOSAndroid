@@ -46,6 +46,11 @@ public class PosCustomer extends PosAbstractModel implements Customer {
     }
 
     @Override
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    @Override
     public String getTelephone() {
         return telephone;
     }
@@ -56,13 +61,28 @@ public class PosCustomer extends PosAbstractModel implements Customer {
     }
 
     @Override
+    public void setFirstName(String firstName) {
+        this.firstname = firstName;
+    }
+
+    @Override
     public String getLastName() {
         return lastname;
     }
 
     @Override
+    public void setLastName(String lastName) {
+        this.lastname = lastName;
+    }
+
+    @Override
     public String getGroupID() {
         return group_id;
+    }
+
+    @Override
+    public void setGroupID(String groupID) {
+        this.group_id = groupID;
     }
 
     @Override

@@ -39,7 +39,7 @@ public class POSAPI {
     // API customer
     public static final String REST_CUSOMTER_GET_LISTING = "/rest/default/V1/webpos/customers/search?";
     public static final String REST_CUSOMTER_GET_DETAIL = "/rest/default/V1/webpos/customers/customerId?customerId=${customerID}";
-    public static final String REST_CUSOMTER_UPDATE = "/rest/default/V1/webpos/customers/${customerID}?";
+    public static final String REST_CUSOMTER_UPDATE = "/rest/default/V1/webpos/customers?";
     public static final String REST_CUSOMTER_ADD = "/rest/default/V1/webpos/customers?";
     public static final String REST_CUSOMTER_ADDRESS_GET_LISTING = "/rest/default/V1/webpos/customers/addresses/${customerID}?";
     public static final String REST_ADDRESS_GET_LISTING = "/rest/default/V1/webpos/customers/addresses/?";

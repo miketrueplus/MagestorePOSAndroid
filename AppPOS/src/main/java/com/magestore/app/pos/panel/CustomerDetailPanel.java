@@ -7,6 +7,7 @@ import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
@@ -36,10 +37,18 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
     // complain của khách hàng
     CustomerComplainListView mCustomerComplainListView;
 
-    // các control
+    // các control button
+    ImageButton mbtnEditCustomer;
+    Button mbtnSaveCustomer;
     ImageButton mbtnCheckOut;
     ImageButton mbtnNewAddress;
     ImageButton mbtnNewComplain;
+
+    // Edit text trên form
+    EditText mtxtFirstName;
+    EditText mtxtLastName;
+    EditText mtxtEmail;
+    EditText mtxtGroup;
 
     EditText mtxtComplain;
 
@@ -89,11 +98,58 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
         // chuẩn bị panel complain của khách hàng
         mCustomerComplainListView = (CustomerComplainListView)  findViewById(R.id.complain_list_panel);
 
+        // các edit text
+        mtxtFirstName = (EditText) findViewById(R.id.firstname);
+        mtxtLastName = (EditText) findViewById(R.id.lastname);
+        mtxtEmail = (EditText) findViewById(R.id.email);
+        mtxtGroup = (EditText) findViewById(R.id.group_id);
 
         // các button
+        mbtnSaveCustomer = (Button) findViewById(R.id.btn_edit_save_customer);
+        mbtnEditCustomer = (ImageButton) findViewById(R.id.btn_edit_customer);
         mbtnNewAddress = (ImageButton) findViewById(R.id.btn_new_address);
         mbtnCheckOut = (ImageButton) findViewById(R.id.btn_check_out);
         mbtnNewComplain = (ImageButton) findViewById(R.id.btn_new_complain);
+
+        mbtnSaveCustomer.setVisibility(INVISIBLE);
+        mbtnEditCustomer.setVisibility(VISIBLE);
+
+        // xử lý khi ấn edit
+        mbtnEditCustomer.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // hiện nút save
+                mbtnSaveCustomer.setVisibility(VISIBLE);
+                mbtnEditCustomer.setVisibility(INVISIBLE);
+
+                // cho phép edit các textbox
+                mtxtFirstName.setEnabled(true);
+                mtxtLastName.setEnabled(true);
+                mtxtEmail.setEnabled(true);
+                mtxtGroup.setEnabled(true);
+
+//                onClickNewAddress(v);
+            }
+        });
+
+        mbtnSaveCustomer.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // dấu nút save
+                mbtnSaveCustomer.setVisibility(INVISIBLE);
+                mbtnEditCustomer.setVisibility(VISIBLE);
+
+                // k0 cho phép edit các textbox
+                mtxtFirstName.setEnabled(false);
+                mtxtLastName.setEnabled(false);
+                mtxtEmail.setEnabled(false);
+                mtxtGroup.setEnabled(false);
+
+//                Customer customer = mController.createItem();
+                bind2Item(mController.getSelectedItem());
+                mController.doUpdate(mController.getSelectedItem(), mController.getSelectedItem());
+            }
+        });
 
         // Xử lý sự kiện các button new address
         mbtnNewAddress.setOnClickListener(new OnClickListener() {
@@ -187,6 +243,10 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
         mCustomerAddressListPanel.showNewItem();
     }
 
+    /**
+     * Chỉ định customer được chọn, cập nhật view
+     * @param item
+     */
     @Override
     public void bindItem(Customer item) {
         super.bindItem(item);
@@ -201,11 +261,21 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
         if (item.getComplain() != null) mCustomerComplainListView.bindList(item.getComplain());
     }
 
+    /**
+     * Cập nhật view khi dữ liệu được thanh đổi
+     */
     @Override
     public void notifyDataSetChanged() {
         super.notifyDataSetChanged();
         mCustomerAddressListPanel.notifyDataSetChanged();
         mCustomerComplainListView.notifyDataSetChanged();
-//        mCustomerComplainListView.notify
+    }
+
+    @Override
+    public void bind2Item(Customer item) {
+        item.setEmail(mtxtEmail.getText().toString().trim());
+        item.setFirstName(mtxtFirstName.getText().toString().trim());
+        item.setLastName(mtxtLastName.getText().toString().trim());
+        item.setGroupID(mtxtGroup.getText().toString().trim());
     }
 }

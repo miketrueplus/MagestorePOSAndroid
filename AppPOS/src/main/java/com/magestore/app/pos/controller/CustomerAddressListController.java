@@ -43,18 +43,25 @@ public class CustomerAddressListController
         bindParent(customer);
     }
 
+    /**
+     * Khởi tạo 1 customer address
+     * @return
+     */
     public CustomerAddress createNewCustomerAddress() {
-        try {
             return getChildListService().create(getParent());
-        } catch (ParseException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+    }
+
+    /**
+     * Khởi tạo 1 customer address
+     * @param customer
+     * @return
+     * @throws IOException
+     * @throws InstantiationException
+     * @throws ParseException
+     * @throws IllegalAccessException
+     */
+    @Override
+    public CustomerAddress createItem(Customer customer) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+        return mChildListService.create(getParent());
     }
 }

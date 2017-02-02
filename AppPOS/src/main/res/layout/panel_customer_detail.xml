@@ -62,10 +62,19 @@
                         app:title="Customer information">
 
                         <ImageButton
+                            android:id="@+id/btn_edit_customer"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="right"
                             android:background="@drawable/ic_edit_dark" />
+
+                        <Button
+                            android:id="@+id/btn_edit_save_customer"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:text="@string/save"
+                            android:visible="false" />
                     </android.support.v7.widget.Toolbar>
 
                     <LinearLayout
@@ -81,23 +90,47 @@
                             android:layout_weight="0.5"
                             android:orientation="vertical">
 
-
-                            <com.magestore.app.view.FormatTextView
-                                android:id="@+id/firstname"
+                            <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:hint="@string/first_name"
-                                android:text='@{@string/first_name + ": " + customerDetail.getFirstName()}'
-                                android:textSize="18sp" />
+                                android:orientation="horizontal"
+                                android:padding="5dp">
 
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:labelFor="@+id/firstname"
+                                    android:text="@string/first_name" />
 
-                            <com.magestore.app.view.FormatTextView
-                                android:id="@+id/lastname"
+                                <com.magestore.app.view.FormatTextEdit
+                                    android:id="@+id/firstname"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:enabled="false"
+                                    android:text='@{customerDetail.getFirstName()}'
+                                    android:textSize="18sp" />
+                            </LinearLayout>
+
+                            <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:hint="@string/last_name"
-                                android:text='@{@string/last_name + ": " + customerDetail.getLastName()}'
-                                android:textSize="18sp" />
+                                android:orientation="horizontal"
+                                android:padding="5dp">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:labelFor="@+id/lastname"
+                                    android:text="@string/last_name" />
+
+                                <com.magestore.app.view.FormatTextEdit
+                                    android:id="@+id/lastname"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:enabled="false"
+                                    android:text='@{customerDetail.getLastName()}'
+                                    android:textSize="18sp" />
+                            </LinearLayout>
 
                         </LinearLayout>
 
@@ -108,22 +141,48 @@
                             android:minWidth="100dp"
                             android:orientation="vertical">
 
-
-                            <com.magestore.app.view.FormatTextView
-                                android:id="@+id/email"
+                            <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:hint="@string/email"
-                                android:text='@{@string/email + ": " + customerDetail.getEmail()}'
-                                android:textSize="18sp" />
+                                android:orientation="horizontal"
+                                android:padding="5dp">
 
-                            <com.magestore.app.view.FormatTextView
-                                android:id="@+id/group_id"
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:labelFor="@+id/email"
+                                    android:text="@string/email" />
+
+                                <com.magestore.app.view.FormatTextEdit
+                                    android:id="@+id/email"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:enabled="false"
+                                    android:text='@{customerDetail.getEmail()}'
+                                    android:textSize="18sp" />
+                            </LinearLayout>
+
+                            <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:hint="@string/group"
-                                android:text='@{@string/group + ": " + customerDetail.getGroupID()}'
-                                android:textSize="18sp" />
+                                android:orientation="horizontal"
+                                android:padding="5dp">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:labelFor="@+id/group"
+                                    android:text="@string/group" />
+
+                                <com.magestore.app.view.FormatTextEdit
+                                    android:id="@+id/group_id"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:enabled="false"
+                                    android:text='@{customerDetail.getGroupID()}'
+                                    android:textSize="18sp" />
+                            </LinearLayout>
+
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
@@ -163,9 +222,9 @@
                             android:layout_weight="1.0"
                             magestore_view:layout_item="@layout/card_customer_address_content"
                             magestore_view:layout_list="@+id/customer_address_list"
-                            magestore_view:layout_panel="@layout/panel_customer_address_list"
                             magestore_view:layout_orientation="horizontal"
-                            magestore_view:layout_span_count="1"/>
+                            magestore_view:layout_panel="@layout/panel_customer_address_list"
+                            magestore_view:layout_span_count="1" />
 
                     </FrameLayout>
                 </LinearLayout>
@@ -246,8 +305,8 @@
                         android:id="@+id/complain_list_panel"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        magestore_view:layout_row="@layout/panel_customer_complain_list"
-                        magestore_view:layout_no_scroll="true"/>
+                        magestore_view:layout_no_scroll="true"
+                        magestore_view:layout_row="@layout/panel_customer_complain_list" />
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>

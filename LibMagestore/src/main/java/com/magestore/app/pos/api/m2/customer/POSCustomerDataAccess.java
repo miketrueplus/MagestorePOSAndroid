@@ -216,6 +216,10 @@ public class POSCustomerDataAccess
         ResultReading rp = null;
         ParamBuilder paramBuilder = null;
 
+        // gỡ tạm complain ra
+        List<Complain> backupComplain = newCustomer.getComplain();
+        newCustomer.setComplain(null);
+
         try {
             // Khởi tạo connection và khởi tạo truy vấn
             connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
@@ -231,7 +235,6 @@ public class POSCustomerDataAccess
             Wrap wrapCustomer = new Wrap();
             wrapCustomer.customer = newCustomer;
             rp = statement.execute(wrapCustomer);
-            String strJson = (new Gson()).toJson(wrapCustomer);
             String result = rp.readResult2String();
             return true;
         } catch (ConnectionException ex) {
@@ -239,6 +242,9 @@ public class POSCustomerDataAccess
         } catch (IOException ex) {
             throw ex;
         } finally {
+            // khôi phục lại complain
+            newCustomer.setComplain(backupComplain);
+
             // đóng result reading
             if (rp != null) rp.close();
             rp = null;
