@@ -1,4 +1,4 @@
-package com.magestore.app.lib.panel;
+package com.magestore.app.lib.view;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -13,7 +13,6 @@ import android.widget.ListView;
 import com.magestore.app.lib.R;
 import com.magestore.app.lib.controller.ListController;
 import com.magestore.app.lib.model.Model;
-import com.magestore.app.lib.view.MagestoreView;
 
 import java.util.List;
 

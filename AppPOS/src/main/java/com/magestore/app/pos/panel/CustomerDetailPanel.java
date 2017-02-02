@@ -1,25 +1,18 @@
 package com.magestore.app.pos.panel;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
-import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 
-import com.google.gson.internal.LinkedTreeMap;
 import com.magestore.app.lib.controller.Controller;
-import com.magestore.app.lib.model.config.Config;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
-import com.magestore.app.lib.panel.SimpleSpinner;
+import com.magestore.app.lib.view.SimpleSpinner;
 import com.magestore.app.pos.controller.CustomerAddressListController;
 import com.magestore.app.pos.controller.CustomerListController;
 import com.magestore.app.pos.databinding.PanelCustomerDetailBinding;
@@ -27,10 +20,7 @@ import com.magestore.app.pos.R;
 import com.magestore.app.pos.util.DialogUtil;
 import com.magestore.app.pos.view.CustomerComplainListView;
 import com.magestore.app.pos.view.MagestoreDialog;
-import com.magestore.app.util.ConfigUtil;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 /**

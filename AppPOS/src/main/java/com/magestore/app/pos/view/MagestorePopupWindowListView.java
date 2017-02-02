@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.magestore.app.lib.model.custom.PopupWindow;
-import com.magestore.app.lib.panel.AbstractSimpleListView;
+import com.magestore.app.lib.view.AbstractSimpleListView;
 import com.magestore.app.pos.databinding.PanelPopupWindowBinding;
 
 /**

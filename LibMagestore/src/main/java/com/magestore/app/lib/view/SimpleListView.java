@@ -1,16 +1,15 @@
-package com.magestore.app.lib.panel;
+package com.magestore.app.lib.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Spinner;
+import android.widget.ListView;
 
-import com.google.gson.internal.LinkedTreeMap;
 import com.magestore.app.lib.R;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,7 +18,7 @@ import java.util.Map;
  * mike@trueplus.vn
  */
 
-public class SimpleSpinner extends Spinner {
+public class SimpleListView extends ListView  {
     // ID Layout của rowview
     int mListLayout;
     boolean mNoScroll;
@@ -27,28 +26,18 @@ public class SimpleSpinner extends Spinner {
     // chứa dữ liệu
     String[] mListKeys;
 
-    public SimpleSpinner(Context context) {
+    public SimpleListView(Context context) {
         super(context);
     }
 
-    public SimpleSpinner(Context context, int mode) {
-        super(context, mode);
-    }
-
-    public SimpleSpinner(Context context, AttributeSet attrs) {
+    public SimpleListView(Context context, AttributeSet attrs) {
         super(context, attrs);
         loadAttrs(context, attrs);
         initLayout();
     }
 
-    public SimpleSpinner(Context context, AttributeSet attrs, int defStyle) {
+    public SimpleListView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        loadAttrs(context, attrs);
-        initLayout();
-    }
-
-    public SimpleSpinner(Context context, AttributeSet attrs, int defStyle, int mode) {
-        super(context, attrs, defStyle, mode);
         loadAttrs(context, attrs);
         initLayout();
     }
@@ -74,6 +63,26 @@ public class SimpleSpinner extends Spinner {
     }
 
     public void initValue() {
+    }
+
+    /**
+     * Xử lý nếu không muốn có scroll
+     * @param widthMeasureSpec
+     * @param heightMeasureSpec
+     */
+    @Override
+    public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        // Nếu k0 tự động thay đổi chiều cao
+        if (!mNoScroll) {
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+            return;
+        }
+
+        int heightMeasureSpec_custom = MeasureSpec.makeMeasureSpec(
+                Integer.MAX_VALUE >> 2, MeasureSpec.AT_MOST);
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec_custom);
+        ViewGroup.LayoutParams params = getLayoutParams();
+        params.height = getMeasuredHeight();
     }
 
     /**
@@ -104,7 +113,6 @@ public class SimpleSpinner extends Spinner {
      * @param strKey
      */
     public void setSelection(String strKey) {
-        if (mListKeys == null) return;
         for (int i = 0; i < mListKeys.length; i++) {
             if (mListKeys[i].equals(strKey)) {
                 setSelection(i);

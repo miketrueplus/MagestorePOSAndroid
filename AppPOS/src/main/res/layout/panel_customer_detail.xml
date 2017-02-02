@@ -174,7 +174,7 @@
                                     android:labelFor="@+id/spinner_group_id"
                                     android:text="@string/group" />
 
-                                <com.magestore.app.lib.panel.SimpleSpinner
+                                <com.magestore.app.lib.view.SimpleSpinner
                                     android:id="@+id/spinner_group_id"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
