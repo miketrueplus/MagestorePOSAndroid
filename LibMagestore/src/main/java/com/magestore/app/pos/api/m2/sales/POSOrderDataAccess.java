@@ -208,9 +208,6 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
             OrderEntity orderEntity = new OrderEntity();
             orderEntity.entity = shipmentParams;
 
-            // TODO: log params request
-
-
             rp = statement.execute(orderEntity);
             rp.setParseImplement(getClassParseImplement());
             rp.setParseModel(PosOrder.class);
@@ -246,7 +243,7 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
         try {
             connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
             statement = connection.createStatement();
-            statement.prepareQuery(POSAPI.REST_ORDER_SHIPMENT);
+            statement.prepareQuery(POSAPI.REST_ORDER_REFUND);
 
             // Xây dựng tham số
             paramBuilder = statement.getParamBuilder()
@@ -255,9 +252,10 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
             OrderEntity orderEntity = new OrderEntity();
             orderEntity.entity = refundParams;
 
-            Gson gson = new Gson();
-            String json = gson.toJson(orderEntity);
-            Log.e("JSON", json.toString());
+            // TODO: log params request
+//            Gson gson = new Gson();
+//            String json = gson.toJson(orderEntity);
+//            Log.e("JSON", json.toString());
 
             rp = statement.execute(orderEntity);
             rp.setParseImplement(getClassParseImplement());
