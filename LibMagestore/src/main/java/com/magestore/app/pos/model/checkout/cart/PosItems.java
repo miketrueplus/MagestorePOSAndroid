@@ -161,6 +161,11 @@ public class PosItems extends PosAbstractModel implements Items {
     }
 
     @Override
+    public int QtyInvoice() {
+        return qty_ordered - qty_invoiced;
+    }
+
+    @Override
     public void setOrderItemId(String strOrderItemId) {
         orderItemId = strOrderItemId;
     }

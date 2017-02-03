@@ -48,6 +48,7 @@
     <string name="order_detail_content_item_qty">Qty</string>
     <string name="order_detail_content_item_qty_to_ship">Qty to ship</string>
     <string name="order_detail_content_item_qty_to_refund">Qty to refund</string>
+    <string name="order_detail_content_item_qty_to_invoice">Qty to Invoice</string>
     <string name="order_detail_content_item_return_stock">Return to stock</string>
     <string name="order_detail_content_item_subtotal">Subtotal</string>
     <string name="order_detail_content_item_tax_amount">Tax</string>
@@ -91,6 +92,12 @@
     <string name="order_refund_comment_title">Refund Comment</string>
     <string name="order_refund_btn_submit">SUBMIT REFUND</string>
     <string name="order_refund_success">A creditmemo has been created!</string>
+    <string name="order_invoice_title">Invoice</string>
+    <string name="order_invoice_comment_title">Invoice Comment</string>
+    <string name="order_invoice_btn_submit">SUBMIT INVOICE</string>
+    <string name="order_invoice_total_paid">Total Paid:</string>
+    <string name="order_total_invoiced">Total Invoiced:</string>
+    <string name="order_invoiceable">Invoiceable:</string>
 
     <!--Strings related to register shift-->
     <string name="register_shift_list_open"> - OPEN</string>

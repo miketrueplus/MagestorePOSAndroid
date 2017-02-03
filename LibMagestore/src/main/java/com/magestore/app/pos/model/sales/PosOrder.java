@@ -2,6 +2,7 @@ package com.magestore.app.pos.model.sales;
 
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.model.checkout.cart.Items;
+import com.magestore.app.lib.model.sales.OrderInvoiceParams;
 import com.magestore.app.lib.model.sales.OrderRefundParams;
 import com.magestore.app.lib.model.sales.OrderShipmentParams;
 import com.magestore.app.lib.model.sales.OrderStatus;
@@ -123,6 +124,9 @@ public class PosOrder extends PosAbstractModel implements Order {
 
     // Param request refund
     PosOrderRefundParams param_refund;
+
+    // Param request invoice
+    PosOrderInvoiceParams param_invoice;
 
     @Override
     public String getID() {
@@ -371,6 +375,23 @@ public class PosOrder extends PosAbstractModel implements Order {
     }
 
     @Override
+    public boolean checkListInvoice() {
+        boolean ischeck = false;
+        if (items != null && items.size() > 0) {
+            for (Items item : items) {
+                if (item.QtyInvoice() > 0) {
+                    ischeck = true;
+                }
+            }
+        }
+        if (ischeck) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
     public String getBaseCurrencyCode() {
         return base_currency_code;
     }
@@ -378,6 +399,11 @@ public class PosOrder extends PosAbstractModel implements Order {
     @Override
     public String getStoreCurrencyCode() {
         return store_currency_code;
+    }
+
+    @Override
+    public float getTotalInvoiced() {
+        return total_invoiced;
     }
 
     @Override
@@ -408,6 +434,16 @@ public class PosOrder extends PosAbstractModel implements Order {
     @Override
     public void setParamRefund(OrderRefundParams paramRefund) {
         param_refund = (PosOrderRefundParams) paramRefund;
+    }
+
+    @Override
+    public OrderInvoiceParams getParamInvoice() {
+        return param_invoice;
+    }
+
+    @Override
+    public void setParamInvoice(OrderInvoiceParams paramInvoice) {
+        param_invoice = (PosOrderInvoiceParams) paramInvoice;
     }
 
     @Override

@@ -37,6 +37,7 @@ import java.util.Map;
 public class OrderDetailPanel extends AbstractDetailPanel<Order> {
     View v;
     Order mOrder;
+    Button btn_invoice;
     MagestoreDialog dialog;
     PanelOrderDetailBinding mBinding;
     OrderPaymentListPanel mOrderPaymentListPanel;
@@ -63,6 +64,9 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         // Load layout view danh sách khách hàng
         v = inflate(getContext(), R.layout.panel_order_detail, null);
         addView(v);
+
+        btn_invoice = (Button) v.findViewById(R.id.btn_invoice);
+
         mBinding = DataBindingUtil.bind(v);
 
         // chuẩn bị panel view danh sách payment
@@ -127,6 +131,13 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
 
         String status = item.getStatus().toLowerCase();
         changeColorStatusOrder(status, im_status);
+
+        btn_invoice.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClickInvoice();
+            }
+        });
     }
 
     private void changeColorStatusOrder(String status, ImageView im_status) {
@@ -311,5 +322,16 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
                 ((OrderHistoryListController) mController).doAction(OrderHistoryListController.ORDER_REFUND_TYPE, OrderHistoryListController.ORDER_REFUND_CODE, null, order);
             }
         });
+    }
+
+    private void onClickInvoice(){
+        OrderInvoicePanel mOrderInvoicePanel = new OrderInvoicePanel(getContext());
+        mOrderInvoicePanel.bindItem(mOrder);
+        mOrderInvoicePanel.setController(mController);
+        mOrderInvoicePanel.initModel();
+
+        dialog = DialogUtil.dialog(getContext(), getContext().getString(R.string.order_invoice_title), mOrderInvoicePanel);
+        dialog.setGoneButtonSave(true);
+        dialog.show();
     }
 }

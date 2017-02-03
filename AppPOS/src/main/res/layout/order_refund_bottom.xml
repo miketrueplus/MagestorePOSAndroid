@@ -122,7 +122,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="5dp"
-                android:layout_toLeftOf="@+id/btn_submit_shipment"
+                android:layout_toLeftOf="@+id/btn_submit_refund"
                 android:text="@string/order_shipment_send_email" />
 
             <Button
@@ -130,7 +130,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:text="@string/order_shipment_btn_submit" />
+                android:text="@string/order_refund_btn_submit" />
         </RelativeLayout>
     </LinearLayout>
 </LinearLayout>

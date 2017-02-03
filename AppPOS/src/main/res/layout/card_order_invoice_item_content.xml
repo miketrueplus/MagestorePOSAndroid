@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="com.magestore.app.util.ConfigUtil" />
+
+        <variable
+            name="orderItem"
+            type="com.magestore.app.lib.model.checkout.cart.Items" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:descendantFocusability="afterDescendants"
+        android:focusable="false"
+        android:orientation="vertical">
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TableRow
+                android:id="@+id/table_row_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="3"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{orderItem.getName()}" />
+
+                    <TextView
+                        android:id="@+id/sku"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{orderItem.getSku()}"
+                        android:textStyle="italic" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/price"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="@{ConfigUtil.formatPrice(orderItem.getPrice())}" />
+
+                <TextView
+                    android:id="@+id/qty_ordered"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1.2"
+                    android:text='@{@string/order_detail_content_item_row_qty_ordered + " " + String.valueOf(orderItem.getQtyOrdered())}' />
+
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:background="@drawable/boder_linear_layout"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <com.magestore.app.view.FormatTextEdit
+                        android:id="@+id/qty_to_invoice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:gravity="center_horizontal"
+                        android:inputType="number"
+                        android:text="@{String.valueOf(orderItem.QtyInvoice())}" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/subtotal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="@{ConfigUtil.formatPrice(orderItem.getSubtotal())}" />
+
+                <TextView
+                    android:id="@+id/tax_amount"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="@{ConfigUtil.formatPrice(orderItem.getTaxAmount())}" />
+
+                <TextView
+                    android:id="@+id/discount_amount"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="@{ConfigUtil.formatPrice(orderItem.getDiscountAmount())}" />
+
+                <TextView
+                    android:id="@+id/row_total"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="@{ConfigUtil.formatPrice(orderItem.getRowTotal())}" />
+            </TableRow>
+        </TableLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/line" />
+    </LinearLayout>
+</layout>

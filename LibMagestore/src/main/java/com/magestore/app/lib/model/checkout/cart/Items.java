@@ -35,6 +35,7 @@ public interface Items extends Model {
     int getQtyShipped();
     int QtyShip();
     int QtyRefund();
+    int QtyInvoice();
 
     void setId(String strID);
 

@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="com.magestore.app.util.ConfigUtil" />
+
+        <variable
+            name="orderDetail"
+            type="com.magestore.app.lib.model.sales.Order" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/ll_invoice_top"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/total_paid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text='@{@string/order_invoice_total_paid + " " + ConfigUtil.formatPrice(orderDetail.getTotalPaid())}'
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/total_invoiced"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:text='@{@string/order_total_invoiced + " " + ConfigUtil.formatPrice(orderDetail.getTotalInvoiced())}'
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/invoiceable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:text='@{@string/order_invoiceable + " " + ConfigUtil.formatPrice(orderDetail.getGrandTotal())}'
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_invoice_table_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ll_invoice_top"
+            android:background="@color/order_shipment_table_title_color"
+            android:orientation="horizontal"
+            android:padding="5dp">
+
+            <TableRow
+                android:id="@+id/table_row_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/order_detail_content_item_title_product" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/order_detail_content_item_price" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.2"
+                    android:text="@string/order_detail_content_item_qty" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/order_detail_content_item_qty_to_invoice" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/order_detail_content_item_subtotal" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/order_detail_content_item_tax_amount" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/order_detail_content_item_discount_amount" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/order_detail_content_item_row_total" />
+            </TableRow>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/fr_invoice_bottom_with_item"
+            android:layout_below="@+id/ll_invoice_table_title"
+            android:orientation="vertical"
+            android:visibility="@{orderDetail.checkListInvoice() ? View.VISIBLE : View.GONE}">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="5dp"
+                    android:orientation="vertical">
+
+                    <com.magestore.app.pos.panel.OrderInvoiceItemsListPanel
+                        android:id="@+id/order_invoice_items"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.0" />
+                </FrameLayout>
+            </ScrollView>
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/fr_invoice_bottom_with_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:visibility="@{orderDetail.checkListInvoice() ? View.VISIBLE : View.GONE}">
+
+            <include
+                android:id="@+id/ll_invoice_bottom_with_item"
+                layout="@layout/order_invoice_bottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                bind:orderDetail="@{orderDetail}" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ll_invoice_table_title"
+            android:layout_marginTop="10dp"
+            android:visibility="@{orderDetail.checkListInvoice() ? View.GONE : View.VISIBLE}">
+
+            <include
+                android:id="@+id/ll_invoice_bottom_with_no_item"
+                layout="@layout/order_invoice_bottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                bind:orderDetail="@{orderDetail}" />
+        </FrameLayout>
+    </RelativeLayout>
+</layout>
