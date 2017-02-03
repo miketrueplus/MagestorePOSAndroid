@@ -60,11 +60,6 @@ public class POSCustomerComplainService extends AbstractService implements Custo
         complainList.add(complain[0]);
     }
 
-//    @Override
-    public boolean remove(Customer customer, Complain... model) {
-        return false;
-    }
-
     @Override
     public int count(Customer customer) throws ParseException, InstantiationException, IllegalAccessException, IOException {
         return 0;
@@ -77,6 +72,11 @@ public class POSCustomerComplainService extends AbstractService implements Custo
 
     @Override
     public List<Complain> retrieve(Customer customer, int page, int pageSize) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+        return null;
+    }
+
+    @Override
+    public List<Complain> retrieve(Customer customer, String searchString, int page, int pageSize) throws IOException, InstantiationException, ParseException, IllegalAccessException {
         return null;
     }
 

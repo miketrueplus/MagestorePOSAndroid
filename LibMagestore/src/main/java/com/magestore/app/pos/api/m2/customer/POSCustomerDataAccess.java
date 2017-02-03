@@ -210,6 +210,11 @@ public class POSCustomerDataAccess
     }
 
     @Override
+    public List<Customer> retrieve(String searchString, int page, int pageSize) throws ParseException, InstantiationException, IllegalAccessException, IOException {
+        return retrieve();
+    }
+
+    @Override
     public boolean update(Customer oldCustomer, final Customer newCustomer) throws IOException, InstantiationException, ParseException, IllegalAccessException {
         Connection connection = null;
         Statement statement = null;

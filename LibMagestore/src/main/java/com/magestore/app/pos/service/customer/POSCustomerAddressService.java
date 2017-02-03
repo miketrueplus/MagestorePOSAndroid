@@ -89,14 +89,18 @@ public class POSCustomerAddressService extends AbstractService implements Custom
         return customer.getAddress();
     }
 
+    @Override
+    public List<CustomerAddress> retrieve(Customer customer, String searchString, int page, int pageSize) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+        return customer.getAddress();
+    }
+
     /**
      * Gỡ 1 address ra khỏi customer, không cập nhật API
      *
      * @param customer
      * @param customerAddress
      */
-//    @Override
-    public boolean remove(Customer customer, CustomerAddress... customerAddress) {
+    private boolean remove(Customer customer, CustomerAddress... customerAddress) {
         // Tìm customerAddress
         if (customer != null && customerAddress[0] != null & customer.getAddress() != null)
             return customer.getAddress().remove(customerAddress[0]);

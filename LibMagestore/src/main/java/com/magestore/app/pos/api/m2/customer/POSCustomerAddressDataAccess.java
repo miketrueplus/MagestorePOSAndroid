@@ -212,10 +212,36 @@ public class POSCustomerAddressDataAccess extends POSAbstractDataAccess implemen
         }
     }
 
-
+    /**
+     * Trả về customer address theo id
+     * @param customer
+     * @param strID
+     * @return
+     * @throws ParseException
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     * @throws IOException
+     */
     @Override
     public CustomerAddress retrieve(Customer customer, String strID) throws ParseException, InstantiationException, IllegalAccessException, IOException {
         return null;
+    }
+
+    /**
+     * Search customer address theo chuỗi
+     * @param customer
+     * @param searchString
+     * @param page
+     * @param pageSize
+     * @return
+     * @throws ParseException
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     * @throws IOException
+     */
+    @Override
+    public List<CustomerAddress> retrieve(Customer customer, String searchString, int page, int pageSize) throws ParseException, InstantiationException, IllegalAccessException, IOException {
+        return retrieve(customer);
     }
 
     /**

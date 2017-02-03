@@ -6,7 +6,7 @@ import com.magestore.app.lib.connection.ConnectionFactory;
 import com.magestore.app.lib.connection.ParamBuilder;
 import com.magestore.app.lib.connection.ResultReading;
 import com.magestore.app.lib.connection.Statement;
-import com.magestore.app.lib.connection.http.MagestoreConnection;
+import com.magestore.app.lib.parse.ParseException;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.resourcemodel.DataAccessException;
 import com.magestore.app.lib.resourcemodel.catalog.ProductDataAccess;
@@ -15,8 +15,8 @@ import com.magestore.app.pos.api.m2.POSAPI;
 import com.magestore.app.pos.api.m2.POSAbstractDataAccess;
 import com.magestore.app.pos.api.m2.POSDataAccessSession;
 
+
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -34,7 +34,7 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
     /**
      * Trả về list các product
      * @param pageSize Số product trên 1 page
-     * @param currentPage Page hiện tại
+     * @param page Page hiện tại
      * @return Danh sách product
      * @throws ParseException
      * @throws ConnectionException
@@ -42,7 +42,7 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
      * @throws IOException
      */
     @Override
-    public List<Product> getProducts(int pageSize, int currentPage) throws ParseException, ConnectionException, DataAccessException, IOException {
+    public List<Product> retrieve(int page, int pageSize) throws ParseException, ConnectionException, DataAccessException, IOException {
         Connection connection = null;
         Statement statement = null;
         ResultReading rp = null;
@@ -56,7 +56,7 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
 
             // Xây dựng tham số
             paramBuilder = statement.getParamBuilder()
-                .setPage(currentPage)
+                .setPage(page)
                 .setPageSize(pageSize)
                 .setSessionID(POSDataAccessSession.REST_SESSION_ID);
 //                .setFilterEqual("name", "Joust Duffle Bag");
@@ -95,26 +95,138 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
         }
     }
 
-//    @Override
-//    public List<Product> getProducts(int pageSize, int currentPage) throws ParseException, ConnectionException, DataAccessException, IOException {
-//        Gson2PosListProduct listProduct = (Gson2PosListProduct) doAPI(Gson2PosListProduct.class,
-//                POSDataAccessSession.REST_GET_PRODUCT_LISTING,
-//                null,
-//                POSDataAccessSession.PARAM_CURRENT_PAGE, ""+currentPage,
-//                POSDataAccessSession.PARAM_PAGE_SIZE, ""+pageSize,
-//                POSDataAccessSession.PARAM_SESSION_ID, POSAPI.REST_DEMO_SESSION_ID
-//        );
-//        List<Product> list = (List<Product>)(List<?>) (listProduct.items);
-//        return list;
-//    }
-
     @Override
-    public void getProducts(Product product) {
+    public int count() throws ParseException, InstantiationException, IllegalAccessException, IOException {
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
 
+        try {
+            // Khởi tạo connection và khởi tạo truy vấn
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPI.REST_PRODUCT_GET_LISTING);
+
+            // Xây dựng tham số
+            paramBuilder = statement.getParamBuilder()
+                    .setPage(1)
+                    .setPageSize(1)
+                    .setSessionID(POSDataAccessSession.REST_SESSION_ID);
+//                .setFilterEqual("name", "Joust Duffle Bag");
+
+            // thực thi truy vấn và parse kết quả thành object
+            rp = statement.execute();
+            rp.setParseImplement(getClassParseImplement());
+            rp.setParseModel(Gson2PosListProduct.class);
+            Gson2PosListProduct listProduct = (Gson2PosListProduct) rp.doParse();
+
+            // return
+            return listProduct.total_count;
+        }
+        catch (ConnectionException ex) {
+            throw ex;
+        }
+        catch (IOException ex) {
+            throw ex;
+        }
+        finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null)statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
     }
 
     @Override
-    public void updateProduct(Product product) {
+    public List<Product> retrieve() throws ParseException, InstantiationException, IllegalAccessException, IOException {
+        return retrieve(1, 500);
+    }
 
+    @Override
+    public Product retrieve(String strID) throws ParseException, InstantiationException, IllegalAccessException, IOException {
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+
+        try {
+            // Khởi tạo connection và khởi tạo truy vấn
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPI.REST_PRODUCT_GET_LISTING);
+
+            // Xây dựng tham số
+            paramBuilder = statement.getParamBuilder()
+                    .setPage(1)
+                    .setPageSize(1)
+                    .setSessionID(POSDataAccessSession.REST_SESSION_ID)
+                    .setFilterEqual("product_id", strID);
+
+            // thực thi truy vấn và parse kết quả thành object
+            rp = statement.execute();
+            rp.setParseImplement(getClassParseImplement());
+            rp.setParseModel(Gson2PosListProduct.class);
+            Gson2PosListProduct listProduct = (Gson2PosListProduct) rp.doParse();
+            List<Product> list = (List<Product>)(List<?>) (listProduct.items);
+
+            // return
+            if (list.size() >= 1)
+                return list.get(0);
+            else
+                return null;
+        }
+        catch (ConnectionException ex) {
+            throw ex;
+        }
+        catch (IOException ex) {
+            throw ex;
+        }
+        finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null)statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
+    }
+
+    @Override
+    public List<Product> retrieve(String searchString, int page, int pageSize) throws ParseException, InstantiationException, IllegalAccessException, IOException {
+        return retrieve();
+    }
+
+    @Override
+    public boolean update(Product oldModel, Product newModel) throws ParseException, InstantiationException, IllegalAccessException, IOException {
+        return false;
+    }
+
+    @Override
+    public boolean insert(Product... models) throws ParseException, InstantiationException, IllegalAccessException, IOException {
+        return false;
+    }
+
+    @Override
+    public boolean delete(Product... models) throws ParseException, InstantiationException, IllegalAccessException, IOException {
+        return false;
     }
 }

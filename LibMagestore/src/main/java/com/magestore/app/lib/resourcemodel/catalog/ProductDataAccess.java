@@ -5,6 +5,7 @@ import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.parse.ParseException;
 import com.magestore.app.lib.resourcemodel.DataAccess;
 import com.magestore.app.lib.resourcemodel.DataAccessException;
+import com.magestore.app.lib.resourcemodel.ListDataAccess;
 
 import java.io.IOException;
 import java.util.List;
@@ -13,11 +14,10 @@ import java.util.List;
  * Created by Mike on 12/14/2016.
  * Magestore
  * mike@trueplus.vn
- * TODO: Add a class header comment!
  */
 
-public interface ProductDataAccess extends DataAccess {
-    List<Product> getProducts(int pageSize, int currentPage) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
-    void getProducts(Product product);
-    void updateProduct(Product product);
+public interface ProductDataAccess extends DataAccess, ListDataAccess<Product> {
+//    List<Product> getProducts(int pageSize, int currentPage) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
+//    void getProducts(Product product);
+//    void updateProduct(Product product);
 }

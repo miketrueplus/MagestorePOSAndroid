@@ -16,6 +16,7 @@ public interface ChildListDataAccess<TParent extends Model, TModel extends Model
     TModel retrieve(TParent parent, String strID) throws ParseException, InstantiationException, IllegalAccessException, IOException;
     List<TModel> retrieve(TParent parent) throws ParseException, InstantiationException, IllegalAccessException, IOException;
     List<TModel> retrieve(TParent parent, int page, int pageSize) throws ParseException, InstantiationException, IllegalAccessException, IOException;
+    List<TModel> retrieve(TParent parent, String searchString, int page, int pageSize) throws ParseException, InstantiationException, IllegalAccessException, IOException;
     boolean update(TParent parent, TModel oldChild, TModel newChild) throws ParseException, InstantiationException, IllegalAccessException, IOException;
     boolean insert(TParent parent, TModel... childs) throws ParseException, InstantiationException, IllegalAccessException, IOException;
     boolean delete(TParent parent, TModel... childs) throws ParseException, InstantiationException, IllegalAccessException, IOException;

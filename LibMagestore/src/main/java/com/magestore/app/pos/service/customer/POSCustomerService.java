@@ -62,7 +62,21 @@ public class POSCustomerService extends AbstractService
 
     @Override
     public List<Customer> retrieve() throws IOException, InstantiationException, ParseException, IllegalAccessException {
-        return null;
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        CustomerDataAccess customerDataAccess = factory.generateCustomerDataAccess();
+
+        // lấy danh sách khách hàng
+        return customerDataAccess.retrieve(1, 500);
+    }
+
+    @Override
+    public List<Customer> retrieve(String searchString, int page, int pageSize) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+        // cập nhật factory
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        CustomerDataAccess customerDataAccess = factory.generateCustomerDataAccess();
+
+        // lấy danh sách khách hàng
+        return customerDataAccess.retrieve(searchString, page, pageSize);
     }
 
     @Override

@@ -224,6 +224,23 @@ public class POSCustomerComplainDataAccess extends POSAbstractDataAccess impleme
     }
 
     /**
+     * Search complain
+     * @param customer
+     * @param searchString
+     * @param page
+     * @param pageSize
+     * @return
+     * @throws com.magestore.app.lib.parse.ParseException
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     * @throws IOException
+     */
+    @Override
+    public List<Complain> retrieve(Customer customer, String searchString, int page, int pageSize) throws com.magestore.app.lib.parse.ParseException, InstantiationException, IllegalAccessException, IOException {
+        return retrieve(customer);
+    }
+
+    /**
      * Cập nhật complain của 1 customer
      * @param pcustomer
      * @throws DataAccessException

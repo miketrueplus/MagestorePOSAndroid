@@ -15,6 +15,7 @@ public interface ListDataAccess<TModel extends Model> extends DataAccess {
     int count() throws ParseException, InstantiationException, IllegalAccessException, IOException;
     List<TModel> retrieve() throws ParseException, InstantiationException, IllegalAccessException, IOException;
     List<TModel> retrieve(int page, int pageSize) throws ParseException, InstantiationException, IllegalAccessException, IOException;
+    List<TModel> retrieve(String searchString, int page, int pageSize) throws ParseException, InstantiationException, IllegalAccessException, IOException;
     TModel retrieve(String strID) throws ParseException, InstantiationException, IllegalAccessException, IOException;
     boolean update(TModel oldModel, TModel newModel) throws ParseException, InstantiationException, IllegalAccessException, IOException;
     boolean insert(TModel... models) throws ParseException, InstantiationException, IllegalAccessException, IOException;

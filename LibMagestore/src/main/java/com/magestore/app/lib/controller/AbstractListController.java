@@ -99,7 +99,7 @@ public abstract class AbstractListController<TModel extends Model>
     public void doRetrieve(){
         // chuẩn bị task load data
         RetrieveListTask<TModel> task = new RetrieveListTask<TModel>(this);
-        task.doExecute(0, 30);
+        task.doExecute(0, 500);
     }
 
     /**

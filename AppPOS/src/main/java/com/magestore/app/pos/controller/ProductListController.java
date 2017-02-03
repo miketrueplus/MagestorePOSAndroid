@@ -58,6 +58,7 @@ public class ProductListController extends AbstractListController<Product> {
      */
     public void setProdcutService(ProductService service) {
         mProductService = service;
+        setListService(mProductService);
     }
 
     /**
@@ -90,11 +91,11 @@ public class ProductListController extends AbstractListController<Product> {
      * @return
      * @throws Exception
      */
-    @Override
-    protected List<Product> loadDataBackground(Void... params) throws Exception {
-        List<Product> listProduct = mProductService.retrieveProductList(30);
-        return listProduct;
-    }
+//    @Override
+//    protected List<Product> loadDataBackground(Void... params) throws Exception {
+//        List<Product> listProduct = mProductService.retrieve();
+//        return listProduct;
+//    }
 
     /**
      * Bind 1 sản phẩm vào controller để xử lý

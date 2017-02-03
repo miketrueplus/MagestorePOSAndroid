@@ -18,6 +18,7 @@ public interface ListService<TModel> extends Service {
     TModel retrieve(String strID) throws ParseException, InstantiationException, IllegalAccessException, IOException;
     List<TModel> retrieve(int page, int pageSize) throws IOException, InstantiationException, ParseException, IllegalAccessException;
     List<TModel> retrieve() throws IOException, InstantiationException, ParseException, IllegalAccessException;
+    List<TModel> retrieve(String searchString, int page, int pageSize) throws IOException, InstantiationException, ParseException, IllegalAccessException;
     boolean update(TModel oldModel, TModel newModel) throws IOException, InstantiationException, ParseException, IllegalAccessException;
     boolean insert(TModel... models) throws IOException, InstantiationException, ParseException, IllegalAccessException;
     boolean delete(TModel... models) throws IOException, InstantiationException, ParseException, IllegalAccessException;
