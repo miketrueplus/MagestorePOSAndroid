@@ -46,14 +46,32 @@
             </LinearLayout>
         </android.support.design.widget.AppBarLayout>
 
-        <android.support.v7.widget.RecyclerView xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/product_list"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:columnCount="1"
-            app:layoutManager="GridLayoutManager"
-            tools:listitem="@layout/card_product_list_content" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ProgressBar
+                android:id="@+id/progress_product_list"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginBottom="8dp"
+                android:visibility="gone" />
+
+            <android.support.v7.widget.RecyclerView xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/product_list"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:columnCount="1"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                app:layoutManager="GridLayoutManager"
+                tools:listitem="@layout/card_product_list_content" />
+        </RelativeLayout>
     </LinearLayout>
 
 </FrameLayout>

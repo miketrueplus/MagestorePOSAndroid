@@ -52,15 +52,6 @@ public class ProductListPanel extends AbstractListPanel<Product> {
         super(context, attrs, defStyleAttr);
     }
 
-
-    /**
-     * Đặt sự kiện xử lý khi load Product
-     * @param productListPanelListener
-     */
-//    public void setListener(ProductListPanelListener productListPanelListener) {
-//        mProductListPanelListener = productListPanelListener;
-//    }
-
     /**
      * Đặt số cột sản phẩm
      * @param column

@@ -32,6 +32,7 @@
                 android:layout_height="match_parent"
                 magestore_view:layout_item="@layout/card_product_list_content"
                 magestore_view:layout_list="@+id/product_list"
+                magestore_view:layout_progress="@+id/progress_product_list"
                 magestore_view:layout_panel="@layout/panel_product_list"
                 magestore_view:layout_orientation="vertical"
                 magestore_view:layout_span_count="4"/>

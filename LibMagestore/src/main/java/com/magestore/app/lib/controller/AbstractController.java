@@ -56,7 +56,7 @@ public abstract class AbstractController<TModel extends Model, TView extends Mag
 
     @Override
     public void doShowProgress(boolean blnShow) {
-
+        if (mView != null) mView.showProgress(blnShow);
     }
 
     public void bindItem(TModel item) {

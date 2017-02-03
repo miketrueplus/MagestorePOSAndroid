@@ -4,6 +4,7 @@
         <attr name="layout_span_count" format="integer" />
         <attr name="layout_item" format="reference" />
         <attr name="layout_list" format="reference" />
+        <attr name="layout_progress" format="reference" />
         <attr name="layout_panel" format="reference" />
         <attr name="layout_row" format="reference" />
         <attr name="layout_header" format="reference" />

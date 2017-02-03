@@ -1,9 +1,12 @@
 package com.magestore.app.lib.panel;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.app.AlertDialog;
 import android.content.Context;
 
 import android.content.res.TypedArray;
+import android.os.Build;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -46,6 +49,11 @@ public abstract class AbstractListPanel<TModel extends Model>
 
     // tham chiếu layout của mỗi item trong list
     private int mintItemLayout;
+
+    private int mintProgresLayout;
+
+    // tham chiếu layout của progress
+    private View mProgressView;
 
     // tham chiếu layout của cả danh sách
     private int mintListLayout;
@@ -94,12 +102,14 @@ public abstract class AbstractListPanel<TModel extends Model>
 
     /**
      * Đọc attributes
+     *
      * @param context
      * @param attrs
      */
     private void loadAttrs(Context context, AttributeSet attrs) {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.magestore_view);
         mintPanelLayout = a.getResourceId(R.styleable.magestore_view_layout_panel, -1);
+        mintProgresLayout = a.getResourceId(R.styleable.magestore_view_layout_progress, -1);
         mintItemLayout = a.getResourceId(R.styleable.magestore_view_layout_item, -1);
         mintListLayout = a.getResourceId(R.styleable.magestore_view_layout_list, -1);
         mintOrientation = a.getInteger(R.styleable.magestore_view_layout_orientation, LinearLayoutManager.VERTICAL);
@@ -112,19 +122,20 @@ public abstract class AbstractListPanel<TModel extends Model>
         if (mintListLayout > -1) {
             mRecycleView = (RecyclerView) findViewById(mintListLayout);
             mRecycleView.setLayoutManager(new GridLayoutManager(this.getContext(), mintSpanCount, mintOrientation, false));
-//            ((GridLayoutManager)(mRecycleView.getLayoutManager())).setSpanCount(mintSpanCount);
-            // Chuẩn bị list danh sách khách hàng
-//            mRecycleView = (RecyclerView) findViewById(getListLayout());
-//            mRecycleView.setLayoutManager(new GridLayoutManager(this.getContext(), 1, LinearLayoutManager.HORIZONTAL, false));
         }
 
+        if (mintProgresLayout > -1) {
+            mProgressView = findViewById(mintProgresLayout);
+        }
     }
 
     public int getListLayout() {
         return mintListLayout;
     }
+
     /**
      * Thiết lập layout cho panel
+     *
      * @param layoutPanel
      */
     public void setLayoutPanel(int layoutPanel) {
@@ -155,15 +166,6 @@ public abstract class AbstractListPanel<TModel extends Model>
     }
 
     /**
-     * Đặt recycle view layout quản lý danh sách
-     *
-     * @param layout
-     */
-//    public void setLayoutRecycleView(int layout) {
-//        mLayoutRecycleView = layout;
-//    }
-
-    /**
      * Đặt item layout quản lý item trong danh sách
      *
      * @param layout
@@ -177,8 +179,37 @@ public abstract class AbstractListPanel<TModel extends Model>
      *
      * @param show
      */
-    public void showProgress(boolean show) {
+    public void showProgress(final boolean show) {
+        if (mProgressView == null) return;
+// On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+        // for very easy animations. If available, use these APIs to fade-in
+        // the progress spinner.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
+//            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+//            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
+//                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+//                @Override
+//                public void onAnimationEnd(Animator animation) {
+//                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+//                }
+//            });
+
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            mProgressView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                }
+            });
+        } else {
+            // The ViewPropertyAnimator APIs are not available, so simply show
+            // and hide the relevant UI components.
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+//            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+        }
     }
 
     /**
@@ -216,7 +247,6 @@ public abstract class AbstractListPanel<TModel extends Model>
      * @param item
      */
     protected abstract void bindItem(View view, TModel item, int position);
-
 
 
     /**
@@ -331,6 +361,7 @@ public abstract class AbstractListPanel<TModel extends Model>
 
     /**
      * Hiển thị thông báo lỗi
+     *
      * @param strMsg
      */
     public void showErrorMsg(String strMsg) {

@@ -99,6 +99,7 @@ public abstract class AbstractListController<TModel extends Model>
     public void doRetrieve(){
         // chuẩn bị task load data
         RetrieveListTask<TModel> task = new RetrieveListTask<TModel>(this);
+        doShowProgress(true);
         task.doExecute(0, 500);
     }
 
@@ -109,6 +110,7 @@ public abstract class AbstractListController<TModel extends Model>
     public void doRetrieve(int page, int pageSize){
         // chuẩn bị task load data
         RetrieveListTask<TModel> task = new RetrieveListTask<TModel>(this);
+        doShowProgress(true);
         task.doExecute(page, pageSize);
     }
 
@@ -121,7 +123,8 @@ public abstract class AbstractListController<TModel extends Model>
     public List<TModel> onRetrieveBackground(int page, int pageSize) throws Exception {
         if (mListService != null)
             return mListService.retrieve(page, pageSize);
-        return loadDataBackground();
+        else
+            return loadDataBackground();
     }
 
     /**
@@ -130,6 +133,9 @@ public abstract class AbstractListController<TModel extends Model>
      */
     @Override
     public void onRetrievePostExecute(List<TModel> list) {
+        // tắt progress
+        doShowProgress(false);
+
         // gọi lại method đặt tên theo phiên bản cũ
         bindList(list);
 

@@ -19,7 +19,16 @@
         android:layout_margin="5dp"
         card_view:cardCornerRadius="4dp">
 
+        <ProgressBar
+            android:id="@+id/progress_product"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:visibility="gone" />
+
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/display_product"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
