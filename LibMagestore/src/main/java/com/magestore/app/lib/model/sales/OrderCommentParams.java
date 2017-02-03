@@ -11,4 +11,7 @@ import com.magestore.app.lib.model.Model;
 public interface OrderCommentParams extends Model {
     String getComment();
     void setComment(String strComment);
+
+    String getIsVisibleOnFront();
+    void setIsVisibleOnFront(String strIsVisibleOnFront);
 }

@@ -4,12 +4,14 @@ import com.magestore.app.lib.controller.AbstractListController;
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.model.sales.OrderCommentParams;
+import com.magestore.app.lib.model.sales.OrderInvoiceParams;
 import com.magestore.app.lib.model.sales.OrderRefundParams;
 import com.magestore.app.lib.model.sales.OrderShipmentParams;
 import com.magestore.app.lib.model.sales.OrderShipmentTrackParams;
 import com.magestore.app.lib.model.sales.OrderStatus;
 import com.magestore.app.lib.service.order.OrderHistoryService;
 import com.magestore.app.pos.panel.OrderAddCommentPanel;
+import com.magestore.app.pos.panel.OrderInvoicePanel;
 import com.magestore.app.pos.panel.OrderRefundPanel;
 import com.magestore.app.pos.panel.OrderSendEmailPanel;
 import com.magestore.app.pos.panel.OrderShipmentPanel;
@@ -32,6 +34,7 @@ public class OrderHistoryListController extends AbstractListController<Order> {
 
     OrderShipmentPanel mOrderShipmentPanel;
     OrderRefundPanel mOrderRefundPanel;
+    OrderInvoicePanel mOrderInvoicePanel;
 
     public static int SENT_EMAIL_TYPE = 1;
     public static String SENT_EMAIL_CODE = "send_email";
@@ -41,6 +44,8 @@ public class OrderHistoryListController extends AbstractListController<Order> {
     public static String CREATE_SHIPMENT_CODE = "create_shipment";
     public static int ORDER_REFUND_TYPE = 4;
     public static String ORDER_REFUND_CODE = "order_refund";
+    public static int ORDER_INVOICE_TYPE = 5;
+    public static String ORDER_INVOICE_CODE = "order_invoice";
 
     /**
      * Service xử lý các vấn đề liên quan đến order
@@ -89,6 +94,10 @@ public class OrderHistoryListController extends AbstractListController<Order> {
         this.mOrderRefundPanel = mOrderRefundPanel;
     }
 
+    public void setOrderInvoicePanel(OrderInvoicePanel mOrderInvoicePanel) {
+        this.mOrderInvoicePanel = mOrderInvoicePanel;
+    }
+
     @Override
     protected List<Order> loadDataBackground(Void... params) throws Exception {
         // TODO: test lấy webpos_payments
@@ -115,6 +124,11 @@ public class OrderHistoryListController extends AbstractListController<Order> {
             }
         } else if (actionType == ORDER_REFUND_TYPE) {
             Order order = mOrderService.orderRefund((Order) models[0]);
+            if (order != null) {
+                return true;
+            }
+        } else if (actionType == ORDER_INVOICE_TYPE) {
+            Order order = mOrderService.orderInvoice((Order) models[0]);
             if (order != null) {
                 return true;
             }
@@ -147,6 +161,13 @@ public class OrderHistoryListController extends AbstractListController<Order> {
                 mOrderHistoryItemsListController.doSelectOrder(order);
                 mOrderCommentListController.doSelectOrder(order);
             }
+        } else if (actionType == ORDER_INVOICE_TYPE) {
+            if (success) {
+                Order order = (Order) models[0];
+                mOrderInvoicePanel.showAlertRespone();
+                mOrderHistoryItemsListController.doSelectOrder(order);
+                mOrderCommentListController.doSelectOrder(order);
+            }
         }
     }
 
@@ -176,5 +197,9 @@ public class OrderHistoryListController extends AbstractListController<Order> {
 
     public OrderRefundParams createOrderRefundParams() {
         return mOrderService.createOrderRefundParams();
+    }
+
+    public OrderInvoiceParams createOrderInvoiceParams() {
+        return mOrderService.createOrderInvoiceParams();
     }
 }

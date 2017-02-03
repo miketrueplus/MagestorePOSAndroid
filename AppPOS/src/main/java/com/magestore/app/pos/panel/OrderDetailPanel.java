@@ -324,8 +324,8 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         });
     }
 
-    private void onClickInvoice(){
-        OrderInvoicePanel mOrderInvoicePanel = new OrderInvoicePanel(getContext());
+    private void onClickInvoice() {
+        final OrderInvoicePanel mOrderInvoicePanel = new OrderInvoicePanel(getContext());
         mOrderInvoicePanel.bindItem(mOrder);
         mOrderInvoicePanel.setController(mController);
         mOrderInvoicePanel.initModel();
@@ -333,5 +333,17 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         dialog = DialogUtil.dialog(getContext(), getContext().getString(R.string.order_invoice_title), mOrderInvoicePanel);
         dialog.setGoneButtonSave(true);
         dialog.show();
+
+        Button btn_submit_invoice = (Button) dialog.findViewById(R.id.btn_submit_invoice);
+        btn_submit_invoice.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Order order = mOrderInvoicePanel.bind2Item();
+                ((OrderHistoryListController) mController).setOrderInvoicePanel(mOrderInvoicePanel);
+                ((OrderHistoryListController) mController).setOrderCommentListController(mOrderCommentHistoryController);
+                ((OrderHistoryListController) mController).setOrderHistoryItemsListController(mOrderHistoryItemsListController);
+                ((OrderHistoryListController) mController).doAction(OrderHistoryListController.ORDER_INVOICE_TYPE, OrderHistoryListController.ORDER_INVOICE_CODE, null, order);
+            }
+        });
     }
 }

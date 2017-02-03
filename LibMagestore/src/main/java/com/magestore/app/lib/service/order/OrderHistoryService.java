@@ -3,6 +3,7 @@ package com.magestore.app.lib.service.order;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.model.sales.OrderCommentParams;
+import com.magestore.app.lib.model.sales.OrderInvoiceParams;
 import com.magestore.app.lib.model.sales.OrderItemParams;
 import com.magestore.app.lib.model.sales.OrderRefundParams;
 import com.magestore.app.lib.model.sales.OrderShipmentParams;
@@ -33,6 +34,8 @@ public interface OrderHistoryService extends Service {
 
     Order orderRefund(Order order) throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
+    Order orderInvoice(Order order) throws InstantiationException, IllegalAccessException, IOException, ParseException;
+
     OrderStatus createOrderStatus();
 
     OrderShipmentParams createOrderShipmentParams();
@@ -48,4 +51,6 @@ public interface OrderHistoryService extends Service {
     OrderItemParams createOrderItemParams();
 
     OrderRefundParams createOrderRefundParams();
+
+    OrderInvoiceParams createOrderInvoiceParams();
 }

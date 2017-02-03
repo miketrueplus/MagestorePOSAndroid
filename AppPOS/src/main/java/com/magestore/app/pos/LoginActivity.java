@@ -79,7 +79,7 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
 
         // TODO: remove while release
         mUserNameView.setText("demo");
-        mPasswordView.setText("demo123");
+        mPasswordView.setText("demo1234");
 
         // Sự kiện nút login được nhấn
         Button mSignInButton = (Button) findViewById(R.id.sign_in_button);

@@ -4,13 +4,18 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.EditText;
 
 import com.magestore.app.lib.model.checkout.cart.Items;
 import com.magestore.app.lib.panel.AbstractListPanel;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.databinding.CardOrderInvoiceItemContentBinding;
+
+import java.util.List;
 
 /**
  * Created by Johan on 2/3/17.
@@ -51,5 +56,47 @@ public class OrderInvoiceItemsListPanel extends AbstractListPanel<Items> {
     protected void bindItem(View view, Items item, int position) {
         CardOrderInvoiceItemContentBinding mBinding = DataBindingUtil.bind(view);
         mBinding.setOrderItem(item);
+
+        Items i = mList.get(position);
+
+        EditText edt_qty_to_invoice = (EditText) view.findViewById(R.id.qty_to_invoice);
+
+        actionQtyToInvoice(i, edt_qty_to_invoice);
+    }
+
+    private void actionQtyToInvoice(final Items item, final EditText qty_to_invoice) {
+        qty_to_invoice.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                int qty_invoiced;
+                try {
+                    qty_invoiced = Integer.parseInt(qty_to_invoice.getText().toString());
+                } catch (Exception e) {
+                    qty_invoiced = 0;
+                }
+
+                int qty = item.QtyInvoice();
+                if (qty_invoiced < 0 || qty_invoiced > qty) {
+                    qty_to_invoice.setText(String.valueOf(qty));
+                    item.setQuantity(qty);
+                } else {
+                    item.setQuantity(qty_invoiced);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+    }
+
+    public List<Items> bind2List() {
+        return mList;
     }
 }

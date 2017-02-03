@@ -62,8 +62,8 @@ public class PosOrder extends PosAbstractModel implements Order {
     float base_total_invoiced;
     float base_total_invoiced_cost;
     float base_total_paid;
-    float base_to_global_rate;
-    float base_to_order_rate;
+    String base_to_global_rate;
+    String base_to_order_rate;
     String billing_address_id;
     String created_at;
     String customer_email;
@@ -97,6 +97,8 @@ public class PosOrder extends PosAbstractModel implements Order {
     String store_currency_code;
     String store_id;
     String store_name;
+    String store_to_base_rate;
+    String store_to_order_rate;
     float subtotal;
     float subtotal_incl_tax;
     float subtotal_invoiced;
@@ -106,7 +108,7 @@ public class PosOrder extends PosAbstractModel implements Order {
     float total_invoiced;
     float total_item_count;
     float total_paid;
-    String total_qty_ordered;
+    int total_qty_ordered;
     String updated_at;
     String weight;
     String total_count;
@@ -142,6 +144,106 @@ public class PosOrder extends PosAbstractModel implements Order {
     public List<Items> getOrderItems() {
         return (List<Items>) (List<?>) items;
 
+    }
+
+    @Override
+    public float getBaseDiscountAmount() {
+        return base_discount_amount;
+    }
+
+    @Override
+    public float getBaseGrandTotal() {
+        return base_grand_total;
+    }
+
+    @Override
+    public float getBaseShippingAmount() {
+        return base_shipping_amount;
+    }
+
+    @Override
+    public float getBaseShippingInclTax() {
+        return base_shipping_incl_tax;
+    }
+
+    @Override
+    public float getBaseShippingTaxAmount() {
+        return base_shipping_tax_amount;
+    }
+
+    @Override
+    public float getBaseSubtotal() {
+        return base_subtotal;
+    }
+
+    @Override
+    public float getBaseSubtotalInclTax() {
+        return base_subtotal_incl_tax;
+    }
+
+    @Override
+    public String getBillingAddressId() {
+        return billing_address_id;
+    }
+
+    @Override
+    public String getBaseToGlobalRate() {
+        return base_to_global_rate;
+    }
+
+    @Override
+    public String getBaseToOrderRate() {
+        return base_to_order_rate;
+    }
+
+    @Override
+    public String getGlobalCurrencyCode() {
+        return global_currency_code;
+    }
+
+    @Override
+    public String getOrderCurrencyCode() {
+        return order_currency_code;
+    }
+
+    @Override
+    public float getShippingInclTax() {
+        return shipping_incl_tax;
+    }
+
+    @Override
+    public float getShippingTaxAmount() {
+        return shipping_tax_amount;
+    }
+
+    @Override
+    public String getState() {
+        return state;
+    }
+
+    @Override
+    public String getStoreId() {
+        return store_id;
+    }
+
+    @Override
+    public String getStoreToBaseRate() {
+        return store_to_base_rate;
+    }
+
+    @Override
+    public String getStoreToOrderRate() {
+        return store_to_order_rate;
+    }
+
+    @Override
+    public float getSubtotalInclTax() {
+        return subtotal_incl_tax;
+    }
+
+    @Override
+    public int getTotalQtyOrdered() {
+        return total_qty_ordered;
     }
 
     @Override

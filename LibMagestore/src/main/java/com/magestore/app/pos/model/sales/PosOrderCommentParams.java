@@ -11,6 +11,8 @@ import com.magestore.app.pos.model.PosAbstractModel;
 
 public class PosOrderCommentParams extends PosAbstractModel implements OrderCommentParams {
     String comment;
+    String createdAt;
+    String isVisibleOnFront;
 
     @Override
     public String getComment() {
@@ -20,5 +22,15 @@ public class PosOrderCommentParams extends PosAbstractModel implements OrderComm
     @Override
     public void setComment(String strComment) {
         comment = strComment;
+    }
+
+    @Override
+    public String getIsVisibleOnFront() {
+        return isVisibleOnFront;
+    }
+
+    @Override
+    public void setIsVisibleOnFront(String strIsVisibleOnFront) {
+        isVisibleOnFront = strIsVisibleOnFront;
     }
 }

@@ -3,6 +3,7 @@ package com.magestore.app.pos.service.order;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.model.sales.OrderCommentParams;
+import com.magestore.app.lib.model.sales.OrderInvoiceParams;
 import com.magestore.app.lib.model.sales.OrderItemParams;
 import com.magestore.app.lib.model.sales.OrderRefundParams;
 import com.magestore.app.lib.model.sales.OrderShipmentParams;
@@ -12,6 +13,7 @@ import com.magestore.app.lib.resourcemodel.DataAccessFactory;
 import com.magestore.app.lib.resourcemodel.sales.OrderDataAccess;
 import com.magestore.app.lib.service.order.OrderHistoryService;
 import com.magestore.app.pos.model.sales.PosOrderCommentParams;
+import com.magestore.app.pos.model.sales.PosOrderInvoiceParams;
 import com.magestore.app.pos.model.sales.PosOrderItemParams;
 import com.magestore.app.pos.model.sales.PosOrderRefundParams;
 import com.magestore.app.pos.model.sales.PosOrderShipmentParams;
@@ -97,6 +99,16 @@ public class PosOrderHistoryService extends AbstractService implements OrderHist
     }
 
     @Override
+    public Order orderInvoice(Order order) throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        OrderInvoiceParams invoiceParams = order.getParamInvoice();
+
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        OrderDataAccess orderGateway = factory.generateOrderDataAccess();
+
+        return orderGateway.orderInvoice(invoiceParams);
+    }
+
+    @Override
     public OrderStatus createOrderStatus() {
         PosOrderStatus orderStatus = new PosOrderStatus();
         return orderStatus;
@@ -142,5 +154,11 @@ public class PosOrderHistoryService extends AbstractService implements OrderHist
     public OrderRefundParams createOrderRefundParams() {
         PosOrderRefundParams orderRefundParams = new PosOrderRefundParams();
         return orderRefundParams;
+    }
+
+    @Override
+    public OrderInvoiceParams createOrderInvoiceParams() {
+        PosOrderInvoiceParams orderInvoiceParams = new PosOrderInvoiceParams();
+        return orderInvoiceParams;
     }
 }

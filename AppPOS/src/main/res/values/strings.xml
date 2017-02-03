@@ -98,6 +98,7 @@
     <string name="order_invoice_total_paid">Total Paid:</string>
     <string name="order_total_invoiced">Total Invoiced:</string>
     <string name="order_invoiceable">Invoiceable:</string>
+    <string name="order_invoice_success">The invoice has been created successfully.</string>
 
     <!--Strings related to register shift-->
     <string name="register_shift_list_open"> - OPEN</string>

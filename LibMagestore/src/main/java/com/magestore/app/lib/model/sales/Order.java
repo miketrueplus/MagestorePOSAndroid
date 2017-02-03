@@ -20,6 +20,46 @@ public interface Order extends Model {
 
     List<Items> getOrderItems();
 
+    float getBaseDiscountAmount();
+
+    float getBaseGrandTotal();
+
+    float getBaseShippingAmount();
+
+    float getBaseShippingInclTax();
+
+    float getBaseShippingTaxAmount();
+
+    float getBaseSubtotal();
+
+    float getBaseSubtotalInclTax();
+
+    String getBillingAddressId();
+
+    String getBaseToGlobalRate();
+
+    String getBaseToOrderRate();
+
+    String getGlobalCurrencyCode();
+
+    String getOrderCurrencyCode();
+
+    float getShippingInclTax();
+
+    float getShippingTaxAmount();
+
+    String getState();
+
+    String getStoreId();
+
+    String getStoreToBaseRate();
+
+    String getStoreToOrderRate();
+
+    float getSubtotalInclTax();
+
+    int getTotalQtyOrdered();
+
     float getSubTotal();
 
     float getDiscountTotal();
