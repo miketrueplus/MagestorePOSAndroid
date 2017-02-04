@@ -130,4 +130,20 @@ public interface Statement {
      * Build trước final query
      */
     String buildFinalQuery();
+
+    /**
+     * Thiết lập cache, với cache name tự đặt
+     */
+    void setEnableCacle();
+
+    /**
+     * Thiết lập cache connection với cache name
+     */
+    void setEnableCache(String cacheName);
+
+    /**
+     *
+     * @return
+     */
+    CacheConnection getCacheConnection();
 }

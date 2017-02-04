@@ -33,7 +33,12 @@ public class LoadProductImageTask extends AsyncTaskAbstractTask<Void, Product, V
         // Duyệt danh mục product
         for (Product product: mListProduct) {
             // Kiểm tra xem đã load bitmap trước đó của product chưa
-            Bitmap bmp = mProductService.retrieveBitmap(product, 200, 200);
+            Bitmap bmp = null;
+            try {
+                bmp = mProductService.retrieveBitmap(product, 200, 200);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             if (bmp == null) continue;
 
             // Báo hiệu đã load ảnh xong

@@ -39,6 +39,7 @@
                 android:id="@+id/customer_list_panel"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                magestore_view:layout_progress="@+id/progress_customer_list"
                 magestore_view:layout_item="@layout/card_customer_list_content"
                 magestore_view:layout_list="@+id/customer_list"
                 magestore_view:layout_panel="@layout/panel_customer_list"

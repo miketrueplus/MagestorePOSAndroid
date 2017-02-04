@@ -1,5 +1,7 @@
 package com.magestore.app.lib.resourcemodel.catalog;
 
+import android.graphics.Bitmap;
+
 import com.magestore.app.lib.connection.ConnectionException;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.parse.ParseException;
@@ -17,6 +19,7 @@ import java.util.List;
  */
 
 public interface ProductDataAccess extends DataAccess, ListDataAccess<Product> {
+    Bitmap retrieveBitmap(Product product, int sizeWidth, int sizeHeight) throws IOException;
 //    List<Product> getProducts(int pageSize, int currentPage) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
 //    void getProducts(Product product);
 //    void updateProduct(Product product);

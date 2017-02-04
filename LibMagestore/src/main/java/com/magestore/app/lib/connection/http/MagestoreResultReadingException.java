@@ -47,6 +47,12 @@ public class MagestoreResultReadingException extends MagestoreResultReading {
     }
 
     @Override
+    public InputStream getInputStream() throws IOException {
+        doParse();
+        return null;
+    }
+
+    @Override
     public void writeOutputStream(OutputStream out) throws ParseException, ConnectionException, IOException {
         doParse();
     }
@@ -60,7 +66,7 @@ public class MagestoreResultReadingException extends MagestoreResultReading {
     public String readResult2String() throws ConnectionException, IOException {
         super.setParseImplement(Gson2PosMesssageExceptionImplement.class);
         super.setParseModel(PosMessagException.class);
-        doParse();
-        return null;
+        PosMessagException msgExp = (PosMessagException) super.doParse();
+        return msgExp.getMessage();
     }
 }
