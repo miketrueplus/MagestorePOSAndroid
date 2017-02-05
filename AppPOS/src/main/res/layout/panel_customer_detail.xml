@@ -178,11 +178,11 @@
                                     android:id="@+id/spinner_group_id"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    magestore_view:layout_no_scroll="true"
-                                    android:enabled="false"
                                     android:layout_marginLeft="5dp"
-                                    magestore_view:layout_row="@layout/simple_textview_row"
-                                    android:textSize="18sp"/>
+                                    android:enabled="false"
+                                    android:textSize="18sp"
+                                    magestore_view:layout_no_scroll="true"
+                                    magestore_view:layout_row="@layout/simple_textview_row" />
                             </LinearLayout>
 
                         </LinearLayout>
@@ -303,12 +303,28 @@
                             android:background="@drawable/ic_add_new" />
                     </android.support.v7.widget.Toolbar>
 
-                    <com.magestore.app.pos.view.CustomerComplainListView
-                        android:id="@+id/complain_list_panel"
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        magestore_view:layout_no_scroll="true"
-                        magestore_view:layout_row="@layout/panel_customer_complain_list" />
+                        android:layout_height="wrap_content">
+
+                        <ProgressBar
+                            android:id="@+id/progress_complain_list"
+                            style="?android:attr/progressBarStyleLarge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:layout_gravity="center"
+                            android:layout_marginBottom="8dp"
+                            android:visibility="gone" />
+
+                        <com.magestore.app.pos.view.CustomerComplainListView
+                            android:id="@+id/complain_list_panel"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            magestore_view:layout_no_scroll="true"
+                            magestore_view:layout_row="@layout/panel_customer_complain_list" />
+                    </RelativeLayout>
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>

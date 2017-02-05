@@ -89,9 +89,11 @@ public class CustomerListController extends AbstractListController<Customer> {
         return mCustomerService;
     }
 
-    public void doLoadComplain(Customer customer) {
-        doAction(ACTION_CODE_GET_COMPLAIN, null, null, customer);
-    }
+//    public void doLoadComplain(Customer customer) {
+//        doAction(ACTION_CODE_GET_COMPLAIN, null, null, customer);
+//        if (mDetailView instanceof CustomerDetailPanel)
+//            ((CustomerDetailPanel)mDetailView).showComplainProgress(true);
+//    }
 
     /**
      * Tạo mới 1 complain
@@ -136,6 +138,10 @@ public class CustomerListController extends AbstractListController<Customer> {
     @Override
     public void onActionPostExecute(boolean success, int actionType, String actionCode, Map<String, Object> wrapper, Model... models) {
         if (success && actionType == ACTION_CODE_GET_COMPLAIN) {
+            // tắt progress với complain
+            if (mDetailView instanceof CustomerDetailPanel)
+                ((CustomerDetailPanel)mDetailView).showComplainProgress(false);
+
             super.bindItem((Customer) models[0]);
         }
         if (success && actionType == ACTION_CODE_INPUT_COMPLAIN) {
@@ -151,5 +157,7 @@ public class CustomerListController extends AbstractListController<Customer> {
     public void bindItem(Customer item) {
         super.bindItem(item);
         doAction(ACTION_CODE_GET_COMPLAIN, null, null, item);
+        if (mDetailView instanceof CustomerDetailPanel)
+            ((CustomerDetailPanel)mDetailView).showComplainProgress(true);
     }
 }

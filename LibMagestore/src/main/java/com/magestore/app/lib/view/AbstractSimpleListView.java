@@ -1,8 +1,11 @@
 package com.magestore.app.lib.view;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +38,8 @@ public abstract class AbstractSimpleListView<TModel extends Model>
 
     // Model chứa data danh sách
     protected List<TModel> mList;
+    private int mintProgresLayout;
+    private View mProgressView;
 
     public AbstractSimpleListView(Context context) {
         super(context);
@@ -75,7 +80,12 @@ public abstract class AbstractSimpleListView<TModel extends Model>
         if (mListLayout == -1)
             mListLayout = a.getResourceId(R.styleable.magestore_view_layout_row, -1);
         mNoScroll = a.getBoolean(R.styleable.magestore_view_layout_no_scroll, true);
+        mintProgresLayout = a.getResourceId(R.styleable.magestore_view_layout_progress, -1);
         a.recycle();
+
+        if (mintProgresLayout > -1) {
+            mProgressView = findViewById(mintProgresLayout);
+        }
     }
 
     public void initLayout() {
@@ -116,8 +126,37 @@ public abstract class AbstractSimpleListView<TModel extends Model>
      *
      * @param show
      */
-    public void showProgress(boolean show) {
+    public void showProgress(final boolean show) {
+        if (mProgressView == null) return;
+// On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+        // for very easy animations. If available, use these APIs to fade-in
+        // the progress spinner.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
+//            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+//            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
+//                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+//                @Override
+//                public void onAnimationEnd(Animator animation) {
+//                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+//                }
+//            });
+
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            mProgressView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                }
+            });
+        } else {
+            // The ViewPropertyAnimator APIs are not available, so simply show
+            // and hide the relevant UI components.
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+//            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+        }
     }
 
     public void setListLayout(int listLayout) {
