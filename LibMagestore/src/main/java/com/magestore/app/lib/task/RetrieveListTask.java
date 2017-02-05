@@ -41,14 +41,11 @@ public class RetrieveListTask<TModel extends Model>
     protected void onPostExecute(List<TModel> ts) {
         super.onPostExecute(ts);
         mListController.onRetrievePostExecute(ts);
-        mListController.doShowProgress(false);
+
     }
 
     @Override
     protected void onProgressUpdate(Void... values) {
         super.onProgressUpdate(values);
-//        mListController.onProgressUpdateLoadData();
     }
-
-
 }

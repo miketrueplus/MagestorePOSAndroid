@@ -35,6 +35,6 @@ public class DeleteListTask<TModel extends Model>
     @Override
     protected void onPostExecute(Boolean aBoolean) {
         mListController.onDeletePostExecute(aBoolean);
-        mListController.doShowProgress(false);
+//        mListController.doShowProgress(false);
     }
 }

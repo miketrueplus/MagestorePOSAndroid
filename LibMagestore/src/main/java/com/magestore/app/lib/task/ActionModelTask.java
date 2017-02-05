@@ -55,7 +55,7 @@ public class ActionModelTask extends AsyncTask<Model, Void, Boolean> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        mController.doShowProgress(true);
+//        mController.doShowProgress(true);
     }
 
     @Override
@@ -68,6 +68,4 @@ public class ActionModelTask extends AsyncTask<Model, Void, Boolean> {
     protected void onPostExecute(Boolean aBoolean) {
         mController.onActionPostExecute(aBoolean, mActionType, mActionCode, mWrapper, this.models);
     }
-
-
 }

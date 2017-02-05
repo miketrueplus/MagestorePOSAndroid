@@ -98,9 +98,8 @@ public abstract class AbstractListController<TModel extends Model>
     @Override
     public void doRetrieve(){
         // chuẩn bị task load data
-        RetrieveListTask<TModel> task = new RetrieveListTask<TModel>(this);
-        doShowProgress(true);
-        task.doExecute(0, 500);
+        doRetrieve(1, 500);
+
     }
 
     /**
@@ -110,8 +109,9 @@ public abstract class AbstractListController<TModel extends Model>
     public void doRetrieve(int page, int pageSize){
         // chuẩn bị task load data
         RetrieveListTask<TModel> task = new RetrieveListTask<TModel>(this);
-        doShowProgress(true);
         task.doExecute(page, pageSize);
+        doShowProgress(true);
+
     }
 
     /**

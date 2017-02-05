@@ -101,6 +101,7 @@ public abstract class AbstractController<TModel extends Model, TView extends Mag
     public void onCancelledBackground(Exception exp) {
         if (exp != null)
             doShowErrorMsg(exp);
+        doShowProgress(false);
     }
 
 }

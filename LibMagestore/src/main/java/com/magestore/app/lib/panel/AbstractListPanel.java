@@ -116,14 +116,19 @@ public abstract class AbstractListPanel<TModel extends Model>
         mintSpanCount = a.getInteger(R.styleable.magestore_view_layout_span_count, 1);
         a.recycle();
 
+        // tham chiêu file layout của panel
         if (mintPanelLayout > -1) setLayoutPanel(mintPanelLayout);
+
+        // tham chiếu item của list, layout
         if (mintItemLayout > -1) setLayoutItem(mintItemLayout);
 
+        // tham chiếu layout của recycle view
         if (mintListLayout > -1) {
             mRecycleView = (RecyclerView) findViewById(mintListLayout);
             mRecycleView.setLayoutManager(new GridLayoutManager(this.getContext(), mintSpanCount, mintOrientation, false));
         }
 
+        // tham chiếu layout của progressbar
         if (mintProgresLayout > -1) {
             mProgressView = findViewById(mintProgresLayout);
         }
