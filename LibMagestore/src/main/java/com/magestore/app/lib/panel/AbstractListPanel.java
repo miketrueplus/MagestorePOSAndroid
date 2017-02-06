@@ -132,7 +132,7 @@ public abstract class AbstractListPanel<TModel extends Model>
         // số cột hoặc hàng trong list
         mintSpanCount = a.getInteger(R.styleable.magestore_view_layout_span_count, 1);
         // kích thước phân trang, số item tối đa
-        mintPageSize = a.getInteger(R.styleable.magestore_view_page_size, 10);
+        mintPageSize = a.getInteger(R.styleable.magestore_view_page_size, 500);
         mintPageFirst = a.getInteger(R.styleable.magestore_view_page_size, 10);
         mintPageSizeMax = a.getInteger(R.styleable.magestore_view_page_size_max, 10);
 
@@ -246,7 +246,7 @@ public abstract class AbstractListPanel<TModel extends Model>
      */
     public void setController(ListController<TModel> controller) {
         mController = controller;
-        mController.setPage(mintPageSize, mintPageSizeMax);
+        if (mintPageSize < 500) mController.setPage(mintPageSize, mintPageSizeMax);
     }
 
     /**
@@ -267,12 +267,13 @@ public abstract class AbstractListPanel<TModel extends Model>
             mRecycleView.setAdapter(new AbstractListPanel<TModel>.ListRecyclerViewAdapter(mList));
         }
 
-        mRecycleView.setOnScrollListener(new EndlessRecyclerOnScrollListener(mRecycleViewLayoutManager) {
-            @Override
-            public void onLoadMore(int current_page) {
-                mController.doRetrieveMore(current_page);
-            }
-        });
+        if (mintPageSize < 500)
+            mRecycleView.setOnScrollListener(new EndlessRecyclerOnScrollListener(mRecycleViewLayoutManager) {
+                @Override
+                public void onLoadMore(int current_page) {
+                    mController.doRetrieveMore(current_page);
+                }
+            });
     }
 
     /**

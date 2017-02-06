@@ -27,9 +27,10 @@ public abstract class AbstractListController<TModel extends Model>
         implements ListController<TModel> {
 
     // tham chiếu phân trang
-    private int mintPageSize = 10;
+    private int mintPageSize = 500;
     private int mintPageFirst = 1;
     private int mintPageSizeMax = 500;
+    private boolean lazyLoading = false;
 
     // tự động chọn item đầu tiên trong danh sách
     boolean mblnAutoChooseFirstItem = true;
@@ -56,6 +57,15 @@ public abstract class AbstractListController<TModel extends Model>
     public void setPage(int pageSize, int pageMax) {
         mintPageSize = pageSize;
         mintPageSizeMax = pageMax;
+        lazyLoading = true;
+    }
+
+    /**
+     * Clear danh sách
+     */
+    public void clearList() {
+        mList = null;
+        mView.notifyDataSetChanged();
     }
 
     /**
@@ -149,7 +159,13 @@ public abstract class AbstractListController<TModel extends Model>
     public void onRetrievePostExecute(List<TModel> list) {
         // tắt progress
         doShowProgress(false);
-        if ((list == null) || (list.size() <= 0)) return;
+        if (lazyLoading && ((list == null) || (list.size() <= 0))) return;
+
+        // xóa danh sách cũ đi nếu k0 chạy lazyloading
+        if (!lazyLoading) {
+//            if (mList != null) mList.clear();
+            mList = null;
+        }
 
         // gọi lại method đặt tên theo phiên bản cũ
         if (mList != null) {

@@ -286,6 +286,11 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
         if (item.getComplain() != null) mCustomerComplainListView.bindList(item.getComplain());
     }
 
+    public void bindComplain(Customer item) {
+        // chỉ định complain list cho hiển thị
+        if (item.getComplain() != null) mCustomerComplainListView.bindList(item.getComplain());
+    }
+
     /**
      * Cập nhật view khi dữ liệu được thanh đổi
      */
