@@ -11,6 +11,9 @@
         <attr name="layout_footer" format="reference" />
         <attr name="layout_no_scroll" format="boolean" />
         <attr name="layout_auto_height" format="boolean" />
+        <attr name="page_size_max" format="integer" />
+        <attr name="page_size" format="integer" />
+        <attr name="page_first" format="integer" />
         <attr name="layout_orientation" format="integer" >
             <enum name="horizontal" value="0" />
             <enum name="vertical" value="1" />

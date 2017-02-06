@@ -20,6 +20,7 @@ import com.magestore.app.lib.R;
 
 import com.magestore.app.lib.controller.ListController;
 import com.magestore.app.lib.model.Model;
+import com.magestore.app.lib.view.EndlessRecyclerOnScrollListener;
 import com.magestore.app.lib.view.MagestoreView;
 
 import java.util.List;
@@ -55,10 +56,19 @@ public abstract class AbstractListPanel<TModel extends Model>
     // tham chiếu layout của progress
     private View mProgressView;
 
+    // layout manager của recycle view
+    LinearLayoutManager mRecycleViewLayoutManager;
+
     // tham chiếu layout của cả danh sách
     private int mintListLayout;
 
+    // số cột trong 1 list
     private int mintSpanCount = 1;
+
+    // tham chiếu phân trang
+    private int mintPageSize = 10;
+    private int mintPageFirst = 1;
+    private int mintPageSizeMax = 500;
 
     private int mintOrientation = LinearLayoutManager.VERTICAL;
 
@@ -108,12 +118,24 @@ public abstract class AbstractListPanel<TModel extends Model>
      */
     private void loadAttrs(Context context, AttributeSet attrs) {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.magestore_view);
+
+        // layoyt id của chính panel
         mintPanelLayout = a.getResourceId(R.styleable.magestore_view_layout_panel, -1);
+        // layout id của progress hiển thị quá trình loading
         mintProgresLayout = a.getResourceId(R.styleable.magestore_view_layout_progress, -1);
+        // layout mỗi ô trong list
         mintItemLayout = a.getResourceId(R.styleable.magestore_view_layout_item, -1);
+        // layout của list
         mintListLayout = a.getResourceId(R.styleable.magestore_view_layout_list, -1);
+        // chiều của list, ngang học dọc
         mintOrientation = a.getInteger(R.styleable.magestore_view_layout_orientation, LinearLayoutManager.VERTICAL);
+        // số cột hoặc hàng trong list
         mintSpanCount = a.getInteger(R.styleable.magestore_view_layout_span_count, 1);
+        // kích thước phân trang, số item tối đa
+        mintPageSize = a.getInteger(R.styleable.magestore_view_page_size, 10);
+        mintPageFirst = a.getInteger(R.styleable.magestore_view_page_size, 10);
+        mintPageSizeMax = a.getInteger(R.styleable.magestore_view_page_size_max, 10);
+
         a.recycle();
 
         // tham chiêu file layout của panel
@@ -125,17 +147,14 @@ public abstract class AbstractListPanel<TModel extends Model>
         // tham chiếu layout của recycle view
         if (mintListLayout > -1) {
             mRecycleView = (RecyclerView) findViewById(mintListLayout);
-            mRecycleView.setLayoutManager(new GridLayoutManager(this.getContext(), mintSpanCount, mintOrientation, false));
+            mRecycleViewLayoutManager = new GridLayoutManager(this.getContext(), mintSpanCount, mintOrientation, false);
+            mRecycleView.setLayoutManager(mRecycleViewLayoutManager);
         }
 
         // tham chiếu layout của progressbar
         if (mintProgresLayout > -1) {
             mProgressView = findViewById(mintProgresLayout);
         }
-    }
-
-    public int getListLayout() {
-        return mintListLayout;
     }
 
     /**
@@ -186,6 +205,9 @@ public abstract class AbstractListPanel<TModel extends Model>
      */
     public void showProgress(final boolean show) {
         if (mProgressView == null) return;
+
+        // nếu danh sách đã có số liệu, không show progress nữa
+        if ((mRecycleView.getAdapter() != null) && mRecycleView.getAdapter().getItemCount() > 0) return;
 // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
         // for very easy animations. If available, use these APIs to fade-in
         // the progress spinner.
@@ -224,6 +246,7 @@ public abstract class AbstractListPanel<TModel extends Model>
      */
     public void setController(ListController<TModel> controller) {
         mController = controller;
+        mController.setPage(mintPageSize, mintPageSizeMax);
     }
 
     /**
@@ -243,7 +266,33 @@ public abstract class AbstractListPanel<TModel extends Model>
         if (mList != null) {
             mRecycleView.setAdapter(new AbstractListPanel<TModel>.ListRecyclerViewAdapter(mList));
         }
+
+        mRecycleView.setOnScrollListener(new EndlessRecyclerOnScrollListener(mRecycleViewLayoutManager) {
+            @Override
+            public void onLoadMore(int current_page) {
+                mController.doRetrieveMore(current_page);
+            }
+        });
     }
+
+    /**
+     * Bind thêm list vào danh sách
+     * @param list
+     */
+//    public void bindListMore(List<TModel> list) {
+//        // điều kiện khi thêm danh sách vào
+//        if ((list == null) || (list.size() <= 0)) return;
+//
+//        // danh sách ban đầu khi còn trống
+//        if (mList == null) {
+//            bindList(list);
+//            return;
+//        }
+//
+//        // Nếu danh sách k0 trống
+//        if (mList != null) mList.addAll(list);
+//        mRecycleView.getAdapter().notifyDataSetChanged();
+//    }
 
     /**
      * Map mỗi item tương ứng với view trên danh sách
@@ -321,6 +370,7 @@ public abstract class AbstractListPanel<TModel extends Model>
          */
         @Override
         public int getItemCount() {
+            if (mList == null) return 0;
             return mList.size();
         }
 
@@ -362,6 +412,10 @@ public abstract class AbstractListPanel<TModel extends Model>
         RecyclerView.Adapter adapter = mRecycleView.getAdapter();
         if (adapter != null)
             adapter.notifyDataSetChanged();
+    }
+
+    public void notifyDataSetChangedLastItem() {
+        mRecycleView.getAdapter().notifyItemRangeInserted(mRecycleView.getAdapter().getItemCount() - 1, mintPageSize);
     }
 
     /**

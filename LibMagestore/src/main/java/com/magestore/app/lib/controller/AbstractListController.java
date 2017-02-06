@@ -1,5 +1,7 @@
 package com.magestore.app.lib.controller;
 
+import android.widget.Toast;
+
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
 import com.magestore.app.lib.panel.AbstractListPanel;
@@ -9,6 +11,8 @@ import com.magestore.app.lib.task.InsertListTask;
 import com.magestore.app.lib.task.RetrieveListTask;
 import com.magestore.app.lib.task.UpdateListTask;
 
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +26,10 @@ public abstract class AbstractListController<TModel extends Model>
         extends AbstractController<TModel, AbstractListPanel<TModel>>
         implements ListController<TModel> {
 
+    // tham chiếu phân trang
+    private int mintPageSize = 10;
+    private int mintPageFirst = 1;
+    private int mintPageSizeMax = 500;
 
     // tự động chọn item đầu tiên trong danh sách
     boolean mblnAutoChooseFirstItem = true;
@@ -43,6 +51,12 @@ public abstract class AbstractListController<TModel extends Model>
      * Service xử lý
      */
     protected ListService<TModel> mListService;
+
+    @Override
+    public void setPage(int pageSize, int pageMax) {
+        mintPageSize = pageSize;
+        mintPageSizeMax = pageMax;
+    }
 
     /**
      * Thiết lập danh sách, cho hiển thị lên view
@@ -98,7 +112,7 @@ public abstract class AbstractListController<TModel extends Model>
     @Override
     public void doRetrieve(){
         // chuẩn bị task load data
-        doRetrieve(1, 500);
+        doRetrieve(1, mintPageSize);
 
     }
 
@@ -135,13 +149,20 @@ public abstract class AbstractListController<TModel extends Model>
     public void onRetrievePostExecute(List<TModel> list) {
         // tắt progress
         doShowProgress(false);
+        if ((list == null) || (list.size() <= 0)) return;
 
         // gọi lại method đặt tên theo phiên bản cũ
-        bindList(list);
+        if (mList != null) {
+            mList.addAll(list);
+            mView.notifyDataSetChangedLastItem();
+        }
+        else {
+            bindList(list);
 
-        // Chọn item đầu tiên
-        if (mblnAutoChooseFirstItem && mList != null && mDetailView != null && mList.size() > 0)
-            bindItem(mList.get(0));
+            // Chọn item đầu tiên
+            if (mblnAutoChooseFirstItem && mList != null && mDetailView != null && mList.size() > 0)
+                bindItem(mList.get(0));
+        }
     }
 
     /**
@@ -317,5 +338,14 @@ public abstract class AbstractListController<TModel extends Model>
     @Override
     public TModel createItem() {
         return getListService().create();
+    }
+
+    /**
+     * lấy số trang
+     * @param page
+     */
+    @Override
+    public void doRetrieveMore(int page) {
+        doRetrieve(page, mintPageSize);
     }
 }

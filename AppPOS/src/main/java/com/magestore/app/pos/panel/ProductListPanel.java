@@ -56,9 +56,9 @@ public class ProductListPanel extends AbstractListPanel<Product> {
      * Đặt số cột sản phẩm
      * @param column
      */
-    public void setColumn(int column) {
+//    public void setColumn(int column) {
 //        ((GridLayoutManager)(mRecycleView.getLayoutManager())).setSpanCount(column);
-    }
+//    }
 
     /**
      * Chuẩn bị layout control
