@@ -91,6 +91,7 @@ public class ProductListPanel extends AbstractListPanel<Product> {
 
     @Override
     protected void bindItem(View view, Product item, int position) {
+        if (item == null) return;
         final CardProductListContentBinding binding = DataBindingUtil.bind(view);
         binding.setProduct(item);
 

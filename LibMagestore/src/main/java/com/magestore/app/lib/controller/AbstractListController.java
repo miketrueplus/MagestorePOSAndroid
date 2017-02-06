@@ -163,14 +163,15 @@ public abstract class AbstractListController<TModel extends Model>
 
         // xóa danh sách cũ đi nếu k0 chạy lazyloading
         if (!lazyLoading) {
-//            if (mList != null) mList.clear();
+            if (mList != null) mList.clear();
             mList = null;
         }
 
         // gọi lại method đặt tên theo phiên bản cũ
         if (mList != null) {
             mList.addAll(list);
-            mView.notifyDataSetChangedLastItem();
+            mView.notifyDataSetChangedLastItem(list);
+            mView.setItemLoadingProgress(null, false);
         }
         else {
             bindList(list);
@@ -363,5 +364,6 @@ public abstract class AbstractListController<TModel extends Model>
     @Override
     public void doRetrieveMore(int page) {
         doRetrieve(page, mintPageSize);
+        mView.setItemLoadingProgress(null, true);
     }
 }

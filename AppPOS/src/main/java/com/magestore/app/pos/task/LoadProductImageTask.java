@@ -31,18 +31,22 @@ public class LoadProductImageTask extends AsyncTaskAbstractTask<Void, Product, V
         if (mListProduct == null) return null;
 
         // Duyệt danh mục product
-        for (Product product: mListProduct) {
-            // Kiểm tra xem đã load bitmap trước đó của product chưa
-            Bitmap bmp = null;
-            try {
-                bmp = mProductService.retrieveBitmap(product, 200, 200);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            if (bmp == null) continue;
+        try {
+            for (Product product : mListProduct) {
+                // Kiểm tra xem đã load bitmap trước đó của product chưa
+                Bitmap bmp = null;
+                try {
+                    bmp = mProductService.retrieveBitmap(product, 200, 200);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                if (bmp == null) continue;
 
-            // Báo hiệu đã load ảnh xong
-            publishProgress(product);
+                // Báo hiệu đã load ảnh xong
+                publishProgress(product);
+            }
+        } catch (Exception exp) {
+            exp.printStackTrace();
         }
 
 
@@ -58,7 +62,7 @@ public class LoadProductImageTask extends AsyncTaskAbstractTask<Void, Product, V
         if (mListProduct == null) return;
 
         // Với mỗi sản phẩm
-        for (Product product: values) {
+        for (Product product : values) {
             // Truy vấn vào bitmap
             Bitmap bmp = product.getBitmap();
 

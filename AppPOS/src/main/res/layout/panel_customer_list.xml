@@ -27,13 +27,18 @@
                 android:layout_marginBottom="8dp"
                 android:visibility="gone" />
 
-            <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+            <com.magestore.app.lib.view.ListRecycleView
+                xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
+                xmlns:magestore_view="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/customer_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1.0"
                 app:layoutManager="LinearLayoutManager"
+                magestore_view:layout_item_progress="@+id/progress_customer_list_card_view"
+                magestore_view:layout_item_msg="@+id/msg_customer_list_card_view"
+                magestore_view:layout_item_content="@+id/content_customer_list_card_view"
                 tools:listitem="@layout/card_customer_list_content" />
         </RelativeLayout>
     </LinearLayout>

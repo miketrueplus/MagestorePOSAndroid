@@ -11,6 +11,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import com.magestore.app.lib.R;
 import com.magestore.app.lib.controller.ListController;
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.view.EndlessRecyclerOnScrollListener;
+import com.magestore.app.lib.view.ListRecycleView;
 import com.magestore.app.lib.view.MagestoreView;
 
 import java.util.List;
@@ -51,10 +53,13 @@ public abstract class AbstractListPanel<TModel extends Model>
     // tham chiếu layout của mỗi item trong list
     private int mintItemLayout;
 
+    // tham chiếu id layout của progress
     private int mintProgresLayout;
 
     // tham chiếu layout của progress
     private View mProgressView;
+
+    private int mintItemProgressLayout;
 
     // layout manager của recycle view
     LinearLayoutManager mRecycleViewLayoutManager;
@@ -74,6 +79,10 @@ public abstract class AbstractListPanel<TModel extends Model>
 
     // tham chiếu view của layout
     View mView;
+
+    // loading progress của từng item
+    TModel mModelLoadingProgress = null;
+    boolean mblnModelLoadingProgress = false;
 
     /**
      * Khởi tạo
@@ -131,6 +140,7 @@ public abstract class AbstractListPanel<TModel extends Model>
         mintOrientation = a.getInteger(R.styleable.magestore_view_layout_orientation, LinearLayoutManager.VERTICAL);
         // số cột hoặc hàng trong list
         mintSpanCount = a.getInteger(R.styleable.magestore_view_layout_span_count, 1);
+
         // kích thước phân trang, số item tối đa
         mintPageSize = a.getInteger(R.styleable.magestore_view_page_size, 500);
         mintPageFirst = a.getInteger(R.styleable.magestore_view_page_size, 10);
@@ -207,7 +217,8 @@ public abstract class AbstractListPanel<TModel extends Model>
         if (mProgressView == null) return;
 
         // nếu danh sách đã có số liệu, không show progress nữa
-        if ((mRecycleView.getAdapter() != null) && mRecycleView.getAdapter().getItemCount() > 0) return;
+        if ((mRecycleView.getAdapter() != null) && mRecycleView.getAdapter().getItemCount() > 0)
+            return;
 // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
         // for very easy animations. If available, use these APIs to fade-in
         // the progress spinner.
@@ -277,25 +288,6 @@ public abstract class AbstractListPanel<TModel extends Model>
     }
 
     /**
-     * Bind thêm list vào danh sách
-     * @param list
-     */
-//    public void bindListMore(List<TModel> list) {
-//        // điều kiện khi thêm danh sách vào
-//        if ((list == null) || (list.size() <= 0)) return;
-//
-//        // danh sách ban đầu khi còn trống
-//        if (mList == null) {
-//            bindList(list);
-//            return;
-//        }
-//
-//        // Nếu danh sách k0 trống
-//        if (mList != null) mList.addAll(list);
-//        mRecycleView.getAdapter().notifyDataSetChanged();
-//    }
-
-    /**
      * Map mỗi item tương ứng với view trên danh sách
      *
      * @param view
@@ -343,7 +335,16 @@ public abstract class AbstractListPanel<TModel extends Model>
          */
         @Override
         public void onBindViewHolder(final AbstractListPanel<TModel>.ListRecyclerViewAdapter.ListViewHolder holder, final int position) {
+            // kiểm tra bật progress nếu thêm mới 1 item hoặc lazy loading
+            if (position >= mList.size()) {
+                holder.setItem(null, position);
+                return;
+            }
+
+            // lấy item trên row
             final TModel item = mList.get(position);
+
+            // hiển thị item
             holder.setItem(item, position);
 
             // highlight vị trí đã chọn
@@ -371,8 +372,11 @@ public abstract class AbstractListPanel<TModel extends Model>
          */
         @Override
         public int getItemCount() {
-            if (mList == null) return 0;
-            return mList.size();
+            int valueReturn = 0;
+            if (mList == null) valueReturn = 0;
+            else valueReturn = mList.size();
+            if (mblnModelLoadingProgress && (mModelLoadingProgress == null)) valueReturn++;
+            return valueReturn;
         }
 
         /**
@@ -389,6 +393,19 @@ public abstract class AbstractListPanel<TModel extends Model>
             }
 
             public void setItem(TModel item, int position) {
+                if (position >= mList.size()) {
+                    showItemLoadingProgres(mView, true);
+                    return;
+                }
+                else {
+                    showItemLoadingProgres(mView, false);
+                }
+
+//                if (item == mModelLoadingProgress) {
+//                    showItemLoadingProgres(mView, true);
+//                    return;
+//
+//                }
                 mItem = item;
                 bindItem(mView, item, position);
             }
@@ -415,8 +432,11 @@ public abstract class AbstractListPanel<TModel extends Model>
             adapter.notifyDataSetChanged();
     }
 
-    public void notifyDataSetChangedLastItem() {
-        mRecycleView.getAdapter().notifyItemRangeInserted(mRecycleView.getAdapter().getItemCount() - 1, mintPageSize);
+    public void notifyDataSetChangedLastItem(List<TModel> list) {
+        int start = mRecycleView.getAdapter().getItemCount() - 1 - list.size();
+        int range = mList.size() -  start;
+        mRecycleView.getAdapter().notifyItemChanged(mRecycleView.getAdapter().getItemCount() - 1 - list.size());
+        mRecycleView.getAdapter().notifyItemRangeInserted(start, range);
     }
 
     /**
@@ -438,5 +458,21 @@ public abstract class AbstractListPanel<TModel extends Model>
                 .setMessage(exp.getMessage())
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
+    }
+
+    /**
+     * Bật tắt show loading theo 1 item
+     * @param model
+     * @param show
+     */
+    public void setItemLoadingProgress(TModel model, boolean show) {
+        mModelLoadingProgress = model;
+        mblnModelLoadingProgress = show;
+    }
+
+    public void showItemLoadingProgres(View v, boolean show) {
+        if (mRecycleView instanceof ListRecycleView) {
+            ((ListRecycleView) mRecycleView).showProgress(v, show);
+        }
     }
 }
