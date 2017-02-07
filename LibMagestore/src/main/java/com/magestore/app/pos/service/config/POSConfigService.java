@@ -53,7 +53,7 @@ public class POSConfigService extends AbstractService implements ConfigService {
     }
 
     @Override
-    public List<ConfigCountry> getCountry() throws InstantiationException, IllegalAccessException, IOException, ParseException {
+    public Map<String, ConfigCountry> getCountry() throws InstantiationException, IllegalAccessException, IOException, ParseException {
         // Nếu chưa khởi tạo customer gateway factory
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();

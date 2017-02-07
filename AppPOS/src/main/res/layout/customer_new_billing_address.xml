@@ -207,7 +207,7 @@
                 android:hint="@string/state_or_province" />
 
             <com.magestore.app.lib.view.SimpleSpinner
-                android:id="@+id/s_spinner_state"
+                android:id="@+id/b_spinner_state"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="false"

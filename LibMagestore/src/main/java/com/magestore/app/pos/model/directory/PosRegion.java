@@ -21,8 +21,23 @@ public class PosRegion extends PosAbstractModel implements Region {
     }
 
     @Override
+    public void setRegionCode(String strRegionCode) {
+        region_code = strRegionCode;
+    }
+
+    @Override
     public String getRegionName() {
         return region;
+    }
+
+    @Override
+    public void setRegionName(String strRegionName) {
+        region = strRegionName;
+    }
+
+    @Override
+    public void setID(String strID) {
+        region_id = strID;
     }
 
     @Override

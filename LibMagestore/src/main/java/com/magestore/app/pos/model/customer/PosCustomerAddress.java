@@ -35,8 +35,8 @@ public class PosCustomerAddress extends PosAbstractModel implements CustomerAddr
     String vat_id;
     String company;
     String state;
-    boolean default_shipping;
-    boolean default_billing;
+    String default_shipping;
+    String default_billing;
 
     @Override
     public String getName() {
@@ -112,6 +112,16 @@ public class PosCustomerAddress extends PosAbstractModel implements CustomerAddr
     public String getRegionCode() {
         if (region == null) return null;
         return region.getRegionCode();
+    }
+
+    @Override
+    public void setRegionID(String strRegionID) {
+        region_id = strRegionID;
+    }
+
+    @Override
+    public void setRegion(Region region) {
+        this.region = (PosRegion) region;
     }
 
     @Override
@@ -214,21 +224,21 @@ public class PosCustomerAddress extends PosAbstractModel implements CustomerAddr
     }
 
     @Override
-    public boolean isShipping() {
+    public String isShipping() {
         return default_shipping;
     }
     @Override
-    public void setDefaultShipping(boolean blnShipping) {
-        default_shipping = blnShipping;
+    public void setDefaultShipping(String strShipping) {
+        default_shipping = strShipping;
     }
 
     @Override
-    public boolean isBilling() {
+    public String isBilling() {
         return default_billing;
     }
     @Override
-    public void setDefaultBilling(boolean blnBilling) {
-        default_billing = blnBilling;
+    public void setDefaultBilling(String strBilling) {
+        default_billing = strBilling;
     }
 
     @Override

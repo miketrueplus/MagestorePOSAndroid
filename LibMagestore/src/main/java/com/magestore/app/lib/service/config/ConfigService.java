@@ -6,10 +6,8 @@ import com.magestore.app.lib.model.config.ConfigCountry;
 import com.magestore.app.lib.model.config.ConfigCustomerGroup;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.service.Service;
-
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -47,5 +45,5 @@ public interface ConfigService extends Service {
      * @throws IOException
      * @throws ParseException
      */
-    List<ConfigCountry> getCountry() throws InstantiationException, IllegalAccessException, IOException, ParseException;
+    Map<String, ConfigCountry> getCountry() throws InstantiationException, IllegalAccessException, IOException, ParseException;
 }

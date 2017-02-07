@@ -2,6 +2,7 @@ package com.magestore.app.lib.model.customer;
 
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.directory.Region;
+import com.magestore.app.pos.model.directory.PosRegion;
 
 import java.util.List;
 
@@ -55,14 +56,16 @@ public interface CustomerAddress extends Model {
     String getCompany();
     void setCompany(String strCompany);
 
-    boolean isShipping();
-    void setDefaultShipping(boolean blnShipping);
+    String isShipping();
+    void setDefaultShipping(String strShipping);
 
-    boolean isBilling();
-    void setDefaultBilling(boolean blnBilling);
+    String isBilling();
+    void setDefaultBilling(String strBilling);
 
     Region getRegion();
     String getRegionCode();
+    void setRegionID(String strRegionID);
+    void setRegion(Region region);
 
     void setCustomer(String strCustomerID);
     void setCustomer(Customer customer);

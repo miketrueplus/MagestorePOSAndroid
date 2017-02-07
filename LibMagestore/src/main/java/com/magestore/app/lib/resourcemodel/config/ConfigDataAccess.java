@@ -6,9 +6,7 @@ import com.magestore.app.lib.model.config.ConfigCountry;
 import com.magestore.app.lib.parse.ParseException;
 import com.magestore.app.lib.resourcemodel.DataAccess;
 import com.magestore.app.lib.resourcemodel.DataAccessException;
-
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,5 +20,5 @@ public interface ConfigDataAccess extends DataAccess {
     Config retrieveConfig() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     String getConfig(String configPath) throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     Map<String, String> getCustomerGroup() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
-    List<ConfigCountry> getCountryGroup() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
+    Map<String, ConfigCountry> getCountryGroup() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
 }

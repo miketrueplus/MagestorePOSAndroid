@@ -1,7 +1,7 @@
 package com.magestore.app.pos.model.config;
 
 import com.magestore.app.lib.model.config.ConfigCountry;
-import com.magestore.app.lib.model.directory.Region;
+import com.magestore.app.lib.model.config.ConfigRegion;
 import com.magestore.app.pos.model.PosAbstractModel;
 
 import java.util.List;
@@ -43,8 +43,8 @@ public class PosConfigCountry extends PosAbstractModel implements ConfigCountry 
     }
 
     @Override
-    public List<Region> getRegions() {
-        return (List<Region>)(List<?>) (regions);
+    public List<ConfigRegion> getRegions() {
+        return (List<ConfigRegion>)(List<?>) (regions);
     }
 
     @Override

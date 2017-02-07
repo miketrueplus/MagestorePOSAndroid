@@ -9,6 +9,7 @@ import java.util.List;
  */
 
 public interface Customer extends Model {
+    void setID(String strID);
     String getName();
     String getEmail();
     void setEmail(String email);
@@ -23,4 +24,6 @@ public interface Customer extends Model {
     void setAddressList(List<CustomerAddress> addresses);
     List<Complain> getComplain();
     void setComplain(List<Complain> complains);
+    String getSubscriber();
+    void setSubscriber(String strSubscriber);
 }

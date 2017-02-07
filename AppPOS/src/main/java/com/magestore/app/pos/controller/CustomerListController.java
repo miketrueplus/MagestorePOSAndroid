@@ -6,9 +6,12 @@ import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.config.ConfigCountry;
 import com.magestore.app.lib.model.customer.Complain;
 import com.magestore.app.lib.model.customer.Customer;
+import com.magestore.app.lib.model.customer.CustomerAddress;
+import com.magestore.app.lib.model.directory.Region;
 import com.magestore.app.lib.service.Service;
 import com.magestore.app.lib.service.ServiceFactory;
 import com.magestore.app.lib.service.config.ConfigService;
+import com.magestore.app.lib.service.customer.CustomerAddressService;
 import com.magestore.app.lib.service.customer.CustomerComplainService;
 import com.magestore.app.lib.service.customer.CustomerService;
 import com.magestore.app.pos.model.customer.PosComplain;
@@ -36,6 +39,7 @@ public class CustomerListController extends AbstractListController<Customer> {
      */
     CustomerService mCustomerService;
     CustomerComplainService mCustomerComplainService;
+    CustomerAddressService mCustomerAddressService;
     ConfigService mConfigService;
 
     /**
@@ -54,6 +58,7 @@ public class CustomerListController extends AbstractListController<Customer> {
         try {
             mConfigService = ServiceFactory.getFactory(getMagestoreContext()).generateConfigService();
             mCustomerComplainService = ServiceFactory.getFactory(getMagestoreContext()).generateCustomerComplainService();
+            mCustomerAddressService = ServiceFactory.getFactory(getMagestoreContext()).generateCustomerAddressService();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InstantiationException e) {
@@ -188,7 +193,7 @@ public class CustomerListController extends AbstractListController<Customer> {
         return null;
     }
 
-    public List<ConfigCountry> getCountry() {
+    public Map<String, ConfigCountry> getCountry() {
         try {
             return mConfigService.getCountry();
         } catch (InstantiationException e) {
@@ -201,5 +206,13 @@ public class CustomerListController extends AbstractListController<Customer> {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public CustomerAddress createCustomerAddress() {
+        return mCustomerAddressService.create(null);
+    }
+
+    public Region createRegion() {
+        return mCustomerAddressService.createRegion();
     }
 }

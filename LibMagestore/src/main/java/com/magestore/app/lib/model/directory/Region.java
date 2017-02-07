@@ -10,5 +10,8 @@ import com.magestore.app.lib.model.Model;
 
 public interface Region extends Model {
     String getRegionCode();
+    void setRegionCode(String strRegionCode);
     String getRegionName();
+    void setRegionName(String strRegionName);
+    void setID(String strID);
 }

@@ -2,12 +2,14 @@ package com.magestore.app.pos.service.customer;
 
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.customer.CustomerAddress;
+import com.magestore.app.lib.model.directory.Region;
 import com.magestore.app.lib.resourcemodel.ChildListDataAccess;
 import com.magestore.app.lib.resourcemodel.DataAccessFactory;
 import com.magestore.app.lib.resourcemodel.customer.CustomerAddressDataAccess;
 import com.magestore.app.lib.resourcemodel.customer.CustomerDataAccess;
 import com.magestore.app.lib.service.customer.CustomerAddressService;
 import com.magestore.app.pos.model.customer.PosCustomerAddress;
+import com.magestore.app.pos.model.directory.PosRegion;
 import com.magestore.app.pos.service.AbstractService;
 
 import java.io.IOException;
@@ -25,6 +27,7 @@ public class POSCustomerAddressService extends AbstractService implements Custom
 
     /**
      * Đếm số address trong customer
+     *
      * @param customer
      * @return
      * @throws ParseException
@@ -40,6 +43,7 @@ public class POSCustomerAddressService extends AbstractService implements Custom
 
     /**
      * Khởi tạo address theo customer
+     *
      * @param customer
      * @return
      */
@@ -54,6 +58,7 @@ public class POSCustomerAddressService extends AbstractService implements Custom
 
     /**
      * Khởi tạo address theo customer
+     *
      * @param customer
      * @return
      */
@@ -128,6 +133,12 @@ public class POSCustomerAddressService extends AbstractService implements Custom
         // Xóa address trong danh sách
         if (success) remove(customer, customerAddress);
         return success;
+    }
+
+    @Override
+    public Region createRegion() {
+        PosRegion region = new PosRegion();
+        return region;
     }
 
     /**

@@ -36,6 +36,16 @@ public class PosCustomer extends PosAbstractModel implements Customer {
     List<Complain> complainsa;
 
     @Override
+    public String getID() {
+        return id;
+    }
+
+    @Override
+    public void setID(String strID) {
+        id = strID;
+    }
+
+    @Override
     public String getName() {
         return full_name;
     }
@@ -87,12 +97,12 @@ public class PosCustomer extends PosAbstractModel implements Customer {
 
     @Override
     public List<CustomerAddress> getAddress() {
-        return (List<CustomerAddress>)(List<?>) addresses;
+        return (List<CustomerAddress>) (List<?>) addresses;
     }
 
     @Override
     public void setAddressList(List<CustomerAddress> addresses) {
-        this.addresses = (List<PosCustomerAddress>)(List<?>) addresses;
+        this.addresses = (List<PosCustomerAddress>) (List<?>) addresses;
     }
 
 
@@ -104,5 +114,15 @@ public class PosCustomer extends PosAbstractModel implements Customer {
     @Override
     public void setComplain(List<Complain> complains) {
         this.complainsa = complains;
+    }
+
+    @Override
+    public String getSubscriber() {
+        return subscriber_status;
+    }
+
+    @Override
+    public void setSubscriber(String strSubscriber) {
+        subscriber_status = strSubscriber;
     }
 }

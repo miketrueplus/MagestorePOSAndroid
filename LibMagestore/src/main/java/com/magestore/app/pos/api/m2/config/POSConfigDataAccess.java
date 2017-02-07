@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -155,13 +156,12 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
      * @throws ParseException
      */
     @Override
-    public List<ConfigCountry> getCountryGroup() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+    public Map<String, ConfigCountry> getCountryGroup() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
         // nếu chưa load config, cần khởi tạo chế độ default
         if (mConfig == null) mConfig = new PosConfigDefault();
 
         ArrayList<LinkedTreeMap> countryList = (ArrayList) mConfig.getValue("country");
-        List<PosConfigCountry> listConfigCountry = new ArrayList<PosConfigCountry>();
-        List<PosConfigRegion> listConfigRegion = new ArrayList<PosConfigRegion>();
+        Map<String, ConfigCountry> listConfigCountry = new HashMap<String, ConfigCountry>();
         for (LinkedTreeMap country : countryList) {
             ConfigCountry configCountry = new PosConfigCountry();
             String country_id = country.get("country_id").toString();
@@ -170,6 +170,7 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
             configCountry.setCountryName(country_name);
             ArrayList<LinkedTreeMap> regionList = (ArrayList) country.get("regions");
             if (regionList != null) {
+                List<PosConfigRegion> listConfigRegion = new ArrayList<PosConfigRegion>();
                 for (LinkedTreeMap region : regionList) {
                     ConfigRegion configRegion = new PosConfigRegion();
                     String code = region.get("code").toString();
@@ -180,25 +181,11 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
                     configRegion.setName(name);
                     listConfigRegion.add((PosConfigRegion) configRegion);
                 }
+                configCountry.setRegions(listConfigRegion);
             }
-//            Collections.sort(listConfigRegion, new Comparator<PosConfigRegion>() {
-//                @Override
-//                public int compare(PosConfigRegion r1, PosConfigRegion r2) {
-//                    return r1.getName().compareToIgnoreCase(r2.getName());
-//                }
-//            });
-            configCountry.setRegions(listConfigRegion);
-            listConfigCountry.add((PosConfigCountry) configCountry);
+            listConfigCountry.put(country_id, configCountry);
         }
-        // TODO: chưa sort country
-//        Collections.sort(listConfigCountry, new Comparator<PosConfigCountry>() {
-//            @Override
-//            public int compare(PosConfigCountry c1, PosConfigCountry c2) {
-//                return c1.getName().toString().compareToIgnoreCase(c2.getName().toString());
-//            }
-//        });
-        return (List<ConfigCountry>) (List<?>) listConfigCountry;
+        // TODO: chưa sort country, region
+        return listConfigCountry;
     }
-
-
 }
