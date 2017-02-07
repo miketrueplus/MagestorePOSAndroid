@@ -14,6 +14,8 @@ import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.panel.AbstractListPanel;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.databinding.CardCustomerListContentBinding;
+import com.magestore.app.pos.util.DialogUtil;
+import com.magestore.app.pos.view.MagestoreDialog;
 
 /**
  * Panel giao diện quản lý danh sách khách hàng
@@ -62,8 +64,11 @@ public class CustomerListPanel extends AbstractListPanel<Customer> {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                CustomerAddNewPanel customerAddNewPanel = new CustomerAddNewPanel(getContext());
+                customerAddNewPanel.setController(mController);
+
+                MagestoreDialog dialog = DialogUtil.dialog(getContext(), getContext().getString(R.string.customer_add_new), customerAddNewPanel);
+                dialog.show();
             }
         });
     }

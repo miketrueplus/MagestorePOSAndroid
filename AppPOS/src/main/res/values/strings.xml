@@ -30,6 +30,7 @@
     <string name="customer_title_order_detail">Order Detail</string>
     <string name="customer_update_address">Update address</string>
     <string name="customer_delete_address">Delete address</string>
+    <string name="customer_add_new">New Customer</string>
 
     <!-- Strings related to order -->
     <string name="order_detail_top_status">Status:</string>
