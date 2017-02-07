@@ -3,6 +3,7 @@ package com.magestore.app.lib.connection.http;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.magestore.app.lib.connection.CacheConnection;
 import com.magestore.app.lib.connection.Connection;
 import com.magestore.app.lib.connection.ConnectionException;
 import com.magestore.app.lib.connection.ParamBuilder;
@@ -35,6 +36,9 @@ import java.util.Map;
 public class MagestoreStatement implements Statement {
     // Param builder
     ParamBuilder mParambuilder;
+
+    // cache
+    MagestoreFileCacheConnection mCacheConnection;
 
     // String builder excuteQuery
     StringBuilder mstrPreparedQuery;
@@ -209,24 +213,24 @@ public class MagestoreStatement implements Statement {
 
         return mstrExecuteQuery;
     }
-//
-//    public String abuildFinalQuery() {
-//        mstrExecuteQuery = null;
-//        if (mstrPreparedQuery == null) prepareQuery(mstrLastPreparedQuery);
-//        StringBuilder strFinalBuilderQuery = mstrPreparedQuery;
-//        if (mParambuilder != null) {
-//            strFinalBuilderQuery = new StringBuilder(mstrPreparedQuery);
-//            strFinalBuilderQuery.append(mParambuilder.buildQuery());
-//        }
-//        if (mValuesMap != null) {
-//            StrSubstitutor sub = new StrSubstitutor(mValuesMap);
-//            mstrExecuteQuery = sub.replace(strFinalBuilderQuery);
-//        }
-//        else
-//            mstrExecuteQuery = strFinalBuilderQuery.toString();
-//
-//        return mstrExecuteQuery;
-//    }
+
+    @Override
+    public void setEnableCacle() {
+        mCacheConnection = new MagestoreFileCacheConnection();
+        mCacheConnection.setStatement(this);
+    }
+
+    @Override
+    public void setEnableCache(String cacheName) {
+        mCacheConnection = new MagestoreFileCacheConnection();
+        mCacheConnection.setCacheName(cacheName);
+        mCacheConnection.setStatement(this);
+    }
+
+    @Override
+    public CacheConnection getCacheConnection() {
+        return mCacheConnection;
+    }
 
     /**
      * Chuẩn bị HTTP connection với method post và object
@@ -239,23 +243,19 @@ public class MagestoreStatement implements Statement {
     }
 
     /**
-     * Thực hiện truy vấn đến server
-     * @return ResultReading
+     *
+     * @return
      * @throws ConnectionException
+     * @throws IOException
      */
-    @Override
-    public ResultReading execute() throws ConnectionException, IOException {
-        // Chuẩn bị chuỗi URL truy vấn, thay các tham số bằng các giá trị tương ứng
-//        buildFinalQuery();
-        String strExecuteQuery = buildFinalQuery();
-
+    protected ResultReading doExecute() throws ConnectionException, IOException {
         // Tham chiếu đến connection
         MagestoreConnection magestoreConnection = (MagestoreConnection) getConnection();
         if (!magestoreConnection.isOpenned())
             magestoreConnection.open();
 
         // Khởi tạo HTTP Connection với query, giao thức GET
-        mHttpConnection = magestoreConnection.openHTTPConnection(strExecuteQuery, mstrMethod);
+        mHttpConnection = magestoreConnection.openHTTPConnection(mstrExecuteQuery, mstrMethod);
 
         // Nếu có object làm tham số. ghi json vào http body
         if (mobjPrepareParam != null) {
@@ -278,10 +278,33 @@ public class MagestoreStatement implements Statement {
         int statusCode = mHttpConnection.getResponseCode();
         InputStream is = null;
 
-        if (statusCode == HTTP_CODE_RESPONSE_SUCCESS)
+        if (statusCode == HTTP_CODE_RESPONSE_SUCCESS) {
             return new MagestoreResultReading(mHttpConnection.getInputStream());
-        else
-            return new MagestoreResultReadingException(mHttpConnection.getErrorStream(), statusCode);
+        }
+        else {
+            // có lỗi, ném ra exception
+            MagestoreResultReadingException rp = new MagestoreResultReadingException(mHttpConnection.getErrorStream(), statusCode);
+            throw new ConnectionException(rp.readResult2String());
+        }
+    }
+
+    /**
+     * Thực hiện truy vấn đến server
+     * @return ResultReading
+     * @throws ConnectionException
+     */
+    @Override
+    public ResultReading execute() throws ConnectionException, IOException {
+        // Chuẩn bị chuỗi URL truy vấn, thay các tham số bằng các giá trị tương ứng
+        String strExecuteQuery = buildFinalQuery();
+
+        // kiểm tra load từ cache trước
+        if (mCacheConnection != null) {
+            return new MagestoreResultReading(mCacheConnection.execute());
+        }
+
+        // k0 chỉ định xử lý cache
+        return doExecute();
     }
 
     /**
@@ -396,4 +419,6 @@ public class MagestoreStatement implements Statement {
         mstrPreparedQuery = null;
         mHttpConnection = null;
     }
+
+
 }

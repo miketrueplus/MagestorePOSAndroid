@@ -130,7 +130,7 @@ public class MagestoreResultReading implements ResultReading {
      * @return
      */
     @Override
-    public InputStream getInputStream() {
+    public InputStream getInputStream() throws IOException {
         return mInputStream;
     }
 

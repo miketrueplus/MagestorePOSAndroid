@@ -35,6 +35,6 @@ public class InsertListTask<TModel extends Model>
     @Override
     protected void onPostExecute(Boolean aBoolean) {
         mListController.onInsertPostExecute(aBoolean, paramsModel);
-        mListController.doShowProgress(false);
+//        mListController.doShowProgress(false);
     }
 }

@@ -79,7 +79,7 @@ public class SalesActivity extends AbstractActivity
         }
 
         mProductListPanel = (ProductListPanel) findViewById(R.id.product_list_panel);
-        mProductListPanel.setColumn(mTwoPane ? 4 : 1);
+//        mProductListPanel.setColumn(mTwoPane ? 4 : 1);
 
         mCartItemListPanel = (CartItemListPanel) findViewById(R.id.order_item_panel);
         if (mCartItemListPanel == null) return;

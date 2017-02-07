@@ -1,5 +1,7 @@
 package com.magestore.app.lib.controller;
 
+import android.widget.Toast;
+
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
 import com.magestore.app.lib.panel.AbstractListPanel;
@@ -9,6 +11,8 @@ import com.magestore.app.lib.task.InsertListTask;
 import com.magestore.app.lib.task.RetrieveListTask;
 import com.magestore.app.lib.task.UpdateListTask;
 
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +26,11 @@ public abstract class AbstractListController<TModel extends Model>
         extends AbstractController<TModel, AbstractListPanel<TModel>>
         implements ListController<TModel> {
 
+    // tham chiếu phân trang
+    private int mintPageSize = 500;
+    private int mintPageFirst = 1;
+    private int mintPageSizeMax = 500;
+    private boolean lazyLoading = false;
 
     // tự động chọn item đầu tiên trong danh sách
     boolean mblnAutoChooseFirstItem = true;
@@ -43,6 +52,21 @@ public abstract class AbstractListController<TModel extends Model>
      * Service xử lý
      */
     protected ListService<TModel> mListService;
+
+    @Override
+    public void setPage(int pageSize, int pageMax) {
+        mintPageSize = pageSize;
+        mintPageSizeMax = pageMax;
+        lazyLoading = true;
+    }
+
+    /**
+     * Clear danh sách
+     */
+    public void clearList() {
+        mList = null;
+        mView.notifyDataSetChanged();
+    }
 
     /**
      * Thiết lập danh sách, cho hiển thị lên view
@@ -98,8 +122,8 @@ public abstract class AbstractListController<TModel extends Model>
     @Override
     public void doRetrieve(){
         // chuẩn bị task load data
-        RetrieveListTask<TModel> task = new RetrieveListTask<TModel>(this);
-        task.doExecute(0, 500);
+        doRetrieve(1, mintPageSize);
+
     }
 
     /**
@@ -110,6 +134,8 @@ public abstract class AbstractListController<TModel extends Model>
         // chuẩn bị task load data
         RetrieveListTask<TModel> task = new RetrieveListTask<TModel>(this);
         task.doExecute(page, pageSize);
+        doShowProgress(true);
+
     }
 
     /**
@@ -121,7 +147,8 @@ public abstract class AbstractListController<TModel extends Model>
     public List<TModel> onRetrieveBackground(int page, int pageSize) throws Exception {
         if (mListService != null)
             return mListService.retrieve(page, pageSize);
-        return loadDataBackground();
+        else
+            return loadDataBackground();
     }
 
     /**
@@ -130,12 +157,29 @@ public abstract class AbstractListController<TModel extends Model>
      */
     @Override
     public void onRetrievePostExecute(List<TModel> list) {
-        // gọi lại method đặt tên theo phiên bản cũ
-        bindList(list);
+        // tắt progress
+        doShowProgress(false);
+        if (lazyLoading && ((list == null) || (list.size() <= 0))) return;
 
-        // Chọn item đầu tiên
-        if (mblnAutoChooseFirstItem && mList != null && mDetailView != null && mList.size() > 0)
-            bindItem(mList.get(0));
+        // xóa danh sách cũ đi nếu k0 chạy lazyloading
+        if (!lazyLoading) {
+            if (mList != null) mList.clear();
+            mList = null;
+        }
+
+        // gọi lại method đặt tên theo phiên bản cũ
+        if (mList != null) {
+            mList.addAll(list);
+            mView.notifyDataSetChangedLastItem(list);
+            mView.setItemLoadingProgress(null, false);
+        }
+        else {
+            bindList(list);
+
+            // Chọn item đầu tiên
+            if (mblnAutoChooseFirstItem && mList != null && mDetailView != null && mList.size() > 0)
+                bindItem(mList.get(0));
+        }
     }
 
     /**
@@ -311,5 +355,15 @@ public abstract class AbstractListController<TModel extends Model>
     @Override
     public TModel createItem() {
         return getListService().create();
+    }
+
+    /**
+     * lấy số trang
+     * @param page
+     */
+    @Override
+    public void doRetrieveMore(int page) {
+        doRetrieve(page, mintPageSize);
+        mView.setItemLoadingProgress(null, true);
     }
 }

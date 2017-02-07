@@ -45,5 +45,5 @@ public interface ProductService extends Service, ListService<Product> {
      * @param product
      * @return
      */
-    public Bitmap retrieveBitmap(Product product, int sizeWidth, int sizeHeight);
+    public Bitmap retrieveBitmap(Product product, int sizeWidth, int sizeHeight) throws InstantiationException, IllegalAccessException, IOException;
 }

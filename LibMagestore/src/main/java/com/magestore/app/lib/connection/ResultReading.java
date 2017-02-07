@@ -29,7 +29,7 @@ public interface ResultReading {
      * Trả về input stream
      * @return
      */
-    InputStream getInputStream();
+    InputStream getInputStream() throws IOException;
 
     /**
      * Đóng và giải phóng tài nguyên

@@ -44,6 +44,7 @@ public class CustomerListController extends AbstractListController<Customer> {
 
     /**
      * Thiết lập service xử lý các nghiệp vụ liên quan customer
+     *
      * @param service
      */
     public void setCustomerService(CustomerService service) {
@@ -75,6 +76,7 @@ public class CustomerListController extends AbstractListController<Customer> {
 
     /**
      * Tạo mới customer
+     *
      * @return
      */
     public Customer createNewCustomer() {
@@ -83,28 +85,33 @@ public class CustomerListController extends AbstractListController<Customer> {
 
     /**
      * Trả lại customer service xử lý các nghiệp vụ liên quan customer
+     *
      * @return
      */
     public CustomerService getCustomerService() {
         return mCustomerService;
     }
 
-    public void doLoadComplain(Customer customer) {
-        doAction(ACTION_CODE_GET_COMPLAIN, null, null, customer);
-    }
+//    public void doLoadComplain(Customer customer) {
+//        doAction(ACTION_CODE_GET_COMPLAIN, null, null, customer);
+//        if (mDetailView instanceof CustomerDetailPanel)
+//            ((CustomerDetailPanel)mDetailView).showComplainProgress(true);
+//    }
 
     /**
      * Tạo mới 1 complain
+     *
      * @param newComplain
      */
     public void doInputNewComplain(String newComplain) {
-        Complain complain =  mCustomerComplainService.create(mSelectedItem);
+        Complain complain = mCustomerComplainService.create(mSelectedItem);
         complain.setContent(newComplain);
         doAction(ACTION_CODE_INPUT_COMPLAIN, null, null, mItem, complain);
     }
 
     /**
      * Thực hiện các action trên background
+     *
      * @param actionType
      * @param actionCode
      * @param wrapper
@@ -127,6 +134,7 @@ public class CustomerListController extends AbstractListController<Customer> {
 
     /**
      * Sau khi hoàn thành các action
+     *
      * @param success
      * @param actionType
      * @param actionCode
@@ -135,21 +143,32 @@ public class CustomerListController extends AbstractListController<Customer> {
      */
     @Override
     public void onActionPostExecute(boolean success, int actionType, String actionCode, Map<String, Object> wrapper, Model... models) {
+        // Nếu action là lấy complain
         if (success && actionType == ACTION_CODE_GET_COMPLAIN) {
-            super.bindItem((Customer) models[0]);
+            // tắt progress với complain
+            if (mDetailView instanceof CustomerDetailPanel) {
+                ((CustomerDetailPanel) mDetailView).showComplainProgress(false);
+                ((CustomerDetailPanel) mDetailView).bindComplain((Customer) models[0]);
+            }
         }
+        // nếu action là input new complain
         if (success && actionType == ACTION_CODE_INPUT_COMPLAIN) {
-            super.bindItem((Customer) models[0]);
+            if (mDetailView instanceof CustomerDetailPanel) {
+                ((CustomerDetailPanel) mDetailView).bindComplain((Customer) models[0]);
+            }
         }
     }
 
     /**
      * Bind item, cập nhật giao diện
+     *
      * @param item
      */
     @Override
     public void bindItem(Customer item) {
         super.bindItem(item);
         doAction(ACTION_CODE_GET_COMPLAIN, null, null, item);
+        if (mDetailView instanceof CustomerDetailPanel)
+            ((CustomerDetailPanel) mDetailView).showComplainProgress(true);
     }
 }

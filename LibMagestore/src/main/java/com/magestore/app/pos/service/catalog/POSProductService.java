@@ -69,14 +69,16 @@ public class POSProductService extends AbstractService implements ProductService
      * @return
      */
     @Override
-    public Bitmap retrieveBitmap(Product product, int sizeWidth, int sizeHeight) {
+    public Bitmap retrieveBitmap(Product product, int sizeWidth, int sizeHeight) throws InstantiationException, IllegalAccessException, IOException {
         Bitmap bmp = null;
         bmp = (Bitmap) product.getBitmap();
         if (bmp != null && !bmp.isRecycled()) return bmp;
         if (product.getImage() == null) return null;
 
-        // ảnh chưa được load vào product, load ảnh về
-        bmp = ImageUtil.getBitmap(product, product.getImage(), sizeWidth, sizeWidth);
+        // ảnh chưa load vào product, load ảnh về
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        ProductDataAccess productDataAccess = factory.generateProductDataAccess();
+        bmp = productDataAccess.retrieveBitmap(product, sizeWidth, sizeHeight);
 
         // Đặt biến bitmap cho ảnh
         product.setBitmap(bmp);

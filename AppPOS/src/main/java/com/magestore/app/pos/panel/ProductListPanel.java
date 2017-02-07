@@ -52,22 +52,13 @@ public class ProductListPanel extends AbstractListPanel<Product> {
         super(context, attrs, defStyleAttr);
     }
 
-
-    /**
-     * Đặt sự kiện xử lý khi load Product
-     * @param productListPanelListener
-     */
-//    public void setListener(ProductListPanelListener productListPanelListener) {
-//        mProductListPanelListener = productListPanelListener;
-//    }
-
     /**
      * Đặt số cột sản phẩm
      * @param column
      */
-    public void setColumn(int column) {
+//    public void setColumn(int column) {
 //        ((GridLayoutManager)(mRecycleView.getLayoutManager())).setSpanCount(column);
-    }
+//    }
 
     /**
      * Chuẩn bị layout control
@@ -100,6 +91,7 @@ public class ProductListPanel extends AbstractListPanel<Product> {
 
     @Override
     protected void bindItem(View view, Product item, int position) {
+        if (item == null) return;
         final CardProductListContentBinding binding = DataBindingUtil.bind(view);
         binding.setProduct(item);
 

@@ -1,7 +1,10 @@
 package com.magestore.app.pos.panel;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
@@ -44,6 +47,9 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
     ImageButton mbtnCheckOut;
     ImageButton mbtnNewAddress;
     ImageButton mbtnNewComplain;
+
+    // progress
+    View mComplainProgress;
 
     // Edit text trên form
     EditText mtxtFirstName;
@@ -114,6 +120,9 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
         mbtnNewAddress = (ImageButton) findViewById(R.id.btn_new_address);
         mbtnCheckOut = (ImageButton) findViewById(R.id.btn_check_out);
         mbtnNewComplain = (ImageButton) findViewById(R.id.btn_new_complain);
+
+        // complain progress bar
+        mComplainProgress = findViewById(R.id.progress_complain_list);
 
         mbtnSaveCustomer.setVisibility(INVISIBLE);
         mbtnEditCustomer.setVisibility(VISIBLE);
@@ -277,6 +286,11 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
         if (item.getComplain() != null) mCustomerComplainListView.bindList(item.getComplain());
     }
 
+    public void bindComplain(Customer item) {
+        // chỉ định complain list cho hiển thị
+        if (item.getComplain() != null) mCustomerComplainListView.bindList(item.getComplain());
+    }
+
     /**
      * Cập nhật view khi dữ liệu được thanh đổi
      */
@@ -293,5 +307,42 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
         item.setFirstName(mtxtFirstName.getText().toString().trim());
         item.setLastName(mtxtLastName.getText().toString().trim());
         item.setGroupID(mspinGroupID.getSelection());
+    }
+
+    /**
+     * Hiển thị progress với complain
+     * @param show
+     */
+    public void showComplainProgress(final boolean show) {
+            if (mComplainProgress == null) return;
+// On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+            // for very easy animations. If available, use these APIs to fade-in
+            // the progress spinner.
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+                int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
+//            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+//            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
+//                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+//                @Override
+//                public void onAnimationEnd(Animator animation) {
+//                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+//                }
+//            });
+
+                mComplainProgress.setVisibility(show ? View.VISIBLE : View.GONE);
+                mComplainProgress.animate().setDuration(shortAnimTime).alpha(
+                        show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        mComplainProgress.setVisibility(show ? View.VISIBLE : View.GONE);
+                    }
+                });
+            } else {
+                // The ViewPropertyAnimator APIs are not available, so simply show
+                // and hide the relevant UI components.
+                mComplainProgress.setVisibility(show ? View.VISIBLE : View.GONE);
+//            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+            }
     }
 }

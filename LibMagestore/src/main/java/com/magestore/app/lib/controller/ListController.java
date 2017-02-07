@@ -105,6 +105,13 @@ public interface ListController<TModel extends Model>
     void onInsertPostExecute(Boolean success, TModel... models);
 
     /**
+     * Thiết lập các phân trang
+     * @param pageSize
+     * @param pageMax
+     */
+    void setPage(int pageSize, int pageMax);
+
+    /**
      * Gán 1 list vào danh sách, có cập nhật view
      * @param list
      */
@@ -162,4 +169,10 @@ public interface ListController<TModel extends Model>
      * @param models
      */
     void setSelectedItem(List<TModel> models);
+
+    /**
+     * Load thêm dữ liệu theo số trang (dùng trong lazy loading
+     * @param page
+     */
+    void doRetrieveMore(int page);
 }

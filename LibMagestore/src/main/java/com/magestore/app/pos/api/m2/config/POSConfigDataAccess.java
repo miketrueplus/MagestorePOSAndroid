@@ -1,7 +1,5 @@
 package com.magestore.app.pos.api.m2.config;
 
-import com.google.common.math.DoubleMath;
-import com.google.common.util.concurrent.Service;
 import com.google.gson.internal.LinkedTreeMap;
 import com.magestore.app.lib.connection.Connection;
 import com.magestore.app.lib.connection.ConnectionException;
@@ -9,10 +7,8 @@ import com.magestore.app.lib.connection.ConnectionFactory;
 import com.magestore.app.lib.connection.ParamBuilder;
 import com.magestore.app.lib.connection.ResultReading;
 import com.magestore.app.lib.connection.Statement;
-import com.magestore.app.lib.connection.http.MagestoreCacheConnection;
-import com.magestore.app.lib.model.catalog.Product;
+import com.magestore.app.lib.connection.http.MagestoreFileCacheConnection;
 import com.magestore.app.lib.model.config.Config;
-import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.resourcemodel.config.ConfigDataAccess;
 import com.magestore.app.lib.resourcemodel.DataAccessException;
 import com.magestore.app.pos.api.m2.POSAPI;
@@ -22,14 +18,9 @@ import com.magestore.app.pos.model.config.PosConfig;
 import com.magestore.app.lib.parse.ParseException;
 import com.magestore.app.pos.model.config.PosConfigDefault;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosConfigParseImplement;
-import com.magestore.app.pos.parse.gson2pos.Gson2PosListOrder;
-import com.magestore.app.pos.parse.gson2pos.Gson2PosListProduct;
-import com.magestore.app.util.ConfigUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -61,27 +52,24 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         Statement statement = null;
         ParamBuilder paramBuilder = null;
         Thread thread = null;
+        ResultReading rp = null;
 
         try {
             // Khởi tạo connection và khởi tạo truy vấn
             connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
             statement = connection.createStatement();
             statement.prepareQuery(POSAPI.REST_CONFIG_GET_LISTING);
+            statement.setEnableCache("POSConfigDataAccess.getConfig");
 
             // Xây dựng tham số
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
 
-            // load cache
-            final MagestoreCacheConnection cache = new MagestoreCacheConnection<Gson2PosConfigParseImplement, PosConfig>()
-                    .setCacheName("POSConfigDataAccess.getConfig")
-                    .setStatement(statement)
-                    .setForceOutOfDate(false)
-                    .setReloadCacheLater(true)
-                    .setParseImplement(Gson2PosConfigParseImplement.class)
-                    .setParseModel(PosConfig.class);
-            mConfig = (Config) cache.excute();
-
+            // thực hiện truy vấn
+            rp = statement.execute();
+            rp.setParseImplement(Gson2PosConfigParseImplement.class);
+            rp.setParseModel(PosConfig.class);
+            mConfig = (Config) rp.doParse();
             return mConfig;
         } catch (ConnectionException ex) {
             throw ex;

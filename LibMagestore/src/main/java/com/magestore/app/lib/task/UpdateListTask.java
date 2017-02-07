@@ -38,6 +38,6 @@ public class UpdateListTask<TModel extends Model>
     @Override
     protected void onPostExecute(Boolean aBoolean) {
         mListController.onUpdatePostExecute(aBoolean, models[0], models[1]);
-        mListController.doShowProgress(false);
+//        mListController.doShowProgress(false);
     }
 }
