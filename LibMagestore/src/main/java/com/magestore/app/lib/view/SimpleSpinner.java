@@ -123,6 +123,19 @@ public class SimpleSpinner extends Spinner {
     }
 
     /**
+     * Sử dụng 1 map làm
+     */
+    public void bindModelMap(Map<String, Model> mapValues) {
+        // Lập map key và value
+        ArrayList<String> values = new ArrayList<String>();
+        mListKeys = mapValues.keySet().toArray(new String[0]);
+        for (String key: mListKeys) values.add(mapValues.get(key).getDisplayContent());
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), mListLayout, values);
+        setAdapter(adapter);
+    }
+
+    /**
      * Chỉ định selection
      * @param strKey
      */
