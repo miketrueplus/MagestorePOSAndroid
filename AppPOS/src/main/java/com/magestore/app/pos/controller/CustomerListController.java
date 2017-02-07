@@ -3,6 +3,7 @@ package com.magestore.app.pos.controller;
 import com.google.gson.internal.LinkedTreeMap;
 import com.magestore.app.lib.controller.AbstractListController;
 import com.magestore.app.lib.model.Model;
+import com.magestore.app.lib.model.config.ConfigCountry;
 import com.magestore.app.lib.model.customer.Complain;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.service.Service;
@@ -170,5 +171,35 @@ public class CustomerListController extends AbstractListController<Customer> {
         doAction(ACTION_CODE_GET_COMPLAIN, null, null, item);
         if (mDetailView instanceof CustomerDetailPanel)
             ((CustomerDetailPanel) mDetailView).showComplainProgress(true);
+    }
+
+    public Map<String, String> getCustomerGroupList() {
+        try {
+            return mConfigService.getCustomerGroup();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<ConfigCountry> getCountry() {
+        try {
+            return mConfigService.getCountry();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

@@ -31,6 +31,10 @@
     <string name="customer_update_address">Update address</string>
     <string name="customer_delete_address">Delete address</string>
     <string name="customer_add_new">New Customer</string>
+    <string name="customer_subscribe">Subscribe Newsletter</string>
+    <string name="customer_billing_address">Billing Address</string>
+    <string name="customer_shipping_address">Shipping Address</string>
+    <string name="customer_same_billing_and_shipping_address">Billing Address and Shipping Address are the same</string>
 
     <!-- Strings related to order -->
     <string name="order_detail_top_status">Status:</string>

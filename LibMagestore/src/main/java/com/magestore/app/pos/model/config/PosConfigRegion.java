@@ -12,6 +12,12 @@ import com.magestore.app.pos.model.PosAbstractModel;
 public class PosConfigRegion extends PosAbstractModel implements ConfigRegion {
     String code;
     String name;
+    String id;
+
+    @Override
+    public String getID() {
+        return code;
+    }
 
     @Override
     public String getCode() {
@@ -19,7 +25,27 @@ public class PosConfigRegion extends PosAbstractModel implements ConfigRegion {
     }
 
     @Override
+    public void setCode(String strCode) {
+        code = strCode;
+    }
+
+    @Override
     public String getName() {
+        return name;
+    }
+
+    @Override
+    public void setName(String strName) {
+        name = strName;
+    }
+
+    @Override
+    public void setID(String id) {
+        this.id = id;
+    }
+
+    @Override
+    public String getDisplayContent() {
         return name;
     }
 }

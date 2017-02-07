@@ -69,6 +69,10 @@ public class MagestoreDialog extends Dialog {
         return dialog_save;
     }
 
+    public TextView getButtonCancel() {
+        return dialog_cancel;
+    }
+
     public void setDialogTitle(String dialogTitle) {
         this.dialogTitle = dialogTitle;
     }

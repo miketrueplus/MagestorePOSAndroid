@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:magestore_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/boder_linear_layout"
+            android:orientation="vertical"
+            android:padding="5dp">
+
+            <com.magestore.app.view.FormatTextEdit
+                android:id="@+id/b_first_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:hint="@string/first_name" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/boder_linear_layout"
+            android:orientation="vertical"
+            android:padding="5dp">
+
+            <com.magestore.app.view.FormatTextEdit
+                android:id="@+id/b_last_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:hint="@string/last_name" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/boder_linear_layout"
+            android:orientation="vertical"
+            android:padding="5dp">
+
+            <com.magestore.app.view.FormatTextEdit
+                android:id="@+id/b_company"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:hint="@string/company" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/boder_linear_layout"
+            android:orientation="vertical"
+            android:padding="5dp">
+
+            <com.magestore.app.view.FormatTextEdit
+                android:id="@+id/b_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:hint="@string/phone" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/boder_linear_layout"
+            android:orientation="vertical"
+            android:padding="5dp">
+
+            <com.magestore.app.view.FormatTextEdit
+                android:id="@+id/b_street1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:hint="@string/street" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/boder_linear_layout"
+            android:orientation="vertical"
+            android:padding="5dp">
+
+            <com.magestore.app.view.FormatTextEdit
+                android:id="@+id/b_street2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:hint="@string/street" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/boder_linear_layout"
+            android:orientation="vertical"
+            android:padding="5dp">
+
+            <com.magestore.app.view.FormatTextEdit
+                android:id="@+id/b_city"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:hint="@string/city" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/boder_linear_layout"
+            android:orientation="vertical"
+            android:padding="5dp">
+
+            <com.magestore.app.view.FormatTextEdit
+                android:id="@+id/b_zipcode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:hint="@string/zip_code" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/boder_linear_layout"
+            android:orientation="vertical"
+            android:padding="5dp">
+
+            <com.magestore.app.lib.view.SimpleSpinner
+                android:id="@+id/b_spinner_country"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:padding="5dp"
+                android:textSize="18sp"
+                magestore_view:layout_no_scroll="true"
+                magestore_view:layout_row="@layout/simple_textview_row" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/boder_linear_layout"
+            android:orientation="vertical"
+            android:padding="5dp">
+
+            <com.magestore.app.view.FormatTextEdit
+                android:id="@+id/b_state"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:hint="@string/state_or_province" />
+
+            <com.magestore.app.lib.view.SimpleSpinner
+                android:id="@+id/s_spinner_state"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:padding="5dp"
+                android:textSize="18sp"
+                android:visibility="gone"
+                magestore_view:layout_no_scroll="true"
+                magestore_view:layout_row="@layout/simple_textview_row" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/boder_linear_layout"
+            android:orientation="vertical"
+            android:padding="5dp">
+
+            <com.magestore.app.view.FormatTextEdit
+                android:id="@+id/b_vat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:hint="@string/vat" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="5dp" />
+    </LinearLayout>
+</LinearLayout>

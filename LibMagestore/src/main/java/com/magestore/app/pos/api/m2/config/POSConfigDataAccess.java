@@ -9,6 +9,8 @@ import com.magestore.app.lib.connection.ResultReading;
 import com.magestore.app.lib.connection.Statement;
 import com.magestore.app.lib.connection.http.MagestoreFileCacheConnection;
 import com.magestore.app.lib.model.config.Config;
+import com.magestore.app.lib.model.config.ConfigCountry;
+import com.magestore.app.lib.model.config.ConfigRegion;
 import com.magestore.app.lib.resourcemodel.config.ConfigDataAccess;
 import com.magestore.app.lib.resourcemodel.DataAccessException;
 import com.magestore.app.pos.api.m2.POSAPI;
@@ -16,11 +18,16 @@ import com.magestore.app.pos.api.m2.POSAbstractDataAccess;
 import com.magestore.app.pos.api.m2.POSDataAccessSession;
 import com.magestore.app.pos.model.config.PosConfig;
 import com.magestore.app.lib.parse.ParseException;
+import com.magestore.app.pos.model.config.PosConfigCountry;
 import com.magestore.app.pos.model.config.PosConfigDefault;
+import com.magestore.app.pos.model.config.PosConfigRegion;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosConfigParseImplement;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -114,6 +121,7 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
 
     /**
      * Lấy customer group trong config
+     *
      * @return
      * @throws DataAccessException
      * @throws ConnectionException
@@ -126,13 +134,71 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         // nếu chưa load config, cần khởi tạo chế độ default
         if (mConfig == null) mConfig = new PosConfigDefault();
 
-        // Chuyển đối custome
+        // Chuyển đối customer
         ArrayList<LinkedTreeMap> customerGroupList = (ArrayList) mConfig.getValue("customerGroup");
         LinkedTreeMap<String, String> returnCustomerGroup = new LinkedTreeMap<String, String>();
-        for (LinkedTreeMap customerGroup: customerGroupList) {
+        for (LinkedTreeMap customerGroup : customerGroupList) {
             Double id = (Double) customerGroup.get("id");
             returnCustomerGroup.put(String.format("%.0f", id), customerGroup.get("code").toString());
         }
         return returnCustomerGroup;
     }
+
+    /**
+     * Lấy country trong config
+     *
+     * @return
+     * @throws DataAccessException
+     * @throws ConnectionException
+     * @throws ParseException
+     * @throws IOException
+     * @throws ParseException
+     */
+    @Override
+    public List<ConfigCountry> getCountryGroup() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        // nếu chưa load config, cần khởi tạo chế độ default
+        if (mConfig == null) mConfig = new PosConfigDefault();
+
+        ArrayList<LinkedTreeMap> countryList = (ArrayList) mConfig.getValue("country");
+        List<PosConfigCountry> listConfigCountry = new ArrayList<PosConfigCountry>();
+        List<PosConfigRegion> listConfigRegion = new ArrayList<PosConfigRegion>();
+        for (LinkedTreeMap country : countryList) {
+            ConfigCountry configCountry = new PosConfigCountry();
+            String country_id = country.get("country_id").toString();
+            String country_name = country.get("country_name").toString();
+            configCountry.setCountryID(country_id);
+            configCountry.setCountryName(country_name);
+            ArrayList<LinkedTreeMap> regionList = (ArrayList) country.get("regions");
+            if (regionList != null) {
+                for (LinkedTreeMap region : regionList) {
+                    ConfigRegion configRegion = new PosConfigRegion();
+                    String code = region.get("code").toString();
+                    String name = region.get("name").toString();
+                    String id = region.get("id").toString();
+                    configRegion.setID(id);
+                    configRegion.setCode(code);
+                    configRegion.setName(name);
+                    listConfigRegion.add((PosConfigRegion) configRegion);
+                }
+            }
+//            Collections.sort(listConfigRegion, new Comparator<PosConfigRegion>() {
+//                @Override
+//                public int compare(PosConfigRegion r1, PosConfigRegion r2) {
+//                    return r1.getName().compareToIgnoreCase(r2.getName());
+//                }
+//            });
+            configCountry.setRegions(listConfigRegion);
+            listConfigCountry.add((PosConfigCountry) configCountry);
+        }
+        // TODO: chưa sort country
+//        Collections.sort(listConfigCountry, new Comparator<PosConfigCountry>() {
+//            @Override
+//            public int compare(PosConfigCountry c1, PosConfigCountry c2) {
+//                return c1.getName().toString().compareToIgnoreCase(c2.getName().toString());
+//            }
+//        });
+        return (List<ConfigCountry>) (List<?>) listConfigCountry;
+    }
+
+
 }

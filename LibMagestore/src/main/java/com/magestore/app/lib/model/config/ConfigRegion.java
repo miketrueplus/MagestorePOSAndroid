@@ -10,5 +10,8 @@ import com.magestore.app.lib.model.Model;
 
 public interface ConfigRegion extends Model {
     String getCode();
+    void setCode(String strCode);
     String getName();
+    void setName(String strName);
+    void setID(String id);
 }
