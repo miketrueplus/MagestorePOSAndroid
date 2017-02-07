@@ -2,12 +2,14 @@ package com.magestore.app.lib.service.config;
 
 import com.google.gson.internal.LinkedTreeMap;
 import com.magestore.app.lib.model.config.Config;
+import com.magestore.app.lib.model.config.ConfigCountry;
 import com.magestore.app.lib.model.config.ConfigCustomerGroup;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.service.Service;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -36,4 +38,14 @@ public interface ConfigService extends Service {
      * @throws ParseException
      */
     Map<String, String> getCustomerGroup() throws InstantiationException, IllegalAccessException, IOException, ParseException;
+
+    /**
+     * Trả về Country
+     * @return
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     * @throws IOException
+     * @throws ParseException
+     */
+    List<ConfigCountry> getCountry() throws InstantiationException, IllegalAccessException, IOException, ParseException;
 }

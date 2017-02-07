@@ -1,8 +1,6 @@
 package com.magestore.app.pos.model.config;
 
-import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.model.config.ConfigCountry;
-import com.magestore.app.lib.model.config.ConfigRegion;
 import com.magestore.app.lib.model.directory.Region;
 import com.magestore.app.pos.model.PosAbstractModel;
 
@@ -20,8 +18,18 @@ public class PosConfigCountry extends PosAbstractModel implements ConfigCountry 
     List<PosConfigRegion> regions;
 
     @Override
+    public String getID() {
+        return country_id;
+    }
+
+    @Override
     public String getCountryID() {
         return country_id;
+    }
+
+    @Override
+    public void setCountryID(String strCountryID) {
+        country_id = strCountryID;
     }
 
     @Override
@@ -30,7 +38,22 @@ public class PosConfigCountry extends PosAbstractModel implements ConfigCountry 
     }
 
     @Override
+    public void setCountryName(String strCountryName) {
+        country_name = strCountryName;
+    }
+
+    @Override
     public List<Region> getRegions() {
         return (List<Region>)(List<?>) (regions);
+    }
+
+    @Override
+    public void setRegions(List<PosConfigRegion> regions) {
+        this.regions = regions;
+    }
+
+    @Override
+    public String getDisplayContent() {
+        return country_name;
     }
 }
