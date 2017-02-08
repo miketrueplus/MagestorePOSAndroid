@@ -3,7 +3,7 @@ package com.magestore.app.pos.panel;
 import android.content.Context;
 import android.util.AttributeSet;
 
-import com.magestore.app.lib.model.checkout.PaymentMethod;
+import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
 
 /**
@@ -12,7 +12,7 @@ import com.magestore.app.lib.panel.AbstractDetailPanel;
  * mike@trueplus.vn
  */
 
-public class CheckoutPaymentDetailPanel extends AbstractDetailPanel<PaymentMethod> {
+public class CheckoutPaymentDetailPanel extends AbstractDetailPanel<CheckoutPayment> {
     public CheckoutPaymentDetailPanel(Context context) {
         super(context);
     }

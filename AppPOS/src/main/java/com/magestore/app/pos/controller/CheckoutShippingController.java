@@ -2,7 +2,7 @@ package com.magestore.app.pos.controller;
 
 import com.magestore.app.lib.controller.AbstractChildListController;
 import com.magestore.app.lib.model.checkout.Checkout;
-import com.magestore.app.lib.model.checkout.Shipping;
+import com.magestore.app.lib.model.checkout.CheckoutShipping;
 
 /**
  * Created by Mike on 2/8/2017.
@@ -10,5 +10,5 @@ import com.magestore.app.lib.model.checkout.Shipping;
  * mike@trueplus.vn
  */
 
-public class CheckoutShippingController  extends AbstractChildListController<Checkout, Shipping> {
+public class CheckoutShippingController  extends AbstractChildListController<Checkout, CheckoutShipping> {
 }

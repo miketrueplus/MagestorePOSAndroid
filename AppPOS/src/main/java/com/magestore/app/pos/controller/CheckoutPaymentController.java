@@ -2,7 +2,7 @@ package com.magestore.app.pos.controller;
 
 import com.magestore.app.lib.controller.AbstractChildListController;
 import com.magestore.app.lib.model.checkout.Checkout;
-import com.magestore.app.lib.model.checkout.PaymentMethod;
+import com.magestore.app.lib.model.checkout.CheckoutPayment;
 
 /**
  * Created by Mike on 2/8/2017.
@@ -10,5 +10,5 @@ import com.magestore.app.lib.model.checkout.PaymentMethod;
  * mike@trueplus.vn
  */
 
-public class CheckoutPaymentController  extends AbstractChildListController<Checkout, PaymentMethod> {
+public class CheckoutPaymentController  extends AbstractChildListController<Checkout, CheckoutPayment> {
 }

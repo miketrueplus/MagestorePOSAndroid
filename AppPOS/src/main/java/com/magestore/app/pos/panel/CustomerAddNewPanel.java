@@ -249,7 +249,7 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
     }
 
     /**
-     * Trả về Shipping Address
+     * Trả về CheckoutShipping Address
      *
      * @return CustomerAddress
      */
@@ -267,7 +267,7 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
     }
 
     /**
-     * Khởi tạo Shipping Address
+     * Khởi tạo CheckoutShipping Address
      */
     public void insertShippingAddress() {
         shippingAddress = ((CustomerListController) mController).createCustomerAddress();
@@ -359,7 +359,7 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
     }
 
     /**
-     * Delete Shipping Address
+     * Delete CheckoutShipping Address
      */
     public void deleteShippingAddress() {
         shippingAddress = null;

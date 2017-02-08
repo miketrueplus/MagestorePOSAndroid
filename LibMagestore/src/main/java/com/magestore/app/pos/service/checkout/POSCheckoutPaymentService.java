@@ -1,7 +1,7 @@
 package com.magestore.app.pos.service.checkout;
 
 import com.magestore.app.lib.model.checkout.Checkout;
-import com.magestore.app.lib.model.checkout.PaymentMethod;
+import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.lib.service.checkout.CheckoutPaymentService;
 import com.magestore.app.pos.service.AbstractService;
 
@@ -17,7 +17,7 @@ import java.util.List;
 
 public class POSCheckoutPaymentService extends AbstractService implements CheckoutPaymentService {
     @Override
-    public PaymentMethod create(Checkout checkout) {
+    public CheckoutPayment create(Checkout checkout) {
         return null;
     }
 
@@ -27,37 +27,37 @@ public class POSCheckoutPaymentService extends AbstractService implements Checko
     }
 
     @Override
-    public PaymentMethod retrieve(Checkout checkout, String strID) throws ParseException, InstantiationException, IllegalAccessException, IOException {
+    public CheckoutPayment retrieve(Checkout checkout, String strID) throws ParseException, InstantiationException, IllegalAccessException, IOException {
         return null;
     }
 
     @Override
-    public List<PaymentMethod> retrieve(Checkout checkout, int page, int pageSize) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+    public List<CheckoutPayment> retrieve(Checkout checkout, int page, int pageSize) throws IOException, InstantiationException, ParseException, IllegalAccessException {
         return null;
     }
 
     @Override
-    public List<PaymentMethod> retrieve(Checkout checkout) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+    public List<CheckoutPayment> retrieve(Checkout checkout) throws IOException, InstantiationException, ParseException, IllegalAccessException {
         return null;
     }
 
     @Override
-    public List<PaymentMethod> retrieve(Checkout checkout, String searchString, int page, int pageSize) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+    public List<CheckoutPayment> retrieve(Checkout checkout, String searchString, int page, int pageSize) throws IOException, InstantiationException, ParseException, IllegalAccessException {
         return null;
     }
 
     @Override
-    public boolean update(Checkout checkout, PaymentMethod oldModel, PaymentMethod newModel) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+    public boolean update(Checkout checkout, CheckoutPayment oldModel, CheckoutPayment newModel) throws IOException, InstantiationException, ParseException, IllegalAccessException {
         return false;
     }
 
     @Override
-    public boolean insert(Checkout checkout, PaymentMethod... childs) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+    public boolean insert(Checkout checkout, CheckoutPayment... childs) throws IOException, InstantiationException, ParseException, IllegalAccessException {
         return false;
     }
 
     @Override
-    public boolean delete(Checkout checkout, PaymentMethod... childs) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+    public boolean delete(Checkout checkout, CheckoutPayment... childs) throws IOException, InstantiationException, ParseException, IllegalAccessException {
         return false;
     }
 }

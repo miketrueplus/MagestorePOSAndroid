@@ -1,7 +1,7 @@
 package com.magestore.app.lib.service.checkout;
 
 import com.magestore.app.lib.model.checkout.Checkout;
-import com.magestore.app.lib.model.checkout.PaymentMethod;
+import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.lib.service.ChildListService;
 
 /**
@@ -10,5 +10,5 @@ import com.magestore.app.lib.service.ChildListService;
  * mike@trueplus.vn
  */
 
-public interface CheckoutPaymentService  extends ChildListService<Checkout, PaymentMethod> {
+public interface CheckoutPaymentService  extends ChildListService<Checkout, CheckoutPayment> {
 }

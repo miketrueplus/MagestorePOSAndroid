@@ -1,15 +1,15 @@
 package com.magestore.app.pos.service.checkout;
 
 import com.magestore.app.lib.model.checkout.Checkout;
-import com.magestore.app.lib.model.checkout.PaymentMethod;
-import com.magestore.app.lib.model.checkout.Shipping;
+import com.magestore.app.lib.model.checkout.CheckoutPayment;
+import com.magestore.app.lib.model.checkout.CheckoutShipping;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.resourcemodel.DataAccessFactory;
 import com.magestore.app.lib.resourcemodel.sales.CheckoutDataAccess;
 import com.magestore.app.lib.service.checkout.CheckoutService;
 import com.magestore.app.pos.model.checkout.PosCheckout;
-import com.magestore.app.pos.model.checkout.PosPaymentMethod;
-import com.magestore.app.pos.model.checkout.PosShipping;
+import com.magestore.app.pos.model.checkout.PosCheckoutPayment;
+import com.magestore.app.pos.model.checkout.PosCheckoutShipping;
 import com.magestore.app.pos.service.AbstractService;
 
 import java.io.IOException;
@@ -78,12 +78,12 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
     }
 
     @Override
-    public PaymentMethod createPaymentMethod() {
-        return new PosPaymentMethod();
+    public CheckoutPayment createPaymentMethod() {
+        return new PosCheckoutPayment();
     }
 
     @Override
-    public Shipping createShipping() {
-        return new PosShipping();
+    public CheckoutShipping createShipping() {
+        return new PosCheckoutShipping();
     }
 }

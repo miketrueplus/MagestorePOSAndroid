@@ -4,9 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.magestore.app.lib.model.checkout.Checkout;
-import com.magestore.app.lib.model.checkout.Shipping;
-import com.magestore.app.lib.model.customer.CustomerAddress;
+import com.magestore.app.lib.model.checkout.CheckoutShipping;
 import com.magestore.app.lib.panel.AbstractListPanel;
 
 /**
@@ -15,7 +13,7 @@ import com.magestore.app.lib.panel.AbstractListPanel;
  * mike@trueplus.vn
  */
 
-public class CheckoutShippingListPanel extends AbstractListPanel<Shipping> {
+public class CheckoutShippingListPanel extends AbstractListPanel<CheckoutShipping> {
     public CheckoutShippingListPanel(Context context) {
         super(context);
     }
@@ -29,7 +27,7 @@ public class CheckoutShippingListPanel extends AbstractListPanel<Shipping> {
     }
 
     @Override
-    protected void bindItem(View view, Shipping item, int position) {
+    protected void bindItem(View view, CheckoutShipping item, int position) {
 
     }
 }

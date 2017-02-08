@@ -1,11 +1,9 @@
 package com.magestore.app.lib.service.checkout;
 
 import com.magestore.app.lib.model.checkout.Checkout;
-import com.magestore.app.lib.model.checkout.PaymentMethod;
-import com.magestore.app.lib.model.checkout.Shipping;
-import com.magestore.app.lib.service.ChildListService;
+import com.magestore.app.lib.model.checkout.CheckoutShipping;
+import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.lib.service.ListService;
-import com.magestore.app.lib.service.Service;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -21,7 +19,7 @@ public interface CheckoutService extends ListService<Checkout> {
 
     Checkout create();
 
-    PaymentMethod createPaymentMethod();
+    CheckoutPayment createPaymentMethod();
 
-    Shipping createShipping();
+    CheckoutShipping createShipping();
 }

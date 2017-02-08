@@ -3,8 +3,8 @@ package com.magestore.app.pos.model.checkout;
 import com.google.gson.annotations.Expose;
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.checkout.Checkout;
-import com.magestore.app.lib.model.checkout.PaymentMethod;
-import com.magestore.app.lib.model.checkout.Shipping;
+import com.magestore.app.lib.model.checkout.CheckoutShipping;
+import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.pos.model.PosAbstractModel;
 
@@ -20,8 +20,8 @@ import java.util.List;
 public class PosCheckout extends PosAbstractModel implements Checkout {
     String customer_id;
     List<CartItem> items;
-    PaymentMethod payment;
-    Shipping shipping;
+    CheckoutPayment payment;
+    CheckoutShipping checkoutShipping;
     private class CheckoutConfig {
         String apply_promotion = "0";
         String note;
@@ -71,23 +71,21 @@ public class PosCheckout extends PosAbstractModel implements Checkout {
         this.items = cartItem;
     }
 
-    @Override
-    public Shipping getShipping() {
-        return shipping;
+    public CheckoutShipping getCheckoutShipping() {
+        return checkoutShipping;
+    }
+
+    public void setCheckoutShipping(CheckoutShipping shiping) {
+        this.checkoutShipping = shiping;
     }
 
     @Override
-    public void setShipping(Shipping shiping) {
-        this.shipping = shiping;
-    }
-
-    @Override
-    public PaymentMethod getPayment() {
+    public CheckoutPayment getPayment() {
         return payment;
     }
 
     @Override
-    public void setPayment(PaymentMethod payment) {
+    public void setPayment(CheckoutPayment payment) {
         this.payment = payment;
     }
 

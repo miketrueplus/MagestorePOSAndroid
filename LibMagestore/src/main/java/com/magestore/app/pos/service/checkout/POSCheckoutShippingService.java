@@ -1,7 +1,7 @@
 package com.magestore.app.pos.service.checkout;
 
 import com.magestore.app.lib.model.checkout.Checkout;
-import com.magestore.app.lib.model.checkout.Shipping;
+import com.magestore.app.lib.model.checkout.CheckoutShipping;
 import com.magestore.app.lib.service.checkout.CheckoutShippingService;
 import com.magestore.app.pos.service.AbstractService;
 
@@ -17,7 +17,7 @@ import java.util.List;
 
 public class POSCheckoutShippingService extends AbstractService implements CheckoutShippingService {
     @Override
-    public Shipping create(Checkout checkout) {
+    public CheckoutShipping create(Checkout checkout) {
         return null;
     }
 
@@ -27,37 +27,37 @@ public class POSCheckoutShippingService extends AbstractService implements Check
     }
 
     @Override
-    public Shipping retrieve(Checkout checkout, String strID) throws ParseException, InstantiationException, IllegalAccessException, IOException {
+    public CheckoutShipping retrieve(Checkout checkout, String strID) throws ParseException, InstantiationException, IllegalAccessException, IOException {
         return null;
     }
 
     @Override
-    public List<Shipping> retrieve(Checkout checkout, int page, int pageSize) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+    public List<CheckoutShipping> retrieve(Checkout checkout, int page, int pageSize) throws IOException, InstantiationException, ParseException, IllegalAccessException {
         return null;
     }
 
     @Override
-    public List<Shipping> retrieve(Checkout checkout) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+    public List<CheckoutShipping> retrieve(Checkout checkout) throws IOException, InstantiationException, ParseException, IllegalAccessException {
         return null;
     }
 
     @Override
-    public List<Shipping> retrieve(Checkout checkout, String searchString, int page, int pageSize) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+    public List<CheckoutShipping> retrieve(Checkout checkout, String searchString, int page, int pageSize) throws IOException, InstantiationException, ParseException, IllegalAccessException {
         return null;
     }
 
     @Override
-    public boolean update(Checkout checkout, Shipping oldModel, Shipping newModel) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+    public boolean update(Checkout checkout, CheckoutShipping oldModel, CheckoutShipping newModel) throws IOException, InstantiationException, ParseException, IllegalAccessException {
         return false;
     }
 
     @Override
-    public boolean insert(Checkout checkout, Shipping... childs) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+    public boolean insert(Checkout checkout, CheckoutShipping... childs) throws IOException, InstantiationException, ParseException, IllegalAccessException {
         return false;
     }
 
     @Override
-    public boolean delete(Checkout checkout, Shipping... childs) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+    public boolean delete(Checkout checkout, CheckoutShipping... childs) throws IOException, InstantiationException, ParseException, IllegalAccessException {
         return false;
     }
 }

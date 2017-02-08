@@ -18,11 +18,11 @@ public interface Checkout extends Model {
     List<CartItem> getCartItem();
     void setCartItem(List<CartItem> items);
 
-    Shipping getShipping();
-    void setShipping(Shipping shiping);
+    CheckoutShipping getCheckoutShipping();
+    void setCheckoutShipping(CheckoutShipping shiping);
 
-    PaymentMethod getPayment();
-    void setPayment(PaymentMethod payment);
+    CheckoutPayment getPayment();
+    void setPayment(CheckoutPayment payment);
 
     String getCouponCode();
     void setCouponCode(String strCouponCode);

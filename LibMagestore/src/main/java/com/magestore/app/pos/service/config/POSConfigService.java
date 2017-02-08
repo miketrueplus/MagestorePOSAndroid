@@ -1,25 +1,19 @@
 package com.magestore.app.pos.service.config;
 
-import com.google.gson.internal.LinkedTreeMap;
 import com.magestore.app.lib.model.checkout.PaymentMethod;
-import com.magestore.app.lib.model.checkout.Shipping;
+import com.magestore.app.lib.model.checkout.ShippingMethod;
 import com.magestore.app.lib.model.config.Config;
 import com.magestore.app.lib.model.config.ConfigCountry;
 import com.magestore.app.lib.resourcemodel.config.ConfigDataAccess;
-import com.magestore.app.pos.model.checkout.PosPaymentMethod;
-import com.magestore.app.pos.model.config.PosConfigDefault;
 import com.magestore.app.lib.resourcemodel.DataAccessFactory;
 import com.magestore.app.lib.service.config.ConfigService;
+import com.magestore.app.pos.model.checkout.PosPaymentMethod;
+import com.magestore.app.pos.model.checkout.PosShippingMethod;
 import com.magestore.app.pos.service.AbstractService;
-import com.magestore.app.util.ConfigUtil;
-import com.magestore.app.util.FileUtil;
 
-import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -72,26 +66,64 @@ public class POSConfigService extends AbstractService implements ConfigService {
     public static String PAYMENT_METHOD_CUSTOM_PAYMENT1 = "CUSTOM_PAYMENT1";
     public static String PAYMENT_METHOD_CUSTOM_PAYMENT2 = "CUSTOM_PAYMENT2";
     @Override
-    public Map<String, String> getPaymentMethodList() throws InstantiationException, IllegalAccessException, IOException, ParseException {
-        Map<String, String> paymentMethodList = new HashMap<String, String>();
-        paymentMethodList.put(PAYMENT_METHOD_CC_DIRECT_POST, "Credit Card Direct Post (Authorize.net)");
-        paymentMethodList.put(PAYMENT_METHOD_CASH_IN, "Direct cash in");
-        paymentMethodList.put(PAYMENT_METHOD_CC_CARD, "Credit direct");
-        paymentMethodList.put(PAYMENT_METHOD_CASH_COD, "Cash on delivery");
-        paymentMethodList.put(PAYMENT_METHOD_CUSTOM_PAYMENT1, "Custom payment 1");
-        paymentMethodList.put(PAYMENT_METHOD_CUSTOM_PAYMENT2, "Custom payment 2");
+    public Map<String, PaymentMethod> getPaymentMethodList() throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        Map<String, PaymentMethod> paymentMethodList = new HashMap<String, PaymentMethod>();
+
+        PaymentMethod method = new PosPaymentMethod();
+        method.setName("Credit Card Direct Post (Authorize.net)");
+        method.setCreditCardDirect();
+        paymentMethodList.put(PAYMENT_METHOD_CC_DIRECT_POST, method);
+
+        method = new PosPaymentMethod();
+        method.setName("Direct cash in");
+        method.setCashIn();
+        paymentMethodList.put(PAYMENT_METHOD_CASH_IN, method);
+
+        method = new PosPaymentMethod();
+        method.setName("Credit direct");
+        method.setCreditCardIn();
+        paymentMethodList.put(PAYMENT_METHOD_CC_CARD, method);
+
+        method = new PosPaymentMethod();
+        method.setName("Cash on delivery");
+        method.setCashOnDelivery();
+        paymentMethodList.put(PAYMENT_METHOD_CASH_COD, method);
+
+        method = new PosPaymentMethod();
+        method.setName("Custom payment 1");
+        method.setCustomerPayment();
+        paymentMethodList.put(PAYMENT_METHOD_CUSTOM_PAYMENT1, method);
+
+        method = new PosPaymentMethod();
+        method.setName("Custom payment 2");
+        method.setCustomerPayment();
+        paymentMethodList.put(PAYMENT_METHOD_CUSTOM_PAYMENT2, method);
+
         return paymentMethodList;
     }
 
-    public static String SHIPPING_METHOD_FLAT_RATE = "";
-    public static String PAYMENT_METHOD_FREE_SHIPPING = "";
-    public static String PAYMENT_METHOD_STORE_PICKUP = "";
+    public static String SHIPPING_METHOD_FLAT_RATE = "SHIPPING_METHOD_FLAT_RATE";
+    public static String PAYMENT_METHOD_FREE_SHIPPING = "PAYMENT_METHOD_FREE_SHIPPING";
+    public static String PAYMENT_METHOD_STORE_PICKUP = "PAYMENT_METHOD_STORE_PICKUP";
     @Override
-    public Map<String, String> getShippingMethodList() throws InstantiationException, IllegalAccessException, IOException, ParseException {
-        Map<String, String> shippingMethodList = new HashMap<String, String>();
-        shippingMethodList.put(SHIPPING_METHOD_FLAT_RATE, "Flat Rate - Fixed");
-        shippingMethodList.put(PAYMENT_METHOD_FREE_SHIPPING, "Free Shipping - Free");
-        shippingMethodList.put(PAYMENT_METHOD_STORE_PICKUP, "POS Shipping - Store Pickup");
+    public Map<String, ShippingMethod> getShippingMethodList() throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        Map<String, ShippingMethod> shippingMethodList = new HashMap<String, ShippingMethod>();
+
+        ShippingMethod method = new PosShippingMethod();
+        method.setName("Flat Rate - Fixed");
+        method.setFixedRate(10);
+        shippingMethodList.put(SHIPPING_METHOD_FLAT_RATE, method);
+
+        method = new PosShippingMethod();
+        method.setName("Free CheckoutShipping - Free");
+        method.setFreeRate();
+        shippingMethodList.put(PAYMENT_METHOD_FREE_SHIPPING, method);
+
+        method = new PosShippingMethod();
+        method.setName("POS CheckoutShipping - Store Pickup");
+        method.setFreeRate();
+        shippingMethodList.put(PAYMENT_METHOD_STORE_PICKUP, method);
+
         return shippingMethodList;
     }
 }

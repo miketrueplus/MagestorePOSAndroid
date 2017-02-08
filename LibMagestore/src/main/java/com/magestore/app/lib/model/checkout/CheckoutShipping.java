@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * mike@trueplus.vn
  */
 
-public interface Shipping extends Model {
+public interface CheckoutShipping extends Model {
     void setMethod(String strMethod);
 
     String getMethod();

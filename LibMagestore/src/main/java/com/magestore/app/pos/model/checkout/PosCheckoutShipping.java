@@ -1,7 +1,7 @@
 package com.magestore.app.pos.model.checkout;
 
 import com.magestore.app.lib.model.Model;
-import com.magestore.app.lib.model.checkout.Shipping;
+import com.magestore.app.lib.model.checkout.CheckoutShipping;
 import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.pos.model.PosAbstractModel;
 
@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * mike@trueplus.vn
  */
 
-public class PosShipping extends PosAbstractModel implements Shipping {
+public class PosCheckoutShipping extends PosAbstractModel implements CheckoutShipping {
     String method;
     String datetime;
     ArrayList<Model> tracks;

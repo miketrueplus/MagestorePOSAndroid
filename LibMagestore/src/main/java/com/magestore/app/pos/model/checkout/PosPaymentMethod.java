@@ -4,168 +4,83 @@ import com.magestore.app.lib.model.checkout.PaymentMethod;
 import com.magestore.app.pos.model.PosAbstractModel;
 
 /**
- * Created by Mike on 2/7/2017.
+ * Created by Mike on 2/8/2017.
  * Magestore
  * mike@trueplus.vn
  */
 
 public class PosPaymentMethod extends PosAbstractModel implements PaymentMethod {
-    String code;
-    String title;
-    int base_amount;
-    int amount;
-    int base_real_amount;
-    int real_amount;
-    int is_pay_later;
-    String shift_id;
+    public static String PAYMENT_METHOD_CC_DIRECT_POST = "CC_DIRECT";
+    public static String PAYMENT_METHOD_CASH_IN = "CASH_IN";
+    public static String PAYMENT_METHOD_CC_CARD = "CC_CARDN";
+    public static String PAYMENT_METHOD_CASH_COD = "CASH_ON_DELIVERY";
+    public static String PAYMENT_METHOD_CUSTOM_PAYMENT = "CUSTOM_PAYMENT";
 
-    class AdditionalData {
-        String cc_owner;
-        String cc_type;
-        String cc_number;
-        String cc_exp_month;
-        String cc_exp_year;
-        String cc_cid;
-    }
-    AdditionalData additional_data = new AdditionalData();
-
+    String name;
+    String type;
     @Override
-    public void setCode(String strCode) {
-        this.code = strCode;
+    public String getName() {
+        return name;
     }
 
     @Override
-    public String getCode() {
-        return this.code;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
-    public void setTitle(String strTitle) {
-        this.title = strTitle;
+    public String getDisplayContent() {
+        return name;
     }
 
     @Override
-    public String getTitle() {
-        return this.title;
+    public void setID(String id) {
+        this.id = id;
+    }
+
+    public boolean isCashOnDelivery() {
+        return PAYMENT_METHOD_CASH_COD.equals(type);
     }
 
     @Override
-    public void setBaseAmount(int amount) {
-        this.base_amount = amount;
+    public void setCashOnDelivery() {
+        type = PAYMENT_METHOD_CASH_COD;
+    }
+
+    public boolean isCashIn() {
+        return PAYMENT_METHOD_CASH_IN.equals(type);
     }
 
     @Override
-    public int getBaseAmount() {
-        return this.base_amount;
+    public void setCashIn() {
+        type = PAYMENT_METHOD_CASH_IN;
     }
 
     @Override
-    public int getAmount() {
-        return this.amount;
+    public boolean isCreditCardDirect() {
+        return PAYMENT_METHOD_CC_DIRECT_POST.equals(type);
     }
 
     @Override
-    public void setAmount(int amount) {
-        this.amount = amount;
+    public void setCreditCardDirect() {
+        type = PAYMENT_METHOD_CC_DIRECT_POST;
+    }
+
+    public boolean isCreditCardIn() {
+        return PAYMENT_METHOD_CC_CARD.equals(type);
     }
 
     @Override
-    public int getBaseRealAmount() {
-        return this.base_real_amount;
+    public void setCreditCardIn() {
+        type = PAYMENT_METHOD_CC_CARD;
+    }
+
+    public boolean isCustomerPayment() {
+        return PAYMENT_METHOD_CUSTOM_PAYMENT.equals(type);
     }
 
     @Override
-    public void setBaseRealAmount(int amount) {
-        this.base_real_amount = amount;
-    }
-
-    @Override
-    public int getRealAmount() {
-        return this.real_amount;
-    }
-
-    @Override
-    public void setRealAmount(int amount) {
-        this.real_amount = amount;
-    }
-
-    @Override
-    public void setPaylater(int paylater) {
-        this.is_pay_later = paylater;
-    }
-
-    @Override
-    public int isPaylater() {
-        return is_pay_later;
-    }
-
-    @Override
-    public void setShiftID(String shiftID) {
-        this.shift_id = shiftID;
-    }
-
-    @Override
-    public String getShiftID() {
-        return this.shift_id;
-    }
-
-    @Override
-    public void setCCOwner(String owner) {
-        this.additional_data.cc_owner = owner;
-    }
-
-    @Override
-    public String getCCOwner() {
-        return this.additional_data.cc_owner;
-    }
-
-    @Override
-    public void setCCType(String type) {
-        this.additional_data.cc_type = type;
-    }
-
-    @Override
-    public String getCCType() {
-        return this.additional_data.cc_type;
-    }
-
-    @Override
-    public void setCCNumber(String number) {
-        this.additional_data.cc_number = number;
-    }
-
-    @Override
-    public String getCCNumber() {
-        return this.additional_data.cc_number;
-    }
-
-    @Override
-    public void setCCExpMonth(String month) {
-        this.additional_data.cc_exp_month = month;
-    }
-
-    @Override
-    public String getCCExpMonth() {
-        return this.additional_data.cc_exp_month;
-    }
-
-    @Override
-    public void setCCExpYear(String year) {
-        this.additional_data.cc_exp_year = year;
-    }
-
-    @Override
-    public String getCCExpYear() {
-        return this.additional_data.cc_exp_year;
-    }
-
-    @Override
-    public void setCID(String cid) {
-        this.additional_data.cc_cid = cid;
-    }
-
-    @Override
-    public String getCID() {
-        return this.additional_data.cc_cid;
+    public void setCustomerPayment() {
+        type = PAYMENT_METHOD_CUSTOM_PAYMENT;
     }
 }

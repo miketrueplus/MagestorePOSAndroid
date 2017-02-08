@@ -1,6 +1,8 @@
 package com.magestore.app.lib.service.config;
 
 import com.google.gson.internal.LinkedTreeMap;
+import com.magestore.app.lib.model.checkout.PaymentMethod;
+import com.magestore.app.lib.model.checkout.ShippingMethod;
 import com.magestore.app.lib.model.config.Config;
 import com.magestore.app.lib.model.config.ConfigCountry;
 import com.magestore.app.lib.model.config.ConfigCustomerGroup;
@@ -47,7 +49,7 @@ public interface ConfigService extends Service {
      */
     Map<String, ConfigCountry> getCountry() throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
-    Map<String, String> getPaymentMethodList() throws InstantiationException, IllegalAccessException, IOException, ParseException;
+    Map<String, PaymentMethod> getPaymentMethodList() throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
-    Map<String, String> getShippingMethodList() throws InstantiationException, IllegalAccessException, IOException, ParseException;
+    Map<String, ShippingMethod> getShippingMethodList() throws InstantiationException, IllegalAccessException, IOException, ParseException;
 }
