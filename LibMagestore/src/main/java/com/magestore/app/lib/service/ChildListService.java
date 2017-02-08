@@ -25,5 +25,4 @@ public interface ChildListService<TParent extends Model, TModel extends Model> e
     boolean update(TParent parent, TModel oldModel, TModel newModel) throws IOException, InstantiationException, ParseException, IllegalAccessException;
     boolean insert(TParent parent, TModel... childs) throws IOException, InstantiationException, ParseException, IllegalAccessException;
     boolean delete(TParent parent, TModel... childs) throws IOException, InstantiationException, ParseException, IllegalAccessException;
-    Region createRegion();
 }

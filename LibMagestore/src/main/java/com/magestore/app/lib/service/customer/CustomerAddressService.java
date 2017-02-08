@@ -4,6 +4,7 @@ import android.location.Address;
 
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.customer.CustomerAddress;
+import com.magestore.app.lib.model.directory.Region;
 import com.magestore.app.lib.service.ChildListService;
 
 /**
@@ -13,4 +14,5 @@ import com.magestore.app.lib.service.ChildListService;
  */
 
 public interface CustomerAddressService extends ChildListService<Customer, CustomerAddress> {
+    Region createRegion();
 }
