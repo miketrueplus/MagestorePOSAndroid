@@ -254,5 +254,6 @@
         android:id="@+id/cb_same_billing_and_shipping"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/customer_same_billing_and_shipping_address" />
+        android:text="@string/customer_same_billing_and_shipping_address"
+        android:checked="true"/>
 </LinearLayout>

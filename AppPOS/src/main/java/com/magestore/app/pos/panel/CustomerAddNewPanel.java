@@ -20,7 +20,7 @@ import com.magestore.app.lib.panel.AbstractDetailPanel;
 import com.magestore.app.lib.view.SimpleSpinner;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.CustomerListController;
-import com.magestore.app.pos.model.directory.PosRegion;
+import com.magestore.app.pos.util.EditTextUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +49,8 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
     CheckBox cb_same_billing_and_shipping;
     ConfigRegion shippingRegion;
     ConfigRegion billingRegion;
+    CustomerAddress shippingAddress;
+    CustomerAddress billingAddress;
 
     public CustomerAddNewPanel(Context context) {
         super(context);
@@ -110,24 +112,6 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
         setCustomerGroupDataSet(((CustomerListController) mController).getCustomerGroupList());
         final Map<String, ConfigCountry> countryDataSet = ((CustomerListController) mController).getCountry();
         setCountryDataSet(countryDataSet);
-
-        ll_shipping_address.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ll_new_shipping_address.setVisibility(VISIBLE);
-                ll_add_new_customer.setVisibility(GONE);
-                ll_new_billing_address.setVisibility(GONE);
-            }
-        });
-
-        ll_billing_address.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ll_new_billing_address.setVisibility(VISIBLE);
-                ll_add_new_customer.setVisibility(GONE);
-                ll_new_shipping_address.setVisibility(GONE);
-            }
-        });
 
         s_spinner_country.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -196,11 +180,92 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
         });
     }
 
+    /**
+     * Trả param Customer cho ListPanel để request add new Customer
+     *
+     * @return Customer
+     */
     public Customer returnCustomer() {
         boolean check_subscribe = subscribe.isChecked();
         Customer customer = ((CustomerListController) mController).createNewCustomer();
         List<CustomerAddress> listCustomerAddress = new ArrayList<>();
-        CustomerAddress shippingAddress = ((CustomerListController) mController).createCustomerAddress();
+
+        if (shippingAddress != null) {
+            if (cb_same_billing_and_shipping.isChecked()) {
+                shippingAddress.setDefaultShipping("1");
+                shippingAddress.setDefaultBilling("1");
+                listCustomerAddress.add(shippingAddress);
+                customer.setAddressList(listCustomerAddress);
+            } else {
+                shippingAddress.setDefaultShipping("1");
+                shippingAddress.setDefaultBilling(String.valueOf(false));
+                if (billingAddress != null) {
+                    listCustomerAddress.add(billingAddress);
+                }
+                listCustomerAddress.add(shippingAddress);
+
+            }
+        }
+        if (billingAddress != null) {
+            if (!cb_same_billing_and_shipping.isChecked()) {
+                listCustomerAddress.add(billingAddress);
+            }
+        }
+        customer.setAddressList(listCustomerAddress);
+        customer.setID(email.getText().toString());
+        customer.setGroupID(mspinGroupID.getSelection());
+        customer.setEmail(email.getText().toString());
+        customer.setFirstName(first_name.getText().toString());
+        customer.setLastName(last_name.getText().toString());
+        customer.setSubscriber(String.valueOf(check_subscribe));
+        return customer;
+    }
+
+    /**
+     * Gán giá trị customer group cho spinner
+     *
+     * @param customerGroupDataSet
+     */
+    public void setCustomerGroupDataSet(Map<String, String> customerGroupDataSet) {
+        if (customerGroupDataSet != null)
+            mspinGroupID.bind(customerGroupDataSet);
+    }
+
+    /**
+     * Gán giá trị country cho spinner country shipping và billing
+     *
+     * @param countryDataSet
+     */
+    public void setCountryDataSet(Map<String, ConfigCountry> countryDataSet) {
+        if (countryDataSet != null) {
+            s_spinner_country.bindModelMap((Map<String, Model>) (Map<?, ?>) countryDataSet);
+            b_spinner_country.bindModelMap((Map<String, Model>) (Map<?, ?>) countryDataSet);
+        }
+    }
+
+    /**
+     * Trả về Shipping Address
+     *
+     * @return CustomerAddress
+     */
+    public CustomerAddress getShippingAddress() {
+        return shippingAddress;
+    }
+
+    /**
+     * Trả về Billing Address
+     *
+     * @return CustomerAddress
+     */
+    public CustomerAddress getBillingAddress() {
+        return billingAddress;
+    }
+
+    /**
+     * Khởi tạo Shipping Address
+     */
+    public void insertShippingAddress() {
+        shippingAddress = ((CustomerListController) mController).createCustomerAddress();
         shippingAddress.setFirstName(s_first_name.getText().toString());
         shippingAddress.setLastName(s_last_name.getText().toString());
         shippingAddress.setCompany(s_company.getText().toString());
@@ -226,71 +291,156 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
             shippingAddress.setRegion(s_region);
         }
         shippingAddress.setVAT(s_vat.getText().toString());
-        if (cb_same_billing_and_shipping.isChecked()) {
-            shippingAddress.setDefaultShipping("1");
-            shippingAddress.setDefaultBilling("1");
-            listCustomerAddress.add(shippingAddress);
-            customer.setAddressList(listCustomerAddress);
-        } else {
-            shippingAddress.setDefaultShipping("1");
-            shippingAddress.setDefaultBilling(String.valueOf(false));
-
-            CustomerAddress billingAddress = ((CustomerListController) mController).createCustomerAddress();
-            billingAddress.setDefaultShipping("1");
-            billingAddress.setDefaultBilling(String.valueOf(false));
-            billingAddress.setFirstName(b_first_name.getText().toString());
-            billingAddress.setLastName(b_last_name.getText().toString());
-            billingAddress.setCompany(b_company.getText().toString());
-            billingAddress.setTelephone(b_phone.getText().toString());
-            billingAddress.setStreet1(b_street1.getText().toString());
-            billingAddress.setStreet2(b_street2.getText().toString());
-            billingAddress.setCity(b_city.getText().toString());
-            billingAddress.setPostCode(b_zipcode.getText().toString());
-            billingAddress.setCountry(b_spinner_country.getSelection());
-            Region b_region = ((CustomerListController) mController).createRegion();
-            if (b_state.getVisibility() == VISIBLE) {
-                b_region.setRegionCode(b_state.getText().toString());
-                b_region.setRegionName(b_state.getText().toString());
-                b_region.setID("0");
-                billingAddress.setRegionID("0");
-                billingAddress.setRegion(s_region);
-            } else {
-                b_region.setID(billingRegion.getID());
-                b_region.setRegionName(billingRegion.getName());
-                b_region.setRegionCode(billingRegion.getCode());
-                billingAddress.setState(b_spinner_state.getSelection());
-                billingAddress.setRegionID(b_spinner_state.getSelection());
-                billingAddress.setRegion(s_region);
-            }
-            billingAddress.setVAT(b_vat.getText().toString());
-
-            listCustomerAddress.add(shippingAddress);
-            listCustomerAddress.add(billingAddress);
-            customer.setAddressList(listCustomerAddress);
-        }
-        customer.setID(email.getText().toString());
-        customer.setGroupID(mspinGroupID.getSelection());
-        customer.setEmail(email.getText().toString());
-        customer.setFirstName(first_name.getText().toString());
-        customer.setLastName(last_name.getText().toString());
-        customer.setSubscriber(String.valueOf(check_subscribe));
-        return customer;
     }
 
     /**
-     * Gán giá trị customer group cho spinner
-     *
-     * @param customerGroupDataSet
+     * Khởi tạo Billing Address
      */
-    public void setCustomerGroupDataSet(Map<String, String> customerGroupDataSet) {
-        if (customerGroupDataSet != null)
-            mspinGroupID.bind(customerGroupDataSet);
+    public void insertBillingAddress() {
+        billingAddress = ((CustomerListController) mController).createCustomerAddress();
+        if (shippingAddress != null) {
+            shippingAddress.setDefaultShipping("1");
+            shippingAddress.setDefaultBilling(String.valueOf(false));
+        }
+        billingAddress.setDefaultShipping("1");
+        billingAddress.setDefaultBilling(String.valueOf(false));
+        billingAddress.setFirstName(b_first_name.getText().toString());
+        billingAddress.setLastName(b_last_name.getText().toString());
+        billingAddress.setCompany(b_company.getText().toString());
+        billingAddress.setTelephone(b_phone.getText().toString());
+        billingAddress.setStreet1(b_street1.getText().toString());
+        billingAddress.setStreet2(b_street2.getText().toString());
+        billingAddress.setCity(b_city.getText().toString());
+        billingAddress.setPostCode(b_zipcode.getText().toString());
+        billingAddress.setCountry(b_spinner_country.getSelection());
+        Region b_region = ((CustomerListController) mController).createRegion();
+        if (b_state.getVisibility() == VISIBLE) {
+            b_region.setRegionCode(b_state.getText().toString());
+            b_region.setRegionName(b_state.getText().toString());
+            b_region.setID("0");
+            billingAddress.setRegionID("0");
+            billingAddress.setRegion(b_region);
+        } else {
+            b_region.setID(billingRegion.getID());
+            b_region.setRegionName(billingRegion.getName());
+            b_region.setRegionCode(billingRegion.getCode());
+            billingAddress.setState(b_spinner_state.getSelection());
+            billingAddress.setRegionID(b_spinner_state.getSelection());
+            billingAddress.setRegion(b_region);
+        }
+        billingAddress.setVAT(b_vat.getText().toString());
     }
 
-    public void setCountryDataSet(Map<String, ConfigCountry> countryDataSet) {
-        if (countryDataSet != null) {
-            s_spinner_country.bindModelMap((Map<String, Model>) (Map<?, ?>) countryDataSet);
-            b_spinner_country.bindModelMap((Map<String, Model>) (Map<?, ?>) countryDataSet);
+    /**
+     * Delete Shipping Address
+     */
+    public void deleteShippingAddress(){
+        shippingAddress = null;
+        clearText(s_first_name);
+        clearText(s_last_name);
+        clearText(s_phone);
+        clearText(s_company);
+        clearText(s_street1);
+        clearText(s_street2);
+        clearText(s_city);
+        clearText(s_zipcode);
+        clearText(s_vat);
+        cb_same_billing_and_shipping.setChecked(true);
+    }
+
+    /**
+     * Delete Billing Address
+     */
+    public void deleteBillingAddress(){
+        billingAddress = null;
+        clearText(b_first_name);
+        clearText(b_last_name);
+        clearText(b_phone);
+        clearText(b_company);
+        clearText(b_street1);
+        clearText(b_street2);
+        clearText(b_city);
+        clearText(b_zipcode);
+        clearText(b_vat);
+    }
+
+    /**
+     * Kiểm tra các trường customer
+     *
+     * @return boolean
+     */
+    public boolean checkRequiedCustomer() {
+        if (!isRequied(first_name)) {
+            return false;
         }
+        if (!isRequied(first_name)) {
+            return false;
+        }
+        if (!isRequied(email)) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Kiểm tra các trường shipping address
+     *
+     * @return boolean
+     */
+    public boolean checkRequiedShippingAddress() {
+        if (!isRequied(s_first_name)) {
+            return false;
+        }
+        if (!isRequied(s_last_name)) {
+            return false;
+        }
+        if (!isRequied(s_phone)) {
+            return false;
+        }
+        if (!isRequied(s_street1)) {
+            return false;
+        }
+        if (!isRequied(s_city)) {
+            return false;
+        }
+        if (!isRequied(s_zipcode)) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Kiểm tra các trường billing address
+     *
+     * @return boolean
+     */
+    public boolean checkRequiedBillingAddress() {
+        if (!isRequied(b_first_name)) {
+            return false;
+        }
+        if (!isRequied(b_last_name)) {
+            return false;
+        }
+        if (!isRequied(b_phone)) {
+            return false;
+        }
+        if (!isRequied(b_street1)) {
+            return false;
+        }
+        if (!isRequied(b_city)) {
+            return false;
+        }
+        if (!isRequied(b_zipcode)) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean isRequied(EditText editText) {
+        return EditTextUtil.checkRequied(getContext(), editText);
+    }
+
+    public void clearText(EditText editText){
+        editText.setText("");
     }
 }

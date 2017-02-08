@@ -91,13 +91,51 @@ public class CustomerListPanel extends AbstractListPanel<Customer> {
 
         final LinearLayout ll_new_billing_address = (LinearLayout) dialog.findViewById(R.id.ll_new_billing_address);
 
+        LinearLayout ll_shipping_address = (LinearLayout) dialog.findViewById(R.id.ll_shipping_address);
+
+        LinearLayout ll_billing_address = (LinearLayout) dialog.findViewById(R.id.ll_billing_address);
+
+        ll_shipping_address.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ll_new_shipping_address.setVisibility(VISIBLE);
+                ll_add_new_customer.setVisibility(GONE);
+                ll_new_billing_address.setVisibility(GONE);
+                dialog.getDialogTitle().setText(getContext().getString(R.string.customer_add_shipping_address));
+                if (customerAddNewPanel.getShippingAddress() != null) {
+                    dialog.getButtonCancel().setText(getContext().getString(R.string.delete));
+                }
+            }
+        });
+
+        ll_billing_address.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ll_new_billing_address.setVisibility(VISIBLE);
+                ll_add_new_customer.setVisibility(GONE);
+                ll_new_shipping_address.setVisibility(GONE);
+                dialog.getDialogTitle().setText(getContext().getString(R.string.customer_add_billing_address));
+                if (customerAddNewPanel.getBillingAddress() != null) {
+                    dialog.getButtonCancel().setText(getContext().getString(R.string.delete));
+                }
+            }
+        });
+
         dialog.getButtonCancel().setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (ll_new_shipping_address.getVisibility() == VISIBLE || ll_new_billing_address.getVisibility() == VISIBLE) {
+                    if (dialog.getButtonCancel().getText().toString().equals(getContext().getString(R.string.delete)) && ll_new_shipping_address.getVisibility() == VISIBLE) {
+                        customerAddNewPanel.deleteShippingAddress();
+                    }
+                    if (dialog.getButtonCancel().getText().toString().equals(getContext().getString(R.string.delete)) && ll_new_shipping_address.getVisibility() == VISIBLE) {
+                        customerAddNewPanel.deleteShippingAddress();
+                    }
                     ll_add_new_customer.setVisibility(VISIBLE);
                     ll_new_shipping_address.setVisibility(GONE);
                     ll_new_billing_address.setVisibility(GONE);
+                    dialog.getDialogTitle().setText(getContext().getString(R.string.customer_add_new));
+                    dialog.getButtonCancel().setText(getContext().getString(R.string.cancel));
                 } else {
                     dialog.dismiss();
                 }
@@ -107,14 +145,30 @@ public class CustomerListPanel extends AbstractListPanel<Customer> {
         dialog.getButtonSave().setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (ll_new_shipping_address.getVisibility() == VISIBLE || ll_new_billing_address.getVisibility() == VISIBLE) {
-                    ll_add_new_customer.setVisibility(VISIBLE);
-                    ll_new_shipping_address.setVisibility(GONE);
-                    ll_new_billing_address.setVisibility(GONE);
+                if (ll_new_shipping_address.getVisibility() == VISIBLE) {
+                    if (customerAddNewPanel.checkRequiedShippingAddress()) {
+                        customerAddNewPanel.insertShippingAddress();
+                        ll_add_new_customer.setVisibility(VISIBLE);
+                        ll_new_shipping_address.setVisibility(GONE);
+                        ll_new_billing_address.setVisibility(GONE);
+                        dialog.getDialogTitle().setText(getContext().getString(R.string.customer_add_new));
+                        dialog.getButtonCancel().setText(getContext().getString(R.string.cancel));
+                    }
+                } else if (ll_new_billing_address.getVisibility() == VISIBLE) {
+                    if (customerAddNewPanel.checkRequiedBillingAddress()) {
+                        customerAddNewPanel.insertBillingAddress();
+                        ll_add_new_customer.setVisibility(VISIBLE);
+                        ll_new_shipping_address.setVisibility(GONE);
+                        ll_new_billing_address.setVisibility(GONE);
+                        dialog.getDialogTitle().setText(getContext().getString(R.string.customer_add_new));
+                        dialog.getButtonCancel().setText(getContext().getString(R.string.cancel));
+                    }
                 } else {
-                    Customer customer = customerAddNewPanel.returnCustomer();
-                    ((CustomerListController) mController).doInsert(customer);
-                    dialog.dismiss();
+                    if (customerAddNewPanel.checkRequiedCustomer()) {
+                        Customer customer = customerAddNewPanel.returnCustomer();
+                        ((CustomerListController) mController).doInsert(customer);
+                        dialog.dismiss();
+                    }
                 }
             }
         });
