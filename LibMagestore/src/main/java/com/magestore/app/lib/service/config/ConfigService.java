@@ -46,4 +46,8 @@ public interface ConfigService extends Service {
      * @throws ParseException
      */
     Map<String, ConfigCountry> getCountry() throws InstantiationException, IllegalAccessException, IOException, ParseException;
+
+    Map<String, String> getPaymentMethodList() throws InstantiationException, IllegalAccessException, IOException, ParseException;
+
+    Map<String, String> getShippingMethodList() throws InstantiationException, IllegalAccessException, IOException, ParseException;
 }

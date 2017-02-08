@@ -9,7 +9,7 @@ import com.magestore.app.lib.service.catalog.ProductService;
 import com.magestore.app.lib.service.ServiceFactory;
 import com.magestore.app.lib.service.order.OrderHistoryService;
 import com.magestore.app.lib.service.registershift.RegisterShiftService;
-import com.magestore.app.lib.service.sales.CheckoutService;
+import com.magestore.app.lib.service.checkout.CheckoutService;
 import com.magestore.app.lib.service.sales.OrderService;
 import com.magestore.app.lib.service.user.UserService;
 import com.magestore.app.pos.service.catalog.POSProductService;
@@ -20,7 +20,7 @@ import com.magestore.app.pos.service.customer.POSCustomerComplainService;
 import com.magestore.app.pos.service.customer.POSCustomerService;
 import com.magestore.app.pos.service.order.PosOrderHistoryService;
 import com.magestore.app.pos.service.registershift.POSRegisterShiftService;
-import com.magestore.app.pos.service.sales.POSCheckoutService;
+import com.magestore.app.pos.service.checkout.POSCheckoutService;
 import com.magestore.app.pos.service.sales.POSOrderService;
 import com.magestore.app.pos.service.user.POSUserService;
 

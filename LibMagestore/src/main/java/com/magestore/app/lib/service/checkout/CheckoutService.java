@@ -1,4 +1,4 @@
-package com.magestore.app.lib.service.sales;
+package com.magestore.app.lib.service.checkout;
 
 import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.checkout.PaymentMethod;

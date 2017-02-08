@@ -1,7 +1,6 @@
 package com.magestore.app.lib.service;
 
 import com.magestore.app.lib.context.MagestoreContext;
-import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.service.catalog.ProductService;
 import com.magestore.app.lib.service.checkout.CartService;
 import com.magestore.app.lib.service.config.ConfigService;
@@ -10,7 +9,7 @@ import com.magestore.app.lib.service.customer.CustomerComplainService;
 import com.magestore.app.lib.service.customer.CustomerService;
 import com.magestore.app.lib.service.order.OrderHistoryService;
 import com.magestore.app.lib.service.registershift.RegisterShiftService;
-import com.magestore.app.lib.service.sales.CheckoutService;
+import com.magestore.app.lib.service.checkout.CheckoutService;
 import com.magestore.app.lib.service.sales.OrderService;
 import com.magestore.app.lib.service.user.UserService;
 import com.magestore.app.pos.service.POSServiceFactory;

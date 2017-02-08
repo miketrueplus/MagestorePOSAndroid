@@ -440,6 +440,10 @@ public abstract class AbstractListPanel<TModel extends Model>
         mRecycleView.getAdapter().notifyItemRangeInserted(start, range);
     }
 
+    public void notifyDataSetChangedFirtItem() {
+        mRecycleView.getAdapter().notifyItemRangeInserted(0, 1);
+    }
+
     /**
      * Hiển thị thông báo lỗi
      *

@@ -1,4 +1,4 @@
-package com.magestore.app.pos.service.sales;
+package com.magestore.app.pos.service.checkout;
 
 import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.checkout.PaymentMethod;
@@ -6,7 +6,7 @@ import com.magestore.app.lib.model.checkout.Shipping;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.resourcemodel.DataAccessFactory;
 import com.magestore.app.lib.resourcemodel.sales.CheckoutDataAccess;
-import com.magestore.app.lib.service.sales.CheckoutService;
+import com.magestore.app.lib.service.checkout.CheckoutService;
 import com.magestore.app.pos.model.checkout.PosCheckout;
 import com.magestore.app.pos.model.checkout.PosPaymentMethod;
 import com.magestore.app.pos.model.checkout.PosShipping;
