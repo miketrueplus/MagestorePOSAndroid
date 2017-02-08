@@ -30,9 +30,10 @@ import java.util.Map;
  */
 
 public class CustomerListController extends AbstractListController<Customer> {
-    // đánh dấu actrion
+    // đánh dấu action
     static final int ACTION_CODE_GET_COMPLAIN = 0;
     static final int ACTION_CODE_INPUT_COMPLAIN = 1;
+    static final int ACTION_CODE_INSERT_CUSTOMER = 2;
 
     /**
      * Service xử lý các vấn đề liên quan đến customer
@@ -135,6 +136,9 @@ public class CustomerListController extends AbstractListController<Customer> {
             mCustomerComplainService.insert((Customer) models[0], (Complain) models[1]);
             return true;
         }
+        if (actionType == ACTION_CODE_INSERT_CUSTOMER) {
+
+        }
         return false;
     }
 
@@ -162,6 +166,22 @@ public class CustomerListController extends AbstractListController<Customer> {
             if (mDetailView instanceof CustomerDetailPanel) {
                 ((CustomerDetailPanel) mDetailView).bindComplain((Customer) models[0]);
             }
+        }
+    }
+
+    /**
+     * Sau khi hoàn thành action insert
+     *
+     * @param success
+     * @param models
+     */
+    @Override
+    public void onInsertPostExecute(Boolean success, Customer... models) {
+        super.onInsertPostExecute(success, models);
+        if (success) {
+            Customer customer = models[0];
+            mList.add(0, customer);
+            mView.notifyDataSetChanged();
         }
     }
 

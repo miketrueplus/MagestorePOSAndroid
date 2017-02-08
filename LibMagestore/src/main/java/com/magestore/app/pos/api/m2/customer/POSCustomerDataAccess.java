@@ -1,15 +1,12 @@
 package com.magestore.app.pos.api.m2.customer;
 
-
-import android.location.Address;
-
-import com.google.gson.Gson;
 import com.magestore.app.lib.connection.Connection;
 import com.magestore.app.lib.connection.ConnectionException;
 import com.magestore.app.lib.connection.ConnectionFactory;
 import com.magestore.app.lib.connection.ParamBuilder;
 import com.magestore.app.lib.connection.ResultReading;
 import com.magestore.app.lib.connection.Statement;
+import com.magestore.app.lib.connection.http.MagestoreResultReadingException;
 import com.magestore.app.lib.model.customer.Complain;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.customer.CustomerAddress;
@@ -18,15 +15,11 @@ import com.magestore.app.lib.resourcemodel.customer.CustomerDataAccess;
 import com.magestore.app.lib.resourcemodel.DataAccessException;
 import com.magestore.app.lib.parse.ParseException;
 import com.magestore.app.pos.model.customer.PosCustomer;
-import com.magestore.app.pos.parse.gson2pos.Gson2PosListAddress;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListCustomer;
 import com.magestore.app.pos.api.m2.POSAPI;
 import com.magestore.app.pos.api.m2.POSAbstractDataAccess;
 import com.magestore.app.pos.api.m2.POSDataAccessSession;
-import com.magestore.app.pos.parse.gson2pos.Gson2PostListComplain;
-
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -287,8 +280,14 @@ public class POSCustomerDataAccess
             // thực thi truy vấn và parse kết quả thành object
             Wrap wrapCustomer = new Wrap();
             wrapCustomer.customer = customers[0];
+
             rp = statement.execute(wrapCustomer);
-            String result = rp.readResult2String();
+
+            // TODO: bug vòng lặp khi đọc json trả về
+            if(rp instanceof MagestoreResultReadingException) {
+                String result = rp.readResult2String();
+                return false;
+            }
             return true;
         } catch (ConnectionException ex) {
             throw ex;

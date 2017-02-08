@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.panel.AbstractListPanel;
 import com.magestore.app.pos.R;
+import com.magestore.app.pos.controller.CustomerListController;
 import com.magestore.app.pos.databinding.CardCustomerListContentBinding;
 import com.magestore.app.pos.util.DialogUtil;
 import com.magestore.app.pos.view.MagestoreDialog;
@@ -77,7 +78,7 @@ public class CustomerListPanel extends AbstractListPanel<Customer> {
     }
 
     private void actionButtonAddNewCustomer() {
-        CustomerAddNewPanel customerAddNewPanel = new CustomerAddNewPanel(getContext());
+        final CustomerAddNewPanel customerAddNewPanel = new CustomerAddNewPanel(getContext());
         customerAddNewPanel.setController(mController);
         customerAddNewPanel.bindItem(mCustomer);
 
@@ -98,6 +99,21 @@ public class CustomerListPanel extends AbstractListPanel<Customer> {
                     ll_new_shipping_address.setVisibility(GONE);
                     ll_new_billing_address.setVisibility(GONE);
                 } else {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        dialog.getButtonSave().setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (ll_new_shipping_address.getVisibility() == VISIBLE || ll_new_billing_address.getVisibility() == VISIBLE) {
+                    ll_add_new_customer.setVisibility(VISIBLE);
+                    ll_new_shipping_address.setVisibility(GONE);
+                    ll_new_billing_address.setVisibility(GONE);
+                } else {
+                    Customer customer = customerAddNewPanel.returnCustomer();
+                    ((CustomerListController) mController).doInsert(customer);
                     dialog.dismiss();
                 }
             }
