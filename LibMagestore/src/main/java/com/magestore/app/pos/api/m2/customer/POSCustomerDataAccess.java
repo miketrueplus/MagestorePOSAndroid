@@ -354,8 +354,7 @@ public class POSCustomerDataAccess
             // đóng connection
             if (connection != null) connection.close();
             connection = null;
-        }
-    }
+        }    }
 
     /**
      * Đếm toàn bộ số address có trong hệ thống

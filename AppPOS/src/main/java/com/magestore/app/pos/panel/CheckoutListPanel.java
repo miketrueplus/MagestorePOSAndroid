@@ -45,7 +45,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
     @Override
     public void initLayout() {
         super.initLayout();
-        mCartItemListPanel = (CartItemListPanel) findViewById(R.id.order_item_panel);
+//        mCartItemListPanel = (CartItemListPanel) findViewById(R.id.order_item_panel);
         mBinding = DataBindingUtil.bind(getView());
     }
 
@@ -53,25 +53,20 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
     public void initModel() {
         super.initModel();
 
-        try {
-            ServiceFactory factory = ServiceFactory.getFactory(getController().getMagestoreContext());
-            cartService = factory.generateCartService();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            ServiceFactory factory = ServiceFactory.getFactory(getController().getMagestoreContext());
+//            cartService = factory.generateCartService();
+//        } catch (IllegalAccessException e) {
+//            e.printStackTrace();
+//        } catch (InstantiationException e) {
+//            e.printStackTrace();
+//        }
 
-        // controller quản lý đơn hàng
-        mCartItemListController = new CartItemListController();
-        mCartItemListController.setMagestoreContext(getController().getMagestoreContext());
-        mCartItemListController.setListPanel(mCartItemListPanel);
-        mCartItemListController.setChildListService(cartService);
-        mCartItemListController.setParentController(getController());
+
 
         // tham chiếu từ checkout sang cartitem
-        if (getController() instanceof CheckoutListController)
-            ((CheckoutListController) getController()).setCartItemListController(mCartItemListController);
+//        if (getController() instanceof CheckoutListController)
+//            ((CheckoutListController) getController()).setCartItemListController(mCartItemListController);
     }
 
     /**

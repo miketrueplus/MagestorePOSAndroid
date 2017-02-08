@@ -22,9 +22,14 @@ import com.magestore.app.lib.service.checkout.CartService;
 import com.magestore.app.lib.service.sales.CheckoutService;
 import com.magestore.app.pos.controller.CartItemListController;
 import com.magestore.app.pos.controller.CheckoutListController;
+import com.magestore.app.pos.controller.CheckoutPaymentController;
+import com.magestore.app.pos.controller.CheckoutShippingController;
 import com.magestore.app.pos.controller.ProductListController;
 import com.magestore.app.pos.panel.CartItemListPanel;
 import com.magestore.app.pos.panel.CheckoutListPanel;
+import com.magestore.app.pos.panel.CheckoutPaymentListPanel;
+import com.magestore.app.pos.panel.CheckoutShippingDetailPanel;
+import com.magestore.app.pos.panel.CheckoutShippingListPanel;
 import com.magestore.app.pos.panel.ProductListPanel;
 import com.magestore.app.pos.ui.AbstractActivity;
 import com.magestore.app.view.ui.PosUI;
@@ -42,10 +47,16 @@ public class SalesActivity extends AbstractActivity
     // Panel chứa danh sách mặt hàng và đơn hàng
     private ProductListPanel mProductListPanel;
     private CheckoutListPanel mCheckoutListPanel;
+    private CheckoutShippingListPanel mCheckoutShippingListPanel;
+    private CheckoutPaymentListPanel mCheckoutPaymentListPanel;
+    private CartItemListPanel mCartItemListPanel;
 
     // controller cho danh sách mặt hàng và đơn hàng
     private ProductListController mProductListController;
     private CheckoutListController mCheckoutListController;
+    private CartItemListController mCheckoutCartItemListController;
+    private CheckoutPaymentController mCheckoutPaymentListController;
+    private CheckoutShippingController mCheckShippingListController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +98,9 @@ public class SalesActivity extends AbstractActivity
 
         // check out list
         mCheckoutListPanel = (CheckoutListPanel) findViewById(R.id.checkout_list_panel);
+
+        // cart item panel
+        mCartItemListPanel = (CartItemListPanel) mCheckoutListPanel.findViewById(R.id.order_item_panel);
     }
 
     protected void initModel() {
@@ -98,11 +112,13 @@ public class SalesActivity extends AbstractActivity
         ServiceFactory factory;
         ProductService productService = null;
         CheckoutService checkoutService = null;
+        CartService cartService = null;
 
         try {
             factory = ServiceFactory.getFactory(magestoreContext);
             productService = factory.generateProductService();
             checkoutService = factory.generateCheckoutService();
+            cartService = factory.generateCartService();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InstantiationException e) {
@@ -110,7 +126,7 @@ public class SalesActivity extends AbstractActivity
         }
 
 
-
+        // controller quangr lyts check out
         mCheckoutListController = new CheckoutListController();
         mCheckoutListController.setMagestoreContext(magestoreContext);
         mCheckoutListController.setListService(checkoutService);
@@ -123,8 +139,28 @@ public class SalesActivity extends AbstractActivity
         mProductListController.setListPanel(mProductListPanel);
         mProductListController.setCheckoutListController(mCheckoutListController);
 
+        // controller quản lý đơn hàng
+        mCheckoutCartItemListController = new CartItemListController();
+        mCheckoutCartItemListController.setMagestoreContext(magestoreContext);
+        mCheckoutCartItemListController.setListPanel(mCartItemListPanel);
+        mCheckoutCartItemListController.setChildListService(cartService);
+        mCheckoutCartItemListController.setParentController(mCheckoutListController);
+        mCheckoutListController.setCartItemListController(mCheckoutCartItemListController);
+
+        mCheckShippingListController = new CheckoutShippingController();
+        mCheckShippingListController.setMagestoreContext(magestoreContext);
+        mCheckShippingListController.setListPanel(mCheckoutShippingListPanel);
+        mCheckShippingListController.setParentController(mCheckoutListController);
+
+
+        mCheckoutPaymentListController = new CheckoutPaymentController();
+        mCheckoutPaymentListController.setMagestoreContext(magestoreContext);
+//        mChec
+
+
         mProductListPanel.initModel();
         mCheckoutListPanel.initModel();
+        mCartItemListPanel.initModel();
     }
 
     @Override
