@@ -1,5 +1,7 @@
 package com.magestore.app.pos.model.customer;
 
+import android.text.TextUtils;
+
 import com.google.gson.annotations.Expose;
 import com.magestore.app.lib.adapter.AdapterViewAnnotiation;
 import com.magestore.app.lib.model.customer.Customer;
@@ -62,6 +64,7 @@ public class PosCustomerAddress extends PosAbstractModel implements CustomerAddr
     public String getPostCode() {
         return postcode;
     }
+
     @Override
     public void setPostCode(String strPostCode) {
         postcode = strPostCode;
@@ -71,6 +74,7 @@ public class PosCustomerAddress extends PosAbstractModel implements CustomerAddr
     public String getTelephone() {
         return telephone;
     }
+
     @Override
     public void setTelephone(String strTelephone) {
         telephone = strTelephone;
@@ -80,6 +84,7 @@ public class PosCustomerAddress extends PosAbstractModel implements CustomerAddr
     public String getCountry() {
         return country_id;
     }
+
     @Override
     public void setCountry(String strCountry) {
         country_id = strCountry;
@@ -89,6 +94,7 @@ public class PosCustomerAddress extends PosAbstractModel implements CustomerAddr
     public String getCity() {
         return city;
     }
+
     @Override
     public void setCity(String strCity) {
         city = strCity;
@@ -103,6 +109,7 @@ public class PosCustomerAddress extends PosAbstractModel implements CustomerAddr
     public String getFirstName() {
         return firstname;
     }
+
     @Override
     public void setFirstName(String strFirstName) {
         firstname = strFirstName;
@@ -146,9 +153,41 @@ public class PosCustomerAddress extends PosAbstractModel implements CustomerAddr
     }
 
     @Override
+    public String getShortAddress() {
+        String fullName = getFirstName() + " " + getLastName();
+        StringBuilder builder = new StringBuilder();
+        builder.append(fullName);
+        builder.append(", ");
+        if (!TextUtils.isEmpty(getStreet1())) {
+            builder.append(getStreet1());
+            builder.append(", ");
+        }
+        if (!TextUtils.isEmpty(getStreet2())) {
+            builder.append(getStreet2());
+            builder.append(", ");
+        }
+        builder.append(getCity());
+        builder.append(", ");
+        if (getRegion() != null) {
+            String state = getRegion().getRegionName();
+            if (!TextUtils.isEmpty(state)) {
+                builder.append(state);
+                builder.append(", ");
+            }
+        }
+        builder.append(getCountry());
+        builder.append(", ");
+        builder.append(getPostCode());
+        builder.append(", ");
+        builder.append(getTelephone());
+        return builder.toString();
+    }
+
+    @Override
     public String getLastName() {
         return lastname;
     }
+
     @Override
     public void setLastName(String strLastName) {
         lastname = strLastName;
@@ -178,6 +217,7 @@ public class PosCustomerAddress extends PosAbstractModel implements CustomerAddr
     public String getVAT() {
         return vat_id;
     }
+
     @Override
     public void setVAT(String strVat) {
         vat_id = strVat;
@@ -189,6 +229,7 @@ public class PosCustomerAddress extends PosAbstractModel implements CustomerAddr
         if (street == null) return "";
         return street.get(0);
     }
+
     @AdapterViewAnnotiation(resName = "street1", methodType = AdapterViewAnnotiation.MethodType.SET)
     @Override
     public void setStreet1(String strStreet1) {
@@ -218,6 +259,7 @@ public class PosCustomerAddress extends PosAbstractModel implements CustomerAddr
     public String getCompany() {
         return company;
     }
+
     @Override
     public void setCompany(String strCompany) {
         company = strCompany;
@@ -227,6 +269,7 @@ public class PosCustomerAddress extends PosAbstractModel implements CustomerAddr
     public String isShipping() {
         return default_shipping;
     }
+
     @Override
     public void setDefaultShipping(String strShipping) {
         default_shipping = strShipping;
@@ -236,6 +279,7 @@ public class PosCustomerAddress extends PosAbstractModel implements CustomerAddr
     public String isBilling() {
         return default_billing;
     }
+
     @Override
     public void setDefaultBilling(String strBilling) {
         default_billing = strBilling;

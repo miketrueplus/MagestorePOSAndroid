@@ -72,4 +72,6 @@ public interface CustomerAddress extends Model {
 
     String getCustomerID();
     Customer getCustomer();
+
+    String getShortAddress();
 }

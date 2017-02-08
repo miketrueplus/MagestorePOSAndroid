@@ -9,6 +9,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import com.magestore.app.lib.model.customer.Customer;
@@ -27,6 +28,13 @@ import com.magestore.app.pos.view.MagestoreDialog;
  */
 public class CustomerListPanel extends AbstractListPanel<Customer> {
     Customer mCustomer;
+    LinearLayout ll_add_new_customer, ll_new_shipping_address, ll_new_billing_address, ll_shipping_address;
+    LinearLayout ll_billing_address, ll_short_shipping_address, ll_short_billing_address;
+    ImageButton btn_shipping_address, btn_billing_address;
+    ImageButton btn_shipping_adrress_edit, btn_billing_adrress_edit;
+    ImageButton btn_shipping_address_delete, btn_billing_address_delete;
+    MagestoreDialog dialog;
+    CustomerAddNewPanel customerAddNewPanel;
 
     /**
      * Khởi tạo
@@ -78,22 +86,14 @@ public class CustomerListPanel extends AbstractListPanel<Customer> {
     }
 
     private void actionButtonAddNewCustomer() {
-        final CustomerAddNewPanel customerAddNewPanel = new CustomerAddNewPanel(getContext());
+        customerAddNewPanel = new CustomerAddNewPanel(getContext());
         customerAddNewPanel.setController(mController);
         customerAddNewPanel.bindItem(mCustomer);
 
-        final MagestoreDialog dialog = DialogUtil.dialog(getContext(), getContext().getString(R.string.customer_add_new), customerAddNewPanel);
+        dialog = DialogUtil.dialog(getContext(), getContext().getString(R.string.customer_add_new), customerAddNewPanel);
         dialog.show();
 
-        final LinearLayout ll_add_new_customer = (LinearLayout) dialog.findViewById(R.id.ll_add_new_customer);
-
-        final LinearLayout ll_new_shipping_address = (LinearLayout) dialog.findViewById(R.id.ll_new_shipping_address);
-
-        final LinearLayout ll_new_billing_address = (LinearLayout) dialog.findViewById(R.id.ll_new_billing_address);
-
-        LinearLayout ll_shipping_address = (LinearLayout) dialog.findViewById(R.id.ll_shipping_address);
-
-        LinearLayout ll_billing_address = (LinearLayout) dialog.findViewById(R.id.ll_billing_address);
+        initLayoutDialog(dialog);
 
         ll_shipping_address.setOnClickListener(new OnClickListener() {
             @Override
@@ -127,9 +127,13 @@ public class CustomerListPanel extends AbstractListPanel<Customer> {
                 if (ll_new_shipping_address.getVisibility() == VISIBLE || ll_new_billing_address.getVisibility() == VISIBLE) {
                     if (dialog.getButtonCancel().getText().toString().equals(getContext().getString(R.string.delete)) && ll_new_shipping_address.getVisibility() == VISIBLE) {
                         customerAddNewPanel.deleteShippingAddress();
+                        btn_shipping_address.setVisibility(VISIBLE);
+                        ll_short_shipping_address.setVisibility(GONE);
                     }
-                    if (dialog.getButtonCancel().getText().toString().equals(getContext().getString(R.string.delete)) && ll_new_shipping_address.getVisibility() == VISIBLE) {
-                        customerAddNewPanel.deleteShippingAddress();
+                    if (dialog.getButtonCancel().getText().toString().equals(getContext().getString(R.string.delete)) && ll_new_billing_address.getVisibility() == VISIBLE) {
+                        customerAddNewPanel.deleteBillingAddress();
+                        btn_billing_address.setVisibility(VISIBLE);
+                        ll_short_billing_address.setVisibility(GONE);
                     }
                     ll_add_new_customer.setVisibility(VISIBLE);
                     ll_new_shipping_address.setVisibility(GONE);
@@ -148,6 +152,14 @@ public class CustomerListPanel extends AbstractListPanel<Customer> {
                 if (ll_new_shipping_address.getVisibility() == VISIBLE) {
                     if (customerAddNewPanel.checkRequiedShippingAddress()) {
                         customerAddNewPanel.insertShippingAddress();
+                        ll_short_shipping_address.setVisibility(VISIBLE);
+                        customerAddNewPanel.showShortShippingAddress();
+                        btn_shipping_address.setVisibility(GONE);
+                        if (customerAddNewPanel.checkSameBillingAndShipping()) {
+                            ll_short_billing_address.setVisibility(VISIBLE);
+                            customerAddNewPanel.showShortBillingAddress();
+                            btn_billing_address.setVisibility(GONE);
+                        }
                         ll_add_new_customer.setVisibility(VISIBLE);
                         ll_new_shipping_address.setVisibility(GONE);
                         ll_new_billing_address.setVisibility(GONE);
@@ -157,6 +169,9 @@ public class CustomerListPanel extends AbstractListPanel<Customer> {
                 } else if (ll_new_billing_address.getVisibility() == VISIBLE) {
                     if (customerAddNewPanel.checkRequiedBillingAddress()) {
                         customerAddNewPanel.insertBillingAddress();
+                        ll_short_billing_address.setVisibility(VISIBLE);
+                        customerAddNewPanel.showShortBillingAddress();
+                        btn_billing_address.setVisibility(GONE);
                         ll_add_new_customer.setVisibility(VISIBLE);
                         ll_new_shipping_address.setVisibility(GONE);
                         ll_new_billing_address.setVisibility(GONE);
@@ -172,5 +187,73 @@ public class CustomerListPanel extends AbstractListPanel<Customer> {
                 }
             }
         });
+
+        btn_shipping_adrress_edit.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ll_new_shipping_address.setVisibility(VISIBLE);
+                ll_add_new_customer.setVisibility(GONE);
+                ll_new_billing_address.setVisibility(GONE);
+                dialog.getDialogTitle().setText(getContext().getString(R.string.customer_add_shipping_address));
+                dialog.getButtonCancel().setText(getContext().getString(R.string.delete));
+            }
+        });
+
+        btn_billing_adrress_edit.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ll_new_billing_address.setVisibility(VISIBLE);
+                ll_add_new_customer.setVisibility(GONE);
+                ll_new_shipping_address.setVisibility(GONE);
+                dialog.getDialogTitle().setText(getContext().getString(R.string.customer_add_billing_address));
+                dialog.getButtonCancel().setText(getContext().getString(R.string.delete));
+            }
+        });
+
+        btn_shipping_address_delete.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ll_short_shipping_address.setVisibility(GONE);
+                btn_shipping_address.setVisibility(VISIBLE);
+                customerAddNewPanel.deleteShippingAddress();
+            }
+        });
+
+        btn_billing_address_delete.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ll_short_billing_address.setVisibility(GONE);
+                btn_billing_address.setVisibility(VISIBLE);
+                customerAddNewPanel.deleteBillingAddress();
+            }
+        });
+    }
+
+    private void initLayoutDialog(MagestoreDialog dialog) {
+        ll_add_new_customer = (LinearLayout) dialog.findViewById(R.id.ll_add_new_customer);
+
+        ll_new_shipping_address = (LinearLayout) dialog.findViewById(R.id.ll_new_shipping_address);
+
+        ll_new_billing_address = (LinearLayout) dialog.findViewById(R.id.ll_new_billing_address);
+
+        ll_shipping_address = (LinearLayout) dialog.findViewById(R.id.ll_shipping_address);
+
+        ll_billing_address = (LinearLayout) dialog.findViewById(R.id.ll_billing_address);
+
+        ll_short_shipping_address = (LinearLayout) dialog.findViewById(R.id.ll_short_shipping_address);
+
+        ll_short_billing_address = (LinearLayout) dialog.findViewById(R.id.ll_short_billing_address);
+
+        btn_shipping_address = (ImageButton) dialog.findViewById(R.id.btn_shipping_address);
+
+        btn_billing_address = (ImageButton) dialog.findViewById(R.id.btn_billing_address);
+
+        btn_shipping_adrress_edit = (ImageButton) dialog.findViewById(R.id.btn_shipping_adrress_edit);
+
+        btn_billing_adrress_edit = (ImageButton) dialog.findViewById(R.id.btn_billing_adrress_edit);
+
+        btn_shipping_address_delete = (ImageButton) dialog.findViewById(R.id.btn_shipping_address_delete);
+
+        btn_billing_address_delete = (ImageButton) dialog.findViewById(R.id.btn_billing_address_delete);
     }
 }

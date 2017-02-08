@@ -1,6 +1,7 @@
 package com.magestore.app.pos.panel;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.config.ConfigCountry;
@@ -51,6 +53,7 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
     ConfigRegion billingRegion;
     CustomerAddress shippingAddress;
     CustomerAddress billingAddress;
+    TextView tv_shipping_address, tv_billing_address;
 
     public CustomerAddNewPanel(Context context) {
         super(context);
@@ -104,6 +107,8 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
         s_vat = (EditText) findViewById(R.id.s_vat);
         b_vat = (EditText) findViewById(R.id.b_vat);
         cb_same_billing_and_shipping = (CheckBox) findViewById(R.id.cb_same_billing_and_shipping);
+        tv_shipping_address = (TextView) findViewById(R.id.tv_shipping_address);
+        tv_billing_address = (TextView) findViewById(R.id.tv_billing_address);
     }
 
     @Override
@@ -291,6 +296,28 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
             shippingAddress.setRegion(s_region);
         }
         shippingAddress.setVAT(s_vat.getText().toString());
+        if (cb_same_billing_and_shipping.isChecked()) {
+            billingAddress = shippingAddress;
+            b_first_name.setText(billingAddress.getFirstName());
+            b_last_name.setText(billingAddress.getLastName());
+            b_company.setText(billingAddress.getCompany());
+            b_phone.setText(billingAddress.getTelephone());
+            b_street1.setText(billingAddress.getStreet1());
+            b_street2.setText(billingAddress.getStreet2());
+            b_city.setText(billingAddress.getCity());
+            b_zipcode.setText(billingAddress.getPostCode());
+            b_spinner_country.setSelection(billingAddress.getCountry());
+            if (billingAddress.getRegion().getID().equals("0")) {
+                b_state.setVisibility(VISIBLE);
+                b_spinner_state.setVisibility(GONE);
+                b_state.setText(billingAddress.getRegion().getRegionName());
+            } else {
+                b_state.setVisibility(GONE);
+                b_spinner_state.setVisibility(VISIBLE);
+                b_spinner_state.setSelection(billingAddress.getRegion().getRegionCode());
+            }
+            b_vat.setText(billingAddress.getVAT());
+        }
     }
 
     /**
@@ -334,7 +361,7 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
     /**
      * Delete Shipping Address
      */
-    public void deleteShippingAddress(){
+    public void deleteShippingAddress() {
         shippingAddress = null;
         clearText(s_first_name);
         clearText(s_last_name);
@@ -351,7 +378,7 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
     /**
      * Delete Billing Address
      */
-    public void deleteBillingAddress(){
+    public void deleteBillingAddress() {
         billingAddress = null;
         clearText(b_first_name);
         clearText(b_last_name);
@@ -362,6 +389,24 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
         clearText(b_city);
         clearText(b_zipcode);
         clearText(b_vat);
+    }
+
+    /**
+     * Hiển thị short content shipping address
+     */
+    public void showShortShippingAddress() {
+        tv_shipping_address.setText(shippingAddress.getShortAddress());
+    }
+
+    /**
+     * Hiển thị short content shipping address
+     */
+    public void showShortBillingAddress() {
+        tv_billing_address.setText(billingAddress.getShortAddress());
+    }
+
+    public boolean checkSameBillingAndShipping() {
+        return cb_same_billing_and_shipping.isChecked();
     }
 
     /**
@@ -440,7 +485,7 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
         return EditTextUtil.checkRequied(getContext(), editText);
     }
 
-    public void clearText(EditText editText){
+    public void clearText(EditText editText) {
         editText.setText("");
     }
 }
