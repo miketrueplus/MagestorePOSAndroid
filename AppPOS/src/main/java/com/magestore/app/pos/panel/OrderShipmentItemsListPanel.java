@@ -10,7 +10,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.EditText;
 
-import com.magestore.app.lib.model.checkout.cart.Items;
+import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.sales.OrderItemParams;
 import com.magestore.app.lib.panel.AbstractListPanel;
 import com.magestore.app.pos.R;
@@ -26,7 +26,7 @@ import java.util.List;
  * dong.le@trueplus.vn
  */
 
-public class OrderShipmentItemsListPanel extends AbstractListPanel<Items> {
+public class OrderShipmentItemsListPanel extends AbstractListPanel<CartItem> {
     List<OrderItemParams> listItem;
 
     public OrderShipmentItemsListPanel(Context context) {
@@ -59,18 +59,18 @@ public class OrderShipmentItemsListPanel extends AbstractListPanel<Items> {
     }
 
     @Override
-    protected void bindItem(View view, Items item, int position) {
+    protected void bindItem(View view, CartItem item, int position) {
         CardOrderShipmentItemContentBinding mBinding = DataBindingUtil.bind(view);
         mBinding.setOrderItem(item);
 
-        Items i = mList.get(position);
+        CartItem i = mList.get(position);
 
         EditText qty_to_ship = (EditText) view.findViewById(R.id.qty_to_ship);
         actionQtyToShip(i, qty_to_ship);
         i.setOrderItemId(i.getID());
     }
 
-    private void actionQtyToShip(final Items item, final EditText qty_to_ship) {
+    private void actionQtyToShip(final CartItem item, final EditText qty_to_ship) {
         qty_to_ship.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -103,7 +103,7 @@ public class OrderShipmentItemsListPanel extends AbstractListPanel<Items> {
     }
 
     public List<OrderItemParams> bind2List() {
-        for (Items item : mList) {
+        for (CartItem item : mList) {
             OrderItemParams param = ((OrderShipmentItemsListController) mController).createOrderShipmentItemParams();
             param.setOrderItemId(item.getOrderItemId());
             param.setQty(item.getQuantity());

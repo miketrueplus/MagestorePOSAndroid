@@ -97,7 +97,7 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         mOrderCommentHistoryController.setView(mOrderCommentHistoryListPanel);
         mOrderCommentHistoryController.setMagestoreContext(controller.getMagestoreContext());
 
-        // Controller Items
+        // Controller CartItem
         mOrderHistoryItemsListController = new OrderHistoryItemsListController();
         mOrderHistoryItemsListController.setView(mOrderHistoryItemsListPanel);
         mOrderHistoryItemsListController.setMagestoreContext(controller.getMagestoreContext());

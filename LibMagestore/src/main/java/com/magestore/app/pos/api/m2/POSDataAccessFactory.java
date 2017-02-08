@@ -6,6 +6,7 @@ import com.magestore.app.lib.resourcemodel.customer.CustomerComplainDataAccess;
 import com.magestore.app.lib.resourcemodel.customer.CustomerDataAccess;
 import com.magestore.app.lib.resourcemodel.DataAccessFactory;
 import com.magestore.app.lib.resourcemodel.registershift.RegisterShiftDataAccess;
+import com.magestore.app.lib.resourcemodel.sales.CheckoutDataAccess;
 import com.magestore.app.lib.resourcemodel.sales.OrderDataAccess;
 import com.magestore.app.lib.resourcemodel.user.UserDataAccess;
 import com.magestore.app.lib.resourcemodel.catalog.ProductDataAccess;
@@ -15,6 +16,7 @@ import com.magestore.app.pos.api.m2.customer.POSCustomerAddressDataAccess;
 import com.magestore.app.pos.api.m2.customer.POSCustomerComplainDataAccess;
 import com.magestore.app.pos.api.m2.customer.POSCustomerDataAccess;
 import com.magestore.app.pos.api.m2.registershift.POSRegisterShiftDataAccess;
+import com.magestore.app.pos.api.m2.sales.POSCheckoutDataAccess;
 import com.magestore.app.pos.api.m2.sales.POSOrderDataAccess;
 import com.magestore.app.pos.api.m2.user.POSUserDataAccess;
 
@@ -65,5 +67,10 @@ public class POSDataAccessFactory extends DataAccessFactory {
     @Override
     public ConfigDataAccess generateConfigDataAccess() {
         return new POSConfigDataAccess();
+    }
+
+    @Override
+    public CheckoutDataAccess generateCheckoutDataAccess() {
+        return new POSCheckoutDataAccess();
     }
 }

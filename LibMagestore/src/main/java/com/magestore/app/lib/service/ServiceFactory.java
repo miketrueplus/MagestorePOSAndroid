@@ -10,6 +10,7 @@ import com.magestore.app.lib.service.customer.CustomerComplainService;
 import com.magestore.app.lib.service.customer.CustomerService;
 import com.magestore.app.lib.service.order.OrderHistoryService;
 import com.magestore.app.lib.service.registershift.RegisterShiftService;
+import com.magestore.app.lib.service.sales.CheckoutService;
 import com.magestore.app.lib.service.sales.OrderService;
 import com.magestore.app.lib.service.user.UserService;
 import com.magestore.app.pos.service.POSServiceFactory;
@@ -34,6 +35,7 @@ public abstract class ServiceFactory {
     public abstract CustomerAddressService generateCustomerAddressService();
     public abstract CustomerComplainService generateCustomerComplainService();
     public abstract ConfigService generateConfigService();
+    public abstract CheckoutService generateCheckoutService();
 
     /**
      * Trả lại context

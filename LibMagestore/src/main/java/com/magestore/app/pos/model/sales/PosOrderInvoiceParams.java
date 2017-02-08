@@ -1,6 +1,6 @@
 package com.magestore.app.pos.model.sales;
 
-import com.magestore.app.lib.model.checkout.cart.Items;
+import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.sales.OrderAttributes;
 import com.magestore.app.lib.model.sales.OrderCommentParams;
 import com.magestore.app.lib.model.sales.OrderInvoiceParams;
@@ -50,7 +50,7 @@ public class PosOrderInvoiceParams extends PosAbstractModel implements OrderInvo
     int totalQty;
     String updatedAt;
     OrderAttributes extension_attributes;
-    List<Items> items;
+    List<CartItem> items;
 
     @Override
     public void setEmailSent(String strEmailSent) {
@@ -403,12 +403,12 @@ public class PosOrderInvoiceParams extends PosAbstractModel implements OrderInvo
     }
 
     @Override
-    public List<Items> getItems() {
+    public List<CartItem> getItems() {
         return items;
     }
 
     @Override
-    public void setItems(List<Items> items) {
+    public void setItems(List<CartItem> items) {
         this.items = items;
     }
 }

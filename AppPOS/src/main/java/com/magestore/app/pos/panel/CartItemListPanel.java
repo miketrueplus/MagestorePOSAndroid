@@ -3,7 +3,6 @@ package com.magestore.app.pos.panel;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
-import android.support.v7.widget.GridLayoutManager;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
@@ -11,15 +10,14 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.daimajia.swipe.SwipeLayout;
+import com.magestore.app.lib.model.checkout.Checkout;
+import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.sales.Order;
-import com.magestore.app.lib.model.checkout.cart.Items;
-import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.panel.AbstractListPanel;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.CartItemListController;
 import com.magestore.app.pos.databinding.CardCartListContentBinding;
 import com.magestore.app.pos.databinding.PanelCartListBinding;
-import com.magestore.app.view.FormatTextView;
 
 /**
  * Quản lý hiển thị danh sách các hàng chọn trong cart
@@ -28,7 +26,7 @@ import com.magestore.app.view.FormatTextView;
  * mike@trueplus.vn
  */
 
-public class CartItemListPanel extends AbstractListPanel<Items> {
+public class CartItemListPanel extends AbstractListPanel<CartItem> {
     // Binding dữ liệu
     PanelCartListBinding mBinding;
 
@@ -69,7 +67,7 @@ public class CartItemListPanel extends AbstractListPanel<Items> {
     }
 
     @Override
-    protected void bindItem(View view, final Items item, int position) {
+    protected void bindItem(View view, final CartItem item, int position) {
         // map dữ liệu của item vào
         final CardCartListContentBinding binding = DataBindingUtil.bind(view);
         binding.setCartItem(item);
@@ -150,14 +148,7 @@ public class CartItemListPanel extends AbstractListPanel<Items> {
         });
     }
 
-    /**
-     * Cập nhật bảng giá tổng
-     */
-    public void updateTotalPrice(Order order) {
-        mBinding.setOrder(order);
-    }
-
-    /**
+    /*
      * Trả về controller
      * @return
      */

@@ -7,10 +7,9 @@ import com.magestore.app.lib.model.catalog.Product;
  * Created by Mike on 12/26/2016.
  * Magestore
  * mike@trueplus.vn
- * TODO: Add a class header comment!
  */
 
-public interface Items extends Model {
+public interface CartItem extends Model {
     void setQuantity(int param_quantity);
     void setProduct(Product param_product);
     void setPrice(float param_price);

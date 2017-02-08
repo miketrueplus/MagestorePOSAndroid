@@ -65,13 +65,11 @@
                 </android.support.v7.widget.Toolbar>
             </android.support.design.widget.AppBarLayout>
 
-            <com.magestore.app.pos.panel.CartItemListPanel
-                android:id="@+id/order_item_panel"
+            <com.magestore.app.pos.panel.CheckoutListPanel
+                android:id="@+id/checkout_list_panel"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                magestore_view:layout_list="@+id/sales_order_container"
-                magestore_view:layout_item="@layout/card_cart_list_content"
-                magestore_view:layout_panel="@layout/panel_cart_list"
+                magestore_view:layout_panel="@layout/panel_checkout_list"
                 magestore_view:layout_orientation="vertical"
                 magestore_view:layout_span_count="1"/>
         </LinearLayout>

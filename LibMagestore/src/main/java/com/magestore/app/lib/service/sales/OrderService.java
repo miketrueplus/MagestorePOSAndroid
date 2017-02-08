@@ -1,7 +1,7 @@
 package com.magestore.app.lib.service.sales;
 
 import com.magestore.app.lib.model.catalog.Product;
-import com.magestore.app.lib.model.checkout.cart.Items;
+import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.service.Service;
 
@@ -9,7 +9,6 @@ import com.magestore.app.lib.service.Service;
  * Created by Mike on 1/6/2017.
  * Magestore
  * mike@trueplus.vn
- * TODO: Add a class header comment!
  */
 
 public interface OrderService extends Service {
@@ -55,9 +54,9 @@ public interface OrderService extends Service {
 
     /**
      *
-     * @param items
+     * @param cartItem
      */
-    public void delOrderItem(Items items);
+    public void delOrderItem(CartItem cartItem);
 
     /**
      *

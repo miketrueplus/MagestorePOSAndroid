@@ -18,7 +18,7 @@ import com.magestore.app.pos.panel.OrderListPanel;
 import com.magestore.app.pos.ui.AbstractActivity;
 
 /**
- * An activity representing a list of Items. This activity
+ * An activity representing a list of CartItem. This activity
  * has different presentations for handset and tablet-size devices. On
  * handsets, the activity presents a list of items, which when touched,
  * lead to a {@link OrderDetailActivity} representing

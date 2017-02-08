@@ -15,12 +15,16 @@ import android.view.View;
 
 
 import com.magestore.app.lib.context.MagestoreContext;
+import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.service.ServiceFactory;
 import com.magestore.app.lib.service.catalog.ProductService;
 import com.magestore.app.lib.service.checkout.CartService;
+import com.magestore.app.lib.service.sales.CheckoutService;
 import com.magestore.app.pos.controller.CartItemListController;
+import com.magestore.app.pos.controller.CheckoutListController;
 import com.magestore.app.pos.controller.ProductListController;
 import com.magestore.app.pos.panel.CartItemListPanel;
+import com.magestore.app.pos.panel.CheckoutListPanel;
 import com.magestore.app.pos.panel.ProductListPanel;
 import com.magestore.app.pos.ui.AbstractActivity;
 import com.magestore.app.view.ui.PosUI;
@@ -37,11 +41,11 @@ public class SalesActivity extends AbstractActivity
 
     // Panel chứa danh sách mặt hàng và đơn hàng
     private ProductListPanel mProductListPanel;
-    private CartItemListPanel mCartItemListPanel;
+    private CheckoutListPanel mCheckoutListPanel;
 
     // controller cho danh sách mặt hàng và đơn hàng
     private ProductListController mProductListController;
-    private CartItemListController mCartItemListController;
+    private CheckoutListController mCheckoutListController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,11 +82,11 @@ public class SalesActivity extends AbstractActivity
             mTwoPane = true;
         }
 
+        // product list
         mProductListPanel = (ProductListPanel) findViewById(R.id.product_list_panel);
-//        mProductListPanel.setColumn(mTwoPane ? 4 : 1);
 
-        mCartItemListPanel = (CartItemListPanel) findViewById(R.id.order_item_panel);
-        if (mCartItemListPanel == null) return;
+        // check out list
+        mCheckoutListPanel = (CheckoutListPanel) findViewById(R.id.checkout_list_panel);
     }
 
     protected void initModel() {
@@ -93,39 +97,42 @@ public class SalesActivity extends AbstractActivity
         // chuẩn bị service
         ServiceFactory factory;
         ProductService productService = null;
-        CartService cartService = null;
+        CheckoutService checkoutService = null;
 
         try {
             factory = ServiceFactory.getFactory(magestoreContext);
             productService = factory.generateProductService();
-            cartService = factory.generateCartService();
+            checkoutService = factory.generateCheckoutService();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InstantiationException e) {
             e.printStackTrace();
         }
 
-        // controller quản lý đơn hàng
-        mCartItemListController = new CartItemListController();
-        mCartItemListController.setMagestoreContext(magestoreContext);
-        mCartItemListController.setCartService(cartService);
-        mCartItemListController.setListPanel(mCartItemListPanel);
+
+
+        mCheckoutListController = new CheckoutListController();
+        mCheckoutListController.setMagestoreContext(magestoreContext);
+        mCheckoutListController.setListService(checkoutService);
+        mCheckoutListController.setListPanel(mCheckoutListPanel);
 
         // controller quản lý danh sách khách hàng
         mProductListController = new ProductListController();
         mProductListController.setMagestoreContext(magestoreContext);
         mProductListController.setProdcutService(productService);
         mProductListController.setListPanel(mProductListPanel);
-        mProductListController.setOrderItemListController(mCartItemListController);
+        mProductListController.setCheckoutListController(mCheckoutListController);
+
+        mProductListPanel.initModel();
+        mCheckoutListPanel.initModel();
     }
 
     @Override
     protected void initValue() {
         // Load danh sách sản phẩm, không tự động chọn sản phẩm đầu tiên
-        mProductListController.doLoadData(false);
-
-        // TODO: Tạm thời new activity thì tạo checkout mới luôn
-        mCartItemListController.newSales();
+        mProductListController.doRetrieve();
+        // Load danh sách check out
+        mCheckoutListController.doRetrieve();
     }
 
     @Override

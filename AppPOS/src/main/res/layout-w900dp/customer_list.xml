@@ -23,7 +23,7 @@
         tools:context="com.magestore.app.pos.CustomerActivity">
 
         <!--
-        This layout is a two-pane layout for the Items
+        This layout is a two-pane layout for the CartItem
         master/detail flow.
 
         -->

@@ -29,7 +29,7 @@ public class ProductListController extends AbstractListController<Product> {
     }
 
     // Tham chiếu đến CartItemListController
-    CartItemListController mCartItemListController;
+    CheckoutListController mCheckoutListController;
 
     public void doLoadProductsImage() {
         LoadProductImageTask task = new LoadProductImageTask(mProductService, null, mList);
@@ -67,15 +67,15 @@ public class ProductListController extends AbstractListController<Product> {
      * Get 1 order item controller
      * @return
      */
-    public CartItemListController getOrderItemListController() {
-        return mCartItemListController;
+    public CheckoutListController getmCheckoutListController() {
+        return mCheckoutListController;
     }
 
     /**
      * Đặt 1 order item controller
      */
-    public void setOrderItemListController(CartItemListController controller) {
-        this.mCartItemListController = controller;
+    public void setCheckoutListController(CheckoutListController controller) {
+        this.mCheckoutListController = controller;
     }
 
 
@@ -98,6 +98,6 @@ public class ProductListController extends AbstractListController<Product> {
     @Override
     public void bindItem(Product item) {
         super.bindItem(item);
-        if (mCartItemListController != null) mCartItemListController.bindItem(item);
+        if (mCheckoutListController != null) mCheckoutListController.bindProduct(item);
     }
 }

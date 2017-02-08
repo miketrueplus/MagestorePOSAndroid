@@ -1,12 +1,19 @@
 package com.magestore.app.pos.controller;
 
+import com.magestore.app.lib.controller.AbstractChildListController;
 import com.magestore.app.lib.controller.AbstractListController;
+import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.catalog.Product;
-import com.magestore.app.lib.model.checkout.cart.Items;
+import com.magestore.app.lib.model.checkout.Checkout;
+import com.magestore.app.lib.model.checkout.cart.CartItem;
+import com.magestore.app.lib.service.ChildListService;
 import com.magestore.app.lib.service.checkout.CartService;
 import com.magestore.app.pos.panel.CartItemListPanel;
 
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Mike on 1/11/2017.
@@ -14,22 +21,10 @@ import java.util.List;
  * mike@trueplus.vn
  */
 
-public class CartItemListController extends AbstractListController<Items> {
-    /**
-     * Service xử lý các vấn đề liên quan đến customer
-     */
+public class CartItemListController extends AbstractChildListController<Checkout, CartItem> {
     CartService mCartService;
-
-    public void setCartService(CartService service) {
-        mCartService = service;
-    }
-
-    public CartService getCartService() {
-        return mCartService;
-    }
-
     @Override
-    protected List<Items> loadDataBackground(Void... params) throws Exception {
+    protected List<CartItem> loadDataBackground(Void... params) throws Exception {
         return null;
     }
 
@@ -37,32 +32,39 @@ public class CartItemListController extends AbstractListController<Items> {
      * Bind 1 sản
      * @param product
      */
-    public void bindItem(Product product) {
-        if (mCartService == null) return;
-
-        // Bổ sung thêm product vào cart
-        mCartService.addOrderItem(product, 1, product.getPrice());
+    public void bindProduct(Product product) {
+        try {
+            mCartService.insert(getParent(), product, 1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
         mView.notifyDataSetChanged();
-
-//
-        // cập nhật tổng lên cuối order
         updateTotalPrice();
     }
 
-    /**
-     * Tạo một phiên bán hàng mới
-     */
-    public void newSales() {
-        mCartService.newSales();
-        super.bindList(mCartService.getOrder().getOrderItems());
+
+    @Override
+    public void setChildListService(ChildListService<Checkout, CartItem> service) {
+        super.setChildListService(service);
+        if (service instanceof CartService) mCartService = (CartService) service;
     }
+
 
     /**
      * Cập nhật lại phần tính giá tiền, discount và tax
      */
     public void updateTotalPrice() {
-        mCartService.calculateLastTotalOrderItems();
-        ((CartItemListPanel) mView).updateTotalPrice(mCartService.getOrder());
+        mCartService.calculateLastTotal(getParent());
+
+//        mCartService.calculateLastTotalOrderItems();
+        if (mParrentController != null && (mParrentController instanceof  CheckoutListController))
+          ((CheckoutListController) mParrentController).updateTotalPrice();
     }
 
     /**
@@ -70,7 +72,18 @@ public class CartItemListController extends AbstractListController<Items> {
      * @param product
      */
     public void deleteProduct(Product product) {
-        mCartService.delOrderItem(product);
+        try {
+            mCartService.delete(getParent(), product);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+//        mCartService.delOrderItem(product);
         mView.notifyDataSetChanged();
         updateTotalPrice();
     }
@@ -82,8 +95,12 @@ public class CartItemListController extends AbstractListController<Items> {
      * @param price
      */
     public void addProduct(Product product, int quantity, float price) {
-        mCartService.addOrderItem(product, quantity, price);
-//        mView.notifyDatasetChanged();
+        try {
+            mCartService.insert(getParent(), product, quantity, price);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+//        mView.notifyDataSetChanged();
         updateTotalPrice();
     }
 
@@ -103,8 +120,13 @@ public class CartItemListController extends AbstractListController<Items> {
      * @param price
      */
     public void substructProduct(Product product, int quantity, float price) {
-        mCartService.subtructOrderItem(product, quantity);
-//        mView.notifyDatasetChanged();
+//        mCartService.subtructOrderItem(product, quantity);
+        try {
+            mCartService.delete(getParent(), product, quantity);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+//        mView.notifyDataSetChanged();
         updateTotalPrice();
     }
 

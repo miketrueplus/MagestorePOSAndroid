@@ -10,7 +10,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.EditText;
 
-import com.magestore.app.lib.model.checkout.cart.Items;
+import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.panel.AbstractListPanel;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.databinding.CardOrderInvoiceItemContentBinding;
@@ -23,7 +23,7 @@ import java.util.List;
  * dong.le@trueplus.vn
  */
 
-public class OrderInvoiceItemsListPanel extends AbstractListPanel<Items> {
+public class OrderInvoiceItemsListPanel extends AbstractListPanel<CartItem> {
 
     public OrderInvoiceItemsListPanel(Context context) {
         super(context);
@@ -53,18 +53,18 @@ public class OrderInvoiceItemsListPanel extends AbstractListPanel<Items> {
     }
 
     @Override
-    protected void bindItem(View view, Items item, int position) {
+    protected void bindItem(View view, CartItem item, int position) {
         CardOrderInvoiceItemContentBinding mBinding = DataBindingUtil.bind(view);
         mBinding.setOrderItem(item);
 
-        Items i = mList.get(position);
+        CartItem i = mList.get(position);
 
         EditText edt_qty_to_invoice = (EditText) view.findViewById(R.id.qty_to_invoice);
 
         actionQtyToInvoice(i, edt_qty_to_invoice);
     }
 
-    private void actionQtyToInvoice(final Items item, final EditText qty_to_invoice) {
+    private void actionQtyToInvoice(final CartItem item, final EditText qty_to_invoice) {
         qty_to_invoice.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -96,7 +96,7 @@ public class OrderInvoiceItemsListPanel extends AbstractListPanel<Items> {
         });
     }
 
-    public List<Items> bind2List() {
+    public List<CartItem> bind2List() {
         return mList;
     }
 }

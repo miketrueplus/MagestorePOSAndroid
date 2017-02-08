@@ -50,19 +50,4 @@ public class CustomerAddressListController
     public CustomerAddress createNewCustomerAddress() {
             return getChildListService().create(getParent());
     }
-
-    /**
-     * Khởi tạo 1 customer address
-     * @param customer
-     * @return
-     * @throws IOException
-     * @throws InstantiationException
-     * @throws ParseException
-     * @throws IllegalAccessException
-     */
-    @Override
-    public CustomerAddress createItem(Customer customer) throws IOException, InstantiationException, ParseException, IllegalAccessException {
-        return mChildListService.create(getParent());
-    }
-
 }

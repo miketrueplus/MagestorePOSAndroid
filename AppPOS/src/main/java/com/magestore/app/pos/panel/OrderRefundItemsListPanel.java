@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
-import com.magestore.app.lib.model.checkout.cart.Items;
+import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.sales.OrderItemParams;
 import com.magestore.app.lib.panel.AbstractListPanel;
 import com.magestore.app.pos.R;
@@ -27,7 +27,7 @@ import java.util.List;
  * dong.le@trueplus.vn
  */
 
-public class OrderRefundItemsListPanel extends AbstractListPanel<Items> {
+public class OrderRefundItemsListPanel extends AbstractListPanel<CartItem> {
     List<OrderItemParams> listItem;
     private static String RETURN_TO_STOCK = "back_to_stock";
 
@@ -61,11 +61,11 @@ public class OrderRefundItemsListPanel extends AbstractListPanel<Items> {
     }
 
     @Override
-    protected void bindItem(View view, Items item, int position) {
+    protected void bindItem(View view, CartItem item, int position) {
         CardOrderRefundItemContentBinding binding = DataBindingUtil.bind(view);
         binding.setOrderItem(item);
 
-        Items i = mList.get(position);
+        CartItem i = mList.get(position);
 
         EditText edt_qty_to_refund = (EditText) view.findViewById(R.id.qty_to_refund);
         CheckBox cb_return_to_stock = (CheckBox) view.findViewById(R.id.return_to_stock);
@@ -77,7 +77,7 @@ public class OrderRefundItemsListPanel extends AbstractListPanel<Items> {
         }
     }
 
-    private void actionQtyToRefund(final Items item, final EditText qty_to_refund) {
+    private void actionQtyToRefund(final CartItem item, final EditText qty_to_refund) {
         qty_to_refund.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -110,7 +110,7 @@ public class OrderRefundItemsListPanel extends AbstractListPanel<Items> {
     }
 
     public List<OrderItemParams> bind2List() {
-        for (Items item : mList) {
+        for (CartItem item : mList) {
             OrderItemParams param = ((OrderRefundItemsListController) mController).createOrderRefundItemParams();
             param.setOrderItemId(item.getOrderItemId());
             param.setQty(item.getQuantity());

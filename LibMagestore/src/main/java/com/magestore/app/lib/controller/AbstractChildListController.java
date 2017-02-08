@@ -115,4 +115,9 @@ public abstract class AbstractChildListController<TParent extends Model, TModel 
             return mChildListService.delete(mParentModel, models);
         return false;
     }
+
+    @Override
+    public TModel createItem(TParent parent) {
+        return createItem();
+    }
 }

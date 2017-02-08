@@ -1,7 +1,7 @@
 package com.magestore.app.lib.model.sales;
 
 import com.magestore.app.lib.model.Model;
-import com.magestore.app.lib.model.checkout.cart.Items;
+import com.magestore.app.lib.model.checkout.cart.CartItem;
 
 import java.util.List;
 
@@ -152,7 +152,7 @@ public interface OrderInvoiceParams extends Model {
 
     void setExtensionAttributes(OrderAttributes extension_attributes);
 
-    List<Items> getItems();
+    List<CartItem> getItems();
 
-    void setItems(List<Items> items);
+    void setItems(List<CartItem> items);
 }

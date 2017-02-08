@@ -6,8 +6,8 @@
         <import type="com.magestore.app.util.ConfigUtil" />
 
         <variable
-            name="order"
-            type="com.magestore.app.lib.model.sales.Order" />
+            name="checkout"
+            type="com.magestore.app.lib.model.checkout.Checkout" />
     </data>
 
     <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -34,6 +34,7 @@
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/fab"
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|end"
@@ -42,93 +43,6 @@
                 tools:ignore="VectorDrawableCompat" />
         </FrameLayout>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp">
 
-            <com.magestore.app.view.FormatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/sub_total"
-                android:textSize="24sp" />
-
-            <com.magestore.app.view.FormatTextView
-                android:id="@+id/text_sales_order_subtotal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_gravity="right"
-                android:layout_weight="1"
-                android:text="@{ConfigUtil.formatPrice(order.getSubTotal())}"
-                android:textSize="24sp" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp">
-
-            <com.magestore.app.view.FormatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/discount"
-                android:textSize="24sp" />
-
-            <com.magestore.app.view.FormatTextView
-                android:id="@+id/text_sales_order_discount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_gravity="right"
-                android:layout_weight="1"
-                android:text="@{ConfigUtil.formatPrice(order.getDiscountTotal())}"
-                android:textSize="24sp" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp">
-
-            <com.magestore.app.view.FormatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tax"
-                android:textSize="24sp" />
-
-            <com.magestore.app.view.FormatTextView
-                android:id="@+id/text_sales_order_tax"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_gravity="right"
-                android:layout_weight="1"
-                android:text="@{ConfigUtil.formatPrice(order.getTaxTotal())}"
-                android:textSize="24sp" />
-        </RelativeLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:orientation="horizontal">
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.7"
-                android:text="Hold"
-                android:textSize="18sp" />
-
-            <Button
-                android:id="@+id/btn_sales_order_checkout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:text='@{@string/checkout + " (" + ConfigUtil.formatPrice(order.getLastTotal()) + ")"}'
-                android:textColorHighlight="@color/colorAccent"
-                android:textSize="18sp" />
-        </LinearLayout>
     </LinearLayout>
 </layout>

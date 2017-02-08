@@ -274,6 +274,7 @@ public abstract class AbstractListPanel<TModel extends Model>
      */
     public void bindList(List<TModel> list) {
         mList = list;
+        if (mRecycleView == null) return;
         if (mList != null) {
             mRecycleView.setAdapter(new AbstractListPanel<TModel>.ListRecyclerViewAdapter(mList));
         }

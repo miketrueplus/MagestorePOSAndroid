@@ -7,5 +7,5 @@ package com.magestore.app.lib.model.checkout.cart;
  * TODO: Add a class header comment!
  */
 
-public interface ItemDefault extends Items {
+public interface ItemDefault extends CartItem {
 }

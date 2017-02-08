@@ -1,14 +1,14 @@
 package com.magestore.app.pos.model.sales;
 
+import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.sales.Order;
-import com.magestore.app.lib.model.checkout.cart.Items;
 import com.magestore.app.lib.model.sales.OrderInvoiceParams;
 import com.magestore.app.lib.model.sales.OrderRefundParams;
 import com.magestore.app.lib.model.sales.OrderShipmentParams;
 import com.magestore.app.lib.model.sales.OrderStatus;
 import com.magestore.app.lib.model.sales.OrderWebposPayment;
 import com.magestore.app.pos.model.PosAbstractModel;
-import com.magestore.app.pos.model.checkout.cart.PosItems;
+import com.magestore.app.pos.model.checkout.cart.PosCartItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +33,7 @@ public class PosOrder extends PosAbstractModel implements Order {
     private String webpos_staff_id;
     private String webpos_staff_name;
 
-    private List<PosItems> items;
+    private List<PosCartItem> items;
 
     float sub_total = 0;
     float tax_total = 0;
@@ -141,8 +141,8 @@ public class PosOrder extends PosAbstractModel implements Order {
     }
 
     @Override
-    public List<Items> getOrderItems() {
-        return (List<Items>) (List<?>) items;
+    public List<CartItem> getOrderItems() {
+        return (List<CartItem>) (List<?>) items;
 
     }
 
@@ -446,7 +446,7 @@ public class PosOrder extends PosAbstractModel implements Order {
     public boolean checkListShipment() {
         boolean ischeck = false;
         if (items != null && items.size() > 0) {
-            for (Items item : items) {
+            for (CartItem item : items) {
                 if (item.QtyShip() > 0) {
                     ischeck = true;
                 }
@@ -463,7 +463,7 @@ public class PosOrder extends PosAbstractModel implements Order {
     public boolean checkListRefund() {
         boolean ischeck = false;
         if (items != null && items.size() > 0) {
-            for (Items item : items) {
+            for (CartItem item : items) {
                 if (item.QtyRefund() > 0) {
                     ischeck = true;
                 }
@@ -480,7 +480,7 @@ public class PosOrder extends PosAbstractModel implements Order {
     public boolean checkListInvoice() {
         boolean ischeck = false;
         if (items != null && items.size() > 0) {
-            for (Items item : items) {
+            for (CartItem item : items) {
                 if (item.QtyInvoice() > 0) {
                     ischeck = true;
                 }
@@ -549,9 +549,9 @@ public class PosOrder extends PosAbstractModel implements Order {
     }
 
     @Override
-    public List<Items> newOrderItems() {
-        items = new ArrayList<PosItems>();
-        return (List<Items>) (List<?>) items;
+    public List<CartItem> newOrderItems() {
+        items = new ArrayList<PosCartItem>();
+        return (List<CartItem>) (List<?>) items;
     }
 
     private PosOrderShippingAddress getShippingAddress() {

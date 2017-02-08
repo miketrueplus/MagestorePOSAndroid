@@ -7,7 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.magestore.app.lib.model.checkout.cart.Items;
+import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.panel.AbstractListPanel;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.databinding.CardOrderHistoryItemContentBinding;
@@ -18,7 +18,7 @@ import com.magestore.app.pos.databinding.CardOrderHistoryItemContentBinding;
  * dong.le@trueplus.vn
  */
 
-public class OrderHistoryItemsListPanel extends AbstractListPanel<Items> {
+public class OrderHistoryItemsListPanel extends AbstractListPanel<CartItem> {
 
     /**
      * Các hàm khởi tạo
@@ -53,7 +53,7 @@ public class OrderHistoryItemsListPanel extends AbstractListPanel<Items> {
     }
 
     @Override
-    protected void bindItem(View view, Items item, int position) {
+    protected void bindItem(View view, CartItem item, int position) {
         CardOrderHistoryItemContentBinding binding = DataBindingUtil.bind(view);
         binding.setOrderItem(item);
     }

@@ -1,12 +1,11 @@
 package com.magestore.app.pos.service.sales;
 
+import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.sales.Order;
-import com.magestore.app.lib.model.checkout.cart.Items;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.service.sales.OrderService;
+import com.magestore.app.pos.model.checkout.cart.PosCartItem;
 import com.magestore.app.pos.model.sales.PosOrder;
-import com.magestore.app.pos.model.checkout.cart.PosItems;
-import com.magestore.app.lib.service.checkout.CartService;
 import com.magestore.app.pos.service.AbstractService;
 
 import java.util.ArrayList;
@@ -93,11 +92,11 @@ public class POSOrderService extends AbstractService implements OrderService {
     @Override
     public synchronized float calculateSubTotalOrderItems() {
         // Khởi tạo danh sách order items
-        List<Items> listItems =  mOrder.getOrderItems();
+        List<CartItem> listItems =  mOrder.getOrderItems();
         if (listItems == null) return 0;
 
         float total = 0;
-        for (Items item : listItems) {
+        for (CartItem item : listItems) {
             item.setPrice(item.getQuantity() * item.getProduct().getPrice());
             total += item.getPrice();
         }
@@ -151,42 +150,42 @@ public class POSOrderService extends AbstractService implements OrderService {
         // nếu chưa có đơn hàng, bo qua
         if (mOrder == null) return;
 
-        // Khởi tạo danh sách order items
-        List<Items> listItems =  mOrder.getOrderItems();
+        // Khởi tạo danh sách order cartItem
+        List<CartItem> listItems =  mOrder.getOrderItems();
         if (listItems == null) {
             mOrder.newOrderItems();
             listItems = mOrder.getOrderItems();
         }
 
         // Kiểm tra xem đã có order item với mặt hàng tương ứng chưa
-        Items items = null;
-        for (Items item : listItems) {
+        CartItem cartItem = null;
+        for (CartItem item : listItems) {
             String itemID = item.getProduct().getID();
             if (itemID == null) continue;
             if (itemID.equals(product.getID())) {
-                items = item;
+                cartItem = item;
                 break;
             }
         }
 
         // nếu chưa thì thêm mới
-        if (items == null) {
+        if (cartItem == null) {
             // Khởi tạo product order item
-            items = new PosItems();
-            items.setProduct(product);
-            items.setQuantity(quantity);
-            items.setPrice(price * quantity);
-            items.setOriginalPrice(product.getPrice());
+            cartItem = new PosCartItem();
+            cartItem.setProduct(product);
+            cartItem.setQuantity(quantity);
+            cartItem.setPrice(price * quantity);
+            cartItem.setOriginalPrice(product.getPrice());
 
-            // Thêm vào danh sách order items
-            mOrder.getOrderItems().add(items);
+            // Thêm vào danh sách order cartItem
+            mOrder.getOrderItems().add(cartItem);
         }
         // có rồi thì cập nhật lại số lượng
         else {
-            items.setQuantity(items.getQuantity() + quantity);
-            float totalPrice = items.getPrice();
+            cartItem.setQuantity(cartItem.getQuantity() + quantity);
+            float totalPrice = cartItem.getPrice();
             totalPrice += (price * quantity);
-            items.setPrice(totalPrice);
+            cartItem.setPrice(totalPrice);
         }
     }
 
@@ -210,36 +209,36 @@ public class POSOrderService extends AbstractService implements OrderService {
         // nếu chưa có đơn hàng, bỏ qua
         if (mOrder == null) return;
 
-        // Khởi tạo danh sách order items
-        List<Items> listItems =  mOrder.getOrderItems();
+        // Khởi tạo danh sách order cartItem
+        List<CartItem> listItems =  mOrder.getOrderItems();
         if (listItems == null) {
             mOrder.newOrderItems();
             listItems = mOrder.getOrderItems();
         }
 
         // Kiểm tra xem đã có order item với mặt hàng tương ứng chưa
-        Items items = null;
-        for (Items item : listItems) {
+        CartItem cartItem = null;
+        for (CartItem item : listItems) {
             String itemID = item.getProduct().getID();
             if (itemID == null) continue;
             if (itemID.equals(product.getID())) {
-                items = item;
+                cartItem = item;
                 break;
             }
         }
 
         // đã có item, giảm trừ số lượng xuống nhưng không thể ít hơn 1
-        if (items != null) {
+        if (cartItem != null) {
             // Tính số lượng item mới
-            int newQuantity = items.getQuantity() - subQuantity;
+            int newQuantity = cartItem.getQuantity() - subQuantity;
             if (newQuantity < 0) newQuantity = 1;
 
             // Cập nhật số lượng mới
-            items.setQuantity(newQuantity);
-            items.setPrice(newQuantity * product.getPrice());
+            cartItem.setQuantity(newQuantity);
+            cartItem.setPrice(newQuantity * product.getPrice());
 
             // Nếu số lượng bằng 0, xóa luôn khỏi danh sách
-            if (newQuantity == 0) listItems.remove(items);
+            if (newQuantity == 0) listItems.remove(cartItem);
         }
     }
 
@@ -252,7 +251,7 @@ public class POSOrderService extends AbstractService implements OrderService {
         if (mOrder == null) return;
 
         // Khởi tạo danh sách order items
-        List<Items> listItems =  mOrder.getOrderItems();
+        List<CartItem> listItems =  mOrder.getOrderItems();
         if (listItems == null) return;
 
         // remove order item vị trí thứ n
@@ -261,18 +260,18 @@ public class POSOrderService extends AbstractService implements OrderService {
 
     /**
      *
-     * @param items
+     * @param cartItem
      */
-    public void delOrderItem(Items items) {
+    public void delOrderItem(CartItem cartItem) {
         // nếu chưa có đơn hàng, bo qua
         if (mOrder == null) return;
 
-        // Khởi tạo danh sách order items
-        List<Items> listItems =  mOrder.getOrderItems();
+        // Khởi tạo danh sách order cartItem
+        List<CartItem> listItems =  mOrder.getOrderItems();
         if (listItems == null) return;
 
         // remove order item vị trí thứ n
-        listItems.remove(items);
+        listItems.remove(cartItem);
     }
 
     @Override
@@ -280,8 +279,8 @@ public class POSOrderService extends AbstractService implements OrderService {
         // nếu chưa có đơn hàng, bo qua
         if (mOrder == null) return;
 
-        // Khởi tạo danh sách order items
-        List<Items> listItems =  mOrder.getOrderItems();
+        // Khởi tạo danh sách order cartItem
+        List<CartItem> listItems =  mOrder.getOrderItems();
         if (listItems == null) {
             mOrder.newOrderItems();
             listItems = mOrder.getOrderItems();
@@ -289,16 +288,16 @@ public class POSOrderService extends AbstractService implements OrderService {
 
         // Kiểm tra xem đã có order item với mặt hàng tương ứng chưa
         // remove order item đó đi
-        Items items = null;
-        for (Items item : listItems) {
+        CartItem cartItem = null;
+        for (CartItem item : listItems) {
             String itemID = item.getProduct().getID();
             if (itemID == null) continue;
             if (itemID.equals(product.getID())) {
-                items = item;
+                cartItem = item;
                 break;
             }
         }
-        delOrderItem(items);
+        delOrderItem(cartItem);
     }
 
     @Override

@@ -7,7 +7,7 @@
 
         <variable
             name="orderItem"
-            type="com.magestore.app.lib.model.checkout.cart.Items" />
+            type="com.magestore.app.lib.model.checkout.cart.CartItem" />
     </data>
 
     <LinearLayout

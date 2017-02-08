@@ -53,6 +53,8 @@ public class POSAPI {
     public static final String REST_CUSOMTER_COMPLAIN_ADD = "/rest/default/V1/webpos/customers/complain/?";
     public static final String PARAM_CUSTOMER_ID = "customerID";
 
+    // API checkout
+    public static final String REST_CHECKOUT_CREATE = "/rest/default/V1/webpos/checkout/create?";
 
     // API register shifts
     public static final String REST_REGISTER_SHIFTS_GET_LISTING = "/rest/default/V1/webpos/shifts/getlist?session=${sessionID}";

@@ -2,7 +2,7 @@ package com.magestore.app.pos.controller;
 
 import com.magestore.app.lib.controller.AbstractListController;
 import com.magestore.app.lib.controller.ListController;
-import com.magestore.app.lib.model.checkout.cart.Items;
+import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.service.order.OrderHistoryService;
 
@@ -14,7 +14,7 @@ import java.util.List;
  * dong.le@trueplus.vn
  */
 
-public class OrderHistoryItemsListController extends AbstractListController<Items> implements ListController<Items> {
+public class OrderHistoryItemsListController extends AbstractListController<CartItem> implements ListController<CartItem> {
     Order mSelectedOrder;
     OrderHistoryListController mOrderHistoryListController;
     OrderHistoryService mOrderService;
@@ -39,7 +39,7 @@ public class OrderHistoryItemsListController extends AbstractListController<Item
     }
 
     @Override
-    protected List<Items> loadDataBackground(Void... params) throws Exception {
+    protected List<CartItem> loadDataBackground(Void... params) throws Exception {
         return null;
     }
 

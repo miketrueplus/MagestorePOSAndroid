@@ -2,7 +2,7 @@ package com.magestore.app.pos.controller;
 
 import com.magestore.app.lib.controller.AbstractListController;
 import com.magestore.app.lib.controller.ListController;
-import com.magestore.app.lib.model.checkout.cart.Items;
+import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.model.sales.OrderItemParams;
 import com.magestore.app.lib.service.order.OrderHistoryService;
@@ -16,7 +16,7 @@ import java.util.List;
  * dong.le@trueplus.vn
  */
 
-public class OrderShipmentItemsListController extends AbstractListController<Items> implements ListController<Items> {
+public class OrderShipmentItemsListController extends AbstractListController<CartItem> implements ListController<CartItem> {
     Order mSelectedOrder;
     OrderHistoryListController mOrderHistoryListController;
     OrderHistoryService mOrderService;
@@ -51,11 +51,11 @@ public class OrderShipmentItemsListController extends AbstractListController<Ite
         mView.bindList(mList);
     }
 
-    private List<Items> checkListShipment(Order order) {
-        List<Items> listItem = order.getOrderItems();
-        List<Items> nListItem = new ArrayList<>();
+    private List<CartItem> checkListShipment(Order order) {
+        List<CartItem> listItem = order.getOrderItems();
+        List<CartItem> nListItem = new ArrayList<>();
 
-        for (Items item : listItem) {
+        for (CartItem item : listItem) {
             if (item.QtyShip() > 0) {
                 nListItem.add(item);
             }

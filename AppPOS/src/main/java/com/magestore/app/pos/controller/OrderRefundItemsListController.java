@@ -2,7 +2,7 @@ package com.magestore.app.pos.controller;
 
 import com.magestore.app.lib.controller.AbstractListController;
 import com.magestore.app.lib.controller.ListController;
-import com.magestore.app.lib.model.checkout.cart.Items;
+import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.model.sales.OrderItemParams;
 import com.magestore.app.lib.service.order.OrderHistoryService;
@@ -13,7 +13,7 @@ import com.magestore.app.lib.service.order.OrderHistoryService;
  * dong.le@trueplus.vn
  */
 
-public class OrderRefundItemsListController extends AbstractListController<Items> implements ListController<Items> {
+public class OrderRefundItemsListController extends AbstractListController<CartItem> implements ListController<CartItem> {
     Order mSelectedOrder;
     OrderHistoryListController mOrderHistoryListController;
     OrderHistoryService mOrderService;
