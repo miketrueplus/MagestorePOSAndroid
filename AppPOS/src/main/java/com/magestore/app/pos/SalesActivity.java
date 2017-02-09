@@ -119,10 +119,10 @@ public class SalesActivity extends AbstractActivity
         mCheckoutPaymentListPanel = (CheckoutPaymentListPanel) mCheckoutDetailPanel.findViewById(R.id.checkout_payment_list_panel);
 
         // shipping list panel
-        mCheckoutShippingDetailPanel = (CheckoutShippingDetailPanel) mCheckoutDetailPanel.findViewById(R.id.checkout_shipping_detail_panel);
+//        mCheckoutShippingDetailPanel = (CheckoutShippingDetailPanel) mCheckoutDetailPanel.findViewById(R.id.checkout_shipping_detail_panel);
 
         // payment list panel
-        mCheckoutPaymentDetailPanel = (CheckoutPaymentDetailPanel) mCheckoutDetailPanel.findViewById(R.id.checkout_payment_detail_panel);
+//        mCheckoutPaymentDetailPanel = (CheckoutPaymentDetailPanel) mCheckoutDetailPanel.findViewById(R.id.checkout_payment_detail_panel);
 
         // category list panel
         mCategoryListPanel = (CategoryListPanel) mProductListPanel.findViewById(R.id.category);
@@ -159,6 +159,8 @@ public class SalesActivity extends AbstractActivity
         mCheckoutListController.setListService(checkoutService);
         mCheckoutListController.setListPanel(mCheckoutListPanel);
         mCheckoutListController.setDetailPanel(mCheckoutDetailPanel);
+        mCheckoutListController.setCheckoutShippingListPanel(mCheckoutShippingListPanel);
+        mCheckoutListController.setCheckoutPaymentListPanel(mCheckoutPaymentListPanel);
 
         // controller quản lý danh sách khách hàng
         mProductListController = new ProductListController();
@@ -183,11 +185,11 @@ public class SalesActivity extends AbstractActivity
 //        mCheckShippingListController.setParentController(mCheckoutListController);
 
         // quản lý các payment
-        mCheckoutPaymentListController = new CheckoutPaymentController();
-        mCheckoutPaymentListController.setMagestoreContext(magestoreContext);
-        mCheckoutPaymentListController.setListPanel(mCheckoutPaymentListPanel);
-        mCheckoutPaymentListController.setDetailPanel(mCheckoutPaymentDetailPanel);
-        mCheckoutPaymentListController.setParentController(mCheckoutListController);
+//        mCheckoutPaymentListController = new CheckoutPaymentController();
+//        mCheckoutPaymentListController.setMagestoreContext(magestoreContext);
+//        mCheckoutPaymentListController.setListPanel(mCheckoutPaymentListPanel);
+//        mCheckoutPaymentListController.setDetailPanel(mCheckoutPaymentDetailPanel);
+//        mCheckoutPaymentListController.setParentController(mCheckoutListController);
 
         // controller quản lý category
         mCategoryListController = new CategoryListController();
