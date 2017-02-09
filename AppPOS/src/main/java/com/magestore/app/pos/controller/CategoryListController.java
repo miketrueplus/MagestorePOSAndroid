@@ -38,13 +38,9 @@ public class CategoryListController extends AbstractListController<Category> {
     @Override
     public void bindItem(Category item) {
         super.bindItem(item);
-        mList = new ArrayList<>();
-        mList.addAll(getListChildCategory(item));
-        bindList(mList);
-        mView.notifyDataSetChanged();
     }
 
-    public List<Category> getListChildCategory(Category category){
+    public List<Category> getListChildCategory(Category category) {
         try {
             return mCategoryService.getListCategory(category);
         } catch (IOException e) {
@@ -58,5 +54,12 @@ public class CategoryListController extends AbstractListController<Category> {
         }
         List<Category> listCategory = new ArrayList<>();
         return listCategory;
+    }
+
+    public void selectCategoryChild(Category category) {
+        mList = new ArrayList<>();
+        mList.addAll(getListChildCategory(category));
+        bindList(mList);
+        mView.notifyDataSetChanged();
     }
 }

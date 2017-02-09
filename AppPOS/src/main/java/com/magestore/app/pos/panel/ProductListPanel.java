@@ -15,6 +15,8 @@ import com.magestore.app.lib.controller.Controller;
 import com.magestore.app.lib.panel.AbstractListPanel;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.pos.R;
+import com.magestore.app.pos.controller.CategoryListController;
+import com.magestore.app.pos.controller.ProductListController;
 import com.magestore.app.pos.databinding.CardProductListContentBinding;
 import com.magestore.app.pos.task.LoadProductImageTask;
 import java.util.Arrays;
@@ -32,6 +34,7 @@ public class ProductListPanel extends AbstractListPanel<Product> {
     Toolbar toolbar_category;
     ImageButton im_category_arrow;
     FrameLayout fr_category;
+    CategoryListController mCategoryListController;
 
     public ProductListPanel(Context context) {
         super(context);
@@ -43,6 +46,10 @@ public class ProductListPanel extends AbstractListPanel<Product> {
 
     public ProductListPanel(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+    }
+
+    public void setCategoryListController(CategoryListController mCategoryListController) {
+        this.mCategoryListController = mCategoryListController;
     }
 
     /**
@@ -83,8 +90,7 @@ public class ProductListPanel extends AbstractListPanel<Product> {
 
     @Override
     public void initModel() {
-        // Lấy lại customer service từ controller của panel
-        Controller controller = getController();
+
     }
 
     @Override
@@ -105,10 +111,11 @@ public class ProductListPanel extends AbstractListPanel<Product> {
             @Override
             public void onClick(View view) {
                 if(fr_category.getVisibility() == VISIBLE){
-                    im_category_arrow.setRotation(180);
-                    fr_category.setVisibility(GONE);
-                }else{
                     im_category_arrow.setRotation(0);
+                    fr_category.setVisibility(GONE);
+                    ((ProductListController) mController).selectCategoryChild(null);
+                }else{
+                    im_category_arrow.setRotation(180);
                     fr_category.setVisibility(VISIBLE);
                 }
             }

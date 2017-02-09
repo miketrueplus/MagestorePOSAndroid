@@ -117,12 +117,14 @@ public class POSCategoryDataAccess extends POSAbstractDataAccess implements Cate
         if (mListCategory == null) mListCategory = new ArrayList<Category>();
         if (mListDefaultCategory == null) mListDefaultCategory = new ArrayList<Category>();
         if (category == null) {
-            for (Category categoryAll : mListCategory) {
-                if (categoryAll.getLevel() == 1) {
-                    for (String category_id : categoryAll.getChildren()) {
-                        for (Category category_child : mListCategory) {
-                            if (category_id.equals(category_child.getID())) {
-                                mListDefaultCategory.add(category_child);
+            if (mListDefaultCategory.size() <= 0) {
+                for (Category categoryAll : mListCategory) {
+                    if (categoryAll.getLevel() == 1) {
+                        for (String category_id : categoryAll.getChildren()) {
+                            for (Category category_child : mListCategory) {
+                                if (category_id.equals(category_child.getID())) {
+                                    mListDefaultCategory.add(category_child);
+                                }
                             }
                         }
                     }

@@ -4,10 +4,12 @@ import android.os.AsyncTask;
 import android.os.Build;
 
 import com.magestore.app.lib.controller.AbstractListController;
+import com.magestore.app.lib.model.catalog.Category;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.service.catalog.ProductService;
 import com.magestore.app.pos.task.LoadProductImageTask;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,6 +22,11 @@ import java.util.List;
 public class ProductListController extends AbstractListController<Product> {
     // Service xử lý các vấn đề liên quan đến product
     ProductService mProductService;
+    CategoryListController mCategoryListController;
+
+    public void setCategoryListController(CategoryListController mCategoryListController) {
+        this.mCategoryListController = mCategoryListController;
+    }
 
     @Override
     public void onRetrievePostExecute(List<Product> list) {
@@ -99,5 +106,9 @@ public class ProductListController extends AbstractListController<Product> {
     public void bindItem(Product item) {
         super.bindItem(item);
         if (mCheckoutListController != null) mCheckoutListController.bindProduct(item);
+    }
+
+    public void selectCategoryChild(Category category) {
+        mCategoryListController.selectCategoryChild(category);
     }
 }

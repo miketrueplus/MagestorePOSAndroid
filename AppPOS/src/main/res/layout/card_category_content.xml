@@ -12,6 +12,7 @@
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
+        android:descendantFocusability="blocksDescendants"
         android:orientation="vertical">
 
         <ImageView
@@ -26,6 +27,22 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:gravity="center_horizontal"
-            android:text="@{category.getName()}" />
+            android:text="@{category.getName()}"
+            android:maxLines="1"
+            android:ellipsize="end"/>
+
+        <RelativeLayout
+            android:id="@+id/rl_select_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="@drawable/ic_expand_more_white" />
+        </RelativeLayout>
     </LinearLayout>
 </layout>
