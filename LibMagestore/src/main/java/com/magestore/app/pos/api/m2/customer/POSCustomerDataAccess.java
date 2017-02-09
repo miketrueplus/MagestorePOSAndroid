@@ -282,12 +282,8 @@ public class POSCustomerDataAccess
             wrapCustomer.customer = customers[0];
 
             rp = statement.execute(wrapCustomer);
+            String result = rp.readResult2String();
 
-            // TODO: bug vòng lặp khi đọc json trả về
-            if(rp instanceof MagestoreResultReadingException) {
-                String result = rp.readResult2String();
-                return false;
-            }
             return true;
         } catch (ConnectionException ex) {
             throw ex;
