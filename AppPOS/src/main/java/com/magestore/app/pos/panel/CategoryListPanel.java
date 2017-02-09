@@ -1,11 +1,12 @@
 package com.magestore.app.pos.panel;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import com.magestore.app.lib.model.catalog.Category;
 import com.magestore.app.lib.panel.AbstractListPanel;
+import com.magestore.app.pos.databinding.CardCategoryContentBinding;
 
 /**
  * Created by Johan on 2/8/17.
@@ -29,6 +30,7 @@ public class CategoryListPanel extends AbstractListPanel<Category> {
 
     @Override
     protected void bindItem(View view, Category item, int position) {
-        Log.e("a", item.getName());
+        CardCategoryContentBinding mBinding = DataBindingUtil.bind(view);
+        mBinding.setCategory(item);
     }
 }

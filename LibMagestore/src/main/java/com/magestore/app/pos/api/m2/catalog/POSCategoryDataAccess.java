@@ -14,6 +14,7 @@ import com.magestore.app.pos.api.m2.POSAPI;
 import com.magestore.app.pos.api.m2.POSAbstractDataAccess;
 import com.magestore.app.pos.api.m2.POSDataAccessSession;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListCategory;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -133,8 +134,10 @@ public class POSCategoryDataAccess extends POSAbstractDataAccess implements Cate
             if (listSubCategory != null && listSubCategory.size() > 0) {
                 return listSubCategory;
             } else {
-                for (Category categoryAll : mListCategory) {
-                    for (String category_id : categoryAll.getChildren()) {
+                listSubCategory = new ArrayList<Category>();
+                List<String> listCategoryID = category.getChildren();
+                if (listCategoryID != null && listCategoryID.size() > 0) {
+                    for (String category_id : listCategoryID) {
                         for (Category category_child : mListCategory) {
                             if (category_id.equals(category_child.getID())) {
                                 listSubCategory.add(category_child);

@@ -194,6 +194,7 @@ public class SalesActivity extends AbstractActivity
         mCategoryListController.setMagestoreContext(magestoreContext);
         mCategoryListController.setListPanel(mCategoryListPanel);
         mCategoryListController.setCategoryService(categoryService);
+        mCategoryListController.setAutoSelectFirstItem(false);
 
         mProductListPanel.initModel();
         mCheckoutListPanel.initModel();
