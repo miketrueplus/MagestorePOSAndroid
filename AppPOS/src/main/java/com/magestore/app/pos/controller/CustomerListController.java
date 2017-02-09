@@ -33,7 +33,6 @@ public class CustomerListController extends AbstractListController<Customer> {
     // đánh dấu action
     static final int ACTION_CODE_GET_COMPLAIN = 0;
     static final int ACTION_CODE_INPUT_COMPLAIN = 1;
-    static final int ACTION_CODE_INSERT_CUSTOMER = 2;
 
     /**
      * Service xử lý các vấn đề liên quan đến customer
@@ -135,9 +134,6 @@ public class CustomerListController extends AbstractListController<Customer> {
         if (actionType == ACTION_CODE_INPUT_COMPLAIN) {
             mCustomerComplainService.insert((Customer) models[0], (Complain) models[1]);
             return true;
-        }
-        if (actionType == ACTION_CODE_INSERT_CUSTOMER) {
-
         }
         return false;
     }

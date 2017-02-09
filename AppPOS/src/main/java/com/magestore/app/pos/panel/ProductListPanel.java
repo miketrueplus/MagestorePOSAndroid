@@ -1,31 +1,19 @@
 package com.magestore.app.pos.panel;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
-import android.os.Build;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.TextView;
-
+import com.magestore.app.lib.controller.Controller;
 import com.magestore.app.lib.panel.AbstractListPanel;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.databinding.CardProductListContentBinding;
 import com.magestore.app.pos.task.LoadProductImageTask;
-
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -38,7 +26,6 @@ import java.util.List;
 public class ProductListPanel extends AbstractListPanel<Product> {
     // Textbox search product
     AutoCompleteTextView mSearchProductTxt;
-
 
     public ProductListPanel(Context context) {
         super(context);
@@ -74,6 +61,7 @@ public class ProductListPanel extends AbstractListPanel<Product> {
         List<String> dogList = Arrays.asList(dogArr);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), layoutItemId, dogList);
         mSearchProductTxt.setAdapter(adapter);
+
     }
 
     /**
@@ -86,7 +74,8 @@ public class ProductListPanel extends AbstractListPanel<Product> {
 
     @Override
     public void initModel() {
-
+        // Lấy lại customer service từ controller của panel
+        Controller controller = getController();
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.magestore.app.lib.resourcemodel;
 
 import com.magestore.app.lib.context.MagestoreContext;
 import com.magestore.app.lib.model.customer.CustomerAddress;
+import com.magestore.app.lib.resourcemodel.catalog.CategoryDataAccess;
 import com.magestore.app.lib.resourcemodel.catalog.ProductDataAccess;
 import com.magestore.app.lib.resourcemodel.config.ConfigDataAccess;
 import com.magestore.app.lib.resourcemodel.customer.CustomerAddressDataAccess;
@@ -31,7 +32,7 @@ public abstract class DataAccessFactory {
     public abstract CustomerDataAccess generateCustomerDataAccess();
     public abstract CustomerAddressDataAccess generateCustomerAddressDataAccess();
     public abstract CustomerComplainDataAccess generateCustomerComplainDataAccess();
-
+    public abstract CategoryDataAccess generateCategoryDataAccess();
     public abstract RegisterShiftDataAccess generateRegisterShiftDataAccess();
     public abstract ConfigDataAccess generateConfigDataAccess();
 

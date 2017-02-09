@@ -1,5 +1,6 @@
 package com.magestore.app.pos.api.m2;
 
+import com.magestore.app.lib.resourcemodel.catalog.CategoryDataAccess;
 import com.magestore.app.lib.resourcemodel.config.ConfigDataAccess;
 import com.magestore.app.lib.resourcemodel.customer.CustomerAddressDataAccess;
 import com.magestore.app.lib.resourcemodel.customer.CustomerComplainDataAccess;
@@ -10,6 +11,7 @@ import com.magestore.app.lib.resourcemodel.sales.CheckoutDataAccess;
 import com.magestore.app.lib.resourcemodel.sales.OrderDataAccess;
 import com.magestore.app.lib.resourcemodel.user.UserDataAccess;
 import com.magestore.app.lib.resourcemodel.catalog.ProductDataAccess;
+import com.magestore.app.pos.api.m2.catalog.POSCategoryDataAccess;
 import com.magestore.app.pos.api.m2.catalog.POSProductDataAccess;
 import com.magestore.app.pos.api.m2.config.POSConfigDataAccess;
 import com.magestore.app.pos.api.m2.customer.POSCustomerAddressDataAccess;
@@ -57,6 +59,11 @@ public class POSDataAccessFactory extends DataAccessFactory {
     @Override
     public CustomerComplainDataAccess generateCustomerComplainDataAccess() {
         return new POSCustomerComplainDataAccess();
+    }
+
+    @Override
+    public CategoryDataAccess generateCategoryDataAccess() {
+        return new POSCategoryDataAccess();
     }
 
     @Override

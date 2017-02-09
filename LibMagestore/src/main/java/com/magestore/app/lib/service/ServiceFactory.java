@@ -1,6 +1,7 @@
 package com.magestore.app.lib.service;
 
 import com.magestore.app.lib.context.MagestoreContext;
+import com.magestore.app.lib.service.catalog.CategoryService;
 import com.magestore.app.lib.service.catalog.ProductService;
 import com.magestore.app.lib.service.checkout.CartService;
 import com.magestore.app.lib.service.config.ConfigService;
@@ -35,6 +36,7 @@ public abstract class ServiceFactory {
     public abstract CustomerComplainService generateCustomerComplainService();
     public abstract ConfigService generateConfigService();
     public abstract CheckoutService generateCheckoutService();
+    public abstract CategoryService generateCategoryService();
 
     /**
      * Trả lại context

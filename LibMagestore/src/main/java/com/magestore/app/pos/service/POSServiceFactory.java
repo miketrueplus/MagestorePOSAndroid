@@ -1,5 +1,6 @@
 package com.magestore.app.pos.service;
 
+import com.magestore.app.lib.service.catalog.CategoryService;
 import com.magestore.app.lib.service.config.ConfigService;
 import com.magestore.app.lib.service.customer.CustomerAddressService;
 import com.magestore.app.lib.service.customer.CustomerComplainService;
@@ -12,6 +13,7 @@ import com.magestore.app.lib.service.registershift.RegisterShiftService;
 import com.magestore.app.lib.service.checkout.CheckoutService;
 import com.magestore.app.lib.service.sales.OrderService;
 import com.magestore.app.lib.service.user.UserService;
+import com.magestore.app.pos.service.catalog.POSCategoryService;
 import com.magestore.app.pos.service.catalog.POSProductService;
 import com.magestore.app.pos.service.checkout.POSCartService;
 import com.magestore.app.pos.service.config.POSConfigService;
@@ -85,7 +87,8 @@ public class POSServiceFactory extends ServiceFactory {
     public CustomerAddressService generateCustomerAddressService() {
         CustomerAddressService useCase = new POSCustomerAddressService();
         useCase.setContext(getContext());
-        return useCase;    }
+        return useCase;
+    }
 
     @Override
     public ConfigService generateConfigService() {
@@ -104,6 +107,13 @@ public class POSServiceFactory extends ServiceFactory {
     @Override
     public CheckoutService generateCheckoutService() {
         CheckoutService service = new POSCheckoutService();
+        service.setContext(getContext());
+        return service;
+    }
+
+    @Override
+    public CategoryService generateCategoryService() {
+        CategoryService service = new POSCategoryService();
         service.setContext(getContext());
         return service;
     }

@@ -16,15 +16,18 @@ import android.view.View;
 
 import com.magestore.app.lib.context.MagestoreContext;
 import com.magestore.app.lib.service.ServiceFactory;
+import com.magestore.app.lib.service.catalog.CategoryService;
 import com.magestore.app.lib.service.catalog.ProductService;
 import com.magestore.app.lib.service.checkout.CartService;
 import com.magestore.app.lib.service.checkout.CheckoutService;
 import com.magestore.app.pos.controller.CartItemListController;
+import com.magestore.app.pos.controller.CategoryListController;
 import com.magestore.app.pos.controller.CheckoutListController;
 import com.magestore.app.pos.controller.CheckoutPaymentController;
 import com.magestore.app.pos.controller.CheckoutShippingController;
 import com.magestore.app.pos.controller.ProductListController;
 import com.magestore.app.pos.panel.CartItemListPanel;
+import com.magestore.app.pos.panel.CategoryListPanel;
 import com.magestore.app.pos.panel.CheckoutListPanel;
 import com.magestore.app.pos.panel.CheckoutPaymentDetailPanel;
 import com.magestore.app.pos.panel.CheckoutPaymentListPanel;
@@ -52,6 +55,7 @@ public class SalesActivity extends AbstractActivity
     private CheckoutPaymentListPanel mCheckoutPaymentListPanel;
     private CheckoutPaymentDetailPanel mCheckoutPaymentDetailPanel;
     private CartItemListPanel mCartItemListPanel;
+    private CategoryListPanel mCategoryListPanel;
 
     // controller cho danh sách mặt hàng và đơn hàng
     private ProductListController mProductListController;
@@ -59,6 +63,7 @@ public class SalesActivity extends AbstractActivity
     private CartItemListController mCheckoutCartItemListController;
     private CheckoutPaymentController mCheckoutPaymentListController;
     private CheckoutShippingController mCheckShippingListController;
+    private CategoryListController mCategoryListController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +120,9 @@ public class SalesActivity extends AbstractActivity
 
         // payment list panel
         mCheckoutPaymentDetailPanel = (CheckoutPaymentDetailPanel) findViewById(R.id.checkout_payment_detail_panel);
+
+        // category list panel
+        mCategoryListPanel = (CategoryListPanel) mProductListPanel.findViewById(R.id.category);
     }
 
     protected void initModel() {
@@ -127,12 +135,14 @@ public class SalesActivity extends AbstractActivity
         ProductService productService = null;
         CheckoutService checkoutService = null;
         CartService cartService = null;
+        CategoryService categoryService = null;
 
         try {
             factory = ServiceFactory.getFactory(magestoreContext);
             productService = factory.generateProductService();
             checkoutService = factory.generateCheckoutService();
             cartService = factory.generateCartService();
+            categoryService = factory.generateCategoryService();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InstantiationException e) {
@@ -175,15 +185,24 @@ public class SalesActivity extends AbstractActivity
         mCheckoutPaymentListController.setDetailPanel(mCheckoutPaymentDetailPanel);
         mCheckoutPaymentListController.setParentController(mCheckoutListController);
 
+        // controller quản lý category
+        mCategoryListController = new CategoryListController();
+        mCategoryListController.setMagestoreContext(magestoreContext);
+        mCategoryListController.setListPanel(mCategoryListPanel);
+        mCategoryListController.setCategoryService(categoryService);
+
         mProductListPanel.initModel();
         mCheckoutListPanel.initModel();
         mCartItemListPanel.initModel();
+        mCategoryListPanel.initModel();
     }
 
     @Override
     protected void initValue() {
         // Load danh sách sản phẩm, không tự động chọn sản phẩm đầu tiên
         mProductListController.doRetrieve();
+        // Load danh sách danh mục sản phẩm
+        mCategoryListController.doRetrieve();
         // Load danh sách check out
         mCheckoutListController.doRetrieve();
     }
