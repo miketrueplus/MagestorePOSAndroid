@@ -56,18 +56,18 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     public void onRetrievePostExecute(List<Checkout> list) {
         super.onRetrievePostExecute(list);
         bindItem(list.get(0));
-//        try {
-//            mCheckoutShippingListPanel.bindList(getConfigService().getShippingMethodList());
-//            mCheckoutPaymentListPanel.bindList(getConfigService().getCheckoutPaymentList());
-//        } catch (InstantiationException e) {
-//            e.printStackTrace();
-//        } catch (IllegalAccessException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            mCheckoutShippingListPanel.bindList(getConfigService().getShippingMethodList());
+            mCheckoutPaymentListPanel.bindList(getConfigService().getCheckoutPaymentList());
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
     }
 

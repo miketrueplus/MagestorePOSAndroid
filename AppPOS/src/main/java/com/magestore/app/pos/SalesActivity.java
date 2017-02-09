@@ -15,11 +15,13 @@ import android.view.View;
 
 
 import com.magestore.app.lib.context.MagestoreContext;
+import com.magestore.app.lib.model.config.Config;
 import com.magestore.app.lib.service.ServiceFactory;
 import com.magestore.app.lib.service.catalog.CategoryService;
 import com.magestore.app.lib.service.catalog.ProductService;
 import com.magestore.app.lib.service.checkout.CartService;
 import com.magestore.app.lib.service.checkout.CheckoutService;
+import com.magestore.app.lib.service.config.ConfigService;
 import com.magestore.app.pos.controller.CartItemListController;
 import com.magestore.app.pos.controller.CategoryListController;
 import com.magestore.app.pos.controller.CheckoutListController;
@@ -139,13 +141,14 @@ public class SalesActivity extends AbstractActivity
         CheckoutService checkoutService = null;
         CartService cartService = null;
         CategoryService categoryService = null;
-
+        ConfigService configService = null;
         try {
             factory = ServiceFactory.getFactory(magestoreContext);
             productService = factory.generateProductService();
             checkoutService = factory.generateCheckoutService();
             cartService = factory.generateCartService();
             categoryService = factory.generateCategoryService();
+            configService = factory.generateConfigService();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InstantiationException e) {
@@ -166,6 +169,7 @@ public class SalesActivity extends AbstractActivity
         mCheckoutListController.setDetailPanel(mCheckoutDetailPanel);
         mCheckoutListController.setCheckoutShippingListPanel(mCheckoutShippingListPanel);
         mCheckoutListController.setCheckoutPaymentListPanel(mCheckoutPaymentListPanel);
+        mCheckoutListController.setConfigService(configService);
 
         // controller quản lý danh sách khách hàng
         mProductListController = new ProductListController();
@@ -174,6 +178,7 @@ public class SalesActivity extends AbstractActivity
         mProductListController.setListPanel(mProductListPanel);
         mProductListController.setCheckoutListController(mCheckoutListController);
         mProductListController.setCategoryListController(mCategoryListController);
+        mCheckoutListController.setProductListController(mProductListController);
 
         // controller quản lý đơn hàng
         mCheckoutCartItemListController = new CartItemListController();
