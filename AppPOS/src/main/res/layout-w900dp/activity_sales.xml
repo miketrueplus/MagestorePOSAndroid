@@ -44,9 +44,9 @@
                     magestore_view:page_size_max="500" />
 
                 <com.magestore.app.pos.panel.CheckoutDetailPanel
+                    android:id="@+id/checkout_detail_panel"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:id="@+id/checkout_detail_panel"
                     android:visibility="gone"
                     magestore_view:layout_panel="@layout/panel_checkout_detail"/>
             </RelativeLayout>

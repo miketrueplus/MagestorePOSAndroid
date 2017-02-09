@@ -49,7 +49,7 @@ public class POSUserDataAccess extends POSAbstractDataAccess implements UserData
         else
             stringBuilder.append("https://");
         stringBuilder.append(strDomain);
-        if (strDomain.indexOf("/") < 0) stringBuilder.append("/webpos");
+        if (strDomain.indexOf("/") < 0) stringBuilder.append("/pos-app");
         return stringBuilder.toString();
     }
 

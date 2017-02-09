@@ -12,10 +12,10 @@ import com.magestore.app.pos.model.PosAbstractModel;
 public class PosCheckoutPayment extends PosAbstractModel implements CheckoutPayment {
     String code;
     String title;
-    int base_amount;
-    int amount;
-    int base_real_amount;
-    int real_amount;
+    float base_amount;
+    float amount;
+    float base_real_amount;
+    float real_amount;
     int is_pay_later;
     String shift_id;
 
@@ -50,42 +50,42 @@ public class PosCheckoutPayment extends PosAbstractModel implements CheckoutPaym
     }
 
     @Override
-    public void setBaseAmount(int amount) {
+    public void setBaseAmount(float amount) {
         this.base_amount = amount;
     }
 
     @Override
-    public int getBaseAmount() {
+    public float getBaseAmount() {
         return this.base_amount;
     }
 
     @Override
-    public int getAmount() {
+    public float getAmount() {
         return this.amount;
     }
 
     @Override
-    public void setAmount(int amount) {
+    public void setAmount(float amount) {
         this.amount = amount;
     }
 
     @Override
-    public int getBaseRealAmount() {
+    public float getBaseRealAmount() {
         return this.base_real_amount;
     }
 
     @Override
-    public void setBaseRealAmount(int amount) {
+    public void setBaseRealAmount(float amount) {
         this.base_real_amount = amount;
     }
 
     @Override
-    public int getRealAmount() {
+    public float getRealAmount() {
         return this.real_amount;
     }
 
     @Override
-    public void setRealAmount(int amount) {
+    public void setRealAmount(float amount) {
         this.real_amount = amount;
     }
 

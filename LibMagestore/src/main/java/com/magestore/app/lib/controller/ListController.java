@@ -6,6 +6,7 @@ import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
 import com.magestore.app.lib.panel.AbstractListPanel;
 import com.magestore.app.lib.service.ListService;
+import com.magestore.app.lib.service.config.ConfigService;
 
 import java.util.List;
 
@@ -113,6 +114,10 @@ public interface ListController<TModel extends Model>
      */
     void setPage(int pageSize, int pageMax);
 
+    void setConfigService(ConfigService service);
+
+    ConfigService getConfigService();
+
     /**
      * Gán 1 list vào danh sách, có cập nhật view
      * @param list
@@ -183,4 +188,6 @@ public interface ListController<TModel extends Model>
      * @param show
      */
     void doShowDetailPanel(boolean show);
+
+    void doShowListPanel(boolean show);
 }

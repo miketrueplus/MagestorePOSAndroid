@@ -5,8 +5,15 @@ import android.view.View;
 import com.magestore.app.lib.controller.AbstractListController;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.model.checkout.Checkout;
+import com.magestore.app.lib.service.ServiceFactory;
 import com.magestore.app.pos.panel.CheckoutListPanel;
+import com.magestore.app.pos.panel.CheckoutPaymentListPanel;
+import com.magestore.app.pos.panel.CheckoutShippingListPanel;
+import com.magestore.app.pos.panel.PaymentMethodListPanel;
+import com.magestore.app.pos.panel.ProductListPanel;
 
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +25,10 @@ import java.util.List;
 
 public class CheckoutListController extends AbstractListController<Checkout> {
     CartItemListController mCartItemListController;
+    CheckoutShippingListPanel mCheckoutShippingListPanel;
+    CheckoutPaymentListPanel mCheckoutPaymentListPanel;
+    ProductListController mProductListController;
+    PaymentMethodListPanel mPaymentMethodListPanel;
 
     @Override
     public void bindItem(Checkout item) {
@@ -26,6 +37,11 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             mCartItemListController.bindParent(item);
             mCartItemListController.doRetrieve();
         }
+    }
+
+    @Override
+    public List<Checkout> onRetrieveBackground(int page, int pageSize) throws Exception {
+        return super.onRetrieveBackground(page, pageSize);
     }
 
     /**
@@ -40,6 +56,19 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     public void onRetrievePostExecute(List<Checkout> list) {
         super.onRetrievePostExecute(list);
         bindItem(list.get(0));
+        try {
+            mCheckoutShippingListPanel.bindList(getConfigService().getShippingMethodList());
+            mCheckoutPaymentListPanel.bindList(getConfigService().getCheckoutPaymentList());
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
     }
 
     /**
@@ -58,4 +87,25 @@ public class CheckoutListController extends AbstractListController<Checkout> {
              ((CheckoutListPanel) mView).updateTotalPrice(mItem);
     }
 
+    public void setCheckoutShippingListPanel(CheckoutShippingListPanel panel) {
+        mCheckoutShippingListPanel = panel;
+    }
+
+    public void setCheckoutPaymentListPanel(CheckoutPaymentListPanel panel) {
+        mCheckoutPaymentListPanel = panel;
+    }
+
+    public void setProductListController(ProductListController controller) {
+        mProductListController = controller;
+    }
+
+    @Override
+    public void doShowDetailPanel(boolean show) {
+        super.doShowDetailPanel(show);
+        if (mProductListController != null) mProductListController.doShowListPanel(!show);
+    }
+
+    public void setPaymentMethodListPanel(PaymentMethodListPanel panel) {
+        mPaymentMethodListPanel = panel;
+    }
 }

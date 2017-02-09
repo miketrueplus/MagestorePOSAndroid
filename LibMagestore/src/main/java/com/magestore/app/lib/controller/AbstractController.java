@@ -2,6 +2,7 @@ package com.magestore.app.lib.controller;
 
 import com.magestore.app.lib.context.MagestoreContext;
 import com.magestore.app.lib.model.Model;
+import com.magestore.app.lib.service.config.ConfigService;
 import com.magestore.app.lib.task.ActionModelTask;
 import com.magestore.app.lib.view.MagestoreView;
 
@@ -23,6 +24,8 @@ public abstract class AbstractController<TModel extends Model, TView extends Mag
 
     // context
     protected MagestoreContext mMagestoreContext;
+    private ConfigService mConfigService;
+
 
     public void setView(TView view) {
         mView = view;
@@ -102,6 +105,16 @@ public abstract class AbstractController<TModel extends Model, TView extends Mag
         if (exp != null)
             doShowErrorMsg(exp);
         doShowProgress(false);
+    }
+
+    @Override
+    public void setConfigService(ConfigService service) {
+        mConfigService = service;
+    }
+
+    @Override
+    public ConfigService getConfigService() {
+        return mConfigService;
     }
 
 }

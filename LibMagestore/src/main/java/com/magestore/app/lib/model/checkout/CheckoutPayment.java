@@ -17,21 +17,21 @@ public interface CheckoutPayment extends Model {
 
     String getTitle();
 
-    void setBaseAmount(int amount);
+    void setBaseAmount(float amount);
 
-    int getBaseAmount();
+    float getBaseAmount();
 
-    int getAmount();
+    float getAmount();
 
-    void setAmount(int amount);
+    void setAmount(float amount);
 
-    int getBaseRealAmount();
+    float getBaseRealAmount();
 
-    void setBaseRealAmount(int amount);
+    void setBaseRealAmount(float amount);
 
-    int getRealAmount();
+    float getRealAmount();
 
-    void setRealAmount(int amount);
+    void setRealAmount(float amount);
 
     void setPaylater(int paylater);
 

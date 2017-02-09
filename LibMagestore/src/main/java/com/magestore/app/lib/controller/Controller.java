@@ -2,6 +2,7 @@ package com.magestore.app.lib.controller;
 
 import com.magestore.app.lib.context.MagestoreContext;
 import com.magestore.app.lib.model.Model;
+import com.magestore.app.lib.service.config.ConfigService;
 import com.magestore.app.lib.view.MagestoreView;
 
 /**
@@ -21,4 +22,7 @@ public interface Controller<TView extends MagestoreView> {
     void doShowErrorMsg(String msg);
     void doShowProgress(boolean blnShow);
 
+    void setConfigService(ConfigService service);
+
+    ConfigService getConfigService();
 }

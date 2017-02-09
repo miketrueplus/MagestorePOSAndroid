@@ -1,5 +1,6 @@
 package com.magestore.app.pos.service.config;
 
+import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.lib.model.checkout.PaymentMethod;
 import com.magestore.app.lib.model.checkout.ShippingMethod;
 import com.magestore.app.lib.model.config.Config;
@@ -7,13 +8,16 @@ import com.magestore.app.lib.model.config.ConfigCountry;
 import com.magestore.app.lib.resourcemodel.config.ConfigDataAccess;
 import com.magestore.app.lib.resourcemodel.DataAccessFactory;
 import com.magestore.app.lib.service.config.ConfigService;
+import com.magestore.app.pos.model.checkout.PosCheckoutPayment;
 import com.magestore.app.pos.model.checkout.PosPaymentMethod;
 import com.magestore.app.pos.model.checkout.PosShippingMethod;
 import com.magestore.app.pos.service.AbstractService;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -106,24 +110,35 @@ public class POSConfigService extends AbstractService implements ConfigService {
     public static String PAYMENT_METHOD_FREE_SHIPPING = "PAYMENT_METHOD_FREE_SHIPPING";
     public static String PAYMENT_METHOD_STORE_PICKUP = "PAYMENT_METHOD_STORE_PICKUP";
     @Override
-    public Map<String, ShippingMethod> getShippingMethodList() throws InstantiationException, IllegalAccessException, IOException, ParseException {
-        Map<String, ShippingMethod> shippingMethodList = new HashMap<String, ShippingMethod>();
+    public List<ShippingMethod> getShippingMethodList() throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        List<ShippingMethod> shippingMethodList = new ArrayList<ShippingMethod>();
 
         ShippingMethod method = new PosShippingMethod();
         method.setName("Flat Rate - Fixed");
         method.setFixedRate(10);
-        shippingMethodList.put(SHIPPING_METHOD_FLAT_RATE, method);
+        shippingMethodList.add(method);
 
         method = new PosShippingMethod();
         method.setName("Free CheckoutShipping - Free");
         method.setFreeRate();
-        shippingMethodList.put(PAYMENT_METHOD_FREE_SHIPPING, method);
+        shippingMethodList.add(method);
 
         method = new PosShippingMethod();
         method.setName("POS CheckoutShipping - Store Pickup");
         method.setFreeRate();
-        shippingMethodList.put(PAYMENT_METHOD_STORE_PICKUP, method);
+        shippingMethodList.add(method);
 
         return shippingMethodList;
+    }
+
+    @Override
+    public List<CheckoutPayment> getCheckoutPaymentList() throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        List<CheckoutPayment> checkoutPaymentList = new ArrayList<CheckoutPayment>();
+        CheckoutPayment payment = new PosCheckoutPayment();
+        payment.setTitle("Cash In");
+        payment.setBaseAmount(10.0f);
+        checkoutPaymentList.add(payment);
+        return checkoutPaymentList;
+
     }
 }

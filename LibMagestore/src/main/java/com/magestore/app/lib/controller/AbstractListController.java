@@ -7,6 +7,7 @@ import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
 import com.magestore.app.lib.panel.AbstractListPanel;
 import com.magestore.app.lib.service.ListService;
+import com.magestore.app.lib.service.config.ConfigService;
 import com.magestore.app.lib.task.DeleteListTask;
 import com.magestore.app.lib.task.InsertListTask;
 import com.magestore.app.lib.task.RetrieveListTask;
@@ -379,5 +380,11 @@ public abstract class AbstractListController<TModel extends Model>
     @Override
     public void doShowDetailPanel(boolean show) {
         if (mDetailView != null) mDetailView.setVisibility(show ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    public void doShowListPanel(boolean show) {
+        if (mView != null) mView.setVisibility(show ? View.VISIBLE : View.GONE);
+
     }
 }
