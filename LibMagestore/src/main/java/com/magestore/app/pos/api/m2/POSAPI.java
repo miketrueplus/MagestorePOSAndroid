@@ -20,7 +20,7 @@ public class POSAPI {
     public static final String REST_PRODUCT_GET_LISTING = "/rest/default/V1/webpos/products/?";
 
     // API get category
-    public static final String REST_GET_CATEGORY_LISTING = "/rest/default/V1/webpos/categories/?searchCriteria[current_page]=${currentPage}&searchCriteria[page_size]=${pageSize}&session=${sessionID}";
+    public static final String REST_GET_CATEGORY_LISTING = "/rest/default/V1/webpos/categories/?";
 
     // API staff
     public static final String REST_LOGIN = "rest/default/V1/webpos/staff/login";
