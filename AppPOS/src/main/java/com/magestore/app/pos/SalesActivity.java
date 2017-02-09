@@ -152,6 +152,11 @@ public class SalesActivity extends AbstractActivity
             e.printStackTrace();
         }
 
+        // controller quản lý category
+        mCategoryListController = new CategoryListController();
+        mCategoryListController.setMagestoreContext(magestoreContext);
+        mCategoryListController.setListPanel(mCategoryListPanel);
+        mCategoryListController.setCategoryService(categoryService);
 
         // controller quangr lyts check out
         mCheckoutListController = new CheckoutListController();
@@ -168,6 +173,7 @@ public class SalesActivity extends AbstractActivity
         mProductListController.setProdcutService(productService);
         mProductListController.setListPanel(mProductListPanel);
         mProductListController.setCheckoutListController(mCheckoutListController);
+        mProductListController.setCategoryListController(mCategoryListController);
 
         // controller quản lý đơn hàng
         mCheckoutCartItemListController = new CartItemListController();
@@ -191,12 +197,6 @@ public class SalesActivity extends AbstractActivity
 //        mCheckoutPaymentListController.setDetailPanel(mCheckoutPaymentDetailPanel);
 //        mCheckoutPaymentListController.setParentController(mCheckoutListController);
 
-        // controller quản lý category
-        mCategoryListController = new CategoryListController();
-        mCategoryListController.setMagestoreContext(magestoreContext);
-        mCategoryListController.setListPanel(mCategoryListPanel);
-        mCategoryListController.setCategoryService(categoryService);
-
         mProductListPanel.initModel();
         mCheckoutListPanel.initModel();
         mCartItemListPanel.initModel();
@@ -205,10 +205,10 @@ public class SalesActivity extends AbstractActivity
 
     @Override
     protected void initValue() {
-        // Load danh sách sản phẩm, không tự động chọn sản phẩm đầu tiên
-        mProductListController.doRetrieve();
         // Load danh sách danh mục sản phẩm
         mCategoryListController.doRetrieve();
+        // Load danh sách sản phẩm, không tự động chọn sản phẩm đầu tiên
+        mProductListController.doRetrieve();
         // Load danh sách check out
         mCheckoutListController.doRetrieve();
         // load danh sách shipping
