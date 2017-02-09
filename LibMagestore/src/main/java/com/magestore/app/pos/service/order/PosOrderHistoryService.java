@@ -33,19 +33,60 @@ import java.util.List;
  */
 
 public class PosOrderHistoryService extends AbstractService implements OrderHistoryService {
+
     @Override
-    public List<Order> retrieveOrderList(int size) throws InstantiationException, IllegalAccessException, IOException, ParseException {
+    public int count() throws ParseException, InstantiationException, IllegalAccessException, IOException {
+        return 0;
+    }
+
+    @Override
+    public Order create() {
+        return null;
+    }
+
+    @Override
+    public Order retrieve(String strID) throws ParseException, InstantiationException, IllegalAccessException, IOException {
+        return null;
+    }
+
+    @Override
+    public List<Order> retrieve(int page, int pageSize) throws IOException, InstantiationException, ParseException, IllegalAccessException {
         // Khởi tạo order gateway factory
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         OrderDataAccess orderGateway = factory.generateOrderDataAccess();
-        // TODO: test order có webpos_payments
-        return orderGateway.getOrders(size, 32);
-//        return orderGateway.getOrders(size, 1);
+        // giả dữ liêu với page = 32 và pageSize = 30
+        return orderGateway.retrieve(1, 1);
+//        return orderGateway.retrieve(page, pageSize);
+    }
+
+    @Override
+    public List<Order> retrieve() throws IOException, InstantiationException, ParseException, IllegalAccessException {
+        return null;
+    }
+
+    @Override
+    public List<Order> retrieve(String searchString, int page, int pageSize) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+        return null;
+    }
+
+    @Override
+    public boolean update(Order oldModel, Order newModel) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+        return false;
+    }
+
+    @Override
+    public boolean insert(Order... orders) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+        return false;
+    }
+
+    @Override
+    public boolean delete(Order... orders) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+        return false;
     }
 
     @Override
     public List<Order> retrieveOrderLastMonth(Customer customer) throws InstantiationException, IllegalAccessException, IOException, ParseException {
-        return retrieveOrderList(3);
+        return retrieve(1, 3);
     }
 
     @Override

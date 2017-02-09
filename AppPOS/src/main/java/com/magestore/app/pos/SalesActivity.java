@@ -20,7 +20,6 @@ import com.magestore.app.lib.service.catalog.CategoryService;
 import com.magestore.app.lib.service.catalog.ProductService;
 import com.magestore.app.lib.service.checkout.CartService;
 import com.magestore.app.lib.service.checkout.CheckoutService;
-import com.magestore.app.lib.service.config.ConfigService;
 import com.magestore.app.pos.controller.CartItemListController;
 import com.magestore.app.pos.controller.CategoryListController;
 import com.magestore.app.pos.controller.CheckoutListController;
@@ -35,7 +34,6 @@ import com.magestore.app.pos.panel.CheckoutPaymentDetailPanel;
 import com.magestore.app.pos.panel.CheckoutPaymentListPanel;
 import com.magestore.app.pos.panel.CheckoutShippingDetailPanel;
 import com.magestore.app.pos.panel.CheckoutShippingListPanel;
-import com.magestore.app.pos.panel.PaymentMethodListPanel;
 import com.magestore.app.pos.panel.ProductListPanel;
 import com.magestore.app.pos.ui.AbstractActivity;
 import com.magestore.app.view.ui.PosUI;
@@ -55,18 +53,18 @@ public class SalesActivity extends AbstractActivity
     private CheckoutListPanel mCheckoutListPanel;
     private CheckoutDetailPanel mCheckoutDetailPanel;
     private CheckoutShippingListPanel mCheckoutShippingListPanel;
+    private CheckoutShippingDetailPanel mCheckoutShippingDetailPanel;
     private CheckoutPaymentListPanel mCheckoutPaymentListPanel;
+    private CheckoutPaymentDetailPanel mCheckoutPaymentDetailPanel;
     private CartItemListPanel mCartItemListPanel;
     private CategoryListPanel mCategoryListPanel;
-    private PaymentMethodListPanel mPaymentMethodListPanel;
-
 
     // controller cho danh sách mặt hàng và đơn hàng
     private ProductListController mProductListController;
     private CheckoutListController mCheckoutListController;
     private CartItemListController mCheckoutCartItemListController;
-//    private CheckoutPaymentController mCheckoutPaymentListController;
-//    private CheckoutShippingController mCheckShippingListController;
+    private CheckoutPaymentController mCheckoutPaymentListController;
+    private CheckoutShippingController mCheckShippingListController;
     private CategoryListController mCategoryListController;
 
     @Override
@@ -120,14 +118,11 @@ public class SalesActivity extends AbstractActivity
         // payment list panel
         mCheckoutPaymentListPanel = (CheckoutPaymentListPanel) mCheckoutDetailPanel.findViewById(R.id.checkout_payment_list_panel);
 
-        // panel hiển thị các payment method
-        mPaymentMethodListPanel = (PaymentMethodListPanel) mCheckoutDetailPanel.findViewById(R.id.payment_method_list_panel);
-
         // shipping list panel
-//        mCheckoutShippingDetailPanel = (CheckoutShippingDetailPanel) mCheckoutDetailPanel.findViewById(R.id.checkout_shipping_detail_panel);
+        mCheckoutShippingDetailPanel = (CheckoutShippingDetailPanel) mCheckoutDetailPanel.findViewById(R.id.checkout_shipping_detail_panel);
 
         // payment list panel
-//        mCheckoutPaymentDetailPanel = (CheckoutPaymentDetailPanel) mCheckoutDetailPanel.findViewById(R.id.checkout_payment_detail_panel);
+        mCheckoutPaymentDetailPanel = (CheckoutPaymentDetailPanel) mCheckoutDetailPanel.findViewById(R.id.checkout_payment_detail_panel);
 
         // category list panel
         mCategoryListPanel = (CategoryListPanel) mProductListPanel.findViewById(R.id.category);
@@ -144,7 +139,6 @@ public class SalesActivity extends AbstractActivity
         CheckoutService checkoutService = null;
         CartService cartService = null;
         CategoryService categoryService = null;
-        ConfigService configService = null;
 
         try {
             factory = ServiceFactory.getFactory(magestoreContext);
@@ -152,7 +146,6 @@ public class SalesActivity extends AbstractActivity
             checkoutService = factory.generateCheckoutService();
             cartService = factory.generateCartService();
             categoryService = factory.generateCategoryService();
-            configService = factory.generateConfigService();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InstantiationException e) {
@@ -164,12 +157,8 @@ public class SalesActivity extends AbstractActivity
         mCheckoutListController = new CheckoutListController();
         mCheckoutListController.setMagestoreContext(magestoreContext);
         mCheckoutListController.setListService(checkoutService);
-        mCheckoutListController.setConfigService(configService);
         mCheckoutListController.setListPanel(mCheckoutListPanel);
         mCheckoutListController.setDetailPanel(mCheckoutDetailPanel);
-        mCheckoutListController.setCheckoutShippingListPanel(mCheckoutShippingListPanel);
-        mCheckoutListController.setCheckoutPaymentListPanel(mCheckoutPaymentListPanel);
-        mCheckoutListController.setPaymentMethodListPanel(mPaymentMethodListPanel);
 
         // controller quản lý danh sách khách hàng
         mProductListController = new ProductListController();
@@ -177,7 +166,6 @@ public class SalesActivity extends AbstractActivity
         mProductListController.setProdcutService(productService);
         mProductListController.setListPanel(mProductListPanel);
         mProductListController.setCheckoutListController(mCheckoutListController);
-        mCheckoutListController.setProductListController(mProductListController);
 
         // controller quản lý đơn hàng
         mCheckoutCartItemListController = new CartItemListController();
@@ -195,11 +183,11 @@ public class SalesActivity extends AbstractActivity
 //        mCheckShippingListController.setParentController(mCheckoutListController);
 
         // quản lý các payment
-//        mCheckoutPaymentListController = new CheckoutPaymentController();
-//        mCheckoutPaymentListController.setMagestoreContext(magestoreContext);
-//        mCheckoutPaymentListController.setListPanel(mCheckoutPaymentListPanel);
-//        mCheckoutPaymentListController.setDetailPanel(mCheckoutPaymentDetailPanel);
-//        mCheckoutPaymentListController.setParentController(mCheckoutListController);
+        mCheckoutPaymentListController = new CheckoutPaymentController();
+        mCheckoutPaymentListController.setMagestoreContext(magestoreContext);
+        mCheckoutPaymentListController.setListPanel(mCheckoutPaymentListPanel);
+        mCheckoutPaymentListController.setDetailPanel(mCheckoutPaymentDetailPanel);
+        mCheckoutPaymentListController.setParentController(mCheckoutListController);
 
         // controller quản lý category
         mCategoryListController = new CategoryListController();
@@ -208,7 +196,7 @@ public class SalesActivity extends AbstractActivity
         mCategoryListController.setCategoryService(categoryService);
 
         mProductListPanel.initModel();
-//        mCheckoutListPanel.initModel();
+        mCheckoutListPanel.initModel();
         mCartItemListPanel.initModel();
         mCategoryListPanel.initModel();
     }

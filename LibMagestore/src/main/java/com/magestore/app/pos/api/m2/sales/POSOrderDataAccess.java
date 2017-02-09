@@ -34,6 +34,7 @@ import java.util.List;
  */
 
 public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDataAccess {
+
     private class OrderEntity {
         String email = null;
 
@@ -42,28 +43,86 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
         Model entity;
     }
 
-    /**
-     * Trả về list order
-     *
-     * @param pageSize    Số customer trên 1 page
-     * @param currentPage Trang hiện lại
-     * @return Danh sách order
-     * @throws DataAccessException
-     * @throws ConnectionException
-     * @throws ParseException
-     * @throws IOException
-     * @throws java.text.ParseException
-     */
     @Override
-    public List<Order> getOrders(int pageSize, int currentPage) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
-        Gson2PosListOrder listOrder = (Gson2PosListOrder) doAPI(Gson2PosListOrder.class,
-                POSAPI.REST_ORDER_GET_LISTING,
-                null,
-                POSAPI.PARAM_CURRENT_PAGE, "" + currentPage,
-                POSAPI.PARAM_PAGE_SIZE, "" + pageSize,
-                POSAPI.PARAM_SESSION_ID, POSDataAccessSession.REST_SESSION_ID);
-        List<Order> list = (List<Order>) (List<?>) (listOrder.items);
-        return list;
+    public int count() throws ParseException, InstantiationException, IllegalAccessException, IOException {
+        return 0;
+    }
+
+    @Override
+    public List<Order> retrieve() throws ParseException, InstantiationException, IllegalAccessException, IOException {
+        return null;
+    }
+
+    @Override
+    public List<Order> retrieve(int page, int pageSize) throws ParseException, InstantiationException, IllegalAccessException, IOException {
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+        try {
+            // Khởi tạo connection và khởi tạo truy vấn
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPI.REST_ORDER_GET_LISTING);
+
+            // Xây dựng tham số
+            paramBuilder = statement.getParamBuilder()
+                    .setPage(page)
+                    .setPageSize(pageSize)
+                    .setSessionID(POSDataAccessSession.REST_SESSION_ID);
+
+            // thực thi truy vấn và parse kết quả thành object
+            rp = statement.execute();
+            rp.setParseImplement(getClassParseImplement());
+            rp.setParseModel(Gson2PosListOrder.class);
+            Gson2PosListOrder listOrder = (Gson2PosListOrder) rp.doParse();
+            List<Order> list = (List<Order>) (List<?>) (listOrder.items);
+            return list;
+        } catch (ConnectionException ex) {
+            throw ex;
+        } catch (IOException ex) {
+            throw ex;
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
+    }
+
+    @Override
+    public List<Order> retrieve(String searchString, int page, int pageSize) throws ParseException, InstantiationException, IllegalAccessException, IOException {
+        return null;
+    }
+
+    @Override
+    public Order retrieve(String strID) throws ParseException, InstantiationException, IllegalAccessException, IOException {
+        return null;
+    }
+
+    @Override
+    public boolean update(Order oldModel, Order newModel) throws ParseException, InstantiationException, IllegalAccessException, IOException {
+        return false;
+    }
+
+    @Override
+    public boolean insert(Order... models) throws ParseException, InstantiationException, IllegalAccessException, IOException {
+        return false;
+    }
+
+    @Override
+    public boolean delete(Order... models) throws ParseException, InstantiationException, IllegalAccessException, IOException {
+        return false;
     }
 
     /**

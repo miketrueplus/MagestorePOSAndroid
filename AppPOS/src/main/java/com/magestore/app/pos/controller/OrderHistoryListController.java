@@ -59,6 +59,7 @@ public class OrderHistoryListController extends AbstractListController<Order> {
      */
     public void setOrderService(OrderHistoryService mOrderService) {
         this.mOrderService = mOrderService;
+        setListService(mOrderService);
     }
 
     /**
@@ -99,11 +100,8 @@ public class OrderHistoryListController extends AbstractListController<Order> {
     }
 
     @Override
-    protected List<Order> loadDataBackground(Void... params) throws Exception {
-        // TODO: test lấy webpos_payments
-        List<Order> listOrder = mOrderService.retrieveOrderList(50);
-//        List<Order> listOrder = mOrderService.retrieveOrderList(30);
-        return listOrder;
+    public void onRetrievePostExecute(List<Order> list) {
+        super.onRetrievePostExecute(list);
     }
 
     @Override

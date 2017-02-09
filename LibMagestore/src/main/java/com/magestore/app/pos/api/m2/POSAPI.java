@@ -26,14 +26,14 @@ public class POSAPI {
     public static final String REST_LOGIN = "rest/default/V1/webpos/staff/login";
 
     // API order
-    public static final String REST_ORDER_GET_DETAIL = "/rest/default/V1/webpos/orders/${orderID}?session=${sessionID}";
-    public static final String REST_ORDER_GET_LISTING = "/rest/default/V1/webpos/orders?searchCriteria[current_page]=${currentPage}&searchCriteria[page_size]=${pageSize}&session=${sessionID}";
-    public static final String REST_ORDER_CANCEL = "/rest/default/V1/webpos/orders/${orderID}/cancel?session=${sessionID}";
-    public static final String REST_ORDER_EMAIL = "/rest/default/V1/webpos/orders/${orderID}/emails?session=${sessionID}";
-    public static final String REST_ORDER_COMMENTS = "/rest/default/V1/webpos/orders/${orderID}/comments?session=${sessionID}";
-    public static final String REST_ORDER_INVOICE = "/rest/default/V1/webpos/invoices/create?session=${sessionID}";
-    public static final String REST_ORDER_SHIPMENT = "/rest/default/V1/webpos/shipment/create?session=${sessionID}";
-    public static final String REST_ORDER_REFUND = "/rest/default/V1/webpos/creditmemo/create?session=${sessionID}";
+    public static final String REST_ORDER_GET_DETAIL = "/rest/default/V1/webpos/orders/${orderID}?";
+    public static final String REST_ORDER_GET_LISTING = "/rest/default/V1/webpos/orders?";
+    public static final String REST_ORDER_CANCEL = "/rest/default/V1/webpos/orders/${orderID}/cancel?";
+    public static final String REST_ORDER_EMAIL = "/rest/default/V1/webpos/orders/${orderID}/emails?";
+    public static final String REST_ORDER_COMMENTS = "/rest/default/V1/webpos/orders/${orderID}/comments?";
+    public static final String REST_ORDER_INVOICE = "/rest/default/V1/webpos/invoices/create?";
+    public static final String REST_ORDER_SHIPMENT = "/rest/default/V1/webpos/shipment/create?";
+    public static final String REST_ORDER_REFUND = "/rest/default/V1/webpos/creditmemo/create?";
     public static final String PARAM_ORDER_ID = "orderID";
 
     // API customer
