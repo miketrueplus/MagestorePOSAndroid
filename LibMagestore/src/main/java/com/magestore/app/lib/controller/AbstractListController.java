@@ -1,5 +1,6 @@
 package com.magestore.app.lib.controller;
 
+import android.view.View;
 import android.widget.Toast;
 
 import com.magestore.app.lib.model.Model;
@@ -52,6 +53,10 @@ public abstract class AbstractListController<TModel extends Model>
      * Service xử lý
      */
     protected ListService<TModel> mListService;
+
+    public void setAutoSelectFirstItem(boolean auto) {
+        mblnAutoChooseFirstItem = auto;
+    }
 
     @Override
     public void setPage(int pageSize, int pageMax) {
@@ -365,5 +370,14 @@ public abstract class AbstractListController<TModel extends Model>
     public void doRetrieveMore(int page) {
         doRetrieve(page, mintPageSize);
         mView.setItemLoadingProgress(null, true);
+    }
+
+    /**
+     * Bật tắt, hiển thị detail
+     * @param show
+     */
+    @Override
+    public void doShowDetailPanel(boolean show) {
+        if (mDetailView != null) mDetailView.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 }
