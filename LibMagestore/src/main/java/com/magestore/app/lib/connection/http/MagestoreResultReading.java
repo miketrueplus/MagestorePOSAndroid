@@ -134,6 +134,10 @@ public class MagestoreResultReading implements ResultReading {
         return mInputStream;
     }
 
+    private InputStream getCurrentInputStream() throws IOException {
+        return mInputStream;
+    }
+
     /**
      * Đặt parse Model class
      *
@@ -181,7 +185,7 @@ public class MagestoreResultReading implements ResultReading {
     @Override
     public ParseModel doParse() throws ParseException, IOException {
         // Thực thi parse
-        mParseImplement.prepareParse(getInputStream(), mclParseModel);
+        mParseImplement.prepareParse(getCurrentInputStream(), mclParseModel);
         mParseImplement.doParse();
 
         // Trả về parse Model

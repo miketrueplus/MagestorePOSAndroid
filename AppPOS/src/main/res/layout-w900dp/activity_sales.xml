@@ -43,13 +43,15 @@
                 android:id="@+id/checkout_shipping_list_panel"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="gone" />
+                android:visibility="gone"
+                magestore_view:layout_panel="@layout/panel_checkout_shipping" />
 
             <com.magestore.app.pos.panel.CheckoutPaymentListPanel
                 android:id="@+id/checkout_payment_list_panel"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="gone" />
+                android:visibility="gone"
+                magestore_view:layout_panel="@layout/panel_checkout_payment" />
 
             <com.magestore.app.pos.panel.CheckoutShippingDetailPanel
                 android:id="@+id/checkout_shipping_detail_panel"
