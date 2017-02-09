@@ -69,7 +69,8 @@
                 android:layout_alignParentTop="true"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="5dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <com.magestore.app.pos.panel.CategoryListPanel
                     android:id="@+id/category"

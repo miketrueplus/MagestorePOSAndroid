@@ -3,10 +3,13 @@ package com.magestore.app.pos.panel;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
+import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import com.magestore.app.lib.controller.Controller;
 import com.magestore.app.lib.panel.AbstractListPanel;
@@ -26,6 +29,9 @@ import java.util.List;
 public class ProductListPanel extends AbstractListPanel<Product> {
     // Textbox search product
     AutoCompleteTextView mSearchProductTxt;
+    Toolbar toolbar_category;
+    ImageButton im_category_arrow;
+    FrameLayout fr_category;
 
     public ProductListPanel(Context context) {
         super(context);
@@ -62,6 +68,9 @@ public class ProductListPanel extends AbstractListPanel<Product> {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), layoutItemId, dogList);
         mSearchProductTxt.setAdapter(adapter);
 
+        fr_category = (FrameLayout) findViewById(R.id.fr_category);
+        toolbar_category = (Toolbar) findViewById(R.id.toolbar_category);
+        im_category_arrow = (ImageButton) findViewById(R.id.im_category_arrow);
     }
 
     /**
@@ -91,6 +100,19 @@ public class ProductListPanel extends AbstractListPanel<Product> {
 
         // Đặt tham chiếu imageview sang product
         item.setRefer(LoadProductImageTask.KEY_IMAGEVIEW, imageView);
+
+        toolbar_category.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(fr_category.getVisibility() == VISIBLE){
+                    im_category_arrow.setRotation(180);
+                    fr_category.setVisibility(GONE);
+                }else{
+                    im_category_arrow.setRotation(0);
+                    fr_category.setVisibility(VISIBLE);
+                }
+            }
+        });
     }
 
     /**
