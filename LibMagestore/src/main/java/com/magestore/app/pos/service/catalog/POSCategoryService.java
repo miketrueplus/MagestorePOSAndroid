@@ -65,4 +65,13 @@ public class POSCategoryService extends AbstractService implements CategoryServi
     public boolean delete(Category... categories) throws IOException, InstantiationException, ParseException, IllegalAccessException {
         return false;
     }
+
+    @Override
+    public List<Category> getListCategory(Category category) throws IOException, InstantiationException, ParseException, IllegalAccessException{
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        CategoryDataAccess categoryDataAccess = factory.generateCategoryDataAccess();
+
+        // Lấy danh sách các category con
+        return categoryDataAccess.getListCategory(category);
+    }
 }

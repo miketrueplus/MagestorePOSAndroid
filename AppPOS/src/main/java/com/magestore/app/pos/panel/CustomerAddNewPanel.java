@@ -284,11 +284,15 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
         if (s_state.getVisibility() == VISIBLE) {
             s_region.setRegionCode(s_state.getText().toString());
             s_region.setRegionName(s_state.getText().toString());
-            s_region.setID("0");
+            s_region.setRegionID(0);
             shippingAddress.setRegionID("0");
             shippingAddress.setRegion(s_region);
         } else {
-            s_region.setID(shippingRegion.getID());
+            try {
+                s_region.setRegionID(Integer.parseInt(shippingRegion.getID()));
+            } catch (Exception e) {
+                s_region.setRegionID(0);
+            }
             s_region.setRegionName(shippingRegion.getName());
             s_region.setRegionCode(shippingRegion.getCode());
             shippingAddress.setState(s_spinner_state.getSelection());
@@ -344,11 +348,15 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
         if (b_state.getVisibility() == VISIBLE) {
             b_region.setRegionCode(b_state.getText().toString());
             b_region.setRegionName(b_state.getText().toString());
-            b_region.setID("0");
+            b_region.setRegionID(0);
             billingAddress.setRegionID("0");
             billingAddress.setRegion(b_region);
         } else {
-            b_region.setID(billingRegion.getID());
+            try {
+                b_region.setRegionID(Integer.parseInt(billingRegion.getID()));
+            } catch (Exception e) {
+                b_region.setRegionID(0);
+            }
             b_region.setRegionName(billingRegion.getName());
             b_region.setRegionCode(billingRegion.getCode());
             billingAddress.setState(b_spinner_state.getSelection());

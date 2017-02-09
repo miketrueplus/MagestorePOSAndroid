@@ -1,5 +1,6 @@
 package com.magestore.app.pos.model.catalog;
 
+import com.google.gson.annotations.Expose;
 import com.magestore.app.lib.model.catalog.Category;
 import com.magestore.app.pos.model.PosAbstractModel;
 
@@ -21,6 +22,9 @@ public class PosCategory extends PosAbstractModel implements Category {
     int level;
     int parent_id;
     String path;
+
+    @Expose(serialize = false, deserialize = false)
+    List<Category> list_sub;
 
     @Override
     public String getName() {
@@ -50,5 +54,15 @@ public class PosCategory extends PosAbstractModel implements Category {
     @Override
     public String getPath() {
         return path;
+    }
+
+    @Override
+    public List<String> getChildren() {
+        return children;
+    }
+
+    @Override
+    public List<Category> getSubCategory() {
+        return list_sub;
     }
 }

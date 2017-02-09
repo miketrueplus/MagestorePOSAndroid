@@ -8,13 +8,14 @@ import com.magestore.app.lib.connection.ResultReading;
 import com.magestore.app.lib.connection.Statement;
 import com.magestore.app.lib.model.catalog.Category;
 import com.magestore.app.lib.parse.ParseException;
+import com.magestore.app.lib.resourcemodel.DataAccessException;
 import com.magestore.app.lib.resourcemodel.catalog.CategoryDataAccess;
 import com.magestore.app.pos.api.m2.POSAPI;
 import com.magestore.app.pos.api.m2.POSAbstractDataAccess;
 import com.magestore.app.pos.api.m2.POSDataAccessSession;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListCategory;
-
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,6 +25,9 @@ import java.util.List;
  */
 
 public class POSCategoryDataAccess extends POSAbstractDataAccess implements CategoryDataAccess {
+    public static List<Category> mListCategory;
+    public static List<Category> mListDefaultCategory;
+
     @Override
     public int count() throws ParseException, InstantiationException, IllegalAccessException, IOException {
         return 0;
@@ -57,8 +61,8 @@ public class POSCategoryDataAccess extends POSAbstractDataAccess implements Cate
             rp.setParseImplement(getClassParseImplement());
             rp.setParseModel(Gson2PosListCategory.class);
             Gson2PosListCategory listCategory = (Gson2PosListCategory) rp.doParse();
-            List<Category> list = (List<Category>) (List<?>) (listCategory.items);
-            return list;
+            mListCategory = (List<Category>) (List<?>) (listCategory.items);
+            return getListCategory(null);
         } catch (ConnectionException ex) {
             throw ex;
         } catch (IOException ex) {
@@ -104,5 +108,42 @@ public class POSCategoryDataAccess extends POSAbstractDataAccess implements Cate
     @Override
     public boolean delete(Category... models) throws ParseException, InstantiationException, IllegalAccessException, IOException {
         return false;
+    }
+
+
+    @Override
+    public List<Category> getListCategory(Category category) throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        if (mListCategory == null) mListCategory = new ArrayList<Category>();
+        if (mListDefaultCategory == null) mListDefaultCategory = new ArrayList<Category>();
+        if (category == null) {
+            for (Category categoryAll : mListCategory) {
+                if (categoryAll.getLevel() == 1) {
+                    for (String category_id : categoryAll.getChildren()) {
+                        for (Category category_child : mListCategory) {
+                            if (category_id.equals(category_child.getID())) {
+                                mListDefaultCategory.add(category_child);
+                            }
+                        }
+                    }
+                }
+            }
+            return mListDefaultCategory;
+        } else {
+            List<Category> listSubCategory = category.getSubCategory();
+            if (listSubCategory != null && listSubCategory.size() > 0) {
+                return listSubCategory;
+            } else {
+                for (Category categoryAll : mListCategory) {
+                    for (String category_id : categoryAll.getChildren()) {
+                        for (Category category_child : mListCategory) {
+                            if (category_id.equals(category_child.getID())) {
+                                listSubCategory.add(category_child);
+                            }
+                        }
+                    }
+                }
+                return listSubCategory;
+            }
+        }
     }
 }
