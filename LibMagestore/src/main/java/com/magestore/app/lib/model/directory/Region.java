@@ -13,5 +13,6 @@ public interface Region extends Model {
     void setRegionCode(String strRegionCode);
     String getRegionName();
     void setRegionName(String strRegionName);
-    void setID(String strID);
+    int getRegionID();
+    void setRegionID(int intID);
 }

@@ -2,6 +2,8 @@ package com.magestore.app.lib.model.catalog;
 
 import com.magestore.app.lib.model.Model;
 
+import java.util.List;
+
 /**
  * Created by Mike on 12/22/2016.
  * Magestore
@@ -16,4 +18,6 @@ public interface Category extends Model {
     int getLevel();
     int getParentID();
     String getPath();
+    List<String> getChildren();
+    List<Category> getSubCategory();
 }

@@ -13,7 +13,7 @@ import com.magestore.app.pos.model.PosAbstractModel;
 public class PosRegion extends PosAbstractModel implements Region {
     String region_code;
     String region;
-    String region_id;
+    int region_id;
 
     @Override
     public String getRegionCode() {
@@ -36,12 +36,12 @@ public class PosRegion extends PosAbstractModel implements Region {
     }
 
     @Override
-    public void setID(String strID) {
-        region_id = strID;
+    public int getRegionID() {
+        return region_id;
     }
 
     @Override
-    public String getID() {
-        return region_id;
+    public void setRegionID(int intID) {
+        region_id = intID;
     }
 }
