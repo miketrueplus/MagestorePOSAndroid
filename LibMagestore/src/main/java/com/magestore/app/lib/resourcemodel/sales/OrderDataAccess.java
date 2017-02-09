@@ -9,6 +9,7 @@ import com.magestore.app.lib.model.sales.OrderStatus;
 import com.magestore.app.lib.parse.ParseException;
 import com.magestore.app.lib.resourcemodel.DataAccess;
 import com.magestore.app.lib.resourcemodel.DataAccessException;
+import com.magestore.app.lib.resourcemodel.ListDataAccess;
 
 import java.io.IOException;
 import java.util.List;
@@ -19,9 +20,7 @@ import java.util.List;
  * mike@trueplus.vn
  */
 
-public interface OrderDataAccess extends DataAccess {
-    List<Order> getOrders(int pageSize, int currentPage) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
-
+public interface OrderDataAccess extends DataAccess, ListDataAccess<Order> {
     String sendEmail(String email, String orderId) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
 
     Order insertOrderStatus(OrderStatus orderStatus, String orderId) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;

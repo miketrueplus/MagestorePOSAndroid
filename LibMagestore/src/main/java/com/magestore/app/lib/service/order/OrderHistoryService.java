@@ -9,8 +9,8 @@ import com.magestore.app.lib.model.sales.OrderRefundParams;
 import com.magestore.app.lib.model.sales.OrderShipmentParams;
 import com.magestore.app.lib.model.sales.OrderShipmentTrackParams;
 import com.magestore.app.lib.model.sales.OrderStatus;
+import com.magestore.app.lib.service.ListService;
 import com.magestore.app.lib.service.Service;
-
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
@@ -21,9 +21,7 @@ import java.util.List;
  * dong.le@trueplus.vn
  */
 
-public interface OrderHistoryService extends Service {
-    List<Order> retrieveOrderList(int size) throws InstantiationException, IllegalAccessException, IOException, ParseException;
-
+public interface OrderHistoryService extends Service , ListService<Order> {
     List<Order> retrieveOrderLastMonth(Customer customer) throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
     String sendEmail(String email, String orderId) throws InstantiationException, IllegalAccessException, IOException, ParseException;
