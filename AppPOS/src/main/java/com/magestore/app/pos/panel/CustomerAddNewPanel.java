@@ -311,7 +311,7 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
             b_city.setText(billingAddress.getCity());
             b_zipcode.setText(billingAddress.getPostCode());
             b_spinner_country.setSelection(billingAddress.getCountry());
-            if (billingAddress.getRegion().getID().equals("0")) {
+            if (billingAddress.getRegion().getRegionID() == 0) {
                 b_state.setVisibility(VISIBLE);
                 b_spinner_state.setVisibility(GONE);
                 b_state.setText(billingAddress.getRegion().getRegionName());
