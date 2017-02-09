@@ -25,6 +25,8 @@ public class SimpleListView extends ListView  {
     // ID Layout của rowview
     int mListLayout;
     boolean mNoScroll;
+    boolean mblnShowRadioButton;
+    boolean mblnShowSecondValue;
 
     // chứa dữ liệu
     String[] mListKeys;

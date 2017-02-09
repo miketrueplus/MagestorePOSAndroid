@@ -1,5 +1,7 @@
 package com.magestore.app.pos.controller;
 
+import android.view.View;
+
 import com.magestore.app.lib.controller.AbstractListController;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.model.checkout.Checkout;
@@ -48,20 +50,6 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         mCartItemListController = controller;
     }
 
-//    /**
-//     *
-//     * @param success
-//     * @param models
-//     */
-//    @Override
-//    public void onInsertPostExecute(Boolean success, Checkout... models) {
-//        super.onInsertPostExecute(success, models);
-//        if (mList == null) mList = new ArrayList<Checkout>();
-//        mList.add(models[0]);
-//        bindItem(models[0]);
-//        mView.notifyDataSetChanged();
-//    }
-
     /**
      * Cập nhật tổng giá
      */
@@ -69,4 +57,5 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         if (mView != null && mItem != null && (mView instanceof CheckoutListPanel))
              ((CheckoutListPanel) mView).updateTotalPrice(mItem);
     }
+
 }

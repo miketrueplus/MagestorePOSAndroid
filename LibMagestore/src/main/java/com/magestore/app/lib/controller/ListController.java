@@ -1,5 +1,7 @@
 package com.magestore.app.lib.controller;
 
+import android.view.View;
+
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
 import com.magestore.app.lib.panel.AbstractListPanel;
@@ -175,4 +177,10 @@ public interface ListController<TModel extends Model>
      * @param page
      */
     void doRetrieveMore(int page);
+
+    /**
+     * Bật tắt hiển thị panel detail
+     * @param show
+     */
+    void doShowDetailPanel(boolean show);
 }

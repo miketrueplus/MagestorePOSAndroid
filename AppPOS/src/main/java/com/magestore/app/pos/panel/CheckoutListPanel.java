@@ -4,13 +4,12 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.Button;
 
 import com.magestore.app.lib.service.ServiceFactory;
 import com.magestore.app.pos.R;
 import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.panel.AbstractListPanel;
-import com.magestore.app.lib.service.checkout.CartService;
-import com.magestore.app.pos.controller.CartItemListController;
 import com.magestore.app.pos.controller.CheckoutListController;
 import com.magestore.app.pos.databinding.PanelCheckoutListBinding;
 
@@ -21,9 +20,6 @@ import com.magestore.app.pos.databinding.PanelCheckoutListBinding;
  */
 public class CheckoutListPanel extends AbstractListPanel<Checkout> {
     private PanelCheckoutListBinding mBinding;
-    private CartItemListPanel mCartItemListPanel;
-    private CartItemListController mCartItemListController;
-    CartService cartService = null;
 
     public CheckoutListPanel(Context context) {
         super(context);
@@ -45,28 +41,15 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
     @Override
     public void initLayout() {
         super.initLayout();
-//        mCartItemListPanel = (CartItemListPanel) findViewById(R.id.order_item_panel);
         mBinding = DataBindingUtil.bind(getView());
-    }
 
-    @Override
-    public void initModel() {
-        super.initModel();
+        ((Button) findViewById(R.id.btn_sales_order_checkout)).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getController().doShowDetailPanel(true);
+            }
+        });
 
-//        try {
-//            ServiceFactory factory = ServiceFactory.getFactory(getController().getMagestoreContext());
-//            cartService = factory.generateCartService();
-//        } catch (IllegalAccessException e) {
-//            e.printStackTrace();
-//        } catch (InstantiationException e) {
-//            e.printStackTrace();
-//        }
-
-
-
-        // tham chiếu từ checkout sang cartitem
-//        if (getController() instanceof CheckoutListController)
-//            ((CheckoutListController) getController()).setCartItemListController(mCartItemListController);
     }
 
     /**

@@ -28,6 +28,7 @@ import com.magestore.app.pos.controller.CheckoutShippingController;
 import com.magestore.app.pos.controller.ProductListController;
 import com.magestore.app.pos.panel.CartItemListPanel;
 import com.magestore.app.pos.panel.CategoryListPanel;
+import com.magestore.app.pos.panel.CheckoutDetailPanel;
 import com.magestore.app.pos.panel.CheckoutListPanel;
 import com.magestore.app.pos.panel.CheckoutPaymentDetailPanel;
 import com.magestore.app.pos.panel.CheckoutPaymentListPanel;
@@ -50,6 +51,7 @@ public class SalesActivity extends AbstractActivity
     // Panel chứa danh sách mặt hàng và đơn hàng
     private ProductListPanel mProductListPanel;
     private CheckoutListPanel mCheckoutListPanel;
+    private CheckoutDetailPanel mCheckoutDetailPanel;
     private CheckoutShippingListPanel mCheckoutShippingListPanel;
     private CheckoutShippingDetailPanel mCheckoutShippingDetailPanel;
     private CheckoutPaymentListPanel mCheckoutPaymentListPanel;
@@ -103,23 +105,24 @@ public class SalesActivity extends AbstractActivity
         // product list
         mProductListPanel = (ProductListPanel) findViewById(R.id.product_list_panel);
 
-        // check out list
+        // check out list & detail
         mCheckoutListPanel = (CheckoutListPanel) findViewById(R.id.checkout_list_panel);
+        mCheckoutDetailPanel = (CheckoutDetailPanel) findViewById(R.id.checkout_detail_panel);
 
         // cart item panel
         mCartItemListPanel = (CartItemListPanel) mCheckoutListPanel.findViewById(R.id.order_item_panel);
 
         // shipping list panel
-        mCheckoutShippingListPanel = (CheckoutShippingListPanel) findViewById(R.id.checkout_shipping_list_panel);
+        mCheckoutShippingListPanel = (CheckoutShippingListPanel) mCheckoutDetailPanel.findViewById(R.id.checkout_shipping_list_panel);
 
         // payment list panel
-        mCheckoutPaymentListPanel = (CheckoutPaymentListPanel) findViewById(R.id.checkout_payment_list_panel);
+        mCheckoutPaymentListPanel = (CheckoutPaymentListPanel) mCheckoutDetailPanel.findViewById(R.id.checkout_payment_list_panel);
 
         // shipping list panel
-        mCheckoutShippingDetailPanel = (CheckoutShippingDetailPanel) findViewById(R.id.checkout_shipping_detail_panel);
+        mCheckoutShippingDetailPanel = (CheckoutShippingDetailPanel) mCheckoutDetailPanel.findViewById(R.id.checkout_shipping_detail_panel);
 
         // payment list panel
-        mCheckoutPaymentDetailPanel = (CheckoutPaymentDetailPanel) findViewById(R.id.checkout_payment_detail_panel);
+        mCheckoutPaymentDetailPanel = (CheckoutPaymentDetailPanel) mCheckoutDetailPanel.findViewById(R.id.checkout_payment_detail_panel);
 
         // category list panel
         mCategoryListPanel = (CategoryListPanel) mProductListPanel.findViewById(R.id.category);
@@ -155,6 +158,7 @@ public class SalesActivity extends AbstractActivity
         mCheckoutListController.setMagestoreContext(magestoreContext);
         mCheckoutListController.setListService(checkoutService);
         mCheckoutListController.setListPanel(mCheckoutListPanel);
+        mCheckoutListController.setDetailPanel(mCheckoutDetailPanel);
 
         // controller quản lý danh sách khách hàng
         mProductListController = new ProductListController();
@@ -172,11 +176,11 @@ public class SalesActivity extends AbstractActivity
         mCheckoutListController.setCartItemListController(mCheckoutCartItemListController);
 
         // quản lý các shipping
-        mCheckShippingListController = new CheckoutShippingController();
-        mCheckShippingListController.setMagestoreContext(magestoreContext);
-        mCheckShippingListController.setListPanel(mCheckoutShippingListPanel);
-        mCheckShippingListController.setDetailPanel(mCheckoutShippingDetailPanel);
-        mCheckShippingListController.setParentController(mCheckoutListController);
+//        mCheckShippingListController = new CheckoutShippingController();
+//        mCheckShippingListController.setMagestoreContext(magestoreContext);
+//        mCheckShippingListController.setListPanel(mCheckoutShippingListPanel);
+//        mCheckShippingListController.setDetailPanel(mCheckoutShippingDetailPanel);
+//        mCheckShippingListController.setParentController(mCheckoutListController);
 
         // quản lý các payment
         mCheckoutPaymentListController = new CheckoutPaymentController();
@@ -205,6 +209,8 @@ public class SalesActivity extends AbstractActivity
         mCategoryListController.doRetrieve();
         // Load danh sách check out
         mCheckoutListController.doRetrieve();
+        // load danh sách shipping
+//        mCheckShippingListController.doRetrieve();
     }
 
     @Override

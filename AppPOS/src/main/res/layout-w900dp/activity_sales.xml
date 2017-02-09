@@ -25,45 +25,31 @@
             android:layout_weight="0.65"
             android:orientation="vertical">
 
-            <com.magestore.app.pos.panel.ProductListPanel
-                android:id="@+id/product_list_panel"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                magestore_view:layout_item="@layout/card_product_list_content"
-                magestore_view:layout_list="@+id/product_list"
-                magestore_view:layout_orientation="vertical"
-                magestore_view:layout_panel="@layout/panel_product_list"
-                magestore_view:layout_progress="@+id/progress_product_list"
-                magestore_view:layout_span_count="4"
-                magestore_view:page_first="1"
-                magestore_view:page_size="15"
-                magestore_view:page_size_max="500" />
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
 
-            <com.magestore.app.pos.panel.CheckoutShippingListPanel
-                android:id="@+id/checkout_shipping_list_panel"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone"
-                magestore_view:layout_panel="@layout/panel_checkout_shipping" />
+                <com.magestore.app.pos.panel.ProductListPanel
+                    android:id="@+id/product_list_panel"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    magestore_view:layout_item="@layout/card_product_list_content"
+                    magestore_view:layout_list="@+id/product_list"
+                    magestore_view:layout_orientation="vertical"
+                    magestore_view:layout_panel="@layout/panel_product_list"
+                    magestore_view:layout_progress="@+id/progress_product_list"
+                    magestore_view:layout_span_count="4"
+                    magestore_view:page_first="1"
+                    magestore_view:page_size="15"
+                    magestore_view:page_size_max="500" />
 
-            <com.magestore.app.pos.panel.CheckoutPaymentListPanel
-                android:id="@+id/checkout_payment_list_panel"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone"
-                magestore_view:layout_panel="@layout/panel_checkout_payment" />
-
-            <com.magestore.app.pos.panel.CheckoutShippingDetailPanel
-                android:id="@+id/checkout_shipping_detail_panel"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone" />
-
-            <com.magestore.app.pos.panel.CheckoutPaymentDetailPanel
-                android:id="@+id/checkout_payment_detail_panel"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone" />
+                <com.magestore.app.pos.panel.CheckoutDetailPanel
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/checkout_detail_panel"
+                    android:visibility="gone"
+                    magestore_view:layout_panel="@layout/panel_checkout_detail"/>
+            </RelativeLayout>
         </LinearLayout>
 
         <LinearLayout

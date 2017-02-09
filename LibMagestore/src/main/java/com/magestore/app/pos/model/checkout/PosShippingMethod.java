@@ -34,6 +34,11 @@ public class PosShippingMethod extends PosAbstractModel implements ShippingMetho
     }
 
     @Override
+    public String getName() {
+        return this.name;
+    }
+
+    @Override
     public void setID(String id) {
         this.id = id;
     }

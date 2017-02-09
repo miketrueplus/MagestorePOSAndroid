@@ -43,7 +43,6 @@ public class MagestoreResultReadingException extends MagestoreResultReading {
     public ParseModel doParse() throws ParseException, IOException, ConnectionException {
         PosMessagException msgExp = (PosMessagException) super.doParse();
         ConnectionException exp = new ConnectionException(msgExp.getMessage());
-//        ConnectionException exp = new ConnectionException("Hi");
         throw exp;
     }
 

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:magestore_view="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.magestore.app.pos.panel.CheckoutShippingListPanel
+        android:id="@+id/checkout_shipping_list_panel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        magestore_view:layout_no_scroll="true"
+        magestore_view:layout_row="@layout/card_checkout_shipping_content" />
+
+    <com.magestore.app.pos.panel.CheckoutPaymentDetailPanel
+        android:id="@+id/checkout_payment_detail_panel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.magestore.app.pos.panel.CheckoutPaymentListPanel
+        android:id="@+id/checkout_payment_list_panel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        magestore_view:layout_panel="@layout/panel_checkout_payment" />
+
+    <com.magestore.app.pos.panel.CheckoutShippingDetailPanel
+        android:id="@+id/checkout_shipping_detail_panel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>
