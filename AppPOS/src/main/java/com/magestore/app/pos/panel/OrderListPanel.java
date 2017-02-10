@@ -60,9 +60,6 @@ public class OrderListPanel extends AbstractListPanel<Order> {
 
     @Override
     public void initLayout() {
-        // Load layout view danh sách đơn hàng
-        View v = inflate(getContext(), R.layout.panel_order_list, null);
-        addView(v);
 
         // Xử lý sự kiện floating action bar
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -74,11 +71,6 @@ public class OrderListPanel extends AbstractListPanel<Order> {
             }
         });
 
-        // Chuẩn bị layout từng order trong danh sách khách hàng
-        setLayoutItem(R.layout.card_order_history_list_content);
-
-        // Chuẩn bị list danh sách đơn hàng
-        initRecycleView(R.id.order_list, new GridLayoutManager(this.getContext(), 1));
     }
 
     @Override

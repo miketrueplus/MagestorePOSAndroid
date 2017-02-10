@@ -10,7 +10,8 @@
             type="com.magestore.app.lib.model.sales.Order" />
     </data>
 
-    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/sales_customer_list_card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -40,7 +41,7 @@
                 android:layout_centerVertical="true"
                 android:visibility="gone" />
 
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            <LinearLayout
                 android:id="@+id/content_order_list_card_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
