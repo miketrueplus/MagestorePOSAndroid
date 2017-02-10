@@ -176,7 +176,7 @@ public abstract class AbstractListController<TModel extends Model>
         // gọi lại method đặt tên theo phiên bản cũ
         if (mList != null) {
             mList.addAll(list);
-            mView.notifyDataSetChangedLastItem(list);
+            mView.notifyDataSetInsertLastItem(list);
             mView.setItemLoadingProgress(null, false);
         }
         else {

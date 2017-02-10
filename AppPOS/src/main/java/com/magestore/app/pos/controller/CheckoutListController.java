@@ -59,6 +59,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         try {
             mCheckoutShippingListPanel.bindList(getConfigService().getShippingMethodList());
             mCheckoutPaymentListPanel.bindList(getConfigService().getCheckoutPaymentList());
+            mPaymentMethodListPanel.bindList(getConfigService().getPaymentMethodList());
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {

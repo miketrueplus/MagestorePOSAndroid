@@ -433,15 +433,62 @@ public abstract class AbstractListPanel<TModel extends Model>
             adapter.notifyDataSetChanged();
     }
 
-    public void notifyDataSetChangedLastItem(List<TModel> list) {
+//    /**
+//     * Notify khi item được cho vào cuối danh sách
+//     * @param list
+//     */
+//    public void notifyDataSetChangedLastItem(List<TModel> list) {
+//        int start = mRecycleView.getAdapter().getItemCount() - 1 - list.size();
+//        int range = mList.size() -  start;
+//        mRecycleView.getAdapter().notifyItemChanged(mRecycleView.getAdapter().getItemCount() - 1 - list.size());
+//        mRecycleView.getAdapter().notifyItemRangeInserted(start, range);
+//    }
+
+    /**
+     * Notify khi item được cho vào cuối danh sách
+     * @param list
+     */
+    public void notifyDataSetInsertLastItem(List<TModel> list) {
         int start = mRecycleView.getAdapter().getItemCount() - 1 - list.size();
         int range = mList.size() -  start;
         mRecycleView.getAdapter().notifyItemChanged(mRecycleView.getAdapter().getItemCount() - 1 - list.size());
-        mRecycleView.getAdapter().notifyItemRangeInserted(start, range);
+//        mRecycleView.getAdapter().notifyItemRangeInserted(start, range);
     }
 
-    public void notifyDataSetChangedFirtItem() {
+    /**
+     * Notify khi item đầu tiên thay đổi
+     */
+    public void notifyDataSetInsertFirstItem() {
         mRecycleView.getAdapter().notifyItemRangeInserted(0, 1);
+        mRecycleView.getAdapter().notifyItemChanged(0, 1);
+    }
+
+    /**
+     * Notify khi item được cho vào cuối danh sách
+     * @param list
+     */
+    public void notifyDataSetInsertFirstItem(List<TModel> list) {
+        int start = 0;
+        int range = list.size();
+        mRecycleView.getAdapter().notifyItemRangeInserted(start, range);
+        mRecycleView.getAdapter().notifyItemChanged(start, range);
+    }
+
+    /**
+     * Thay đổi giao diện khi xóa 1 item
+     * @param position
+     */
+    public void notifyDataSetRemoveItem(int position) {
+        mRecycleView.getAdapter().notifyItemRemoved(position);
+        mRecycleView.getAdapter().notifyItemRangeChanged(position, mRecycleView.getAdapter().getItemCount());
+    }
+
+    /**
+     * Thay đổi giao diện khi thay đổi 1 position
+     * @param position
+     */
+    public void notifyDataSetUpdateItem(int position) {
+        mRecycleView.getAdapter().notifyItemChanged(position);
     }
 
     /**

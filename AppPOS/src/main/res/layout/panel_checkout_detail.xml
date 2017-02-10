@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:magestore_view="http://schemas.android.com/apk/res-auto">
+
     <data>
 
         <import type="com.magestore.app.util.ConfigUtil" />
@@ -62,7 +64,10 @@
                 android:id="@+id/payment_method_list_panel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
+                android:visibility="visible"
+                android:columnCount="4"
+                app:layoutManager="GridLayoutManager"
+                magestore_view:layout_span_count="4"
                 magestore_view:layout_row="@layout/card_payment_method_content" />
 
             <LinearLayout

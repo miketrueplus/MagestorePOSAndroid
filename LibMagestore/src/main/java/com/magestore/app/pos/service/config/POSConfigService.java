@@ -70,38 +70,38 @@ public class POSConfigService extends AbstractService implements ConfigService {
     public static String PAYMENT_METHOD_CUSTOM_PAYMENT1 = "CUSTOM_PAYMENT1";
     public static String PAYMENT_METHOD_CUSTOM_PAYMENT2 = "CUSTOM_PAYMENT2";
     @Override
-    public Map<String, PaymentMethod> getPaymentMethodList() throws InstantiationException, IllegalAccessException, IOException, ParseException {
-        Map<String, PaymentMethod> paymentMethodList = new HashMap<String, PaymentMethod>();
+    public List<PaymentMethod> getPaymentMethodList() throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        List<PaymentMethod> paymentMethodList = new ArrayList<PaymentMethod>();
 
         PaymentMethod method = new PosPaymentMethod();
         method.setName("Credit Card Direct Post (Authorize.net)");
         method.setCreditCardDirect();
-        paymentMethodList.put(PAYMENT_METHOD_CC_DIRECT_POST, method);
+        paymentMethodList.add(method);
 
         method = new PosPaymentMethod();
         method.setName("Direct cash in");
         method.setCashIn();
-        paymentMethodList.put(PAYMENT_METHOD_CASH_IN, method);
+        paymentMethodList.add(method);
 
         method = new PosPaymentMethod();
         method.setName("Credit direct");
         method.setCreditCardIn();
-        paymentMethodList.put(PAYMENT_METHOD_CC_CARD, method);
+        paymentMethodList.add(method);
 
         method = new PosPaymentMethod();
         method.setName("Cash on delivery");
         method.setCashOnDelivery();
-        paymentMethodList.put(PAYMENT_METHOD_CASH_COD, method);
+        paymentMethodList.add(method);
 
         method = new PosPaymentMethod();
         method.setName("Custom payment 1");
         method.setCustomerPayment();
-        paymentMethodList.put(PAYMENT_METHOD_CUSTOM_PAYMENT1, method);
+        paymentMethodList.add(method);
 
         method = new PosPaymentMethod();
         method.setName("Custom payment 2");
         method.setCustomerPayment();
-        paymentMethodList.put(PAYMENT_METHOD_CUSTOM_PAYMENT2, method);
+        paymentMethodList.add(method);
 
         return paymentMethodList;
     }
