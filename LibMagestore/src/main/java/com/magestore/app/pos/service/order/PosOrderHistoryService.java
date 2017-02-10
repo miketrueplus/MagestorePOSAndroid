@@ -36,7 +36,9 @@ public class PosOrderHistoryService extends AbstractService implements OrderHist
 
     @Override
     public int count() throws ParseException, InstantiationException, IllegalAccessException, IOException {
-        return 0;
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        OrderDataAccess orderDataAccess = factory.generateOrderDataAccess();
+        return orderDataAccess.count();
     }
 
     @Override
@@ -53,10 +55,10 @@ public class PosOrderHistoryService extends AbstractService implements OrderHist
     public List<Order> retrieve(int page, int pageSize) throws IOException, InstantiationException, ParseException, IllegalAccessException {
         // Khởi tạo order gateway factory
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
-        OrderDataAccess orderGateway = factory.generateOrderDataAccess();
+        OrderDataAccess orderDataAccess = factory.generateOrderDataAccess();
         // giả dữ liêu với page = 32 và pageSize = 30
-        return orderGateway.retrieve(1, 1);
-//        return orderGateway.retrieve(page, pageSize);
+        return orderDataAccess.retrieve(1, 1);
+//        return orderDataAccess.retrieve(page, pageSize);
     }
 
     @Override

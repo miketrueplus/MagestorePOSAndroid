@@ -20,4 +20,5 @@ public interface Category extends Model {
     String getPath();
     List<String> getChildren();
     List<Category> getSubCategory();
+    boolean checkListSubCategory();
 }

@@ -61,7 +61,7 @@ public class POSAPI {
     public static final String REST_REGISTER_SHIFTS_MAKE_ADJUSTMENT = "/rest/default/V1/webpos/cash_transaction/save?";
 
     // API config
-    public static final String REST_CONFIG_GET_LISTING = "/rest/default/V1/webpos/configurations?session=${sessionID}";
+    public static final String REST_CONFIG_GET_LISTING = "/rest/default/V1/webpos/configurations?";
     public static final String REST_CONFIG_GET_ = "/rest/default/V1/webpos/configurations/${configID}?path=${configPath}&session=${sessionID}";
 
 }

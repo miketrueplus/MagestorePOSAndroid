@@ -65,4 +65,12 @@ public class PosCategory extends PosAbstractModel implements Category {
     public List<Category> getSubCategory() {
         return list_sub;
     }
+
+    @Override
+    public boolean checkListSubCategory() {
+        if (children != null && children.size() > 0) {
+            return true;
+        }
+        return false;
+    }
 }
