@@ -32,7 +32,7 @@ public class PosCashTransaction extends PosAbstractModel implements CashTransact
     String balance_title;
     String check_type_value;
 
-    @Expose(serialize = false, deserialize = false)
+    @Expose(serialize = true, deserialize = true)
     boolean check_open_shift;
 
     @Override

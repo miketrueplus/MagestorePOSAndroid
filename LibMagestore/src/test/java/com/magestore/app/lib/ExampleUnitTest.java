@@ -1,5 +1,12 @@
 package com.magestore.app.lib;
 
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.FieldAttributes;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.annotations.Expose;
+import com.magestore.app.pos.model.registershift.PosCashTransaction;
+
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -12,6 +19,28 @@ import static org.junit.Assert.*;
 public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() throws Exception {
-        assertEquals(4, 2 + 2);
+        PosCashTransaction cashTransaction = new PosCashTransaction();
+        cashTransaction.setCheckOpenShift(true);
+        cashTransaction.setBalance(1.0f);
+
+        class MyExclusionStrategy implements ExclusionStrategy {
+
+            private MyExclusionStrategy() {
+            }
+
+
+            public boolean shouldSkipField(FieldAttributes f) {
+                return f.getAnnotation(Expose.class) != null;
+            }
+
+            @Override
+            public boolean shouldSkipClass(Class<?> clazz) {
+                return false;
+            }
+        }
+
+        Gson gson = new GsonBuilder().setExclusionStrategies(new MyExclusionStrategy()).create();
+        String str = gson.toJson(cashTransaction);
+        return;
     }
 }

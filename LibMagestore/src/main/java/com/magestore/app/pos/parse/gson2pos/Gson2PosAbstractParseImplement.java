@@ -1,7 +1,10 @@
 package com.magestore.app.pos.parse.gson2pos;
 
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.annotations.Expose;
 import com.magestore.app.lib.parse.ParseModel;
 import com.magestore.app.lib.parse.ParseException;
 import com.magestore.app.lib.parse.ParseImplement;
@@ -70,7 +73,22 @@ public class Gson2PosAbstractParseImplement extends DefaultHandler implements Pa
      * @return
      */
     protected Gson createGson() {
-        GsonBuilder builder = new GsonBuilder();
+        class MyExclusionStrategy implements ExclusionStrategy {
+
+            private MyExclusionStrategy() {
+            }
+
+
+            public boolean shouldSkipField(FieldAttributes f) {
+                return f.getAnnotation(Expose.class) != null;
+            }
+
+            @Override
+            public boolean shouldSkipClass(Class<?> clazz) {
+                return false;
+            }
+        }
+        GsonBuilder builder = new GsonBuilder().setExclusionStrategies(new MyExclusionStrategy());
         return builder.create();
     }
 
