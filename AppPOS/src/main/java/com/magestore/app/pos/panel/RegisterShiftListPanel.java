@@ -35,10 +35,6 @@ public class RegisterShiftListPanel extends AbstractListPanel<RegisterShift> {
 
     @Override
     public void initLayout() {
-        // Load layout view danh sách register shift
-        View v = inflate(getContext(), R.layout.panel_register_shift_list, null);
-        addView(v);
-
         // Xử lý sự kiện floating action bar
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -48,12 +44,6 @@ public class RegisterShiftListPanel extends AbstractListPanel<RegisterShift> {
                         .setAction("Action", null).show();
             }
         });
-
-        // Chuẩn bị layout từng order trong danh sách register shift
-        setLayoutItem(R.layout.card_register_shift_list_content);
-
-        // Chuẩn bị list danh sách register shift
-        initRecycleView(R.id.register_shift_list, new GridLayoutManager(this.getContext(), 1));
     }
 
     @Override

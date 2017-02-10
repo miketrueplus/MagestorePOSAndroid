@@ -26,21 +26,85 @@ import java.util.List;
  */
 
 public class POSRegisterShiftDataAccess extends POSAbstractDataAccess implements RegisterShiftDataAccess {
-    /**
-     * Trả về list register shift
-     *
-     * @return Danh sách register shift
-     * @throws DataAccessException
-     * @throws ConnectionException
-     * @throws ParseException
-     * @throws IOException
-     * @throws java.text.ParseException
-     */
+
     @Override
-    public List<RegisterShift> getRegisterShifts() throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
-        Gson2PosListRegisterShift listRegisterShift = (Gson2PosListRegisterShift) doAPI(Gson2PosListRegisterShift.class, POSAPI.REST_REGISTER_SHIFTS_GET_LISTING, null, POSAPI.PARAM_SESSION_ID, POSDataAccessSession.REST_SESSION_ID);
-        List<RegisterShift> list = (List<RegisterShift>) (List<?>) (listRegisterShift.items);
-        return list;
+    public int count() throws ParseException, InstantiationException, IllegalAccessException, IOException {
+        return 0;
+    }
+
+    @Override
+    public List<RegisterShift> retrieve() throws ParseException, InstantiationException, IllegalAccessException, IOException {
+        return null;
+    }
+
+    @Override
+    public List<RegisterShift> retrieve(int page, int pageSize) throws ParseException, InstantiationException, IllegalAccessException, IOException {
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+        try {
+            // Khởi tạo connection và khởi tạo truy vấn
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPI.REST_REGISTER_SHIFTS_GET_LISTING);
+
+            // Xây dựng tham số
+            paramBuilder = statement.getParamBuilder()
+                    .setSessionID(POSDataAccessSession.REST_SESSION_ID);
+
+            // thực thi truy vấn và parse kết quả thành object
+            rp = statement.execute();
+            rp.setParseImplement(getClassParseImplement());
+            rp.setParseModel(Gson2PosListRegisterShift.class);
+            Gson2PosListRegisterShift listRegisterShift = (Gson2PosListRegisterShift) rp.doParse();
+            List<RegisterShift> list = (List<RegisterShift>) (List<?>) (listRegisterShift.items);
+            return list;
+        } catch (ConnectionException ex) {
+            throw ex;
+        } catch (IOException ex) {
+            throw ex;
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
+    }
+
+    @Override
+    public List<RegisterShift> retrieve(String searchString, int page, int pageSize) throws ParseException, InstantiationException, IllegalAccessException, IOException {
+        return null;
+    }
+
+    @Override
+    public RegisterShift retrieve(String strID) throws ParseException, InstantiationException, IllegalAccessException, IOException {
+        return null;
+    }
+
+    @Override
+    public boolean update(RegisterShift oldModel, RegisterShift newModel) throws ParseException, InstantiationException, IllegalAccessException, IOException {
+        return false;
+    }
+
+    @Override
+    public boolean insert(RegisterShift... models) throws ParseException, InstantiationException, IllegalAccessException, IOException {
+        return false;
+    }
+
+    @Override
+    public boolean delete(RegisterShift... models) throws ParseException, InstantiationException, IllegalAccessException, IOException {
+        return false;
     }
 
     @Override

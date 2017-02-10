@@ -2,6 +2,7 @@ package com.magestore.app.lib.service.registershift;
 
 import com.magestore.app.lib.model.registershift.CashTransaction;
 import com.magestore.app.lib.model.registershift.RegisterShift;
+import com.magestore.app.lib.service.ListService;
 import com.magestore.app.lib.service.Service;
 
 import java.io.IOException;
@@ -14,9 +15,7 @@ import java.util.List;
  * dong.le@trueplus.vn
  */
 
-public interface RegisterShiftService extends Service{
-    List<RegisterShift> retrieveRegisterShiftList() throws InstantiationException, IllegalAccessException, IOException, ParseException;
-
+public interface RegisterShiftService extends Service , ListService<RegisterShift> {
     List<RegisterShift> insertMakeAdjustment(RegisterShift registerShift) throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
     CashTransaction createCashTransaction();

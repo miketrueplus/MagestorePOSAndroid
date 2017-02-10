@@ -57,7 +57,7 @@ public class POSAPI {
     public static final String REST_CHECKOUT_CREATE = "/rest/default/V1/webpos/checkout/create?";
 
     // API register shifts
-    public static final String REST_REGISTER_SHIFTS_GET_LISTING = "/rest/default/V1/webpos/shifts/getlist?session=${sessionID}";
+    public static final String REST_REGISTER_SHIFTS_GET_LISTING = "/rest/default/V1/webpos/shifts/getlist?";
     public static final String REST_REGISTER_SHIFTS_MAKE_ADJUSTMENT = "/rest/default/V1/webpos/cash_transaction/save?";
 
     // API config

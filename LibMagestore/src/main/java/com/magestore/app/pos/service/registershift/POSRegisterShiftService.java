@@ -22,11 +22,51 @@ import java.util.List;
 public class POSRegisterShiftService extends AbstractService implements RegisterShiftService {
 
     @Override
-    public List<RegisterShift> retrieveRegisterShiftList() throws InstantiationException, IllegalAccessException, IOException, ParseException {
+    public int count() throws ParseException, InstantiationException, IllegalAccessException, IOException {
+        return 0;
+    }
+
+    @Override
+    public RegisterShift create() {
+        return null;
+    }
+
+    @Override
+    public RegisterShift retrieve(String strID) throws ParseException, InstantiationException, IllegalAccessException, IOException {
+        return null;
+    }
+
+    @Override
+    public List<RegisterShift> retrieve(int page, int pageSize) throws IOException, InstantiationException, ParseException, IllegalAccessException {
         // Khởi tạo register shift gateway factory
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         RegisterShiftDataAccess registerShiftDataAccess = factory.generateRegisterShiftDataAccess();
-        return registerShiftDataAccess.getRegisterShifts();
+        return registerShiftDataAccess.retrieve(page, pageSize);
+    }
+
+    @Override
+    public List<RegisterShift> retrieve() throws IOException, InstantiationException, ParseException, IllegalAccessException {
+        return null;
+    }
+
+    @Override
+    public List<RegisterShift> retrieve(String searchString, int page, int pageSize) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+        return null;
+    }
+
+    @Override
+    public boolean update(RegisterShift oldModel, RegisterShift newModel) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+        return false;
+    }
+
+    @Override
+    public boolean insert(RegisterShift... registerShifts) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+        return false;
+    }
+
+    @Override
+    public boolean delete(RegisterShift... registerShifts) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+        return false;
     }
 
     @Override

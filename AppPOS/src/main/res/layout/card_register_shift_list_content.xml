@@ -18,42 +18,66 @@
         android:layout_margin="5dp"
         card_view:cardCornerRadius="4dp">
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/list_item_selector"
-            android:orientation="vertical"
-            android:padding="5dp">
+            android:layout_height="wrap_content">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
+            <ProgressBar
+                android:id="@+id/progress_register_shift_list_card_view"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp">
-
-                <TextView
-                    android:id="@+id/update_at"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:text="@{ConfigUtil.formatDate(registerShift.getOpenedAt())}"
-                    android:textAppearance="?attr/textAppearanceListItem" />
-
-                <TextView
-                    android:id="@+id/total_sales"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:text="@{ConfigUtil.formatPrice(registerShift.getTotalSales())}"
-                    android:textAppearance="?attr/textAppearanceListItem" />
-            </RelativeLayout>
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:visibility="gone" />
 
             <TextView
-                android:id="@+id/open_close_time"
-                android:layout_width="match_parent"
+                android:id="@+id/msg_register_shift_list_card_view"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:text='@{registerShift.checkStatus() ? ConfigUtil.formatTime(registerShift.getOpenedAt()) + " " + @string/register_shift_list_open : registerShift.getOpenAndClose()}'
-                android:textAppearance="?attr/textAppearanceListItem" />
-        </LinearLayout>
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/content_register_shift_list_card_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/list_item_selector"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp">
+
+                    <TextView
+                        android:id="@+id/update_at"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:text="@{ConfigUtil.formatDate(registerShift.getOpenedAt())}"
+                        android:textAppearance="?attr/textAppearanceListItem" />
+
+                    <TextView
+                        android:id="@+id/total_sales"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:text="@{ConfigUtil.formatPrice(registerShift.getTotalSales())}"
+                        android:textAppearance="?attr/textAppearanceListItem" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/open_close_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:text='@{registerShift.checkStatus() ? ConfigUtil.formatTime(registerShift.getOpenedAt()) + " " + @string/register_shift_list_open : registerShift.getOpenAndClose()}'
+                    android:textAppearance="?attr/textAppearanceListItem" />
+            </LinearLayout>
+        </RelativeLayout>
     </android.support.v7.widget.CardView>
 </layout>

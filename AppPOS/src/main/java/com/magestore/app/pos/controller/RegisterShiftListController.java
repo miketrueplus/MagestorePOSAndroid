@@ -29,6 +29,7 @@ public class RegisterShiftListController extends AbstractListController<Register
      */
     public void setRegisterShiftService(RegisterShiftService mRegisterShiftService) {
         this.mRegisterShiftService = mRegisterShiftService;
+        setListService(mRegisterShiftService);
     }
 
     /**
@@ -41,9 +42,8 @@ public class RegisterShiftListController extends AbstractListController<Register
     }
 
     @Override
-    protected List<RegisterShift> loadDataBackground(Void... params) throws Exception {
-        List<RegisterShift> listRegisterShift = mRegisterShiftService.retrieveRegisterShiftList();
-        return listRegisterShift;
+    public void onRetrievePostExecute(List<RegisterShift> list) {
+        super.onRetrievePostExecute(list);
     }
 
     public void makeAdjustment(RegisterShift registerShift)  {
