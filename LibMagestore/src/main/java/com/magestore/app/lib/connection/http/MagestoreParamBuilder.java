@@ -29,11 +29,11 @@ public class MagestoreParamBuilder implements ParamBuilder {
 
     // phân nhóm cho tìm kiếm
     private final static String SEARCH_DEFAULT_GROUP_NAME = "MAGESTORE";
-    private final static String SEARCH_CRITERIA_GROUP = "searchCriteria[filterGroups]";
+    private final static String SEARCH_CRITERIA_GROUP = "searchCriteria[filter_groups]";
     private final static String SEARCH_CRITERIA_FILTER = "[filters]";
     private final static String SEARCH_CRITERIA_FIELD = "[field]";
     private final static String SEARCH_CRITERIA_VALUE = "[value]";
-    private final static String SEARCH_CRITERIA_CONDITION_TYPE = "[conditionType]";
+    private final static String SEARCH_CRITERIA_CONDITION_TYPE = "[condition_type]";
 
     // Danhf cho sắp xếp
     private final static String SEARCH_CRITERIA_DIRECTION = "[direction]";
@@ -44,7 +44,7 @@ public class MagestoreParamBuilder implements ParamBuilder {
     private final static String PAGE_SIZE = "magestore_pageSize";
 
     // sắp xếp
-    private final static String SEARCH_CRITERIA_SORT_ORDER = "searchCriteria[sortOrders]";
+    private final static String SEARCH_CRITERIA_SORT_ORDER = "searchCriteria[sort_orders]";
     private final static String SEARCH_CRITERIA_SORT_FIELD = "[field]";
 
     // session
