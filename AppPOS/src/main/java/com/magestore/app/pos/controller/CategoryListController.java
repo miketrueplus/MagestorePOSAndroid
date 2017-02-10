@@ -39,7 +39,8 @@ public class CategoryListController extends AbstractListController<Category> {
     @Override
     public void bindItem(Category item) {
         super.bindItem(item);
-
+        if (mProductListController != null)
+            mProductListController.doRetrieveByCategoryID(item);
     }
 
     public List<Category> getListChildCategory(Category category) {
