@@ -179,6 +179,7 @@ public class SalesActivity extends AbstractActivity
         mProductListController.setCheckoutListController(mCheckoutListController);
         mProductListController.setCategoryListController(mCategoryListController);
         mCheckoutListController.setProductListController(mProductListController);
+        mCategoryListController.setProductListController(mProductListController);
 
         // controller quản lý đơn hàng
         mCheckoutCartItemListController = new CartItemListController();

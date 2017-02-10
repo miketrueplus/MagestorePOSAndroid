@@ -85,19 +85,6 @@ public class ProductListController extends AbstractListController<Product> {
         this.mCheckoutListController = controller;
     }
 
-
-    /**
-     * Load danh mục sản phẩm
-     * @param params
-     * @return
-     * @throws Exception
-     */
-//    @Override
-//    protected List<Product> loadDataBackground(Void... params) throws Exception {
-//        List<Product> listProduct = mProductService.retrieve();
-//        return listProduct;
-//    }
-
     /**
      * Bind 1 sản phẩm vào controller để xử lý
      * @param item
