@@ -103,7 +103,7 @@ public class RegisterShiftDetailPanel extends AbstractDetailPanel<RegisterShift>
         dialog.getButtonSave().setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((RegisterShiftListController) mController).makeAdjustment(panelMakeAdjustment.bind2Item());
+                ((RegisterShiftListController) mController).doInputMakeAdjustment(panelMakeAdjustment.bind2Item());
             }
         });
     }

@@ -1,5 +1,6 @@
 package com.magestore.app.pos.model.registershift;
 
+import com.google.gson.annotations.Expose;
 import com.magestore.app.lib.model.registershift.CashTransaction;
 import com.magestore.app.pos.model.PosAbstractModel;
 import com.magestore.app.util.ConfigUtil;
@@ -28,9 +29,11 @@ public class PosCashTransaction extends PosAbstractModel implements CashTransact
     String updated_at;
     String open_shift_title;
     float float_amount;
-    boolean check_open_shift;
     String balance_title;
     String check_type_value;
+
+    @Expose(serialize = false, deserialize = false)
+    boolean check_open_shift;
 
     @Override
     public String getID() {

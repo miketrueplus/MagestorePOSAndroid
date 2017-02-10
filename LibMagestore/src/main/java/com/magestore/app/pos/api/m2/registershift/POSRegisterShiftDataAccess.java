@@ -1,5 +1,8 @@
 package com.magestore.app.pos.api.m2.registershift;
 
+import android.util.Log;
+
+import com.google.gson.Gson;
 import com.magestore.app.lib.connection.Connection;
 import com.magestore.app.lib.connection.ConnectionException;
 import com.magestore.app.lib.connection.ConnectionFactory;
@@ -26,6 +29,10 @@ import java.util.List;
  */
 
 public class POSRegisterShiftDataAccess extends POSAbstractDataAccess implements RegisterShiftDataAccess {
+
+    private class RegisterShiftEntity {
+        CashTransaction cashTransaction;
+    }
 
     @Override
     public int count() throws ParseException, InstantiationException, IllegalAccessException, IOException {
@@ -125,10 +132,15 @@ public class POSRegisterShiftDataAccess extends POSAbstractDataAccess implements
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
 
             // thực thi truy vấn và parse kết quả thành object
-            Object wrapCash = new Object() {
-                public PosCashTransaction cashTransaction = (PosCashTransaction) pCashTransaction;
-            };
-            rp = statement.execute(wrapCash);
+            RegisterShiftEntity registerShiftEntity = new RegisterShiftEntity();
+            registerShiftEntity.cashTransaction = pCashTransaction;
+
+            // TODO: log params request
+            Gson gson = new Gson();
+            String json = gson.toJson(registerShiftEntity);
+            Log.e("JSON", json.toString());
+
+            rp = statement.execute(registerShiftEntity);
             rp.setParseImplement(getClassParseImplement());
             rp.setParseModel(Gson2PosListRegisterShift.class);
             Gson2PosListRegisterShift listRegisterShift = (Gson2PosListRegisterShift) rp.doParse();
