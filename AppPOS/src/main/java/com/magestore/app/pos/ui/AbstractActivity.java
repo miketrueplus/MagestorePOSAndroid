@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.magestore.app.pos.RegisterShiftActivity;
+import com.magestore.app.pos.SettingActivity;
 import com.magestore.app.view.ui.PosUI;
 import com.magestore.app.pos.CustomerActivity;
 import com.magestore.app.pos.OrderActivity;
@@ -29,8 +30,8 @@ import com.magestore.app.pos.SalesActivity;
 public abstract class AbstractActivity
         extends AppCompatActivity
         implements
-            PosUI,
-            NavigationView.OnNavigationItemSelectedListener{
+        PosUI,
+        NavigationView.OnNavigationItemSelectedListener {
     /**
      * Cấu hình lại các control layout
      */
@@ -54,6 +55,7 @@ public abstract class AbstractActivity
 
     /**
      * Kiểm tra giá trịc ác control trước khi login
+     *
      * @return
      */
     protected boolean validControlValue() {
@@ -62,6 +64,7 @@ public abstract class AbstractActivity
 
     /**
      * Lưu value trong shared preference
+     *
      * @param strKey
      * @param strValue
      */
@@ -92,6 +95,7 @@ public abstract class AbstractActivity
 
     /**
      * Hiển thị thông báo lỗi
+     *
      * @param strMsg
      */
     public void showErrorMsg(String strMsg) {
@@ -120,21 +124,20 @@ public abstract class AbstractActivity
         if (id == R.id.nav_customers) {
             Intent intent = new Intent(getContext(), CustomerActivity.class);
             startActivity(intent);
-        }
-        else if (id == R.id.nav_sales) {
+        } else if (id == R.id.nav_sales) {
             Intent intent = new Intent(getContext(), SalesActivity.class);
             startActivity(intent);
-        }
-        else if (id == R.id.nav_orders_history) {
+        } else if (id == R.id.nav_orders_history) {
             Intent intent = new Intent(getContext(), OrderActivity.class);
             startActivity(intent);
-        }
-        else if (id == R.id.nav_onhold_orders) {
+        } else if (id == R.id.nav_onhold_orders) {
             Intent intent = new Intent(getContext(), OrderActivity.class);
             startActivity(intent);
-        }
-        else if (id == R.id.nav_register_shift) {
+        } else if (id == R.id.nav_register_shift) {
             Intent intent = new Intent(getContext(), RegisterShiftActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_settings) {
+            Intent intent = new Intent(getContext(), SettingActivity.class);
             startActivity(intent);
         }
 

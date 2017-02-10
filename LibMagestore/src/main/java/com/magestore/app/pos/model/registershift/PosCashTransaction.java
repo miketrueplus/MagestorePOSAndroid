@@ -29,12 +29,13 @@ public class PosCashTransaction extends PosAbstractModel implements CashTransact
     String indexeddb_id;
     String updated_at;
     String open_shift_title;
-    float float_amount;
     String balance_title;
     String check_type_value;
 
     @Gson2PosExclude
     boolean check_open_shift;
+    @Gson2PosExclude
+    float float_amount;
 
     @Override
     public String getID() {

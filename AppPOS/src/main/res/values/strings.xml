@@ -32,6 +32,7 @@
     <string name="customer_title_customer_detail">Customer Detail</string>
     <string name="customer_title_order_list">Order</string>
     <string name="customer_title_register_shifts">Register Shifts</string>
+    <string name="customer_title_settings">Settings</string>
     <string name="customer_title_order_detail">Order Detail</string>
     <string name="customer_update_address">Update address</string>
     <string name="customer_delete_address">Delete address</string>

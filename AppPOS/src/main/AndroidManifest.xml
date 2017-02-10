@@ -50,6 +50,12 @@
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".SettingActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/customer_title_settings"
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".OrderDetailActivity"
             android:label="@string/customer_title_order_detail"
             android:parentActivityName=".OrderActivity"

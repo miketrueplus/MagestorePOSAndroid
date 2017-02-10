@@ -246,7 +246,7 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         Map<String, Object> paramSendEmail = new HashMap<>();
         paramSendEmail.put("email", email);
         paramSendEmail.put("order_id", orderId);
-        ((OrderHistoryListController) mController).doAction(OrderHistoryListController.SENT_EMAIL_TYPE, OrderHistoryListController.SENT_EMAIL_CODE, paramSendEmail, null);
+        ((OrderHistoryListController) mController).doInputSendEmail(paramSendEmail);
     }
 
     private void onClickAddComment() {
@@ -276,7 +276,7 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
 
         ((OrderHistoryListController) mController).setOrderAddCommentPanel(mOrderAddCommentPanel);
         ((OrderHistoryListController) mController).setOrderCommentListController(mOrderCommentHistoryController);
-        ((OrderHistoryListController) mController).doAction(OrderHistoryListController.INSERT_STATUS_TYPE, OrderHistoryListController.INSERT_STATUS_CODE, null, order);
+        ((OrderHistoryListController) mController).doInputInsertStatus(order);
     }
 
     private void onClickShipment() {
@@ -296,7 +296,7 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
                 ((OrderHistoryListController) mController).setOrderShipmentPanel(mOrderShipmentPanel);
                 ((OrderHistoryListController) mController).setOrderCommentListController(mOrderCommentHistoryController);
                 ((OrderHistoryListController) mController).setOrderHistoryItemsListController(mOrderHistoryItemsListController);
-                ((OrderHistoryListController) mController).doAction(OrderHistoryListController.CREATE_SHIPMENT_TYPE, OrderHistoryListController.CREATE_SHIPMENT_CODE, null, order);
+                ((OrderHistoryListController) mController).doInputCreateShipment(order);
                 dialog.dismiss();
             }
         });
@@ -319,7 +319,7 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
                 ((OrderHistoryListController) mController).setOrderRefundPanel(mOrderRefundPanel);
                 ((OrderHistoryListController) mController).setOrderCommentListController(mOrderCommentHistoryController);
                 ((OrderHistoryListController) mController).setOrderHistoryItemsListController(mOrderHistoryItemsListController);
-                ((OrderHistoryListController) mController).doAction(OrderHistoryListController.ORDER_REFUND_TYPE, OrderHistoryListController.ORDER_REFUND_CODE, null, order);
+                ((OrderHistoryListController) mController).doInputRefund(order);
             }
         });
     }
@@ -342,7 +342,7 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
                 ((OrderHistoryListController) mController).setOrderInvoicePanel(mOrderInvoicePanel);
                 ((OrderHistoryListController) mController).setOrderCommentListController(mOrderCommentHistoryController);
                 ((OrderHistoryListController) mController).setOrderHistoryItemsListController(mOrderHistoryItemsListController);
-                ((OrderHistoryListController) mController).doAction(OrderHistoryListController.ORDER_INVOICE_TYPE, OrderHistoryListController.ORDER_INVOICE_CODE, null, order);
+                ((OrderHistoryListController) mController).doInputInvoice(order);
             }
         });
     }

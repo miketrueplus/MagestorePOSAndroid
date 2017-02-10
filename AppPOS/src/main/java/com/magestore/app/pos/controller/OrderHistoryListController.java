@@ -104,6 +104,26 @@ public class OrderHistoryListController extends AbstractListController<Order> {
         super.onRetrievePostExecute(list);
     }
 
+    public void doInputSendEmail(Map<String, Object> paramSendEmail){
+        doAction(SENT_EMAIL_TYPE, SENT_EMAIL_CODE, paramSendEmail, null);
+    }
+
+    public void doInputCreateShipment(Order order){
+        doAction(CREATE_SHIPMENT_TYPE, CREATE_SHIPMENT_CODE, null, order);
+    }
+
+    public void doInputInsertStatus(Order order){
+        doAction(INSERT_STATUS_TYPE, INSERT_STATUS_CODE, null, order);
+    }
+
+    public void doInputRefund(Order order){
+        doAction(ORDER_REFUND_TYPE, ORDER_REFUND_CODE, null, order);
+    }
+
+    public void doInputInvoice(Order order){
+        doAction(ORDER_INVOICE_TYPE, ORDER_INVOICE_CODE, null, order);
+    }
+
     @Override
     public Boolean doActionBackround(int actionType, String actionCode, Map<String, Object> wraper, Model... models) throws Exception {
         if (actionType == SENT_EMAIL_TYPE) {
