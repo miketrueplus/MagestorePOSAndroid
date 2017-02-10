@@ -2,7 +2,11 @@ package com.magestore.app.lib.connection.http;
 
 import android.util.Log;
 
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.annotations.Expose;
 import com.magestore.app.lib.connection.CacheConnection;
 import com.magestore.app.lib.connection.Connection;
 import com.magestore.app.lib.connection.ConnectionException;
@@ -73,6 +77,21 @@ public class MagestoreStatement implements Statement {
     // Bảng map chứa các tham số của truy vấn
     private Map mValuesMap = null;
 
+    class MyExclusionStrategy implements ExclusionStrategy {
+
+        private MyExclusionStrategy() {
+        }
+
+
+        public boolean shouldSkipField(FieldAttributes f) {
+            return f.getAnnotation(Expose.class) != null;
+        }
+
+        @Override
+        public boolean shouldSkipClass(Class<?> clazz) {
+            return false;
+        }
+    }
 
     /**
      * Khởi tạo với 1 JSON Connection tương ứng
@@ -267,7 +286,7 @@ public class MagestoreStatement implements Statement {
             mHttpConnection.setRequestMethod(METHOD_POST);
 
             // Viết nội dung của object thành dạng json cho input
-            Gson gson = new Gson();
+            Gson gson = new GsonBuilder().setExclusionStrategies(new MyExclusionStrategy()).create();
             OutputStreamWriter wr = new OutputStreamWriter(mHttpConnection.getOutputStream());
             gson.toJson(mobjPrepareParam, wr);
             wr.flush();

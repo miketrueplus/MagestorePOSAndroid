@@ -73,22 +73,7 @@ public class Gson2PosAbstractParseImplement extends DefaultHandler implements Pa
      * @return
      */
     protected Gson createGson() {
-        class MyExclusionStrategy implements ExclusionStrategy {
-
-            private MyExclusionStrategy() {
-            }
-
-
-            public boolean shouldSkipField(FieldAttributes f) {
-                return f.getAnnotation(Expose.class) != null;
-            }
-
-            @Override
-            public boolean shouldSkipClass(Class<?> clazz) {
-                return false;
-            }
-        }
-        GsonBuilder builder = new GsonBuilder().setExclusionStrategies(new MyExclusionStrategy());
+        GsonBuilder builder = new GsonBuilder();
         return builder.create();
     }
 
