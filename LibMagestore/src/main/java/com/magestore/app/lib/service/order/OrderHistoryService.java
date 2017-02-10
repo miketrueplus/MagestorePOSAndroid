@@ -11,6 +11,7 @@ import com.magestore.app.lib.model.sales.OrderShipmentTrackParams;
 import com.magestore.app.lib.model.sales.OrderStatus;
 import com.magestore.app.lib.service.ListService;
 import com.magestore.app.lib.service.Service;
+
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
@@ -21,7 +22,7 @@ import java.util.List;
  * dong.le@trueplus.vn
  */
 
-public interface OrderHistoryService extends Service , ListService<Order> {
+public interface OrderHistoryService extends Service, ListService<Order> {
     List<Order> retrieveOrderLastMonth(Customer customer) throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
     String sendEmail(String email, String orderId) throws InstantiationException, IllegalAccessException, IOException, ParseException;
@@ -33,6 +34,8 @@ public interface OrderHistoryService extends Service , ListService<Order> {
     Order orderRefund(Order order) throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
     Order orderInvoice(Order order) throws InstantiationException, IllegalAccessException, IOException, ParseException;
+
+    Order orderCancel(Order order) throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
     OrderStatus createOrderStatus();
 

@@ -11,11 +11,13 @@ import com.magestore.app.lib.model.sales.OrderShipmentTrackParams;
 import com.magestore.app.lib.model.sales.OrderStatus;
 import com.magestore.app.lib.service.order.OrderHistoryService;
 import com.magestore.app.pos.panel.OrderAddCommentPanel;
+import com.magestore.app.pos.panel.OrderCancelPanel;
 import com.magestore.app.pos.panel.OrderInvoicePanel;
 import com.magestore.app.pos.panel.OrderRefundPanel;
 import com.magestore.app.pos.panel.OrderSendEmailPanel;
 import com.magestore.app.pos.panel.OrderShipmentPanel;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,6 +37,7 @@ public class OrderHistoryListController extends AbstractListController<Order> {
     OrderShipmentPanel mOrderShipmentPanel;
     OrderRefundPanel mOrderRefundPanel;
     OrderInvoicePanel mOrderInvoicePanel;
+    OrderCancelPanel mOrderCancelPanel;
 
     public static int SENT_EMAIL_TYPE = 1;
     public static String SENT_EMAIL_CODE = "send_email";
@@ -46,6 +49,10 @@ public class OrderHistoryListController extends AbstractListController<Order> {
     public static String ORDER_REFUND_CODE = "order_refund";
     public static int ORDER_INVOICE_TYPE = 5;
     public static String ORDER_INVOICE_CODE = "order_invoice";
+    public static int ORDER_CANCEL_TYPE = 6;
+    public static String ORDER_CANCEL_CODE = "order_cancel";
+
+    Map<String, Object> wraper;
 
     /**
      * Service xử lý các vấn đề liên quan đến order
@@ -99,29 +106,38 @@ public class OrderHistoryListController extends AbstractListController<Order> {
         this.mOrderInvoicePanel = mOrderInvoicePanel;
     }
 
+    public void setOrderCancelPanel(OrderCancelPanel mOrderCancelPanel) {
+        this.mOrderCancelPanel = mOrderCancelPanel;
+    }
+
     @Override
     public void onRetrievePostExecute(List<Order> list) {
         super.onRetrievePostExecute(list);
+        wraper = new HashMap<>();
     }
 
-    public void doInputSendEmail(Map<String, Object> paramSendEmail){
+    public void doInputSendEmail(Map<String, Object> paramSendEmail) {
         doAction(SENT_EMAIL_TYPE, SENT_EMAIL_CODE, paramSendEmail, null);
     }
 
-    public void doInputCreateShipment(Order order){
-        doAction(CREATE_SHIPMENT_TYPE, CREATE_SHIPMENT_CODE, null, order);
+    public void doInputCreateShipment(Order order) {
+        doAction(CREATE_SHIPMENT_TYPE, CREATE_SHIPMENT_CODE, wraper, order);
     }
 
-    public void doInputInsertStatus(Order order){
-        doAction(INSERT_STATUS_TYPE, INSERT_STATUS_CODE, null, order);
+    public void doInputInsertStatus(Order order) {
+        doAction(INSERT_STATUS_TYPE, INSERT_STATUS_CODE, wraper, order);
     }
 
-    public void doInputRefund(Order order){
-        doAction(ORDER_REFUND_TYPE, ORDER_REFUND_CODE, null, order);
+    public void doInputRefund(Order order) {
+        doAction(ORDER_REFUND_TYPE, ORDER_REFUND_CODE, wraper, order);
     }
 
-    public void doInputInvoice(Order order){
-        doAction(ORDER_INVOICE_TYPE, ORDER_INVOICE_CODE, null, order);
+    public void doInputInvoice(Order order) {
+        doAction(ORDER_INVOICE_TYPE, ORDER_INVOICE_CODE, wraper, order);
+    }
+
+    public void doInputCancel(Order order) {
+        doAction(ORDER_CANCEL_TYPE, ORDER_CANCEL_CODE, wraper, order);
     }
 
     @Override
@@ -131,25 +147,20 @@ public class OrderHistoryListController extends AbstractListController<Order> {
             String orderId = (String) wraper.get("order_id");
             return Boolean.parseBoolean(mOrderService.sendEmail(email, orderId).trim());
         } else if (actionType == CREATE_SHIPMENT_TYPE) {
-            Order order = mOrderService.createShipment((Order) models[0]);
-            if (order != null) {
-                return true;
-            }
+            wraper.put("shipment_respone", mOrderService.createShipment((Order) models[0]));
+            return true;
         } else if (actionType == INSERT_STATUS_TYPE) {
-            Order order = mOrderService.insertOrderStatus((Order) models[0]);
-            if (order != null) {
-                return true;
-            }
+            wraper.put("status_respone", mOrderService.insertOrderStatus((Order) models[0]));
+            return true;
         } else if (actionType == ORDER_REFUND_TYPE) {
-            Order order = mOrderService.orderRefund((Order) models[0]);
-            if (order != null) {
-                return true;
-            }
+            wraper.put("refund_respone", mOrderService.orderRefund((Order) models[0]));
+            return true;
         } else if (actionType == ORDER_INVOICE_TYPE) {
-            Order order = mOrderService.orderInvoice((Order) models[0]);
-            if (order != null) {
-                return true;
-            }
+            wraper.put("invoice_respone", mOrderService.orderInvoice((Order) models[0]));
+            return true;
+        } else if (actionType == ORDER_CANCEL_TYPE) {
+            wraper.put("cancel_respone", mOrderService.orderCancel((Order) models[0]));
+            return true;
         }
         return false;
     }
@@ -161,28 +172,35 @@ public class OrderHistoryListController extends AbstractListController<Order> {
             mOrderSendEmailPanel.showAlertRespone(success);
         } else if (actionType == CREATE_SHIPMENT_TYPE) {
             if (success) {
-                Order order = (Order) models[0];
+                Order order = (Order) wraper.get("shipment_respone");
                 mOrderShipmentPanel.showAlertRespone();
                 mOrderHistoryItemsListController.doSelectOrder(order);
                 mOrderCommentListController.doSelectOrder(order);
             }
         } else if (actionType == INSERT_STATUS_TYPE) {
             if (success) {
-                Order order = (Order) models[0];
+                Order order = (Order) wraper.get("status_respone");
                 mOrderAddCommentPanel.showAlertRespone();
                 mOrderCommentListController.doSelectOrder(order);
             }
         } else if (actionType == ORDER_REFUND_TYPE) {
             if (success) {
-                Order order = (Order) models[0];
+                Order order = (Order) wraper.get("refund_respone");
                 mOrderRefundPanel.showAlertRespone();
                 mOrderHistoryItemsListController.doSelectOrder(order);
                 mOrderCommentListController.doSelectOrder(order);
             }
         } else if (actionType == ORDER_INVOICE_TYPE) {
             if (success) {
-                Order order = (Order) models[0];
+                Order order = (Order) wraper.get("invoice_respone");
                 mOrderInvoicePanel.showAlertRespone();
+                mOrderHistoryItemsListController.doSelectOrder(order);
+                mOrderCommentListController.doSelectOrder(order);
+            }
+        } else if (actionType == ORDER_CANCEL_TYPE) {
+            if (success) {
+                Order order = (Order) wraper.get("cancel_respone");
+                mOrderCancelPanel.showAlertRespone();
                 mOrderHistoryItemsListController.doSelectOrder(order);
                 mOrderCommentListController.doSelectOrder(order);
             }

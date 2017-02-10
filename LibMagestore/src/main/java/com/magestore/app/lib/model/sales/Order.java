@@ -152,4 +152,9 @@ public interface Order extends Model {
     OrderInvoiceParams getParamInvoice();
 
     void setParamInvoice(OrderInvoiceParams paramInvoice);
+
+    // param cancel
+    OrderCommentParams getParamCancel();
+
+    void setParamCancel(OrderCommentParams paramCancel);
 }

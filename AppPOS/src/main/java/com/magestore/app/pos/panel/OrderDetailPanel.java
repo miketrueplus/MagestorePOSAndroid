@@ -6,7 +6,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.PopupMenu;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -186,6 +185,7 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
                         onClickShipment();
                         return true;
                     case R.id.action_cancel:
+                        onClickCancel();
                         return true;
                     case R.id.action_add_comment:
                         onClickAddComment();
@@ -343,6 +343,27 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
                 ((OrderHistoryListController) mController).setOrderCommentListController(mOrderCommentHistoryController);
                 ((OrderHistoryListController) mController).setOrderHistoryItemsListController(mOrderHistoryItemsListController);
                 ((OrderHistoryListController) mController).doInputInvoice(order);
+            }
+        });
+    }
+
+    private void onClickCancel() {
+        final OrderCancelPanel mOrderCancelPanel = new OrderCancelPanel(getContext());
+        mOrderCancelPanel.bindItem(mOrder);
+        mOrderCancelPanel.setController(mController);
+
+        dialog = DialogUtil.dialog(getContext(), getContext().getString(R.string.order_cancel_title), mOrderCancelPanel);
+        dialog.show();
+
+        dialog.getButtonSave().setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Order order = mOrderCancelPanel.bind2Item();
+                ((OrderHistoryListController) mController).setOrderCancelPanel(mOrderCancelPanel);
+                ((OrderHistoryListController) mController).setOrderCommentListController(mOrderCommentHistoryController);
+                ((OrderHistoryListController) mController).setOrderHistoryItemsListController(mOrderHistoryItemsListController);
+                ((OrderHistoryListController) mController).doInputCancel(order);
+                dialog.dismiss();
             }
         });
     }

@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <data>
-
-
-        <variable
-            name="complain"
-            type="com.magestore.app.lib.model.customer.Complain" />
-    </data>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,12 +18,12 @@
             android:padding="10dp">
 
             <com.magestore.app.view.FormatTextEdit
-                android:id="@+id/text_input_complain"
+                android:id="@+id/cancel_comment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:hint="@string/complain"
-                android:text="@{complain.getContent()}" />
+                android:hint="@string/order_cancel_comment_title" />
         </LinearLayout>
     </LinearLayout>
-</layout>
+
+</LinearLayout>

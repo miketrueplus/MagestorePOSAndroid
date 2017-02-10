@@ -13,6 +13,12 @@ public class PosOrderCommentParams extends PosAbstractModel implements OrderComm
     String comment;
     String createdAt;
     String isVisibleOnFront;
+    String entityId;
+    String entityName;
+    PosOrderAttributes extensionAttributes;
+    String isCustomerNotified;
+    String parentId;
+    String status;
 
     @Override
     public String getComment() {
@@ -32,5 +38,35 @@ public class PosOrderCommentParams extends PosAbstractModel implements OrderComm
     @Override
     public void setIsVisibleOnFront(String strIsVisibleOnFront) {
         isVisibleOnFront = strIsVisibleOnFront;
+    }
+
+    @Override
+    public void setEntityName(String strEntityName) {
+        entityName = strEntityName;
+    }
+
+    @Override
+    public String getEntityName() {
+        return entityName;
+    }
+
+    @Override
+    public String getIsCustomerNotified() {
+        return isCustomerNotified;
+    }
+
+    @Override
+    public void setIsCustomerNotified(String strIsCustomerNotified) {
+        isCustomerNotified = strIsCustomerNotified;
+    }
+
+    @Override
+    public void setParentId(String strParentId) {
+        parentId = strParentId;
+    }
+
+    @Override
+    public void setStatus(String strStatus) {
+        status = strStatus;
     }
 }

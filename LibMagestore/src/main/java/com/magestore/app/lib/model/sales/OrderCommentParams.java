@@ -14,4 +14,14 @@ public interface OrderCommentParams extends Model {
 
     String getIsVisibleOnFront();
     void setIsVisibleOnFront(String strIsVisibleOnFront);
+
+    void setEntityName(String strEntityName);
+    String getEntityName();
+
+    String getIsCustomerNotified();
+    void setIsCustomerNotified(String strIsCustomerNotified);
+
+    void setParentId(String strParentId);
+
+    void setStatus(String strStatus);
 }

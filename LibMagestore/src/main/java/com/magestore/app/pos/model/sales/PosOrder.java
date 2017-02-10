@@ -2,6 +2,7 @@ package com.magestore.app.pos.model.sales;
 
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.sales.Order;
+import com.magestore.app.lib.model.sales.OrderCommentParams;
 import com.magestore.app.lib.model.sales.OrderInvoiceParams;
 import com.magestore.app.lib.model.sales.OrderRefundParams;
 import com.magestore.app.lib.model.sales.OrderShipmentParams;
@@ -129,6 +130,9 @@ public class PosOrder extends PosAbstractModel implements Order {
 
     // Param request invoice
     PosOrderInvoiceParams param_invoice;
+
+    // Param request cancel
+    PosOrderCommentParams param_cancel;
 
     @Override
     public String getID() {
@@ -546,6 +550,16 @@ public class PosOrder extends PosAbstractModel implements Order {
     @Override
     public void setParamInvoice(OrderInvoiceParams paramInvoice) {
         param_invoice = (PosOrderInvoiceParams) paramInvoice;
+    }
+
+    @Override
+    public OrderCommentParams getParamCancel() {
+        return param_cancel;
+    }
+
+    @Override
+    public void setParamCancel(OrderCommentParams paramCancel) {
+        param_cancel = (PosOrderCommentParams) paramCancel;
     }
 
     @Override

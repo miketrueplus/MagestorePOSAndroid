@@ -113,6 +113,9 @@
     <string name="order_total_invoiced">Total Invoiced:</string>
     <string name="order_invoiceable">Invoiceable:</string>
     <string name="order_invoice_success">The invoice has been created successfully.</string>
+    <string name="order_cancel_title">Cancel Comment</string>
+    <string name="order_cancel_comment_title">Reason to cancel order</string>
+    <string name="order_cancel_success">The order has been canceled successfully.</string>
 
     <!--Strings related to register shift-->
     <string name="register_shift_list_open"> - OPEN</string>

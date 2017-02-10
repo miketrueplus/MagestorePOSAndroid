@@ -95,8 +95,8 @@ public class PosOrderHistoryService extends AbstractService implements OrderHist
     public String sendEmail(String email, String orderId) throws InstantiationException, IllegalAccessException, IOException, ParseException {
         // Khởi tạo order gateway factory
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
-        OrderDataAccess orderGateway = factory.generateOrderDataAccess();
-        return orderGateway.sendEmail(email, orderId);
+        OrderDataAccess orderDataAccess = factory.generateOrderDataAccess();
+        return orderDataAccess.sendEmail(email, orderId);
     }
 
     @Override
@@ -116,9 +116,9 @@ public class PosOrderHistoryService extends AbstractService implements OrderHist
         orderStatus.setExtensionAttributes(param.getExtensionAttributes());
 
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
-        OrderDataAccess orderGateway = factory.generateOrderDataAccess();
+        OrderDataAccess orderDataAccess = factory.generateOrderDataAccess();
 
-        return orderGateway.insertOrderStatus(orderStatus, orderId);
+        return orderDataAccess.insertOrderStatus(orderStatus, orderId);
     }
 
     @Override
@@ -126,9 +126,9 @@ public class PosOrderHistoryService extends AbstractService implements OrderHist
         OrderShipmentParams shipmentParams = order.getParamShipment();
 
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
-        OrderDataAccess orderGateway = factory.generateOrderDataAccess();
+        OrderDataAccess orderDataAccess = factory.generateOrderDataAccess();
 
-        return orderGateway.createShipment(shipmentParams);
+        return orderDataAccess.createShipment(shipmentParams);
     }
 
     @Override
@@ -136,9 +136,9 @@ public class PosOrderHistoryService extends AbstractService implements OrderHist
         OrderRefundParams refundParams = order.getParamRefund();
 
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
-        OrderDataAccess orderGateway = factory.generateOrderDataAccess();
+        OrderDataAccess orderDataAccess = factory.generateOrderDataAccess();
 
-        return orderGateway.orderRefund(refundParams);
+        return orderDataAccess.orderRefund(refundParams);
     }
 
     @Override
@@ -146,9 +146,20 @@ public class PosOrderHistoryService extends AbstractService implements OrderHist
         OrderInvoiceParams invoiceParams = order.getParamInvoice();
 
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
-        OrderDataAccess orderGateway = factory.generateOrderDataAccess();
+        OrderDataAccess orderDataAccess = factory.generateOrderDataAccess();
 
-        return orderGateway.orderInvoice(invoiceParams);
+        return orderDataAccess.orderInvoice(invoiceParams);
+    }
+
+    @Override
+    public Order orderCancel(Order order) throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        OrderCommentParams cancelParams = order.getParamCancel();
+        String orderID = order.getID();
+
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        OrderDataAccess orderDataAccess = factory.generateOrderDataAccess();
+
+        return orderDataAccess.orderCancel(cancelParams, orderID);
     }
 
     @Override
