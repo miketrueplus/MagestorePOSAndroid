@@ -57,8 +57,8 @@ public class PosOrderHistoryService extends AbstractService implements OrderHist
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         OrderDataAccess orderDataAccess = factory.generateOrderDataAccess();
         // giả dữ liêu với page = 32 và pageSize = 30
-        return orderDataAccess.retrieve(1, 1);
-//        return orderDataAccess.retrieve(page, pageSize);
+//        return orderDataAccess.retrieve(32, 30);
+        return orderDataAccess.retrieve(page, pageSize);
     }
 
     @Override

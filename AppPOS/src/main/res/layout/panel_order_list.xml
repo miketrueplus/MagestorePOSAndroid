@@ -37,6 +37,7 @@
                 app:layoutManager="LinearLayoutManager"
                 magestore_view:layout_item_msg="@+id/msg_order_list_card_view"
                 magestore_view:layout_item_progress="@+id/progress_order_list_card_view"
+                magestore_view:layout_item_content="@+id/content_order_list_card_view"
                 tools:listitem="@layout/card_order_history_list_content" />
         </RelativeLayout>
     </LinearLayout>
