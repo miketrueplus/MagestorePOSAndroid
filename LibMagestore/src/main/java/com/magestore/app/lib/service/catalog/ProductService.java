@@ -38,7 +38,8 @@ public interface ProductService extends Service, ListService<Product> {
 //     * @throws IOException
 //     * @throws ParseException
 //     */
-//    List<Product> retrieveProductList(int size) throws InstantiationException, IllegalAccessException, IOException, ParseException;
+
+    List<Product> retrieve(String categoryId, String searchString, int pageSize, int currentPage) throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
     /**
      * Load ảnh bitmap

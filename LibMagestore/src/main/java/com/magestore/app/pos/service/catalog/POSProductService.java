@@ -87,6 +87,7 @@ public class POSProductService extends AbstractService implements ProductService
 
     /**
      * Đếm số product
+     *
      * @return
      * @throws ParseException
      * @throws InstantiationException
@@ -131,6 +132,13 @@ public class POSProductService extends AbstractService implements ProductService
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         ProductDataAccess productDataAccess = factory.generateProductDataAccess();
         return productDataAccess.retrieve(searchString, page, pageSize);
+    }
+
+    @Override
+    public List<Product> retrieve(String categoryId, String searchString, int pageSize, int currentPage) throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        ProductDataAccess productDataAccess = factory.generateProductDataAccess();
+        return productDataAccess.retrieve(categoryId, searchString, pageSize, currentPage);
     }
 
     @Override

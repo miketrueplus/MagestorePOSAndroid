@@ -110,6 +110,7 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
             paramBuilder = statement.getParamBuilder()
                     .setPage(page)
                     .setPageSize(pageSize)
+                    .setSortOrderDESC("entity_id")
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
 
             // thực thi truy vấn và parse kết quả thành object
