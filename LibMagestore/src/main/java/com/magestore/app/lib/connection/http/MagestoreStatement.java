@@ -13,6 +13,7 @@ import com.magestore.app.lib.connection.ConnectionException;
 import com.magestore.app.lib.connection.ParamBuilder;
 import com.magestore.app.lib.connection.ResultReading;
 import com.magestore.app.lib.connection.Statement;
+import com.magestore.app.pos.parse.gson2pos.Gson2PosExclude;
 
 import java.io.IOException;
 import org.apache.commons.lang3.text.StrSubstitutor;
@@ -77,14 +78,14 @@ public class MagestoreStatement implements Statement {
     // Bảng map chứa các tham số của truy vấn
     private Map mValuesMap = null;
 
-    class MyExclusionStrategy implements ExclusionStrategy {
+    class MagestoreExclusionStrategy implements ExclusionStrategy {
 
-        private MyExclusionStrategy() {
+        private MagestoreExclusionStrategy() {
         }
 
 
         public boolean shouldSkipField(FieldAttributes f) {
-            return f.getAnnotation(Expose.class) != null;
+            return f.getAnnotation(Gson2PosExclude.class) != null;
         }
 
         @Override
@@ -286,7 +287,7 @@ public class MagestoreStatement implements Statement {
             mHttpConnection.setRequestMethod(METHOD_POST);
 
             // Viết nội dung của object thành dạng json cho input
-            Gson gson = new GsonBuilder().setExclusionStrategies(new MyExclusionStrategy()).create();
+            Gson gson = new GsonBuilder().setExclusionStrategies(new MagestoreExclusionStrategy()).create();
             OutputStreamWriter wr = new OutputStreamWriter(mHttpConnection.getOutputStream());
             gson.toJson(mobjPrepareParam, wr);
             wr.flush();

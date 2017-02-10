@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.magestore.app.lib.model.registershift.CashTransaction;
 import com.magestore.app.pos.model.PosAbstractModel;
 import com.magestore.app.util.ConfigUtil;
+import com.magestore.app.pos.parse.gson2pos.Gson2PosExclude;
 
 /**
  * Created by Johan on 1/18/17.
@@ -32,7 +33,7 @@ public class PosCashTransaction extends PosAbstractModel implements CashTransact
     String balance_title;
     String check_type_value;
 
-    @Expose(serialize = true, deserialize = true)
+    @Gson2PosExclude
     boolean check_open_shift;
 
     @Override

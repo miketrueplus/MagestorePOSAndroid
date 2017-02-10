@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
 import com.magestore.app.pos.model.registershift.PosCashTransaction;
+import com.magestore.app.pos.parse.gson2pos.Gson2PosExclude;
 
 import org.junit.Test;
 
@@ -30,7 +31,7 @@ public class ExampleUnitTest {
 
 
             public boolean shouldSkipField(FieldAttributes f) {
-                return f.getAnnotation(Expose.class) != null;
+                return f.getAnnotation(Gson2PosExclude.class) == null;
             }
 
             @Override
