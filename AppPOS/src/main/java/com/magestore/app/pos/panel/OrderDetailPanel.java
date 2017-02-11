@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.magestore.app.lib.controller.Controller;
 import com.magestore.app.lib.model.sales.Order;
@@ -47,6 +48,8 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
     OrderHistoryItemsListPanel mOrderHistoryItemsListPanel;
     OrderHistoryItemsListController mOrderHistoryItemsListController;
     FrameLayout fr_detail_bottom_left, fr_detail_bottom_right;
+    ImageView im_status;
+    TextView status;
 
     public OrderDetailPanel(Context context) {
         super(context);
@@ -140,11 +143,13 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         mOrderCommentHistoryController.doSelectOrder(item);
         mOrderHistoryItemsListController.doSelectOrder(item);
 
-        ImageView im_status = (ImageView) v.findViewById(R.id.im_status);
+        status = (TextView) v.findViewById(R.id.status);
+        im_status = (ImageView) v.findViewById(R.id.im_status);
         im_status.setImageResource(R.drawable.ic_order_status);
 
-        String status = item.getStatus().toLowerCase();
-        changeColorStatusOrder(status, im_status);
+        String item_status = item.getStatus().toLowerCase();
+        changeStatusTopOrder(item_status);
+        changeColorStatusOrder(item_status);
 
         btn_invoice.setOnClickListener(new OnClickListener() {
             @Override
@@ -154,7 +159,7 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         });
     }
 
-    private void changeColorStatusOrder(String status, ImageView im_status) {
+    public void changeColorStatusOrder(String status) {
         switch (status) {
             case "pending":
                 im_status.setColorFilter(ContextCompat.getColor(getContext(), R.color.order_status_pending));
@@ -175,6 +180,18 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
                 im_status.setColorFilter(ContextCompat.getColor(getContext(), R.color.order_status_notsync));
                 break;
         }
+    }
+
+    public void setOrder(Order mOrder) {
+        this.mOrder = mOrder;
+    }
+
+    public void changeStatusTopOrder(String item_status) {
+        status.setText(item_status);
+    }
+
+    public void bindDataRespone(Order order) {
+        mBinding.setOrderDetail(order);
     }
 
     public void showPopupMenu(View view) {

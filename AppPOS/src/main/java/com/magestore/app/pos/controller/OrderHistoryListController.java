@@ -12,6 +12,7 @@ import com.magestore.app.lib.model.sales.OrderStatus;
 import com.magestore.app.lib.service.order.OrderHistoryService;
 import com.magestore.app.pos.panel.OrderAddCommentPanel;
 import com.magestore.app.pos.panel.OrderCancelPanel;
+import com.magestore.app.pos.panel.OrderDetailPanel;
 import com.magestore.app.pos.panel.OrderInvoicePanel;
 import com.magestore.app.pos.panel.OrderRefundPanel;
 import com.magestore.app.pos.panel.OrderSendEmailPanel;
@@ -176,6 +177,14 @@ public class OrderHistoryListController extends AbstractListController<Order> {
                 mOrderShipmentPanel.showAlertRespone();
                 mOrderHistoryItemsListController.doSelectOrder(order);
                 mOrderCommentListController.doSelectOrder(order);
+                mOrderHistoryItemsListController.notifyDataSetChanged();
+                mOrderCommentListController.notifyDataSetChanged();
+                mList.set(mList.indexOf(((Order) models[0])), order);
+                mView.notifyDataSetChanged();
+                ((OrderDetailPanel) mDetailView).changeColorStatusOrder(order.getStatus());
+                ((OrderDetailPanel) mDetailView).changeStatusTopOrder(order.getStatus());
+                ((OrderDetailPanel) mDetailView).bindDataRespone(order);
+                ((OrderDetailPanel) mDetailView).setOrder(order);
             }
         } else if (actionType == INSERT_STATUS_TYPE) {
             if (success) {
@@ -183,6 +192,7 @@ public class OrderHistoryListController extends AbstractListController<Order> {
                 mOrderAddCommentPanel.showAlertRespone();
                 mOrderCommentListController.doSelectOrder(order);
                 mOrderCommentListController.notifyDataSetChanged();
+                ((OrderDetailPanel) mDetailView).bindDataRespone(order);
             }
         } else if (actionType == ORDER_REFUND_TYPE) {
             if (success) {
@@ -192,6 +202,12 @@ public class OrderHistoryListController extends AbstractListController<Order> {
                 mOrderCommentListController.doSelectOrder(order);
                 mOrderHistoryItemsListController.notifyDataSetChanged();
                 mOrderCommentListController.notifyDataSetChanged();
+                mList.set(mList.indexOf(((Order) models[0])), order);
+                mView.notifyDataSetChanged();
+                ((OrderDetailPanel) mDetailView).changeColorStatusOrder(order.getStatus());
+                ((OrderDetailPanel) mDetailView).changeStatusTopOrder(order.getStatus());
+                ((OrderDetailPanel) mDetailView).bindDataRespone(order);
+                ((OrderDetailPanel) mDetailView).setOrder(order);
             }
         } else if (actionType == ORDER_INVOICE_TYPE) {
             if (success) {
@@ -201,6 +217,12 @@ public class OrderHistoryListController extends AbstractListController<Order> {
                 mOrderCommentListController.doSelectOrder(order);
                 mOrderHistoryItemsListController.notifyDataSetChanged();
                 mOrderCommentListController.notifyDataSetChanged();
+                mList.set(mList.indexOf(((Order) models[0])), order);
+                mView.notifyDataSetChanged();
+                ((OrderDetailPanel) mDetailView).changeColorStatusOrder(order.getStatus());
+                ((OrderDetailPanel) mDetailView).changeStatusTopOrder(order.getStatus());
+                ((OrderDetailPanel) mDetailView).bindDataRespone(order);
+                ((OrderDetailPanel) mDetailView).setOrder(order);
             }
         } else if (actionType == ORDER_CANCEL_TYPE) {
             if (success) {
@@ -210,6 +232,12 @@ public class OrderHistoryListController extends AbstractListController<Order> {
                 mOrderCommentListController.doSelectOrder(order);
                 mOrderHistoryItemsListController.notifyDataSetChanged();
                 mOrderCommentListController.notifyDataSetChanged();
+                mList.set(mList.indexOf(((Order) models[0])), order);
+                mView.notifyDataSetChanged();
+                ((OrderDetailPanel) mDetailView).changeColorStatusOrder(order.getStatus());
+                ((OrderDetailPanel) mDetailView).changeStatusTopOrder(order.getStatus());
+                ((OrderDetailPanel) mDetailView).bindDataRespone(order);
+                ((OrderDetailPanel) mDetailView).setOrder(order);
             }
         }
     }
