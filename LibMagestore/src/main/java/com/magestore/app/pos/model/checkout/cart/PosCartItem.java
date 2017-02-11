@@ -3,6 +3,7 @@ package com.magestore.app.pos.model.checkout.cart;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.pos.model.PosAbstractModel;
+import com.magestore.app.pos.parse.gson2pos.Gson2PosExclude;
 
 /**
  * Created by Mike on 12/26/2016.
@@ -13,16 +14,14 @@ import com.magestore.app.pos.model.PosAbstractModel;
 public class PosCartItem extends PosAbstractModel implements CartItem {
     Product product;
     int qty;
+    @Gson2PosExclude
     String child_id;
+    @Gson2PosExclude
     String bundle_option;
-    int bundle_option_qty;
     float price;
     float base_price;
+    @Gson2PosExclude
     float unit_price;
-    float base_unit_price;
-    float original_price;
-    float base_original_price;
-    String item_id;
 
     // Order history
     String name;
@@ -31,14 +30,33 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     float row_total_incl_tax = 0;
     float tax_amount = 0;
     float discount_amount = 0;
+    @Gson2PosExclude
     int qty_ordered;
+    @Gson2PosExclude
     int qty_canceled;
+    @Gson2PosExclude
     int qty_invoiced;
+    @Gson2PosExclude
     int qty_refunded;
+    @Gson2PosExclude
     int qty_shipped;
+    @Gson2PosExclude
     String product_type;
-    String is_virtual;
+    @Gson2PosExclude
     String parent_item_id;
+
+    @Gson2PosExclude
+    float base_original_price;
+    @Gson2PosExclude
+    float base_unit_price;
+    @Gson2PosExclude
+    int bundle_option_qty;
+    @Gson2PosExclude
+    String is_virtual;
+    @Gson2PosExclude
+    String item_id;
+    @Gson2PosExclude
+    float original_price;
 
     // Params Order Shipment
     String orderItemId;

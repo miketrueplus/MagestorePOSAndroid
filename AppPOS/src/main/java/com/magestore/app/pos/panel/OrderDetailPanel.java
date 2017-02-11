@@ -339,6 +339,7 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
                 ((OrderHistoryListController) mController).setOrderCommentListController(mOrderCommentHistoryController);
                 ((OrderHistoryListController) mController).setOrderHistoryItemsListController(mOrderHistoryItemsListController);
                 ((OrderHistoryListController) mController).doInputRefund(order);
+                dialog.dismiss();
             }
         });
     }

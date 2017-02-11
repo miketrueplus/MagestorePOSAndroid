@@ -358,9 +358,9 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
             orderEntity.entity = refundParams;
 
             // TODO: log params request
-//            Gson gson = new Gson();
-//            String json = gson.toJson(orderEntity);
-//            Log.e("JSON", json.toString());
+            Gson gson = new Gson();
+            String json = gson.toJson(orderEntity);
+            Log.e("JSON", json.toString());
 
             rp = statement.execute(orderEntity);
             rp.setParseImplement(getClassParseImplement());
