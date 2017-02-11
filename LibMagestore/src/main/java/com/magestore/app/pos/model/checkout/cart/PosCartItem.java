@@ -36,6 +36,9 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     int qty_invoiced;
     int qty_refunded;
     int qty_shipped;
+    String product_type;
+    String is_virtual;
+    String parent_item_id;
 
     // Params Order Shipment
     String orderItemId;
@@ -162,6 +165,21 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     @Override
     public int QtyInvoice() {
         return qty_ordered - qty_invoiced;
+    }
+
+    @Override
+    public String getProductType() {
+        return product_type;
+    }
+
+    @Override
+    public String getIsVirtual() {
+        return is_virtual;
+    }
+
+    @Override
+    public String getParentItemId() {
+        return parent_item_id;
     }
 
     @Override

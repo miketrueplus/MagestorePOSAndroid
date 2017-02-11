@@ -1,5 +1,8 @@
 package com.magestore.app.pos.service.order;
 
+import android.text.TextUtils;
+
+import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.model.sales.OrderCommentParams;
@@ -214,5 +217,96 @@ public class PosOrderHistoryService extends AbstractService implements OrderHist
     public OrderInvoiceParams createOrderInvoiceParams() {
         PosOrderInvoiceParams orderInvoiceParams = new PosOrderInvoiceParams();
         return orderInvoiceParams;
+    }
+
+    @Override
+    public boolean checkCanInvoice(Order order) {
+        String status = order.getStatus();
+        if (this.canUnhold(status) || status.equals("holded"))
+            return false;
+        if (status.equals("status") || status.equals("complete") || status.equals("closed"))
+            return false;
+        boolean allInvoiced = true;
+        for (CartItem item : order.getOrderItems()) {
+            if (item.getQtyOrdered() - item.getQtyInvoiced() - item.getQtyCanceled() > 0) {
+                allInvoiced = false;
+            }
+        }
+        if (!allInvoiced) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean checkCanCancel(Order order) {
+        String status = order.getStatus();
+        if (this.canUnhold(status)) {
+            return false;
+        }
+        if (status.equals("")) {
+            return false;
+        }
+        if (status.equals("status") || status.equals("complete") || status.equals("closed"))
+            return false;
+        boolean allInvoiced = true;
+        for (CartItem item : order.getOrderItems()) {
+            if (item.getQtyOrdered() - item.getQtyInvoiced() - item.getQtyCanceled() > 0) {
+                allInvoiced = false;
+            }
+        }
+        if (allInvoiced) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean checkCanRefund(Order order) {
+        String status = order.getStatus();
+        if (this.canUnhold(status) || status.equals("holded"))
+            return false;
+        if (status.equals("canceled") || status.equals("closed") || order.getGrandTotal() == 0)
+            return false;
+        if (order.getTotalPaid() - order.getTotalRefunded() < 0.0001) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean checkCanShip(Order order) {
+        String status = order.getStatus();
+        if (this.canUnhold(status) || status.equals("holded"))
+            return false;
+        if (order.getIsVirtual().equals("1") || status.equals("canceled")) {
+            return false;
+        }
+        boolean allShip = true;
+        for (CartItem item : order.getOrderItems()) {
+            if (item.getProductType().equals("customsale") && item.getIsVirtual().equals("1")) {
+                return true;
+            }
+            if (item.getProductType().equals("simple") && !TextUtils.isEmpty(item.getParentItemId())) {
+                return true;
+            }
+            if (item.getQtyOrdered() - item.getQtyShipped() - item.getQtyRefunded() - item.getQtyCanceled() > 0)
+                allShip = false;
+
+        }
+        if (!allShip) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean canUnhold(String status) {
+        if (status.equals("payment_review")) {
+            return false;
+        }
+        if (status.equals("holded")) {
+            return true;
+        }
+        return false;
     }
 }

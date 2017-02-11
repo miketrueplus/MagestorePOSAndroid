@@ -106,6 +106,7 @@ public class PosOrder extends PosAbstractModel implements Order {
     float tax_amount;
     float tax_invoiced;
     float total_due;
+    float total_refunded;
     float total_invoiced;
     float total_item_count;
     float total_paid;
@@ -442,6 +443,11 @@ public class PosOrder extends PosAbstractModel implements Order {
     }
 
     @Override
+    public float getTotalRefunded() {
+        return total_refunded;
+    }
+
+    @Override
     public float getOrderHistorySubtotal() {
         return subtotal;
     }
@@ -510,6 +516,11 @@ public class PosOrder extends PosAbstractModel implements Order {
     @Override
     public float getTotalInvoiced() {
         return total_invoiced;
+    }
+
+    @Override
+    public String getIsVirtual() {
+        return is_virtual;
     }
 
     @Override

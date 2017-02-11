@@ -167,6 +167,7 @@
                 android:orientation="horizontal">
 
                 <FrameLayout
+                    android:id="@+id/fr_detail_bottom_left"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -191,6 +192,7 @@
                     android:textSize="18sp" />
 
                 <FrameLayout
+                    android:id="@+id/fr_detail_bottom_right"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

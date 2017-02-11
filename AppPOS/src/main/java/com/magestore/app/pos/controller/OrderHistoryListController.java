@@ -182,6 +182,7 @@ public class OrderHistoryListController extends AbstractListController<Order> {
                 Order order = (Order) wraper.get("status_respone");
                 mOrderAddCommentPanel.showAlertRespone();
                 mOrderCommentListController.doSelectOrder(order);
+                mOrderCommentListController.notifyDataSetChanged();
             }
         } else if (actionType == ORDER_REFUND_TYPE) {
             if (success) {
@@ -189,6 +190,8 @@ public class OrderHistoryListController extends AbstractListController<Order> {
                 mOrderRefundPanel.showAlertRespone();
                 mOrderHistoryItemsListController.doSelectOrder(order);
                 mOrderCommentListController.doSelectOrder(order);
+                mOrderHistoryItemsListController.notifyDataSetChanged();
+                mOrderCommentListController.notifyDataSetChanged();
             }
         } else if (actionType == ORDER_INVOICE_TYPE) {
             if (success) {
@@ -196,6 +199,8 @@ public class OrderHistoryListController extends AbstractListController<Order> {
                 mOrderInvoicePanel.showAlertRespone();
                 mOrderHistoryItemsListController.doSelectOrder(order);
                 mOrderCommentListController.doSelectOrder(order);
+                mOrderHistoryItemsListController.notifyDataSetChanged();
+                mOrderCommentListController.notifyDataSetChanged();
             }
         } else if (actionType == ORDER_CANCEL_TYPE) {
             if (success) {
@@ -203,6 +208,8 @@ public class OrderHistoryListController extends AbstractListController<Order> {
                 mOrderCancelPanel.showAlertRespone();
                 mOrderHistoryItemsListController.doSelectOrder(order);
                 mOrderCommentListController.doSelectOrder(order);
+                mOrderHistoryItemsListController.notifyDataSetChanged();
+                mOrderCommentListController.notifyDataSetChanged();
             }
         }
     }
@@ -237,5 +244,21 @@ public class OrderHistoryListController extends AbstractListController<Order> {
 
     public OrderInvoiceParams createOrderInvoiceParams() {
         return mOrderService.createOrderInvoiceParams();
+    }
+
+    public boolean checkCanInvoice(Order order) {
+        return mOrderService.checkCanInvoice(order);
+    }
+
+    public boolean checkCanCancel(Order order) {
+        return mOrderService.checkCanCancel(order);
+    }
+
+    public boolean checkCanRefund(Order order) {
+        return mOrderService.checkCanRefund(order);
+    }
+
+    public boolean checkCanShip(Order order) {
+        return mOrderService.checkCanShip(order);
     }
 }

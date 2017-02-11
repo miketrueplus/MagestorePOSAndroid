@@ -5,16 +5,13 @@ import android.databinding.DataBindingUtil;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.GridLayoutManager;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
-
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.panel.AbstractListPanel;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.databinding.CardOrderHistoryListContentBinding;
-
 import java.util.List;
 
 /**
@@ -96,7 +93,7 @@ public class OrderListPanel extends AbstractListPanel<Order> {
             case "complete":
                 im_status.setColorFilter(ContextCompat.getColor(getContext(), R.color.order_status_complete));
                 break;
-            case "cancelled":
+            case "canceled":
                 im_status.setColorFilter(ContextCompat.getColor(getContext(), R.color.order_status_cancelled));
                 break;
             case "closed":

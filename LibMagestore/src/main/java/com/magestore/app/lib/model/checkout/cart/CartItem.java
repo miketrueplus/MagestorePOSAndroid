@@ -35,6 +35,9 @@ public interface CartItem extends Model {
     int QtyShip();
     int QtyRefund();
     int QtyInvoice();
+    String getProductType();
+    String getIsVirtual();
+    String getParentItemId();
 
     void setId(String strID);
 

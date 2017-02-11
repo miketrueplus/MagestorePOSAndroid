@@ -119,6 +119,8 @@ public interface Order extends Model {
 
     float getTotalPaid();
 
+    float getTotalRefunded();
+
     float getOrderHistorySubtotal();
 
     boolean checkListShipment();
@@ -132,6 +134,8 @@ public interface Order extends Model {
     String getStoreCurrencyCode();
 
     float getTotalInvoiced();
+
+    String getIsVirtual();
 
     // param add comment history
     OrderStatus getParamStatus();

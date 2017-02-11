@@ -53,4 +53,8 @@ public class OrderCommentListController extends AbstractListController<OrderStat
         mList = order.getOrderStatus();
         mView.bindList(mList);
     }
+
+    public void notifyDataSetChanged() {
+        mView.notifyDataSetChanged();
+    }
 }

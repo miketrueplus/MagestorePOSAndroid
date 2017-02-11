@@ -53,4 +53,8 @@ public class OrderHistoryItemsListController extends AbstractListController<Cart
         mList = order.getOrderItems();
         mView.bindList(mList);
     }
+
+    public void notifyDataSetChanged() {
+        mView.notifyDataSetChanged();
+    }
 }

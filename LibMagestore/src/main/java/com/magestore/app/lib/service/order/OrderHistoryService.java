@@ -54,4 +54,12 @@ public interface OrderHistoryService extends Service, ListService<Order> {
     OrderRefundParams createOrderRefundParams();
 
     OrderInvoiceParams createOrderInvoiceParams();
+
+    boolean checkCanInvoice(Order order);
+
+    boolean checkCanCancel(Order order);
+
+    boolean checkCanRefund(Order order);
+
+    boolean checkCanShip(Order order);
 }
