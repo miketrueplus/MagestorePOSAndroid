@@ -2,9 +2,14 @@ package com.magestore.app.pos.panel;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
+import android.widget.Button;
 
 import com.magestore.app.lib.model.checkout.Checkout;
+import com.magestore.app.lib.observe.GenericState;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
+import com.magestore.app.pos.R;
+import com.magestore.app.pos.controller.CheckoutListController;
 
 /**
  * Created by Mike on 2/9/2017.
@@ -13,6 +18,8 @@ import com.magestore.app.lib.panel.AbstractDetailPanel;
  */
 
 public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
+    PaymentMethodListPanel mPaymentMethodListPanel;
+
     public CheckoutDetailPanel(Context context) {
         super(context);
     }
@@ -23,5 +30,49 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
 
     public CheckoutDetailPanel(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+    }
+
+    @Override
+    protected void initLayout() {
+        super.initLayout();
+
+        // đặt sự kiện click nút ađ payment
+        ((Button) findViewById(R.id.btn_checkout_add_payment)).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickAddPayment();
+            }
+        });
+
+        ((Button) findViewById(R.id.btn_checkout_place_holder)).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickPlaceHolder();
+            }
+        });
+    }
+
+    /**
+     * Xử lý khi click thêm mới payment
+     */
+    void onClickAddPayment() {
+
+    }
+
+    /**
+     * Xử lý khi thanh toán (Place holder hoặc Partial)
+     */
+    void onClickPlaceHolder() {
+        //TODO: test thử observe
+        GenericState<CheckoutListController> state = new GenericState<CheckoutListController>(null, CheckoutListController.STATE_ON_PLACE_ORDER);
+        getController().getSubject().setState(state);
+        ((CheckoutListController) getController()).onPlaceOrder();
+    }
+
+    /**
+     * Tham chiếu sang panel payment method list
+     */
+    public void setPaymentMethodListPanel(PaymentMethodListPanel panel) {
+        mPaymentMethodListPanel = panel;
     }
 }

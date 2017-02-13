@@ -7,7 +7,6 @@ import com.magestore.app.pos.api.m2.POSDataAccessSession;
  * Created by Mike on 1/17/2017.
  * Magestore
  * mike@trueplus.vn
- * TODO: Add a class header comment!
  */
 
 public class ConnectionWrapper  {

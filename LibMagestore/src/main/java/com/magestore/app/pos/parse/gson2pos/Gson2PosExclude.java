@@ -14,5 +14,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Gson2PosExclude {
+    public boolean fromJson() default false;
+    public boolean toJson() default false;
 
 }
