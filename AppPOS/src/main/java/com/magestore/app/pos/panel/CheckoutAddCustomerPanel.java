@@ -50,6 +50,10 @@ public class CheckoutAddCustomerPanel extends AbstractDetailPanel<Checkout> {
         this.mCheckoutListPanel = mCheckoutListPanel;
     }
 
+    public CheckoutAddCustomerController getCustomerListController() {
+        return mCustomerListController;
+    }
+
     @Override
     protected void initLayout() {
         View v = inflate(getContext(), R.layout.panel_checkout_add_customer, null);
