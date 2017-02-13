@@ -9,6 +9,7 @@ import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 
 import com.magestore.app.lib.model.checkout.cart.CartItem;
@@ -72,9 +73,7 @@ public class OrderRefundItemsListPanel extends AbstractListPanel<CartItem> {
 
         actionQtyToRefund(i, edt_qty_to_refund);
         i.setOrderItemId(i.getID());
-        if (cb_return_to_stock.isChecked()) {
-            i.setReturnToStock(RETURN_TO_STOCK);
-        }
+        actionReturnToStock(i, cb_return_to_stock);
     }
 
     private void actionQtyToRefund(final CartItem item, final EditText qty_to_refund) {
@@ -105,6 +104,17 @@ public class OrderRefundItemsListPanel extends AbstractListPanel<CartItem> {
             @Override
             public void afterTextChanged(Editable editable) {
 
+            }
+        });
+    }
+
+    private void actionReturnToStock(final CartItem item, final CheckBox cb_return_to_stock) {
+        cb_return_to_stock.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean cb_return_to_stock) {
+                if (cb_return_to_stock) {
+                    item.setReturnToStock(RETURN_TO_STOCK);
+                }
             }
         });
     }
