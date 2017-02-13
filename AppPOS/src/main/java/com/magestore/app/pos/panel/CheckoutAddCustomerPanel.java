@@ -5,13 +5,13 @@ import android.support.design.widget.FloatingActionButton;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
-
 import com.magestore.app.lib.context.MagestoreContext;
 import com.magestore.app.lib.model.checkout.Checkout;
+import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
 import com.magestore.app.lib.service.customer.CustomerService;
 import com.magestore.app.pos.R;
-import com.magestore.app.pos.controller.CustomerListController;
+import com.magestore.app.pos.controller.CheckoutAddCustomerController;
 
 /**
  * Created by Johan on 2/13/17.
@@ -21,9 +21,10 @@ import com.magestore.app.pos.controller.CustomerListController;
 
 public class CheckoutAddCustomerPanel extends AbstractDetailPanel<Checkout> {
     CustomerListPanel mCustomerListPanel;
-    CustomerListController mCustomerListController;
+    CheckoutAddCustomerController mCustomerListController;
     MagestoreContext mMagestoreContext;
     CustomerService mCustomerService;
+    CheckoutListPanel mCheckoutListPanel;
 
     public CheckoutAddCustomerPanel(Context context) {
         super(context);
@@ -45,6 +46,10 @@ public class CheckoutAddCustomerPanel extends AbstractDetailPanel<Checkout> {
         this.mCustomerService = mCustomerService;
     }
 
+    public void setCheckoutListPanel(CheckoutListPanel mCheckoutListPanel) {
+        this.mCheckoutListPanel = mCheckoutListPanel;
+    }
+
     @Override
     protected void initLayout() {
         View v = inflate(getContext(), R.layout.panel_checkout_add_customer, null);
@@ -55,17 +60,22 @@ public class CheckoutAddCustomerPanel extends AbstractDetailPanel<Checkout> {
         fab.setVisibility(GONE);
         AutoCompleteTextView text_search_customer = (AutoCompleteTextView) mCustomerListPanel.findViewById(R.id.text_search_customer);
         text_search_customer.setFocusable(true);
-
         initModel();
+    }
+
+    @Override
+    public void bindItem(Checkout item) {
+        super.bindItem(item);
     }
 
     @Override
     public void initModel() {
         // Tạo list controller
-        mCustomerListController = new CustomerListController();
+        mCustomerListController = new CheckoutAddCustomerController();
         mCustomerListController.setMagestoreContext(mMagestoreContext);
         mCustomerListController.setCustomerService(mCustomerService);
         mCustomerListController.setListPanel(mCustomerListPanel);
+        mCustomerListController.setCheckoutAddCustomerPanel(this);
 
         // chuẩn bị model cho các panel
         mCustomerListPanel.initModel();
@@ -74,5 +84,9 @@ public class CheckoutAddCustomerPanel extends AbstractDetailPanel<Checkout> {
     @Override
     public void initValue() {
         mCustomerListController.doRetrieve();
+    }
+
+    public void dismissDialogShowCustomer(Customer customer) {
+        mCheckoutListPanel.dismissDialogShowCustomer(customer);
     }
 }

@@ -244,6 +244,7 @@ public class SalesActivity extends AbstractActivity
             public void onClick(View view) {
                 mCheckoutListPanel.setMagestoreContext(magestoreContext);
                 mCheckoutListPanel.setCustomerService(customerService);
+                mCheckoutListPanel.setToolbarOrder(toolbar_order);
                 mCheckoutListPanel.showPopUpAddCustomer();
             }
         });

@@ -2,17 +2,18 @@ package com.magestore.app.pos.panel;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.magestore.app.lib.context.MagestoreContext;
-import com.magestore.app.lib.service.ServiceFactory;
+import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.service.customer.CustomerService;
 import com.magestore.app.pos.R;
 import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.panel.AbstractListPanel;
-import com.magestore.app.pos.controller.CheckoutListController;
 import com.magestore.app.pos.databinding.PanelCheckoutListBinding;
 import com.magestore.app.pos.util.DialogUtil;
 import com.magestore.app.pos.view.MagestoreDialog;
@@ -24,10 +25,13 @@ import com.magestore.app.pos.view.MagestoreDialog;
  */
 public class CheckoutListPanel extends AbstractListPanel<Checkout> {
     private PanelCheckoutListBinding mBinding;
+    CheckoutAddCustomerPanel mCheckoutAddCustomerPanel;
     MagestoreDialog dialog;
     Checkout mCheckout;
     MagestoreContext mMagestoreContext;
     CustomerService mCustomerService;
+    Toolbar toolbar_order;
+    Customer mCustomer;
 
     public CheckoutListPanel(Context context) {
         super(context);
@@ -47,6 +51,10 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
 
     public void setMagestoreContext(MagestoreContext mMagestoreContext) {
         this.mMagestoreContext = mMagestoreContext;
+    }
+
+    public void setToolbarOrder(Toolbar toolbar_order) {
+        this.toolbar_order = toolbar_order;
     }
 
     @Override
@@ -76,16 +84,28 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
     }
 
     public void showPopUpAddCustomer() {
-        CheckoutAddCustomerPanel mCheckoutAddCustomerPanel = new CheckoutAddCustomerPanel(getContext());
-        mCheckoutAddCustomerPanel.setMagestoreContext(mMagestoreContext);
-        mCheckoutAddCustomerPanel.setCustomerService(mCustomerService);
-        mCheckoutAddCustomerPanel.bindItem(mCheckout);
-        mCheckoutAddCustomerPanel.setController(mController);
-        mCheckoutAddCustomerPanel.initModel();
-        mCheckoutAddCustomerPanel.initValue();
+        if (mCheckoutAddCustomerPanel == null) {
+            mCheckoutAddCustomerPanel = new CheckoutAddCustomerPanel(getContext());
+            mCheckoutAddCustomerPanel.setMagestoreContext(mMagestoreContext);
+            mCheckoutAddCustomerPanel.setCustomerService(mCustomerService);
+            mCheckoutAddCustomerPanel.setCheckoutListPanel(this);
+            mCheckoutAddCustomerPanel.bindItem(mCheckout);
+            mCheckoutAddCustomerPanel.setController(mController);
+            mCheckoutAddCustomerPanel.initModel();
+            mCheckoutAddCustomerPanel.initValue();
+        }
 
-        dialog = DialogUtil.dialog(getContext(), "", mCheckoutAddCustomerPanel);
-        dialog.setGoneButtonSave(true);
+        if (dialog == null) {
+            dialog = DialogUtil.dialog(getContext(), "", mCheckoutAddCustomerPanel);
+            dialog.setGoneButtonSave(true);
+        }
+
         dialog.show();
+    }
+
+    public void dismissDialogShowCustomer(Customer customer) {
+        mCustomer = customer;
+        ((TextView) toolbar_order.findViewById(R.id.text_customer_name)).setText(customer.getName());
+        dialog.dismiss();
     }
 }
