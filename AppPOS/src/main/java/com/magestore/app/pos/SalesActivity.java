@@ -22,6 +22,7 @@ import com.magestore.app.lib.service.catalog.ProductService;
 import com.magestore.app.lib.service.checkout.CartService;
 import com.magestore.app.lib.service.checkout.CheckoutService;
 import com.magestore.app.lib.service.config.ConfigService;
+import com.magestore.app.lib.service.customer.CustomerService;
 import com.magestore.app.pos.controller.CartItemListController;
 import com.magestore.app.pos.controller.CategoryListController;
 import com.magestore.app.pos.controller.CheckoutListController;
@@ -48,6 +49,8 @@ import com.magestore.app.view.ui.PosUI;
 public class SalesActivity extends AbstractActivity
         implements
         PosUI {
+    MagestoreContext magestoreContext;
+
     // 2 pane
     private boolean mTwoPane;
 
@@ -69,6 +72,10 @@ public class SalesActivity extends AbstractActivity
     private CheckoutShippingController mCheckShippingListController;
     private CategoryListController mCategoryListController;
 
+    // Toolbar Order
+    Toolbar toolbar_order;
+    CustomerService customerService = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,8 +93,8 @@ public class SalesActivity extends AbstractActivity
     @Override
     protected void initLayout() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_category);
-        if (toolbar == null) toolbar = (Toolbar) findViewById(R.id.toolbar_order);
         initToolbarMenu(toolbar);
+        toolbar_order = (Toolbar) findViewById(R.id.toolbar_order);
 
         // Nút tab để tạo đơn hàng mới
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -123,11 +130,13 @@ public class SalesActivity extends AbstractActivity
         mPaymentMethodListPanel = (PaymentMethodListPanel) mCheckoutDetailPanel.findViewById(R.id.payment_method_list_panel);
         // category list panel
         mCategoryListPanel = (CategoryListPanel) mProductListPanel.findViewById(R.id.category);
+
+
     }
 
     protected void initModel() {
         // Context sử dụng xuyên suốt hệ thống
-        MagestoreContext magestoreContext = new MagestoreContext();
+        magestoreContext = new MagestoreContext();
         magestoreContext.setActivity(this);
 
         // chuẩn bị service
@@ -144,6 +153,7 @@ public class SalesActivity extends AbstractActivity
             cartService = factory.generateCartService();
             categoryService = factory.generateCategoryService();
             configService = factory.generateConfigService();
+            customerService = factory.generateCustomerService();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InstantiationException e) {
@@ -156,7 +166,7 @@ public class SalesActivity extends AbstractActivity
         mCategoryListController.setListPanel(mCategoryListPanel);
         mCategoryListController.setCategoryService(categoryService);
 
-        // controller quangr lyts check out
+        // controller quản lý check out
         mCheckoutListController = new CheckoutListController();
         mCheckoutListController.setMagestoreContext(magestoreContext);
         mCheckoutListController.setListService(checkoutService);
@@ -215,6 +225,15 @@ public class SalesActivity extends AbstractActivity
         mCheckoutListController.doRetrieve();
         // load danh sách shipping
 //        mCheckShippingListController.doRetrieve();
+
+        toolbar_order.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mCheckoutListPanel.setMagestoreContext(magestoreContext);
+                mCheckoutListPanel.setCustomerService(customerService);
+                mCheckoutListPanel.showPopUpAddCustomer();
+            }
+        });
     }
 
     @Override
