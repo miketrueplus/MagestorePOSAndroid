@@ -5,6 +5,9 @@ import android.view.View;
 import com.magestore.app.lib.controller.AbstractListController;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.model.checkout.Checkout;
+import com.magestore.app.lib.model.checkout.PaymentMethod;
+import com.magestore.app.lib.model.sales.Payment;
+import com.magestore.app.lib.observe.State;
 import com.magestore.app.lib.service.ServiceFactory;
 import com.magestore.app.pos.panel.CheckoutListPanel;
 import com.magestore.app.pos.panel.CheckoutPaymentListPanel;
@@ -24,6 +27,10 @@ import java.util.List;
  */
 
 public class CheckoutListController extends AbstractListController<Checkout> {
+    public static final String STATE_ON_ADD_PAYMENT =  "STATE_ON_ADD_PAYMENT";
+    public static final String STATE_ON_PLACE_ORDER =  "STATE_ON_PLACE_ORDER";
+    public static final String STATE_ON_MARK_AS_PARTIAL =  "STATE_ON_MARK_AS_PARTIAL";
+
     CartItemListController mCartItemListController;
     CheckoutShippingListPanel mCheckoutShippingListPanel;
     CheckoutPaymentListPanel mCheckoutPaymentListPanel;
@@ -108,5 +115,28 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
     public void setPaymentMethodListPanel(PaymentMethodListPanel panel) {
         mPaymentMethodListPanel = panel;
+    }
+
+    @Override
+    public void notifyState(State state) {
+        String strS = state.getStateCode();
+    }
+
+    /**
+     * Khi đánh dấu thanh toán 1 phần
+     */
+    public void onMarkAsPartial() {
+        doInsert(getSelectedItem());
+    }
+
+    public void onAddPaymentMethod(PaymentMethod method) {
+
+    }
+
+    /**
+     * Place thực hiện order
+     */
+    public void onPlaceOrder() {
+        doInsert(getSelectedItem());
     }
 }

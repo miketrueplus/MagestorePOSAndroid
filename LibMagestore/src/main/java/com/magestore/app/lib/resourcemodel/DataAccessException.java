@@ -1,10 +1,10 @@
 package com.magestore.app.lib.resourcemodel;
 
 /**
+ * Các exception do lớp data access sinh ra
  * Created by Mike on 12/14/2016.
  * Magestore
  * mike@trueplus.vn
- * TODO: Add a class header comment!
  */
 
 public class DataAccessException extends RuntimeException {

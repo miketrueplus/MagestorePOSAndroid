@@ -16,6 +16,7 @@ import android.view.View;
 
 import com.magestore.app.lib.context.MagestoreContext;
 import com.magestore.app.lib.model.config.Config;
+import com.magestore.app.lib.observe.Subject;
 import com.magestore.app.lib.service.ServiceFactory;
 import com.magestore.app.lib.service.catalog.CategoryService;
 import com.magestore.app.lib.service.catalog.ProductService;
@@ -139,6 +140,9 @@ public class SalesActivity extends AbstractActivity
         magestoreContext = new MagestoreContext();
         magestoreContext.setActivity(this);
 
+        // subject
+        Subject subject = new Subject();
+
         // chuẩn bị service
         ServiceFactory factory;
         ProductService productService = null;
@@ -165,9 +169,11 @@ public class SalesActivity extends AbstractActivity
         mCategoryListController.setMagestoreContext(magestoreContext);
         mCategoryListController.setListPanel(mCategoryListPanel);
         mCategoryListController.setCategoryService(categoryService);
+        mCategoryListController.setSubject(subject);
 
         // controller quản lý check out
         mCheckoutListController = new CheckoutListController();
+        mCheckoutListController.setSubject(subject);
         mCheckoutListController.setMagestoreContext(magestoreContext);
         mCheckoutListController.setListService(checkoutService);
         mCheckoutListController.setListPanel(mCheckoutListPanel);
@@ -176,9 +182,14 @@ public class SalesActivity extends AbstractActivity
         mCheckoutListController.setCheckoutPaymentListPanel(mCheckoutPaymentListPanel);
         mCheckoutListController.setPaymentMethodListPanel(mPaymentMethodListPanel);
         mCheckoutListController.setConfigService(configService);
+        subject.attach(null, CheckoutListController.STATE_ON_ADD_PAYMENT, mCheckoutListController);
+        subject.attach(null, CheckoutListController.STATE_ON_MARK_AS_PARTIAL, mCheckoutListController);
+        subject.attach(null, CheckoutListController.STATE_ON_PLACE_ORDER, mCheckoutListController);
+
 
         // controller quản lý danh sách khách hàng
         mProductListController = new ProductListController();
+        mProductListController.setSubject(subject);
         mProductListController.setMagestoreContext(magestoreContext);
         mProductListController.setProdcutService(productService);
         mProductListController.setListPanel(mProductListPanel);
@@ -189,12 +200,14 @@ public class SalesActivity extends AbstractActivity
 
         // controller quản lý đơn hàng
         mCheckoutCartItemListController = new CartItemListController();
+        mCheckoutCartItemListController.setSubject(subject);
         mCheckoutCartItemListController.setMagestoreContext(magestoreContext);
         mCheckoutCartItemListController.setListPanel(mCartItemListPanel);
         mCheckoutCartItemListController.setChildListService(cartService);
         mCheckoutCartItemListController.setParentController(mCheckoutListController);
         mCheckoutListController.setCartItemListController(mCheckoutCartItemListController);
 
+        mPaymentMethodListPanel.setCheckoutListController(mCheckoutListController);
         // quản lý các shipping
 //        mCheckShippingListController = new CheckoutShippingController();
 //        mCheckShippingListController.setMagestoreContext(magestoreContext);

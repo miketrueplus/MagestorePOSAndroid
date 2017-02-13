@@ -20,6 +20,9 @@ import com.magestore.app.pos.databinding.CardPaymentMethodContentBinding;
 
 public class PaymentMethodListPanel extends AbstractSimpleRecycleView<PaymentMethod> {
     CheckoutListController mCheckoutListController;
+    public void setCheckoutListController(CheckoutListController controller) {
+        mCheckoutListController = controller;
+    }
     public PaymentMethodListPanel(Context context) {
         super(context);
     }
@@ -42,6 +45,7 @@ public class PaymentMethodListPanel extends AbstractSimpleRecycleView<PaymentMet
     protected void onClickItem(View view, PaymentMethod item, int position) {
         mList.remove(position);
         getAdapter().notifyDataSetChanged();
+        if (mCheckoutListController != null) mCheckoutListController.onAddPaymentMethod(item);
 //        getAdapter().notifyItemRemoved(position);
 //        getAdapter().notifyItemRangeChanged(position, getAdapter().getItemCount());
     }

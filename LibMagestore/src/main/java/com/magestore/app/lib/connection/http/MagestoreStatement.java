@@ -20,6 +20,7 @@ import org.apache.commons.lang3.text.StrSubstitutor;
 
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
+import java.lang.annotation.Annotation;
 import java.net.HttpURLConnection;
 import java.util.HashMap;
 import java.util.Map;
@@ -83,9 +84,14 @@ public class MagestoreStatement implements Statement {
         private MagestoreExclusionStrategy() {
         }
 
-
         public boolean shouldSkipField(FieldAttributes f) {
-            return f.getAnnotation(Gson2PosExclude.class) != null;
+            Annotation annotation = f.getAnnotation(Gson2PosExclude.class);
+            return (annotation != null);
+//            if (annotation != null) {
+//                Gson2PosExclude exclude = (Gson2PosExclude) annotation;
+//                return !exclude.toJson();
+//            }
+//            return false;
         }
 
         @Override

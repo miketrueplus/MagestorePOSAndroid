@@ -2,6 +2,8 @@ package com.magestore.app.lib.controller;
 
 import com.magestore.app.lib.context.MagestoreContext;
 import com.magestore.app.lib.model.Model;
+import com.magestore.app.lib.observe.State;
+import com.magestore.app.lib.observe.Subject;
 import com.magestore.app.lib.service.config.ConfigService;
 import com.magestore.app.lib.task.ActionModelTask;
 import com.magestore.app.lib.view.MagestoreView;
@@ -15,6 +17,8 @@ import java.util.Map;
  * mike@trueplus.vn
  */
 public abstract class AbstractController<TModel extends Model, TView extends MagestoreView> implements Controller<TView> {
+    private Subject mSubject;
+
     // item và view
     protected TModel mItem;
     protected TView mView;
@@ -117,4 +121,18 @@ public abstract class AbstractController<TModel extends Model, TView extends Mag
         return mConfigService;
     }
 
+    @Override
+    public void notifyState(State state) {
+
+    }
+
+    @Override
+    public void setSubject(Subject subject) {
+        mSubject = subject;
+    }
+
+    @Override
+    public Subject getSubject() {
+        return mSubject;
+    }
 }
