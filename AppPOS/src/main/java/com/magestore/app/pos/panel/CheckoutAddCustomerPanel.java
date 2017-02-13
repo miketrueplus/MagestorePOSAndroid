@@ -5,6 +5,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
+
 import com.magestore.app.lib.context.MagestoreContext;
 import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.customer.Customer;
@@ -69,6 +70,7 @@ public class CheckoutAddCustomerPanel extends AbstractDetailPanel<Checkout> {
 
     @Override
     public void bindItem(Checkout item) {
+        if(item == null){return;}
         super.bindItem(item);
     }
 
@@ -90,7 +92,7 @@ public class CheckoutAddCustomerPanel extends AbstractDetailPanel<Checkout> {
         mCustomerListController.doRetrieve();
     }
 
-    public void dismissDialogShowCustomer(Customer customer) {
-        mCheckoutListPanel.dismissDialogShowCustomer(customer);
+    public void updateCustomerToOrder(Customer customer) {
+        mCheckoutListPanel.updateCustomerToOrder(customer);
     }
 }

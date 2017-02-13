@@ -110,6 +110,10 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
             mCustomerAddNewPanel.bindItem(mCustomer);
 
             initLayoutPanel();
+        } else {
+            if (mCustomer != null) {
+                mCustomerAddNewPanel.bindItem(mCustomer);
+            }
         }
 
         if (dialog == null) {
@@ -124,16 +128,15 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
             ll_sales_add_customer.setVisibility(VISIBLE);
             dialog.getButtonSave().setVisibility(GONE);
             dialog.getDialogTitle().setText("");
+        } else {
+            fr_sales_new_customer.setVisibility(VISIBLE);
+            ll_sales_add_customer.setVisibility(GONE);
+            dialog.getButtonSave().setVisibility(VISIBLE);
+            dialog.getDialogTitle().setText(mCustomer.getName());
         }
 
         actionPanel();
         actionDialog();
-    }
-
-    public void dismissDialogShowCustomer(Customer customer) {
-        mCustomer = customer;
-        ((TextView) toolbar_order.findViewById(R.id.text_customer_name)).setText(customer.getName());
-        dialog.dismiss();
     }
 
     /**
@@ -332,13 +335,23 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
             dialog.getButtonCancel().setText(getContext().getString(R.string.cancel));
         } else {
             if (fr_sales_new_customer.getVisibility() == VISIBLE) {
-                dialog.getButtonSave().setVisibility(GONE);
-                dialog.getDialogTitle().setText("");
-                fr_sales_new_customer.setVisibility(GONE);
-                ll_sales_add_customer.setVisibility(VISIBLE);
-            }else {
+                if (mCustomer != null) {
+                    dialog.dismiss();
+                } else {
+                    dialog.getButtonSave().setVisibility(GONE);
+                    dialog.getDialogTitle().setText("");
+                    fr_sales_new_customer.setVisibility(GONE);
+                    ll_sales_add_customer.setVisibility(VISIBLE);
+                }
+            } else {
                 dialog.dismiss();
             }
         }
+    }
+
+    public void updateCustomerToOrder(Customer customer) {
+        mCustomer = customer;
+        ((TextView) toolbar_order.findViewById(R.id.text_customer_name)).setText(customer.getName());
+        dialog.dismiss();
     }
 }

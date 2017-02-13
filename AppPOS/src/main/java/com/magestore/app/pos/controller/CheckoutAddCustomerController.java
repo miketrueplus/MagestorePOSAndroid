@@ -18,6 +18,14 @@ public class CheckoutAddCustomerController extends CustomerListController {
 
     @Override
     public void bindItem(Customer item) {
-        mCheckoutAddCustomerPanel.dismissDialogShowCustomer(item);
+        mCheckoutAddCustomerPanel.updateCustomerToOrder(item);
+    }
+
+    @Override
+    public void onInsertPostExecute(Boolean success, Customer... models) {
+        Customer customer = ((Customer) models[0]);
+        if (success && customer != null) {
+            mCheckoutAddCustomerPanel.updateCustomerToOrder(customer);
+        }
     }
 }

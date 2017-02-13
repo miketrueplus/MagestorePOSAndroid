@@ -1,276 +1,290 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:magestore_view="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <LinearLayout
-        android:id="@+id/ll_add_new_customer"
+    <data>
+
+        <import type="com.magestore.app.util.ConfigUtil" />
+
+        <variable
+            name="customer"
+            type="com.magestore.app.lib.model.customer.Customer" />
+    </data>
+
+    <RelativeLayout xmlns:magestore_view="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <LinearLayout
+            android:id="@+id/ll_add_new_customer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_weight="1"
-                android:background="@drawable/boder_linear_layout"
-                android:orientation="vertical"
-                android:padding="5dp">
+                android:layout_margin="5dp"
+                android:orientation="horizontal">
 
-                <com.magestore.app.view.FormatTextEdit
-                    android:id="@+id/first_name"
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:hint="@string/first_name" />
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/boder_linear_layout"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <com.magestore.app.view.FormatTextEdit
+                        android:id="@+id/first_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:hint="@string/first_name"
+                        android:text="@{customer.getFirstName()}" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/boder_linear_layout"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <com.magestore.app.view.FormatTextEdit
+                        android:id="@+id/last_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:hint="@string/last_name"
+                        android:text="@{customer.getLastName()}" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/boder_linear_layout"
-                android:orientation="vertical"
-                android:padding="5dp">
+                android:layout_margin="5dp"
+                android:orientation="horizontal">
 
-                <com.magestore.app.view.FormatTextEdit
-                    android:id="@+id/last_name"
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:hint="@string/last_name" />
-            </LinearLayout>
-        </LinearLayout>
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/boder_linear_layout"
+                    android:orientation="vertical"
+                    android:padding="5dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:orientation="horizontal">
+                    <com.magestore.app.view.FormatTextEdit
+                        android:id="@+id/email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:hint="@string/email"
+                        android:text="@{customer.getEmail()}" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/boder_linear_layout"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <com.magestore.app.lib.view.SimpleSpinner
+                        android:id="@+id/spinner_group_id"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:enabled="false"
+                        android:padding="5dp"
+                        magestore_view:layout_no_scroll="true"
+                        magestore_view:layout_row="@layout/simple_textview_row" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <Switch
+                android:id="@+id/subscribe"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="@string/customer_subscribe" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/line" />
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:id="@+id/ll_shipping_address"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_weight="1"
-                android:background="@drawable/boder_linear_layout"
-                android:orientation="vertical"
-                android:padding="5dp">
+                android:layout_margin="5dp"
+                android:minHeight="50dp"
+                android:orientation="vertical">
 
-                <com.magestore.app.view.FormatTextEdit
-                    android:id="@+id/email"
+                <RelativeLayout
+                    android:id="@+id/rl_shipping_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:hint="@string/email" />
-            </LinearLayout>
+                    android:layout_marginBottom="5dp">
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/boder_linear_layout"
-                android:orientation="vertical"
-                android:padding="5dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="5dp"
+                        android:layout_toLeftOf="@+id/btn_shipping_address"
+                        android:text="@string/customer_shipping_address" />
 
-                <com.magestore.app.lib.view.SimpleSpinner
-                    android:id="@+id/spinner_group_id"
+                    <ImageButton
+                        android:id="@+id/btn_shipping_address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:background="@drawable/ic_add_new" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_short_shipping_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:enabled="false"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/boder_dash_linear_layout"
+                    android:orientation="vertical"
                     android:padding="5dp"
-                    magestore_view:layout_no_scroll="true"
-                    magestore_view:layout_row="@layout/simple_textview_row" />
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/tv_shipping_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_shipping_edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_marginLeft="10dp"
+                        android:orientation="horizontal">
+
+                        <ImageButton
+                            android:id="@+id/btn_shipping_adrress_edit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/ic_edit_dark" />
+
+                        <ImageButton
+                            android:id="@+id/btn_shipping_address_delete"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:background="@drawable/ic_delete" />
+                    </LinearLayout>
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
 
-        <Switch
-            android:id="@+id/subscribe"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:text="@string/customer_subscribe" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
-            android:background="@color/line" />
-
-        <LinearLayout
-            android:id="@+id/ll_shipping_address"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:minHeight="50dp"
-            android:orientation="vertical">
-
-            <RelativeLayout
-                android:id="@+id/rl_shipping_address"
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="5dp"
-                    android:layout_toLeftOf="@+id/btn_shipping_address"
-                    android:text="@string/customer_shipping_address" />
-
-                <ImageButton
-                    android:id="@+id/btn_shipping_address"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:background="@drawable/ic_add_new" />
-            </RelativeLayout>
+                android:layout_height="1dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/line" />
 
             <LinearLayout
-                android:id="@+id/ll_short_shipping_address"
+                android:id="@+id/ll_billing_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/boder_dash_linear_layout"
-                android:orientation="vertical"
-                android:padding="5dp"
-                android:visibility="gone">
+                android:layout_margin="5dp"
+                android:minHeight="50dp"
+                android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tv_shipping_address"
+                <RelativeLayout
+                    android:id="@+id/rl_billing_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp" />
+                    android:layout_marginBottom="5dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="5dp"
+                        android:layout_toLeftOf="@+id/btn_billing_address"
+                        android:text="@string/customer_billing_address" />
+
+                    <ImageButton
+                        android:id="@+id/btn_billing_address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:background="@drawable/ic_add_new" />
+                </RelativeLayout>
 
                 <LinearLayout
-                    android:id="@+id/ll_shipping_edit"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/ll_short_billing_address"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:layout_marginLeft="10dp"
-                    android:orientation="horizontal">
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/boder_dash_linear_layout"
+                    android:orientation="vertical"
+                    android:padding="5dp"
+                    android:visibility="gone">
 
-                    <ImageButton
-                        android:id="@+id/btn_shipping_adrress_edit"
+                    <TextView
+                        android:id="@+id/tv_billing_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_billing_edit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/ic_edit_dark" />
+                        android:layout_gravity="right"
+                        android:layout_marginLeft="10dp"
+                        android:orientation="horizontal">
 
-                    <ImageButton
-                        android:id="@+id/btn_shipping_address_delete"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:background="@drawable/ic_delete" />
+                        <ImageButton
+                            android:id="@+id/btn_billing_adrress_edit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/ic_edit_dark" />
+
+                        <ImageButton
+                            android:id="@+id/btn_billing_address_delete"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:background="@drawable/ic_delete" />
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
-            android:background="@color/line" />
-
-        <LinearLayout
-            android:id="@+id/ll_billing_address"
+        <include
+            android:id="@+id/ll_new_shipping_address"
+            layout="@layout/customer_new_shipping_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:minHeight="50dp"
-            android:orientation="vertical">
+            android:visibility="gone" />
 
-            <RelativeLayout
-                android:id="@+id/rl_billing_address"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="5dp"
-                    android:layout_toLeftOf="@+id/btn_billing_address"
-                    android:text="@string/customer_billing_address" />
-
-                <ImageButton
-                    android:id="@+id/btn_billing_address"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:background="@drawable/ic_add_new" />
-            </RelativeLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_short_billing_address"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/boder_dash_linear_layout"
-                android:orientation="vertical"
-                android:padding="5dp"
-                android:visibility="gone">
-
-                <TextView
-                    android:id="@+id/tv_billing_address"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp" />
-
-                <LinearLayout
-                    android:id="@+id/ll_billing_edit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:layout_marginLeft="10dp"
-                    android:orientation="horizontal">
-
-                    <ImageButton
-                        android:id="@+id/btn_billing_adrress_edit"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/ic_edit_dark" />
-
-                    <ImageButton
-                        android:id="@+id/btn_billing_address_delete"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:background="@drawable/ic_delete" />
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
-    </LinearLayout>
-
-    <include
-        android:id="@+id/ll_new_shipping_address"
-        layout="@layout/customer_new_shipping_address"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone" />
-
-    <include
-        android:id="@+id/ll_new_billing_address"
-        layout="@layout/customer_new_billing_address"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone" />
-</RelativeLayout>
+        <include
+            android:id="@+id/ll_new_billing_address"
+            layout="@layout/customer_new_billing_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+    </RelativeLayout>
+</layout>

@@ -1,9 +1,8 @@
 package com.magestore.app.pos.panel;
 
 import android.content.Context;
-import android.text.TextUtils;
+import android.databinding.DataBindingUtil;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
@@ -22,6 +21,7 @@ import com.magestore.app.lib.panel.AbstractDetailPanel;
 import com.magestore.app.lib.view.SimpleSpinner;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.CustomerListController;
+import com.magestore.app.pos.databinding.PanelCustomerAddNewBinding;
 import com.magestore.app.pos.util.EditTextUtil;
 
 import java.util.ArrayList;
@@ -54,6 +54,7 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
     CustomerAddress shippingAddress;
     CustomerAddress billingAddress;
     TextView tv_shipping_address, tv_billing_address;
+    PanelCustomerAddNewBinding mBinding;
 
     public CustomerAddNewPanel(Context context) {
         super(context);
@@ -109,14 +110,73 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
         cb_same_billing_and_shipping = (CheckBox) findViewById(R.id.cb_same_billing_and_shipping);
         tv_shipping_address = (TextView) findViewById(R.id.tv_shipping_address);
         tv_billing_address = (TextView) findViewById(R.id.tv_billing_address);
+
+        mBinding = DataBindingUtil.bind(view);
     }
 
     @Override
     public void bindItem(Customer item) {
         super.bindItem(item);
+
         setCustomerGroupDataSet(((CustomerListController) mController).getCustomerGroupList());
         final Map<String, ConfigCountry> countryDataSet = ((CustomerListController) mController).getCountry();
         setCountryDataSet(countryDataSet);
+        subscribe.setVisibility(VISIBLE);
+        if (item != null) {
+            mBinding.setCustomer(item);
+            mspinGroupID.setSelection(item.getGroupID());
+            subscribe.setVisibility(GONE);
+            if (item.getAddress() != null && item.getAddress().size() > 0) {
+                CustomerAddress billingAddress = null;
+                CustomerAddress shippingAddress = null;
+                if (item.getAddress().size() >= 2) {
+                    billingAddress = item.getAddress().get(1);
+                    shippingAddress = item.getAddress().get(0);
+                } else {
+                    billingAddress = item.getAddress().get(0);
+                    shippingAddress = item.getAddress().get(0);
+                }
+
+                s_first_name.setText(shippingAddress.getFirstName());
+                s_last_name.setText(shippingAddress.getLastName());
+                s_company.setText(shippingAddress.getCompany());
+                s_phone.setText(shippingAddress.getTelephone());
+                s_street1.setText(shippingAddress.getStreet1());
+                s_street2.setText(shippingAddress.getStreet2());
+                s_city.setText(shippingAddress.getCity());
+                s_zipcode.setText(shippingAddress.getPostCode());
+                s_spinner_country.setSelection(shippingAddress.getCountry());
+                if (shippingAddress.getRegion().getRegionID() == 0) {
+                    s_state.setVisibility(VISIBLE);
+                    s_spinner_state.setVisibility(GONE);
+                    s_state.setText(shippingAddress.getRegion().getRegionName());
+                } else {
+                    s_state.setVisibility(GONE);
+                    s_spinner_state.setVisibility(VISIBLE);
+                    s_spinner_state.setSelection(shippingAddress.getRegion().getRegionCode());
+                }
+
+                b_first_name.setText(billingAddress.getFirstName());
+                b_last_name.setText(billingAddress.getLastName());
+                b_company.setText(billingAddress.getCompany());
+                b_phone.setText(billingAddress.getTelephone());
+                b_street1.setText(billingAddress.getStreet1());
+                b_street2.setText(billingAddress.getStreet2());
+                b_city.setText(billingAddress.getCity());
+                b_zipcode.setText(billingAddress.getPostCode());
+                b_spinner_country.setSelection(billingAddress.getCountry());
+                if (billingAddress.getRegion().getRegionID() == 0) {
+                    b_state.setVisibility(VISIBLE);
+                    b_spinner_state.setVisibility(GONE);
+                    b_state.setText(billingAddress.getRegion().getRegionName());
+                } else {
+                    b_state.setVisibility(GONE);
+                    b_spinner_state.setVisibility(VISIBLE);
+                    b_spinner_state.setSelection(billingAddress.getRegion().getRegionCode());
+                }
+            }
+
+        }
 
         s_spinner_country.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
