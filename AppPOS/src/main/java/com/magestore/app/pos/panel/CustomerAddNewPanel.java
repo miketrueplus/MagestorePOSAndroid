@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -36,13 +37,9 @@ import java.util.Map;
 
 public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
     SimpleSpinner mspinGroupID;
-    SimpleSpinner s_spinner_country;
-    SimpleSpinner b_spinner_country;
-    SimpleSpinner s_spinner_state;
-    SimpleSpinner b_spinner_state;
-    LinearLayout ll_add_new_customer;
-    LinearLayout ll_shipping_address;
-    LinearLayout ll_billing_address;
+    SimpleSpinner s_spinner_country, b_spinner_country, s_spinner_state, b_spinner_state, s_shipping_address, s_billing_address;
+    LinearLayout ll_add_new_customer, ll_short_shipping_address, ll_short_billing_address;
+    LinearLayout ll_shipping_address, ll_billing_address, ll_s_shipping_address, ll_s_billing_address;
     LinearLayout ll_new_shipping_address;
     LinearLayout ll_new_billing_address;
     EditText s_state, b_state, s_first_name, b_first_name, s_last_name, b_last_name, s_street1, b_street1, s_street2, b_street2, s_vat, b_vat;
@@ -55,6 +52,7 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
     CustomerAddress billingAddress;
     TextView tv_shipping_address, tv_billing_address;
     PanelCustomerAddNewBinding mBinding;
+    ImageButton btn_shipping_address, btn_billing_address;
 
     public CustomerAddNewPanel(Context context) {
         super(context);
@@ -83,6 +81,8 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
         b_spinner_country = (SimpleSpinner) findViewById(R.id.b_spinner_country);
         s_spinner_state = (SimpleSpinner) findViewById(R.id.s_spinner_state);
         b_spinner_state = (SimpleSpinner) findViewById(R.id.b_spinner_state);
+        s_shipping_address = (SimpleSpinner) findViewById(R.id.s_shipping_address);
+        s_billing_address = (SimpleSpinner) findViewById(R.id.s_billing_address);
         s_state = (EditText) findViewById(R.id.s_state);
         b_state = (EditText) findViewById(R.id.b_state);
         first_name = (EditText) findViewById(R.id.first_name);
@@ -110,7 +110,12 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
         cb_same_billing_and_shipping = (CheckBox) findViewById(R.id.cb_same_billing_and_shipping);
         tv_shipping_address = (TextView) findViewById(R.id.tv_shipping_address);
         tv_billing_address = (TextView) findViewById(R.id.tv_billing_address);
-
+        ll_short_shipping_address = (LinearLayout) findViewById(R.id.ll_short_shipping_address);
+        ll_short_billing_address = (LinearLayout) findViewById(R.id.ll_short_billing_address);
+        btn_shipping_address = (ImageButton) findViewById(R.id.btn_shipping_address);
+        btn_billing_address = (ImageButton) findViewById(R.id.btn_billing_address);
+        ll_s_shipping_address = (LinearLayout) findViewById(R.id.ll_s_shipping_address);
+        ll_s_billing_address = (LinearLayout) findViewById(R.id.ll_s_billing_address);
         mBinding = DataBindingUtil.bind(view);
     }
 
@@ -122,11 +127,29 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
         final Map<String, ConfigCountry> countryDataSet = ((CustomerListController) mController).getCountry();
         setCountryDataSet(countryDataSet);
         subscribe.setVisibility(VISIBLE);
+        ll_s_shipping_address.setVisibility(GONE);
+        ll_s_billing_address.setVisibility(GONE);
+
+        ll_short_shipping_address.setVisibility(GONE);
+        btn_shipping_address.setVisibility(VISIBLE);
+        ll_short_billing_address.setVisibility(GONE);
+        btn_billing_address.setVisibility(VISIBLE);
+
         if (item != null) {
             mBinding.setCustomer(item);
             mspinGroupID.setSelection(item.getGroupID());
             subscribe.setVisibility(GONE);
             if (item.getAddress() != null && item.getAddress().size() > 0) {
+
+                ll_short_shipping_address.setVisibility(VISIBLE);
+                btn_shipping_address.setVisibility(GONE);
+                ll_short_billing_address.setVisibility(VISIBLE);
+                btn_billing_address.setVisibility(GONE);
+
+                ll_s_shipping_address.setVisibility(VISIBLE);
+                ll_s_billing_address.setVisibility(VISIBLE);
+
+                setAddressDataSet(item.getAddress());
                 CustomerAddress billingAddress = null;
                 CustomerAddress shippingAddress = null;
                 if (item.getAddress().size() >= 2) {
@@ -137,6 +160,7 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
                     shippingAddress = item.getAddress().get(0);
                 }
 
+                tv_shipping_address.setText(shippingAddress.getShortAddress());
                 s_first_name.setText(shippingAddress.getFirstName());
                 s_last_name.setText(shippingAddress.getLastName());
                 s_company.setText(shippingAddress.getCompany());
@@ -156,6 +180,7 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
                     s_spinner_state.setSelection(shippingAddress.getRegion().getRegionCode());
                 }
 
+                tv_billing_address.setText(billingAddress.getShortAddress());
                 b_first_name.setText(billingAddress.getFirstName());
                 b_last_name.setText(billingAddress.getLastName());
                 b_company.setText(billingAddress.getCompany());
@@ -306,6 +331,11 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
             s_spinner_country.bindModelMap((Map<String, Model>) (Map<?, ?>) countryDataSet);
             b_spinner_country.bindModelMap((Map<String, Model>) (Map<?, ?>) countryDataSet);
         }
+    }
+
+    public void setAddressDataSet(List<CustomerAddress> listAddress) {
+        s_shipping_address.bind(listAddress.toArray(new CustomerAddress[0]));
+        s_billing_address.bind(listAddress.toArray(new CustomerAddress[0]));
     }
 
     /**

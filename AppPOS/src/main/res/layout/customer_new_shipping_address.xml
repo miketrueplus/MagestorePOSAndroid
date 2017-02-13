@@ -185,7 +185,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="false"
-                android:padding="5dp"
                 android:textSize="18sp"
                 magestore_view:layout_no_scroll="true"
                 magestore_view:layout_row="@layout/simple_textview_row" />
@@ -211,7 +210,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="false"
-                android:padding="5dp"
                 android:textSize="18sp"
                 android:visibility="gone"
                 magestore_view:layout_no_scroll="true"

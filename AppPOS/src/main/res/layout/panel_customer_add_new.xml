@@ -99,7 +99,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:enabled="false"
-                        android:padding="5dp"
                         magestore_view:layout_no_scroll="true"
                         magestore_view:layout_row="@layout/simple_textview_row" />
                 </LinearLayout>
@@ -148,6 +147,27 @@
                         android:layout_alignParentRight="true"
                         android:background="@drawable/ic_add_new" />
                 </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_s_shipping_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/boder_linear_layout"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <com.magestore.app.lib.view.SimpleSpinner
+                        android:id="@+id/s_shipping_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:enabled="false"
+                        android:textSize="18sp"
+                        magestore_view:layout_no_scroll="true"
+                        magestore_view:layout_row="@layout/simple_textview_row" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/ll_short_shipping_address"
@@ -228,6 +248,27 @@
                         android:layout_alignParentRight="true"
                         android:background="@drawable/ic_add_new" />
                 </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_s_billing_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/boder_linear_layout"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <com.magestore.app.lib.view.SimpleSpinner
+                        android:id="@+id/s_billing_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:enabled="false"
+                        android:textSize="18sp"
+                        magestore_view:layout_no_scroll="true"
+                        magestore_view:layout_row="@layout/simple_textview_row" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/ll_short_billing_address"
