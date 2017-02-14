@@ -89,7 +89,7 @@ public abstract  class EndlessRecyclerOnScrollListener extends RecyclerView.OnSc
      * Đặt page hiện tại
      */
     public void resetCurrentPage() {
-        current_page = 0;
+        current_page = 1;
         previousTotal = 0;
     }
 
