@@ -10,17 +10,17 @@ import com.magestore.app.pos.model.PosAbstractModel;
  * mike@trueplus.vn
  */
 
-public class PosMessagException extends PosAbstractModel implements MessageException {
+public class PosMessageException extends PosAbstractModel implements MessageException {
     String message;
     String trace;
 
     @Override
     public String getMessage() {
-        return message;
+        return null;
     }
 
     @Override
     public String getTrace() {
-        return trace;
+        return null;
     }
 }

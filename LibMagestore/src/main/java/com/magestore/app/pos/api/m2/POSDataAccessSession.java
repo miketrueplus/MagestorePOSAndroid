@@ -14,9 +14,9 @@ public class POSDataAccessSession implements DataAccessSession {
     public static String REST_SESSION_ID = null;
 
     // cấu hình url và user password khi có proxy
-    public static String REST_BASE_URL = BuildConfig.REST_BASE_URL;
-    public static final String REST_USER_NAME = BuildConfig.REST_USER_NAME;
-    public static final String REST_PASSWORD = BuildConfig.REST_PASSWORD;
+    public static String REST_BASE_URL = BuildConfig.DEFAULT_REST_BASE_URL;
+    public static String REST_USER_NAME = BuildConfig.DEFAULT_REST_USER_NAME;
+    public static String REST_PASSWORD = BuildConfig.DEFAULT_REST_PASSWORD;
 
     // cấu hình date time và currency format
     public static final String REST_DATEFORMAT = "DD/MM/YYYY";

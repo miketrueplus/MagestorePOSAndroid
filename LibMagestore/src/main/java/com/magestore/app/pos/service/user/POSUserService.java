@@ -1,5 +1,6 @@
 package com.magestore.app.pos.service.user;
 
+import com.magestore.app.lib.BuildConfig;
 import com.magestore.app.lib.model.user.User;
 import com.magestore.app.lib.resourcemodel.DataAccessFactory;
 import com.magestore.app.lib.resourcemodel.user.UserDataAccess;
@@ -23,6 +24,36 @@ public class POSUserService extends AbstractService implements UserService {
     public static POSDataAccessSession session;
 
     /**
+     * Dựng base url từ domain do user nhập
+     * @param strDomain
+     * @return
+     */
+    public String buildPOSBaseURL(String strDomain) {
+        StringBuilder stringBuilder = new StringBuilder();
+        String strFinalDomain = strDomain;
+        if (strFinalDomain == null || strFinalDomain.trim().equals(""))
+            strFinalDomain = BuildConfig.DEFAULT_REST_BASE_URL;
+
+        int lastIndexOfApp = strFinalDomain.lastIndexOf("/");
+
+        if (!strFinalDomain.startsWith("http://") && !strFinalDomain.startsWith("https://")) {
+            if (BuildConfig.DEFAULT_REST_BASE_URL.startsWith("https://"))
+                stringBuilder.append("https://");
+            else
+                stringBuilder.append("http://");
+            stringBuilder.append(strFinalDomain);
+            if (lastIndexOfApp < 0) stringBuilder.append("/").append(BuildConfig.DEFAULT_REST_BASE_PAGE);
+            if (lastIndexOfApp == strFinalDomain.length() - 1) stringBuilder.append(BuildConfig.DEFAULT_REST_BASE_PAGE);
+        }
+        else {
+            stringBuilder.append(strFinalDomain);
+            if (lastIndexOfApp == strFinalDomain.indexOf("://") + 2) stringBuilder.append("/").append(BuildConfig.DEFAULT_REST_BASE_PAGE);
+            if (lastIndexOfApp == strFinalDomain.length() - 1) stringBuilder.append(BuildConfig.DEFAULT_REST_BASE_PAGE);
+        }
+        return stringBuilder.toString();
+    }
+
+    /**
      * Thực hiện đăng nhập, check đúng sai
      * @param domain
      * @param username
@@ -31,23 +62,30 @@ public class POSUserService extends AbstractService implements UserService {
      * @throws InstantiationException
      * @throws IllegalAccessException
      */
-    public boolean doLogin(String domain, String username, String password) throws InstantiationException, IllegalAccessException, IOException, ParseException {
+    @Override
+    public boolean doLogin(String domain, String proxyUser, String proxyPass, String username, String password) throws InstantiationException, IllegalAccessException, IOException, ParseException {
         // Gọi user gateway
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         UserDataAccess userGateway = factory.generateUserDataAccess();
-        String strBaseURL = userGateway.buildPOSBaseURL(domain);
+        String strBaseURL = buildPOSBaseURL(domain);
 
         // Thực hiện đăng nhập
         User user = new PosUser();
         user.setUserName(username);
         user.setPasswords(password);
-        String str = userGateway.login(strBaseURL, user);
+        String str = userGateway.login(strBaseURL, proxyUser, proxyPass, user);
         boolean success = (str != null && (!strfalse.equals(str)));
 
+        // nếu không đúng format session key thì thông báo lỗi
+        if (success && str.length() > 100) {
+            throw new IOException(str);
+        }
         // Lưu lại session ID
         if (success) {
             session.REST_SESSION_ID = str.trim().replace("\"", "");
             session.REST_BASE_URL = strBaseURL;
+            session.REST_USER_NAME = proxyUser;
+            session.REST_PASSWORD = proxyPass;
 
             // Lấy config hệ thống và lưu lại
             ServiceFactory serviceFactory = ServiceFactory.getFactory(getContext());

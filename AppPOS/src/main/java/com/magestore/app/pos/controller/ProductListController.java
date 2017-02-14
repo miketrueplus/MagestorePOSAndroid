@@ -25,10 +25,22 @@ import java.util.Map;
 
 public class ProductListController extends AbstractListController<Product> {
     static final int ACTION_CODE_RETRIEVE_BY_CATEGORY_ID = 0;
+    private Category mCategory = null;
 
     // Service xử lý các vấn đề liên quan đến product
     ProductService mProductService;
     CategoryListController mCategoryListController;
+
+    /**
+     * Đặt category id
+     *
+     * @param category
+     */
+    public void setCategory(Category category) {
+        mCategory = category;
+        clearList();
+        doRetrieve();
+    }
 
     public void setCategoryListController(CategoryListController mCategoryListController) {
         this.mCategoryListController = mCategoryListController;
@@ -100,25 +112,33 @@ public class ProductListController extends AbstractListController<Product> {
     }
 
     @Override
-    public Boolean doActionBackround(int actionType, String actionCode, Map<String, Object> wraper, Model... models) throws Exception {
-        if (actionType == ACTION_CODE_RETRIEVE_BY_CATEGORY_ID) {
-            String categoryID = ((Category) models[0]).getID();
-            wraper.put("list_product_by_category", mProductService.retrieve(categoryID, null, 1, 30));
-            return true;
-        }
-        return false;
+    public List<Product> onRetrieveBackground(int page, int pageSize) throws Exception {
+        if (mCategory == null || !(mListService instanceof ProductService))
+            return super.onRetrieveBackground(page, pageSize);
+        else
+            return ((ProductService) mListService).retrieve(mCategory.getID(), null, page, pageSize);
     }
 
-    @Override
-    public void onActionPostExecute(boolean success, int actionType, String actionCode, Map<String, Object> wraper, Model... models) {
-        if (success && actionType == ACTION_CODE_RETRIEVE_BY_CATEGORY_ID) {
-            List<Product> listProduct = (List<Product>) wraper.get("list_product_by_category");
-            mList = new ArrayList<>();
-            mList.addAll(listProduct);
-            bindList(mList);
-            mView.notifyDataSetChanged();
-        }
-    }
+//    @Override
+//    public Boolean doActionBackround(int actionType, String actionCode, Map<String, Object> wraper, Model... models) throws Exception {
+//        if (actionType == ACTION_CODE_RETRIEVE_BY_CATEGORY_ID) {
+//            String categoryID = ((Category) models[0]).getID();
+//            wraper.put("list_product_by_category", mProductService.retrieve(categoryID, null, 1, 30));
+//            return true;
+//        }
+//        return false;
+//    }
+//
+//    @Override
+//    public void onActionPostExecute(boolean success, int actionType, String actionCode, Map<String, Object> wraper, Model... models) {
+//        if (success && actionType == ACTION_CODE_RETRIEVE_BY_CATEGORY_ID) {
+//            List<Product> listProduct = (List<Product>) wraper.get("list_product_by_category");
+//            mList = new ArrayList<>();
+//            mList.addAll(listProduct);
+//            bindList(mList);
+//            mView.notifyDataSetChanged();
+//        }
+//    }
 
     /**
      * Bind 1 sản phẩm vào controller để xử lý

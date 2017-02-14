@@ -17,6 +17,8 @@ public abstract  class EndlessRecyclerOnScrollListener extends RecyclerView.OnSc
     private int visibleThreshold = 5; // The minimum amount of items to have below your current scroll position before loading more.
     int firstVisibleItem, visibleItemCount, totalItemCount;
 
+    boolean mblnLockLazyLoading = false;
+    boolean mblnEnableLazyLoading = true;
     private int current_page = 1;
 
     private LinearLayoutManager mLinearLayoutManager;
@@ -26,8 +28,9 @@ public abstract  class EndlessRecyclerOnScrollListener extends RecyclerView.OnSc
     }
 
     @Override
-    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+    public synchronized void onScrolled(RecyclerView recyclerView, int dx, int dy) {
         super.onScrolled(recyclerView, dx, dy);
+        if (mblnLockLazyLoading || !mblnEnableLazyLoading) return;
 
         visibleItemCount = recyclerView.getChildCount();
         totalItemCount = mLinearLayoutManager.getItemCount();
@@ -45,9 +48,49 @@ public abstract  class EndlessRecyclerOnScrollListener extends RecyclerView.OnSc
 
             // Do something
             current_page++;
+            lockLazyLoading(true);
             onLoadMore(current_page);
             loading = true;
         }
+    }
+
+    /**
+     * Khóa trạng thái ngừng lazyloading
+     * @param lock
+     */
+    public void lockLazyLoading(boolean lock) {
+        mblnLockLazyLoading = lock;
+    }
+
+    /**
+     * Bật tắt lazy loading
+     */
+    public void enableLazyLoading(boolean enable) {
+        mblnEnableLazyLoading = enable;
+    }
+
+    /**
+     * Đang lock lazy loading hay không
+     * @return
+     */
+    public boolean isLockLazyLoading() {
+        return mblnLockLazyLoading;
+    }
+
+    /**
+     * Cho phép lazy loading hay không
+     * @return
+     */
+    public boolean isEnableLazyLoading() {
+        return mblnEnableLazyLoading;
+    }
+
+    /**
+     * Đặt page hiện tại
+     */
+    public void resetCurrentPage() {
+        current_page = 0;
+        previousTotal = 0;
     }
 
     public abstract void onLoadMore(int current_page);

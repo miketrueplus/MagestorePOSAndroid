@@ -107,12 +107,12 @@ public interface ListController<TModel extends Model>
      */
     void onInsertPostExecute(Boolean success, TModel... models);
 
-    /**
-     * Thiết lập các phân trang
-     * @param pageSize
-     * @param pageMax
-     */
-    void setPage(int pageSize, int pageMax);
+//    /**
+//     * Thiết lập các phân trang
+//     * @param pageSize
+//     * @param pageMax
+//     */
+//    void setPage(int pageSize, int pageMax);
 
     void setConfigService(ConfigService service);
 

@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.magestore.app.lib.*;
 import com.magestore.app.lib.task.Task;
 import com.magestore.app.lib.task.TaskListener;
 import com.magestore.app.pos.task.LoginTask;
@@ -100,7 +101,7 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
      */
     protected void initControlValue() {
         // Lấy domain là domain của lần đăng nhập cuối mà thành công
-        mDomainView.setText(getSharedValue("login_activity_domain", "demo-magento2.magestore.com").trim());
+        mDomainView.setText(getSharedValue("login_activity_domain", BuildConfig.REST_BASE_URL).trim());
     }
 
     /**
@@ -147,6 +148,36 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
     }
 
     /**
+     * Dựng base url từ domain do user nhập
+     * @param strDomain
+     * @return
+     */
+    public String buildPOSBaseURL(String strDomain) {
+        StringBuilder stringBuilder = new StringBuilder();
+        String strFinalDomain = strDomain;
+        if (strFinalDomain == null || strFinalDomain.trim().equals(""))
+            strFinalDomain = BuildConfig.REST_BASE_URL;
+
+        int lastIndexOfApp = strFinalDomain.lastIndexOf("/");
+
+        if (!strFinalDomain.startsWith("http://") && !strFinalDomain.startsWith("https://")) {
+            if (BuildConfig.REST_BASE_URL.startsWith("https://"))
+                stringBuilder.append("https://");
+            else
+                stringBuilder.append("http://");
+            stringBuilder.append(strFinalDomain);
+            if (lastIndexOfApp < 0) stringBuilder.append("/").append(BuildConfig.REST_BASE_PAGE);
+            if (lastIndexOfApp == strFinalDomain.length() - 1) stringBuilder.append(BuildConfig.REST_BASE_PAGE);
+        }
+        else {
+            stringBuilder.append(strFinalDomain);
+            if (lastIndexOfApp == strFinalDomain.indexOf("://") + 2) stringBuilder.append("/").append(BuildConfig.REST_BASE_PAGE);
+            if (lastIndexOfApp == strFinalDomain.length() - 1) stringBuilder.append(BuildConfig.REST_BASE_PAGE);
+        }
+        return stringBuilder.toString();
+    }
+
+    /**
      * Được gọi khi nút login được nhấn hoặc người dùng ấn enter lúc password
      */
     private void attemptLogin() {
@@ -172,8 +203,9 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
             String username = mUserNameView.getText().toString().trim();
             String password = mPasswordView.getText().toString().trim();
 
+            String strFinalDomain = buildPOSBaseURL(domain);
             // Bắt đầu login task
-            mAuthTask = new LoginTask(new LoginListener(), domain, username, password);
+            mAuthTask = new LoginTask(new LoginListener(), strFinalDomain, username, password);
 //            mAuthTask.execute();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) // Above Api Level 13
             {

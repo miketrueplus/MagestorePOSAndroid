@@ -36,24 +36,6 @@ public class POSUserDataAccess extends POSAbstractDataAccess implements UserData
     }
 
     /**
-     * Dựng base url từ domain do user nhập
-     * @param strDomain
-     * @return
-     */
-    @Override
-    public String buildPOSBaseURL(String strDomain) {
-        if (strDomain == null) return BuildConfig.REST_BASE_URL;
-        StringBuilder stringBuilder = new StringBuilder();
-        if (BuildConfig.REST_BASE_URL.startsWith("http://"))
-            stringBuilder.append("http://");
-        else
-            stringBuilder.append("https://");
-        stringBuilder.append(strDomain);
-        if (strDomain.indexOf("/") < 0) stringBuilder.append("/").append(BuildConfig.REST_BASE_PAGE);
-        return stringBuilder.toString();
-    }
-
-    /**
      * Login, xem đúng user name và password
      * Nếu đúng trả lại session id, nếu k0 trả lại "false"
      * HTTP POST
@@ -67,13 +49,13 @@ public class POSUserDataAccess extends POSAbstractDataAccess implements UserData
      * @throws IOException
      */
     @Override
-    public String login(String domain, final User user) throws ParseException, ConnectionException, DataAccessException, IOException {
+    public String login(String domain, String proxyUser, String proxyPassword, final User user) throws ParseException, ConnectionException, DataAccessException, IOException {
         Connection connection = null;
         Statement statement = null;
         ResultReading rp = null;
         try {
             // Khởi tạo connection
-            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
+            connection = ConnectionFactory.generateConnection(getContext(), domain, proxyUser, proxyPassword);
 //            connection = MagestoreConnection.getConnection(domain, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
             statement = connection.createStatement();
             statement.prepareQuery(POSAPI.REST_LOGIN);

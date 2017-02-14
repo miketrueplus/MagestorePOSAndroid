@@ -12,7 +12,7 @@ import java.text.ParseException;
  */
 
 public interface UserService extends Service {
-    boolean doLogin(String domain, String username, String password) throws InstantiationException, IllegalAccessException, IOException, ParseException;
+    boolean doLogin(String domain, String proxyUser, String proxyPass, String username, String password) throws InstantiationException, IllegalAccessException, IOException, ParseException;
     void doLogout();
     boolean isLogin();
 }

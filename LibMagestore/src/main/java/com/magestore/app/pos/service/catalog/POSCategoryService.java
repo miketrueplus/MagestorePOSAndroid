@@ -43,7 +43,8 @@ public class POSCategoryService extends AbstractService implements CategoryServi
 
     @Override
     public List<Category> retrieve() throws IOException, InstantiationException, ParseException, IllegalAccessException {
-        return null;
+        // Lấy danh sách Category
+        return retrieve(1, 500);
     }
 
     @Override

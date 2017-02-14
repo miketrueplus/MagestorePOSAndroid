@@ -59,7 +59,17 @@
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:layout_gravity="center"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="@dimen/layout_margin"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/txt_msg_product_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/layout_margin"
                 android:visibility="gone" />
 
             <FrameLayout
@@ -85,7 +95,7 @@
 
             </FrameLayout>
 
-            <android.support.v7.widget.RecyclerView xmlns:tools="http://schemas.android.com/tools"
+            <com.magestore.app.lib.view.ListRecycleView xmlns:tools="http://schemas.android.com/tools"
                 android:id="@+id/product_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -94,6 +104,9 @@
                 android:layout_centerVertical="true"
                 android:layout_gravity="center"
                 android:columnCount="1"
+                magestore_view:layout_item_progress="@+id/progress_product_list_card_view"
+                magestore_view:layout_item_msg="@+id/msg_product_list_card_view"
+                magestore_view:layout_item_content="@+id/display_product"
                 app:layoutManager="GridLayoutManager"
                 tools:listitem="@layout/card_product_list_content" />
         </RelativeLayout>

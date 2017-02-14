@@ -29,10 +29,9 @@ public abstract class AbstractListController<TModel extends Model>
         implements ListController<TModel> {
 
     // tham chiếu phân trang
-    private int mintPageSize = 500;
-    private int mintPageFirst = 1;
-    private int mintPageSizeMax = 500;
-    private boolean lazyLoading = false;
+//    private int mintPageSize = 500;
+//    private int mintItemMax = 500;
+//    private boolean mHaveLazyLoading = false;
 
     // tự động chọn item đầu tiên trong danh sách
     boolean mblnAutoChooseFirstItem = true;
@@ -59,32 +58,36 @@ public abstract class AbstractListController<TModel extends Model>
         mblnAutoChooseFirstItem = auto;
     }
 
-    @Override
-    public void setPage(int pageSize, int pageMax) {
-        mintPageSize = pageSize;
-        mintPageSizeMax = pageMax;
-        lazyLoading = true;
-    }
+//    @Override
+//    public void setPage(int pageSize, int pageItemMax, boolean haveLazyLoading) {
+//        mintPageSize = pageSize;
+//        mintItemMax = pageItemMax;
+//        lazyLoading = (pageSize > 0);
+//    }
 
     /**
      * Clear danh sách
      */
     public void clearList() {
         mList = null;
-        mView.notifyDataSetChanged();
+        mView.clearList();
+//        mView.notifyDataSetChanged();
     }
 
     /**
      * Thiết lập danh sách, cho hiển thị lên view
+     *
      * @param list
      */
     public void bindList(List<TModel> list) {
         mList = list;
         mView.bindList(mList);
+//        mView.notifyDataSetChanged();
     }
 
     /**
      * Sự kiện lúc chọn được data, cập nhật cả view và dữ liệu
+     *
      * @param item
      */
     @Override
@@ -105,6 +108,7 @@ public abstract class AbstractListController<TModel extends Model>
 
     /**
      * Đặt list panel để quản lý hiển thị cho panel
+     *
      * @param view
      */
     public void setListPanel(AbstractListPanel<TModel> view) {
@@ -115,6 +119,7 @@ public abstract class AbstractListController<TModel extends Model>
 
     /**
      * Thực hiện tải dữ liệu, xác định xem có tự động chọn item đầu tiên không
+     *
      * @param blnAutoChooseFirstItem
      */
     public void doLoadData(boolean blnAutoChooseFirstItem) {
@@ -126,9 +131,9 @@ public abstract class AbstractListController<TModel extends Model>
      * Thực hiện load dữ liệu lúc đầu mở view
      */
     @Override
-    public void doRetrieve(){
+    public void doRetrieve() {
         // chuẩn bị task load data
-        doRetrieve(1, mintPageSize);
+        doRetrieve(1, mView.getPageSize());
 
     }
 
@@ -136,50 +141,66 @@ public abstract class AbstractListController<TModel extends Model>
      * Thực hiện load dữ liệu lúc đầu mở view
      */
     @Override
-    public void doRetrieve(int page, int pageSize){
+    public void doRetrieve(int page, int pageSize) {
         // chuẩn bị task load data
+        mView.lockLazyLoading(true);
         RetrieveListTask<TModel> task = new RetrieveListTask<TModel>(this);
         task.doExecute(page, pageSize);
-        doShowProgress(true);
+        if (page == 1) doShowProgress(true);
 
     }
 
     /**
      * Load data từ background ngầm, các lớp con sẽ nạp chồng hàm này
+     *
      * @return
      * @throws Exception
      */
     @Override
     public List<TModel> onRetrieveBackground(int page, int pageSize) throws Exception {
-        if (mListService != null)
-            return mListService.retrieve(page, pageSize);
-        else
-            return loadDataBackground();
+        List<TModel> returnList;
+        if (mListService != null) {
+            if (pageSize > 0)
+                returnList = mListService.retrieve(page, pageSize);
+            else returnList = mListService.retrieve();
+        } else
+            returnList = loadDataBackground();
+        return returnList;
     }
 
     /**
      * Sự kiện sau khi load dữ liệu
+     *
      * @param list
      */
     @Override
-    public void onRetrievePostExecute(List<TModel> list) {
+    public synchronized void onRetrievePostExecute(List<TModel> list) {
         // tắt progress
         doShowProgress(false);
-        if (lazyLoading && ((list == null) || (list.size() <= 0))) return;
+        // xem chế độ là lazyloading hay k0
+        if (mView.haveLazyLoading()) {
+            if (mList == null || mList.size() == 0) {
+                bindList(list);
 
-        // xóa danh sách cũ đi nếu k0 chạy lazyloading
-        if (!lazyLoading) {
-            if (mList != null) mList.clear();
-            mList = null;
-        }
+                // disable lazyloading nếu đã là cuối danh sách
+                mView.enableLazyLoading(!(list == null || list.size() < mView.getPageSize()));
+                mView.lockLazyLoading(false);
 
-        // gọi lại method đặt tên theo phiên bản cũ
-        if (mList != null) {
-            mList.addAll(list);
-            mView.notifyDataSetInsertLastItem(list);
-            mView.setItemLoadingProgress(null, false);
-        }
-        else {
+                // Chọn item đầu tiên
+                if (mblnAutoChooseFirstItem && mList != null && mDetailView != null && mList.size() > 0)
+                    bindItem(mList.get(0));
+            } else {
+                // disable lazyloading nếu đã là cuối danh sách
+                if (list == null || list.size() < mView.getPageSize())
+                    mView.enableLazyLoading(false);
+
+                // bổ sung thêm vào list theo lazyloading
+                mList.addAll(list);
+                mView.notifyDataSetInsertLastItem(list);
+                mView.setItemLoadingProgress(null, false);
+                mView.lockLazyLoading(false);
+            }
+        } else {
             bindList(list);
 
             // Chọn item đầu tiên
@@ -191,6 +212,7 @@ public abstract class AbstractListController<TModel extends Model>
     /**
      * Load data từ background ngầm, các lớp con sẽ nạp chồng hàm này
      * Bản cũ không dùng nữa
+     *
      * @return
      * @throws Exception
      */
@@ -210,11 +232,11 @@ public abstract class AbstractListController<TModel extends Model>
 
     /**
      * Overider hàm này để xử lý nghiệp vụ update trên một thread khác
+     *
      * @throws Exception
      */
     @Override
-    public boolean onUpdateBackGround(TModel oldModel, TModel newModels) throws Exception
-    {
+    public boolean onUpdateBackGround(TModel oldModel, TModel newModels) throws Exception {
         if (mListService != null)
             return mListService.update(oldModel, newModels);
         return false;
@@ -222,6 +244,7 @@ public abstract class AbstractListController<TModel extends Model>
 
     /**
      * Cập nhật thành công
+     *
      * @param success
      */
     @Override
@@ -241,11 +264,11 @@ public abstract class AbstractListController<TModel extends Model>
 
     /**
      * Overider hàm này để xử lý nghiệp vụ insert
+     *
      * @throws Exception
      */
     @Override
-    public boolean onDeleteBackGround(TModel... models) throws Exception
-    {
+    public boolean onDeleteBackGround(TModel... models) throws Exception {
         if (mListService != null)
             return mListService.delete(models);
         return false;
@@ -253,6 +276,7 @@ public abstract class AbstractListController<TModel extends Model>
 
     /**
      * Xóa thành công
+     *
      * @param success
      */
     @Override
@@ -272,13 +296,13 @@ public abstract class AbstractListController<TModel extends Model>
 
     /**
      * Overider hàm này để xử lý nghiệp vụ insert
+     *
      * @param params
      * @throws Exception
      */
     @Override
     public boolean onInsertBackground(TModel... params)
-            throws Exception
-    {
+            throws Exception {
         if (mListService != null)
             return mListService.insert(params);
         return false;
@@ -286,6 +310,7 @@ public abstract class AbstractListController<TModel extends Model>
 
     /**
      * Insert thành công
+     *
      * @param success
      */
     @Override
@@ -304,6 +329,7 @@ public abstract class AbstractListController<TModel extends Model>
 
     /**
      * Chỉ định 1 item được chọn về mặt dataset, k0 có update view
+     *
      * @param model
      */
     public void setSelectedItem(TModel model) {
@@ -312,6 +338,7 @@ public abstract class AbstractListController<TModel extends Model>
 
     /**
      * Trả về item đã được chọn trên danh sách
+     *
      * @return
      */
     public TModel getSelectedItem() {
@@ -320,6 +347,7 @@ public abstract class AbstractListController<TModel extends Model>
 
     /**
      * Trả lại danh sách nhiều item được chọn
+     *
      * @return
      */
     public List<TModel> getSelectedItems() {
@@ -330,6 +358,7 @@ public abstract class AbstractListController<TModel extends Model>
 
     /**
      * Chỉ định tập hợp các item được chọn, k0 thay đổi view, chỉ về mặt dữ liệu
+     *
      * @param models
      */
     public void setSelectedItem(List<TModel> models) {
@@ -338,6 +367,7 @@ public abstract class AbstractListController<TModel extends Model>
 
     /**
      * Chỉ định list service
+     *
      * @param service
      */
     @Override
@@ -347,6 +377,7 @@ public abstract class AbstractListController<TModel extends Model>
 
     /**
      * Trả về list service xử lý thao tác
+     *
      * @return
      */
     @Override
@@ -356,6 +387,7 @@ public abstract class AbstractListController<TModel extends Model>
 
     /**
      * Khởi tạo mới 1 model
+     *
      * @return
      */
     @Override
@@ -365,16 +397,17 @@ public abstract class AbstractListController<TModel extends Model>
 
     /**
      * lấy số trang
+     *
      * @param page
      */
     @Override
     public void doRetrieveMore(int page) {
-        doRetrieve(page, mintPageSize);
-        mView.setItemLoadingProgress(null, true);
+        doRetrieve(page, mView.getPageSize());
     }
 
     /**
      * Bật tắt, hiển thị detail
+     *
      * @param show
      */
     @Override

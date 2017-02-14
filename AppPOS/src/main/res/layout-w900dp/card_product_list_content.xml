@@ -19,83 +19,98 @@
         android:layout_margin="@dimen/layout_margin"
         card_view:cardCornerRadius="@dimen/layout_margin">
 
-        <ProgressBar
-            android:id="@+id/progress_product"
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:visibility="gone" />
-
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/display_product"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:background="@drawable/list_item_selector"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/product_image"
+            <ProgressBar
+                android:id="@+id/progress_product_list_card_view"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginBottom="8dp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/msg_product_list_card_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:visibility="gone" />
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/display_product"
                 android:layout_width="match_parent"
-                android:layout_height="120dp"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:src="@mipmap/ic_unknow_products" />
+                android:background="@drawable/list_item_selector"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/layout_margin"
-                android:layout_marginRight="@dimen/layout_margin"
-                android:ellipsize="end"
-                android:text="@{product.getName()}"
-                android:lines="2"
-                android:textAppearance="?attr/textAppearanceListItem" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                <ImageView
+                    android:id="@+id/product_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:layout_gravity="center"
+                    android:src="@mipmap/ic_unknow_products" />
 
                 <TextView
-                    android:id="@+id/sku"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/name"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_gravity="left"
                     android:layout_marginLeft="@dimen/layout_margin"
                     android:layout_marginRight="@dimen/layout_margin"
-                    android:layout_weight="1"
-                    android:text="@{product.getSKU()}"
-                    android:textAppearance="?attr/textAppearanceListItem"
-                    android:textStyle="italic" />
+                    android:ellipsize="end"
+                    android:lines="2"
+                    android:text="@{product.getName()}"
+                    android:textAppearance="?attr/textAppearanceListItem" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/sku"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_gravity="left"
+                        android:layout_marginLeft="@dimen/layout_margin"
+                        android:layout_marginRight="@dimen/layout_margin"
+                        android:layout_weight="1"
+                        android:text="@{product.getSKU()}"
+                        android:textAppearance="?attr/textAppearanceListItem"
+                        android:textStyle="italic" />
+
+                    <TextView
+                        android:id="@+id/price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_gravity="right"
+                        android:layout_marginLeft="@dimen/layout_margin"
+                        android:layout_marginRight="@dimen/layout_margin"
+                        android:layout_toRightOf="@+id/sku"
+                        android:gravity="right"
+                        android:text="@{ConfigUtil.formatPrice(product.getPrice())}"
+                        android:textAppearance="?attr/textAppearanceListItem"
+                        android:textStyle="normal|bold" />
+                </LinearLayout>
 
                 <TextView
-                    android:id="@+id/price"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/avaiable"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_gravity="right"
                     android:layout_marginLeft="@dimen/layout_margin"
                     android:layout_marginRight="@dimen/layout_margin"
-                    android:layout_toRightOf="@+id/sku"
-                    android:gravity="right"
-                    android:text="@{ConfigUtil.formatPrice(product.getPrice())}"
+                    android:text="@string/avaibles"
                     android:textAppearance="?attr/textAppearanceListItem"
-                    android:textStyle="normal|bold" />
+                    android:textColor="@android:color/darker_gray" />
             </LinearLayout>
-
-            <TextView
-                android:id="@+id/avaiable"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/layout_margin"
-                android:layout_marginRight="@dimen/layout_margin"
-                android:text="@string/avaibles"
-                android:textAppearance="?attr/textAppearanceListItem"
-                android:textColor="@android:color/darker_gray" />
-        </LinearLayout>
+        </RelativeLayout>
     </android.support.v7.widget.CardView>
 
 </layout>

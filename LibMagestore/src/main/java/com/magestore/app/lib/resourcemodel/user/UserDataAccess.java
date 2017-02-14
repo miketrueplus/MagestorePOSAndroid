@@ -15,12 +15,10 @@ import java.text.ParseException;
  */
 
 public interface UserDataAccess extends DataAccess {
-
-    String buildPOSBaseURL(String strDomain);
     /**
      * Thực hiện login với username và password
      * @return Trả lại user id đăng nhập
      * @throws DataAccessException
      */
-    String login(String domain, User user) throws ParseException, ConnectionException, DataAccessException, IOException;
+    String login(String domain, String proxyUser, String proxyPassword, User user) throws ParseException, ConnectionException, DataAccessException, IOException;
 }

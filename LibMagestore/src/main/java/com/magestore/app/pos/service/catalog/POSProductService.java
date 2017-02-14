@@ -135,7 +135,7 @@ public class POSProductService extends AbstractService implements ProductService
     }
 
     @Override
-    public List<Product> retrieve(String categoryId, String searchString, int pageSize, int currentPage) throws InstantiationException, IllegalAccessException, IOException, ParseException {
+    public List<Product> retrieve(String categoryId, String searchString, int currentPage, int pageSize) throws InstantiationException, IllegalAccessException, IOException, ParseException {
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         ProductDataAccess productDataAccess = factory.generateProductDataAccess();
         return productDataAccess.retrieve(categoryId, searchString, pageSize, currentPage);

@@ -38,10 +38,11 @@ public class LoginTask extends AsyncTaskAbstractTask<Void, Void, Boolean> {
     @Override
     protected Boolean doInBackground(Void... params) {
         try {
+            // điều chỉnh domain
             // Gọi use case đăng nhập
             ServiceFactory serviceFactory = ServiceFactory.getFactory(null);
             UserService userAccount = serviceFactory.generateUserService();
-            return userAccount.doLogin(mDomain, mUserName, mPassword);
+            return userAccount.doLogin(mDomain, "", "", mUserName, mPassword);
         } catch (Exception e) {
             cancel(e, true);
             return false;

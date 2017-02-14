@@ -8,6 +8,7 @@
         <attr name="layout_item_msg" format="reference" />
         <attr name="layout_list" format="reference" />
         <attr name="layout_progress" format="reference" />
+        <attr name="layout_msg" format="reference" />
         <attr name="layout_panel" format="reference" />
         <attr name="layout_row" format="reference" />
         <attr name="layout_header" format="reference" />

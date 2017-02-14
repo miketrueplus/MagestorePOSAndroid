@@ -13,7 +13,10 @@ import com.magestore.app.lib.connection.ConnectionException;
 import com.magestore.app.lib.connection.ParamBuilder;
 import com.magestore.app.lib.connection.ResultReading;
 import com.magestore.app.lib.connection.Statement;
+import com.magestore.app.pos.model.exception.PosMessageException;
+import com.magestore.app.pos.model.exception.PosMessageException500;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosExclude;
+import com.magestore.app.pos.parse.gson2pos.Gson2PosMesssageExceptionImplement;
 
 import java.io.IOException;
 import org.apache.commons.lang3.text.StrSubstitutor;
@@ -310,7 +313,15 @@ public class MagestoreStatement implements Statement {
         else {
             // có lỗi, ném ra exception
             MagestoreResultReadingException rp = new MagestoreResultReadingException(mHttpConnection.getErrorStream(), statusCode);
-            throw new ConnectionException(rp.readResult2String());
+            rp.setParseImplement(Gson2PosMesssageExceptionImplement.class);
+            if (statusCode == 500)  {
+                rp.setParseModel(PosMessageException500.class);
+                throw new ConnectionException(((PosMessageException500) rp.doParse()).getMessage());
+            }
+            else {
+                rp.setParseModel(PosMessageException.class);
+                throw new ConnectionException(((PosMessageException) rp.doParse()).getMessage());
+            }
         }
     }
 

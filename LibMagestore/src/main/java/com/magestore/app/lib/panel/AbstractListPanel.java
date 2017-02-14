@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.magestore.app.lib.R;
 
@@ -25,6 +26,7 @@ import com.magestore.app.lib.view.EndlessRecyclerOnScrollListener;
 import com.magestore.app.lib.view.ListRecycleView;
 import com.magestore.app.lib.view.MagestoreView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -56,8 +58,14 @@ public abstract class AbstractListPanel<TModel extends Model>
     // tham chiếu id layout của progress
     private int mintProgresLayout;
 
+    // tham chiếu id của thông báo lỗi
+    private int mintTxtErrMsg;
+
     // tham chiếu layout của progress
     private View mProgressView;
+
+    // tham chiếu layout thông báo lỗi
+    private TextView mTxtErrorMsg;
 
     private int mintItemProgressLayout;
 
@@ -71,9 +79,9 @@ public abstract class AbstractListPanel<TModel extends Model>
     private int mintSpanCount = 1;
 
     // tham chiếu phân trang
-    private int mintPageSize = 10;
-    private int mintPageFirst = 1;
-    private int mintPageSizeMax = 500;
+    private int mintPageSize = -1;
+    private int mintItemMax = 500;
+    private boolean haveLazyLoading = false;
 
     private int mintOrientation = LinearLayoutManager.VERTICAL;
 
@@ -83,6 +91,9 @@ public abstract class AbstractListPanel<TModel extends Model>
     // loading progress của từng item
     TModel mModelLoadingProgress = null;
     boolean mblnModelLoadingProgress = false;
+
+    // scroll litsenr cho lazy loading
+    EndlessRecyclerOnScrollListener mScrollListener;
 
     /**
      * Khởi tạo
@@ -132,6 +143,8 @@ public abstract class AbstractListPanel<TModel extends Model>
         mintPanelLayout = a.getResourceId(R.styleable.magestore_view_layout_panel, -1);
         // layout id của progress hiển thị quá trình loading
         mintProgresLayout = a.getResourceId(R.styleable.magestore_view_layout_progress, -1);
+        // layout id của progress hiển thị quá trình loading
+        mintTxtErrMsg = a.getResourceId(R.styleable.magestore_view_layout_msg, -1);
         // layout mỗi ô trong list
         mintItemLayout = a.getResourceId(R.styleable.magestore_view_layout_item, -1);
         // layout của list
@@ -142,11 +155,14 @@ public abstract class AbstractListPanel<TModel extends Model>
         mintSpanCount = a.getInteger(R.styleable.magestore_view_layout_span_count, 1);
 
         // kích thước phân trang, số item tối đa
-        mintPageSize = a.getInteger(R.styleable.magestore_view_page_size, 500);
-        mintPageFirst = a.getInteger(R.styleable.magestore_view_page_size, 10);
-        mintPageSizeMax = a.getInteger(R.styleable.magestore_view_page_size_max, 10);
+        mintPageSize = a.getInteger(R.styleable.magestore_view_page_size, -1);
+        mintItemMax = a.getInteger(R.styleable.magestore_view_page_size_max, 500);
 
         a.recycle();
+
+        // xác định các tham só cho lazy loading
+        haveLazyLoading = mintPageSize > 0;
+        if (mintPageSize <= 0) mintPageSize = mintItemMax;
 
         // tham chiêu file layout của panel
         if (mintPanelLayout > -1) setLayoutPanel(mintPanelLayout);
@@ -159,11 +175,29 @@ public abstract class AbstractListPanel<TModel extends Model>
             mRecycleView = (RecyclerView) findViewById(mintListLayout);
             mRecycleViewLayoutManager = new GridLayoutManager(this.getContext(), mintSpanCount, mintOrientation, false);
             mRecycleView.setLayoutManager(mRecycleViewLayoutManager);
+            if (haveLazyLoading) {
+                mScrollListener = new EndlessRecyclerOnScrollListener(mRecycleViewLayoutManager) {
+                    @Override
+                    public void onLoadMore(int current_page) {
+                        // loading dữ liệu
+                        mController.doRetrieveMore(current_page);
+                        // hiện progress loading ở item cuối cùng
+                        setItemLoadingProgress(null, true);
+
+                    }
+                };
+                mRecycleView.setOnScrollListener(mScrollListener);
+            }
         }
 
         // tham chiếu layout của progressbar
         if (mintProgresLayout > -1) {
             mProgressView = findViewById(mintProgresLayout);
+        }
+
+        // tham chiếu layout của thông báo lỗi
+        if (mintTxtErrMsg > -1) {
+            mTxtErrorMsg = (TextView) findViewById(mintTxtErrMsg);
         }
     }
 
@@ -219,21 +253,11 @@ public abstract class AbstractListPanel<TModel extends Model>
         // nếu danh sách đã có số liệu, không show progress nữa
         if ((mRecycleView.getAdapter() != null) && mRecycleView.getAdapter().getItemCount() > 0)
             return;
-// On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
         // for very easy animations. If available, use these APIs to fade-in
         // the progress spinner.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-
-//            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-//            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
-//                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-//                @Override
-//                public void onAnimationEnd(Animator animation) {
-//                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-//                }
-//            });
-
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
             mProgressView.animate().setDuration(shortAnimTime).alpha(
                     show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
@@ -257,7 +281,7 @@ public abstract class AbstractListPanel<TModel extends Model>
      */
     public void setController(ListController<TModel> controller) {
         mController = controller;
-        if (mintPageSize < 500) mController.setPage(mintPageSize, mintPageSizeMax);
+//        mController.setPage(mintPageSize, mintItemMax);
     }
 
     /**
@@ -268,29 +292,81 @@ public abstract class AbstractListPanel<TModel extends Model>
     }
 
     /**
+     * Clear danh sách
+     */
+    public void clearList() {
+        // null tham chiếu list
+        mList = null;
+        if (mRecycleView == null) return;
+
+        // tạo adapter với zero phần tử
+        mRecycleView.setAdapter(new AbstractListPanel<TModel>.ListRecyclerViewAdapter(new ArrayList<TModel>()));
+
+        // reset lại controll listener
+        if (mScrollListener!=null) mScrollListener.resetCurrentPage();
+
+        // cập nhật giao diện
+        notifyDataSetChanged();
+
+        // disable lazy loading
+        enableLazyLoading(false);
+    }
+
+    /**
      * Gán danh sách và cập nhật view
      *
      * @param list
      */
     public void bindList(List<TModel> list) {
-        mList = list;
         if (mRecycleView == null) return;
+
+        // đặt tham chiếu cho list
+        mList = list;
         if (mList != null) {
+            // khởi tạo adapter
             mRecycleView.setAdapter(new AbstractListPanel<TModel>.ListRecyclerViewAdapter(mList));
+
+            // đặt lại scroll listener cho lazy loading
+            if (mScrollListener!=null) mScrollListener.resetCurrentPage();
         }
 
-        if (mintPageSize < 500)
-            mRecycleView.setOnScrollListener(new EndlessRecyclerOnScrollListener(mRecycleViewLayoutManager) {
-                @Override
-                public void onLoadMore(int current_page) {
-                    mController.doRetrieveMore(current_page);
-                }
-            });
+        // notify view thay đổi
+        notifyDataSetChanged();
+    }
+
+    /**
+     * Có sử dụng lazy loading hay không
+     * @return
+     */
+    public boolean haveLazyLoading() {
+        return haveLazyLoading;
+    }
+
+    public int getPageSize() { return mintPageSize;}
+    public int getItemMax() {return mintItemMax;}
+
+    /**
+     * Tạm khóa lazyloading trong khi đang load dữ liệu
+     * @param lock
+     */
+    public void lockLazyLoading(boolean lock) {
+        if (mScrollListener != null) mScrollListener.lockLazyLoading(lock);
+    }
+
+    /**
+     * Bật tắt layzyloading
+     */
+    public void enableLazyLoading(boolean enable) {
+        if (mScrollListener != null) mScrollListener.enableLazyLoading(enable);
+//        if (mRecycleView == null) return;
+//        if (enable)
+//            mRecycleView.setOnScrollListener(mScrollListener);
+//        else
+//            mRecycleView.setOnScrollListener(null);
     }
 
     /**
      * Map mỗi item tương ứng với view trên danh sách
-     *
      * @param view
      * @param item
      */
@@ -376,7 +452,10 @@ public abstract class AbstractListPanel<TModel extends Model>
             int valueReturn = 0;
             if (mList == null) valueReturn = 0;
             else valueReturn = mList.size();
-            if (mblnModelLoadingProgress && (mModelLoadingProgress == null)) valueReturn++;
+            if (mblnModelLoadingProgress
+                    && (mModelLoadingProgress == null))
+//                    && (mScrollListener != null && mScrollListener.isEnableLazyLoading() && !mScrollListener.isLockLazyLoading()))
+                valueReturn++;
             return valueReturn;
         }
 
@@ -428,6 +507,7 @@ public abstract class AbstractListPanel<TModel extends Model>
      * Có sự thay đổi số liệu, cập nhật lại giao diện
      */
     public void notifyDataSetChanged() {
+        if (mRecycleView == null) return;
         RecyclerView.Adapter adapter = mRecycleView.getAdapter();
         if (adapter != null)
             adapter.notifyDataSetChanged();
@@ -497,19 +577,22 @@ public abstract class AbstractListPanel<TModel extends Model>
      * @param strMsg
      */
     public void showErrorMsg(String strMsg) {
-        new AlertDialog.Builder(getContext())
-                .setMessage(strMsg)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show();
+        if (mTxtErrorMsg != null) {
+            mTxtErrorMsg.setText(strMsg);
+            mTxtErrorMsg.setVisibility(VISIBLE);
+        }
+        else {
+            new AlertDialog.Builder(getContext())
+                    .setMessage(strMsg)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        }
     }
 
     @Override
     public void showErrorMsg(Exception exp) {
         exp.printStackTrace();
-        new AlertDialog.Builder(getContext())
-                .setMessage(exp.getMessage())
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show();
+        showErrorMsg(exp.getMessage());
     }
 
     /**
@@ -522,7 +605,13 @@ public abstract class AbstractListPanel<TModel extends Model>
         mblnModelLoadingProgress = show;
     }
 
+    /**
+     * Hiwwne thị quá trình show loading cho item
+     * @param v
+     * @param show
+     */
     public void showItemLoadingProgres(View v, boolean show) {
+        if (mRecycleView == null) return;
         if (mRecycleView instanceof ListRecycleView) {
             ((ListRecycleView) mRecycleView).showProgress(v, show);
         }

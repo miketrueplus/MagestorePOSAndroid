@@ -59,7 +59,7 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         Connection connection = null;
         Statement statement = null;
         ParamBuilder paramBuilder = null;
-        Thread thread = null;
+//        Thread thread = null;
         ResultReading rp = null;
 
         try {
@@ -84,8 +84,8 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         } catch (IOException ex) {
             throw ex;
         } finally {
-            if (thread != null)
-                thread.start();
+//            if (thread != null)
+//                thread.start();
             // đóng param builder
 //            if (paramBuilder != null) paramBuilder.clear();
 //            paramBuilder = null;
