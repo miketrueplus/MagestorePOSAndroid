@@ -138,4 +138,8 @@ public class CartItemListController extends AbstractChildListController<Checkout
     public void substructProduct(Product product, int quantity) {
         substructProduct(product, quantity, product.getPrice());
     }
+
+    public List<CartItem> getListCartItem(){
+        return mList;
+    }
 }

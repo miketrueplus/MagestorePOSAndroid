@@ -2,6 +2,7 @@ package com.magestore.app.pos.panel;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -19,6 +20,7 @@ import com.magestore.app.pos.controller.CheckoutListController;
 
 public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
     PaymentMethodListPanel mPaymentMethodListPanel;
+    Checkout mCheckout;
 
     public CheckoutDetailPanel(Context context) {
         super(context);
@@ -52,6 +54,15 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         });
     }
 
+    @Override
+    public void bindItem(Checkout item) {
+        if (item == null) {
+            return;
+        }
+        super.bindItem(item);
+        mCheckout = item;
+    }
+
     /**
      * Xử lý khi click thêm mới payment
      */
@@ -63,6 +74,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
      * Xử lý khi thanh toán (Place holder hoặc Partial)
      */
     void onClickPlaceHolder() {
+
         //TODO: test thử observe
         GenericState<CheckoutListController> state = new GenericState<CheckoutListController>(null, CheckoutListController.STATE_ON_PLACE_ORDER);
         getController().getSubject().setState(state);

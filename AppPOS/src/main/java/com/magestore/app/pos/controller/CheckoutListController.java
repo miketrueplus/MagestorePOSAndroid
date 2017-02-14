@@ -6,6 +6,7 @@ import com.magestore.app.lib.controller.AbstractListController;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.checkout.PaymentMethod;
+import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.sales.Payment;
 import com.magestore.app.lib.observe.State;
 import com.magestore.app.lib.service.ServiceFactory;
@@ -27,9 +28,9 @@ import java.util.List;
  */
 
 public class CheckoutListController extends AbstractListController<Checkout> {
-    public static final String STATE_ON_ADD_PAYMENT =  "STATE_ON_ADD_PAYMENT";
-    public static final String STATE_ON_PLACE_ORDER =  "STATE_ON_PLACE_ORDER";
-    public static final String STATE_ON_MARK_AS_PARTIAL =  "STATE_ON_MARK_AS_PARTIAL";
+    public static final String STATE_ON_ADD_PAYMENT = "STATE_ON_ADD_PAYMENT";
+    public static final String STATE_ON_PLACE_ORDER = "STATE_ON_PLACE_ORDER";
+    public static final String STATE_ON_MARK_AS_PARTIAL = "STATE_ON_MARK_AS_PARTIAL";
 
     CartItemListController mCartItemListController;
     CheckoutShippingListPanel mCheckoutShippingListPanel;
@@ -53,10 +54,23 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
     /**
      * Tương ứng khi 1 product được chọn trên product list
+     *
      * @param product
      */
     public void bindProduct(Product product) {
         if (mCartItemListController != null) mCartItemListController.bindProduct(product);
+    }
+
+    public void bindCustomer(Customer customer) {
+        if (customer != null) {
+            Checkout checkout = getSelectedItem();
+            checkout.setCustomerID(customer.getID());
+        }
+    }
+
+    public void binCartItem() {
+        Checkout checkout = getSelectedItem();
+        checkout.setCartItem(mCartItemListController.getListCartItem());
     }
 
     @Override
@@ -81,6 +95,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
     /**
      * Tham chiếu sang cart item controller
+     *
      * @param controller
      */
     public void setCartItemListController(CartItemListController controller) {
@@ -92,7 +107,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
      */
     public void updateTotalPrice() {
         if (mView != null && mItem != null && (mView instanceof CheckoutListPanel))
-             ((CheckoutListPanel) mView).updateTotalPrice(mItem);
+            ((CheckoutListPanel) mView).updateTotalPrice(mItem);
     }
 
     public void setCheckoutShippingListPanel(CheckoutShippingListPanel panel) {

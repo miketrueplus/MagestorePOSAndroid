@@ -14,9 +14,11 @@ import android.widget.TextView;
 import com.magestore.app.lib.context.MagestoreContext;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.service.customer.CustomerService;
+import com.magestore.app.lib.view.SimpleSpinner;
 import com.magestore.app.pos.R;
 import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.panel.AbstractListPanel;
+import com.magestore.app.pos.controller.CheckoutListController;
 import com.magestore.app.pos.databinding.PanelCheckoutListBinding;
 import com.magestore.app.pos.util.DialogUtil;
 import com.magestore.app.pos.view.MagestoreDialog;
@@ -81,6 +83,8 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
         ((Button) findViewById(R.id.btn_sales_order_checkout)).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                ((CheckoutListController) getController()).binCartItem();
+                getController().bindItem(getController().getSelectedItem());
                 getController().doShowDetailPanel(true);
             }
         });
@@ -352,6 +356,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
     public void updateCustomerToOrder(Customer customer) {
         mCustomer = customer;
         ((TextView) toolbar_order.findViewById(R.id.text_customer_name)).setText(customer.getName());
+        ((CheckoutListController) mController).bindCustomer(customer);
         dialog.dismiss();
     }
 }

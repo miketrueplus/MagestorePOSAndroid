@@ -290,5 +290,8 @@ public class PosCustomerAddress extends PosAbstractModel implements CustomerAddr
         return region;
     }
 
-
+    @Override
+    public String getDisplayContent() {
+        return getShortAddress();
+    }
 }
