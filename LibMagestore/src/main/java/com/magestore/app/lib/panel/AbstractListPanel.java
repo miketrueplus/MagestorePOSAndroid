@@ -322,12 +322,17 @@ public abstract class AbstractListPanel<TModel extends Model>
 
         // đặt tham chiếu cho list
         mList = list;
-        if (mList != null) {
-            // khởi tạo adapter
-            mRecycleView.setAdapter(new AbstractListPanel<TModel>.ListRecyclerViewAdapter(mList));
+        // khởi tạo adapter
+        mRecycleView.setAdapter(new AbstractListPanel<TModel>.ListRecyclerViewAdapter(mList));
+
+        if (mList != null && mList.size() > 0) {
+            hideWarning();
 
             // đặt lại scroll listener cho lazy loading
             if (mScrollListener!=null) mScrollListener.resetCurrentPage();
+        }
+        else {
+            showWarning("No data to display");
         }
 
         // notify view thay đổi
@@ -615,5 +620,17 @@ public abstract class AbstractListPanel<TModel extends Model>
         if (mRecycleView instanceof ListRecycleView) {
             ((ListRecycleView) mRecycleView).showProgress(v, show);
         }
+    }
+
+    public void showWarning(String strMsg) {
+        if (mTxtErrorMsg != null) {
+            mTxtErrorMsg.setText(strMsg);
+            mTxtErrorMsg.setVisibility(VISIBLE);
+        }
+    }
+
+    public void hideWarning() {
+        if (mTxtErrorMsg != null)
+            mTxtErrorMsg.setVisibility(GONE);
     }
 }

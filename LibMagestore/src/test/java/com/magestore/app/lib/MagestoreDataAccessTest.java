@@ -86,7 +86,7 @@ public class MagestoreDataAccessTest {
         UserDataAccess userDA = factory.generateUserDataAccess();
 
         // Lấy list 30 order đầu tiên
-        String strSession = userDA.login("http://demo-magento2.magestore.com/webpos", user);
+        String strSession = userDA.login("http://" + BuildConfig.DEFAULT_REST_BASE_URL + "/" + BuildConfig.DEFAULT_REST_BASE_PAGE, "", "", user);
         POSUserService.session = new POSDataAccessSession();
         POSUserService.session.REST_SESSION_ID = strSession.trim().replace("\"", "");
 
@@ -126,7 +126,7 @@ public class MagestoreDataAccessTest {
         UserDataAccess userDA = factory.generateUserDataAccess();
 
         // Lấy list 30 order đầu tiên
-        String strSession = userDA.login("http://demo-magento2.magestore.com/webpos", user);
+        String strSession = userDA.login("http://" + BuildConfig.DEFAULT_REST_BASE_URL + "/" + BuildConfig.DEFAULT_REST_BASE_PAGE, "", "", user);
         POSUserService.session = new POSDataAccessSession();
         POSUserService.session.REST_SESSION_ID = strSession.trim().replace("\"", "");
 
@@ -189,11 +189,33 @@ public class MagestoreDataAccessTest {
         UserDataAccess userDA = factory.generateUserDataAccess();
 
         // Lấy list 30 order đầu tiên
-        String strSession = userDA.login("http://demo-magento2.magestore.com/webpos", user);
+        String strSession = userDA.login("http://" + BuildConfig.DEFAULT_REST_BASE_URL + "/" + BuildConfig.DEFAULT_REST_BASE_PAGE, "", "", user);
         POSUserService.session = new POSDataAccessSession();
         POSUserService.session.REST_SESSION_ID = strSession.trim().replace("\"", "");
 
         List<Category> list = categoryDataAccess.retrieve(1, 200);
+        assert (list != null);
+        return;
+    }
+
+    @Test
+    public void test_search_product_is_correct() throws Exception {
+        User user = new PosUser();
+        user.setUserName("demo");
+        user.setPasswords("demo123");
+
+        // Khởi tạo order gateway factory
+        DataAccessFactory factory = DataAccessFactory.getFactory(new MagestoreContext());
+        ProductDataAccess productDataAccess = factory.generateProductDataAccess();
+        UserDataAccess userDA = factory.generateUserDataAccess();
+
+        // Lấy list 30 order đầu tiên
+        POSDataAccessSession.REST_BASE_URL = "http://" + BuildConfig.DEFAULT_REST_BASE_URL + "/" + BuildConfig.DEFAULT_REST_BASE_PAGE;
+        String strSession = userDA.login(POSDataAccessSession.REST_BASE_URL, "", "", user);
+        POSUserService.session = new POSDataAccessSession();
+        POSUserService.session.REST_SESSION_ID = strSession.trim().replace("\"", "");
+
+        List<Product> list = productDataAccess.retrieve("MB02", 1, 500);
         assert (list != null);
         return;
     }

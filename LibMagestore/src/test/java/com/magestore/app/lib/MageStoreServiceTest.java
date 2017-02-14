@@ -19,7 +19,7 @@ public class MageStoreServiceTest {
         // Đăng nhập
         ServiceFactory factory = ServiceFactory.getFactory(null);
         UserService userService = factory.generateUserService();
-        userService.doLogin("demo-magento2.magestore.com", "demo", "demo123");
+        userService.doLogin(null, null, null, "demo", "demo123");
 
         ConfigService configService = factory.generateConfigService();
         Config config = configService.retrieveConfig();
