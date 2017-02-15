@@ -1,5 +1,6 @@
 package com.magestore.app.pos.model;
 
+import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -30,6 +31,16 @@ public class PosAbstractModel implements Model, ParseModel {
     @Override
     public String getDisplayContent() {
         return id;
+    }
+
+    @Override
+    public String getSubDisplayContent() {
+        return null;
+    }
+
+    @Override
+    public Bitmap getDisplayBitmap() {
+        return null;
     }
 
     @Override

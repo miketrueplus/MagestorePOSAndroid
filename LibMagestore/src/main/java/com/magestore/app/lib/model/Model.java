@@ -1,5 +1,6 @@
 package com.magestore.app.lib.model;
 
+import android.graphics.Bitmap;
 import android.os.Parcelable;
 
 /**
@@ -9,6 +10,8 @@ import android.os.Parcelable;
 public interface Model extends Parcelable {
     String getID();
     String getDisplayContent();
+    String getSubDisplayContent();
+    Bitmap getDisplayBitmap();
     void setRefer(String key, Object value);
     Object getRefer(String key);
     boolean setValue(String key, Object value);

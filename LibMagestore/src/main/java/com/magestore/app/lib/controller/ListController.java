@@ -190,4 +190,12 @@ public interface ListController<TModel extends Model>
     void doShowDetailPanel(boolean show);
 
     void doShowListPanel(boolean show);
+
+    void enableLazyLoading(boolean enable);
+
+    void displaySearch(TModel model);
+
+    void displaySearch(List<TModel> model);
+
+    void hideSearch();
 }

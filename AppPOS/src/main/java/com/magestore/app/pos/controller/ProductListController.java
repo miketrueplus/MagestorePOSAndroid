@@ -154,4 +154,10 @@ public class ProductListController extends AbstractListController<Product> {
     public void selectCategoryChild(Category category) {
         mCategoryListController.selectCategoryChild(category);
     }
+
+    @Override
+    public void displaySearch(Product model) {
+        super.displaySearch(model);
+        bindItem(model);
+    }
 }

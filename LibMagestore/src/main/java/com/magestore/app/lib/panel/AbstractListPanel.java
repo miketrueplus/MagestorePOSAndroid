@@ -39,15 +39,19 @@ import java.util.List;
 public abstract class AbstractListPanel<TModel extends Model>
         extends FrameLayout
         implements MagestoreView<ListController<TModel>> {
+    // list search
+    int mintSearchAutoCompletePanel;
+    private SearchAutoCompletePanel mSearchPanel;
+
     // Task điều khiển danh sách trong list
     protected ListController<TModel> mController;
 
     // Model chứa data danh sách
     protected List<TModel> mList;
+    private List<TModel> saveList;
 
     // Các control nắm view
     protected RecyclerView mRecycleView;
-//    protected int mLayoutRecycleView;
 
     // tham chiếu của cả panel
     private int mintPanelLayout;
@@ -66,8 +70,6 @@ public abstract class AbstractListPanel<TModel extends Model>
 
     // tham chiếu layout thông báo lỗi
     private TextView mTxtErrorMsg;
-
-    private int mintItemProgressLayout;
 
     // layout manager của recycle view
     LinearLayoutManager mRecycleViewLayoutManager;
@@ -153,6 +155,8 @@ public abstract class AbstractListPanel<TModel extends Model>
         mintOrientation = a.getInteger(R.styleable.magestore_view_layout_orientation, LinearLayoutManager.VERTICAL);
         // số cột hoặc hàng trong list
         mintSpanCount = a.getInteger(R.styleable.magestore_view_layout_span_count, 1);
+        // panel search
+        mintSearchAutoCompletePanel = a.getResourceId(R.styleable.magestore_view_layout_search, -1);
 
         // kích thước phân trang, số item tối đa
         mintPageSize = a.getInteger(R.styleable.magestore_view_page_size, -1);
@@ -188,6 +192,11 @@ public abstract class AbstractListPanel<TModel extends Model>
                 };
                 mRecycleView.setOnScrollListener(mScrollListener);
             }
+        }
+
+        // panel search
+        if (mintSearchAutoCompletePanel > 0) {
+            mSearchPanel = (SearchAutoCompletePanel) findViewById(mintSearchAutoCompletePanel);
         }
 
         // tham chiếu layout của progressbar
@@ -281,7 +290,7 @@ public abstract class AbstractListPanel<TModel extends Model>
      */
     public void setController(ListController<TModel> controller) {
         mController = controller;
-//        mController.setPage(mintPageSize, mintItemMax);
+        if (mSearchPanel != null) mSearchPanel.setListController(controller);
     }
 
     /**
@@ -632,5 +641,23 @@ public abstract class AbstractListPanel<TModel extends Model>
     public void hideWarning() {
         if (mTxtErrorMsg != null)
             mTxtErrorMsg.setVisibility(GONE);
+    }
+
+    /**
+     * Hiển thị kết quả search
+     * @param model
+     */
+    public void displaySearch(List<TModel> model) {
+        saveList = mList;
+        lockLazyLoading(true);
+        bindList(model);
+    }
+
+    /**
+     * Giấu kết quả search
+     */
+    public void hideSearch() {
+        bindList(saveList);
+        lockLazyLoading(false);
     }
 }

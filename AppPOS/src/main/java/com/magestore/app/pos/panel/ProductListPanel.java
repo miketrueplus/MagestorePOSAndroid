@@ -6,20 +6,22 @@ import android.graphics.Bitmap;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
+import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import com.magestore.app.lib.controller.Controller;
+
 import com.magestore.app.lib.panel.AbstractListPanel;
 import com.magestore.app.lib.model.catalog.Product;
+import com.magestore.app.lib.view.SearchAutoCompleteTextView;
+import com.magestore.app.lib.view.adapter.SearchAutoCompleteAdapter;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.CategoryListController;
 import com.magestore.app.pos.controller.ProductListController;
 import com.magestore.app.pos.databinding.CardProductListContentBinding;
 import com.magestore.app.pos.task.LoadProductImageTask;
-import java.util.Arrays;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,7 +32,7 @@ import java.util.List;
  */
 public class ProductListPanel extends AbstractListPanel<Product> {
     // Textbox search product
-    AutoCompleteTextView mSearchProductTxt;
+//    SearchAutoCompleteTextView mSearchProductTxt;
     Toolbar toolbar_category;
     ImageButton im_category_arrow;
     FrameLayout fr_category;
@@ -53,28 +55,11 @@ public class ProductListPanel extends AbstractListPanel<Product> {
     }
 
     /**
-     * Đặt số cột sản phẩm
-     * @param column
-     */
-//    public void setColumn(int column) {
-//        ((GridLayoutManager)(mRecycleView.getLayoutManager())).setSpanCount(column);
-//    }
-
-    /**
      * Chuẩn bị layout control
      */
     @Override
     public void initLayout() {
         // Chuẩn bị list danh sách khách hàng
-//        initRecycleView(getListLayout(), new GridLayoutManager(this.getContext(), 1));
-
-        mSearchProductTxt = (AutoCompleteTextView) findViewById(R.id.text_search_product);
-        int layoutItemId = android.R.layout.simple_dropdown_item_1line;
-        String[] dogArr = getResources().getStringArray(R.array.dogs_list);
-        List<String> dogList = Arrays.asList(dogArr);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), layoutItemId, dogList);
-        mSearchProductTxt.setAdapter(adapter);
-
         fr_category = (FrameLayout) findViewById(R.id.fr_category);
         toolbar_category = (Toolbar) findViewById(R.id.toolbar_category);
         im_category_arrow = (ImageButton) findViewById(R.id.im_category_arrow);
@@ -90,7 +75,21 @@ public class ProductListPanel extends AbstractListPanel<Product> {
 
     @Override
     public void initModel() {
-
+//
+//        mSearchProductTxt.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+//                Product product = (Product) adapterView.getItemAtPosition(position);
+//                mSearchProductTxt.setText(product.getDisplayContent());
+//                List<Product> productList = new ArrayList<Product>();
+//                productList.add(product);
+//                mController.bindItem(product);
+//                mController.bindList(productList);
+//                mController.enableLazyLoading(false);
+////                Book book = (Book) adapterView.getItemAtPosition(position);
+////                bookTitle.setText(book.getTitle());
+//            }
+//        });
     }
 
     @Override

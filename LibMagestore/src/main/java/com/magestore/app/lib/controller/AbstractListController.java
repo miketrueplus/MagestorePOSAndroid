@@ -7,7 +7,6 @@ import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
 import com.magestore.app.lib.panel.AbstractListPanel;
 import com.magestore.app.lib.service.ListService;
-import com.magestore.app.lib.service.config.ConfigService;
 import com.magestore.app.lib.task.DeleteListTask;
 import com.magestore.app.lib.task.InsertListTask;
 import com.magestore.app.lib.task.RetrieveListTask;
@@ -27,11 +26,6 @@ import java.util.List;
 public abstract class AbstractListController<TModel extends Model>
         extends AbstractController<TModel, AbstractListPanel<TModel>>
         implements ListController<TModel> {
-
-    // tham chiếu phân trang
-//    private int mintPageSize = 500;
-//    private int mintItemMax = 500;
-//    private boolean mHaveLazyLoading = false;
 
     // tự động chọn item đầu tiên trong danh sách
     boolean mblnAutoChooseFirstItem = true;
@@ -419,5 +413,27 @@ public abstract class AbstractListController<TModel extends Model>
     public void doShowListPanel(boolean show) {
         if (mView != null) mView.setVisibility(show ? View.VISIBLE : View.GONE);
 
+    }
+
+    @Override
+    public void enableLazyLoading(boolean enable) {
+        if (mView != null) mView.enableLazyLoading(enable);
+    }
+
+    @Override
+    public void displaySearch(TModel model) {
+        List<TModel> listModel = new ArrayList<TModel>();
+        listModel.add(model);
+        mView.displaySearch(listModel);
+    }
+
+    @Override
+    public void displaySearch(List<TModel> listModel) {
+        mView.displaySearch(listModel);
+    }
+
+    @Override
+    public void hideSearch() {
+        mView.hideSearch();
     }
 }

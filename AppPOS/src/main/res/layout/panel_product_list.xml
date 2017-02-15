@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/toolbar_menu">
 
-            <include layout="@layout/toolbar_search_product" />
+            <include layout="@layout/panel_search_product" />
         </android.support.v7.widget.Toolbar>
 
         <android.support.v7.widget.RecyclerView xmlns:tools="http://schemas.android.com/tools"

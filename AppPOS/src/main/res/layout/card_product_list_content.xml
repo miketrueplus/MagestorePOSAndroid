@@ -31,7 +31,7 @@
                 android:layout_height="70dp"
                 android:layout_gravity="center"
                 android:layout_marginLeft="5dp"
-                android:background="@mipmap/ic_unknow_products" />
+                android:background="@mipmap/ic_unknow" />
 
             <LinearLayout
                 android:layout_width="match_parent"

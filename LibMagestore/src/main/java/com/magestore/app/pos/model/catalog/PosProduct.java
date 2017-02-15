@@ -108,4 +108,19 @@ public class PosProduct extends PosAbstractModel implements Product {
     public void setBitmap(Bitmap bmp) {
         bitmap = bmp;
     }
+
+    @Override
+    public String getDisplayContent() {
+        return getName();
+    }
+
+    @Override
+    public String getSubDisplayContent() {
+        return getSKU();
+    }
+
+    @Override
+    public Bitmap getDisplayBitmap() {
+        return getBitmap();
+    }
 }
