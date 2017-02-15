@@ -40,22 +40,24 @@
             android:layout_toLeftOf="@+id/button_barcode"
             android:background="@drawable/ic_camera_white" />
 
+        <ImageButton
+            android:id="@+id/button_hide_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/button_camera"
+            android:background="@drawable/ic_close_white"
+            android:visibility="gone" />
+
         <ProgressBar
             android:id="@+id/progress_autotext_search_product"
             style="?android:attr/progressBarStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/button_camera"
+            android:layout_toLeftOf="@+id/button_hide_search"
             android:visibility="gone"/>
 
-        <ImageButton
-            android:id="@+id/button_hide_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/progress_autotext_search_product"
-            android:background="@drawable/ic_close_white"
-            android:visibility="gone" />
+
     </RelativeLayout>
 </android.support.design.widget.TextInputLayout>

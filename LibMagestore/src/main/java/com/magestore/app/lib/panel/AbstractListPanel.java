@@ -306,6 +306,7 @@ public abstract class AbstractListPanel<TModel extends Model>
     public void clearList() {
         // null tham chiếu list
         mList = null;
+        saveList = null;
         if (mRecycleView == null) return;
 
         // tạo adapter với zero phần tử
@@ -648,7 +649,7 @@ public abstract class AbstractListPanel<TModel extends Model>
      * @param model
      */
     public void displaySearch(List<TModel> model) {
-        saveList = mList;
+        if (saveList == null) saveList = mList;
         lockLazyLoading(true);
         bindList(model);
     }
@@ -658,6 +659,7 @@ public abstract class AbstractListPanel<TModel extends Model>
      */
     public void hideSearch() {
         bindList(saveList);
+        saveList = null;
         lockLazyLoading(false);
     }
 }
