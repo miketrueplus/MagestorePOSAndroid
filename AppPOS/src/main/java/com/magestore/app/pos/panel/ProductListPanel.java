@@ -13,8 +13,6 @@ import android.widget.ImageView;
 
 import com.magestore.app.lib.panel.AbstractListPanel;
 import com.magestore.app.lib.model.catalog.Product;
-import com.magestore.app.lib.view.SearchAutoCompleteTextView;
-import com.magestore.app.lib.view.adapter.SearchAutoCompleteAdapter;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.CategoryListController;
 import com.magestore.app.pos.controller.ProductListController;
@@ -31,8 +29,6 @@ import java.util.List;
  * mike@trueplus.vn
  */
 public class ProductListPanel extends AbstractListPanel<Product> {
-    // Textbox search product
-//    SearchAutoCompleteTextView mSearchProductTxt;
     Toolbar toolbar_category;
     ImageButton im_category_arrow;
     FrameLayout fr_category;
@@ -75,21 +71,7 @@ public class ProductListPanel extends AbstractListPanel<Product> {
 
     @Override
     public void initModel() {
-//
-//        mSearchProductTxt.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-//                Product product = (Product) adapterView.getItemAtPosition(position);
-//                mSearchProductTxt.setText(product.getDisplayContent());
-//                List<Product> productList = new ArrayList<Product>();
-//                productList.add(product);
-//                mController.bindItem(product);
-//                mController.bindList(productList);
-//                mController.enableLazyLoading(false);
-////                Book book = (Book) adapterView.getItemAtPosition(position);
-////                bookTitle.setText(book.getTitle());
-//            }
-//        });
+
     }
 
     @Override

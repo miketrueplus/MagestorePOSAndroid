@@ -204,8 +204,56 @@ public class POSCustomerDataAccess
 
     @Override
     public List<Customer> retrieve(String searchString, int page, int pageSize) throws ParseException, InstantiationException, IllegalAccessException, IOException {
-        return retrieve();
-    }
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+        String finalSearch = "%" + searchString + "%";
+
+        try {
+            // Khởi tạo connection và khởi tạo truy vấn
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPI.REST_CUSOMTER_GET_LISTING);
+
+            // Xây dựng tham số
+            paramBuilder = statement.getParamBuilder()
+                    .setPage(page)
+                    .setPageSize(pageSize)
+                    .setFilterLike("name", finalSearch)
+                    .setFilterLike("email", finalSearch)
+//                    .setFilterLike("telephone", finalSearch)
+                    .setSessionID(POSDataAccessSession.REST_SESSION_ID);
+
+            // thực thi truy vấn và parse kết quả thành object
+            rp = statement.execute();
+            rp.setParseImplement(getClassParseImplement());
+            rp.setParseModel(Gson2PosListCustomer.class);
+            Gson2PosListCustomer listCustomer = (Gson2PosListCustomer) rp.doParse();
+            List<Customer> list = (List<Customer>) (List<?>) (listCustomer.items);
+
+            // return
+            return list;
+        } catch (ConnectionException ex) {
+            throw ex;
+        } catch (IOException ex) {
+            throw ex;
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }    }
 
     @Override
     public boolean update(Customer oldCustomer, final Customer newCustomer) throws IOException, InstantiationException, ParseException, IllegalAccessException {
@@ -350,278 +398,6 @@ public class POSCustomerDataAccess
             // đóng connection
             if (connection != null) connection.close();
             connection = null;
-        }    }
-
-    /**
-     * Đếm toàn bộ số address có trong hệ thống
-     *
-     * @return
-     * @throws DataAccessException
-     * @throws ConnectionException
-     * @throws ParseException
-     * @throws IOException
-     * @throws java.text.ParseException
-     */
-//    @Override
-//    public int countAddress() throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
-//        Connection connection = null;
-//        Statement statement = null;
-//        ResultReading rp = null;
-//        ParamBuilder paramBuilder = null;
-//
-//        try {
-//            // Khởi tạo connection và khởi tạo truy vấn
-//            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
-//            statement = connection.createStatement();
-//            statement.prepareQuery(POSAPI.REST_ADDRESS_GET_LISTING);
-//
-//            // Xây dựng tham số
-//            paramBuilder = statement.getParamBuilder()
-//                    .setSessionID(POSDataAccessSession.REST_SESSION_ID)
-//                    .setPage(1)
-//                    .setPageSize(1);
-//
-//            // thực thi truy vấn và parse kết quả thành object
-//            rp = statement.execute();
-//            rp.setParseImplement(getClassParseImplement());
-//            rp.setParseModel(Gson2PosListAddress.class);
-//            Gson2PosListAddress listAddress = (Gson2PosListAddress) rp.doParse();
-//
-//            // return
-//            return listAddress.total_count;
-//        } catch (ConnectionException ex) {
-//            throw ex;
-//        } catch (IOException ex) {
-//            throw ex;
-//        } finally {
-//            // đóng result reading
-//            if (rp != null) rp.close();
-//            rp = null;
-//
-//            if (paramBuilder != null) paramBuilder.clear();
-//            paramBuilder = null;
-//
-//            // đóng statement
-//            if (statement != null) statement.close();
-//            statement = null;
-//
-//            // đóng connection
-//            if (connection != null) connection.close();
-//            connection = null;
-//        }
-//    }
-
-    /**
-     * Trả về tất cả address trong hệ thống
-     * @param pageSize
-     * @param currentPage
-     * @return
-     * @throws DataAccessException
-     * @throws ConnectionException
-     * @throws ParseException
-     * @throws IOException
-     * @throws java.text.ParseException
-     */
-//    @Override
-//    public List<CustomerAddress> retrieveCustomerAddress(int pageSize, int currentPage) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
-//        Connection connection = null;
-//        Statement statement = null;
-//        ResultReading rp = null;
-//        ParamBuilder paramBuilder = null;
-//
-//        try {
-//            // Khởi tạo connection và khởi tạo truy vấn
-//            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
-//            statement = connection.createStatement();
-//            statement.prepareQuery(POSAPI.REST_ADDRESS_GET_LISTING);
-//
-//            // Xây dựng tham số
-//            paramBuilder = statement.getParamBuilder()
-//                    .setSessionID(POSDataAccessSession.REST_SESSION_ID)
-//                    .setPage(currentPage)
-//                    .setPageSize(pageSize);
-//
-//            // thực thi truy vấn và parse kết quả thành object
-//            rp = statement.execute();
-//            rp.setParseImplement(getClassParseImplement());
-//            rp.setParseModel(Gson2PosListAddress.class);
-//            Gson2PosListAddress listAddress = (Gson2PosListAddress) rp.doParse();
-//            List<CustomerAddress> list = (List<CustomerAddress>) (List<?>) (listAddress.items);
-//
-//            // return
-//            return list;
-//        } catch (ConnectionException ex) {
-//            throw ex;
-//        } catch (IOException ex) {
-//            throw ex;
-//        } finally {
-//            // đóng result reading
-//            if (rp != null) rp.close();
-//            rp = null;
-//
-//            if (paramBuilder != null) paramBuilder.clear();
-//            paramBuilder = null;
-//
-//            // đóng statement
-//            if (statement != null) statement.close();
-//            statement = null;
-//
-//            // đóng connection
-//            if (connection != null) connection.close();
-//            connection = null;
-//        }
-//    }
-
-    /**
-     * Trả về address của 1 customer
-     *
-     * @param customerID
-     * @return
-     * @throws DataAccessException
-     * @throws ConnectionException
-     * @throws ParseException
-     * @throws IOException
-     * @throws java.text.ParseException
-     */
-//    @Override
-//    public List<CustomerAddress> retrieveCustomerAddress(String customerID)
-//            throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
-//        Connection connection = null;
-//        Statement statement = null;
-//        ResultReading rp = null;
-//        ParamBuilder paramBuilder = null;
-//
-//        try {
-//            // Khởi tạo connection và khởi tạo truy vấn
-//            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
-//            statement = connection.createStatement();
-//            statement.prepareQuery(POSAPI.REST_CUSOMTER_ADDRESS_GET_LISTING);
-//            statement.setParam(POSAPI.PARAM_CUSTOMER_ID, customerID);
-//
-//            // Xây dựng tham số
-//            paramBuilder = statement.getParamBuilder()
-//                    .setSessionID(POSDataAccessSession.REST_SESSION_ID);
-//                    //.setParam(POSAPI.PARAM_CUSTOMER_ID, customerID);
-//
-//            // thực thi truy vấn và parse kết quả thành object
-//            rp = statement.execute();
-//            rp.setParseImplement(getClassParseImplement());
-//            rp.setParseModel(Gson2PosListAddress.class);
-//            Gson2PosListAddress listAddress = (Gson2PosListAddress) rp.doParse();
-//            List<CustomerAddress> list = (List<CustomerAddress>) (List<?>) (listAddress.items);
-//
-//            // return
-//            return list;
-//        } catch (ConnectionException ex) {
-//            throw ex;
-//        } catch (IOException ex) {
-//            throw ex;
-//        } finally {
-//            // đóng result reading
-//            if (rp != null) rp.close();
-//            rp = null;
-//
-//            if (paramBuilder != null) paramBuilder.clear();
-//            paramBuilder = null;
-//
-//            // đóng statement
-//            if (statement != null) statement.close();
-//            statement = null;
-//
-//            // đóng connection
-//            if (connection != null) connection.close();
-//            connection = null;
-//        }
-//    }
-
-    /**
-     * Trả về address của 1 customer
-     *
-     * @param customer
-     * @return
-     * @throws DataAccessException
-     * @throws ConnectionException
-     * @throws ParseException
-     * @throws IOException
-     * @throws java.text.ParseException
-     */
-//    @Override
-//    public List<CustomerAddress> retrieveCustomerAddress(Customer customer) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
-//        return retrieveCustomerAddress(customer.getID());
-//    }
-
-    /**
-     * Trả về Cập nhật địa chỉ của 1 customer
-     *
-     * @param pcustomer
-     * @param address
-     * @throws DataAccessException
-     * @throws ConnectionException
-     * @throws ParseException
-     * @throws IOException
-     * @throws java.text.ParseException
-     */
-//    @Override
-//    public boolean updateCustomerAddress(final Customer pcustomer, CustomerAddress oldCustomerAddress, CustomerAddress address) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
-//        Connection connection = null;
-//        Statement statement = null;
-//        ResultReading rp = null;
-//        ParamBuilder paramBuilder = null;
-//
-//        // Lưu address hiện tại tạm vào
-//        if (pcustomer.getAddress() == null) return false;
-//        if (!pcustomer.getAddress().contains(oldCustomerAddress)) return false;
-//        int indexAddress = pcustomer.getAddress().indexOf(oldCustomerAddress);
-//        pcustomer.getAddress().set(indexAddress, address);
-//
-//        // gỡ tạm complain ra
-//        List<Complain> backupComplain = pcustomer.getComplain();
-//        pcustomer.setComplain(null);
-//
-//        try {
-//            // Khởi tạo connection và khởi tạo truy vấn
-//            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
-//            statement = connection.createStatement();
-//            statement.prepareQuery(POSAPI.REST_ADDRESS_UPDATE);
-//            statement.setParam(POSAPI.PARAM_CUSTOMER_ID, pcustomer.getID());
-//
-//            // Xây dựng tham số
-//            paramBuilder = statement.getParamBuilder()
-//                    .setSessionID(POSDataAccessSession.REST_SESSION_ID);
-//                    //.setParam(POSAPI.PARAM_CUSTOMER_ID, pcustomer.getID());
-//
-//            // thực thi truy vấn và parse kết quả thành object
-//            Wrap wrapCustomer = new Wrap();
-//            wrapCustomer.customer = pcustomer;
-//            rp = statement.execute(wrapCustomer);
-//            String result = rp.readResult2String();
-//            return true;
-//        } catch (ConnectionException ex) {
-//            pcustomer.getAddress().remove(address);
-//            throw ex;
-//        } catch (IOException ex) {
-//            pcustomer.getAddress().remove(address);
-//            throw ex;
-//        } finally {
-//            // cập nhật trả lại address
-//            pcustomer.getAddress().set(indexAddress, oldCustomerAddress);
-//            // khôi phục lại complain
-//            pcustomer.setComplain(backupComplain);
-//
-//            // đóng result reading
-//            if (rp != null) rp.close();
-//            rp = null;
-//
-//            if (paramBuilder != null) paramBuilder.clear();
-//            paramBuilder = null;
-//
-//            // đóng statement
-//            if (statement != null) statement.close();
-//            statement = null;
-//
-//            // đóng connection
-//            if (connection != null) connection.close();
-//            connection = null;
-//        }
-//    }
+        }
+    }
 }

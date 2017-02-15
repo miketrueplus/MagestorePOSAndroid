@@ -42,6 +42,7 @@
                 magestore_view:page_size_max="500"
                 magestore_view:page_size="15"
                 magestore_view:page_first="1"
+                magestore_view:layout_search="@+id/panel_search_customer"
                 magestore_view:layout_progress="@+id/progress_customer_list"
                 magestore_view:layout_msg="@+id/txt_msg_customer_list"
                 magestore_view:layout_item="@layout/card_customer_list_content"

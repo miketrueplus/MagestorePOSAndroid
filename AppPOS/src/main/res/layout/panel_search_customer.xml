@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.TextInputLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.magestore.app.lib.view.SearchAutoCompleteTextView
+            android:id="@+id/text_search_customer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:hint="@string/customer_search_customer_here"
+            android:inputType="text"
+            android:theme="@style/Autocomplete"
+            android:maxLines="1" />
+
+        <ImageButton
+            android:id="@+id/button_camera_customer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/ic_camera_white" />
+
+        <ImageButton
+            android:id="@+id/button_hide_search_customer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/button_camera_customer"
+            android:background="@drawable/ic_close_white"
+            android:visibility="gone" />
+
+        <ProgressBar
+            android:id="@+id/progress_autotext_search_customer"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/button_hide_search_customer"
+            android:visibility="gone"/>
+    </RelativeLayout>
+</android.support.design.widget.TextInputLayout>

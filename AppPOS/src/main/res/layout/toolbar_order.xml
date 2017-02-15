@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/button_customer"
-        android:text="Mike" />
+        android:text="@string/guest" />
 
     <ImageButton
         android:id="@+id/button_shopping_cart"

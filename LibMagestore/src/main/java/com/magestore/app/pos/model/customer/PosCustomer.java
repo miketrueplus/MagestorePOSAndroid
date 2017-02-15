@@ -125,4 +125,14 @@ public class PosCustomer extends PosAbstractModel implements Customer {
     public void setSubscriber(String strSubscriber) {
         subscriber_status = strSubscriber;
     }
+
+    @Override
+    public String getDisplayContent() {
+        return getName();
+    }
+
+    @Override
+    public String getSubDisplayContent() {
+        return getEmail();
+    }
 }

@@ -38,6 +38,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"
+                magestore_view:layout_search="@+id/panel_search_customer"
                 magestore_view:layout_item="@layout/card_customer_list_content"
                 magestore_view:layout_list="@+id/customer_list"
                 magestore_view:layout_orientation="vertical"

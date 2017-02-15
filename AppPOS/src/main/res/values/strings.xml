@@ -153,6 +153,7 @@
     <string name="email">Email</string>
     <string name="first_name">First Name</string>
     <string name="group">Group</string>
+    <string name="guest">Guest</string>
     <string name="history">History</string>
     <string name="hold">Hold</string>
     <string name="item">Item</string>
