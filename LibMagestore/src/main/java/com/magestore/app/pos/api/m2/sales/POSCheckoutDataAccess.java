@@ -13,9 +13,7 @@ import com.magestore.app.lib.resourcemodel.sales.CheckoutDataAccess;
 import com.magestore.app.pos.api.m2.POSAPI;
 import com.magestore.app.pos.api.m2.POSAbstractDataAccess;
 import com.magestore.app.pos.api.m2.POSDataAccessSession;
-import com.magestore.app.pos.api.m2.customer.POSCustomerDataAccess;
 import com.magestore.app.pos.model.checkout.PosCheckout;
-import com.magestore.app.pos.parse.gson2pos.Gson2PostCheckout;
 import java.io.IOException;
 
 /**
@@ -92,8 +90,8 @@ public class POSCheckoutDataAccess extends POSAbstractDataAccess implements Chec
             rp.setParseImplement(getClassParseImplement());
             rp.setParseModel(PosCheckout.class);
 
-            Gson2PostCheckout checkout = (Gson2PostCheckout) rp.doParse();
-            return (Checkout) checkout.items;
+            Checkout checkout = (Checkout) rp.doParse();
+            return checkout;
         } catch (ConnectionException ex) {
             throw ex;
         } catch (IOException ex) {

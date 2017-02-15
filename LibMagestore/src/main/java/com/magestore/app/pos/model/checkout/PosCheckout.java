@@ -5,9 +5,11 @@ import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.checkout.CheckoutShipping;
 import com.magestore.app.lib.model.checkout.CheckoutPayment;
+import com.magestore.app.lib.model.checkout.CheckoutTotals;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.pos.model.PosAbstractModel;
+import com.magestore.app.pos.model.checkout.cart.PosCartItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,10 +22,11 @@ import java.util.List;
 
 public class PosCheckout extends PosAbstractModel implements Checkout {
     String customer_id;
-    List<CartItem> items;
-    CheckoutPayment payment;
-    CheckoutShipping checkoutShipping;
+    List<PosCartItem> items;
+    List<PosCheckoutPayment> payment;
+    List<PosCheckoutShipping> shipping;
     Customer customer;
+    List<PosCheckoutToTals> totals;
 
     private class CheckoutConfig {
         String apply_promotion = "0";
@@ -69,30 +72,30 @@ public class PosCheckout extends PosAbstractModel implements Checkout {
 
     @Override
     public List<CartItem> getCartItem() {
-        return this.items;
+        return (List<CartItem>) (List<?>) items;
     }
 
     @Override
     public void setCartItem(List<CartItem> cartItem) {
-        this.items = cartItem;
+        this.items = (List<PosCartItem>) (List<?>) cartItem;
     }
 
-    public CheckoutShipping getCheckoutShipping() {
-        return checkoutShipping;
+    public List<CheckoutShipping> getCheckoutShipping() {
+        return (List<CheckoutShipping>) (List<?>) shipping;
     }
 
-    public void setCheckoutShipping(CheckoutShipping shiping) {
-        this.checkoutShipping = shiping;
-    }
-
-    @Override
-    public CheckoutPayment getPayment() {
-        return payment;
+    public void setCheckoutShipping(List<CheckoutShipping> shiping) {
+        this.shipping = (List<PosCheckoutShipping>) (List<?>) shiping;
     }
 
     @Override
-    public void setPayment(CheckoutPayment payment) {
-        this.payment = payment;
+    public List<CheckoutPayment> getCheckoutPayment() {
+        return (List<CheckoutPayment>) (List<?>) payment;
+    }
+
+    @Override
+    public void setCheckoutPayment(List<CheckoutPayment> payment) {
+        this.payment = (List<PosCheckoutPayment>) (List<?>) payment;
     }
 
     @Override
@@ -153,5 +156,15 @@ public class PosCheckout extends PosAbstractModel implements Checkout {
     @Override
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    @Override
+    public List<CheckoutTotals> getTotals() {
+        return (List<CheckoutTotals>) (List<?>) totals;
+    }
+
+    @Override
+    public void setTotals(List<CheckoutTotals> checkoutTotals) {
+        totals = (List<PosCheckoutToTals>) (List<?>) checkoutTotals;
     }
 }

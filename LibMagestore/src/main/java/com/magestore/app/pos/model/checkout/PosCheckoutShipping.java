@@ -15,9 +15,39 @@ import java.util.ArrayList;
 
 public class PosCheckoutShipping extends PosAbstractModel implements CheckoutShipping {
     String method;
+    String title;
+    String description;
+    String error_message;
+    String price_type;
+    float price;
     String datetime;
     ArrayList<Model> tracks;
     CustomerAddress address;
+
+    @Override
+    public String getTitle() {
+        return title;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
+    public String getErrorMessage() {
+        return error_message;
+    }
+
+    @Override
+    public String getPriceType() {
+        return price_type;
+    }
+
+    @Override
+    public float getPrice() {
+        return price;
+    }
 
     @Override
     public void setMethod(String strMethod) {

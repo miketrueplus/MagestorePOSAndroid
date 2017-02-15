@@ -17,7 +17,7 @@ public class PosQuoteCustomer extends PosAbstractModel implements QuoteCustomer 
 
     @Override
     public void setCustomerId(String strCustomerId) {
-        id = customer_id;
+        customer_id = strCustomerId;
     }
 
     @Override

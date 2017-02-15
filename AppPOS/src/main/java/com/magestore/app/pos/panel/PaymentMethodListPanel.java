@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.lib.model.checkout.PaymentMethod;
 import com.magestore.app.lib.model.sales.Payment;
 import com.magestore.app.lib.view.AbstractSimpleListView;
@@ -18,7 +19,7 @@ import com.magestore.app.pos.databinding.CardPaymentMethodContentBinding;
  * mike@trueplus.vn
  */
 
-public class PaymentMethodListPanel extends AbstractSimpleRecycleView<PaymentMethod> {
+public class PaymentMethodListPanel extends AbstractSimpleRecycleView<CheckoutPayment> {
     CheckoutListController mCheckoutListController;
     public void setCheckoutListController(CheckoutListController controller) {
         mCheckoutListController = controller;
@@ -36,13 +37,13 @@ public class PaymentMethodListPanel extends AbstractSimpleRecycleView<PaymentMet
     }
 
     @Override
-    protected void bindItem(View view, PaymentMethod item, final int position) {
+    protected void bindItem(View view, CheckoutPayment item, final int position) {
         CardPaymentMethodContentBinding binding = DataBindingUtil.bind(view);
         binding.setPaymentMethod(item);
     }
 
     @Override
-    protected void onClickItem(View view, PaymentMethod item, int position) {
+    protected void onClickItem(View view, CheckoutPayment item, int position) {
         mList.remove(position);
         getAdapter().notifyDataSetChanged();
         if (mCheckoutListController != null) mCheckoutListController.onAddPaymentMethod(item);

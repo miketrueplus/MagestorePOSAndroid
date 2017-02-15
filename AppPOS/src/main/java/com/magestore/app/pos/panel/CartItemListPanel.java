@@ -74,8 +74,11 @@ public class CartItemListPanel extends AbstractListPanel<CartItem> {
 
         // Hiển thị ảnh
         ImageView imageView = (ImageView) view.findViewById(R.id.sales_order_image);
-        Bitmap bmp = item.getProduct().getBitmap();
-        if (bmp != null && !bmp.isRecycled() && imageView != null) imageView.setImageBitmap(bmp);
+        if(item.getProduct() != null) {
+            Bitmap bmp = item.getProduct().getBitmap();
+            if (bmp != null && !bmp.isRecycled() && imageView != null)
+                imageView.setImageBitmap(bmp);
+        }
 
         // Cho phép swipe drag
         final SwipeLayout swipeLayout = (SwipeLayout) view.findViewById(R.id.sales_order_swipe_layout);

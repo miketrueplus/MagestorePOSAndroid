@@ -16,8 +16,12 @@ public class PosCheckoutPayment extends PosAbstractModel implements CheckoutPaym
     float amount;
     float base_real_amount;
     float real_amount;
-    int is_pay_later;
+    String is_pay_later;
     String shift_id;
+    String information;
+    String is_default;
+    String is_reference_number;
+    String type;
 
     class AdditionalData {
         String cc_owner;
@@ -27,6 +31,7 @@ public class PosCheckoutPayment extends PosAbstractModel implements CheckoutPaym
         String cc_exp_year;
         String cc_cid;
     }
+
     AdditionalData additional_data = new AdditionalData();
 
     @Override
@@ -90,13 +95,53 @@ public class PosCheckoutPayment extends PosAbstractModel implements CheckoutPaym
     }
 
     @Override
-    public void setPaylater(int paylater) {
+    public void setPaylater(String paylater) {
         this.is_pay_later = paylater;
     }
 
     @Override
-    public int isPaylater() {
+    public String isPaylater() {
         return is_pay_later;
+    }
+
+    @Override
+    public String getIsDefault() {
+        return is_default;
+    }
+
+    @Override
+    public void setIsDefault(String strIsDefault) {
+        is_default = strIsDefault;
+    }
+
+    @Override
+    public String getIsReferenceNumber() {
+        return is_reference_number;
+    }
+
+    @Override
+    public void setIsReferenceNumber(String strIsReferenceNumber) {
+        is_reference_number = strIsReferenceNumber;
+    }
+
+    @Override
+    public String getType() {
+        return type;
+    }
+
+    @Override
+    public void setType(String strType) {
+        type = strType;
+    }
+
+    @Override
+    public String getInformation() {
+        return information;
+    }
+
+    @Override
+    public void setInformation(String strInformation) {
+        information = strInformation;
     }
 
     @Override

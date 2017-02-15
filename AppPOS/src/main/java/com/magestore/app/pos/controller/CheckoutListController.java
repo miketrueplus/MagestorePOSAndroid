@@ -7,6 +7,7 @@ import com.magestore.app.lib.controller.AbstractListController;
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.model.checkout.Checkout;
+import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.lib.model.checkout.PaymentMethod;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.sales.Payment;
@@ -22,6 +23,7 @@ import com.magestore.app.pos.panel.ProductListPanel;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -80,37 +82,17 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         checkout.setCartItem(mCartItemListController.getListCartItem());
     }
 
-    @Override
-    public void onRetrievePostExecute(List<Checkout> list) {
-        super.onRetrievePostExecute(list);
-        bindItem(list.get(0));
-        try {
-            mCheckoutShippingListPanel.bindList(getConfigService().getShippingMethodList());
-            mCheckoutPaymentListPanel.bindList(getConfigService().getCheckoutPaymentList());
-            mPaymentMethodListPanel.bindList(getConfigService().getPaymentMethodList());
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-    }
-
     public void doInputSaveCart() {
         binCartItem();
         Checkout checkout = getSelectedItem();
-        doAction(ACTION_TYPE_SAVE_CART, null, null, checkout);
+        Map<String, Object> wraper = new HashMap<>();
+        doAction(ACTION_TYPE_SAVE_CART, null, wraper, checkout);
     }
 
     @Override
     public Boolean doActionBackround(int actionType, String actionCode, Map<String, Object> wraper, Model... models) throws Exception {
         if (actionType == ACTION_TYPE_SAVE_CART) {
-            Checkout checkout = ((CheckoutService) mListService).savePayment((Checkout) models[0]);
-            Log.e("Checkout", checkout.getCustomerID());
+            wraper.put("checkout", ((CheckoutService) mListService).savePayment((Checkout) models[0]));
             return true;
         }
         return false;
@@ -119,7 +101,12 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     @Override
     public void onActionPostExecute(boolean success, int actionType, String actionCode, Map<String, Object> wraper, Model... models) {
         if (success && actionType == ACTION_TYPE_SAVE_CART) {
-
+            Checkout checkout = (Checkout) wraper.get("checkout");
+            bindItem(checkout);
+            mCheckoutShippingListPanel.bindList(checkout.getCheckoutShipping());
+            mCheckoutPaymentListPanel.bindList(checkout.getCheckoutPayment());
+            mPaymentMethodListPanel.bindList(checkout.getCheckoutPayment());
+            doShowDetailPanel(true);
         }
     }
 
@@ -174,7 +161,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         doInsert(getSelectedItem());
     }
 
-    public void onAddPaymentMethod(PaymentMethod method) {
+    public void onAddPaymentMethod(CheckoutPayment method) {
 
     }
 
