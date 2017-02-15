@@ -12,10 +12,7 @@ import android.support.design.widget.Snackbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
-
 import com.magestore.app.lib.context.MagestoreContext;
-import com.magestore.app.lib.model.config.Config;
 import com.magestore.app.lib.observe.Subject;
 import com.magestore.app.lib.service.ServiceFactory;
 import com.magestore.app.lib.service.catalog.CategoryService;
@@ -27,8 +24,6 @@ import com.magestore.app.lib.service.customer.CustomerService;
 import com.magestore.app.pos.controller.CartItemListController;
 import com.magestore.app.pos.controller.CategoryListController;
 import com.magestore.app.pos.controller.CheckoutListController;
-import com.magestore.app.pos.controller.CheckoutPaymentController;
-import com.magestore.app.pos.controller.CheckoutShippingController;
 import com.magestore.app.pos.controller.ProductListController;
 import com.magestore.app.pos.panel.CartItemListPanel;
 import com.magestore.app.pos.panel.CategoryListPanel;
@@ -69,8 +64,6 @@ public class SalesActivity extends AbstractActivity
     private ProductListController mProductListController;
     private CheckoutListController mCheckoutListController;
     private CartItemListController mCheckoutCartItemListController;
-    private CheckoutPaymentController mCheckoutPaymentListController;
-    private CheckoutShippingController mCheckShippingListController;
     private CategoryListController mCategoryListController;
 
     // Toolbar Order
@@ -209,19 +202,6 @@ public class SalesActivity extends AbstractActivity
         mCheckoutListController.setCartItemListController(mCheckoutCartItemListController);
 
         mPaymentMethodListPanel.setCheckoutListController(mCheckoutListController);
-        // quản lý các shipping
-//        mCheckShippingListController = new CheckoutShippingController();
-//        mCheckShippingListController.setMagestoreContext(magestoreContext);
-//        mCheckShippingListController.setListPanel(mCheckoutShippingListPanel);
-//        mCheckShippingListController.setDetailPanel(mCheckoutShippingDetailPanel);
-//        mCheckShippingListController.setParentController(mCheckoutListController);
-
-        // quản lý các payment
-//        mCheckoutPaymentListController = new CheckoutPaymentController();
-//        mCheckoutPaymentListController.setMagestoreContext(magestoreContext);
-//        mCheckoutPaymentListController.setListPanel(mCheckoutPaymentListPanel);
-//        mCheckoutPaymentListController.setDetailPanel(mCheckoutPaymentDetailPanel);
-//        mCheckoutPaymentListController.setParentController(mCheckoutListController);
 
         mCheckoutShippingListPanel.setCheckoutListController(mCheckoutListController);
         mCheckoutPaymentListPanel.setCheckoutListController(mCheckoutListController);
