@@ -3,6 +3,8 @@ package com.magestore.app.pos.model.checkout;
 import com.magestore.app.lib.model.checkout.QuoteCustomerAddress;
 import com.magestore.app.pos.model.PosAbstractModel;
 
+import java.util.List;
+
 /**
  * Created by Johan on 2/14/17.
  * Magestore
@@ -11,12 +13,12 @@ import com.magestore.app.pos.model.PosAbstractModel;
 
 public class PosQuoteCustomerAddress extends PosAbstractModel implements QuoteCustomerAddress {
     String country_id;
-    String region_id;
+    int region_id;
     String postcode;
-    String street;
+    List<String> street;
     String telephone;
     String city;
-    String fisrtname;
+    String firstname;
     String lastname;
     String email;
 
@@ -31,13 +33,13 @@ public class PosQuoteCustomerAddress extends PosAbstractModel implements QuoteCu
     }
 
     @Override
-    public String getRegionId() {
+    public int getRegionId() {
         return region_id;
     }
 
     @Override
-    public void setRegionId(String strRegionId) {
-        region_id = strRegionId;
+    public void setRegionId(int intRegionId) {
+        region_id = intRegionId;
     }
 
     @Override
@@ -51,12 +53,12 @@ public class PosQuoteCustomerAddress extends PosAbstractModel implements QuoteCu
     }
 
     @Override
-    public String getStreet() {
+    public List<String> getStreet() {
         return street;
     }
 
     @Override
-    public void setStreet(String strStreet) {
+    public void setStreet(List<String> strStreet) {
         street = strStreet;
     }
 
@@ -81,13 +83,13 @@ public class PosQuoteCustomerAddress extends PosAbstractModel implements QuoteCu
     }
 
     @Override
-    public String getFisrtname() {
-        return fisrtname;
+    public String getFirstname() {
+        return firstname;
     }
 
     @Override
-    public void setFisrtname(String strFisrtname) {
-        fisrtname = strFisrtname;
+    public void setFirstname(String strFirstname) {
+        firstname = strFirstname;
     }
 
     @Override

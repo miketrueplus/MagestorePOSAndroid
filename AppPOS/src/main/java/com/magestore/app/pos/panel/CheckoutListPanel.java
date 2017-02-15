@@ -83,9 +83,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
         ((Button) findViewById(R.id.btn_sales_order_checkout)).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((CheckoutListController) getController()).binCartItem();
-                getController().bindItem(getController().getSelectedItem());
-                getController().doShowDetailPanel(true);
+                ((CheckoutListController) getController()).doInputSaveCart();
             }
         });
 

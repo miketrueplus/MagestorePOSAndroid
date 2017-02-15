@@ -19,6 +19,8 @@ public interface CartItem extends Model {
     int getQuantity();
     float getPrice();
     float getOriginalPrice();
+    String getItemId();
+    void setItemId(String strItemId);
 
     // Order history
     String getName();

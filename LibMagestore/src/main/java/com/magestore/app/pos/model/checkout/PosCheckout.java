@@ -6,6 +6,7 @@ import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.checkout.CheckoutShipping;
 import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
+import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.pos.model.PosAbstractModel;
 
 import java.util.ArrayList;
@@ -22,6 +23,8 @@ public class PosCheckout extends PosAbstractModel implements Checkout {
     List<CartItem> items;
     CheckoutPayment payment;
     CheckoutShipping checkoutShipping;
+    Customer customer;
+
     private class CheckoutConfig {
         String apply_promotion = "0";
         String note;
@@ -32,15 +35,18 @@ public class PosCheckout extends PosAbstractModel implements Checkout {
         String cart_discount_name;
         String currency_code;
     }
+
     CheckoutConfig config;
     String coupon_code;
+
     private class Extension {
         String key;
         String value;
     }
+
     Extension extension_data;
     ArrayList<Model> session_data;
-    ArrayList<Model>Sintegration;
+    ArrayList<Model> Sintegration;
 
     @Expose(serialize = false, deserialize = false)
     float sub_total = 0;
@@ -137,5 +143,15 @@ public class PosCheckout extends PosAbstractModel implements Checkout {
     @Override
     public void setLastTotal(float total) {
         last_total = total;
+    }
+
+    @Override
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    @Override
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 }

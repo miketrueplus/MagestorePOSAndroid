@@ -20,5 +20,7 @@ public interface Quote extends Model {
     String getTillId();
     void setTillId(String strTillId);
     List<QuoteItems> getItems();
+    void setItems(List<QuoteItems> items);
     QuoteCustomer getCustomer();
+    void setCustomer(QuoteCustomer customer);
 }

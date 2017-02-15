@@ -176,7 +176,8 @@ public class POSCartService extends AbstractService implements CartService {
             cartItem.setQuantity(quantity);
             cartItem.setPrice(price * quantity);
             cartItem.setOriginalPrice(product.getPrice());
-
+            cartItem.setId(product.getID());
+            cartItem.setItemId(String.valueOf(getItemIdInCurrentTime()));
             // Thêm vào danh sách order cartItem
             insert(checkout, cartItem);
         }
@@ -188,6 +189,11 @@ public class POSCartService extends AbstractService implements CartService {
             cartItem.setPrice(totalPrice);
         }
         return true;
+    }
+
+    private long getItemIdInCurrentTime() {
+        long time = System.currentTimeMillis();
+        return time;
     }
 
     /**

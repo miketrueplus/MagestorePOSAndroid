@@ -19,7 +19,7 @@ public class PosQuote extends PosAbstractModel implements Quote {
     String customer_id;
     String currency_id;
     String till_id;
-    List<PosQuoteItems> items;
+    List<QuoteItems> items;
     PosQuoteCustomer customer;
 
     @Override
@@ -74,11 +74,21 @@ public class PosQuote extends PosAbstractModel implements Quote {
 
     @Override
     public List<QuoteItems> getItems() {
-        return (List<QuoteItems>) (List<?>) items;
+        return items;
+    }
+
+    @Override
+    public void setItems(List<QuoteItems> items) {
+        this.items = items;
     }
 
     @Override
     public QuoteCustomer getCustomer() {
         return customer;
+    }
+
+    @Override
+    public void setCustomer(QuoteCustomer customer) {
+        this.customer = (PosQuoteCustomer) customer;
     }
 }

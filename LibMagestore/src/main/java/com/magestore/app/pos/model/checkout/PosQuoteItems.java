@@ -66,4 +66,9 @@ public class PosQuoteItems extends PosAbstractModel implements QuoteItems {
     public QuoteItemExtension getExtensionData() {
         return extension_data;
     }
+
+    @Override
+    public void setExtensionData(QuoteItemExtension quoteItemExtension) {
+        extension_data = (PosQuoteItemExtension) quoteItemExtension;
+    }
 }

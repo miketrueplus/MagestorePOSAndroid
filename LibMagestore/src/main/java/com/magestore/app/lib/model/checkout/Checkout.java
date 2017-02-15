@@ -2,6 +2,7 @@ package com.magestore.app.lib.model.checkout;
 
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
+import com.magestore.app.lib.model.customer.Customer;
 
 import java.util.List;
 
@@ -38,4 +39,7 @@ public interface Checkout extends Model {
 
     float getLastTotal();
     void setLastTotal(float total);
+
+    Customer getCustomer();
+    void setCustomer(Customer customer);
 }
