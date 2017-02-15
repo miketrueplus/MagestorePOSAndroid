@@ -174,6 +174,7 @@ public class SalesActivity extends AbstractActivity
         // controller quản lý check out
         mCheckoutListController = new CheckoutListController();
         mCheckoutListController.setSubject(subject);
+        mCheckoutListController.setContext(getContext());
         mCheckoutListController.setMagestoreContext(magestoreContext);
         mCheckoutListController.setListService(checkoutService);
         mCheckoutListController.setListPanel(mCheckoutListPanel);
@@ -221,6 +222,8 @@ public class SalesActivity extends AbstractActivity
 //        mCheckoutPaymentListController.setListPanel(mCheckoutPaymentListPanel);
 //        mCheckoutPaymentListController.setDetailPanel(mCheckoutPaymentDetailPanel);
 //        mCheckoutPaymentListController.setParentController(mCheckoutListController);
+
+        mCheckoutShippingListPanel.setCheckoutListController(mCheckoutListController);
 
         mProductListPanel.initModel();
         mCheckoutListPanel.initModel();

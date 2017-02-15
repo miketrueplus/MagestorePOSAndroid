@@ -22,9 +22,9 @@ public interface CheckoutShipping extends Model {
 
     float getPrice();
 
-    void setMethod(String strMethod);
+    void setCode(String strCode);
 
-    String getMethod();
+    String getCode();
 
     void setTrack(ArrayList<Model> tracks);
 

@@ -6,6 +6,7 @@ import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.checkout.CheckoutShipping;
 import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.lib.model.checkout.CheckoutTotals;
+import com.magestore.app.lib.model.checkout.Quote;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.pos.model.PosAbstractModel;
@@ -27,6 +28,7 @@ public class PosCheckout extends PosAbstractModel implements Checkout {
     List<PosCheckoutShipping> shipping;
     Customer customer;
     List<PosCheckoutToTals> totals;
+    PosQuote quote_init;
 
     private class CheckoutConfig {
         String apply_promotion = "0";
@@ -166,5 +168,15 @@ public class PosCheckout extends PosAbstractModel implements Checkout {
     @Override
     public void setTotals(List<CheckoutTotals> checkoutTotals) {
         totals = (List<PosCheckoutToTals>) (List<?>) checkoutTotals;
+    }
+
+    @Override
+    public Quote getQuote() {
+        return quote_init;
+    }
+
+    @Override
+    public void setQuote(Quote quote) {
+        quote_init = (PosQuote) quote;
     }
 }

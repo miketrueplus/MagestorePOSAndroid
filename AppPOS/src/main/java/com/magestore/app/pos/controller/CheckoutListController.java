@@ -1,28 +1,22 @@
 package com.magestore.app.pos.controller;
 
-import android.util.Log;
-import android.view.View;
+import android.content.Context;
 
 import com.magestore.app.lib.controller.AbstractListController;
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.checkout.CheckoutPayment;
-import com.magestore.app.lib.model.checkout.PaymentMethod;
+import com.magestore.app.lib.model.checkout.CheckoutShipping;
 import com.magestore.app.lib.model.customer.Customer;
-import com.magestore.app.lib.model.sales.Payment;
 import com.magestore.app.lib.observe.State;
-import com.magestore.app.lib.service.ServiceFactory;
 import com.magestore.app.lib.service.checkout.CheckoutService;
 import com.magestore.app.pos.panel.CheckoutListPanel;
 import com.magestore.app.pos.panel.CheckoutPaymentListPanel;
 import com.magestore.app.pos.panel.CheckoutShippingListPanel;
 import com.magestore.app.pos.panel.PaymentMethodListPanel;
-import com.magestore.app.pos.panel.ProductListPanel;
+import com.magestore.app.util.DataUtil;
 
-import java.io.IOException;
-import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,12 +33,15 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     public static final String STATE_ON_MARK_AS_PARTIAL = "STATE_ON_MARK_AS_PARTIAL";
 
     static final int ACTION_TYPE_SAVE_CART = 0;
-
+    static final int ACTION_TYPE_SAVE_SHIPPING = 1;
+    static final int ACTION_TYPE_SAVE_PAYMENT = 2;
+    Map<String, Object> wraper;
     CartItemListController mCartItemListController;
     CheckoutShippingListPanel mCheckoutShippingListPanel;
     CheckoutPaymentListPanel mCheckoutPaymentListPanel;
     ProductListController mProductListController;
     PaymentMethodListPanel mPaymentMethodListPanel;
+    Context context;
 
     @Override
     public void bindItem(Checkout item) {
@@ -57,6 +54,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
     @Override
     public List<Checkout> onRetrieveBackground(int page, int pageSize) throws Exception {
+        wraper = new HashMap<>();
         return super.onRetrieveBackground(page, pageSize);
     }
 
@@ -85,14 +83,33 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     public void doInputSaveCart() {
         binCartItem();
         Checkout checkout = getSelectedItem();
-        Map<String, Object> wraper = new HashMap<>();
+        wraper.put("quote_id", DataUtil.getDataStringToPreferences(context, DataUtil.QUOTE));
         doAction(ACTION_TYPE_SAVE_CART, null, wraper, checkout);
+    }
+
+    public void doInputSaveShipping(CheckoutShipping checkoutShipping) {
+        doAction(ACTION_TYPE_SAVE_SHIPPING, null, wraper, checkoutShipping);
+    }
+
+    public void doInputSavePayment(CheckoutPayment checkoutPayment) {
+        doAction(ACTION_TYPE_SAVE_PAYMENT, null, wraper, checkoutPayment);
     }
 
     @Override
     public Boolean doActionBackround(int actionType, String actionCode, Map<String, Object> wraper, Model... models) throws Exception {
         if (actionType == ACTION_TYPE_SAVE_CART) {
-            wraper.put("checkout", ((CheckoutService) mListService).savePayment((Checkout) models[0]));
+            String quoteId = (String) wraper.get("quote_id");
+            wraper.put("save_cart", ((CheckoutService) mListService).saveCart((Checkout) models[0], quoteId));
+            return true;
+        } else if (actionType == ACTION_TYPE_SAVE_SHIPPING) {
+            String shippingCode = ((CheckoutShipping) models[0]).getCode();
+            String quoteId = DataUtil.getDataStringToPreferences(context, DataUtil.QUOTE);
+            wraper.put("save_shipping", ((CheckoutService) mListService).saveShipping(quoteId, shippingCode));
+            return true;
+        } else if (actionType == ACTION_TYPE_SAVE_PAYMENT) {
+            String paymentCode = ((CheckoutPayment) models[0]).getCode();
+            String quoteId = DataUtil.getDataStringToPreferences(context, DataUtil.QUOTE);
+            wraper.put("save_payment", ((CheckoutService) mListService).savePayment(quoteId, paymentCode));
             return true;
         }
         return false;
@@ -101,13 +118,26 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     @Override
     public void onActionPostExecute(boolean success, int actionType, String actionCode, Map<String, Object> wraper, Model... models) {
         if (success && actionType == ACTION_TYPE_SAVE_CART) {
-            Checkout checkout = (Checkout) wraper.get("checkout");
+            Checkout checkout = (Checkout) wraper.get("save_cart");
+            String quoteId = checkout.getQuote().getID();
             bindItem(checkout);
             mCheckoutShippingListPanel.bindList(checkout.getCheckoutShipping());
             mCheckoutPaymentListPanel.bindList(checkout.getCheckoutPayment());
             mPaymentMethodListPanel.bindList(checkout.getCheckoutPayment());
+            DataUtil.saveDataStringToPreferences(context, DataUtil.QUOTE, quoteId);
             doShowDetailPanel(true);
+        } else if (success && actionType == ACTION_TYPE_SAVE_SHIPPING) {
+            Checkout checkout = (Checkout) wraper.get("save_shipping");
+            mCheckoutPaymentListPanel.bindList(checkout.getCheckoutPayment());
+            mPaymentMethodListPanel.bindList(checkout.getCheckoutPayment());
+        } else if (success && actionType == ACTION_TYPE_SAVE_PAYMENT) {
+            Checkout checkout = (Checkout) wraper.get("save_payment");
+
         }
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
     }
 
     /**

@@ -45,4 +45,7 @@ public interface Checkout extends Model {
 
     List<CheckoutTotals> getTotals();
     void setTotals(List<CheckoutTotals> checkoutTotals);
+
+    Quote getQuote();
+    void setQuote(Quote quote);
 }

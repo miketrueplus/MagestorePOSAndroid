@@ -14,7 +14,7 @@ import java.util.ArrayList;
  */
 
 public class PosCheckoutShipping extends PosAbstractModel implements CheckoutShipping {
-    String method;
+    String code;
     String title;
     String description;
     String error_message;
@@ -50,13 +50,13 @@ public class PosCheckoutShipping extends PosAbstractModel implements CheckoutShi
     }
 
     @Override
-    public void setMethod(String strMethod) {
-        this.method = strMethod;
+    public void setCode(String strCode) {
+        this.code = strCode;
     }
 
     @Override
-    public String getMethod() {
-        return method;
+    public String getCode() {
+        return code;
     }
 
     @Override

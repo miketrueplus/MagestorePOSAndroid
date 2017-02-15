@@ -17,4 +17,8 @@ public interface CheckoutDataAccess extends DataAccess {
     boolean insert(Checkout... models) throws ParseException, InstantiationException, IllegalAccessException, IOException;
 
     Checkout saveCart(Quote quote) throws ParseException, InstantiationException, IllegalAccessException, IOException;
+
+    Checkout saveShipping(String quoteId, String shippingCode) throws ParseException, InstantiationException, IllegalAccessException, IOException;
+
+    Checkout savePayment(String quoteId, String paymentCode) throws ParseException, InstantiationException, IllegalAccessException, IOException;
 }

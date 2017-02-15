@@ -44,10 +44,10 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
     }
 
     @Override
-    public Checkout savePayment(Checkout checkout) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+    public Checkout saveCart(Checkout checkout, String quoteId) throws IOException, InstantiationException, ParseException, IllegalAccessException {
         QuoteCustomer quoteCustomer = createQuoteCustomer();
         Quote quote = createQuote();
-        quote.setQuoteId("");
+        quote.setQuoteId(quoteId);
         quote.setCustomerId(checkout.getCustomerID());
         // TODO: Giả data với (store_id = 1 và current_id = USD, till_id = 1) sau fix lại theo config
         quote.setCurrencyId("USD");
@@ -63,6 +63,22 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         CheckoutDataAccess checkoutDataAccess = factory.generateCheckoutDataAccess();
 
         return checkoutDataAccess.saveCart(quote);
+    }
+
+    @Override
+    public Checkout saveShipping(String quoteId, String shippingCode) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+        // Khởi tạo customer gateway factory
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        CheckoutDataAccess checkoutDataAccess = factory.generateCheckoutDataAccess();
+        return checkoutDataAccess.saveShipping(quoteId, shippingCode);
+    }
+
+    @Override
+    public Checkout savePayment(String quoteId, String paymentCode) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+        // Khởi tạo customer gateway factory
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        CheckoutDataAccess checkoutDataAccess = factory.generateCheckoutDataAccess();
+        return checkoutDataAccess.savePayment(quoteId, paymentCode);
     }
 
     @Override

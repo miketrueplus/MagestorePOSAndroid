@@ -10,9 +10,11 @@ import android.widget.RadioButton;
 import com.magestore.app.lib.model.checkout.CheckoutShipping;
 import com.magestore.app.lib.model.checkout.ShippingMethod;
 import com.magestore.app.lib.view.AbstractSimpleListView;
+import com.magestore.app.pos.controller.CheckoutListController;
 import com.magestore.app.pos.databinding.CardCheckoutShippingContentBinding;
 
 import com.magestore.app.pos.R;
+
 /**
  * Created by Mike on 2/7/2017.
  * Magestore
@@ -21,6 +23,12 @@ import com.magestore.app.pos.R;
 
 public class CheckoutShippingListPanel extends AbstractSimpleListView<CheckoutShipping> {
     int selectedPos = -1;
+    CheckoutListController mCheckoutListController;
+
+    public void setCheckoutListController(CheckoutListController mCheckoutListController) {
+        this.mCheckoutListController = mCheckoutListController;
+    }
+
     public CheckoutShippingListPanel(Context context) {
         super(context);
     }
@@ -45,13 +53,14 @@ public class CheckoutShippingListPanel extends AbstractSimpleListView<CheckoutSh
             @Override
             public void onClick(View v) {
                 selectedPos = position;
+                mCheckoutListController.doInputSaveShipping(getSelectedShippingMethod());
                 notifyDataSetChanged();
             }
         });
     }
 
-//    public ShippingMethod getSelectedShippingMethod() {
-//        if (selectedPos < 0) return null;
-//        return mList.get(selectedPos);
-//    }
+    public CheckoutShipping getSelectedShippingMethod() {
+        if (selectedPos < 0) return null;
+        return mList.get(selectedPos);
+    }
 }

@@ -22,7 +22,11 @@ import java.text.ParseException;
 public interface CheckoutService extends ListService<Checkout> {
     boolean insert(Checkout... checkouts) throws IOException, InstantiationException, ParseException, IllegalAccessException;
 
-    Checkout savePayment(Checkout checkout) throws IOException, InstantiationException, ParseException, IllegalAccessException;
+    Checkout saveCart(Checkout checkout, String quoteId) throws IOException, InstantiationException, ParseException, IllegalAccessException;
+
+    Checkout saveShipping(String quoteId, String shippingCode) throws IOException, InstantiationException, ParseException, IllegalAccessException;
+
+    Checkout savePayment(String quoteId, String paymentCode) throws IOException, InstantiationException, ParseException, IllegalAccessException;
 
     Checkout create();
 
