@@ -182,7 +182,7 @@ public class POSCheckoutDataAccess extends POSAbstractDataAccess implements Chec
 
             CheckoutEntity checkoutEntity = new CheckoutEntity();
             checkoutEntity.quote_id = quoteId;
-            checkoutEntity.shipping_method = paymentCode;
+            checkoutEntity.payment_method = paymentCode;
 
             rp = statement.execute(checkoutEntity);
             rp.setParseImplement(getClassParseImplement());

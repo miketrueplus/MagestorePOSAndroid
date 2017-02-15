@@ -1,6 +1,7 @@
 package com.magestore.app.pos.controller;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.magestore.app.lib.controller.AbstractListController;
 import com.magestore.app.lib.model.Model;
@@ -132,7 +133,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             mPaymentMethodListPanel.bindList(checkout.getCheckoutPayment());
         } else if (success && actionType == ACTION_TYPE_SAVE_PAYMENT) {
             Checkout checkout = (Checkout) wraper.get("save_payment");
-
+            // TODO: Action khi save payment method xong
         }
     }
 
