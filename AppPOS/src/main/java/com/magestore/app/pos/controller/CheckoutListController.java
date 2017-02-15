@@ -1,25 +1,26 @@
 package com.magestore.app.pos.controller;
 
-import android.view.View;
+import android.content.Context;
+import android.util.Log;
 
 import com.magestore.app.lib.controller.AbstractListController;
+import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.model.checkout.Checkout;
-import com.magestore.app.lib.model.checkout.PaymentMethod;
+import com.magestore.app.lib.model.checkout.CheckoutPayment;
+import com.magestore.app.lib.model.checkout.CheckoutShipping;
 import com.magestore.app.lib.model.customer.Customer;
-import com.magestore.app.lib.model.sales.Payment;
 import com.magestore.app.lib.observe.State;
-import com.magestore.app.lib.service.ServiceFactory;
+import com.magestore.app.lib.service.checkout.CheckoutService;
 import com.magestore.app.pos.panel.CheckoutListPanel;
 import com.magestore.app.pos.panel.CheckoutPaymentListPanel;
 import com.magestore.app.pos.panel.CheckoutShippingListPanel;
 import com.magestore.app.pos.panel.PaymentMethodListPanel;
-import com.magestore.app.pos.panel.ProductListPanel;
+import com.magestore.app.util.DataUtil;
 
-import java.io.IOException;
-import java.text.ParseException;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Mike on 2/7/2017.
@@ -32,11 +33,16 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     public static final String STATE_ON_PLACE_ORDER = "STATE_ON_PLACE_ORDER";
     public static final String STATE_ON_MARK_AS_PARTIAL = "STATE_ON_MARK_AS_PARTIAL";
 
+    static final int ACTION_TYPE_SAVE_CART = 0;
+    static final int ACTION_TYPE_SAVE_SHIPPING = 1;
+    static final int ACTION_TYPE_SAVE_PAYMENT = 2;
+    Map<String, Object> wraper;
     CartItemListController mCartItemListController;
     CheckoutShippingListPanel mCheckoutShippingListPanel;
     CheckoutPaymentListPanel mCheckoutPaymentListPanel;
     ProductListController mProductListController;
     PaymentMethodListPanel mPaymentMethodListPanel;
+    Context context;
 
     @Override
     public void bindItem(Checkout item) {
@@ -49,6 +55,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
     @Override
     public List<Checkout> onRetrieveBackground(int page, int pageSize) throws Exception {
+        wraper = new HashMap<>();
         return super.onRetrieveBackground(page, pageSize);
     }
 
@@ -64,6 +71,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     public void bindCustomer(Customer customer) {
         if (customer != null) {
             Checkout checkout = getSelectedItem();
+            checkout.setCustomer(customer);
             checkout.setCustomerID(customer.getID());
         }
     }
@@ -73,24 +81,64 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         checkout.setCartItem(mCartItemListController.getListCartItem());
     }
 
-    @Override
-    public void onRetrievePostExecute(List<Checkout> list) {
-        super.onRetrievePostExecute(list);
-        bindItem(list.get(0));
-        try {
-            mCheckoutShippingListPanel.bindList(getConfigService().getShippingMethodList());
-            mCheckoutPaymentListPanel.bindList(getConfigService().getCheckoutPaymentList());
-            mPaymentMethodListPanel.bindList(getConfigService().getPaymentMethodList());
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+    public void doInputSaveCart() {
+        binCartItem();
+        Checkout checkout = getSelectedItem();
+        wraper.put("quote_id", DataUtil.getDataStringToPreferences(context, DataUtil.QUOTE));
+        doAction(ACTION_TYPE_SAVE_CART, null, wraper, checkout);
+    }
 
+    public void doInputSaveShipping(CheckoutShipping checkoutShipping) {
+        doAction(ACTION_TYPE_SAVE_SHIPPING, null, wraper, checkoutShipping);
+    }
+
+    public void doInputSavePayment(CheckoutPayment checkoutPayment) {
+        doAction(ACTION_TYPE_SAVE_PAYMENT, null, wraper, checkoutPayment);
+    }
+
+    @Override
+    public Boolean doActionBackround(int actionType, String actionCode, Map<String, Object> wraper, Model... models) throws Exception {
+        if (actionType == ACTION_TYPE_SAVE_CART) {
+            String quoteId = (String) wraper.get("quote_id");
+            wraper.put("save_cart", ((CheckoutService) mListService).saveCart((Checkout) models[0], quoteId));
+            return true;
+        } else if (actionType == ACTION_TYPE_SAVE_SHIPPING) {
+            String shippingCode = ((CheckoutShipping) models[0]).getCode();
+            String quoteId = DataUtil.getDataStringToPreferences(context, DataUtil.QUOTE);
+            wraper.put("save_shipping", ((CheckoutService) mListService).saveShipping(quoteId, shippingCode));
+            return true;
+        } else if (actionType == ACTION_TYPE_SAVE_PAYMENT) {
+            String paymentCode = ((CheckoutPayment) models[0]).getCode();
+            String quoteId = DataUtil.getDataStringToPreferences(context, DataUtil.QUOTE);
+            wraper.put("save_payment", ((CheckoutService) mListService).savePayment(quoteId, paymentCode));
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void onActionPostExecute(boolean success, int actionType, String actionCode, Map<String, Object> wraper, Model... models) {
+        if (success && actionType == ACTION_TYPE_SAVE_CART) {
+            Checkout checkout = (Checkout) wraper.get("save_cart");
+            String quoteId = checkout.getQuote().getID();
+            bindItem(checkout);
+            mCheckoutShippingListPanel.bindList(checkout.getCheckoutShipping());
+            mCheckoutPaymentListPanel.bindList(checkout.getCheckoutPayment());
+            mPaymentMethodListPanel.bindList(checkout.getCheckoutPayment());
+            DataUtil.saveDataStringToPreferences(context, DataUtil.QUOTE, quoteId);
+            doShowDetailPanel(true);
+        } else if (success && actionType == ACTION_TYPE_SAVE_SHIPPING) {
+            Checkout checkout = (Checkout) wraper.get("save_shipping");
+            mCheckoutPaymentListPanel.bindList(checkout.getCheckoutPayment());
+            mPaymentMethodListPanel.bindList(checkout.getCheckoutPayment());
+        } else if (success && actionType == ACTION_TYPE_SAVE_PAYMENT) {
+            Checkout checkout = (Checkout) wraper.get("save_payment");
+            // TODO: Action khi save payment method xong
+        }
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
     }
 
     /**
@@ -144,7 +192,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         doInsert(getSelectedItem());
     }
 
-    public void onAddPaymentMethod(PaymentMethod method) {
+    public void onAddPaymentMethod(CheckoutPayment method) {
 
     }
 

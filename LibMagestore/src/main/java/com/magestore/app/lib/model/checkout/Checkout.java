@@ -2,6 +2,7 @@ package com.magestore.app.lib.model.checkout;
 
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
+import com.magestore.app.lib.model.customer.Customer;
 
 import java.util.List;
 
@@ -18,11 +19,11 @@ public interface Checkout extends Model {
     List<CartItem> getCartItem();
     void setCartItem(List<CartItem> items);
 
-    CheckoutShipping getCheckoutShipping();
-    void setCheckoutShipping(CheckoutShipping shiping);
+    List<CheckoutShipping> getCheckoutShipping();
+    void setCheckoutShipping(List<CheckoutShipping> shiping);
 
-    CheckoutPayment getPayment();
-    void setPayment(CheckoutPayment payment);
+    List<CheckoutPayment> getCheckoutPayment();
+    void setCheckoutPayment(List<CheckoutPayment> payment);
 
     String getCouponCode();
     void setCouponCode(String strCouponCode);
@@ -38,4 +39,13 @@ public interface Checkout extends Model {
 
     float getLastTotal();
     void setLastTotal(float total);
+
+    Customer getCustomer();
+    void setCustomer(Customer customer);
+
+    List<CheckoutTotals> getTotals();
+    void setTotals(List<CheckoutTotals> checkoutTotals);
+
+    Quote getQuote();
+    void setQuote(Quote quote);
 }

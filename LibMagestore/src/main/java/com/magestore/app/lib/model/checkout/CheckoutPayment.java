@@ -33,9 +33,25 @@ public interface CheckoutPayment extends Model {
 
     void setRealAmount(float amount);
 
-    void setPaylater(int paylater);
+    void setPaylater(String paylater);
 
-    int isPaylater();
+    String isPaylater();
+
+    String getIsDefault();
+
+    void setIsDefault(String strIsDefault);
+
+    String getIsReferenceNumber();
+
+    void setIsReferenceNumber(String strIsReferenceNumber);
+
+    String getType();
+
+    void setType(String strType);
+
+    String getInformation();
+
+    void setInformation(String strInformation);
 
     void setShiftID(String shiftID);
 

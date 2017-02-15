@@ -12,9 +12,19 @@ import java.util.ArrayList;
  */
 
 public interface CheckoutShipping extends Model {
-    void setMethod(String strMethod);
+    String getTitle();
 
-    String getMethod();
+    String getDescription();
+
+    String getErrorMessage();
+
+    String getPriceType();
+
+    float getPrice();
+
+    void setCode(String strCode);
+
+    String getCode();
 
     void setTrack(ArrayList<Model> tracks);
 

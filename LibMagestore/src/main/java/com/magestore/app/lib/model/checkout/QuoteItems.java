@@ -19,4 +19,5 @@ public interface QuoteItems extends Model {
     int getUserDiscount();
     void setUserDiscount(int intUserDiscount);
     QuoteItemExtension getExtensionData();
+    void setExtensionData(QuoteItemExtension quoteItemExtension);
 }

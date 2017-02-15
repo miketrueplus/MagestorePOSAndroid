@@ -1,7 +1,6 @@
 package com.magestore.app.lib.model.checkout;
 
 import com.magestore.app.lib.model.Model;
-import com.magestore.app.pos.model.checkout.PosQuoteCustomerAddress;
 
 /**
  * Created by Johan on 2/14/17.
@@ -12,7 +11,9 @@ import com.magestore.app.pos.model.checkout.PosQuoteCustomerAddress;
 public interface QuoteCustomer extends Model {
     void setCustomerId(String strCustomerId);
 
-    PosQuoteCustomerAddress getBillingAddress();
+    QuoteCustomerAddress getBillingAddress();
+    void setBillingAddress(QuoteCustomerAddress billingAddress);
 
-    PosQuoteCustomerAddress getShippingAddress();
+    QuoteCustomerAddress getShippingAddress();
+    void setShippingAddress(QuoteCustomerAddress shippingAddress);
 }

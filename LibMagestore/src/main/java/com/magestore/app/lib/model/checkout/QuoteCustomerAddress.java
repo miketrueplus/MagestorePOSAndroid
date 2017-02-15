@@ -2,6 +2,8 @@ package com.magestore.app.lib.model.checkout;
 
 import com.magestore.app.lib.model.Model;
 
+import java.util.List;
+
 /**
  * Created by Johan on 2/14/17.
  * Magestore
@@ -13,17 +15,17 @@ public interface QuoteCustomerAddress extends Model {
 
     void setCountryId(String strCountryId);
 
-    String getRegionId();
+    int getRegionId();
 
-    void setRegionId(String strRegionId);
+    void setRegionId(int intRegionId);
 
     String getPostcode();
 
     void setPostcode(String strPoscode);
 
-    String getStreet();
+    List<String> getStreet();
 
-    void setStreet(String strStreet);
+    void setStreet(List<String> strStreet);
 
     String getTelephone();
 
@@ -33,9 +35,9 @@ public interface QuoteCustomerAddress extends Model {
 
     void setCity(String strCity);
 
-    String getFisrtname();
+    String getFirstname();
 
-    void setFisrtname(String strFisrtname);
+    void setFirstname(String strFirstname);
 
     String getLastname();
 

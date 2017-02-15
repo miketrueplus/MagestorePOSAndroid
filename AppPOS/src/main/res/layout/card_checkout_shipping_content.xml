@@ -5,7 +5,7 @@
         <import type="com.magestore.app.util.ConfigUtil" />
         <variable
             name="shippingMethod"
-            type="com.magestore.app.lib.model.checkout.ShippingMethod" />
+            type="com.magestore.app.lib.model.checkout.CheckoutShipping" />
     </data>
 
     <FrameLayout
@@ -24,13 +24,13 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                android:text="@{shippingMethod.getName()}" />
+                android:text="@{shippingMethod.getTitle()}" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:text="@{ConfigUtil.formatPrice(shippingMethod.getRate())}" />
+                android:text="@{ConfigUtil.formatPrice(shippingMethod.getPrice())}" />
         </RelativeLayout>
     </FrameLayout>
 </layout>

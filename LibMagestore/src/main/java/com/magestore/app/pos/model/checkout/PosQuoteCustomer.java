@@ -1,6 +1,7 @@
 package com.magestore.app.pos.model.checkout;
 
 import com.magestore.app.lib.model.checkout.QuoteCustomer;
+import com.magestore.app.lib.model.checkout.QuoteCustomerAddress;
 import com.magestore.app.pos.model.PosAbstractModel;
 
 /**
@@ -11,21 +12,31 @@ import com.magestore.app.pos.model.PosAbstractModel;
 
 public class PosQuoteCustomer extends PosAbstractModel implements QuoteCustomer {
     String customer_id;
-    PosQuoteCustomerAddress billing_address;
-    PosQuoteCustomerAddress shipping_address;
+    QuoteCustomerAddress billing_address;
+    QuoteCustomerAddress shipping_address;
 
     @Override
     public void setCustomerId(String strCustomerId) {
-        id = customer_id;
+        customer_id = strCustomerId;
     }
 
     @Override
-    public PosQuoteCustomerAddress getBillingAddress() {
+    public QuoteCustomerAddress getBillingAddress() {
         return billing_address;
     }
 
     @Override
-    public PosQuoteCustomerAddress getShippingAddress() {
+    public void setBillingAddress(QuoteCustomerAddress billingAddress) {
+        billing_address = billingAddress;
+    }
+
+    @Override
+    public QuoteCustomerAddress getShippingAddress() {
         return shipping_address;
+    }
+
+    @Override
+    public void setShippingAddress(QuoteCustomerAddress shippingAddress) {
+        shipping_address = shippingAddress;
     }
 }

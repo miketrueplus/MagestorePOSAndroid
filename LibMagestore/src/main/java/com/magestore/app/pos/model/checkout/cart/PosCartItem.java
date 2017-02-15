@@ -65,16 +65,6 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     String return_to_stock;
 
     @Override
-    public String getID() {
-        return item_id;
-    }
-
-    @Override
-    public void setId(String strId) {
-        item_id = strId;
-    }
-
-    @Override
     public void setQuantity(int param_quantity) {
         qty = param_quantity;
     }
@@ -112,6 +102,16 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     @Override
     public float getOriginalPrice() {
         return original_price;
+    }
+
+    @Override
+    public String getItemId() {
+        return item_id;
+    }
+
+    @Override
+    public void setItemId(String strItemId) {
+        item_id = strItemId;
     }
 
     // Order history
@@ -198,6 +198,11 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     @Override
     public String getParentItemId() {
         return parent_item_id;
+    }
+
+    @Override
+    public void setId(String strID) {
+        id = strID;
     }
 
     @Override
