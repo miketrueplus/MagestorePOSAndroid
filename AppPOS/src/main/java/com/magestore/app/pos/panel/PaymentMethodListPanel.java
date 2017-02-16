@@ -4,11 +4,7 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.util.AttributeSet;
 import android.view.View;
-
 import com.magestore.app.lib.model.checkout.CheckoutPayment;
-import com.magestore.app.lib.model.checkout.PaymentMethod;
-import com.magestore.app.lib.model.sales.Payment;
-import com.magestore.app.lib.view.AbstractSimpleListView;
 import com.magestore.app.lib.view.AbstractSimpleRecycleView;
 import com.magestore.app.pos.controller.CheckoutListController;
 import com.magestore.app.pos.databinding.CardPaymentMethodContentBinding;

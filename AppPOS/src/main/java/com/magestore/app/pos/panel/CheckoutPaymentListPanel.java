@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.lib.panel.AbstractListPanel;
@@ -43,11 +44,21 @@ public class CheckoutPaymentListPanel extends AbstractSimpleListView<CheckoutPay
         CardCheckoutPaymentContentBinding mBinding = DataBindingUtil.bind(view);
         mBinding.setCheckoutPayment(item);
 
-        LinearLayout ll_payment_method = (LinearLayout) view.findViewById(R.id.ll_payment_method);
-        ll_payment_method.setOnClickListener(new OnClickListener() {
+//        LinearLayout ll_payment_method = (LinearLayout) view.findViewById(R.id.ll_payment_method);
+//        ll_payment_method.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                mCheckoutListController.doInputSavePayment(mList.get(position));
+//            }
+//        });
+
+        RelativeLayout rl_remove_payment = (RelativeLayout) view.findViewById(R.id.rl_remove_payment);
+        rl_remove_payment.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                mCheckoutListController.doInputSavePayment(mList.get(position));
+                mList.remove(position);
+                notifyDataSetChanged();
+                mCheckoutListController.onRemovePaymentMethod();
             }
         });
     }

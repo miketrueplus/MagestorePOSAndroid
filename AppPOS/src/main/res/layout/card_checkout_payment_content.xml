@@ -3,6 +3,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <import type="com.magestore.app.util.ConfigUtil" />
 
         <variable
@@ -10,22 +12,25 @@
             type="com.magestore.app.lib.model.checkout.CheckoutPayment" />
     </data>
 
-    <FrameLayout
+
+    <LinearLayout
+        android:id="@+id/ll_payment_method"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/layout_margin"
         android:orientation="horizontal">
 
         <LinearLayout
-            android:id="@+id/ll_payment_method"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/layout_margin"
+            android:layout_weight="2"
             android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.6">
+                android:layout_weight="1"
+                android:orientation="horizontal">
 
                 <ImageView
                     android:id="@+id/img_background_checkout_payment"
@@ -42,27 +47,67 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_weight="0.4">
+                android:layout_weight="1"
+                android:background="@drawable/boder_linear_layout"
+                android:orientation="vertical"
+                android:padding="5dp"
+                android:visibility="@{checkoutPayment.checkReference() ? View.VISIBLE : View.GONE}">
 
-                <TextView
-                    android:id="@+id/txt_name_checkout_refer"
-                    android:layout_width="wrap_content"
+                <com.magestore.app.view.FormatTextEdit
+                    android:id="@+id/reference_number"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="0.5"
-                    android:text="refer" />
-
-                <TextView
-                    android:id="@+id/txt_name_checkout_value"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="0.5"
-                    android:text="@{ConfigUtil.formatPrice(checkoutPayment.getBaseAmount())}" />
+                    android:background="@color/white"
+                    android:hint="@string/reference_number" />
             </LinearLayout>
         </LinearLayout>
-    </FrameLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:descendantFocusability="blocksDescendants"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="2"
+                android:background="@drawable/boder_linear_layout"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <com.magestore.app.view.FormatTextEdit
+                    android:id="@+id/checkout_value"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:hint="@string/first_name" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_remove_payment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1">
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/ic_remove_circle" />
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
 </layout>

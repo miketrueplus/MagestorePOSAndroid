@@ -100,8 +100,10 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
      * Xử lý khi click thêm mới payment
      */
     void onClickAddPayment() {
-        dialog = DialogUtil.dialog(getContext(), getContext().getString(R.string.sales_add_payment), mCheckoutAddPaymentPanel);
-        dialog.setGoneButtonSave(true);
+        if (dialog == null) {
+            dialog = DialogUtil.dialog(getContext(), getContext().getString(R.string.sales_add_payment), mCheckoutAddPaymentPanel);
+            dialog.setGoneButtonSave(true);
+        }
         dialog.show();
     }
 
@@ -125,7 +127,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         }
     }
 
-    public void showPaymentMethod(){
+    public void showPaymentMethod() {
         rl_content_payment_method.setVisibility(VISIBLE);
         im_payment_arrow.setRotation(180);
     }
@@ -176,7 +178,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         tv_shipping_method.setText(getContext().getString(R.string.shipping) + ": " + titleShippingMethod);
     }
 
-    public void dismissDialogAddPayment(){
+    public void dismissDialogAddPayment() {
         dialog.dismiss();
     }
 }

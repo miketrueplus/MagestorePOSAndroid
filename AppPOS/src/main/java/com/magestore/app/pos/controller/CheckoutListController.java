@@ -267,6 +267,13 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         ((CheckoutDetailPanel) mDetailView).showPanelCheckoutPayment();
     }
 
+    public void onRemovePaymentMethod(){
+        List<CheckoutPayment> listPayment = (List<CheckoutPayment>) wraper.get("list_payment");
+        if(listPayment.size() == 0){
+            ((CheckoutDetailPanel) mDetailView).showPanelPaymentMethod();
+        }
+    }
+
     /**
      * Place thực hiện order
      */

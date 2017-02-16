@@ -23,6 +23,7 @@ import com.magestore.app.lib.service.config.ConfigService;
 import com.magestore.app.lib.service.customer.CustomerService;
 import com.magestore.app.pos.controller.CartItemListController;
 import com.magestore.app.pos.controller.CategoryListController;
+import com.magestore.app.pos.controller.CheckoutAddPaymentListController;
 import com.magestore.app.pos.controller.CheckoutListController;
 import com.magestore.app.pos.controller.ProductListController;
 import com.magestore.app.pos.panel.CartItemListPanel;
@@ -68,6 +69,7 @@ public class SalesActivity extends AbstractActivity
     private CheckoutListController mCheckoutListController;
     private CartItemListController mCheckoutCartItemListController;
     private CategoryListController mCategoryListController;
+    private CheckoutAddPaymentListController mCheckoutAddPaymentListController;
 
     // Toolbar Order
     Toolbar toolbar_order;
@@ -205,6 +207,11 @@ public class SalesActivity extends AbstractActivity
         mCheckoutCartItemListController.setChildListService(cartService);
         mCheckoutCartItemListController.setParentController(mCheckoutListController);
         mCheckoutListController.setCartItemListController(mCheckoutCartItemListController);
+
+        mCheckoutAddPaymentListController = new CheckoutAddPaymentListController();
+        mCheckoutAddPaymentListController.setMagestoreContext(magestoreContext);
+        mCheckoutAddPaymentListController.setListPanel(mCheckoutAddPaymentPanel);
+        mCheckoutAddPaymentListController.setCheckoutListController(mCheckoutListController);
 
         mPaymentMethodListPanel.setCheckoutListController(mCheckoutListController);
 

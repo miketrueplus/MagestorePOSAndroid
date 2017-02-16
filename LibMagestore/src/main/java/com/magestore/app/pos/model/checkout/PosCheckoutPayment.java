@@ -2,6 +2,7 @@ package com.magestore.app.pos.model.checkout;
 
 import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.pos.model.PosAbstractModel;
+import com.magestore.app.pos.parse.gson2pos.Gson2PosExclude;
 
 /**
  * Created by Mike on 2/7/2017.
@@ -31,6 +32,9 @@ public class PosCheckoutPayment extends PosAbstractModel implements CheckoutPaym
         String cc_exp_year;
         String cc_cid;
     }
+
+    @Gson2PosExclude
+    boolean check_reference;
 
     AdditionalData additional_data = new AdditionalData();
 
@@ -212,5 +216,13 @@ public class PosCheckoutPayment extends PosAbstractModel implements CheckoutPaym
     @Override
     public String getCID() {
         return this.additional_data.cc_cid;
+    }
+
+    @Override
+    public boolean checkReference() {
+        if (getIsReferenceNumber().equals("1")) {
+            return true;
+        }
+        return false;
     }
 }

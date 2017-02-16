@@ -6,8 +6,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.LinearLayout;
-
 import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.lib.panel.AbstractListPanel;
 import com.magestore.app.pos.R;
@@ -53,15 +51,6 @@ public class CheckoutAddPaymentPanel extends AbstractListPanel<CheckoutPayment> 
     protected void bindItem(View view, final CheckoutPayment item, int position) {
         CardPaymentMethodContentBinding binding = DataBindingUtil.bind(view);
         binding.setPaymentMethod(item);
-        LinearLayout ll_payment_method = (LinearLayout) view.findViewById(R.id.ll_payment_method);
-        ll_payment_method.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Select payment method
-                mCheckoutListController.addPaymentFromDialog(item);
-            }
-        });
-
     }
 
     public void setCheckoutListController(CheckoutListController mCheckoutListController) {
