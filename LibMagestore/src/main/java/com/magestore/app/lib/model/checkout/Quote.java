@@ -23,4 +23,5 @@ public interface Quote extends Model {
     void setItems(List<QuoteItems> items);
     QuoteCustomer getCustomer();
     void setCustomer(QuoteCustomer customer);
+    String getShippingMethod();
 }

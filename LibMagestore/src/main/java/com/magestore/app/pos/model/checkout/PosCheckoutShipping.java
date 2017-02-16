@@ -22,6 +22,7 @@ public class PosCheckoutShipping extends PosAbstractModel implements CheckoutShi
     float price;
     String datetime;
     ArrayList<Model> tracks;
+    String is_default;
     CustomerAddress address;
 
     @Override
@@ -87,5 +88,10 @@ public class PosCheckoutShipping extends PosAbstractModel implements CheckoutShi
     @Override
     public CustomerAddress getAddress() {
         return this.address;
+    }
+
+    @Override
+    public String getIsDefault() {
+        return is_default;
     }
 }

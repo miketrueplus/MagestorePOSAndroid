@@ -79,6 +79,8 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         GenericState<CheckoutListController> state = new GenericState<CheckoutListController>(null, CheckoutListController.STATE_ON_PLACE_ORDER);
         getController().getSubject().setState(state);
         ((CheckoutListController) getController()).onPlaceOrder();
+
+        ((CheckoutListController) getController()).doInputPlaceOrder();
     }
 
     /**

@@ -21,6 +21,7 @@ public class PosQuote extends PosAbstractModel implements Quote {
     String till_id;
     List<QuoteItems> items;
     PosQuoteCustomer customer;
+    String shipping_method;
 
     @Override
     public String getID() {
@@ -90,5 +91,10 @@ public class PosQuote extends PosAbstractModel implements Quote {
     @Override
     public void setCustomer(QuoteCustomer customer) {
         this.customer = (PosQuoteCustomer) customer;
+    }
+
+    @Override
+    public String getShippingMethod() {
+        return shipping_method;
     }
 }

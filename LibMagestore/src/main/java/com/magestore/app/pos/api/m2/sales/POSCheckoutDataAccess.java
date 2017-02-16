@@ -1,5 +1,8 @@
 package com.magestore.app.pos.api.m2.sales;
 
+import android.util.Log;
+
+import com.google.gson.Gson;
 import com.magestore.app.lib.connection.Connection;
 import com.magestore.app.lib.connection.ConnectionException;
 import com.magestore.app.lib.connection.ConnectionFactory;
@@ -7,13 +10,17 @@ import com.magestore.app.lib.connection.ParamBuilder;
 import com.magestore.app.lib.connection.ResultReading;
 import com.magestore.app.lib.connection.Statement;
 import com.magestore.app.lib.model.checkout.Checkout;
+import com.magestore.app.lib.model.checkout.PlaceOrderParams;
 import com.magestore.app.lib.model.checkout.Quote;
+import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.parse.ParseException;
 import com.magestore.app.lib.resourcemodel.sales.CheckoutDataAccess;
 import com.magestore.app.pos.api.m2.POSAPI;
 import com.magestore.app.pos.api.m2.POSAbstractDataAccess;
 import com.magestore.app.pos.api.m2.POSDataAccessSession;
 import com.magestore.app.pos.model.checkout.PosCheckout;
+import com.magestore.app.pos.model.sales.PosOrder;
+
 import java.io.IOException;
 
 /**
@@ -88,6 +95,11 @@ public class POSCheckoutDataAccess extends POSAbstractDataAccess implements Chec
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
 
+            // TODO: log params request
+            Gson gson = new Gson();
+            String json = gson.toJson(quote);
+            Log.e("JSON", json.toString());
+
             rp = statement.execute(quote);
             rp.setParseImplement(getClassParseImplement());
             rp.setParseModel(PosCheckout.class);
@@ -134,7 +146,12 @@ public class POSCheckoutDataAccess extends POSAbstractDataAccess implements Chec
 
             CheckoutEntity checkoutEntity = new CheckoutEntity();
             checkoutEntity.quote_id = quoteId;
-            checkoutEntity.shipping_method = shippingCode;
+            checkoutEntity.shipping_method = "flatrate_flatrate";
+
+            // TODO: log params request
+            Gson gson = new Gson();
+            String json = gson.toJson(checkoutEntity);
+            Log.e("JSON", json.toString());
 
             rp = statement.execute(checkoutEntity);
             rp.setParseImplement(getClassParseImplement());
@@ -184,12 +201,66 @@ public class POSCheckoutDataAccess extends POSAbstractDataAccess implements Chec
             checkoutEntity.quote_id = quoteId;
             checkoutEntity.payment_method = paymentCode;
 
+            // TODO: log params request
+            Gson gson = new Gson();
+            String json = gson.toJson(checkoutEntity);
+            Log.e("JSON", json.toString());
+
             rp = statement.execute(checkoutEntity);
             rp.setParseImplement(getClassParseImplement());
             rp.setParseModel(PosCheckout.class);
 
             Checkout checkout = (Checkout) rp.doParse();
             return checkout;
+        } catch (ConnectionException ex) {
+            throw ex;
+        } catch (IOException ex) {
+            throw ex;
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
+    }
+
+    @Override
+    public Order placeOrder(PlaceOrderParams placeOrderParams) throws ParseException, InstantiationException, IllegalAccessException, IOException {
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+        try {
+            // Khởi tạo connection và khởi tạo truy vấn
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPI.REST_CHECK_OUT_PLACE_ORDER);
+
+            // Xây dựng tham số
+            paramBuilder = statement.getParamBuilder()
+                    .setSessionID(POSDataAccessSession.REST_SESSION_ID);
+
+            // TODO: log params request
+            Gson gson = new Gson();
+            String json = gson.toJson(placeOrderParams);
+            Log.e("JSON", json.toString());
+
+            rp = statement.execute(placeOrderParams);
+            rp.setParseImplement(getClassParseImplement());
+            rp.setParseModel(PosOrder.class);
+
+            Order order = (Order) rp.doParse();
+            return order;
         } catch (ConnectionException ex) {
             throw ex;
         } catch (IOException ex) {

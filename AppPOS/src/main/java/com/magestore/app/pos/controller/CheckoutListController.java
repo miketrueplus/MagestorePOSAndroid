@@ -10,6 +10,7 @@ import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.lib.model.checkout.CheckoutShipping;
 import com.magestore.app.lib.model.customer.Customer;
+import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.observe.State;
 import com.magestore.app.lib.service.checkout.CheckoutService;
 import com.magestore.app.pos.panel.CheckoutListPanel;
@@ -36,6 +37,8 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     static final int ACTION_TYPE_SAVE_CART = 0;
     static final int ACTION_TYPE_SAVE_SHIPPING = 1;
     static final int ACTION_TYPE_SAVE_PAYMENT = 2;
+    static final int ACTION_TYPE_PLACE_ORDER = 3;
+
     Map<String, Object> wraper;
     CartItemListController mCartItemListController;
     CheckoutShippingListPanel mCheckoutShippingListPanel;
@@ -93,7 +96,14 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     }
 
     public void doInputSavePayment(CheckoutPayment checkoutPayment) {
+        wraper.put("select_payment", checkoutPayment);
         doAction(ACTION_TYPE_SAVE_PAYMENT, null, wraper, checkoutPayment);
+    }
+
+    public void doInputPlaceOrder() {
+        // TODO: Check payment khác null hay ko
+        CheckoutPayment checkoutPayment = (CheckoutPayment) wraper.get("select_payment");
+        doAction(ACTION_TYPE_PLACE_ORDER, null, wraper, checkoutPayment);
     }
 
     @Override
@@ -111,6 +121,12 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             String paymentCode = ((CheckoutPayment) models[0]).getCode();
             String quoteId = DataUtil.getDataStringToPreferences(context, DataUtil.QUOTE);
             wraper.put("save_payment", ((CheckoutService) mListService).savePayment(quoteId, paymentCode));
+            return true;
+        } else if (actionType == ACTION_TYPE_PLACE_ORDER) {
+            CheckoutPayment checkoutPayment = ((CheckoutPayment) models[0]);
+            Checkout checkout = (Checkout) wraper.get("save_payment");
+            String quoteId = DataUtil.getDataStringToPreferences(context, DataUtil.QUOTE);
+            wraper.put("place_order", ((CheckoutService) mListService).placeOrder(quoteId, checkout, checkoutPayment));
             return true;
         }
         return false;
@@ -131,9 +147,20 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             Checkout checkout = (Checkout) wraper.get("save_shipping");
             mCheckoutPaymentListPanel.bindList(checkout.getCheckoutPayment());
             mPaymentMethodListPanel.bindList(checkout.getCheckoutPayment());
+            // TODO: hoàn thành save shipping
+            Log.e("CheckListController", "finish shipping");
         } else if (success && actionType == ACTION_TYPE_SAVE_PAYMENT) {
             Checkout checkout = (Checkout) wraper.get("save_payment");
             // TODO: Action khi save payment method xong
+
+            // TODO: hoàn thành save payment
+            Log.e("CheckListController", "finish payment");
+        } else if (success && actionType == ACTION_TYPE_PLACE_ORDER) {
+            Order order = (Order) wraper.get("place_order");
+            // TODO: Action khi place order
+
+            // TODO: hoàn thành place order
+            Log.e("CheckListController", "finish place order");
         }
     }
 

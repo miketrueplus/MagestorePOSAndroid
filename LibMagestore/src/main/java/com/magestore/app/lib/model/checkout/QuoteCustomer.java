@@ -9,8 +9,6 @@ import com.magestore.app.lib.model.Model;
  */
 
 public interface QuoteCustomer extends Model {
-    void setCustomerId(String strCustomerId);
-
     QuoteCustomerAddress getBillingAddress();
     void setBillingAddress(QuoteCustomerAddress billingAddress);
 

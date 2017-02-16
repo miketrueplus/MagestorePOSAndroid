@@ -1,10 +1,11 @@
 package com.magestore.app.lib.resourcemodel.sales;
 
 import com.magestore.app.lib.model.checkout.Checkout;
+import com.magestore.app.lib.model.checkout.PlaceOrderParams;
 import com.magestore.app.lib.model.checkout.Quote;
+import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.parse.ParseException;
 import com.magestore.app.lib.resourcemodel.DataAccess;
-import com.magestore.app.lib.resourcemodel.ListDataAccess;
 
 import java.io.IOException;
 
@@ -21,4 +22,6 @@ public interface CheckoutDataAccess extends DataAccess {
     Checkout saveShipping(String quoteId, String shippingCode) throws ParseException, InstantiationException, IllegalAccessException, IOException;
 
     Checkout savePayment(String quoteId, String paymentCode) throws ParseException, InstantiationException, IllegalAccessException, IOException;
+
+    Order placeOrder(PlaceOrderParams placeOrderParams) throws ParseException, InstantiationException, IllegalAccessException, IOException;
 }

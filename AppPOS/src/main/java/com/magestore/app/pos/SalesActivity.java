@@ -36,6 +36,7 @@ import com.magestore.app.pos.panel.CheckoutShippingListPanel;
 import com.magestore.app.pos.panel.PaymentMethodListPanel;
 import com.magestore.app.pos.panel.ProductListPanel;
 import com.magestore.app.pos.ui.AbstractActivity;
+import com.magestore.app.util.DataUtil;
 import com.magestore.app.view.ui.PosUI;
 
 /**
@@ -205,6 +206,9 @@ public class SalesActivity extends AbstractActivity
 
         mCheckoutShippingListPanel.setCheckoutListController(mCheckoutListController);
         mCheckoutPaymentListPanel.setCheckoutListController(mCheckoutListController);
+
+        // TODO: clear quote
+//        DataUtil.removeDataStringToPreferences(getContext(), DataUtil.QUOTE);
 
         mProductListPanel.initModel();
         mCheckoutListPanel.initModel();

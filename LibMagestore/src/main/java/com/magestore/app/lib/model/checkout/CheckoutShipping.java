@@ -37,4 +37,6 @@ public interface CheckoutShipping extends Model {
     void setAddress(CustomerAddress address);
 
     CustomerAddress getAddress();
+
+    String getIsDefault();
 }

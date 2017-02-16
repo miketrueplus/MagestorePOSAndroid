@@ -3,12 +3,15 @@ package com.magestore.app.lib.service.checkout;
 import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.checkout.CheckoutShipping;
 import com.magestore.app.lib.model.checkout.CheckoutPayment;
+import com.magestore.app.lib.model.checkout.PlaceOrderParams;
 import com.magestore.app.lib.model.checkout.Quote;
 import com.magestore.app.lib.model.checkout.QuoteCustomer;
 import com.magestore.app.lib.model.checkout.QuoteCustomerAddress;
 import com.magestore.app.lib.model.checkout.QuoteItemExtension;
 import com.magestore.app.lib.model.checkout.QuoteItems;
+import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.service.ListService;
+import com.magestore.app.pos.model.checkout.PosPlaceOrderParams;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -28,6 +31,8 @@ public interface CheckoutService extends ListService<Checkout> {
 
     Checkout savePayment(String quoteId, String paymentCode) throws IOException, InstantiationException, ParseException, IllegalAccessException;
 
+    Order placeOrder(String quoteId, Checkout checkout, CheckoutPayment checkoutPayment) throws IOException, InstantiationException, ParseException, IllegalAccessException;
+
     Checkout create();
 
     CheckoutPayment createPaymentMethod();
@@ -43,4 +48,6 @@ public interface CheckoutService extends ListService<Checkout> {
     QuoteCustomerAddress createCustomerAddress();
 
     QuoteItemExtension createQuoteItemExtension();
+
+    PlaceOrderParams createPlaceOrderParams();
 }

@@ -11,14 +11,8 @@ import com.magestore.app.pos.model.PosAbstractModel;
  */
 
 public class PosQuoteCustomer extends PosAbstractModel implements QuoteCustomer {
-    String customer_id;
     QuoteCustomerAddress billing_address;
     QuoteCustomerAddress shipping_address;
-
-    @Override
-    public void setCustomerId(String strCustomerId) {
-        customer_id = strCustomerId;
-    }
 
     @Override
     public QuoteCustomerAddress getBillingAddress() {
