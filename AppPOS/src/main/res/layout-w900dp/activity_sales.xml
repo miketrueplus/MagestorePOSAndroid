@@ -42,7 +42,7 @@
                     magestore_view:layout_msg="@+id/txt_msg_product_list"
                     magestore_view:layout_span_count="4"
                     magestore_view:page_first="1"
-                    magestore_view:page_size="15"
+                    magestore_view:page_size="20"
                     magestore_view:page_size_max="500" />
 
                 <com.magestore.app.pos.panel.CheckoutDetailPanel

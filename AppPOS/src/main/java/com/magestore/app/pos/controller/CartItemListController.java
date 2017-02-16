@@ -34,7 +34,7 @@ public class CartItemListController extends AbstractChildListController<Checkout
      */
     public void bindProduct(Product product) {
         try {
-            mCartService.insert(getParent(), product, 1);
+            mCartService.insert(getParent(), product, product.getQuantityIncrement());
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InstantiationException e) {
@@ -122,7 +122,7 @@ public class CartItemListController extends AbstractChildListController<Checkout
     public void substructProduct(Product product, int quantity, float price) {
 //        mCartService.subtructOrderItem(product, quantity);
         try {
-            mCartService.delete(getParent(), product, quantity);
+            mCartService.delete(getParent(), product, product.getQuantityIncrement());
         } catch (Exception e) {
             e.printStackTrace();
         }

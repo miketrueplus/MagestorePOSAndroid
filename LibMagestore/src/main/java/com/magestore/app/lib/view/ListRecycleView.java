@@ -76,7 +76,7 @@ public class ListRecycleView extends RecyclerView {
             // The ViewPropertyAnimator APIs are not available, so simply show
             // and hide the relevant UI components.
             vLayoutProgress.setVisibility(show ? View.VISIBLE : View.GONE);
-            vLayoutProgress.setVisibility(show ? View.GONE : View.VISIBLE);
+            vLayoutContent.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }
 }

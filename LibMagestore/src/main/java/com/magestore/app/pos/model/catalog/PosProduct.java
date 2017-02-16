@@ -36,6 +36,8 @@ public class PosProduct extends PosAbstractModel implements Product {
     private String category_ids;
     private PosStock[] stock;
     private PosTierPrice[] tier_prices;
+    int qty_increment = 1;
+
     @Override
     public String getTypeID() {
         return type_id;
@@ -122,5 +124,15 @@ public class PosProduct extends PosAbstractModel implements Product {
     @Override
     public Bitmap getDisplayBitmap() {
         return getBitmap();
+    }
+
+    @Override
+    public int getQuantityIncrement() {
+        return qty_increment;
+    }
+
+    @Override
+    public void setQuantityIncrement(int quantityIncrement) {
+        this.qty_increment = quantityIncrement;
     }
 }

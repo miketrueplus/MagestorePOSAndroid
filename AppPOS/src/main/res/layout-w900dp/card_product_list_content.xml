@@ -42,11 +42,10 @@
                 android:visibility="gone" />
 
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/display_product"
+                android:id="@+id/content_product_list_card_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:background="@drawable/list_item_selector"
                 android:orientation="vertical">
 
                 <ImageView
@@ -57,14 +56,13 @@
                     android:src="@mipmap/ic_unknow_products" />
 
                 <TextView
-                    android:id="@+id/name"
+                    android:id="@+id/txt_product_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/layout_margin"
                     android:layout_marginRight="@dimen/layout_margin"
                     android:ellipsize="end"
                     android:lines="2"
-                    android:text="@{product.getName()}"
                     android:textAppearance="?attr/textAppearanceListItem" />
 
                 <LinearLayout
@@ -81,7 +79,6 @@
                         android:layout_marginLeft="@dimen/layout_margin"
                         android:layout_marginRight="@dimen/layout_margin"
                         android:layout_weight="1"
-                        android:text="@{product.getSKU()}"
                         android:textAppearance="?attr/textAppearanceListItem"
                         android:textStyle="italic" />
 
@@ -95,7 +92,6 @@
                         android:layout_marginRight="@dimen/layout_margin"
                         android:layout_toRightOf="@+id/sku"
                         android:gravity="right"
-                        android:text="@{ConfigUtil.formatPrice(product.getPrice())}"
                         android:textAppearance="?attr/textAppearanceListItem"
                         android:textStyle="normal|bold" />
                 </LinearLayout>

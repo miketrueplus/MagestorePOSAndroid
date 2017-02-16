@@ -23,8 +23,10 @@ import org.apache.commons.lang3.text.StrSubstitutor;
 
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.lang.annotation.Annotation;
 import java.net.HttpURLConnection;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -186,7 +188,11 @@ public class MagestoreStatement implements Statement {
     public void setParam(String pstrName, String pstrValue) throws ConnectionException {
         if (mValuesMap == null)
             mValuesMap = new HashMap<String, String>();
-        mValuesMap.put(pstrName, pstrValue);
+        try {
+            mValuesMap.put(pstrName, URLEncoder.encode(pstrValue, "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            throw new ConnectionException(e.getMessage(), e);
+        }
     }
 
     /**

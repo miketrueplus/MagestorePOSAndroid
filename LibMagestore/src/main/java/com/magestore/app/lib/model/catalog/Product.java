@@ -28,4 +28,8 @@ public interface Product extends Model, ParseModel {
     String getBarcodeString();
     Bitmap getBitmap();
     void setBitmap(Bitmap bmp);
+
+    int getQuantityIncrement();
+
+    void setQuantityIncrement(int quantityIncrement);
 }

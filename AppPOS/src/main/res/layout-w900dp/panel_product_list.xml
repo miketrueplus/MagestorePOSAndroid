@@ -111,11 +111,10 @@
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:layout_gravity="center"
-                android:columnCount="1"
+                app:layoutManager="LinearLayoutManager"
                 magestore_view:layout_item_progress="@+id/progress_product_list_card_view"
                 magestore_view:layout_item_msg="@+id/msg_product_list_card_view"
-                magestore_view:layout_item_content="@+id/display_product"
-                app:layoutManager="GridLayoutManager"
+                magestore_view:layout_item_content="@+id/content_product_list_card_view"
                 tools:listitem="@layout/card_product_list_content" />
         </RelativeLayout>
     </LinearLayout>

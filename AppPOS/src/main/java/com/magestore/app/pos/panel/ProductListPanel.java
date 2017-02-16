@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.magestore.app.lib.panel.AbstractListPanel;
 import com.magestore.app.lib.model.catalog.Product;
@@ -18,6 +19,7 @@ import com.magestore.app.pos.controller.CategoryListController;
 import com.magestore.app.pos.controller.ProductListController;
 import com.magestore.app.pos.databinding.CardProductListContentBinding;
 import com.magestore.app.pos.task.LoadProductImageTask;
+import com.magestore.app.util.ConfigUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,8 +79,11 @@ public class ProductListPanel extends AbstractListPanel<Product> {
     @Override
     protected void bindItem(View view, Product item, int position) {
         if (item == null) return;
-        final CardProductListContentBinding binding = DataBindingUtil.bind(view);
-        binding.setProduct(item);
+//        final CardProductListContentBinding binding = DataBindingUtil.bind(view);
+//        binding.setProduct(item);
+        ((TextView) view.findViewById(R.id.txt_product_name)).setText(item.getName());
+        ((TextView) view.findViewById(R.id.price)).setText(ConfigUtil.formatPrice(item.getPrice()));
+        ((TextView) view.findViewById(R.id.sku)).setText(item.getSKU());
 
         // Hiện ảnh vào product nếu đã load được ảnh
         ImageView imageView = (ImageView) view.findViewById(R.id.product_image);

@@ -58,8 +58,6 @@ public class ProductListController extends AbstractListController<Product> {
 
     public void doLoadProductsImage() {
         LoadProductImageTask task = new LoadProductImageTask(mProductService, null, mList);
-        //    public void loadProductImage() {
-//        mLoadImageTask = new LoadProductImageTask(new ProductListPanel.LoadProductImageListener(), mListProduct);
         if (task != null)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) // Above Api Level 13
             {
@@ -68,7 +66,6 @@ public class ProductListController extends AbstractListController<Product> {
             {
                 task.execute();
             }
-//    }
     }
 
     /**

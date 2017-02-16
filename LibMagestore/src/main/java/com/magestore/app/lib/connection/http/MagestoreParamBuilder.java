@@ -7,6 +7,8 @@ import com.magestore.app.lib.connection.ParamBuilder;
 import com.magestore.app.lib.connection.Statement;
 import com.magestore.app.lib.model.Model;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -137,7 +139,11 @@ public class MagestoreParamBuilder implements ParamBuilder {
     }
 
     protected ParamBuilder setParam(String pstrName, String pstrValue) {
-        mMapKeyValue.put(pstrName, pstrValue);
+        try {
+            mMapKeyValue.put(pstrName, URLEncoder.encode(pstrValue, "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            throw new ConnectionException(e.getMessage(), e);
+        }
         return this;
     }
 
@@ -301,7 +307,11 @@ public class MagestoreParamBuilder implements ParamBuilder {
         if (!mapFilterGroup.containsKey(strGroupName)) {
             Table<String, String, String> filter = HashBasedTable.create();
             filter.put(strFieldName, strConditionType, strKey);
-            mMapKeyValue.put(strKey, strFieldValue);
+            try {
+                mMapKeyValue.put(strKey, URLEncoder.encode(strFieldValue, "UTF-8"));
+            } catch (UnsupportedEncodingException e) {
+                throw new ConnectionException(e.getMessage(), e);
+            }
             mapFilterGroup.put(strGroupName, filter);
             hasMoreParams = true;
             return this;
@@ -311,7 +321,11 @@ public class MagestoreParamBuilder implements ParamBuilder {
         Table<String, String, String> filter = mapFilterGroup.get(strGroupName);
         hasMoreParams = !(filter.contains(strFieldName, strConditionType));
         filter.put(strFieldName, strConditionType, strKey);
-        mMapKeyValue.put(strKey, strFieldValue);
+        try {
+            mMapKeyValue.put(strKey, URLEncoder.encode(strFieldValue, "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            throw new ConnectionException(e.getMessage(), e);
+        }
 
         // trả về true nếu có tham số mới, false nếu ngược lại
         return this;
