@@ -150,7 +150,8 @@
     <string name="customer">Customer</string>
     <string name="dashboard">Customer</string>
     <string name="discount">Discount</string>
-    <string name="shipping">Shipping &amp; Handling</string>
+    <string name="shipping">Shipping</string>
+    <string name="shipping_and_handling">Shipping &amp; Handling</string>
     <string name="email">Email</string>
     <string name="first_name">First Name</string>
     <string name="group">Group</string>
@@ -183,6 +184,8 @@
     <string name="done">Done</string>
     <string name="zip_code">Zip Code</string>
     <string name="delete">Delete</string>
+    <string name="create_shipping">Mark as shipped</string>
+    <string name="create_invoice">Create Invoice</string>
 
     <!-- Strings related to error message -->
     <string name="err_no_network_connection">No network connection, Pls check yout network settings</string>

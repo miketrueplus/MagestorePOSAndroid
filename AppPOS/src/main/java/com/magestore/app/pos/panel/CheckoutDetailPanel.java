@@ -21,6 +21,7 @@ import com.magestore.app.pos.controller.CheckoutListController;
 public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
     PaymentMethodListPanel mPaymentMethodListPanel;
     Checkout mCheckout;
+    CheckoutPaymentListPanel mCheckoutPaymentListPanel;
 
     public CheckoutDetailPanel(Context context) {
         super(context);
@@ -88,5 +89,19 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
      */
     public void setPaymentMethodListPanel(PaymentMethodListPanel panel) {
         mPaymentMethodListPanel = panel;
+    }
+
+    public void setCheckoutPaymentListPanel(CheckoutPaymentListPanel mCheckoutPaymentListPanel) {
+        this.mCheckoutPaymentListPanel = mCheckoutPaymentListPanel;
+    }
+
+    public void showPanelCheckoutPayment() {
+        mPaymentMethodListPanel.setVisibility(GONE);
+        mCheckoutPaymentListPanel.setVisibility(VISIBLE);
+    }
+
+    public void showPanelPaymentMethod() {
+        mPaymentMethodListPanel.setVisibility(VISIBLE);
+        mCheckoutPaymentListPanel.setVisibility(GONE);
     }
 }

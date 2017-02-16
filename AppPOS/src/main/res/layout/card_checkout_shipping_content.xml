@@ -2,7 +2,9 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+
         <import type="com.magestore.app.util.ConfigUtil" />
+
         <variable
             name="shippingMethod"
             type="com.magestore.app.lib.model.checkout.CheckoutShipping" />
@@ -11,25 +13,28 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/layout_margin"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="@dimen/layout_margin">
 
         <RelativeLayout
+            android:id="@+id/ll_shipping_method"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <RadioButton
                 android:id="@+id/rad_selected_method"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/shipping_price"
                 android:text="@{shippingMethod.getTitle()}" />
 
             <TextView
+                android:id="@+id/shipping_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
                 android:text="@{ConfigUtil.formatPrice(shippingMethod.getPrice())}" />
         </RelativeLayout>
     </FrameLayout>

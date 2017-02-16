@@ -13,12 +13,14 @@ import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.observe.State;
 import com.magestore.app.lib.service.checkout.CheckoutService;
+import com.magestore.app.pos.panel.CheckoutDetailPanel;
 import com.magestore.app.pos.panel.CheckoutListPanel;
 import com.magestore.app.pos.panel.CheckoutPaymentListPanel;
 import com.magestore.app.pos.panel.CheckoutShippingListPanel;
 import com.magestore.app.pos.panel.PaymentMethodListPanel;
 import com.magestore.app.util.DataUtil;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -139,8 +141,9 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             String quoteId = checkout.getQuote().getID();
             bindItem(checkout);
             mCheckoutShippingListPanel.bindList(checkout.getCheckoutShipping());
-            mCheckoutPaymentListPanel.bindList(checkout.getCheckoutPayment());
             mPaymentMethodListPanel.bindList(checkout.getCheckoutPayment());
+            // auto select shipping method
+            mCheckoutShippingListPanel.getShippingMethodDefault();
             DataUtil.saveDataStringToPreferences(context, DataUtil.QUOTE, quoteId);
             ((CheckoutService) mListService).updateTotal(checkout);
             if (mView != null && checkout != null && (mView instanceof CheckoutListPanel))
@@ -148,7 +151,6 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             doShowDetailPanel(true);
         } else if (success && actionType == ACTION_TYPE_SAVE_SHIPPING) {
             Checkout checkout = (Checkout) wraper.get("save_shipping");
-            mCheckoutPaymentListPanel.bindList(checkout.getCheckoutPayment());
             mPaymentMethodListPanel.bindList(checkout.getCheckoutPayment());
             ((CheckoutService) mListService).updateTotal(checkout);
             if (mView != null && checkout != null && (mView instanceof CheckoutListPanel))
@@ -226,7 +228,14 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     }
 
     public void onAddPaymentMethod(CheckoutPayment method) {
-
+        List<CheckoutPayment> listPayment = (List<CheckoutPayment>) wraper.get("list_payment");
+        if(listPayment == null){
+            listPayment = new ArrayList<>();
+        }
+        listPayment.add(method);
+        wraper.put("list_payment", listPayment);
+        mCheckoutPaymentListPanel.bindList(listPayment);
+        ((CheckoutDetailPanel) mDetailView).showPanelCheckoutPayment();
     }
 
     /**

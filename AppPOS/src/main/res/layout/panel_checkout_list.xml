@@ -67,7 +67,7 @@
                     <com.magestore.app.view.FormatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/shipping" />
+                        android:text="@string/shipping_and_handling" />
 
                     <com.magestore.app.view.FormatTextView
                         android:id="@+id/text_sales_order_shipping"

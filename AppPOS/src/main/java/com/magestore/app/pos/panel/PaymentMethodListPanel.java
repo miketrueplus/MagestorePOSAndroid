@@ -44,10 +44,13 @@ public class PaymentMethodListPanel extends AbstractSimpleRecycleView<CheckoutPa
 
     @Override
     protected void onClickItem(View view, CheckoutPayment item, int position) {
-        mList.remove(position);
-        getAdapter().notifyDataSetChanged();
-        if (mCheckoutListController != null) mCheckoutListController.onAddPaymentMethod(item);
+//        mList.remove(position);
+//        getAdapter().notifyDataSetChanged();
+//        if (mCheckoutListController != null) mCheckoutListController.onAddPaymentMethod(item);
 //        getAdapter().notifyItemRemoved(position);
 //        getAdapter().notifyItemRangeChanged(position, getAdapter().getItemCount());
+
+        // Select payment method
+        mCheckoutListController.onAddPaymentMethod(item);
     }
 }

@@ -87,6 +87,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
             }
         });
 
+        
     }
 
     /**

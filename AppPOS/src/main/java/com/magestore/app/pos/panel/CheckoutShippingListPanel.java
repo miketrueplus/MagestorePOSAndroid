@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RadioButton;
+import android.widget.RelativeLayout;
 
 
 import com.magestore.app.lib.model.checkout.CheckoutShipping;
@@ -22,7 +23,7 @@ import com.magestore.app.pos.R;
  */
 
 public class CheckoutShippingListPanel extends AbstractSimpleListView<CheckoutShipping> {
-    int selectedPos = -1;
+    int selectedPos = 0;
     CheckoutListController mCheckoutListController;
 
     public void setCheckoutListController(CheckoutListController mCheckoutListController) {
@@ -46,7 +47,7 @@ public class CheckoutShippingListPanel extends AbstractSimpleListView<CheckoutSh
         CardCheckoutShippingContentBinding mBinding = DataBindingUtil.bind(view);
         mBinding.setShippingMethod(item);
 
-        // chekc trạng thái radio button
+        // check trạng thái radio button
         RadioButton radioButton = (RadioButton) view.findViewById(R.id.rad_selected_method);
         radioButton.setChecked(position == selectedPos);
         radioButton.setOnClickListener(new OnClickListener() {
@@ -60,7 +61,15 @@ public class CheckoutShippingListPanel extends AbstractSimpleListView<CheckoutSh
     }
 
     public CheckoutShipping getSelectedShippingMethod() {
-        if (selectedPos < 0) return null;
+        if(selectedPos < 0){return null;}
         return mList.get(selectedPos);
+    }
+
+    public void getShippingMethodDefault() {
+        if (mList.size() > 0) {
+            // TODO: thiếu check có phải shipping default
+            CheckoutShipping checkoutShipping = mList.get(0);
+            mCheckoutListController.doInputSaveShipping(checkoutShipping);
+        }
     }
 }
