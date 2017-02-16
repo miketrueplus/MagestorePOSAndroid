@@ -94,6 +94,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     }
 
     public void doInputSaveShipping(CheckoutShipping checkoutShipping) {
+        ((CheckoutDetailPanel) mDetailView).setTitleShippingMethod(checkoutShipping.getTitle());
         doAction(ACTION_TYPE_SAVE_SHIPPING, null, wraper, checkoutShipping);
     }
 
@@ -140,21 +141,33 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             Checkout checkout = (Checkout) wraper.get("save_cart");
             String quoteId = checkout.getQuote().getID();
             bindItem(checkout);
+            // cập nhật list shipping và payment
             mCheckoutShippingListPanel.bindList(checkout.getCheckoutShipping());
             mPaymentMethodListPanel.bindList(checkout.getCheckoutPayment());
             // auto select shipping method
             mCheckoutShippingListPanel.getShippingMethodDefault();
+            // lưu quote data vào system
             DataUtil.saveDataStringToPreferences(context, DataUtil.QUOTE, quoteId);
+            //  cập nhật giá
             ((CheckoutService) mListService).updateTotal(checkout);
             if (mView != null && checkout != null && (mView instanceof CheckoutListPanel))
                 ((CheckoutListPanel) mView).updateTotalPrice(checkout);
+            // show detail panel
             doShowDetailPanel(true);
         } else if (success && actionType == ACTION_TYPE_SAVE_SHIPPING) {
             Checkout checkout = (Checkout) wraper.get("save_shipping");
+            // cập nhật list payment
             mPaymentMethodListPanel.bindList(checkout.getCheckoutPayment());
+            //  cập nhật giá
             ((CheckoutService) mListService).updateTotal(checkout);
+
             if (mView != null && checkout != null && (mView instanceof CheckoutListPanel))
                 ((CheckoutListPanel) mView).updateTotalPrice(checkout);
+            // hiden shipping method
+            ((CheckoutDetailPanel) mDetailView).onClickTitleShippingMethod();
+            // show payment method
+            ((CheckoutDetailPanel) mDetailView).showPaymentMethod();
+
             // TODO: hoàn thành save shipping
             Log.e("CheckListController", "finish shipping");
         } else if (success && actionType == ACTION_TYPE_SAVE_PAYMENT) {
