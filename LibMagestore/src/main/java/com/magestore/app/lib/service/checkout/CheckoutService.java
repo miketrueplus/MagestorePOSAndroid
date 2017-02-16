@@ -33,6 +33,8 @@ public interface CheckoutService extends ListService<Checkout> {
 
     Order placeOrder(String quoteId, Checkout checkout, CheckoutPayment checkoutPayment) throws IOException, InstantiationException, ParseException, IllegalAccessException;
 
+    Checkout updateTotal(Checkout checkout);
+
     Checkout create();
 
     CheckoutPayment createPaymentMethod();

@@ -3,6 +3,7 @@ package com.magestore.app.pos.service.checkout;
 import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.lib.model.checkout.CheckoutShipping;
+import com.magestore.app.lib.model.checkout.CheckoutTotals;
 import com.magestore.app.lib.model.checkout.PlaceOrderParams;
 import com.magestore.app.lib.model.checkout.Quote;
 import com.magestore.app.lib.model.checkout.QuoteCustomer;
@@ -121,6 +122,28 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         CheckoutDataAccess checkoutDataAccess = factory.generateCheckoutDataAccess();
         return checkoutDataAccess.placeOrder(placeOrderParams);
+    }
+
+    @Override
+    public Checkout updateTotal(Checkout checkout) {
+        for (CheckoutTotals checkoutTotals : checkout.getTotals()) {
+            if (checkoutTotals.getCode().equals("subtotal")) {
+                checkout.setSubTotal(checkoutTotals.getValue());
+            }
+            if (checkoutTotals.getCode().equals("shipping")) {
+                checkout.setShippingTotal(checkoutTotals.getValue());
+            }
+            if (checkoutTotals.getCode().equals("discount")) {
+                checkout.setDiscountTotal(checkoutTotals.getValue());
+            }
+            if (checkoutTotals.getCode().equals("tax")) {
+                checkout.setTaxTotal(checkoutTotals.getValue());
+            }
+            if (checkoutTotals.getCode().equals("grand_total")) {
+                checkout.setGrandTotal(checkoutTotals.getValue());
+            }
+        }
+        return checkout;
     }
 
     @Override

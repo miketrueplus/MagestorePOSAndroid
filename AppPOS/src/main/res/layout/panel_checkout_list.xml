@@ -67,6 +67,26 @@
                     <com.magestore.app.view.FormatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="@string/shipping" />
+
+                    <com.magestore.app.view.FormatTextView
+                        android:id="@+id/text_sales_order_shipping"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_gravity="right"
+                        android:layout_weight="1"
+                        android:text="@{ConfigUtil.formatPrice(checkout.getShippingTotal())}" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp">
+
+                    <com.magestore.app.view.FormatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:text="@string/discount" />
 
                     <com.magestore.app.view.FormatTextView
@@ -116,7 +136,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.3"
-                        android:text='@{@string/checkout + " (" + ConfigUtil.formatPrice(checkout.getLastTotal()) + ")"}'
+                        android:text='@{@string/checkout + " (" + ConfigUtil.formatPrice(checkout.getGrandTotal()) + ")"}'
                         android:textColorHighlight="@color/colorAccent" />
                 </LinearLayout>
             </LinearLayout>

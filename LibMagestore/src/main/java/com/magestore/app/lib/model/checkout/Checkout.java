@@ -31,14 +31,17 @@ public interface Checkout extends Model {
     float getSubTotal();
     void setSubTotal(float total);
 
+    float getShippingTotal();
+    void setShippingTotal(float shipping);
+
     float getTaxTotal();
     void setTaxTotal(float total);
 
     float getDiscountTotal();
     void setDiscountTotal(float total);
 
-    float getLastTotal();
-    void setLastTotal(float total);
+    float getGrandTotal();
+    void setGrandTotal(float total);
 
     Customer getCustomer();
     void setCustomer(Customer customer);

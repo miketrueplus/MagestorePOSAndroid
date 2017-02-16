@@ -142,11 +142,17 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             mCheckoutPaymentListPanel.bindList(checkout.getCheckoutPayment());
             mPaymentMethodListPanel.bindList(checkout.getCheckoutPayment());
             DataUtil.saveDataStringToPreferences(context, DataUtil.QUOTE, quoteId);
+            ((CheckoutService) mListService).updateTotal(checkout);
+            if (mView != null && checkout != null && (mView instanceof CheckoutListPanel))
+                ((CheckoutListPanel) mView).updateTotalPrice(checkout);
             doShowDetailPanel(true);
         } else if (success && actionType == ACTION_TYPE_SAVE_SHIPPING) {
             Checkout checkout = (Checkout) wraper.get("save_shipping");
             mCheckoutPaymentListPanel.bindList(checkout.getCheckoutPayment());
             mPaymentMethodListPanel.bindList(checkout.getCheckoutPayment());
+            ((CheckoutService) mListService).updateTotal(checkout);
+            if (mView != null && checkout != null && (mView instanceof CheckoutListPanel))
+                ((CheckoutListPanel) mView).updateTotalPrice(checkout);
             // TODO: hoàn thành save shipping
             Log.e("CheckListController", "finish shipping");
         } else if (success && actionType == ACTION_TYPE_SAVE_PAYMENT) {

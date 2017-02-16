@@ -56,11 +56,13 @@ public class PosCheckout extends PosAbstractModel implements Checkout {
     @Expose(serialize = false, deserialize = false)
     float sub_total = 0;
     @Expose(serialize = false, deserialize = false)
+    float shipping_total = 0;
+    @Expose(serialize = false, deserialize = false)
     float tax_total = 0;
     @Expose(serialize = false, deserialize = false)
     float discount_total = 0;
     @Expose(serialize = false, deserialize = false)
-    float last_total = 0;
+    float grand_total = 0;
 
     @Override
     public String getCustomerID() {
@@ -121,6 +123,16 @@ public class PosCheckout extends PosAbstractModel implements Checkout {
     }
 
     @Override
+    public float getShippingTotal() {
+        return shipping_total;
+    }
+
+    @Override
+    public void setShippingTotal(float shipping) {
+        shipping_total = shipping;
+    }
+
+    @Override
     public float getTaxTotal() {
         return tax_total;
     }
@@ -141,13 +153,13 @@ public class PosCheckout extends PosAbstractModel implements Checkout {
     }
 
     @Override
-    public float getLastTotal() {
-        return last_total;
+    public float getGrandTotal() {
+        return grand_total;
     }
 
     @Override
-    public void setLastTotal(float total) {
-        last_total = total;
+    public void setGrandTotal(float total) {
+        grand_total = total;
     }
 
     @Override
