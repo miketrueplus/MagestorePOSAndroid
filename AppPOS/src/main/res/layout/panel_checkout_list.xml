@@ -60,9 +60,11 @@
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/rl_sales_shipping"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp">
+                    android:layout_margin="5dp"
+                    android:visibility="gone">
 
                     <com.magestore.app.view.FormatTextView
                         android:layout_width="wrap_content"
@@ -120,6 +122,7 @@
                 </RelativeLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_action_checkout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"

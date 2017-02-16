@@ -13,6 +13,7 @@ import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.observe.State;
 import com.magestore.app.lib.service.checkout.CheckoutService;
+import com.magestore.app.pos.panel.CheckoutAddPaymentPanel;
 import com.magestore.app.pos.panel.CheckoutDetailPanel;
 import com.magestore.app.pos.panel.CheckoutListPanel;
 import com.magestore.app.pos.panel.CheckoutPaymentListPanel;
@@ -47,6 +48,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     CheckoutPaymentListPanel mCheckoutPaymentListPanel;
     ProductListController mProductListController;
     PaymentMethodListPanel mPaymentMethodListPanel;
+    CheckoutAddPaymentPanel mCheckoutAddPaymentPanel;
     Context context;
 
     @Override
@@ -144,20 +146,25 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             // cập nhật list shipping và payment
             mCheckoutShippingListPanel.bindList(checkout.getCheckoutShipping());
             mPaymentMethodListPanel.bindList(checkout.getCheckoutPayment());
+            mCheckoutAddPaymentPanel.bindList(checkout.getCheckoutPayment());
             // auto select shipping method
             mCheckoutShippingListPanel.getShippingMethodDefault();
             // lưu quote data vào system
             DataUtil.saveDataStringToPreferences(context, DataUtil.QUOTE, quoteId);
             //  cập nhật giá
             ((CheckoutService) mListService).updateTotal(checkout);
-            if (mView != null && checkout != null && (mView instanceof CheckoutListPanel))
+            if (mView != null && checkout != null && (mView instanceof CheckoutListPanel)) {
+                ((CheckoutListPanel) mView).hidenActionButton();
+                ((CheckoutListPanel) mView).showSalesShipping();
                 ((CheckoutListPanel) mView).updateTotalPrice(checkout);
+            }
             // show detail panel
             doShowDetailPanel(true);
         } else if (success && actionType == ACTION_TYPE_SAVE_SHIPPING) {
             Checkout checkout = (Checkout) wraper.get("save_shipping");
             // cập nhật list payment
             mPaymentMethodListPanel.bindList(checkout.getCheckoutPayment());
+            mCheckoutAddPaymentPanel.bindList(checkout.getCheckoutPayment());
             //  cập nhật giá
             ((CheckoutService) mListService).updateTotal(checkout);
 
@@ -218,6 +225,10 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         mProductListController = controller;
     }
 
+    public void setCheckoutAddPaymentPanel(CheckoutAddPaymentPanel mCheckoutAddPaymentPanel) {
+        this.mCheckoutAddPaymentPanel = mCheckoutAddPaymentPanel;
+    }
+
     @Override
     public void doShowDetailPanel(boolean show) {
         super.doShowDetailPanel(show);
@@ -238,6 +249,11 @@ public class CheckoutListController extends AbstractListController<Checkout> {
      */
     public void onMarkAsPartial() {
         doInsert(getSelectedItem());
+    }
+
+    public void addPaymentFromDialog(CheckoutPayment method){
+        onAddPaymentMethod(method);
+        ((CheckoutDetailPanel) mDetailView).dismissDialogAddPayment();
     }
 
     public void onAddPaymentMethod(CheckoutPayment method) {

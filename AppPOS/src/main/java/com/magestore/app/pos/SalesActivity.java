@@ -27,6 +27,7 @@ import com.magestore.app.pos.controller.CheckoutListController;
 import com.magestore.app.pos.controller.ProductListController;
 import com.magestore.app.pos.panel.CartItemListPanel;
 import com.magestore.app.pos.panel.CategoryListPanel;
+import com.magestore.app.pos.panel.CheckoutAddPaymentPanel;
 import com.magestore.app.pos.panel.CheckoutDetailPanel;
 import com.magestore.app.pos.panel.CheckoutListPanel;
 import com.magestore.app.pos.panel.CheckoutPaymentDetailPanel;
@@ -60,6 +61,7 @@ public class SalesActivity extends AbstractActivity
     private CartItemListPanel mCartItemListPanel;
     private CategoryListPanel mCategoryListPanel;
     private PaymentMethodListPanel mPaymentMethodListPanel;
+    private CheckoutAddPaymentPanel mCheckoutAddPaymentPanel;
 
     // controller cho danh sách mặt hàng và đơn hàng
     private ProductListController mProductListController;
@@ -123,10 +125,11 @@ public class SalesActivity extends AbstractActivity
         mCheckoutPaymentListPanel = (CheckoutPaymentListPanel) mCheckoutDetailPanel.findViewById(R.id.checkout_payment_list_panel);
         // payment thod panel
         mPaymentMethodListPanel = (PaymentMethodListPanel) mCheckoutDetailPanel.findViewById(R.id.payment_method_list_panel);
+        // add payment panel
+        mCheckoutAddPaymentPanel = new CheckoutAddPaymentPanel(getContext());
+
         // category list panel
         mCategoryListPanel = (CategoryListPanel) mProductListPanel.findViewById(R.id.category);
-
-
     }
 
     protected void initModel() {
@@ -176,6 +179,7 @@ public class SalesActivity extends AbstractActivity
         mCheckoutListController.setCheckoutShippingListPanel(mCheckoutShippingListPanel);
         mCheckoutListController.setCheckoutPaymentListPanel(mCheckoutPaymentListPanel);
         mCheckoutListController.setPaymentMethodListPanel(mPaymentMethodListPanel);
+        mCheckoutListController.setCheckoutAddPaymentPanel(mCheckoutAddPaymentPanel);
         mCheckoutListController.setConfigService(configService);
         subject.attach(null, CheckoutListController.STATE_ON_ADD_PAYMENT, mCheckoutListController);
         subject.attach(null, CheckoutListController.STATE_ON_MARK_AS_PARTIAL, mCheckoutListController);
@@ -207,9 +211,11 @@ public class SalesActivity extends AbstractActivity
         mCheckoutDetailPanel.setCheckoutPaymentListPanel(mCheckoutPaymentListPanel);
         mCheckoutDetailPanel.setPaymentMethodListPanel(mPaymentMethodListPanel);
         mCheckoutDetailPanel.setCheckoutShippingListPanel(mCheckoutShippingListPanel);
+        mCheckoutDetailPanel.setCheckoutAddPaymentPanel(mCheckoutAddPaymentPanel);
 
         mCheckoutShippingListPanel.setCheckoutListController(mCheckoutListController);
         mCheckoutPaymentListPanel.setCheckoutListController(mCheckoutListController);
+        mCheckoutAddPaymentPanel.setCheckoutListController(mCheckoutListController);
 
         // TODO: clear quote
 //        DataUtil.removeDataStringToPreferences(getContext(), DataUtil.QUOTE);

@@ -14,6 +14,8 @@ import com.magestore.app.lib.observe.GenericState;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.CheckoutListController;
+import com.magestore.app.pos.util.DialogUtil;
+import com.magestore.app.pos.view.MagestoreDialog;
 
 /**
  * Created by Mike on 2/9/2017.
@@ -25,10 +27,12 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
     PaymentMethodListPanel mPaymentMethodListPanel;
     CheckoutPaymentListPanel mCheckoutPaymentListPanel;
     CheckoutShippingListPanel mCheckoutShippingListPanel;
+    CheckoutAddPaymentPanel mCheckoutAddPaymentPanel;
     Checkout mCheckout;
     TextView tv_shipping_method;
     RelativeLayout rl_title_shipping_method, rl_title_payment_method, rl_content_payment_method;
     ImageView im_shipping_arrow, im_payment_arrow;
+    MagestoreDialog dialog;
 
     public CheckoutDetailPanel(Context context) {
         super(context);
@@ -96,7 +100,9 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
      * Xử lý khi click thêm mới payment
      */
     void onClickAddPayment() {
-
+        dialog = DialogUtil.dialog(getContext(), getContext().getString(R.string.sales_add_payment), mCheckoutAddPaymentPanel);
+        dialog.setGoneButtonSave(true);
+        dialog.show();
     }
 
     public void onClickTitleShippingMethod() {
@@ -152,6 +158,10 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         this.mCheckoutShippingListPanel = mCheckoutShippingListPanel;
     }
 
+    public void setCheckoutAddPaymentPanel(CheckoutAddPaymentPanel mCheckoutAddPaymentPanel) {
+        this.mCheckoutAddPaymentPanel = mCheckoutAddPaymentPanel;
+    }
+
     public void showPanelCheckoutPayment() {
         mPaymentMethodListPanel.setVisibility(GONE);
         mCheckoutPaymentListPanel.setVisibility(VISIBLE);
@@ -164,5 +174,9 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
 
     public void setTitleShippingMethod(String titleShippingMethod) {
         tv_shipping_method.setText(getContext().getString(R.string.shipping) + ": " + titleShippingMethod);
+    }
+
+    public void dismissDialogAddPayment(){
+        dialog.dismiss();
     }
 }
