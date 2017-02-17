@@ -87,4 +87,7 @@ public interface CheckoutPayment extends Model {
 
     String getReferenceNumber();
     void setReferenceNumber(String strReferenceNumber);
+
+    float getCurrentValue();
+    void setCurrentValue(float fCurrentValue);
 }

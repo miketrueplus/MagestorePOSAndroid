@@ -38,6 +38,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
     MagestoreDialog dialog;
     Switch create_ship, create_invoice;
     ImageButton im_back;
+    Button btn_checkout_add_payment;
 
     public CheckoutDetailPanel(Context context) {
         super(context);
@@ -68,6 +69,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         txt_remain_value = (TextView) findViewById(R.id.txt_remain_value);
         create_ship = (Switch) findViewById(R.id.create_ship);
         create_invoice = (Switch) findViewById(R.id.create_invoice);
+        btn_checkout_add_payment = (Button) findViewById(R.id.btn_checkout_add_payment);
 
         im_back.setOnClickListener(new OnClickListener() {
             @Override
@@ -76,8 +78,8 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
             }
         });
 
-        // đặt sự kiện click nút ađ payment
-        ((Button) findViewById(R.id.btn_checkout_add_payment)).setOnClickListener(new OnClickListener() {
+        // đặt sự kiện click nút add payment
+        btn_checkout_add_payment.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 onClickAddPayment();
@@ -171,6 +173,22 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
             strCreateInvoice = "1";
         }
         return strCreateInvoice;
+    }
+
+    public void isEnableButtonAddPayment(boolean enable) {
+        if (enable) {
+            btn_checkout_add_payment.setEnabled(true);
+        } else {
+            btn_checkout_add_payment.setEnabled(false);
+        }
+    }
+
+    public void isEnableCreateInvoice(boolean enable){
+        if (enable) {
+            create_invoice.setVisibility(VISIBLE);
+        } else {
+            create_invoice.setVisibility(GONE);
+        }
     }
 
     public void bindTotalPrice(float totalPrice) {

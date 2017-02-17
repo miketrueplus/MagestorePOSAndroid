@@ -146,8 +146,7 @@ public class POSCheckoutDataAccess extends POSAbstractDataAccess implements Chec
 
             CheckoutEntity checkoutEntity = new CheckoutEntity();
             checkoutEntity.quote_id = quoteId;
-            // TODO: fake shipping method
-            checkoutEntity.shipping_method = "flatrate_flatrate";
+            checkoutEntity.shipping_method = shippingCode;
 
             // TODO: log params request
             Gson gson = new Gson();

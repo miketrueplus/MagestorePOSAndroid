@@ -5,23 +5,17 @@ import android.databinding.DataBindingUtil;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-
 import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.checkout.CheckoutPayment;
-import com.magestore.app.lib.panel.AbstractListPanel;
-import com.magestore.app.lib.view.AbstractSimpleListView;
 import com.magestore.app.lib.view.AbstractSimpleRecycleView;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.CheckoutListController;
 import com.magestore.app.pos.databinding.CardCheckoutPaymentContentBinding;
-import com.magestore.app.util.ConfigUtil;
-
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -33,8 +27,8 @@ import java.util.List;
 public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<CheckoutPayment> {
     CheckoutListController mCheckoutListController;
     Checkout mCheckout;
-    float mTotalValue;
     List<EditText> listTextChangeValue;
+    HashMap<CheckoutPayment, EditText> mapTextId;
 
     public void setCheckoutListController(CheckoutListController mCheckoutListController) {
         this.mCheckoutListController = mCheckoutListController;
@@ -55,6 +49,7 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
     @Override
     public void initLayout() {
         listTextChangeValue = new ArrayList<>();
+        mapTextId = new HashMap<>();
     }
 
     @Override
@@ -68,10 +63,9 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
         actionAddReferenceNumber(reference_number, checkoutPayment);
 
         EditText checkout_value = (EditText) view.findViewById(R.id.checkout_value);
-        checkout_value.setText(String.valueOf(mTotalValue));
-        actionChangeValueTotal(listTextChangeValue.get(position), mCheckout, checkoutPayment);
-//        listTextChangeValue.add(checkout_value);
-
+        mapTextId.put(item, checkout_value);
+        checkout_value.setText(String.valueOf(checkoutPayment.getAmount()));
+        actionChangeValueTotal(checkout_value, mCheckout, checkoutPayment);
 
         RelativeLayout rl_remove_payment = (RelativeLayout) view.findViewById(R.id.rl_remove_payment);
         rl_remove_payment.setOnClickListener(new OnClickListener() {
@@ -89,7 +83,34 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
     }
 
     private void actionRemovePayment(int position) {
+        mapTextId.remove(mList.get(position));
         mList.remove(position);
+        float grand_total = mCheckout.getGrandTotal();
+        float totalValue = 0;
+        float allRowTotal;
+
+        for (EditText edt_value : mapTextId.values()) {
+            String value = edt_value.getText().toString();
+            try {
+                allRowTotal = Float.parseFloat(value);
+            } catch (Exception e) {
+                allRowTotal = 0;
+            }
+            totalValue += allRowTotal;
+        }
+
+        if (totalValue >= grand_total) {
+            float money = totalValue - grand_total;
+            mCheckout.setExchangeMoney(money);
+            mCheckoutListController.updateMoneyTotal(true, money);
+            // disable add payment
+            mCheckoutListController.isEnableButtonAddPayment(false);
+        } else {
+            float money = grand_total - totalValue;
+            mCheckout.setRemainMoney(money);
+            mCheckoutListController.updateMoneyTotal(false, money);
+            mCheckoutListController.isEnableButtonAddPayment(true);
+        }
         notifyDataSetChanged();
         mCheckoutListController.onRemovePaymentMethod();
     }
@@ -123,25 +144,49 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                String value = checkout_value.getText().toString();
                 float grand_total = mCheckout.getGrandTotal();
                 float totalValue = 0;
+                float currentValue;
+                float allRowTotal;
+                for (EditText edt_value : mapTextId.values()) {
+                    String value = edt_value.getText().toString();
+                    try {
+                        allRowTotal = Float.parseFloat(value);
+                    } catch (Exception e) {
+                        allRowTotal = 0;
+                    }
+                    totalValue += allRowTotal;
+                }
+
+                String txtValue = checkout_value.getText().toString();
                 try {
-                    totalValue = Float.parseFloat(value);
+                    currentValue = Float.parseFloat(txtValue);
                 } catch (Exception e) {
-                    totalValue = 0;
+                    currentValue = 0;
                 }
 
                 if (totalValue >= grand_total) {
                     float money = totalValue - grand_total;
                     mCheckout.setExchangeMoney(money);
                     mCheckoutListController.updateMoneyTotal(true, money);
+
+                    float remain_money = currentValue - money;
+                    checkoutPayment.setAmount(currentValue);
+                    checkoutPayment.setBaseAmount(currentValue);
+                    checkoutPayment.setRealAmount(remain_money);
+                    checkoutPayment.setBaseRealAmount(remain_money);
+                    // disable add payment
+                    mCheckoutListController.isEnableButtonAddPayment(false);
                 } else {
                     float money = grand_total - totalValue;
                     mCheckout.setRemainMoney(money);
                     mCheckoutListController.updateMoneyTotal(false, money);
+                    checkoutPayment.setAmount(currentValue);
+                    checkoutPayment.setBaseAmount(currentValue);
+                    checkoutPayment.setRealAmount(currentValue);
+                    checkoutPayment.setBaseRealAmount(currentValue);
+                    mCheckoutListController.isEnableButtonAddPayment(true);
                 }
-                Log.e("List", listTextChangeValue.size() + "");
             }
 
             @Override
@@ -153,6 +198,5 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
 
     public void setCheckout(Checkout mCheckout) {
         this.mCheckout = mCheckout;
-        mTotalValue = mCheckout.getGrandTotal();
     }
 }

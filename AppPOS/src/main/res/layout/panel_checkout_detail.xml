@@ -229,7 +229,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:text="@string/create_invoice" />
+                    android:text="@string/create_invoice"
+                    android:visibility="gone"/>
             </RelativeLayout>
 
             <LinearLayout

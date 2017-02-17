@@ -275,19 +275,39 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
     public void onAddPaymentMethod(CheckoutPayment method) {
         List<CheckoutPayment> listPayment = (List<CheckoutPayment>) wraper.get("list_payment");
+        Checkout checkout = (Checkout) wraper.get("save_shipping");
+        float total = 0;
+        if(checkout.getRemainMoney() > 0){
+            total = checkout.getRemainMoney();
+            ((CheckoutDetailPanel) mDetailView).isEnableButtonAddPayment(true);
+        }else{
+            total = checkout.getGrandTotal();
+            ((CheckoutDetailPanel) mDetailView).isEnableButtonAddPayment(false);
+        }
+
+        method.setAmount(total);
+        method.setBaseAmount(total);
+        method.setRealAmount(total);
+        method.setBaseRealAmount(total);
+
         if (listPayment == null) {
             listPayment = new ArrayList<>();
         }
         listPayment.add(method);
         wraper.put("list_payment", listPayment);
         mCheckoutPaymentListPanel.bindList(listPayment);
+        ((CheckoutDetailPanel) mDetailView).isEnableCreateInvoice(true);
         ((CheckoutDetailPanel) mDetailView).showPanelCheckoutPayment();
     }
 
     public void onRemovePaymentMethod() {
         List<CheckoutPayment> listPayment = (List<CheckoutPayment>) wraper.get("list_payment");
+        Checkout checkout = (Checkout) wraper.get("save_shipping");
         if (listPayment.size() == 0) {
             ((CheckoutDetailPanel) mDetailView).showPanelPaymentMethod();
+            ((CheckoutDetailPanel) mDetailView).bindTotalPrice(checkout.getGrandTotal());
+            isEnableButtonAddPayment(true);
+            ((CheckoutDetailPanel) mDetailView).isEnableCreateInvoice(false);
         }
     }
 
@@ -308,6 +328,10 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     // khi thay đổi value từng payment update giá trị money
     public void updateMoneyTotal(boolean type, float totalPrice){
         ((CheckoutDetailPanel) mDetailView).updateMoneyTotal(type, totalPrice);
+    }
+
+    public void isEnableButtonAddPayment(boolean enable){
+        ((CheckoutDetailPanel) mDetailView).isEnableButtonAddPayment(enable);
     }
 
     /**

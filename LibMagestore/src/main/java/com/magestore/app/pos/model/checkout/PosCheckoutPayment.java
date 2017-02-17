@@ -40,6 +40,8 @@ public class PosCheckoutPayment extends PosAbstractModel implements CheckoutPaym
     boolean check_reference;
     @Gson2PosExclude
     String check_is_pay_late;
+    @Gson2PosExclude
+    float current_value;
 
     AdditionalData additional_data = new AdditionalData();
 
@@ -247,5 +249,15 @@ public class PosCheckoutPayment extends PosAbstractModel implements CheckoutPaym
     @Override
     public void setReferenceNumber(String strReferenceNumber) {
         reference_number = strReferenceNumber;
+    }
+
+    @Override
+    public float getCurrentValue() {
+        return current_value;
+    }
+
+    @Override
+    public void setCurrentValue(float fCurrentValue) {
+        current_value = fCurrentValue;
     }
 }
