@@ -114,16 +114,14 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
 
         for (CheckoutPayment checkoutPayment: listCheckoutPayment) {
             PaymentMethodDataParam paymentMethodDataParam = createPaymentMethodParam();
-            // TODO fake data ReferenceNumber
             paymentMethodDataParam.setReferenceNumber(checkoutPayment.getReferenceNumber());
             // TODO: đang để mặc định 1 giá
-            paymentMethodDataParam.setAmount(checkout.getTotals().get(3).getValue());
-            paymentMethodDataParam.setBaseAmount(checkout.getTotals().get(3).getValue());
-            paymentMethodDataParam.setBaseRealAmount(checkout.getTotals().get(3).getValue());
-            paymentMethodDataParam.setRealAmount(checkout.getTotals().get(3).getValue());
+            paymentMethodDataParam.setAmount(checkout.getGrandTotal());
+            paymentMethodDataParam.setBaseAmount(checkout.getGrandTotal());
+            paymentMethodDataParam.setBaseRealAmount(checkout.getGrandTotal());
+            paymentMethodDataParam.setRealAmount(checkout.getGrandTotal());
             paymentMethodDataParam.setCode(checkoutPayment.getCode());
-            // TODO: đang để mặc định 0
-            paymentMethodDataParam.setIsPayLater("0");
+            paymentMethodDataParam.setIsPayLater(checkoutPayment.isPaylater());
             paymentMethodDataParam.setTitle(checkoutPayment.getTitle());
             listPaymentMethodParam.add(paymentMethodDataParam);
         }

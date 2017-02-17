@@ -108,9 +108,9 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     public void doInputPlaceOrder() {
         // Check payment khác null hay ko
         List<CheckoutPayment> listCheckoutPayment = (List<CheckoutPayment>) wraper.get("list_payment");
-        if(listCheckoutPayment != null && listCheckoutPayment.size() > 0){
+        if (listCheckoutPayment != null && listCheckoutPayment.size() > 0) {
             doAction(ACTION_TYPE_PLACE_ORDER, null, wraper, null);
-        }else {
+        } else {
             // hiển thị thông báo chọn payment
             ((CheckoutDetailPanel) mDetailView).showNotifiSelectPayment();
         }
@@ -160,9 +160,16 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             DataUtil.saveDataStringToPreferences(context, DataUtil.QUOTE, quoteId);
             //  cập nhật giá
             ((CheckoutService) mListService).updateTotal(checkout);
+            ((CheckoutDetailPanel) mDetailView).bindTotalPrice(checkout.getGrandTotal());
+
+            mCheckoutPaymentListPanel.setCheckout(checkout);
+
             if (mView != null && checkout != null && (mView instanceof CheckoutListPanel)) {
-                ((CheckoutListPanel) mView).hidenActionButton();
-                ((CheckoutListPanel) mView).showSalesShipping();
+                // ẩn button checkout và hold order
+                ((CheckoutListPanel) mView).hidenActionButton(true);
+                // show shipping total
+                ((CheckoutListPanel) mView).showSalesShipping(true);
+                // câp nhật giá
                 ((CheckoutListPanel) mView).updateTotalPrice(checkout);
             }
             // show detail panel
@@ -174,6 +181,9 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             mCheckoutAddPaymentPanel.bindList(checkout.getCheckoutPayment());
             //  cập nhật giá
             ((CheckoutService) mListService).updateTotal(checkout);
+            ((CheckoutDetailPanel) mDetailView).bindTotalPrice(checkout.getGrandTotal());
+
+            mCheckoutPaymentListPanel.setCheckout(checkout);
 
             if (mView != null && checkout != null && (mView instanceof CheckoutListPanel))
                 ((CheckoutListPanel) mView).updateTotalPrice(checkout);
@@ -258,14 +268,14 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         doInsert(getSelectedItem());
     }
 
-    public void addPaymentFromDialog(CheckoutPayment method){
+    public void addPaymentFromDialog(CheckoutPayment method) {
         onAddPaymentMethod(method);
         ((CheckoutDetailPanel) mDetailView).dismissDialogAddPayment();
     }
 
     public void onAddPaymentMethod(CheckoutPayment method) {
         List<CheckoutPayment> listPayment = (List<CheckoutPayment>) wraper.get("list_payment");
-        if(listPayment == null){
+        if (listPayment == null) {
             listPayment = new ArrayList<>();
         }
         listPayment.add(method);
@@ -274,11 +284,30 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         ((CheckoutDetailPanel) mDetailView).showPanelCheckoutPayment();
     }
 
-    public void onRemovePaymentMethod(){
+    public void onRemovePaymentMethod() {
         List<CheckoutPayment> listPayment = (List<CheckoutPayment>) wraper.get("list_payment");
-        if(listPayment.size() == 0){
+        if (listPayment.size() == 0) {
             ((CheckoutDetailPanel) mDetailView).showPanelPaymentMethod();
         }
+    }
+
+    public void showActionButtonCheckout() {
+        if (mView != null && (mView instanceof CheckoutListPanel)) {
+            // show button checkout và hold order
+            ((CheckoutListPanel) mView).hidenActionButton(false);
+        }
+    }
+
+    public void showSalesShipping(){
+        if (mView != null && (mView instanceof CheckoutListPanel)) {
+            // show button checkout và hold order
+            ((CheckoutListPanel) mView).showSalesShipping(false);
+        }
+    }
+
+    // khi thay đổi value từng payment update giá trị money
+    public void updateMoneyTotal(boolean type, float totalPrice){
+        ((CheckoutDetailPanel) mDetailView).updateMoneyTotal(type, totalPrice);
     }
 
     /**

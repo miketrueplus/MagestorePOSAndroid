@@ -83,6 +83,8 @@ public interface CheckoutPayment extends Model {
 
     boolean checkReference();
 
+    boolean checkIsPayLater();
+
     String getReferenceNumber();
     void setReferenceNumber(String strReferenceNumber);
 }

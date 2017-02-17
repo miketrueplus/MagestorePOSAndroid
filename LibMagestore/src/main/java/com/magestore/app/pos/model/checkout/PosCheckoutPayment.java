@@ -38,6 +38,8 @@ public class PosCheckoutPayment extends PosAbstractModel implements CheckoutPaym
 
     @Gson2PosExclude
     boolean check_reference;
+    @Gson2PosExclude
+    String check_is_pay_late;
 
     AdditionalData additional_data = new AdditionalData();
 
@@ -224,6 +226,14 @@ public class PosCheckoutPayment extends PosAbstractModel implements CheckoutPaym
     @Override
     public boolean checkReference() {
         if (getIsReferenceNumber().equals("1")) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean checkIsPayLater() {
+        if (isPaylater().equals("1")) {
             return true;
         }
         return false;

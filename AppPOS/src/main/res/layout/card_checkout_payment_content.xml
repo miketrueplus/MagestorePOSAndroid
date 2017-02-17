@@ -75,7 +75,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:descendantFocusability="blocksDescendants"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -85,15 +84,22 @@
                 android:layout_weight="2"
                 android:background="@drawable/boder_linear_layout"
                 android:orientation="vertical"
-                android:padding="5dp">
+                android:padding="5dp"
+                android:visibility="@{checkoutPayment.checkIsPayLater() ? View.GONE : View.VISIBLE}">
 
                 <com.magestore.app.view.FormatTextEdit
                     android:id="@+id/checkout_value"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
-                    android:hint="@string/first_name" />
+                    android:inputType="numberDecimal" />
             </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:visibility="@{checkoutPayment.checkIsPayLater() ? View.VISIBLE : View.GONE}" />
 
             <RelativeLayout
                 android:id="@+id/rl_remove_payment"

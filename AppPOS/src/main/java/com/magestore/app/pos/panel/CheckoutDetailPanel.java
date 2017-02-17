@@ -5,6 +5,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
@@ -17,6 +18,7 @@ import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.CheckoutListController;
 import com.magestore.app.pos.util.DialogUtil;
 import com.magestore.app.pos.view.MagestoreDialog;
+import com.magestore.app.util.ConfigUtil;
 
 /**
  * Created by Mike on 2/9/2017.
@@ -30,11 +32,12 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
     CheckoutShippingListPanel mCheckoutShippingListPanel;
     CheckoutAddPaymentPanel mCheckoutAddPaymentPanel;
     Checkout mCheckout;
-    TextView tv_shipping_method;
+    TextView tv_shipping_method, txt_grand_total, txt_remain_title, txt_remain_value;
     RelativeLayout rl_title_shipping_method, rl_title_payment_method, rl_content_payment_method;
     ImageView im_shipping_arrow, im_payment_arrow;
     MagestoreDialog dialog;
     Switch create_ship, create_invoice;
+    ImageButton im_back;
 
     public CheckoutDetailPanel(Context context) {
         super(context);
@@ -52,14 +55,26 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
     protected void initLayout() {
         super.initLayout();
 
+        txt_grand_total = (TextView) findViewById(R.id.txt_grand_total);
+        im_back = (ImageButton) findViewById(R.id.im_back);
+
         tv_shipping_method = (TextView) findViewById(R.id.tv_shipping_method);
         rl_title_shipping_method = (RelativeLayout) findViewById(R.id.rl_title_shipping_method);
         rl_title_payment_method = (RelativeLayout) findViewById(R.id.rl_title_payment_method);
         rl_content_payment_method = (RelativeLayout) findViewById(R.id.rl_content_payment_method);
         im_shipping_arrow = (ImageView) findViewById(R.id.im_shipping_arrow);
         im_payment_arrow = (ImageView) findViewById(R.id.im_payment_arrow);
+        txt_remain_title = (TextView) findViewById(R.id.txt_remain_title);
+        txt_remain_value = (TextView) findViewById(R.id.txt_remain_value);
         create_ship = (Switch) findViewById(R.id.create_ship);
         create_invoice = (Switch) findViewById(R.id.create_invoice);
+
+        im_back.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClickBack();
+            }
+        });
 
         // đặt sự kiện click nút ađ payment
         ((Button) findViewById(R.id.btn_checkout_add_payment)).setOnClickListener(new OnClickListener() {
@@ -100,6 +115,12 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         mCheckout = item;
     }
 
+    void onClickBack() {
+        ((CheckoutListController) getController()).showSalesShipping();
+        ((CheckoutListController) getController()).showActionButtonCheckout();
+        ((CheckoutListController) getController()).doShowDetailPanel(false);
+    }
+
     /**
      * Xử lý khi click thêm mới payment
      */
@@ -136,20 +157,36 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         im_payment_arrow.setRotation(180);
     }
 
-    public String isCreateShip(){
+    public String isCreateShip() {
         String strCreateShip = "0";
-        if(create_ship.isChecked()){
+        if (create_ship.isChecked()) {
             strCreateShip = "1";
         }
         return strCreateShip;
     }
 
-    public String isCreateInvoice(){
+    public String isCreateInvoice() {
         String strCreateInvoice = "0";
-        if(create_invoice.isChecked()){
+        if (create_invoice.isChecked()) {
             strCreateInvoice = "1";
         }
         return strCreateInvoice;
+    }
+
+    public void bindTotalPrice(float totalPrice) {
+        String total = ConfigUtil.formatPrice(totalPrice);
+        txt_grand_total.setText(total);
+        txt_remain_value.setText(total);
+    }
+
+    public void updateMoneyTotal(boolean type, float totalPrice) {
+        String total = ConfigUtil.formatPrice(totalPrice);
+        if (type) {
+            txt_remain_title.setText(getContext().getString(R.string.sales_expected_change));
+        } else {
+            txt_remain_title.setText(getContext().getString(R.string.sales_remain_money));
+        }
+        txt_remain_value.setText(total);
     }
 
     /**
@@ -158,14 +195,14 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
     void onClickPlaceHolder() {
 
         //TODO: test thử observe
-        GenericState<CheckoutListController> state = new GenericState<CheckoutListController>(null, CheckoutListController.STATE_ON_PLACE_ORDER);
-        getController().getSubject().setState(state);
-        ((CheckoutListController) getController()).onPlaceOrder();
+//        GenericState<CheckoutListController> state = new GenericState<CheckoutListController>(null, CheckoutListController.STATE_ON_PLACE_ORDER);
+//        getController().getSubject().setState(state);
+//        ((CheckoutListController) getController()).onPlaceOrder();
 
         ((CheckoutListController) getController()).doInputPlaceOrder();
     }
 
-    public void showNotifiSelectPayment(){
+    public void showNotifiSelectPayment() {
         String message = getContext().getString(R.string.sales_show_notifi_select_payment);
 
         // Tạo dialog và hiển thị

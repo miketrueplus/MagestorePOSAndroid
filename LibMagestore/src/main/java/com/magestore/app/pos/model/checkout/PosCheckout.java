@@ -69,6 +69,12 @@ public class PosCheckout extends PosAbstractModel implements Checkout {
     float discount_total = 0;
     @Expose(serialize = false, deserialize = false)
     float grand_total = 0;
+    @Gson2PosExclude
+    float real_amount;
+    @Gson2PosExclude
+    float remain_money;
+    @Gson2PosExclude
+    float exchange_money;
 
     @Override
     public String getCustomerID() {
@@ -216,5 +222,35 @@ public class PosCheckout extends PosAbstractModel implements Checkout {
     @Override
     public void setCreateInvoice(String strCreateInvoice) {
         create_invoice = strCreateInvoice;
+    }
+
+    @Override
+    public float getRealAmount() {
+        return real_amount;
+    }
+
+    @Override
+    public void setRealAmount(float fRealAmount) {
+        real_amount = fRealAmount;
+    }
+
+    @Override
+    public float getRemainMoney() {
+        return remain_money;
+    }
+
+    @Override
+    public void setRemainMoney(float fRemainMoney) {
+        remain_money = fRemainMoney;
+    }
+
+    @Override
+    public float getExchangeMoney() {
+        return exchange_money;
+    }
+
+    @Override
+    public void setExchangeMoney(float fExchangeMoney) {
+        exchange_money = fExchangeMoney;
     }
 }
