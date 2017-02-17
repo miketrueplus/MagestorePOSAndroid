@@ -82,4 +82,7 @@ public interface CheckoutPayment extends Model {
     String getCID();
 
     boolean checkReference();
+
+    String getReferenceNumber();
+    void setReferenceNumber(String strReferenceNumber);
 }

@@ -149,6 +149,6 @@ public class OrderInvoicePanel extends AbstractDetailPanel<Order> {
         String message = getContext().getString(R.string.order_invoice_success);
 
         // Tạo dialog và hiển thị
-        DialogUtil.confirm(getContext(), message, R.string.done);
+        DialogUtil.confirm(getContext(), message, R.string.ok);
     }
 }

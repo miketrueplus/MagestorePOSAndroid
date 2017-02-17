@@ -51,4 +51,10 @@ public interface Checkout extends Model {
 
     Quote getQuote();
     void setQuote(Quote quote);
+
+    String getCreateShip();
+    void setCreateShip(String strCreateShip);
+
+    String getCreateInvoice();
+    void setCreateInvoice(String strCreateInvoice);
 }

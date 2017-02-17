@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.magestore.app.lib.model.checkout.Checkout;
@@ -33,6 +34,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
     RelativeLayout rl_title_shipping_method, rl_title_payment_method, rl_content_payment_method;
     ImageView im_shipping_arrow, im_payment_arrow;
     MagestoreDialog dialog;
+    Switch create_ship, create_invoice;
 
     public CheckoutDetailPanel(Context context) {
         super(context);
@@ -56,6 +58,8 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         rl_content_payment_method = (RelativeLayout) findViewById(R.id.rl_content_payment_method);
         im_shipping_arrow = (ImageView) findViewById(R.id.im_shipping_arrow);
         im_payment_arrow = (ImageView) findViewById(R.id.im_payment_arrow);
+        create_ship = (Switch) findViewById(R.id.create_ship);
+        create_invoice = (Switch) findViewById(R.id.create_invoice);
 
         // đặt sự kiện click nút ađ payment
         ((Button) findViewById(R.id.btn_checkout_add_payment)).setOnClickListener(new OnClickListener() {
@@ -132,6 +136,22 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         im_payment_arrow.setRotation(180);
     }
 
+    public String isCreateShip(){
+        String strCreateShip = "0";
+        if(create_ship.isChecked()){
+            strCreateShip = "1";
+        }
+        return strCreateShip;
+    }
+
+    public String isCreateInvoice(){
+        String strCreateInvoice = "0";
+        if(create_invoice.isChecked()){
+            strCreateInvoice = "1";
+        }
+        return strCreateInvoice;
+    }
+
     /**
      * Xử lý khi thanh toán (Place holder hoặc Partial)
      */
@@ -143,6 +163,13 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         ((CheckoutListController) getController()).onPlaceOrder();
 
         ((CheckoutListController) getController()).doInputPlaceOrder();
+    }
+
+    public void showNotifiSelectPayment(){
+        String message = getContext().getString(R.string.sales_show_notifi_select_payment);
+
+        // Tạo dialog và hiển thị
+        com.magestore.app.util.DialogUtil.confirm(getContext(), message, R.string.ok);
     }
 
     /**

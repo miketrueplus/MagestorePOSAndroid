@@ -24,6 +24,9 @@ public class PosCheckoutPayment extends PosAbstractModel implements CheckoutPaym
     String is_reference_number;
     String type;
 
+    @Gson2PosExclude
+    String reference_number;
+
     class AdditionalData {
         String cc_owner;
         String cc_type;
@@ -224,5 +227,15 @@ public class PosCheckoutPayment extends PosAbstractModel implements CheckoutPaym
             return true;
         }
         return false;
+    }
+
+    @Override
+    public String getReferenceNumber() {
+        return reference_number;
+    }
+
+    @Override
+    public void setReferenceNumber(String strReferenceNumber) {
+        reference_number = strReferenceNumber;
     }
 }

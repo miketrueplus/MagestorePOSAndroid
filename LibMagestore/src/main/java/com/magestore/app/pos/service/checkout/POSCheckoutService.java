@@ -4,6 +4,7 @@ import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.lib.model.checkout.CheckoutShipping;
 import com.magestore.app.lib.model.checkout.CheckoutTotals;
+import com.magestore.app.lib.model.checkout.PaymentMethodDataParam;
 import com.magestore.app.lib.model.checkout.PlaceOrderParams;
 import com.magestore.app.lib.model.checkout.Quote;
 import com.magestore.app.lib.model.checkout.QuoteCustomer;
@@ -19,6 +20,7 @@ import com.magestore.app.lib.service.checkout.CheckoutService;
 import com.magestore.app.pos.model.checkout.PosCheckout;
 import com.magestore.app.pos.model.checkout.PosCheckoutPayment;
 import com.magestore.app.pos.model.checkout.PosCheckoutShipping;
+import com.magestore.app.pos.model.checkout.PosPaymentMethodDataParam;
 import com.magestore.app.pos.model.checkout.PosPlaceOrderParams;
 import com.magestore.app.pos.model.checkout.PosQuote;
 import com.magestore.app.pos.model.checkout.PosQuoteCustomer;
@@ -86,15 +88,14 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
     }
 
     @Override
-    public Order placeOrder(String quoteId, Checkout checkout, CheckoutPayment checkoutPayment) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+    public Order placeOrder(String quoteId, Checkout checkout, List<CheckoutPayment> listCheckoutPayment) throws IOException, InstantiationException, ParseException, IllegalAccessException {
         PlaceOrderParams placeOrderParams = createPlaceOrderParams();
         placeOrderParams.setQuoteId(quoteId);
         PosPlaceOrderParams.PlaceOrderIntegration placeOrderIntegration = placeOrderParams.createPlaceOrderIntegration();
         placeOrderParams.setIntegration(placeOrderIntegration);
         PosPlaceOrderParams.PlaceOrderActionParam placeOrderActionParam = placeOrderParams.createPlaceOrderActionParam();
-        // TODO: fake data crate invoice và
-        placeOrderParams.setCreateInvoice("1");
-        placeOrderParams.setCreateShipment("1");
+        placeOrderParams.setCreateInvoice(checkout.getCreateInvoice());
+        placeOrderParams.setCreateShipment(checkout.getCreateShip());
         placeOrderParams.setActions(placeOrderActionParam);
         PosPlaceOrderParams.PlaceOrderQuoteDataParam placeOrderQuoteDataParam = placeOrderParams.createPlaceOrderQuoteDataParam();
         // TODO: fake data customer note
@@ -102,20 +103,32 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         placeOrderParams.setQuoteData(placeOrderQuoteDataParam);
 
         PosPlaceOrderParams.PlaceOrderPaymentParam placeOrderPaymentParam = placeOrderParams.createPlaceOrderPaymentParam();
-        placeOrderParams.setMethod(checkoutPayment.getCode());
-        PosPlaceOrderParams.PaymentMethodDataParam paymentMethodDataParam = placeOrderParams.createPaymentMethodData();
-        // TODO fake data ReferenceNumber
-        placeOrderParams.setReferenceNumber("TestReferenceNumber");
-        // TODO: đang để mặc định 1 giá
-        placeOrderParams.setAmount(checkout.getTotals().get(3).getValue());
-        placeOrderParams.setBaseAmount(checkout.getTotals().get(3).getValue());
-        placeOrderParams.setBaseRealAmount(checkout.getTotals().get(3).getValue());
-        placeOrderParams.setRealAmount(checkout.getTotals().get(3).getValue());
-        placeOrderParams.setCode(checkoutPayment.getCode());
-        // TODO: đang để mặc định 0
-        placeOrderParams.setIsPayLater("0");
-        placeOrderParams.setTitle("Cash");
-        placeOrderParams.setMethodData(paymentMethodDataParam);
+        if(listCheckoutPayment.size() > 1){
+            // TODO: trường hợp 2 payment trở lên thì truyền tham số "multipaymentforpos"
+            placeOrderParams.setMethod("multipaymentforpos");
+        }else {
+            placeOrderParams.setMethod(listCheckoutPayment.get(0).getCode());
+        }
+
+        List<PaymentMethodDataParam> listPaymentMethodParam = placeOrderParams.createPaymentMethodData();
+
+        for (CheckoutPayment checkoutPayment: listCheckoutPayment) {
+            PaymentMethodDataParam paymentMethodDataParam = createPaymentMethodParam();
+            // TODO fake data ReferenceNumber
+            paymentMethodDataParam.setReferenceNumber(checkoutPayment.getReferenceNumber());
+            // TODO: đang để mặc định 1 giá
+            paymentMethodDataParam.setAmount(checkout.getTotals().get(3).getValue());
+            paymentMethodDataParam.setBaseAmount(checkout.getTotals().get(3).getValue());
+            paymentMethodDataParam.setBaseRealAmount(checkout.getTotals().get(3).getValue());
+            paymentMethodDataParam.setRealAmount(checkout.getTotals().get(3).getValue());
+            paymentMethodDataParam.setCode(checkoutPayment.getCode());
+            // TODO: đang để mặc định 0
+            paymentMethodDataParam.setIsPayLater("0");
+            paymentMethodDataParam.setTitle(checkoutPayment.getTitle());
+            listPaymentMethodParam.add(paymentMethodDataParam);
+        }
+
+        placeOrderParams.setMethodData(listPaymentMethodParam);
         placeOrderParams.setPayment(placeOrderPaymentParam);
 
         // Khởi tạo customer gateway factory
@@ -229,6 +242,11 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
     @Override
     public PlaceOrderParams createPlaceOrderParams() {
         return new PosPlaceOrderParams();
+    }
+
+    @Override
+    public PaymentMethodDataParam createPaymentMethodParam() {
+        return new PosPaymentMethodDataParam();
     }
 
     private List<QuoteItems> addItemToQuote(Checkout checkout) {

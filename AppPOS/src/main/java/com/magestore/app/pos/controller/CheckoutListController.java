@@ -106,9 +106,14 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     }
 
     public void doInputPlaceOrder() {
-        // TODO: Check payment khác null hay ko
-        CheckoutPayment checkoutPayment = (CheckoutPayment) wraper.get("select_payment");
-        doAction(ACTION_TYPE_PLACE_ORDER, null, wraper, checkoutPayment);
+        // Check payment khác null hay ko
+        List<CheckoutPayment> listCheckoutPayment = (List<CheckoutPayment>) wraper.get("list_payment");
+        if(listCheckoutPayment != null && listCheckoutPayment.size() > 0){
+            doAction(ACTION_TYPE_PLACE_ORDER, null, wraper, null);
+        }else {
+            // hiển thị thông báo chọn payment
+            ((CheckoutDetailPanel) mDetailView).showNotifiSelectPayment();
+        }
     }
 
     @Override
@@ -128,10 +133,12 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             wraper.put("save_payment", ((CheckoutService) mListService).savePayment(quoteId, paymentCode));
             return true;
         } else if (actionType == ACTION_TYPE_PLACE_ORDER) {
-            CheckoutPayment checkoutPayment = ((CheckoutPayment) models[0]);
-            Checkout checkout = (Checkout) wraper.get("save_payment");
+            List<CheckoutPayment> listCheckoutPayment = (List<CheckoutPayment>) wraper.get("list_payment");
+            Checkout checkout = (Checkout) wraper.get("save_shipping");
+            checkout.setCreateShip(((CheckoutDetailPanel) mDetailView).isCreateShip());
+            checkout.setCreateInvoice(((CheckoutDetailPanel) mDetailView).isCreateInvoice());
             String quoteId = DataUtil.getDataStringToPreferences(context, DataUtil.QUOTE);
-            wraper.put("place_order", ((CheckoutService) mListService).placeOrder(quoteId, checkout, checkoutPayment));
+            wraper.put("place_order", ((CheckoutService) mListService).placeOrder(quoteId, checkout, listCheckoutPayment));
             return true;
         }
         return false;

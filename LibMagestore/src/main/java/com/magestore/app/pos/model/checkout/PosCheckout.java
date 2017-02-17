@@ -11,6 +11,7 @@ import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.pos.model.PosAbstractModel;
 import com.magestore.app.pos.model.checkout.cart.PosCartItem;
+import com.magestore.app.pos.parse.gson2pos.Gson2PosExclude;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +53,11 @@ public class PosCheckout extends PosAbstractModel implements Checkout {
     Extension extension_data;
     ArrayList<Model> session_data;
     ArrayList<Model> Sintegration;
+
+    @Gson2PosExclude
+    String create_ship;
+    @Gson2PosExclude
+    String create_invoice;
 
     @Expose(serialize = false, deserialize = false)
     float sub_total = 0;
@@ -190,5 +196,25 @@ public class PosCheckout extends PosAbstractModel implements Checkout {
     @Override
     public void setQuote(Quote quote) {
         quote_init = (PosQuote) quote;
+    }
+
+    @Override
+    public String getCreateShip() {
+        return create_ship;
+    }
+
+    @Override
+    public void setCreateShip(String strCreateShip) {
+        create_ship = strCreateShip;
+    }
+
+    @Override
+    public String getCreateInvoice() {
+        return create_invoice;
+    }
+
+    @Override
+    public void setCreateInvoice(String strCreateInvoice) {
+        create_invoice = strCreateInvoice;
     }
 }

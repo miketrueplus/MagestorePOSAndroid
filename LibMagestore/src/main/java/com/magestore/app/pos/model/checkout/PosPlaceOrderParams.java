@@ -1,7 +1,10 @@
 package com.magestore.app.pos.model.checkout;
 
+import com.magestore.app.lib.model.checkout.PaymentMethodDataParam;
 import com.magestore.app.lib.model.checkout.PlaceOrderParams;
 import com.magestore.app.pos.model.PosAbstractModel;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Johan on 2/15/17.
@@ -62,48 +65,8 @@ public class PosPlaceOrderParams extends PosAbstractModel implements PlaceOrderP
     }
 
     @Override
-    public void setMethodData(PaymentMethodDataParam methodData) {
+    public void setMethodData(List<PaymentMethodDataParam> methodData) {
         payment.method_data = methodData;
-    }
-
-    @Override
-    public void setReferenceNumber(String strReferenceNumber) {
-        payment.method_data.reference_number = strReferenceNumber;
-    }
-
-    @Override
-    public void setAmount(float fAmount) {
-        payment.method_data.amount = fAmount;
-    }
-
-    @Override
-    public void setBaseAmount(float fBaseAmount) {
-        payment.method_data.base_amount = fBaseAmount;
-    }
-
-    @Override
-    public void setBaseRealAmount(float fBaseRealAmount) {
-        payment.method_data.base_real_amount = fBaseRealAmount;
-    }
-
-    @Override
-    public void setCode(String strCode) {
-        payment.method_data.code = strCode;
-    }
-
-    @Override
-    public void setIsPayLater(String strIsPayLater) {
-        payment.method_data.is_pay_later = strIsPayLater;
-    }
-
-    @Override
-    public void setRealAmount(float fRealAmount) {
-        payment.method_data.real_amount = fRealAmount;
-    }
-
-    @Override
-    public void setTitle(String strTitle) {
-        payment.method_data.title = strTitle;
     }
 
     @Override
@@ -125,8 +88,8 @@ public class PosPlaceOrderParams extends PosAbstractModel implements PlaceOrderP
     }
 
     @Override
-    public PaymentMethodDataParam createPaymentMethodData() {
-        payment.method_data = new PaymentMethodDataParam();
+    public List<PaymentMethodDataParam> createPaymentMethodData() {
+        payment.method_data = new ArrayList<PaymentMethodDataParam>();
         return payment.method_data;
     }
 
@@ -151,22 +114,6 @@ public class PosPlaceOrderParams extends PosAbstractModel implements PlaceOrderP
 
     public class PlaceOrderPaymentParam {
         String method;
-        PaymentMethodDataParam method_data;
-    }
-
-    public class PaymentMethodDataParam {
-        PaymentMethodAdditionalParam additional_data;
-        String reference_number;
-        float amount;
-        float base_amount;
-        float base_real_amount;
-        String code;
-        String is_pay_later;
-        float real_amount;
-        String title;
-    }
-
-    public class PaymentMethodAdditionalParam {
-
+        List<PaymentMethodDataParam> method_data;
     }
 }

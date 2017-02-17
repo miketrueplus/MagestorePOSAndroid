@@ -2,8 +2,11 @@ package com.magestore.app.pos.panel;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -44,21 +47,42 @@ public class CheckoutPaymentListPanel extends AbstractSimpleListView<CheckoutPay
         CardCheckoutPaymentContentBinding mBinding = DataBindingUtil.bind(view);
         mBinding.setCheckoutPayment(item);
 
-//        LinearLayout ll_payment_method = (LinearLayout) view.findViewById(R.id.ll_payment_method);
-//        ll_payment_method.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                mCheckoutListController.doInputSavePayment(mList.get(position));
-//            }
-//        });
+        CheckoutPayment checkoutPayment = mList.get(position);
+
+        EditText reference_number = (EditText) view.findViewById(R.id.reference_number);
+        actionAddReferenceNumber(reference_number, checkoutPayment);
 
         RelativeLayout rl_remove_payment = (RelativeLayout) view.findViewById(R.id.rl_remove_payment);
         rl_remove_payment.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                mList.remove(position);
-                notifyDataSetChanged();
-                mCheckoutListController.onRemovePaymentMethod();
+                actionRemovePayment(position);
+            }
+        });
+    }
+
+    private void actionRemovePayment(int position) {
+        mList.remove(position);
+        notifyDataSetChanged();
+        mCheckoutListController.onRemovePaymentMethod();
+    }
+
+    private void actionAddReferenceNumber(final EditText reference_number, final CheckoutPayment checkoutPayment) {
+        reference_number.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                String referenceNumber = reference_number.getText().toString().trim();
+                checkoutPayment.setReferenceNumber(referenceNumber);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
             }
         });
     }
