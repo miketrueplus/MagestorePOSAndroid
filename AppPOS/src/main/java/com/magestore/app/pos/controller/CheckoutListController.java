@@ -13,6 +13,7 @@ import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.observe.State;
 import com.magestore.app.lib.service.checkout.CheckoutService;
+import com.magestore.app.lib.service.config.ConfigService;
 import com.magestore.app.pos.panel.CheckoutAddPaymentPanel;
 import com.magestore.app.pos.panel.CheckoutDetailPanel;
 import com.magestore.app.pos.panel.CheckoutListPanel;
@@ -50,6 +51,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     PaymentMethodListPanel mPaymentMethodListPanel;
     CheckoutAddPaymentPanel mCheckoutAddPaymentPanel;
     Context context;
+    Customer guest_checkout;
 
     @Override
     public void bindItem(Checkout item) {
@@ -63,6 +65,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     @Override
     public List<Checkout> onRetrieveBackground(int page, int pageSize) throws Exception {
         wraper = new HashMap<>();
+        guest_checkout = ((ConfigService) mListService).getGuestCheckout();
         return super.onRetrieveBackground(page, pageSize);
     }
 
@@ -220,6 +223,10 @@ public class CheckoutListController extends AbstractListController<Checkout> {
      */
     public void setCartItemListController(CartItemListController controller) {
         mCartItemListController = controller;
+    }
+
+    public Customer getGuestCheckout(){
+        return guest_checkout;
     }
 
     /**

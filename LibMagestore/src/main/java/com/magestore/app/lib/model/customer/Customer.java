@@ -18,6 +18,7 @@ public interface Customer extends Model {
     String getLastName();
     void setLastName(String lastName);
     String getTelephone();
+    void setTelephone(String strTelephone);
     String getGroupID();
     void setGroupID(String groupID);
     List<CustomerAddress> getAddress();

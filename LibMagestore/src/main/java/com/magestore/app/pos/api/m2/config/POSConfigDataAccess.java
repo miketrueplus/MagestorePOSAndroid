@@ -11,6 +11,9 @@ import com.magestore.app.lib.connection.http.MagestoreFileCacheConnection;
 import com.magestore.app.lib.model.config.Config;
 import com.magestore.app.lib.model.config.ConfigCountry;
 import com.magestore.app.lib.model.config.ConfigRegion;
+import com.magestore.app.lib.model.customer.Customer;
+import com.magestore.app.lib.model.customer.CustomerAddress;
+import com.magestore.app.lib.model.directory.Region;
 import com.magestore.app.lib.resourcemodel.config.ConfigDataAccess;
 import com.magestore.app.lib.resourcemodel.DataAccessException;
 import com.magestore.app.pos.api.m2.POSAPI;
@@ -21,6 +24,9 @@ import com.magestore.app.lib.parse.ParseException;
 import com.magestore.app.pos.model.config.PosConfigCountry;
 import com.magestore.app.pos.model.config.PosConfigDefault;
 import com.magestore.app.pos.model.config.PosConfigRegion;
+import com.magestore.app.pos.model.customer.PosCustomer;
+import com.magestore.app.pos.model.customer.PosCustomerAddress;
+import com.magestore.app.pos.model.directory.PosRegion;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosConfigParseImplement;
 
 import java.io.IOException;
@@ -187,5 +193,42 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         }
         // TODO: chưa sort country, region
         return listConfigCountry;
+    }
+
+    @Override
+    public Customer getGuestCheckout() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        if (mConfig == null) mConfig = new PosConfigDefault();
+
+        String customer_id = (String) mConfig.getValue("webpos/guest_checkout/customer_id");
+        String email = (String) mConfig.getValue("webpos/guest_checkout/email");
+        String first_name = (String) mConfig.getValue("webpos/guest_checkout/first_name");
+        String last_name = (String) mConfig.getValue("webpos/guest_checkout/last_name");
+        String street = (String) mConfig.getValue("webpos/guest_checkout/street");
+        String country_id = (String) mConfig.getValue("webpos/guest_checkout/country_id");
+        String city = (String) mConfig.getValue("webpos/guest_checkout/city");
+        String region_id = (String) mConfig.getValue("webpos/guest_checkout/region_id");
+        String zip_code = (String) mConfig.getValue("webpos/guest_checkout/zip");
+        String telephone = (String) mConfig.getValue("webpos/guest_checkout/telephone");
+
+        Customer guest = new PosCustomer();
+        guest.setID(customer_id);
+        guest.setEmail(email);
+        guest.setFirstName(first_name);
+        guest.setLastName(last_name);
+        guest.setTelephone(telephone);
+        CustomerAddress customerAddress = new PosCustomerAddress();
+        customerAddress.setCustomer(customer_id);
+        customerAddress.setFirstName(first_name);
+        customerAddress.setLastName(last_name);
+        customerAddress.setTelephone(telephone);
+        customerAddress.setCity(city);
+        customerAddress.setPostCode(zip_code);
+        customerAddress.setCountry(country_id);
+        customerAddress.setStreet1(street);
+        customerAddress.setRegionID(region_id);
+        Region region = new PosRegion();
+        region.setRegionID(Integer.parseInt(region_id));
+
+        return guest;
     }
 }

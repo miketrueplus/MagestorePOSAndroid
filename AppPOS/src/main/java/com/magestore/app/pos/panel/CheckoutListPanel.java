@@ -93,18 +93,18 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
         rl_sales_shipping = (RelativeLayout) findViewById(R.id.rl_sales_shipping);
     }
 
-    public void showSalesShipping(boolean isShow){
-        if(isShow){
+    public void showSalesShipping(boolean isShow) {
+        if (isShow) {
             rl_sales_shipping.setVisibility(VISIBLE);
-        }else {
+        } else {
             rl_sales_shipping.setVisibility(GONE);
         }
     }
 
-    public void hidenActionButton(boolean isShow){
-        if(isShow){
+    public void hidenActionButton(boolean isShow) {
+        if (isShow) {
             ll_action_checkout.setVisibility(GONE);
-        }else{
+        } else {
             ll_action_checkout.setVisibility(VISIBLE);
         }
     }
@@ -202,6 +202,8 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
             @Override
             public void onClick(View view) {
                 mCustomer = null;
+                mCustomer = ((CheckoutListController) getController()).getGuestCheckout();
+                updateCustomerToOrder(mCustomer);
                 dialog.dismiss();
             }
         });

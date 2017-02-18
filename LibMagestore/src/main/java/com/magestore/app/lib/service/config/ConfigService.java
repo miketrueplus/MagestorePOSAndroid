@@ -56,4 +56,6 @@ public interface ConfigService extends Service {
     List<ShippingMethod> getShippingMethodList() throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
     List<CheckoutPayment> getCheckoutPaymentList() throws InstantiationException, IllegalAccessException, IOException, ParseException;
+
+    Customer getGuestCheckout() throws InstantiationException, IllegalAccessException, IOException, ParseException;
 }

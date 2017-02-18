@@ -66,6 +66,11 @@ public class PosCustomer extends PosAbstractModel implements Customer {
     }
 
     @Override
+    public void setTelephone(String strTelephone) {
+        telephone = strTelephone;
+    }
+
+    @Override
     public String getFirstName() {
         return firstname;
     }
