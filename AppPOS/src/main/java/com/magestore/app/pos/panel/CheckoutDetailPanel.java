@@ -127,6 +127,12 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
      * Xử lý khi click thêm mới payment
      */
     void onClickAddPayment() {
+        if (!((CheckoutListController) getController()).checkListPaymentDialog()) {
+            String message = getContext().getString(R.string.sales_no_payment_method);
+            // Tạo dialog và hiển thị
+            com.magestore.app.util.DialogUtil.confirm(getContext(), message, R.string.ok);
+            return;
+        }
         if (dialog == null) {
             dialog = DialogUtil.dialog(getContext(), getContext().getString(R.string.sales_add_payment), mCheckoutAddPaymentPanel);
             dialog.setGoneButtonSave(true);
@@ -183,7 +189,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         }
     }
 
-    public void isEnableCreateInvoice(boolean enable){
+    public void isEnableCreateInvoice(boolean enable) {
         if (enable) {
             create_invoice.setVisibility(VISIBLE);
         } else {

@@ -296,6 +296,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         listPayment.add(method);
         wraper.put("list_payment", listPayment);
         mCheckoutPaymentListPanel.bindList(listPayment);
+        mCheckoutPaymentListPanel.updateTotal(listPayment);
         ((CheckoutDetailPanel) mDetailView).isEnableCreateInvoice(true);
         ((CheckoutDetailPanel) mDetailView).showPanelCheckoutPayment();
     }
@@ -332,6 +333,26 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
     public void isEnableButtonAddPayment(boolean enable){
         ((CheckoutDetailPanel) mDetailView).isEnableButtonAddPayment(enable);
+    }
+
+    public boolean checkListPaymentDialog(){
+        List<CheckoutPayment> listPayment = (List<CheckoutPayment>) wraper.get("list_payment");
+        Checkout checkout = (Checkout) wraper.get("save_shipping");
+        List<CheckoutPayment> listAllPayment = checkout.getCheckoutPayment();
+        List<CheckoutPayment> listPaymentDialog = new ArrayList<>();
+        listPaymentDialog.addAll(listAllPayment);
+        for (CheckoutPayment checkoutPayment: listAllPayment) {
+            for (CheckoutPayment paymentMethod:listPayment) {
+                if(checkoutPayment.getCode().equals(paymentMethod.getCode())){
+                    listPaymentDialog.remove(checkoutPayment);
+                }
+            }
+        }
+        if(listPaymentDialog.size() > 0){
+            mCheckoutAddPaymentPanel.bindList(listPaymentDialog);
+            return true;
+        }
+        return false;
     }
 
     /**
