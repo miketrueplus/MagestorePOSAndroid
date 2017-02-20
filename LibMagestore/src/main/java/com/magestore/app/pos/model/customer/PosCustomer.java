@@ -51,6 +51,11 @@ public class PosCustomer extends PosAbstractModel implements Customer {
     }
 
     @Override
+    public void setName(String strName) {
+        full_name = strName;
+    }
+
+    @Override
     public String getEmail() {
         return email;
     }

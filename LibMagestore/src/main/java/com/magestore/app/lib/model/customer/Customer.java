@@ -11,6 +11,7 @@ import java.util.List;
 public interface Customer extends Model {
     void setID(String strID);
     String getName();
+    void setName(String strName);
     String getEmail();
     void setEmail(String email);
     String getFirstName();

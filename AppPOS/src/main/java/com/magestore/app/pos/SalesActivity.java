@@ -220,6 +220,8 @@ public class SalesActivity extends AbstractActivity
         mCheckoutDetailPanel.setCheckoutShippingListPanel(mCheckoutShippingListPanel);
         mCheckoutDetailPanel.setCheckoutAddPaymentPanel(mCheckoutAddPaymentPanel);
 
+        mCheckoutListPanel.setToolbarOrder(toolbar_order);
+
         mCheckoutShippingListPanel.setCheckoutListController(mCheckoutListController);
         mCheckoutPaymentListPanel.setCheckoutListController(mCheckoutListController);
         mCheckoutAddPaymentPanel.setCheckoutListController(mCheckoutListController);
@@ -244,12 +246,13 @@ public class SalesActivity extends AbstractActivity
         // load danh sách shipping
 //        mCheckShippingListController.doRetrieve();
 
+        mCheckoutListController.doInputGuestCheckout();
+
         toolbar_order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mCheckoutListPanel.setMagestoreContext(magestoreContext);
                 mCheckoutListPanel.setCustomerService(customerService);
-                mCheckoutListPanel.setToolbarOrder(toolbar_order);
                 mCheckoutListPanel.showPopUpAddCustomer();
             }
         });

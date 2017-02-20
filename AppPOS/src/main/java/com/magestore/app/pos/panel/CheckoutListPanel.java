@@ -93,6 +93,12 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
         rl_sales_shipping = (RelativeLayout) findViewById(R.id.rl_sales_shipping);
     }
 
+    public void useDefaultGuestCheckout(Customer customer){
+        // config guest checkout default add to order
+        mCustomer = customer;
+        updateCustomerToOrder(mCustomer);
+    }
+
     public void showSalesShipping(boolean isShow) {
         if (isShow) {
             rl_sales_shipping.setVisibility(VISIBLE);
@@ -377,6 +383,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
         mCustomer = customer;
         ((TextView) toolbar_order.findViewById(R.id.text_customer_name)).setText(customer.getName());
         ((CheckoutListController) mController).bindCustomer(customer);
-        dialog.dismiss();
+        if(dialog != null)
+            dialog.dismiss();
     }
 }

@@ -22,6 +22,8 @@ import com.magestore.app.pos.panel.CheckoutShippingListPanel;
 import com.magestore.app.pos.panel.PaymentMethodListPanel;
 import com.magestore.app.util.DataUtil;
 
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,10 +40,11 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     public static final String STATE_ON_PLACE_ORDER = "STATE_ON_PLACE_ORDER";
     public static final String STATE_ON_MARK_AS_PARTIAL = "STATE_ON_MARK_AS_PARTIAL";
 
-    static final int ACTION_TYPE_SAVE_CART = 0;
-    static final int ACTION_TYPE_SAVE_SHIPPING = 1;
-    static final int ACTION_TYPE_SAVE_PAYMENT = 2;
-    static final int ACTION_TYPE_PLACE_ORDER = 3;
+    static final int ACTION_TYPE_USER_GUEST = 0;
+    static final int ACTION_TYPE_SAVE_CART = 1;
+    static final int ACTION_TYPE_SAVE_SHIPPING = 2;
+    static final int ACTION_TYPE_SAVE_PAYMENT = 3;
+    static final int ACTION_TYPE_PLACE_ORDER = 4;
 
     Map<String, Object> wraper;
     CartItemListController mCartItemListController;
@@ -63,9 +66,13 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     }
 
     @Override
+    public void doRetrieve() {
+        super.doRetrieve();
+    }
+
+    @Override
     public List<Checkout> onRetrieveBackground(int page, int pageSize) throws Exception {
         wraper = new HashMap<>();
-        guest_checkout = ((ConfigService) mListService).getGuestCheckout();
         return super.onRetrieveBackground(page, pageSize);
     }
 
@@ -119,9 +126,26 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         }
     }
 
+    public void doInputGuestCheckout(){
+        try {
+            guest_checkout = getConfigService().getGuestCheckout();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        doAction(ACTION_TYPE_USER_GUEST, null, wraper, guest_checkout);
+    }
+
     @Override
     public Boolean doActionBackround(int actionType, String actionCode, Map<String, Object> wraper, Model... models) throws Exception {
-        if (actionType == ACTION_TYPE_SAVE_CART) {
+        if(actionType == ACTION_TYPE_USER_GUEST){
+            return true;
+        } else if (actionType == ACTION_TYPE_SAVE_CART) {
             String quoteId = (String) wraper.get("quote_id");
             wraper.put("save_cart", ((CheckoutService) mListService).saveCart((Checkout) models[0], quoteId));
             return true;
@@ -149,7 +173,10 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
     @Override
     public void onActionPostExecute(boolean success, int actionType, String actionCode, Map<String, Object> wraper, Model... models) {
-        if (success && actionType == ACTION_TYPE_SAVE_CART) {
+        if(success && actionType == ACTION_TYPE_USER_GUEST){
+            Customer customer = (Customer) models[0];
+            ((CheckoutListPanel)mView).useDefaultGuestCheckout(customer);
+        } else if (success && actionType == ACTION_TYPE_SAVE_CART) {
             Checkout checkout = (Checkout) wraper.get("save_cart");
             String quoteId = checkout.getQuote().getID();
             bindItem(checkout);

@@ -203,6 +203,7 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         String email = (String) mConfig.getValue("webpos/guest_checkout/email");
         String first_name = (String) mConfig.getValue("webpos/guest_checkout/first_name");
         String last_name = (String) mConfig.getValue("webpos/guest_checkout/last_name");
+        String full_name = first_name + " " + last_name;
         String street = (String) mConfig.getValue("webpos/guest_checkout/street");
         String country_id = (String) mConfig.getValue("webpos/guest_checkout/country_id");
         String city = (String) mConfig.getValue("webpos/guest_checkout/city");
@@ -215,7 +216,9 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         guest.setEmail(email);
         guest.setFirstName(first_name);
         guest.setLastName(last_name);
+        guest.setName(full_name);
         guest.setTelephone(telephone);
+        List<CustomerAddress> listAddress = new ArrayList<CustomerAddress>();
         CustomerAddress customerAddress = new PosCustomerAddress();
         customerAddress.setCustomer(customer_id);
         customerAddress.setFirstName(first_name);
@@ -228,6 +231,9 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         customerAddress.setRegionID(region_id);
         Region region = new PosRegion();
         region.setRegionID(Integer.parseInt(region_id));
+        customerAddress.setRegion(region);
+        listAddress.add(customerAddress);
+        guest.setAddressList(listAddress);
 
         return guest;
     }
