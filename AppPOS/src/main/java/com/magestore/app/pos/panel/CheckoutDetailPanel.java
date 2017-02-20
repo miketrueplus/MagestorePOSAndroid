@@ -31,7 +31,6 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
     CheckoutPaymentListPanel mCheckoutPaymentListPanel;
     CheckoutShippingListPanel mCheckoutShippingListPanel;
     CheckoutAddPaymentPanel mCheckoutAddPaymentPanel;
-    Checkout mCheckout;
     TextView tv_shipping_method, txt_grand_total, txt_remain_title, txt_remain_value;
     RelativeLayout rl_title_shipping_method, rl_title_payment_method, rl_content_payment_method;
     ImageView im_shipping_arrow, im_payment_arrow;
@@ -114,7 +113,6 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
             return;
         }
         super.bindItem(item);
-        mCheckout = item;
     }
 
     void onClickBack() {

@@ -46,7 +46,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
     ImageButton btn_shipping_address, btn_billing_address;
     ImageButton btn_shipping_adrress_edit, btn_billing_adrress_edit;
     ImageButton btn_shipping_address_delete, btn_billing_address_delete;
-    RelativeLayout rl_sales_shipping;
+    RelativeLayout rl_sales_shipping, rl_sales_total;
 
     public CheckoutListPanel(Context context) {
         super(context);
@@ -91,6 +91,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
 
         ll_action_checkout = (LinearLayout) findViewById(R.id.ll_action_checkout);
         rl_sales_shipping = (RelativeLayout) findViewById(R.id.rl_sales_shipping);
+        rl_sales_total = (RelativeLayout) findViewById(R.id.rl_sales_total);
     }
 
     public void useDefaultGuestCheckout(Customer customer){
@@ -101,8 +102,10 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
 
     public void showSalesShipping(boolean isShow) {
         if (isShow) {
+            rl_sales_total.setVisibility(VISIBLE);
             rl_sales_shipping.setVisibility(VISIBLE);
         } else {
+            rl_sales_total.setVisibility(GONE);
             rl_sales_shipping.setVisibility(GONE);
         }
     }

@@ -25,8 +25,8 @@
                 android:id="@+id/order_item_panel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1.0"
                 android:layout_alignParentTop="true"
+                android:layout_weight="1.0"
                 magestore_view:layout_item="@layout/card_cart_list_content"
                 magestore_view:layout_list="@+id/sales_order_container"
                 magestore_view:layout_orientation="vertical"
@@ -102,6 +102,28 @@
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/rl_sales_total"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:visibility="gone">
+
+                    <com.magestore.app.view.FormatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/total" />
+
+                    <com.magestore.app.view.FormatTextView
+                        android:id="@+id/text_sales_order_tax"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_gravity="right"
+                        android:layout_weight="1"
+                        android:text="@{ConfigUtil.formatPrice(checkout.getTaxTotal())}" />
+                </RelativeLayout>
+
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp">
@@ -112,13 +134,13 @@
                         android:text="@string/tax" />
 
                     <com.magestore.app.view.FormatTextView
-                        android:id="@+id/text_sales_order_tax"
+                        android:id="@+id/text_sales_order_total"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_gravity="right"
                         android:layout_weight="1"
-                        android:text="@{ConfigUtil.formatPrice(checkout.getTaxTotal())}" />
+                        android:text="@{ConfigUtil.formatPrice(checkout.getGrandTotal())}" />
                 </RelativeLayout>
 
                 <LinearLayout
