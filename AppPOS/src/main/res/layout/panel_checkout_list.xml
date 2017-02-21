@@ -11,14 +11,14 @@
             type="com.magestore.app.lib.model.checkout.Checkout" />
     </data>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/ll_list_check_out"
             android:orientation="vertical">
 
             <com.magestore.app.pos.panel.CartItemListPanel
@@ -166,5 +166,60 @@
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_list_check_out"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_margin="5dp"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/rl_add_checkout"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginBottom="5dp"
+                android:background="@color/white"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="@string/plus"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_remove_checkout"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@color/white"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="@string/minus"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <com.magestore.app.pos.panel.CartOrderListPanel
+                android:id="@+id/checkout_item_panel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_weight="1.0"
+                magestore_view:layout_item="@layout/card_cart_order_content"
+                magestore_view:layout_list="@+id/sales_cart_order_container"
+                magestore_view:layout_orientation="vertical"
+                magestore_view:layout_panel="@layout/panel_cart_order_list"
+                magestore_view:layout_span_count="1" />
+
+        </LinearLayout>
+    </RelativeLayout>
 </layout>

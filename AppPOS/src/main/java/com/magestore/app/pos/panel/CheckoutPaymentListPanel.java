@@ -79,7 +79,6 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
     @Override
     protected void onClickItem(View view, CheckoutPayment item, int position) {
 //        CheckoutPayment checkoutPayment = mList.get(position);
-
     }
 
     public void updateTotal(List<CheckoutPayment> listPayment){

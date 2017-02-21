@@ -345,9 +345,7 @@ public abstract class AbstractListController<TModel extends Model>
      * @return
      */
     public List<TModel> getSelectedItems() {
-        List<TModel> models = new ArrayList<TModel>();
-        models.add(mSelectedItem);
-        return models;
+        return mList;
     }
 
     /**

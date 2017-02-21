@@ -191,6 +191,8 @@
     <string name="create_shipping">Mark as shipped</string>
     <string name="create_invoice">Create Invoice</string>
     <string name="reference_number">Reference Number</string>
+    <string name="plus">+</string>
+    <string name="minus">-</string>
 
     <!-- Strings related to error message -->
     <string name="err_no_network_connection">No network connection, Pls check yout network settings</string>
