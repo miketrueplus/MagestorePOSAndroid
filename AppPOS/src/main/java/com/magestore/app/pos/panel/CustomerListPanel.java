@@ -88,7 +88,7 @@ public class CustomerListPanel extends AbstractListPanel<Customer> {
     private void actionButtonAddNewCustomer() {
         customerAddNewPanel = new CustomerAddNewPanel(getContext());
         customerAddNewPanel.setController(mController);
-        customerAddNewPanel.bindItem(mCustomer);
+        customerAddNewPanel.bindItem(null);
 
         dialog = DialogUtil.dialog(getContext(), getContext().getString(R.string.customer_add_new), customerAddNewPanel);
         dialog.show();
