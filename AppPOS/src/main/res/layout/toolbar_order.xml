@@ -4,29 +4,39 @@
     android:layout_height="wrap_content"
     android:layout_centerVertical="true">
 
-    <ImageButton
-        android:id="@+id/button_customer"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/rl_customer"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="5dp"
-        android:background="@drawable/ic_customer_white" />
+        android:layout_toLeftOf="@+id/rl_change_customer">
 
-    <TextView
-        android:id="@+id/text_customer_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/button_customer"
-        android:text="@string/guest" />
+        <ImageButton
+            android:id="@+id/button_customer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/ic_person_white" />
+
+        <TextView
+            android:id="@+id/text_customer_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/button_customer"
+            android:ellipsize="end"
+            android:lines="1"
+            android:text="@string/guest" />
+    </RelativeLayout>
 
     <ImageButton
-        android:id="@+id/button_shopping_cart"
+        android:id="@+id/rl_change_customer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
+        android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:background="@drawable/ic_shopping_cart_white" />
+        android:background="@drawable/ic_customer_white" />
 </RelativeLayout>

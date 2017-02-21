@@ -158,7 +158,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
         mBinding.setCheckout(checkout);
     }
 
-    public void showPopUpAddCustomer() {
+    public void showPopUpAddCustomer(int type) {
         if (mCheckoutAddCustomerPanel == null) {
             mCheckoutAddCustomerPanel = new CheckoutAddCustomerPanel(getContext());
             mCheckoutAddCustomerPanel.setMagestoreContext(mMagestoreContext);
@@ -193,10 +193,17 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
             dialog.getButtonSave().setVisibility(GONE);
             dialog.getDialogTitle().setText("");
         } else {
-            fr_sales_new_customer.setVisibility(VISIBLE);
-            ll_sales_add_customer.setVisibility(GONE);
-            dialog.getButtonSave().setVisibility(VISIBLE);
-            dialog.getDialogTitle().setText(mCustomer.getName());
+            if(type == 0){
+                fr_sales_new_customer.setVisibility(GONE);
+                ll_sales_add_customer.setVisibility(VISIBLE);
+                dialog.getButtonSave().setVisibility(GONE);
+                dialog.getDialogTitle().setText("");
+            }else {
+                fr_sales_new_customer.setVisibility(VISIBLE);
+                ll_sales_add_customer.setVisibility(GONE);
+                dialog.getButtonSave().setVisibility(VISIBLE);
+                dialog.getDialogTitle().setText(mCustomer.getName());
+            }
         }
 
         actionPanel();
@@ -421,5 +428,10 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
         ((CheckoutListController) mController).bindCustomer(customer);
         if(dialog != null)
             dialog.dismiss();
+    }
+
+    public void changeCustomerInToolBar(Customer customer){
+        mCustomer = customer;
+        ((TextView) toolbar_order.findViewById(R.id.text_customer_name)).setText(customer.getName());
     }
 }

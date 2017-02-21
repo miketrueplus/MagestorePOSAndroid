@@ -12,6 +12,9 @@ import android.support.design.widget.Snackbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
+import android.widget.RelativeLayout;
+
 import com.magestore.app.lib.context.MagestoreContext;
 import com.magestore.app.lib.observe.Subject;
 import com.magestore.app.lib.service.ServiceFactory;
@@ -75,6 +78,8 @@ public class SalesActivity extends AbstractActivity
 
     // Toolbar Order
     Toolbar toolbar_order;
+    RelativeLayout rl_customer;
+    ImageButton rl_change_customer;
     CustomerService customerService = null;
 
     @Override
@@ -96,6 +101,8 @@ public class SalesActivity extends AbstractActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_category);
         initToolbarMenu(toolbar);
         toolbar_order = (Toolbar) findViewById(R.id.toolbar_order);
+        rl_customer = (RelativeLayout) toolbar_order.findViewById(R.id.rl_customer);
+        rl_change_customer = (ImageButton) toolbar_order.findViewById(R.id.rl_change_customer);
 
         // Nút tab để tạo đơn hàng mới
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -226,6 +233,8 @@ public class SalesActivity extends AbstractActivity
         mCheckoutDetailPanel.setCheckoutAddPaymentPanel(mCheckoutAddPaymentPanel);
 
         mCheckoutListPanel.setToolbarOrder(toolbar_order);
+        mCheckoutListPanel.setMagestoreContext(magestoreContext);
+        mCheckoutListPanel.setCustomerService(customerService);
 
         mCheckoutShippingListPanel.setCheckoutListController(mCheckoutListController);
         mCheckoutPaymentListPanel.setCheckoutListController(mCheckoutListController);
@@ -254,12 +263,17 @@ public class SalesActivity extends AbstractActivity
 
         mCheckoutListController.doInputGuestCheckout();
 
-        toolbar_order.setOnClickListener(new View.OnClickListener() {
+        rl_customer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mCheckoutListPanel.setMagestoreContext(magestoreContext);
-                mCheckoutListPanel.setCustomerService(customerService);
-                mCheckoutListPanel.showPopUpAddCustomer();
+                mCheckoutListPanel.showPopUpAddCustomer(1);
+            }
+        });
+
+        rl_change_customer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mCheckoutListPanel.showPopUpAddCustomer(0);
             }
         });
     }

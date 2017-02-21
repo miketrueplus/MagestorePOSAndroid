@@ -93,6 +93,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             Checkout checkout = getSelectedItem();
             checkout.setCustomer(customer);
             checkout.setCustomerID(customer.getID());
+            mCartOrderListPanel.notifyDataSetChanged();
         }
     }
 
@@ -261,6 +262,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
      */
     public void addNewOrder(){
         Checkout checkout = ((CheckoutService) mListService).create();
+        checkout.setCustomerID(guest_checkout.getID());
         checkout.setCustomer(guest_checkout);
         setSelectedItem(checkout);
         getSelectedItems().add(checkout);
@@ -272,6 +274,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         mCartOrderListPanel.setSelectPosition(position);
         mCartOrderListPanel.bindList(getSelectedItems());
         mCartOrderListPanel.scrollToPosition(position);
+        ((CheckoutListPanel) mView).changeCustomerInToolBar(guest_checkout);
         updateTotalPrice();
     }
 
@@ -281,6 +284,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     public void removeOrder(){
         if(getSelectedItems().size() == 1){
             Checkout checkout = ((CheckoutService) mListService).create();
+            checkout.setCustomerID(guest_checkout.getID());
             checkout.setCustomer(guest_checkout);
             getSelectedItems().clear();
             setSelectedItem(checkout);
@@ -293,6 +297,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             mCartOrderListPanel.setSelectPosition(position);
             mCartOrderListPanel.bindList(getSelectedItems());
             mCartOrderListPanel.scrollToPosition(position);
+            ((CheckoutListPanel) mView).changeCustomerInToolBar(guest_checkout);
             updateTotalPrice();
         }else {
             int index = getSelectedItems().indexOf(getSelectedItem());
@@ -309,6 +314,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             mCartOrderListPanel.setSelectPosition(index);
             mCartOrderListPanel.bindList(getSelectedItems());
             mCartOrderListPanel.scrollToPosition(index);
+            ((CheckoutListPanel) mView).changeCustomerInToolBar(checkout.getCustomer());
             updateTotalPrice();
         }
     }
@@ -333,6 +339,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         mCartItemListController.bindParent(checkout);
         mCartItemListController.doRetrieve();
         mCartOrderListPanel.bindList(getSelectedItems());
+        ((CheckoutListPanel) mView).changeCustomerInToolBar(checkout.getCustomer());
         updateTotalPrice();
     }
 
