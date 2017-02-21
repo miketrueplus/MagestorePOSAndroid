@@ -171,12 +171,19 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
 
             mCustomerAddNewPanel = (CustomerAddNewPanel) mCheckoutAddCustomerPanel.findViewById(R.id.sales_new_customer);
             mCustomerAddNewPanel.setController(mCheckoutAddCustomerPanel.getCustomerListController());
-            mCustomerAddNewPanel.bindItem(mCustomer);
-
+            if(type == 0){
+                mCustomerAddNewPanel.bindItem(null);
+            }else {
+                mCustomerAddNewPanel.bindItem(mCustomer);
+            }
             initLayoutPanel();
         } else {
             if (mCustomer != null) {
-                mCustomerAddNewPanel.bindItem(mCustomer);
+                if(type == 0){
+                    mCustomerAddNewPanel.bindItem(null);
+                }else {
+                    mCustomerAddNewPanel.bindItem(mCustomer);
+                }
             }
         }
 

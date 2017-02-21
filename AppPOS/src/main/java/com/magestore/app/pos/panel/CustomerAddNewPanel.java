@@ -140,7 +140,6 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
             mspinGroupID.setSelection(item.getGroupID());
             subscribe.setVisibility(GONE);
             if (item.getAddress() != null && item.getAddress().size() > 0) {
-
                 ll_short_shipping_address.setVisibility(VISIBLE);
                 btn_shipping_address.setVisibility(GONE);
                 ll_short_billing_address.setVisibility(VISIBLE);
@@ -201,6 +200,8 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
                 }
             }
 
+        }else{
+            mBinding.setCustomer(null);
         }
 
         s_spinner_country.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
