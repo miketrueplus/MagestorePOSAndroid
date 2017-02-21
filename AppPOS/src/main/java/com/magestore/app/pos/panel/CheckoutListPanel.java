@@ -1,6 +1,7 @@
 package com.magestore.app.pos.panel;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
@@ -46,7 +47,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
     ImageButton btn_shipping_address, btn_billing_address;
     ImageButton btn_shipping_adrress_edit, btn_billing_adrress_edit;
     ImageButton btn_shipping_address_delete, btn_billing_address_delete;
-    RelativeLayout rl_sales_shipping, rl_sales_total, rl_add_checkout;
+    RelativeLayout rl_sales_shipping, rl_sales_total, rl_add_checkout, rl_remove_checkout;
 
     public CheckoutListPanel(Context context) {
         super(context);
@@ -93,6 +94,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
         rl_sales_shipping = (RelativeLayout) findViewById(R.id.rl_sales_shipping);
         rl_sales_total = (RelativeLayout) findViewById(R.id.rl_sales_total);
         rl_add_checkout = (RelativeLayout) findViewById(R.id.rl_add_checkout);
+        rl_remove_checkout = (RelativeLayout) findViewById(R.id.rl_remove_checkout);
 
         initValue();
     }
@@ -103,6 +105,24 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
             @Override
             public void onClick(View view) {
                 ((CheckoutListController) mController).addNewOrder();
+            }
+        });
+
+        rl_remove_checkout.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(((CheckoutListController) mController).checkItemInOrder()) {
+                    com.magestore.app.util.DialogUtil.confirm(getContext(),
+                            R.string.checkout_delete_order,
+                            R.string.title_confirm_delete,
+                            R.string.confirm,
+                            R.string.no,
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    ((CheckoutListController) mController).removeOrder();
+                                }
+                            });
+                }
             }
         });
     }

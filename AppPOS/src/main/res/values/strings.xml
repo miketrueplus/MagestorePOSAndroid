@@ -30,6 +30,7 @@
     <string name="sales_use_guest">Use Guest</string>
     <string name="sales_show_notifi_select_payment">Please select the payment method</string>
     <string name="sales_no_payment_method">No payment method is avaible</string>
+    <string name="checkout_delete_order">Delete current order</string>
 
     <!-- Strings related to customer -->
     <string name="customer_search_customer_here">Search name, email, telephone</string>

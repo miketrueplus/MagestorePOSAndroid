@@ -256,7 +256,9 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         }
     }
 
-
+    /**
+     * add checkout to list order
+     */
     public void addNewOrder(){
         Checkout checkout = ((CheckoutService) mListService).create();
         checkout.setCustomer(guest_checkout);
@@ -266,10 +268,78 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         mCartItemListController.bindList(checkout.getCartItem());
         mCartItemListController.bindParent(checkout);
         mCartItemListController.doRetrieve();
+        int position = getSelectedItems().size() - 1;
+        mCartOrderListPanel.setSelectPosition(position);
+        mCartOrderListPanel.bindList(getSelectedItems());
+        mCartOrderListPanel.scrollToPosition(position);
+        updateTotalPrice();
+    }
+
+    /**
+     * remove checkout to list order
+     */
+    public void removeOrder(){
+        if(getSelectedItems().size() == 1){
+            Checkout checkout = ((CheckoutService) mListService).create();
+            checkout.setCustomer(guest_checkout);
+            getSelectedItems().clear();
+            setSelectedItem(checkout);
+            getSelectedItems().add(checkout);
+            mItem = checkout;
+            mCartItemListController.bindList(checkout.getCartItem());
+            mCartItemListController.bindParent(checkout);
+            mCartItemListController.doRetrieve();
+            int position = getSelectedItems().size() - 1;
+            mCartOrderListPanel.setSelectPosition(position);
+            mCartOrderListPanel.bindList(getSelectedItems());
+            mCartOrderListPanel.scrollToPosition(position);
+            updateTotalPrice();
+        }else {
+            int index = getSelectedItems().indexOf(getSelectedItem());
+            getSelectedItems().remove(index);
+            if(index == getSelectedItems().size()) {
+                index = index - 1;
+            }
+            Checkout checkout = getSelectedItems().get(index);
+            setSelectedItem(checkout);
+            mItem = checkout;
+            mCartItemListController.bindList(checkout.getCartItem());
+            mCartItemListController.bindParent(checkout);
+            mCartItemListController.doRetrieve();
+            mCartOrderListPanel.setSelectPosition(index);
+            mCartOrderListPanel.bindList(getSelectedItems());
+            mCartOrderListPanel.scrollToPosition(index);
+            updateTotalPrice();
+        }
+    }
+
+    public boolean checkItemInOrder(){
+        if(getSelectedItems().size() == 1){
+            if(getSelectedItems().get(0).getCartItem().size() <= 0){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * select order from list order
+     * @param checkout
+     */
+    public void selectOrder(Checkout checkout){
+        setSelectedItem(checkout);
+        mItem = checkout;
+        mCartItemListController.bindList(checkout.getCartItem());
+        mCartItemListController.bindParent(checkout);
+        mCartItemListController.doRetrieve();
         mCartOrderListPanel.bindList(getSelectedItems());
         updateTotalPrice();
     }
 
+    /**
+     * tham chiếu context từ sales activity
+     * @param context
+     */
     public void setContext(Context context) {
         this.context = context;
     }

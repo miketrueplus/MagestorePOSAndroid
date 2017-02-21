@@ -1,8 +1,10 @@
 package com.magestore.app.pos.panel;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.magestore.app.lib.model.checkout.Checkout;
@@ -18,8 +20,10 @@ import com.magestore.app.pos.controller.CheckoutListController;
  */
 
 public class CartOrderListPanel extends AbstractSimpleRecycleView<Checkout> {
+    int selectPos = 0;
     CheckoutListController mCheckoutListController;
     TextView checkout_name;
+    RelativeLayout rl_checkout;
 
     public void setCheckoutListController(CheckoutListController mCheckoutListController) {
         this.mCheckoutListController = mCheckoutListController;
@@ -44,6 +48,12 @@ public class CartOrderListPanel extends AbstractSimpleRecycleView<Checkout> {
 
     @Override
     protected void bindItem(View view, Checkout item, int position) {
+        rl_checkout = (RelativeLayout) view.findViewById(R.id.rl_checkout);
+        if (position == selectPos) {
+            rl_checkout.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.order_status_pending));
+        } else {
+            rl_checkout.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
+        }
         checkout_name = (TextView) view.findViewById(R.id.checkout_name);
         String customer_name = item.getCustomer().getName();
         Customer guest = mCheckoutListController.getGuestCheckout();
@@ -58,10 +68,16 @@ public class CartOrderListPanel extends AbstractSimpleRecycleView<Checkout> {
 
     @Override
     protected void onClickItem(View view, Checkout item, int position) {
-
+        selectPos = position;
+        mCheckoutListController.selectOrder(item);
+        this.getLayoutManager().scrollToPosition(position);
     }
 
-    public void notifyDataSetChanged(){
-        notifyDataSetChanged();
+    public void setSelectPosition(int selectPos) {
+        this.selectPos = selectPos;
+    }
+
+    public void scrollToPosition(int position){
+        this.getLayoutManager().scrollToPosition(position);
     }
 }
