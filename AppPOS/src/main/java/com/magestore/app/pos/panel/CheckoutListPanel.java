@@ -42,12 +42,12 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
     CustomerAddNewPanel mCustomerAddNewPanel;
     Button btn_create_customer, btn_use_guest;
     FrameLayout fr_sales_new_customer;
-    LinearLayout ll_add_new_customer, ll_new_shipping_address, ll_new_billing_address, ll_shipping_address;
+    LinearLayout ll_add_new_customer, ll_new_shipping_address, ll_new_billing_address, ll_shipping_address, ll_sales_shipping, ll_sales_total;
     LinearLayout ll_billing_address, ll_short_shipping_address, ll_short_billing_address, ll_sales_add_customer, ll_action_checkout;
     ImageButton btn_shipping_address, btn_billing_address;
     ImageButton btn_shipping_adrress_edit, btn_billing_adrress_edit;
     ImageButton btn_shipping_address_delete, btn_billing_address_delete;
-    RelativeLayout rl_sales_shipping, rl_sales_total, rl_add_checkout, rl_remove_checkout;
+    RelativeLayout rl_add_checkout, rl_remove_checkout;
 
     public CheckoutListPanel(Context context) {
         super(context);
@@ -91,8 +91,8 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
         });
 
         ll_action_checkout = (LinearLayout) findViewById(R.id.ll_action_checkout);
-        rl_sales_shipping = (RelativeLayout) findViewById(R.id.rl_sales_shipping);
-        rl_sales_total = (RelativeLayout) findViewById(R.id.rl_sales_total);
+        ll_sales_shipping = (LinearLayout) findViewById(R.id.ll_sales_shipping);
+        ll_sales_total = (LinearLayout) findViewById(R.id.ll_sales_total);
         rl_add_checkout = (RelativeLayout) findViewById(R.id.rl_add_checkout);
         rl_remove_checkout = (RelativeLayout) findViewById(R.id.rl_remove_checkout);
         initValue();
@@ -134,11 +134,11 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
 
     public void showSalesShipping(boolean isShow) {
         if (isShow) {
-            rl_sales_total.setVisibility(VISIBLE);
-            rl_sales_shipping.setVisibility(VISIBLE);
+            ll_sales_total.setVisibility(VISIBLE);
+            ll_sales_shipping.setVisibility(VISIBLE);
         } else {
-            rl_sales_total.setVisibility(GONE);
-            rl_sales_shipping.setVisibility(GONE);
+            ll_sales_total.setVisibility(GONE);
+            ll_sales_shipping.setVisibility(GONE);
         }
     }
 

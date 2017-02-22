@@ -37,132 +37,151 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:orientation="vertical">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/layout_margin">
-
-                    <com.magestore.app.view.FormatTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/sub_total" />
-
-                    <com.magestore.app.view.FormatTextView
-                        android:id="@+id/text_sales_order_subtotal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_gravity="right"
-                        android:layout_weight="1"
-                        android:text="@{ConfigUtil.formatPrice(checkout.getSubTotal())}" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/rl_sales_shipping"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:visibility="gone">
-
-                    <com.magestore.app.view.FormatTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/shipping_and_handling" />
-
-                    <com.magestore.app.view.FormatTextView
-                        android:id="@+id/text_sales_order_shipping"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_gravity="right"
-                        android:layout_weight="1"
-                        android:text="@{ConfigUtil.formatPrice(checkout.getShippingTotal())}" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp">
-
-                    <com.magestore.app.view.FormatTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/discount" />
-
-                    <com.magestore.app.view.FormatTextView
-                        android:id="@+id/text_sales_order_discount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_gravity="right"
-                        android:layout_weight="1"
-                        android:text="@{ConfigUtil.formatPrice(checkout.getDiscountTotal())}" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/rl_sales_total"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:visibility="gone">
-
-                    <com.magestore.app.view.FormatTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/total" />
-
-                    <com.magestore.app.view.FormatTextView
-                        android:id="@+id/text_sales_order_tax"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_gravity="right"
-                        android:layout_weight="1"
-                        android:text="@{ConfigUtil.formatPrice(checkout.getTaxTotal())}" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp">
-
-                    <com.magestore.app.view.FormatTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/tax" />
-
-                    <com.magestore.app.view.FormatTextView
-                        android:id="@+id/text_sales_order_total"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_gravity="right"
-                        android:layout_weight="1"
-                        android:text="@{ConfigUtil.formatPrice(checkout.getGrandTotal())}" />
-                </RelativeLayout>
+                android:orientation="horizontal">
 
                 <LinearLayout
                     android:id="@+id/ll_action_checkout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_margin="5dp"
-                    android:orientation="horizontal">
-
-                    <Button
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.7"
-                        android:text="Hold" />
+                    android:layout_weight="1">
 
                     <Button
                         android:id="@+id/btn_sales_order_checkout"
                         android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="@string/checkout"
+                        android:textColorHighlight="@color/colorAccent"
+                        android:textSize="@dimen/sales_total_text_size" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/ll_sales_total"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.3"
-                        android:text='@{@string/checkout + " (" + ConfigUtil.formatPrice(checkout.getGrandTotal()) + ")"}'
-                        android:textColorHighlight="@color/colorAccent" />
+                        android:orientation="horizontal">
+
+                        <com.magestore.app.view.FormatTextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="left"
+                            android:text="@string/total"
+                            android:textSize="@dimen/sales_total_text_size"
+                            android:textStyle="bold" />
+
+                        <com.magestore.app.view.FormatTextView
+                            android:id="@+id/text_sales_order_total"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:text="@{ConfigUtil.formatPrice(checkout.getGrandTotal())}"
+                            android:textSize="@dimen/sales_total_text_size"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.magestore.app.view.FormatTextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="left"
+                            android:text="@string/sub_total"
+                            android:textSize="@dimen/sales_price_text_size" />
+
+                        <com.magestore.app.view.FormatTextView
+                            android:id="@+id/text_sales_order_subtotal"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:text="@{ConfigUtil.formatPrice(checkout.getSubTotal())}"
+                            android:textSize="@dimen/sales_price_text_size" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_sales_shipping"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <com.magestore.app.view.FormatTextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="left"
+                            android:text="@string/shipping_and_handling"
+                            android:textSize="@dimen/sales_price_text_size" />
+
+                        <com.magestore.app.view.FormatTextView
+                            android:id="@+id/text_sales_order_shipping"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:text="@{ConfigUtil.formatPrice(checkout.getShippingTotal())}"
+                            android:textSize="@dimen/sales_price_text_size" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.magestore.app.view.FormatTextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="left"
+                            android:text="@string/discount"
+                            android:textSize="@dimen/sales_price_text_size" />
+
+                        <com.magestore.app.view.FormatTextView
+                            android:id="@+id/text_sales_order_discount"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:text="@{ConfigUtil.formatPrice(checkout.getDiscountTotal())}"
+                            android:textSize="@dimen/sales_price_text_size" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.magestore.app.view.FormatTextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="left"
+                            android:text="@string/tax"
+                            android:textSize="@dimen/sales_price_text_size" />
+
+                        <com.magestore.app.view.FormatTextView
+                            android:id="@+id/text_sales_order_tax"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:text="@{ConfigUtil.formatPrice(checkout.getTaxTotal())}"
+                            android:textSize="@dimen/sales_price_text_size" />
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

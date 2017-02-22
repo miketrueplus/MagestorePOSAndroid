@@ -10,4 +10,8 @@
     <dimen name="nav_header_vertical_spacing">16dp</dimen>
     <dimen name="nav_header_height">160dp</dimen>
     <dimen name="layout_margin">5dp</dimen>
+
+    <!--Cart List-->
+    <dimen name="sales_total_text_size">26sp</dimen>
+    <dimen name="sales_price_text_size">14sp</dimen>
 </resources>

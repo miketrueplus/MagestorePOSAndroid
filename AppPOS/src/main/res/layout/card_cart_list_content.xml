@@ -97,7 +97,7 @@
                             android:background="@drawable/conner_order_item_quantity"
                             android:minEms="1"
                             android:text="@{ConfigUtil.formatQuantity(cartItem.getQuantity())}"
-                            android:textAlignment="textEnd"
+                            android:textAlignment="center"
                             android:textColor="#FFFFFFFF"
                             android:textStyle="bold" />
                     </RelativeLayout>
