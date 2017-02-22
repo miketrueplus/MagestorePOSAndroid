@@ -41,7 +41,7 @@
                 android:layout_centerVertical="true"
                 android:visibility="gone" />
 
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            <LinearLayout
                 android:id="@+id/content_product_list_card_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -65,47 +65,30 @@
                     android:lines="2"
                     android:textAppearance="?attr/textAppearanceListItem" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/sku"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_gravity="left"
-                        android:layout_marginLeft="@dimen/layout_margin"
-                        android:layout_marginRight="@dimen/layout_margin"
-                        android:layout_weight="1"
-                        android:textAppearance="?attr/textAppearanceListItem"
-                        android:textStyle="italic" />
-
-                    <TextView
-                        android:id="@+id/price"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_gravity="right"
-                        android:layout_marginLeft="@dimen/layout_margin"
-                        android:layout_marginRight="@dimen/layout_margin"
-                        android:layout_toRightOf="@+id/sku"
-                        android:gravity="right"
-                        android:textAppearance="?attr/textAppearanceListItem"
-                        android:textStyle="normal|bold" />
-                </LinearLayout>
-
                 <TextView
-                    android:id="@+id/avaiable"
-                    android:layout_width="match_parent"
+                    android:id="@+id/sku"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_gravity="left"
                     android:layout_marginLeft="@dimen/layout_margin"
                     android:layout_marginRight="@dimen/layout_margin"
-                    android:text="@string/avaibles"
+                    android:layout_weight="1"
                     android:textAppearance="?attr/textAppearanceListItem"
-                    android:textColor="@android:color/darker_gray" />
+                    android:textStyle="italic" />
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="@dimen/layout_margin"
+                android:layout_marginRight="@dimen/layout_margin"
+                android:gravity="right"
+                android:textAppearance="?attr/textAppearanceListItem"
+                android:textStyle="normal|bold" />
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 
