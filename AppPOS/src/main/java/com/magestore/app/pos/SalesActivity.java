@@ -99,11 +99,10 @@ public class SalesActivity extends AbstractActivity
     @Override
     protected void initLayout() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_category);
-        initToolbarMenu(toolbar);
         toolbar_order = (Toolbar) findViewById(R.id.toolbar_order);
         rl_customer = (RelativeLayout) toolbar_order.findViewById(R.id.rl_customer);
         rl_change_customer = (ImageButton) toolbar_order.findViewById(R.id.rl_change_customer);
-
+        initToolbarMenu(toolbar_order);
         // Nút tab để tạo đơn hàng mới
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
