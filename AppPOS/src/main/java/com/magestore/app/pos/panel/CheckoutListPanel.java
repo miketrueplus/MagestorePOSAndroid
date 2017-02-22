@@ -95,7 +95,6 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
         rl_sales_total = (RelativeLayout) findViewById(R.id.rl_sales_total);
         rl_add_checkout = (RelativeLayout) findViewById(R.id.rl_add_checkout);
         rl_remove_checkout = (RelativeLayout) findViewById(R.id.rl_remove_checkout);
-
         initValue();
     }
 
@@ -111,7 +110,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
         rl_remove_checkout.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(((CheckoutListController) mController).checkItemInOrder()) {
+                if (((CheckoutListController) mController).checkItemInOrder()) {
                     com.magestore.app.util.DialogUtil.confirm(getContext(),
                             R.string.checkout_delete_order,
                             R.string.title_confirm_delete,
@@ -127,7 +126,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
         });
     }
 
-    public void useDefaultGuestCheckout(Customer customer){
+    public void useDefaultGuestCheckout(Customer customer) {
         // config guest checkout default add to order
         mCustomer = customer;
         updateCustomerToOrder(mCustomer);
@@ -171,17 +170,17 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
 
             mCustomerAddNewPanel = (CustomerAddNewPanel) mCheckoutAddCustomerPanel.findViewById(R.id.sales_new_customer);
             mCustomerAddNewPanel.setController(mCheckoutAddCustomerPanel.getCustomerListController());
-            if(type == 0){
+            if (type == 0) {
                 mCustomerAddNewPanel.bindItem(null);
-            }else {
+            } else {
                 mCustomerAddNewPanel.bindItem(mCustomer);
             }
             initLayoutPanel();
         } else {
             if (mCustomer != null) {
-                if(type == 0){
+                if (type == 0) {
                     mCustomerAddNewPanel.bindItem(null);
-                }else {
+                } else {
                     mCustomerAddNewPanel.bindItem(mCustomer);
                 }
             }
@@ -200,12 +199,12 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
             dialog.getButtonSave().setVisibility(GONE);
             dialog.getDialogTitle().setText("");
         } else {
-            if(type == 0){
+            if (type == 0) {
                 fr_sales_new_customer.setVisibility(GONE);
                 ll_sales_add_customer.setVisibility(VISIBLE);
                 dialog.getButtonSave().setVisibility(GONE);
                 dialog.getDialogTitle().setText("");
-            }else {
+            } else {
                 fr_sales_new_customer.setVisibility(VISIBLE);
                 ll_sales_add_customer.setVisibility(GONE);
                 dialog.getButtonSave().setVisibility(VISIBLE);
@@ -433,11 +432,11 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
         mCustomer = customer;
         ((TextView) toolbar_order.findViewById(R.id.text_customer_name)).setText(customer.getName());
         ((CheckoutListController) mController).bindCustomer(customer);
-        if(dialog != null)
+        if (dialog != null)
             dialog.dismiss();
     }
 
-    public void changeCustomerInToolBar(Customer customer){
+    public void changeCustomerInToolBar(Customer customer) {
         mCustomer = customer;
         ((TextView) toolbar_order.findViewById(R.id.text_customer_name)).setText(customer.getName());
     }

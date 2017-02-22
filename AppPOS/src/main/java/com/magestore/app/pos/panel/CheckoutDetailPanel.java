@@ -32,7 +32,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
     CheckoutShippingListPanel mCheckoutShippingListPanel;
     CheckoutAddPaymentPanel mCheckoutAddPaymentPanel;
     TextView tv_shipping_method, txt_grand_total, txt_remain_title, txt_remain_value;
-    RelativeLayout rl_title_shipping_method, rl_title_payment_method, rl_content_payment_method;
+    RelativeLayout rl_title_shipping_method, rl_title_payment_method, rl_content_payment_method, sales_background_loading;
     ImageView im_shipping_arrow, im_payment_arrow;
     MagestoreDialog dialog;
     Switch create_ship, create_invoice;
@@ -69,6 +69,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         create_ship = (Switch) findViewById(R.id.create_ship);
         create_invoice = (Switch) findViewById(R.id.create_invoice);
         btn_checkout_add_payment = (Button) findViewById(R.id.btn_checkout_add_payment);
+        sales_background_loading = (RelativeLayout) findViewById(R.id.sales_background_loading);
 
         im_back.setOnClickListener(new OnClickListener() {
             @Override
@@ -192,6 +193,14 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
             create_invoice.setVisibility(VISIBLE);
         } else {
             create_invoice.setVisibility(GONE);
+        }
+    }
+
+    public void isShowLoadingDetail(boolean isShow) {
+        if (isShow) {
+            sales_background_loading.setVisibility(VISIBLE);
+        } else {
+            sales_background_loading.setVisibility(GONE);
         }
     }
 
