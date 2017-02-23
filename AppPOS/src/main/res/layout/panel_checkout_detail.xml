@@ -95,7 +95,15 @@
                             android:checked="true"
                             android:text="@string/checkout_pick_as_store" />
 
-
+                        <com.magestore.app.lib.view.SimpleSpinner
+                            android:id="@+id/sp_shipping_method"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:enabled="false"
+                            android:textSize="18sp"
+                            android:layout_margin="5dp"
+                            magestore_view:layout_no_scroll="true"
+                            magestore_view:layout_row="@layout/simple_textview_row" />
 
                         <ScrollView
                             android:layout_width="match_parent"

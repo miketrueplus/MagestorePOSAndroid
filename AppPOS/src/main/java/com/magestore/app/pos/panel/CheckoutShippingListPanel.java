@@ -54,7 +54,7 @@ public class CheckoutShippingListPanel extends AbstractSimpleListView<CheckoutSh
             @Override
             public void onClick(View v) {
                 selectedPos = position;
-                mCheckoutListController.doInputSaveShipping(getSelectedShippingMethod());
+//                mCheckoutListController.doInputSaveShipping(getSelectedShippingMethod());
                 notifyDataSetChanged();
             }
         });
@@ -65,11 +65,11 @@ public class CheckoutShippingListPanel extends AbstractSimpleListView<CheckoutSh
         return mList.get(selectedPos);
     }
 
-    public void getShippingMethodDefault() {
-        if (mList.size() > 0) {
-            // TODO: thiếu check có phải shipping default
-            CheckoutShipping checkoutShipping = mList.get(0);
-            mCheckoutListController.doInputSaveShipping(checkoutShipping);
-        }
-    }
+//    public void getShippingMethodDefault() {
+//        if (mList.size() > 0) {
+//            // TODO: thiếu check có phải shipping default
+//            CheckoutShipping checkoutShipping = mList.get(0);
+//            mCheckoutListController.doInputSaveShipping(checkoutShipping);
+//        }
+//    }
 }

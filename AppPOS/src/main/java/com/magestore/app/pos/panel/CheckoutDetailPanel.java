@@ -2,23 +2,25 @@ package com.magestore.app.pos.panel;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
-
 import com.magestore.app.lib.model.checkout.Checkout;
-import com.magestore.app.lib.observe.GenericState;
+import com.magestore.app.lib.model.checkout.CheckoutShipping;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
+import com.magestore.app.lib.view.SimpleSpinner;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.CheckoutListController;
 import com.magestore.app.pos.util.DialogUtil;
 import com.magestore.app.pos.view.MagestoreDialog;
 import com.magestore.app.util.ConfigUtil;
+
+import java.util.List;
 
 /**
  * Created by Mike on 2/9/2017.
@@ -38,6 +40,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
     Switch create_ship, create_invoice;
     ImageButton im_back;
     Button btn_checkout_add_payment;
+    SimpleSpinner sp_shipping_method;
 
     public CheckoutDetailPanel(Context context) {
         super(context);
@@ -70,6 +73,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         create_invoice = (Switch) findViewById(R.id.create_invoice);
         btn_checkout_add_payment = (Button) findViewById(R.id.btn_checkout_add_payment);
         sales_background_loading = (RelativeLayout) findViewById(R.id.sales_background_loading);
+        sp_shipping_method = (SimpleSpinner) findViewById(R.id.sp_shipping_method);
 
         im_back.setOnClickListener(new OnClickListener() {
             @Override
@@ -106,6 +110,18 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
                 onClickTitlePaymentMethod();
             }
         });
+
+        sp_shipping_method.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                getShippingMethod();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
     @Override
@@ -140,11 +156,12 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
     }
 
     public void onClickTitleShippingMethod() {
+        mCheckoutShippingListPanel.setVisibility(GONE);
         if (mCheckoutShippingListPanel.getVisibility() == VISIBLE) {
-            mCheckoutShippingListPanel.setVisibility(GONE);
+//            mCheckoutShippingListPanel.setVisibility(GONE);
             im_shipping_arrow.setRotation(0);
         } else {
-            mCheckoutShippingListPanel.setVisibility(VISIBLE);
+//            mCheckoutShippingListPanel.setVisibility(VISIBLE);
             im_shipping_arrow.setRotation(180);
         }
     }
@@ -218,6 +235,18 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
             txt_remain_title.setText(getContext().getString(R.string.sales_remain_money));
         }
         txt_remain_value.setText(total);
+    }
+
+    public void setShippingDataSet(List<CheckoutShipping> listShipping){
+        sp_shipping_method.bind(listShipping.toArray(new CheckoutShipping[0]));
+    }
+
+    public void getShippingMethod() {
+        String code = sp_shipping_method.getSelection();
+        isShowLoadingDetail(true);
+        // TODO: show title shipping name
+        setTitleShippingMethod(code);
+        ((CheckoutListController) getController()).doInputSaveShipping(code);
     }
 
     /**

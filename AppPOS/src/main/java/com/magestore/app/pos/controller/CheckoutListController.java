@@ -121,12 +121,11 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     /**
      * khi chọn shipping request saveshipping và quote lưu lại shipping được chọn
      *
-     * @param checkoutShipping
+     * @param shippingCode
      */
-    public void doInputSaveShipping(CheckoutShipping checkoutShipping) {
-        ((CheckoutDetailPanel) mDetailView).isShowLoadingDetail(true);
-        ((CheckoutDetailPanel) mDetailView).setTitleShippingMethod(checkoutShipping.getTitle());
-        doAction(ACTION_TYPE_SAVE_SHIPPING, null, wraper, checkoutShipping);
+    public void doInputSaveShipping(String shippingCode) {
+        wraper.put("shipping_code", shippingCode);
+        doAction(ACTION_TYPE_SAVE_SHIPPING, null, wraper, null);
     }
 
     public void doInputSavePayment(CheckoutPayment checkoutPayment) {
@@ -176,7 +175,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             wraper.put("save_cart", ((CheckoutService) mListService).saveCart((Checkout) models[0], quoteId));
             return true;
         } else if (actionType == ACTION_TYPE_SAVE_SHIPPING) {
-            String shippingCode = ((CheckoutShipping) models[0]).getCode();
+            String shippingCode = (String) wraper.get("shipping_code");
             String quoteId = DataUtil.getDataStringToPreferences(context, DataUtil.QUOTE);
             wraper.put("save_shipping", ((CheckoutService) mListService).saveShipping(quoteId, shippingCode));
             return true;
@@ -207,12 +206,17 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             Checkout checkout = (Checkout) wraper.get("save_cart");
             String quoteId = checkout.getQuote().getID();
 //            bindItem(checkout);
+
+            // set data shipping cho desgin cũ
+//            mCheckoutShippingListPanel.bindList(checkout.getCheckoutShipping());
             // cập nhật list shipping và payment
-            mCheckoutShippingListPanel.bindList(checkout.getCheckoutShipping());
+            ((CheckoutDetailPanel) mDetailView).setShippingDataSet(checkout.getCheckoutShipping());
             mPaymentMethodListPanel.bindList(checkout.getCheckoutPayment());
             mCheckoutAddPaymentPanel.bindList(checkout.getCheckoutPayment());
             // auto select shipping method
-            mCheckoutShippingListPanel.getShippingMethodDefault();
+            ((CheckoutDetailPanel) mDetailView).getShippingMethod();
+//            mCheckoutShippingListPanel.getShippingMethodDefault();
+
             // lưu quote data vào system
             DataUtil.saveDataStringToPreferences(context, DataUtil.QUOTE, quoteId);
             //  cập nhật giá

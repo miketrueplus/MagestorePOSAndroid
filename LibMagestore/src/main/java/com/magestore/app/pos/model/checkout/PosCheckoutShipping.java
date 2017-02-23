@@ -26,6 +26,11 @@ public class PosCheckoutShipping extends PosAbstractModel implements CheckoutShi
     CustomerAddress address;
 
     @Override
+    public String getID() {
+        return code;
+    }
+
+    @Override
     public String getTitle() {
         return title;
     }
@@ -93,5 +98,10 @@ public class PosCheckoutShipping extends PosAbstractModel implements CheckoutShi
     @Override
     public String getIsDefault() {
         return is_default;
+    }
+
+    @Override
+    public String getDisplayContent() {
+        return title;
     }
 }
