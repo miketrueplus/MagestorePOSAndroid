@@ -95,11 +95,6 @@ public class POSCheckoutDataAccess extends POSAbstractDataAccess implements Chec
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
 
-            // TODO: log params request
-            Gson gson = new Gson();
-            String json = gson.toJson(quote);
-            Log.e("JSON", json.toString());
-
             rp = statement.execute(quote);
             rp.setParseImplement(getClassParseImplement());
             rp.setParseModel(PosCheckout.class);
@@ -147,11 +142,6 @@ public class POSCheckoutDataAccess extends POSAbstractDataAccess implements Chec
             CheckoutEntity checkoutEntity = new CheckoutEntity();
             checkoutEntity.quote_id = quoteId;
             checkoutEntity.shipping_method = shippingCode;
-
-            // TODO: log params request
-            Gson gson = new Gson();
-            String json = gson.toJson(checkoutEntity);
-            Log.e("JSON", json.toString());
 
             rp = statement.execute(checkoutEntity);
             rp.setParseImplement(getClassParseImplement());
@@ -201,11 +191,6 @@ public class POSCheckoutDataAccess extends POSAbstractDataAccess implements Chec
             checkoutEntity.quote_id = quoteId;
             checkoutEntity.payment_method = paymentCode;
 
-            // TODO: log params request
-            Gson gson = new Gson();
-            String json = gson.toJson(checkoutEntity);
-            Log.e("JSON", json.toString());
-
             rp = statement.execute(checkoutEntity);
             rp.setParseImplement(getClassParseImplement());
             rp.setParseModel(PosCheckout.class);
@@ -249,11 +234,6 @@ public class POSCheckoutDataAccess extends POSAbstractDataAccess implements Chec
             // Xây dựng tham số
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
-
-            // TODO: log params request
-            Gson gson = new Gson();
-            String json = gson.toJson(placeOrderParams);
-            Log.e("JSON", json.toString());
 
             rp = statement.execute(placeOrderParams);
             rp.setParseImplement(getClassParseImplement());

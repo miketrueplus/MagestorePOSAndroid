@@ -158,6 +158,9 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
     }
 
     public void showPopUpAddCustomer(int type) {
+        if(mCustomer != null && mCustomer.getID().equals(((CheckoutListController) mController).getGuestCheckout().getID())){
+            type = 0;
+        }
         if (mCheckoutAddCustomerPanel == null) {
             mCheckoutAddCustomerPanel = new CheckoutAddCustomerPanel(getContext());
             mCheckoutAddCustomerPanel.setMagestoreContext(mMagestoreContext);
