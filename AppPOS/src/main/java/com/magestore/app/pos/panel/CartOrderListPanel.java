@@ -22,7 +22,7 @@ import com.magestore.app.pos.controller.CheckoutListController;
 public class CartOrderListPanel extends AbstractSimpleRecycleView<Checkout> {
     int selectPos = 0;
     CheckoutListController mCheckoutListController;
-    TextView checkout_name;
+    TextView checkout_name, checkout_time;
     RelativeLayout rl_checkout;
 
     public void setCheckoutListController(CheckoutListController mCheckoutListController) {
@@ -49,12 +49,15 @@ public class CartOrderListPanel extends AbstractSimpleRecycleView<Checkout> {
     @Override
     protected void bindItem(View view, Checkout item, int position) {
         rl_checkout = (RelativeLayout) view.findViewById(R.id.rl_checkout);
+        checkout_name = (TextView) view.findViewById(R.id.checkout_name);
+        checkout_time = (TextView) view.findViewById(R.id.checkout_time);
+
+        // set data name customer từ checkout vào text (nếu use_guest thì truyền vào position)
         if (position == selectPos) {
             rl_checkout.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.order_status_pending));
         } else {
             rl_checkout.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
         }
-        checkout_name = (TextView) view.findViewById(R.id.checkout_name);
         String customer_name = item.getCustomer().getName();
         Customer guest = mCheckoutListController.getGuestCheckout();
         if (customer_name.length() > 0 && !guest.getName().equals(customer_name)) {
@@ -64,6 +67,8 @@ public class CartOrderListPanel extends AbstractSimpleRecycleView<Checkout> {
             int order_index = position + 1;
             checkout_name.setText(String.valueOf(order_index));
         }
+        // set data time từ checkout vào text
+        checkout_time.setText(item.getCreateAt());
     }
 
     @Override

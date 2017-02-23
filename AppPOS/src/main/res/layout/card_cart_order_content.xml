@@ -7,17 +7,32 @@
     <RelativeLayout
         android:id="@+id/rl_checkout"
         android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:background="@color/white"
-        android:padding="10dp">
+        android:padding="5dp">
 
-        <TextView
-            android:id="@+id/checkout_name"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            android:layout_centerInParent="true"/>
+            android:layout_centerInParent="true"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/checkout_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="5dp"
+                android:textSize="@dimen/sales_list_order_name_text_size"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/checkout_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textSize="@dimen/sales_list_order_time_text_size" />
+        </LinearLayout>
     </RelativeLayout>
 </LinearLayout>

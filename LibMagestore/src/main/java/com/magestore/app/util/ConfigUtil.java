@@ -1,14 +1,11 @@
 package com.magestore.app.util;
 
-import com.google.gson.internal.LinkedTreeMap;
-import com.magestore.app.lib.model.config.Config;
-
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -216,5 +213,11 @@ public class ConfigUtil {
             return date;
         }
         return DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.SHORT).format(dateFormat);
+    }
+
+    public static String getCurrentTime(){
+        DateFormat df = new SimpleDateFormat("hh:mm");
+        String date = df.format(Calendar.getInstance().getTime());
+        return date;
     }
 }

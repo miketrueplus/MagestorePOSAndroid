@@ -30,6 +30,7 @@ public class PosCheckout extends PosAbstractModel implements Checkout {
     Customer customer;
     List<PosCheckoutToTals> totals;
     PosQuote quote_init;
+    String create_at;
 
     private class CheckoutConfig {
         String apply_promotion = "0";
@@ -252,5 +253,15 @@ public class PosCheckout extends PosAbstractModel implements Checkout {
     @Override
     public void setExchangeMoney(float fExchangeMoney) {
         exchange_money = fExchangeMoney;
+    }
+
+    @Override
+    public String getCreateAt() {
+        return create_at;
+    }
+
+    @Override
+    public void setCreateAt(String strCreateAt) {
+        create_at = strCreateAt;
     }
 }

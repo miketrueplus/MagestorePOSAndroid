@@ -28,7 +28,7 @@ import com.magestore.app.pos.model.checkout.PosQuoteCustomerAddress;
 import com.magestore.app.pos.model.checkout.PosQuoteItemExtension;
 import com.magestore.app.pos.model.checkout.PosQuoteItems;
 import com.magestore.app.pos.service.AbstractService;
-
+import com.magestore.app.util.ConfigUtil;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -171,6 +171,7 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
     @Override
     public Checkout create() {
         Checkout checkout = new PosCheckout();
+        checkout.setCreateAt(ConfigUtil.getCurrentTime());
         List<CartItem> cartItemList = new ArrayList<CartItem>();
         checkout.setCartItem(cartItemList);
         return checkout;

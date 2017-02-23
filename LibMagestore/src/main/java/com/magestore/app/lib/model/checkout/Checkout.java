@@ -66,4 +66,7 @@ public interface Checkout extends Model {
 
     float getExchangeMoney();
     void setExchangeMoney(float fExchangeMoney);
+
+    String getCreateAt();
+    void setCreateAt(String strCreateAt);
 }
