@@ -17,6 +17,7 @@ import com.magestore.app.lib.service.checkout.CheckoutService;
 import com.magestore.app.lib.service.config.ConfigService;
 import com.magestore.app.pos.panel.CartOrderListPanel;
 import com.magestore.app.pos.panel.CheckoutAddPaymentPanel;
+import com.magestore.app.pos.panel.CheckoutAddressListPanel;
 import com.magestore.app.pos.panel.CheckoutDetailPanel;
 import com.magestore.app.pos.panel.CheckoutListPanel;
 import com.magestore.app.pos.panel.CheckoutPaymentListPanel;
@@ -58,6 +59,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     Context context;
     Customer guest_checkout;
     CartOrderListPanel mCartOrderListPanel;
+    CheckoutAddressListPanel mCheckoutAddressListPanel;
 
     @Override
     public void bindItem(Checkout item) {
@@ -91,6 +93,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
     public void bindCustomer(Customer customer) {
         if (customer != null) {
+            wraper.put("customer", customer);
             Checkout checkout = getSelectedItem();
             checkout.setCustomer(customer);
             checkout.setCustomerID(customer.getID());
@@ -163,6 +166,9 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        if (wraper == null)
+            wraper = new HashMap<>();
+        wraper.put("customer", guest_checkout);
         doAction(ACTION_TYPE_USER_GUEST, null, wraper, guest_checkout);
     }
 
@@ -231,6 +237,10 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 // câp nhật giá
                 ((CheckoutListPanel) mView).updateTotalPrice(checkout);
             }
+
+            // hiển thị list shipping address
+            Customer customer = (Customer) wraper.get("customer");
+            mCheckoutAddressListPanel.bindList(customer.getAddress());
         } else if (success && actionType == ACTION_TYPE_SAVE_SHIPPING) {
             Checkout checkout = (Checkout) wraper.get("save_shipping");
             // cập nhật list payment
@@ -406,6 +416,10 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
     public void setCheckoutAddPaymentPanel(CheckoutAddPaymentPanel mCheckoutAddPaymentPanel) {
         this.mCheckoutAddPaymentPanel = mCheckoutAddPaymentPanel;
+    }
+
+    public void setCheckoutAddressListPanel(CheckoutAddressListPanel mCheckoutAddressListPanel) {
+        this.mCheckoutAddressListPanel = mCheckoutAddressListPanel;
     }
 
     @Override

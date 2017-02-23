@@ -33,6 +33,7 @@ import com.magestore.app.pos.panel.CartItemListPanel;
 import com.magestore.app.pos.panel.CartOrderListPanel;
 import com.magestore.app.pos.panel.CategoryListPanel;
 import com.magestore.app.pos.panel.CheckoutAddPaymentPanel;
+import com.magestore.app.pos.panel.CheckoutAddressListPanel;
 import com.magestore.app.pos.panel.CheckoutDetailPanel;
 import com.magestore.app.pos.panel.CheckoutListPanel;
 import com.magestore.app.pos.panel.CheckoutPaymentDetailPanel;
@@ -68,6 +69,7 @@ public class SalesActivity extends AbstractActivity
     private PaymentMethodListPanel mPaymentMethodListPanel;
     private CheckoutAddPaymentPanel mCheckoutAddPaymentPanel;
     private CartOrderListPanel mCartOrderListPanel;
+    private CheckoutAddressListPanel mCheckoutAddressListPanel;
 
     // controller cho danh sách mặt hàng và đơn hàng
     private ProductListController mProductListController;
@@ -137,6 +139,10 @@ public class SalesActivity extends AbstractActivity
         mCheckoutPaymentListPanel = (CheckoutPaymentListPanel) mCheckoutDetailPanel.findViewById(R.id.checkout_payment_list_panel);
         // payment thod panel
         mPaymentMethodListPanel = (PaymentMethodListPanel) mCheckoutDetailPanel.findViewById(R.id.payment_method_list_panel);
+
+        // shipping address panel
+        mCheckoutAddressListPanel = (CheckoutAddressListPanel) mCheckoutDetailPanel.findViewById(R.id.address_list_panel);
+
         // add payment panel
         mCheckoutAddPaymentPanel = new CheckoutAddPaymentPanel(getContext());
 
@@ -193,6 +199,7 @@ public class SalesActivity extends AbstractActivity
         mCheckoutListController.setPaymentMethodListPanel(mPaymentMethodListPanel);
         mCheckoutListController.setCheckoutAddPaymentPanel(mCheckoutAddPaymentPanel);
         mCheckoutListController.setCartOrderListPanel(mCartOrderListPanel);
+        mCheckoutListController.setCheckoutAddressListPanel(mCheckoutAddressListPanel);
         mCheckoutListController.setConfigService(configService);
         subject.attach(null, CheckoutListController.STATE_ON_ADD_PAYMENT, mCheckoutListController);
         subject.attach(null, CheckoutListController.STATE_ON_MARK_AS_PARTIAL, mCheckoutListController);

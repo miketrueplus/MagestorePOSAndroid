@@ -5,6 +5,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -41,6 +42,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
     ImageButton im_back;
     Button btn_checkout_add_payment;
     SimpleSpinner sp_shipping_method;
+    CheckBox cb_pick_as_store;
 
     public CheckoutDetailPanel(Context context) {
         super(context);
@@ -60,6 +62,8 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
 
         txt_grand_total = (TextView) findViewById(R.id.txt_grand_total);
         im_back = (ImageButton) findViewById(R.id.im_back);
+
+        cb_pick_as_store = (CheckBox) findViewById(R.id.cb_pick_as_store);
 
         tv_shipping_method = (TextView) findViewById(R.id.tv_shipping_method);
         rl_title_shipping_method = (RelativeLayout) findViewById(R.id.rl_title_shipping_method);
