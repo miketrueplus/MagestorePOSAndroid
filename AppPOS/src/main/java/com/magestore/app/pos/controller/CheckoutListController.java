@@ -95,9 +95,24 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         if (customer != null) {
             wraper.put("customer", customer);
             Checkout checkout = getSelectedItem();
-            checkout.setCustomer(customer);
-            checkout.setCustomerID(customer.getID());
+            if(checkout == null){
+                if(mList ==  null){
+                    mList = new ArrayList<>();
+                }
+                Checkout new_checkout = ((CheckoutService) mListService).create();
+                new_checkout.setCustomer(customer);
+                new_checkout.setCustomerID(customer.getID());
+                mList.add(new_checkout);
+                setSelectedItem(new_checkout);
+                mView.notifyDataSetChanged();
+            }else {
+                checkout.setCustomer(customer);
+                checkout.setCustomerID(customer.getID());
+            }
             mCartOrderListPanel.notifyDataSetChanged();
+            if(((CheckoutDetailPanel) mDetailView).getVisibility() == View.VISIBLE){
+                doInputSaveCart();
+            }
         }
     }
 
@@ -112,7 +127,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     public void doInputSaveCart() {
         ((CheckoutDetailPanel) mDetailView).isShowLoadingDetail(true);
         // ẩn button checkout và hold order
-        ((CheckoutListPanel) mView).hidenActionButton(true);
+        ((CheckoutListPanel) mView).changeActionButton(true);
         // show detail panel
         doShowDetailPanel(true);
         binCartItem();
@@ -502,7 +517,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     public void showActionButtonCheckout() {
         if (mView != null && (mView instanceof CheckoutListPanel)) {
             // show button checkout và hold order
-            ((CheckoutListPanel) mView).hidenActionButton(false);
+            ((CheckoutListPanel) mView).changeActionButton(false);
         }
     }
 

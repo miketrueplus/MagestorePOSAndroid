@@ -96,26 +96,34 @@
                             android:checked="true"
                             android:text="@string/checkout_pick_as_store" />
 
-                        <com.magestore.app.pos.panel.CheckoutAddressListPanel
-                            android:id="@+id/address_list_panel"
+                        <LinearLayout
+                            android:id="@+id/ll_shipping_address"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="10dp"
-                            android:layout_marginLeft="@dimen/layout_margin"
-                            android:layout_marginRight="@dimen/layout_margin"
-                            android:layout_marginTop="10dp"
-                            magestore_view:layout_orientation="horizontal"
-                            magestore_view:layout_row="@layout/card_customer_address_content" />
+                            android:orientation="vertical"
+                            android:visibility="gone">
 
-                        <com.magestore.app.lib.view.SimpleSpinner
-                            android:id="@+id/sp_shipping_method"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="5dp"
-                            android:enabled="false"
-                            android:textSize="18sp"
-                            magestore_view:layout_no_scroll="true"
-                            magestore_view:layout_row="@layout/simple_textview_row" />
+                            <com.magestore.app.pos.panel.CheckoutAddressListPanel
+                                android:id="@+id/address_list_panel"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginLeft="@dimen/layout_margin"
+                                android:layout_marginRight="@dimen/layout_margin"
+                                android:layout_marginTop="10dp"
+                                magestore_view:layout_orientation="horizontal"
+                                magestore_view:layout_row="@layout/card_customer_address_content" />
+
+                            <com.magestore.app.lib.view.SimpleSpinner
+                                android:id="@+id/sp_shipping_method"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp"
+                                android:enabled="false"
+                                android:textSize="18sp"
+                                magestore_view:layout_no_scroll="true"
+                                magestore_view:layout_row="@layout/simple_textview_row" />
+                        </LinearLayout>
 
                         <ScrollView
                             android:layout_width="match_parent"

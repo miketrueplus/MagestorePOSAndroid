@@ -33,6 +33,32 @@
                 magestore_view:layout_panel="@layout/panel_cart_list"
                 magestore_view:layout_span_count="1" />
 
+            <RelativeLayout
+                android:id="@+id/rl_sales_total"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.magestore.app.view.FormatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/text_sales_order_total"
+                    android:gravity="left"
+                    android:text='@{@string/total + ":"}'
+                    android:textSize="@dimen/sales_total_text_size"
+                    android:textStyle="bold" />
+
+                <com.magestore.app.view.FormatTextView
+                    android:id="@+id/text_sales_order_total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="4dp"
+                    android:text="@{ConfigUtil.formatPrice(checkout.getGrandTotal())}"
+                    android:textSize="@dimen/sales_total_text_size"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -52,7 +78,7 @@
                         android:layout_height="match_parent"
                         android:text="@string/checkout"
                         android:textColorHighlight="@color/colorAccent"
-                        android:textSize="@dimen/sales_total_text_size" />
+                         />
                 </LinearLayout>
 
                 <LinearLayout
@@ -61,32 +87,6 @@
                     android:layout_margin="5dp"
                     android:layout_weight="1"
                     android:orientation="vertical">
-
-                    <LinearLayout
-                        android:id="@+id/ll_sales_total"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <com.magestore.app.view.FormatTextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="left"
-                            android:text="@string/total"
-                            android:textSize="@dimen/sales_total_text_size"
-                            android:textStyle="bold" />
-
-                        <com.magestore.app.view.FormatTextView
-                            android:id="@+id/text_sales_order_total"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="right"
-                            android:text="@{ConfigUtil.formatPrice(checkout.getGrandTotal())}"
-                            android:textSize="@dimen/sales_total_text_size"
-                            android:textStyle="bold" />
-                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"

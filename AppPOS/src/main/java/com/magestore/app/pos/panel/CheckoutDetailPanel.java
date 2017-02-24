@@ -6,11 +6,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
+
 import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.checkout.CheckoutShipping;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
@@ -43,6 +46,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
     Button btn_checkout_add_payment;
     SimpleSpinner sp_shipping_method;
     CheckBox cb_pick_as_store;
+    LinearLayout ll_shipping_address;
 
     public CheckoutDetailPanel(Context context) {
         super(context);
@@ -64,7 +68,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         im_back = (ImageButton) findViewById(R.id.im_back);
 
         cb_pick_as_store = (CheckBox) findViewById(R.id.cb_pick_as_store);
-
+        ll_shipping_address = (LinearLayout) findViewById(R.id.ll_shipping_address);
         tv_shipping_method = (TextView) findViewById(R.id.tv_shipping_method);
         rl_title_shipping_method = (RelativeLayout) findViewById(R.id.rl_title_shipping_method);
         rl_title_payment_method = (RelativeLayout) findViewById(R.id.rl_title_payment_method);
@@ -124,6 +128,18 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
+            }
+        });
+
+        cb_pick_as_store.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean check) {
+                if (check) {
+                    ll_shipping_address.setVisibility(GONE);
+                } else {
+                    getShippingMethod();
+                    ll_shipping_address.setVisibility(VISIBLE);
+                }
             }
         });
     }
@@ -241,7 +257,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         txt_remain_value.setText(total);
     }
 
-    public void setShippingDataSet(List<CheckoutShipping> listShipping){
+    public void setShippingDataSet(List<CheckoutShipping> listShipping) {
         sp_shipping_method.bind(listShipping.toArray(new CheckoutShipping[0]));
     }
 
@@ -262,8 +278,6 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
 //        GenericState<CheckoutListController> state = new GenericState<CheckoutListController>(null, CheckoutListController.STATE_ON_PLACE_ORDER);
 //        getController().getSubject().setState(state);
 //        ((CheckoutListController) getController()).onPlaceOrder();
-
-        ((CheckoutListController) getController()).doInputPlaceOrder();
     }
 
     public void showNotifiSelectPayment() {

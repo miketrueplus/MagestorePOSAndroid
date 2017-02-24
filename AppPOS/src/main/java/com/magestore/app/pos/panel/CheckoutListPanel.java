@@ -40,14 +40,14 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
     Toolbar toolbar_order;
     Customer mCustomer;
     CustomerAddNewPanel mCustomerAddNewPanel;
-    Button btn_create_customer, btn_use_guest;
+    Button btn_create_customer, btn_use_guest, btn_sales_order_checkout;
     FrameLayout fr_sales_new_customer;
-    LinearLayout ll_add_new_customer, ll_new_shipping_address, ll_new_billing_address, ll_shipping_address, ll_sales_shipping, ll_sales_total;
+    LinearLayout ll_add_new_customer, ll_new_shipping_address, ll_new_billing_address, ll_shipping_address, ll_sales_shipping;
     LinearLayout ll_billing_address, ll_short_shipping_address, ll_short_billing_address, ll_sales_add_customer, ll_action_checkout;
     ImageButton btn_shipping_address, btn_billing_address;
     ImageButton btn_shipping_adrress_edit, btn_billing_adrress_edit;
     ImageButton btn_shipping_address_delete, btn_billing_address_delete;
-    RelativeLayout rl_add_checkout, rl_remove_checkout;
+    RelativeLayout rl_add_checkout, rl_remove_checkout, rl_sales_total;
 
     public CheckoutListPanel(Context context) {
         super(context);
@@ -83,16 +83,10 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
         super.initLayout();
         mBinding = DataBindingUtil.bind(getView());
 
-        ((Button) findViewById(R.id.btn_sales_order_checkout)).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((CheckoutListController) getController()).doInputSaveCart();
-            }
-        });
-
+        btn_sales_order_checkout = (Button) findViewById(R.id.btn_sales_order_checkout);
         ll_action_checkout = (LinearLayout) findViewById(R.id.ll_action_checkout);
         ll_sales_shipping = (LinearLayout) findViewById(R.id.ll_sales_shipping);
-        ll_sales_total = (LinearLayout) findViewById(R.id.ll_sales_total);
+        rl_sales_total = (RelativeLayout) findViewById(R.id.rl_sales_total);
         rl_add_checkout = (RelativeLayout) findViewById(R.id.rl_add_checkout);
         rl_remove_checkout = (RelativeLayout) findViewById(R.id.rl_remove_checkout);
         initValue();
@@ -100,6 +94,18 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
 
     @Override
     public void initValue() {
+        btn_sales_order_checkout.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String place_order = getContext().getString(R.string.sales_place_holder);
+                if(btn_sales_order_checkout.getText().equals(place_order)){
+                    ((CheckoutListController) getController()).doInputPlaceOrder();
+                }else {
+                    ((CheckoutListController) getController()).doInputSaveCart();
+                }
+            }
+        });
+
         rl_add_checkout.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -134,19 +140,19 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
 
     public void showSalesShipping(boolean isShow) {
         if (isShow) {
-            ll_sales_total.setVisibility(VISIBLE);
+//            ll_sales_total.setVisibility(VISIBLE);
             ll_sales_shipping.setVisibility(VISIBLE);
         } else {
-            ll_sales_total.setVisibility(GONE);
+//            ll_sales_total.setVisibility(GONE);
             ll_sales_shipping.setVisibility(GONE);
         }
     }
 
-    public void hidenActionButton(boolean isShow) {
-        if (isShow) {
-            ll_action_checkout.setVisibility(GONE);
+    public void changeActionButton(boolean ischange) {
+        if (ischange) {
+            btn_sales_order_checkout.setText(getContext().getString(R.string.sales_place_holder));
         } else {
-            ll_action_checkout.setVisibility(VISIBLE);
+            btn_sales_order_checkout.setText(getContext().getString(R.string.checkout));
         }
     }
 
