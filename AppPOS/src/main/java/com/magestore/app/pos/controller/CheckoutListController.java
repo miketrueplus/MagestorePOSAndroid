@@ -11,6 +11,7 @@ import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.lib.model.checkout.CheckoutShipping;
 import com.magestore.app.lib.model.customer.Customer;
+import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.observe.State;
 import com.magestore.app.lib.service.checkout.CheckoutService;
@@ -95,8 +96,8 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         if (customer != null) {
             wraper.put("customer", customer);
             Checkout checkout = getSelectedItem();
-            if(checkout == null){
-                if(mList ==  null){
+            if (checkout == null) {
+                if (mList == null) {
                     mList = new ArrayList<>();
                 }
                 Checkout new_checkout = ((CheckoutService) mListService).create();
@@ -105,12 +106,12 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 mList.add(new_checkout);
                 setSelectedItem(new_checkout);
                 mView.notifyDataSetChanged();
-            }else {
+            } else {
                 checkout.setCustomer(customer);
                 checkout.setCustomerID(customer.getID());
             }
             mCartOrderListPanel.notifyDataSetChanged();
-            if(((CheckoutDetailPanel) mDetailView).getVisibility() == View.VISIBLE){
+            if (((CheckoutDetailPanel) mDetailView).getVisibility() == View.VISIBLE) {
                 doInputSaveCart();
             }
         }
@@ -355,6 +356,11 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         }
     }
 
+    /**
+     * kiểm tra item trong cart
+     *
+     * @return
+     */
     public boolean checkItemInOrder() {
         if (getSelectedItems().size() == 1) {
             if (getSelectedItems().get(0).getCartItem().size() <= 0) {
@@ -362,6 +368,21 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             }
         }
         return true;
+    }
+
+    /**
+     * Thay đổi shipping address
+     */
+    public void changeShippingAddress(CustomerAddress customerAddress) {
+        List<CustomerAddress> listAddress = getSelectedItem().getCustomer().getAddress();
+        if (listAddress.size() > 1) {
+            for (CustomerAddress address : listAddress) {
+                if (address.getID().equals(customerAddress.getID())) {
+                    listAddress.set(0, address);
+                }
+            }
+            doInputSaveCart();
+        }
     }
 
     /**
@@ -382,6 +403,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             doInputSaveCart();
         }
     }
+
 
     /**
      * tham chiếu context từ sales activity

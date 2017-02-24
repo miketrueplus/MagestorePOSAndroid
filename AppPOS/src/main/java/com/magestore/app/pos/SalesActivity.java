@@ -246,6 +246,7 @@ public class SalesActivity extends AbstractActivity
         mCheckoutPaymentListPanel.setCheckoutListController(mCheckoutListController);
         mCheckoutAddPaymentPanel.setCheckoutListController(mCheckoutListController);
         mCartOrderListPanel.setCheckoutListController(mCheckoutListController);
+        mCheckoutAddressListPanel.setCheckoutListController(mCheckoutListController);
 
         // TODO: clear quote
 //        DataUtil.removeDataStringToPreferences(getContext(), DataUtil.QUOTE);

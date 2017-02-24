@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.view.AbstractSimpleRecycleView;
 import com.magestore.app.pos.R;
+import com.magestore.app.pos.controller.CheckoutListController;
 import com.magestore.app.pos.databinding.CardCustomerAddressContentBinding;
 
 /**
@@ -18,7 +19,11 @@ import com.magestore.app.pos.databinding.CardCustomerAddressContentBinding;
  */
 
 public class CheckoutAddressListPanel extends AbstractSimpleRecycleView<CustomerAddress> {
+    CheckoutListController mCheckoutListController;
 
+    public void setCheckoutListController(CheckoutListController mCheckoutListController) {
+        this.mCheckoutListController = mCheckoutListController;
+    }
 
     public CheckoutAddressListPanel(Context context) {
         super(context);
@@ -44,6 +49,6 @@ public class CheckoutAddressListPanel extends AbstractSimpleRecycleView<Customer
 
     @Override
     protected void onClickItem(View view, CustomerAddress item, int position) {
-
+        mCheckoutListController.changeShippingAddress(item);
     }
 }
