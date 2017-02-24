@@ -138,6 +138,20 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
     }
 
     @Override
+    public boolean addOrderToListCheckout(Checkout checkout) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        CheckoutDataAccess checkoutDataAccess = factory.generateCheckoutDataAccess();
+        return checkoutDataAccess.addOrderToListCheckout(checkout);
+    }
+
+    @Override
+    public boolean removeOrderToListCheckout(Checkout checkout) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        CheckoutDataAccess checkoutDataAccess = factory.generateCheckoutDataAccess();
+        return checkoutDataAccess.removeOrderToListCheckout(checkout);
+    }
+
+    @Override
     public Checkout updateTotal(Checkout checkout) {
         for (CheckoutTotals checkoutTotals : checkout.getTotals()) {
             if (checkoutTotals.getCode().equals("subtotal")) {

@@ -263,4 +263,14 @@ public class POSCheckoutDataAccess extends POSAbstractDataAccess implements Chec
         }
     }
 
+    @Override
+    public boolean addOrderToListCheckout(Checkout checkout) throws ParseException, InstantiationException, IllegalAccessException, IOException {
+        return false;
+    }
+
+    @Override
+    public boolean removeOrderToListCheckout(Checkout checkout) throws ParseException, InstantiationException, IllegalAccessException, IOException {
+        return false;
+    }
+
 }
