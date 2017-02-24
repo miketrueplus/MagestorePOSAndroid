@@ -12,11 +12,9 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.magestore.app.lib.context.MagestoreContext;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.service.customer.CustomerService;
-import com.magestore.app.lib.view.SimpleSpinner;
 import com.magestore.app.pos.R;
 import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.panel.AbstractListPanel;
@@ -40,7 +38,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
     Toolbar toolbar_order;
     Customer mCustomer;
     CustomerAddNewPanel mCustomerAddNewPanel;
-    Button btn_create_customer, btn_use_guest, btn_sales_order_checkout;
+    Button btn_create_customer, btn_use_guest, btn_sales_order_checkout, bt_sales_discount;
     FrameLayout fr_sales_new_customer;
     LinearLayout ll_add_new_customer, ll_new_shipping_address, ll_new_billing_address, ll_shipping_address, ll_sales_shipping;
     LinearLayout ll_billing_address, ll_short_shipping_address, ll_short_billing_address, ll_sales_add_customer, ll_action_checkout;
@@ -89,6 +87,8 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
         rl_sales_total = (RelativeLayout) findViewById(R.id.rl_sales_total);
         rl_add_checkout = (RelativeLayout) findViewById(R.id.rl_add_checkout);
         rl_remove_checkout = (RelativeLayout) findViewById(R.id.rl_remove_checkout);
+        bt_sales_discount = (Button) findViewById(R.id.bt_sales_discount);
+
         initValue();
     }
 
@@ -128,6 +128,17 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
                                 }
                             });
                 }
+            }
+        });
+
+        bt_sales_discount.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CheckoutDiscountPanel mCheckoutDiscountPanel = new CheckoutDiscountPanel(getContext());
+                MagestoreDialog dialog = DialogUtil.dialog(getContext(), "", mCheckoutDiscountPanel);
+                dialog.setDialogTitle(getContext().getString(R.string.checkout_discount_all));
+                dialog.setDialogSave(getContext().getString(R.string.apply));
+                dialog.show();
             }
         });
     }

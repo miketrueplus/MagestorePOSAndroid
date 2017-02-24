@@ -8,6 +8,12 @@
     <color name="line">#e1e1e1</color>
     <color name="black">#000000</color>
 
+    <!--Checkout-->
+    <color name="sales_discount_bg_select">#0E86E2</color>
+    <color name="sales_discount_bg_not_select">#e1e1e1</color>
+    <color name="sales_discount_text_select">#ffffff</color>
+    <color name="sales_discount_text_not_select">#48586c</color>
+
     <!--Dialog-->
     <color name="dialog_background_color">#ffffff</color>
 

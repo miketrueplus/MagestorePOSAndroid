@@ -32,6 +32,7 @@
     <string name="sales_no_payment_method">No payment method is avaible</string>
     <string name="checkout_delete_order">Delete current order</string>
     <string name="checkout_pick_as_store">Pick as store</string>
+    <string name="checkout_discount_all">Discount - Maximum 100%</string>
 
     <!-- Strings related to customer -->
     <string name="customer_search_customer_here">Search name, email, telephone</string>
@@ -139,7 +140,6 @@
     <string name="register_shift_dialog_make_adjustment_balance">The current balance of your shift:</string>
     <string name="register_shift_dialog_make_adjustment_add">Add</string>
     <string name="register_shift_dialog_make_adjustment_remove">Remove</string>
-    <string name="register_shift_dialog_make_adjustment_amount">Amount</string>
     <string name="register_shift_dialog_make_adjustment_note">Note</string>
 
     <!-- Strings related to single words -->
@@ -195,6 +195,12 @@
     <string name="reference_number">Reference Number</string>
     <string name="plus">+</string>
     <string name="minus">-</string>
+    <string name="name">Name</string>
+    <string name="amount">Amount</string>
+    <string name="coupon_code">Coupon Code</string>
+    <string name="check">Check</string>
+    <string name="promotion">Promotion</string>
+    <string name="apply">Apply</string>
 
     <!-- Strings related to error message -->
     <string name="err_no_network_connection">No network connection, Pls check yout network settings</string>
