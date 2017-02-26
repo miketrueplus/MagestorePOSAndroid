@@ -168,4 +168,9 @@ public abstract class AbstractDetailPanel<TModel extends Model>
     public void notifyDataSetChanged() {
 
     }
+
+    @Override
+    public void hideAllProgressBar() {
+
+    }
 }

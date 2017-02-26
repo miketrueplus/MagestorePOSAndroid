@@ -5,6 +5,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.text.TextUtils;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.magestore.app.lib.connection.BitmapFileCacheConnection;
 import com.magestore.app.lib.connection.Connection;
 import com.magestore.app.lib.connection.ConnectionException;
@@ -12,14 +14,20 @@ import com.magestore.app.lib.connection.ConnectionFactory;
 import com.magestore.app.lib.connection.ParamBuilder;
 import com.magestore.app.lib.connection.ResultReading;
 import com.magestore.app.lib.connection.Statement;
+import com.magestore.app.lib.model.catalog.ProductOption;
 import com.magestore.app.lib.parse.ParseException;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.resourcemodel.DataAccessException;
 import com.magestore.app.lib.resourcemodel.catalog.ProductDataAccess;
+import com.magestore.app.pos.model.catalog.PosProductConfigOptionAttributes;
+import com.magestore.app.pos.model.catalog.PosProductConfigOptionImage;
+import com.magestore.app.pos.model.catalog.PosProductOption;
+import com.magestore.app.pos.parse.gson2pos.Gson2PosAbstractParseImplement;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListProduct;
 import com.magestore.app.pos.api.m2.POSAPI;
 import com.magestore.app.pos.api.m2.POSAbstractDataAccess;
 import com.magestore.app.pos.api.m2.POSDataAccessSession;
+import com.magestore.app.pos.parse.gson2pos.Gson2PosProductParseImplement;
 import com.magestore.app.util.ImageUtil;
 import com.magestore.app.util.SecurityUtil;
 
@@ -29,6 +37,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,6 +50,41 @@ import java.util.List;
 public class POSProductDataAccess extends POSAbstractDataAccess implements ProductDataAccess {
     public POSProductDataAccess() {
         super();
+    }
+
+    @Override
+    public ProductOption loadProductOption(Product product) {
+        if (product.getJsonConfigOption() == null || "".equals(product.getJsonConfigOption().trim())) return null;
+        Gson2PosProductParseImplement implement = new Gson2PosProductParseImplement();
+        Gson gson = implement.createGson();
+        PosProductOption productOption = gson.fromJson(product.getJsonConfigOption(), PosProductOption.class);
+        product.setProductOption((ProductOption) productOption);
+        return (ProductOption) productOption;
+    }
+
+    @Override
+    public void loadProductOption(List<Product> listProduct) {
+        Gson2PosProductParseImplement implement = new Gson2PosProductParseImplement();
+        Gson gson = implement.createGson();
+        for (Product product: listProduct) {
+            if (product.getJsonConfigOption() == null || "".equals(product.getJsonConfigOption().trim())) continue;
+            PosProductOption productOption = gson.fromJson(product.getJsonConfigOption(), PosProductOption.class);
+            product.setProductOption((ProductOption) productOption);
+        }
+    }
+
+    /**
+     * Sắp xếp lại các biến trong product option để thuận tiện truy cập hơn
+     */
+    public void arrangeProductOption(PosProductOption productOption) {
+        // duỵet từng nhóm thuộc tính
+//        for (PosProductConfigOptionAttributes attribute : productOption.attributes.values()) {
+//            // duyệt từng option trong thuộc tính
+//            for (PosProductConfigOptionAttributes.Attributes option: attribute.options ) {
+//                option.images = new ArrayList<PosProductConfigOptionImage>();
+//                option.images.add(attribute.images.get())
+//            }
+//        }
     }
 
     /**
@@ -70,15 +114,19 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
             paramBuilder = statement.getParamBuilder()
                 .setPage(page)
                 .setPageSize(pageSize)
+//                .setFilterLike("name", "%Backyard%")
                 .setSessionID(POSDataAccessSession.REST_SESSION_ID);
 //                .setFilterEqual("name", "Joust Duffle Bag");
 
             // thực thi truy vấn và parse kết quả thành object
             rp = statement.execute();
-            rp.setParseImplement(getClassParseImplement());
+            rp.setParseImplement(Gson2PosProductParseImplement.class);
             rp.setParseModel(Gson2PosListProduct.class);
             Gson2PosListProduct listProduct = (Gson2PosListProduct) rp.doParse();
             List<Product> list = (List<Product>)(List<?>) (listProduct.items);
+
+            // đọc nốt thông tin về product option
+            loadProductOption(list);
 
             // return
             return list;
@@ -192,6 +240,9 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
             Gson2PosListProduct listProduct = (Gson2PosListProduct) rp.doParse();
             List<Product> list = (List<Product>)(List<?>) (listProduct.items);
 
+            // đọc nốt thông tin về product option
+            loadProductOption(list);
+
             // return
             if (list.size() >= 1)
                 return list.get(0);
@@ -253,6 +304,9 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
             Gson2PosListProduct listProduct = (Gson2PosListProduct) rp.doParse();
             List<Product> list = (List<Product>)(List<?>) (listProduct.items);
 
+            // đọc nốt thông tin về product option
+            loadProductOption(list);
+
             // return
             return list;
         }
@@ -308,6 +362,9 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
             Gson2PosListProduct listProduct = (Gson2PosListProduct) rp.doParse();
             List<Product> list = (List<Product>)(List<?>) (listProduct.items);
 
+            // đọc nốt thông tin về product option
+            loadProductOption(list);
+
             // return
             return list;
         }
@@ -355,7 +412,6 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
         // chuẩn bị cache
         BitmapFileCacheConnection cacheConnection = new BitmapFileCacheConnection();
         cacheConnection.setCacheName(product.getID() + SecurityUtil.getHash(product.getImage()));
-//        cacheConnection.setForceOutOfDate(true);
         cacheConnection.setReloadCacheLater(false);
         cacheConnection.setBmpURL(product.getImage());
 

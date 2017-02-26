@@ -39,10 +39,10 @@ public class SearchAutoCompleteAdapter<TModel extends Model> extends BaseAdapter
     public SearchAutoCompleteAdapter(Context context, ListService<TModel> service) {
         mContext = context;
         mService = service;
-        mintLayoutDropDown = R.layout.autotext_search_dropdown;
-        mintText1 = R.id.autotext_search_dropdown_text1;
-        mintText2 = R.id.autotext_search_dropdown_text2;
-        mintImage = R.id.autotext_search_dropdown_img;
+        mintLayoutDropDown = R.layout.layout_modelview_default_item_content;
+        mintText1 = R.id.id_modelview_default_item_text1;
+        mintText2 = R.id.id_modelview_default_item_text2;
+        mintImage = R.id.id_modelview_default_item_image;
     }
 
     @Override

@@ -8,10 +8,7 @@ import android.view.View;
 
 
 import com.magestore.app.lib.context.MagestoreContext;
-import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.service.ServiceFactory;
-import com.magestore.app.lib.service.customer.CustomerAddressService;
-import com.magestore.app.lib.service.customer.CustomerComplainService;
 import com.magestore.app.lib.service.customer.CustomerService;
 import com.magestore.app.pos.controller.CustomerListController;
 import com.magestore.app.pos.panel.CustomerDetailPanel;

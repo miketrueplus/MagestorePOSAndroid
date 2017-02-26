@@ -28,4 +28,5 @@ public interface MagestoreView<TController extends Controller> {
      * @param blnShow
      */
     void showProgress(boolean blnShow);
+    void hideAllProgressBar();
 }

@@ -106,6 +106,7 @@ public abstract class AbstractActivity
     }
 
     public void showErrorMsg(Exception exp) {
+        exp.printStackTrace();
         new AlertDialog.Builder(this)
                 .setMessage(exp.getLocalizedMessage())
                 .setIcon(android.R.drawable.ic_dialog_alert)

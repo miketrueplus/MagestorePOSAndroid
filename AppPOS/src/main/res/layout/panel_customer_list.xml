@@ -55,10 +55,27 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1.0"
                 app:layoutManager="LinearLayoutManager"
-                magestore_view:layout_item_progress="@+id/progress_customer_list_card_view"
-                magestore_view:layout_item_msg="@+id/msg_customer_list_card_view"
-                magestore_view:layout_item_content="@+id/content_customer_list_card_view"
                 tools:listitem="@layout/card_customer_list_content" />
+
+            <ProgressBar
+                android:id="@+id/progress_customer_list_top"
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="center"
+                android:visibility="gone" />
+
+            <ProgressBar
+                android:id="@+id/progress_customer_list_bottom"
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="center"
+                android:visibility="gone" />
         </RelativeLayout>
     </LinearLayout>
 

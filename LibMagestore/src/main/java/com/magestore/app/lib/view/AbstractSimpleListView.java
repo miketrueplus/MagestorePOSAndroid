@@ -274,4 +274,9 @@ public abstract class AbstractSimpleListView<TModel extends Model>
         ViewGroup.LayoutParams params = getLayoutParams();
         params.height = getMeasuredHeight();
     }
+
+    @Override
+    public void hideAllProgressBar() {
+
+    }
 }

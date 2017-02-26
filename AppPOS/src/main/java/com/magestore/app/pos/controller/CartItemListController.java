@@ -34,7 +34,8 @@ public class CartItemListController extends AbstractChildListController<Checkout
      */
     public void bindProduct(Product product) {
         try {
-            mCartService.insert(getParent(), product, product.getQuantityIncrement());
+            CartItem cartItem = mCartService.insert(getParent(), product, product.getQuantityIncrement());
+            mView.updateModelInsertAtLastIfNotFound(cartItem);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InstantiationException e) {
@@ -44,7 +45,7 @@ public class CartItemListController extends AbstractChildListController<Checkout
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
-        mView.notifyDataSetChanged();
+//        mView.notifyDataSetChanged();
         updateTotalPrice();
     }
 
@@ -73,7 +74,8 @@ public class CartItemListController extends AbstractChildListController<Checkout
      */
     public void deleteProduct(Product product) {
         try {
-            mCartService.delete(getParent(), product);
+            CartItem cartItem = mCartService.delete(getParent(), product);
+            mView.deleteList(cartItem);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InstantiationException e) {
@@ -84,7 +86,7 @@ public class CartItemListController extends AbstractChildListController<Checkout
             e.printStackTrace();
         }
 //        mCartService.delOrderItem(product);
-        mView.notifyDataSetChanged();
+//        mView.notifyDataSetChanged();
         updateTotalPrice();
     }
 
@@ -96,10 +98,12 @@ public class CartItemListController extends AbstractChildListController<Checkout
      */
     public void addProduct(Product product, int quantity, float price) {
         try {
-            mCartService.insert(getParent(), product, quantity, price);
+            CartItem cartItem = mCartService.insert(getParent(), product, quantity, price);
+//            mView.updateModelInsertAtLastIfNotFound(cartItem);
         } catch (Exception e) {
             e.printStackTrace();
         }
+
 //        mView.notifyDataSetChanged();
         updateTotalPrice();
     }
@@ -122,7 +126,8 @@ public class CartItemListController extends AbstractChildListController<Checkout
     public void substructProduct(Product product, int quantity, float price) {
 //        mCartService.subtructOrderItem(product, quantity);
         try {
-            mCartService.delete(getParent(), product, product.getQuantityIncrement());
+            CartItem cartItem = mCartService.delete(getParent(), product, product.getQuantityIncrement());
+//            mView.updateModel(cartItem);
         } catch (Exception e) {
             e.printStackTrace();
         }

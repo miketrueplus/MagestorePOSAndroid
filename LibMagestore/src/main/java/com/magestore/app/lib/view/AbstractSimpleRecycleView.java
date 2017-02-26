@@ -319,11 +319,15 @@ public abstract class AbstractSimpleRecycleView<TModel extends Model>
         }
     }
 
-    /**
-     * Xuwr
-     * @param widthMeasureSpec
-     * @param heightMeasureSpec
-     */
+    @Override
+    public void hideAllProgressBar() {
+
+    }
+    //    /**
+//     * Xuwr
+//     * @param widthMeasureSpec
+//     * @param heightMeasureSpec
+//     */
 //    @Override
 //    public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 //        // Nếu k0 tự động thay đổi chiều cao

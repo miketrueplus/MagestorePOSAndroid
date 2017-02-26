@@ -80,7 +80,6 @@ public class CustomerAddressDetailPanel extends AbstractDetailPanel<CustomerAddr
     public CustomerAddress bind2Item() {
         if (mController instanceof CustomerAddressListController) {
             //  khởi tạo customer address
-
             CustomerAddress address = mController.getListService().create();
             bindItem(address);
             return address;
@@ -100,5 +99,6 @@ public class CustomerAddressDetailPanel extends AbstractDetailPanel<CustomerAddr
         address.setPostCode(((EditText) findViewById(R.id.postcode)).getText().toString().trim());
         address.setCountry(((EditText) findViewById(R.id.postcode)).getText().toString().trim());
         address.setState(((EditText) findViewById(R.id.state)).getText().toString().trim());
-        address.setVAT(((EditText) findViewById(R.id.vat_id)).getText().toString().trim());    }
+        address.setVAT(((EditText) findViewById(R.id.vat_id)).getText().toString().trim());
+    }
 }

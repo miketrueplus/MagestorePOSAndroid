@@ -110,7 +110,8 @@ public class CustomerAddressListPanel extends AbstractListPanel<CustomerAddress>
         dialog.getButtonSave().setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomerAddress item = panelAddress.bind2Item();
+                CustomerAddress item = ((CustomerAddressListController) mController).createNewCustomerAddress();
+                panelAddress.bind2Item(item);
                 mController.doInsert(item);
                 dialog.dismiss();
             }
@@ -138,7 +139,8 @@ public class CustomerAddressListPanel extends AbstractListPanel<CustomerAddress>
         dialog.getButtonSave().setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomerAddress newitem = panelAddress.bind2Item();
+                CustomerAddress newitem = ((CustomerAddressListController) mController).createNewCustomerAddress();
+                panelAddress.bind2Item(newitem);
                 mController.doUpdate(item, newitem);
                 dialog.dismiss();
             }

@@ -68,6 +68,6 @@ public class CategoryListController extends AbstractListController<Category> {
     }
 
     public void setProductListController(ProductListController mProductListController) {
-        this.mProductListController = mProductListController;
+        mProductListController = mProductListController;
     }
 }

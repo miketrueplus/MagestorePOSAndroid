@@ -3,20 +3,28 @@ package com.magestore.app.pos.model.catalog;
 import android.graphics.Bitmap;
 
 import com.magestore.app.lib.model.catalog.Product;
+import com.magestore.app.lib.model.catalog.ProductOption;
 import com.magestore.app.pos.model.PosAbstractModel;
 import com.magestore.app.pos.model.PosStock;
 import com.magestore.app.pos.model.PosTierPrice;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Mike on 12/15/2016.
  * Magestore
  * mike@trueplus.vn
- * TODO: Add a class header comment!
  */
 
 public class PosProduct extends PosAbstractModel implements Product {
+    public class ConfigOption {
+        public String optionId;
+        public String optionLabel;
+        public Map<String, String> optionValues;
+    }
+
     private String type_id;
     private String sku;
     private float price;
@@ -25,18 +33,42 @@ public class PosProduct extends PosAbstractModel implements Product {
     private String name;
     private String status;
     private String image;
+    private List<String> images;
     private Bitmap bitmap;
-
+    private ConfigOption[] config_options;
+    private String json_config;
     private float special_price;
     private String special_from_date;
     private String updated_at;
     private int max_characters;
     private PosProduct[] custom_options;
-    private String[] images;
     private String category_ids;
     private PosStock[] stock;
     private PosTierPrice[] tier_prices;
-    int qty_increment = 1;
+    private float qty_increment = 1;
+    private PosProductOption productOption;
+
+    @Override
+    public ProductOption getProductOption() {
+        return (ProductOption) productOption;
+    }
+
+    @Override
+    public void setProductOption(ProductOption productOption) {
+        this.productOption = (PosProductOption) productOption;
+    }
+
+    @Override
+    public boolean haveProductionOption() {
+        if (productOption == null) return false;
+        if (productOption.attributes == null) return false;
+        if (productOption.attributes.size() == 0) return false;
+        return true;
+    }
+
+    public ConfigOption generateConfigOption() {
+        return new ConfigOption();
+    }
 
     @Override
     public String getTypeID() {
@@ -128,11 +160,16 @@ public class PosProduct extends PosAbstractModel implements Product {
 
     @Override
     public int getQuantityIncrement() {
-        return qty_increment;
+        return 1;
     }
 
     @Override
     public void setQuantityIncrement(int quantityIncrement) {
-        this.qty_increment = quantityIncrement;
+//        this.qty_increment = quantityIncrement;
+    }
+
+    @Override
+    public String getJsonConfigOption() {
+        return json_config;
     }
 }

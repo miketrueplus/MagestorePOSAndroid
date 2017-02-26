@@ -140,8 +140,8 @@ public abstract class AbstractListController<TModel extends Model>
         mView.lockLazyLoading(true);
         RetrieveListTask<TModel> task = new RetrieveListTask<TModel>(this);
         task.doExecute(page, pageSize);
-        if (page == 1) doShowProgress(true);
-
+        if (page == 1) mView.showProgress(true);
+        else mView.showProgressBottom(true);
     }
 
     /**
@@ -170,7 +170,8 @@ public abstract class AbstractListController<TModel extends Model>
     @Override
     public synchronized void onRetrievePostExecute(List<TModel> list) {
         // tắt progress
-        doShowProgress(false);
+        mView.hideAllProgressBar();
+
         // xem chế độ là lazyloading hay k0
         if (mView.haveLazyLoading()) {
             if (mList == null || mList.size() == 0) {
@@ -190,8 +191,9 @@ public abstract class AbstractListController<TModel extends Model>
 
                 // bổ sung thêm vào list theo lazyloading
                 mList.addAll(list);
-                mView.notifyDataSetInsertLastItem(list);
-                mView.setItemLoadingProgress(null, false);
+                mView.insertListAtLast(list);
+//                mView.notifyDataSetInsertLastItem(list);
+//                mView.setItemLoadingProgress(null, false);
                 mView.lockLazyLoading(false);
             }
         } else {
@@ -275,6 +277,7 @@ public abstract class AbstractListController<TModel extends Model>
      */
     @Override
     public void onDeletePostExecute(Boolean success) {
+
         if (success) mView.notifyDataSetChanged();
     }
 
@@ -310,6 +313,7 @@ public abstract class AbstractListController<TModel extends Model>
     @Override
     public void onInsertPostExecute(Boolean success, TModel... models) {
         if (success) mView.notifyDataSetChanged();
+        mView.insertListAtLast(models);
     }
 
 
@@ -422,16 +426,16 @@ public abstract class AbstractListController<TModel extends Model>
     public void displaySearch(TModel model) {
         List<TModel> listModel = new ArrayList<TModel>();
         listModel.add(model);
-        mView.displaySearch(listModel);
+        mView.publishSearchList(listModel);
     }
 
     @Override
     public void displaySearch(List<TModel> listModel) {
-        mView.displaySearch(listModel);
+        mView.publishSearchList(listModel);
     }
 
     @Override
     public void hideSearch() {
-        mView.hideSearch();
+        mView.closeSearchList();
     }
 }

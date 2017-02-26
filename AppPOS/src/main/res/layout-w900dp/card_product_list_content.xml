@@ -19,30 +19,15 @@
         android:layout_margin="@dimen/layout_margin"
         card_view:cardCornerRadius="@dimen/layout_margin">
 
+        <include layout="@layout/layout_modelview_default_item_progressbar_message" />
+
         <RelativeLayout
+            android:id="@+id/content_product_list_card_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ProgressBar
-                android:id="@+id/progress_product_list_card_view"
-                style="?android:attr/progressBarStyleLarge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:layout_marginBottom="8dp"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/msg_product_list_card_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:visibility="gone" />
 
             <LinearLayout
-                android:id="@+id/content_product_list_card_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -61,6 +46,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/layout_margin"
                     android:layout_marginRight="@dimen/layout_margin"
+                    android:text="@{product.getName()}"
                     android:ellipsize="end"
                     android:lines="2"
                     android:textAppearance="?attr/textAppearanceListItem" />
@@ -74,6 +60,7 @@
                     android:layout_marginLeft="@dimen/layout_margin"
                     android:layout_marginRight="@dimen/layout_margin"
                     android:layout_weight="1"
+                    android:text="@{product.getSKU()}"
                     android:textAppearance="?attr/textAppearanceListItem"
                     android:textStyle="italic" />
             </LinearLayout>
@@ -87,6 +74,7 @@
                 android:layout_marginTop="@dimen/layout_margin"
                 android:layout_marginRight="@dimen/layout_margin"
                 android:gravity="right"
+                android:text="@{ConfigUtil.formatPrice(product.getPrice())}"
                 android:textAppearance="?attr/textAppearanceListItem"
                 android:textStyle="normal|bold" />
         </RelativeLayout>

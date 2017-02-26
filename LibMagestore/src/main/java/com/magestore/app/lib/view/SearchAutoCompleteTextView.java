@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 import com.magestore.app.lib.R;
 
 /**
+ * Textview với khả năng auto complete, hiện ra gợi ý với mỗi từ hkóa được nhập vào
  * Created by Mike on 2/14/2017.
  * Magestore
  * mike@trueplus.vn

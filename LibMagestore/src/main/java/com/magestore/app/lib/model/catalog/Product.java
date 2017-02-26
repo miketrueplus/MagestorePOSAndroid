@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.parse.ParseModel;
+import com.magestore.app.pos.model.catalog.PosProductOption;
 
 import java.util.Date;
 
@@ -14,6 +15,13 @@ import java.util.Date;
 public interface Product extends Model, ParseModel {
     String getID();
     String getName();
+
+    ProductOption getProductOption();
+
+    void setProductOption(ProductOption productOption);
+
+    boolean haveProductionOption();
+
     String getTypeID();
     String getSKU();
     float getPrice();
@@ -32,4 +40,6 @@ public interface Product extends Model, ParseModel {
     int getQuantityIncrement();
 
     void setQuantityIncrement(int quantityIncrement);
+
+    String getJsonConfigOption();
 }

@@ -26,13 +26,13 @@ public interface CartService extends ChildListService<Checkout, CartItem> {
 
     CartItem findItem(Checkout checkout, Product product);
 
-    boolean insert(Checkout checkout, Product product, int quantity, float price) throws InstantiationException, IllegalAccessException, ParseException, IOException;
+    CartItem insert(Checkout checkout, Product product, int quantity, float price) throws InstantiationException, IllegalAccessException, ParseException, IOException;
 
-    boolean insert(Checkout checkout, Product product, int quantity) throws IOException, InstantiationException, ParseException, IllegalAccessException;
+    CartItem insert(Checkout checkout, Product product, int quantity) throws IOException, InstantiationException, ParseException, IllegalAccessException;
 
     boolean delete(Checkout checkout, int position) throws IOException, InstantiationException, ParseException, IllegalAccessException;
 
-    boolean delete(Checkout checkout, Product product) throws IOException, InstantiationException, ParseException, IllegalAccessException;
+    CartItem delete(Checkout checkout, Product product) throws IOException, InstantiationException, ParseException, IllegalAccessException;
 
-    boolean delete(Checkout checkout, Product product, int subQuantity) throws IOException, InstantiationException, ParseException, IllegalAccessException;
+    CartItem delete(Checkout checkout, Product product, int subQuantity) throws IOException, InstantiationException, ParseException, IllegalAccessException;
 }

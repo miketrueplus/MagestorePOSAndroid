@@ -44,12 +44,15 @@
                 magestore_view:page_first="1"
                 magestore_view:layout_search="@+id/panel_search_customer"
                 magestore_view:layout_progress="@+id/progress_customer_list"
+                magestore_view:layout_progress_top="@+id/progress_customer_list_top"
+                magestore_view:layout_progress_bottom="@+id/progress_customer_list_bottom"
                 magestore_view:layout_msg="@+id/txt_msg_customer_list"
-                magestore_view:layout_item="@layout/card_customer_list_content"
                 magestore_view:layout_list="@+id/customer_list"
                 magestore_view:layout_panel="@layout/panel_customer_list"
                 magestore_view:layout_orientation="vertical"
-                magestore_view:layout_span_count="1"/>
+                magestore_view:layout_span_count="1"
+                magestore_view:layout_item="@layout/card_customer_list_content"
+                magestore_view:layout_item_content="@+id/content_customer_list_card_view" />
 
         </LinearLayout>
 

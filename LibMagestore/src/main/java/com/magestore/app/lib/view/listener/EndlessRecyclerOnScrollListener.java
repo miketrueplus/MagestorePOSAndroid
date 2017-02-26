@@ -1,4 +1,4 @@
-package com.magestore.app.lib.view;
+package com.magestore.app.lib.view.listener;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;

@@ -205,6 +205,8 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
         // xác định controller là customer list
         if (controller instanceof CustomerListController)
             mCustomerAddressListController.setCustomerService(((CustomerListController) controller).getCustomerService());
+
+
     }
 
     /**

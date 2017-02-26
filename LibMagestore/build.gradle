@@ -1,9 +1,8 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 19
-    buildToolsVersion "25.0.0"
-
+    compileSdkVersion 24
+    buildToolsVersion '25.0.0'
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 19
@@ -17,18 +16,24 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField  "String", "DEFAULT_REST_BASE_URL", '"demo-magento2.magestore.com"'
-            buildConfigField  "String", "DEFAULT_REST_USER_NAME", '""'
-            buildConfigField  "String", "DEFAULT_REST_PASSWORD", '""'
-            buildConfigField  "String", "DEFAULT_REST_BASE_PAGE", '"pos-app"'
+            buildConfigField "String", "DEFAULT_REST_BASE_URL", '"demo-magento2.magestore.com"'
+            buildConfigField "String", "DEFAULT_REST_USER_NAME", '""'
+            buildConfigField "String", "DEFAULT_REST_PASSWORD", '""'
+            buildConfigField "String", "DEFAULT_REST_BASE_PAGE", '"pos-app"'
         }
 
         debug {
-            buildConfigField  "String", "DEFAULT_REST_BASE_URL", '"demo-magento2.magestore.com"'
-            buildConfigField  "String", "DEFAULT_REST_USER_NAME", '""'
-            buildConfigField  "String", "DEFAULT_REST_PASSWORD", '""'
-            buildConfigField  "String", "DEFAULT_REST_BASE_PAGE", '"pos-app"'
+            buildConfigField "String", "DEFAULT_REST_BASE_URL", '"demo-magento2.magestore.com"'
+            buildConfigField "String", "DEFAULT_REST_USER_NAME", '""'
+            buildConfigField "String", "DEFAULT_REST_PASSWORD", '""'
+            buildConfigField "String", "DEFAULT_REST_BASE_PAGE", '"pos-app"'
         }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+    productFlavors {
     }
 }
 
@@ -42,6 +47,7 @@ dependencies {
     compile 'com.google.code.gson:gson:2.8.0'
     compile 'sax:sax:2.0.1'
     compile files('libs/odata-client-android-4.0.0-beta-01-RC01.jar')
+    compile 'io.realm:realm-android:0.87.4'
     compile 'com.android.support:recyclerview-v7:24.2.1'
     compile 'com.google.guava:guava:17.0'
 }

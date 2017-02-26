@@ -71,7 +71,7 @@ public class LoadProductImageTask extends AsyncTaskAbstractTask<Void, Product, V
 
             // Đặt bitmap cho imageview
             if (imgView != null && bmp != null) {
-//                imgView.setImageBitmap(bmp);
+                imgView.setImageBitmap(bmp);
 //                imgView.invalidate();
             }
         }

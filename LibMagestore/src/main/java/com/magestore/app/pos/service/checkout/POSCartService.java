@@ -146,9 +146,9 @@ public class POSCartService extends AbstractService implements CartService {
      * @param price
      */
     @Override
-    public boolean insert(Checkout checkout, Product product, int quantity, float price) throws InstantiationException, IllegalAccessException, ParseException, IOException {
+    public CartItem insert(Checkout checkout, Product product, int quantity, float price) throws InstantiationException, IllegalAccessException, ParseException, IOException {
         // nếu chưa có đơn hàng, bo qua
-        if (checkout == null) return false;
+        if (checkout == null) return null;
 
         // Khởi tạo danh sách order cartItem
         List<CartItem> listItems =  checkout.getCartItem();
@@ -188,7 +188,7 @@ public class POSCartService extends AbstractService implements CartService {
             totalPrice += (price * quantity);
             cartItem.setPrice(totalPrice);
         }
-        return true;
+        return cartItem;
     }
 
     private long getItemIdInCurrentTime() {
@@ -202,7 +202,7 @@ public class POSCartService extends AbstractService implements CartService {
      * @param quantity
      */
     @Override
-    public boolean insert(Checkout checkout, Product product, int quantity) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+    public CartItem insert(Checkout checkout, Product product, int quantity) throws IOException, InstantiationException, ParseException, IllegalAccessException {
         return insert(checkout, product, quantity, product.getPrice());
     }
 
@@ -247,13 +247,13 @@ public class POSCartService extends AbstractService implements CartService {
      * @param subQuantity
      */
     @Override
-    public boolean delete(Checkout checkout, Product product, int subQuantity) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+    public CartItem delete(Checkout checkout, Product product, int subQuantity) throws IOException, InstantiationException, ParseException, IllegalAccessException {
         // nếu chưa có đơn hàng, bỏ qua
-        if (checkout == null) return false;
+        if (checkout == null) return null;
 
         // Khởi tạo danh sách order cartItem
         List<CartItem> listItems =  checkout.getCartItem();
-        if (listItems == null) return false;
+        if (listItems == null) return null;
 
         // Kiểm tra xem đã có item với mặt hàng tương ứng chưa
         CartItem cartItem = null;
@@ -275,9 +275,8 @@ public class POSCartService extends AbstractService implements CartService {
             // Cập nhật số lượng mới
             cartItem.setQuantity(newQuantity);
             cartItem.setPrice(newQuantity * product.getPrice());
-            return true;
         }
-        return false;
+        return cartItem;
     }
 
     /**
@@ -285,13 +284,13 @@ public class POSCartService extends AbstractService implements CartService {
      * @param product
      */
     @Override
-    public boolean delete(Checkout checkout, Product product) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+    public CartItem delete(Checkout checkout, Product product) throws IOException, InstantiationException, ParseException, IllegalAccessException {
         // nếu chưa có đơn hàng, bỏ qua
-        if (checkout == null) return false;
+        if (checkout == null) return null;
 
         // Khởi tạo danh sách order cartItem
         List<CartItem> listItems =  checkout.getCartItem();
-        if (listItems == null) return false;
+        if (listItems == null) return null;
 
         // Kiểm tra xem đã có item với mặt hàng tương ứng chưa
         CartItem cartItem = null;
@@ -304,9 +303,8 @@ public class POSCartService extends AbstractService implements CartService {
             }
         }
 
-        // đã có item, giảm trừ số lượng xuống nhưng không thể ít hơn 1
-        if (cartItem != null)
-            return  delete(checkout, cartItem);
-        return false;
+        // xóa khỏi danh sách checkout
+        if (cartItem != null) delete(checkout, cartItem);
+        return cartItem;
     }
 }
