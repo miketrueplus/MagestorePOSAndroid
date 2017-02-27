@@ -534,6 +534,29 @@ public abstract class AbstractListPanel<TModel extends Model>
     }
 
     /**
+     * Cập nhật và thay thế model trong view
+     * @param oldModel
+     * @param newModel
+     * @return
+     */
+    public boolean updateModel(TModel oldModel, TModel newModel) {
+        if (mRecycleView == null) return false;
+        if (oldModel == null) return false;
+        if (mModelViewList == null || mModelViewList.size() <= 0) return false;
+
+        // tìm model tương ứng
+        boolean blnFoundModel = false;
+            for (int i = 0; i < mModelViewList.size(); i++) {
+                if (mModelViewList.get(i).getModel() == oldModel) {
+                    mModelViewList.get(i).setModel(newModel);
+                    mRecycleView.getAdapter().notifyItemChanged(i);
+                    blnFoundModel = true;
+                }
+            }
+        return blnFoundModel;
+    }
+
+    /**
      * Cập nhật model trong view
      * @param list
      * @return true nếu có model trong danh sách
@@ -555,6 +578,7 @@ public abstract class AbstractListPanel<TModel extends Model>
         }
         return blnFoundModel;
     }
+
     /**
      * Cập nhật nội dung ô chứa Model
      * Nếu chưa có thì insert
