@@ -3,6 +3,7 @@ package com.magestore.app.lib.resourcemodel.config;
 import com.magestore.app.lib.connection.ConnectionException;
 import com.magestore.app.lib.model.config.Config;
 import com.magestore.app.lib.model.config.ConfigCountry;
+import com.magestore.app.lib.model.config.ConfigPriceFormat;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.directory.Currency;
 import com.magestore.app.lib.parse.ParseException;
@@ -27,4 +28,6 @@ public interface ConfigDataAccess extends DataAccess {
     Customer getGuestCheckout() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     List<Currency> getCurrencies() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     Currency getDefaultCurrency() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
+    ConfigPriceFormat getPriceFormat() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
+    ConfigPriceFormat getBasePriceFomat() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
 }
