@@ -51,8 +51,8 @@ public class OrderShipmentItemsListPanel extends AbstractListPanel<CartItem> {
         setLayoutItem(R.layout.card_order_shipment_item_content);
 
         // Chuẩn bị list danh sách item
-        mRecycleView = (RecyclerView) findViewById(R.id.order_shipment_items_list);
-        mRecycleView.setLayoutManager(new GridLayoutManager(this.getContext(), 1));
+//        mRecycleView = (RecyclerView) findViewById(R.id.order_shipment_items_list);
+//        mRecycleView.setLayoutManager(new GridLayoutManager(this.getContext(), 1));
         mRecycleView.setNestedScrollingEnabled(false);
 
         listItem = new ArrayList<>();

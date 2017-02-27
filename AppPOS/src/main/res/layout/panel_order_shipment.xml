@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:magestore_view="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -97,7 +98,9 @@
                         android:id="@+id/order_shipment_items"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1.0" />
+                        android:layout_weight="1.0"
+                        magestore_view:layout_list="@+id/order_shipment_items_list"
+                        magestore_view:layout_panel="@layout/panel_order_shipment_item_list" />
                 </FrameLayout>
             </ScrollView>
         </LinearLayout>
