@@ -18,6 +18,6 @@ public interface Currency extends Model {
     void setCurrencySymbol(String strCurrencySymbol);
     String getIsDefault();
     void setIsDefault(String strIsDefault);
-    float getCurrencyRate();
-    void setCurrencyRate(float fCurrencyRate);
+    double getCurrencyRate();
+    void setCurrencyRate(double dCurrencyRate);
 }

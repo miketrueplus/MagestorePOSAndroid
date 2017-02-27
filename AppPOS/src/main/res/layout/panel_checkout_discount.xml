@@ -90,6 +90,25 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1">
 
+                <TextView
+                    android:id="@+id/amount_percent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:background="@color/sales_discount_bg_not_select"
+                    android:padding="5dp"
+                    android:text="@string/percent"
+                    android:textColor="@color/sales_discount_text_not_select" />
+
+                <TextView
+                    android:id="@+id/amount_currency"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/amount_percent"
+                    android:background="@color/sales_discount_bg_select"
+                    android:padding="5dp"
+                    android:textColor="@color/sales_discount_text_select" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -104,25 +123,8 @@
                         android:layout_height="wrap_content"
                         android:background="@color/white" />
                 </LinearLayout>
-
-                <TextView
-                    android:id="@+id/amount_currency"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@+id/amount_percent"
-                    android:background="@color/sales_discount_bg_select"
-                    android:padding="5dp"
-                    android:textColor="@color/sales_discount_text_select" />
-
-                <TextView
-                    android:id="@+id/amount_percent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:background="@color/sales_discount_bg_not_select"
-                    android:padding="5dp"
-                    android:textColor="@color/sales_discount_text_not_select" />
             </RelativeLayout>
+
         </LinearLayout>
     </LinearLayout>
 

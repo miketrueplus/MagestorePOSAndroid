@@ -12,6 +12,7 @@ import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.lib.model.checkout.CheckoutShipping;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.customer.CustomerAddress;
+import com.magestore.app.lib.model.directory.Currency;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.observe.State;
 import com.magestore.app.lib.service.checkout.CheckoutService;
@@ -59,6 +60,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     CheckoutAddPaymentPanel mCheckoutAddPaymentPanel;
     Context context;
     Customer guest_checkout;
+    Currency currency;
     CartOrderListPanel mCartOrderListPanel;
     CheckoutAddressListPanel mCheckoutAddressListPanel;
 
@@ -173,6 +175,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     public void doInputGuestCheckout() {
         try {
             guest_checkout = getConfigService().getGuestCheckout();
+            currency = getConfigService().getDefaultCurrency();
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
@@ -425,6 +428,10 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
     public Customer getGuestCheckout() {
         return guest_checkout;
+    }
+
+    public Currency getCurrency() {
+        return currency;
     }
 
     /**

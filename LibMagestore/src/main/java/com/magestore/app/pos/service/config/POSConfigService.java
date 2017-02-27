@@ -6,6 +6,7 @@ import com.magestore.app.lib.model.checkout.ShippingMethod;
 import com.magestore.app.lib.model.config.Config;
 import com.magestore.app.lib.model.config.ConfigCountry;
 import com.magestore.app.lib.model.customer.Customer;
+import com.magestore.app.lib.model.directory.Currency;
 import com.magestore.app.lib.resourcemodel.config.ConfigDataAccess;
 import com.magestore.app.lib.resourcemodel.DataAccessFactory;
 import com.magestore.app.lib.service.config.ConfigService;
@@ -70,6 +71,22 @@ public class POSConfigService extends AbstractService implements ConfigService {
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
         return configDataAccess.getGuestCheckout();
+    }
+
+    @Override
+    public List<Currency> getCurrencies() throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        // Nếu chưa khởi tạo customer gateway factory
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
+        return configDataAccess.getCurrencies();
+    }
+
+    @Override
+    public Currency getDefaultCurrency() throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        // Nếu chưa khởi tạo customer gateway factory
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
+        return configDataAccess.getDefaultCurrency();
     }
 
     public static String PAYMENT_METHOD_CC_DIRECT_POST = "CC_DIRECT";
