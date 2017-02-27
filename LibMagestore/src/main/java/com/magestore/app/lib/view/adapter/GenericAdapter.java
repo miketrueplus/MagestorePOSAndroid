@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 
 import com.magestore.app.lib.R;
 import com.magestore.app.lib.model.Model;
+import com.magestore.app.lib.view.item.ModelView;
 
 import java.util.ArrayList;
 import java.util.HashMap;

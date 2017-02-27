@@ -1,10 +1,10 @@
-package com.magestore.app.lib.view.adapter;
+package com.magestore.app.lib.view.item;
 
 import android.graphics.Bitmap;
 import android.view.View;
 
 import com.magestore.app.lib.model.Model;
-import com.magestore.app.lib.view.ViewState;
+import com.magestore.app.lib.view.item.ViewState;
 
 /**
  * Created by Mike on 2/20/2017.

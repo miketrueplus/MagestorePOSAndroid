@@ -1,4 +1,4 @@
-package com.magestore.app.lib.view.adapter;
+package com.magestore.app.lib.view.item;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -9,7 +9,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.magestore.app.lib.model.Model;
-import com.magestore.app.lib.view.ViewState;
 
 /**
  * View data nắm giữ và quản lý view cho các ô trong 1 list

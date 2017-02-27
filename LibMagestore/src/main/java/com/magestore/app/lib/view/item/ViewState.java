@@ -1,4 +1,4 @@
-package com.magestore.app.lib.view;
+package com.magestore.app.lib.view.item;
 
 /**
  * Created by Mike on 2/19/2017.

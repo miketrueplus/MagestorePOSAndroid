@@ -1,10 +1,8 @@
-package com.magestore.app.lib.view.adapter;
+package com.magestore.app.lib.view.item;
 
 import com.magestore.app.lib.model.Model;
 
 import java.util.HashMap;
-import java.util.List;
-import java.util.ListIterator;
 
 /**
  * Created by Mike on 2/21/2017.

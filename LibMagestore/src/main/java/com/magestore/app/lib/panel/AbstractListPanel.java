@@ -24,9 +24,8 @@ import com.magestore.app.lib.R;
 import com.magestore.app.lib.controller.ListController;
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.view.adapter.DefaultModelView;
-import com.magestore.app.lib.view.adapter.ModelView;
+import com.magestore.app.lib.view.item.ModelView;
 import com.magestore.app.lib.view.listener.EndlessRecyclerOnScrollListener;
-import com.magestore.app.lib.view.ListRecycleView;
 import com.magestore.app.lib.view.MagestoreView;
 
 import java.util.ArrayList;
@@ -53,7 +52,7 @@ public abstract class AbstractListPanel<TModel extends Model>
     protected ListController<TModel> mController;
 
     // Model chứa data danh sách
-    private List<TModel> mList;
+    protected List<TModel> mList;
     protected List<ModelView> mSaveModelViewList;
     protected List<ModelView> mModelViewList;
 
@@ -615,21 +614,20 @@ public abstract class AbstractListPanel<TModel extends Model>
             mModelViewList.add(modelView);
         }
 
+        // nếu danh sách không trống
+        if (mModelViewList != null && mModelViewList.size() > 0) {
+            hideWarning();
+
+            // đặt lại scroll listener cho lazy loading
+            if (mScrollListener!=null) mScrollListener.resetCurrentPage();
+        }
+        else {
+            // hiện thông báo
+            showWarning("No data to display");
+        }
+
         // update giao diện trên view
         mRecycleView.getAdapter().notifyDataSetChanged();
-
-//        if (mModelViewList != null && mModelViewList.size() > 0) {
-//            hideWarning();
-//
-//            // đặt lại scroll listener cho lazy loading
-//            if (mScrollListener!=null) mScrollListener.resetCurrentPage();
-//        }
-//        else {
-//            showWarning("No data to display");
-//        }
-
-        // notify view thay đổi
-//        notifyDataSetChanged();
     }
 
     /**
@@ -641,10 +639,18 @@ public abstract class AbstractListPanel<TModel extends Model>
         return haveLazyLoading;
     }
 
+    /**
+     * Kích thước 1 page
+     * @return
+     */
     public int getPageSize() {
         return mintPageSize;
     }
 
+    /**
+     * Số item max trong 1 page
+     * @return
+     */
     public int getItemMax() {
         return mintItemMax;
     }
@@ -663,11 +669,7 @@ public abstract class AbstractListPanel<TModel extends Model>
      */
     public void enableLazyLoading(boolean enable) {
         if (mScrollListener != null) mScrollListener.enableLazyLoading(enable);
-//        if (mRecycleView == null) return;
-//        if (enable)
-//            mRecycleView.setOnScrollListener(mScrollListener);
-//        else
-//            mRecycleView.setOnScrollListener(null);
+
     }
 
     /**
@@ -676,7 +678,7 @@ public abstract class AbstractListPanel<TModel extends Model>
      * @param view
      * @param item
      */
-    protected abstract void bindItem(View view, TModel item, int position);
+    protected void bindItem(View view, TModel item, int position) {}
 
     /**
      * Hold ayout view của iten, gán findview id vào các biến
@@ -720,6 +722,8 @@ public abstract class AbstractListPanel<TModel extends Model>
             return holdItemView(view);
         }
 
+
+
         /**
          * Map dataset sang view
          *
@@ -728,12 +732,6 @@ public abstract class AbstractListPanel<TModel extends Model>
          */
         @Override
         public void onBindViewHolder(final AbstractListPanel<TModel>.RecycleViewItemHolder holder, final int position) {
-            // kiểm tra bật progress nếu thêm mới 1 item hoặc lazy loading
-//            if (position >= mListModelView.size()) {
-//                holder.setItem(null, position);
-//                return;
-//            }
-
             // lấy item trên row
             final ModelView modelView = mModelViewList.get(position);
 
@@ -763,6 +761,7 @@ public abstract class AbstractListPanel<TModel extends Model>
         // view cho phần hiện content, (bỏ phần progress bar
         View mLayoutContentView;
 
+        // các item
         TextView mTxtItem1 = null;
         TextView mTxtItem2 = null;
         TextView mTxtItemMsg = null;
@@ -779,6 +778,10 @@ public abstract class AbstractListPanel<TModel extends Model>
             super(view);
         }
 
+        /**
+         * Load layout cho view
+         * @param view
+         */
         public void holdView(View view) {
             mLayoutMainView = view;
             mTxtItem1 = ((TextView) view.findViewById(mintLayoutModelViewText1 > 0 ? mintLayoutModelViewText1 : R.id.id_modelview_default_item_text1));
@@ -802,6 +805,11 @@ public abstract class AbstractListPanel<TModel extends Model>
             });
         }
 
+        /**
+         * Gán giá trị từ model từ lên view
+         * @param item
+         * @param position
+         */
         public void setItem(ModelView item, int position) {
             if (item == null) return;
             // xử lý hiển thị progress bar nếu có
@@ -832,22 +840,6 @@ public abstract class AbstractListPanel<TModel extends Model>
                     bindItem(mLayoutMainView, (TModel) item.getModel(), position);
                 return;
             }
-
-//                if (position >= mList.size()) {
-//                    showItemLoadingProgres(mView, true);
-//                    return;
-//                }
-//                else {
-//                    showItemLoadingProgres(mView, false);
-//                }
-//
-////                if (item == mModelLoadingProgress) {
-////                    showItemLoadingProgres(mView, true);
-////                    return;
-////
-////                }
-//                mItem = item;
-//                bindItem(mView, item, position);
         }
 
         /**
@@ -938,66 +930,43 @@ public abstract class AbstractListPanel<TModel extends Model>
     }
 
 //    /**
+//     * Notify khi item đầu tiên thay đổi
+//     */
+//    public void notifyDataSetInsertFirstItem() {
+//        mRecycleView.getAdapter().notifyItemRangeInserted(0, 1);
+//        mRecycleView.getAdapter().notifyItemChanged(0, 1);
+//    }
+//
+//    /**
 //     * Notify khi item được cho vào cuối danh sách
+//     *
 //     * @param list
 //     */
-//    public void notifyDataSetChangedLastItem(List<TModel> list) {
-//        int start = mRecycleView.getAdapter().getItemCount() - 1 - list.size();
-//        int range = mList.size() -  start;
-//        mRecycleView.getAdapter().notifyItemChanged(mRecycleView.getAdapter().getItemCount() - 1 - list.size());
+//    public void notifyDataSetInsertFirstItem(List<TModel> list) {
+//        int start = 0;
+//        int range = list.size();
 //        mRecycleView.getAdapter().notifyItemRangeInserted(start, range);
+//        mRecycleView.getAdapter().notifyItemChanged(start, range);
 //    }
-
-    /**
-     * Notify khi item được cho vào cuối danh sách
-     *
-     * @param list
-     */
-    public void notifyDataSetInsertLastItem(List<TModel> list) {
-        int start = mRecycleView.getAdapter().getItemCount() - 1 - list.size();
-//        int range = mList.size() -  start;
-        mRecycleView.getAdapter().notifyItemChanged(mRecycleView.getAdapter().getItemCount() - 1 - list.size());
-//        mRecycleView.getAdapter().notifyItemRangeInserted(start, range);
-    }
-
-    /**
-     * Notify khi item đầu tiên thay đổi
-     */
-    public void notifyDataSetInsertFirstItem() {
-        mRecycleView.getAdapter().notifyItemRangeInserted(0, 1);
-        mRecycleView.getAdapter().notifyItemChanged(0, 1);
-    }
-
-    /**
-     * Notify khi item được cho vào cuối danh sách
-     *
-     * @param list
-     */
-    public void notifyDataSetInsertFirstItem(List<TModel> list) {
-        int start = 0;
-        int range = list.size();
-        mRecycleView.getAdapter().notifyItemRangeInserted(start, range);
-        mRecycleView.getAdapter().notifyItemChanged(start, range);
-    }
-
-    /**
-     * Thay đổi giao diện khi xóa 1 item
-     *
-     * @param position
-     */
-    public void notifyDataSetRemoveItem(int position) {
-        mRecycleView.getAdapter().notifyItemRemoved(position);
-        mRecycleView.getAdapter().notifyItemRangeChanged(position, mRecycleView.getAdapter().getItemCount());
-    }
-
-    /**
-     * Thay đổi giao diện khi thay đổi 1 position
-     *
-     * @param position
-     */
-    public void notifyDataSetUpdateItem(int position) {
-        mRecycleView.getAdapter().notifyItemChanged(position);
-    }
+//
+//    /**
+//     * Thay đổi giao diện khi xóa 1 item
+//     *
+//     * @param position
+//     */
+//    public void notifyDataSetRemoveItem(int position) {
+//        mRecycleView.getAdapter().notifyItemRemoved(position);
+//        mRecycleView.getAdapter().notifyItemRangeChanged(position, mRecycleView.getAdapter().getItemCount());
+//    }
+//
+//    /**
+//     * Thay đổi giao diện khi thay đổi 1 position
+//     *
+//     * @param position
+//     */
+//    public void notifyDataSetUpdateItem(int position) {
+//        mRecycleView.getAdapter().notifyItemChanged(position);
+//    }
 
     /**
      * Hiển thị thông báo lỗi
@@ -1016,6 +985,10 @@ public abstract class AbstractListPanel<TModel extends Model>
         }
     }
 
+    /**
+     * Hiện thông báo lỗi cho exception
+     * @param exp
+     */
     @Override
     public void showErrorMsg(Exception exp) {
         exp.printStackTrace();
@@ -1034,18 +1007,22 @@ public abstract class AbstractListPanel<TModel extends Model>
     }
 
     /**
-     * Hiwwne thị quá trình show loading cho item
+     * Hiển thị quá trình show loading cho item
      *
      * @param v
      * @param show
      */
-    public void showItemLoadingProgres(View v, boolean show) {
-        if (mRecycleView == null) return;
-        if (mRecycleView instanceof ListRecycleView) {
-            ((ListRecycleView) mRecycleView).showProgress(v, show);
-        }
-    }
+//    public void showItemLoadingProgres(View v, boolean show) {
+//        if (mRecycleView == null) return;
+//        if (mRecycleView instanceof ListRecycleView) {
+//            ((ListRecycleView) mRecycleView).showProgress(v, show);
+//        }
+//    }
 
+    /**
+     * Hiển thị thông tin cảnh báo
+     * @param strMsg
+     */
     public void showWarning(String strMsg) {
         if (mTxtErrorMsg != null) {
             mTxtErrorMsg.setText(strMsg);
@@ -1053,6 +1030,9 @@ public abstract class AbstractListPanel<TModel extends Model>
         }
     }
 
+    /**
+     * Ẩn thông tin cảnh báo
+     */
     public void hideWarning() {
         if (mTxtErrorMsg != null)
             mTxtErrorMsg.setVisibility(GONE);

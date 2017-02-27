@@ -6,6 +6,9 @@
         <attr name="layout_item_progress" format="reference" />
         <attr name="layout_item_content" format="reference" />
         <attr name="layout_item_msg" format="reference" />
+        <attr name="id_item_text1" format="reference" />
+        <attr name="id_item_text2" format="reference" />
+        <attr name="id_item_image" format="reference" />
         <attr name="layout_list" format="reference" />
         <attr name="layout_progress" format="reference" />
         <attr name="layout_progress_top" format="reference" />

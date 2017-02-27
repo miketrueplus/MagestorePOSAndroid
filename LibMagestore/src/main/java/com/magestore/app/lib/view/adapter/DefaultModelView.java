@@ -5,6 +5,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.magestore.app.lib.R;
+import com.magestore.app.lib.view.item.GenericModelView;
 
 /**
  * Model view mặc định với 2 dòng text và 1 image
