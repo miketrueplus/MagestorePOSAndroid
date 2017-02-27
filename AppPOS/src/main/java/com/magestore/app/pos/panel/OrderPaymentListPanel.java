@@ -50,8 +50,8 @@ public class OrderPaymentListPanel extends AbstractListPanel<OrderWebposPayment>
         setLayoutItem(R.layout.card_order_payment_content);
 
         // Chuẩn bị list danh sách payment
-        mRecycleView = (RecyclerView) findViewById(R.id.order_payment_list);
-        mRecycleView.setLayoutManager(new GridLayoutManager(this.getContext(), 1));
+//        mRecycleView = (RecyclerView) findViewById(R.id.order_payment_list);
+//        mRecycleView.setLayoutManager(new GridLayoutManager(this.getContext(), 1));
         mRecycleView.setNestedScrollingEnabled(false);
     }
 

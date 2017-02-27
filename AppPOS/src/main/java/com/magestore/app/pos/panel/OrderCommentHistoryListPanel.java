@@ -47,8 +47,8 @@ public class OrderCommentHistoryListPanel extends AbstractListPanel<OrderStatus>
         setLayoutItem(R.layout.card_order_comment_history_content);
 
         // Chuẩn bị list danh sách comment
-        mRecycleView = (RecyclerView) findViewById(R.id.order_comment_history_list);
-        mRecycleView.setLayoutManager(new GridLayoutManager(this.getContext(), 1));
+//        mRecycleView = (RecyclerView) findViewById(R.id.order_comment_history_list);
+//        mRecycleView.setLayoutManager(new GridLayoutManager(this.getContext(), 1));
         mRecycleView.setNestedScrollingEnabled(false);
     }
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:magestore_view="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -186,6 +186,8 @@
                                     android:id="@+id/order_payment"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
+                                    magestore_view:layout_panel="@layout/panel_order_payment_list"
+                                    magestore_view:layout_list="@+id/order_payment_list"
                                     android:layout_weight="1.0" />
 
                             </FrameLayout>
@@ -325,6 +327,8 @@
                                 android:id="@+id/order_items"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
+                                magestore_view:layout_panel="@layout/panel_order_history_items_list"
+                                magestore_view:layout_list="@+id/order_items_list"
                                 android:layout_weight="1.0" />
                         </FrameLayout>
                     </LinearLayout>
@@ -368,6 +372,8 @@
                                 android:id="@+id/order_comment"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
+                                magestore_view:layout_panel="@layout/panel_order_comment_history_list"
+                                magestore_view:layout_list="@+id/order_comment_history_list"
                                 android:layout_weight="1.0" />
                         </FrameLayout>
                     </LinearLayout>
