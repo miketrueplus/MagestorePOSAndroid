@@ -41,8 +41,8 @@ public class RegisterShiftSaleListPanel extends AbstractListPanel<SaleSummary> {
         setLayoutItem(R.layout.card_register_shift_sale_content);
 
         // Chuẩn bị list danh sách payment
-        mRecycleView = (RecyclerView) findViewById(R.id.register_shift_sale_list);
-        mRecycleView.setLayoutManager(new GridLayoutManager(this.getContext(), 1));
+//        mRecycleView = (RecyclerView) findViewById(R.id.register_shift_sale_list);
+//        mRecycleView.setLayoutManager(new GridLayoutManager(this.getContext(), 1));
         mRecycleView.setNestedScrollingEnabled(false);
     }
 

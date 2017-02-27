@@ -45,8 +45,8 @@ public class RegisterShiftCashListPanel extends AbstractListPanel<CashTransactio
         setLayoutItem(R.layout.card_register_shift_cash_content);
 
         // Chuẩn bị list danh sách cash transaction
-        mRecycleView = (RecyclerView) findViewById(R.id.register_shift_cash_list);
-        mRecycleView.setLayoutManager(new GridLayoutManager(this.getContext(), 1));
+//        mRecycleView = (RecyclerView) findViewById(R.id.register_shift_cash_list);
+//        mRecycleView.setLayoutManager(new GridLayoutManager(this.getContext(), 1));
         mRecycleView.setNestedScrollingEnabled(false);
     }
 
