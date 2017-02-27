@@ -10,9 +10,11 @@ import com.magestore.app.lib.connection.Statement;
 import com.magestore.app.lib.connection.http.MagestoreFileCacheConnection;
 import com.magestore.app.lib.model.config.Config;
 import com.magestore.app.lib.model.config.ConfigCountry;
+import com.magestore.app.lib.model.config.ConfigPriceFormat;
 import com.magestore.app.lib.model.config.ConfigRegion;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.customer.CustomerAddress;
+import com.magestore.app.lib.model.directory.Currency;
 import com.magestore.app.lib.model.directory.Region;
 import com.magestore.app.lib.resourcemodel.config.ConfigDataAccess;
 import com.magestore.app.lib.resourcemodel.DataAccessException;
@@ -23,9 +25,11 @@ import com.magestore.app.pos.model.config.PosConfig;
 import com.magestore.app.lib.parse.ParseException;
 import com.magestore.app.pos.model.config.PosConfigCountry;
 import com.magestore.app.pos.model.config.PosConfigDefault;
+import com.magestore.app.pos.model.config.PosConfigPriceFormat;
 import com.magestore.app.pos.model.config.PosConfigRegion;
 import com.magestore.app.pos.model.customer.PosCustomer;
 import com.magestore.app.pos.model.customer.PosCustomerAddress;
+import com.magestore.app.pos.model.directory.PosCurrency;
 import com.magestore.app.pos.model.directory.PosRegion;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosConfigParseImplement;
 
@@ -238,5 +242,83 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         guest.setAddressList(listAddress);
 
         return guest;
+    }
+
+    @Override
+    public List<Currency> getCurrencies() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        if (mConfig == null) mConfig = new PosConfigDefault();
+
+        ArrayList<LinkedTreeMap> currencyList = (ArrayList) mConfig.getValue("currencies");
+        List<Currency> listCurrency = new ArrayList<>();
+
+        for (LinkedTreeMap item : currencyList) {
+            Currency currency = new PosCurrency();
+            String code = item.get("code").toString();
+            String currency_name = item.get("currency_name").toString();
+            String currency_symbol = item.get("currency_symbol").toString();
+            String is_default = item.get("is_default").toString();
+            float currency_rate = (float) item.get("currency_rate");
+            currency.setCode(code);
+            currency.setCurrenyName(currency_name);
+            currency.setCurrencySymbol(currency_symbol);
+            currency.setIsDefault(is_default);
+            currency.setCurrencyRate(currency_rate);
+            listCurrency.add(currency);
+        }
+
+        return listCurrency;
+    }
+
+    @Override
+    public Currency getDefaultCurrency() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        List<Currency> listCurrency = getCurrencies();
+        if (listCurrency != null && listCurrency.size() > 0) {
+            for (Currency currency : listCurrency) {
+                if (currency.getIsDefault().equals("1")) {
+                    return currency;
+                }
+            }
+            return listCurrency.get(0);
+        }
+        return null;
+    }
+
+    @Override
+    public ConfigPriceFormat getPriceFormat() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        if (mConfig == null) mConfig = new PosConfigDefault();
+
+        LinkedTreeMap priceFormat = (LinkedTreeMap) mConfig.getValue("priceFormat");
+
+        return getPriceFormat(priceFormat);
+    }
+
+    @Override
+    public ConfigPriceFormat getBasePriceFomat() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        if (mConfig == null) mConfig = new PosConfigDefault();
+
+        LinkedTreeMap priceFormat = (LinkedTreeMap) mConfig.getValue("basePriceFormat");
+
+        return getPriceFormat(priceFormat);
+    }
+
+    private ConfigPriceFormat getPriceFormat(LinkedTreeMap priceFormat){
+        String pattern = priceFormat.get("pattern").toString();
+        int precision = (int) priceFormat.get("precision");
+        int requiredPrecision = (int) priceFormat.get("requiredPrecision");
+        String decimalSymbol = priceFormat.get("decimalSymbol").toString();
+        String groupSymbol = priceFormat.get("groupSymbol").toString();
+        int groupLength = (int) priceFormat.get("groupLength");
+        int integerRequired = (int) priceFormat.get("integerRequired");
+
+        ConfigPriceFormat configPriceFormat = new PosConfigPriceFormat();
+        configPriceFormat.setPattern(pattern);
+        configPriceFormat.setPrecision(precision);
+        configPriceFormat.setRequirePrecision(requiredPrecision);
+        configPriceFormat.setDecimalSymbol(decimalSymbol);
+        configPriceFormat.setGroupSymbol(groupSymbol);
+        configPriceFormat.setGroupLength(groupLength);
+        configPriceFormat.setIntegerRequied(integerRequired);
+
+        return configPriceFormat;
     }
 }

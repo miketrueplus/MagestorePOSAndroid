@@ -11,16 +11,21 @@ import com.magestore.app.pos.model.PosAbstractModel;
 
 public class PosConfigPriceFormat extends PosAbstractModel implements ConfigPriceFormat {
     String pattern;
-    int precision = 2;
-    int requiredPrecision = 2;
-    char decimalSymbol = '$';
-    char groupSymbol = '.';
-    int groupLength = 3;
-    int integerRequired = 1;
+    int precision;
+    int requiredPrecision;
+    String decimalSymbol;
+    String groupSymbol;
+    int groupLength;
+    int integerRequired;
 
     @Override
     public String getPattern() {
         return pattern;
+    }
+
+    @Override
+    public void setPattern(String strPattern) {
+        pattern = strPattern;
     }
 
     @Override
@@ -29,18 +34,38 @@ public class PosConfigPriceFormat extends PosAbstractModel implements ConfigPric
     }
 
     @Override
+    public void setPrecision(int intPrecision) {
+        precision = intPrecision;
+    }
+
+    @Override
     public int getRequirePrecision() {
         return requiredPrecision;
     }
 
     @Override
-    public char getDecimalSymbol() {
+    public void setRequirePrecision(int intRequirePrecision) {
+        requiredPrecision = intRequirePrecision;
+    }
+
+    @Override
+    public String getDecimalSymbol() {
         return decimalSymbol;
     }
 
     @Override
-    public char getGroupSymbol() {
+    public void setDecimalSymbol(String strDecimalSymbol) {
+        decimalSymbol = strDecimalSymbol;
+    }
+
+    @Override
+    public String getGroupSymbol() {
         return groupSymbol;
+    }
+
+    @Override
+    public void setGroupSymbol(String strGroupSymbol) {
+        groupSymbol = strGroupSymbol;
     }
 
     @Override
@@ -49,7 +74,17 @@ public class PosConfigPriceFormat extends PosAbstractModel implements ConfigPric
     }
 
     @Override
+    public void setGroupLength(int intGroupLength) {
+        groupLength = intGroupLength;
+    }
+
+    @Override
     public int getIntegerRequired() {
         return integerRequired;
+    }
+
+    @Override
+    public void setIntegerRequied(int intIntegerRequied) {
+        intIntegerRequied = intIntegerRequied;
     }
 }
