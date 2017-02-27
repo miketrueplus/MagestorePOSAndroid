@@ -66,14 +66,12 @@ public class OrderRefundItemsListPanel extends AbstractListPanel<CartItem> {
         CardOrderRefundItemContentBinding binding = DataBindingUtil.bind(view);
         binding.setOrderItem(item);
 
-        CartItem i = mList.get(position);
-
         EditText edt_qty_to_refund = (EditText) view.findViewById(R.id.qty_to_refund);
         CheckBox cb_return_to_stock = (CheckBox) view.findViewById(R.id.return_to_stock);
 
-        actionQtyToRefund(i, edt_qty_to_refund);
-        i.setOrderItemId(i.getID());
-        actionReturnToStock(i, cb_return_to_stock);
+        actionQtyToRefund(item, edt_qty_to_refund);
+        item.setOrderItemId(item.getID());
+        actionReturnToStock(item, cb_return_to_stock);
     }
 
     private void actionQtyToRefund(final CartItem item, final EditText qty_to_refund) {
@@ -120,12 +118,15 @@ public class OrderRefundItemsListPanel extends AbstractListPanel<CartItem> {
     }
 
     public List<OrderItemParams> bind2List() {
-        for (CartItem item : mList) {
-            OrderItemParams param = ((OrderRefundItemsListController) mController).createOrderRefundItemParams();
-            param.setOrderItemId(item.getOrderItemId());
-            param.setQty(item.getQuantity());
-            param.setAdditionalData(item.getReturnToStock());
-            listItem.add(param);
+        List<CartItem> listCartItems = ((OrderRefundItemsListController) mController).getSelectedItems();
+        if (listCartItems != null && listCartItems.size() > 0) {
+            for (CartItem item : listCartItems) {
+                OrderItemParams param = ((OrderRefundItemsListController) mController).createOrderRefundItemParams();
+                param.setOrderItemId(item.getOrderItemId());
+                param.setQty(item.getQuantity());
+                param.setAdditionalData(item.getReturnToStock());
+                listItem.add(param);
+            }
         }
         return listItem;
     }

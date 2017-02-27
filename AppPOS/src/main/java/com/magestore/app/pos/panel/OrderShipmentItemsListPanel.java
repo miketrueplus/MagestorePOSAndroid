@@ -63,11 +63,9 @@ public class OrderShipmentItemsListPanel extends AbstractListPanel<CartItem> {
         CardOrderShipmentItemContentBinding mBinding = DataBindingUtil.bind(view);
         mBinding.setOrderItem(item);
 
-        CartItem i = mList.get(position);
-
         EditText qty_to_ship = (EditText) view.findViewById(R.id.qty_to_ship);
-        actionQtyToShip(i, qty_to_ship);
-        i.setOrderItemId(i.getID());
+        actionQtyToShip(item, qty_to_ship);
+        item.setOrderItemId(item.getID());
     }
 
     private void actionQtyToShip(final CartItem item, final EditText qty_to_ship) {
@@ -103,11 +101,14 @@ public class OrderShipmentItemsListPanel extends AbstractListPanel<CartItem> {
     }
 
     public List<OrderItemParams> bind2List() {
-        for (CartItem item : mList) {
-            OrderItemParams param = ((OrderShipmentItemsListController) mController).createOrderShipmentItemParams();
-            param.setOrderItemId(item.getOrderItemId());
-            param.setQty(item.getQuantity());
-            listItem.add(param);
+        List<CartItem> listCartItems = ((OrderShipmentItemsListController) mController).getSelectedItems();
+        if (listCartItems != null && listCartItems.size() > 0) {
+            for (CartItem item : listCartItems) {
+                OrderItemParams param = ((OrderShipmentItemsListController) mController).createOrderShipmentItemParams();
+                param.setOrderItemId(item.getOrderItemId());
+                param.setQty(item.getQuantity());
+                listItem.add(param);
+            }
         }
         return listItem;
     }

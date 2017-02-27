@@ -18,7 +18,7 @@ import com.magestore.app.pos.R;
  */
 
 public class CheckoutDiscountPanel extends AbstractDetailPanel<Checkout> {
-    TextView txt_sales_discount, txt_sales_promotion;
+    TextView txt_sales_discount, txt_sales_promotion, amount_currency, amount_percent;
     LinearLayout ll_sales_discount, ll_sales_promotion;
 
     public CheckoutDiscountPanel(Context context) {
@@ -44,6 +44,9 @@ public class CheckoutDiscountPanel extends AbstractDetailPanel<Checkout> {
         ll_sales_discount = (LinearLayout) view.findViewById(R.id.ll_sales_discount);
         ll_sales_promotion = (LinearLayout) view.findViewById(R.id.ll_sales_promotion);
 
+        amount_currency = (TextView) view.findViewById(R.id.amount_currency);
+        amount_percent = (TextView) view.findViewById(R.id.amount_percent);
+
         initValue();
     }
 
@@ -52,10 +55,8 @@ public class CheckoutDiscountPanel extends AbstractDetailPanel<Checkout> {
         txt_sales_discount.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                txt_sales_discount.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.sales_discount_bg_select));
-                txt_sales_discount.setTextColor(ContextCompat.getColor(getContext(), R.color.sales_discount_text_select));
-                txt_sales_promotion.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.sales_discount_bg_not_select));
-                txt_sales_promotion.setTextColor(ContextCompat.getColor(getContext(), R.color.sales_discount_text_not_select));
+                changeColor(true, txt_sales_discount);
+                changeColor(false, txt_sales_promotion);
                 ll_sales_discount.setVisibility(VISIBLE);
                 ll_sales_promotion.setVisibility(GONE);
             }
@@ -64,13 +65,37 @@ public class CheckoutDiscountPanel extends AbstractDetailPanel<Checkout> {
         txt_sales_promotion.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                txt_sales_promotion.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.sales_discount_bg_select));
-                txt_sales_promotion.setTextColor(ContextCompat.getColor(getContext(), R.color.sales_discount_text_select));
-                txt_sales_discount.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.sales_discount_bg_not_select));
-                txt_sales_discount.setTextColor(ContextCompat.getColor(getContext(), R.color.sales_discount_text_not_select));
+                changeColor(true, txt_sales_promotion);
+                changeColor(false, txt_sales_discount);
                 ll_sales_discount.setVisibility(GONE);
                 ll_sales_promotion.setVisibility(VISIBLE);
             }
         });
+
+        amount_currency.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changeColor(true, amount_currency);
+                changeColor(false, amount_percent);
+            }
+        });
+
+        amount_percent.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changeColor(true, amount_percent);
+                changeColor(false, amount_currency);
+            }
+        });
+    }
+
+    private void changeColor(boolean isSelect, TextView textView) {
+        if (isSelect) {
+            textView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.sales_discount_bg_select));
+            textView.setTextColor(ContextCompat.getColor(getContext(), R.color.sales_discount_text_select));
+        } else {
+            textView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.sales_discount_bg_not_select));
+            textView.setTextColor(ContextCompat.getColor(getContext(), R.color.sales_discount_text_not_select));
+        }
     }
 }
