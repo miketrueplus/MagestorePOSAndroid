@@ -38,7 +38,6 @@ import java.util.List;
  * Magestore
  * mike@trueplus.vn
  */
-
 public abstract class AbstractListPanel<TModel extends Model>
         extends FrameLayout
         implements MagestoreView<ListController<TModel>> {
@@ -54,10 +53,9 @@ public abstract class AbstractListPanel<TModel extends Model>
     protected ListController<TModel> mController;
 
     // Model chứa data danh sách
-    protected List<TModel> mList;
+    private List<TModel> mList;
     protected List<ModelView> mSaveModelViewList;
     protected List<ModelView> mModelViewList;
-
 
     // Các control nắm view
     protected RecyclerView mRecycleView;

@@ -239,18 +239,6 @@ public abstract class AbstractSimpleListView<TModel extends Model>
 //
 //            // map dữ liệu từ model sang item trong danh sách
             bindItem(v, item, position);
-//
-//            // Sự kiện click trên view
-//            v.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    // Thông báo sự kiện khi đã chọn 1 item trên danh sách
-//                    if (mController != null)
-//                        mController.bindItem(item);
-//                }
-//            });
-
-            // return view
             return v;
         }
     }
