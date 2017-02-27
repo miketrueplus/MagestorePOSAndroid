@@ -13,6 +13,7 @@ import android.widget.EditText;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.panel.AbstractListPanel;
 import com.magestore.app.pos.R;
+import com.magestore.app.pos.controller.OrderInvoiceItemsListController;
 import com.magestore.app.pos.databinding.CardOrderInvoiceItemContentBinding;
 
 import java.util.List;
@@ -57,11 +58,9 @@ public class OrderInvoiceItemsListPanel extends AbstractListPanel<CartItem> {
         CardOrderInvoiceItemContentBinding mBinding = DataBindingUtil.bind(view);
         mBinding.setOrderItem(item);
 
-        CartItem i = mList.get(position);
-
         EditText edt_qty_to_invoice = (EditText) view.findViewById(R.id.qty_to_invoice);
 
-        actionQtyToInvoice(i, edt_qty_to_invoice);
+        actionQtyToInvoice(item, edt_qty_to_invoice);
     }
 
     private void actionQtyToInvoice(final CartItem item, final EditText qty_to_invoice) {
@@ -97,6 +96,6 @@ public class OrderInvoiceItemsListPanel extends AbstractListPanel<CartItem> {
     }
 
     public List<CartItem> bind2List() {
-        return mList;
+        return ((OrderInvoiceItemsListController) mController).getSelectedItems();
     }
 }

@@ -50,13 +50,13 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_marginRight="5dp"
                 android:layout_weight="1"
                 android:text="@string/name" />
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
                 android:layout_weight="1"
                 android:background="@drawable/boder_linear_layout"
                 android:orientation="vertical"
@@ -81,24 +81,48 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_marginRight="5dp"
                 android:layout_weight="1"
                 android:text="@string/amount" />
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_weight="1"
-                android:background="@drawable/boder_linear_layout"
-                android:orientation="vertical"
-                android:padding="5dp">
+                android:layout_weight="1">
 
-                <com.magestore.app.view.FormatTextEdit
-                    android:id="@+id/discount_amount"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/white" />
-            </LinearLayout>
+                    android:layout_toLeftOf="@+id/amount_currency"
+                    android:background="@drawable/boder_linear_layout"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <com.magestore.app.view.FormatTextEdit
+                        android:id="@+id/discount_amount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/amount_currency"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/amount_percent"
+                    android:background="@color/sales_discount_bg_select"
+                    android:padding="5dp"
+                    android:textColor="@color/sales_discount_text_select" />
+
+                <TextView
+                    android:id="@+id/amount_percent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:background="@color/sales_discount_bg_not_select"
+                    android:padding="5dp"
+                    android:textColor="@color/sales_discount_text_not_select" />
+            </RelativeLayout>
         </LinearLayout>
     </LinearLayout>
 
@@ -119,13 +143,13 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_marginRight="5dp"
                 android:layout_weight="1"
                 android:text="@string/coupon_code" />
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
                 android:layout_weight="1"
                 android:background="@drawable/boder_linear_layout"
                 android:orientation="vertical"
@@ -150,13 +174,13 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_marginRight="5dp"
                 android:layout_weight="1"
                 android:text="@string/amount" />
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
                 android:layout_weight="1"
                 android:background="@drawable/boder_linear_layout"
                 android:orientation="vertical"
