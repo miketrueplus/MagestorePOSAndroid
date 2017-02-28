@@ -2,6 +2,7 @@ package com.magestore.app.lib.controller;
 
 import com.magestore.app.lib.context.MagestoreContext;
 import com.magestore.app.lib.model.Model;
+import com.magestore.app.lib.observe.GenericState;
 import com.magestore.app.lib.observe.State;
 import com.magestore.app.lib.observe.Subject;
 import com.magestore.app.lib.service.config.ConfigService;
@@ -113,26 +114,90 @@ public abstract class AbstractController<TModel extends Model, TView extends Mag
         mView.hideAllProgressBar();
     }
 
+    /**
+     * Đặt config service để sử dụng
+     * @param service
+     */
     @Override
     public void setConfigService(ConfigService service) {
         mConfigService = service;
     }
 
+    /**
+     * Trả lại config service
+     * @return
+     */
     @Override
     public ConfigService getConfigService() {
         return mConfigService;
     }
 
+    /**
+     * Gửi 1 state và thông báo cho các controller observe khác
+     * @param state
+     */
+    @Override
+    public void setObserveState(State state) {
+        state.setController(this);
+        if (getSubject() != null) getSubject().setState(state);
+    }
+
+    /**
+     * Khởi tạo observ
+     * @return
+     */
+    public Subject.Observe attachListenerObserve() {
+        if (getSubject() != null)
+            return getSubject().attach(this);
+        return null;
+    }
+
+    public void attachListenerObserve(Class<State> stateClass, String stateCode, Class<Controller> controllerStateClazz, Controller controllerState) {
+        if (getSubject() != null) getSubject().attach(this, null, stateClass, stateCode, controllerStateClazz, controllerState);
+    }
+
+    public void attachListenerObserve(String stateCode, Class controllerStateClazz) {
+        if (getSubject() != null) getSubject().attach(this, null, null, stateCode, controllerStateClazz, null);
+    }
+
+    public void attachListenerObserve(String stateCode, Controller controllerState) {
+        if (getSubject() != null) getSubject().attach(this, null, null, stateCode, null, controllerState);
+    }
+
+    public void attachListenerObserve(String methodName, Class<State> stateClass, String stateCode, Class<Controller> controllerStateClazz, Controller controllerState) {
+        if (getSubject() != null) getSubject().attach(this, methodName, stateClass, stateCode, controllerStateClazz, controllerState);
+    }
+
+    public void attachListenerObserve(String methodName, String stateCode, Class controllerStateClazz) {
+        if (getSubject() != null) getSubject().attach(this, methodName, null, stateCode, controllerStateClazz, null);
+    }
+
+    public void attachListenerObserve(String methodName, String stateCode, Controller controllerState) {
+        if (getSubject() != null) getSubject().attach(this, methodName, null, stateCode, null, controllerState);
+    }
+
+    /**
+     * Tiếp nhận state do controller observer khác thông báo
+     * @param state
+     */
     @Override
     public void notifyState(State state) {
 
     }
 
+    /**
+     * Gán subject thông báo cho các controller observer khác
+     * @param subject
+     */
     @Override
     public void setSubject(Subject subject) {
         mSubject = subject;
     }
 
+    /**
+     * Trả về subject để thông báo cho các observer khác
+     * @return
+     */
     @Override
     public Subject getSubject() {
         return mSubject;

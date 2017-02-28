@@ -12,6 +12,7 @@ import com.magestore.app.lib.model.Model;
 
 public class DeleteListTask<TModel extends Model>
         extends AbstractListTask<AbstractListController<TModel>, TModel, Void, Boolean> {
+    TModel[] models;
 
     /**
      * Khởi tạo với controller
@@ -24,7 +25,8 @@ public class DeleteListTask<TModel extends Model>
     @Override
     protected Boolean doInBackground(TModel... models) {
         try {
-            return mListController.onDeleteBackGround(models);
+            this.models = models;
+            return mListController.onDeleteBackGround(this.models);
         } catch (Exception exp) {
             mException = exp;
             cancel(true);
@@ -34,7 +36,7 @@ public class DeleteListTask<TModel extends Model>
 
     @Override
     protected void onPostExecute(Boolean aBoolean) {
-        mListController.onDeletePostExecute(aBoolean);
+        mListController.onDeletePostExecute(aBoolean, this.models);
 //        mListController.doShowProgress(false);
     }
 }

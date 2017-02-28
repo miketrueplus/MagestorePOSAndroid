@@ -2,6 +2,8 @@ package com.magestore.app.lib.observe;
 
 import com.magestore.app.lib.controller.Controller;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,14 +16,43 @@ import java.util.Map;
  */
 
 public class Subject {
-    class Observe {
-        Controller controller;
+    public class Observe {
+        Controller controllerObserve;
         String stateCode;
         Class stateClazz;
+        Class controllerStateClazz;
+        Controller controllerState;
+        String methodName;
+
+        public Observe setStateCode(String stateCode) {
+            this.stateCode = stateCode;
+            return this;
+        }
+
+        public Observe setStateClazz(Class stateClazz) {
+            this.stateClazz = stateClazz;
+            return this;
+        }
+
+        public Observe setControllerStateClazz(Class controllerStateClazz) {
+            this.controllerStateClazz = controllerStateClazz;
+            return this;
+        }
+
+        public Observe setControllerState(Controller controllerState) {
+            this.controllerState = controllerState;
+            return this;
+        }
+
+        public Observe setMethodName(String methodName) {
+            this.methodName = methodName;
+            return this;
+        }
     }
     private List<Observe> observerList = new ArrayList<Observe>();
-    private Map<String, Controller> stateCodeMap = new HashMap<String, Controller>();
-    private Map<State, Controller> stateMap = new HashMap<State, Controller>();
+//    private Map<String, Controller> stateCodeMap = new HashMap<String, Controller>();
+//    private Map<State, Controller> stateMap = new HashMap<State, Controller>();
+
     /**
      * Cập nhật trạng thái
      * @param state
@@ -31,15 +62,74 @@ public class Subject {
     }
 
     /**
-     * Attach observer vào cuối danh sách
+     * Thông báo cho các observs
+     * State đã được cập nhật
+     */
+    private void notifyAllObservers(State state) {
+        for (Observe observer : observerList) {
+            // điều kiện để nhận đuwọc thông báo là
+            // state code của observ đã đăng ký bằng với state code của State
+            // và stateClazz của observer
+            if (observer.stateCode != null && !observer.stateCode.equals(state.getStateCode())) continue;
+            if (observer.stateClazz != null && !observer.stateClazz.isInstance(state)) continue;
+            if (observer.controllerStateClazz != null && !observer.controllerStateClazz.isInstance(state.getController().getClass())) continue;
+            if (observer.controllerState != null && !(observer.controllerState == state.getController())) continue;
+            if (observer.methodName == null) observer.controllerObserve.notifyState(state);
+            else {
+                try {
+                    Method method = observer.controllerObserve.getClass().getMethod(observer.methodName, State.class);
+                    method.invoke(observer.controllerObserve, state);
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+    /**
+     * Attach observer vào cuối danh sách đăng ký nhật thông báo
+     * Khi cập nhật state
+     */
+    public void attach(Controller controllerObserve, String methodName, Class<State> stateClazz, String stateCode, Class<Controller> controllerClazz, Controller controllerState) {
+        Observe observer = new Observe();
+        observer.controllerObserve = controllerObserve;
+        observer.stateCode = stateCode;
+        observer.stateClazz = stateClazz;
+        observer.controllerStateClazz = controllerClazz;
+        observer.controllerState = controllerState;
+        observer.methodName = methodName;
+        observerList.add(observer);
+    }
+
+    public Observe attach(Controller controllerObserve) {
+        Observe observer = new Observe();
+        observer.controllerObserve = controllerObserve;
+        observerList.add(observer);
+        return observer;
+    }
+
+    /**
+     * Gỡ, detach observe
      *
      */
-    public void attach(Class<State> StateClazz, String stateCode, Controller controller) {
-        Observe observer = new Observe();
-        observer.controller = controller;
-        observer.stateCode = stateCode;
-        observer.stateClazz = StateClazz;
-        observerList.add(observer);
+    public void detach(Class<State> stateClazz, String stateCode, Controller controller) {
+        for (Observe observer : observerList) {
+            if (controller != observer.controllerObserve) continue;
+            if (observer.stateCode != null && observer.stateCode.equals(stateCode)) continue;
+            if (observer.stateClazz != null && observer.stateClazz.isInstance(stateClazz)) continue;
+
+            observerList.remove(observer);
+        }
+    }
+
+    /**
+     * Gỡ, clear tất cả observ
+     */
+    public void release() {
+        observerList.clear();
     }
 
 //    /**
@@ -83,35 +173,4 @@ public class Subject {
 //        if (index < 0 || index >= observerList.size()) return;
 //        observerList.add(index + 1, observer);
 //    }
-
-    /**
-     * Gỡ, detach observe
-     *
-     */
-    public void detach(Class<State> stateClazz, String stateCode, Controller controller) {
-        for (Observe observer : observerList) {
-            if (controller != observer.controller) continue;
-            if (observer.stateCode != null && observer.stateCode.equals(stateCode)) continue;
-            if (observer.stateClazz != null && observer.stateClazz.isInstance(stateClazz)) continue;
-            observerList.remove(observer);
-        }
-    }
-
-    /**
-     * Gỡ, clear tất cả observ
-     */
-    public void release() {
-        observerList.clear();
-    }
-
-    /**
-     * Thông báo cho các observs
-     */
-    public void notifyAllObservers(State state) {
-        for (Observe observer : observerList) {
-            if (observer.stateCode != null && !observer.stateCode.equals(state.getStateCode())) continue;
-            if (observer.stateClazz != null && !observer.stateClazz.isInstance(state)) continue;
-            observer.controller.notifyState(state);
-        }
-    }
 }

@@ -85,7 +85,7 @@ public interface ListController<TModel extends Model>
      * Thực thi sau khi xóa item thành công trên api
      * @param success
      */
-    void onDeletePostExecute(Boolean success);
+    void onDeletePostExecute(Boolean success, TModel... models);
 
 
     /**

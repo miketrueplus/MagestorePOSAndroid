@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.magestore.app.lib.model.customer.Complain;
 import com.magestore.app.lib.view.AbstractSimpleListView;
+import com.magestore.app.lib.view.SimpleModelListView;
 import com.magestore.app.pos.databinding.PanelCustomerComplainListBinding;
 
 /**
@@ -15,7 +16,7 @@ import com.magestore.app.pos.databinding.PanelCustomerComplainListBinding;
  * mike@trueplus.vn
  */
 
-public class CustomerComplainListView extends AbstractSimpleListView<Complain> {
+public class CustomerComplainListView extends SimpleModelListView {
     public CustomerComplainListView(Context context) {
         super(context);
     }
@@ -28,9 +29,9 @@ public class CustomerComplainListView extends AbstractSimpleListView<Complain> {
         super(context, attrs, defStyle);
     }
 
-    @Override
-    protected void bindItem(View view, Complain item, int position) {
-        PanelCustomerComplainListBinding binding = DataBindingUtil.bind(view);
-        binding.setComplain(item);
-    }
+//    @Override
+//    protected void bindItem(View view, Complain item, int position) {
+//        PanelCustomerComplainListBinding binding = DataBindingUtil.bind(view);
+//        binding.setComplain(item);
+//    }
 }

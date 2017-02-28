@@ -83,14 +83,14 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         return super.onRetrieveBackground(page, pageSize);
     }
 
-    /**
-     * Tương ứng khi 1 product được chọn trên product list
-     *
-     * @param product
-     */
-    public void bindProduct(Product product) {
-        if (mCartItemListController != null) mCartItemListController.bindProduct(product);
-    }
+//    /**
+//     * Tương ứng khi 1 product được chọn trên product list
+//     *
+//     * @param product
+//     */
+//    public void bindProduct(Product product) {
+//        if (mCartItemListController != null) mCartItemListController.bindProduct(product);
+//    }
 
     public void bindCustomer(Customer customer) {
         if (customer != null) {

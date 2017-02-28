@@ -6,6 +6,7 @@ import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
+import com.magestore.app.lib.observe.State;
 import com.magestore.app.lib.service.ChildListService;
 import com.magestore.app.lib.service.checkout.CartService;
 import com.magestore.app.pos.panel.CartItemListPanel;
@@ -146,5 +147,17 @@ public class CartItemListController extends AbstractChildListController<Checkout
 
     public List<CartItem> getListCartItem(){
         return mList;
+    }
+
+    @Override
+    public void notifyState(State state) {
+//        super.notifyState(state);
+//        if (ProductListController.STATE_ON_CHOOSE_PRODUCT.equals(state.getStateCode())) {
+//            bindProduct(((ProductListController)state.getController()).getSelectedItem());
+//        }
+    }
+
+    public void bindProduct(State state) {
+        bindProduct(((ProductListController)state.getController()).getSelectedItem());
     }
 }

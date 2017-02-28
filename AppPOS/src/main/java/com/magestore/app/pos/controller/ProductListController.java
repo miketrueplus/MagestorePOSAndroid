@@ -8,6 +8,7 @@ import com.magestore.app.lib.controller.AbstractListController;
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.catalog.Category;
 import com.magestore.app.lib.model.catalog.Product;
+import com.magestore.app.lib.observe.GenericState;
 import com.magestore.app.lib.service.catalog.ProductService;
 import com.magestore.app.pos.task.LoadProductImageTask;
 
@@ -24,6 +25,7 @@ import java.util.Map;
  */
 
 public class ProductListController extends AbstractListController<Product> {
+
     static final int ACTION_CODE_RETRIEVE_BY_CATEGORY_ID = 0;
     private Category mCategory = null;
 
@@ -145,7 +147,9 @@ public class ProductListController extends AbstractListController<Product> {
     @Override
     public void bindItem(Product item) {
         super.bindItem(item);
-        if (mCheckoutListController != null) mCheckoutListController.bindProduct(item);
+        GenericState<ProductListController> state = new GenericState<ProductListController>(this, GenericState.DEFAULT_STATE_CODE_ON_SELECT_ITEM);
+        getSubject().setState(state);
+//        if (mCheckoutListController != null) mCheckoutListController.bindProduct(item);
     }
 
     public void selectCategoryChild(Category category) {

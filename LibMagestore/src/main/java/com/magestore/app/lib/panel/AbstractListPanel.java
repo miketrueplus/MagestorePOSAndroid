@@ -14,6 +14,8 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -37,7 +39,7 @@ import java.util.List;
  * Magestore
  * mike@trueplus.vn
  */
-public abstract class AbstractListPanel<TModel extends Model>
+public class AbstractListPanel<TModel extends Model>
         extends FrameLayout
         implements MagestoreView<ListController<TModel>> {
 
@@ -76,7 +78,7 @@ public abstract class AbstractListPanel<TModel extends Model>
     // tham chiếu layout của progress
     private ProgressBar mProgressBar;
     private ProgressBar mProgressBarTop;
-    private ProgressBar mProgressBarBottom;
+    private View mProgressBarBottom;
 
     // tham chiếu layout thông báo lỗi
     private TextView mTxtErrorMsg;
@@ -232,7 +234,7 @@ public abstract class AbstractListPanel<TModel extends Model>
         // tham chiếu layout của progressbar
         mProgressBar = (ProgressBar) findViewById(mintIdProgresBar);
         mProgressBarTop = (ProgressBar) findViewById(mintIdProgresBarTop);
-        mProgressBarBottom = (ProgressBar) findViewById(mintIdProgresBarBottom);
+        mProgressBarBottom = (View) findViewById(mintIdProgresBarBottom);
 
 
         // tham chiếu layout của thông báo lỗi
@@ -314,6 +316,12 @@ public abstract class AbstractListPanel<TModel extends Model>
     public void showProgressBottom(final boolean show) {
         if (mProgressBarBottom == null) return;
         mProgressBarBottom.setVisibility(show ? View.VISIBLE : View.GONE);
+        if (mProgressBarBottom instanceof com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar) {
+            ScaleAnimation animation = new ScaleAnimation(0, 1, 0, 1, Animation.RELATIVE_TO_SELF, (float)0.5, Animation.RELATIVE_TO_SELF, (float)0.5);
+            animation.setDuration(500);
+            animation.setFillAfter(true);
+            ((com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar) mProgressBarBottom).startAnimation(animation);
+        }
     }
 
     /**
@@ -928,45 +936,6 @@ public abstract class AbstractListPanel<TModel extends Model>
         if (adapter != null)
             adapter.notifyDataSetChanged();
     }
-
-//    /**
-//     * Notify khi item đầu tiên thay đổi
-//     */
-//    public void notifyDataSetInsertFirstItem() {
-//        mRecycleView.getAdapter().notifyItemRangeInserted(0, 1);
-//        mRecycleView.getAdapter().notifyItemChanged(0, 1);
-//    }
-//
-//    /**
-//     * Notify khi item được cho vào cuối danh sách
-//     *
-//     * @param list
-//     */
-//    public void notifyDataSetInsertFirstItem(List<TModel> list) {
-//        int start = 0;
-//        int range = list.size();
-//        mRecycleView.getAdapter().notifyItemRangeInserted(start, range);
-//        mRecycleView.getAdapter().notifyItemChanged(start, range);
-//    }
-//
-//    /**
-//     * Thay đổi giao diện khi xóa 1 item
-//     *
-//     * @param position
-//     */
-//    public void notifyDataSetRemoveItem(int position) {
-//        mRecycleView.getAdapter().notifyItemRemoved(position);
-//        mRecycleView.getAdapter().notifyItemRangeChanged(position, mRecycleView.getAdapter().getItemCount());
-//    }
-//
-//    /**
-//     * Thay đổi giao diện khi thay đổi 1 position
-//     *
-//     * @param position
-//     */
-//    public void notifyDataSetUpdateItem(int position) {
-//        mRecycleView.getAdapter().notifyItemChanged(position);
-//    }
 
     /**
      * Hiển thị thông báo lỗi

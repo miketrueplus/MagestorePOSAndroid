@@ -84,6 +84,9 @@ public class ProductListPanel extends AbstractListPanel<Product> {
         return viewHolder;
     }
 
+    /**
+     * Hold layout và nội dung các item trong view
+     */
     public class RecycleViewProductHolder extends RecycleViewItemHolder {
         CardProductListContentBinding binding;
         TextView txtProductName;
@@ -95,6 +98,10 @@ public class ProductListPanel extends AbstractListPanel<Product> {
             super(view);
         }
 
+        /**
+         * Hold layout item trong view
+         * @param view
+         */
         @Override
         public void holdView(View view) {
             super.holdView(view);
@@ -106,16 +113,24 @@ public class ProductListPanel extends AbstractListPanel<Product> {
             imgBitmap = (ImageView) view.findViewById(R.id.product_image);
         }
 
+        /**
+         * Đặt nội dung item trong view
+         * @param item
+         * @param position
+         */
         public void setItem(ModelView item, int position) {
             super.setItem(item, position);
+
+            // lấy product
             Product product = (Product) item.getModel();
             if (product == null) return;
 
-            // gán giá trị vào
+            // gán giá trị của product vào
             txtProductName.setText(product.getName());
             txtPrice.setText(ConfigUtil.formatPrice(product.getPrice()));
             txtSKU.setText(product.getSKU());
 
+            // gán ảnh vào
             Bitmap bmp = product.getBitmap();
             if (bmp != null && !bmp.isRecycled() && imgBitmap != null) imgBitmap.setImageBitmap(bmp);
 

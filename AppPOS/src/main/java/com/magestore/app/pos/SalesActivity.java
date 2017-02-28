@@ -16,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
 import com.magestore.app.lib.context.MagestoreContext;
+import com.magestore.app.lib.observe.GenericState;
 import com.magestore.app.lib.observe.Subject;
 import com.magestore.app.lib.service.ServiceFactory;
 import com.magestore.app.lib.service.catalog.CategoryService;
@@ -201,10 +202,6 @@ public class SalesActivity extends AbstractActivity
         mCheckoutListController.setCartOrderListPanel(mCartOrderListPanel);
         mCheckoutListController.setCheckoutAddressListPanel(mCheckoutAddressListPanel);
         mCheckoutListController.setConfigService(configService);
-        subject.attach(null, CheckoutListController.STATE_ON_ADD_PAYMENT, mCheckoutListController);
-        subject.attach(null, CheckoutListController.STATE_ON_MARK_AS_PARTIAL, mCheckoutListController);
-        subject.attach(null, CheckoutListController.STATE_ON_PLACE_ORDER, mCheckoutListController);
-
 
         // controller quản lý danh sách khách hàng
         mProductListController = new ProductListController();
@@ -214,6 +211,7 @@ public class SalesActivity extends AbstractActivity
         mProductListController.setListPanel(mProductListPanel);
         mProductListController.setCheckoutListController(mCheckoutListController);
         mProductListController.setCategoryListController(mCategoryListController);
+        mProductListController.setSubject(subject);
         mCheckoutListController.setProductListController(mProductListController);
         mCategoryListController.setProductListController(mProductListController);
 
@@ -225,6 +223,7 @@ public class SalesActivity extends AbstractActivity
         mCheckoutCartItemListController.setChildListService(cartService);
         mCheckoutCartItemListController.setParentController(mCheckoutListController);
         mCheckoutListController.setCartItemListController(mCheckoutCartItemListController);
+        mCheckoutCartItemListController.setSubject(subject);
 
         mCheckoutAddPaymentListController = new CheckoutAddPaymentListController();
         mCheckoutAddPaymentListController.setMagestoreContext(magestoreContext);
@@ -255,6 +254,13 @@ public class SalesActivity extends AbstractActivity
         mCheckoutListPanel.initModel();
         mCartItemListPanel.initModel();
         mCategoryListPanel.initModel();
+
+        // map các observ
+        mCheckoutCartItemListController
+                .attachListenerObserve()
+                .setMethodName("bindProduct")
+                .setStateCode(GenericState.DEFAULT_STATE_CODE_ON_SELECT_ITEM)
+                .setControllerState(mProductListController);
     }
 
     @Override

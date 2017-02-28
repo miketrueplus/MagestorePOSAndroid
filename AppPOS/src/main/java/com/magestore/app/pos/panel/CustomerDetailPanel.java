@@ -13,6 +13,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.magestore.app.lib.controller.Controller;
+import com.magestore.app.lib.model.Model;
+import com.magestore.app.lib.model.customer.Complain;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
 import com.magestore.app.lib.view.SimpleSpinner;
@@ -24,6 +26,7 @@ import com.magestore.app.pos.util.DialogUtil;
 import com.magestore.app.pos.view.CustomerComplainListView;
 import com.magestore.app.pos.view.MagestoreDialog;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -285,12 +288,12 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
         mCustomerAddressListController.bindCustomer(item);
 
         // chỉ định complain list cho hiển thị
-        if (item.getComplain() != null) mCustomerComplainListView.bindList(item.getComplain());
+        if (item.getComplain() != null) mCustomerComplainListView.bind((List<Model>)(List<?>) item.getComplain());
     }
 
     public void bindComplain(Customer item) {
         // chỉ định complain list cho hiển thị
-        if (item.getComplain() != null) mCustomerComplainListView.bindList(item.getComplain());
+        if (item.getComplain() != null) mCustomerComplainListView.bind((List<Model>)(List<?>) item.getComplain());
     }
 
     /**
@@ -300,7 +303,7 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
     public void notifyDataSetChanged() {
         super.notifyDataSetChanged();
         mCustomerAddressListPanel.notifyDataSetChanged();
-        mCustomerComplainListView.notifyDataSetChanged();
+//        mCustomerComplainListView.not .notifyDataSetChanged();
     }
 
     @Override

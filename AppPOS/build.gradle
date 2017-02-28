@@ -45,4 +45,5 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:24.2.1'
     compile 'com.android.support:cardview-v7:24.2.1'
     compile 'com.daimajia.swipelayout:library:1.2.0@aar'
+    compile('com.lsjwzh:materialloadingprogressbar:0.5.8-RELEASE')
 }

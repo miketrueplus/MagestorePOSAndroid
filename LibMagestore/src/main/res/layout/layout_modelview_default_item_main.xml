@@ -6,4 +6,5 @@
 
     <include layout="@layout/layout_modelview_default_item_progressbar_message" />
     <include layout="@layout/layout_modelview_default_item_content" />
+
 </LinearLayout>

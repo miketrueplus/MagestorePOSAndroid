@@ -23,6 +23,16 @@ public class PosComplain extends PosAbstractModel implements Complain {
     String customer_email;
 
     @Override
+    public String getDisplayContent() {
+        return getContent();
+    }
+
+    @Override
+    public String getSubDisplayContent() {
+        return getCreateAt();
+    }
+
+    @Override
     public String getCustomerID() {
         return customer_id;
     }
@@ -39,7 +49,7 @@ public class PosComplain extends PosAbstractModel implements Complain {
 
     @Override
     public String getCreateAt() {
-        return create_at;
+        return "15:00 27/02/2017";
     }
 
     @Override

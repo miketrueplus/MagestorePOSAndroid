@@ -15,8 +15,15 @@ import java.util.Map;
  */
 
 public interface State<TController extends Controller> {
-    public TController getController();
-    public String getStateCode();
-    void setController(TController controller);
+    // get state code
     void setStateCode(String code);
+    public String getStateCode();
+
+    // get controller
+    void setController(TController controller);
+    public TController getController();
+
+    // get tag
+    Object getTag(String key);
+    void setTag(String key, Object value);
 }

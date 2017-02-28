@@ -29,5 +29,8 @@ public interface Controller<TView extends MagestoreView> {
     void setConfigService(ConfigService service);
 
     ConfigService getConfigService();
+
+    void setObserveState(State state);
+
     void notifyState(State state);
 }
