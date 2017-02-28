@@ -1,20 +1,16 @@
 package com.magestore.app.pos.controller;
 
 import com.magestore.app.lib.controller.AbstractChildListController;
-import com.magestore.app.lib.controller.AbstractListController;
-import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
-import com.magestore.app.lib.observe.State;
+import com.magestore.app.lib.observ.State;
 import com.magestore.app.lib.service.ChildListService;
 import com.magestore.app.lib.service.checkout.CartService;
-import com.magestore.app.pos.panel.CartItemListPanel;
 
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Mike on 1/11/2017.

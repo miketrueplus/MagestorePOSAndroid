@@ -1,11 +1,6 @@
-package com.magestore.app.lib.observe;
-
-import android.view.View;
+package com.magestore.app.lib.observ;
 
 import com.magestore.app.lib.controller.Controller;
-import com.magestore.app.lib.view.MagestoreView;
-
-import java.util.Map;
 
 /**
  * Các state để truyền giữa các controller

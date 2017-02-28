@@ -16,8 +16,8 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
 import com.magestore.app.lib.context.MagestoreContext;
-import com.magestore.app.lib.observe.GenericState;
-import com.magestore.app.lib.observe.Subject;
+import com.magestore.app.lib.observ.GenericState;
+import com.magestore.app.lib.observ.SubjectObserv;
 import com.magestore.app.lib.service.ServiceFactory;
 import com.magestore.app.lib.service.catalog.CategoryService;
 import com.magestore.app.lib.service.catalog.ProductService;
@@ -37,14 +37,11 @@ import com.magestore.app.pos.panel.CheckoutAddPaymentPanel;
 import com.magestore.app.pos.panel.CheckoutAddressListPanel;
 import com.magestore.app.pos.panel.CheckoutDetailPanel;
 import com.magestore.app.pos.panel.CheckoutListPanel;
-import com.magestore.app.pos.panel.CheckoutPaymentDetailPanel;
 import com.magestore.app.pos.panel.CheckoutPaymentListPanel;
-import com.magestore.app.pos.panel.CheckoutShippingDetailPanel;
 import com.magestore.app.pos.panel.CheckoutShippingListPanel;
 import com.magestore.app.pos.panel.PaymentMethodListPanel;
 import com.magestore.app.pos.panel.ProductListPanel;
 import com.magestore.app.pos.ui.AbstractActivity;
-import com.magestore.app.util.DataUtil;
 import com.magestore.app.view.ui.PosUI;
 
 /**
@@ -156,8 +153,8 @@ public class SalesActivity extends AbstractActivity
         magestoreContext = new MagestoreContext();
         magestoreContext.setActivity(this);
 
-        // subject
-        Subject subject = new Subject();
+        // subjectObserv
+        SubjectObserv subjectObserv = new SubjectObserv();
 
         // chuẩn bị service
         ServiceFactory factory;
@@ -185,11 +182,11 @@ public class SalesActivity extends AbstractActivity
         mCategoryListController.setMagestoreContext(magestoreContext);
         mCategoryListController.setListPanel(mCategoryListPanel);
         mCategoryListController.setCategoryService(categoryService);
-        mCategoryListController.setSubject(subject);
+        mCategoryListController.setSubject(subjectObserv);
 
         // controller quản lý check out
         mCheckoutListController = new CheckoutListController();
-        mCheckoutListController.setSubject(subject);
+        mCheckoutListController.setSubject(subjectObserv);
         mCheckoutListController.setContext(getContext());
         mCheckoutListController.setMagestoreContext(magestoreContext);
         mCheckoutListController.setListService(checkoutService);
@@ -205,25 +202,25 @@ public class SalesActivity extends AbstractActivity
 
         // controller quản lý danh sách khách hàng
         mProductListController = new ProductListController();
-        mProductListController.setSubject(subject);
+        mProductListController.setSubject(subjectObserv);
         mProductListController.setMagestoreContext(magestoreContext);
         mProductListController.setProdcutService(productService);
         mProductListController.setListPanel(mProductListPanel);
         mProductListController.setCheckoutListController(mCheckoutListController);
         mProductListController.setCategoryListController(mCategoryListController);
-        mProductListController.setSubject(subject);
+        mProductListController.setSubject(subjectObserv);
         mCheckoutListController.setProductListController(mProductListController);
         mCategoryListController.setProductListController(mProductListController);
 
         // controller quản lý đơn hàng
         mCheckoutCartItemListController = new CartItemListController();
-        mCheckoutCartItemListController.setSubject(subject);
+        mCheckoutCartItemListController.setSubject(subjectObserv);
         mCheckoutCartItemListController.setMagestoreContext(magestoreContext);
         mCheckoutCartItemListController.setListPanel(mCartItemListPanel);
         mCheckoutCartItemListController.setChildListService(cartService);
         mCheckoutCartItemListController.setParentController(mCheckoutListController);
         mCheckoutListController.setCartItemListController(mCheckoutCartItemListController);
-        mCheckoutCartItemListController.setSubject(subject);
+        mCheckoutCartItemListController.setSubject(subjectObserv);
 
         mCheckoutAddPaymentListController = new CheckoutAddPaymentListController();
         mCheckoutAddPaymentListController.setMagestoreContext(magestoreContext);

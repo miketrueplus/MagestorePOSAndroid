@@ -1,4 +1,4 @@
-package com.magestore.app.lib.observe;
+package com.magestore.app.lib.observ;
 
 import com.magestore.app.lib.controller.Controller;
 

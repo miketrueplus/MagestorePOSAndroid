@@ -2,17 +2,13 @@ package com.magestore.app.pos.controller;
 
 import android.os.AsyncTask;
 import android.os.Build;
-import android.util.Log;
 
 import com.magestore.app.lib.controller.AbstractListController;
-import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.catalog.Category;
 import com.magestore.app.lib.model.catalog.Product;
-import com.magestore.app.lib.observe.GenericState;
 import com.magestore.app.lib.service.catalog.ProductService;
 import com.magestore.app.pos.task.LoadProductImageTask;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

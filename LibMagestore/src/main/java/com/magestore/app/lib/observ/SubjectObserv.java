@@ -1,13 +1,11 @@
-package com.magestore.app.lib.observe;
+package com.magestore.app.lib.observ;
 
 import com.magestore.app.lib.controller.Controller;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Mike on 2/11/2017.
@@ -15,7 +13,7 @@ import java.util.Map;
  * mike@trueplus.vn
  */
 
-public class Subject {
+public class SubjectObserv {
     public class Observe {
         Controller controllerObserve;
         String stateCode;

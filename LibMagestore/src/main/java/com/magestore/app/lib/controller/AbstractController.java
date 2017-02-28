@@ -2,9 +2,9 @@ package com.magestore.app.lib.controller;
 
 import com.magestore.app.lib.context.MagestoreContext;
 import com.magestore.app.lib.model.Model;
-import com.magestore.app.lib.observe.GenericState;
-import com.magestore.app.lib.observe.State;
-import com.magestore.app.lib.observe.Subject;
+import com.magestore.app.lib.observ.GenericState;
+import com.magestore.app.lib.observ.State;
+import com.magestore.app.lib.observ.SubjectObserv;
 import com.magestore.app.lib.service.config.ConfigService;
 import com.magestore.app.lib.task.ActionModelTask;
 import com.magestore.app.lib.view.MagestoreView;
@@ -18,7 +18,7 @@ import java.util.Map;
  * mike@trueplus.vn
  */
 public abstract class AbstractController<TModel extends Model, TView extends MagestoreView> implements Controller<TView> {
-    private Subject mSubject;
+    private SubjectObserv mSubjectObserv;
 
     // item và view
     protected TModel mItem;
@@ -148,7 +148,7 @@ public abstract class AbstractController<TModel extends Model, TView extends Mag
      * Khởi tạo observ
      * @return
      */
-    public Subject.Observe attachListenerObserve() {
+    public SubjectObserv.Observe attachListenerObserve() {
         if (getSubject() != null)
             return getSubject().attach(this);
         return null;
@@ -188,12 +188,12 @@ public abstract class AbstractController<TModel extends Model, TView extends Mag
     }
 
     /**
-     * Gán subject thông báo cho các controller observer khác
-     * @param subject
+     * Gán subjectObserv thông báo cho các controller observer khác
+     * @param subjectObserv
      */
     @Override
-    public void setSubject(Subject subject) {
-        mSubject = subject;
+    public void setSubject(SubjectObserv subjectObserv) {
+        mSubjectObserv = subjectObserv;
     }
 
     /**
@@ -201,7 +201,7 @@ public abstract class AbstractController<TModel extends Model, TView extends Mag
      * @return
      */
     @Override
-    public Subject getSubject() {
-        return mSubject;
+    public SubjectObserv getSubject() {
+        return mSubjectObserv;
     }
 }

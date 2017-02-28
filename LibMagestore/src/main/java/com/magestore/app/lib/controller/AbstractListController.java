@@ -1,10 +1,9 @@
 package com.magestore.app.lib.controller;
 
 import android.view.View;
-import android.widget.Toast;
 
 import com.magestore.app.lib.model.Model;
-import com.magestore.app.lib.observe.GenericState;
+import com.magestore.app.lib.observ.GenericState;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
 import com.magestore.app.lib.panel.AbstractListPanel;
 import com.magestore.app.lib.service.ListService;
@@ -13,8 +12,6 @@ import com.magestore.app.lib.task.InsertListTask;
 import com.magestore.app.lib.task.RetrieveListTask;
 import com.magestore.app.lib.task.UpdateListTask;
 
-import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
