@@ -147,9 +147,6 @@ public class ProductListController extends AbstractListController<Product> {
     @Override
     public void bindItem(Product item) {
         super.bindItem(item);
-        GenericState<ProductListController> state = new GenericState<ProductListController>(this, GenericState.DEFAULT_STATE_CODE_ON_SELECT_ITEM);
-        getSubject().setState(state);
-//        if (mCheckoutListController != null) mCheckoutListController.bindProduct(item);
     }
 
     public void selectCategoryChild(Category category) {

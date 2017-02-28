@@ -4,6 +4,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.magestore.app.lib.model.Model;
+import com.magestore.app.lib.observe.GenericState;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
 import com.magestore.app.lib.panel.AbstractListPanel;
 import com.magestore.app.lib.service.ListService;
@@ -85,6 +86,10 @@ public class AbstractListController<TModel extends Model>
         setSelectedItem(item);
         if (mDetailView != null)
             mDetailView.bindItem(item);
+
+        // báo cho các observ khác về việc bind item
+        GenericState<ListController<TModel>> state = new GenericState<ListController<TModel>>(this, GenericState.DEFAULT_STATE_CODE_ON_SELECT_ITEM);
+        if (getSubject() != null) getSubject().setState(state);
     }
 
     /**
@@ -198,6 +203,10 @@ public class AbstractListController<TModel extends Model>
             if (mblnAutoChooseFirstItem && mList != null && mDetailView != null && mList.size() > 0)
                 bindItem(mList.get(0));
         }
+
+        // báo cho các observ khác về việc bind item
+        GenericState<ListController<TModel>> state = new GenericState<ListController<TModel>>(this, GenericState.DEFAULT_STATE_CODE_ON_RETRIEVE);
+        if (getSubject() != null) getSubject().setState(state);
     }
 
     /**
@@ -228,8 +237,9 @@ public class AbstractListController<TModel extends Model>
      */
     @Override
     public boolean onUpdateBackGround(TModel oldModel, TModel newModels) throws Exception {
-        if (mListService != null)
+        if (mListService != null) {
             return mListService.update(oldModel, newModels);
+        }
         return false;
     }
 
@@ -240,7 +250,13 @@ public class AbstractListController<TModel extends Model>
      */
     @Override
     public void onUpdatePostExecute(Boolean success, TModel oldModel, TModel newModels) {
-        if (success) mView.updateModel(oldModel, newModels);
+        if (success) {
+            mView.updateModel(oldModel, newModels);
+
+            // báo cho các observ khác về việc bind item
+            GenericState<ListController<TModel>> state = new GenericState<ListController<TModel>>(this, GenericState.DEFAULT_STATE_CODE_ON_UPDATE);
+            if (getSubject() != null) getSubject().setState(state);
+        }
     }
 
     /**
@@ -272,7 +288,13 @@ public class AbstractListController<TModel extends Model>
      */
     @Override
     public void onDeletePostExecute(Boolean success, TModel... models) {
-        if (success) mView.deleteList(models);
+        if (success) {
+            mView.deleteList(models);
+
+            // báo cho các observ khác về việc bind item
+            GenericState<ListController<TModel>> state = new GenericState<ListController<TModel>>(this, GenericState.DEFAULT_STATE_CODE_ON_DELETE);
+            if (getSubject() != null) getSubject().setState(state);
+        }
     }
 
     /**
@@ -304,8 +326,14 @@ public class AbstractListController<TModel extends Model>
      */
     @Override
     public void onInsertPostExecute(Boolean success, TModel... models) {
-        if (success) mView.notifyDataSetChanged();
-        mView.insertListAtLast(models);
+        if (success) {
+//            mView.notifyDataSetChanged();
+            mView.insertListAtLast(models);
+
+            // báo cho các observ khác về việc bind item
+            GenericState<ListController<TModel>> state = new GenericState<ListController<TModel>>(this, GenericState.DEFAULT_STATE_CODE_ON_INSERT);
+            if (getSubject() != null) getSubject().setState(state);
+        }
     }
 
 
