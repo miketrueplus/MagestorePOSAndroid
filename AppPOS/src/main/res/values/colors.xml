@@ -44,6 +44,9 @@
     <color name="sales_discount_bg_not_select">#e1e1e1</color>
     <color name="sales_discount_text_select">#ffffff</color>
     <color name="sales_discount_text_not_select">#48586c</color>
+    <color name="sales_button_checkout_background_color">#2f353a</color>
+    <color name="sales_button_checkout_text_color">#ffffff</color>
+    <color name="sales_line">#c7cbd0</color>
 
     <!--Register Shift-->
     <color name="register_shift_dialog_make_adjustment_bg_select">#00a679</color>

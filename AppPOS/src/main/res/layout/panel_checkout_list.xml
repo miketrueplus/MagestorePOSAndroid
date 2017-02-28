@@ -34,32 +34,6 @@
                 magestore_view:layout_panel="@layout/panel_cart_list"
                 magestore_view:layout_span_count="1" />
 
-            <RelativeLayout
-                android:id="@+id/rl_sales_total"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <com.magestore.app.view.FormatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@+id/text_sales_order_total"
-                    android:gravity="left"
-                    android:text='@{@string/total + ":"}'
-                    android:textSize="@dimen/sales_total_text_size"
-                    android:textStyle="bold" />
-
-                <com.magestore.app.view.FormatTextView
-                    android:id="@+id/text_sales_order_total"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginLeft="4dp"
-                    android:text="@{ConfigUtil.formatPrice(checkout.getGrandTotal())}"
-                    android:textSize="@dimen/sales_total_text_size"
-                    android:textStyle="bold" />
-            </RelativeLayout>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -77,8 +51,10 @@
                         android:id="@+id/btn_sales_order_checkout"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:background="@color/sales_button_checkout_background_color"
                         android:text="@string/checkout"
-                        android:textColorHighlight="@color/colorAccent" />
+                        android:textColor="@color/sales_button_checkout_text_color"
+                        android:textSize="@dimen/sales_button_checkout_text_size" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -88,28 +64,26 @@
                     android:layout_weight="1"
                     android:orientation="vertical">
 
-                    <LinearLayout
+                    <RelativeLayout
+                        android:id="@+id/rl_sales_total"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:layout_height="wrap_content">
 
                         <com.magestore.app.view.FormatTextView
-                            android:layout_width="0dp"
+                            android:id="@+id/text_sales_order_total"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="left"
-                            android:text="@string/sub_total"
-                            android:textSize="@dimen/sales_price_text_size" />
-
-                        <com.magestore.app.view.FormatTextView
-                            android:id="@+id/text_sales_order_subtotal"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:gravity="right"
-                            android:text="@{ConfigUtil.formatPrice(checkout.getSubTotal())}"
-                            android:textSize="@dimen/sales_price_text_size" />
-                    </LinearLayout>
+                            android:text="@{ConfigUtil.formatPrice(checkout.getGrandTotal())}"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/sales_total_text_size"
+                            android:textStyle="bold" />
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/line"
+                        android:background="@color/sales_line" />
 
                     <LinearLayout
                         android:id="@+id/ll_sales_shipping"
@@ -124,6 +98,7 @@
                             android:layout_weight="1"
                             android:gravity="left"
                             android:text="@string/shipping_and_handling"
+                            android:textColor="@color/text_color"
                             android:textSize="@dimen/sales_price_text_size" />
 
                         <com.magestore.app.view.FormatTextView
@@ -133,29 +108,7 @@
                             android:layout_weight="1"
                             android:gravity="right"
                             android:text="@{ConfigUtil.formatPrice(checkout.getShippingTotal())}"
-                            android:textSize="@dimen/sales_price_text_size" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <com.magestore.app.view.FormatTextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="left"
-                            android:text="@string/discount"
-                            android:textSize="@dimen/sales_price_text_size" />
-
-                        <com.magestore.app.view.FormatTextView
-                            android:id="@+id/text_sales_order_discount"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="right"
-                            android:text="@{ConfigUtil.formatPrice(checkout.getDiscountTotal())}"
+                            android:textColor="@color/text_color"
                             android:textSize="@dimen/sales_price_text_size" />
                     </LinearLayout>
 
@@ -170,6 +123,7 @@
                             android:layout_weight="1"
                             android:gravity="left"
                             android:text="@string/tax"
+                            android:textColor="@color/text_color"
                             android:textSize="@dimen/sales_price_text_size" />
 
                         <com.magestore.app.view.FormatTextView
@@ -180,6 +134,57 @@
                             android:layout_weight="1"
                             android:gravity="right"
                             android:text="@{ConfigUtil.formatPrice(checkout.getTaxTotal())}"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/sales_price_text_size" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.magestore.app.view.FormatTextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="left"
+                            android:text="@string/discount"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/sales_price_text_size" />
+
+                        <com.magestore.app.view.FormatTextView
+                            android:id="@+id/text_sales_order_discount"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:text="@{ConfigUtil.formatPrice(checkout.getDiscountTotal())}"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/sales_price_text_size" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.magestore.app.view.FormatTextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="left"
+                            android:text="@string/sub_total"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/sales_price_text_size" />
+
+                        <com.magestore.app.view.FormatTextView
+                            android:id="@+id/text_sales_order_subtotal"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:text="@{ConfigUtil.formatPrice(checkout.getSubTotal())}"
+                            android:textColor="@color/text_color"
                             android:textSize="@dimen/sales_price_text_size" />
                     </LinearLayout>
                 </LinearLayout>
@@ -191,9 +196,9 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
-            android:padding="@dimen/sales_list_order_item_margin"
             android:background="@color/sales_list_order_background"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="@dimen/sales_list_order_item_margin">
 
             <RelativeLayout
                 android:id="@+id/rl_add_checkout"
