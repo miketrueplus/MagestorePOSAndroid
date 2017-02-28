@@ -7,7 +7,6 @@ import com.magestore.app.lib.connection.ConnectionFactory;
 import com.magestore.app.lib.connection.ParamBuilder;
 import com.magestore.app.lib.connection.ResultReading;
 import com.magestore.app.lib.connection.Statement;
-import com.magestore.app.lib.connection.http.MagestoreFileCacheConnection;
 import com.magestore.app.lib.model.config.Config;
 import com.magestore.app.lib.model.config.ConfigCountry;
 import com.magestore.app.lib.model.config.ConfigPriceFormat;
@@ -35,8 +34,6 @@ import com.magestore.app.pos.parse.gson2pos.Gson2PosConfigParseImplement;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -236,7 +233,11 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         customerAddress.setStreet1(street);
         customerAddress.setRegionID(region_id);
         Region region = new PosRegion();
-        region.setRegionID(Integer.parseInt(region_id));
+        try {
+            region.setRegionID(Integer.parseInt(region_id));
+        } catch (Exception e) {
+            region.setRegionID(0);
+        }
         customerAddress.setRegion(region);
         listAddress.add(customerAddress);
         guest.setAddressList(listAddress);
@@ -257,12 +258,15 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
             String currency_name = item.get("currency_name").toString();
             String currency_symbol = item.get("currency_symbol").toString();
             String is_default = item.get("is_default").toString();
-            float currency_rate = (float) item.get("currency_rate");
+            String currency_rate = item.get("currency_rate").toString();
             currency.setCode(code);
             currency.setCurrenyName(currency_name);
             currency.setCurrencySymbol(currency_symbol);
             currency.setIsDefault(is_default);
-            currency.setCurrencyRate(currency_rate);
+            try {
+                currency.setCurrencyRate(Double.parseDouble(currency_rate));
+            } catch (Exception e) {
+            }
             listCurrency.add(currency);
         }
 
@@ -272,15 +276,20 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
     @Override
     public Currency getDefaultCurrency() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
         List<Currency> listCurrency = getCurrencies();
+        Currency dCurrentcy = new PosCurrency();
         if (listCurrency != null && listCurrency.size() > 0) {
+            boolean checkCurrency = false;
             for (Currency currency : listCurrency) {
                 if (currency.getIsDefault().equals("1")) {
-                    return currency;
+                    checkCurrency = true;
+                    dCurrentcy = currency;
                 }
             }
-            return listCurrency.get(0);
+            if (!checkCurrency) {
+                dCurrentcy = listCurrency.get(0);
+            }
         }
-        return null;
+        return dCurrentcy;
     }
 
     @Override
@@ -301,7 +310,7 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         return getPriceFormat(priceFormat);
     }
 
-    private ConfigPriceFormat getPriceFormat(LinkedTreeMap priceFormat){
+    private ConfigPriceFormat getPriceFormat(LinkedTreeMap priceFormat) {
         String pattern = priceFormat.get("pattern").toString();
         int precision = (int) priceFormat.get("precision");
         int requiredPrecision = (int) priceFormat.get("requiredPrecision");

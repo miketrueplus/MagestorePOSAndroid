@@ -54,9 +54,11 @@ public class CartOrderListPanel extends AbstractSimpleRecycleView<Checkout> {
 
         // set data name customer từ checkout vào text (nếu use_guest thì truyền vào position)
         if (position == selectPos) {
-            rl_checkout.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.order_status_pending));
+            rl_checkout.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.app_color));
+            checkout_name.setTextColor(ContextCompat.getColor(getContext(), R.color.sales_list_order_item_text_name_select_color));
         } else {
-            rl_checkout.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
+            rl_checkout.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.sales_list_order_item_background));
+            checkout_name.setTextColor(ContextCompat.getColor(getContext(), R.color.text_color));
         }
         String customer_name = item.getCustomer().getName();
         Customer guest = mCheckoutListController.getGuestCheckout();
@@ -82,7 +84,7 @@ public class CartOrderListPanel extends AbstractSimpleRecycleView<Checkout> {
         this.selectPos = selectPos;
     }
 
-    public void scrollToPosition(int position){
+    public void scrollToPosition(int position) {
         this.getLayoutManager().scrollToPosition(position);
     }
 }

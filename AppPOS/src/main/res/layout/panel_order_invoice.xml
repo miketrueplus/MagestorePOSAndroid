@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:bind="http://schemas.android.com/apk/res-auto">
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:magestore_view="http://schemas.android.com/tools">
 
     <data>
 
@@ -151,6 +152,8 @@
 
                     <com.magestore.app.pos.panel.OrderInvoiceItemsListPanel
                         android:id="@+id/order_invoice_items"
+                        magestore_view:layout_list="@+id/order_invoice_items_list"
+                        magestore_view:layout_panel="@layout/panel_order_invoice_item_list"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1.0" />

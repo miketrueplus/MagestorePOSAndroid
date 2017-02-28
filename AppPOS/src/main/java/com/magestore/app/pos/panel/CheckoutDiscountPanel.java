@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
 import com.magestore.app.pos.R;
+import com.magestore.app.pos.controller.CheckoutListController;
 
 /**
  * Created by Johan on 2/24/17.
@@ -20,6 +21,11 @@ import com.magestore.app.pos.R;
 public class CheckoutDiscountPanel extends AbstractDetailPanel<Checkout> {
     TextView txt_sales_discount, txt_sales_promotion, amount_currency, amount_percent;
     LinearLayout ll_sales_discount, ll_sales_promotion;
+    CheckoutListController mCheckoutListController;
+
+    public void setCheckoutListController(CheckoutListController mCheckoutListController) {
+        this.mCheckoutListController = mCheckoutListController;
+    }
 
     public CheckoutDiscountPanel(Context context) {
         super(context);
@@ -46,12 +52,15 @@ public class CheckoutDiscountPanel extends AbstractDetailPanel<Checkout> {
 
         amount_currency = (TextView) view.findViewById(R.id.amount_currency);
         amount_percent = (TextView) view.findViewById(R.id.amount_percent);
-
-        initValue();
     }
 
     @Override
     public void initValue() {
+        if(mCheckoutListController.getCurrency() != null) {
+            String currency_symbol = mCheckoutListController.getCurrency().getCurrencySymbol();
+            amount_currency.setText(currency_symbol);
+        }
+
         txt_sales_discount.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {

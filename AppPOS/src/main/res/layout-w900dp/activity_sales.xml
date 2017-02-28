@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:magestore_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background_default"
     android:fitsSystemWindows="true"
     tools:context="com.magestore.app.pos.SalesActivity"
     tools:openDrawer="start">
@@ -67,15 +67,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     magestore_view:layout_item="@layout/card_product_list_content"
+                    magestore_view:layout_item_content="@+id/content_product_list_card_view"
                     magestore_view:layout_list="@+id/product_list"
+                    magestore_view:layout_msg="@+id/txt_msg_product_list"
                     magestore_view:layout_orientation="vertical"
-                    magestore_view:layout_search="@+id/panel_search_product"
                     magestore_view:layout_panel="@layout/panel_product_list"
                     magestore_view:layout_progress="@+id/progress_product_list"
-                    magestore_view:layout_progress_top="@+id/progress_product_list_top"
                     magestore_view:layout_progress_bottom="@+id/progress_product_list_bottom"
-                    magestore_view:layout_msg="@+id/txt_msg_product_list"
-                    magestore_view:layout_item_content="@+id/content_product_list_card_view"
+                    magestore_view:layout_progress_top="@+id/progress_product_list_top"
+                    magestore_view:layout_search="@+id/panel_search_product"
                     magestore_view:layout_span_count="4"
                     magestore_view:page_first="1"
                     magestore_view:page_size="20"
@@ -86,7 +86,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:visibility="gone"
-                    magestore_view:layout_panel="@layout/panel_checkout_detail"/>
+                    magestore_view:layout_panel="@layout/panel_checkout_detail" />
             </RelativeLayout>
         </LinearLayout>
     </LinearLayout>

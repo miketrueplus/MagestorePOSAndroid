@@ -38,8 +38,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="?attr/actionBarSize"
                     android:layout_alignParentRight="true"
-                    android:layout_toRightOf="@+id/toolbar_category"
                     android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/toolbar_category"
                     android:layout_weight="1.0">
 
                     <com.magestore.app.lib.panel.SearchAutoCompletePanel
@@ -48,16 +48,17 @@
                         android:layout_height="match_parent"
                         android:layout_centerVertical="true"
                         magestore_view:layout_close="@+id/button_hide_search"
-                        magestore_view:layout_progress="@+id/progress_autotext_search_product"
                         magestore_view:layout_item="@+id/text_search_product"
-                        magestore_view:layout_panel="@layout/panel_search_product" />
+                        magestore_view:layout_panel="@layout/panel_search_product"
+                        magestore_view:layout_progress="@+id/progress_autotext_search_product" />
                 </android.support.v7.widget.Toolbar>
             </LinearLayout>
         </android.support.design.widget.AppBarLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:padding="@dimen/product_item_space">
 
             <ProgressBar
                 android:id="@+id/progress_product_list"
@@ -120,8 +121,8 @@
                 style="?android:attr/progressBarStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
                 android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
                 android:visibility="gone" />
 
@@ -130,8 +131,8 @@
                 style="?android:attr/progressBarStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
                 android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
                 android:visibility="gone" />
         </RelativeLayout>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:magestore_view="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -87,7 +88,9 @@
                     android:id="@+id/register_shift_sales"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1.0" />
+                    android:layout_weight="1.0"
+                    magestore_view:layout_list="@+id/register_shift_sale_list"
+                    magestore_view:layout_panel="@layout/panel_register_shift_sale_list" />
             </FrameLayout>
         </LinearLayout>
     </LinearLayout>

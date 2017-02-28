@@ -14,7 +14,7 @@ public class PosCurrency extends PosAbstractModel implements Currency {
     String currency_name;
     String currency_symbol;
     String is_default;
-    float currency_rate;
+    double currency_rate;
 
     @Override
     public String getCode() {
@@ -57,12 +57,12 @@ public class PosCurrency extends PosAbstractModel implements Currency {
     }
 
     @Override
-    public float getCurrencyRate() {
+    public double getCurrencyRate() {
         return currency_rate;
     }
 
     @Override
-    public void setCurrencyRate(float fCurrencyRate) {
-        currency_rate = fCurrencyRate;
+    public void setCurrencyRate(double dCurrencyRate) {
+        currency_rate = dCurrencyRate;
     }
 }

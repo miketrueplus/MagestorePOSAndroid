@@ -10,91 +10,81 @@
             type="com.magestore.app.lib.model.catalog.Product" />
     </data>
 
-    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/sales_product_list_card_view"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:layout_margin="5dp"
-        card_view:cardCornerRadius="4dp">
+        android:background="@drawable/list_item_selector"
+        android:orientation="horizontal">
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+        <ImageView
+            android:id="@+id/product_image"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:layout_gravity="center"
-            android:background="@drawable/list_item_selector"
-            android:orientation="horizontal">
+            android:layout_marginLeft="5dp"
+            android:background="@mipmap/ic_unknow" />
 
-            <ImageView
-                android:id="@+id/product_image"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:layout_gravity="center"
-                android:layout_marginLeft="5dp"
-                android:background="@mipmap/ic_unknow" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/name"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:ellipsize="end"
-                        android:lines="2"
-                        android:text="@{product.getName()}"
-                        android:textAppearance="?attr/textAppearanceListItem" />
-
-                    <TextView
-                        android:id="@+id/sku"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_gravity="left"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:textAppearance="?attr/textAppearanceListItem"
-                        android:text="@{product.getSKU()}"
-                        android:textStyle="italic" />
-
-                    <TextView
-                        android:id="@+id/avaiable"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:textAppearance="?attr/textAppearanceListItem"
-                        android:text="@string/avaibles"
-                        android:textColor="@android:color/darker_gray" />
-                </LinearLayout>
+                android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/price"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/name"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_gravity="right"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:gravity="right"
+                    android:ellipsize="end"
+                    android:lines="2"
+                    android:text="@{product.getName()}"
+                    android:textAppearance="?attr/textAppearanceListItem" />
+
+                <TextView
+                    android:id="@+id/sku"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:text="@{product.getSKU()}"
                     android:textAppearance="?attr/textAppearanceListItem"
-                    android:textSize="16sp"
-                    android:text="@{ConfigUtil.formatPrice(product.getPrice())}"
-                    android:textStyle="normal|bold" />
+                    android:textStyle="italic" />
+
+                <TextView
+                    android:id="@+id/avaiable"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:text="@string/avaibles"
+                    android:textAppearance="?attr/textAppearanceListItem"
+                    android:textColor="@android:color/darker_gray" />
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="right"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:gravity="right"
+                android:text="@{ConfigUtil.formatPrice(product.getPrice())}"
+                android:textAppearance="?attr/textAppearanceListItem"
+                android:textSize="16sp"
+                android:textStyle="normal|bold" />
         </LinearLayout>
-    </android.support.v7.widget.CardView>
+    </LinearLayout>
 </layout>
 

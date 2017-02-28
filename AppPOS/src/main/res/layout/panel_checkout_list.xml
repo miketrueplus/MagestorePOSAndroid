@@ -19,6 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_toRightOf="@+id/ll_list_check_out"
+            android:background="@color/card_background_color"
             android:orientation="vertical">
 
             <com.magestore.app.pos.panel.CartItemListPanel
@@ -190,40 +191,40 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
-            android:layout_margin="5dp"
+            android:padding="@dimen/sales_list_order_item_margin"
+            android:background="@color/sales_list_order_background"
             android:orientation="vertical">
 
             <RelativeLayout
                 android:id="@+id/rl_add_checkout"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginBottom="5dp"
-                android:background="@color/white"
+                android:layout_marginBottom="@dimen/sales_list_order_item_margin"
+                android:layout_marginLeft="@dimen/sales_list_order_item_margin"
+                android:layout_marginRight="@dimen/sales_list_order_item_margin"
+                android:background="@color/sales_list_order_item_background"
                 android:padding="10dp">
 
-                <TextView
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="@string/plus"
-                    android:textSize="22sp"
-                    android:textStyle="bold" />
+                    android:src="@drawable/ic_card_add_order" />
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/rl_remove_checkout"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="@color/white"
+                android:layout_margin="@dimen/sales_list_order_item_margin"
+                android:background="@color/sales_list_order_item_background"
                 android:padding="10dp">
 
-                <TextView
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="@string/minus"
-                    android:textSize="22sp"
-                    android:textStyle="bold" />
+                    android:src="@drawable/ic_card_remove_order" />
             </RelativeLayout>
 
             <com.magestore.app.pos.panel.CartOrderListPanel

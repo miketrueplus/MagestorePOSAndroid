@@ -135,6 +135,8 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
             @Override
             public void onClick(View view) {
                 CheckoutDiscountPanel mCheckoutDiscountPanel = new CheckoutDiscountPanel(getContext());
+                mCheckoutDiscountPanel.setCheckoutListController(((CheckoutListController) mController));
+                mCheckoutDiscountPanel.initValue();
                 MagestoreDialog dialog = DialogUtil.dialog(getContext(), "", mCheckoutDiscountPanel);
                 dialog.setDialogTitle(getContext().getString(R.string.checkout_discount_all));
                 dialog.setDialogSave(getContext().getString(R.string.apply));

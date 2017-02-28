@@ -201,6 +201,7 @@
     <string name="check">Check</string>
     <string name="promotion">Promotion</string>
     <string name="apply">Apply</string>
+    <string name="percent">%</string>
 
     <!-- Strings related to error message -->
     <string name="err_no_network_connection">No network connection, Pls check yout network settings</string>

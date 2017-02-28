@@ -8,30 +8,30 @@
         android:id="@+id/rl_checkout"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:background="@color/white"
-        android:padding="5dp">
+        android:background="@color/sales_list_order_item_background"
+        android:layout_margin="@dimen/sales_list_order_item_margin">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="5dp">
 
             <TextView
                 android:id="@+id/checkout_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="5dp"
-                android:textSize="@dimen/sales_list_order_name_text_size"
-                android:textStyle="bold" />
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/sales_list_order_name_text_size" />
 
             <TextView
                 android:id="@+id/checkout_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
+                android:textColor="@color/sales_list_order_item_text_time_color"
                 android:textSize="@dimen/sales_list_order_time_text_size" />
         </LinearLayout>
     </RelativeLayout>

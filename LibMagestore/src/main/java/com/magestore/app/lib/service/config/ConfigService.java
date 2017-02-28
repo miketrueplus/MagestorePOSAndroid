@@ -8,6 +8,7 @@ import com.magestore.app.lib.model.config.Config;
 import com.magestore.app.lib.model.config.ConfigCountry;
 import com.magestore.app.lib.model.config.ConfigCustomerGroup;
 import com.magestore.app.lib.model.customer.Customer;
+import com.magestore.app.lib.model.directory.Currency;
 import com.magestore.app.lib.service.Service;
 import java.io.IOException;
 import java.text.ParseException;
@@ -58,4 +59,8 @@ public interface ConfigService extends Service {
     List<CheckoutPayment> getCheckoutPaymentList() throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
     Customer getGuestCheckout() throws InstantiationException, IllegalAccessException, IOException, ParseException;
+
+    List<Currency> getCurrencies() throws InstantiationException, IllegalAccessException, IOException, ParseException;
+
+    Currency getDefaultCurrency() throws InstantiationException, IllegalAccessException, IOException, ParseException;
 }
