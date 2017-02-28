@@ -6,10 +6,19 @@
     <dimen name="app_bar_height">200dp</dimen>
     <dimen name="item_width">750dp</dimen>
     <dimen name="text_margin">16dp</dimen>
+
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="nav_header_vertical_spacing">16dp</dimen>
     <dimen name="nav_header_height">160dp</dimen>
     <dimen name="layout_margin">5dp</dimen>
+
+    <!--Product List-->
+    <dimen name="product_item_space">0.5dp</dimen>
+    <dimen name="product_image_height">120dp</dimen>
+    <dimen name="product_price_margin">2dp</dimen>
+    <dimen name="product_text_name_size">14sp</dimen>
+    <dimen name="product_text_sku_size">14sp</dimen>
+    <dimen name="product_text_price_size">15sp</dimen>
 
     <!--Cart List-->
     <dimen name="sales_total_text_size">26sp</dimen>

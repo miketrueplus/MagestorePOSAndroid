@@ -8,11 +8,12 @@
     <color name="line">#e1e1e1</color>
     <color name="black">#000000</color>
 
-    <!--Checkout-->
-    <color name="sales_discount_bg_select">#0E86E2</color>
-    <color name="sales_discount_bg_not_select">#e1e1e1</color>
-    <color name="sales_discount_text_select">#ffffff</color>
-    <color name="sales_discount_text_not_select">#48586c</color>
+    <color name="text_color">#273746</color>
+    <color name="background">#f4f4f4</color>
+
+    <!--Product List-->
+    <color name="product_background_item">#ffffff</color>
+    <color name="product_background_price">#1a1d87e5</color>
 
     <!--Dialog-->
     <color name="dialog_background_color">#ffffff</color>
@@ -31,6 +32,10 @@
 
     <!--Checkout-->
     <color name="sales_background_loading">#80000000</color>
+    <color name="sales_discount_bg_select">#0E86E2</color>
+    <color name="sales_discount_bg_not_select">#e1e1e1</color>
+    <color name="sales_discount_text_select">#ffffff</color>
+    <color name="sales_discount_text_not_select">#48586c</color>
 
     <!--Register Shift-->
     <color name="register_shift_dialog_make_adjustment_bg_select">#00a679</color>
