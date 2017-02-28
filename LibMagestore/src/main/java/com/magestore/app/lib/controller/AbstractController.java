@@ -102,7 +102,9 @@ public abstract class AbstractController<TModel extends Model, TView extends Mag
      * @param models
      */
     public void onActionPostExecute(boolean success, int actionType, String actionCode, Map<String, Object> wraper, Model... models) {
-
+        // báo cho các observ khác về việc bind item
+        GenericState<AbstractController<TModel, TView>> state = new GenericState<AbstractController<TModel, TView>>(this, actionCode);
+        if (getSubject() != null) getSubject().setState(state);
     }
 
     /**
