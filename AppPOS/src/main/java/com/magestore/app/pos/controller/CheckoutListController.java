@@ -270,8 +270,6 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
             if (mView != null && checkout != null && (mView instanceof CheckoutListPanel))
                 ((CheckoutListPanel) mView).updateTotalPrice(checkout);
-            // hiden shipping method
-            ((CheckoutDetailPanel) mDetailView).onClickTitleShippingMethod();
             // show payment method
             ((CheckoutDetailPanel) mDetailView).showPaymentMethod();
 

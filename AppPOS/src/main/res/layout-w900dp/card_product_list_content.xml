@@ -64,7 +64,7 @@
                 android:padding="@dimen/layout_margin"
                 android:text="@{ConfigUtil.formatPrice(product.getPrice())}"
                 android:textColor="@color/text_color"
-                android:textSize="@dimen/product_text_price_size" />
+                android:textSize="@dimen/text_size" />
         </RelativeLayout>
     </RelativeLayout>
 </layout>

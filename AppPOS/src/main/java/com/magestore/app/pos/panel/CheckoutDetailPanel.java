@@ -8,7 +8,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
@@ -37,15 +36,14 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
     CheckoutPaymentListPanel mCheckoutPaymentListPanel;
     CheckoutShippingListPanel mCheckoutShippingListPanel;
     CheckoutAddPaymentPanel mCheckoutAddPaymentPanel;
-    TextView tv_shipping_method, txt_grand_total, txt_remain_title, txt_remain_value;
-    RelativeLayout rl_title_shipping_method, rl_title_payment_method, rl_content_payment_method, sales_background_loading;
-    ImageView im_shipping_arrow, im_payment_arrow;
+    TextView txt_grand_total, txt_remain_title, txt_remain_value;
+    RelativeLayout rl_content_payment_method, sales_background_loading;
     MagestoreDialog dialog;
     Switch create_ship, create_invoice;
     ImageButton im_back;
     Button btn_checkout_add_payment;
     SimpleSpinner sp_shipping_method;
-    CheckBox cb_pick_as_store;
+    Switch cb_pick_as_store;
     LinearLayout ll_shipping_address;
 
     public CheckoutDetailPanel(Context context) {
@@ -67,14 +65,9 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         txt_grand_total = (TextView) findViewById(R.id.txt_grand_total);
         im_back = (ImageButton) findViewById(R.id.im_back);
 
-        cb_pick_as_store = (CheckBox) findViewById(R.id.cb_pick_as_store);
+        cb_pick_as_store = (Switch) findViewById(R.id.cb_pick_as_store);
         ll_shipping_address = (LinearLayout) findViewById(R.id.ll_shipping_address);
-        tv_shipping_method = (TextView) findViewById(R.id.tv_shipping_method);
-        rl_title_shipping_method = (RelativeLayout) findViewById(R.id.rl_title_shipping_method);
-        rl_title_payment_method = (RelativeLayout) findViewById(R.id.rl_title_payment_method);
         rl_content_payment_method = (RelativeLayout) findViewById(R.id.rl_content_payment_method);
-        im_shipping_arrow = (ImageView) findViewById(R.id.im_shipping_arrow);
-        im_payment_arrow = (ImageView) findViewById(R.id.im_payment_arrow);
         txt_remain_title = (TextView) findViewById(R.id.txt_remain_title);
         txt_remain_value = (TextView) findViewById(R.id.txt_remain_value);
         create_ship = (Switch) findViewById(R.id.create_ship);
@@ -102,20 +95,6 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
             @Override
             public void onClick(View v) {
                 onClickPlaceHolder();
-            }
-        });
-
-        rl_title_shipping_method.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onClickTitleShippingMethod();
-            }
-        });
-
-        rl_title_payment_method.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onClickTitlePaymentMethod();
             }
         });
 
@@ -175,30 +154,8 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         dialog.show();
     }
 
-    public void onClickTitleShippingMethod() {
-        mCheckoutShippingListPanel.setVisibility(GONE);
-        if (mCheckoutShippingListPanel.getVisibility() == VISIBLE) {
-//            mCheckoutShippingListPanel.setVisibility(GONE);
-            im_shipping_arrow.setRotation(0);
-        } else {
-//            mCheckoutShippingListPanel.setVisibility(VISIBLE);
-            im_shipping_arrow.setRotation(180);
-        }
-    }
-
-    public void onClickTitlePaymentMethod() {
-        if (rl_content_payment_method.getVisibility() == VISIBLE) {
-            rl_content_payment_method.setVisibility(GONE);
-            im_payment_arrow.setRotation(0);
-        } else {
-            rl_content_payment_method.setVisibility(VISIBLE);
-            im_payment_arrow.setRotation(180);
-        }
-    }
-
     public void showPaymentMethod() {
         rl_content_payment_method.setVisibility(VISIBLE);
-        im_payment_arrow.setRotation(180);
     }
 
     public String isCreateShip() {
@@ -264,8 +221,6 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
     public void getShippingMethod() {
         String code = sp_shipping_method.getSelection();
         isShowLoadingDetail(true);
-        // TODO: show title shipping name
-        setTitleShippingMethod(code);
         ((CheckoutListController) getController()).doInputSaveShipping(code);
     }
 
@@ -314,10 +269,6 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
     public void showPanelPaymentMethod() {
         mPaymentMethodListPanel.setVisibility(VISIBLE);
         mCheckoutPaymentListPanel.setVisibility(GONE);
-    }
-
-    public void setTitleShippingMethod(String titleShippingMethod) {
-        tv_shipping_method.setText(getContext().getString(R.string.shipping) + ": " + titleShippingMethod);
     }
 
     public void dismissDialogAddPayment() {
