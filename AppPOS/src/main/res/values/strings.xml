@@ -59,9 +59,7 @@
     <string name="order_detail_top_staff_name">Served by:</string>
     <string name="order_detail_content_billing_address">BILLING ADDRESS</string>
     <string name="order_detail_content_shipping_address">SHIPPING ADDRESS</string>
-    <string name="order_detail_content_payment_method">PAYMENT METHOD</string>
     <string name="order_detail_content_payment_paid">PAID</string>
-    <string name="order_detail_content_shipping_method">SHIPPING METHOD</string>
     <string name="order_detail_content_comment_history">COMMENT HISTORY</string>
     <string name="order_detail_content_item_title_product">Product</string>
     <string name="order_detail_content_item_title_sku">Sku</string>
@@ -202,6 +200,9 @@
     <string name="promotion">Promotion</string>
     <string name="apply">Apply</string>
     <string name="percent">%</string>
+    <string name="note">Note</string>
+    <string name="payment_method">PAYMENT METHOD</string>
+    <string name="shipping_method">SHIPPING METHOD</string>
 
     <!-- Strings related to error message -->
     <string name="err_no_network_connection">No network connection, Pls check yout network settings</string>

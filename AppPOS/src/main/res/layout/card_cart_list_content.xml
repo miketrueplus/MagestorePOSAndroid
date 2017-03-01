@@ -99,7 +99,7 @@
                                     android:maxLines="2"
                                     android:text="@{cartItem.getProduct().getName()}"
                                     android:textColor="@color/text_color"
-                                    android:textSize="@dimen/card_item_text_name_size" />
+                                    android:textSize="@dimen/text_size" />
 
                                 <TextView
                                     android:id="@+id/sales_order_sku"
@@ -133,7 +133,7 @@
                                     android:maxLines="2"
                                     android:text="@{ConfigUtil.formatPrice(cartItem.getProduct().getPrice() * cartItem.getQuantity())}"
                                     android:textColor="@color/text_color"
-                                    android:textSize="@dimen/card_item_text_price_size" />
+                                    android:textSize="@dimen/text_size" />
 
                                 <TextView
                                     android:id="@+id/sales_order_quantity"

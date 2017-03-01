@@ -16,179 +16,120 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar_checkout_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_gravity="left"
+                android:gravity="left">
+
+                <include layout="@layout/toolbar_checkout_detail" />
+            </android.support.v7.widget.Toolbar>
+        </android.support.design.widget.AppBarLayout>
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <android.support.design.widget.AppBarLayout
-                android:id="@+id/app_bar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:theme="@style/AppTheme.AppBarOverlay">
-
-                <android.support.v7.widget.Toolbar
-                    android:id="@+id/toolbar_checkout_detail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="?attr/actionBarSize"
-                    android:layout_gravity="left"
-                    android:gravity="left">
-
-                    <include layout="@layout/toolbar_checkout_detail" />
-                </android.support.v7.widget.Toolbar>
-            </android.support.design.widget.AppBarLayout>
+            android:layout_below="@+id/app_bar">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1.0"
-                android:orientation="vertical">
+                android:layout_above="@+id/checkout_bottom"
+                android:orientation="vertical"
+                android:padding="@dimen/checkout_margin">
 
-                <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                <ScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="top"
-                    android:layout_margin="5dp"
-                    card_view:cardCornerRadius="4dp">
+                    android:layout_height="match_parent">
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/order_detail_content_card_background"
+                        android:layout_height="match_parent"
                         android:orientation="vertical">
-
-                        <RelativeLayout
-                            android:id="@+id/rl_title_shipping_method"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="5dp">
-
-                            <TextView
-                                android:id="@+id/tv_shipping_method"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_marginRight="5dp"
-                                android:text="@string/shipping"
-                                android:textStyle="bold" />
-
-                            <ImageButton
-                                android:id="@+id/im_shipping_arrow"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true"
-                                android:background="@drawable/ic_expand_more_white"
-                                android:rotation="180" />
-                        </RelativeLayout>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/line"
-                            android:background="@color/line" />
-
-                        <CheckBox
-                            android:id="@+id/cb_pick_as_store"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_margin="5dp"
-                            android:checked="true"
-                            android:text="@string/checkout_pick_as_store" />
 
                         <LinearLayout
-                            android:id="@+id/ll_shipping_address"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:visibility="gone">
+                            android:orientation="vertical">
 
-                            <com.magestore.app.pos.panel.CheckoutAddressListPanel
-                                android:id="@+id/address_list_panel"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="10dp"
-                                android:layout_marginLeft="@dimen/layout_margin"
-                                android:layout_marginRight="@dimen/layout_margin"
-                                android:layout_marginTop="10dp"
-                                magestore_view:layout_orientation="horizontal"
-                                magestore_view:layout_row="@layout/card_customer_address_content" />
-
-                            <com.magestore.app.lib.view.SimpleSpinner
-                                android:id="@+id/sp_shipping_method"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="5dp"
-                                android:enabled="false"
-                                android:textSize="18sp"
-                                magestore_view:layout_no_scroll="true"
-                                magestore_view:layout_row="@layout/simple_textview_row" />
-                        </LinearLayout>
-
-                        <ScrollView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
-
-                                <com.magestore.app.pos.panel.CheckoutShippingListPanel
-                                    android:id="@+id/checkout_shipping_list_panel"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    magestore_view:layout_no_scroll="true"
-                                    magestore_view:layout_row="@layout/card_checkout_shipping_content" />
-                            </RelativeLayout>
-                        </ScrollView>
-                    </LinearLayout>
-                </android.support.v7.widget.CardView>
-
-                <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="top"
-                    android:layout_margin="@dimen/layout_margin"
-                    card_view:cardCornerRadius="4dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/order_detail_content_card_background"
-                        android:orientation="vertical">
-
-                        <RelativeLayout
-                            android:id="@+id/rl_title_payment_method"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="5dp">
-
-                            <TextView
-                                android:id="@+id/tv_payment_method"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="@dimen/layout_margin"
-                                android:text="@string/payment"
-                                android:textStyle="bold" />
-
-                            <ImageButton
-                                android:id="@+id/im_payment_arrow"
+                            <Switch
+                                android:id="@+id/cb_pick_as_store"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true"
-                                android:background="@drawable/ic_expand_more_white"
-                                android:rotation="180" />
-                        </RelativeLayout>
+                                android:layout_margin="5dp"
+                                android:checked="true"
+                                android:text="@string/checkout_pick_as_store"
+                                android:textAllCaps="true"
+                                android:textColor="@color/text_color"
+                                android:textSize="@dimen/text_size" />
 
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/line"
-                            android:background="@color/line" />
+                            <LinearLayout
+                                android:id="@+id/ll_shipping_address"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:visibility="gone">
 
-                        <ScrollView
+                                <com.magestore.app.pos.panel.CheckoutAddressListPanel
+                                    android:id="@+id/address_list_panel"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="10dp"
+                                    android:layout_marginLeft="@dimen/layout_margin"
+                                    android:layout_marginRight="@dimen/layout_margin"
+                                    android:layout_marginTop="10dp"
+                                    magestore_view:layout_orientation="horizontal"
+                                    magestore_view:layout_row="@layout/card_customer_address_content" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/tv_shipping_method"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="top"
+                                        android:layout_weight="1"
+                                        android:text="@string/shipping_method"
+                                        android:textColor="@color/text_color"
+                                        android:textSize="@dimen/text_size" />
+
+                                    <com.magestore.app.lib.view.SimpleSpinner
+                                        android:id="@+id/sp_shipping_method"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_margin="5dp"
+                                        android:layout_weight="3"
+                                        android:enabled="false"
+                                        android:textSize="18sp"
+                                        magestore_view:layout_no_scroll="true"
+                                        magestore_view:layout_row="@layout/simple_textview_row" />
+                                </LinearLayout>
+                            </LinearLayout>
+
+                            <com.magestore.app.pos.panel.CheckoutShippingListPanel
+                                android:id="@+id/checkout_shipping_list_panel"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                magestore_view:layout_no_scroll="true"
+                                magestore_view:layout_row="@layout/card_checkout_shipping_content" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
 
                             <RelativeLayout
                                 android:id="@+id/rl_content_payment_method"
@@ -215,71 +156,105 @@
                                     magestore_view:layout_row="@layout/card_payment_method_content"
                                     magestore_view:layout_span_count="4" />
                             </RelativeLayout>
-                        </ScrollView>
+                        </LinearLayout>
                     </LinearLayout>
-                </android.support.v7.widget.CardView>
+                </ScrollView>
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/checkout_bottom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:background="@color/white"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/layout_margin"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/txt_remain_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1.0"
-                        android:text="@string/sales_expected_change" />
-
-                    <TextView
-                        android:id="@+id/txt_remain_value"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/line"
-                    android:layout_marginLeft="@dimen/layout_margin"
-                    android:layout_marginRight="@dimen/layout_margin"
-                    android:background="@color/line" />
+                android:orientation="vertical"
+                android:padding="@dimen/checkout_margin">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/layout_margin">
+                    android:layout_height="wrap_content">
 
-                    <Switch
-                        android:id="@+id/create_ship"
+                    <LinearLayout
+                        android:id="@+id/ll_ship_and_invoice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
                         android:layout_marginRight="@dimen/layout_margin"
-                        android:text="@string/create_shipping" />
+                        android:orientation="horizontal">
 
-                    <Switch
-                        android:id="@+id/create_invoice"
-                        android:layout_width="wrap_content"
+                        <Switch
+                            android:id="@+id/create_ship"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/checkout_margin"
+                            android:text="@string/create_shipping"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/text_size" />
+
+                        <Switch
+                            android:id="@+id/create_invoice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/create_invoice"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/text_size"
+                            android:visibility="gone" />
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:text="@string/create_invoice"
-                        android:visibility="gone" />
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/ll_ship_and_invoice">
+
+                        <TextView
+                            android:id="@+id/txt_remain_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="@dimen/layout_margin"
+                            android:layout_toLeftOf="@+id/txt_remain_value"
+                            android:text="@string/sales_expected_change"
+                            android:textColor="@color/app_color"
+                            android:textSize="@dimen/text_size" />
+
+                        <TextView
+                            android:id="@+id/txt_remain_value"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/checkout_remain_text_price_size" />
+                    </RelativeLayout>
                 </RelativeLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/boder_linear_layout"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <com.magestore.app.view.FormatTextEdit
+                        android:id="@+id/note"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:gravity="top"
+                        android:hint="@string/note"
+                        android:inputType="textMultiLine"
+                        android:minLines="3"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/text_size" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/layout_margin"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <Button
                         android:id="@+id/btn_checkout_add_payment"
@@ -296,7 +271,7 @@
                         android:text="@string/sales_place_holder" />
                 </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
+        </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/sales_background_loading"
