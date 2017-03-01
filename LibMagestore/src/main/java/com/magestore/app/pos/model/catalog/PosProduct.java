@@ -46,25 +46,31 @@ public class PosProduct extends PosAbstractModel implements Product {
     private PosStock[] stock;
     private PosTierPrice[] tier_prices;
     private float qty_increment = 1;
-    private PosProductOption productOption;
+    private List<ProductOption> productOptionList;
+    private int options;
 
     @Override
-    public ProductOption getProductOption() {
-        return (ProductOption) productOption;
+    public boolean haveProductOption() {
+        return options > 0;
     }
 
     @Override
-    public void setProductOption(ProductOption productOption) {
-        this.productOption = (PosProductOption) productOption;
+    public List<ProductOption> getProductOption() {
+        return productOptionList;
     }
 
     @Override
-    public boolean haveProductionOption() {
-        if (productOption == null) return false;
-        if (productOption.attributes == null) return false;
-        if (productOption.attributes.size() == 0) return false;
-        return true;
+    public void setProductOption(List<ProductOption> productOptionList) {
+        this.productOptionList = productOptionList;
     }
+
+//    @Override
+//    public boolean haveProductionOption() {
+//        if (productOption == null) return false;
+//        if (productOption.attributes == null) return false;
+//        if (productOption.attributes.size() == 0) return false;
+//        return true;
+//    }
 
     public ConfigOption generateConfigOption() {
         return new ConfigOption();

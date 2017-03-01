@@ -6,6 +6,7 @@ import com.magestore.app.lib.controller.ChildListController;
 import com.magestore.app.lib.controller.ListController;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.customer.CustomerAddress;
+import com.magestore.app.lib.observ.State;
 import com.magestore.app.lib.service.ServiceFactory;
 import com.magestore.app.lib.service.customer.CustomerAddressService;
 import com.magestore.app.lib.service.customer.CustomerService;
@@ -39,8 +40,20 @@ public class CustomerAddressListController
         }
     }
 
+    /**
+     * Gán customer cho address list
+     * @param customer
+     */
     public void bindCustomer(Customer customer) {
         bindParent(customer);
+    }
+
+    /**
+     * Gán customer cho address list thông qua cơ chế state observe
+     * @param state
+     */
+    public void bindCustomer(State state) {
+        bindCustomer(((CustomerListController) state.getController()).getSelectedItem());
     }
 
     /**

@@ -25,6 +25,7 @@ import com.magestore.app.lib.R;
 
 import com.magestore.app.lib.controller.ListController;
 import com.magestore.app.lib.model.Model;
+import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.view.adapter.DefaultModelView;
 import com.magestore.app.lib.view.item.ModelView;
 import com.magestore.app.lib.view.listener.EndlessRecyclerOnScrollListener;
@@ -39,7 +40,7 @@ import java.util.List;
  * Magestore
  * mike@trueplus.vn
  */
-public class AbstractListPanel<TModel extends Model>
+public abstract class AbstractListPanel<TModel extends Model>
         extends FrameLayout
         implements MagestoreView<ListController<TModel>> {
 
@@ -700,6 +701,29 @@ public class AbstractListPanel<TModel extends Model>
     }
 
     /**
+     * Hiển thị dialog confirm delete
+     * @param item
+     */
+    public void showDeleteItemInput(TModel item) {
+
+    }
+
+    /**
+     * Hiển thị dialog insert
+     */
+    public void showInsertItemInput() {
+
+    }
+
+    /**
+     * Hiển thị dialog update
+     * @param item
+     */
+    public void showUpdateItemInput(TModel item) {
+
+    }
+
+    /**
      * Adapter map từ danh sách sang recycleview
      */
     public class ListRecyclerViewAdapter
@@ -916,16 +940,16 @@ public class AbstractListPanel<TModel extends Model>
         }
     }
 
-    /**
-     * @param item
-     */
-    public void showDeleteItem(TModel item) {
-
-    }
-
-    public void showUpdateItem(TModel item) {
-
-    }
+//    /**
+//     * @param item
+//     */
+//    public void showDeleteItem(TModel item) {
+//
+//    }
+//
+//    public void showUpdateItem(TModel item) {
+//
+//    }
 
     /**
      * Có sự thay đổi số liệu, cập nhật lại giao diện

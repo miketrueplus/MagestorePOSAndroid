@@ -8,9 +8,14 @@ import android.view.View;
 
 
 import com.magestore.app.lib.context.MagestoreContext;
+import com.magestore.app.lib.observ.GenericState;
+import com.magestore.app.lib.observ.SubjectObserv;
 import com.magestore.app.lib.service.ServiceFactory;
+import com.magestore.app.lib.service.customer.CustomerAddressService;
 import com.magestore.app.lib.service.customer.CustomerService;
+import com.magestore.app.pos.controller.CustomerAddressListController;
 import com.magestore.app.pos.controller.CustomerListController;
+import com.magestore.app.pos.panel.CustomerAddressListPanel;
 import com.magestore.app.pos.panel.CustomerDetailPanel;
 import com.magestore.app.pos.panel.CustomerListPanel;
 import com.magestore.app.pos.ui.AbstractActivity;
@@ -24,6 +29,10 @@ public class CustomerActivity extends AbstractActivity {
     private CustomerListPanel mCustomerListPanel = null;
     private CustomerListController mCustomerListController = null;
     private CustomerDetailPanel mCustomerDetailPanel = null;
+
+    // view và controller cho địa chỉ
+    CustomerAddressListPanel mCustomerAddressListPanel;
+    CustomerAddressListController mCustomerAddressListController;
 
 //    private CustomerDetailController mCustomerDetailController = null;
     private boolean mblnTwoPane;
@@ -57,23 +66,29 @@ public class CustomerActivity extends AbstractActivity {
         mCustomerListPanel = (CustomerListPanel) findViewById(R.id.customer_list_panel);
         mCustomerDetailPanel = (CustomerDetailPanel) findViewById(R.id.customer_detail_panel);
 
+        // panel địa chỉ khách hàng
+        mCustomerAddressListPanel = (CustomerAddressListPanel) findViewById(R.id.customer_address);
+
         // xem giao diện 2 pane hay 1 pane
         mblnTwoPane = findViewById(R.id.two_pane) != null;
     }
 
     @Override
     protected void initModel() {
+
         // Context sử dụng xuyên suốt hệ thống
         MagestoreContext magestoreContext = new MagestoreContext();
         magestoreContext.setActivity(this);
 
         // chuẩn bị service
         ServiceFactory factory;
-        CustomerService service = null;
+        CustomerService customersService = null;
+        CustomerAddressService customerAddressService = null;
 
         try {
             factory = ServiceFactory.getFactory(magestoreContext);
-            service = factory.generateCustomerService();
+            customersService = factory.generateCustomerService();
+            customerAddressService = factory.generateCustomerAddressService();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InstantiationException e) {
@@ -83,13 +98,39 @@ public class CustomerActivity extends AbstractActivity {
         // Tạo list controller
         mCustomerListController = new CustomerListController();
         mCustomerListController.setMagestoreContext(magestoreContext);
-        mCustomerListController.setCustomerService(service);
+        mCustomerListController.setListService(customersService);
+        mCustomerListController.setCustomerService(customersService);
         mCustomerListController.setListPanel(mCustomerListPanel);
         mCustomerListController.setDetailPanel(mCustomerDetailPanel);
+
+        // Chuẩn bị controller quản lý danh sách địa chỉ khách hàng
+        mCustomerAddressListController = new CustomerAddressListController();
+        mCustomerAddressListController.setView(mCustomerAddressListPanel);
+        mCustomerAddressListController.setMagestoreContext(magestoreContext);
+        mCustomerAddressListController.setCustomerService(customersService);
+        mCustomerAddressListController.setChildListService(customerAddressService);
+
+
 
         // chuẩn bị model cho các panel
         mCustomerListPanel.initModel();
         mCustomerDetailPanel.initModel();
+
+        // khởi tạo subject, observe
+        SubjectObserv subjectObserv = new SubjectObserv();
+        mCustomerListController.setSubject(subjectObserv);
+        mCustomerAddressListController.setSubject(subjectObserv);
+        mCustomerAddressListController
+                .attachListenerObserve()
+                .setStateCode(GenericState.DEFAULT_STATE_CODE_ON_SELECT_ITEM)
+                .setControllerState(mCustomerListController)
+                .setMethodName("bindParent");
+
+        mCustomerAddressListController
+                .attachListenerObserve()
+                .setStateCode(CustomerListController.STATE_CODE_ON_CLICK_NEW_ADDRESS)
+                .setControllerState(mCustomerListController)
+                .setMethodName("doShowInsertItemInput");
     }
 
     @Override

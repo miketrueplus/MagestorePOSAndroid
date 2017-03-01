@@ -4,6 +4,7 @@ import android.view.View;
 
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.observ.GenericState;
+import com.magestore.app.lib.observ.State;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
 import com.magestore.app.lib.panel.AbstractListPanel;
 import com.magestore.app.lib.service.ListService;
@@ -60,7 +61,6 @@ public class AbstractListController<TModel extends Model>
     public void clearList() {
         mList = null;
         mView.clearList();
-//        mView.notifyDataSetChanged();
     }
 
     /**
@@ -70,7 +70,6 @@ public class AbstractListController<TModel extends Model>
     public void bindList(List<TModel> list) {
         mList = list;
         mView.bindList(mList);
-//        mView.notifyDataSetChanged();
     }
 
     /**
@@ -324,7 +323,6 @@ public class AbstractListController<TModel extends Model>
     @Override
     public void onInsertPostExecute(Boolean success, TModel... models) {
         if (success) {
-//            mView.notifyDataSetChanged();
             mView.insertListAtLast(models);
 
             // báo cho các observ khác về việc bind item
@@ -399,6 +397,37 @@ public class AbstractListController<TModel extends Model>
     @Override
     public TModel createItem() {
         return getListService().create();
+    }
+
+    /**
+     * Hiển thị confirm delete item
+     * @param item
+     */
+    @Override
+    public void doShowDeleteItemInput(TModel item) {
+        mView.showDeleteItemInput(item);
+    }
+
+    /**
+     * Hiển thị để update 1 item
+     * @param item
+     */
+    @Override
+    public void doShowUpdateItemInput(TModel item) {
+        mView.showUpdateItemInput(item);
+    }
+
+    /**
+     * Hiển thị để insert 1 item
+     */
+    @Override
+    public void doShowInsertItemInput() {
+        mView.showInsertItemInput();
+    }
+
+    @Override
+    public void doShowInsertItemInput(State state) {
+        doShowInsertItemInput();
     }
 
     /**

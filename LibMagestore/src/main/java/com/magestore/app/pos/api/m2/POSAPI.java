@@ -14,9 +14,15 @@ public class POSAPI {
     public static final String PARAM_SESSION_ID = "sessionID";
     public static final String PARAM_CONFIG_ID = "configID";
     public static final String PARAM_CONFIG_PATH = "configPath";
+    public static final String PARAM_PRODUCT_ID = "productID";
 
     // API get product
-    public static final String REST_PRODUCT_GET_LISTING = "/rest/default/V1/webpos/products/?";
+    public static final String REST_PRODUCT_GET_LISTING = "/rest/default/V1/webpos/productlist/?";
+    public static final String REST_PRODUCT_GET = "/rest/default/V1/webpos/products/?";
+
+
+    // API get product options
+    public static final String REST_PRODUCT_GET_OPTION = "/rest/default/V1/webpos/products/${productID}/options?";
 
     // API get category
     public static final String REST_GET_CATEGORY_LISTING = "/rest/default/V1/webpos/categories/?";

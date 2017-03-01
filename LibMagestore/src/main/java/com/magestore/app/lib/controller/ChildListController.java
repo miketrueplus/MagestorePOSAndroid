@@ -1,6 +1,7 @@
 package com.magestore.app.lib.controller;
 
 import com.magestore.app.lib.model.Model;
+import com.magestore.app.lib.observ.State;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
 import com.magestore.app.lib.panel.AbstractListPanel;
 import com.magestore.app.lib.service.ChildListService;
@@ -18,11 +19,20 @@ import java.util.List;
 
 public interface ChildListController<TParent extends Model, TModel extends Model>
         extends ListController<TModel> {
+
+
+
     /**
      * Trả lại parent model tham chiếu
      * @return
      */
     TParent getParent();
+
+    /**
+     * Bind parent theo cơ chế observ
+     * @param state
+     */
+    void bindParent(State<ListController<TParent>> state);
 
     /**
      * Chỉ định parent model tham chiếu

@@ -22,7 +22,7 @@ import java.util.List;
 public interface ProductDataAccess extends DataAccess, ListDataAccess<Product> {
     Bitmap retrieveBitmap(Product product, int sizeWidth, int sizeHeight) throws IOException;
 
-    ProductOption loadProductOption(Product product);
+    List<ProductOption> loadProductOption(Product product) throws IOException;
 
     void loadProductOption(List<Product> listProduct);
 

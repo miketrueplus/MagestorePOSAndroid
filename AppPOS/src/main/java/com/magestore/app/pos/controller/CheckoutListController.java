@@ -61,19 +61,19 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     CartOrderListPanel mCartOrderListPanel;
     CheckoutAddressListPanel mCheckoutAddressListPanel;
 
-    @Override
-    public void bindItem(Checkout item) {
-        super.bindItem(item);
-        if (mCartItemListController != null) {
-            mCartItemListController.bindParent(item);
-            mCartItemListController.doRetrieve();
-        }
-    }
+//    @Override
+//    public void bindItem(Checkout item) {
+//        super.bindItem(item);
+//        if (mCartItemListController != null) {
+//            mCartItemListController.bindParent(item);
+//            mCartItemListController.doRetrieve();
+//        }
+//    }
 
-    @Override
-    public void doRetrieve() {
-        super.doRetrieve();
-    }
+//    @Override
+//    public void doRetrieve() {
+//        super.doRetrieve();
+//    }
 
     @Override
     public List<Checkout> onRetrieveBackground(int page, int pageSize) throws Exception {

@@ -13,9 +13,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.magestore.app.lib.controller.Controller;
+import com.magestore.app.lib.controller.ListController;
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.customer.Complain;
 import com.magestore.app.lib.model.customer.Customer;
+import com.magestore.app.lib.observ.GenericState;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
 import com.magestore.app.lib.view.SimpleSpinner;
 import com.magestore.app.pos.controller.CustomerAddressListController;
@@ -28,6 +30,7 @@ import com.magestore.app.pos.view.MagestoreDialog;
 
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 /**
  * Hiển thị và quản lý các thông tin chi tiết của 1 customer
@@ -38,8 +41,8 @@ import java.util.Map;
 
 public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
     // controller và view để quản lý địa chỉ của khách hàng
-    CustomerAddressListPanel mCustomerAddressListPanel;
-    CustomerAddressListController mCustomerAddressListController;
+//    CustomerAddressListPanel mCustomerAddressListPanel;
+//    CustomerAddressListController mCustomerAddressListController;
 
     // complain của khách hàng
     CustomerComplainListView mCustomerComplainListView;
@@ -106,7 +109,7 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
         mBinding = DataBindingUtil.bind(getView());
 
         // chuẩn bị panel view danh sách địa chỉ khách hàng
-        mCustomerAddressListPanel = (CustomerAddressListPanel) findViewById(R.id.customer_address);
+//        mCustomerAddressListPanel = (CustomerAddressListPanel) findViewById(R.id.customer_address);
 
         // chuẩn bị panel complain của khách hàng
         mCustomerComplainListView = (CustomerComplainListView) findViewById(R.id.complain_list_panel);
@@ -195,22 +198,22 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
     /**
      * Chuẩn bị các model, controller
      */
-    @Override
-    public void initModel() {
+//    @Override
+//    public void initModel() {
         // Lấy lại customer service từ controller của panel này và đặt cho controlller địa chỉ
-        Controller controller = getController();
+//        Controller controller = getController();
 
-        // Chuẩn bị controller quản lý danh sách địa chỉ khách hàng
-        mCustomerAddressListController = new CustomerAddressListController();
-        mCustomerAddressListController.setView(mCustomerAddressListPanel);
-        mCustomerAddressListController.setMagestoreContext(controller.getMagestoreContext());
+//        // Chuẩn bị controller quản lý danh sách địa chỉ khách hàng
+//        mCustomerAddressListController = new CustomerAddressListController();
+//        mCustomerAddressListController.setView(mCustomerAddressListPanel);
+//        mCustomerAddressListController.setMagestoreContext(controller.getMagestoreContext());
+//
+//        // xác định controller là customer list
+//        if (controller instanceof CustomerListController)
+//            mCustomerAddressListController.setCustomerService(((CustomerListController) controller).getCustomerService());
 
-        // xác định controller là customer list
-        if (controller instanceof CustomerListController)
-            mCustomerAddressListController.setCustomerService(((CustomerListController) controller).getCustomerService());
 
-
-    }
+//    }
 
     /**
      * Sự kiện khi ấn nút checkout
@@ -260,7 +263,10 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
      */
     public void onClickNewAddress(View v) {
         // Chuẩn bị layout cho dialog customerAddress
-        mCustomerAddressListPanel.showNewItem();
+        // báo cho các observ khác về việc bind item
+        GenericState<ListController> state = new GenericState<ListController>(mController, CustomerListController.STATE_CODE_ON_CLICK_NEW_ADDRESS);
+        if (mController.getSubject() != null) mController.getSubject().setState(state);
+//        mCustomerAddressListPanel.showNewItem();
     }
 
     /**
@@ -285,7 +291,7 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
         mspinGroupID.setSelection(item.getGroupID());
 
         // chỉ định adress controller hiển thị các address lên
-        mCustomerAddressListController.bindCustomer(item);
+//        mCustomerAddressListController.bindCustomer(item);
 
         // chỉ định complain list cho hiển thị
         if (item.getComplain() != null) mCustomerComplainListView.bind((List<Model>)(List<?>) item.getComplain());
@@ -302,7 +308,7 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
     @Override
     public void notifyDataSetChanged() {
         super.notifyDataSetChanged();
-        mCustomerAddressListPanel.notifyDataSetChanged();
+//        mCustomerAddressListPanel.notifyDataSetChanged();
 //        mCustomerComplainListView.not .notifyDataSetChanged();
     }
 

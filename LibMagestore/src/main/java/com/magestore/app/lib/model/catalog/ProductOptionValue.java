@@ -1,9 +1,6 @@
 package com.magestore.app.lib.model.catalog;
 
 import com.magestore.app.lib.model.Model;
-import com.magestore.app.pos.model.catalog.PosProductOptionValue;
-
-import java.util.List;
 
 /**
  * Created by Mike on 12/14/2016.
@@ -11,24 +8,12 @@ import java.util.List;
  * mike@trueplus.vn
  */
 
-public interface ProductOption extends Model {
+public interface ProductOptionValue extends Model {
+    String getOptionTypeID();
+
     String getOptionID();
 
-    String getProductID();
-
-    String getType();
-
-    boolean isRequired();
-
     String getSku();
-
-    int getMaxCharacters();
-
-    String getFileExtension();
-
-    String getImageSizeX();
-
-    String getImageSizeY();
 
     String getSortOrder();
 
@@ -49,6 +34,4 @@ public interface ProductOption extends Model {
     String getPrice();
 
     String getPriceType();
-
-    List<PosProductOptionValue> getOptionValueList();
 }

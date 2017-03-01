@@ -3,6 +3,7 @@ package com.magestore.app.lib.controller;
 import android.view.View;
 
 import com.magestore.app.lib.model.Model;
+import com.magestore.app.lib.observ.State;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
 import com.magestore.app.lib.panel.AbstractListPanel;
 import com.magestore.app.lib.service.ListService;
@@ -176,6 +177,14 @@ public interface ListController<TModel extends Model>
      * @param models
      */
     void setSelectedItem(List<TModel> models);
+
+    void doShowDeleteItemInput(TModel item);
+
+    void doShowUpdateItemInput(TModel item);
+
+    void doShowInsertItemInput();
+
+    void doShowInsertItemInput(State state);
 
     /**
      * Load thêm dữ liệu theo số trang (dùng trong lazy loading

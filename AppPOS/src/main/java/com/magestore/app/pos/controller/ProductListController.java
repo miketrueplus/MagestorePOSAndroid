@@ -143,6 +143,7 @@ public class ProductListController extends AbstractListController<Product> {
     @Override
     public void bindItem(Product item) {
         super.bindItem(item);
+
     }
 
     public void selectCategoryChild(Category category) {

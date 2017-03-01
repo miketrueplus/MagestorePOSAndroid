@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.magestore.app.lib.context.MagestoreContext;
 import com.magestore.app.lib.model.catalog.Category;
+import com.magestore.app.lib.model.catalog.ProductOption;
 import com.magestore.app.lib.model.config.Config;
 import com.magestore.app.lib.model.customer.Complain;
 import com.magestore.app.lib.model.customer.Customer;
@@ -20,6 +21,7 @@ import com.magestore.app.lib.resourcemodel.registershift.RegisterShiftDataAccess
 import com.magestore.app.lib.resourcemodel.sales.OrderDataAccess;
 import com.magestore.app.lib.resourcemodel.user.UserDataAccess;
 import com.magestore.app.pos.api.m2.POSDataAccessSession;
+import com.magestore.app.pos.model.catalog.PosProduct;
 import com.magestore.app.pos.model.user.PosUser;
 import com.magestore.app.pos.service.user.POSUserService;
 
@@ -217,6 +219,32 @@ public class MagestoreDataAccessTest {
 
         List<Product> list = productDataAccess.retrieve("MB02", 1, 500);
         assert (list != null);
+        return;
+    }
+
+    @Test
+    public void test_search_product_option_is_correct() throws Exception {
+        User user = new PosUser();
+        user.setUserName("demo");
+        user.setPasswords("demo123");
+
+        // Khởi tạo order gateway factory
+        DataAccessFactory factory = DataAccessFactory.getFactory(new MagestoreContext());
+        ProductDataAccess productDataAccess = factory.generateProductDataAccess();
+        UserDataAccess userDA = factory.generateUserDataAccess();
+
+        // Lấy list 30 order đầu tiên
+        POSDataAccessSession.REST_BASE_URL = "http://" + BuildConfig.DEFAULT_REST_BASE_URL + "/" + BuildConfig.DEFAULT_REST_BASE_PAGE;
+        String strSession = userDA.login(POSDataAccessSession.REST_BASE_URL, "", "", user);
+        POSUserService.session = new POSDataAccessSession();
+        POSUserService.session.REST_SESSION_ID = strSession.trim().replace("\"", "");
+
+        List<Product> productList = productDataAccess.retrieve();
+        for (Product product : productList) {
+            if (product.haveProductOption()) {
+                List<ProductOption> productOptionList = productDataAccess.loadProductOption(product);
+            }
+        }
         return;
     }
 }

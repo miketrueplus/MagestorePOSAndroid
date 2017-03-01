@@ -34,6 +34,8 @@ public class CustomerListController extends AbstractListController<Customer> {
     static final int ACTION_CODE_GET_COMPLAIN = 0;
     static final int ACTION_CODE_INPUT_COMPLAIN = 1;
 
+    public static final String STATE_CODE_ON_CLICK_NEW_ADDRESS = "STATE_CODE_ON_CLICK_NEW_ADDRESS";
+
     /**
      * Service xử lý các vấn đề liên quan đến customer
      */

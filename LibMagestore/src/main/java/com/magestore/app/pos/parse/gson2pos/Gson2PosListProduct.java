@@ -6,7 +6,6 @@ import com.magestore.app.pos.model.catalog.PosProduct;
  * Created by Mike on 12/19/2016.
  * Magestore
  * mike@trueplus.vn
- * TODO: Add a class header comment!
  */
 
 public class Gson2PosListProduct extends Gson2PosListParseModel<PosProduct> {

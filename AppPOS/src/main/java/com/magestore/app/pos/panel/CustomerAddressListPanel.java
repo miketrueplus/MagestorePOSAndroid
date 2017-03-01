@@ -55,7 +55,7 @@ public class CustomerAddressListPanel extends AbstractListPanel<CustomerAddress>
         ((ImageButton) view.findViewById(R.id.btn_adrress_edit)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showUpdateItem(item);
+                showUpdateItemInput(item);
             }
         });
 
@@ -63,7 +63,7 @@ public class CustomerAddressListPanel extends AbstractListPanel<CustomerAddress>
         ((ImageButton) view.findViewById(R.id.btn_adrress_delete)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDeleteItem(item);
+                showDeleteItemInput(item);
             }
         });
     }
@@ -74,7 +74,8 @@ public class CustomerAddressListPanel extends AbstractListPanel<CustomerAddress>
      * Hiển thị dialog confirm trước khi delete
      * @param item
      */
-    public void showDeleteItem(final CustomerAddress item) {
+    @Override
+    public void showDeleteItemInput(final CustomerAddress item) {
         final Context context = getContext();
         // Tạo dialog và hiển thị
         DialogUtil.confirm(context,
@@ -92,7 +93,8 @@ public class CustomerAddressListPanel extends AbstractListPanel<CustomerAddress>
     /**
      * Hiển thị dialog tạo mới địa chỉ
      */
-    public void showNewItem() {
+    @Override
+    public void showInsertItemInput() {
         // Chuẩn bị layout cho dialog
         final CustomerAddressDetailPanel panelAddress = new CustomerAddressDetailPanel(getContext());
         panelAddress.setLayoutPanel(R.layout.panel_customer_address_detail);
@@ -122,7 +124,8 @@ public class CustomerAddressListPanel extends AbstractListPanel<CustomerAddress>
      * Hiển thị dialog edit địa chỉ
      * @param item
      */
-    public void showUpdateItem(final CustomerAddress item) {
+    @Override
+    public void showUpdateItemInput(final CustomerAddress item) {
         // Chuẩn bị layout cho dialog customerAddress
         final CustomerAddressDetailPanel panelAddress = new CustomerAddressDetailPanel(getContext());
         panelAddress.setLayoutPanel(R.layout.panel_customer_address_detail);

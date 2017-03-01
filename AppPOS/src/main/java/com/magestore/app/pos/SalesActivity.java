@@ -253,11 +253,18 @@ public class SalesActivity extends AbstractActivity
         mCategoryListPanel.initModel();
 
         // map các observ
+        /////////////////////////////////
         mCheckoutCartItemListController
                 .attachListenerObserve()
                 .setMethodName("bindProduct")
                 .setStateCode(GenericState.DEFAULT_STATE_CODE_ON_SELECT_ITEM)
                 .setControllerState(mProductListController);
+
+        mCheckoutCartItemListController
+                .attachListenerObserve()
+                .setMethodName("bindParent")
+                .setStateCode(GenericState.DEFAULT_STATE_CODE_ON_SELECT_ITEM)
+                .setControllerState(mCheckoutListController);
     }
 
     @Override

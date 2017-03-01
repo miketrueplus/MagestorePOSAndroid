@@ -1,6 +1,7 @@
 package com.magestore.app.lib.controller;
 
 import com.magestore.app.lib.model.Model;
+import com.magestore.app.lib.observ.State;
 import com.magestore.app.lib.service.ChildListService;
 
 import java.util.List;
@@ -29,6 +30,15 @@ public abstract class AbstractChildListController<TParent extends Model, TModel 
     public void bindParent(TParent parent) {
         mParentModel = parent;
         doRetrieve();
+    }
+
+    /**
+     * Chỉ định parent model theo cơ chế observe state
+     * @return
+     */
+    @Override
+    public void bindParent(State<ListController<TParent>> state) {
+        bindParent(state.getController().getSelectedItem());
     }
 
     /**

@@ -3,6 +3,7 @@ package com.magestore.app.pos.service.catalog;
 import android.graphics.Bitmap;
 
 import com.magestore.app.lib.model.catalog.Product;
+import com.magestore.app.lib.model.catalog.ProductOption;
 import com.magestore.app.lib.resourcemodel.DataAccessFactory;
 import com.magestore.app.lib.resourcemodel.catalog.ProductDataAccess;
 import com.magestore.app.lib.service.catalog.ProductService;
@@ -20,51 +21,9 @@ import java.util.List;
  * Magestore
  * mike@trueplus.vn
  */
-
 public class POSProductService extends AbstractService implements ProductService {
-//    Product mProduct;
-
-//    /**
-//     * Trả tham chiếu đến product dang thực hiện nghiệp vụ
-//     *
-//     * @return
-//     */
-//    @Override
-//    public Product getProduct() {
-//        return mProduct;
-//    }
-//
-//    /**
-//     * Đặt product để thực hiện các nghiệp vụ
-//     *
-//     * @param product
-//     */
-//    public void setProduct(Product product) {
-//        mProduct = product;
-//    }
-
-    /**
-     * Lấy danh sách product
-     *
-     * @param size
-     * @return
-     * @throws InstantiationException
-     * @throws IllegalAccessException
-     * @throws IOException
-     * @throws ParseException
-     */
-//    public List<Product> retrieveProductList(int size) throws InstantiationException, IllegalAccessException, IOException, ParseException {
-//        // Khởi tạo product gateway factory
-//        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
-//        ProductDataAccess productDataAccess = factory.generateProductDataAccess();
-//
-//        // Lấy list 30 products đầu tiên
-//        return productDataAccess.retrieve(1, size);
-//    }
-
     /**
      * Load bitmap từ image vào bitmap
-     *
      * @param product
      * @return
      */

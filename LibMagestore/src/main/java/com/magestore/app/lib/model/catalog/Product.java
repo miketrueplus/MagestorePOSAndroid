@@ -7,6 +7,7 @@ import com.magestore.app.lib.parse.ParseModel;
 import com.magestore.app.pos.model.catalog.PosProductOption;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Mike on 12/11/2016.
@@ -16,11 +17,13 @@ public interface Product extends Model, ParseModel {
     String getID();
     String getName();
 
-    ProductOption getProductOption();
+    boolean haveProductOption();
 
-    void setProductOption(ProductOption productOption);
+    List<ProductOption> getProductOption();
 
-    boolean haveProductionOption();
+    void setProductOption(List<ProductOption> productOption);
+
+//    boolean haveProductionOption();
 
     String getTypeID();
     String getSKU();

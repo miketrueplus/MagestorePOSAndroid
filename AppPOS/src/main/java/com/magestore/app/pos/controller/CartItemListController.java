@@ -30,18 +30,23 @@ public class CartItemListController extends AbstractChildListController<Checkout
      * @param product
      */
     public void bindProduct(Product product) {
-        try {
-            CartItem cartItem = mCartService.insert(getParent(), product, product.getQuantityIncrement());
-            mView.updateModelInsertAtLastIfNotFound(cartItem);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
+//        if (!product.haveProductOption()) {
+            try {
+                CartItem cartItem = mCartService.insert(getParent(), product, product.getQuantityIncrement());
+                mView.updateModelInsertAtLastIfNotFound(cartItem);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+//        }
+//        else {
+
+//        }
 //        mView.notifyDataSetChanged();
         updateTotalPrice();
     }
