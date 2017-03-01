@@ -1,6 +1,7 @@
 package com.magestore.app.pos.controller;
 
 import com.magestore.app.lib.controller.AbstractChildListController;
+import com.magestore.app.lib.controller.AbstractController;
 import com.magestore.app.lib.controller.ListController;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.model.checkout.Checkout;
@@ -22,6 +23,8 @@ import java.util.List;
 
 public class CartItemListController extends AbstractChildListController<Checkout, CartItem> {
     public static final String STATE_ON_SHOW_PRODUCT_OPTION = "STATE_ON_SHOW_PRODUCT_OPTION";
+    public static final String STATE_ON_UPDATE_CART_ITEM = "STATE_ON_UPDATE_CART_ITEM";
+
 
     CartService mCartService;
     @Override
@@ -78,10 +81,12 @@ public class CartItemListController extends AbstractChildListController<Checkout
      */
     public void updateTotalPrice() {
         mCartService.calculateLastTotal(getParent());
-
+        // thông báo sự kiện update tổng giá
+        GenericState<ListController> state = new GenericState<ListController>(this, STATE_ON_UPDATE_CART_ITEM);
+        if (getSubject() != null) getSubject().setState(state);
 //        mCartService.calculateLastTotalOrderItems();
-        if (mParrentController != null && (mParrentController instanceof  CheckoutListController))
-          ((CheckoutListController) mParrentController).updateTotalPrice();
+//        if (mParrentController != null && (mParrentController instanceof  CheckoutListController))
+//          ((CheckoutListController) mParrentController).updateTotalPrice();
     }
 
     /**

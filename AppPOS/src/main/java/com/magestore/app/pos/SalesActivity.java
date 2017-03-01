@@ -260,22 +260,32 @@ public class SalesActivity extends AbstractActivity
 
         // map các observ
         /////////////////////////////////
+        // mỗi khi 1 product trên product list được ấn chọn
         mCheckoutCartItemListController
                 .attachListenerObserve()
                 .setMethodName("bindProduct")
                 .setStateCode(GenericState.DEFAULT_STATE_CODE_ON_SELECT_ITEM)
                 .setControllerState(mProductListController);
 
+        // sự kiện mỗi khi có 1 checkout được chọn
         mCheckoutCartItemListController
                 .attachListenerObserve()
                 .setMethodName("bindParent")
                 .setStateCode(GenericState.DEFAULT_STATE_CODE_ON_SELECT_ITEM)
                 .setControllerState(mCheckoutListController);
 
+        // hiển thị production opption nếu product có option
         mProductOptionListController
                 .attachListenerObserve()
                 .setMethodName("doShowProductOptionInput")
                 .setStateCode(CartItemListController.STATE_ON_SHOW_PRODUCT_OPTION)
+                .setControllerState(mCheckoutCartItemListController);
+
+        // cập nhật giá tổng trên view mỗi khi có 1 cart item được thay đổi
+        mCheckoutListController
+                .attachListenerObserve()
+                .setMethodName("updateTotalPrice")
+                .setStateCode(CartItemListController.STATE_ON_UPDATE_CART_ITEM)
                 .setControllerState(mCheckoutCartItemListController);
     }
 

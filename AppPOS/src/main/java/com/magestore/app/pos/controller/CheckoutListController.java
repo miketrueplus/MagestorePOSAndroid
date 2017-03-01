@@ -437,6 +437,14 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             ((CheckoutListPanel) mView).updateTotalPrice(mItem);
     }
 
+    /**
+     * Cập nhật tổng giá theo observe mỗi khi có state từ cartitem
+     * @param state
+     */
+    public void updateTotalPrice(State state) {
+        updateTotalPrice();
+    }
+
     public void setCartOrderListPanel(CartOrderListPanel mCartOrderListPanel) {
         this.mCartOrderListPanel = mCartOrderListPanel;
     }
