@@ -14,6 +14,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/card_item_margin_size"
+        android:layout_marginRight="@dimen/card_item_margin_size"
         card_view:cardElevation="0dp">
 
         <RelativeLayout
@@ -43,8 +45,8 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
                             android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
                             android:src="@drawable/ic_card_swipe_delete_item" />
                     </RelativeLayout>
 
@@ -70,40 +72,31 @@
                                 android:layout_gravity="center"
                                 android:layout_marginLeft="5dp"
                                 android:background="@mipmap/ic_unknow" />
-
-                            <TextView
-                                android:id="@+id/sales_order_quantity"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="end"
-                                android:background="@drawable/conner_order_item_quantity"
-                                android:minEms="1"
-                                android:text="@{ConfigUtil.formatQuantity(cartItem.getQuantity())}"
-                                android:textAlignment="center"
-                                android:textColor="#FFFFFFFF"
-                                android:textStyle="bold" />
                         </RelativeLayout>
 
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             android:layout_weight="1"
                             android:orientation="horizontal">
 
                             <LinearLayout
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:orientation="vertical">
 
                                 <TextView
                                     android:id="@+id/sales_order_name"
-                                    android:layout_width="match_parent"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginLeft="5dp"
-                                    android:layout_marginRight="5dp"
+                                    android:layout_gravity="left"
+                                    android:layout_marginLeft="@dimen/layout_margin"
+                                    android:layout_marginRight="@dimen/layout_margin"
                                     android:ellipsize="end"
-                                    android:lines="2"
+                                    android:gravity="bottom"
+                                    android:maxLines="2"
                                     android:text="@{cartItem.getProduct().getName()}"
                                     android:textColor="@color/text_color"
                                     android:textSize="@dimen/card_item_text_name_size" />
@@ -114,28 +107,46 @@
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentLeft="true"
                                     android:layout_gravity="left"
-                                    android:layout_marginLeft="5dp"
-                                    android:layout_marginRight="5dp"
+                                    android:layout_marginLeft="@dimen/layout_margin"
+                                    android:layout_marginRight="@dimen/layout_margin"
                                     android:text="@{cartItem.getProduct().getSKU()}"
                                     android:textColor="@color/card_item_text_option_color"
                                     android:textSize="@dimen/card_item_text_option_size"
                                     android:textStyle="italic" />
                             </LinearLayout>
 
-
-                            <com.magestore.app.view.FormatTextView
-                                android:id="@+id/sales_order_price"
-                                android:layout_width="wrap_content"
+                            <LinearLayout
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:layout_gravity="right"
-                                android:layout_marginLeft="5dp"
-                                android:layout_marginRight="5dp"
-                                android:layout_toRightOf="@+id/sku"
-                                android:gravity="right"
-                                android:text="@{ConfigUtil.formatPrice(cartItem.getProduct().getPrice() * cartItem.getQuantity())}"
-                                android:textColor="@color/text_color"
-                                android:textSize="@dimen/card_item_text_price_size" />
+                                android:layout_gravity="center"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <com.magestore.app.view.FormatTextView
+                                    android:id="@+id/sales_order_price"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="right"
+                                    android:layout_marginLeft="@dimen/layout_margin"
+                                    android:layout_marginRight="@dimen/layout_margin"
+                                    android:gravity="bottom"
+                                    android:maxLines="2"
+                                    android:text="@{ConfigUtil.formatPrice(cartItem.getProduct().getPrice() * cartItem.getQuantity())}"
+                                    android:textColor="@color/text_color"
+                                    android:textSize="@dimen/card_item_text_price_size" />
+
+                                <TextView
+                                    android:id="@+id/sales_order_quantity"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="right"
+                                    android:layout_marginLeft="@dimen/layout_margin"
+                                    android:layout_marginRight="@dimen/layout_margin"
+                                    android:text='@{cartItem.getProduct().getPrice() + " x " + cartItem.getQuantity()}'
+                                    android:textColor="@color/card_item_text_option_color"
+                                    android:textSize="@dimen/card_item_text_option_size"
+                                    android:textStyle="italic" />
+                            </LinearLayout>
                         </LinearLayout>
 
                     </LinearLayout>

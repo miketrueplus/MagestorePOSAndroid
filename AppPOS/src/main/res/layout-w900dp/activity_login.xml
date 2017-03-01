@@ -5,17 +5,6 @@
     android:gravity="center_horizontal"
     tools:context="com.magestore.app.pos.LoginActivity">
 
-    <!-- Login progress -->
-    <ProgressBar
-        android:id="@+id/login_progress"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="8dp"
-        android:visibility="gone" />
-
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -27,6 +16,14 @@
         android:layout_height="match_parent"
         android:background="@color/login_background" />
 
+    <!-- Login progress -->
+    <ProgressBar
+        android:id="@+id/login_progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/login_form"
@@ -56,7 +53,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="5"
                 android:background="@drawable/border_background_form_login"
-                android:padding="40dp">
+                android:padding="@dimen/login_form_padding_size">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -74,7 +71,7 @@
                         android:hint="@string/login_domain"
                         android:inputType="text"
                         android:maxLines="1"
-                        android:padding="15dp" />
+                        android:padding="@dimen/login_edditext_padding_size" />
 
                     <AutoCompleteTextView
                         android:id="@+id/user_name"
@@ -86,7 +83,7 @@
                         android:hint="@string/login_user_name"
                         android:inputType="text"
                         android:maxLines="1"
-                        android:padding="15dp" />
+                        android:padding="@dimen/login_edditext_padding_size" />
 
                     <EditText
                         android:id="@+id/password"
@@ -100,7 +97,7 @@
                         android:imeOptions="actionUnspecified"
                         android:inputType="textPassword"
                         android:maxLines="1"
-                        android:padding="15dp" />
+                        android:padding="@dimen/login_edditext_padding_size" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -116,7 +113,7 @@
                             android:id="@+id/sign_in_button"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="25dp"
+                            android:layout_marginTop="@dimen/login_form_button_margin_top"
                             android:layout_weight="1"
                             android:background="@drawable/login_form_border_button"
                             android:text="@string/login_action_sign_in"
