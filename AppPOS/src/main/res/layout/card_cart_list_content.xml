@@ -24,31 +24,31 @@
                 android:id="@+id/sales_order_swipe_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:descendantFocusability="beforeDescendants"
                 swipe:clickToClose="true"
                 swipe:leftEdgeSwipeOffset="0dp"
                 swipe:rightEdgeSwipeOffset="0dp">
 
-                <LinearLayout
+                <RelativeLayout
                     android:id="@+id/sales_order_swipe_delete_layout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@color/card_swipe_background"
-                    android:orientation="horizontal">
+                    android:layout_width="@dimen/card_item_image_size"
+                    android:layout_height="match_parent"
+                    android:background="@color/card_swipe_background">
 
                     <RelativeLayout
                         android:id="@+id/sales_order_swipe_del_button"
-                        android:layout_width="@dimen/card_item_image_size"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center_horizontal|center_vertical">
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
 
-                        <ImageButton
+                        <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:background="@drawable/ic_card_swipe_delete_item" />
+                            android:layout_centerVertical="true"
+                            android:layout_centerHorizontal="true"
+                            android:src="@drawable/ic_card_swipe_delete_item" />
                     </RelativeLayout>
 
-                </LinearLayout>
+                </RelativeLayout>
 
                 <FrameLayout
                     android:layout_width="match_parent"

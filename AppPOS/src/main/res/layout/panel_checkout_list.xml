@@ -44,7 +44,8 @@
                     android:id="@+id/ll_action_checkout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="5dp"
                     android:layout_weight="1">
 
                     <Button

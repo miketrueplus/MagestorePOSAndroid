@@ -13,6 +13,12 @@
     <dimen name="layout_margin">5dp</dimen>
     <dimen name="line">1dp</dimen>
 
+    <!--Login-->
+    <dimen name="login_form_background_border_size">2dp</dimen>
+    <dimen name="login_form_border_radius">4dp</dimen>
+    <dimen name="login_form_background_border_radius">10dp</dimen>
+    <dimen name="login_text_size">14sp</dimen>
+
     <!--Product List-->
     <dimen name="product_item_space">0.5dp</dimen>
     <dimen name="product_image_height">120dp</dimen>

@@ -9,12 +9,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:text="@string/category" />
+        android:text="@string/category"
+        android:textColor="@color/menu_category_text_color" />
 
-    <ImageButton
+    <ImageView
         android:id="@+id/im_category_arrow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:background="@drawable/ic_expand_more_white" />
+        android:src="@drawable/ic_expand_more_white" />
 </LinearLayout>
