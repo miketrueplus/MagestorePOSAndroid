@@ -28,7 +28,7 @@ import com.magestore.app.util.ConfigUtil;
  */
 public class ProductListPanel extends AbstractListPanel<Product> {
     Toolbar toolbar_category;
-    ImageButton im_category_arrow;
+    ImageView im_category_arrow;
     FrameLayout fr_category;
     CategoryListController mCategoryListController;
 
@@ -56,7 +56,7 @@ public class ProductListPanel extends AbstractListPanel<Product> {
         // Chuẩn bị list danh sách khách hàng
         fr_category = (FrameLayout) findViewById(R.id.fr_category);
         toolbar_category = (Toolbar) findViewById(R.id.toolbar_category);
-        im_category_arrow = (ImageButton) findViewById(R.id.im_category_arrow);
+        im_category_arrow = (ImageView) findViewById(R.id.im_category_arrow);
 
         toolbar_category.setOnClickListener(new OnClickListener() {
             @Override
@@ -128,7 +128,7 @@ public class ProductListPanel extends AbstractListPanel<Product> {
             // gán giá trị của product vào
             txtProductName.setText(product.getName());
             txtPrice.setText(ConfigUtil.formatPrice(product.getPrice()));
-            txtSKU.setText(product.getSKU());
+//            txtSKU.setText(product.getSKU());
 
             // gán ảnh vào
             Bitmap bmp = product.getBitmap();

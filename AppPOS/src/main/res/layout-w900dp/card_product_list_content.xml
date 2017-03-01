@@ -45,20 +45,10 @@
                     android:layout_marginBottom="@dimen/product_price_margin"
                     android:ellipsize="end"
                     android:lines="2"
+                    android:gravity="bottom"
                     android:text="@{product.getName()}"
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/product_text_name_size" />
-
-                <TextView
-                    android:id="@+id/sku"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:layout_weight="1"
-                    android:text="@{product.getSKU()}"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/product_text_sku_size"
-                    android:textStyle="italic" />
             </LinearLayout>
 
             <TextView
