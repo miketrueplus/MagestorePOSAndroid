@@ -39,6 +39,7 @@ public abstract class AbstractChildListController<TParent extends Model, TModel 
     @Override
     public void bindParent(State<ListController<TParent>> state) {
         bindParent(state.getController().getSelectedItem());
+        doRetrieve();
     }
 
     /**

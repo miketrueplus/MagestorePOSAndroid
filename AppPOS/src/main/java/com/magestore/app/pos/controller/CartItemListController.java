@@ -1,9 +1,11 @@
 package com.magestore.app.pos.controller;
 
 import com.magestore.app.lib.controller.AbstractChildListController;
+import com.magestore.app.lib.controller.ListController;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
+import com.magestore.app.lib.observ.GenericState;
 import com.magestore.app.lib.observ.State;
 import com.magestore.app.lib.service.ChildListService;
 import com.magestore.app.lib.service.checkout.CartService;
@@ -19,6 +21,8 @@ import java.util.List;
  */
 
 public class CartItemListController extends AbstractChildListController<Checkout, CartItem> {
+    public static final String STATE_ON_SHOW_PRODUCT_OPTION = "STATE_ON_SHOW_PRODUCT_OPTION";
+
     CartService mCartService;
     @Override
     protected List<CartItem> loadDataBackground(Void... params) throws Exception {
@@ -30,10 +34,11 @@ public class CartItemListController extends AbstractChildListController<Checkout
      * @param product
      */
     public void bindProduct(Product product) {
-//        if (!product.haveProductOption()) {
+        if (!product.haveProductOption()) {
             try {
                 CartItem cartItem = mCartService.insert(getParent(), product, product.getQuantityIncrement());
-                mView.updateModelInsertAtLastIfNotFound(cartItem);
+                mView.updateModelToFirstInsertIfNotFound(cartItem);
+//                mView.updateModelInsertAtFistIfNotFound(cartItem);
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (InstantiationException e) {
@@ -43,14 +48,23 @@ public class CartItemListController extends AbstractChildListController<Checkout
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
-//        }
-//        else {
-
-//        }
+        }
+        else {
+            showChooseProductOptionInput(product);
+        }
 //        mView.notifyDataSetChanged();
         updateTotalPrice();
     }
 
+    /**
+     * Thông báo cho các controller xử lý, đặc biệt các observe xử lý option
+     * @param product
+     */
+    public void showChooseProductOptionInput(Product product) {
+        GenericState<ListController> state = new GenericState<ListController>(this, STATE_ON_SHOW_PRODUCT_OPTION);
+        state.setTag(STATE_ON_SHOW_PRODUCT_OPTION, product);
+        if (getSubject() != null) getSubject().setState(state);
+    }
 
     @Override
     public void setChildListService(ChildListService<Checkout, CartItem> service) {

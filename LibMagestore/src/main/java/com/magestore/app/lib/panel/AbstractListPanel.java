@@ -586,6 +586,42 @@ public abstract class AbstractListPanel<TModel extends Model>
     }
 
     /**
+     * Cập nhật 1 model, đưa lên đầu danh sách
+     * @param list
+     */
+    public boolean updateModelToFirst(TModel... list) {
+        if (mRecycleView == null) return false;
+        if (list == null) return false;
+        if (mModelViewList == null || mModelViewList.size() <= 0) return false;
+
+        // tìm các ô chứa model để cập nhật
+        boolean blnFoundModel = false;
+        for (TModel model : list) {
+            for (int i = 0; i < mModelViewList.size(); i++) {
+                if (mModelViewList.get(i).getModel() == model) {
+                    if (i > 0) {
+                        ModelView modelView = mModelViewList.get(i);
+                        mModelViewList.remove(i);
+                        mModelViewList.add(0, modelView);
+                    }
+                    mRecycleView.getAdapter().notifyItemMoved(i, 0);
+                    mRecycleView.getAdapter().notifyItemChanged(0);
+                    blnFoundModel = true;
+                }
+            }
+        }
+        return blnFoundModel;
+    }
+
+    /**
+     * Cập nhật 1 model, đưa lên đầu danh sách. Nếu chưa có thì chèn vào
+     * @param model
+     */
+    public void updateModelToFirstInsertIfNotFound(TModel model) {
+        if (!updateModelToFirst(model)) insertListAtFirst(model);
+    }
+
+    /**
      * Cập nhật nội dung ô chứa Model
      * Nếu chưa có thì insert
      */
@@ -598,7 +634,7 @@ public abstract class AbstractListPanel<TModel extends Model>
      * Cập nhật nội dung ô chứa Model
      * Nếu chưa có thì insert
      */
-    public void updateModelFistIfNotFound(TModel model) {
+    public void updateModelInsertAtFistIfNotFound(TModel model) {
         // nếu k0 có chèn vào cuối
         if (!updateModel(model)) insertListAtFirst(model);
     }

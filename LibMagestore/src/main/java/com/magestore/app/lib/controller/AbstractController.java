@@ -47,6 +47,7 @@ public abstract class AbstractController<TModel extends Model, TView extends Mag
         return mMagestoreContext;
     }
 
+    @Deprecated
     public void setParentController(Controller controller) {
         mParrentController = controller;
     }

@@ -30,6 +30,7 @@ import com.magestore.app.pos.controller.CategoryListController;
 import com.magestore.app.pos.controller.CheckoutAddPaymentListController;
 import com.magestore.app.pos.controller.CheckoutListController;
 import com.magestore.app.pos.controller.ProductListController;
+import com.magestore.app.pos.controller.ProductOptionListController;
 import com.magestore.app.pos.panel.CartItemListPanel;
 import com.magestore.app.pos.panel.CartOrderListPanel;
 import com.magestore.app.pos.panel.CategoryListPanel;
@@ -75,6 +76,7 @@ public class SalesActivity extends AbstractActivity
     private CartItemListController mCheckoutCartItemListController;
     private CategoryListController mCategoryListController;
     private CheckoutAddPaymentListController mCheckoutAddPaymentListController;
+    private ProductOptionListController mProductOptionListController;
 
     // Toolbar Order
     Toolbar toolbar_order;
@@ -218,7 +220,7 @@ public class SalesActivity extends AbstractActivity
         mCheckoutCartItemListController.setMagestoreContext(magestoreContext);
         mCheckoutCartItemListController.setListPanel(mCartItemListPanel);
         mCheckoutCartItemListController.setChildListService(cartService);
-        mCheckoutCartItemListController.setParentController(mCheckoutListController);
+//        mCheckoutCartItemListController.setParentController(mCheckoutListController);
         mCheckoutListController.setCartItemListController(mCheckoutCartItemListController);
         mCheckoutCartItemListController.setSubject(subjectObserv);
 
@@ -226,6 +228,10 @@ public class SalesActivity extends AbstractActivity
         mCheckoutAddPaymentListController.setMagestoreContext(magestoreContext);
         mCheckoutAddPaymentListController.setListPanel(mCheckoutAddPaymentPanel);
         mCheckoutAddPaymentListController.setCheckoutListController(mCheckoutListController);
+
+        mProductOptionListController = new ProductOptionListController();
+        mProductOptionListController.setSubject(subjectObserv);
+//        mProductOptionListController.setParentController(mProductListController);
 
         mPaymentMethodListPanel.setCheckoutListController(mCheckoutListController);
 
@@ -265,6 +271,12 @@ public class SalesActivity extends AbstractActivity
                 .setMethodName("bindParent")
                 .setStateCode(GenericState.DEFAULT_STATE_CODE_ON_SELECT_ITEM)
                 .setControllerState(mCheckoutListController);
+
+        mProductOptionListController
+                .attachListenerObserve()
+                .setMethodName("doShowProductOptionInput")
+                .setStateCode(CartItemListController.STATE_ON_SHOW_PRODUCT_OPTION)
+                .setControllerState(mCheckoutCartItemListController);
     }
 
     @Override
