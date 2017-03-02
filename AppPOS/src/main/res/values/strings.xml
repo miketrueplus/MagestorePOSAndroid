@@ -201,6 +201,7 @@
     <string name="apply">Apply</string>
     <string name="percent">%</string>
     <string name="note">Note</string>
+    <string name="demo">Demo</string>
     <string name="payment_method">PAYMENT METHOD</string>
     <string name="shipping_method">SHIPPING METHOD</string>
 

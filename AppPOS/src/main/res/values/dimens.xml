@@ -22,6 +22,7 @@
     <dimen name="login_edditext_padding_size">15dp</dimen>
     <dimen name="login_form_padding_size">40dp</dimen>
     <dimen name="login_form_button_margin_top">25dp</dimen>
+    <dimen name="login_button_margin_right">20dp</dimen>
 
     <!--Product List-->
     <dimen name="product_item_space">0.5dp</dimen>
