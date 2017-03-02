@@ -41,7 +41,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
     MagestoreDialog dialog;
     Switch create_ship, create_invoice;
     ImageButton im_back;
-    Button btn_checkout_add_payment;
+    LinearLayout ll_checkout_add_payment;
     SimpleSpinner sp_shipping_method;
     Switch cb_pick_as_store;
     LinearLayout ll_shipping_address;
@@ -72,7 +72,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         txt_remain_value = (TextView) findViewById(R.id.txt_remain_value);
         create_ship = (Switch) findViewById(R.id.create_ship);
         create_invoice = (Switch) findViewById(R.id.create_invoice);
-        btn_checkout_add_payment = (Button) findViewById(R.id.btn_checkout_add_payment);
+        ll_checkout_add_payment = (LinearLayout) findViewById(R.id.ll_checkout_add_payment);
         sales_background_loading = (RelativeLayout) findViewById(R.id.sales_background_loading);
         sp_shipping_method = (SimpleSpinner) findViewById(R.id.sp_shipping_method);
 
@@ -84,7 +84,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         });
 
         // đặt sự kiện click nút add payment
-        btn_checkout_add_payment.setOnClickListener(new OnClickListener() {
+        ll_checkout_add_payment.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 onClickAddPayment();
@@ -176,9 +176,9 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
 
     public void isEnableButtonAddPayment(boolean enable) {
         if (enable) {
-            btn_checkout_add_payment.setEnabled(true);
+            ll_checkout_add_payment.setVisibility(VISIBLE);
         } else {
-            btn_checkout_add_payment.setEnabled(false);
+            ll_checkout_add_payment.setVisibility(GONE);
         }
     }
 

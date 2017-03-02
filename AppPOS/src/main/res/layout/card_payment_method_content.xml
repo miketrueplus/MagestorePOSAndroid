@@ -28,19 +28,21 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="@dimen/layout_margin"
                 android:layout_marginTop="@dimen/layout_margin"
                 android:src="@drawable/ic_payment" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="@dimen/layout_margin"
+                android:layout_gravity="bottom"
+                android:layout_margin="@dimen/layout_margin"
                 android:ellipsize="end"
-                android:lines="2"
+                android:gravity="bottom"
+                android:maxLines="2"
                 android:text="@{paymentMethod.getTitle()}"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/checkout_payment_text_size" />
         </LinearLayout>
     </LinearLayout>
 </layout>

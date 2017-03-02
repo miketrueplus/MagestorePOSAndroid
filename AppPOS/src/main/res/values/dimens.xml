@@ -45,4 +45,8 @@
     <!--Checkout-->
     <dimen name="checkout_remain_text_price_size">18sp</dimen>
     <dimen name="checkout_margin">20dp</dimen>
+    <dimen name="check_out_radius">5dp</dimen>
+    <dimen name="checkout_payment_text_size">13sp</dimen>
+    <dimen name="checkout_im_remove_payment_width">30dp</dimen>
+    <dimen name="checkout_add_payment_margin">10dp</dimen>
 </resources>
