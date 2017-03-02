@@ -48,5 +48,9 @@
     <dimen name="check_out_radius">5dp</dimen>
     <dimen name="checkout_payment_text_size">13sp</dimen>
     <dimen name="checkout_im_remove_payment_width">30dp</dimen>
+    <dimen name="checkout_address_item_border_size">2dp</dimen>
     <dimen name="checkout_add_payment_margin">10dp</dimen>
+    <dimen name="checkout_address_item_width">150dp</dimen>
+    <dimen name="checkout_address_item_margin">10dp</dimen>
+    <dimen name="checkout_address_item_text_size">13sp</dimen>
 </resources>

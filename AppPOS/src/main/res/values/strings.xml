@@ -33,6 +33,7 @@
     <string name="checkout_delete_order">Delete current order</string>
     <string name="checkout_pick_as_store">Pick as store</string>
     <string name="checkout_discount_all">Discount - Maximum 100%</string>
+    <string name="checkout_address_item_default">default</string>
 
     <!-- Strings related to customer -->
     <string name="customer_search_customer_here">Search name, email, telephone</string>

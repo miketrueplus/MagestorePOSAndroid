@@ -58,6 +58,9 @@ public interface Checkout extends Model {
     String getCreateInvoice();
     void setCreateInvoice(String strCreateInvoice);
 
+    String getNote();
+    void setNote(String strNote);
+
     float getRealAmount();
     void setRealAmount(float fRealAmount);
 

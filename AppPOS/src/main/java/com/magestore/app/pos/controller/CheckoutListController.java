@@ -211,6 +211,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             Checkout checkout = (Checkout) wraper.get("save_shipping");
             checkout.setCreateShip(((CheckoutDetailPanel) mDetailView).isCreateShip());
             checkout.setCreateInvoice(((CheckoutDetailPanel) mDetailView).isCreateInvoice());
+            checkout.setNote(((CheckoutDetailPanel) mDetailView).getNote());
             String quoteId = DataUtil.getDataStringToPreferences(context, DataUtil.QUOTE);
             wraper.put("place_order", ((CheckoutService) mListService).placeOrder(quoteId, checkout, listCheckoutPayment));
             return true;
@@ -538,7 +539,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         if (listPayment.size() == 0) {
             ((CheckoutDetailPanel) mDetailView).showPanelPaymentMethod();
             ((CheckoutDetailPanel) mDetailView).bindTotalPrice(checkout.getGrandTotal());
-            isEnableButtonAddPayment(true);
+            isEnableButtonAddPayment(false);
             ((CheckoutDetailPanel) mDetailView).isEnableCreateInvoice(false);
         }
     }

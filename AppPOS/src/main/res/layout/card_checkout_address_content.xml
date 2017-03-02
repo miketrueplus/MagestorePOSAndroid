@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="com.magestore.app.util.ConfigUtil" />
+
+        <variable
+            name="customerAddress"
+            type="com.magestore.app.lib.model.customer.CustomerAddress" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/ll_checkout_address"
+        android:layout_width="@dimen/checkout_address_item_width"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/checkout_address_item_margin"
+        android:background="@drawable/checkout_address_border_item"
+        android:orientation="vertical"
+        android:padding="@dimen/checkout_address_item_margin">
+
+        <TextView
+            android:id="@+id/txt_adrress_full"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:ellipsize="end"
+            android:lines="2"
+            android:text="@{customerAddress.getCheckoutAddress()}"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/checkout_address_item_text_size" />
+
+        <TextView
+            android:id="@+id/txt_adrress_telephone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text='@{@string/phone + ": " + customerAddress.getTelephone()}'
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/checkout_address_item_text_size" />
+
+        <TextView
+            android:id="@+id/txt_default_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginTop="5dp"
+            android:text="@string/checkout_address_item_default"
+            android:textColor="@color/app_color"
+            android:textSize="@dimen/checkout_address_item_text_size" />
+    </LinearLayout>
+</layout>

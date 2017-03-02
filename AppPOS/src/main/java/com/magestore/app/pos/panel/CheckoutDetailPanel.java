@@ -7,6 +7,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -45,6 +46,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
     SimpleSpinner sp_shipping_method;
     Switch cb_pick_as_store;
     LinearLayout ll_shipping_address;
+    EditText et_checkout_note;
 
     public CheckoutDetailPanel(Context context) {
         super(context);
@@ -75,6 +77,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         ll_checkout_add_payment = (LinearLayout) findViewById(R.id.ll_checkout_add_payment);
         sales_background_loading = (RelativeLayout) findViewById(R.id.sales_background_loading);
         sp_shipping_method = (SimpleSpinner) findViewById(R.id.sp_shipping_method);
+        et_checkout_note = (EditText) findViewById(R.id.et_checkout_note);
 
         im_back.setOnClickListener(new OnClickListener() {
             @Override
@@ -88,13 +91,6 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
             @Override
             public void onClick(View v) {
                 onClickAddPayment();
-            }
-        });
-
-        ((Button) findViewById(R.id.btn_checkout_place_holder)).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onClickPlaceHolder();
             }
         });
 
@@ -224,15 +220,8 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         ((CheckoutListController) getController()).doInputSaveShipping(code);
     }
 
-    /**
-     * Xử lý khi thanh toán (Place holder hoặc Partial)
-     */
-    void onClickPlaceHolder() {
-
-        //TODO: test thử observe
-//        GenericState<CheckoutListController> state = new GenericState<CheckoutListController>(null, CheckoutListController.STATE_ON_PLACE_ORDER);
-//        getController().getSubject().setState(state);
-//        ((CheckoutListController) getController()).onPlaceOrder();
+    public String getNote(){
+        return et_checkout_note.getText().toString();
     }
 
     public void showNotifiSelectPayment() {

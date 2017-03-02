@@ -37,7 +37,8 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/app_bar">
+            android:layout_below="@+id/app_bar"
+            android:background="@color/background_default">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -64,7 +65,6 @@
                                 android:id="@+id/cb_pick_as_store"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_margin="5dp"
                                 android:checked="true"
                                 android:text="@string/checkout_pick_as_store"
                                 android:textAllCaps="true"
@@ -75,6 +75,7 @@
                                 android:id="@+id/ll_shipping_address"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/checkout_margin"
                                 android:orientation="vertical"
                                 android:visibility="gone">
 
@@ -82,12 +83,9 @@
                                     android:id="@+id/address_list_panel"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginBottom="10dp"
-                                    android:layout_marginLeft="@dimen/layout_margin"
-                                    android:layout_marginRight="@dimen/layout_margin"
-                                    android:layout_marginTop="10dp"
+                                    android:layout_marginBottom="@dimen/checkout_margin"
                                     magestore_view:layout_orientation="horizontal"
-                                    magestore_view:layout_row="@layout/card_customer_address_content" />
+                                    magestore_view:layout_row="@layout/card_checkout_address_content" />
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
@@ -136,6 +134,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/checkout_margin"
                             android:orientation="horizontal">
 
                             <TextView
@@ -317,7 +316,7 @@
                     android:padding="10dp">
 
                     <com.magestore.app.view.FormatTextEdit
-                        android:id="@+id/note"
+                        android:id="@+id/et_checkout_note"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/white"
@@ -327,27 +326,6 @@
                         android:minLines="3"
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/text_size" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/layout_margin"
-                    android:orientation="horizontal"
-                    android:visibility="gone">
-
-                    <Button
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
-                        android:text="@string/sales_add_payment" />
-
-                    <Button
-                        android:id="@+id/btn_checkout_place_holder"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
-                        android:text="@string/sales_place_holder" />
                 </LinearLayout>
             </LinearLayout>
         </RelativeLayout>

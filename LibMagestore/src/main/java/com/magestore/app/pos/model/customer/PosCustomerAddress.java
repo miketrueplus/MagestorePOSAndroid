@@ -61,6 +61,34 @@ public class PosCustomerAddress extends PosAbstractModel implements CustomerAddr
     }
 
     @Override
+    public String getCheckoutAddress() {
+        StringBuilder builder = new StringBuilder();
+        if (!TextUtils.isEmpty(getStreet1())) {
+            builder.append(getStreet1());
+            builder.append(", ");
+        }
+        if (!TextUtils.isEmpty(getStreet2())) {
+            builder.append(getStreet2());
+            builder.append(", ");
+        }
+        builder.append(getCity());
+        builder.append(", ");
+        if (getRegion() != null) {
+            String state = getRegion().getRegionName();
+            if (!TextUtils.isEmpty(state)) {
+                builder.append(state);
+                builder.append(", ");
+            }
+        }
+        builder.append(getCountry());
+        if (!TextUtils.isEmpty(getPostCode())) {
+            builder.append(", ");
+            builder.append(getPostCode());
+        }
+        return builder.toString();
+    }
+
+    @Override
     public String getPostCode() {
         return postcode;
     }

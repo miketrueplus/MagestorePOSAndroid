@@ -59,6 +59,8 @@ public class PosCheckout extends PosAbstractModel implements Checkout {
     String create_ship;
     @Gson2PosExclude
     String create_invoice;
+    @Gson2PosExclude
+    String note;
 
     @Expose(serialize = false, deserialize = false)
     float sub_total = 0;
@@ -223,6 +225,16 @@ public class PosCheckout extends PosAbstractModel implements Checkout {
     @Override
     public void setCreateInvoice(String strCreateInvoice) {
         create_invoice = strCreateInvoice;
+    }
+
+    @Override
+    public String getNote() {
+        return note;
+    }
+
+    @Override
+    public void setNote(String strNote) {
+        note = strNote;
     }
 
     @Override

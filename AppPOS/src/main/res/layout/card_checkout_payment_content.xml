@@ -12,7 +12,6 @@
             type="com.magestore.app.lib.model.checkout.CheckoutPayment" />
     </data>
 
-
     <LinearLayout
         android:id="@+id/ll_payment_method"
         android:layout_width="match_parent"
@@ -89,7 +88,6 @@
                         android:textSize="@dimen/text_size"
                         android:visibility="@{checkoutPayment.checkIsPayLater() ? View.GONE : View.VISIBLE}" />
                 </LinearLayout>
-
             </LinearLayout>
 
             <RelativeLayout

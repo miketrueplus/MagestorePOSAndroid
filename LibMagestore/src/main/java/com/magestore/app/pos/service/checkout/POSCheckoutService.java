@@ -100,8 +100,7 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         placeOrderParams.setCreateShipment(checkout.getCreateShip());
         placeOrderParams.setActions(placeOrderActionParam);
         PosPlaceOrderParams.PlaceOrderQuoteDataParam placeOrderQuoteDataParam = placeOrderParams.createPlaceOrderQuoteDataParam();
-        // TODO: fake data customer note
-        placeOrderParams.setCustomerNote("Test");
+        placeOrderParams.setCustomerNote(checkout.getNote());
         placeOrderParams.setQuoteData(placeOrderQuoteDataParam);
 
         PosPlaceOrderParams.PlaceOrderPaymentParam placeOrderPaymentParam = placeOrderParams.createPlaceOrderPaymentParam();
@@ -117,7 +116,6 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         for (CheckoutPayment checkoutPayment: listCheckoutPayment) {
             PaymentMethodDataParam paymentMethodDataParam = createPaymentMethodParam();
             paymentMethodDataParam.setReferenceNumber(checkoutPayment.getReferenceNumber());
-            // TODO: đang để mặc định 1 giá
             paymentMethodDataParam.setAmount(checkoutPayment.getAmount());
             paymentMethodDataParam.setBaseAmount(checkoutPayment.getBaseAmount());
             paymentMethodDataParam.setBaseRealAmount(checkoutPayment.getRealAmount());

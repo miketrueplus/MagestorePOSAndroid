@@ -24,6 +24,8 @@ public interface CustomerAddress extends Model {
 
     String getFullAddress();
 
+    String getCheckoutAddress();
+
     String getPostCode();
     void setPostCode(String strPostCode);
 
