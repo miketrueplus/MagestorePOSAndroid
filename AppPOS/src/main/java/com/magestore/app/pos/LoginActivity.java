@@ -63,7 +63,6 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
         // Tham chiếu đến các trường và điền các giá trị vào
         mDomainView = (AutoCompleteTextView) findViewById(R.id.domain);
         mUserNameView = (AutoCompleteTextView) findViewById(R.id.user_name);
-        mDomainView.requestFocus();
 
         // Sự kiện nhấn enter ở ô password, thực hiện login luôn
         mPasswordView = (EditText) findViewById(R.id.password);
