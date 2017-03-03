@@ -29,6 +29,7 @@ import com.magestore.app.pos.model.checkout.PosQuoteItemExtension;
 import com.magestore.app.pos.model.checkout.PosQuoteItems;
 import com.magestore.app.pos.service.AbstractService;
 import com.magestore.app.util.ConfigUtil;
+
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -78,6 +79,11 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         // Khởi tạo customer gateway factory
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         CheckoutDataAccess checkoutDataAccess = factory.generateCheckoutDataAccess();
+
+        // TODO: với trường hợp shipping ko có default thì truyền lên webpos_shipping_storepickup
+        if (shippingCode.equals("")) {
+            shippingCode = "webpos_shipping_storepickup";
+        }
         return checkoutDataAccess.saveShipping(quoteId, shippingCode);
     }
 
@@ -104,21 +110,21 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         placeOrderParams.setQuoteData(placeOrderQuoteDataParam);
 
         PosPlaceOrderParams.PlaceOrderPaymentParam placeOrderPaymentParam = placeOrderParams.createPlaceOrderPaymentParam();
-        if(listCheckoutPayment.size() > 1){
+        if (listCheckoutPayment.size() > 1) {
             // TODO: trường hợp 2 payment trở lên thì truyền tham số "multipaymentforpos"
             placeOrderParams.setMethod("multipaymentforpos");
-        }else {
+        } else {
             placeOrderParams.setMethod(listCheckoutPayment.get(0).getCode());
         }
 
         List<PaymentMethodDataParam> listPaymentMethodParam = placeOrderParams.createPaymentMethodData();
 
-        for (CheckoutPayment checkoutPayment: listCheckoutPayment) {
+        for (CheckoutPayment checkoutPayment : listCheckoutPayment) {
             PaymentMethodDataParam paymentMethodDataParam = createPaymentMethodParam();
             paymentMethodDataParam.setReferenceNumber(checkoutPayment.getReferenceNumber());
             paymentMethodDataParam.setAmount(checkoutPayment.getAmount());
-            paymentMethodDataParam.setBaseAmount(checkoutPayment.getBaseAmount());
-            paymentMethodDataParam.setBaseRealAmount(checkoutPayment.getRealAmount());
+            paymentMethodDataParam.setBaseAmount(ConfigUtil.convertToBaseCurrency(checkoutPayment.getBaseAmount()));
+            paymentMethodDataParam.setBaseRealAmount(ConfigUtil.convertToBaseCurrency(checkoutPayment.getRealAmount()));
             paymentMethodDataParam.setRealAmount(checkoutPayment.getBaseRealAmount());
             paymentMethodDataParam.setCode(checkoutPayment.getCode());
             paymentMethodDataParam.setIsPayLater(checkoutPayment.isPaylater());

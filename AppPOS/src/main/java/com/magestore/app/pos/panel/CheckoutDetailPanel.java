@@ -44,7 +44,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
     ImageButton im_back;
     LinearLayout ll_checkout_add_payment;
     SimpleSpinner sp_shipping_method;
-    Switch cb_pick_as_store;
+    Switch cb_pick_at_store;
     LinearLayout ll_shipping_address;
     EditText et_checkout_note;
 
@@ -67,7 +67,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         txt_grand_total = (TextView) findViewById(R.id.txt_grand_total);
         im_back = (ImageButton) findViewById(R.id.im_back);
 
-        cb_pick_as_store = (Switch) findViewById(R.id.cb_pick_as_store);
+        cb_pick_at_store = (Switch) findViewById(R.id.cb_pick_at_store);
         ll_shipping_address = (LinearLayout) findViewById(R.id.ll_shipping_address);
         rl_content_payment_method = (RelativeLayout) findViewById(R.id.rl_content_payment_method);
         txt_remain_title = (TextView) findViewById(R.id.txt_remain_title);
@@ -106,7 +106,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
             }
         });
 
-        cb_pick_as_store.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        cb_pick_at_store.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean check) {
                 if (check) {
@@ -220,8 +220,22 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         ((CheckoutListController) getController()).doInputSaveShipping(code);
     }
 
-    public String getNote(){
+    public void selectDefaultShippingMethod(CheckoutShipping shipping) {
+        isShowLoadingDetail(true);
+        if (shipping != null) {
+            String code = shipping.getCode();
+            ((CheckoutListController) getController()).doInputSaveShipping(code);
+        } else {
+            ((CheckoutListController) getController()).doInputSaveShipping("");
+        }
+    }
+
+    public String getNote() {
         return et_checkout_note.getText().toString();
+    }
+
+    public boolean getPickAtStore() {
+        return cb_pick_at_store.isChecked();
     }
 
     public void showNotifiSelectPayment() {

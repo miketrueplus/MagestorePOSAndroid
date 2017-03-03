@@ -220,4 +220,8 @@ public class ConfigUtil {
         String date = df.format(Calendar.getInstance().getTime());
         return date;
     }
+
+    public static float convertToBaseCurrency(float number){
+        return number;
+    }
 }

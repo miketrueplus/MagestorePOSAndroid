@@ -1,13 +1,13 @@
 package com.magestore.app.pos.controller;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 
 import com.magestore.app.lib.controller.AbstractListController;
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.checkout.CheckoutPayment;
+import com.magestore.app.lib.model.checkout.CheckoutShipping;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.model.directory.Currency;
@@ -228,18 +228,14 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         } else if (success && actionType == ACTION_TYPE_SAVE_CART) {
             Checkout checkout = (Checkout) wraper.get("save_cart");
             String quoteId = checkout.getQuote().getID();
-//            bindItem(checkout);
-
-            // set data shipping cho desgin cũ
-//            mCheckoutShippingListPanel.bindList(checkout.getCheckoutShipping());
             // cập nhật list shipping và payment
-            ((CheckoutDetailPanel) mDetailView).setShippingDataSet(checkout.getCheckoutShipping());
-            mPaymentMethodListPanel.bindList(checkout.getCheckoutPayment());
-            mCheckoutAddPaymentPanel.bindList(checkout.getCheckoutPayment());
+            List<CheckoutShipping> listShipping = checkout.getCheckoutShipping();
+            List<CheckoutPayment> listPayment = checkout.getCheckoutPayment();
+            ((CheckoutDetailPanel) mDetailView).setShippingDataSet(listShipping);
+            mPaymentMethodListPanel.bindList(listPayment);
+            mCheckoutAddPaymentPanel.bindList(listPayment);
             // auto select shipping method
-            ((CheckoutDetailPanel) mDetailView).getShippingMethod();
-//            mCheckoutShippingListPanel.getShippingMethodDefault();
-
+            autoSelectShipping(listShipping);
             // lưu quote data vào system
             DataUtil.saveDataStringToPreferences(context, DataUtil.QUOTE, quoteId);
             //  cập nhật giá
@@ -278,10 +274,6 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             ((CheckoutDetailPanel) mDetailView).isShowLoadingDetail(false);
         } else if (success && actionType == ACTION_TYPE_SAVE_PAYMENT) {
             Checkout checkout = (Checkout) wraper.get("save_payment");
-            // TODO: Action khi save payment method xong
-
-            // TODO: hoàn thành save payment
-            Log.e("CheckListController", "finish payment");
         } else if (success && actionType == ACTION_TYPE_PLACE_ORDER) {
             Order order = (Order) wraper.get("place_order");
             // TODO: Action khi place order
@@ -403,6 +395,35 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         }
     }
 
+    private void autoSelectShipping(List<CheckoutShipping> listShipping){
+        if (((CheckoutDetailPanel) mDetailView).getPickAtStore()) {
+            if (listShipping != null && listShipping.size() > 0) {
+                if (listShipping.size() == 1) {
+                    ((CheckoutDetailPanel) mDetailView).getShippingMethod();
+                } else {
+                    CheckoutShipping shipping = checkListShippingMethodDefault(listShipping);
+                    if (shipping != null) {
+                        ((CheckoutDetailPanel) mDetailView).selectDefaultShippingMethod(shipping);
+                    } else {
+                        ((CheckoutDetailPanel) mDetailView).selectDefaultShippingMethod(null);
+                    }
+                }
+            }
+        } else {
+            if (listShipping != null && listShipping.size() > 0) {
+                if (listShipping.size() == 1) {
+                    ((CheckoutDetailPanel) mDetailView).getShippingMethod();
+                } else {
+                    CheckoutShipping shipping = checkListShippingMethodDefault(listShipping);
+                    if (shipping != null) {
+                        ((CheckoutDetailPanel) mDetailView).selectDefaultShippingMethod(shipping);
+                    } else {
+                        ((CheckoutDetailPanel) mDetailView).selectDefaultShippingMethod(listShipping.get(0));
+                    }
+                }
+            }
+        }
+    }
 
     /**
      * tham chiếu context từ sales activity
@@ -440,6 +461,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
     /**
      * Cập nhật tổng giá theo observe mỗi khi có state từ cartitem
+     *
      * @param state
      */
     public void updateTotalPrice(State state) {
@@ -601,6 +623,15 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             return true;
         }
         return false;
+    }
+
+    public CheckoutShipping checkListShippingMethodDefault(List<CheckoutShipping> listShipping) {
+        for (CheckoutShipping shipping : listShipping) {
+            if (shipping.getIsDefault().equals("1")) {
+                return shipping;
+            }
+        }
+        return null;
     }
 
     /**
