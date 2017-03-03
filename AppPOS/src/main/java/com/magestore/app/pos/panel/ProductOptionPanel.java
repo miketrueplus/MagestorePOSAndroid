@@ -7,14 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.magestore.app.lib.model.catalog.ProductOption;
-import com.magestore.app.lib.panel.AbstractListPanel;
+import com.magestore.app.lib.panel.AbstractPanel;
 import com.magestore.app.pos.R;
+import com.magestore.app.pos.controller.ProductOptionController;
 import com.magestore.app.pos.dummy.ExpandableListDataPump;
 
 import java.util.ArrayList;
@@ -27,21 +27,21 @@ import java.util.List;
  * mike@trueplus.vn
  */
 
-public class ProductOptionListPanel extends AbstractListPanel<ProductOption> {
+public class ProductOptionPanel extends AbstractPanel<ProductOptionController> {
     ExpandableListView expandableListView;
-    ProductOptionListPanel.CustomExpandableListAdapter expandableListAdapter;
+    ProductOptionPanel.CustomExpandableListAdapter expandableListAdapter;
     List<String> expandableListTitle;
     HashMap<String, List<String>> expandableListDetail;
 
-    public ProductOptionListPanel(Context context) {
+    public ProductOptionPanel(Context context) {
         super(context);
     }
 
-    public ProductOptionListPanel(Context context, AttributeSet attrs) {
+    public ProductOptionPanel(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public ProductOptionListPanel(Context context, AttributeSet attrs, int defStyleAttr) {
+    public ProductOptionPanel(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
@@ -51,7 +51,7 @@ public class ProductOptionListPanel extends AbstractListPanel<ProductOption> {
     @Override
     public void initLayout() {
         // đặt layout chung cả panel
-        super.initLayout();
+//        super.initLayout();
         setLayoutPanel(R.layout.panel_product_option_list);
 
         // expan list view
@@ -59,7 +59,7 @@ public class ProductOptionListPanel extends AbstractListPanel<ProductOption> {
 
         expandableListDetail = ExpandableListDataPump.getData();
         expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
-        expandableListAdapter = new ProductOptionListPanel.CustomExpandableListAdapter(getContext(), expandableListTitle, expandableListDetail);
+        expandableListAdapter = new ProductOptionPanel.CustomExpandableListAdapter(getContext(), expandableListTitle, expandableListDetail);
         expandableListView.setAdapter(expandableListAdapter);
         expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
 
@@ -99,13 +99,13 @@ public class ProductOptionListPanel extends AbstractListPanel<ProductOption> {
         });
     }
 
-    @Override
-    public void bindList(List<ProductOption> list) {
-//        super.bindList(list);
-        expandableListAdapter.bindList(list);
-        expandableListAdapter.notifyDataSetChanged();
-
-    }
+//    @Override
+//    public void bindList(List<ProductOption> list) {
+////        super.bindList(list);
+//        expandableListAdapter.bindList(list);
+//        expandableListAdapter.notifyDataSetChanged();
+//
+//    }
 
     public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
         private List<ProductOption> mProductOptionList;

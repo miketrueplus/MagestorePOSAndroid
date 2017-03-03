@@ -112,7 +112,7 @@ public class CustomerListController extends AbstractListController<Customer> {
      * @param newComplain
      */
     public void doInputNewComplain(String newComplain) {
-        Complain complain = mCustomerComplainService.create(mSelectedItem);
+        Complain complain = mCustomerComplainService.create(getSelectedItem());
         complain.setContent(newComplain);
         doAction(ACTION_CODE_INPUT_COMPLAIN, null, null, mItem, complain);
     }
@@ -179,7 +179,7 @@ public class CustomerListController extends AbstractListController<Customer> {
         if (success) {
             Customer customer = models[0];
             mList.add(0, customer);
-            mView.notifyDataSetChanged();
+            getView().notifyDataSetChanged();
         }
     }
 

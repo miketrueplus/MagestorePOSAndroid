@@ -27,7 +27,7 @@ public abstract class AbstractController<TModel extends Model, TView extends Mag
     protected TView mView;
 
     // Controller chủ
-    protected Controller mParrentController;
+    private Controller mParrentController;
 
     // context
     protected MagestoreContext mMagestoreContext;
@@ -37,6 +37,10 @@ public abstract class AbstractController<TModel extends Model, TView extends Mag
     public void setView(TView view) {
         mView = view;
         mView.setController(this);
+    }
+
+    public TView getView() {
+        return mView;
     }
 
     @Override

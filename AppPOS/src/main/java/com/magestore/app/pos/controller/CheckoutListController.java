@@ -104,7 +104,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 new_checkout.setCustomerID(customer.getID());
                 mList.add(new_checkout);
                 setSelectedItem(new_checkout);
-                mView.notifyDataSetChanged();
+                getView().notifyDataSetChanged();
             } else {
                 checkout.setCustomer(customer);
                 checkout.setCustomerID(customer.getID());
@@ -244,11 +244,11 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
             mCheckoutPaymentListPanel.setCheckout(checkout);
 
-            if (mView != null && checkout != null && (mView instanceof CheckoutListPanel)) {
+            if (getView() != null && checkout != null && (getView() instanceof CheckoutListPanel)) {
                 // show shipping total
-                ((CheckoutListPanel) mView).showSalesShipping(true);
+                ((CheckoutListPanel) getView()).showSalesShipping(true);
                 // câp nhật giá
-                ((CheckoutListPanel) mView).updateTotalPrice(checkout);
+                ((CheckoutListPanel) getView()).updateTotalPrice(checkout);
             }
 
             // hiển thị list shipping address

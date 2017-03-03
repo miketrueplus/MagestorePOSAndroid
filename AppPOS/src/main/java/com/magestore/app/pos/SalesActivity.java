@@ -30,9 +30,8 @@ import com.magestore.app.pos.controller.CartItemListController;
 import com.magestore.app.pos.controller.CategoryListController;
 import com.magestore.app.pos.controller.CheckoutAddPaymentListController;
 import com.magestore.app.pos.controller.CheckoutListController;
-import com.magestore.app.pos.controller.CustomerAddressListController;
 import com.magestore.app.pos.controller.ProductListController;
-import com.magestore.app.pos.controller.ProductOptionListController;
+import com.magestore.app.pos.controller.ProductOptionController;
 import com.magestore.app.pos.panel.CartItemListPanel;
 import com.magestore.app.pos.panel.CartOrderListPanel;
 import com.magestore.app.pos.panel.CategoryListPanel;
@@ -42,12 +41,10 @@ import com.magestore.app.pos.panel.CheckoutDetailPanel;
 import com.magestore.app.pos.panel.CheckoutListPanel;
 import com.magestore.app.pos.panel.CheckoutPaymentListPanel;
 import com.magestore.app.pos.panel.CheckoutShippingListPanel;
-import com.magestore.app.pos.panel.CustomerAddressDetailPanel;
 import com.magestore.app.pos.panel.PaymentMethodListPanel;
 import com.magestore.app.pos.panel.ProductListPanel;
-import com.magestore.app.pos.panel.ProductOptionListPanel;
+import com.magestore.app.pos.panel.ProductOptionPanel;
 import com.magestore.app.pos.ui.AbstractActivity;
-import com.magestore.app.pos.view.MagestoreDialog;
 import com.magestore.app.view.ui.PosUI;
 
 /**
@@ -74,7 +71,7 @@ public class SalesActivity extends AbstractActivity
     private CheckoutAddPaymentPanel mCheckoutAddPaymentPanel;
     private CartOrderListPanel mCartOrderListPanel;
     private CheckoutAddressListPanel mCheckoutAddressListPanel;
-    private ProductOptionListPanel mPanelProductOption;
+    private ProductOptionPanel mPanelProductOption;
 
     // controller cho danh sách mặt hàng và đơn hàng
     private ProductListController mProductListController;
@@ -82,7 +79,7 @@ public class SalesActivity extends AbstractActivity
     private CartItemListController mCheckoutCartItemListController;
     private CategoryListController mCategoryListController;
     private CheckoutAddPaymentListController mCheckoutAddPaymentListController;
-    private ProductOptionListController mProductOptionListController;
+    private ProductOptionController mProductOptionController;
 
     // Toolbar Order
     Toolbar toolbar_order;
@@ -156,7 +153,7 @@ public class SalesActivity extends AbstractActivity
         mCategoryListPanel = (CategoryListPanel) mProductListPanel.findViewById(R.id.category);
 
         // panel hiển thị product option
-        mPanelProductOption = new ProductOptionListPanel(getContext());
+        mPanelProductOption = new ProductOptionPanel(getContext());
 //        mPanelProductOption.setLayoutPanel(R.layout.panel_product_option_list);
 
     }
@@ -242,13 +239,11 @@ public class SalesActivity extends AbstractActivity
         mCheckoutAddPaymentListController.setListPanel(mCheckoutAddPaymentPanel);
         mCheckoutAddPaymentListController.setCheckoutListController(mCheckoutListController);
 
-        mProductOptionListController = new ProductOptionListController();
-        mProductOptionListController.setSubject(subjectObserv);
-        mPanelProductOption.setController(mProductOptionListController);
-//        mProductOptionListController.setListPanel(mPanelProductOption);
-//        mProductOptionListController.setSer
-//        mProductOptionListController.setListService(productOptionService);
-//        mProductOptionListController.setChildListService(productOptionService);
+        mProductOptionController = new ProductOptionController();
+        mProductOptionController.setSubject(subjectObserv);
+        mProductOptionController.setView(mPanelProductOption);
+        mProductOptionController.setService(productOptionService);
+
 
         mPaymentMethodListPanel.setCheckoutListController(mCheckoutListController);
 
@@ -292,7 +287,7 @@ public class SalesActivity extends AbstractActivity
                 .setControllerState(mCheckoutListController);
 
         // hiển thị production opption nếu product có option
-        mProductOptionListController
+        mProductOptionController
                 .attachListenerObserve()
                 .setMethodName("doShowProductOptionInput")
                 .setStateCode(CartItemListController.STATE_ON_SHOW_PRODUCT_OPTION)

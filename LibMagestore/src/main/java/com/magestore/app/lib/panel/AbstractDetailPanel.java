@@ -19,7 +19,7 @@ import com.magestore.app.lib.view.MagestoreView;
  */
 
 public abstract class AbstractDetailPanel<TModel extends Model>
-        extends FrameLayout
+        extends AbstractPanel<ListController<TModel>>
         implements MagestoreView<ListController<TModel>> {
     // controller của danh sách
     protected ListController<TModel> mController;
@@ -87,9 +87,6 @@ public abstract class AbstractDetailPanel<TModel extends Model>
 
     protected View getView() {
         return mView;
-    }
-
-    protected void initLayout() {
     }
 
     public void initModel() {

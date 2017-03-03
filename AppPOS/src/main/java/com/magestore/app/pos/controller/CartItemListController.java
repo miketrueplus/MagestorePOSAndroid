@@ -40,7 +40,7 @@ public class CartItemListController extends AbstractChildListController<Checkout
         if (!product.haveProductOption()) {
             try {
                 CartItem cartItem = mCartService.insert(getParent(), product, product.getQuantityIncrement());
-                mView.updateModelToFirstInsertIfNotFound(cartItem);
+                getView().updateModelToFirstInsertIfNotFound(cartItem);
 //                mView.updateModelInsertAtFistIfNotFound(cartItem);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -96,7 +96,7 @@ public class CartItemListController extends AbstractChildListController<Checkout
     public void deleteProduct(Product product) {
         try {
             CartItem cartItem = mCartService.delete(getParent(), product);
-            mView.deleteList(cartItem);
+            getView().deleteList(cartItem);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InstantiationException e) {

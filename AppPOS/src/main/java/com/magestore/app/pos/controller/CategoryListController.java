@@ -64,7 +64,7 @@ public class CategoryListController extends AbstractListController<Category> {
         mList = new ArrayList<>();
         mList.addAll(getListChildCategory(category));
         bindList(mList);
-        mView.notifyDataSetChanged();
+        getView().notifyDataSetChanged();
     }
 
     public void setProductListController(ProductListController mProductListController) {

@@ -41,7 +41,7 @@ import java.util.List;
  * mike@trueplus.vn
  */
 public abstract class AbstractListPanel<TModel extends Model>
-        extends FrameLayout
+        extends AbstractPanel<ListController<TModel>>
         implements MagestoreView<ListController<TModel>> {
 
     // vị trí chọn
@@ -61,9 +61,6 @@ public abstract class AbstractListPanel<TModel extends Model>
 
     // Các control nắm view
     protected RecyclerView mRecycleView;
-
-    // tham chiếu của cả panel
-    private int mintPanelLayout;
 
     // tham chiếu layout của mỗi item trong list
     private int mintItemLayout;
@@ -107,9 +104,6 @@ public abstract class AbstractListPanel<TModel extends Model>
     int mintLayoutModelViewText2 = -1;
 
     private int mintOrientation = LinearLayoutManager.VERTICAL;
-
-    // tham chiếu view của layout
-    View mView;
 
     // loading progress của từng item
     TModel mModelLoadingProgress = null;
@@ -163,7 +157,7 @@ public abstract class AbstractListPanel<TModel extends Model>
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.magestore_view);
 
         // layoyt id của chính panel
-        mintPanelLayout = a.getResourceId(R.styleable.magestore_view_layout_panel, -1);
+        int intPanelLayout = a.getResourceId(R.styleable.magestore_view_layout_panel, -1);
 
         // layout id của progress hiển thị quá trình loading
         mintIdProgresBar = a.getResourceId(R.styleable.magestore_view_layout_progress, R.id.id_modelview_default_progressbar);
@@ -200,7 +194,7 @@ public abstract class AbstractListPanel<TModel extends Model>
         if (mintPageSize <= 0) mintPageSize = mintItemMax;
 
         // tham chiêu file layout của panel
-        if (mintPanelLayout > -1) setLayoutPanel(mintPanelLayout);
+        if (intPanelLayout > -1) setLayoutPanel(intPanelLayout);
 
         // tham chiếu item của list, layout
         if (mintItemLayout > -1) setLayoutItem(mintItemLayout);
@@ -244,20 +238,6 @@ public abstract class AbstractListPanel<TModel extends Model>
         }
     }
 
-    /**
-     * Thiết lập layout cho panel
-     *
-     * @param layoutPanel
-     */
-    public void setLayoutPanel(int layoutPanel) {
-        mintPanelLayout = layoutPanel;
-        mView = inflate(getContext(), mintPanelLayout, null);
-        addView(mView);
-    }
-
-    protected View getView() {
-        return mView;
-    }
 
     public void initLayout() {
 

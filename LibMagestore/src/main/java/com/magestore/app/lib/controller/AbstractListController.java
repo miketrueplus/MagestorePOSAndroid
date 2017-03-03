@@ -40,7 +40,7 @@ public class AbstractListController<TModel extends Model>
     /**
      * Item được chọn trên danh sách
      */
-    protected TModel mSelectedItem;
+    private TModel mSelectedItem;
 
     /**
      * Service xử lý
@@ -60,7 +60,7 @@ public class AbstractListController<TModel extends Model>
      */
     public void clearList() {
         mList = null;
-        mView.clearList();
+        getView().clearList();
     }
 
     /**
@@ -69,7 +69,7 @@ public class AbstractListController<TModel extends Model>
      */
     public void bindList(List<TModel> list) {
         mList = list;
-        mView.bindList(mList);
+        getView().bindList(mList);
     }
 
     /**
@@ -122,7 +122,7 @@ public class AbstractListController<TModel extends Model>
     @Override
     public void doRetrieve() {
         // chuẩn bị task load data
-        doRetrieve(1, mView.getPageSize());
+        doRetrieve(1, getView().getPageSize());
     }
 
     /**
@@ -131,15 +131,15 @@ public class AbstractListController<TModel extends Model>
     @Override
     public void doRetrieve(int page, int pageSize) {
         // hiển thị progress
-        if (page == 1) mView.showProgress(true);
-        else mView.showProgressBottom(true);
+        if (page == 1) getView().showProgress(true);
+        else getView().showProgressBottom(true);
 
         // chuẩn bị task load data
         RetrieveListTask<TModel> task = new RetrieveListTask<TModel>(this);
         task.doExecute(page, pageSize);
 
         // cho phép layzy loading
-        mView.lockLazyLoading(true);
+        getView().lockLazyLoading(true);
     }
 
     /**
@@ -167,29 +167,29 @@ public class AbstractListController<TModel extends Model>
     @Override
     public synchronized void onRetrievePostExecute(List<TModel> list) {
         // tắt progress
-        mView.hideAllProgressBar();
+        getView().hideAllProgressBar();
 
         // xem chế độ là lazyloading hay k0
-        if (mView.haveLazyLoading()) {
+        if (getView().haveLazyLoading()) {
             if (mList == null || mList.size() == 0) {
                 bindList(list);
 
                 // disable lazyloading nếu đã là cuối danh sách
-                mView.enableLazyLoading(!(list == null || list.size() < mView.getPageSize()));
-                mView.lockLazyLoading(false);
+                getView().enableLazyLoading(!(list == null || list.size() < getView().getPageSize()));
+                getView().lockLazyLoading(false);
 
                 // Chọn item đầu tiên
                 if (mblnAutoChooseFirstItem && mList != null && mDetailView != null && mList.size() > 0)
                     bindItem(mList.get(0));
             } else {
                 // disable lazyloading nếu đã là cuối danh sách
-                if (list == null || list.size() < mView.getPageSize())
-                    mView.enableLazyLoading(false);
+                if (list == null || list.size() < getView().getPageSize())
+                    getView().enableLazyLoading(false);
 
                 // bổ sung thêm vào list theo lazyloading
                 mList.addAll(list);
-                mView.insertListAtLast(list);
-                mView.lockLazyLoading(false);
+                getView().insertListAtLast(list);
+                getView().lockLazyLoading(false);
             }
         } else {
             bindList(list);
@@ -246,7 +246,7 @@ public class AbstractListController<TModel extends Model>
     @Override
     public void onUpdatePostExecute(Boolean success, TModel oldModel, TModel newModels) {
         if (success) {
-            mView.updateModel(oldModel, newModels);
+            getView().updateModel(oldModel, newModels);
 
             // báo cho các observ khác về việc bind item
             GenericState<ListController<TModel>> state = new GenericState<ListController<TModel>>(this, GenericState.DEFAULT_STATE_CODE_ON_UPDATE);
@@ -284,7 +284,7 @@ public class AbstractListController<TModel extends Model>
     @Override
     public void onDeletePostExecute(Boolean success, TModel... models) {
         if (success) {
-            mView.deleteList(models);
+            getView().deleteList(models);
 
             // báo cho các observ khác về việc bind item
             GenericState<ListController<TModel>> state = new GenericState<ListController<TModel>>(this, GenericState.DEFAULT_STATE_CODE_ON_DELETE);
@@ -322,7 +322,7 @@ public class AbstractListController<TModel extends Model>
     @Override
     public void onInsertPostExecute(Boolean success, TModel... models) {
         if (success) {
-            mView.insertListAtLast(models);
+            getView().insertListAtLast(models);
 
             // báo cho các observ khác về việc bind item
             GenericState<ListController<TModel>> state = new GenericState<ListController<TModel>>(this, GenericState.DEFAULT_STATE_CODE_ON_INSERT);
@@ -404,7 +404,7 @@ public class AbstractListController<TModel extends Model>
      */
     @Override
     public void doShowDeleteItemInput(TModel item) {
-        mView.showDeleteItemInput(item);
+        getView().showDeleteItemInput(item);
     }
 
     /**
@@ -413,7 +413,7 @@ public class AbstractListController<TModel extends Model>
      */
     @Override
     public void doShowUpdateItemInput(TModel item) {
-        mView.showUpdateItemInput(item);
+        getView().showUpdateItemInput(item);
     }
 
     /**
@@ -421,7 +421,7 @@ public class AbstractListController<TModel extends Model>
      */
     @Override
     public void doShowInsertItemInput() {
-        mView.showInsertItemInput();
+        getView().showInsertItemInput();
     }
 
     @Override
@@ -435,7 +435,7 @@ public class AbstractListController<TModel extends Model>
      */
     @Override
     public void doRetrieveMore(int page) {
-        doRetrieve(page, mView.getPageSize());
+        doRetrieve(page, getView().getPageSize());
     }
 
     /**
@@ -453,7 +453,7 @@ public class AbstractListController<TModel extends Model>
      */
     @Override
     public void doShowListPanel(boolean show) {
-        if (mView != null) mView.setVisibility(show ? View.VISIBLE : View.GONE);
+        if (getView() != null) getView().setVisibility(show ? View.VISIBLE : View.GONE);
 
     }
 
@@ -463,7 +463,7 @@ public class AbstractListController<TModel extends Model>
      */
     @Override
     public void enableLazyLoading(boolean enable) {
-        if (mView != null) mView.enableLazyLoading(enable);
+        if (getView() != null) getView().enableLazyLoading(enable);
     }
 
     /**
@@ -474,7 +474,7 @@ public class AbstractListController<TModel extends Model>
     public void displaySearch(TModel model) {
         List<TModel> listModel = new ArrayList<TModel>();
         listModel.add(model);
-        mView.publishSearchList(listModel);
+        getView().publishSearchList(listModel);
     }
 
     /**
@@ -483,7 +483,7 @@ public class AbstractListController<TModel extends Model>
      */
     @Override
     public void displaySearch(List<TModel> listModel) {
-        mView.publishSearchList(listModel);
+        getView().publishSearchList(listModel);
     }
 
     /**
@@ -491,6 +491,6 @@ public class AbstractListController<TModel extends Model>
      */
     @Override
     public void hideSearch() {
-        mView.closeSearchList();
+        getView().closeSearchList();
     }
 }
