@@ -19,9 +19,9 @@ public interface Product extends Model, ParseModel {
 
     boolean haveProductOption();
 
-    List<ProductOption> getProductOption();
+    ProductOption getProductOption();
 
-    void setProductOption(List<ProductOption> productOption);
+    void setProductOption(ProductOption productOption);
 
 //    boolean haveProductionOption();
 

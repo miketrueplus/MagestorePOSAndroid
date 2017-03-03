@@ -20,6 +20,7 @@ import com.magestore.app.lib.observ.GenericState;
 import com.magestore.app.lib.observ.SubjectObserv;
 import com.magestore.app.lib.service.ServiceFactory;
 import com.magestore.app.lib.service.catalog.CategoryService;
+import com.magestore.app.lib.service.catalog.ProductOptionService;
 import com.magestore.app.lib.service.catalog.ProductService;
 import com.magestore.app.lib.service.checkout.CartService;
 import com.magestore.app.lib.service.checkout.CheckoutService;
@@ -29,6 +30,7 @@ import com.magestore.app.pos.controller.CartItemListController;
 import com.magestore.app.pos.controller.CategoryListController;
 import com.magestore.app.pos.controller.CheckoutAddPaymentListController;
 import com.magestore.app.pos.controller.CheckoutListController;
+import com.magestore.app.pos.controller.CustomerAddressListController;
 import com.magestore.app.pos.controller.ProductListController;
 import com.magestore.app.pos.controller.ProductOptionListController;
 import com.magestore.app.pos.panel.CartItemListPanel;
@@ -40,9 +42,12 @@ import com.magestore.app.pos.panel.CheckoutDetailPanel;
 import com.magestore.app.pos.panel.CheckoutListPanel;
 import com.magestore.app.pos.panel.CheckoutPaymentListPanel;
 import com.magestore.app.pos.panel.CheckoutShippingListPanel;
+import com.magestore.app.pos.panel.CustomerAddressDetailPanel;
 import com.magestore.app.pos.panel.PaymentMethodListPanel;
 import com.magestore.app.pos.panel.ProductListPanel;
+import com.magestore.app.pos.panel.ProductOptionListPanel;
 import com.magestore.app.pos.ui.AbstractActivity;
+import com.magestore.app.pos.view.MagestoreDialog;
 import com.magestore.app.view.ui.PosUI;
 
 /**
@@ -69,6 +74,7 @@ public class SalesActivity extends AbstractActivity
     private CheckoutAddPaymentPanel mCheckoutAddPaymentPanel;
     private CartOrderListPanel mCartOrderListPanel;
     private CheckoutAddressListPanel mCheckoutAddressListPanel;
+    private ProductOptionListPanel mPanelProductOption;
 
     // controller cho danh sách mặt hàng và đơn hàng
     private ProductListController mProductListController;
@@ -148,6 +154,11 @@ public class SalesActivity extends AbstractActivity
 
         // category list panel
         mCategoryListPanel = (CategoryListPanel) mProductListPanel.findViewById(R.id.category);
+
+        // panel hiển thị product option
+        mPanelProductOption = new ProductOptionListPanel(getContext());
+//        mPanelProductOption.setLayoutPanel(R.layout.panel_product_option_list);
+
     }
 
     protected void initModel() {
@@ -165,6 +176,7 @@ public class SalesActivity extends AbstractActivity
         CartService cartService = null;
         CategoryService categoryService = null;
         ConfigService configService = null;
+        ProductOptionService productOptionService = null;
         try {
             factory = ServiceFactory.getFactory(magestoreContext);
             productService = factory.generateProductService();
@@ -173,6 +185,7 @@ public class SalesActivity extends AbstractActivity
             categoryService = factory.generateCategoryService();
             configService = factory.generateConfigService();
             customerService = factory.generateCustomerService();
+            productOptionService = factory.generateProductOptionService();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InstantiationException e) {
@@ -231,7 +244,11 @@ public class SalesActivity extends AbstractActivity
 
         mProductOptionListController = new ProductOptionListController();
         mProductOptionListController.setSubject(subjectObserv);
-//        mProductOptionListController.setParentController(mProductListController);
+        mPanelProductOption.setController(mProductOptionListController);
+//        mProductOptionListController.setListPanel(mPanelProductOption);
+//        mProductOptionListController.setSer
+//        mProductOptionListController.setListService(productOptionService);
+//        mProductOptionListController.setChildListService(productOptionService);
 
         mPaymentMethodListPanel.setCheckoutListController(mCheckoutListController);
 

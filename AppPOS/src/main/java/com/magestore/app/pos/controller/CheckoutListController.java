@@ -99,7 +99,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 if (mList == null) {
                     mList = new ArrayList<>();
                 }
-                Checkout new_checkout = ((CheckoutService) mListService).create();
+                Checkout new_checkout = ((CheckoutService) getListService()).create();
                 new_checkout.setCustomer(customer);
                 new_checkout.setCustomerID(customer.getID());
                 mList.add(new_checkout);
@@ -194,17 +194,17 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             return true;
         } else if (actionType == ACTION_TYPE_SAVE_CART) {
             String quoteId = (String) wraper.get("quote_id");
-            wraper.put("save_cart", ((CheckoutService) mListService).saveCart((Checkout) models[0], quoteId));
+            wraper.put("save_cart", ((CheckoutService) getListService()).saveCart((Checkout) models[0], quoteId));
             return true;
         } else if (actionType == ACTION_TYPE_SAVE_SHIPPING) {
             String shippingCode = (String) wraper.get("shipping_code");
             String quoteId = DataUtil.getDataStringToPreferences(context, DataUtil.QUOTE);
-            wraper.put("save_shipping", ((CheckoutService) mListService).saveShipping(quoteId, shippingCode));
+            wraper.put("save_shipping", ((CheckoutService) getListService()).saveShipping(quoteId, shippingCode));
             return true;
         } else if (actionType == ACTION_TYPE_SAVE_PAYMENT) {
             String paymentCode = ((CheckoutPayment) models[0]).getCode();
             String quoteId = DataUtil.getDataStringToPreferences(context, DataUtil.QUOTE);
-            wraper.put("save_payment", ((CheckoutService) mListService).savePayment(quoteId, paymentCode));
+            wraper.put("save_payment", ((CheckoutService) getListService()).savePayment(quoteId, paymentCode));
             return true;
         } else if (actionType == ACTION_TYPE_PLACE_ORDER) {
             List<CheckoutPayment> listCheckoutPayment = (List<CheckoutPayment>) wraper.get("list_payment");
@@ -213,7 +213,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             checkout.setCreateInvoice(((CheckoutDetailPanel) mDetailView).isCreateInvoice());
             checkout.setNote(((CheckoutDetailPanel) mDetailView).getNote());
             String quoteId = DataUtil.getDataStringToPreferences(context, DataUtil.QUOTE);
-            wraper.put("place_order", ((CheckoutService) mListService).placeOrder(quoteId, checkout, listCheckoutPayment));
+            wraper.put("place_order", ((CheckoutService) getListService()).placeOrder(quoteId, checkout, listCheckoutPayment));
             return true;
         }
         return false;
@@ -239,7 +239,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             // lưu quote data vào system
             DataUtil.saveDataStringToPreferences(context, DataUtil.QUOTE, quoteId);
             //  cập nhật giá
-            ((CheckoutService) mListService).updateTotal(checkout);
+            ((CheckoutService) getListService()).updateTotal(checkout);
             ((CheckoutDetailPanel) mDetailView).bindTotalPrice(checkout.getGrandTotal());
 
             mCheckoutPaymentListPanel.setCheckout(checkout);
@@ -260,7 +260,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             mPaymentMethodListPanel.bindList(checkout.getCheckoutPayment());
             mCheckoutAddPaymentPanel.bindList(checkout.getCheckoutPayment());
             //  cập nhật giá
-            ((CheckoutService) mListService).updateTotal(checkout);
+            ((CheckoutService) getListService()).updateTotal(checkout);
             ((CheckoutDetailPanel) mDetailView).bindTotalPrice(checkout.getGrandTotal());
 
             mCheckoutPaymentListPanel.setCheckout(checkout);
@@ -289,7 +289,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
      * add checkout to list order
      */
     public void addNewOrder() {
-        Checkout checkout = ((CheckoutService) mListService).create();
+        Checkout checkout = ((CheckoutService) getListService()).create();
         checkout.setCustomerID(guest_checkout.getID());
         checkout.setCustomer(guest_checkout);
         setSelectedItem(checkout);
@@ -311,7 +311,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
      */
     public void removeOrder() {
         if (getSelectedItems().size() == 1) {
-            Checkout checkout = ((CheckoutService) mListService).create();
+            Checkout checkout = ((CheckoutService) getListService()).create();
             checkout.setCustomerID(guest_checkout.getID());
             checkout.setCustomer(guest_checkout);
             getSelectedItems().clear();

@@ -23,7 +23,7 @@ import java.util.List;
  * mike@trueplus.vn
  */
 public class AbstractListController<TModel extends Model>
-        extends AbstractController<TModel, AbstractListPanel<TModel>>
+        extends AbstractController<TModel, AbstractListPanel<TModel>, ListService<TModel>>
         implements ListController<TModel> {
 
     // tự động chọn item đầu tiên trong danh sách
@@ -45,7 +45,7 @@ public class AbstractListController<TModel extends Model>
     /**
      * Service xử lý
      */
-    protected ListService<TModel> mListService;
+//    protected ListService<TModel> mListService;
 
     /**
      * Chỉ định có tự động chọn item đầu tiên trong danh sách sau khi load không
@@ -123,7 +123,6 @@ public class AbstractListController<TModel extends Model>
     public void doRetrieve() {
         // chuẩn bị task load data
         doRetrieve(1, mView.getPageSize());
-
     }
 
     /**
@@ -151,10 +150,10 @@ public class AbstractListController<TModel extends Model>
     @Override
     public List<TModel> onRetrieveBackground(int page, int pageSize) throws Exception {
         List<TModel> returnList;
-        if (mListService != null) {
+        if (getListService() != null) {
             if (pageSize > 0)
-                returnList = mListService.retrieve(page, pageSize);
-            else returnList = mListService.retrieve();
+                returnList = getListService().retrieve(page, pageSize);
+            else returnList = getListService().retrieve();
         } else
             returnList = loadDataBackground();
         return returnList;
@@ -233,8 +232,8 @@ public class AbstractListController<TModel extends Model>
      */
     @Override
     public boolean onUpdateBackGround(TModel oldModel, TModel newModels) throws Exception {
-        if (mListService != null) {
-            return mListService.update(oldModel, newModels);
+        if (getListService() != null) {
+            return getListService().update(oldModel, newModels);
         }
         return false;
     }
@@ -272,8 +271,8 @@ public class AbstractListController<TModel extends Model>
      */
     @Override
     public boolean onDeleteBackGround(TModel... models) throws Exception {
-        if (mListService != null)
-            return mListService.delete(models);
+        if (getListService() != null)
+            return getListService().delete(models);
         return false;
     }
 
@@ -311,8 +310,8 @@ public class AbstractListController<TModel extends Model>
     @Override
     public boolean onInsertBackground(TModel... params)
             throws Exception {
-        if (mListService != null)
-            return mListService.insert(params);
+        if (getListService() != null)
+            return getListService().insert(params);
         return false;
     }
 
@@ -378,7 +377,7 @@ public class AbstractListController<TModel extends Model>
      */
     @Override
     public void setListService(ListService<TModel> service) {
-        mListService = service;
+        setService(service);
     }
 
     /**
@@ -387,7 +386,7 @@ public class AbstractListController<TModel extends Model>
      */
     @Override
     public ListService<TModel> getListService() {
-        return mListService;
+        return getService();
     }
 
     /**

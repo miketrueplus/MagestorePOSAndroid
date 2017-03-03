@@ -3,6 +3,7 @@ package com.magestore.app.lib.controller;
 import com.magestore.app.lib.context.MagestoreContext;
 import com.magestore.app.lib.observ.State;
 import com.magestore.app.lib.observ.SubjectObserv;
+import com.magestore.app.lib.service.Service;
 import com.magestore.app.lib.service.config.ConfigService;
 import com.magestore.app.lib.view.MagestoreView;
 
@@ -14,7 +15,7 @@ import com.magestore.app.lib.view.MagestoreView;
  * mike@trueplus.vn
  */
 
-public interface Controller<TView extends MagestoreView> {
+public interface Controller<TView extends MagestoreView, TService extends Service> {
     void setSubject(SubjectObserv subjectObserv);
     SubjectObserv getSubject();
     void setMagestoreContext(MagestoreContext context);
@@ -28,6 +29,10 @@ public interface Controller<TView extends MagestoreView> {
     void setConfigService(ConfigService service);
 
     ConfigService getConfigService();
+
+    void setService(TService service);
+
+    TService getService();
 
     void setObserveState(State state);
 

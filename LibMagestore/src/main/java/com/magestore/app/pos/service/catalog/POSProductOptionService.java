@@ -28,56 +28,16 @@ import java.util.List;
 public class POSProductOptionService extends AbstractService implements ProductOptionService {
 
     @Override
-    public ProductOption create(Product product) {
-        return null;
-    }
-
-    @Override
-    public int count(Product product) throws ParseException, InstantiationException, IllegalAccessException, IOException {
-        return 0;
-    }
-
-    @Override
-    public ProductOption retrieve(Product product, String strID) throws ParseException, InstantiationException, IllegalAccessException, IOException {
-        return null;
-    }
-
-    @Override
-    public List<ProductOption> retrieve(Product product, int page, int pageSize) throws IOException, InstantiationException, ParseException, IllegalAccessException {
-        return null;
-    }
-
-    @Override
-    public List<ProductOption> retrieve(Product product) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+    public ProductOption retrieve(Product product) throws IOException, InstantiationException, ParseException, IllegalAccessException {
         // Khởi tạo data access
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         ProductDataAccess productDataAccess = factory.generateProductDataAccess();
 
         // load product option
-        List<ProductOption> productOptionList = productDataAccess.loadProductOption(product);
-        product.setProductOption(productOptionList);
+        ProductOption productOption = productDataAccess.loadProductOption(product);
+        product.setProductOption(productOption);
 
         // return
-        return productOptionList;
-    }
-
-    @Override
-    public List<ProductOption> retrieve(Product product, String searchString, int page, int pageSize) throws IOException, InstantiationException, ParseException, IllegalAccessException {
-        return null;
-    }
-
-    @Override
-    public boolean update(Product product, ProductOption oldModel, ProductOption newModel) throws IOException, InstantiationException, ParseException, IllegalAccessException {
-        return false;
-    }
-
-    @Override
-    public boolean insert(Product product, ProductOption... childs) throws IOException, InstantiationException, ParseException, IllegalAccessException {
-        return false;
-    }
-
-    @Override
-    public boolean delete(Product product, ProductOption... childs) throws IOException, InstantiationException, ParseException, IllegalAccessException {
-        return false;
+        return productOption;
     }
 }

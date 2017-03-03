@@ -11,7 +11,7 @@ import java.util.Map;
  * mike@trueplus.vn
  */
 
-public class PosProductConfigOptionAttributes extends PosAbstractModel {
+public class PosProductOptionJsonConfigAttributes extends PosAbstractModel {
     public class Option {
         public String id;
         public String label;

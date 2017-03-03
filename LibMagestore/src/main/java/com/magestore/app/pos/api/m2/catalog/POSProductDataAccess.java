@@ -3,10 +3,8 @@ package com.magestore.app.pos.api.m2.catalog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
-import android.text.TextUtils;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.magestore.app.lib.connection.BitmapFileCacheConnection;
 import com.magestore.app.lib.connection.Connection;
 import com.magestore.app.lib.connection.ConnectionException;
@@ -19,16 +17,12 @@ import com.magestore.app.lib.parse.ParseException;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.resourcemodel.DataAccessException;
 import com.magestore.app.lib.resourcemodel.catalog.ProductDataAccess;
-import com.magestore.app.pos.model.catalog.PosProductConfigOptionAttributes;
-import com.magestore.app.pos.model.catalog.PosProductConfigOptionImage;
 import com.magestore.app.pos.model.catalog.PosProductOption;
-import com.magestore.app.pos.parse.gson2pos.Gson2PosAbstractParseImplement;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListProduct;
 import com.magestore.app.pos.api.m2.POSAPI;
 import com.magestore.app.pos.api.m2.POSAbstractDataAccess;
 import com.magestore.app.pos.api.m2.POSDataAccessSession;
-import com.magestore.app.pos.parse.gson2pos.Gson2PosListProductOption;
-import com.magestore.app.pos.parse.gson2pos.Gson2PosProductParseImplement;
+import com.magestore.app.pos.parse.gson2pos.Gson2PosProductOptionParseImplement;
 import com.magestore.app.util.ImageUtil;
 import com.magestore.app.util.SecurityUtil;
 
@@ -36,9 +30,6 @@ import com.magestore.app.util.SecurityUtil;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -54,7 +45,7 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
     }
 
     @Override
-    public List<ProductOption> loadProductOption(Product product) throws ParseException, ConnectionException, DataAccessException, IOException {
+    public ProductOption loadProductOption(Product product) throws ParseException, ConnectionException, DataAccessException, IOException {
         Connection connection = null;
         Statement statement = null;
         ResultReading rp = null;
@@ -75,14 +66,23 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
 //                .setFilterEqual("name", "Joust Duffle Bag");
 
-            // thực thi truy vấn và parse kết quả thành object
+            // thực thi truy vấn và parse kết quả thành json
             rp = statement.execute();
-            String json = rp.readResult2String().replace("\\\"", "\"").replace("\"{\"", "{\"").replace("}\"", "}");
-            Gson gson = new Gson();
-            Gson2PosListProductOption optionList = gson.fromJson(json, Gson2PosListProductOption.class);
+            String json = rp.readResult2String()
+                    .replace("\\", "")
+//                    .replace("\\\\\"", "\\\"")
+//                    .replace("\\\"", "\"")
+                    .replace("\"{\"", "{\"")
+                    .replace("}\"", "}");
+
+            // tạo json implement
+            Gson2PosProductOptionParseImplement implement = new Gson2PosProductOptionParseImplement();
+            Gson gson = implement.createGson();
+            PosProductOption productOption = gson.fromJson(json, PosProductOption.class);
 
             // return
-            return (List<ProductOption>)(List<?>) optionList.custom_options;
+            product.setProductOption(productOption);
+            return productOption;
         }
         catch (ConnectionException ex) {
             throw ex;
@@ -106,12 +106,6 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
             if (connection != null) connection.close();
             connection = null;
         }
-//        if (product.getJsonConfigOption() == null || "".equals(product.getJsonConfigOption().trim())) return null;
-//        Gson2PosProductParseImplement implement = new Gson2PosProductParseImplement();
-//        Gson gson = implement.createGson();
-//        PosProductOption productOption = gson.fromJson(product.getJsonConfigOption(), PosProductOption.class);
-//        product.setProductOption((ProductOption) productOption);
-//        return (ProductOption) productOption;
     }
 
     @Override
@@ -133,7 +127,7 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
 //        for (PosProductConfigOptionAttributes attribute : productOption.attributes.values()) {
 //            // duyệt từng option trong thuộc tính
 //            for (PosProductConfigOptionAttributes.Attributes option: attribute.options ) {
-//                option.images = new ArrayList<PosProductConfigOptionImage>();
+//                option.images = new ArrayList<PosProductOptionJsonConfigOptionImage>();
 //                option.images.add(attribute.images.get())
 //            }
 //        }
@@ -172,7 +166,7 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
 
             // thực thi truy vấn và parse kết quả thành object
             rp = statement.execute();
-            rp.setParseImplement(Gson2PosProductParseImplement.class);
+            rp.setParseImplement(getClassParseImplement());
             rp.setParseModel(Gson2PosListProduct.class);
             Gson2PosListProduct listProduct = (Gson2PosListProduct) rp.doParse();
             List<Product> list = (List<Product>)(List<?>) (listProduct.items);

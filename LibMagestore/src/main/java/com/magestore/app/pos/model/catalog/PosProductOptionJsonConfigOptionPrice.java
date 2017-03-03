@@ -7,8 +7,7 @@ import com.magestore.app.pos.model.PosAbstractModel;
  * Magestore
  * mike@trueplus.vn
  */
-
-public class PosProductConfigOptionPrice extends PosAbstractModel {
+public class PosProductOptionJsonConfigOptionPrice extends PosAbstractModel {
     float oldPrice;
     float basePrice;
     float finalPrice;

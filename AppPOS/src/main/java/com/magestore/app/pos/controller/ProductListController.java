@@ -108,10 +108,10 @@ public class ProductListController extends AbstractListController<Product> {
 
     @Override
     public List<Product> onRetrieveBackground(int page, int pageSize) throws Exception {
-        if (mCategory == null || !(mListService instanceof ProductService))
+        if (mCategory == null || !(getListService() instanceof ProductService))
             return super.onRetrieveBackground(page, pageSize);
         else
-            return ((ProductService) mListService).retrieve(mCategory.getID(), null, page, pageSize);
+            return ((ProductService) getListService()).retrieve(mCategory.getID(), null, page, pageSize);
     }
 
 //    @Override

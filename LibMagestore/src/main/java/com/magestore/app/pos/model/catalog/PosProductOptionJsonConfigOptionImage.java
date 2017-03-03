@@ -8,7 +8,7 @@ import com.magestore.app.pos.model.PosAbstractModel;
  * mike@trueplus.vn
  */
 
-public class PosProductConfigOptionImage extends PosAbstractModel {
+public class PosProductOptionJsonConfigOptionImage extends PosAbstractModel {
     public String thumb;
     public String img;
     public String full;

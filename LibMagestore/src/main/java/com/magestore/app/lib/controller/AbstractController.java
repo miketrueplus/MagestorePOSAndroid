@@ -5,6 +5,7 @@ import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.observ.GenericState;
 import com.magestore.app.lib.observ.State;
 import com.magestore.app.lib.observ.SubjectObserv;
+import com.magestore.app.lib.service.Service;
 import com.magestore.app.lib.service.config.ConfigService;
 import com.magestore.app.lib.task.ActionModelTask;
 import com.magestore.app.lib.view.MagestoreView;
@@ -17,10 +18,11 @@ import java.util.Map;
  * Magestore
  * mike@trueplus.vn
  */
-public abstract class AbstractController<TModel extends Model, TView extends MagestoreView> implements Controller<TView> {
+public abstract class AbstractController<TModel extends Model, TView extends MagestoreView, TService extends Service> implements Controller<TView, TService> {
     private SubjectObserv mSubjectObserv;
 
     // item và view
+    private TService mService;
     protected TModel mItem;
     protected TView mView;
 
@@ -104,7 +106,7 @@ public abstract class AbstractController<TModel extends Model, TView extends Mag
      */
     public void onActionPostExecute(boolean success, int actionType, String actionCode, Map<String, Object> wraper, Model... models) {
         // báo cho các observ khác về việc bind item
-        GenericState<AbstractController<TModel, TView>> state = new GenericState<AbstractController<TModel, TView>>(this, actionCode);
+        GenericState<AbstractController<TModel, TView, TService>> state = new GenericState<AbstractController<TModel, TView, TService>>(this, actionCode);
         if (getSubject() != null) getSubject().setState(state);
     }
 
@@ -133,6 +135,24 @@ public abstract class AbstractController<TModel extends Model, TView extends Mag
     @Override
     public ConfigService getConfigService() {
         return mConfigService;
+    }
+
+    /**
+     * Đặt config service để sử dụng
+     * @param service
+     */
+    @Override
+    public void setService(TService service) {
+        mService = service;
+    }
+
+    /**
+     * Trả lại config service
+     * @return
+     */
+    @Override
+    public TService getService() {
+        return mService;
     }
 
     /**

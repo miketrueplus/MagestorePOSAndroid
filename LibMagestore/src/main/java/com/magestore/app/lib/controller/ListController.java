@@ -19,7 +19,7 @@ import java.util.List;
  */
 
 public interface ListController<TModel extends Model>
-        extends Controller<AbstractListPanel<TModel>> {
+        extends Controller<AbstractListPanel<TModel>, ListService<TModel>> {
 
     /**
      * Tạo mới 1 model

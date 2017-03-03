@@ -2,6 +2,7 @@ package com.magestore.app.pos.parse.gson2pos;
 
 import com.magestore.app.lib.parse.ParseModel;
 import com.magestore.app.pos.model.catalog.PosProductOption;
+import com.magestore.app.pos.model.catalog.PosProductOptionJsonConfig;
 
 import java.util.List;
 
@@ -14,4 +15,5 @@ import java.util.List;
 
 public class Gson2PosListProductOption implements ParseModel {
     public List<PosProductOption> custom_options;
+    public PosProductOptionJsonConfig json_config;
 }

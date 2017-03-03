@@ -5,13 +5,9 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.annotations.Expose;
-import com.google.gson.internal.$Gson$Types;
 import com.google.gson.reflect.TypeToken;
-import com.magestore.app.lib.model.catalog.Product;
-import com.magestore.app.pos.model.catalog.PosProduct;
-import com.magestore.app.pos.model.catalog.PosProductConfigOptionPrice;
+import com.magestore.app.pos.model.catalog.PosProductOptionConfigOption;
+import com.magestore.app.pos.model.catalog.PosProductOptionJsonConfigOptionPrice;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -26,7 +22,7 @@ import static com.magestore.app.pos.model.catalog.PosProduct.*;
  * mike@trueplus.vn
  */
 
-public class Gson2PosProductParseImplement extends Gson2PosAbstractParseImplement  {
+public class Gson2PosProductOptionParseImplement extends Gson2PosAbstractParseImplement  {
     /**
      * Bổ sung MapKeySerialization cho Gson
      * @return
@@ -35,9 +31,11 @@ public class Gson2PosProductParseImplement extends Gson2PosAbstractParseImplemen
     public Gson createGson() {
         GsonBuilder builder = new GsonBuilder();
         builder.enableComplexMapKeySerialization();
-        builder.registerTypeAdapter(new TypeToken<PosProduct.ConfigOption>(){}
+//        builder.registerTypeAdapter(new TypeToken<HashMap<String, PosProductOptionConfigOption>>(){}
+//                .getType(), new HashMapConfigOptionConverter());
+        builder.registerTypeAdapter(new TypeToken<PosProductOptionConfigOption>(){}
                 .getType(), new ConfigOptionConverter());
-        builder.registerTypeAdapter(new TypeToken<PosProductConfigOptionPrice>(){}
+        builder.registerTypeAdapter(new TypeToken<PosProductOptionJsonConfigOptionPrice>(){}
                 .getType(), new ProductConfigOptionPriceConverter());
         return builder.create();
     }
@@ -48,15 +46,30 @@ public class Gson2PosProductParseImplement extends Gson2PosAbstractParseImplemen
      * Đoạn json mẫu
      * {"optionId":"90","optionLabel":"Color","53":"Green","58":"Red","59":"White"}
      */
+//    public class HashMapConfigOptionConverter implements JsonDeserializer<HashMap<String, PosProductOptionConfigOption>> {
+//        public HashMap<String, PosProductOptionConfigOption> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext ctx) {
+//            Set<Map.Entry<String, JsonElement>> map = json.getAsJsonObject().entrySet();
+//            HashMap<String, PosProductOptionConfigOption> returnMap = new HashMap<String, PosProductOptionConfigOption>();
+//            for (Map.Entry<String, JsonElement> element: map)
+//                returnMap.put(element.getKey(), (PosProductOptionConfigOption) ctx.deserialize(element.getValue(), PosProductOptionConfigOption.class));
+//            return returnMap;
+//        }
+//    }
+
+    /**
+     * Map từ điển của config_options sang
+     * PosProduct.ConfigOption
+     * Đoạn json mẫu
+     * {"optionId":"90","optionLabel":"Color","53":"Green","58":"Red","59":"White"}
+     */
     private static final String JSON_OPTION_ID = "optionId";
     private static final String JSON_OPTION_LABEL = "optionLabel";
-    public class ConfigOptionConverter implements JsonDeserializer<PosProduct.ConfigOption> {
-        public PosProduct.ConfigOption deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext ctx) {
+    public class ConfigOptionConverter implements JsonDeserializer<PosProductOptionConfigOption> {
+        public PosProductOptionConfigOption deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext ctx) {
             // khởi tạo product config
-            PosProduct product = new PosProduct();
-            PosProduct.ConfigOption configOption = product.generateConfigOption();
-
-            // đặt option Id và label
+            PosProductOptionConfigOption configOption = new PosProductOptionConfigOption();
+            //
+//            // đặt option Id và label
             configOption.optionId = json.getAsJsonObject().remove(JSON_OPTION_ID).getAsString();
             configOption.optionLabel = json.getAsJsonObject().remove(JSON_OPTION_LABEL).getAsString();
 
@@ -65,7 +78,6 @@ public class Gson2PosProductParseImplement extends Gson2PosAbstractParseImplemen
             Set<Map.Entry<String, JsonElement>> entry = json.getAsJsonObject().entrySet();
             for (Map.Entry<String, JsonElement> item: json.getAsJsonObject().entrySet())
                 configOption.optionValues.put(item.getKey(), item.getValue().getAsString());
-
             return configOption;
         }
     }
@@ -79,9 +91,9 @@ public class Gson2PosProductParseImplement extends Gson2PosAbstractParseImplemen
     private static final String PRICE_BASE = "basePrice";
     private static final String PRICE_FINAL = "finalPrice";
     private static final String PRICE_AMOUNT = "amount";
-    public class ProductConfigOptionPriceConverter implements JsonDeserializer<PosProductConfigOptionPrice> {
-        public PosProductConfigOptionPrice deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext ctx) {
-            PosProductConfigOptionPrice optionPrice =  new PosProductConfigOptionPrice();
+    public class ProductConfigOptionPriceConverter implements JsonDeserializer<PosProductOptionJsonConfigOptionPrice> {
+        public PosProductOptionJsonConfigOptionPrice deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext ctx) {
+            PosProductOptionJsonConfigOptionPrice optionPrice =  new PosProductOptionJsonConfigOptionPrice();
             if (json.getAsJsonObject().get(PRICE_BASE).getAsJsonObject().has(PRICE_AMOUNT)) {
                 String price = json.getAsJsonObject().get(PRICE_BASE).getAsJsonObject().get(PRICE_AMOUNT).getAsString();
                 optionPrice.setBasePrice(price == null || price.trim().equals("") ? 0 : Float.parseFloat(price));

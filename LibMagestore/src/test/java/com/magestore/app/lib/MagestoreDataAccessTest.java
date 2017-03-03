@@ -241,8 +241,8 @@ public class MagestoreDataAccessTest {
 
         List<Product> productList = productDataAccess.retrieve();
         for (Product product : productList) {
-            if (product.haveProductOption()) {
-                List<ProductOption> productOptionList = productDataAccess.loadProductOption(product);
+            if (product.haveProductOption() && (product.getID().equals("67"))) {
+                ProductOption productOption = productDataAccess.loadProductOption(product);
             }
         }
         return;

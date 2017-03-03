@@ -19,12 +19,6 @@ import java.util.Map;
  */
 
 public class PosProduct extends PosAbstractModel implements Product {
-    public class ConfigOption {
-        public String optionId;
-        public String optionLabel;
-        public Map<String, String> optionValues;
-    }
-
     private String type_id;
     private String sku;
     private float price;
@@ -35,7 +29,6 @@ public class PosProduct extends PosAbstractModel implements Product {
     private String image;
     private List<String> images;
     private Bitmap bitmap;
-    private ConfigOption[] config_options;
     private String json_config;
     private float special_price;
     private String special_from_date;
@@ -46,7 +39,7 @@ public class PosProduct extends PosAbstractModel implements Product {
     private PosStock[] stock;
     private PosTierPrice[] tier_prices;
     private float qty_increment = 1;
-    private List<ProductOption> productOptionList;
+    private ProductOption productOption;
     private int options;
 
     @Override
@@ -55,13 +48,13 @@ public class PosProduct extends PosAbstractModel implements Product {
     }
 
     @Override
-    public List<ProductOption> getProductOption() {
-        return productOptionList;
+    public ProductOption getProductOption() {
+        return productOption;
     }
 
     @Override
-    public void setProductOption(List<ProductOption> productOptionList) {
-        this.productOptionList = productOptionList;
+    public void setProductOption(ProductOption productOption) {
+        this.productOption = productOption;
     }
 
 //    @Override
@@ -71,10 +64,6 @@ public class PosProduct extends PosAbstractModel implements Product {
 //        if (productOption.attributes.size() == 0) return false;
 //        return true;
 //    }
-
-    public ConfigOption generateConfigOption() {
-        return new ConfigOption();
-    }
 
     @Override
     public String getTypeID() {
