@@ -23,10 +23,25 @@ public interface MagestoreView<TController extends Controller> {
     void showErrorMsg(String msg);
     void showErrorMsg(Exception exp);
 
+    void hideErrorMsg(Exception exp);
+
     /**
      * Hiển thị tiến trình
      * @param blnShow
      */
     void showProgress(boolean blnShow);
+
+    void showProgressLoadRefresh(boolean show);
+
+    void showProgressLoadingMore(boolean show);
+
     void hideAllProgressBar();
+
+    void initModel();
+
+    void initValue();
+
+    // hiện thông báo lỗi
+    void showWarning(String strMsg);
+    void hideWarning();
 }

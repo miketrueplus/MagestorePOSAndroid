@@ -108,7 +108,7 @@ public class ProductOptionPanel extends AbstractPanel<ProductOptionController> {
 //    }
 
     public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
-        private List<ProductOption> mProductOptionList;
+//        private List<ProductOption> mProductOptionList;
         private Context context;
         private List<String> expandableListTitle;
         private HashMap<String, List<String>> expandableListDetail;
@@ -121,7 +121,7 @@ public class ProductOptionPanel extends AbstractPanel<ProductOptionController> {
         }
 
         public void bindList(List<ProductOption> productOptions) {
-            mProductOptionList = productOptions;
+//            mProductOptionList = productOptions;
         }
 
         @Override
@@ -165,14 +165,15 @@ public class ProductOptionPanel extends AbstractPanel<ProductOptionController> {
 
         @Override
         public Object getGroup(int listPosition) {
-            if (mProductOptionList != null) return mProductOptionList.get(listPosition).getDisplayContent();
+//            if (mProductOptionList != null) return mProductOptionList.get(listPosition).getDisplayContent();
             return this.expandableListTitle.get(listPosition);
         }
 
         @Override
         public int getGroupCount() {
-            if (mProductOptionList != null) return mProductOptionList.size();
-            else return this.expandableListTitle.size();
+//            if (mProductOptionList != null) return mProductOptionList.size();
+//            else
+                return this.expandableListTitle.size();
         }
 
         @Override

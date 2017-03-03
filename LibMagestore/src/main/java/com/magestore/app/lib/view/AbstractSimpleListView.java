@@ -267,4 +267,29 @@ public abstract class AbstractSimpleListView<TModel extends Model>
     public void hideAllProgressBar() {
 
     }
+
+    @Override
+    public void hideErrorMsg(Exception exp) {
+
+    }
+
+    @Override
+    public void showWarning(String strMsg) {
+
+    }
+
+    @Override
+    public void hideWarning() {
+
+    }
+
+    @Override
+    public void showProgressLoadRefresh(boolean show) {
+
+    }
+
+    @Override
+    public void showProgressLoadingMore(boolean show) {
+
+    }
 }

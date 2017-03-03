@@ -52,9 +52,9 @@ public abstract class AbstractSimpleRecycleView<TModel extends Model>
     private int mintSpanCount = 1;
 
     // tham chiếu phân trang
-    private int mintPageSize = 10;
-    private int mintPageFirst = 1;
-    private int mintPageSizeMax = 500;
+//    private int mintPageSize = 10;
+//    private int mintPageFirst = 1;
+//    private int mintPageSizeMax = 500;
 
     private int mintOrientation = LinearLayoutManager.VERTICAL;
 
@@ -323,6 +323,41 @@ public abstract class AbstractSimpleRecycleView<TModel extends Model>
     public void hideAllProgressBar() {
 
     }
+
+    @Override
+    public void hideErrorMsg(Exception exp) {
+
+    }
+
+    @Override
+    public void showWarning(String strMsg) {
+
+    }
+
+    @Override
+    public void hideWarning() {
+
+    }
+
+    @Override
+    public void showProgressLoadRefresh(boolean show) {
+
+    }
+
+    @Override
+    public void showProgressLoadingMore(boolean show) {
+
+    }
+
+    @Override
+    public void initModel() {
+
+    }
+
+    @Override
+    public void initValue() {
+
+    }
     //    /**
 //     * Xuwr
 //     * @param widthMeasureSpec
@@ -342,4 +377,6 @@ public abstract class AbstractSimpleRecycleView<TModel extends Model>
 //        ViewGroup.LayoutParams params = getLayoutParams();
 //        params.height = getMeasuredHeight();
 //    }
+
+
 }

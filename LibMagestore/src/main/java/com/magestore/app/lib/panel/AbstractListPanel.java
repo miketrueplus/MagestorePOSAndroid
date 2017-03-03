@@ -52,7 +52,7 @@ public abstract class AbstractListPanel<TModel extends Model>
     private SearchAutoCompletePanel mSearchPanel;
 
     // Task điều khiển danh sách trong list
-    protected ListController<TModel> mController;
+//    protected ListController<TModel> mController;
 
     // Model chứa data danh sách
     protected List<TModel> mList;
@@ -65,22 +65,6 @@ public abstract class AbstractListPanel<TModel extends Model>
     // tham chiếu layout của mỗi item trong list
     private int mintItemLayout;
 
-    // tham chiếu id layout của progress
-    private int mintIdProgresBar;
-    private int mintIdProgresBarTop;
-    private int mintIdProgresBarBottom;
-
-    // tham chiếu id của thông báo lỗi
-    private int mintTxtErrMsg;
-
-    // tham chiếu layout của progress
-    private ProgressBar mProgressBar;
-    private ProgressBar mProgressBarTop;
-    private View mProgressBarBottom;
-
-    // tham chiếu layout thông báo lỗi
-    private TextView mTxtErrorMsg;
-
     // layout manager của recycle view
     LinearLayoutManager mRecycleViewLayoutManager;
 
@@ -91,23 +75,19 @@ public abstract class AbstractListPanel<TModel extends Model>
     private int mintSpanCount = 1;
 
     // tham chiếu phân trang
-    private int mintPageSize = -1;
-    private int mintItemMax = 500;
-    private boolean haveLazyLoading = false;
+    private int mintPageSize;
+    private int mintItemMax;
+    private boolean haveLazyLoading;
 
     // progress và thông báo cho các item
-    int mintLayoutModelViewProgress = -1;
-    int mintLayoutModelViewContent = -1;
-    int mintLayoutModelViewMsg = -1;
-    int mintLayoutModelViewImage = -1;
-    int mintLayoutModelViewText1 = -1;
-    int mintLayoutModelViewText2 = -1;
+    int mintLayoutModelViewProgress;
+    int mintLayoutModelViewContent;
+    int mintLayoutModelViewMsg;
+    int mintLayoutModelViewImage;
+    int mintLayoutModelViewText1;
+    int mintLayoutModelViewText2;
 
-    private int mintOrientation = LinearLayoutManager.VERTICAL;
-
-    // loading progress của từng item
-    TModel mModelLoadingProgress = null;
-    boolean mblnModelLoadingProgress = false;
+    private int mintOrientation;
 
     // scroll litsenr cho lazy loading
     EndlessRecyclerOnScrollListener mScrollListener;
@@ -119,7 +99,6 @@ public abstract class AbstractListPanel<TModel extends Model>
      */
     public AbstractListPanel(Context context) {
         super(context);
-        initLayout();
     }
 
     /**
@@ -130,8 +109,6 @@ public abstract class AbstractListPanel<TModel extends Model>
      */
     public AbstractListPanel(Context context, AttributeSet attrs) {
         super(context, attrs);
-        loadAttrs(context, attrs);
-        initLayout();
     }
 
     /**
@@ -143,8 +120,6 @@ public abstract class AbstractListPanel<TModel extends Model>
      */
     public AbstractListPanel(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        loadAttrs(context, attrs);
-        initLayout();
     }
 
     /**
@@ -153,19 +128,21 @@ public abstract class AbstractListPanel<TModel extends Model>
      * @param context
      * @param attrs
      */
-    private void loadAttrs(Context context, AttributeSet attrs) {
+    @Override
+    protected void loadAttrs(Context context, AttributeSet attrs) {
+        super.loadAttrs(context, attrs);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.magestore_view);
 
         // layoyt id của chính panel
-        int intPanelLayout = a.getResourceId(R.styleable.magestore_view_layout_panel, -1);
+//        mintPanelLayout = a.getResourceId(R.styleable.magestore_view_layout_panel, -1);
+
+//        // layout id của progress hiển thị quá trình loading
+//        mintIdProgresBar = a.getResourceId(R.styleable.magestore_view_layout_progress, R.id.id_modelview_default_progressbar);
+//        mintIdProgresBarTop = a.getResourceId(R.styleable.magestore_view_layout_progress_top, R.id.id_modelview_default_progressbar_top);
+//        mintIdProgresBarBottom = a.getResourceId(R.styleable.magestore_view_layout_progress_bottom, R.id.id_modelview_default_progressbar_bottom);
 
         // layout id của progress hiển thị quá trình loading
-        mintIdProgresBar = a.getResourceId(R.styleable.magestore_view_layout_progress, R.id.id_modelview_default_progressbar);
-        mintIdProgresBarTop = a.getResourceId(R.styleable.magestore_view_layout_progress_top, R.id.id_modelview_default_progressbar_top);
-        mintIdProgresBarBottom = a.getResourceId(R.styleable.magestore_view_layout_progress_bottom, R.id.id_modelview_default_progressbar_bottom);
-
-        // layout id của progress hiển thị quá trình loading
-        mintTxtErrMsg = a.getResourceId(R.styleable.magestore_view_layout_msg, R.id.id_modelview_default_textmsg);
+//        mintTxtErrMsg = a.getResourceId(R.styleable.magestore_view_layout_msg, R.id.id_modelview_default_textmsg);
 
         // layout mỗi ô trong list
         mintItemLayout = a.getResourceId(R.styleable.magestore_view_layout_item, -1);
@@ -188,13 +165,14 @@ public abstract class AbstractListPanel<TModel extends Model>
         mintLayoutModelViewMsg = a.getResourceId(R.styleable.magestore_view_layout_item_msg, -1);
 
         a.recycle();
+    }
 
+    @Override
+    protected void initLayout() {
+        super.initLayout();
         // xác định các tham só cho lazy loading
         haveLazyLoading = mintPageSize > 0;
         if (mintPageSize <= 0) mintPageSize = mintItemMax;
-
-        // tham chiêu file layout của panel
-        if (intPanelLayout > -1) setLayoutPanel(intPanelLayout);
 
         // tham chiếu item của list, layout
         if (mintItemLayout > -1) setLayoutItem(mintItemLayout);
@@ -213,7 +191,7 @@ public abstract class AbstractListPanel<TModel extends Model>
                         // loading dữ liệu
                         mController.doRetrieveMore(current_page);
                         // hiện progress loading ở item cuối cùng
-                        setItemLoadingProgress(null, true);
+//                        setItemLoadingProgress(null, true);
 
                     }
                 };
@@ -225,36 +203,14 @@ public abstract class AbstractListPanel<TModel extends Model>
         if (mintSearchAutoCompletePanel > 0) {
             mSearchPanel = (SearchAutoCompletePanel) findViewById(mintSearchAutoCompletePanel);
         }
-
-        // tham chiếu layout của progressbar
-        mProgressBar = (ProgressBar) findViewById(mintIdProgresBar);
-        mProgressBarTop = (ProgressBar) findViewById(mintIdProgresBarTop);
-        mProgressBarBottom = (View) findViewById(mintIdProgresBarBottom);
-
-
-        // tham chiếu layout của thông báo lỗi
-        if (mintTxtErrMsg > -1) {
-            mTxtErrorMsg = (TextView) findViewById(mintTxtErrMsg);
-        }
     }
 
-
-    public void initLayout() {
-
-    }
-
-    public void initModel() {
-    }
-
-    public void initValue() {
-    }
-
-    protected void initRecycleView(int resID, GridLayoutManager layoutManager) {
-        // View chưa danh sách các mặt hàng trong đơn
-        mRecycleView = (RecyclerView) findViewById(resID);
-        if (mRecycleView != null)
-            mRecycleView.setLayoutManager(layoutManager);
-    }
+    //    protected void initRecycleView(int resID, GridLayoutManager layoutManager) {
+//        // View chưa danh sách các mặt hàng trong đơn
+//        mRecycleView = (RecyclerView) findViewById(resID);
+//        if (mRecycleView != null)
+//            mRecycleView.setLayoutManager(layoutManager);
+//    }
 
     /**
      * Đặt item layout quản lý item trong danh sách
@@ -270,49 +226,12 @@ public abstract class AbstractListPanel<TModel extends Model>
      *
      * @param show
      */
+    @Override
     public void showProgress(final boolean show) {
-        if (mProgressBar == null) return;
-
         // nếu danh sách đã có số liệu, không show progress nữa
-        if ((mRecycleView.getAdapter() != null) && mRecycleView.getAdapter().getItemCount() > 0)
-            return;
-        mProgressBar.setVisibility(show ? View.VISIBLE : View.GONE);
-    }
-
-    /**
-     * Hiển thị progress bar top của panel khi loading dữ liệu lazy
-     *
-     * @param show
-     */
-    public void showProgressTop(final boolean show) {
-        if (mProgressBarTop == null) return;
-        mProgressBarTop.setVisibility(show ? View.VISIBLE : View.GONE);
-    }
-
-    /**
-     * Hiển thị progress bar bottom của panel khi loading dữ liệu lazy
-     *
-     * @param show
-     */
-    public void showProgressBottom(final boolean show) {
-        if (mProgressBarBottom == null) return;
-        mProgressBarBottom.setVisibility(show ? View.VISIBLE : View.GONE);
-        if (mProgressBarBottom instanceof com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar) {
-            ScaleAnimation animation = new ScaleAnimation(0, 1, 0, 1, Animation.RELATIVE_TO_SELF, (float)0.5, Animation.RELATIVE_TO_SELF, (float)0.5);
-            animation.setDuration(500);
-            animation.setFillAfter(true);
-            ((com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar) mProgressBarBottom).startAnimation(animation);
-        }
-    }
-
-    /**
-     * Ẩn tất cả progressbar
-     */
-    public void hideAllProgressBar() {
-        if (mProgressBarTop != null) mProgressBarTop.setVisibility(View.GONE);
-        if (mProgressBarBottom != null) mProgressBarBottom.setVisibility(View.GONE);
-        if (mProgressBar != null) mProgressBar.setVisibility(View.GONE);
-
+        if (mRecycleView != null && (mRecycleView.getAdapter() != null) && mRecycleView.getAdapter().getItemCount() > 0)
+            super.showProgress(false);
+        else super.showProgress(show);
     }
 
     /**
@@ -321,15 +240,8 @@ public abstract class AbstractListPanel<TModel extends Model>
      * @param controller
      */
     public void setController(ListController<TModel> controller) {
-        mController = controller;
+        super.setController(controller);
         if (mSearchPanel != null) mSearchPanel.setListController(controller);
-    }
-
-    /**
-     * Trả lại controller
-     */
-    public ListController<TModel> getController() {
-        return mController;
     }
 
     /**
@@ -956,94 +868,12 @@ public abstract class AbstractListPanel<TModel extends Model>
         }
     }
 
-//    /**
-//     * @param item
-//     */
-//    public void showDeleteItem(TModel item) {
-//
-//    }
-//
-//    public void showUpdateItem(TModel item) {
-//
-//    }
-
     /**
      * Có sự thay đổi số liệu, cập nhật lại giao diện
      */
     public void notifyDataSetChanged() {
         if (mRecycleView == null) return;
-        RecyclerView.Adapter adapter = mRecycleView.getAdapter();
-        if (adapter != null)
-            adapter.notifyDataSetChanged();
-    }
-
-    /**
-     * Hiển thị thông báo lỗi
-     *
-     * @param strMsg
-     */
-    public void showErrorMsg(String strMsg) {
-        if (mTxtErrorMsg != null) {
-            mTxtErrorMsg.setText(strMsg);
-            mTxtErrorMsg.setVisibility(VISIBLE);
-        } else {
-            new AlertDialog.Builder(getContext())
-                    .setMessage(strMsg)
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .show();
-        }
-    }
-
-    /**
-     * Hiện thông báo lỗi cho exception
-     * @param exp
-     */
-    @Override
-    public void showErrorMsg(Exception exp) {
-        exp.printStackTrace();
-        showErrorMsg(exp.getMessage());
-    }
-
-    /**
-     * Bật tắt show loading theo 1 item
-     *
-     * @param model
-     * @param show
-     */
-    public void setItemLoadingProgress(TModel model, boolean show) {
-        mModelLoadingProgress = model;
-        mblnModelLoadingProgress = show;
-    }
-
-    /**
-     * Hiển thị quá trình show loading cho item
-     *
-     * @param v
-     * @param show
-     */
-//    public void showItemLoadingProgres(View v, boolean show) {
-//        if (mRecycleView == null) return;
-//        if (mRecycleView instanceof ListRecycleView) {
-//            ((ListRecycleView) mRecycleView).showProgress(v, show);
-//        }
-//    }
-
-    /**
-     * Hiển thị thông tin cảnh báo
-     * @param strMsg
-     */
-    public void showWarning(String strMsg) {
-        if (mTxtErrorMsg != null) {
-            mTxtErrorMsg.setText(strMsg);
-            mTxtErrorMsg.setVisibility(VISIBLE);
-        }
-    }
-
-    /**
-     * Ẩn thông tin cảnh báo
-     */
-    public void hideWarning() {
-        if (mTxtErrorMsg != null)
-            mTxtErrorMsg.setVisibility(GONE);
+        if (mRecycleView.getAdapter() != null)
+            mRecycleView.getAdapter().notifyDataSetChanged();
     }
 }

@@ -172,6 +172,7 @@
     <string name="phone">Phone</string>
     <string name="price">Price</string>
     <string name="province">Province</string>
+    <string name="product_option">Product Option</string>
     <string name="quantity">Quantity</string>
     <string name="revenue">Revenue</string>
     <string name="save">Save</string>

@@ -39,7 +39,7 @@ public abstract class AbstractDetailPanel<TModel extends Model>
      */
     public AbstractDetailPanel(Context context) {
         super(context);
-        initLayout();
+//        initLayout();
     }
 
     /**
@@ -48,8 +48,8 @@ public abstract class AbstractDetailPanel<TModel extends Model>
      */
     public AbstractDetailPanel(Context context, AttributeSet attrs) {
         super(context, attrs);
-        loadAttrs(context, attrs);
-        initLayout();
+//        loadAttrs(context, attrs);
+//        initLayout();
     }
 
     /**
@@ -58,8 +58,8 @@ public abstract class AbstractDetailPanel<TModel extends Model>
      */
     public AbstractDetailPanel(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        loadAttrs(context, attrs);
-        initLayout();
+//        loadAttrs(context, attrs);
+//        initLayout();
     }
 
     /**
@@ -67,7 +67,8 @@ public abstract class AbstractDetailPanel<TModel extends Model>
      * @param context
      * @param attrs
      */
-    private void loadAttrs(Context context, AttributeSet attrs) {
+    @Override
+    protected void loadAttrs(Context context, AttributeSet attrs) {
         TypedArray a = context.obtainStyledAttributes(attrs, com.magestore.app.lib.R.styleable.magestore_view);
         mintPanelLayout = a.getResourceId(com.magestore.app.lib.R.styleable.magestore_view_layout_panel, -1);
         a.recycle();

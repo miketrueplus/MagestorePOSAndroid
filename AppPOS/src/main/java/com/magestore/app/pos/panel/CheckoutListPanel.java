@@ -453,7 +453,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
     public void updateCustomerToOrder(Customer customer) {
         mCustomer = customer;
         ((TextView) toolbar_order.findViewById(R.id.text_customer_name)).setText(customer.getName());
-        ((CheckoutListController) mController).bindCustomer(customer);
+        ((CheckoutListController) getController()).bindCustomer(customer);
         if (dialog != null)
             dialog.dismiss();
     }

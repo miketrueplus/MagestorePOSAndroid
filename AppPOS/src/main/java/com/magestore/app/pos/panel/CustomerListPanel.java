@@ -75,6 +75,7 @@ public class CustomerListPanel extends AbstractListPanel<Customer> {
 
     @Override
     public void initLayout() {
+        super.initLayout();
         // Xử lý sự kiện floating action bar
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

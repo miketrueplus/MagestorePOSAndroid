@@ -54,6 +54,9 @@ public class CartItemListPanel extends AbstractListPanel<CartItem> {
      * Chuẩn bị layout
      */
     public void initLayout() {
+        // init layout
+        super.initLayout();
+
         // Load layout view các mặt hàng trong 1 đơn hàng
         mBinding = DataBindingUtil.bind(getView());
 

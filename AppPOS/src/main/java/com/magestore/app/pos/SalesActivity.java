@@ -203,6 +203,7 @@ public class SalesActivity extends AbstractActivity
         mCheckoutListController.setMagestoreContext(magestoreContext);
         mCheckoutListController.setListService(checkoutService);
         mCheckoutListController.setListPanel(mCheckoutListPanel);
+        mCheckoutListPanel.setController(mCheckoutListController);
         mCheckoutListController.setDetailPanel(mCheckoutDetailPanel);
         mCheckoutListController.setCheckoutShippingListPanel(mCheckoutShippingListPanel);
         mCheckoutListController.setCheckoutPaymentListPanel(mCheckoutPaymentListPanel);

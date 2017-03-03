@@ -132,7 +132,7 @@ public class AbstractListController<TModel extends Model>
     public void doRetrieve(int page, int pageSize) {
         // hiển thị progress
         if (page == 1) getView().showProgress(true);
-        else getView().showProgressBottom(true);
+        else getView().showProgressLoadingMore(true);
 
         // chuẩn bị task load data
         RetrieveListTask<TModel> task = new RetrieveListTask<TModel>(this);

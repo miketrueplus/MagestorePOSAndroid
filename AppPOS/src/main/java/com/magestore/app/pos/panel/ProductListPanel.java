@@ -53,6 +53,8 @@ public class ProductListPanel extends AbstractListPanel<Product> {
      */
     @Override
     public void initLayout() {
+        super.initLayout();
+
         // Chuẩn bị list danh sách khách hàng
         fr_category = (FrameLayout) findViewById(R.id.fr_category);
         toolbar_category = (Toolbar) findViewById(R.id.toolbar_category);

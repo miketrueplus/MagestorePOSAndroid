@@ -39,7 +39,7 @@ public class ProductOptionController extends AbstractController<ProductOption, P
         // khởi tạo và hiển thị dialog
         if (mDialog == null) {
             mDialog = com.magestore.app.pos.util.DialogUtil.dialog(getView().getContext(),
-                    getView().getContext().getString(R.string.province),
+                    getView().getContext().getString(R.string.product_option),
                     getView());
         }
         mDialog.show();
