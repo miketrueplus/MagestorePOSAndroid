@@ -16,6 +16,7 @@
         android:id="@+id/ll_payment_method"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/checkout_add_payment_margin"
         android:orientation="horizontal">
 
         <TextView

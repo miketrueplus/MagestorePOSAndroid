@@ -221,7 +221,7 @@ public class ConfigUtil {
         return date;
     }
 
-    public static float convertToBaseCurrency(float number){
+    public static float convertToBasePrice(float number){
         return number;
     }
 }

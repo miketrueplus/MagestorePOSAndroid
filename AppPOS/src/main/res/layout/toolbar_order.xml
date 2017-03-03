@@ -17,7 +17,7 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="5dp"
-            android:background="@drawable/ic_person_white" />
+            android:background="@drawable/ic_edit_customer" />
 
         <TextView
             android:id="@+id/text_customer_name"
@@ -38,5 +38,5 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:background="@drawable/ic_customer_white" />
+        android:background="@drawable/ic_change_customer" />
 </RelativeLayout>
