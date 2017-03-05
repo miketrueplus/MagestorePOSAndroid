@@ -175,10 +175,10 @@ public abstract class AbstractListPanel<TModel extends Model>
         if (mintPageSize <= 0) mintPageSize = mintItemMax;
 
         // tham chiếu item của list, layout
-        if (mintItemLayout > -1) setLayoutItem(mintItemLayout);
+        if (mintItemLayout > 0) setLayoutItem(mintItemLayout);
 
         // tham chiếu layout của recycle view
-        if (mintListLayout > -1) {
+        if (mintListLayout > 0) {
             mRecycleView = (RecyclerView) findViewById(mintListLayout);
 //            mRecycleViewLayoutManager = new LinearLayoutManager(this.getContext());
             mRecycleViewLayoutManager = new GridLayoutManager(this.getContext(), mintSpanCount, mintOrientation, false);

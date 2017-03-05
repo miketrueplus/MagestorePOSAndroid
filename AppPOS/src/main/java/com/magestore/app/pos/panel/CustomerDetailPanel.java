@@ -105,11 +105,7 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
      */
     @Override
     protected void initLayout() {
-        // Load layout view thông tin khách hàng chi tiết
-        mBinding = DataBindingUtil.bind(getView());
-
-        // chuẩn bị panel view danh sách địa chỉ khách hàng
-//        mCustomerAddressListPanel = (CustomerAddressListPanel) findViewById(R.id.customer_address);
+        super.initLayout();
 
         // chuẩn bị panel complain của khách hàng
         mCustomerComplainListView = (CustomerComplainListView) findViewById(R.id.complain_list_panel);
@@ -193,6 +189,12 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
                 onClickNewComplain(v);
             }
         });
+    }
+
+    @Override
+    public void initModel() {
+        // Load layout view thông tin khách hàng chi tiết
+        mBinding = DataBindingUtil.bind(getView());
     }
 
     /**
@@ -305,12 +307,12 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
     /**
      * Cập nhật view khi dữ liệu được thanh đổi
      */
-    @Override
-    public void notifyDataSetChanged() {
-        super.notifyDataSetChanged();
+//    @Override
+//    public void notifyDataSetChanged() {
+//        super.notifyDataSetChanged();
 //        mCustomerAddressListPanel.notifyDataSetChanged();
 //        mCustomerComplainListView.not .notifyDataSetChanged();
-    }
+//    }
 
     @Override
     public void bind2Item(Customer item) {

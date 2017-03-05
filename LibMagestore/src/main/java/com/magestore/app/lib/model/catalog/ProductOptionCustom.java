@@ -49,4 +49,10 @@ public interface ProductOptionCustom extends Model {
     String getPriceType();
 
     List<PosProductOptionCustomerValue> getOptionValueList();
+
+    boolean isTypeSelectOne();
+
+    boolean isTypeSelectMultipe();
+
+    boolean isTypeChooseQuantity();
 }

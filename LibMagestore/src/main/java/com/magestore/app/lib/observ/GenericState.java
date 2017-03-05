@@ -28,7 +28,7 @@ public class GenericState<TController extends Controller> implements State<TCont
     public static final String DEFAULT_STATE_CODE_ON_INSERT = "FIRE_STATE_ON_INSERT";
     public static final String DEFAULT_STATE_CODE_ON_UPDATE = "FIRE_STATE_ON_UPDATE";
     public static final String DEFAULT_STATE_CODE_ON_DELETE = "FIRE_STATE_ON_DELETE";
-    public static final String DEFAULT_STATE_CODE_ON_INIT = "FIRE_STATE_ON_INIT";
+    public static final String DEFAULT_STATE_CODE_ON_LOAD_ITEM = "DEFAULT_STATE_CODE_ON_LOAD_ITEM";
 
     // controler nơi xuất phát state
     TController mController;

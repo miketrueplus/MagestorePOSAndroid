@@ -21,17 +21,8 @@ import com.magestore.app.lib.view.MagestoreView;
 public abstract class AbstractDetailPanel<TModel extends Model>
         extends AbstractPanel<ListController<TModel>>
         implements MagestoreView<ListController<TModel>> {
-    // controller của danh sách
-    protected ListController<TModel> mController;
-
-    // tham chiếu layout của panel
-    protected int mintPanelLayout;
-
     // Model chính
-    protected TModel mItem;
-
-    // view chính của panel
-    View mView;
+    private TModel mItem;
 
     /**
      * Khởi tạo panel
@@ -39,7 +30,6 @@ public abstract class AbstractDetailPanel<TModel extends Model>
      */
     public AbstractDetailPanel(Context context) {
         super(context);
-//        initLayout();
     }
 
     /**
@@ -48,8 +38,6 @@ public abstract class AbstractDetailPanel<TModel extends Model>
      */
     public AbstractDetailPanel(Context context, AttributeSet attrs) {
         super(context, attrs);
-//        loadAttrs(context, attrs);
-//        initLayout();
     }
 
     /**
@@ -58,50 +46,14 @@ public abstract class AbstractDetailPanel<TModel extends Model>
      */
     public AbstractDetailPanel(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-//        loadAttrs(context, attrs);
-//        initLayout();
     }
 
     /**
-     * Đọc attributes
-     * @param context
-     * @param attrs
+     * Return item
+     * @return
      */
-    @Override
-    protected void loadAttrs(Context context, AttributeSet attrs) {
-        TypedArray a = context.obtainStyledAttributes(attrs, com.magestore.app.lib.R.styleable.magestore_view);
-        mintPanelLayout = a.getResourceId(com.magestore.app.lib.R.styleable.magestore_view_layout_panel, -1);
-        a.recycle();
-
-        if (mintPanelLayout > -1) setLayoutPanel(mintPanelLayout);
-    }
-
-    /**
-     * Thiết lập layout cho panel
-     * @param layoutPanel
-     */
-    public void setLayoutPanel(int layoutPanel) {
-        mintPanelLayout = layoutPanel;
-        mView = inflate(getContext(), mintPanelLayout, null);
-        addView(mView);
-    }
-
-    protected View getView() {
-        return mView;
-    }
-
-    public void initModel() {
-    }
-
-    public void initValue() {
-    }
-
-    /**
-     * Hiển thị tiến trình
-     * @param show
-     */
-    public void showProgress(boolean show) {
-
+    public TModel getItem() {
+        return mItem;
     }
 
     /**
@@ -109,7 +61,6 @@ public abstract class AbstractDetailPanel<TModel extends Model>
      */
     public void bindItem(TModel item) {
         mItem = item;
-        notifyDataSetChanged();
     }
 
     /**
@@ -125,50 +76,6 @@ public abstract class AbstractDetailPanel<TModel extends Model>
      * @param item
      */
     public void bind2Item(TModel item) {
-
-    }
-
-    /**
-     * Đặt controller điều khiển
-     * @param controller
-     */
-    public void setController(ListController<TModel> controller) {
-        mController = controller;
-    }
-
-    /**
-     * Trả về controller điều khiển
-     * @return
-     */
-    public ListController<TModel> getController() {
-        return mController;
-    }
-
-    /**
-     * Hiển thị thông báo lỗi
-     * @param strMsg
-     */
-    public void showErrorMsg(String strMsg) {
-        new AlertDialog.Builder(getContext())
-                .setMessage(strMsg)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show();
-    }
-
-    @Override
-    public void showErrorMsg(Exception exp) {
-        new AlertDialog.Builder(getContext())
-                .setMessage(exp.getLocalizedMessage())
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show();
-    }
-
-    public void notifyDataSetChanged() {
-
-    }
-
-    @Override
-    public void hideAllProgressBar() {
 
     }
 }

@@ -8,6 +8,7 @@ import com.magestore.app.lib.observ.SubjectObserv;
 import com.magestore.app.lib.service.Service;
 import com.magestore.app.lib.service.config.ConfigService;
 import com.magestore.app.lib.task.ActionModelTask;
+import com.magestore.app.lib.task.LoadModelTask;
 import com.magestore.app.lib.view.MagestoreView;
 
 import java.util.Map;
@@ -81,6 +82,46 @@ public abstract class AbstractController<TModel extends Model, TView extends Mag
     }
 
     /**
+     * Load item
+     * @param item
+     */
+    public void doLoadItem(TModel... item) {
+        LoadModelTask loadTask = new LoadModelTask(this);
+        loadTask.doExcute(item);
+    }
+
+    /**
+     * Thực hiện load item trên tiến trình ở background
+     * @param item
+     * @return
+     */
+    public boolean doLoadItemBackground(TModel... item) throws Exception  {
+        return true;
+    }
+
+    /**
+     * Trước khi load item
+     * @param item
+     */
+    public void onLoadItemPreExecute(TModel... item) {
+        doShowProgress(true);
+    }
+
+    /**
+     * Load thành công item
+     * @param success
+     * @param item
+     */
+    public void onLoadItemPostExecute(boolean success, TModel... item) {
+        // giấu các progress bar
+        getView().hideAllProgressBar();
+
+        // báo cho các observ khác về việc bind item
+        GenericState<AbstractController<TModel, TView, TService>> state = new GenericState<AbstractController<TModel, TView, TService>>(this, GenericState.DEFAULT_STATE_CODE_ON_LOAD_ITEM);
+        if (getSubject() != null) getSubject().setState(state);
+    }
+
+    /**
      * Thực hiện action
      * @param actionType
      * @param actionCode
@@ -89,6 +130,10 @@ public abstract class AbstractController<TModel extends Model, TView extends Mag
     public void doAction(int actionType, String actionCode, Map<String, Object> wraper, Model... models) {
         ActionModelTask actionTask = new ActionModelTask(this, actionType, actionCode, wraper);
         actionTask.doExcute(wraper, models);
+    }
+
+    public void onActionPreExecute(int actionType, String actionCode, Map<String, Object> wraper, Model... models) {
+
     }
 
     /**

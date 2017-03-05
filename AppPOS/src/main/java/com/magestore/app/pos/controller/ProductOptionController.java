@@ -20,7 +20,7 @@ import java.util.List;
  * mike@trueplus.vn
  */
 
-public class ProductOptionController extends AbstractController<ProductOption, ProductOptionPanel, ProductOptionService> {
+public class ProductOptionController extends AbstractController<Product, ProductOptionPanel, ProductOptionService> {
     MagestoreDialog mDialog;
     /**
      * Hiển thị dialog show chọn option
@@ -43,11 +43,41 @@ public class ProductOptionController extends AbstractController<ProductOption, P
                     getView());
         }
         mDialog.show();
+        getView().clearList();
+        if (product.getProductOption() != null) bindItem(product);
+        else doLoadItem(product);
     }
 
-//    @Override
-//    public synchronized void onRetrievePostExecute(List<ProductOption> list) {
-////        super.onRetrievePostExecute(list);
-//        mView.bindList(list);
-//    }
+    /**
+     * Gán product vào controller và view
+     * @param item
+     */
+    @Override
+    public void bindItem(Product item) {
+        super.bindItem(item);
+        getView().bindItem(item);
+    }
+
+    /**
+     * Load product option
+     * @param item
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public boolean doLoadItemBackground(Product... item) throws Exception  {
+        getService().retrieve(item[0]);
+        return true;
+    }
+
+    /**
+     * Load product option thành công, gán vào view để xử lý
+     * @param success
+     * @param item
+     */
+    @Override
+    public void onLoadItemPostExecute(boolean success, Product... item) {
+        super.onLoadItemPostExecute(success, item);
+        if (success) bindItem(item[0]);
+    }
 }

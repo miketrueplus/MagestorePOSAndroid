@@ -146,4 +146,19 @@ public class PosProductOptionCustom extends PosAbstractModel implements ProductO
     public List<PosProductOptionCustomerValue> getOptionValueList() {
         return values;
     }
+
+    @Override
+    public boolean isTypeSelectOne() {
+        return "radio".equals(type) || "dropdown".equals(type);
+    }
+
+    @Override
+    public boolean isTypeSelectMultipe() {
+        return "checkbox".equals(type);
+    }
+
+    @Override
+    public boolean isTypeChooseQuantity() {
+        return false;
+    }
 }

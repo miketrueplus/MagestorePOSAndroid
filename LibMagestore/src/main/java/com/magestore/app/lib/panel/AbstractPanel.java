@@ -37,7 +37,7 @@ public abstract class AbstractPanel<TController extends Controller> extends Fram
     private int mintTxtErrMsg;
 
     // tham chiếu view của layout
-    View mView;
+    protected View mView;
 
     // tham chiếu của cả panel
     private int mintPanelLayout;
@@ -169,6 +169,24 @@ public abstract class AbstractPanel<TController extends Controller> extends Fram
     }
 
     /**
+     * Set progress bar
+     * @param idProgresBar
+     */
+    protected void setProgressBar(int idProgresBar) {
+        mintIdProgresBar = idProgresBar;
+        mProgressBar = (ProgressBar) findViewById(mintIdProgresBar);
+    }
+
+    /**
+     * Set textview thôgn báo khi lỗi hoặc warning
+     * @param idTxtView
+     */
+    protected void setTextViewMsg(int idTxtView) {
+        mintTxtErrMsg = idTxtView;
+        mTxtErrorMsg = (TextView) findViewById(mintTxtErrMsg);
+    }
+
+    /**
      * Đọc các thuộc tính từ XML của layout
      * @param context
      * @param attrs
@@ -201,7 +219,7 @@ public abstract class AbstractPanel<TController extends Controller> extends Fram
         mProgressBarBottom = (View) findViewById(mintIdProgresBarBottom);
 
         // tham chiếu layout của thông báo lỗi
-        if (mintTxtErrMsg > -1) {
+        if (mintTxtErrMsg > 0) {
             mTxtErrorMsg = (TextView) findViewById(mintTxtErrMsg);
         }
     }

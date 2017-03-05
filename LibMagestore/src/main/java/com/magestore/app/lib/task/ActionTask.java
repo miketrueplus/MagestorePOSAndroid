@@ -52,7 +52,7 @@ public class ActionTask<TModel extends Model> extends AsyncTask<TModel, Void, Bo
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        mController.doShowProgress(true);
+        mController.onActionPreExecute(mActionType, mActionCode, null, this.models);
     }
 
     @Override

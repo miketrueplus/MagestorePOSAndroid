@@ -11,11 +11,9 @@ import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.magestore.app.lib.model.catalog.ProductOption;
-import com.magestore.app.lib.panel.AbstractPanel;
+import com.magestore.app.lib.model.catalog.Product;
+import com.magestore.app.lib.panel.AbstractDetailPanel;
 import com.magestore.app.pos.R;
-import com.magestore.app.pos.controller.ProductOptionController;
-import com.magestore.app.pos.dummy.ExpandableListDataPump;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,11 +25,9 @@ import java.util.List;
  * mike@trueplus.vn
  */
 
-public class ProductOptionPanel extends AbstractPanel<ProductOptionController> {
+public class ProductOptionPanel extends AbstractDetailPanel<Product> {
     ExpandableListView expandableListView;
     ProductOptionPanel.CustomExpandableListAdapter expandableListAdapter;
-    List<String> expandableListTitle;
-    HashMap<String, List<String>> expandableListDetail;
 
     public ProductOptionPanel(Context context) {
         super(context);
@@ -46,6 +42,29 @@ public class ProductOptionPanel extends AbstractPanel<ProductOptionController> {
     }
 
     /**
+     * Đưa item vào giao diện
+     * @param item
+     */
+    @Override
+    public void bindItem(Product item) {
+        super.bindItem(item);
+        if (expandableListAdapter != null) {
+            expandableListAdapter.setProduct(item);
+            expandableListAdapter.notifyDataSetChanged();
+        }
+    }
+
+    /**
+     * Clear danh sách khi lần đầu hiện form
+     */
+    public void clearList() {
+        if (expandableListAdapter != null) {
+            expandableListAdapter.setProduct(null);
+            expandableListAdapter.notifyDataSetChanged();
+        }
+    }
+
+    /**
      * Khởi tạo layout
      */
     @Override
@@ -54,20 +73,22 @@ public class ProductOptionPanel extends AbstractPanel<ProductOptionController> {
 //        super.initLayout();
         setLayoutPanel(R.layout.panel_product_option_list);
 
+        // progress bar
+        setProgressBar(R.id.id_product_option_progress);
+        setTextViewMsg(R.id.id_product_option_msg);
+
         // expan list view
         expandableListView = (ExpandableListView) findViewById(R.id.id_product_option_list);
 
-        expandableListDetail = ExpandableListDataPump.getData();
-        expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
-        expandableListAdapter = new ProductOptionPanel.CustomExpandableListAdapter(getContext(), expandableListTitle, expandableListDetail);
+        expandableListAdapter = new ProductOptionPanel.CustomExpandableListAdapter(getContext());
         expandableListView.setAdapter(expandableListAdapter);
         expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
 
             @Override
             public void onGroupExpand(int groupPosition) {
-                Toast.makeText(getContext(),
-                        expandableListTitle.get(groupPosition) + " List Expanded.",
-                        Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(),
+//                        expandableListTitle.get(groupPosition) + " List Expanded.",
+//                        Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -75,9 +96,9 @@ public class ProductOptionPanel extends AbstractPanel<ProductOptionController> {
 
             @Override
             public void onGroupCollapse(int groupPosition) {
-                Toast.makeText(getContext(),
-                        expandableListTitle.get(groupPosition) + " List Collapsed.",
-                        Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(),
+//                        expandableListTitle.get(groupPosition) + " List Collapsed.",
+//                        Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -86,14 +107,14 @@ public class ProductOptionPanel extends AbstractPanel<ProductOptionController> {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v,
                                         int groupPosition, int childPosition, long id) {
-                Toast.makeText(
-                        getContext(),
-                        expandableListTitle.get(groupPosition)
-                                + " -> "
-                                + expandableListDetail.get(
-                                expandableListTitle.get(groupPosition)).get(
-                                childPosition), Toast.LENGTH_SHORT
-                ).show();
+//                Toast.makeText(
+//                        getContext(),
+//                        expandableListTitle.get(groupPosition)
+//                                + " -> "
+//                                + expandableListDetail.get(
+//                                expandableListTitle.get(groupPosition)).get(
+//                                childPosition), Toast.LENGTH_SHORT
+//                ).show();
                 return false;
             }
         });
@@ -110,28 +131,23 @@ public class ProductOptionPanel extends AbstractPanel<ProductOptionController> {
     public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
 //        private List<ProductOption> mProductOptionList;
         private Context context;
-        private List<String> expandableListTitle;
-        private HashMap<String, List<String>> expandableListDetail;
+        private Product mProduct;
+//        private List<String> expandableListTitle;
+//        private HashMap<String, List<String>> expandableListDetail;
 
-        public CustomExpandableListAdapter(Context context, List<String> expandableListTitle,
-                                           HashMap<String, List<String>> expandableListDetail) {
+        public CustomExpandableListAdapter(Context context) {
             this.context = context;
-            this.expandableListTitle = expandableListTitle;
-            this.expandableListDetail = expandableListDetail;
+//            mProduct = product;
         }
 
-        public void bindList(List<ProductOption> productOptions) {
-//            mProductOptionList = productOptions;
+        public void setProduct(Product product) {
+            mProduct = product;
         }
 
         @Override
         public Object getChild(int listPosition, int expandedListPosition) {
-//            if (mProductOptionList != null) {
-//                return mProductOptionList.get(listPosition).getOptionValueList().get(expandedListPosition).getDisplayContent();
-//            }
-//            else
-                return this.expandableListDetail.get(this.expandableListTitle.get(listPosition))
-                    .get(expandedListPosition);
+            return mProduct.getProductOption().getCustomOptions().get(listPosition).getOptionValueList().get(expandedListPosition).getDisplayContent()
+                    + ": " + mProduct.getProductOption().getCustomOptions().get(listPosition).getOptionValueList().get(expandedListPosition).getPrice();
         }
 
         @Override
@@ -156,24 +172,25 @@ public class ProductOptionPanel extends AbstractPanel<ProductOptionController> {
 
         @Override
         public int getChildrenCount(int listPosition) {
-//            if (mProductOptionList != null) {
-//                return mProductOptionList.get(listPosition).getOptionValueList().size();
-//            }
-//            else
-                return this.expandableListDetail.get(this.expandableListTitle.get(listPosition)).size();
+            if (mProduct == null || mProduct.getProductOption() == null || mProduct.getProductOption().getCustomOptions() == null)
+                return 0;
+            if (mProduct.getProductOption().getCustomOptions().get(listPosition).getOptionValueList() == null)
+                return 0;
+            return mProduct.getProductOption().getCustomOptions().get(listPosition).getOptionValueList().size();
         }
 
         @Override
         public Object getGroup(int listPosition) {
+            return mProduct.getProductOption().getCustomOptions().get(listPosition).getDisplayContent();
 //            if (mProductOptionList != null) return mProductOptionList.get(listPosition).getDisplayContent();
-            return this.expandableListTitle.get(listPosition);
+//            return this.expandableListTitle.get(listPosition);
         }
 
         @Override
         public int getGroupCount() {
-//            if (mProductOptionList != null) return mProductOptionList.size();
-//            else
-                return this.expandableListTitle.size();
+            if (mProduct == null || mProduct.getProductOption() == null || mProduct.getProductOption().getCustomOptions() == null)
+                return 0;
+            return mProduct.getProductOption().getCustomOptions().size();
         }
 
         @Override

@@ -55,7 +55,7 @@ public class ActionModelTask extends AsyncTask<Model, Void, Boolean> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-//        mController.doShowProgress(true);
+        mController.onActionPreExecute(mActionType, mActionCode, mWrapper, this.models);
     }
 
     @Override
