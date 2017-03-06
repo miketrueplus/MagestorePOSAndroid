@@ -759,8 +759,10 @@ public abstract class AbstractListPanel<TModel extends Model>
                     mRecycleView.getAdapter().notifyItemChanged(mintSelectedPos);
 
                     // Thông báo sự kiện khi đã chọn 1 item trên danh sách cho controller
-                    if (mController != null)
+                    if (mController != null) {
                         mController.bindItem((TModel) mModelViewList.get(mintSelectedPos).getModel());
+                        mController.doShowDetailPanel(true);
+                    }
                 }
             });
         }

@@ -447,6 +447,11 @@ public class AbstractListController<TModel extends Model>
         if (mDetailView != null) mDetailView.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
+    @Override
+    public AbstractDetailPanel<TModel> getDetailView() {
+        return mDetailView;
+    }
+
     /**
      * Hiển thị panel list
      * @param show

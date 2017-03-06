@@ -1,7 +1,6 @@
 package com.magestore.app.pos.model.catalog;
 
-import com.magestore.app.lib.model.catalog.ProductOption;
-import com.magestore.app.lib.model.catalog.ProductOptionValue;
+import com.magestore.app.lib.model.catalog.ProductOptionCustomValue;
 import com.magestore.app.pos.model.PosAbstractModel;
 
 /**
@@ -9,7 +8,7 @@ import com.magestore.app.pos.model.PosAbstractModel;
  * Magestore
  * mike@trueplus.vn
  */
-public class PosProductOptionCustomerValue extends PosAbstractModel implements ProductOptionValue {
+public class PosProductOptionCustomCustomValue extends PosAbstractModel implements ProductOptionCustomValue {
     String option_type_id;
     String option_id;
     String sku;

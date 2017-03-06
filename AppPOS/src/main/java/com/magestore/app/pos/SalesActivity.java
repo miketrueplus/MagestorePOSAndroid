@@ -32,6 +32,7 @@ import com.magestore.app.pos.controller.CheckoutAddPaymentListController;
 import com.magestore.app.pos.controller.CheckoutListController;
 import com.magestore.app.pos.controller.ProductListController;
 import com.magestore.app.pos.controller.ProductOptionController;
+import com.magestore.app.pos.panel.CartItemDetailPanel;
 import com.magestore.app.pos.panel.CartItemListPanel;
 import com.magestore.app.pos.panel.CartOrderListPanel;
 import com.magestore.app.pos.panel.CategoryListPanel;
@@ -65,7 +66,11 @@ public class SalesActivity extends AbstractActivity
     private CheckoutDetailPanel mCheckoutDetailPanel;
     private CheckoutShippingListPanel mCheckoutShippingListPanel;
     private CheckoutPaymentListPanel mCheckoutPaymentListPanel;
+
+    // item panel
     private CartItemListPanel mCartItemListPanel;
+    private CartItemDetailPanel mCartItemDetailPanel;
+
     private CategoryListPanel mCategoryListPanel;
     private PaymentMethodListPanel mPaymentMethodListPanel;
     private CheckoutAddPaymentPanel mCheckoutAddPaymentPanel;
@@ -132,6 +137,7 @@ public class SalesActivity extends AbstractActivity
 
         // cart item panel
         mCartItemListPanel = (CartItemListPanel) mCheckoutListPanel.findViewById(R.id.order_item_panel);
+        mCartItemDetailPanel = new CartItemDetailPanel(this.getContext());
 
         mCartOrderListPanel = (CartOrderListPanel) mCheckoutListPanel.findViewById(R.id.checkout_item_panel);
 
@@ -230,10 +236,11 @@ public class SalesActivity extends AbstractActivity
         mCheckoutCartItemListController.setSubject(subjectObserv);
         mCheckoutCartItemListController.setMagestoreContext(magestoreContext);
         mCheckoutCartItemListController.setListPanel(mCartItemListPanel);
+        mCheckoutCartItemListController.setDetailPanel(mCartItemDetailPanel);
         mCheckoutCartItemListController.setChildListService(cartService);
-//        mCheckoutCartItemListController.setParentController(mCheckoutListController);
-        mCheckoutListController.setCartItemListController(mCheckoutCartItemListController);
         mCheckoutCartItemListController.setSubject(subjectObserv);
+
+        mCheckoutListController.setCartItemListController(mCheckoutCartItemListController);
 
         mCheckoutAddPaymentListController = new CheckoutAddPaymentListController();
         mCheckoutAddPaymentListController.setMagestoreContext(magestoreContext);
@@ -268,6 +275,7 @@ public class SalesActivity extends AbstractActivity
 
         mProductListPanel.initModel();
         mCheckoutListPanel.initModel();
+        mCartItemDetailPanel.initModel();
         mCartItemListPanel.initModel();
         mCategoryListPanel.initModel();
 
@@ -371,41 +379,5 @@ public class SalesActivity extends AbstractActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return navMenu;
-    }
-
-    /**
-     * Hiển thị progress bar lúc load danh sách lần đầu
-     */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    public void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-//                int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-//
-//                mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-//                mLoginFormView.animate().setDuration(shortAnimTime).alpha(
-//                        show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-//                    @Override
-//                    public void onAnimationEnd(Animator animation) {
-//                        mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-//                    }
-//                });
-//
-//                mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-//                mProgressView.animate().setDuration(shortAnimTime).alpha(
-//                        show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-//                    @Override
-//                    public void onAnimationEnd(Animator animation) {
-//                        mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-//                    }
-//                });
-//            } else {
-//                // The ViewPropertyAnimator APIs are not available, so simply show
-//                // and hide the relevant UI components.
-//                mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-//                mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-//            }
     }
 }

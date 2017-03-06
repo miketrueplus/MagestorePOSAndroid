@@ -29,7 +29,7 @@ public class PosProductOptionCustom extends PosAbstractModel implements ProductO
     String store_price_type;
     String price;
     String price_type;
-    List<PosProductOptionCustomerValue> values;
+    List<PosProductOptionCustomCustomValue> values;
     PosProductOptionJsonConfig json_config;
 
     @Override
@@ -143,13 +143,13 @@ public class PosProductOptionCustom extends PosAbstractModel implements ProductO
     }
 
     @Override
-    public List<PosProductOptionCustomerValue> getOptionValueList() {
+    public List<PosProductOptionCustomCustomValue> getOptionValueList() {
         return values;
     }
 
     @Override
     public boolean isTypeSelectOne() {
-        return "radio".equals(type) || "dropdown".equals(type);
+        return "radio".equals(type) || "drop_down".equals(type);
     }
 
     @Override
@@ -159,6 +159,21 @@ public class PosProductOptionCustom extends PosAbstractModel implements ProductO
 
     @Override
     public boolean isTypeChooseQuantity() {
-        return false;
+        return "field".equals(type);
+    }
+
+    @Override
+    public boolean isTypeTime() {
+        return "time".equals(type);
+    }
+
+    @Override
+    public boolean isTypeDate() {
+        return "date".equals(type);
+    }
+
+    @Override
+    public boolean isTypeDateTime() {
+        return "date_time".equals(type);
     }
 }

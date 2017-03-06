@@ -7,17 +7,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.ExpandableListView;
+import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.TimePicker;
 
 import com.magestore.app.lib.model.catalog.Product;
+import com.magestore.app.lib.model.catalog.ProductOptionCustom;
+import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
 import com.magestore.app.pos.R;
+import com.magestore.app.pos.model.catalog.PosProductOption;
+import com.magestore.app.pos.model.catalog.PosProductOptionCustom;
+import com.magestore.app.pos.model.catalog.PosProductOptionCustomCustomValue;
+import com.magestore.app.util.ConfigUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Mike on 3/2/2017.
@@ -55,6 +65,13 @@ public class ProductOptionPanel extends AbstractDetailPanel<Product> {
     }
 
     /**
+     * Bind giá trị sang 1 caritem
+     */
+    public void bindCartItem(CartItem cartItem) {
+
+    }
+
+    /**
      * Clear danh sách khi lần đầu hiện form
      */
     public void clearList() {
@@ -82,62 +99,16 @@ public class ProductOptionPanel extends AbstractDetailPanel<Product> {
 
         expandableListAdapter = new ProductOptionPanel.CustomExpandableListAdapter(getContext());
         expandableListView.setAdapter(expandableListAdapter);
-        expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-
-            @Override
-            public void onGroupExpand(int groupPosition) {
-//                Toast.makeText(getContext(),
-//                        expandableListTitle.get(groupPosition) + " List Expanded.",
-//                        Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        expandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
-
-            @Override
-            public void onGroupCollapse(int groupPosition) {
-//                Toast.makeText(getContext(),
-//                        expandableListTitle.get(groupPosition) + " List Collapsed.",
-//                        Toast.LENGTH_SHORT).show();
-
-            }
-        });
-
-        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v,
-                                        int groupPosition, int childPosition, long id) {
-//                Toast.makeText(
-//                        getContext(),
-//                        expandableListTitle.get(groupPosition)
-//                                + " -> "
-//                                + expandableListDetail.get(
-//                                expandableListTitle.get(groupPosition)).get(
-//                                childPosition), Toast.LENGTH_SHORT
-//                ).show();
-                return false;
-            }
-        });
     }
 
-//    @Override
-//    public void bindList(List<ProductOption> list) {
-////        super.bindList(list);
-//        expandableListAdapter.bindList(list);
-//        expandableListAdapter.notifyDataSetChanged();
-//
-//    }
-
     public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
-//        private List<ProductOption> mProductOptionList;
         private Context context;
         private Product mProduct;
-//        private List<String> expandableListTitle;
-//        private HashMap<String, List<String>> expandableListDetail;
+        public Map<PosProductOptionCustom, ProductOptionCustomHolder> mProductOptionCustomHolderMap;
 
         public CustomExpandableListAdapter(Context context) {
             this.context = context;
-//            mProduct = product;
+            mProductOptionCustomHolderMap = new HashMap<PosProductOptionCustom, ProductOptionCustomHolder>();
         }
 
         public void setProduct(Product product) {
@@ -145,9 +116,8 @@ public class ProductOptionPanel extends AbstractDetailPanel<Product> {
         }
 
         @Override
-        public Object getChild(int listPosition, int expandedListPosition) {
-            return mProduct.getProductOption().getCustomOptions().get(listPosition).getOptionValueList().get(expandedListPosition).getDisplayContent()
-                    + ": " + mProduct.getProductOption().getCustomOptions().get(listPosition).getOptionValueList().get(expandedListPosition).getPrice();
+        public PosProductOptionCustomCustomValue getChild(int listPosition, int expandedListPosition) {
+            return mProduct.getProductOption().getCustomOptions().get(listPosition).getOptionValueList().get(expandedListPosition);
         }
 
         @Override
@@ -155,18 +125,83 @@ public class ProductOptionPanel extends AbstractDetailPanel<Product> {
             return expandedListPosition;
         }
 
+        private void initTypeChooseOneHolder(View convertView, final ProductOptionCustom productOptionCustom, final ProductOptionCustomValueHolder viewHolder) {
+            viewHolder.mradChoose = (RadioButton) convertView.findViewById(R.id.id_radio_product_option_radio);
+            viewHolder.mradChoose.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // tìm tất cả các radio trong cùng product option
+                    for (ProductOptionCustomValueHolder eachViewHolder:
+                            mProductOptionCustomHolderMap.get(productOptionCustom).mProductOptionCustomValueHolderList) {
+                        eachViewHolder.mradChoose.setSelected(eachViewHolder == viewHolder);
+                        eachViewHolder.mradChoose.setChecked(eachViewHolder == viewHolder);
+                    }
+                }
+            });
+        }
+
+        private void initTypeChooseMultipeHolder(View convertView, ProductOptionCustom productOptionCustomer, ProductOptionCustomValueHolder viewHolder) {
+            viewHolder.mchkChoose = (CheckBox) convertView.findViewById(R.id.id_checkbox_product_option_checkbox);
+        }
+
+        private void initTypeDateTimeHolder(View convertView, ProductOptionCustom productOptionCustomer, ProductOptionCustomValueHolder viewHolder) {
+            viewHolder.mdatePicker = (DatePicker) convertView.findViewById(R.id.id_datepicker_product_option_date);
+            viewHolder.mtimePicker = (TimePicker) convertView.findViewById(R.id.id_timepicker_product_option_time);
+        }
+
         @Override
         public View getChildView(int listPosition, final int expandedListPosition,
                                  boolean isLastChild, View convertView, ViewGroup parent) {
-            final String expandedListText = (String) getChild(listPosition, expandedListPosition);
+
+            // Tham chiếu option value
+            PosProductOptionCustom productOptionCustom = getGroup(listPosition);
+            PosProductOptionCustomCustomValue optionValue = getChild(listPosition, expandedListPosition);
+            ProductOptionCustomValueHolder viewHolder;
             if (convertView == null) {
                 LayoutInflater layoutInflater = (LayoutInflater) this.context
                         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                convertView = layoutInflater.inflate(R.layout.sample_list_item, null);
+
+                // Khởi tạo holder
+                viewHolder = new ProductOptionCustomValueHolder();
+                mProductOptionCustomHolderMap.get(productOptionCustom).mProductOptionCustomValueHolderList.add(viewHolder);
+
+                // Xem kiểu option là gì để lựa chọn layout tương ứng
+                ProductOptionCustom productOption = mProduct.getProductOption().getCustomOptions().get(listPosition);
+                if (productOption.isTypeSelectMultipe()) {
+                    convertView = layoutInflater.inflate(R.layout.card_product_option_item_checkbox, null);
+                    initTypeChooseMultipeHolder(convertView, productOption, viewHolder);
+                }
+                if (productOption.isTypeDate()
+                        || productOption.isTypeDateTime()
+                        || productOption.isTypeTime()) {
+                    convertView = layoutInflater.inflate(R.layout.card_product_option_item_datetime, null);
+                    initTypeDateTimeHolder(convertView, productOption, viewHolder);
+                }
+                else {
+                    convertView = layoutInflater.inflate(R.layout.card_product_option_item_radio, null);
+                    initTypeChooseOneHolder(convertView, productOption, viewHolder);
+                }
+
+                // đặt giá trị cho hiển thị tên option và giá cả
+                viewHolder.mtxtDisplay = (TextView) convertView
+                        .findViewById(R.id.id_txt_product_option_display);
+                viewHolder.mtxtPrice = (TextView) convertView
+                        .findViewById(R.id.id_txt_product_option_price);
+
+                // lưu tag lại với view
+                convertView.setTag(viewHolder);
             }
-            TextView expandedListTextView = (TextView) convertView
-                    .findViewById(R.id.expandedListItem);
-            expandedListTextView.setText(expandedListText);
+
+            // lấy lại layout đã có trước đó
+            if (convertView == null) return convertView;
+            viewHolder = (ProductOptionCustomValueHolder) convertView.getTag();
+
+            // bind giá trị vào
+            viewHolder.mtxtDisplay.setText(optionValue.getDisplayContent());
+            viewHolder.mtxtPrice.setText(ConfigUtil.formatPrice(optionValue.getPrice()));
+            viewHolder.customerValue = optionValue;
+
+            // return view
             return convertView;
         }
 
@@ -180,10 +215,8 @@ public class ProductOptionPanel extends AbstractDetailPanel<Product> {
         }
 
         @Override
-        public Object getGroup(int listPosition) {
-            return mProduct.getProductOption().getCustomOptions().get(listPosition).getDisplayContent();
-//            if (mProductOptionList != null) return mProductOptionList.get(listPosition).getDisplayContent();
-//            return this.expandableListTitle.get(listPosition);
+        public PosProductOptionCustom getGroup(int listPosition) {
+            return mProduct.getProductOption().getCustomOptions().get(listPosition);
         }
 
         @Override
@@ -201,16 +234,35 @@ public class ProductOptionPanel extends AbstractDetailPanel<Product> {
         @Override
         public View getGroupView(int listPosition, boolean isExpanded,
                                  View convertView, ViewGroup parent) {
-            String listTitle = (String) getGroup(listPosition);
+            // chuẩn bị holder
+            ProductOptionCustomHolder viewHolder;
             if (convertView == null) {
+                // khởi tạo view
                 LayoutInflater layoutInflater = (LayoutInflater) this.context.
                         getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                convertView = layoutInflater.inflate(R.layout.sample_list_group, null);
+                convertView = layoutInflater.inflate(R.layout.card_product_option_group, null);
+
+                // khởi tạo view holder
+                viewHolder = new ProductOptionCustomHolder();
+                viewHolder.view = convertView;
+                viewHolder.productOptionCustom = mProduct.getProductOption().getCustomOptions().get(listPosition);
+                viewHolder.mProductOptionCustomValueHolderList = new ArrayList<>();
+                viewHolder.mtxtTitle = (TextView) convertView.findViewById(R.id.listTitle);
+                viewHolder.mtxtTitle.setTypeface(null, Typeface.BOLD);
+
+                // lưu hash map cho view holder này
+                mProductOptionCustomHolderMap.put(viewHolder.productOptionCustom, viewHolder);
+
+                // lưu view holder lại
+                convertView.setTag(viewHolder);
             }
-            TextView listTitleTextView = (TextView) convertView
-                    .findViewById(R.id.listTitle);
-            listTitleTextView.setTypeface(null, Typeface.BOLD);
-            listTitleTextView.setText(listTitle);
+            if (convertView == null) return null;
+
+            // gán giá trị cho view holder text view
+            String listTitle = getGroup(listPosition).getTitle();
+            viewHolder = (ProductOptionCustomHolder) convertView.getTag();
+            viewHolder.mtxtTitle.setText(listTitle);
+
             return convertView;
         }
 
@@ -223,5 +275,30 @@ public class ProductOptionPanel extends AbstractDetailPanel<Product> {
         public boolean isChildSelectable(int listPosition, int expandedListPosition) {
             return true;
         }
+    }
+
+    /**
+     * Nắm ngữ view và product option custom  tương ứng
+     */
+    public class ProductOptionCustomHolder {
+        public View view;
+        public List<ProductOptionCustomValueHolder> mProductOptionCustomValueHolderList;
+        public PosProductOptionCustom productOptionCustom;
+        public TextView mtxtTitle;
+    }
+
+    /**
+     * Nắm ngữ view và product option custom value tương ứng
+     */
+    public class ProductOptionCustomValueHolder {
+        public View view;
+        public TextView mtxtDisplay;
+//        public TextView mtxtDisplaySub;
+        public TextView mtxtPrice;
+        public RadioButton mradChoose;
+        public CheckBox mchkChoose;
+        public DatePicker mdatePicker;
+        public TimePicker mtimePicker;
+        public PosProductOptionCustomCustomValue customerValue;
     }
 }

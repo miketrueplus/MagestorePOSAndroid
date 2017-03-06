@@ -8,7 +8,7 @@ import com.magestore.app.lib.model.Model;
  * mike@trueplus.vn
  */
 
-public interface ProductOptionValue extends Model {
+public interface ProductOptionCustomValue extends Model {
     String getOptionTypeID();
 
     String getOptionID();

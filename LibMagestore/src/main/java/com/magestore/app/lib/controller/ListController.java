@@ -198,6 +198,8 @@ public interface ListController<TModel extends Model>
      */
     void doShowDetailPanel(boolean show);
 
+    AbstractDetailPanel<TModel> getDetailView();
+
     void doShowListPanel(boolean show);
 
     void enableLazyLoading(boolean enable);

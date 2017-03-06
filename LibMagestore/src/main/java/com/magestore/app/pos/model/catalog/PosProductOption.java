@@ -1,10 +1,8 @@
 package com.magestore.app.pos.model.catalog;
 
 import com.magestore.app.lib.model.catalog.ProductOption;
-import com.magestore.app.lib.model.catalog.ProductOptionValue;
 import com.magestore.app.pos.model.PosAbstractModel;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

@@ -10,6 +10,8 @@ import com.magestore.app.lib.observ.GenericState;
 import com.magestore.app.lib.observ.State;
 import com.magestore.app.lib.service.ChildListService;
 import com.magestore.app.lib.service.checkout.CartService;
+import com.magestore.app.pos.R;
+import com.magestore.app.pos.view.MagestoreDialog;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -179,5 +181,17 @@ public class CartItemListController extends AbstractChildListController<Checkout
 
     public void bindProduct(State state) {
         bindProduct(((ProductListController)state.getController()).getSelectedItem());
+    }
+
+    @Override
+    public void doShowDetailPanel(boolean show) {
+        // khởi tạo và hiển thị dialog
+//        MagestoreDialog mDialog;
+//        if (mDialog == null) {
+        MagestoreDialog mDialog = com.magestore.app.pos.util.DialogUtil.dialog(getDetailView().getContext(),
+                getDetailView().getContext().getString(R.string.product_option),
+                getDetailView());
+//        }
+        mDialog.show();
     }
 }
