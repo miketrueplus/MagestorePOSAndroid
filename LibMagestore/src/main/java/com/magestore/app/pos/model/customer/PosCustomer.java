@@ -4,6 +4,7 @@ import com.magestore.app.lib.model.customer.Complain;
 import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.pos.model.PosAbstractModel;
+import com.magestore.app.pos.parse.gson2pos.Gson2PosExclude;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,9 @@ public class PosCustomer extends PosAbstractModel implements Customer {
     String disable_auto_group_change;
     List<PosCustomerAddress> addresses;
     List<Complain> complainsa;
+
+    @Gson2PosExclude
+    boolean use_one_address;
 
     @Override
     public String getID() {
@@ -134,6 +138,16 @@ public class PosCustomer extends PosAbstractModel implements Customer {
     @Override
     public void setSubscriber(String strSubscriber) {
         subscriber_status = strSubscriber;
+    }
+
+    @Override
+    public boolean getUseOneAddress() {
+        return use_one_address;
+    }
+
+    @Override
+    public void setUseOneAddress(boolean bUseOnleAddress) {
+        use_one_address = bUseOnleAddress;
     }
 
     @Override

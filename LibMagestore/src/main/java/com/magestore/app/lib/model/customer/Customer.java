@@ -28,4 +28,6 @@ public interface Customer extends Model {
     void setComplain(List<Complain> complains);
     String getSubscriber();
     void setSubscriber(String strSubscriber);
+    boolean getUseOneAddress();
+    void setUseOneAddress(boolean bUseOnleAddress);
 }

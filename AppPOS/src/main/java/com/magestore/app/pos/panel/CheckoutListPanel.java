@@ -12,8 +12,10 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.magestore.app.lib.context.MagestoreContext;
 import com.magestore.app.lib.model.customer.Customer;
+import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.service.customer.CustomerService;
 import com.magestore.app.pos.R;
 import com.magestore.app.lib.model.checkout.Checkout;
@@ -98,9 +100,9 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
             @Override
             public void onClick(View v) {
                 String place_order = getContext().getString(R.string.sales_place_holder);
-                if(btn_sales_order_checkout.getText().equals(place_order)){
+                if (btn_sales_order_checkout.getText().equals(place_order)) {
                     ((CheckoutListController) getController()).doInputPlaceOrder();
-                }else {
+                } else {
                     ((CheckoutListController) getController()).doInputSaveCart();
                 }
             }
@@ -177,7 +179,8 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
     }
 
     public void showPopUpAddCustomer(int type) {
-        if(mCustomer != null && mCustomer.getID().equals(((CheckoutListController) mController).getGuestCheckout().getID())){
+        String guest_id = ((CheckoutListController) mController).getGuestCheckout().getID();
+        if (mCustomer != null && mCustomer.getID().equals(guest_id)) {
             type = 0;
         }
         if (mCheckoutAddCustomerPanel == null) {
@@ -246,31 +249,18 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
         btn_use_guest = (Button) mCheckoutAddCustomerPanel.findViewById(R.id.btn_use_guest);
         fr_sales_new_customer = (FrameLayout) mCheckoutAddCustomerPanel.findViewById(R.id.fr_sales_new_customer);
         ll_sales_add_customer = (LinearLayout) mCheckoutAddCustomerPanel.findViewById(R.id.ll_sales_add_customer);
-
         ll_add_new_customer = (LinearLayout) mCheckoutAddCustomerPanel.findViewById(R.id.ll_add_new_customer);
-
         ll_new_shipping_address = (LinearLayout) mCheckoutAddCustomerPanel.findViewById(R.id.ll_new_shipping_address);
-
         ll_new_billing_address = (LinearLayout) mCheckoutAddCustomerPanel.findViewById(R.id.ll_new_billing_address);
-
         ll_shipping_address = (LinearLayout) mCheckoutAddCustomerPanel.findViewById(R.id.ll_shipping_address);
-
         ll_billing_address = (LinearLayout) mCheckoutAddCustomerPanel.findViewById(R.id.ll_billing_address);
-
         ll_short_shipping_address = (LinearLayout) mCheckoutAddCustomerPanel.findViewById(R.id.ll_short_shipping_address);
-
         ll_short_billing_address = (LinearLayout) mCheckoutAddCustomerPanel.findViewById(R.id.ll_short_billing_address);
-
         btn_shipping_address = (ImageButton) mCheckoutAddCustomerPanel.findViewById(R.id.btn_shipping_address);
-
         btn_billing_address = (ImageButton) mCheckoutAddCustomerPanel.findViewById(R.id.btn_billing_address);
-
         btn_shipping_adrress_edit = (ImageButton) mCheckoutAddCustomerPanel.findViewById(R.id.btn_shipping_adrress_edit);
-
         btn_billing_adrress_edit = (ImageButton) mCheckoutAddCustomerPanel.findViewById(R.id.btn_billing_adrress_edit);
-
         btn_shipping_address_delete = (ImageButton) mCheckoutAddCustomerPanel.findViewById(R.id.btn_shipping_address_delete);
-
         btn_billing_address_delete = (ImageButton) mCheckoutAddCustomerPanel.findViewById(R.id.btn_billing_address_delete);
     }
 
@@ -304,8 +294,10 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
                 ll_add_new_customer.setVisibility(GONE);
                 ll_new_billing_address.setVisibility(GONE);
                 dialog.getDialogTitle().setText(getContext().getString(R.string.customer_add_shipping_address));
-                if (mCustomerAddNewPanel.getShippingAddress() != null) {
-                    dialog.getButtonCancel().setText(getContext().getString(R.string.delete));
+                if (mCustomer == null) {
+                    if (mCustomerAddNewPanel.getShippingAddress() != null) {
+                        dialog.getButtonCancel().setText(getContext().getString(R.string.delete));
+                    }
                 }
             }
         });
@@ -317,8 +309,10 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
                 ll_add_new_customer.setVisibility(GONE);
                 ll_new_shipping_address.setVisibility(GONE);
                 dialog.getDialogTitle().setText(getContext().getString(R.string.customer_add_billing_address));
-                if (mCustomerAddNewPanel.getBillingAddress() != null) {
-                    dialog.getButtonCancel().setText(getContext().getString(R.string.delete));
+                if (mCustomer == null) {
+                    if (mCustomerAddNewPanel.getBillingAddress() != null) {
+                        dialog.getButtonCancel().setText(getContext().getString(R.string.delete));
+                    }
                 }
             }
         });
@@ -344,7 +338,9 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
                 ll_add_new_customer.setVisibility(GONE);
                 ll_new_billing_address.setVisibility(GONE);
                 dialog.getDialogTitle().setText(getContext().getString(R.string.customer_add_shipping_address));
-                dialog.getButtonCancel().setText(getContext().getString(R.string.delete));
+                if (mCustomer == null) {
+                    dialog.getButtonCancel().setText(getContext().getString(R.string.delete));
+                }
             }
         });
 
@@ -355,7 +351,9 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
                 ll_add_new_customer.setVisibility(GONE);
                 ll_new_shipping_address.setVisibility(GONE);
                 dialog.getDialogTitle().setText(getContext().getString(R.string.customer_add_billing_address));
-                dialog.getButtonCancel().setText(getContext().getString(R.string.delete));
+                if (mCustomer == null) {
+                    dialog.getButtonCancel().setText(getContext().getString(R.string.delete));
+                }
             }
         });
 
@@ -409,12 +407,46 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
                 dialog.getButtonCancel().setText(getContext().getString(R.string.cancel));
             }
         } else {
-            if (mCustomerAddNewPanel.checkRequiedCustomer()) {
-                Customer customer = mCustomerAddNewPanel.returnCustomer();
-                mCheckoutAddCustomerPanel.getCustomerListController().doInsert(customer);
+            Customer customer = mCustomerAddNewPanel.returnCustomer();
+            if (mCustomer != null) {
+                CustomerAddress shippingAddress = mCustomerAddNewPanel.getShippingAddress();
+                CustomerAddress billingAddress = mCustomerAddNewPanel.getBillingAddress();
+                mCustomer.getAddress().remove(shippingAddress);
+                mCustomer.getAddress().add(0, shippingAddress);
+                if (shippingAddress.getID().equals(billingAddress.getID())) {
+                    mCustomer.setUseOneAddress(true);
+                } else {
+                    mCustomer.setUseOneAddress(false);
+                    mCustomer.getAddress().remove(billingAddress);
+                    mCustomer.getAddress().add(1, billingAddress);
+                }
+                if (checkChangeCustomer(customer)) {
+                    mCheckoutAddCustomerPanel.getCustomerListController().doInsert(customer);
+                }
                 dialog.dismiss();
+            } else {
+                if (mCustomerAddNewPanel.checkRequiedCustomer()) {
+                    mCheckoutAddCustomerPanel.getCustomerListController().doInsert(customer);
+                    dialog.dismiss();
+                }
             }
         }
+    }
+
+    private boolean checkChangeCustomer(Customer customer) {
+        if (mCustomer.getFirstName().equals(customer.getFirstName())) {
+            return true;
+        }
+        if (mCustomer.getLastName().equals(customer.getLastName())) {
+            return true;
+        }
+        if (mCustomer.getEmail().equals(customer.getEmail())) {
+            return true;
+        }
+        if (mCustomer.getGroupID().equals(customer.getGroupID())) {
+            return true;
+        }
+        return false;
     }
 
     private void onClickDialogCancel() {
@@ -423,11 +455,17 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
                 mCustomerAddNewPanel.deleteShippingAddress();
                 btn_shipping_address.setVisibility(VISIBLE);
                 ll_short_shipping_address.setVisibility(GONE);
+            } else if (ll_new_shipping_address.getVisibility() == VISIBLE) {
+                btn_shipping_address.setVisibility(GONE);
+                ll_short_shipping_address.setVisibility(VISIBLE);
             }
             if (dialog.getButtonCancel().getText().toString().equals(getContext().getString(R.string.delete)) && ll_new_billing_address.getVisibility() == VISIBLE) {
                 mCustomerAddNewPanel.deleteBillingAddress();
                 btn_billing_address.setVisibility(VISIBLE);
                 ll_short_billing_address.setVisibility(GONE);
+            } else if (ll_new_billing_address.getVisibility() == VISIBLE) {
+                btn_billing_address.setVisibility(GONE);
+                ll_short_billing_address.setVisibility(VISIBLE);
             }
             ll_add_new_customer.setVisibility(VISIBLE);
             ll_new_shipping_address.setVisibility(GONE);

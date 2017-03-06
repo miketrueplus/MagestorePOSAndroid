@@ -286,45 +286,57 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         List<CustomerAddress> listAddress = checkout.getCustomer().getAddress();
         if (listAddress != null && listAddress.size() > 0) {
             if (listAddress.size() > 2) {
-                CustomerAddress shippingAddress = listAddress.get(0);
-                QuoteCustomerAddress customerShippingAddress = createCustomerAddress();
-                customerShippingAddress.setCountryId(shippingAddress.getCountry());
-                customerShippingAddress.setRegionId(shippingAddress.getRegion().getRegionID());
-                customerShippingAddress.setPostcode(shippingAddress.getPostCode());
-                customerShippingAddress.setStreet(shippingAddress.getStreet());
-                customerShippingAddress.setTelephone(shippingAddress.getTelephone());
-                customerShippingAddress.setCity(shippingAddress.getCity());
-                customerShippingAddress.setFirstname(shippingAddress.getFirstName());
-                customerShippingAddress.setLastname(shippingAddress.getLastName());
-                customerShippingAddress.setEmail(checkout.getCustomer().getEmail());
-                quoteCustomer.setShippingAddress(customerShippingAddress);
-                CustomerAddress billingAddress = listAddress.get(1);
-                QuoteCustomerAddress customerBillingAddress = createCustomerAddress();
-                customerBillingAddress.setCountryId(billingAddress.getCountry());
-                customerBillingAddress.setRegionId(billingAddress.getRegion().getRegionID());
-                customerBillingAddress.setPostcode(billingAddress.getPostCode());
-                customerBillingAddress.setStreet(billingAddress.getStreet());
-                customerBillingAddress.setTelephone(billingAddress.getTelephone());
-                customerBillingAddress.setCity(billingAddress.getCity());
-                customerBillingAddress.setFirstname(billingAddress.getFirstName());
-                customerBillingAddress.setLastname(billingAddress.getLastName());
-                customerBillingAddress.setEmail(checkout.getCustomer().getEmail());
-                quoteCustomer.setBillingAddress(customerBillingAddress);
+                if(checkout.getCustomer().getUseOneAddress()){
+                    customerUseOneAddress(listAddress, checkout, quoteCustomer);
+                }else {
+                    customerUseDiffentAddress(listAddress, checkout, quoteCustomer);
+                }
             } else {
-                CustomerAddress address = listAddress.get(0);
-                QuoteCustomerAddress customerAddress = createCustomerAddress();
-                customerAddress.setCountryId(address.getCountry());
-                customerAddress.setRegionId(address.getRegion().getRegionID());
-                customerAddress.setPostcode(address.getPostCode());
-                customerAddress.setStreet(address.getStreet());
-                customerAddress.setTelephone(address.getTelephone());
-                customerAddress.setCity(address.getCity());
-                customerAddress.setFirstname(address.getFirstName());
-                customerAddress.setLastname(address.getLastName());
-                customerAddress.setEmail(checkout.getCustomer().getEmail());
-                quoteCustomer.setShippingAddress(customerAddress);
-                quoteCustomer.setBillingAddress(customerAddress);
+                customerUseOneAddress(listAddress, checkout, quoteCustomer);
             }
         }
+    }
+
+    private void customerUseOneAddress(List<CustomerAddress> listAddress, Checkout checkout, QuoteCustomer quoteCustomer){
+        CustomerAddress address = listAddress.get(0);
+        QuoteCustomerAddress customerAddress = createCustomerAddress();
+        customerAddress.setCountryId(address.getCountry());
+        customerAddress.setRegionId(address.getRegion().getRegionID());
+        customerAddress.setPostcode(address.getPostCode());
+        customerAddress.setStreet(address.getStreet());
+        customerAddress.setTelephone(address.getTelephone());
+        customerAddress.setCity(address.getCity());
+        customerAddress.setFirstname(address.getFirstName());
+        customerAddress.setLastname(address.getLastName());
+        customerAddress.setEmail(checkout.getCustomer().getEmail());
+        quoteCustomer.setShippingAddress(customerAddress);
+        quoteCustomer.setBillingAddress(customerAddress);
+    }
+
+    private void customerUseDiffentAddress(List<CustomerAddress> listAddress, Checkout checkout, QuoteCustomer quoteCustomer){
+        CustomerAddress shippingAddress = listAddress.get(0);
+        QuoteCustomerAddress customerShippingAddress = createCustomerAddress();
+        customerShippingAddress.setCountryId(shippingAddress.getCountry());
+        customerShippingAddress.setRegionId(shippingAddress.getRegion().getRegionID());
+        customerShippingAddress.setPostcode(shippingAddress.getPostCode());
+        customerShippingAddress.setStreet(shippingAddress.getStreet());
+        customerShippingAddress.setTelephone(shippingAddress.getTelephone());
+        customerShippingAddress.setCity(shippingAddress.getCity());
+        customerShippingAddress.setFirstname(shippingAddress.getFirstName());
+        customerShippingAddress.setLastname(shippingAddress.getLastName());
+        customerShippingAddress.setEmail(checkout.getCustomer().getEmail());
+        quoteCustomer.setShippingAddress(customerShippingAddress);
+        CustomerAddress billingAddress = listAddress.get(1);
+        QuoteCustomerAddress customerBillingAddress = createCustomerAddress();
+        customerBillingAddress.setCountryId(billingAddress.getCountry());
+        customerBillingAddress.setRegionId(billingAddress.getRegion().getRegionID());
+        customerBillingAddress.setPostcode(billingAddress.getPostCode());
+        customerBillingAddress.setStreet(billingAddress.getStreet());
+        customerBillingAddress.setTelephone(billingAddress.getTelephone());
+        customerBillingAddress.setCity(billingAddress.getCity());
+        customerBillingAddress.setFirstname(billingAddress.getFirstName());
+        customerBillingAddress.setLastname(billingAddress.getLastName());
+        customerBillingAddress.setEmail(checkout.getCustomer().getEmail());
+        quoteCustomer.setBillingAddress(customerBillingAddress);
     }
 }

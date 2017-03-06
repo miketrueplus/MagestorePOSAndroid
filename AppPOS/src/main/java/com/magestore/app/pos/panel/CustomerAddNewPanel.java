@@ -46,13 +46,12 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
     EditText first_name, last_name, email, s_company, b_company, s_phone, b_phone, s_city, b_city, s_zipcode, b_zipcode;
     Switch subscribe;
     CheckBox cb_same_billing_and_shipping;
-    ConfigRegion shippingRegion;
-    ConfigRegion billingRegion;
-    CustomerAddress shippingAddress;
-    CustomerAddress billingAddress;
+    ConfigRegion shippingRegion, billingRegion;
+    CustomerAddress shippingAddress, billingAddress, c_shippingAddress, c_billingAddress;
     TextView tv_shipping_address, tv_billing_address;
     PanelCustomerAddNewBinding mBinding;
     ImageButton btn_shipping_address, btn_billing_address;
+    List<CustomerAddress> listAddress;
 
     public CustomerAddNewPanel(Context context) {
         super(context);
@@ -152,8 +151,8 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
                 CustomerAddress billingAddress = null;
                 CustomerAddress shippingAddress = null;
                 if (item.getAddress().size() >= 2) {
-                    billingAddress = item.getAddress().get(1);
                     shippingAddress = item.getAddress().get(0);
+                    billingAddress = item.getAddress().get(1);
                 } else {
                     billingAddress = item.getAddress().get(0);
                     shippingAddress = item.getAddress().get(0);
@@ -198,12 +197,20 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
                     b_spinner_state.setVisibility(VISIBLE);
                     b_spinner_state.setSelection(billingAddress.getRegion().getRegionCode());
                 }
+                s_shipping_address.setSelection(shippingAddress.getID());
+                s_billing_address.setSelection(billingAddress.getID());
+                this.shippingAddress = shippingAddress;
+                this.billingAddress = billingAddress;
             }
 
-        }else{
+        } else {
             mBinding.setCustomer(null);
         }
 
+        actionChangeSpinner(countryDataSet);
+    }
+
+    private void actionChangeSpinner(final Map<String, ConfigCountry> countryDataSet) {
         s_spinner_country.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -269,6 +276,41 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
 
             }
         });
+
+        s_shipping_address.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                shippingAddress = getAddressSelect(s_shipping_address);
+                showShortShippingAddress();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        s_billing_address.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                billingAddress = getAddressSelect(s_billing_address);
+                showShortBillingAddress();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
+
+    private CustomerAddress getAddressSelect(SimpleSpinner s_address) {
+        for (CustomerAddress address : listAddress) {
+            if(address.getID().equals(s_address.getSelection())){
+                return address;
+            }
+        }
+        return null;
     }
 
     /**
@@ -335,8 +377,17 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
     }
 
     public void setAddressDataSet(List<CustomerAddress> listAddress) {
+        this.listAddress = listAddress;
         s_shipping_address.bind(listAddress.toArray(new CustomerAddress[0]));
         s_billing_address.bind(listAddress.toArray(new CustomerAddress[0]));
+    }
+
+    public CustomerAddress getChangeshippingAddress() {
+        return c_shippingAddress;
+    }
+
+    public CustomerAddress getChangebillingAddress() {
+        return c_billingAddress;
     }
 
     /**
