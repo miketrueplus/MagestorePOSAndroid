@@ -14,6 +14,7 @@ import com.magestore.app.lib.model.directory.Currency;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.observ.State;
 import com.magestore.app.lib.service.checkout.CheckoutService;
+import com.magestore.app.lib.service.customer.CustomerAddressService;
 import com.magestore.app.pos.panel.CartOrderListPanel;
 import com.magestore.app.pos.panel.CheckoutAddPaymentPanel;
 import com.magestore.app.pos.panel.CheckoutAddressListPanel;
@@ -43,10 +44,12 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     public static final String STATE_ON_MARK_AS_PARTIAL = "STATE_ON_MARK_AS_PARTIAL";
 
     static final int ACTION_TYPE_USER_GUEST = 0;
-    static final int ACTION_TYPE_SAVE_CART = 1;
-    static final int ACTION_TYPE_SAVE_SHIPPING = 2;
-    static final int ACTION_TYPE_SAVE_PAYMENT = 3;
-    static final int ACTION_TYPE_PLACE_ORDER = 4;
+    static final int ACTION_TYPE_UPDATE_ADDRESS = 1;
+    static final int ACTION_TYPE_DELETE_ADDRESS = 2;
+    static final int ACTION_TYPE_SAVE_CART = 3;
+    static final int ACTION_TYPE_SAVE_SHIPPING = 4;
+    static final int ACTION_TYPE_SAVE_PAYMENT = 5;
+    static final int ACTION_TYPE_PLACE_ORDER = 6;
 
     Map<String, Object> wraper;
     CartItemListController mCartItemListController;
@@ -60,6 +63,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     Currency currency;
     CartOrderListPanel mCartOrderListPanel;
     CheckoutAddressListPanel mCheckoutAddressListPanel;
+    CustomerAddressService mCustomerAddressService;
 
 //    @Override
 //    public void bindItem(Checkout item) {
@@ -119,6 +123,19 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     public void binCartItem() {
         Checkout checkout = getSelectedItem();
         checkout.setCartItem(mCartItemListController.getListCartItem());
+    }
+
+    public void doInputEditAddress(int type, Customer customer, CustomerAddress oldAddress, CustomerAddress newAddress) {
+        wraper.put("type_update_address", type);
+        wraper.put("customer_update_address", customer);
+        wraper.put("old_address", oldAddress);
+        doAction(ACTION_TYPE_UPDATE_ADDRESS, null, wraper, newAddress);
+    }
+
+    public void doInputDeleteAddress(int type, Customer customer, CustomerAddress customerAddress) {
+        wraper.put("type_delete_address", type);
+        wraper.put("customer_delete_address", customer);
+        doAction(ACTION_TYPE_DELETE_ADDRESS, null, wraper, customerAddress);
     }
 
     /**
@@ -192,6 +209,17 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     public Boolean doActionBackround(int actionType, String actionCode, Map<String, Object> wraper, Model... models) throws Exception {
         if (actionType == ACTION_TYPE_USER_GUEST) {
             return true;
+        } else if (actionType == ACTION_TYPE_UPDATE_ADDRESS) {
+            Customer customer = (Customer) wraper.get("customer_update_address");
+            CustomerAddress oldAddress = (CustomerAddress) wraper.get("old_address");
+            CustomerAddress newAddress = (CustomerAddress) models[0];
+            mCustomerAddressService.update(customer, oldAddress, newAddress);
+            return true;
+        } else if (actionType == ACTION_TYPE_DELETE_ADDRESS) {
+            Customer customer = (Customer) wraper.get("customer_delete_address");
+            CustomerAddress customerAddress = (CustomerAddress) models[0];
+            mCustomerAddressService.delete(customer, customerAddress);
+            return true;
         } else if (actionType == ACTION_TYPE_SAVE_CART) {
             String quoteId = (String) wraper.get("quote_id");
             wraper.put("save_cart", ((CheckoutService) getListService()).saveCart((Checkout) models[0], quoteId));
@@ -225,6 +253,14 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             Customer customer = (Customer) models[0];
             ((CheckoutListPanel) mView).useDefaultGuestCheckout(customer);
             mCartOrderListPanel.bindList(getSelectedItems());
+        } else if (success && actionType == ACTION_TYPE_UPDATE_ADDRESS) {
+            int typeAddress = (int) wraper.get("type_update_address");
+            CustomerAddress customerAddress = (CustomerAddress) wraper.get("old_address");
+            ((CheckoutListPanel) mView).updateAddress(0, typeAddress, customerAddress);
+        } else if (success && actionType == ACTION_TYPE_DELETE_ADDRESS) {
+            int typeAddress = (int) wraper.get("type_delete_address");
+            CustomerAddress customerAddress = (CustomerAddress) models[0];
+            ((CheckoutListPanel) mView).updateAddress(0, typeAddress, customerAddress);
         } else if (success && actionType == ACTION_TYPE_SAVE_CART) {
             Checkout checkout = (Checkout) wraper.get("save_cart");
             String quoteId = checkout.getQuote().getID();
@@ -395,7 +431,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         }
     }
 
-    private void autoSelectShipping(List<CheckoutShipping> listShipping){
+    private void autoSelectShipping(List<CheckoutShipping> listShipping) {
         if (((CheckoutDetailPanel) mDetailView).getPickAtStore()) {
             if (listShipping != null && listShipping.size() > 0) {
                 if (listShipping.size() == 1) {
@@ -432,6 +468,10 @@ public class CheckoutListController extends AbstractListController<Checkout> {
      */
     public void setContext(Context context) {
         this.context = context;
+    }
+
+    public void setCustomerAddressService(CustomerAddressService mCustomerAddressService) {
+        this.mCustomerAddressService = mCustomerAddressService;
     }
 
     /**

@@ -199,8 +199,8 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
                 }
                 s_shipping_address.setSelection(shippingAddress.getID());
                 s_billing_address.setSelection(billingAddress.getID());
-                this.shippingAddress = shippingAddress;
-                this.billingAddress = billingAddress;
+                c_shippingAddress = shippingAddress;
+                c_billingAddress = billingAddress;
             }
 
         } else {
@@ -280,7 +280,7 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
         s_shipping_address.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                shippingAddress = getAddressSelect(s_shipping_address);
+                c_shippingAddress = getAddressSelect(s_shipping_address);
                 showShortShippingAddress();
             }
 
@@ -293,7 +293,7 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
         s_billing_address.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                billingAddress = getAddressSelect(s_billing_address);
+                c_billingAddress = getAddressSelect(s_billing_address);
                 showShortBillingAddress();
             }
 
@@ -306,7 +306,7 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
 
     private CustomerAddress getAddressSelect(SimpleSpinner s_address) {
         for (CustomerAddress address : listAddress) {
-            if(address.getID().equals(s_address.getSelection())){
+            if (address.getID().equals(s_address.getSelection())) {
                 return address;
             }
         }
@@ -380,6 +380,17 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
         this.listAddress = listAddress;
         s_shipping_address.bind(listAddress.toArray(new CustomerAddress[0]));
         s_billing_address.bind(listAddress.toArray(new CustomerAddress[0]));
+    }
+
+    public void updateAddress(int type, List<CustomerAddress> listAddress, CustomerAddress address) {
+        this.listAddress = listAddress;
+        if (type == 0) {
+            s_shipping_address.bind(listAddress.toArray(new CustomerAddress[0]));
+            s_shipping_address.setSelection(address.getID());
+        } else {
+            s_billing_address.bind(listAddress.toArray(new CustomerAddress[0]));
+            s_billing_address.setSelection(address.getID());
+        }
     }
 
     public CustomerAddress getChangeshippingAddress() {
@@ -545,14 +556,14 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
      * Hiển thị short content shipping address
      */
     public void showShortShippingAddress() {
-        tv_shipping_address.setText(shippingAddress.getShortAddress());
+        tv_shipping_address.setText(c_shippingAddress.getShortAddress());
     }
 
     /**
      * Hiển thị short content shipping address
      */
     public void showShortBillingAddress() {
-        tv_billing_address.setText(billingAddress.getShortAddress());
+        tv_billing_address.setText(c_billingAddress.getShortAddress());
     }
 
     public boolean checkSameBillingAndShipping() {

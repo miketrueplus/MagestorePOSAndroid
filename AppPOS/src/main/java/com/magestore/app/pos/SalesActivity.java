@@ -25,6 +25,7 @@ import com.magestore.app.lib.service.catalog.ProductService;
 import com.magestore.app.lib.service.checkout.CartService;
 import com.magestore.app.lib.service.checkout.CheckoutService;
 import com.magestore.app.lib.service.config.ConfigService;
+import com.magestore.app.lib.service.customer.CustomerAddressService;
 import com.magestore.app.lib.service.customer.CustomerService;
 import com.magestore.app.pos.controller.CartItemListController;
 import com.magestore.app.pos.controller.CategoryListController;
@@ -180,6 +181,7 @@ public class SalesActivity extends AbstractActivity
         CategoryService categoryService = null;
         ConfigService configService = null;
         ProductOptionService productOptionService = null;
+        CustomerAddressService customerAddressService = null;
         try {
             factory = ServiceFactory.getFactory(magestoreContext);
             productService = factory.generateProductService();
@@ -189,6 +191,7 @@ public class SalesActivity extends AbstractActivity
             configService = factory.generateConfigService();
             customerService = factory.generateCustomerService();
             productOptionService = factory.generateProductOptionService();
+            customerAddressService = factory.generateCustomerAddressService();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InstantiationException e) {
@@ -208,6 +211,8 @@ public class SalesActivity extends AbstractActivity
         mCheckoutListController.setContext(getContext());
         mCheckoutListController.setMagestoreContext(magestoreContext);
         mCheckoutListController.setListService(checkoutService);
+        mCheckoutListController.setConfigService(configService);
+        mCheckoutListController.setCustomerAddressService(customerAddressService);
         mCheckoutListController.setListPanel(mCheckoutListPanel);
         mCheckoutListPanel.setController(mCheckoutListController);
         mCheckoutListController.setDetailPanel(mCheckoutDetailPanel);
@@ -217,7 +222,6 @@ public class SalesActivity extends AbstractActivity
         mCheckoutListController.setCheckoutAddPaymentPanel(mCheckoutAddPaymentPanel);
         mCheckoutListController.setCartOrderListPanel(mCartOrderListPanel);
         mCheckoutListController.setCheckoutAddressListPanel(mCheckoutAddressListPanel);
-        mCheckoutListController.setConfigService(configService);
 
         // controller quản lý danh sách khách hàng
         mProductListController = new ProductListController();
