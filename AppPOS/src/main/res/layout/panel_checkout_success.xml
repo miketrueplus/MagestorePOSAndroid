@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_default"
+    android:orientation="vertical"
+    android:padding="@dimen/checkout_margin">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3.5">
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/checkout_success_boder_email"
+                android:padding="5dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/checkout_success_background" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/checkout_success_border_content"
+                android:orientation="vertical"
+                android:padding="@dimen/checkout_margin">
+
+                <TextView
+                    android:id="@+id/msg_checkout_success"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:text="@string/checkout_success_message"
+                    android:textColor="@color/checkout_success_msg_text_color"
+                    android:textSize="@dimen/checkout_success_msg_text_size" />
+
+                <TextView
+                    android:id="@+id/order_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/checkout_margin"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/checkout_success_order_id_color"
+                    android:textSize="@dimen/checkout_success_order_id_text_size" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/checkout_success_edditext_width_size"
+                    android:layout_marginLeft="@dimen/checkout_margin"
+                    android:layout_marginRight="@dimen/checkout_margin"
+                    android:layout_marginTop="@dimen/checkout_success_edditext_margin_top">
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_toLeftOf="@+id/btn_send_email"
+                        android:background="@drawable/checkout_success_border_edittext"
+                        android:hint="@string/email"
+                        android:inputType="textEmailAddress"
+                        android:padding="@dimen/checkout_success_edditext_padding_size" />
+
+                    <Button
+                        android:id="@+id/btn_send_email"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:background="@drawable/checkout_success_border_text"
+                        android:text="@string/send"
+                        android:textColor="@color/checkout_success_text_send_color"
+                        android:textSize="@dimen/text_size" />
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.5">
+
+        <Button
+            android:id="@+id/btn_print"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginRight="@dimen/checkout_margin"
+            android:layout_weight="1"
+            android:background="@drawable/checkout_success_border_button_print"
+            android:text="@string/print"
+            android:textAllCaps="true"
+            android:textColor="@color/checkout_success_btn_text_print_color"
+            android:textSize="@dimen/checkout_success_button_text_size" />
+
+        <Button
+            android:id="@+id/btn_new_order"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="@dimen/checkout_margin"
+            android:layout_weight="1"
+            android:background="@drawable/checkout_success_border_button_new_order"
+            android:text="@string/new_order"
+            android:textAllCaps="true"
+            android:textColor="@color/checkout_success_btn_text_new_color"
+            android:textSize="@dimen/checkout_success_button_text_size" />
+    </LinearLayout>
+
+</LinearLayout>

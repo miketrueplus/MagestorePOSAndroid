@@ -22,6 +22,7 @@ import com.magestore.app.pos.panel.CheckoutDetailPanel;
 import com.magestore.app.pos.panel.CheckoutListPanel;
 import com.magestore.app.pos.panel.CheckoutPaymentListPanel;
 import com.magestore.app.pos.panel.CheckoutShippingListPanel;
+import com.magestore.app.pos.panel.CheckoutSuccessPanel;
 import com.magestore.app.pos.panel.PaymentMethodListPanel;
 import com.magestore.app.util.DataUtil;
 
@@ -63,6 +64,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     Currency currency;
     CartOrderListPanel mCartOrderListPanel;
     CheckoutAddressListPanel mCheckoutAddressListPanel;
+    CheckoutSuccessPanel mCheckoutSuccessPanel;
     CustomerAddressService mCustomerAddressService;
 
 //    @Override
@@ -312,7 +314,9 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             Checkout checkout = (Checkout) wraper.get("save_payment");
         } else if (success && actionType == ACTION_TYPE_PLACE_ORDER) {
             Order order = (Order) wraper.get("place_order");
-            // TODO: Action khi place order
+
+            mCheckoutSuccessPanel.bindItem(order);
+            doShowDetailSuccess(true);
 
             // hoàn thành place order hiden progressbar
             ((CheckoutDetailPanel) mDetailView).isShowLoadingDetail(false);
@@ -532,10 +536,18 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         this.mCheckoutAddressListPanel = mCheckoutAddressListPanel;
     }
 
+    public void setCheckoutSuccessPanel(CheckoutSuccessPanel mCheckoutSuccessPanel) {
+        this.mCheckoutSuccessPanel = mCheckoutSuccessPanel;
+    }
+
     @Override
     public void doShowDetailPanel(boolean show) {
         super.doShowDetailPanel(show);
         if (mProductListController != null) mProductListController.doShowListPanel(!show);
+    }
+
+    public void doShowDetailSuccess(boolean show) {
+        mCheckoutSuccessPanel.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
     public void setPaymentMethodListPanel(PaymentMethodListPanel panel) {
@@ -638,6 +650,13 @@ public class CheckoutListController extends AbstractListController<Checkout> {
      */
     public void isEnableButtonAddPayment(boolean enable) {
         ((CheckoutDetailPanel) mDetailView).isEnableButtonAddPayment(enable);
+    }
+
+    public void actionNewOrder() {
+        showSalesShipping();
+        showActionButtonCheckout();
+        doShowDetailPanel(false);
+        doShowDetailSuccess(false);
     }
 
     /**

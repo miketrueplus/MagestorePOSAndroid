@@ -53,4 +53,12 @@
     <dimen name="checkout_address_item_width">150dp</dimen>
     <dimen name="checkout_address_item_margin">10dp</dimen>
     <dimen name="checkout_address_item_text_size">13sp</dimen>
+    <dimen name="checkout_success_msg_text_size">21sp</dimen>
+    <dimen name="checkout_success_order_id_text_size">22sp</dimen>
+    <dimen name="checkout_success_radius">5dp</dimen>
+    <dimen name="checkout_success_button_radius">3dp</dimen>
+    <dimen name="checkout_success_edditext_padding_size">5dp</dimen>
+    <dimen name="checkout_success_edditext_width_size">40dp</dimen>
+    <dimen name="checkout_success_edditext_margin_top">40dp</dimen>
+    <dimen name="checkout_success_button_text_size">20sp</dimen>
 </resources>

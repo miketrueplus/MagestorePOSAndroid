@@ -171,27 +171,15 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
     }
 
     public void isEnableButtonAddPayment(boolean enable) {
-        if (enable) {
-            ll_checkout_add_payment.setVisibility(VISIBLE);
-        } else {
-            ll_checkout_add_payment.setVisibility(GONE);
-        }
+        ll_checkout_add_payment.setVisibility(enable ? VISIBLE : GONE);
     }
 
     public void isEnableCreateInvoice(boolean enable) {
-        if (enable) {
-            create_invoice.setVisibility(VISIBLE);
-        } else {
-            create_invoice.setVisibility(GONE);
-        }
+        create_invoice.setVisibility(enable ? VISIBLE : GONE);
     }
 
     public void isShowLoadingDetail(boolean isShow) {
-        if (isShow) {
-            sales_background_loading.setVisibility(VISIBLE);
-        } else {
-            sales_background_loading.setVisibility(GONE);
-        }
+        sales_background_loading.setVisibility(isShow ? VISIBLE : GONE);
     }
 
     public void bindTotalPrice(float totalPrice) {

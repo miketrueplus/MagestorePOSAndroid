@@ -38,7 +38,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_weight="1"
-                android:text="@string/register_shift_bottom_print"
+                android:text="@string/print"
                 android:textAllCaps="false"
                 android:textSize="18sp" />
 

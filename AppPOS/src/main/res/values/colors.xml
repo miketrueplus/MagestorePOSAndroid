@@ -20,7 +20,7 @@
 
     <!--Menu-->
     <color name="menu_category_text_color">#ffffff</color>
-    
+
     <!--Product List-->
     <color name="product_background_item">#ffffff</color>
     <color name="product_background_price">#1a1d87e5</color>
@@ -57,6 +57,13 @@
     <color name="sales_button_checkout_text_color">#ffffff</color>
     <color name="sales_line">#c7cbd0</color>
     <color name="checkout_line">#d5d9dd</color>
+    <color name="checkout_success_msg_text_color">#aeb4ba</color>
+    <color name="checkout_success_order_id_color">#454e57</color>
+    <color name="checkout_success_text_send_color">#ffffff</color>
+    <color name="checkout_success_button_send_color">#00a65a</color>
+    <color name="checkout_success_button_new_color">#00a65a</color>
+    <color name="checkout_success_btn_text_print_color">#454e57</color>
+    <color name="checkout_success_btn_text_new_color">#ffffff</color>
 
     <!--Register Shift-->
     <color name="register_shift_dialog_make_adjustment_bg_select">#00a679</color>

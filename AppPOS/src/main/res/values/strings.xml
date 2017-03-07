@@ -34,6 +34,8 @@
     <string name="checkout_pick_as_store">Pick at store</string>
     <string name="checkout_discount_all">Discount - Maximum 100%</string>
     <string name="checkout_address_item_default">default</string>
+    <string name="checkout_success_message">Order has been created successfully</string>
+    <string name="checkout_order_id">#%1s</string>
 
     <!-- Strings related to customer -->
     <string name="customer_search_customer_here">Search name, email, telephone</string>
@@ -85,7 +87,6 @@
     <string name="order_detail_bottom_tb_discount">Discount</string>
     <string name="order_detail_bottom_tb_grand_total">Grand Total</string>
     <string name="order_detail_bottom_tb_total_paid">Total Paid</string>
-    <string name="order_detail_bottom_btn_print">PRINT</string>
     <string name="order_detail_bottom_btn_invoice">INVOICE</string>
     <string name="order_menu_send_email">Send Email</string>
     <string name="order_menu_ship">Ship</string>
@@ -132,7 +133,6 @@
     <string name="register_shift_content_open_shift">Open Shift</string>
     <string name="register_shift_content_item_float">Float</string>
     <string name="register_shift_content_item_balance">Balance</string>
-    <string name="register_shift_bottom_print">Print</string>
     <string name="register_shift_bottom_make_adjustment">Make Adjustment</string>
     <string name="register_shift_bottom_close_shift">Close Shift</string>
     <string name="register_shift_dialog_make_adjustment_title">Make Adjustment</string>
@@ -206,6 +206,9 @@
     <string name="demo">Demo</string>
     <string name="payment_method">PAYMENT METHOD</string>
     <string name="shipping_method">SHIPPING METHOD</string>
+    <string name="print">Print</string>
+    <string name="new_order">New Order</string>
+    <string name="send">Send</string>
 
     <!-- Strings related to error message -->
     <string name="err_no_network_connection">No network connection, Pls check yout network settings</string>

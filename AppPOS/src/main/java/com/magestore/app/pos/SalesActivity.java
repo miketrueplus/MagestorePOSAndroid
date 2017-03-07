@@ -43,6 +43,7 @@ import com.magestore.app.pos.panel.CheckoutDetailPanel;
 import com.magestore.app.pos.panel.CheckoutListPanel;
 import com.magestore.app.pos.panel.CheckoutPaymentListPanel;
 import com.magestore.app.pos.panel.CheckoutShippingListPanel;
+import com.magestore.app.pos.panel.CheckoutSuccessPanel;
 import com.magestore.app.pos.panel.PaymentMethodListPanel;
 import com.magestore.app.pos.panel.ProductListPanel;
 import com.magestore.app.pos.panel.ProductOptionPanel;
@@ -78,6 +79,7 @@ public class SalesActivity extends AbstractActivity
     private CartOrderListPanel mCartOrderListPanel;
     private CheckoutAddressListPanel mCheckoutAddressListPanel;
     private ProductOptionPanel mPanelProductOption;
+    private CheckoutSuccessPanel mCheckoutSuccessPanel;
 
     // controller cho danh sách mặt hàng và đơn hàng
     private ProductListController mProductListController;
@@ -135,6 +137,9 @@ public class SalesActivity extends AbstractActivity
         // check out list & detail
         mCheckoutListPanel = (CheckoutListPanel) findViewById(R.id.checkout_list_panel);
         mCheckoutDetailPanel = (CheckoutDetailPanel) findViewById(R.id.checkout_detail_panel);
+
+        // order success panel
+        mCheckoutSuccessPanel = (CheckoutSuccessPanel) findViewById(R.id.checkout_success_panel);
 
         // cart item panel
         mCartItemListPanel = (CartItemListPanel) mCheckoutListPanel.findViewById(R.id.order_item_panel);
@@ -222,6 +227,7 @@ public class SalesActivity extends AbstractActivity
         mCheckoutListController.setCheckoutAddPaymentPanel(mCheckoutAddPaymentPanel);
         mCheckoutListController.setCartOrderListPanel(mCartOrderListPanel);
         mCheckoutListController.setCheckoutAddressListPanel(mCheckoutAddressListPanel);
+        mCheckoutListController.setCheckoutSuccessPanel(mCheckoutSuccessPanel);
 
         // controller quản lý danh sách khách hàng
         mProductListController = new ProductListController();
@@ -273,6 +279,7 @@ public class SalesActivity extends AbstractActivity
         mCheckoutAddPaymentPanel.setCheckoutListController(mCheckoutListController);
         mCartOrderListPanel.setCheckoutListController(mCheckoutListController);
         mCheckoutAddressListPanel.setCheckoutListController(mCheckoutListController);
+        mCheckoutSuccessPanel.setCheckoutListController(mCheckoutListController);
 
         // TODO: clear quote
 //        DataUtil.removeDataStringToPreferences(getContext(), DataUtil.QUOTE);
