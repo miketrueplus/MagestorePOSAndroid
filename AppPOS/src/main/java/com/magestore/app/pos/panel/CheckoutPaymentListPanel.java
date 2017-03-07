@@ -8,12 +8,14 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+
 import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.lib.view.AbstractSimpleRecycleView;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.CheckoutListController;
 import com.magestore.app.pos.databinding.CardCheckoutPaymentContentBinding;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -81,7 +83,7 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
 //        CheckoutPayment checkoutPayment = mList.get(position);
     }
 
-    public void updateTotal(List<CheckoutPayment> listPayment){
+    public void updateTotal(List<CheckoutPayment> listPayment) {
         float grand_total = mCheckout.getGrandTotal();
         float totalValue = 0;
 
@@ -169,7 +171,17 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
                 float totalValue = 0;
                 float currentValue;
                 float allRowTotal;
+                float totalNotExchange = 0;
+
+                String txtValue = checkout_value.getText().toString();
+                try {
+                    currentValue = Float.parseFloat(txtValue);
+                } catch (Exception e) {
+                    currentValue = 0;
+                }
+
                 for (EditText edt_value : mapTextId.values()) {
+                    edt_value.setEnabled(true);
                     String value = edt_value.getText().toString();
                     try {
                         allRowTotal = Float.parseFloat(value);
@@ -179,19 +191,27 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
                     totalValue += allRowTotal;
                 }
 
-                String txtValue = checkout_value.getText().toString();
-                try {
-                    currentValue = Float.parseFloat(txtValue);
-                } catch (Exception e) {
-                    currentValue = 0;
-                }
+                if (totalValue > grand_total) {
+                    for (EditText edt_value : mapTextId.values()) {
+                        if (edt_value == checkout_value) {
+                            checkout_value.setEnabled(true);
+                        } else {
+                            edt_value.setEnabled(false);
+                            String value = edt_value.getText().toString();
+                            try {
+                                allRowTotal = Float.parseFloat(value);
+                            } catch (Exception e) {
+                                allRowTotal = 0;
+                            }
+                            totalNotExchange += allRowTotal;
+                        }
+                    }
 
-                if (totalValue >= grand_total) {
                     float money = totalValue - grand_total;
                     mCheckout.setExchangeMoney(money);
                     mCheckoutListController.updateMoneyTotal(true, money);
 
-                    float remain_money = currentValue - money;
+                    float remain_money = grand_total - totalNotExchange;
                     checkoutPayment.setAmount(currentValue);
                     checkoutPayment.setBaseAmount(currentValue);
                     checkoutPayment.setRealAmount(remain_money);
