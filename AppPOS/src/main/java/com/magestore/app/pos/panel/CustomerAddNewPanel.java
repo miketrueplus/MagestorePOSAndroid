@@ -384,11 +384,13 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
 
     public void updateAddress(int type, List<CustomerAddress> listAddress, CustomerAddress address) {
         this.listAddress = listAddress;
+        s_shipping_address.bind(listAddress.toArray(new CustomerAddress[0]));
+        s_billing_address.bind(listAddress.toArray(new CustomerAddress[0]));
         if (type == 0) {
-            s_shipping_address.bind(listAddress.toArray(new CustomerAddress[0]));
             s_shipping_address.setSelection(address.getID());
+            s_billing_address.setSelection(c_billingAddress.getID());
         } else {
-            s_billing_address.bind(listAddress.toArray(new CustomerAddress[0]));
+            s_shipping_address.setSelection(c_shippingAddress.getID());
             s_billing_address.setSelection(address.getID());
         }
     }

@@ -14,6 +14,8 @@ import java.util.List;
  */
 
 public interface CustomerAddress extends Model {
+    void setId(String strId);
+
     String getFirstName();
     void setFirstName(String strFirstName);
 

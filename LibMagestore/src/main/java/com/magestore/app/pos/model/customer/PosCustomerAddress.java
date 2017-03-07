@@ -41,6 +41,15 @@ public class PosCustomerAddress extends PosAbstractModel implements CustomerAddr
     String default_billing;
 
     @Override
+    public String getID() {
+        if (super.getID() == null) {
+            return "" + this.hashCode();
+        } else {
+            return super.getID();
+        }
+    }
+
+    @Override
     public String getName() {
         return firstname + " " + lastname;
     }
@@ -131,6 +140,11 @@ public class PosCustomerAddress extends PosAbstractModel implements CustomerAddr
     @Override
     public List<String> getStreet() {
         return street;
+    }
+
+    @Override
+    public void setId(String strId) {
+        id = strId;
     }
 
     @Override

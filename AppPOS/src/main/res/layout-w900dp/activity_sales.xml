@@ -87,6 +87,12 @@
                     android:layout_height="match_parent"
                     android:visibility="gone"
                     magestore_view:layout_panel="@layout/panel_checkout_detail" />
+
+                <com.magestore.app.pos.panel.CheckoutSuccessPanel
+                    android:id="@+id/checkout_success_panel"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone" />
             </RelativeLayout>
         </LinearLayout>
     </LinearLayout>

@@ -153,6 +153,10 @@ public class POSCustomerAddressService extends AbstractService implements Custom
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         CustomerAddressDataAccess customerDataAccess = factory.generateCustomerAddressDataAccess();
 
+        if (oldCustomerAddress.getID() != null) {
+            customerAddress.setId(oldCustomerAddress.getID());
+        }
+
         // lấy danh sách khách hàng
         boolean success = customerDataAccess.update(customer, oldCustomerAddress, customerAddress);
 
