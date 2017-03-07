@@ -9,8 +9,10 @@ import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.observ.GenericState;
 import com.magestore.app.lib.observ.State;
 import com.magestore.app.lib.service.ChildListService;
+import com.magestore.app.lib.service.catalog.ProductOptionService;
 import com.magestore.app.lib.service.checkout.CartService;
 import com.magestore.app.pos.R;
+import com.magestore.app.pos.panel.ProductOptionPanel;
 import com.magestore.app.pos.view.MagestoreDialog;
 
 import java.io.IOException;
@@ -26,8 +28,11 @@ import java.util.List;
 public class CartItemListController extends AbstractChildListController<Checkout, CartItem> {
     public static final String STATE_ON_SHOW_PRODUCT_OPTION = "STATE_ON_SHOW_PRODUCT_OPTION";
     public static final String STATE_ON_UPDATE_CART_ITEM = "STATE_ON_UPDATE_CART_ITEM";
-    MagestoreDialog mDialog;
+    MagestoreDialog mCartItemDetailDialog;
+    MagestoreDialog mProductOptionDialog;
     CartService mCartService;
+    ProductOptionService mProductOptionService;
+    ProductOptionPanel mProductOptionPanel;
 
     @Override
     protected List<CartItem> loadDataBackground(Void... params) throws Exception {
@@ -42,9 +47,12 @@ public class CartItemListController extends AbstractChildListController<Checkout
     public void bindProduct(Product product) {
         if (!product.haveProductOption()) {
             try {
+                // chèn vào cart item
                 CartItem cartItem = mCartService.insert(getParent(), product, product.getQuantityIncrement());
+
+                // cập nhật view và giá
                 getView().updateModelToFirstInsertIfNotFound(cartItem);
-//                mView.updateModelInsertAtFistIfNotFound(cartItem);
+                updateTotalPrice();
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (InstantiationException e) {
@@ -55,22 +63,23 @@ public class CartItemListController extends AbstractChildListController<Checkout
                 e.printStackTrace();
             }
         } else {
-            showChooseProductOptionInput(product);
+            doShowProductOptionInput(product);
         }
 //        mView.notifyDataSetChanged();
-        updateTotalPrice();
+
     }
 
-    /**
-     * Thông báo cho các controller xử lý, đặc biệt các observe xử lý option
-     *
-     * @param product
-     */
-    public void showChooseProductOptionInput(Product product) {
-        GenericState<ListController> state = new GenericState<ListController>(this, STATE_ON_SHOW_PRODUCT_OPTION);
-        state.setTag(STATE_ON_SHOW_PRODUCT_OPTION, product);
-        if (getSubject() != null) getSubject().setState(state);
-    }
+//    /**
+//     * Thông báo cho các controller xử lý, đặc biệt các observe xử lý option
+//     *
+//     * @param product
+//     */
+//    public void showChooseProductOptionInput(Product product) {
+//        doShowProductOptionInput(product);
+//        GenericState<ListController> state = new GenericState<ListController>(this, STATE_ON_SHOW_PRODUCT_OPTION);
+//        state.setTag(STATE_ON_SHOW_PRODUCT_OPTION, product);
+//        if (getSubject() != null) getSubject().setState(state);
+//    }
 
     @Override
     public void setChildListService(ChildListService<Checkout, CartItem> service) {
@@ -187,15 +196,120 @@ public class CartItemListController extends AbstractChildListController<Checkout
         bindProduct(((ProductListController) state.getController()).getSelectedItem());
     }
 
+    /**
+     * Hiển thị dialog detail cho phép chỉnh số lượng, giá cả, discount
+     * @param show
+     */
     @Override
     public void doShowDetailPanel(boolean show) {
         // khởi tạo và hiển thị dialog
-        if (mDialog == null) {
-            mDialog = com.magestore.app.pos.util.DialogUtil.dialog(getDetailView().getContext(),
+        if (mCartItemDetailDialog == null) {
+            mCartItemDetailDialog = com.magestore.app.pos.util.DialogUtil.dialog(getDetailView().getContext(),
                     getDetailView().getContext().getString(R.string.product_option),
                     getDetailView());
         }
-        mDialog.setDialogTitle(getSelectedItem().getProduct().getName());
-        mDialog.show();
+        mCartItemDetailDialog.setTitle(getSelectedItem().getProduct().getName());
+        mCartItemDetailDialog.setDialogTitle(getSelectedItem().getProduct().getName());
+        mCartItemDetailDialog.show();
+    }
+
+    /**
+     * Tham chiếu cart service
+     * @param cartService
+     */
+    public void setCartService(CartService cartService) {
+        mCartService = cartService;
+    }
+
+    /**
+     * Đặt product option service
+     * @param productOptionService
+     */
+    public void setProductOptionService(ProductOptionService productOptionService) {mProductOptionService = productOptionService; }
+
+    /**
+     * Đặt product option panel
+     * @param productOptionPanel
+     */
+    public void setProductOptionPanel(ProductOptionPanel productOptionPanel) {
+        mProductOptionPanel = productOptionPanel;
+        mProductOptionPanel.setController(this);
+    }
+
+    public void doShowProductOptionInput(CartItem cartItem) {
+        // khởi tạo và hiển thị dialog
+        if (mProductOptionDialog == null) {
+            mProductOptionDialog = com.magestore.app.pos.util.DialogUtil.dialog(mProductOptionPanel.getContext(),
+                    cartItem.getProduct().getName(),
+                    mProductOptionPanel);
+        }
+
+        // clear list option và hiện thị thông tin product và cart item
+        mProductOptionPanel.clearList();
+        mProductOptionPanel.showCartItemInfo(cartItem);
+        mProductOptionDialog.show();
+
+        // gán cart item và load product option
+        if (cartItem.getProduct().getProductOption() != null) bindItem(cartItem);
+        else doLoadItem(cartItem);
+    }
+
+    /**
+     * Hiển thị dialog show chọn option
+     * @param product
+     */
+    public void doShowProductOptionInput(Product product) {
+        CartItem cartItem = mCartService.create(product);
+        doShowProductOptionInput(cartItem);
+    }
+
+    /**
+     * Gán product vào controller và view
+     * @param item
+     */
+    @Override
+    public void bindItem(CartItem item) {
+        super.bindItem(item);
+        mProductOptionPanel.bindItem(item);
+    }
+
+    /**
+     * Load product option
+     * @param item
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public boolean doLoadItemBackground(CartItem... item) throws Exception  {
+        mProductOptionService.retrieve(item[0].getProduct());
+        return true;
+    }
+
+    /**
+     * Load product option thành công, gán vào view để xử lý
+     * @param success
+     * @param item
+     */
+    @Override
+    public void onLoadItemPostExecute(boolean success, CartItem... item) {
+        super.onLoadItemPostExecute(success, item);
+        if (success) bindItem(item[0]);
+    }
+
+    public void setQuantity() {
+    }
+
+    /**
+     * Tăng bớt số lượng
+     */
+    public void addQuantity() {
+        mCartService.increase(getItem());
+    }
+
+    /**
+     * Trừ số lượng
+     */
+    public void substractQuantity() {
+        mCartService.substract(getItem());
     }
 }

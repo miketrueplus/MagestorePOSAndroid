@@ -103,7 +103,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.0"
-                    android:text="@{ConfigUtil.formatPrice(cartItem.getPrice())}"
+                    android:text="@{ConfigUtil.formatPrice(cartItem.getUnitPrice())}"
                     android:textAlignment="viewEnd" />
                 <Button
                     android:id="@+id/id_btn_cart_item_detail_price_substract"

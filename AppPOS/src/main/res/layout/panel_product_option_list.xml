@@ -11,7 +11,7 @@
             type="com.magestore.app.pos.panel.ProductOptionPanel" />
         <variable
             name="controller"
-            type="com.magestore.app.pos.controller.ProductOptionController" />
+            type="com.magestore.app.pos.controller.CartItemListController" />
         <variable
             name="product"
             type="com.magestore.app.lib.model.catalog.Product" />

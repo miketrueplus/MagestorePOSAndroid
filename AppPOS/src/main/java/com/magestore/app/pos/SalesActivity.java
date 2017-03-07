@@ -1,8 +1,6 @@
 package com.magestore.app.pos;
 
 
-import android.annotation.TargetApi;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -32,7 +30,6 @@ import com.magestore.app.pos.controller.CategoryListController;
 import com.magestore.app.pos.controller.CheckoutAddPaymentListController;
 import com.magestore.app.pos.controller.CheckoutListController;
 import com.magestore.app.pos.controller.ProductListController;
-import com.magestore.app.pos.controller.ProductOptionController;
 import com.magestore.app.pos.panel.CartItemDetailPanel;
 import com.magestore.app.pos.panel.CartItemListPanel;
 import com.magestore.app.pos.panel.CartOrderListPanel;
@@ -69,16 +66,16 @@ public class SalesActivity extends AbstractActivity
     private CheckoutShippingListPanel mCheckoutShippingListPanel;
     private CheckoutPaymentListPanel mCheckoutPaymentListPanel;
 
-    // item panel
+    // cart item panel
     private CartItemListPanel mCartItemListPanel;
     private CartItemDetailPanel mCartItemDetailPanel;
+    private ProductOptionPanel mProductOptionPanel;
 
     private CategoryListPanel mCategoryListPanel;
     private PaymentMethodListPanel mPaymentMethodListPanel;
     private CheckoutAddPaymentPanel mCheckoutAddPaymentPanel;
     private CartOrderListPanel mCartOrderListPanel;
     private CheckoutAddressListPanel mCheckoutAddressListPanel;
-    private ProductOptionPanel mPanelProductOption;
     private CheckoutSuccessPanel mCheckoutSuccessPanel;
 
     // controller cho danh sách mặt hàng và đơn hàng
@@ -87,7 +84,7 @@ public class SalesActivity extends AbstractActivity
     private CartItemListController mCheckoutCartItemListController;
     private CategoryListController mCategoryListController;
     private CheckoutAddPaymentListController mCheckoutAddPaymentListController;
-    private ProductOptionController mProductOptionController;
+//    private ProductOptionController mProductOptionController;
 
     // Toolbar Order
     Toolbar toolbar_order;
@@ -144,6 +141,7 @@ public class SalesActivity extends AbstractActivity
         // cart item panel
         mCartItemListPanel = (CartItemListPanel) mCheckoutListPanel.findViewById(R.id.order_item_panel);
         mCartItemDetailPanel = new CartItemDetailPanel(this.getContext());
+        mProductOptionPanel = new ProductOptionPanel(getContext());
 
         mCartOrderListPanel = (CartOrderListPanel) mCheckoutListPanel.findViewById(R.id.checkout_item_panel);
 
@@ -163,10 +161,6 @@ public class SalesActivity extends AbstractActivity
 
         // category list panel
         mCategoryListPanel = (CategoryListPanel) mProductListPanel.findViewById(R.id.category);
-
-        // panel hiển thị product option
-        mPanelProductOption = new ProductOptionPanel(getContext());
-//        mPanelProductOption.setLayoutPanel(R.layout.panel_product_option_list);
 
     }
 
@@ -247,21 +241,21 @@ public class SalesActivity extends AbstractActivity
         mCheckoutCartItemListController.setMagestoreContext(magestoreContext);
         mCheckoutCartItemListController.setListPanel(mCartItemListPanel);
         mCheckoutCartItemListController.setDetailPanel(mCartItemDetailPanel);
+        mCheckoutCartItemListController.setProductOptionPanel(mProductOptionPanel);
         mCheckoutCartItemListController.setChildListService(cartService);
-        mCheckoutCartItemListController.setSubject(subjectObserv);
+        mCheckoutCartItemListController.setProductOptionService(productOptionService);
 
         mCheckoutListController.setCartItemListController(mCheckoutCartItemListController);
-
         mCheckoutAddPaymentListController = new CheckoutAddPaymentListController();
         mCheckoutAddPaymentListController.setMagestoreContext(magestoreContext);
         mCheckoutAddPaymentListController.setListPanel(mCheckoutAddPaymentPanel);
         mCheckoutAddPaymentListController.setCheckoutListController(mCheckoutListController);
 
-        mProductOptionController = new ProductOptionController();
-        mProductOptionController.setSubject(subjectObserv);
-        mProductOptionController.setView(mPanelProductOption);
-        mProductOptionController.setService(productOptionService);
-        mProductOptionController.setCartService(cartService);
+//        mProductOptionController = new ProductOptionController();
+//        mProductOptionController.setSubject(subjectObserv);
+//        mProductOptionController.setView(mPanelProductOption);
+//        mProductOptionController.setService(productOptionService);
+//        mProductOptionController.setCartService(cartService);
 
 
         mPaymentMethodListPanel.setCheckoutListController(mCheckoutListController);
@@ -307,12 +301,12 @@ public class SalesActivity extends AbstractActivity
                 .setStateCode(GenericState.DEFAULT_STATE_CODE_ON_SELECT_ITEM)
                 .setControllerState(mCheckoutListController);
 
-        // hiển thị production opption nếu product có option
-        mProductOptionController
-                .attachListenerObserve()
-                .setMethodName("doShowProductOptionInput")
-                .setStateCode(CartItemListController.STATE_ON_SHOW_PRODUCT_OPTION)
-                .setControllerState(mCheckoutCartItemListController);
+//        // hiển thị production opption nếu product có option
+//        mCheckoutCartItemListController
+//                .attachListenerObserve()
+//                .setMethodName("doShowProductOptionInput")
+//                .setStateCode(CartItemListController.STATE_ON_SHOW_PRODUCT_OPTION)
+//                .setControllerState(mCheckoutCartItemListController);
 
         // cập nhật giá tổng trên view mỗi khi có 1 cart item được thay đổi
         mCheckoutListController
