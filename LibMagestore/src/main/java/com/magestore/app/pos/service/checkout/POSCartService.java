@@ -33,7 +33,7 @@ public class POSCartService extends AbstractService implements CartService {
 
         float total = 0;
         for (CartItem item : listItems) {
-            item.setPrice(item.getQuantity() * item.getProduct().getPrice());
+//            item.setPrice(item.getQuantity() * item.getProduct().getPrice());
             total += item.getPrice();
         }
         checkout.setSubTotal(total);
@@ -74,18 +74,51 @@ public class POSCartService extends AbstractService implements CartService {
     }
 
     @Override
-    public CartItem create(Checkout checkout) {
-        CartItem item = new PosCartItem();
-        return item;
+    public CartItem create(Checkout checkout) throws InstantiationException, IllegalAccessException, ParseException, IOException {
+        CartItem cartItem = new PosCartItem();
+
+        // Thêm vào danh sách order cartItem
+        insert(checkout, cartItem);
+        return cartItem;
     }
 
     @Override
-    public CartItem findItem(Checkout checkout, Product product) {
+    public CartItem create(Product product) {
+        return create(product, 1, product.getFinalPrice());
+    }
+
+    @Override
+    public CartItem create(Product product, int quantity, float price) {
+        CartItem cartItem = new PosCartItem();
+        cartItem.setProduct(product);
+        cartItem.setQuantity(quantity);
+        cartItem.setPrice(price * quantity);
+        cartItem.setOriginalPrice(price * quantity);
+        cartItem.setUnitPrice(price);
+        cartItem.setId(product.getID());
+        cartItem.setItemId(String.valueOf(getItemIdInCurrentTime()));
+        return cartItem;
+    }
+
+    @Override
+    public CartItem create(Product product, int quantity) {
+        return create(product, quantity, product.getFinalPrice());
+    }
+
+    @Override
+    public CartItem create(Checkout checkout, Product product) throws InstantiationException, IllegalAccessException, ParseException, IOException {
+        CartItem cartItem = create(product);
+        insert(checkout, cartItem);
+        return cartItem;
+    }
+
+    @Override
+    public CartItem findItem(Checkout checkout, Product product) throws IOException, InstantiationException, ParseException, IllegalAccessException {
         if (checkout == null) return null;
 
         // Khởi tạo danh sách order cartItem
         List<CartItem> listItems =  checkout.getCartItem();
-        if (listItems == null) return create(checkout);
+        if (listItems == null) return null;
 
         // Kiểm tra xem đã có order item với mặt hàng tương ứng chưa
         CartItem cartItem = null;
@@ -139,6 +172,28 @@ public class POSCartService extends AbstractService implements CartService {
         return true;
     }
 
+    @Override
+    public void increase(CartItem cartItem) {
+        increase(cartItem, cartItem.getProduct().getQuantityIncrement());
+    }
+
+    @Override
+    public void increase(CartItem cartItem, int quantity) {
+        int newQuantity = cartItem.getQuantity() + quantity;
+        cartItem.setQuantity(newQuantity > 0 ? newQuantity : cartItem.getProduct().getQuantityIncrement());
+    }
+
+    @Override
+    public void substract(CartItem cartItem) {
+        substract(cartItem, cartItem.getProduct().getQuantityIncrement());
+    }
+
+    @Override
+    public void substract(CartItem cartItem, int quantity) {
+        int newQuantity = cartItem.getQuantity() - quantity;
+        cartItem.setQuantity(newQuantity > 0 ? newQuantity : cartItem.getProduct().getQuantityIncrement());
+    }
+
     /**
      * Thêm 1 order item
      * @param product
@@ -171,13 +226,7 @@ public class POSCartService extends AbstractService implements CartService {
         // nếu chưa thì thêm mới
         if (cartItem == null) {
             // Khởi tạo product order item
-            cartItem = new PosCartItem();
-            cartItem.setProduct(product);
-            cartItem.setQuantity(quantity);
-            cartItem.setPrice(price * quantity);
-            cartItem.setOriginalPrice(product.getPrice());
-            cartItem.setId(product.getID());
-            cartItem.setItemId(String.valueOf(getItemIdInCurrentTime()));
+            cartItem = create(product, quantity, price);
             // Thêm vào danh sách order cartItem
             insert(checkout, cartItem);
         }

@@ -1,9 +1,15 @@
 package com.magestore.app.pos.model.checkout.cart;
 
+import com.magestore.app.lib.model.catalog.ProductOption;
+import com.magestore.app.lib.model.catalog.ProductOptionCustom;
+import com.magestore.app.lib.model.catalog.ProductOptionCustomValue;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.pos.model.PosAbstractModel;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosExclude;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Mike on 12/26/2016.
@@ -12,6 +18,12 @@ import com.magestore.app.pos.parse.gson2pos.Gson2PosExclude;
  */
 
 public class PosCartItem extends PosAbstractModel implements CartItem {
+    public class ChooseProductOption {
+        List<ProductOptionCustomValue> productOptionCustomValueList;
+        int qty;
+    }
+    Map<ProductOptionCustom, ChooseProductOption> choose_product_options;
+
     Product product;
     int qty;
     @Gson2PosExclude
@@ -85,6 +97,11 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     }
 
     @Override
+    public void setUnitPrice(float param_price) {
+        this.unit_price = param_price;
+    }
+
+    @Override
     public Product getProduct() {
         return product;
     }
@@ -92,6 +109,11 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     @Override
     public int getQuantity() {
         return qty;
+    }
+
+    @Override
+    public float getUnitPrice() {
+        return unit_price;
     }
 
     @Override

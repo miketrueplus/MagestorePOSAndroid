@@ -9,16 +9,22 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.daimajia.swipe.SwipeLayout;
+import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.panel.AbstractListPanel;
+import com.magestore.app.lib.view.item.ModelView;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.CartItemListController;
 import com.magestore.app.pos.databinding.CardCartListContentBinding;
+import com.magestore.app.pos.databinding.CardProductListContentBinding;
 import com.magestore.app.pos.databinding.PanelCartListBinding;
+import com.magestore.app.pos.task.LoadProductImageTask;
+import com.magestore.app.util.ConfigUtil;
 
 /**
  * Quản lý hiển thị danh sách các hàng chọn trong cart
@@ -33,10 +39,6 @@ public class CartItemListPanel extends AbstractListPanel<CartItem> {
 
     // button checkout
     private Button mCheckoutButton;
-
-    // adapter
-//    OrderItemListPanel.OrderItemListRecyclerViewAdapter mOrderItemListAdapter;
-
 
     public CartItemListPanel(Context context) throws InstantiationException, IllegalAccessException {
         super(context);
@@ -63,78 +65,133 @@ public class CartItemListPanel extends AbstractListPanel<CartItem> {
         // Button
         mCheckoutButton = (Button) findViewById(R.id.btn_sales_order_checkout);
     }
+//
+//    @Override
+//    protected void bindItem(View view, final CartItem item, int position) {
+//        super.bind
+//    }
 
+    /**
+     * Hold ayout view của iten, gán findview id vào các biến
+     * @param view
+     * @return
+     */
     @Override
-    protected void bindItem(View view, final CartItem item, int position) {
-        // map dữ liệu của item vào
-        final CardCartListContentBinding binding = DataBindingUtil.bind(view);
-        binding.setCartItem(item);
+    protected RecycleViewItemHolder holdItemView(View view) {
+        RecycleViewItemHolder viewHolder = new CartItemListPanel.RecycleViewCartItemHolder(view);
+        viewHolder.holdView(view);
+        return viewHolder;
+    }
 
-        // Hiển thị ảnh
-        ImageView imageView = (ImageView) view.findViewById(R.id.sales_order_image);
-        if (item.getProduct() != null) {
-            Bitmap bmp = item.getProduct().getBitmap();
-            if (bmp != null && !bmp.isRecycled() && imageView != null)
-                imageView.setImageBitmap(bmp);
+    /**
+     * Hold layout và nội dung các item trong view
+     */
+    public class RecycleViewCartItemHolder extends RecycleViewItemHolder {
+        CardCartListContentBinding binding;
+        ImageView imageView;
+        SwipeLayout swipeLayout;
+        RelativeLayout mDelButton;
+
+        public RecycleViewCartItemHolder(View view) {
+            super(view);
         }
 
-        // Cho phép swipe drag
-        final SwipeLayout swipeLayout = (SwipeLayout) view.findViewById(R.id.sales_order_swipe_layout);
-        swipeLayout.addDrag(SwipeLayout.DragEdge.Left, swipeLayout.findViewById(R.id.sales_order_swipe_delete_layout));
+        /**
+         * Hold layout item trong view
+         * @param view
+         */
+        @Override
+        public void holdView(View view) {
+            super.holdView(view);
 
-        // các button trên swipe
-        RelativeLayout mDelButton = (RelativeLayout) swipeLayout.findViewById(R.id.sales_order_swipe_del_button);
+            // map dữ liệu của item vào
+            binding = DataBindingUtil.bind(view);
 
-        // Xử lý sự kiện xóa trên swipe
-        mDelButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                getOrderItemListController().deleteProduct(item.getProduct());
+            // Hiển thị ảnh
+            imageView = (ImageView) view.findViewById(R.id.sales_order_image);
+
+            // Cho phép swipe drag
+            swipeLayout = (SwipeLayout) view.findViewById(R.id.sales_order_swipe_layout);
+            swipeLayout.addDrag(SwipeLayout.DragEdge.Left, swipeLayout.findViewById(R.id.sales_order_swipe_delete_layout));
+
+            // các button trên swipe
+            mDelButton = (RelativeLayout) swipeLayout.findViewById(R.id.sales_order_swipe_del_button);
+
+            // Xử lý sự kiện xóa trên swipe
+            mDelButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    if (getModelView() == null || getModelView().getModel() == null) return;
+                    ((CartItemListController)getController()).deleteProduct(((CartItem)getModelView().getModel()).getProduct());
+                }
+            });
+
+            // Sự kiện khi swipe in
+            swipeLayout.addSwipeListener(new SwipeLayout.SwipeListener() {
+                @Override
+                public void onStartOpen(SwipeLayout layout) {
+
+                }
+
+                @Override
+                public void onOpen(SwipeLayout layout) {
+
+                }
+
+                @Override
+                public void onStartClose(SwipeLayout layout) {
+
+                }
+
+                /**
+                 * Khi close swipe
+                 * @param swipeLayout
+                 */
+                @Override
+                public void onClose(SwipeLayout swipeLayout) {
+//                    CartItemListPanel.this.notifyDataSetChanged();
+                }
+
+                @Override
+                public void onUpdate(SwipeLayout layout, int leftOffset, int topOffset) {
+
+                }
+
+                @Override
+                public void onHandRelease(SwipeLayout layout, float xvel, float yvel) {
+
+                }
+            });
+
+            swipeLayout.setOnDoubleClickListener(new SwipeLayout.DoubleClickListener() {
+                @Override
+                public void onDoubleClick(SwipeLayout layout, boolean surface) {
+                    if (getModelView() == null || getModelView().getModel() == null) return;
+                    getController().bindItem((CartItem) getModelView().getModel());
+                    getController().doShowDetailPanel(true);
+                }
+            });
+        }
+
+        /**
+         * Đặt nội dung item trong view
+         * @param item
+         * @param position
+         */
+        public void setItem(ModelView item, int position) {
+            binding.setCartItem((CartItem)item.getModel());
+            if (((CartItem)item.getModel()).getProduct() != null) {
+                Bitmap bmp = ((CartItem)item.getModel()).getProduct().getBitmap();
+                if (bmp != null && !bmp.isRecycled() && imageView != null)
+                    imageView.setImageBitmap(bmp);
             }
-        });
-
-        // Sự kiện khi swipe in
-        swipeLayout.addSwipeListener(new SwipeLayout.SwipeListener() {
-            @Override
-            public void onStartOpen(SwipeLayout layout) {
-
-            }
-
-            @Override
-            public void onOpen(SwipeLayout layout) {
-
-            }
-
-            @Override
-            public void onStartClose(SwipeLayout layout) {
-
-            }
-
-            /**
-             * Khi close swipe
-             * @param swipeLayout
-             */
-            @Override
-            public void onClose(SwipeLayout swipeLayout) {
-                CartItemListPanel.this.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onUpdate(SwipeLayout layout, int leftOffset, int topOffset) {
-
-            }
-
-            @Override
-            public void onHandRelease(SwipeLayout layout, float xvel, float yvel) {
-
-            }
-        });
+        }
     }
 
     /*
      * Trả về controller
      * @return
      */
-    public CartItemListController getOrderItemListController() {
-        return (CartItemListController) getController();
-    }
+//    public CartItemListController getOrderItemListController() {
+//        return (CartItemListController) getController();
+//    }
 }

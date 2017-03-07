@@ -261,6 +261,7 @@ public class SalesActivity extends AbstractActivity
         mProductOptionController.setSubject(subjectObserv);
         mProductOptionController.setView(mPanelProductOption);
         mProductOptionController.setService(productOptionService);
+        mProductOptionController.setCartService(cartService);
 
 
         mPaymentMethodListPanel.setCheckoutListController(mCheckoutListController);

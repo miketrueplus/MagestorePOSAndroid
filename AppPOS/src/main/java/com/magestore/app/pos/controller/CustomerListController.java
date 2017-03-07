@@ -112,7 +112,18 @@ public class CustomerListController extends AbstractListController<Customer> {
      * @param newComplain
      */
     public void doInputNewComplain(String newComplain) {
-        Complain complain = mCustomerComplainService.create(getSelectedItem());
+        Complain complain = null;
+        try {
+            complain = mCustomerComplainService.create(getSelectedItem());
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         complain.setContent(newComplain);
         doAction(ACTION_CODE_INPUT_COMPLAIN, null, null, mItem, complain);
     }
@@ -227,7 +238,18 @@ public class CustomerListController extends AbstractListController<Customer> {
     }
 
     public CustomerAddress createCustomerAddress() {
-        return mCustomerAddressService.create(null);
+        try {
+            return mCustomerAddressService.create(null);
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public Region createRegion() {

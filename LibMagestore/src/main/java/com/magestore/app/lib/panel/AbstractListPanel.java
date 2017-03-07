@@ -696,6 +696,17 @@ public abstract class AbstractListPanel<TModel extends Model>
             final ModelView modelView = mModelViewList.get(position);
 
             // hiển thị item
+            holder.mModelView = modelView;
+            // xử lý hiển thị progress bar nếu có
+            holder.displayProgressBar(modelView);
+
+            // xử lý hiển thị thông báo lỗi nếu có
+            holder.displayErrorMsg(modelView);
+
+            // xử lý hiển thị content
+            holder.displayContent(modelView);
+
+            // hiển thị dữ liệu
             holder.setItem(modelView, position);
         }
 
@@ -715,6 +726,7 @@ public abstract class AbstractListPanel<TModel extends Model>
      * Nắm giữ từng view con trong list
      */
     public class RecycleViewItemHolder extends RecyclerView.ViewHolder {
+        ModelView mModelView;
         // view chính cho toàn bộ holder
         View mLayoutMainView;
 
@@ -732,10 +744,13 @@ public abstract class AbstractListPanel<TModel extends Model>
 
         // progress bar và text msg khi có lỗi hoặc thông báo
         protected ProgressBar mProgressBarItem = null;
-        protected TextView mTxtMsg = null;
 
         public RecycleViewItemHolder(View view) {
             super(view);
+        }
+
+        public ModelView getModelView() {
+            return mModelView;
         }
 
         /**
@@ -774,14 +789,6 @@ public abstract class AbstractListPanel<TModel extends Model>
          */
         public void setItem(ModelView item, int position) {
             if (item == null) return;
-            // xử lý hiển thị progress bar nếu có
-            displayProgressBar(item);
-
-            // xử lý hiển thị thông báo lỗi nếu có
-            displayErrorMsg(item);
-
-            // xử lý hiển thị content
-            displayContent(item);
 
             // hiển thị nội dung theo layout mặc định
             if (mTxtItem1 != null && mblnUseTxtView1)

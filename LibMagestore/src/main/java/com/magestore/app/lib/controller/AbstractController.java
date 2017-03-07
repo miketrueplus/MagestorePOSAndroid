@@ -77,8 +77,20 @@ public abstract class AbstractController<TModel extends Model, TView extends Mag
         }
     }
 
+    /**
+     * Bind item cho controllerr và giao diện
+     * @param item
+     */
     public void bindItem(TModel item) {
         mItem = item;
+    }
+
+    /**
+     * Trả tham chiếu đến item
+     * @return
+     */
+    public TModel getItem() {
+        return mItem;
     }
 
     /**

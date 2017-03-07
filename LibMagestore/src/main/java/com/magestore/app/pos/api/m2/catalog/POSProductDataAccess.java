@@ -13,11 +13,18 @@ import com.magestore.app.lib.connection.ParamBuilder;
 import com.magestore.app.lib.connection.ResultReading;
 import com.magestore.app.lib.connection.Statement;
 import com.magestore.app.lib.model.catalog.ProductOption;
+import com.magestore.app.lib.model.catalog.ProductOptionCustom;
 import com.magestore.app.lib.parse.ParseException;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.resourcemodel.DataAccessException;
 import com.magestore.app.lib.resourcemodel.catalog.ProductDataAccess;
 import com.magestore.app.pos.model.catalog.PosProductOption;
+import com.magestore.app.pos.model.catalog.PosProductOptionBundle;
+import com.magestore.app.pos.model.catalog.PosProductOptionBundleItem;
+import com.magestore.app.pos.model.catalog.PosProductOptionConfigOption;
+import com.magestore.app.pos.model.catalog.PosProductOptionCustom;
+import com.magestore.app.pos.model.catalog.PosProductOptionCustomValue;
+import com.magestore.app.pos.model.catalog.PosProductOptionJsonConfig;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListProduct;
 import com.magestore.app.pos.api.m2.POSAPI;
 import com.magestore.app.pos.api.m2.POSAbstractDataAccess;
@@ -30,7 +37,9 @@ import com.magestore.app.util.SecurityUtil;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Gọi các API của Product
@@ -60,9 +69,7 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
 
             // Xây dựng tham số
             paramBuilder = statement.getParamBuilder()
-//                    .setPage(page)
-//                    .setPageSize(pageSize)
-//                .setFilterLike("name", "%Backyard%")
+
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
 //                .setFilterEqual("name", "Joust Duffle Bag");
 
@@ -70,8 +77,6 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
             rp = statement.execute();
             String json = rp.readResult2String()
                     .replace("\\", "")
-//                    .replace("\\\\\"", "\\\"")
-//                    .replace("\\\"", "\"")
                     .replace("\"{\"", "{\"")
                     .replace("}\"", "}");
 
@@ -79,6 +84,83 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
             Gson2PosProductOptionParseImplement implement = new Gson2PosProductOptionParseImplement();
             Gson gson = implement.createGson();
             PosProductOption productOption = gson.fromJson(json, PosProductOption.class);
+
+            // convert option theo bundle options sang 1 format thống nhất
+            List<PosProductOptionBundle> bundleList = productOption.getBundleOptions();
+            if (bundleList != null) {
+                // nếu custom option chưa được khởi tạo thì khởi tạo
+                List<PosProductOptionCustom> listCustomOption = productOption.getCustomOptions();
+                if (listCustomOption == null) {
+                    listCustomOption = new ArrayList<>();
+                    productOption.setCustomOptions(listCustomOption);
+                }
+
+                for (PosProductOptionBundle bundle: bundleList) {
+                    PosProductOptionCustom productOptionCustom = new PosProductOptionCustom();
+                    productOptionCustom.setProductID(product.getID());
+                    productOptionCustom.setOptionID(bundle.getID());
+                    productOptionCustom.setTitle(bundle.getTitle());
+                    productOptionCustom.setType(bundle.getType());
+                    productOptionCustom.setRequire(bundle.isRequired());
+                    listCustomOption.add(productOptionCustom);
+
+                    // tạo value cho mỗi custom option tương ứng từ config option
+                    productOptionCustom.setOptionValueList(new ArrayList<PosProductOptionCustomValue>());
+                    List<PosProductOptionCustomValue> listCustomValue = productOptionCustom.getOptionValueList();
+                    for (PosProductOptionBundleItem bundleItem: bundle.getItems()) {
+                        PosProductOptionCustomValue customValue = new PosProductOptionCustomValue();
+                        customValue.setPrice(bundleItem.getPrice());
+                        customValue.setOptionId(bundleItem.getOptionId());
+                        customValue.setOptionTypeId(bundleItem.getEntityId());
+                        customValue.setTitle(bundleItem.getName());
+                        customValue.setSku(bundleItem.getSku());
+                        customValue.setDefaultTitle(bundleItem.getName());
+                        listCustomValue.add(customValue);
+                    }
+                }
+            }
+
+            // convert option theo json config product options sang 1 format thống nhất
+            Map<String, PosProductOptionConfigOption> configOptionMap = productOption.getConfigurableOptions();
+            if (configOptionMap != null) {
+                // nếu custom option chưa được khởi tạo thì khởi tạo
+                List<PosProductOptionCustom> listCustomOption = productOption.getCustomOptions();
+                if (listCustomOption == null) {
+                    listCustomOption = new ArrayList<>();
+                    productOption.setCustomOptions(listCustomOption);
+                }
+
+                // với mỗi configurable trong option, tạo custom option tương ứng
+                for (String optionCode : configOptionMap.keySet()) {
+                    PosProductOptionCustom productOptionCustom = new PosProductOptionCustom();
+                    PosProductOptionConfigOption configOption = configOptionMap.get(optionCode);
+                    productOptionCustom.setOptionCode(optionCode);
+                    productOptionCustom.setProductID(product.getID());
+                    productOptionCustom.setOptionID(configOption.optionId);
+                    productOptionCustom.setTitle(configOption.optionLabel);
+                    productOptionCustom.setDefaultTitle(configOption.optionLabel);
+                    productOptionCustom.setType("radio");
+                    productOptionCustom.setRequire(true);
+                    listCustomOption.add(productOptionCustom);
+
+                    // tạo value cho mỗi custom option tương ứng từ config option
+                    productOptionCustom.setOptionValueList(new ArrayList<PosProductOptionCustomValue>());
+                    List<PosProductOptionCustomValue> listCustomValue = productOptionCustom.getOptionValueList();
+                    for (String key : configOption.optionValues.keySet()) {
+                        PosProductOptionCustomValue customValue = new PosProductOptionCustomValue();
+                        customValue.setOptionId(configOption.optionId);
+                        customValue.setOptionTypeId(key);
+                        customValue.setTitle(configOption.optionValues.get(key));
+                        customValue.setStoreTitle(configOption.optionValues.get(key));
+                        customValue.setDefaultTitle(configOption.optionValues.get(key));
+                        customValue.setPrice("0");
+                        customValue.setPriceType("0");
+                        customValue.setDefaultPrice("0");
+                        customValue.setPriceType(null);
+                        listCustomValue.add(customValue);
+                    }
+                }
+            }
 
             // return
             product.setProductOption(productOption);

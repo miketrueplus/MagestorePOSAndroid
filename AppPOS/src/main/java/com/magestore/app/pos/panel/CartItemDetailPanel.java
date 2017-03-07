@@ -43,6 +43,11 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
         mBinding = DataBindingUtil.bind(getView());
     }
 
+    @Override
+    public void initModel() {
+        super.initModel();
+    }
+
     /**
      * Bind value vào giao diện
      * @param item

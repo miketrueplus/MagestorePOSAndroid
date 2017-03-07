@@ -1,7 +1,7 @@
 package com.magestore.app.lib.model.catalog;
 
 import com.magestore.app.lib.model.Model;
-import com.magestore.app.pos.model.catalog.PosProductOptionCustomCustomValue;
+import com.magestore.app.pos.model.catalog.PosProductOptionCustomValue;
 
 import java.util.List;
 
@@ -11,6 +11,8 @@ import java.util.List;
 
 public interface ProductOptionCustom extends Model {
     String getOptionID();
+
+    String getOptionCode();
 
     String getProductID();
 
@@ -48,7 +50,7 @@ public interface ProductOptionCustom extends Model {
 
     String getPriceType();
 
-    List<PosProductOptionCustomCustomValue> getOptionValueList();
+    List<PosProductOptionCustomValue> getOptionValueList();
 
     boolean isTypeSelectOne();
 
@@ -61,4 +63,22 @@ public interface ProductOptionCustom extends Model {
     boolean isTypeDate();
 
     boolean isTypeDateTime();
+
+    void setOptionID(String option_id);
+
+    void setOptionCode(String option_code);
+
+    void setProductID(String product_id);
+
+    void setOptionValueList(List<PosProductOptionCustomValue> values);
+
+    void setType(String type);
+
+    void setRequire(boolean isRequire);
+
+    void setDefaultTitle(String default_title);
+
+    void setStoreTitle(String store_title);
+
+    void setTitle(String title);
 }

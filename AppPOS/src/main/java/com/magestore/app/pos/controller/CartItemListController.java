@@ -26,9 +26,9 @@ import java.util.List;
 public class CartItemListController extends AbstractChildListController<Checkout, CartItem> {
     public static final String STATE_ON_SHOW_PRODUCT_OPTION = "STATE_ON_SHOW_PRODUCT_OPTION";
     public static final String STATE_ON_UPDATE_CART_ITEM = "STATE_ON_UPDATE_CART_ITEM";
-
-
+    MagestoreDialog mDialog;
     CartService mCartService;
+
     @Override
     protected List<CartItem> loadDataBackground(Void... params) throws Exception {
         return null;
@@ -36,6 +36,7 @@ public class CartItemListController extends AbstractChildListController<Checkout
 
     /**
      * Bind 1 sản
+     *
      * @param product
      */
     public void bindProduct(Product product) {
@@ -53,8 +54,7 @@ public class CartItemListController extends AbstractChildListController<Checkout
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
-        }
-        else {
+        } else {
             showChooseProductOptionInput(product);
         }
 //        mView.notifyDataSetChanged();
@@ -63,6 +63,7 @@ public class CartItemListController extends AbstractChildListController<Checkout
 
     /**
      * Thông báo cho các controller xử lý, đặc biệt các observe xử lý option
+     *
      * @param product
      */
     public void showChooseProductOptionInput(Product product) {
@@ -93,6 +94,7 @@ public class CartItemListController extends AbstractChildListController<Checkout
 
     /**
      * Xóa 1 sản phẩm khỏi đơn hàng
+     *
      * @param product
      */
     public void deleteProduct(Product product) {
@@ -115,6 +117,7 @@ public class CartItemListController extends AbstractChildListController<Checkout
 
     /**
      * Thêm 1 sản phẩm vào đơn hàng
+     *
      * @param product
      * @param quantity
      * @param price
@@ -133,6 +136,7 @@ public class CartItemListController extends AbstractChildListController<Checkout
 
     /**
      * Thêm 1 sản phẩm vào đơn hàng
+     *
      * @param product
      * @param quantity
      */
@@ -142,6 +146,7 @@ public class CartItemListController extends AbstractChildListController<Checkout
 
     /**
      * Thêm 1 sản phẩm vào đơn hàng
+     *
      * @param product
      * @param quantity
      * @param price
@@ -160,6 +165,7 @@ public class CartItemListController extends AbstractChildListController<Checkout
 
     /**
      * Thêm 1 sản phẩm vào đơn hàng
+     *
      * @param product
      * @param quantity
      */
@@ -167,31 +173,29 @@ public class CartItemListController extends AbstractChildListController<Checkout
         substructProduct(product, quantity, product.getPrice());
     }
 
-    public List<CartItem> getListCartItem(){
+    public List<CartItem> getListCartItem() {
         return mList;
     }
 
-    @Override
-    public void notifyState(State state) {
-//        super.notifyState(state);
-//        if (ProductListController.STATE_ON_CHOOSE_PRODUCT.equals(state.getStateCode())) {
-//            bindProduct(((ProductListController)state.getController()).getSelectedItem());
-//        }
-    }
 
+    /**
+     * Gán product theo cơ chế subject observ
+     *
+     * @param state
+     */
     public void bindProduct(State state) {
-        bindProduct(((ProductListController)state.getController()).getSelectedItem());
+        bindProduct(((ProductListController) state.getController()).getSelectedItem());
     }
 
     @Override
     public void doShowDetailPanel(boolean show) {
         // khởi tạo và hiển thị dialog
-//        MagestoreDialog mDialog;
-//        if (mDialog == null) {
-        MagestoreDialog mDialog = com.magestore.app.pos.util.DialogUtil.dialog(getDetailView().getContext(),
-                getDetailView().getContext().getString(R.string.product_option),
-                getDetailView());
-//        }
+        if (mDialog == null) {
+            mDialog = com.magestore.app.pos.util.DialogUtil.dialog(getDetailView().getContext(),
+                    getDetailView().getContext().getString(R.string.product_option),
+                    getDetailView());
+        }
+        mDialog.setDialogTitle(getSelectedItem().getProduct().getName());
         mDialog.show();
     }
 }

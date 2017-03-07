@@ -15,8 +15,13 @@ public interface CartItem extends Model {
     void setPrice(float param_price);
     void setOriginalPrice(float param_price);
 
+    void setUnitPrice(float param_price);
+
     Product getProduct();
     int getQuantity();
+
+    float getUnitPrice();
+
     float getPrice();
     float getOriginalPrice();
     String getItemId();

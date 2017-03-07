@@ -15,6 +15,7 @@ import java.util.Map;
 public class PosProductOption extends PosAbstractModel implements ProductOption {
     Map<String, PosProductOptionConfigOption> configurable_options;
     List<PosProductOptionCustom> custom_options;
+    List<PosProductOptionBundle> bundle_options;
     PosProductOptionJsonConfig json_config;
     PosProductOptionPriceConfig price_config;
 
@@ -39,7 +40,17 @@ public class PosProductOption extends PosAbstractModel implements ProductOption 
     }
 
     @Override
-    public PosProductOptionJsonConfig getJson_config() {
+    public List<PosProductOptionBundle> getBundleOptions() {
+        return bundle_options;
+    }
+
+    @Override
+    public void setBundleOptions(List<PosProductOptionBundle> bundle_options) {
+        this.bundle_options = bundle_options;
+    }
+
+    @Override
+    public PosProductOptionJsonConfig getJsonConfig() {
         return json_config;
     }
 

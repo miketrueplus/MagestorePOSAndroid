@@ -80,6 +80,7 @@ public class ProductListPanel extends AbstractListPanel<Product> {
      * @param view
      * @return
      */
+    @Override
     protected RecycleViewItemHolder holdItemView(View view) {
         RecycleViewItemHolder viewHolder = new RecycleViewProductHolder(view);
         viewHolder.holdView(view);

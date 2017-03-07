@@ -27,6 +27,7 @@
     <!--Product List-->
     <dimen name="product_item_space">0.5dp</dimen>
     <dimen name="product_image_height">120dp</dimen>
+    <dimen name="product_image_detail_height" >320dp</dimen>
     <dimen name="product_price_margin">2dp</dimen>
     <dimen name="product_text_name_size">14sp</dimen>
     <dimen name="product_text_sku_size">14sp</dimen>

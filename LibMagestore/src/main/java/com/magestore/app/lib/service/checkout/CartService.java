@@ -24,7 +24,23 @@ public interface CartService extends ChildListService<Checkout, CartItem> {
 
     float calculateLastTotal(Checkout checkout);
 
-    CartItem findItem(Checkout checkout, Product product);
+    CartItem create(Product product);
+
+    CartItem create(Product product, int quantity, float price);
+
+    CartItem create(Product product, int quantity);
+
+    CartItem create(Checkout checkout, Product product) throws InstantiationException, IllegalAccessException, ParseException, IOException;
+
+    CartItem findItem(Checkout checkout, Product product) throws IOException, InstantiationException, ParseException, IllegalAccessException;
+
+    void increase(CartItem cartItem);
+
+    void increase(CartItem cartItem, int quantity);
+
+    void substract(CartItem cartItem);
+
+    void substract(CartItem cartItem, int quantity);
 
     CartItem insert(Checkout checkout, Product product, int quantity, float price) throws InstantiationException, IllegalAccessException, ParseException, IOException;
 
