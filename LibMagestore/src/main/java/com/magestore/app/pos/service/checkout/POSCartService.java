@@ -1,6 +1,7 @@
 package com.magestore.app.pos.service.checkout;
 
 import com.magestore.app.lib.model.catalog.Product;
+import com.magestore.app.lib.model.checkout.Cart;
 import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.service.checkout.CartService;
@@ -180,7 +181,10 @@ public class POSCartService extends AbstractService implements CartService {
     @Override
     public void increase(CartItem cartItem, int quantity) {
         int newQuantity = cartItem.getQuantity() + quantity;
-        cartItem.setQuantity(newQuantity > 0 ? newQuantity : cartItem.getProduct().getQuantityIncrement());
+        newQuantity = newQuantity > 0 ? newQuantity : cartItem.getProduct().getQuantityIncrement();
+        float newPrice = cartItem.getUnitPrice() * newQuantity;
+        cartItem.setQuantity(newQuantity);
+        cartItem.setPrice(newPrice);
     }
 
     @Override
@@ -191,7 +195,10 @@ public class POSCartService extends AbstractService implements CartService {
     @Override
     public void substract(CartItem cartItem, int quantity) {
         int newQuantity = cartItem.getQuantity() - quantity;
-        cartItem.setQuantity(newQuantity > 0 ? newQuantity : cartItem.getProduct().getQuantityIncrement());
+        newQuantity = newQuantity > 0 ? newQuantity : cartItem.getProduct().getQuantityIncrement();
+        float newPrice = cartItem.getUnitPrice() * newQuantity;
+        cartItem.setQuantity(newQuantity);
+        cartItem.setPrice(newPrice);
     }
 
     /**
@@ -240,6 +247,10 @@ public class POSCartService extends AbstractService implements CartService {
         return cartItem;
     }
 
+    /**
+     * Sinh ID tương ứng theo thời gian
+     * @return
+     */
     private long getItemIdInCurrentTime() {
         long time = System.currentTimeMillis();
         return time;
@@ -355,5 +366,12 @@ public class POSCartService extends AbstractService implements CartService {
         // xóa khỏi danh sách checkout
         if (cartItem != null) delete(checkout, cartItem);
         return cartItem;
+    }
+
+    /**
+     * Xóa bỏ product option cũ
+     */
+    public void clearProductOption(CartItem cartItem) {
+
     }
 }

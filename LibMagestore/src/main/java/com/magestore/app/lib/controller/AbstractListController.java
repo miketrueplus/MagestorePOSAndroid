@@ -246,7 +246,8 @@ public class AbstractListController<TModel extends Model>
     @Override
     public void onUpdatePostExecute(Boolean success, TModel oldModel, TModel newModels) {
         if (success) {
-            getView().updateModel(oldModel, newModels);
+            getView().replaceModel(oldModel, newModels);
+//            getView().notifyDataSetChanged();
 
             // báo cho các observ khác về việc bind item
             GenericState<ListController<TModel>> state = new GenericState<ListController<TModel>>(this, GenericState.DEFAULT_STATE_CODE_ON_UPDATE);

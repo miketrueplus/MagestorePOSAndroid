@@ -26,6 +26,8 @@ public interface Controller<TView extends MagestoreView, TService extends Servic
     void doShowErrorMsg(String msg);
     void doShowProgress(boolean blnShow);
 
+    void hideAllProgressBar();
+
     void setConfigService(ConfigService service);
 
     ConfigService getConfigService();

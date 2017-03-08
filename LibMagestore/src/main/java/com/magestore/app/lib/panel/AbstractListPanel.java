@@ -264,6 +264,7 @@ public abstract class AbstractListPanel<TModel extends Model>
 
     /**
      * Điền kết quả tìm kiếm vào list
+     *
      * @param list
      */
     public void publishSearchList(List<TModel> list) {
@@ -378,6 +379,8 @@ public abstract class AbstractListPanel<TModel extends Model>
         // update giao diện trên view
         if (startRange == 0) mRecycleView.getAdapter().notifyDataSetChanged();
         mRecycleView.getAdapter().notifyItemRangeInserted(0, list.size());
+        mRecycleView.scrollToPosition(0);
+
     }
 
     /**
@@ -405,10 +408,13 @@ public abstract class AbstractListPanel<TModel extends Model>
         // update giao diện trên view
         if (startRange == 0) mRecycleView.getAdapter().notifyDataSetChanged();
         mRecycleView.getAdapter().notifyItemRangeInserted(0, list.length);
+        mRecycleView.scrollToPosition(0);
+
     }
 
     /**
      * Xóa trên danh sách hiển thị
+     *
      * @param list
      * @return true nếu tìm thấy danh sách
      */
@@ -433,29 +439,91 @@ public abstract class AbstractListPanel<TModel extends Model>
 
     /**
      * Cập nhật và thay thế model trong view
+     *
      * @param oldModel
      * @param newModel
      * @return
      */
-    public boolean updateModel(TModel oldModel, TModel newModel) {
+    public boolean replaceModel(TModel oldModel, TModel newModel) {
         if (mRecycleView == null) return false;
         if (oldModel == null) return false;
         if (mModelViewList == null || mModelViewList.size() <= 0) return false;
 
         // tìm model tương ứng
         boolean blnFoundModel = false;
-            for (int i = 0; i < mModelViewList.size(); i++) {
-                if (mModelViewList.get(i).getModel() == oldModel) {
-                    mModelViewList.get(i).setModel(newModel);
-                    mRecycleView.getAdapter().notifyItemChanged(i);
-                    blnFoundModel = true;
-                }
+        for (int i = 0; i < mModelViewList.size(); i++) {
+            if (mModelViewList.get(i).getModel() == oldModel) {
+                mModelViewList.get(i).setModel(newModel);
+                mRecycleView.getAdapter().notifyItemChanged(i);
+                blnFoundModel = true;
             }
+        }
         return blnFoundModel;
     }
 
     /**
+     * Cập nhật 1 loạt model, đưa lên đầu danh sách
+     *
+     * @param oldModel
+     * @param newModel
+     */
+    public boolean replaceModelToFirst(TModel oldModel, TModel newModel) {
+        if (mRecycleView == null) return false;
+        if (mModelViewList == null || mModelViewList.size() <= 0) return false;
+
+        // tìm các ô chứa model để cập nhật
+        boolean blnFoundModel = false;
+        for (int i = 0; i < mModelViewList.size(); i++) {
+            if (mModelViewList.get(i).getModel() == oldModel) {
+                if (i > 0) {
+                    ModelView modelView = mModelViewList.get(i);
+                    modelView.setModel(newModel);
+                    mModelViewList.remove(i);
+                    mModelViewList.add(0, modelView);
+                }
+                mRecycleView.getAdapter().notifyItemMoved(i, 0);
+                mRecycleView.getAdapter().notifyItemChanged(0);
+                blnFoundModel = true;
+            }
+        }
+        if (blnFoundModel) mRecycleView.scrollToPosition(0);
+        return blnFoundModel;
+    }
+
+    /**
+     * Cập nhật 1 model, đưa lên đầu danh sách. Nếu chưa có thì chèn vào
+     * @param oldModel
+     * @param newModel
+     */
+    public void replaceModelToFirstInsertIfNotFound(TModel oldModel, TModel newModel) {
+        if (!replaceModelToFirst(oldModel, newModel)) insertListAtFirst(newModel);
+    }
+
+    /**
+     * Cập nhật nội dung ô chứa Model
+     * Nếu chưa có thì insert
+     * @param oldModel
+     * @param newModel
+     */
+    public void replaceModelInsertAtLastIfNotFound(TModel oldModel, TModel newModel) {
+        // nếu k0 có chèn vào cuối
+        if (!replaceModel(oldModel, newModel)) insertListAtLast(newModel);
+    }
+
+    /**
+     * Cập nhật nội dung ô chứa Model
+     * Nếu chưa có thì insert
+     * @param oldModel
+     * @param newModel
+     */
+    public void replaceModelInsertAtFistIfNotFound(TModel oldModel, TModel newModel) {
+        // nếu k0 có chèn vào cuối
+        if (!replaceModel(oldModel, newModel)) insertListAtFirst(newModel);
+    }
+
+    /**
      * Cập nhật model trong view
+     *
      * @param list
      * @return true nếu có model trong danh sách
      */
@@ -478,7 +546,8 @@ public abstract class AbstractListPanel<TModel extends Model>
     }
 
     /**
-     * Cập nhật 1 model, đưa lên đầu danh sách
+     * Cập nhật 1 loạt model, đưa lên đầu danh sách
+     *
      * @param list
      */
     public boolean updateModelToFirst(TModel... list) {
@@ -502,11 +571,13 @@ public abstract class AbstractListPanel<TModel extends Model>
                 }
             }
         }
+        if (blnFoundModel) mRecycleView.scrollToPosition(0);
         return blnFoundModel;
     }
 
     /**
      * Cập nhật 1 model, đưa lên đầu danh sách. Nếu chưa có thì chèn vào
+     *
      * @param model
      */
     public void updateModelToFirstInsertIfNotFound(TModel model) {
@@ -533,6 +604,7 @@ public abstract class AbstractListPanel<TModel extends Model>
 
     /**
      * Gán danh sách và cập nhật view
+     *
      * @param list
      */
     public void bindList(List<TModel> list) {
@@ -556,9 +628,8 @@ public abstract class AbstractListPanel<TModel extends Model>
             hideWarning();
 
             // đặt lại scroll listener cho lazy loading
-            if (mScrollListener!=null) mScrollListener.resetCurrentPage();
-        }
-        else {
+            if (mScrollListener != null) mScrollListener.resetCurrentPage();
+        } else {
             // hiện thông báo
             showWarning("No data to display");
         }
@@ -578,6 +649,7 @@ public abstract class AbstractListPanel<TModel extends Model>
 
     /**
      * Kích thước 1 page
+     *
      * @return
      */
     public int getPageSize() {
@@ -586,6 +658,7 @@ public abstract class AbstractListPanel<TModel extends Model>
 
     /**
      * Số item max trong 1 page
+     *
      * @return
      */
     public int getItemMax() {
@@ -615,10 +688,12 @@ public abstract class AbstractListPanel<TModel extends Model>
      * @param view
      * @param item
      */
-    protected void bindItem(View view, TModel item, int position) {}
+    protected void bindItem(View view, TModel item, int position) {
+    }
 
     /**
      * Hold ayout view của iten, gán findview id vào các biến
+     *
      * @param view
      * @return
      */
@@ -630,6 +705,7 @@ public abstract class AbstractListPanel<TModel extends Model>
 
     /**
      * Hiển thị dialog confirm delete
+     *
      * @param item
      */
     public void showDeleteItemInput(TModel item) {
@@ -645,6 +721,7 @@ public abstract class AbstractListPanel<TModel extends Model>
 
     /**
      * Hiển thị dialog update
+     *
      * @param item
      */
     public void showUpdateItemInput(TModel item) {
@@ -681,7 +758,6 @@ public abstract class AbstractListPanel<TModel extends Model>
             // trả lại view holder
             return holdItemView(view);
         }
-
 
 
         /**
@@ -755,6 +831,7 @@ public abstract class AbstractListPanel<TModel extends Model>
 
         /**
          * Load layout cho view
+         *
          * @param view
          */
         public void holdView(View view) {
@@ -784,6 +861,7 @@ public abstract class AbstractListPanel<TModel extends Model>
 
         /**
          * Gán giá trị từ model từ lên view
+         *
          * @param item
          * @param position
          */

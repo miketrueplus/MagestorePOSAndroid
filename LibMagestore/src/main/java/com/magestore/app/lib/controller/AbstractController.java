@@ -72,9 +72,12 @@ public abstract class AbstractController<TModel extends Model, TView extends Mag
 
     @Override
     public void doShowProgress(boolean blnShow) {
-        if (mView != null) {
-            mView.showProgress(blnShow);
-        }
+        if (mView != null) mView.showProgress(blnShow);
+    }
+
+    @Override
+    public void hideAllProgressBar() {
+        if (mView != null) mView.hideAllProgressBar();
     }
 
     /**
@@ -126,7 +129,7 @@ public abstract class AbstractController<TModel extends Model, TView extends Mag
      */
     public void onLoadItemPostExecute(boolean success, TModel... item) {
         // giấu các progress bar
-        getView().hideAllProgressBar();
+        hideAllProgressBar();
 
         // báo cho các observ khác về việc bind item
         GenericState<AbstractController<TModel, TView, TService>> state = new GenericState<AbstractController<TModel, TView, TService>>(this, GenericState.DEFAULT_STATE_CODE_ON_LOAD_ITEM);

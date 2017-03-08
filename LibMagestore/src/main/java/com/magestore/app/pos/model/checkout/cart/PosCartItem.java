@@ -8,6 +8,7 @@ import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.pos.model.PosAbstractModel;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosExclude;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -19,8 +20,8 @@ import java.util.Map;
 
 public class PosCartItem extends PosAbstractModel implements CartItem {
     public class ChooseProductOption {
-        List<ProductOptionCustomValue> productOptionCustomValueList;
-        int qty;
+        public List<ProductOptionCustomValue> productOptionCustomValueList;
+        public int qty;
     }
     Map<ProductOptionCustom, ChooseProductOption> choose_product_options;
 
@@ -38,6 +39,8 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     // Order history
     String name;
     String sku;
+    String item_description;
+
     float row_total = 0;
     float row_total_incl_tax = 0;
     float tax_amount = 0;
@@ -144,7 +147,7 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
 
     @Override
     public String getSku() {
-        return sku;
+        return (sku != null ? sku : getProduct().getSKU());
     }
 
     @Override
@@ -245,5 +248,37 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     @Override
     public String getReturnToStock() {
         return return_to_stock;
+    }
+
+    @Override
+    public Map<ProductOptionCustom, ChooseProductOption> getChooseProductOptions() {
+        return choose_product_options;
+    }
+
+    @Override
+    public void setChooseProductOptions(Map<ProductOptionCustom, ChooseProductOption> choose_product_options) {
+        this.choose_product_options = choose_product_options;
+    }
+
+    /**
+     * Khởi tạo ChooseProductOption
+     * @return
+     */
+    @Override
+    public ChooseProductOption createChooseProductOption() {
+        ChooseProductOption chooseProductOption = new ChooseProductOption();
+        chooseProductOption.productOptionCustomValueList = new ArrayList<ProductOptionCustomValue>();
+        chooseProductOption.qty = 1;
+        return chooseProductOption;
+    }
+
+    @Override
+    public void setItemDescription(String description) {
+        this.item_description = description;
+    }
+
+    @Override
+    public String getItemDescription() {
+        return (item_description != null ? item_description : getSku());
     }
 }

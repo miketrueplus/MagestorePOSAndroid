@@ -109,7 +109,7 @@
                                     android:layout_gravity="left"
                                     android:layout_marginLeft="@dimen/layout_margin"
                                     android:layout_marginRight="@dimen/layout_margin"
-                                    android:text="@{cartItem.getProduct().getSKU()}"
+                                    android:text="@{cartItem.getItemDescription()}"
                                     android:textColor="@color/card_item_text_option_color"
                                     android:textSize="@dimen/card_item_text_option_size"
                                     android:textStyle="italic" />

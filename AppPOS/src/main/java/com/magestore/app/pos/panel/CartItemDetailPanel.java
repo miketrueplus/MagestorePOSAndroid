@@ -3,10 +3,12 @@ package com.magestore.app.pos.panel;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.util.AttributeSet;
+import android.view.View;
 
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
 import com.magestore.app.pos.R;
+import com.magestore.app.pos.controller.CartItemListController;
 import com.magestore.app.pos.databinding.PanelCartDetailBinding;
 
 /**
@@ -41,6 +43,7 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
         // đặt layout chung cả panel
         setLayoutPanel(R.layout.panel_cart_detail);
         mBinding = DataBindingUtil.bind(getView());
+        mBinding.setPanel(this);
     }
 
     @Override
@@ -56,5 +59,23 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
     public void bindItem(CartItem item) {
         super.bindItem(item);
         mBinding.setCartItem(item);
+    }
+
+    /**
+     * Nhấn nút trừ số lượng
+     * @param view
+     */
+    public void onAddQuantity(View view) {
+        ((CartItemListController) getController()).addQuantity(getItem());
+        mBinding.setCartItem(getItem());
+    }
+
+    /**
+     * Nhấn nút thêm số lượng
+     * @param view
+     */
+    public void onSubstractQuantity(View view) {
+        ((CartItemListController) getController()).substractQuantity(getItem());
+        mBinding.setCartItem(getItem());
     }
 }

@@ -42,7 +42,9 @@ public interface Product extends Model, ParseModel {
 
     int getQuantityIncrement();
 
-    void setQuantityIncrement(int quantityIncrement);
+    float getPriceIncrement();
+
+    void setQuantityIncrement(float quantityIncrement);
 
     String getJsonConfigOption();
 }

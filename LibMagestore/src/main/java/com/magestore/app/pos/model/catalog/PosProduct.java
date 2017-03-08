@@ -39,6 +39,7 @@ public class PosProduct extends PosAbstractModel implements Product {
     private PosStock[] stock;
     private PosTierPrice[] tier_prices;
     private float qty_increment = 1;
+    private float price_increment = 0.1f;
     private ProductOption productOption;
     private int options;
 
@@ -159,8 +160,13 @@ public class PosProduct extends PosAbstractModel implements Product {
     }
 
     @Override
-    public void setQuantityIncrement(int quantityIncrement) {
-//        this.qty_increment = quantityIncrement;
+    public float getPriceIncrement() {
+        return price_increment;
+    }
+
+    @Override
+    public void setQuantityIncrement(float quantityIncrement) {
+        this.qty_increment = quantityIncrement;
     }
 
     @Override

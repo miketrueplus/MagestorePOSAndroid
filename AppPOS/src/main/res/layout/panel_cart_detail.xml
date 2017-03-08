@@ -5,6 +5,15 @@
         <variable
             name="cartItem"
             type="com.magestore.app.lib.model.checkout.cart.CartItem" />
+        <variable
+            name="product"
+            type="com.magestore.app.lib.model.catalog.Product" />
+        <variable
+            name="panel"
+            type="com.magestore.app.pos.panel.CartItemDetailPanel" />
+        <variable
+            name="controller"
+            type="com.magestore.app.pos.controller.CartItemListController" />
     </data>
 
     <LinearLayout
@@ -71,6 +80,7 @@
                     android:id="@+id/id_btn_cart_item_detail_quantity_add"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:onClick="@{panel.onAddQuantity}"
                     android:text="+" />
 
                 <EditText
@@ -85,6 +95,7 @@
                     android:id="@+id/id_btn_cart_item_detail_quantity_substract"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:onClick="@{panel.onSubstractQuantity}"
                     android:text="-" />
             </LinearLayout>
 

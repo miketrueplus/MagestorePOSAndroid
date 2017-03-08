@@ -2,6 +2,10 @@ package com.magestore.app.lib.model.checkout.cart;
 
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.catalog.Product;
+import com.magestore.app.lib.model.catalog.ProductOptionCustom;
+import com.magestore.app.pos.model.checkout.cart.PosCartItem;
+
+import java.util.Map;
 
 /**
  * Created by Mike on 12/26/2016.
@@ -10,6 +14,12 @@ import com.magestore.app.lib.model.catalog.Product;
  */
 
 public interface CartItem extends Model {
+    Map<ProductOptionCustom, PosCartItem.ChooseProductOption> getChooseProductOptions();
+
+    void setChooseProductOptions(Map<ProductOptionCustom, PosCartItem.ChooseProductOption> choose_product_options);
+
+    PosCartItem.ChooseProductOption createChooseProductOption();
+
     void setQuantity(int param_quantity);
     void setProduct(Product param_product);
     void setPrice(float param_price);
@@ -55,4 +65,8 @@ public interface CartItem extends Model {
     // Param Order Refund
     void setReturnToStock(String strReturnToStock);
     String getReturnToStock();
+
+    void setItemDescription(String description);
+
+    String getItemDescription();
 }
