@@ -1,6 +1,7 @@
 package com.magestore.app.lib.model.catalog;
 
 import com.magestore.app.lib.model.Model;
+import com.magestore.app.pos.model.catalog.PosProductOptionBundle;
 import com.magestore.app.pos.model.catalog.PosProductOptionConfigOption;
 import com.magestore.app.pos.model.catalog.PosProductOptionCustom;
 import com.magestore.app.pos.model.catalog.PosProductOptionJsonConfig;
@@ -24,7 +25,11 @@ public interface ProductOption extends Model {
 
     void setCustomOptions(List<PosProductOptionCustom> custom_options);
 
-    PosProductOptionJsonConfig getJson_config();
+    List<PosProductOptionBundle> getBundleOptions();
+
+    void setBundleOptions(List<PosProductOptionBundle> bundle_options);
+
+    PosProductOptionJsonConfig getJsonConfig();
 
     void setJsonConfig(PosProductOptionJsonConfig json_config);
 

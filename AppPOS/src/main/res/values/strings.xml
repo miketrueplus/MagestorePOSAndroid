@@ -145,6 +145,7 @@
     <string name="register_shift_dialog_make_adjustment_note">Note</string>
 
     <!-- Strings related to single words -->
+    <string name="add_to_cart">Add To Cart</string>
     <string name="customerAddress">Address</string>
     <string name="avaibles">Avaibles</string>
     <string name="category">Categories</string>
@@ -155,6 +156,7 @@
     <string name="confirm">Confirm</string>
     <string name="country">Country</string>
     <string name="customer">Customer</string>
+    <string name="custom_price">Custom Price</string>
     <string name="dashboard">Customer</string>
     <string name="discount">Discount</string>
     <string name="shipping">Shipping</string>
@@ -184,6 +186,7 @@
     <string name="state_or_province">State or Province</string>
     <string name="street">Street</string>
     <string name="sub_total">Sub Total</string>
+    <string name="sku">SKU</string>
     <string name="shopping_cart">Shopping card</string>
     <string name="tax">Tax</string>
     <string name="total">Total</string>

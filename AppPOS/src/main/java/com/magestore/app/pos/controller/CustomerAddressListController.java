@@ -61,6 +61,17 @@ public class CustomerAddressListController
      * @return
      */
     public CustomerAddress createNewCustomerAddress() {
+        try {
             return getChildListService().create(getParent());
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

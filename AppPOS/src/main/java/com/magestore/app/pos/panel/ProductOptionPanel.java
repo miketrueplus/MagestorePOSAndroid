@@ -1,6 +1,7 @@
 package com.magestore.app.pos.panel;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -18,10 +20,12 @@ import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.model.catalog.ProductOptionCustom;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
+import com.magestore.app.lib.service.checkout.CartService;
 import com.magestore.app.pos.R;
-import com.magestore.app.pos.model.catalog.PosProductOption;
+import com.magestore.app.pos.controller.CartItemListController;
+import com.magestore.app.pos.databinding.PanelProductOptionListBinding;
 import com.magestore.app.pos.model.catalog.PosProductOptionCustom;
-import com.magestore.app.pos.model.catalog.PosProductOptionCustomCustomValue;
+import com.magestore.app.pos.model.catalog.PosProductOptionCustomValue;
 import com.magestore.app.util.ConfigUtil;
 
 import java.util.ArrayList;
@@ -35,9 +39,13 @@ import java.util.Map;
  * mike@trueplus.vn
  */
 
-public class ProductOptionPanel extends AbstractDetailPanel<Product> {
+public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
+    PanelProductOptionListBinding mBinding;
+
     ExpandableListView expandableListView;
     ProductOptionPanel.CustomExpandableListAdapter expandableListAdapter;
+
+    ImageView mImageProductDetail;
 
     public ProductOptionPanel(Context context) {
         super(context);
@@ -56,18 +64,38 @@ public class ProductOptionPanel extends AbstractDetailPanel<Product> {
      * @param item
      */
     @Override
-    public void bindItem(Product item) {
+    public void bindItem(CartItem item) {
         super.bindItem(item);
+
         if (expandableListAdapter != null) {
-            expandableListAdapter.setProduct(item);
+            expandableListAdapter.setProduct(item.getProduct());
             expandableListAdapter.notifyDataSetChanged();
         }
     }
 
     /**
-     * Bind giá trị sang 1 caritem
+     * Xử lý hiển thị thông tin product và cart item
+     * @param item
      */
-    public void bindCartItem(CartItem cartItem) {
+    public void showCartItemInfo(CartItem item) {
+        mBinding.setCartItem(item);
+        mBinding.setProduct(item.getProduct());
+        if (item.getProduct().getBitmap() != null) mImageProductDetail.setImageBitmap(item.getProduct().getBitmap());
+    }
+
+    /**
+     * Save item vào cart
+     * @param view
+     */
+    public void onAddToCart(View view) {
+
+    }
+
+    public void onAddQuantity(View view) {
+
+    }
+
+    public void onSubstractQuantity(View view) {
 
     }
 
@@ -94,11 +122,17 @@ public class ProductOptionPanel extends AbstractDetailPanel<Product> {
         setProgressBar(R.id.id_product_option_progress);
         setTextViewMsg(R.id.id_product_option_msg);
 
+        // imageview
+        mImageProductDetail = (ImageView) findViewById(R.id.id_img_product_detail_image);
+
         // expan list view
         expandableListView = (ExpandableListView) findViewById(R.id.id_product_option_list);
-
         expandableListAdapter = new ProductOptionPanel.CustomExpandableListAdapter(getContext());
         expandableListView.setAdapter(expandableListAdapter);
+
+        // binding
+        mBinding = DataBindingUtil.bind(getView());
+        mBinding.setPanel(this);
     }
 
     public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
@@ -116,7 +150,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<Product> {
         }
 
         @Override
-        public PosProductOptionCustomCustomValue getChild(int listPosition, int expandedListPosition) {
+        public PosProductOptionCustomValue getChild(int listPosition, int expandedListPosition) {
             return mProduct.getProductOption().getCustomOptions().get(listPosition).getOptionValueList().get(expandedListPosition);
         }
 
@@ -131,8 +165,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<Product> {
                 @Override
                 public void onClick(View v) {
                     // tìm tất cả các radio trong cùng product option
-                    for (ProductOptionCustomValueHolder eachViewHolder:
-                            mProductOptionCustomHolderMap.get(productOptionCustom).mProductOptionCustomValueHolderList) {
+                    for (ProductOptionCustomValueHolder eachViewHolder: mProductOptionCustomHolderMap.get(productOptionCustom).mProductOptionCustomValueHolderList) {
                         eachViewHolder.mradChoose.setSelected(eachViewHolder == viewHolder);
                         eachViewHolder.mradChoose.setChecked(eachViewHolder == viewHolder);
                     }
@@ -155,7 +188,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<Product> {
 
             // Tham chiếu option value
             PosProductOptionCustom productOptionCustom = getGroup(listPosition);
-            PosProductOptionCustomCustomValue optionValue = getChild(listPosition, expandedListPosition);
+            PosProductOptionCustomValue optionValue = getChild(listPosition, expandedListPosition);
             ProductOptionCustomValueHolder viewHolder;
             if (convertView == null) {
                 LayoutInflater layoutInflater = (LayoutInflater) this.context
@@ -299,6 +332,6 @@ public class ProductOptionPanel extends AbstractDetailPanel<Product> {
         public CheckBox mchkChoose;
         public DatePicker mdatePicker;
         public TimePicker mtimePicker;
-        public PosProductOptionCustomCustomValue customerValue;
+        public PosProductOptionCustomValue customerValue;
     }
 }

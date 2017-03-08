@@ -11,6 +11,7 @@ import java.util.List;
 
 public class PosProductOptionCustom extends PosAbstractModel implements ProductOptionCustom {
     String option_id;
+    String option_code;
     String product_id;
     String type;
     String is_require;
@@ -29,8 +30,7 @@ public class PosProductOptionCustom extends PosAbstractModel implements ProductO
     String store_price_type;
     String price;
     String price_type;
-    List<PosProductOptionCustomCustomValue> values;
-    PosProductOptionJsonConfig json_config;
+    List<PosProductOptionCustomValue> values;
 
     @Override
     public String getID() {
@@ -50,6 +50,11 @@ public class PosProductOptionCustom extends PosAbstractModel implements ProductO
     @Override
     public String getOptionID() {
         return option_id;
+    }
+
+    @Override
+    public String getOptionCode() {
+        return option_code;
     }
 
     @Override
@@ -143,7 +148,7 @@ public class PosProductOptionCustom extends PosAbstractModel implements ProductO
     }
 
     @Override
-    public List<PosProductOptionCustomCustomValue> getOptionValueList() {
+    public List<PosProductOptionCustomValue> getOptionValueList() {
         return values;
     }
 
@@ -154,7 +159,7 @@ public class PosProductOptionCustom extends PosAbstractModel implements ProductO
 
     @Override
     public boolean isTypeSelectMultipe() {
-        return "checkbox".equals(type);
+        return "checkbox".equals(type) || "multiple".equals(type);
     }
 
     @Override
@@ -176,4 +181,100 @@ public class PosProductOptionCustom extends PosAbstractModel implements ProductO
     public boolean isTypeDateTime() {
         return "date_time".equals(type);
     }
+
+    @Override
+    public void setOptionID(String option_id) {
+        this.option_id = option_id;
+    }
+
+    @Override
+    public void setOptionCode(String option_code) {
+        this.option_code = option_code;
+    }
+
+    @Override
+    public void setProductID(String product_id) {
+        this.product_id = product_id;
+    }
+
+    @Override
+    public void setOptionValueList(List<PosProductOptionCustomValue> values) {
+        this.values = values;
+    }
+
+    @Override
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    @Override
+    public void setRequire(boolean isRequire) {
+        this.is_require = isRequire ? "1" : "0";
+    }
+
+    @Override
+    public void setDefaultTitle(String default_title) {
+        this.default_title = default_title;
+    }
+
+    @Override
+    public void setStoreTitle(String store_title) {
+        this.store_title = store_title;
+    }
+
+    @Override
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+//
+//    public void setSku(String sku) {
+//        this.sku = sku;
+//    }
+//
+//    public void setMax_characters(String max_characters) {
+//        this.max_characters = max_characters;
+//    }
+//
+//    public void setFile_extension(String file_extension) {
+//        this.file_extension = file_extension;
+//    }
+//
+//    public void setImage_size_x(String image_size_x) {
+//        this.image_size_x = image_size_x;
+//    }
+//
+//    public void setImage_size_y(String image_size_y) {
+//        this.image_size_y = image_size_y;
+//    }
+//
+//    public void setSort_order(String sort_order) {
+//        this.sort_order = sort_order;
+//    }
+//
+
+//
+//    public void setDefault_price(String default_price) {
+//        this.default_price = default_price;
+//    }
+//
+//    public void setDefault_price_type(String default_price_type) {
+//        this.default_price_type = default_price_type;
+//    }
+//
+//    public void setStore_price(String store_price) {
+//        this.store_price = store_price;
+//    }
+//
+//    public void setStore_price_type(String store_price_type) {
+//        this.store_price_type = store_price_type;
+//    }
+//
+//    public void setPrice(String price) {
+//        this.price = price;
+//    }
+//
+//    public void setPrice_type(String price_type) {
+//        this.price_type = price_type;
+//    }
 }

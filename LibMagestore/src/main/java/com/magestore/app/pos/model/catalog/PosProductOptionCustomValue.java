@@ -8,7 +8,7 @@ import com.magestore.app.pos.model.PosAbstractModel;
  * Magestore
  * mike@trueplus.vn
  */
-public class PosProductOptionCustomCustomValue extends PosAbstractModel implements ProductOptionCustomValue {
+public class PosProductOptionCustomValue extends PosAbstractModel implements ProductOptionCustomValue {
     String option_type_id;
     String option_id;
     String sku;
@@ -101,5 +101,60 @@ public class PosProductOptionCustomCustomValue extends PosAbstractModel implemen
     @Override
     public String getPriceType() {
         return price_type;
+    }
+
+    @Override
+    public void setOptionTypeId(String option_type_id) {
+        this.option_type_id = option_type_id;
+    }
+
+    @Override
+    public void setOptionId(String option_id) {
+        this.option_id = option_id;
+    }
+
+    @Override
+    public void setSku(String sku) {
+        this.sku = sku;
+    }
+
+    @Override
+    public void setDefaultTitle(String default_title) {
+        this.default_title = default_title;
+    }
+
+    @Override
+    public void setStoreTitle(String store_title) {
+        this.store_title = store_title;
+    }
+
+    @Override
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    @Override
+    public void setDefaultPrice(String default_price) {
+        this.default_price = default_price;
+    }
+
+    @Override
+    public void setStorePrice(String store_price) {
+        this.store_price = store_price;
+    }
+
+    @Override
+    public void setStorePriceType(String store_price_type) {
+        this.store_price_type = store_price_type;
+    }
+
+    @Override
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    @Override
+    public void setPriceType(String price_type) {
+        this.price_type = price_type;
     }
 }
