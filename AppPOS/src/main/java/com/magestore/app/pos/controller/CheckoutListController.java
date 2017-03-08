@@ -232,6 +232,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             Customer customer = (Customer) wraper.get("customer_new_address");
             CustomerAddress customerAddress = (CustomerAddress) models[0];
             mCustomerAddressService.insert(customer, customerAddress);
+            return true;
         } else if (actionType == ACTION_TYPE_SAVE_CART) {
             String quoteId = (String) wraper.get("quote_id");
             wraper.put("save_cart", ((CheckoutService) getListService()).saveCart((Checkout) models[0], quoteId));
