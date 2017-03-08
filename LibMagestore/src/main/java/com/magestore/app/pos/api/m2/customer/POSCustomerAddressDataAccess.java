@@ -12,12 +12,10 @@ import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.parse.ParseException;
 import com.magestore.app.lib.resourcemodel.DataAccessException;
 import com.magestore.app.lib.resourcemodel.customer.CustomerAddressDataAccess;
-import com.magestore.app.lib.resourcemodel.customer.CustomerDataAccess;
 import com.magestore.app.pos.api.m2.POSAPI;
 import com.magestore.app.pos.api.m2.POSAbstractDataAccess;
 import com.magestore.app.pos.api.m2.POSDataAccessSession;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListAddress;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -364,6 +362,7 @@ public class POSCustomerAddressDataAccess extends POSAbstractDataAccess implemen
             // thực thi truy vấn và parse kết quả thành object
             Wrap wrapCustomer = new Wrap();
             wrapCustomer.customer = pcustomer;
+
             rp = statement.execute(wrapCustomer);
             String result = rp.readResult2String();
             return true;
@@ -426,6 +425,7 @@ public class POSCustomerAddressDataAccess extends POSAbstractDataAccess implemen
             // thực thi truy vấn và parse kết quả thành object
             Wrap wrapCustomer = new Wrap();
             wrapCustomer.customer = pcustomer;
+
             rp = statement.execute(wrapCustomer);
             String result = rp.readResult2String();
             return true;

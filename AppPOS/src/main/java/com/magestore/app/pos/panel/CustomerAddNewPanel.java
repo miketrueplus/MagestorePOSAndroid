@@ -389,7 +389,7 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
         if (type == 0) {
             s_shipping_address.setSelection(address.getID());
             s_billing_address.setSelection(c_billingAddress.getID());
-        } else {
+        } else if (type == 1) {
             s_shipping_address.setSelection(c_shippingAddress.getID());
             s_billing_address.setSelection(address.getID());
         }
@@ -451,7 +451,8 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
             s_region.setRegionName(shippingRegion.getName());
             s_region.setRegionCode(shippingRegion.getCode());
             shippingAddress.setState(s_spinner_state.getSelection());
-            shippingAddress.setRegionID(s_spinner_state.getSelection());
+            // TODO: đang remove set region_id vì chưa dùng
+//            shippingAddress.setRegionID(s_spinner_state.getSelection());
             shippingAddress.setRegion(s_region);
         }
         shippingAddress.setVAT(s_vat.getText().toString());
@@ -515,7 +516,8 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
             b_region.setRegionName(billingRegion.getName());
             b_region.setRegionCode(billingRegion.getCode());
             billingAddress.setState(b_spinner_state.getSelection());
-            billingAddress.setRegionID(b_spinner_state.getSelection());
+            // TODO: đang remove set region_id vì chưa dùng
+//            billingAddress.setRegionID(b_spinner_state.getSelection());
             billingAddress.setRegion(b_region);
         }
         billingAddress.setVAT(b_vat.getText().toString());
@@ -561,11 +563,19 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
         tv_shipping_address.setText(c_shippingAddress.getShortAddress());
     }
 
+    public void showNewShortShippingAddress() {
+        tv_shipping_address.setText(shippingAddress.getShortAddress());
+    }
+
     /**
      * Hiển thị short content shipping address
      */
     public void showShortBillingAddress() {
         tv_billing_address.setText(c_billingAddress.getShortAddress());
+    }
+
+    public void showNewShortBillingAddress() {
+        tv_billing_address.setText(billingAddress.getShortAddress());
     }
 
     public boolean checkSameBillingAndShipping() {

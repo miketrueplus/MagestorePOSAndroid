@@ -51,6 +51,9 @@ public class PosCustomer extends PosAbstractModel implements Customer {
 
     @Override
     public String getName() {
+        if(full_name == null){
+            full_name = firstname + " " + lastname;
+        }
         return full_name;
     }
 
