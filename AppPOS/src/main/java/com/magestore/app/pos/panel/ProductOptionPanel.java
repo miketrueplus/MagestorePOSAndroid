@@ -282,16 +282,6 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
          */
         private void initTypeChooseOneHolder(View convertView, final ProductOptionCustom productOptionCustom, final ProductOptionCustomValueHolder viewHolder) {
             viewHolder.mradChoose = (RadioButton) convertView.findViewById(R.id.id_radio_product_option_radio);
-//            viewHolder.mradChoose.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//                @Override
-//                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                    // tìm tất cả các radio trong cùng product option
-//                    for (ProductOptionCustomValueHolder eachViewHolder: mProductOptionCustomHolderMap.get(productOptionCustom).mProductOptionCustomValueHolderList) {
-//                        eachViewHolder.mradChoose.setSelected(eachViewHolder == viewHolder);
-//                        eachViewHolder.mradChoose.setChecked(eachViewHolder == viewHolder);
-//                    }
-//                }
-//            });
             viewHolder.mradChoose.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {

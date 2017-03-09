@@ -1,8 +1,13 @@
 package com.magestore.app.pos.model.checkout;
 
+import com.magestore.app.lib.model.catalog.ProductOptionCustom;
 import com.magestore.app.lib.model.checkout.QuoteItemExtension;
 import com.magestore.app.lib.model.checkout.QuoteItems;
+import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.pos.model.PosAbstractModel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Johan on 2/14/17.
@@ -16,6 +21,12 @@ public class PosQuoteItems extends PosAbstractModel implements QuoteItems {
     int qty_to_ship;
     int use_discount;
     PosQuoteItemExtension extension_data;
+    class CustomOptions {
+        int code;
+        int[] value;
+    };
+    List<CustomOptions> options;
+
 
     @Override
     public String getItemId() {
@@ -70,5 +81,28 @@ public class PosQuoteItems extends PosAbstractModel implements QuoteItems {
     @Override
     public void setExtensionData(QuoteItemExtension quoteItemExtension) {
         extension_data = (PosQuoteItemExtension) quoteItemExtension;
+    }
+
+    @Override
+    public CartItem getCartItem() {
+        return null;
+    }
+
+    @Override
+    public void convertProductOption(CartItem cartItem) {
+        if (cartItem.getChooseProductOptions() == null) return;
+        if (!cartItem.getProduct().haveProductOption()) return;
+
+        if (options != null) options = new ArrayList<CustomOptions>();
+        for (ProductOptionCustom customOption :
+                cartItem.getChooseProductOptions().keySet()) {
+            CustomOptions quoteCustomeOption = new CustomOptions();
+            quoteCustomeOption.code = Integer.parseInt(customOption.getOptionID());
+            quoteCustomeOption.value = new int[customOption.getOptionValueList().size()];
+            for (int i = 0; i < customOption.getOptionValueList().size(); i++) {
+                quoteCustomeOption.value[i] = Integer.parseInt(customOption.getOptionValueList().get(i).getOptionTypeID());
+            }
+
+        }
     }
 }

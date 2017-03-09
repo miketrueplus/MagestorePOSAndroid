@@ -1,6 +1,7 @@
 package com.magestore.app.lib.model.checkout;
 
 import com.magestore.app.lib.model.Model;
+import com.magestore.app.lib.model.checkout.cart.CartItem;
 
 /**
  * Created by Johan on 2/14/17.
@@ -20,4 +21,8 @@ public interface QuoteItems extends Model {
     void setUserDiscount(int intUserDiscount);
     QuoteItemExtension getExtensionData();
     void setExtensionData(QuoteItemExtension quoteItemExtension);
+
+    CartItem getCartItem();
+
+    void convertProductOption(CartItem cartItem);
 }
