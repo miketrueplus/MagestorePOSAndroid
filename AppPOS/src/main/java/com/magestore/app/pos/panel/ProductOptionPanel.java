@@ -189,7 +189,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
             descriptionBuilder.append(i == 0 ? "" : ". ").append(productOptionCustom.getDisplayContent()).append(": ");
 
             boolean firstCustomValue = true;
-            for(int j = 0; j < expandableListAdapter.getChildrenCount(i); j++) {
+            for(int j = 0; j < expandableListAdapter.mProductOptionCustomHolderMap.get(productOptionCustom).mProductOptionCustomValueHolderList.size(); j++) {
                 ProductOptionCustomValue productOptionCustomValue = expandableListAdapter.getChild(i, j);
                 ProductOptionCustomValueHolder productOptionCustomValueViewHolder =  expandableListAdapter.mProductOptionCustomHolderMap.get(productOptionCustom).mProductOptionCustomValueHolderList.get(j);
                 // nếu là loại chọn nhiều
