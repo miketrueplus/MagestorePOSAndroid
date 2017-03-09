@@ -345,9 +345,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
      */
     public void addNewOrder() {
         if (mDetailView.getVisibility() == View.VISIBLE) {
-            showSalesShipping();
-            showActionButtonCheckout();
-            doShowDetailPanel(false);
+            onBackTohome();
         }
         Checkout checkout = ((CheckoutService) getListService()).create();
         checkout.setCustomerID(guest_checkout.getID());
@@ -372,9 +370,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     public void removeOrder() {
         if (getSelectedItems().size() == 1) {
             if (mDetailView.getVisibility() == View.VISIBLE) {
-                showSalesShipping();
-                showActionButtonCheckout();
-                doShowDetailPanel(false);
+                onBackTohome();
             }
             Checkout checkout = ((CheckoutService) getListService()).create();
             checkout.setCustomerID(guest_checkout.getID());
@@ -683,10 +679,14 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     }
 
     public void actionNewOrder() {
+        onBackTohome();
+        doShowDetailSuccess(false);
+    }
+
+    public void onBackTohome(){
         showSalesShipping();
         showActionButtonCheckout();
         doShowDetailPanel(false);
-        doShowDetailSuccess(false);
     }
 
     /**
