@@ -93,7 +93,7 @@ public class PosQuoteItems extends PosAbstractModel implements QuoteItems {
         if (cartItem.getChooseProductOptions() == null) return;
         if (!cartItem.getProduct().haveProductOption()) return;
 
-        if (options != null) options = new ArrayList<CustomOptions>();
+        if (options == null) options = new ArrayList<CustomOptions>();
         for (ProductOptionCustom customOption :
                 cartItem.getChooseProductOptions().keySet()) {
             CustomOptions quoteCustomeOption = new CustomOptions();
@@ -102,7 +102,7 @@ public class PosQuoteItems extends PosAbstractModel implements QuoteItems {
             for (int i = 0; i < customOption.getOptionValueList().size(); i++) {
                 quoteCustomeOption.value[i] = Integer.parseInt(customOption.getOptionValueList().get(i).getOptionTypeID());
             }
-
+            options.add(quoteCustomeOption);
         }
     }
 }
