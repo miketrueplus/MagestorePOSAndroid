@@ -20,6 +20,7 @@ import com.magestore.app.pos.panel.CheckoutAddPaymentPanel;
 import com.magestore.app.pos.panel.CheckoutAddressListPanel;
 import com.magestore.app.pos.panel.CheckoutDetailPanel;
 import com.magestore.app.pos.panel.CheckoutListPanel;
+import com.magestore.app.pos.panel.CheckoutPaymentCreditCardPanel;
 import com.magestore.app.pos.panel.CheckoutPaymentListPanel;
 import com.magestore.app.pos.panel.CheckoutShippingListPanel;
 import com.magestore.app.pos.panel.CheckoutSuccessPanel;
@@ -60,12 +61,13 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     ProductListController mProductListController;
     PaymentMethodListPanel mPaymentMethodListPanel;
     CheckoutAddPaymentPanel mCheckoutAddPaymentPanel;
-    Context context;
-    Customer guest_checkout;
-    Currency currency;
     CartOrderListPanel mCartOrderListPanel;
     CheckoutAddressListPanel mCheckoutAddressListPanel;
     CheckoutSuccessPanel mCheckoutSuccessPanel;
+    CheckoutPaymentCreditCardPanel mCheckoutPaymentCreditCardPanel;
+    Context context;
+    Customer guest_checkout;
+    Currency currency;
     CustomerAddressService mCustomerAddressService;
 
 //    @Override
@@ -564,6 +566,10 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
     public void setCheckoutSuccessPanel(CheckoutSuccessPanel mCheckoutSuccessPanel) {
         this.mCheckoutSuccessPanel = mCheckoutSuccessPanel;
+    }
+
+    public void setCheckoutPaymentCreditCardPanel(CheckoutPaymentCreditCardPanel mCheckoutPaymentCreditCardPanel) {
+        this.mCheckoutPaymentCreditCardPanel = mCheckoutPaymentCreditCardPanel;
     }
 
     @Override

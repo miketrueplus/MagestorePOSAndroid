@@ -38,6 +38,7 @@ import com.magestore.app.pos.panel.CheckoutAddPaymentPanel;
 import com.magestore.app.pos.panel.CheckoutAddressListPanel;
 import com.magestore.app.pos.panel.CheckoutDetailPanel;
 import com.magestore.app.pos.panel.CheckoutListPanel;
+import com.magestore.app.pos.panel.CheckoutPaymentCreditCardPanel;
 import com.magestore.app.pos.panel.CheckoutPaymentListPanel;
 import com.magestore.app.pos.panel.CheckoutShippingListPanel;
 import com.magestore.app.pos.panel.CheckoutSuccessPanel;
@@ -77,6 +78,7 @@ public class SalesActivity extends AbstractActivity
     private CartOrderListPanel mCartOrderListPanel;
     private CheckoutAddressListPanel mCheckoutAddressListPanel;
     private CheckoutSuccessPanel mCheckoutSuccessPanel;
+    private CheckoutPaymentCreditCardPanel mCheckoutPaymentCreditCardPanel;
 
     // controller cho danh sách mặt hàng và đơn hàng
     private ProductListController mProductListController;
@@ -152,6 +154,8 @@ public class SalesActivity extends AbstractActivity
         mCheckoutPaymentListPanel = (CheckoutPaymentListPanel) mCheckoutDetailPanel.findViewById(R.id.checkout_payment_list_panel);
         // payment thod panel
         mPaymentMethodListPanel = (PaymentMethodListPanel) mCheckoutDetailPanel.findViewById(R.id.payment_method_list_panel);
+        // payment creditcard
+        mCheckoutPaymentCreditCardPanel = (CheckoutPaymentCreditCardPanel) mCheckoutDetailPanel.findViewById(R.id.checkout_payment_credit_card);
 
         // shipping address panel
         mCheckoutAddressListPanel = (CheckoutAddressListPanel) mCheckoutDetailPanel.findViewById(R.id.address_list_panel);
@@ -222,6 +226,7 @@ public class SalesActivity extends AbstractActivity
         mCheckoutListController.setCartOrderListPanel(mCartOrderListPanel);
         mCheckoutListController.setCheckoutAddressListPanel(mCheckoutAddressListPanel);
         mCheckoutListController.setCheckoutSuccessPanel(mCheckoutSuccessPanel);
+        mCheckoutListController.setCheckoutPaymentCreditCardPanel(mCheckoutPaymentCreditCardPanel);
 
         // controller quản lý danh sách khách hàng
         mProductListController = new ProductListController();
@@ -275,6 +280,7 @@ public class SalesActivity extends AbstractActivity
         mCartOrderListPanel.setCheckoutListController(mCheckoutListController);
         mCheckoutAddressListPanel.setCheckoutListController(mCheckoutListController);
         mCheckoutSuccessPanel.setCheckoutListController(mCheckoutListController);
+        mCheckoutPaymentCreditCardPanel.setCheckoutListController(mCheckoutListController);
 
         // TODO: clear quote
 //        DataUtil.removeDataStringToPreferences(getContext(), DataUtil.QUOTE);

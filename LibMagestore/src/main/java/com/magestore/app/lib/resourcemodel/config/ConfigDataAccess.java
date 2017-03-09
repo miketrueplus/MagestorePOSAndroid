@@ -30,4 +30,7 @@ public interface ConfigDataAccess extends DataAccess {
     Currency getDefaultCurrency() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     ConfigPriceFormat getPriceFormat() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     ConfigPriceFormat getBasePriceFomat() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
+    Map<String, String> getConfigCCTypes() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
+    List<String> getConfigMonths() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
+    Map<String, String> getConfigCCYears() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
 }

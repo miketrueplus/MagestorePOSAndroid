@@ -310,6 +310,44 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         return getPriceFormat(priceFormat);
     }
 
+    @Override
+    public Map<String, String> getConfigCCTypes() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        if (mConfig == null) mConfig = new PosConfigDefault();
+
+        Map<String, Object> cc_types = (Map) mConfig.getValue("cc_types");
+
+        Map<String, String> listCCTypes = new HashMap<>();
+
+        for (String key : cc_types.keySet()) {
+            String value = cc_types.get(key).toString();
+            listCCTypes.put(key, value);
+        }
+
+        return listCCTypes;
+    }
+
+    @Override
+    public List<String> getConfigMonths() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        List<String> listCCMonths = (List) mConfig.getValue("cc_months");
+        return listCCMonths;
+    }
+
+    @Override
+    public Map<String, String> getConfigCCYears() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        if (mConfig == null) mConfig = new PosConfigDefault();
+
+        Map<String, Object> cc_years = (Map) mConfig.getValue("cc_years");
+
+        Map<String, String> listCCYears = new HashMap<>();
+
+        for (String key : cc_years.keySet()) {
+            String value = cc_years.get(key).toString();
+            listCCYears.put(key, value);
+        }
+
+        return listCCYears;
+    }
+
     private ConfigPriceFormat getPriceFormat(LinkedTreeMap priceFormat) {
         String pattern = priceFormat.get("pattern").toString();
         int precision = (int) priceFormat.get("precision");

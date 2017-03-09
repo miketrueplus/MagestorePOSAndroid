@@ -36,6 +36,11 @@
     <string name="checkout_address_item_default">default</string>
     <string name="checkout_success_message">Order has been created successfully</string>
     <string name="checkout_order_id">#%1s</string>
+    <string name="checkout_payment_cc_name">Name On Card</string>
+    <string name="checkout_payment_cc_type">Credit Card Type</string>
+    <string name="checkout_payment_cc_number">Credit Card Number</string>
+    <string name="checkout_payment_cc_date">Expiration Date</string>
+    <string name="checkout_payment_cc_cvv">CVV</string>
 
     <!-- Strings related to customer -->
     <string name="customer_search_customer_here">Search name, email, telephone</string>

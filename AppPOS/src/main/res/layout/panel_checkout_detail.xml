@@ -173,6 +173,14 @@
                             android:visibility="gone"
                             magestore_view:layout_row="@layout/card_checkout_payment_content" />
 
+                        <com.magestore.app.pos.panel.CheckoutPaymentCreditCardPanel
+                            android:id="@+id/checkout_payment_credit_card"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/layout_margin"
+                            android:visibility="gone"
+                            magestore_view:layout_panel="@layout/panel_checkout_payment_credit_card" />
+
                         <LinearLayout
                             android:id="@+id/ll_checkout_add_payment"
                             android:layout_width="match_parent"
