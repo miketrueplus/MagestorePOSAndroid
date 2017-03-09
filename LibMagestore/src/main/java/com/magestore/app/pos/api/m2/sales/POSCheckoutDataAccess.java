@@ -95,6 +95,11 @@ public class POSCheckoutDataAccess extends POSAbstractDataAccess implements Chec
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
 
+            // TODO: log params request
+            Gson gson = new Gson();
+            String json = gson.toJson(quote);
+            Log.e("JSON", json.toString());
+
             rp = statement.execute(quote);
             rp.setParseImplement(getClassParseImplement());
             rp.setParseModel(PosCheckout.class);
