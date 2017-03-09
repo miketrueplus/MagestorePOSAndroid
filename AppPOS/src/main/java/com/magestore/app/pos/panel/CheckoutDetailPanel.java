@@ -37,6 +37,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
     CheckoutPaymentListPanel mCheckoutPaymentListPanel;
     CheckoutShippingListPanel mCheckoutShippingListPanel;
     CheckoutAddPaymentPanel mCheckoutAddPaymentPanel;
+    CheckoutPaymentCreditCardPanel mCheckoutPaymentCreditCardPanel;
     TextView txt_grand_total, txt_remain_title, txt_remain_value;
     RelativeLayout rl_content_payment_method, sales_background_loading;
     MagestoreDialog dialog;
@@ -250,6 +251,10 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         this.mCheckoutAddPaymentPanel = mCheckoutAddPaymentPanel;
     }
 
+    public void setCheckoutPaymentCreditCardPanel(CheckoutPaymentCreditCardPanel mCheckoutPaymentCreditCardPanel) {
+        this.mCheckoutPaymentCreditCardPanel = mCheckoutPaymentCreditCardPanel;
+    }
+
     public void showPanelCheckoutPayment() {
         mPaymentMethodListPanel.setVisibility(GONE);
         mCheckoutPaymentListPanel.setVisibility(VISIBLE);
@@ -258,6 +263,11 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
     public void showPanelPaymentMethod() {
         mPaymentMethodListPanel.setVisibility(VISIBLE);
         mCheckoutPaymentListPanel.setVisibility(GONE);
+    }
+
+    public void showPanelCheckoutPaymentCreditCard(boolean isShow) {
+        mPaymentMethodListPanel.setVisibility(isShow ? GONE : VISIBLE);
+        mCheckoutPaymentCreditCardPanel.setVisibility(isShow ? VISIBLE : GONE);
     }
 
     public void dismissDialogAddPayment() {

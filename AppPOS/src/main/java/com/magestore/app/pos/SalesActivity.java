@@ -269,6 +269,7 @@ public class SalesActivity extends AbstractActivity
         mCheckoutDetailPanel.setPaymentMethodListPanel(mPaymentMethodListPanel);
         mCheckoutDetailPanel.setCheckoutShippingListPanel(mCheckoutShippingListPanel);
         mCheckoutDetailPanel.setCheckoutAddPaymentPanel(mCheckoutAddPaymentPanel);
+        mCheckoutDetailPanel.setCheckoutPaymentCreditCardPanel(mCheckoutPaymentCreditCardPanel);
 
         mCheckoutListPanel.setToolbarOrder(toolbar_order);
         mCheckoutListPanel.setMagestoreContext(magestoreContext);

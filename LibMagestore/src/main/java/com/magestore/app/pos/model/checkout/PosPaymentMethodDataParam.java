@@ -60,7 +60,83 @@ public class PosPaymentMethodDataParam extends PosAbstractModel implements Payme
         title = strTitle;
     }
 
-    public class PaymentMethodAdditionalParam {
+    @Override
+    public PaymentMethodAdditionalParam createAddition() {
+        additional_data = new PaymentMethodAdditionalParam();
+        return additional_data;
+    }
 
+    @Override
+    public void setPaymentMethodAdditionalParam(PaymentMethodAdditionalParam paymentMethodAdditionalParam) {
+        additional_data = paymentMethodAdditionalParam;
+    }
+
+    @Override
+    public void setCCOwner(String owner) {
+        additional_data.cc_owner = owner;
+    }
+
+    @Override
+    public String getCCOwner() {
+        return additional_data.cc_owner;
+    }
+
+    @Override
+    public void setCCType(String type) {
+        additional_data.cc_type = type;
+    }
+
+    @Override
+    public String getCCType() {
+        return additional_data.cc_type;
+    }
+
+    @Override
+    public void setCCNumber(String number) {
+        additional_data.cc_number = number;
+    }
+
+    @Override
+    public String getCCNumber() {
+        return additional_data.cc_number;
+    }
+
+    @Override
+    public void setCCExpMonth(String month) {
+        additional_data.cc_exp_month = month;
+    }
+
+    @Override
+    public String getCCExpMonth() {
+        return additional_data.cc_exp_month;
+    }
+
+    @Override
+    public void setCCExpYear(String year) {
+        additional_data.cc_exp_year = year;
+    }
+
+    @Override
+    public String getCCExpYear() {
+        return additional_data.cc_exp_year;
+    }
+
+    @Override
+    public void setCID(String cid) {
+        additional_data.cc_cid = cid;
+    }
+
+    @Override
+    public String getCID() {
+        return additional_data.cc_cid;
+    }
+
+    public class PaymentMethodAdditionalParam {
+        String cc_owner;
+        String cc_type;
+        String cc_number;
+        String cc_exp_month;
+        String cc_exp_year;
+        String cc_cid;
     }
 }

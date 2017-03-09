@@ -63,4 +63,10 @@ public interface ConfigService extends Service {
     List<Currency> getCurrencies() throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
     Currency getDefaultCurrency() throws InstantiationException, IllegalAccessException, IOException, ParseException;
+
+    Map<String, String> getConfigCCTypes() throws InstantiationException, IllegalAccessException, IOException, ParseException;
+
+    List<String> getConfigMonths() throws InstantiationException, IllegalAccessException, IOException, ParseException;
+
+    Map<String, String> getConfigCCYears() throws InstantiationException, IllegalAccessException, IOException, ParseException;
 }

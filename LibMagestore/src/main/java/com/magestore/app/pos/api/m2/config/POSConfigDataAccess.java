@@ -319,8 +319,10 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         Map<String, String> listCCTypes = new HashMap<>();
 
         for (String key : cc_types.keySet()) {
-            String value = cc_types.get(key).toString();
-            listCCTypes.put(key, value);
+            if (!key.equals("")) {
+                String value = cc_types.get(key).toString();
+                listCCTypes.put(key, value);
+            }
         }
 
         return listCCTypes;
@@ -328,7 +330,15 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
 
     @Override
     public List<String> getConfigMonths() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        if (mConfig == null) mConfig = new PosConfigDefault();
+
         List<String> listCCMonths = (List) mConfig.getValue("cc_months");
+        for (String month : listCCMonths) {
+            if (month.equals("Month") || month.equals("month")) {
+                listCCMonths.remove(month);
+                break;
+            }
+        }
         return listCCMonths;
     }
 
@@ -341,8 +351,11 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         Map<String, String> listCCYears = new HashMap<>();
 
         for (String key : cc_years.keySet()) {
-            String value = cc_years.get(key).toString();
-            listCCYears.put(key, value);
+            if(!key.equals("0")){
+                double value = (double) cc_years.get(key);
+                int intValue = (int) value;
+                listCCYears.put(key, String.valueOf(intValue));
+            }
         }
 
         return listCCYears;

@@ -89,6 +89,30 @@ public class POSConfigService extends AbstractService implements ConfigService {
         return configDataAccess.getDefaultCurrency();
     }
 
+    @Override
+    public Map<String, String> getConfigCCTypes() throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        // Nếu chưa khởi tạo customer gateway factory
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
+        return configDataAccess.getConfigCCTypes();
+    }
+
+    @Override
+    public List<String> getConfigMonths() throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        // Nếu chưa khởi tạo customer gateway factory
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
+        return configDataAccess.getConfigMonths();
+    }
+
+    @Override
+    public Map<String, String> getConfigCCYears() throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        // Nếu chưa khởi tạo customer gateway factory
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
+        return configDataAccess.getConfigCCYears();
+    }
+
     public static String PAYMENT_METHOD_CC_DIRECT_POST = "CC_DIRECT";
     public static String PAYMENT_METHOD_CASH_IN = "CASH_IN";
     public static String PAYMENT_METHOD_CC_CARD = "CC_CARDN";

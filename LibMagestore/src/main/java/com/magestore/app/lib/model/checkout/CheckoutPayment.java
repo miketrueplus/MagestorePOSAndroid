@@ -1,6 +1,7 @@
 package com.magestore.app.lib.model.checkout;
 
 import com.magestore.app.lib.model.Model;
+import com.magestore.app.pos.model.checkout.PosCheckoutPayment;
 
 /**
  * Created by Mike on 2/7/2017.
@@ -90,4 +91,7 @@ public interface CheckoutPayment extends Model {
 
     float getCurrentValue();
     void setCurrentValue(float fCurrentValue);
+
+    PosCheckoutPayment.AdditionalData createAdditionalData();
+    void setAdditionalData(PosCheckoutPayment.AdditionalData additionalData);
 }

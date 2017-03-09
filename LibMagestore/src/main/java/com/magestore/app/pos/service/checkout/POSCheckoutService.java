@@ -121,6 +121,8 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
 
         for (CheckoutPayment checkoutPayment : listCheckoutPayment) {
             PaymentMethodDataParam paymentMethodDataParam = createPaymentMethodParam();
+            PosPaymentMethodDataParam.PaymentMethodAdditionalParam additionalParam = paymentMethodDataParam.createAddition();
+            paymentMethodDataParam.setPaymentMethodAdditionalParam(additionalParam);
             paymentMethodDataParam.setReferenceNumber(checkoutPayment.getReferenceNumber());
             paymentMethodDataParam.setAmount(checkoutPayment.getAmount());
             paymentMethodDataParam.setBaseAmount(ConfigUtil.convertToBasePrice(checkoutPayment.getBaseAmount()));
@@ -129,6 +131,12 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
             paymentMethodDataParam.setCode(checkoutPayment.getCode());
             paymentMethodDataParam.setIsPayLater(checkoutPayment.isPaylater());
             paymentMethodDataParam.setTitle(checkoutPayment.getTitle());
+            paymentMethodDataParam.setCCOwner(checkoutPayment.getCCOwner());
+            paymentMethodDataParam.setCCType(checkoutPayment.getCCType());
+            paymentMethodDataParam.setCCNumber(checkoutPayment.getCCNumber());
+            paymentMethodDataParam.setCCExpMonth(checkoutPayment.getCCExpMonth());
+            paymentMethodDataParam.setCCExpYear(checkoutPayment.getCCExpYear());
+            paymentMethodDataParam.setCID(checkoutPayment.getCID());
             listPaymentMethodParam.add(paymentMethodDataParam);
         }
 

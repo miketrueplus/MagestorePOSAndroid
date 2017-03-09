@@ -15,6 +15,7 @@ import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.observ.State;
 import com.magestore.app.lib.service.checkout.CheckoutService;
 import com.magestore.app.lib.service.customer.CustomerAddressService;
+import com.magestore.app.pos.model.checkout.PosCheckoutPayment;
 import com.magestore.app.pos.panel.CartOrderListPanel;
 import com.magestore.app.pos.panel.CheckoutAddPaymentPanel;
 import com.magestore.app.pos.panel.CheckoutAddressListPanel;
@@ -68,21 +69,10 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     Context context;
     Customer guest_checkout;
     Currency currency;
+    Map<String, String> configCCTypes;
+    List<String> configMonths;
+    Map<String, String> configCCYears;
     CustomerAddressService mCustomerAddressService;
-
-//    @Override
-//    public void bindItem(Checkout item) {
-//        super.bindItem(item);
-//        if (mCartItemListController != null) {
-//            mCartItemListController.bindParent(item);
-//            mCartItemListController.doRetrieve();
-//        }
-//    }
-
-//    @Override
-//    public void doRetrieve() {
-//        super.doRetrieve();
-//    }
 
     @Override
     public List<Checkout> onRetrieveBackground(int page, int pageSize) throws Exception {
@@ -90,15 +80,6 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             wraper = new HashMap<>();
         return super.onRetrieveBackground(page, pageSize);
     }
-
-//    /**
-//     * Tương ứng khi 1 product được chọn trên product list
-//     *
-//     * @param product
-//     */
-//    public void bindProduct(Product product) {
-//        if (mCartItemListController != null) mCartItemListController.bindProduct(product);
-//    }
 
     public void bindCustomer(Customer customer) {
         if (customer != null) {
@@ -186,7 +167,24 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         // Check payment khác null hay ko
         List<CheckoutPayment> listCheckoutPayment = (List<CheckoutPayment>) wraper.get("list_payment");
         if (listCheckoutPayment != null && listCheckoutPayment.size() > 0) {
-            doAction(ACTION_TYPE_PLACE_ORDER, null, wraper, null);
+            if (listCheckoutPayment.size() == 1 && listCheckoutPayment.get(0).getType().equals("1")) {
+                CheckoutPayment paymentCreditCard = listCheckoutPayment.get(0);
+                if (mCheckoutPaymentCreditCardPanel.checkRequiedCard()) {
+                    CheckoutPayment payment = mCheckoutPaymentCreditCardPanel.bind2Item();
+                    PosCheckoutPayment.AdditionalData additionalData = paymentCreditCard.createAdditionalData();
+                    paymentCreditCard.setAdditionalData(additionalData);
+                    paymentCreditCard.setCCOwner(payment.getCCOwner());
+                    paymentCreditCard.setType(payment.getCCType());
+                    paymentCreditCard.setCCNumber(payment.getCCNumber());
+                    paymentCreditCard.setCCExpMonth(payment.getCCExpMonth());
+                    paymentCreditCard.setCCExpYear(payment.getCCExpYear());
+                    paymentCreditCard.setCID(payment.getCID());
+
+                    doAction(ACTION_TYPE_PLACE_ORDER, null, wraper, null);
+                }
+            } else {
+                doAction(ACTION_TYPE_PLACE_ORDER, null, wraper, null);
+            }
         } else {
             // hiển thị thông báo chọn payment
             ((CheckoutDetailPanel) mDetailView).showNotifiSelectPayment();
@@ -200,6 +198,9 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         try {
             guest_checkout = getConfigService().getGuestCheckout();
             currency = getConfigService().getDefaultCurrency();
+            configCCTypes = getConfigService().getConfigCCTypes();
+            configMonths = getConfigService().getConfigMonths();
+            configCCYears = getConfigService().getConfigCCYears();
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
@@ -611,29 +612,51 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     public void onAddPaymentMethod(CheckoutPayment method) {
         List<CheckoutPayment> listPayment = (List<CheckoutPayment>) wraper.get("list_payment");
         Checkout checkout = (Checkout) wraper.get("save_shipping");
-        float total = 0;
-        if (checkout.getRemainMoney() > 0) {
-            total = checkout.getRemainMoney();
-            ((CheckoutDetailPanel) mDetailView).isEnableButtonAddPayment(true);
+        if (method.getType().equals("1")) {
+            updateMoneyTotal(true, 0);
+            float total = checkout.getGrandTotal();
+            method.setAmount(total);
+            method.setBaseAmount(total);
+            method.setRealAmount(total);
+            method.setBaseRealAmount(total);
+            mCheckoutPaymentCreditCardPanel.setCardTypeDataSet(configCCTypes);
+            mCheckoutPaymentCreditCardPanel.setCardMonthDataSet(configMonths);
+            mCheckoutPaymentCreditCardPanel.setCardYearDataSet(configCCYears);
+
+            if (listPayment == null) {
+                listPayment = new ArrayList<>();
+            }
+
+            listPayment.add(method);
+            wraper.put("list_payment", listPayment);
+
+            ((CheckoutDetailPanel) mDetailView).isEnableCreateInvoice(true);
+            ((CheckoutDetailPanel) mDetailView).showPanelCheckoutPaymentCreditCard(true);
         } else {
-            total = checkout.getGrandTotal();
-            ((CheckoutDetailPanel) mDetailView).isEnableButtonAddPayment(false);
-        }
+            float total = 0;
+            if (checkout.getRemainMoney() > 0) {
+                total = checkout.getRemainMoney();
+                ((CheckoutDetailPanel) mDetailView).isEnableButtonAddPayment(true);
+            } else {
+                total = checkout.getGrandTotal();
+                ((CheckoutDetailPanel) mDetailView).isEnableButtonAddPayment(false);
+            }
 
-        method.setAmount(total);
-        method.setBaseAmount(total);
-        method.setRealAmount(total);
-        method.setBaseRealAmount(total);
+            method.setAmount(total);
+            method.setBaseAmount(total);
+            method.setRealAmount(total);
+            method.setBaseRealAmount(total);
 
-        if (listPayment == null) {
-            listPayment = new ArrayList<>();
+            if (listPayment == null) {
+                listPayment = new ArrayList<>();
+            }
+            listPayment.add(method);
+            wraper.put("list_payment", listPayment);
+            mCheckoutPaymentListPanel.bindList(listPayment);
+            mCheckoutPaymentListPanel.updateTotal(listPayment);
+            ((CheckoutDetailPanel) mDetailView).isEnableCreateInvoice(true);
+            ((CheckoutDetailPanel) mDetailView).showPanelCheckoutPayment();
         }
-        listPayment.add(method);
-        wraper.put("list_payment", listPayment);
-        mCheckoutPaymentListPanel.bindList(listPayment);
-        mCheckoutPaymentListPanel.updateTotal(listPayment);
-        ((CheckoutDetailPanel) mDetailView).isEnableCreateInvoice(true);
-        ((CheckoutDetailPanel) mDetailView).showPanelCheckoutPayment();
     }
 
     /**
@@ -689,7 +712,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         doShowDetailSuccess(false);
     }
 
-    public void onBackTohome(){
+    public void onBackTohome() {
         showSalesShipping();
         showActionButtonCheckout();
         doShowDetailPanel(false);
@@ -727,6 +750,10 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             }
         }
         return null;
+    }
+
+    public CheckoutPayment createPaymentMethod() {
+        return ((CheckoutService) getListService()).createPaymentMethod();
     }
 
     /**

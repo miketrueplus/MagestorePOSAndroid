@@ -27,7 +27,7 @@ public class PosCheckoutPayment extends PosAbstractModel implements CheckoutPaym
     @Gson2PosExclude
     String reference_number;
 
-    class AdditionalData {
+    public class AdditionalData {
         String cc_owner;
         String cc_type;
         String cc_number;
@@ -43,7 +43,7 @@ public class PosCheckoutPayment extends PosAbstractModel implements CheckoutPaym
     @Gson2PosExclude
     float current_value;
 
-    AdditionalData additional_data = new AdditionalData();
+    AdditionalData additional_data;
 
     @Override
     public void setCode(String strCode) {
@@ -259,5 +259,16 @@ public class PosCheckoutPayment extends PosAbstractModel implements CheckoutPaym
     @Override
     public void setCurrentValue(float fCurrentValue) {
         current_value = fCurrentValue;
+    }
+
+    @Override
+    public AdditionalData createAdditionalData() {
+        additional_data = new AdditionalData();
+        return additional_data;
+    }
+
+    @Override
+    public void setAdditionalData(AdditionalData additionalData) {
+        additional_data = additionalData;
     }
 }
