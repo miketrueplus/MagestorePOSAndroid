@@ -138,7 +138,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         ((CheckoutListPanel) mView).changeActionButton(true);
         // show detail panel
         doShowDetailPanel(true);
-        binCartItem();
+//        binCartItem();
         Checkout checkout = getSelectedItem();
         wraper.put("quote_id", DataUtil.getDataStringToPreferences(context, DataUtil.QUOTE));
         doAction(ACTION_TYPE_SAVE_CART, null, wraper, checkout);

@@ -280,16 +280,24 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
          * @param productOptionCustom
          * @param viewHolder
          */
-        private void initTypeChooseOneHolder(View convertView, final ProductOptionCustom productOptionCustom, final ProductOptionCustomValueHolder viewHolder) {
+        private void initTypeChooseOneHolder(View convertView, ProductOptionCustom productOptionCustom, ProductOptionCustomValueHolder viewHolder) {
             viewHolder.mradChoose = (RadioButton) convertView.findViewById(R.id.id_radio_product_option_radio);
-            viewHolder.mradChoose.setOnClickListener(new OnClickListener() {
+            viewHolder.mProductOptionCustom = productOptionCustom;
+//            final ProductOptionCustomValueHolder mViewH = viewHolder;
+            convertView.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    expandableListAdapter.notifyDataSetChanged();
                     // tìm tất cả các radio trong cùng product option
-                    for (ProductOptionCustomValueHolder eachViewHolder: mProductOptionCustomHolderMap.get(productOptionCustom).mProductOptionCustomValueHolderList) {
-                        eachViewHolder.mradChoose.setSelected(eachViewHolder == viewHolder);
-                        eachViewHolder.mradChoose.setChecked(eachViewHolder == viewHolder);
-                    }
+//                    ProductOptionCustomValueHolder viewHolder = (ProductOptionCustomValueHolder) v.getTag();
+//                    viewHolder.mradChoose.setChecked(true);
+//                    viewHolder.mradChoose.setSelected(true);
+//                    viewHolder.mblnChoosed = true;
+//                    for (ProductOptionCustomValueHolder eachViewHolder: mProductOptionCustomHolderMap.get(viewHolder.mProductOptionCustom).mProductOptionCustomValueHolderList) {
+//                        eachViewHolder.mradChoose.setSelected(eachViewHolder == viewHolder);
+//                        eachViewHolder.mradChoose.setChecked(eachViewHolder == viewHolder);
+//                        viewHolder.mblnChoosed = (eachViewHolder == viewHolder);
+//                    }
                 }
             });
         }
@@ -339,6 +347,8 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                 // Khởi tạo holder
                 viewHolder = new ProductOptionCustomValueHolder();
                 mProductOptionCustomHolderMap.get(productOptionCustom).mProductOptionCustomValueHolderList.add(viewHolder);
+                viewHolder.customValue = optionValue;
+                viewHolder.mProductOptionCustom = productOptionCustom;
 
                 // Xem kiểu option là gì để lựa chọn layout tương ứng
                 ProductOptionCustom productOption = mProduct.getProductOption().getCustomOptions().get(listPosition);
@@ -346,7 +356,26 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                     convertView = layoutInflater.inflate(R.layout.card_product_option_item_checkbox, null);
                     initTypeChooseMultipeHolder(convertView, productOption, viewHolder);
                 }
+                else {
+                    // còn lại quy về kiểu chọn 1
+                    convertView = layoutInflater.inflate(R.layout.card_product_option_item_radio, null);
+                    initTypeChooseOneHolder(convertView, productOption, viewHolder);
 
+//                    viewHolder.mradChoose = (RadioButton) convertView.findViewById(R.id.id_radio_product_option_radio);
+//                    final ProductOptionCustomValueHolder mViewH = viewHolder;
+//                    viewHolder.mradChoose.setOnClickListener(new OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            // tìm tất cả các radio trong cùng product option
+//                            viewHolder.mradChoose.setChecked(true);
+//                            viewHolder.mradChoose.setSelected(true);
+//                            for (ProductOptionCustomValueHolder eachViewHolder: mProductOptionCustomHolderMap.get(mViewH.mProductOptionCustom).mProductOptionCustomValueHolderList) {
+//                                eachViewHolder.mradChoose.setSelected(eachViewHolder == viewHolder);
+//                                eachViewHolder.mradChoose.setChecked(eachViewHolder == viewHolder);
+//                            }
+//                        }
+//                    });
+                }
                 // với kiểu ngày
 //                if (productOption.isTypeDate()
 //                        || productOption.isTypeDateTime()
@@ -354,11 +383,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
 //                    convertView = layoutInflater.inflate(R.layout.card_product_option_item_datetime, null);
 //                    initTypeDateTimeHolder(convertView, productOption, viewHolder);
 //                }
-                else {
-                    // còn lại quy về kiểu chọn 1
-                    convertView = layoutInflater.inflate(R.layout.card_product_option_item_radio, null);
-                    initTypeChooseOneHolder(convertView, productOption, viewHolder);
-                }
+
 
                 // đặt giá trị cho hiển thị tên option và giá cả
                 viewHolder.mtxtDisplay = (TextView) convertView
@@ -366,7 +391,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                 viewHolder.mtxtPrice = (TextView) convertView
                         .findViewById(R.id.id_txt_product_option_price);
 
-                // lưu tag lại với view
+
                 convertView.setTag(viewHolder);
             }
 
@@ -375,9 +400,12 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
             viewHolder = (ProductOptionCustomValueHolder) convertView.getTag();
 
             // bind giá trị vào
-            viewHolder.mtxtDisplay.setText(optionValue.getDisplayContent());
+            viewHolder.mtxtDisplay.setText( viewHolder.mblnChoosed + " " + optionValue.getDisplayContent());
             viewHolder.mtxtPrice.setText(ConfigUtil.formatPrice(optionValue.getPrice()));
-            viewHolder.customValue = optionValue;
+            if (viewHolder.mradChoose != null) {
+                viewHolder.mradChoose.setChecked(viewHolder.mblnChoosed);
+                viewHolder.mradChoose.setSelected(viewHolder.mblnChoosed);
+            }
 
             // return view
             return convertView;
@@ -427,7 +455,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         public View getGroupView(int listPosition, boolean isExpanded,
                                  View convertView, ViewGroup parent) {
             // chuẩn bị holder
-            ProductOptionCustomHolder viewHolder;
+            ProductOptionCustomHolder viewHolder = null;
             if (convertView == null) {
                 // khởi tạo view
                 LayoutInflater layoutInflater = (LayoutInflater) this.context.
@@ -483,6 +511,8 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
      * Nắm ngữ view và product option custom value tương ứng
      */
     public class ProductOptionCustomValueHolder {
+        boolean mblnChoosed = false;
+        ProductOptionCustom mProductOptionCustom;
         public View view;
         public TextView mtxtDisplay;
 //        public TextView mtxtDisplaySub;

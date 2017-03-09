@@ -365,6 +365,15 @@ public class AbstractListController<TModel extends Model>
     }
 
     /**
+     * Trả về toàn bộ list
+     * @return
+     */
+    @Override
+    public List<TModel> getListItems() {
+        return mList;
+    }
+
+    /**
      * Chỉ định tập hợp các item được chọn, k0 thay đổi view, chỉ về mặt dữ liệu
      * @param models
      */

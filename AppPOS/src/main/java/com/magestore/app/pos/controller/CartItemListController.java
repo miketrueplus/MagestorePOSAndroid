@@ -237,6 +237,17 @@ public class CartItemListController extends AbstractChildListController<Checkout
      * @param cartItem
      */
     public void updateToCart(CartItem cartItem) {
+        try {
+            mCartService.insert(getParent(), cartItem);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
         getView().updateModelToFirstInsertIfNotFound(cartItem);
         if (mCartItemDetailDialog != null && mCartItemDetailDialog.isShowing()) mCartItemDetailDialog.dismiss();
         if (mProductOptionDialog != null && mProductOptionDialog.isShowing()) mProductOptionDialog.dismiss();
@@ -249,6 +260,17 @@ public class CartItemListController extends AbstractChildListController<Checkout
      * @param cartItem
      */
     public void addToCart(CartItem cartItem) {
+        try {
+            mCartService.insert(getParent(), cartItem);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
         getView().updateModelToFirstInsertIfNotFound(cartItem);
         if (mCartItemDetailDialog != null && mCartItemDetailDialog.isShowing()) mCartItemDetailDialog.dismiss();
         if (mProductOptionDialog != null && mProductOptionDialog.isShowing()) mProductOptionDialog.dismiss();

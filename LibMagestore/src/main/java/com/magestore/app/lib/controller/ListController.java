@@ -172,6 +172,8 @@ public interface ListController<TModel extends Model>
      */
     List<TModel> getSelectedItems();
 
+    List<TModel> getListItems();
+
     /**
      * Chỉ định model được chọn, k0 cập nhật view
      * @param models
