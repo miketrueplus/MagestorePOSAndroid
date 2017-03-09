@@ -38,15 +38,14 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
     CheckoutShippingListPanel mCheckoutShippingListPanel;
     CheckoutAddPaymentPanel mCheckoutAddPaymentPanel;
     CheckoutPaymentCreditCardPanel mCheckoutPaymentCreditCardPanel;
-    TextView txt_grand_total, txt_remain_title, txt_remain_value;
-    RelativeLayout rl_content_payment_method, sales_background_loading;
+    TextView txt_grand_total, txt_remain_title, txt_remain_value, txt_payment_creditcard;
+    RelativeLayout rl_content_payment_method, sales_background_loading, rl_remove_payment_credit_card;
     MagestoreDialog dialog;
     Switch create_ship, create_invoice;
     ImageButton im_back;
-    LinearLayout ll_checkout_add_payment;
+    LinearLayout ll_checkout_add_payment, ll_shipping_address, ll_payment_credit_card;
     SimpleSpinner sp_shipping_method;
     Switch cb_pick_at_store;
-    LinearLayout ll_shipping_address;
     EditText et_checkout_note;
 
     public CheckoutDetailPanel(Context context) {
@@ -79,6 +78,10 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         sales_background_loading = (RelativeLayout) findViewById(R.id.sales_background_loading);
         sp_shipping_method = (SimpleSpinner) findViewById(R.id.sp_shipping_method);
         et_checkout_note = (EditText) findViewById(R.id.et_checkout_note);
+        // credit card
+        ll_payment_credit_card = (LinearLayout) findViewById(R.id.ll_payment_credit_card);
+        txt_payment_creditcard = (TextView) findViewById(R.id.txt_payment_creditcard);
+        rl_remove_payment_credit_card = (RelativeLayout) findViewById(R.id.rl_remove_payment_credit_card);
 
         im_back.setOnClickListener(new OnClickListener() {
             @Override
@@ -116,6 +119,13 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
                     getShippingMethod();
                     ll_shipping_address.setVisibility(VISIBLE);
                 }
+            }
+        });
+
+        rl_remove_payment_credit_card.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((CheckoutListController) getController()).onRemovePaymentCreditCard();
             }
         });
     }
@@ -267,7 +277,11 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
 
     public void showPanelCheckoutPaymentCreditCard(boolean isShow) {
         mPaymentMethodListPanel.setVisibility(isShow ? GONE : VISIBLE);
-        mCheckoutPaymentCreditCardPanel.setVisibility(isShow ? VISIBLE : GONE);
+        ll_payment_credit_card.setVisibility(isShow ? VISIBLE : GONE);
+    }
+
+    public void updateTitlePaymentCreditCard(String method){
+        txt_payment_creditcard.setText(method);
     }
 
     public void dismissDialogAddPayment() {

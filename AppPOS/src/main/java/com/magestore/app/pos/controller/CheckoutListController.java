@@ -630,6 +630,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             listPayment.add(method);
             wraper.put("list_payment", listPayment);
 
+            ((CheckoutDetailPanel) mDetailView).updateTitlePaymentCreditCard(method.getTitle());
             ((CheckoutDetailPanel) mDetailView).isEnableCreateInvoice(true);
             ((CheckoutDetailPanel) mDetailView).showPanelCheckoutPaymentCreditCard(true);
         } else {
@@ -671,6 +672,13 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             isEnableButtonAddPayment(false);
             ((CheckoutDetailPanel) mDetailView).isEnableCreateInvoice(false);
         }
+    }
+
+    public void onRemovePaymentCreditCard(){
+        List<CheckoutPayment> listPayment = (List<CheckoutPayment>) wraper.get("list_payment");
+        listPayment = new ArrayList<>();
+        ((CheckoutDetailPanel) mDetailView).isEnableCreateInvoice(false);
+        ((CheckoutDetailPanel) mDetailView).showPanelCheckoutPaymentCreditCard(false);
     }
 
     /**
