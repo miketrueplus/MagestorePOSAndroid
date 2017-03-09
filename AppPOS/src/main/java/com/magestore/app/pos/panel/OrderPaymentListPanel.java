@@ -42,6 +42,7 @@ public class OrderPaymentListPanel extends AbstractListPanel<OrderWebposPayment>
      */
     @Override
     public void initLayout() {
+//        super.initLayout();
         // Load layout view danh sách payment của khách hàng
         View v = inflate(getContext(), R.layout.panel_order_payment_list, null);
         addView(v);
@@ -52,7 +53,7 @@ public class OrderPaymentListPanel extends AbstractListPanel<OrderWebposPayment>
         // Chuẩn bị list danh sách payment
 //        mRecycleView = (RecyclerView) findViewById(R.id.order_payment_list);
 //        mRecycleView.setLayoutManager(new GridLayoutManager(this.getContext(), 1));
-        mRecycleView.setNestedScrollingEnabled(false);
+//        mRecycleView.setNestedScrollingEnabled(false);
     }
 
     @Override

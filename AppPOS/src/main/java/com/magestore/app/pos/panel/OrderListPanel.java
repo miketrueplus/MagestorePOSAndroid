@@ -55,20 +55,20 @@ public class OrderListPanel extends AbstractListPanel<Order> {
         super(context, attrs, defStyleAttr);
     }
 
-    @Override
-    public void initLayout() {
-
-        // Xử lý sự kiện floating action bar
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
-    }
+//    @Override
+//    public void initLayout() {
+//
+//        // Xử lý sự kiện floating action bar
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
+//
+//    }
 
     @Override
     protected void bindItem(View view, Order item, int position) {
