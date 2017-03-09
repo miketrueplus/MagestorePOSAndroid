@@ -128,9 +128,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
     }
 
     void onClickBack() {
-        ((CheckoutListController) getController()).showSalesShipping();
-        ((CheckoutListController) getController()).showActionButtonCheckout();
-        ((CheckoutListController) getController()).doShowDetailPanel(false);
+        ((CheckoutListController) getController()).onBackTohome();
     }
 
     /**
