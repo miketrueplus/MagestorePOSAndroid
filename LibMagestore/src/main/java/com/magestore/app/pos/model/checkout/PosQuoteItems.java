@@ -23,7 +23,7 @@ public class PosQuoteItems extends PosAbstractModel implements QuoteItems {
     PosQuoteItemExtension extension_data;
     class CustomOptions {
         int code;
-        int[] value;
+        String value;
     };
     List<CustomOptions> options;
 
@@ -96,12 +96,13 @@ public class PosQuoteItems extends PosAbstractModel implements QuoteItems {
         if (options == null) options = new ArrayList<CustomOptions>();
         for (ProductOptionCustom customOption :
                 cartItem.getChooseProductOptions().keySet()) {
+            StringBuilder stringBuilder = new StringBuilder();
             CustomOptions quoteCustomeOption = new CustomOptions();
             quoteCustomeOption.code = Integer.parseInt(customOption.getOptionID());
-            quoteCustomeOption.value = new int[customOption.getOptionValueList().size()];
             for (int i = 0; i < customOption.getOptionValueList().size(); i++) {
-                quoteCustomeOption.value[i] = Integer.parseInt(customOption.getOptionValueList().get(i).getOptionTypeID());
+                stringBuilder.append(i == 0 ? "" : ",").append(customOption.getOptionValueList().get(i).getOptionTypeID());
             }
+            quoteCustomeOption.value = stringBuilder.toString();
             options.add(quoteCustomeOption);
         }
     }

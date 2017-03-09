@@ -287,12 +287,12 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
             convertView.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    expandableListAdapter.notifyDataSetChanged();
                     // tìm tất cả các radio trong cùng product option
-//                    ProductOptionCustomValueHolder viewHolder = (ProductOptionCustomValueHolder) v.getTag();
+                    ProductOptionCustomValueHolder cviewHolder = (ProductOptionCustomValueHolder) v.getTag();
+                    cviewHolder.mblnChoosed = !cviewHolder.mblnChoosed;
+                    expandableListAdapter.notifyDataSetChanged();
 //                    viewHolder.mradChoose.setChecked(true);
 //                    viewHolder.mradChoose.setSelected(true);
-//                    viewHolder.mblnChoosed = true;
 //                    for (ProductOptionCustomValueHolder eachViewHolder: mProductOptionCustomHolderMap.get(viewHolder.mProductOptionCustom).mProductOptionCustomValueHolderList) {
 //                        eachViewHolder.mradChoose.setSelected(eachViewHolder == viewHolder);
 //                        eachViewHolder.mradChoose.setChecked(eachViewHolder == viewHolder);
