@@ -64,6 +64,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
 
     /**
      * Đưa item vào giao diện
+     *
      * @param item
      */
     @Override
@@ -78,16 +79,19 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
 
     /**
      * Xử lý hiển thị thông tin product và cart item
+     *
      * @param item
      */
     public void showCartItemInfo(CartItem item) {
         mBinding.setCartItem(item);
         mBinding.setProduct(item.getProduct());
-        if (item.getProduct().getBitmap() != null) mImageProductDetail.setImageBitmap(item.getProduct().getBitmap());
+        if (item.getProduct().getBitmap() != null)
+            mImageProductDetail.setImageBitmap(item.getProduct().getBitmap());
     }
 
     /**
      * Save item vào cart
+     *
      * @param view
      */
     public void onAddToCart(View view) {
@@ -96,6 +100,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
 
     /**
      * Nhấn nút trừ số lượng
+     *
      * @param view
      */
     public void onAddQuantity(View view) {
@@ -105,6 +110,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
 
     /**
      * Nhấn nút thêm số lượng
+     *
      * @param view
      */
     public void onSubstractQuantity(View view) {
@@ -150,15 +156,16 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
 
     /**
      * Kiểm tra đã nhập liệu chưa
+     *
      * @return
      */
     public boolean validateInput() {
         // duyệt tất cả các option custome để lấy option mà user đã chọn
-        for(int i = 0; i < expandableListAdapter.getGroupCount(); i++) {
+        for (int i = 0; i < expandableListAdapter.getGroupCount(); i++) {
             ProductOptionCustom productOptionCustom = expandableListAdapter.getGroup(i);
-            for(int j = 0; j < expandableListAdapter.getChildrenCount(i); j++) {
+            for (int j = 0; j < expandableListAdapter.getChildrenCount(i); j++) {
                 ProductOptionCustomValue productOptionCustomValue = expandableListAdapter.getChild(i, j);
-                ProductOptionCustomValueHolder productOptionCustomValueViewHolder =  expandableListAdapter.mProductOptionCustomHolderMap.get(productOptionCustom).mProductOptionCustomValueHolderList.get(j);
+                ProductOptionCustomValueHolder productOptionCustomValueViewHolder = expandableListAdapter.mProductOptionCustomHolderMap.get(productOptionCustom).mProductOptionCustomValueHolderList.get(j);
             }
         }
 
@@ -181,7 +188,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         StringBuilder descriptionBuilder = new StringBuilder();
 
         // duyệt tất cả các option custome để lấy option mà user đã chọn
-        for(int i = 0; i < expandableListAdapter.getGroupCount(); i++) {
+        for (int i = 0; i < expandableListAdapter.getGroupCount(); i++) {
             // khởi tạo danh sách option value
             ProductOptionCustom productOptionCustom = expandableListAdapter.getGroup(i);
             PosCartItem.ChooseProductOption chooseProductOption = item.createChooseProductOption();
@@ -189,9 +196,9 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
             descriptionBuilder.append(i == 0 ? "" : ". ").append(productOptionCustom.getDisplayContent()).append(": ");
 
             boolean firstCustomValue = true;
-            for(int j = 0; j < expandableListAdapter.mProductOptionCustomHolderMap.get(productOptionCustom).mProductOptionCustomValueHolderList.size(); j++) {
+            for (int j = 0; j < expandableListAdapter.mProductOptionCustomHolderMap.get(productOptionCustom).mProductOptionCustomValueHolderList.size(); j++) {
                 ProductOptionCustomValue productOptionCustomValue = expandableListAdapter.getChild(i, j);
-                ProductOptionCustomValueHolder productOptionCustomValueViewHolder =  expandableListAdapter.mProductOptionCustomHolderMap.get(productOptionCustom).mProductOptionCustomValueHolderList.get(j);
+                ProductOptionCustomValueHolder productOptionCustomValueViewHolder = expandableListAdapter.mProductOptionCustomHolderMap.get(productOptionCustom).mProductOptionCustomValueHolderList.get(j);
                 // nếu là loại chọn nhiều
                 if (productOptionCustom.isTypeSelectMultipe()) {
                     if (productOptionCustomValueViewHolder.mchkChoose.isChecked()) {
@@ -201,7 +208,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                     }
                 }
                 // nếu là loại chọn 1
-                else  {
+                else {
                     if (productOptionCustomValueViewHolder.mradChoose.isSelected()) {
                         chooseProductOption.productOptionCustomValueList.add(productOptionCustomValueViewHolder.customValue);
                         descriptionBuilder.append(!firstCustomValue ? ", " : "").append(productOptionCustomValueViewHolder.customValue.getDisplayContent());
@@ -228,6 +235,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
 
         /**
          * Hàm khởi tạo
+         *
          * @param context
          */
         public CustomExpandableListAdapter(Context context) {
@@ -237,6 +245,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
 
         /**
          * Đặt product tham chiến
+         *
          * @param product
          */
         public void setProduct(Product product) {
@@ -245,6 +254,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
 
         /**
          * Đặt cartitem tham chiếu
+         *
          * @param item
          */
         public void setCartItem(CartItem item) {
@@ -254,6 +264,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
 
         /**
          * Trả lại nút option value
+         *
          * @param listPosition
          * @param expandedListPosition
          * @return
@@ -265,6 +276,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
 
         /**
          * ID của 1 nút option value
+         *
          * @param listPosition
          * @param expandedListPosition
          * @return
@@ -276,6 +288,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
 
         /**
          * Chuẩn bị holder cho option value, với kiểu chọn 1
+         *
          * @param convertView
          * @param productOptionCustom
          * @param viewHolder
@@ -283,27 +296,11 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         private void initTypeChooseOneHolder(View convertView, ProductOptionCustom productOptionCustom, ProductOptionCustomValueHolder viewHolder) {
             viewHolder.mradChoose = (RadioButton) convertView.findViewById(R.id.id_radio_product_option_radio);
             viewHolder.mProductOptionCustom = productOptionCustom;
-//            final ProductOptionCustomValueHolder mViewH = viewHolder;
-            convertView.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // tìm tất cả các radio trong cùng product option
-                    ProductOptionCustomValueHolder cviewHolder = (ProductOptionCustomValueHolder) v.getTag();
-                    cviewHolder.mblnChoosed = !cviewHolder.mblnChoosed;
-                    expandableListAdapter.notifyDataSetChanged();
-//                    viewHolder.mradChoose.setChecked(true);
-//                    viewHolder.mradChoose.setSelected(true);
-//                    for (ProductOptionCustomValueHolder eachViewHolder: mProductOptionCustomHolderMap.get(viewHolder.mProductOptionCustom).mProductOptionCustomValueHolderList) {
-//                        eachViewHolder.mradChoose.setSelected(eachViewHolder == viewHolder);
-//                        eachViewHolder.mradChoose.setChecked(eachViewHolder == viewHolder);
-//                        viewHolder.mblnChoosed = (eachViewHolder == viewHolder);
-//                    }
-                }
-            });
         }
 
         /**
          * Chuẩn bị holder cho option value, với kiểu chọn nhiều
+         *
          * @param convertView
          * @param productOptionCustomer
          * @param viewHolder
@@ -314,6 +311,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
 
         /**
          * Chuẩn bị holder cho option value, với kiểu chọn date time
+         *
          * @param convertView
          * @param productOptionCustomer
          * @param viewHolder
@@ -323,8 +321,20 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
             viewHolder.mtimePicker = (TimePicker) convertView.findViewById(R.id.id_timepicker_product_option_time);
         }
 
+        private void onClickView(View v) {
+            // tìm tất cả các radio trong cùng product option
+            ProductOptionCustomValueHolder cviewHolder = (ProductOptionCustomValueHolder) v.getTag();
+            if (cviewHolder.mProductOptionCustom.isTypeSelectOne())
+                for (ProductOptionCustomValueHolder eachViewHolder : mProductOptionCustomHolderMap.get(cviewHolder.mProductOptionCustom).mProductOptionCustomValueHolderList) {
+                    eachViewHolder.customValue.setChosen(false);
+                }
+            cviewHolder.customValue.setChosen(!cviewHolder.customValue.isChosen());
+            expandableListAdapter.notifyDataSetChanged();
+        }
+
         /**
          * Tạo view với 1 option value
+         *
          * @param listPosition
          * @param expandedListPosition
          * @param isLastChild
@@ -355,35 +365,18 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                 if (productOption.isTypeSelectMultipe()) {
                     convertView = layoutInflater.inflate(R.layout.card_product_option_item_checkbox, null);
                     initTypeChooseMultipeHolder(convertView, productOption, viewHolder);
-                }
-                else {
+                } else {
                     // còn lại quy về kiểu chọn 1
                     convertView = layoutInflater.inflate(R.layout.card_product_option_item_radio, null);
                     initTypeChooseOneHolder(convertView, productOption, viewHolder);
-
-//                    viewHolder.mradChoose = (RadioButton) convertView.findViewById(R.id.id_radio_product_option_radio);
-//                    final ProductOptionCustomValueHolder mViewH = viewHolder;
-//                    viewHolder.mradChoose.setOnClickListener(new OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            // tìm tất cả các radio trong cùng product option
-//                            viewHolder.mradChoose.setChecked(true);
-//                            viewHolder.mradChoose.setSelected(true);
-//                            for (ProductOptionCustomValueHolder eachViewHolder: mProductOptionCustomHolderMap.get(mViewH.mProductOptionCustom).mProductOptionCustomValueHolderList) {
-//                                eachViewHolder.mradChoose.setSelected(eachViewHolder == viewHolder);
-//                                eachViewHolder.mradChoose.setChecked(eachViewHolder == viewHolder);
-//                            }
-//                        }
-//                    });
                 }
-                // với kiểu ngày
-//                if (productOption.isTypeDate()
-//                        || productOption.isTypeDateTime()
-//                        || productOption.isTypeTime()) {
-//                    convertView = layoutInflater.inflate(R.layout.card_product_option_item_datetime, null);
-//                    initTypeDateTimeHolder(convertView, productOption, viewHolder);
-//                }
 
+                convertView.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onClickView(v);
+                    }
+                });
 
                 // đặt giá trị cho hiển thị tên option và giá cả
                 viewHolder.mtxtDisplay = (TextView) convertView
@@ -400,11 +393,15 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
             viewHolder = (ProductOptionCustomValueHolder) convertView.getTag();
 
             // bind giá trị vào
-            viewHolder.mtxtDisplay.setText( viewHolder.mblnChoosed + " " + optionValue.getDisplayContent());
+            viewHolder.mtxtDisplay.setText(optionValue.getDisplayContent());
             viewHolder.mtxtPrice.setText(ConfigUtil.formatPrice(optionValue.getPrice()));
             if (viewHolder.mradChoose != null) {
-                viewHolder.mradChoose.setChecked(viewHolder.mblnChoosed);
-                viewHolder.mradChoose.setSelected(viewHolder.mblnChoosed);
+                viewHolder.mradChoose.setChecked(optionValue.isChosen());
+                viewHolder.mradChoose.setSelected(optionValue.isChosen());
+            }
+            if (viewHolder.mchkChoose != null) {
+                viewHolder.mchkChoose.setChecked(optionValue.isChosen());
+                viewHolder.mchkChoose.setSelected(optionValue.isChosen());
             }
 
             // return view
@@ -413,6 +410,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
 
         /**
          * Đếm số nút option value
+         *
          * @param listPosition
          * @return
          */
@@ -427,6 +425,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
 
         /**
          * Trả lại tham chiếu đến productoption custom
+         *
          * @param listPosition
          * @return
          */
@@ -437,6 +436,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
 
         /**
          * Đếm số nút option custom
+         *
          * @return
          */
         @Override
@@ -515,7 +515,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         ProductOptionCustom mProductOptionCustom;
         public View view;
         public TextView mtxtDisplay;
-//        public TextView mtxtDisplaySub;
+        //        public TextView mtxtDisplaySub;
         public TextView mtxtPrice;
         public RadioButton mradChoose;
         public CheckBox mchkChoose;

@@ -22,6 +22,7 @@ public class PosProductOptionCustomValue extends PosAbstractModel implements Pro
     String store_price_type;
     String price;
     String price_type;
+    boolean is_choosen = false;
 
     @Override
     public String getID() {
@@ -156,5 +157,15 @@ public class PosProductOptionCustomValue extends PosAbstractModel implements Pro
     @Override
     public void setPriceType(String price_type) {
         this.price_type = price_type;
+    }
+
+    @Override
+    public boolean isChosen() {
+        return is_choosen;
+    }
+
+    @Override
+    public void setChosen(boolean is_chosen) {
+        this.is_choosen = is_chosen;
     }
 }

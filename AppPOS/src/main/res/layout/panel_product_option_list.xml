@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
-
     <data>
+        <import type="android.text.Html" />
         <import type="com.magestore.app.util.ConfigUtil" />
         <variable
             name="cartItem"
@@ -37,7 +37,7 @@
                 android:layout_width="@dimen/product_image_detail_height"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.6"
-                android:text="@{product.getDescription()}" />
+                android:text="@{Html.fromHtml(product.getDescription()).toString()}" />
         </LinearLayout>
 
         <LinearLayout

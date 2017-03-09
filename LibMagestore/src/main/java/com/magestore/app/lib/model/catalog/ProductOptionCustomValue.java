@@ -56,4 +56,8 @@ public interface ProductOptionCustomValue extends Model {
     void setPrice(String price);
 
     void setPriceType(String price_type);
+
+    boolean isChosen();
+
+    void setChosen(boolean is_chosen);
 }
