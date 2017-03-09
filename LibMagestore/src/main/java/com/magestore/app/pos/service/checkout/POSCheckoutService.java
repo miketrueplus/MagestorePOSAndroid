@@ -120,6 +120,10 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         List<PaymentMethodDataParam> listPaymentMethodParam = placeOrderParams.createPaymentMethodData();
 
         for (CheckoutPayment checkoutPayment : listCheckoutPayment) {
+            if(checkoutPayment.getAdditionalData() == null){
+                PosCheckoutPayment.AdditionalData paymentAdditionParam = checkoutPayment.createAdditionalData();
+                checkoutPayment.setAdditionalData(paymentAdditionParam);
+            }
             PaymentMethodDataParam paymentMethodDataParam = createPaymentMethodParam();
             PosPaymentMethodDataParam.PaymentMethodAdditionalParam additionalParam = paymentMethodDataParam.createAddition();
             paymentMethodDataParam.setPaymentMethodAdditionalParam(additionalParam);

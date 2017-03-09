@@ -268,6 +268,11 @@ public class PosCheckoutPayment extends PosAbstractModel implements CheckoutPaym
     }
 
     @Override
+    public AdditionalData getAdditionalData() {
+        return additional_data;
+    }
+
+    @Override
     public void setAdditionalData(AdditionalData additionalData) {
         additional_data = additionalData;
     }

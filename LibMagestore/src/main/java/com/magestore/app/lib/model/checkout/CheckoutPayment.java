@@ -93,5 +93,6 @@ public interface CheckoutPayment extends Model {
     void setCurrentValue(float fCurrentValue);
 
     PosCheckoutPayment.AdditionalData createAdditionalData();
+    PosCheckoutPayment.AdditionalData getAdditionalData();
     void setAdditionalData(PosCheckoutPayment.AdditionalData additionalData);
 }
