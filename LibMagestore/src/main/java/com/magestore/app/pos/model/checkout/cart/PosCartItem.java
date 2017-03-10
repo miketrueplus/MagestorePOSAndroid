@@ -82,6 +82,7 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     @Override
     public void setQuantity(int param_quantity) {
         qty = param_quantity;
+        price = unit_price * param_quantity;
     }
 
     @Override
@@ -102,6 +103,7 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     @Override
     public void setUnitPrice(float param_price) {
         this.unit_price = param_price;
+        price = unit_price * qty;
     }
 
     @Override

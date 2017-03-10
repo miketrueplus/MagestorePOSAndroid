@@ -5,6 +5,7 @@
     android:layout_height="wrap_content">
     <RadioButton
         android:id="@+id/id_radio_product_option_radio"
+        android:clickable="false"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <ImageView

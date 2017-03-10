@@ -7,6 +7,9 @@ import com.magestore.app.lib.controller.AbstractChildListController;
 import com.magestore.app.lib.controller.AbstractController;
 import com.magestore.app.lib.controller.ListController;
 import com.magestore.app.lib.model.catalog.Product;
+import com.magestore.app.lib.model.catalog.ProductOption;
+import com.magestore.app.lib.model.catalog.ProductOptionCustom;
+import com.magestore.app.lib.model.catalog.ProductOptionCustomValue;
 import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.observ.GenericState;
@@ -301,6 +304,23 @@ public class CartItemListController extends AbstractChildListController<Checkout
     }
 
     /**
+     * Clear các chosen
+     */
+    public void clearProductOptionChosen() {
+        if (getItem() == null) return;
+        if (getItem().getProduct() == null) return;
+        if (getItem().getProduct().getProductOption() == null) return;
+        if (getItem().getProduct().getProductOption().getCustomOptions() == null) return;
+
+        for (ProductOptionCustom productCustomOption : getItem().getProduct().getProductOption().getCustomOptions()) {
+            if (productCustomOption.getOptionValueList() == null) return;
+            for (ProductOptionCustomValue customValue : productCustomOption.getOptionValueList()) {
+                customValue.setChosen(false);
+            }
+        }
+    }
+
+    /**
      * hiển thị dialog product option
      * @param cartItem
      */
@@ -313,6 +333,7 @@ public class CartItemListController extends AbstractChildListController<Checkout
         }
 
         // clear list option và hiện thị thông tin product và cart item
+        clearProductOptionChosen();
         mProductOptionPanel.clearList();
         mProductOptionPanel.showCartItemInfo(cartItem);
         mProductOptionDialog.show();

@@ -185,42 +185,58 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
             item.setChooseProductOptions(chooseProductOptionMap);
         }
 
+        // để tạo description cho product
         StringBuilder descriptionBuilder = new StringBuilder();
-
+        // cập nhật giá cho item
+        float unitPrice = getItem().getProduct().getFinalPrice();
         // duyệt tất cả các option custome để lấy option mà user đã chọn
-        for (int i = 0; i < expandableListAdapter.getGroupCount(); i++) {
+        for (int i = 0; i < getItem().getProduct().getProductOption().getCustomOptions().size(); i++) {
             // khởi tạo danh sách option value
-            ProductOptionCustom productOptionCustom = expandableListAdapter.getGroup(i);
+            ProductOptionCustom productOptionCustom = getItem().getProduct().getProductOption().getCustomOptions().get(i);
+            if (productOptionCustom.getOptionValueList() == null) continue;
+
+            // thêm option được chọn vào
             PosCartItem.ChooseProductOption chooseProductOption = item.createChooseProductOption();
             chooseProductOptionMap.put(productOptionCustom, chooseProductOption);
             descriptionBuilder.append(i == 0 ? "" : ". ").append(productOptionCustom.getDisplayContent()).append(": ");
 
             boolean firstCustomValue = true;
-            for (int j = 0; j < expandableListAdapter.mProductOptionCustomHolderMap.get(productOptionCustom).mProductOptionCustomValueHolderList.size(); j++) {
-                ProductOptionCustomValue productOptionCustomValue = expandableListAdapter.getChild(i, j);
-                ProductOptionCustomValueHolder productOptionCustomValueViewHolder = expandableListAdapter.mProductOptionCustomHolderMap.get(productOptionCustom).mProductOptionCustomValueHolderList.get(j);
+            for (int j = 0; j < productOptionCustom.getOptionValueList().size(); j++) {
+                ProductOptionCustomValue productOptionCustomValue = productOptionCustom.getOptionValueList().get(j);
+//                ProductOptionCustomValueHolder productOptionCustomValueViewHolder = expandableListAdapter.mProductOptionCustomHolderMap.get(productOptionCustom).mProductOptionCustomValueHolderList.get(j);
                 // nếu là loại chọn nhiều
-                if (productOptionCustom.isTypeSelectMultipe()) {
-                    if (productOptionCustomValueViewHolder.mchkChoose.isChecked()) {
-                        chooseProductOption.productOptionCustomValueList.add(productOptionCustomValueViewHolder.customValue);
-                        descriptionBuilder.append(!firstCustomValue ? ", " : "").append(productOptionCustomValueViewHolder.customValue.getDisplayContent());
-                        firstCustomValue = false;
-                    }
-                }
-                // nếu là loại chọn 1
-                else {
-                    if (productOptionCustomValueViewHolder.mradChoose.isSelected()) {
-                        chooseProductOption.productOptionCustomValueList.add(productOptionCustomValueViewHolder.customValue);
-                        descriptionBuilder.append(!firstCustomValue ? ", " : "").append(productOptionCustomValueViewHolder.customValue.getDisplayContent());
-                        firstCustomValue = false;
-                    }
+                if (productOptionCustomValue.isChosen()) {
+                    chooseProductOption.productOptionCustomValueList.add(productOptionCustomValue);
+                    unitPrice += Float.parseFloat(productOptionCustomValue.getPrice());
+                    descriptionBuilder.append(!firstCustomValue ? ", " : "").append(productOptionCustomValue.getDisplayContent());
+                    firstCustomValue = false;
                 }
             }
         }
 
         // trả lại cart item
+        item.setUnitPrice(unitPrice);
         item.setItemDescription(descriptionBuilder.toString());
         return item;
+    }
+
+    /**
+     * Cập nhật giá khi thay đổi option
+     */
+    public void updateCartItemPrice() {
+        float price = getItem().getProduct().getFinalPrice();
+        // duyệt tất cả các option custome để tính lại đơn giá
+        for (ProductOptionCustom productOptionCustom : getItem().getProduct().getProductOption().getCustomOptions()) {
+            if (productOptionCustom.getOptionValueList() == null) continue;
+            // khởi tạo danh sách option value
+            for (ProductOptionCustomValue productOptionCustomValue : productOptionCustom.getOptionValueList()) {
+                // nếu là loại chọn nhiều
+                if (productOptionCustomValue.isChosen()) {
+                    price += Float.parseFloat(productOptionCustomValue.getPrice());
+                }
+            }
+        }
+        getItem().setUnitPrice(price);
     }
 
     /**
@@ -321,6 +337,11 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
             viewHolder.mtimePicker = (TimePicker) convertView.findViewById(R.id.id_timepicker_product_option_time);
         }
 
+        /**
+         * Khi click trên view
+         *
+         * @param v
+         */
         private void onClickView(View v) {
             // tìm tất cả các radio trong cùng product option
             ProductOptionCustomValueHolder cviewHolder = (ProductOptionCustomValueHolder) v.getTag();
@@ -330,6 +351,10 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                 }
             cviewHolder.customValue.setChosen(!cviewHolder.customValue.isChosen());
             expandableListAdapter.notifyDataSetChanged();
+
+            // cập nhật lại giá
+            updateCartItemPrice();
+            mBinding.setCartItem(getItem());
         }
 
         /**
@@ -468,7 +493,6 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                 viewHolder.productOptionCustom = mProduct.getProductOption().getCustomOptions().get(listPosition);
                 viewHolder.mProductOptionCustomValueHolderList = new ArrayList<>();
                 viewHolder.mtxtTitle = (TextView) convertView.findViewById(R.id.listTitle);
-                viewHolder.mtxtTitle.setTypeface(null, Typeface.BOLD);
 
                 // lưu hash map cho view holder này
                 mProductOptionCustomHolderMap.put(viewHolder.productOptionCustom, viewHolder);

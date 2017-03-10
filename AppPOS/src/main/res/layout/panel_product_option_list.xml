@@ -108,7 +108,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:text="@{ConfigUtil.formatPrice(cartItem.getPrice())}"
+                            android:text="@{ConfigUtil.formatPrice(cartItem.getUnitPrice())}"
                             android:textAlignment="viewEnd" />
                     </LinearLayout>
 

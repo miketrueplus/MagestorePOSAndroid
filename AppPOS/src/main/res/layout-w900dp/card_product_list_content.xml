@@ -62,7 +62,7 @@
                 android:background="@color/product_background_price"
                 android:gravity="right"
                 android:padding="@dimen/layout_margin"
-                android:text="@{ConfigUtil.formatPrice(product.getPrice())}"
+                android:text="@{ConfigUtil.formatPrice(product.getFinalPrice())}"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/text_size" />
         </RelativeLayout>
