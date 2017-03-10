@@ -88,7 +88,7 @@ public class PosProduct extends PosAbstractModel implements Product {
 
     @Override
     public String getDescription() {
-        return description;
+        return (description == null) ? "" : description;
     }
 
     @Override

@@ -148,6 +148,16 @@ public class PosProductOptionCustom extends PosAbstractModel implements ProductO
     }
 
     @Override
+    public boolean isPriceTypeFixed() {
+        return !"percent".equals(price_type);
+    }
+
+    @Override
+    public boolean isPriceTypePercent() {
+        return "percent".equals(price_type);
+    }
+
+    @Override
     public List<PosProductOptionCustomValue> getOptionValueList() {
         return values;
     }

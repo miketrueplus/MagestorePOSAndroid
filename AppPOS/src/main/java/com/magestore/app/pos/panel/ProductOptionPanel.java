@@ -189,6 +189,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         StringBuilder descriptionBuilder = new StringBuilder();
         // cập nhật giá cho item
         float unitPrice = getItem().getProduct().getFinalPrice();
+        float basePrice = getItem().getProduct().getFinalPrice();
         // duyệt tất cả các option custome để lấy option mà user đã chọn
         for (int i = 0; i < getItem().getProduct().getProductOption().getCustomOptions().size(); i++) {
             // khởi tạo danh sách option value
@@ -207,7 +208,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                 // nếu là loại chọn nhiều
                 if (productOptionCustomValue.isChosen()) {
                     chooseProductOption.productOptionCustomValueList.add(productOptionCustomValue);
-                    unitPrice += Float.parseFloat(productOptionCustomValue.getPrice());
+                    unitPrice +=  (productOptionCustom.isPriceTypePercent() ? basePrice : 1) * Float.parseFloat(productOptionCustomValue.getPrice());
                     descriptionBuilder.append(!firstCustomValue ? ", " : "").append(productOptionCustomValue.getDisplayContent());
                     firstCustomValue = false;
                 }
@@ -225,6 +226,8 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
      */
     public void updateCartItemPrice() {
         float price = getItem().getProduct().getFinalPrice();
+        float basePrice = getItem().getProduct().getFinalPrice();
+
         // duyệt tất cả các option custome để tính lại đơn giá
         for (ProductOptionCustom productOptionCustom : getItem().getProduct().getProductOption().getCustomOptions()) {
             if (productOptionCustom.getOptionValueList() == null) continue;
@@ -232,7 +235,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
             for (ProductOptionCustomValue productOptionCustomValue : productOptionCustom.getOptionValueList()) {
                 // nếu là loại chọn nhiều
                 if (productOptionCustomValue.isChosen()) {
-                    price += Float.parseFloat(productOptionCustomValue.getPrice());
+                    price += (productOptionCustom.isPriceTypePercent() ? basePrice : 1) * Float.parseFloat(productOptionCustomValue.getPrice());
                 }
             }
         }
@@ -503,9 +506,8 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
             if (convertView == null) return null;
 
             // gán giá trị cho view holder text view
-            String listTitle = getGroup(listPosition).getTitle();
             viewHolder = (ProductOptionCustomHolder) convertView.getTag();
-            viewHolder.mtxtTitle.setText(listTitle);
+            viewHolder.mtxtTitle.setText(getGroup(listPosition).getDisplayContent());
 
             return convertView;
         }

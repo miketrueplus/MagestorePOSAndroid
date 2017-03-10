@@ -50,6 +50,10 @@ public interface ProductOptionCustom extends Model {
 
     String getPriceType();
 
+    boolean isPriceTypeFixed();
+
+    boolean isPriceTypePercent();
+
     List<PosProductOptionCustomValue> getOptionValueList();
 
     boolean isTypeSelectOne();
