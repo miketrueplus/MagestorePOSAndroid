@@ -4,8 +4,6 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -191,6 +189,13 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         sales_background_loading.setVisibility(isShow ? VISIBLE : GONE);
     }
 
+    public void showNotifiAddItems() {
+        String message = getContext().getString(R.string.checkout_add_items);
+
+        // Tạo dialog và hiển thị
+        com.magestore.app.util.DialogUtil.confirm(getContext(), message, R.string.ok);
+    }
+
     public void bindTotalPrice(float totalPrice) {
         String total = ConfigUtil.formatPrice(totalPrice);
         txt_grand_total.setText(total);
@@ -280,7 +285,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         ll_payment_credit_card.setVisibility(isShow ? VISIBLE : GONE);
     }
 
-    public void updateTitlePaymentCreditCard(String method){
+    public void updateTitlePaymentCreditCard(String method) {
         txt_payment_creditcard.setText(method);
     }
 

@@ -133,15 +133,20 @@ public class CheckoutListController extends AbstractListController<Checkout> {
      * khi click checkout request savecart tạo quote
      */
     public void doInputSaveCart() {
-        ((CheckoutDetailPanel) mDetailView).isShowLoadingDetail(true);
-        // ẩn button checkout và hold order
-        ((CheckoutListPanel) mView).changeActionButton(true);
-        // show detail panel
-        doShowDetailPanel(true);
-//        binCartItem();
         Checkout checkout = getSelectedItem();
-        wraper.put("quote_id", DataUtil.getDataStringToPreferences(context, DataUtil.QUOTE));
-        doAction(ACTION_TYPE_SAVE_CART, null, wraper, checkout);
+        if (checkout.getCartItem().size() > 0) {
+            ((CheckoutDetailPanel) mDetailView).isShowLoadingDetail(true);
+            // ẩn button checkout và hold order
+            ((CheckoutListPanel) mView).changeActionButton(true);
+            // show detail panel
+            doShowDetailPanel(true);
+//        binCartItem();
+            wraper.put("quote_id", DataUtil.getDataStringToPreferences(context, DataUtil.QUOTE));
+            doAction(ACTION_TYPE_SAVE_CART, null, wraper, checkout);
+        } else {
+            ((CheckoutDetailPanel) mDetailView).showNotifiAddItems();
+            return;
+        }
     }
 
     /**
@@ -463,7 +468,11 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         ((CheckoutListPanel) mView).changeCustomerInToolBar(checkout.getCustomer());
         updateTotalPrice();
         if (mDetailView.getVisibility() == View.VISIBLE) {
-            doInputSaveCart();
+            if (checkout.getCartItem().size() > 0) {
+                doInputSaveCart();
+            } else {
+                onBackTohome();
+            }
         }
     }
 
@@ -679,7 +688,11 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
     public void onRemovePaymentCreditCard() {
         List<CheckoutPayment> listPayment = (List<CheckoutPayment>) wraper.get("list_payment");
-        listPayment.clear();
+        if (listPayment != null) {
+            listPayment.clear();
+        } else {
+            listPayment = new ArrayList<>();
+        }
         wraper.put("list_payment", listPayment);
         ((CheckoutDetailPanel) mDetailView).isEnableCreateInvoice(false);
         ((CheckoutDetailPanel) mDetailView).showPanelCheckoutPaymentCreditCard(false);
@@ -721,7 +734,11 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
     public void actionNewOrder() {
         List<CheckoutPayment> listPayment = (List<CheckoutPayment>) wraper.get("list_payment");
-        listPayment.clear();
+        if (listPayment != null) {
+            listPayment.clear();
+        } else {
+            listPayment = new ArrayList<>();
+        }
         wraper.put("list_payment", listPayment);
         mCheckoutPaymentListPanel.bindList(listPayment);
         mCheckoutPaymentListPanel.updateTotal(listPayment);
@@ -736,8 +753,23 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     }
 
     public void onBackTohome() {
+        List<CheckoutPayment> listPayment = (List<CheckoutPayment>) wraper.get("list_payment");
+        if (listPayment != null) {
+            listPayment.clear();
+        } else {
+            listPayment = new ArrayList<>();
+        }
+        wraper.put("list_payment", listPayment);
+        mCheckoutPaymentListPanel.bindList(listPayment);
+        mCheckoutPaymentListPanel.updateTotal(listPayment);
+        mCheckoutPaymentCreditCardPanel.clearDataForm();
+        ((CheckoutDetailPanel) mDetailView).isEnableButtonAddPayment(false);
+        ((CheckoutDetailPanel) mDetailView).isEnableCreateInvoice(false);
+        ((CheckoutDetailPanel) mDetailView).showPanelPaymentMethod();
+        ((CheckoutDetailPanel) mDetailView).showPanelCheckoutPaymentCreditCard(false);
         showSalesShipping();
         showActionButtonCheckout();
+        doShowDetailSuccess(false);
         doShowDetailPanel(false);
     }
 

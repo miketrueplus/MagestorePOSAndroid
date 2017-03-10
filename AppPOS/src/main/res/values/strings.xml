@@ -41,6 +41,7 @@
     <string name="checkout_payment_cc_number">Credit Card Number</string>
     <string name="checkout_payment_cc_date">Expiration Date</string>
     <string name="checkout_payment_cc_cvv">CVV</string>
+    <string name="checkout_add_items">Please add item(s) to cart!</string>
 
     <!-- Strings related to customer -->
     <string name="customer_search_customer_here">Search name, email, telephone</string>
