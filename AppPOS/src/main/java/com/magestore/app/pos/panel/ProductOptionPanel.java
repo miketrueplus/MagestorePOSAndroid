@@ -30,6 +30,7 @@ import com.magestore.app.pos.model.catalog.PosProductOptionCustom;
 import com.magestore.app.pos.model.catalog.PosProductOptionCustomValue;
 import com.magestore.app.pos.model.checkout.cart.PosCartItem;
 import com.magestore.app.util.ConfigUtil;
+import com.magestore.app.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -202,9 +203,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
 
         // để tạo description cho product
         StringBuilder descriptionBuilder = new StringBuilder();
-        // cập nhật giá cho item
-        float unitPrice = getItem().getProduct().getFinalPrice();
-        float basePrice = getItem().getProduct().getFinalPrice();
+
         // duyệt tất cả các option custome để lấy option mà user đã chọn
         for (int i = 0; i < getItem().getProduct().getProductOption().getCustomOptions().size(); i++) {
             // khởi tạo danh sách option value
@@ -223,7 +222,6 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                 // nếu là loại chọn nhiều
                 if (productOptionCustomValue.isChosen()) {
                     chooseProductOption.productOptionCustomValueList.add(productOptionCustomValue);
-                    unitPrice += (productOptionCustom.isPriceTypePercent() ? basePrice : 1) * Float.parseFloat(productOptionCustomValue.getPrice());
                     descriptionBuilder.append(!firstCustomValue ? ", " : "").append(productOptionCustomValue.getDisplayContent());
                     firstCustomValue = false;
                 }
@@ -231,8 +229,8 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         }
 
         // trả lại cart item
-        item.setUnitPrice(unitPrice);
         item.setItemDescription(descriptionBuilder.toString());
+        ((CartItemListController) getController()).updateCartItemPrice(item);
         return item;
     }
 
@@ -240,21 +238,24 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
      * Cập nhật giá khi thay đổi option
      */
     public void updateCartItemPrice() {
-        float price = getItem().getProduct().getFinalPrice();
-        float basePrice = getItem().getProduct().getFinalPrice();
-
-        // duyệt tất cả các option custome để tính lại đơn giá
-        for (ProductOptionCustom productOptionCustom : getItem().getProduct().getProductOption().getCustomOptions()) {
-            if (productOptionCustom.getOptionValueList() == null) continue;
-            // khởi tạo danh sách option value
-            for (ProductOptionCustomValue productOptionCustomValue : productOptionCustom.getOptionValueList()) {
-                // nếu là loại chọn nhiều
-                if (productOptionCustomValue.isChosen()) {
-                    price += (productOptionCustom.isPriceTypePercent() ? basePrice : 1) * Float.parseFloat(productOptionCustomValue.getPrice());
-                }
-            }
-        }
-        getItem().setUnitPrice(price);
+        CartItem item = bind2Item();
+        mBinding.setCartItem(item);
+//
+//        float price = getItem().getProduct().getFinalPrice();
+//        float basePrice = getItem().getProduct().getFinalPrice();
+//
+//        // duyệt tất cả các option custome để tính lại đơn giá
+//        for (ProductOptionCustom productOptionCustom : getItem().getProduct().getProductOption().getCustomOptions()) {
+//            if (productOptionCustom.getOptionValueList() == null) continue;
+//            // khởi tạo danh sách option value
+//            for (ProductOptionCustomValue productOptionCustomValue : productOptionCustom.getOptionValueList()) {
+//                // nếu là loại chọn nhiều
+//                if (productOptionCustomValue.isChosen()) {
+//                    price += (productOptionCustom.isPriceTypePercent() ? basePrice : 1) * Float.parseFloat(productOptionCustomValue.getPrice());
+//                }
+//            }
+//        }
+//        getItem().setUnitPrice(price);
     }
 
     /**
@@ -431,7 +432,15 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
 
             // bind giá trị vào
             viewHolder.mtxtDisplay.setText(optionValue.getDisplayContent());
-            viewHolder.mtxtPrice.setText(ConfigUtil.formatPrice(optionValue.getPrice()));
+            if (productOptionCustom.isConfigOption()) {
+                viewHolder.mtxtPrice.setText(StringUtil.STRING_EMPTY);
+            }
+            else {
+                viewHolder.mtxtPrice.setText(ConfigUtil.formatPrice((
+                        productOptionCustom.isPriceTypePercent()
+                                ? "" + Float.parseFloat(optionValue.getPrice()) * mCartItem.getProduct().getFinalPrice()
+                                : optionValue.getPrice())));
+            }
             if (viewHolder.mradChoose != null) {
                 viewHolder.mradChoose.setChecked(optionValue.isChosen());
                 viewHolder.mradChoose.setSelected(optionValue.isChosen());

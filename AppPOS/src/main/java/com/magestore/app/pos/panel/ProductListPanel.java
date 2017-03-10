@@ -130,7 +130,7 @@ public class ProductListPanel extends AbstractListPanel<Product> {
 
             // gán giá trị của product vào
             txtProductName.setText(product.getName());
-            txtPrice.setText(ConfigUtil.formatPrice(product.getPrice()));
+            txtPrice.setText(ConfigUtil.formatPrice(product.getFinalPrice()));
 //            txtSKU.setText(product.getSKU());
 
             // gán ảnh vào

@@ -9,6 +9,8 @@ import com.magestore.app.lib.model.Model;
  */
 
 public interface ProductOptionCustomValue extends Model {
+    void setID(String id);
+
     String getOptionTypeID();
 
     String getOptionID();

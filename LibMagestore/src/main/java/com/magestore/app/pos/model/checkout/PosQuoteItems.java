@@ -7,6 +7,7 @@ import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.pos.model.PosAbstractModel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -21,12 +22,14 @@ public class PosQuoteItems extends PosAbstractModel implements QuoteItems {
     int qty_to_ship;
     int use_discount;
     PosQuoteItemExtension extension_data;
+
     class CustomOptions {
         int code;
-        String value;
-    };
-    List<CustomOptions> options;
+        int value;
+    }
 
+    List<CustomOptions> options;
+    HashMap<String, String> super_attribute;
 
     @Override
     public String getItemId() {
@@ -93,17 +96,21 @@ public class PosQuoteItems extends PosAbstractModel implements QuoteItems {
         if (cartItem.getChooseProductOptions() == null) return;
         if (!cartItem.getProduct().haveProductOption()) return;
 
-        if (options == null) options = new ArrayList<CustomOptions>();
-        for (ProductOptionCustom customOption :
-                cartItem.getChooseProductOptions().keySet()) {
-            StringBuilder stringBuilder = new StringBuilder();
-            CustomOptions quoteCustomeOption = new CustomOptions();
-            quoteCustomeOption.code = Integer.parseInt(customOption.getOptionID());
+        for (ProductOptionCustom customOption : cartItem.getChooseProductOptions().keySet()) {
             for (int i = 0; i < customOption.getOptionValueList().size(); i++) {
-                stringBuilder.append(i == 0 ? "" : ",").append(customOption.getOptionValueList().get(i).getOptionTypeID());
+                // với config option
+                if (customOption.isConfigOption()) {
+                    if (super_attribute == null) super_attribute = new HashMap<>();
+                    super_attribute.put(customOption.getID(), customOption.getOptionValueList().get(i).getID());
+                } else {
+                    // với custom option option
+                    CustomOptions quoteCustomeOption = new CustomOptions();
+                    quoteCustomeOption.code = Integer.parseInt(customOption.getID());
+                    quoteCustomeOption.value = Integer.parseInt(customOption.getOptionValueList().get(i).getID());
+                    if (options == null) options = new ArrayList<CustomOptions>();
+                    options.add(quoteCustomeOption);
+                }
             }
-            quoteCustomeOption.value = stringBuilder.toString();
-            options.add(quoteCustomeOption);
         }
     }
 }

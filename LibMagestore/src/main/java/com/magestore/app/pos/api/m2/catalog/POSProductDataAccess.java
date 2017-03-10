@@ -99,8 +99,10 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
                     PosProductOptionCustom productOptionCustom = new PosProductOptionCustom();
                     productOptionCustom.setProductID(product.getID());
                     productOptionCustom.setOptionID(bundle.getID());
+                    productOptionCustom.setOptionType(ProductOptionCustom.OPTION_TYPE_BUNDLE);
                     productOptionCustom.setTitle(bundle.getTitle());
-                    productOptionCustom.setType(bundle.getType());
+//                    productOptionCustom.setType(bundle.getType());
+                    productOptionCustom.setType(ProductOptionCustom.TYPE_RADIO);
                     productOptionCustom.setRequire(bundle.isRequired());
                     listCustomOption.add(productOptionCustom);
 
@@ -120,7 +122,7 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
                 }
             }
 
-            // convert option theo json config product options sang 1 format thống nhất
+            // convert option theo json config product options sang 1 format thống nhất của custom option
             Map<String, PosProductOptionConfigOption> configOptionMap = productOption.getConfigurableOptions();
             if (configOptionMap != null) {
                 // nếu custom option chưa được khởi tạo thì khởi tạo
@@ -136,10 +138,11 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
                     PosProductOptionConfigOption configOption = configOptionMap.get(optionCode);
                     productOptionCustom.setOptionCode(optionCode);
                     productOptionCustom.setProductID(product.getID());
-                    productOptionCustom.setOptionID(configOption.optionId);
+                    productOptionCustom.setID(configOption.optionId);
                     productOptionCustom.setTitle(configOption.optionLabel);
                     productOptionCustom.setDefaultTitle(configOption.optionLabel);
-                    productOptionCustom.setType("radio");
+                    productOptionCustom.setOptionType(ProductOptionCustom.OPTION_TYPE_CONFIG);
+                    productOptionCustom.setType(ProductOptionCustom.TYPE_RADIO);
                     productOptionCustom.setRequire(true);
                     listCustomOption.add(productOptionCustom);
 
@@ -149,14 +152,13 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
                     for (String key : configOption.optionValues.keySet()) {
                         PosProductOptionCustomValue customValue = new PosProductOptionCustomValue();
                         customValue.setOptionId(configOption.optionId);
-                        customValue.setOptionTypeId(key);
+                        customValue.setID(key);
                         customValue.setTitle(configOption.optionValues.get(key));
                         customValue.setStoreTitle(configOption.optionValues.get(key));
                         customValue.setDefaultTitle(configOption.optionValues.get(key));
                         customValue.setPrice("0");
                         customValue.setPriceType("0");
                         customValue.setDefaultPrice("0");
-                        customValue.setPriceType(null);
                         listCustomValue.add(customValue);
                     }
                 }

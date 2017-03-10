@@ -304,6 +304,14 @@ public class CartItemListController extends AbstractChildListController<Checkout
     }
 
     /**
+     * Cập nhật price của item theo option đã chọn
+     * @param cartItem
+     */
+    public void updateCartItemPrice(CartItem cartItem) {
+        mCartService.updatePrice(cartItem);
+    }
+
+    /**
      * Clear các chosen
      */
     public void clearProductOptionChosen() {

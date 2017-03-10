@@ -30,6 +30,11 @@ public class PosProductOptionCustomValue extends PosAbstractModel implements Pro
     }
 
     @Override
+    public void setID(String id) {
+        this.option_type_id = id;
+    }
+
+    @Override
     public String getDisplayContent() {
         return (title != null) ? title : default_title;
     }

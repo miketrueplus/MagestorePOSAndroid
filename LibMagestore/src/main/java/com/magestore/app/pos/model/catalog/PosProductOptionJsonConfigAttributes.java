@@ -15,7 +15,7 @@ public class PosProductOptionJsonConfigAttributes extends PosAbstractModel {
     public class Option {
         public String id;
         public String label;
-        public String[] products;
+        public List<String> products;
     }
     public List<Option> options;
     public String code;

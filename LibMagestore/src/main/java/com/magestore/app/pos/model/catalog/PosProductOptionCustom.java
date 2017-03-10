@@ -13,6 +13,7 @@ public class PosProductOptionCustom extends PosAbstractModel implements ProductO
     String option_id;
     String option_code;
     String product_id;
+    String option_type;
     String type;
     String is_require;
     String sku;
@@ -35,6 +36,11 @@ public class PosProductOptionCustom extends PosAbstractModel implements ProductO
     @Override
     public String getID() {
         return option_id;
+    }
+
+    @Override
+    public void setID(String id) {
+        this.option_id = id;
     }
 
     @Override
@@ -149,12 +155,12 @@ public class PosProductOptionCustom extends PosAbstractModel implements ProductO
 
     @Override
     public boolean isPriceTypeFixed() {
-        return !"percent".equals(price_type);
+        return !ProductOptionCustom.PRICE_TYPE_PERCENT.equals(price_type);
     }
 
     @Override
     public boolean isPriceTypePercent() {
-        return "percent".equals(price_type);
+        return ProductOptionCustom.PRICE_TYPE_PERCENT.equals(price_type);
     }
 
     @Override
@@ -164,32 +170,32 @@ public class PosProductOptionCustom extends PosAbstractModel implements ProductO
 
     @Override
     public boolean isTypeSelectOne() {
-        return "radio".equals(type) || "drop_down".equals(type);
+        return ProductOptionCustom.TYPE_RADIO.equals(type) || ProductOptionCustom.TYPE_DROP_DOWN.equals(type);
     }
 
     @Override
     public boolean isTypeSelectMultipe() {
-        return "checkbox".equals(type) || "multiple".equals(type);
+        return ProductOptionCustom.TYPE_CHECKBOX.equals(type) || ProductOptionCustom.TYPE_MULTIPE.equals(type);
     }
 
-    @Override
-    public boolean isTypeChooseQuantity() {
-        return "field".equals(type);
-    }
+//    @Override
+//    public boolean isTypeChooseQuantity() {
+//        return "field".equals(type);
+//    }
 
     @Override
     public boolean isTypeTime() {
-        return "time".equals(type);
+        return ProductOptionCustom.TYPE_TIME.equals(type);
     }
 
     @Override
     public boolean isTypeDate() {
-        return "date".equals(type);
+        return ProductOptionCustom.TYPE_DATE.equals(type);
     }
 
     @Override
     public boolean isTypeDateTime() {
-        return "date_time".equals(type);
+        return ProductOptionCustom.TYPE_DATETIME.equals(type);
     }
 
     @Override
@@ -235,6 +241,26 @@ public class PosProductOptionCustom extends PosAbstractModel implements ProductO
     @Override
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    @Override
+    public boolean isCustomOption() {
+        return (option_type == null) || ProductOptionCustom.OPTION_TYPE_CUSTOM.equals(option_type);
+    }
+
+    @Override
+    public boolean isConfigOption() {
+        return ProductOptionCustom.OPTION_TYPE_CONFIG.equals(option_type);
+    }
+
+    @Override
+    public boolean isBundleOption() {
+        return ProductOptionCustom.OPTION_TYPE_BUNDLE.equals(option_type);
+    }
+
+    @Override
+    public void setOptionType(String option_type) {
+        this.option_type = option_type;
     }
 
 //

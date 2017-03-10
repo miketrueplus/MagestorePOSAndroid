@@ -13,6 +13,11 @@ import java.io.InputStreamReader;
  */
 
 public class StringUtil {
+    public static String STRING_EMPTY = "";
+    public static String STRING_DOT = ".";
+    public static String STRING_ZERO = "0";
+
+
     /**
      * Tạo String Builder từ InputStream
      * @param is

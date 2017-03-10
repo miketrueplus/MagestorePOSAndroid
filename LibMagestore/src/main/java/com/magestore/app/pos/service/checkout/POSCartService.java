@@ -1,10 +1,16 @@
 package com.magestore.app.pos.service.checkout;
 
+import android.util.ArraySet;
+
 import com.magestore.app.lib.model.catalog.Product;
+import com.magestore.app.lib.model.catalog.ProductOptionCustom;
+import com.magestore.app.lib.model.catalog.ProductOptionCustomValue;
 import com.magestore.app.lib.model.checkout.Cart;
 import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.service.checkout.CartService;
+import com.magestore.app.pos.model.catalog.PosProductOptionConfigOption;
+import com.magestore.app.pos.model.catalog.PosProductOptionJsonConfigAttributes;
 import com.magestore.app.pos.model.checkout.cart.PosCartItem;
 import com.magestore.app.pos.service.AbstractService;
 
@@ -12,6 +18,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Thực hiện các nghiệp vụ, service của cart
@@ -23,13 +30,14 @@ import java.util.List;
 public class POSCartService extends AbstractService implements CartService {
     /**
      * Tính toán tổng giá trị sub total của đơn hàng
+     *
      * @return
      */
     @Override
     public synchronized float calculateSubTotal(Checkout checkout) {
         // Khởi tạo danh sách order items
         if (checkout == null) return 0;
-        List<CartItem> listItems =  checkout.getCartItem();
+        List<CartItem> listItems = checkout.getCartItem();
         if (listItems == null) return 0;
 
         float total = 0;
@@ -43,6 +51,7 @@ public class POSCartService extends AbstractService implements CartService {
 
     /**
      * Tính toán thuế
+     *
      * @return
      */
     @Override
@@ -55,6 +64,7 @@ public class POSCartService extends AbstractService implements CartService {
 
     /**
      * Tính toán tổng discount
+     *
      * @return
      */
     @Override
@@ -65,6 +75,7 @@ public class POSCartService extends AbstractService implements CartService {
 
     /**
      * Tính toán tổng giá trị cuối cùng của đơn hàng
+     *
      * @return
      */
     @Override
@@ -118,7 +129,7 @@ public class POSCartService extends AbstractService implements CartService {
         if (checkout == null) return null;
 
         // Khởi tạo danh sách order cartItem
-        List<CartItem> listItems =  checkout.getCartItem();
+        List<CartItem> listItems = checkout.getCartItem();
         if (listItems == null) return null;
 
         // Kiểm tra xem đã có order item với mặt hàng tương ứng chưa
@@ -203,6 +214,7 @@ public class POSCartService extends AbstractService implements CartService {
 
     /**
      * Thêm 1 order item
+     *
      * @param product
      * @param quantity
      * @param price
@@ -213,7 +225,7 @@ public class POSCartService extends AbstractService implements CartService {
         if (checkout == null) return null;
 
         // Khởi tạo danh sách order cartItem
-        List<CartItem> listItems =  checkout.getCartItem();
+        List<CartItem> listItems = checkout.getCartItem();
         if (listItems == null) {
             listItems = new ArrayList<CartItem>();
             checkout.setCartItem(listItems);
@@ -249,6 +261,7 @@ public class POSCartService extends AbstractService implements CartService {
 
     /**
      * Sinh ID tương ứng theo thời gian
+     *
      * @return
      */
     private long getItemIdInCurrentTime() {
@@ -258,6 +271,7 @@ public class POSCartService extends AbstractService implements CartService {
 
     /**
      * Thêm product
+     *
      * @param product
      * @param quantity
      */
@@ -268,6 +282,7 @@ public class POSCartService extends AbstractService implements CartService {
 
     /**
      * Xóa 1 mặt hàng trong order item
+     *
      * @param position
      */
     @Override
@@ -276,7 +291,7 @@ public class POSCartService extends AbstractService implements CartService {
         if (checkout == null) return false;
 
         // Khởi tạo danh sách order items
-        List<CartItem> listItems =  checkout.getCartItem();
+        List<CartItem> listItems = checkout.getCartItem();
         if (listItems == null) return true;
 
         // remove order item vị trí thứ n
@@ -286,6 +301,7 @@ public class POSCartService extends AbstractService implements CartService {
 
     /**
      * Xóa item ra khỏi danh sách
+     *
      * @param checkout
      * @param childs
      * @return
@@ -303,6 +319,7 @@ public class POSCartService extends AbstractService implements CartService {
 
     /**
      * Trừ số lượng một mặt hàng trên đơn hàng
+     *
      * @param product
      * @param subQuantity
      */
@@ -312,7 +329,7 @@ public class POSCartService extends AbstractService implements CartService {
         if (checkout == null) return null;
 
         // Khởi tạo danh sách order cartItem
-        List<CartItem> listItems =  checkout.getCartItem();
+        List<CartItem> listItems = checkout.getCartItem();
         if (listItems == null) return null;
 
         // Kiểm tra xem đã có item với mặt hàng tương ứng chưa
@@ -341,6 +358,7 @@ public class POSCartService extends AbstractService implements CartService {
 
     /**
      * Xóa một mặt hàng trên đơn hàng
+     *
      * @param product
      */
     @Override
@@ -349,7 +367,7 @@ public class POSCartService extends AbstractService implements CartService {
         if (checkout == null) return null;
 
         // Khởi tạo danh sách order cartItem
-        List<CartItem> listItems =  checkout.getCartItem();
+        List<CartItem> listItems = checkout.getCartItem();
         if (listItems == null) return null;
 
         // Kiểm tra xem đã có item với mặt hàng tương ứng chưa
@@ -369,9 +387,43 @@ public class POSCartService extends AbstractService implements CartService {
     }
 
     /**
-     * Xóa bỏ product option cũ
+     * Cập nhật lại đơn giá cho cart item
+     *
+     * @param cartItem
      */
-    public void clearProductOption(CartItem cartItem) {
+    @Override
+    public void updatePrice(CartItem cartItem) {
+        float price = cartItem.getProduct().getFinalPrice();
+        float basePrice = cartItem.getProduct().getFinalPrice();
 
+        // sử dụng để tính toán đối với config option
+        List<String> products = new ArrayList<>();
+        String configOptionProductId = null;
+
+        // duyệt từng custome option
+        for (ProductOptionCustom productOptionCustom : cartItem.getChooseProductOptions().keySet()) {
+            if (cartItem.getChooseProductOptions().get(productOptionCustom) == null) continue;
+
+            for (ProductOptionCustomValue productOptionCustomValue : cartItem.getChooseProductOptions().get(productOptionCustom).productOptionCustomValueList) {
+                if (productOptionCustom.isConfigOption()) {
+                    List<PosProductOptionJsonConfigAttributes.Option> configOption = cartItem.getProduct().getProductOption().getJsonConfig().attributes.get(productOptionCustom.getID()).options;
+                    for (PosProductOptionJsonConfigAttributes.Option option : cartItem.getProduct().getProductOption().getJsonConfig().attributes.get(productOptionCustom.getID()).options)
+                        if (option.id.equals(productOptionCustomValue.getID())) {
+                            if (products.size() <= 0) products.addAll(option.products);
+                            else
+                                products.retainAll(option.products);
+                        }
+                    configOptionProductId = (products.size() == 1) ? products.get(0) : null;
+                } else {
+                    price += (productOptionCustom.isPriceTypePercent() ? basePrice : 1) * Float.parseFloat(productOptionCustomValue.getPrice());
+                }
+            }
+        }
+
+        // tính giá theo config option
+        if (configOptionProductId != null) price += cartItem.getProduct().getProductOption().getJsonConfig().optionPrices.get(configOptionProductId).getFinalPrice();
+
+        // cập nhật đơn giá
+        cartItem.setUnitPrice(price);
     }
 }

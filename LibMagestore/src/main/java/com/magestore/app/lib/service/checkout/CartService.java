@@ -51,4 +51,6 @@ public interface CartService extends ChildListService<Checkout, CartItem> {
     CartItem delete(Checkout checkout, Product product) throws IOException, InstantiationException, ParseException, IllegalAccessException;
 
     CartItem delete(Checkout checkout, Product product, int subQuantity) throws IOException, InstantiationException, ParseException, IllegalAccessException;
+
+    void updatePrice(CartItem cartItem);
 }

@@ -10,6 +10,27 @@ import java.util.List;
  */
 
 public interface ProductOptionCustom extends Model {
+    // option type
+    public static final String OPTION_TYPE_CUSTOM = "custom";
+    public static final String OPTION_TYPE_CONFIG = "config";
+    public static final String OPTION_TYPE_BUNDLE = "bundle";
+
+    // type
+    public static final String TYPE_MULTIPE = "multipe";
+    public static final String TYPE_DROP_DOWN = "drop_down";
+    public static final String TYPE_RADIO = "radio";
+    public static final String TYPE_CHECKBOX = "checkbox";
+    public static final String TYPE_DATE = "date";
+    public static final String TYPE_TIME = "time";
+    public static final String TYPE_DATETIME = "date_time";
+
+    // giá type
+    public static final String PRICE_TYPE_PERCENT = "percent";
+    public static final String PRICE_TYPE_FIXED = "fixed";
+
+
+    void setID(String id);
+
     String getOptionID();
 
     String getOptionCode();
@@ -60,7 +81,7 @@ public interface ProductOptionCustom extends Model {
 
     boolean isTypeSelectMultipe();
 
-    boolean isTypeChooseQuantity();
+//    boolean isTypeChooseQuantity();
 
     boolean isTypeTime();
 
@@ -85,4 +106,12 @@ public interface ProductOptionCustom extends Model {
     void setStoreTitle(String store_title);
 
     void setTitle(String title);
+
+    boolean isCustomOption();
+
+    boolean isConfigOption();
+
+    boolean isBundleOption();
+
+    void setOptionType(String option_type);
 }
