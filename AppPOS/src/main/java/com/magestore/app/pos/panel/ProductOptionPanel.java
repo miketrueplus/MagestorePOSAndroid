@@ -72,7 +72,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         super.bindItem(item);
 
         if (expandableListAdapter != null) {
-            expandableListAdapter.setProduct(item.getProduct());
+            expandableListAdapter.setCartItem(item);
             expandableListAdapter.notifyDataSetChanged();
         }
     }
@@ -123,9 +123,12 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
      */
     public void clearList() {
         if (expandableListAdapter != null) {
-            expandableListAdapter.setProduct(null);
+            expandableListAdapter.clearList();
+            expandableListAdapter.setCartItem(null);
             expandableListAdapter.notifyDataSetChanged();
         }
+        expandableListAdapter = new ProductOptionPanel.CustomExpandableListAdapter(getContext());
+        expandableListView.setAdapter(expandableListAdapter);
     }
 
     /**
@@ -259,9 +262,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
      */
     public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
         private Context context;
-        private Product mProduct;
         private CartItem mCartItem;
-
         public Map<PosProductOptionCustom, ProductOptionCustomHolder> mProductOptionCustomHolderMap;
 
         /**
@@ -274,13 +275,9 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
             mProductOptionCustomHolderMap = new HashMap<PosProductOptionCustom, ProductOptionCustomHolder>();
         }
 
-        /**
-         * Đặt product tham chiến
-         *
-         * @param product
-         */
-        public void setProduct(Product product) {
-            mProduct = product;
+        public void clearList() {
+            mProductOptionCustomHolderMap.clear();
+            mProductOptionCustomHolderMap = new HashMap<PosProductOptionCustom, ProductOptionCustomHolder>();
         }
 
         /**
@@ -290,7 +287,6 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
          */
         public void setCartItem(CartItem item) {
             mCartItem = item;
-            mProduct = item.getProduct();
         }
 
         /**
@@ -302,7 +298,8 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
          */
         @Override
         public PosProductOptionCustomValue getChild(int listPosition, int expandedListPosition) {
-            return mProduct.getProductOption().getCustomOptions().get(listPosition).getOptionValueList().get(expandedListPosition);
+            if (mCartItem == null) return null;
+            return mCartItem.getProduct().getProductOption().getCustomOptions().get(listPosition).getOptionValueList().get(expandedListPosition);
         }
 
         /**
@@ -401,7 +398,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                 viewHolder.mProductOptionCustom = productOptionCustom;
 
                 // Xem kiểu option là gì để lựa chọn layout tương ứng
-                ProductOptionCustom productOption = mProduct.getProductOption().getCustomOptions().get(listPosition);
+                ProductOptionCustom productOption = mCartItem.getProduct().getProductOption().getCustomOptions().get(listPosition);
                 if (productOption.isTypeSelectMultipe()) {
                     convertView = layoutInflater.inflate(R.layout.card_product_option_item_checkbox, null);
                     initTypeChooseMultipeHolder(convertView, productOption, viewHolder);
@@ -456,11 +453,12 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
          */
         @Override
         public int getChildrenCount(int listPosition) {
-            if (mProduct == null || mProduct.getProductOption() == null || mProduct.getProductOption().getCustomOptions() == null)
+            if (mCartItem == null) return 0;
+            if (mCartItem.getProduct() == null || mCartItem.getProduct().getProductOption() == null || mCartItem.getProduct().getProductOption().getCustomOptions() == null)
                 return 0;
-            if (mProduct.getProductOption().getCustomOptions().get(listPosition).getOptionValueList() == null)
+            if (mCartItem.getProduct().getProductOption().getCustomOptions().get(listPosition).getOptionValueList() == null)
                 return 0;
-            return mProduct.getProductOption().getCustomOptions().get(listPosition).getOptionValueList().size();
+            return mCartItem.getProduct().getProductOption().getCustomOptions().get(listPosition).getOptionValueList().size();
         }
 
         /**
@@ -471,7 +469,8 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
          */
         @Override
         public PosProductOptionCustom getGroup(int listPosition) {
-            return mProduct.getProductOption().getCustomOptions().get(listPosition);
+            if (mCartItem == null) return null;
+            return mCartItem.getProduct().getProductOption().getCustomOptions().get(listPosition);
         }
 
         /**
@@ -481,9 +480,10 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
          */
         @Override
         public int getGroupCount() {
-            if (mProduct == null || mProduct.getProductOption() == null || mProduct.getProductOption().getCustomOptions() == null)
+            if (mCartItem == null) return 0;
+            if (mCartItem.getProduct() == null || mCartItem.getProduct().getProductOption() == null || mCartItem.getProduct().getProductOption().getCustomOptions() == null)
                 return 0;
-            return mProduct.getProductOption().getCustomOptions().size();
+            return mCartItem.getProduct().getProductOption().getCustomOptions().size();
         }
 
         @Override
@@ -505,7 +505,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                 // khởi tạo view holder
                 viewHolder = new ProductOptionCustomHolder();
                 viewHolder.view = convertView;
-                viewHolder.productOptionCustom = mProduct.getProductOption().getCustomOptions().get(listPosition);
+                viewHolder.productOptionCustom = mCartItem.getProduct().getProductOption().getCustomOptions().get(listPosition);
                 viewHolder.mProductOptionCustomValueHolderList = new ArrayList<>();
                 viewHolder.mtxtTitle = (TextView) convertView.findViewById(R.id.listTitle);
 
@@ -552,7 +552,6 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
      * Nắm ngữ view và product option custom value tương ứng
      */
     public class ProductOptionCustomValueHolder {
-        boolean mblnChoosed = false;
         ProductOptionCustom mProductOptionCustom;
         public View view;
         public TextView mtxtDisplay;
