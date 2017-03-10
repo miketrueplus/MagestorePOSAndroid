@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:paddingLeft="@dimen/product_detail_margin_size">
+    android:paddingLeft="@dimen/product_detail_margin_size"
+    android:paddingRight="@dimen/product_detail_margin_size">
 
     <RadioButton
         android:id="@+id/id_radio_product_option_radio"

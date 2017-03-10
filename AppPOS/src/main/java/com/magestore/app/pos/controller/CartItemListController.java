@@ -331,7 +331,7 @@ public class CartItemListController extends AbstractChildListController<Checkout
                     cartItem.getProduct().getName(),
                     mProductOptionPanel);
         }
-
+        mProductOptionDialog.setGoneButtonSave(true);
         // clear list option và hiện thị thông tin product và cart item
         clearProductOptionChosen();
         mProductOptionPanel.clearList();

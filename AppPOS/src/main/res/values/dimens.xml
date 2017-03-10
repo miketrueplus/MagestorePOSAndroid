@@ -12,7 +12,7 @@
     <dimen name="nav_header_height">160dp</dimen>
     <dimen name="layout_margin_5">5dp</dimen>
     <dimen name="layout_margin_10">10dp</dimen>
-    <dimen name="layout_margin_20">10dp</dimen>
+    <dimen name="layout_margin_20">20dp</dimen>
     <dimen name="layout_margin_30">30dp</dimen>
     <dimen name="layout_margin_40">40dp</dimen>
     <dimen name="line">1dp</dimen>
@@ -38,12 +38,15 @@
 
     <!--Product Detail and Option-->
     <dimen name="product_detail_description_text_size">14sp</dimen>
-    <dimen name="product_detail_margin_size">20sp</dimen>
+    <dimen name="product_detail_margin_size">20dp</dimen>
     <dimen name="product_detail_title_text_size">16sp</dimen>
     <dimen name="product_detail_content_text_size">18sp</dimen>
     <dimen name="product_detail_title_margin_size">10sp</dimen>
     <dimen name="product_detail_background_border_size">2dp</dimen>
     <dimen name="product_detail_border_radius">5dp</dimen>
+    <dimen name="product_detail_edittext_radius">5dp</dimen>
+    <dimen name="product_detail_text_size">28sp</dimen>
+    <dimen name="product_detail_text_quantity_width">80dp</dimen>
 
     <!--Cart List-->
     <dimen name="card_item_image_size">70dp</dimen>
@@ -77,4 +80,8 @@
     <dimen name="checkout_success_edditext_width_size">40dp</dimen>
     <dimen name="checkout_success_edditext_margin_top">40dp</dimen>
     <dimen name="checkout_success_button_text_size">20sp</dimen>
+    
+    <!--Dialog-->
+    <dimen name="dialog_title_text_size">24sp</dimen>
+    <dimen name="dialog_action_text_size">14sp</dimen>
 </resources>

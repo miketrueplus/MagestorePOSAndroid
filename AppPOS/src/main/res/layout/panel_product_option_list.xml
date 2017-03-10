@@ -28,13 +28,12 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:focusableInTouchMode="true"
-        android:orientation="horizontal"
-        android:padding="@dimen/product_detail_margin_size">
+        android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginRight="@dimen/product_detail_margin_size"
+            android:layout_margin="@dimen/product_detail_margin_size"
             android:orientation="vertical">
 
             <ImageView
@@ -61,6 +60,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/product_detail_margin_size"
+                android:layout_marginTop="@dimen/product_detail_margin_size"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -153,35 +154,47 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:layout_weight="3"
                         android:orientation="horizontal">
 
                         <TextView
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:background="#d8d8d8"
-                            android:onClick="@{panel.onAddQuantity}"
-                            android:padding="10dp"
-                            android:text="@string/plus"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="@dimen/layout_margin_5"
+                            android:background="@drawable/product_detail_border_text"
+                            android:onClick="@{panel.onSubstractQuantity}"
+                            android:paddingLeft="@dimen/layout_margin_20"
+                            android:paddingRight="@dimen/layout_margin_20"
+                            android:text="@string/minus"
                             android:textColor="@color/text_color"
-                            android:textSize="22sp" />
+                            android:textSize="@dimen/product_detail_text_size" />
 
                         <EditText
                             android:id="@+id/id_txt_product_option_quantity"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1.0"
-                            android:text="@{ConfigUtil.formatQuantity(cartItem.getQuantity())}" />
+                            android:layout_width="@dimen/product_detail_text_quantity_width"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="@dimen/layout_margin_5"
+                            android:background="@drawable/product_detail_border_edditext"
+                            android:gravity="center"
+                            android:padding="@dimen/layout_margin_10"
+                            android:text="@{ConfigUtil.formatQuantity(cartItem.getQuantity())}"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/product_detail_title_text_size" />
 
                         <TextView
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:background="#d8d8d8"
-                            android:onClick="@{panel.onSubstractQuantity}"
-                            android:padding="10dp"
-                            android:text="@string/minus"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:background="@drawable/product_detail_border_text"
+                            android:onClick="@{panel.onAddQuantity}"
+                            android:paddingLeft="@dimen/layout_margin_20"
+                            android:paddingRight="@dimen/layout_margin_20"
+                            android:text="@string/plus"
                             android:textColor="@color/text_color"
-                            android:textSize="22sp" />
+                            android:textSize="@dimen/product_detail_text_size" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -218,15 +231,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginTop="@dimen/product_detail_title_margin_size"
-                    android:divider="@android:color/darker_gray"
                     android:dividerHeight="0.5dp"
-                    android:groupIndicator="@null" />
+                    android:groupIndicator="@null"
+                    android:scrollbarStyle="outsideInset"
+                    android:childDivider="@null"
+                    android:divider="@null"/>
             </RelativeLayout>
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
+                android:layout_marginBottom="@dimen/product_detail_margin_size"
+                android:layout_marginRight="@dimen/product_detail_margin_size"
                 android:background="@drawable/product_detail_border_button"
                 android:onClick="@{panel.onAddToCart}"
                 android:paddingLeft="@dimen/layout_margin_40"

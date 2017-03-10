@@ -28,6 +28,7 @@
     <!--Product Detail and Option-->
     <color name="product_detail_title_text_color">#9b9b9b</color>
     <color name="product_detail_button_text_color">#ffffff</color>
+    <color name="product_detail_text_bg_color">#d8d8d8</color>
 
     <!--Dialog-->
     <color name="dialog_background_color">#ffffff</color>
