@@ -142,7 +142,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="top"
-                                android:layout_marginRight="@dimen/layout_margin"
+                                android:layout_marginRight="@dimen/layout_margin_5"
                                 android:layout_weight="1"
                                 android:text="@string/payment_method"
                                 android:textColor="@color/text_color"
@@ -169,7 +169,7 @@
                             android:id="@+id/checkout_payment_list_panel"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/layout_margin"
+                            android:layout_marginTop="@dimen/layout_margin_5"
                             android:visibility="gone"
                             magestore_view:layout_row="@layout/card_checkout_payment_content" />
 
@@ -270,12 +270,12 @@
                                         android:layout_height="wrap_content"
                                         android:layout_weight="1"
                                         android:background="@drawable/checkout_border_linear_layout"
-                                        android:padding="@dimen/layout_margin">
+                                        android:padding="@dimen/layout_margin_5">
 
                                         <TextView
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
-                                            android:padding="@dimen/layout_margin"
+                                            android:padding="@dimen/layout_margin_5"
                                             android:text="@string/sales_add_payment"
                                             android:textColor="@color/text_color"
                                             android:textSize="@dimen/text_size" />
@@ -324,7 +324,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginRight="@dimen/layout_margin"
+                        android:layout_marginRight="@dimen/layout_margin_5"
                         android:orientation="horizontal">
 
                         <Switch
@@ -357,7 +357,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:layout_marginRight="@dimen/layout_margin"
+                            android:layout_marginRight="@dimen/layout_margin_5"
                             android:layout_toLeftOf="@+id/txt_remain_value"
                             android:text="@string/sales_expected_change"
                             android:textColor="@color/app_color"

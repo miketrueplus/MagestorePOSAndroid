@@ -27,7 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_margin="@dimen/layout_margin"
+                android:layout_margin="@dimen/layout_margin_5"
                 android:orientation="vertical">
 
                 <ImageView
@@ -35,7 +35,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/product_image_height"
                     android:layout_gravity="center"
-                    android:layout_marginBottom="@dimen/layout_margin"
+                    android:layout_marginBottom="@dimen/layout_margin_5"
                     android:src="@mipmap/ic_unknow_products" />
 
                 <TextView
@@ -61,7 +61,7 @@
                 android:layout_marginTop="@dimen/product_price_margin"
                 android:background="@color/product_background_price"
                 android:gravity="right"
-                android:padding="@dimen/layout_margin"
+                android:padding="@dimen/layout_margin_5"
                 android:text="@{ConfigUtil.formatPrice(product.getFinalPrice())}"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/text_size" />

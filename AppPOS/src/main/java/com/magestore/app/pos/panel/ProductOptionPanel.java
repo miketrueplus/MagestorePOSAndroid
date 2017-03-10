@@ -152,6 +152,18 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         // binding
         mBinding = DataBindingUtil.bind(getView());
         mBinding.setPanel(this);
+
+        initValue();
+    }
+
+    @Override
+    public void initValue() {
+        expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            @Override
+            public boolean onGroupClick(ExpandableListView expandableListView, View view, int i, long l) {
+                return true;
+            }
+        });
     }
 
     /**
@@ -208,7 +220,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                 // nếu là loại chọn nhiều
                 if (productOptionCustomValue.isChosen()) {
                     chooseProductOption.productOptionCustomValueList.add(productOptionCustomValue);
-                    unitPrice +=  (productOptionCustom.isPriceTypePercent() ? basePrice : 1) * Float.parseFloat(productOptionCustomValue.getPrice());
+                    unitPrice += (productOptionCustom.isPriceTypePercent() ? basePrice : 1) * Float.parseFloat(productOptionCustomValue.getPrice());
                     descriptionBuilder.append(!firstCustomValue ? ", " : "").append(productOptionCustomValue.getDisplayContent());
                     firstCustomValue = false;
                 }
@@ -508,6 +520,9 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
             // gán giá trị cho view holder text view
             viewHolder = (ProductOptionCustomHolder) convertView.getTag();
             viewHolder.mtxtTitle.setText(getGroup(listPosition).getDisplayContent());
+
+            ExpandableListView mExpandableListView = (ExpandableListView) parent;
+            mExpandableListView.expandGroup(listPosition);
 
             return convertView;
         }

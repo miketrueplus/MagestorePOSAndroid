@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
     <TextView
         android:id="@+id/listTitle"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
-        android:textColor="@android:color/black"
+        android:paddingBottom="10dp"
         android:paddingTop="10dp"
-        android:paddingBottom="10dp" />
+        android:textColor="@color/product_detail_title_text_color"
+        android:textSize="@dimen/product_detail_title_text_size" />
 </LinearLayout>

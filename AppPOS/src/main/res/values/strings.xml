@@ -221,6 +221,7 @@
     <string name="print">Print</string>
     <string name="new_order">New Order</string>
     <string name="send">Send</string>
+    <string name="availability">Availability</string>
 
     <!-- Strings related to error message -->
     <string name="err_no_network_connection">No network connection, Pls check yout network settings</string>

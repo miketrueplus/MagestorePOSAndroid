@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="@dimen/layout_margin">
+        android:padding="@dimen/layout_margin_5">
 
         <RelativeLayout
             android:id="@+id/ll_shipping_method"

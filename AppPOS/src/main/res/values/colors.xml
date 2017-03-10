@@ -25,6 +25,10 @@
     <color name="product_background_item">#ffffff</color>
     <color name="product_background_price">#1a1d87e5</color>
 
+    <!--Product Detail and Option-->
+    <color name="product_detail_title_text_color">#9b9b9b</color>
+    <color name="product_detail_button_text_color">#ffffff</color>
+
     <!--Dialog-->
     <color name="dialog_background_color">#ffffff</color>
 

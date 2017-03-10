@@ -14,7 +14,7 @@
         android:id="@+id/ll_payment_method"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/layout_margin"
+        android:layout_margin="@dimen/layout_margin_5"
         android:background="@drawable/boder_dash_linear_layout"
         android:orientation="vertical">
 
@@ -28,14 +28,14 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/layout_margin"
+                android:layout_marginTop="@dimen/layout_margin_5"
                 android:src="@drawable/ic_payment" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:layout_margin="@dimen/layout_margin"
+                android:layout_margin="@dimen/layout_margin_5"
                 android:ellipsize="end"
                 android:gravity="bottom"
                 android:maxLines="2"

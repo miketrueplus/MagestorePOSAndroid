@@ -1,30 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/product_detail_margin_size">
+
     <RadioButton
         android:id="@+id/id_radio_product_option_radio"
-        android:clickable="false"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:clickable="false" />
+
     <ImageView
         android:id="@+id/id_img_product_option_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
     <TextView
         android:id="@+id/id_txt_product_option_display"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1.0"
-        android:paddingTop="@dimen/card_item_margin_size"
         android:paddingBottom="@dimen/card_item_margin_size"
-        android:text="Name"/>
+        android:paddingTop="@dimen/card_item_margin_size"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/text_size" />
+
     <TextView
         android:id="@+id/id_txt_product_option_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="right"
         android:layout_alignParentRight="true"
-        android:text="Price"/>
+        android:gravity="right"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/text_size" />
 </LinearLayout>

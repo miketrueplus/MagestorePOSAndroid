@@ -23,17 +23,17 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_margin="@dimen/layout_margin_5"
                 android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="5dp"
+                    android:layout_marginRight="@dimen/layout_margin_5"
                     android:layout_weight="1"
                     android:background="@drawable/boder_linear_layout"
                     android:orientation="vertical"
-                    android:padding="5dp">
+                    android:padding="@dimen/layout_margin_5">
 
                     <com.magestore.app.view.FormatTextEdit
                         android:id="@+id/first_name"
@@ -50,7 +50,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/boder_linear_layout"
                     android:orientation="vertical"
-                    android:padding="5dp">
+                    android:padding="@dimen/layout_margin_5">
 
                     <com.magestore.app.view.FormatTextEdit
                         android:id="@+id/last_name"
@@ -65,17 +65,17 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_margin="@dimen/layout_margin_5"
                 android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="5dp"
+                    android:layout_marginRight="@dimen/layout_margin_5"
                     android:layout_weight="1"
                     android:background="@drawable/boder_linear_layout"
                     android:orientation="vertical"
-                    android:padding="5dp">
+                    android:padding="@dimen/layout_margin_5">
 
                     <com.magestore.app.view.FormatTextEdit
                         android:id="@+id/email"
@@ -92,7 +92,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/boder_linear_layout"
                     android:orientation="vertical"
-                    android:padding="5dp">
+                    android:padding="@dimen/layout_margin_5">
 
                     <com.magestore.app.lib.view.SimpleSpinner
                         android:id="@+id/spinner_group_id"
@@ -108,21 +108,21 @@
                 android:id="@+id/subscribe"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_margin="@dimen/layout_margin_5"
                 android:text="@string/customer_subscribe" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/line"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginBottom="@dimen/layout_margin_5"
+                android:layout_marginTop="@dimen/layout_margin_5"
                 android:background="@color/line" />
 
             <LinearLayout
                 android:id="@+id/ll_shipping_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_margin="@dimen/layout_margin_5"
                 android:minHeight="50dp"
                 android:orientation="vertical">
 
@@ -130,13 +130,13 @@
                     android:id="@+id/rl_shipping_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp">
+                    android:layout_marginBottom="@dimen/layout_margin_5">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginRight="5dp"
+                        android:layout_marginRight="@dimen/layout_margin_5"
                         android:layout_toLeftOf="@+id/btn_shipping_address"
                         android:text="@string/customer_shipping_address" />
 
@@ -152,12 +152,12 @@
                     android:id="@+id/ll_s_shipping_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="@dimen/layout_margin_5"
+                    android:layout_marginLeft="@dimen/layout_margin_20"
+                    android:layout_marginRight="@dimen/layout_margin_20"
                     android:background="@drawable/boder_linear_layout"
                     android:orientation="vertical"
-                    android:padding="5dp">
+                    android:padding="@dimen/layout_margin_5">
 
                     <com.magestore.app.lib.view.SimpleSpinner
                         android:id="@+id/s_shipping_address"
@@ -173,27 +173,27 @@
                     android:id="@+id/ll_short_shipping_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="@dimen/layout_margin_10"
+                    android:layout_marginLeft="@dimen/layout_margin_20"
+                    android:layout_marginRight="@dimen/layout_margin_20"
+                    android:layout_marginTop="@dimen/layout_margin_10"
                     android:background="@drawable/boder_dash_linear_layout"
                     android:orientation="vertical"
-                    android:padding="5dp"
+                    android:padding="@dimen/layout_margin_5"
                     android:visibility="gone">
 
                     <TextView
                         android:id="@+id/tv_shipping_address"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp" />
+                        android:layout_marginBottom="@dimen/layout_margin_5" />
 
                     <LinearLayout
                         android:id="@+id/ll_shipping_edit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="right"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginLeft="@dimen/layout_margin_10"
                         android:orientation="horizontal">
 
                         <ImageButton
@@ -206,7 +206,7 @@
                             android:id="@+id/btn_shipping_address_delete"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginLeft="@dimen/layout_margin_5"
                             android:background="@drawable/ic_delete" />
                     </LinearLayout>
                 </LinearLayout>
@@ -223,7 +223,7 @@
                 android:id="@+id/ll_billing_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_margin="@dimen/layout_margin_5"
                 android:minHeight="50dp"
                 android:orientation="vertical">
 
@@ -231,13 +231,13 @@
                     android:id="@+id/rl_billing_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp">
+                    android:layout_marginBottom="@dimen/layout_margin_5">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginRight="5dp"
+                        android:layout_marginRight="@dimen/layout_margin_5"
                         android:layout_toLeftOf="@+id/btn_billing_address"
                         android:text="@string/customer_billing_address" />
 
@@ -253,12 +253,12 @@
                     android:id="@+id/ll_s_billing_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="@dimen/layout_margin_5"
+                    android:layout_marginLeft="@dimen/layout_margin_20"
+                    android:layout_marginRight="@dimen/layout_margin_20"
                     android:background="@drawable/boder_linear_layout"
                     android:orientation="vertical"
-                    android:padding="5dp">
+                    android:padding="@dimen/layout_margin_5">
 
                     <com.magestore.app.lib.view.SimpleSpinner
                         android:id="@+id/s_billing_address"
@@ -274,27 +274,27 @@
                     android:id="@+id/ll_short_billing_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="@dimen/layout_margin_10"
+                    android:layout_marginLeft="@dimen/layout_margin_20"
+                    android:layout_marginRight="@dimen/layout_margin_20"
+                    android:layout_marginTop="@dimen/layout_margin_10"
                     android:background="@drawable/boder_dash_linear_layout"
                     android:orientation="vertical"
-                    android:padding="5dp"
+                    android:padding="@dimen/layout_margin_5"
                     android:visibility="gone">
 
                     <TextView
                         android:id="@+id/tv_billing_address"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp" />
+                        android:layout_marginBottom="@dimen/layout_margin_5" />
 
                     <LinearLayout
                         android:id="@+id/ll_billing_edit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="right"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginLeft="@dimen/layout_margin_10"
                         android:orientation="horizontal">
 
                         <ImageButton
@@ -307,7 +307,7 @@
                             android:id="@+id/btn_billing_address_delete"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginLeft="@dimen/layout_margin_5"
                             android:background="@drawable/ic_delete" />
                     </LinearLayout>
                 </LinearLayout>
@@ -318,18 +318,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:layout_marginBottom="@dimen/layout_margin"
-                android:layout_marginRight="@dimen/layout_margin"
-                android:background="@color/app_color"
+                android:layout_marginBottom="@dimen/layout_margin_5"
+                android:layout_marginRight="@dimen/layout_margin_5"
+                android:background="@drawable/checkout_address_border_button"
                 android:orientation="horizontal"
-                android:padding="@dimen/layout_margin"
+                android:padding="@dimen/layout_margin_10"
                 android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="@dimen/layout_margin"
+                    android:layout_marginRight="@dimen/layout_margin_5"
                     android:text="@string/customer_add_new_address"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_size" />
