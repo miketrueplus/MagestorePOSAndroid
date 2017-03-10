@@ -163,27 +163,30 @@ public class CheckoutListController extends AbstractListController<Checkout> {
      * action khi click placeorder request tạo order hoặc invoice
      */
     public void doInputPlaceOrder() {
-        ((CheckoutDetailPanel) mDetailView).isShowLoadingDetail(true);
         // Check payment khác null hay ko
         List<CheckoutPayment> listCheckoutPayment = (List<CheckoutPayment>) wraper.get("list_payment");
         if (listCheckoutPayment != null && listCheckoutPayment.size() > 0) {
             if (listCheckoutPayment.size() == 1 && listCheckoutPayment.get(0).getType().equals("1")) {
                 CheckoutPayment paymentCreditCard = listCheckoutPayment.get(0);
-                if (mCheckoutPaymentCreditCardPanel.checkRequiedCard()) {
-                    CheckoutPayment payment = mCheckoutPaymentCreditCardPanel.bind2Item();
-                    PosCheckoutPayment.AdditionalData additionalData = paymentCreditCard.createAdditionalData();
-                    paymentCreditCard.setAdditionalData(additionalData);
-                    paymentCreditCard.setCCOwner(payment.getCCOwner());
-                    paymentCreditCard.setType(payment.getCCType());
-                    paymentCreditCard.setCCNumber(payment.getCCNumber());
-                    paymentCreditCard.setCCExpMonth(payment.getCCExpMonth());
-                    paymentCreditCard.setCCExpYear(payment.getCCExpYear());
-                    paymentCreditCard.setCID(payment.getCID());
-
-                    doAction(ACTION_TYPE_PLACE_ORDER, null, wraper, null);
+                if (!mCheckoutPaymentCreditCardPanel.checkRequiedCard()) {
+                    return;
                 }
+
+                CheckoutPayment payment = mCheckoutPaymentCreditCardPanel.bind2Item();
+                PosCheckoutPayment.AdditionalData additionalData = paymentCreditCard.createAdditionalData();
+                paymentCreditCard.setAdditionalData(additionalData);
+                paymentCreditCard.setCCOwner(payment.getCCOwner());
+                paymentCreditCard.setType(payment.getCCType());
+                paymentCreditCard.setCCNumber(payment.getCCNumber());
+                paymentCreditCard.setCCExpMonth(payment.getCCExpMonth());
+                paymentCreditCard.setCCExpYear(payment.getCCExpYear());
+                paymentCreditCard.setCID(payment.getCID());
+
+                doAction(ACTION_TYPE_PLACE_ORDER, null, wraper, null);
+                ((CheckoutDetailPanel) mDetailView).isShowLoadingDetail(true);
             } else {
                 doAction(ACTION_TYPE_PLACE_ORDER, null, wraper, null);
+                ((CheckoutDetailPanel) mDetailView).isShowLoadingDetail(true);
             }
         } else {
             // hiển thị thông báo chọn payment
@@ -674,9 +677,10 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         }
     }
 
-    public void onRemovePaymentCreditCard(){
+    public void onRemovePaymentCreditCard() {
         List<CheckoutPayment> listPayment = (List<CheckoutPayment>) wraper.get("list_payment");
-        listPayment = new ArrayList<>();
+        listPayment.clear();
+        wraper.put("list_payment", listPayment);
         ((CheckoutDetailPanel) mDetailView).isEnableCreateInvoice(false);
         ((CheckoutDetailPanel) mDetailView).showPanelCheckoutPaymentCreditCard(false);
     }
@@ -716,6 +720,17 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     }
 
     public void actionNewOrder() {
+        List<CheckoutPayment> listPayment = (List<CheckoutPayment>) wraper.get("list_payment");
+        listPayment.clear();
+        wraper.put("list_payment", listPayment);
+        mCheckoutPaymentListPanel.bindList(listPayment);
+        mCheckoutPaymentListPanel.updateTotal(listPayment);
+        mCheckoutPaymentCreditCardPanel.clearDataForm();
+        ((CheckoutDetailPanel) mDetailView).isEnableButtonAddPayment(false);
+        ((CheckoutDetailPanel) mDetailView).isEnableCreateInvoice(false);
+        ((CheckoutDetailPanel) mDetailView).showPanelPaymentMethod();
+        ((CheckoutDetailPanel) mDetailView).showPanelCheckoutPaymentCreditCard(false);
+        removeOrder();
         onBackTohome();
         doShowDetailSuccess(false);
     }

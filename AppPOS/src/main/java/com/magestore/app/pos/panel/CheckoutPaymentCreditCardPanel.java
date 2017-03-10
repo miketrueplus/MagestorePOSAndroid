@@ -90,6 +90,12 @@ public class CheckoutPaymentCreditCardPanel extends AbstractDetailPanel<Checkout
         return checkoutPayment;
     }
 
+    public void clearDataForm(){
+        card_name.setText("");
+        card_number.setText("");
+        card_cvv.setText("");
+    }
+
     public boolean checkRequiedCard() {
         if (!isRequied(card_name)) {
             return false;
