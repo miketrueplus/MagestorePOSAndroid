@@ -421,7 +421,7 @@ public class POSCartService extends AbstractService implements CartService {
         }
 
         // tính giá theo config option
-        if (configOptionProductId != null) price += cartItem.getProduct().getProductOption().getJsonConfig().optionPrices.get(configOptionProductId).getFinalPrice();
+        if (configOptionProductId != null) price = cartItem.getProduct().getProductOption().getJsonConfig().optionPrices.get(configOptionProductId).getFinalPrice();
 
         // cập nhật đơn giá
         cartItem.setUnitPrice(price);

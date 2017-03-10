@@ -1,10 +1,12 @@
 package com.magestore.app.pos.model.checkout;
 
 import com.magestore.app.lib.model.catalog.ProductOptionCustom;
+import com.magestore.app.lib.model.catalog.ProductOptionCustomValue;
 import com.magestore.app.lib.model.checkout.QuoteItemExtension;
 import com.magestore.app.lib.model.checkout.QuoteItems;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.pos.model.PosAbstractModel;
+import com.magestore.app.pos.model.checkout.cart.PosCartItem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -97,16 +99,18 @@ public class PosQuoteItems extends PosAbstractModel implements QuoteItems {
         if (!cartItem.getProduct().haveProductOption()) return;
 
         for (ProductOptionCustom customOption : cartItem.getChooseProductOptions().keySet()) {
-            for (int i = 0; i < customOption.getOptionValueList().size(); i++) {
+            PosCartItem.ChooseProductOption chooseProductOptions = cartItem.getChooseProductOptions().get(customOption);
+            if (chooseProductOptions.productOptionCustomValueList == null) continue;
+            for (ProductOptionCustomValue optionCustomValue : chooseProductOptions.productOptionCustomValueList) {
                 // với config option
                 if (customOption.isConfigOption()) {
                     if (super_attribute == null) super_attribute = new HashMap<>();
-                    super_attribute.put(customOption.getID(), customOption.getOptionValueList().get(i).getID());
+                    super_attribute.put(customOption.getID(), optionCustomValue.getID());
                 } else {
                     // với custom option option
                     CustomOptions quoteCustomeOption = new CustomOptions();
                     quoteCustomeOption.code = Integer.parseInt(customOption.getID());
-                    quoteCustomeOption.value = Integer.parseInt(customOption.getOptionValueList().get(i).getID());
+                    quoteCustomeOption.value = Integer.parseInt(optionCustomValue.getID());
                     if (options == null) options = new ArrayList<CustomOptions>();
                     options.add(quoteCustomeOption);
                 }
