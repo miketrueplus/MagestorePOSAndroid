@@ -348,7 +348,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1.0"
+                            magestore_view:layout_item="@layout/card_order_history_item_content"
                             magestore_view:layout_list="@+id/order_items_list"
+                            magestore_view:layout_no_scroll="true"
                             magestore_view:layout_panel="@layout/panel_order_history_items_list" />
                     </FrameLayout>
                 </LinearLayout>
@@ -391,12 +393,13 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1.0"
+                            magestore_view:layout_item="@layout/card_order_comment_history_content"
                             magestore_view:layout_list="@+id/order_comment_history_list"
+                            magestore_view:layout_no_scroll="true"
                             magestore_view:layout_panel="@layout/panel_order_comment_history_list" />
                     </FrameLayout>
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>
     </RelativeLayout>
-
 </layout>
