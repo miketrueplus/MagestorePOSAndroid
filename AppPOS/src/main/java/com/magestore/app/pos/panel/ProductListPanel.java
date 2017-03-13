@@ -10,6 +10,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.magestore.app.lib.model.catalog.Category;
 import com.magestore.app.lib.panel.AbstractListPanel;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.view.item.ModelView;
@@ -66,7 +67,8 @@ public class ProductListPanel extends AbstractListPanel<Product> {
                 if(fr_category.getVisibility() == VISIBLE){
                     im_category_arrow.setRotation(0);
                     fr_category.setVisibility(GONE);
-                    ((ProductListController) mController).selectCategoryChild(null);
+//                    mController.doRetrieve();
+                    ((ProductListController) mController).bindCategory((Category) null);
                 }else{
                     im_category_arrow.setRotation(180);
                     fr_category.setVisibility(VISIBLE);

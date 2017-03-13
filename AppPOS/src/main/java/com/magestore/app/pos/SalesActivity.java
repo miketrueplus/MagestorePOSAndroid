@@ -236,11 +236,8 @@ public class SalesActivity extends AbstractActivity
         mProductListController.setMagestoreContext(magestoreContext);
         mProductListController.setProdcutService(productService);
         mProductListController.setListPanel(mProductListPanel);
-        mProductListController.setCheckoutListController(mCheckoutListController);
-        mProductListController.setCategoryListController(mCategoryListController);
         mProductListController.setSubject(subjectObserv);
         mCheckoutListController.setProductListController(mProductListController);
-        mCategoryListController.setProductListController(mProductListController);
 
         // controller quản lý đơn hàng
         mCheckoutCartItemListController = new CartItemListController();
@@ -296,6 +293,13 @@ public class SalesActivity extends AbstractActivity
 
         // map các observ
         /////////////////////////////////
+        // update product controller mỗi khi category được chọn
+        mProductListController
+                .attachListenerObserve()
+                .setMethodName("bindCategory")
+                .setStateCode(GenericState.DEFAULT_STATE_CODE_ON_SELECT_ITEM)
+                .setControllerState(mCategoryListController);
+
         // mỗi khi 1 product trên product list được ấn chọn
         mCheckoutCartItemListController
                 .attachListenerObserve()

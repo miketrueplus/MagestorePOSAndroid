@@ -6,6 +6,7 @@ import android.os.Build;
 import com.magestore.app.lib.controller.AbstractListController;
 import com.magestore.app.lib.model.catalog.Category;
 import com.magestore.app.lib.model.catalog.Product;
+import com.magestore.app.lib.observ.State;
 import com.magestore.app.lib.service.catalog.ProductService;
 import com.magestore.app.pos.task.LoadProductImageTask;
 
@@ -27,23 +28,32 @@ public class ProductListController extends AbstractListController<Product> {
 
     // Service xử lý các vấn đề liên quan đến product
     ProductService mProductService;
-    CategoryListController mCategoryListController;
 
     /**
      * Đặt category id
      *
      * @param category
      */
-    public void setCategory(Category category) {
+    public void bindCategory(Category category) {
         mCategory = category;
         clearList();
         doRetrieve();
     }
 
-    public void setCategoryListController(CategoryListController mCategoryListController) {
-        this.mCategoryListController = mCategoryListController;
+    /**
+     * Gán product theo cơ chế subject observ
+     *
+     * @param state
+     */
+    public void bindCategory(State state) {
+        bindCategory(((CategoryListController) state.getController()).getSelectedItem());
     }
 
+
+    /**
+     * Load xong product thì load ảnh
+     * @param list
+     */
     @Override
     public void onRetrievePostExecute(List<Product> list) {
         super.onRetrievePostExecute(list);
@@ -51,9 +61,9 @@ public class ProductListController extends AbstractListController<Product> {
         doLoadProductsImage();
     }
 
-    // Tham chiếu đến CartItemListController
-    CheckoutListController mCheckoutListController;
-
+    /**
+     * Load ảnh cho sản phẩm
+     */
     public void doLoadProductsImage() {
         LoadProductImageTask task = new LoadProductImageTask(mProductService, null, mList);
         if (task != null)
@@ -76,36 +86,6 @@ public class ProductListController extends AbstractListController<Product> {
         setListService(mProductService);
     }
 
-    /**
-     * Nhận lại product service
-     *
-     * @return
-     */
-    public ProductService getProductService() {
-        return mProductService;
-    }
-
-    /**
-     * Get 1 order item controller
-     *
-     * @return
-     */
-    public CheckoutListController getmCheckoutListController() {
-        return mCheckoutListController;
-    }
-
-    /**
-     * Đặt 1 order item controller
-     */
-    public void setCheckoutListController(CheckoutListController controller) {
-        this.mCheckoutListController = controller;
-    }
-
-    public void doRetrieveByCategoryID(Category category) {
-        Map<String, Object> wraper = new HashMap<>();
-        doAction(ACTION_CODE_RETRIEVE_BY_CATEGORY_ID, null, wraper, category);
-    }
-
     @Override
     public List<Product> onRetrieveBackground(int page, int pageSize) throws Exception {
         if (mCategory == null || !(getListService() instanceof ProductService))
@@ -114,26 +94,6 @@ public class ProductListController extends AbstractListController<Product> {
             return ((ProductService) getListService()).retrieve(mCategory.getID(), null, page, pageSize);
     }
 
-//    @Override
-//    public Boolean doActionBackround(int actionType, String actionCode, Map<String, Object> wraper, Model... models) throws Exception {
-//        if (actionType == ACTION_CODE_RETRIEVE_BY_CATEGORY_ID) {
-//            String categoryID = ((Category) models[0]).getID();
-//            wraper.put("list_product_by_category", mProductService.retrieve(categoryID, null, 1, 30));
-//            return true;
-//        }
-//        return false;
-//    }
-//
-//    @Override
-//    public void onActionPostExecute(boolean success, int actionType, String actionCode, Map<String, Object> wraper, Model... models) {
-//        if (success && actionType == ACTION_CODE_RETRIEVE_BY_CATEGORY_ID) {
-//            List<Product> listProduct = (List<Product>) wraper.get("list_product_by_category");
-//            mList = new ArrayList<>();
-//            mList.addAll(listProduct);
-//            bindList(mList);
-//            mView.notifyDataSetChanged();
-//        }
-//    }
 
     /**
      * Bind 1 sản phẩm vào controller để xử lý
@@ -146,10 +106,10 @@ public class ProductListController extends AbstractListController<Product> {
 
     }
 
-    public void selectCategoryChild(Category category) {
-        mCategoryListController.selectCategoryChild(category);
-    }
-
+    /**
+     * Hiển thị kết quả tìm kiếm từ search panel truyền xuống
+     * @param model
+     */
     @Override
     public void displaySearch(Product model) {
         super.displaySearch(model);

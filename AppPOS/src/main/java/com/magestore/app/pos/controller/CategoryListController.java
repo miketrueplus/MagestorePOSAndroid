@@ -18,7 +18,6 @@ import java.util.List;
 public class CategoryListController extends AbstractListController<Category> {
 
     CategoryService mCategoryService;
-    ProductListController mProductListController;
 
     public void setCategoryService(CategoryService mCategoryService) {
         this.mCategoryService = mCategoryService;
@@ -36,13 +35,6 @@ public class CategoryListController extends AbstractListController<Category> {
         super.onRetrievePostExecute(list);
     }
 
-    @Override
-    public void bindItem(Category item) {
-        super.bindItem(item);
-        if (mProductListController != null) {
-            mProductListController.setCategory(item);
-        }
-    }
 
     public List<Category> getListChildCategory(Category category) {
         try {
@@ -67,7 +59,4 @@ public class CategoryListController extends AbstractListController<Category> {
         getView().notifyDataSetChanged();
     }
 
-    public void setProductListController(ProductListController mProductListController) {
-        mProductListController = mProductListController;
-    }
 }

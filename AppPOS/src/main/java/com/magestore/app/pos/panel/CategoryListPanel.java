@@ -34,11 +34,6 @@ public class CategoryListPanel extends AbstractListPanel<Category> {
     }
 
     @Override
-    public void initLayout() {
-
-    }
-
-    @Override
     protected void bindItem(View view, final Category item, int position) {
         CardCategoryContentBinding mBinding = DataBindingUtil.bind(view);
         mBinding.setCategory(item);
