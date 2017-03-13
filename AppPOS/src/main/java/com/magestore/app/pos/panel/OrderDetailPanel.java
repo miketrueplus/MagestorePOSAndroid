@@ -43,10 +43,15 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
     PanelOrderDetailBinding mBinding;
     OrderPaymentListPanel mOrderPaymentListPanel;
     OrderPaymentListController mOrderPaymentListController;
+
+    // panel hiển thị history comment của 1 order
     OrderCommentHistoryListPanel mOrderCommentHistoryListPanel;
     OrderCommentListController mOrderCommentHistoryController;
+
+    // panel hiển thị danh sách item/product trong order
     OrderHistoryItemsListPanel mOrderHistoryItemsListPanel;
     OrderHistoryItemsListController mOrderHistoryItemsListController;
+
     FrameLayout fr_detail_bottom_left, fr_detail_bottom_right;
     ImageView im_status;
     TextView status;

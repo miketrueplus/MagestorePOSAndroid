@@ -71,6 +71,9 @@ public abstract class AbstractListPanel<TModel extends Model>
     // tham chiếu layout của cả danh sách
     private int mintListLayout;
 
+    // có scroll hay không
+    private boolean mblnNoScroll;
+
     // số cột trong 1 list
     private int mintSpanCount = 1;
 
@@ -164,6 +167,8 @@ public abstract class AbstractListPanel<TModel extends Model>
         mintLayoutModelViewContent = a.getResourceId(R.styleable.magestore_view_layout_item_content, -1);
         mintLayoutModelViewMsg = a.getResourceId(R.styleable.magestore_view_layout_item_msg, -1);
 
+        // có scroll hay không
+        mblnNoScroll = a.getBoolean(R.styleable.magestore_view_layout_no_scroll, false);
         a.recycle();
     }
 
@@ -180,10 +185,10 @@ public abstract class AbstractListPanel<TModel extends Model>
         // tham chiếu layout của recycle view
         if (mintListLayout > 0) {
             mRecycleView = (RecyclerView) findViewById(mintListLayout);
-//            mRecycleViewLayoutManager = new LinearLayoutManager(this.getContext());
             mRecycleViewLayoutManager = new GridLayoutManager(this.getContext(), mintSpanCount, mintOrientation, false);
             mRecycleView.setLayoutManager(mRecycleViewLayoutManager);
             mRecycleView.setAdapter(new AbstractListPanel<TModel>.ListRecyclerViewAdapter());
+            mRecycleView.setNestedScrollingEnabled(!mblnNoScroll);
             if (haveLazyLoading) {
                 mScrollListener = new EndlessRecyclerOnScrollListener(mRecycleViewLayoutManager) {
                     @Override
