@@ -18,7 +18,7 @@
             android:id="@+id/nav_orders_history"
             android:icon="@drawable/ic_history"
             android:title="Orders History" />
-        <item
+   <!--     <item
             android:id="@+id/nav_onhold_orders"
             android:icon="@drawable/ic_hold"
             android:title="OnHold Orders" />
@@ -33,20 +33,20 @@
         <item
             android:id="@+id/nav_sync"
             android:icon="@drawable/ic_sync"
-            android:title="Sync" />
+            android:title="Sync" />-->
     </group>
 
-    <item android:title="Supports">
-        <menu>
-            <item
-                android:id="@+id/nav_support"
-                android:icon="@drawable/ic_call_support"
-                android:title="Call support" />
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
-        </menu>
-    </item>
+    <!-- <item android:title="Supports">
+         <menu>
+             <item
+                 android:id="@+id/nav_support"
+                 android:icon="@drawable/ic_call_support"
+                 android:title="Call support" />
+             <item
+                 android:id="@+id/nav_share"
+                 android:icon="@drawable/ic_menu_share"
+                 android:title="Share" />
+         </menu>
+     </item>-->
 
 </menu>
