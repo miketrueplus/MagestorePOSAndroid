@@ -7,8 +7,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="5dp"
+        android:layout_height="match_parent"
+        android:layout_marginRight="@dimen/layout_margin_5"
         android:layout_weight="1"
         android:orientation="vertical">
 
@@ -16,24 +16,28 @@
             android:id="@+id/txt_shipment_comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:text="@string/order_shipment_comment_title" />
+            android:layout_marginBottom="@dimen/layout_margin_5"
+            android:text="@string/order_shipment_comment_title"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/text_size" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/boder_linear_layout"
             android:orientation="vertical"
-            android:padding="5dp">
+            android:padding="@dimen/layout_margin_5">
 
             <com.magestore.app.view.FormatTextEdit
                 android:id="@+id/shipment_comment"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:background="@color/white"
                 android:gravity="top"
                 android:inputType="textMultiLine"
-                android:minLines="3" />
+                android:minLines="3"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/text_size" />
         </LinearLayout>
     </LinearLayout>
 
@@ -47,23 +51,27 @@
             android:id="@+id/txt_track_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:text="@string/order_shipment_track_number_title" />
+            android:layout_marginBottom="@dimen/layout_margin_5"
+            android:text="@string/order_shipment_track_number_title"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/text_size" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
+            android:layout_marginBottom="@dimen/layout_margin_5"
             android:background="@drawable/boder_linear_layout"
             android:orientation="vertical"
-            android:padding="5dp">
+            android:padding="@dimen/layout_margin_5">
 
             <com.magestore.app.view.FormatTextEdit
                 android:id="@+id/track_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:inputType="text" />
+                android:inputType="text"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/text_size" />
         </LinearLayout>
 
         <RelativeLayout
@@ -72,11 +80,12 @@
 
             <CheckBox
                 android:id="@+id/cb_send_email"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="5dp"
                 android:layout_toLeftOf="@+id/btn_submit_shipment"
+                android:gravity="center_vertical"
                 android:text="@string/order_shipment_send_email" />
 
             <Button
@@ -84,7 +93,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:text="@string/order_shipment_btn_submit" />
+                android:layout_centerVertical="true"
+                android:background="@drawable/order_history_ship_button_submit"
+                android:text="@string/order_shipment_btn_submit"
+                android:padding="@dimen/layout_margin_5"
+                android:textColor="@color/order_ship_button_text_color"
+                android:textSize="@dimen/text_size" />
         </RelativeLayout>
     </LinearLayout>
 </LinearLayout>
