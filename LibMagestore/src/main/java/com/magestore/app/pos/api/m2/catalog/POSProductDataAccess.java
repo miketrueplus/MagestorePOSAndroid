@@ -95,7 +95,7 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
                     productOption.setCustomOptions(listCustomOption);
                 }
 
-                for (PosProductOptionBundle bundle: bundleList) {
+                for (PosProductOptionBundle bundle : bundleList) {
                     PosProductOptionCustom productOptionCustom = new PosProductOptionCustom();
                     productOptionCustom.setProductID(product.getID());
                     productOptionCustom.setOptionID(bundle.getID());
@@ -109,7 +109,7 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
                     // tạo value cho mỗi custom option tương ứng từ config option
                     productOptionCustom.setOptionValueList(new ArrayList<PosProductOptionCustomValue>());
                     List<PosProductOptionCustomValue> listCustomValue = productOptionCustom.getOptionValueList();
-                    for (PosProductOptionBundleItem bundleItem: bundle.getItems()) {
+                    for (PosProductOptionBundleItem bundleItem : bundle.getItems()) {
                         PosProductOptionCustomValue customValue = new PosProductOptionCustomValue();
                         customValue.setPrice(bundleItem.getPrice());
                         customValue.setOptionId(bundleItem.getOptionId());
@@ -167,14 +167,11 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
             // return
             product.setProductOption(productOption);
             return productOption;
-        }
-        catch (ConnectionException ex) {
+        } catch (ConnectionException ex) {
             throw ex;
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             throw ex;
-        }
-        finally {
+        } finally {
             // đóng result reading
             if (rp != null) rp.close();
             rp = null;
@@ -183,7 +180,7 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
             paramBuilder = null;
 
             // đóng statement
-            if (statement != null)statement.close();
+            if (statement != null) statement.close();
             statement = null;
 
             // đóng connection
@@ -219,8 +216,9 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
 
     /**
      * Trả về list các product
+     *
      * @param pageSize Số product trên 1 page
-     * @param page Page hiện tại
+     * @param page     Page hiện tại
      * @return Danh sách product
      * @throws ParseException
      * @throws ConnectionException
@@ -242,10 +240,10 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
 
             // Xây dựng tham số
             paramBuilder = statement.getParamBuilder()
-                .setPage(page)
-                .setPageSize(pageSize)
+                    .setPage(page)
+                    .setPageSize(pageSize)
 //                .setFilterLike("name", "%Backyard%")
-                .setSessionID(POSDataAccessSession.REST_SESSION_ID);
+                    .setSessionID(POSDataAccessSession.REST_SESSION_ID);
 //                .setFilterEqual("name", "Joust Duffle Bag");
 
             // thực thi truy vấn và parse kết quả thành object
@@ -253,21 +251,18 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
             rp.setParseImplement(getClassParseImplement());
             rp.setParseModel(Gson2PosListProduct.class);
             Gson2PosListProduct listProduct = (Gson2PosListProduct) rp.doParse();
-            List<Product> list = (List<Product>)(List<?>) (listProduct.items);
+            List<Product> list = (List<Product>) (List<?>) (listProduct.items);
 
             // đọc nốt thông tin về product option
 //            loadProductOption(list);
 
             // return
             return list;
-        }
-        catch (ConnectionException ex) {
+        } catch (ConnectionException ex) {
             throw ex;
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             throw ex;
-        }
-        finally {
+        } finally {
             // đóng result reading
             if (rp != null) rp.close();
             rp = null;
@@ -276,7 +271,7 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
             paramBuilder = null;
 
             // đóng statement
-            if (statement != null)statement.close();
+            if (statement != null) statement.close();
             statement = null;
 
             // đóng connection
@@ -313,14 +308,11 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
 
             // return
             return listProduct.total_count;
-        }
-        catch (ConnectionException ex) {
+        } catch (ConnectionException ex) {
             throw ex;
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             throw ex;
-        }
-        finally {
+        } finally {
             // đóng result reading
             if (rp != null) rp.close();
             rp = null;
@@ -329,7 +321,7 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
             paramBuilder = null;
 
             // đóng statement
-            if (statement != null)statement.close();
+            if (statement != null) statement.close();
             statement = null;
 
             // đóng connection
@@ -368,7 +360,7 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
             rp.setParseImplement(getClassParseImplement());
             rp.setParseModel(Gson2PosListProduct.class);
             Gson2PosListProduct listProduct = (Gson2PosListProduct) rp.doParse();
-            List<Product> list = (List<Product>)(List<?>) (listProduct.items);
+            List<Product> list = (List<Product>) (List<?>) (listProduct.items);
 
             // đọc nốt thông tin về product option
             loadProductOption(list);
@@ -378,14 +370,11 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
                 return list.get(0);
             else
                 return null;
-        }
-        catch (ConnectionException ex) {
+        } catch (ConnectionException ex) {
             throw ex;
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             throw ex;
-        }
-        finally {
+        } finally {
             // đóng result reading
             if (rp != null) rp.close();
             rp = null;
@@ -394,7 +383,7 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
             paramBuilder = null;
 
             // đóng statement
-            if (statement != null)statement.close();
+            if (statement != null) statement.close();
             statement = null;
 
             // đóng connection
@@ -418,35 +407,30 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
             statement.prepareQuery(POSAPI.REST_PRODUCT_GET_LISTING);
 
 
-                paramBuilder = statement.getParamBuilder()
-                        .setPage(page)
-                        .setPageSize(pageSize)
-                        .setFilterLike("name", finalSearchString)
-                        .setFilterLike("sku", finalSearchString)
-
-//                        .setFilterLike("sku", finalSearchString)
-                        .setSessionID(POSDataAccessSession.REST_SESSION_ID);
+            paramBuilder = statement.getParamBuilder()
+                    .setPage(page)
+                    .setPageSize(pageSize)
+                    .setFilterLike("name", finalSearchString)
+                    .setFilterLike("sku", finalSearchString)
+                    .setSessionID(POSDataAccessSession.REST_SESSION_ID);
 
             // thực thi truy vấn và parse kết quả thành object
             rp = statement.execute();
             rp.setParseImplement(getClassParseImplement());
             rp.setParseModel(Gson2PosListProduct.class);
             Gson2PosListProduct listProduct = (Gson2PosListProduct) rp.doParse();
-            List<Product> list = (List<Product>)(List<?>) (listProduct.items);
+            List<Product> list = (List<Product>) (List<?>) (listProduct.items);
 
             // đọc nốt thông tin về product option
 //            loadProductOption(list);
 
             // return
             return list;
-        }
-        catch (ConnectionException ex) {
+        } catch (ConnectionException ex) {
             throw ex;
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             throw ex;
-        }
-        finally {
+        } finally {
             // đóng result reading
             if (rp != null) rp.close();
             rp = null;
@@ -455,7 +439,7 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
             paramBuilder = null;
 
             // đóng statement
-            if (statement != null)statement.close();
+            if (statement != null) statement.close();
             statement = null;
 
             // đóng connection
@@ -478,11 +462,11 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
             statement.prepareQuery(POSAPI.REST_PRODUCT_GET_LISTING);
 
 
-                paramBuilder = statement.getParamBuilder()
-                        .setPage(currentPage)
-                        .setPageSize(pageSize)
-                        .setFilterEqual("category_id", categoryId)
-                        .setSessionID(POSDataAccessSession.REST_SESSION_ID);
+            paramBuilder = statement.getParamBuilder()
+                    .setPage(currentPage)
+                    .setPageSize(pageSize)
+                    .setFilterEqual("category_id", categoryId)
+                    .setSessionID(POSDataAccessSession.REST_SESSION_ID);
 
 
             // thực thi truy vấn và parse kết quả thành object
@@ -490,21 +474,18 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
             rp.setParseImplement(getClassParseImplement());
             rp.setParseModel(Gson2PosListProduct.class);
             Gson2PosListProduct listProduct = (Gson2PosListProduct) rp.doParse();
-            List<Product> list = (List<Product>)(List<?>) (listProduct.items);
+            List<Product> list = (List<Product>) (List<?>) (listProduct.items);
 
             // đọc nốt thông tin về product option
             loadProductOption(list);
 
             // return
             return list;
-        }
-        catch (ConnectionException ex) {
+        } catch (ConnectionException ex) {
             throw ex;
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             throw ex;
-        }
-        finally {
+        } finally {
             // đóng result reading
             if (rp != null) rp.close();
             rp = null;
@@ -513,7 +494,7 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
             paramBuilder = null;
 
             // đóng statement
-            if (statement != null)statement.close();
+            if (statement != null) statement.close();
             statement = null;
 
             // đóng connection

@@ -47,13 +47,16 @@ public class OrderShipmentItemsListPanel extends AbstractListPanel<CartItem> {
         View v = inflate(getContext(), R.layout.panel_order_shipment_item_list, null);
         addView(v);
 
+        // khởi tạo list view
+        initListView(R.id.order_shipment_items_list);
+
         // Chuẩn bị layout từng item trong danh sách items
         setLayoutItem(R.layout.card_order_shipment_item_content);
 
         // Chuẩn bị list danh sách item
 //        mRecycleView = (RecyclerView) findViewById(R.id.order_shipment_items_list);
 //        mRecycleView.setLayoutManager(new GridLayoutManager(this.getContext(), 1));
-        mRecycleView.setNestedScrollingEnabled(false);
+//        mRecycleView.setNestedScrollingEnabled(false);
 
         listItem = new ArrayList<>();
     }

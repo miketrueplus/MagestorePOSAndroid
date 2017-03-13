@@ -40,9 +40,13 @@ public class OrderInvoiceItemsListPanel extends AbstractListPanel<CartItem> {
 
     @Override
     public void initLayout() {
+//        super.initLayout();
         // Load layout view danh sách items của khách hàng
         View v = inflate(getContext(), R.layout.panel_order_invoice_item_list, null);
         addView(v);
+
+        // chuẩn bị list view
+        initListView(R.id.order_invoice_items_list);
 
         // Chuẩn bị layout từng item trong danh sách items
         setLayoutItem(R.layout.card_order_invoice_item_content);
@@ -50,7 +54,7 @@ public class OrderInvoiceItemsListPanel extends AbstractListPanel<CartItem> {
         // Chuẩn bị list danh sách item
 //        mRecycleView = (RecyclerView) findViewById(R.id.order_invoice_items_list);
 //        mRecycleView.setLayoutManager(new GridLayoutManager(this.getContext(), 1));
-        mRecycleView.setNestedScrollingEnabled(false);
+//        mRecycleView.setNestedScrollingEnabled(false);
     }
 
     @Override

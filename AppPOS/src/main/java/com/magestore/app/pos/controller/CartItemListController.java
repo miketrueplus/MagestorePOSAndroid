@@ -208,31 +208,36 @@ public class CartItemListController extends AbstractChildListController<Checkout
      */
     @Override
     public void doShowDetailPanel(boolean show) {
-        // khởi tạo và hiển thị dialog
-        if (mCartItemDetailDialog == null) {
-            mCartItemDetailDialog = com.magestore.app.pos.util.DialogUtil.dialog(getDetailView().getContext(),
-                    getDetailView().getContext().getString(R.string.product_option),
-                    getDetailView());
+        if (!getSelectedItem().getProduct().haveProductOption()) {
+            // khởi tạo và hiển thị dialog
+            if (mCartItemDetailDialog == null) {
+                mCartItemDetailDialog = com.magestore.app.pos.util.DialogUtil.dialog(getDetailView().getContext(),
+                        getDetailView().getContext().getString(R.string.product_option),
+                        getDetailView());
+            }
+            mCartItemDetailDialog.setTitle(getSelectedItem().getProduct().getName());
+            mCartItemDetailDialog.setDialogTitle(getSelectedItem().getProduct().getName());
+            mCartItemDetailDialog.show();
+
+            // Xử lý khi nhấn save trên dialog
+            mCartItemDetailDialog.getButtonSave().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    updateToCart(getDetailView().bind2Item());
+                }
+            });
+
+            // Xử lý khi nhấn cancel trên dialog
+            mCartItemDetailDialog.getButtonCancel().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    updateToCart(getDetailView().bind2Item());
+                }
+            });
         }
-        mCartItemDetailDialog.setTitle(getSelectedItem().getProduct().getName());
-        mCartItemDetailDialog.setDialogTitle(getSelectedItem().getProduct().getName());
-        mCartItemDetailDialog.show();
-
-        // Xử lý khi nhấn save trên dialog
-        mCartItemDetailDialog.getButtonSave().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                updateToCart(getDetailView().bind2Item());
-            }
-        });
-
-        // Xử lý khi nhấn cancel trên dialog
-        mCartItemDetailDialog.getButtonCancel().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                updateToCart(getDetailView().bind2Item());
-            }
-        });
+        else {
+            doShowProductOptionInput(getSelectedItem());
+        }
     }
 
     /**
@@ -320,10 +325,29 @@ public class CartItemListController extends AbstractChildListController<Checkout
         if (getItem().getProduct().getProductOption() == null) return;
         if (getItem().getProduct().getProductOption().getCustomOptions() == null) return;
 
+        // clear các chosen
         for (ProductOptionCustom productCustomOption : getItem().getProduct().getProductOption().getCustomOptions()) {
             if (productCustomOption.getOptionValueList() == null) return;
             for (ProductOptionCustomValue customValue : productCustomOption.getOptionValueList()) {
                 customValue.setChosen(false);
+            }
+        }
+    }
+
+    /**
+     * Đặt lại các chosen trên product tương ứng
+     * @param cartItem
+     */
+    public void setProductOptionChosen(CartItem cartItem) {
+        if (getItem() == null) return;
+        if (getItem().getProduct() == null) return;
+        if (getItem().getProduct().getProductOption() == null) return;
+        if (getItem().getProduct().getProductOption().getCustomOptions() == null) return;
+
+        // clear các chosen
+        for (ProductOptionCustom optionCustom : getItem().getChooseProductOptions().keySet()) {
+            for (ProductOptionCustomValue optionCustomValue : getItem().getChooseProductOptions().get(optionCustom).productOptionCustomValueList) {
+                optionCustomValue.setChosen(true);
             }
         }
     }
@@ -342,6 +366,7 @@ public class CartItemListController extends AbstractChildListController<Checkout
         mProductOptionDialog.setGoneButtonSave(true);
         // clear list option và hiện thị thông tin product và cart item
         clearProductOptionChosen();
+        setProductOptionChosen(cartItem);
         mProductOptionPanel.clearList();
         mProductOptionPanel.showCartItemInfo(cartItem);
         mProductOptionDialog.show();

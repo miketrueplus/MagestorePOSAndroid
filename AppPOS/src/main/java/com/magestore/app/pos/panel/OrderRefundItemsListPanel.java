@@ -50,13 +50,15 @@ public class OrderRefundItemsListPanel extends AbstractListPanel<CartItem> {
         View v = inflate(getContext(), R.layout.panel_order_refund_item_list, null);
         addView(v);
 
+        initListView(R.id.order_refund_items_list);
+
         // Chuẩn bị layout từng item trong danh sách items
         setLayoutItem(R.layout.card_order_refund_item_content);
 
         // Chuẩn bị list danh sách item
 //        mRecycleView = (RecyclerView) findViewById(R.id.order_refund_items_list);
 //        mRecycleView.setLayoutManager(new GridLayoutManager(this.getContext(), 1));
-        mRecycleView.setNestedScrollingEnabled(false);
+//        mRecycleView.setNestedScrollingEnabled(false);
 
         listItem = new ArrayList<>();
     }

@@ -41,13 +41,16 @@ public class RegisterShiftCashListPanel extends AbstractListPanel<CashTransactio
         v = inflate(getContext(), R.layout.panel_register_shift_cash_list, null);
         addView(v);
 
+        // khởi tạo list view
+        initListView(R.id.register_shift_cash_list);
+
         // Chuẩn bị layout từng item trong danh sách cash transaction
         setLayoutItem(R.layout.card_register_shift_cash_content);
 
         // Chuẩn bị list danh sách cash transaction
 //        mRecycleView = (RecyclerView) findViewById(R.id.register_shift_cash_list);
 //        mRecycleView.setLayoutManager(new GridLayoutManager(this.getContext(), 1));
-        mRecycleView.setNestedScrollingEnabled(false);
+//        mRecycleView.setNestedScrollingEnabled(false);
     }
 
     @Override

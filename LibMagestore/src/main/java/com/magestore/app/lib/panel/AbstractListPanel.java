@@ -60,7 +60,7 @@ public abstract class AbstractListPanel<TModel extends Model>
     protected List<ModelView> mModelViewList;
 
     // Các control nắm view
-    protected RecyclerView mRecycleView;
+    private RecyclerView mRecycleView;
 
     // tham chiếu layout của mỗi item trong list
     private int mintItemLayout;
@@ -183,6 +183,33 @@ public abstract class AbstractListPanel<TModel extends Model>
         if (mintItemLayout > 0) setLayoutItem(mintItemLayout);
 
         // tham chiếu layout của recycle view
+        initListView();
+//        if (mintListLayout > 0) {
+//            mRecycleView = (RecyclerView) findViewById(mintListLayout);
+//            mRecycleViewLayoutManager = new GridLayoutManager(this.getContext(), mintSpanCount, mintOrientation, false);
+//            mRecycleView.setLayoutManager(mRecycleViewLayoutManager);
+//            mRecycleView.setAdapter(new AbstractListPanel<TModel>.ListRecyclerViewAdapter());
+//            mRecycleView.setNestedScrollingEnabled(!mblnNoScroll);
+//            if (haveLazyLoading) {
+//                mScrollListener = new EndlessRecyclerOnScrollListener(mRecycleViewLayoutManager) {
+//                    @Override
+//                    public void onLoadMore(int current_page) {
+//                        // loading dữ liệu
+//                        mController.doRetrieveMore(current_page);
+//                    }
+//                };
+//                mRecycleView.setOnScrollListener(mScrollListener);
+//            }
+//        }
+
+        // panel search
+        if (mintSearchAutoCompletePanel > 0) {
+            mSearchPanel = (SearchAutoCompletePanel) findViewById(mintSearchAutoCompletePanel);
+        }
+    }
+
+    public void initListView() {
+        // tham chiếu layout của recycle view
         if (mintListLayout > 0) {
             mRecycleView = (RecyclerView) findViewById(mintListLayout);
             mRecycleViewLayoutManager = new GridLayoutManager(this.getContext(), mintSpanCount, mintOrientation, false);
@@ -195,19 +222,55 @@ public abstract class AbstractListPanel<TModel extends Model>
                     public void onLoadMore(int current_page) {
                         // loading dữ liệu
                         mController.doRetrieveMore(current_page);
-                        // hiện progress loading ở item cuối cùng
-//                        setItemLoadingProgress(null, true);
-
                     }
                 };
                 mRecycleView.setOnScrollListener(mScrollListener);
             }
         }
+    }
 
-        // panel search
-        if (mintSearchAutoCompletePanel > 0) {
-            mSearchPanel = (SearchAutoCompletePanel) findViewById(mintSearchAutoCompletePanel);
-        }
+    /**
+     * Khởi tạo list layout
+     * @param listLayout
+     */
+    public void initListView(int listLayout) {
+        initListView(listLayout, true, false, 1, LinearLayoutManager.VERTICAL);
+    }
+
+    /**
+     * Khởi tạo list view với số cột xác định
+     * @param listLayout
+     * @param intSpanCount
+     */
+    public void initListView(int listLayout,int intSpanCount) {
+        initListView(listLayout, true, false, intSpanCount, LinearLayoutManager.VERTICAL);
+    }
+
+    /**
+     * Khởi tạo list view
+     * @param listLayout
+     * @param blnNoScroll
+     * @param haveLazyLoading
+     */
+    public void initListView(int listLayout, boolean blnNoScroll, boolean haveLazyLoading) {
+        initListView(listLayout, blnNoScroll, haveLazyLoading, 1, LinearLayoutManager.VERTICAL);
+    }
+
+    /**
+     * Khởi tạo list view
+     * @param listLayout
+     * @param intSpanCount
+     * @param intOrientation
+     * @param haveLazyLoading
+     * @param blnNoScroll
+     */
+    public void initListView(int listLayout, boolean blnNoScroll, boolean haveLazyLoading, int intSpanCount, int intOrientation) {
+        this.mintListLayout = listLayout;
+        this.mintSpanCount = intSpanCount;
+        this.mintOrientation = intOrientation;
+        this.haveLazyLoading = haveLazyLoading;
+        this.mblnNoScroll = blnNoScroll;
+        initListView();
     }
 
     //    protected void initRecycleView(int resID, GridLayoutManager layoutManager) {
