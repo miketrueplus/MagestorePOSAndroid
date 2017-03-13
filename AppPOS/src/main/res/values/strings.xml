@@ -152,21 +152,29 @@
 
     <!-- Strings related to single words -->
     <string name="add_to_cart">Add To Cart</string>
-    <string name="customerAddress">Address</string>
+    <string name="amount">Amount</string>
+    <string name="apply">Apply</string>
     <string name="avaibles">Avaibles</string>
+    <string name="availability">Availability</string>
     <string name="category">Categories</string>
     <string name="cancel">Cancel</string>
     <string name="checkout">Check out</string>
+    <string name="check">Check</string>
     <string name="city">City</string>
     <string name="company">Company</string>
     <string name="confirm">Confirm</string>
     <string name="country">Country</string>
+    <string name="coupon_code">Coupon Code</string>
     <string name="customer">Customer</string>
+    <string name="customerAddress">Address</string>
     <string name="custom_price">Custom Price</string>
+    <string name="create_shipping">Mark as shipped</string>
+    <string name="create_invoice">Create Invoice</string>
     <string name="dashboard">Customer</string>
+    <string name="delete">Delete</string>
+    <string name="demo">Demo</string>
     <string name="discount">Discount</string>
-    <string name="shipping">Shipping</string>
-    <string name="shipping_and_handling">Shipping</string>
+    <string name="done">Done</string>
     <string name="email">Email</string>
     <string name="first_name">First Name</string>
     <string name="group">Group</string>
@@ -188,40 +196,32 @@
     <string name="revenue">Revenue</string>
     <string name="save">Save</string>
     <string name="search">Search</string>
+    <string name="shipping">Shipping</string>
+    <string name="shipping_and_handling">Shipping</string>
+    <string name="shopping_cart">Shopping card</string>
+    <string name="sku">SKU</string>
     <string name="state">State</string>
     <string name="state_or_province">State or Province</string>
     <string name="street">Street</string>
     <string name="sub_total">Sub Total</string>
-    <string name="sku">SKU</string>
-    <string name="shopping_cart">Shopping card</string>
     <string name="tax">Tax</string>
     <string name="total">Total</string>
     <string name="telephone">Telephone</string>
     <string name="vat">VAT</string>
     <string name="yes">Yes</string>
-    <string name="done">Done</string>
     <string name="zip_code">Zip Code</string>
-    <string name="delete">Delete</string>
-    <string name="create_shipping">Mark as shipped</string>
-    <string name="create_invoice">Create Invoice</string>
     <string name="reference_number">Reference Number</string>
     <string name="plus">+</string>
     <string name="minus">-</string>
     <string name="name">Name</string>
-    <string name="amount">Amount</string>
-    <string name="coupon_code">Coupon Code</string>
-    <string name="check">Check</string>
     <string name="promotion">Promotion</string>
-    <string name="apply">Apply</string>
     <string name="percent">%</string>
     <string name="note">Note</string>
-    <string name="demo">Demo</string>
     <string name="payment_method">PAYMENT METHOD</string>
     <string name="shipping_method">SHIPPING METHOD</string>
     <string name="print">Print</string>
     <string name="new_order">New Order</string>
     <string name="send">Send</string>
-    <string name="availability">Availability</string>
 
     <!-- Strings related to error message -->
     <string name="err_no_network_connection">No network connection, Pls check yout network settings</string>
@@ -236,6 +236,8 @@
     <string name="ask_are_you_sure_to_update">Are you sure to update?</string>
     <string name="ask_are_you_sure_to_remove">Are you sure to remove?</string>
     <string name="ask_are_you_sure_to_cancel">Are you sure to cancel?</string>
+    <string name="ask_are_you_sure_to_close">Are you sure to close?</string>
+
 
     <!-- Strings related to dialog title -->
     <string name="title_confirm">Please confirm</string>
@@ -244,20 +246,13 @@
     <string name="title_confirm_update">Please confirm update</string>
     <string name="title_confirm_remove">Please confirm remove</string>
     <string name="title_confirm_cancel">Please confirm cancel</string>
+    <string name="title_confirm_close">Please confirm close</string>
+
+    <string name="dialog_close">Close</string>
     <string name="dialog_cancel">Cancel</string>
     <string name="dialog_save">Save</string>
 
 
-    <string-array name="dogs_list">
-        <item>Bichon Frise</item>
-        <item>Border Collie</item>
-        <item>Border Terrier</item>
-        <item>Boxer</item>
-        <item>Chihuahua</item>
-        <item>German Shepherd</item>
-        <item>Golden Retriever</item>
-        <item>Greyhound</item>
-    </string-array>
     <string name="title_testitem_list">Items</string>
     <string name="title_testitem_detail">TestItem Detail</string>
     <string name="title_activity_new_address">NewAddressActivity</string>
