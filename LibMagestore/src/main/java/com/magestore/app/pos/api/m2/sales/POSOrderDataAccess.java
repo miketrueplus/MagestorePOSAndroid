@@ -113,7 +113,7 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
             paramBuilder = statement.getParamBuilder()
                     .setPage(page)
                     .setPageSize(pageSize)
-                    .setSortOrderDESC("entity_id")
+                    .setSortOrderDESC("created_at")
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
 
             // thực thi truy vấn và parse kết quả thành object
@@ -147,7 +147,53 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
 
     @Override
     public List<Order> retrieve(String searchString, int page, int pageSize) throws ParseException, InstantiationException, IllegalAccessException, IOException {
-        return null;
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+        String finalSearchString = "%" + searchString + "%";
+
+        try {
+            // Khởi tạo connection và khởi tạo truy vấn
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPI.REST_ORDER_GET_LISTING);
+
+            // Xây dựng tham số
+            paramBuilder = statement.getParamBuilder()
+                    .setPage(page)
+                    .setPageSize(pageSize)
+                    .setFilterLike("increment_id", finalSearchString)
+                    .setSortOrderDESC("created_at")
+                    .setSessionID(POSDataAccessSession.REST_SESSION_ID);
+
+            // thực thi truy vấn và parse kết quả thành object
+            rp = statement.execute();
+            rp.setParseImplement(getClassParseImplement());
+            rp.setParseModel(Gson2PosListOrder.class);
+            Gson2PosListOrder listOrder = (Gson2PosListOrder) rp.doParse();
+            List<Order> list = (List<Order>) (List<?>) (listOrder.items);
+            return list;
+        } catch (ConnectionException ex) {
+            throw ex;
+        } catch (IOException ex) {
+            throw ex;
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
     }
 
     @Override
@@ -255,7 +301,6 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
 //                    .setParam(POSAPI.PARAM_ORDER_ID, orderId);
 
-
             OrderEntity orderEntity = new OrderEntity();
             orderEntity.statusHistory = orderStatus;
 
@@ -357,11 +402,6 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
             OrderEntity orderEntity = new OrderEntity();
             orderEntity.entity = refundParams;
 
-            // TODO: log params request
-            Gson gson = new Gson();
-            String json = gson.toJson(orderEntity);
-            Log.e("JSON", json.toString());
-
             rp = statement.execute(orderEntity);
             rp.setParseImplement(getClassParseImplement());
             rp.setParseModel(PosOrder.class);
@@ -404,11 +444,6 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
 
             OrderEntity orderEntity = new OrderEntity();
             orderEntity.entity = invoiceParams;
-
-            // TODO: log params request
-            Gson gson = new Gson();
-            String json = gson.toJson(orderEntity);
-            Log.e("JSON", json.toString());
 
             rp = statement.execute(orderEntity);
             rp.setParseImplement(getClassParseImplement());
@@ -454,11 +489,6 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
 
             OrderEntity orderEntity = new OrderEntity();
             orderEntity.comment = cancelParams;
-
-            // TODO: log params request
-            Gson gson = new Gson();
-            String json = gson.toJson(orderEntity);
-            Log.e("JSON", json.toString());
 
             rp = statement.execute(orderEntity);
             rp.setParseImplement(getClassParseImplement());

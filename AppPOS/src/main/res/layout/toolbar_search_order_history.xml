@@ -28,8 +28,29 @@
             android:layout_toRightOf="@+id/im_search"
             android:background="@color/white"
             android:hint="@string/customer_search_customer_here"
+            android:imeOptions="flagNoExtractUi|actionSearch"
             android:inputType="text"
             android:maxLines="1"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/text_size"
             android:theme="@style/Autocomplete" />
+
+        <ImageButton
+            android:id="@+id/button_hide_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/ic_close_white"
+            android:visibility="gone" />
+
+        <ProgressBar
+            android:id="@+id/progress_autotext_search_order"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/button_hide_search"
+            android:visibility="gone" />
     </RelativeLayout>
 </android.support.design.widget.TextInputLayout>

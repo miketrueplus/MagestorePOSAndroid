@@ -48,7 +48,7 @@
                 android:layout_height="@dimen/layout_margin_10"
                 android:layout_gravity="top"
                 android:layout_marginRight="@dimen/layout_margin_10"
-                android:layout_marginTop="@dimen/layout_margin_10" />
+                android:layout_marginTop="@dimen/layout_margin_5" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
