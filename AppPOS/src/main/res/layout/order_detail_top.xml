@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/order_detail_top_background"
-        android:padding="5dp">
+        android:padding="@dimen/layout_margin_10">
 
         <TextView
             android:id="@+id/grand_total"
@@ -24,7 +24,7 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:text="@{ConfigUtil.formatPrice(orderDetail.getGrandTotal())}"
-            android:textSize="18sp"
+            android:textSize="@dimen/order_top_price_text_size"
             android:textStyle="bold" />
 
         <LinearLayout
@@ -36,7 +36,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
+                android:layout_marginRight="@dimen/layout_margin_5"
                 android:orientation="vertical">
 
                 <TextView
@@ -44,23 +44,29 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginBottom="5dp"
-                    android:text="@string/order_detail_top_status" />
+                    android:layout_marginBottom="@dimen/layout_margin_5"
+                    android:text="@string/order_detail_top_status"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/text_size" />
 
                 <TextView
                     android:id="@+id/lb_created_at"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginBottom="5dp"
-                    android:text="@string/order_detail_top_create_at" />
+                    android:layout_marginBottom="@dimen/layout_margin_5"
+                    android:text="@string/order_detail_top_create_at"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/text_size" />
 
                 <TextView
                     android:id="@+id/lb_webpos_staff_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="@string/order_detail_top_staff_name" />
+                    android:text="@string/order_detail_top_staff_name"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/text_size" />
             </LinearLayout>
 
             <LinearLayout
@@ -72,7 +78,7 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
+                    android:layout_marginBottom="@dimen/layout_margin_5"
                     android:orientation="horizontal">
 
                     <TextView
@@ -80,12 +86,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginRight="5dp" />
+                        android:layout_marginRight="@dimen/layout_margin_5"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/text_size" />
 
                     <ImageView
                         android:id="@+id/im_status"
-                        android:layout_width="10dp"
-                        android:layout_height="10dp"
+                        android:layout_width="@dimen/layout_margin_10"
+                        android:layout_height="@dimen/layout_margin_10"
                         android:layout_gravity="center_vertical" />
                 </LinearLayout>
 
@@ -94,15 +102,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginBottom="5dp"
-                    android:text="@{ConfigUtil.formatDate(orderDetail.getCreatedAt())}" />
+                    android:layout_marginBottom="@dimen/layout_margin_5"
+                    android:text="@{ConfigUtil.formatDate(orderDetail.getCreatedAt())}"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/text_size" />
 
                 <TextView
                     android:id="@+id/webpos_staff_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="@{orderDetail.getWebposStaffName()}" />
+                    android:text="@{orderDetail.getWebposStaffName()}"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/text_size" />
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>

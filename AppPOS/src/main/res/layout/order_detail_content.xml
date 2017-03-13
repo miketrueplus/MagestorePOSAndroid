@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:magestore_view="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:magestore_view="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -32,105 +33,114 @@
                     android:orientation="horizontal"
                     android:weightSum="2">
 
-                    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top"
-                        android:layout_margin="5dp"
+                        android:layout_marginBottom="@dimen/layout_margin_5"
+                        android:layout_marginLeft="@dimen/layout_margin_10"
+                        android:layout_marginRight="@dimen/layout_margin_5"
+                        android:layout_marginTop="@dimen/layout_margin_5"
                         android:layout_weight="1"
-                        card_view:cardCornerRadius="4dp">
+                        android:background="@color/order_detail_content_card_background"
+                        android:orientation="vertical">
 
-                        <LinearLayout
+                        <TextView
+                            android:id="@+id/billing_address"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@color/order_detail_content_card_background"
-                            android:orientation="vertical">
+                            android:layout_margin="@dimen/layout_margin_5"
+                            android:text="@string/order_detail_content_billing_address"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/text_size" />
 
-                            <TextView
-                                android:id="@+id/billing_address"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="5dp"
-                                android:text="@string/order_detail_content_billing_address" />
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/line"
+                            android:background="@color/line" />
 
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/line"
-                                android:background="@color/line" />
+                        <TextView
+                            android:id="@+id/txt_billing_adrress_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/layout_margin_5"
+                            android:text="@{orderDetail.getBillingAddressName()}"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/text_size" />
 
-                            <TextView
-                                android:id="@+id/txt_billing_adrress_name"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="5dp"
-                                android:text="@{orderDetail.getBillingAddressName()}" />
+                        <TextView
+                            android:id="@+id/txt_billing_adrress_full"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/layout_margin_5"
+                            android:text="@{orderDetail.getBillingAddressFullAddress()}"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/text_size" />
 
-                            <TextView
-                                android:id="@+id/txt_billing_adrress_full"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="5dp"
-                                android:text="@{orderDetail.getBillingAddressFullAddress()}" />
+                        <TextView
+                            android:id="@+id/txt_billing_adrress_telephone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/layout_margin_5"
+                            android:text="@{orderDetail.getBillingAddressTelephone()}"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/text_size" />
 
-                            <TextView
-                                android:id="@+id/txt_billing_adrress_telephone"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="5dp"
-                                android:text="@{orderDetail.getBillingAddressTelephone()}" />
+                    </LinearLayout>
 
-                        </LinearLayout>
-                    </android.support.v7.widget.CardView>
-
-                    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top"
-                        android:layout_margin="5dp"
+                        android:layout_marginBottom="@dimen/layout_margin_5"
+                        android:layout_marginLeft="@dimen/layout_margin_5"
+                        android:layout_marginRight="@dimen/layout_margin_10"
+                        android:layout_marginTop="@dimen/layout_margin_5"
                         android:layout_weight="1"
-                        card_view:cardCornerRadius="4dp">
+                        android:background="@color/order_detail_content_card_background"
+                        android:orientation="vertical">
 
-                        <LinearLayout
+                        <TextView
+                            android:id="@+id/shipping_address"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@color/order_detail_content_card_background"
-                            android:orientation="vertical">
+                            android:layout_margin="5dp"
+                            android:text="@string/order_detail_content_shipping_address"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/text_size" />
 
-                            <TextView
-                                android:id="@+id/shipping_address"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="5dp"
-                                android:text="@string/order_detail_content_shipping_address" />
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/line"
+                            android:background="@color/line" />
 
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/line"
-                                android:background="@color/line" />
+                        <TextView
+                            android:id="@+id/txt_shipping_adrress_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:text="@{orderDetail.getShippingAddressName()}"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/text_size" />
 
-                            <TextView
-                                android:id="@+id/txt_shipping_adrress_name"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="5dp"
-                                android:text="@{orderDetail.getShippingAddressName()}" />
+                        <TextView
+                            android:id="@+id/txt_shipping_adrress_full"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:text="@{orderDetail.getShippingFullAddress()}"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/text_size" />
 
-                            <TextView
-                                android:id="@+id/txt_shipping_adrress_full"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="5dp"
-                                android:text="@{orderDetail.getShippingFullAddress()}" />
-
-                            <TextView
-                                android:id="@+id/txt_shipping_adrress_telephone"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="5dp"
-                                android:text="@{orderDetail.getShippingTelePhone()}" />
-
-                        </LinearLayout>
-                    </android.support.v7.widget.CardView>
+                        <TextView
+                            android:id="@+id/txt_shipping_adrress_telephone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:text="@{orderDetail.getShippingTelePhone()}"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/text_size" />
+                    </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
@@ -139,245 +149,252 @@
                     android:orientation="horizontal"
                     android:weightSum="2">
 
-                    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="top"
-                        android:layout_margin="5dp"
-                        android:layout_weight="1"
-                        card_view:cardCornerRadius="4dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@color/order_detail_content_card_background"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/payment_method"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="5dp"
-                                android:text="@string/payment_method" />
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/line"
-                                android:background="@color/line" />
-
-                            <TextView
-                                android:id="@+id/payment_paid"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="5dp"
-                                android:text="@string/order_detail_content_payment_paid" />
-
-                            <FrameLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_horizontal"
-                                android:layout_marginBottom="5dp"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginRight="5dp"
-                                android:layout_marginTop="5dp"
-                                android:orientation="vertical">
-
-                                <com.magestore.app.pos.panel.OrderPaymentListPanel
-                                    android:id="@+id/order_payment"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    magestore_view:layout_panel="@layout/panel_order_payment_list"
-                                    magestore_view:layout_list="@+id/order_payment_list"
-                                    android:layout_weight="1.0" />
-
-                            </FrameLayout>
-                        </LinearLayout>
-
-                    </android.support.v7.widget.CardView>
-
-                    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="top"
-                        android:layout_margin="5dp"
-                        android:layout_weight="1"
-                        card_view:cardCornerRadius="4dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@color/order_detail_content_card_background"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/shipping_method"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="5dp"
-                                android:text="@string/shipping_method" />
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/line"
-                                android:background="@color/line" />
-
-                            <TextView
-                                android:id="@+id/txt_shipping_method"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="5dp"
-                                android:text="@{orderDetail.getShippingDescription()}" />
-                        </LinearLayout>
-
-                    </android.support.v7.widget.CardView>
-                </LinearLayout>
-
-                <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="top"
-                    android:layout_margin="5dp"
-                    card_view:cardCornerRadius="4dp">
-
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/order_detail_content_card_background"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="5dp"
-                            android:orientation="horizontal">
-
-                            <TableRow
-                                android:id="@+id/table_row_title"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
-
-                                <LinearLayout
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="3"
-                                    android:orientation="vertical">
-
-                                    <TextView
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:text="@string/order_detail_content_item_title_product" />
-                                </LinearLayout>
-
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:text="@string/order_detail_content_item_original_price" />
-
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:text="@string/order_detail_content_item_price" />
-
-
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1.2"
-                                    android:text="@string/order_detail_content_item_qty" />
-
-
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:text="@string/order_detail_content_item_subtotal" />
-
-
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:text="@string/order_detail_content_item_tax_amount" />
-
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:text="@string/order_detail_content_item_discount_amount" />
-
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:text="@string/order_detail_content_item_row_total" />
-
-                            </TableRow>
-                        </LinearLayout>
-
-                        <FrameLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_margin="5dp"
-                            android:orientation="vertical">
-
-                            <com.magestore.app.pos.panel.OrderHistoryItemsListPanel
-                                android:id="@+id/order_items"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                magestore_view:layout_panel="@layout/panel_order_history_items_list"
-                                magestore_view:layout_list="@+id/order_items_list"
-                                android:layout_weight="1.0" />
-                        </FrameLayout>
-                    </LinearLayout>
-
-                </android.support.v7.widget.CardView>
-
-                <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="top"
-                    android:layout_margin="5dp"
-                    android:visibility="@{orderDetail.checkComment() ? View.VISIBLE : View.GONE}"
-                    card_view:cardCornerRadius="4dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_gravity="top"
+                        android:layout_marginBottom="@dimen/layout_margin_5"
+                        android:layout_marginLeft="@dimen/layout_margin_10"
+                        android:layout_marginRight="@dimen/layout_margin_5"
+                        android:layout_marginTop="@dimen/layout_margin_5"
+                        android:layout_weight="1"
                         android:background="@color/order_detail_content_card_background"
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/comment_history"
+                            android:id="@+id/payment_method"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="5dp"
-                            android:text="@string/order_detail_content_comment_history" />
+                            android:layout_margin="@dimen/layout_margin_5"
+                            android:text="@string/payment_method"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/text_size" />
 
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/line"
                             android:background="@color/line" />
 
+                        <TextView
+                            android:id="@+id/payment_paid"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/layout_margin_5"
+                            android:text="@string/order_detail_content_payment_paid"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/text_size" />
+
                         <FrameLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
-                            android:layout_margin="5dp"
+                            android:layout_marginLeft="@dimen/layout_margin_10"
+                            android:layout_marginRight="@dimen/layout_margin_5"
+                            android:layout_marginTop="@dimen/layout_margin_5"
                             android:orientation="vertical">
 
-                            <com.magestore.app.pos.panel.OrderCommentHistoryListPanel
-                                android:id="@+id/order_comment"
+                            <com.magestore.app.pos.panel.OrderPaymentListPanel
+                                android:id="@+id/order_payment"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                magestore_view:layout_panel="@layout/panel_order_comment_history_list"
-                                magestore_view:layout_list="@+id/order_comment_history_list"
-                                android:layout_weight="1.0" />
+                                android:layout_weight="1.0"
+                                magestore_view:layout_list="@+id/order_payment_list"
+                                magestore_view:layout_panel="@layout/panel_order_payment_list" />
+
                         </FrameLayout>
                     </LinearLayout>
-                </android.support.v7.widget.CardView>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top"
+                        android:layout_marginBottom="@dimen/layout_margin_5"
+                        android:layout_marginLeft="@dimen/layout_margin_5"
+                        android:layout_marginRight="@dimen/layout_margin_10"
+                        android:layout_marginTop="@dimen/layout_margin_5"
+                        android:layout_weight="1"
+                        android:background="@color/order_detail_content_card_background"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/shipping_method"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/layout_margin_5"
+                            android:text="@string/shipping_method"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/text_size" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/line"
+                            android:background="@color/line" />
+
+                        <TextView
+                            android:id="@+id/txt_shipping_method"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/layout_margin_5"
+                            android:text="@{orderDetail.getShippingDescription()}"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/text_size" />
+                    </LinearLayout>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:layout_marginBottom="@dimen/layout_margin_5"
+                    android:layout_marginLeft="@dimen/layout_margin_10"
+                    android:layout_marginRight="@dimen/layout_margin_10"
+                    android:layout_marginTop="@dimen/layout_margin_5"
+                    android:background="@color/order_detail_content_card_background"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/layout_margin_5"
+                        android:orientation="horizontal">
+
+                        <TableRow
+                            android:id="@+id/table_row_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="3"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/order_detail_content_item_title_product"
+                                    android:textColor="@color/text_color"
+                                    android:textSize="@dimen/order_content_table_text_size" />
+                            </LinearLayout>
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/order_detail_content_item_original_price"
+                                android:textColor="@color/text_color"
+                                android:textSize="@dimen/order_content_table_text_size" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/order_detail_content_item_price"
+                                android:textColor="@color/text_color"
+                                android:textSize="@dimen/order_content_table_text_size" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.2"
+                                android:text="@string/order_detail_content_item_qty"
+                                android:textColor="@color/text_color"
+                                android:textSize="@dimen/order_content_table_text_size" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/order_detail_content_item_subtotal"
+                                android:textColor="@color/text_color"
+                                android:textSize="@dimen/order_content_table_text_size" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/order_detail_content_item_tax_amount"
+                                android:textColor="@color/text_color"
+                                android:textSize="@dimen/order_content_table_text_size" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/order_detail_content_item_discount_amount"
+                                android:textColor="@color/text_color"
+                                android:textSize="@dimen/order_content_table_text_size" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/order_detail_content_item_row_total"
+                                android:textColor="@color/text_color"
+                                android:textSize="@dimen/order_content_table_text_size" />
+                        </TableRow>
+                    </LinearLayout>
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_margin="@dimen/layout_margin_5"
+                        android:orientation="vertical">
+
+                        <com.magestore.app.pos.panel.OrderHistoryItemsListPanel
+                            android:id="@+id/order_items"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1.0"
+                            magestore_view:layout_list="@+id/order_items_list"
+                            magestore_view:layout_panel="@layout/panel_order_history_items_list" />
+                    </FrameLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:layout_marginBottom="@dimen/layout_margin_5"
+                    android:layout_marginLeft="@dimen/layout_margin_10"
+                    android:layout_marginRight="@dimen/layout_margin_10"
+                    android:layout_marginTop="@dimen/layout_margin_5"
+                    android:background="@color/order_detail_content_card_background"
+                    android:orientation="vertical"
+                    android:visibility="@{orderDetail.checkComment() ? View.VISIBLE : View.GONE}">
+
+                    <TextView
+                        android:id="@+id/comment_history"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/layout_margin_5"
+                        android:text="@string/order_detail_content_comment_history"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/text_size" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/line"
+                        android:background="@color/line" />
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_margin="@dimen/layout_margin_5"
+                        android:orientation="vertical">
+
+                        <com.magestore.app.pos.panel.OrderCommentHistoryListPanel
+                            android:id="@+id/order_comment"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1.0"
+                            magestore_view:layout_list="@+id/order_comment_history_list"
+                            magestore_view:layout_panel="@layout/panel_order_comment_history_list" />
+                    </FrameLayout>
+                </LinearLayout>
             </LinearLayout>
         </ScrollView>
     </RelativeLayout>

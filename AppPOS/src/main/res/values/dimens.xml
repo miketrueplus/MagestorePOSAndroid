@@ -31,7 +31,7 @@
     <!--Product List-->
     <dimen name="product_item_space">0.5dp</dimen>
     <dimen name="product_image_height">120dp</dimen>
-    <dimen name="product_image_detail_height" >320dp</dimen>
+    <dimen name="product_image_detail_height">320dp</dimen>
     <dimen name="product_price_margin">2dp</dimen>
     <dimen name="product_text_name_size">14sp</dimen>
     <dimen name="product_text_sku_size">14sp</dimen>
@@ -80,7 +80,12 @@
     <dimen name="checkout_success_edditext_width_size">40dp</dimen>
     <dimen name="checkout_success_edditext_margin_top">40dp</dimen>
     <dimen name="checkout_success_button_text_size">20sp</dimen>
-    
+
+    <!--Order History-->
+    <dimen name="order_top_price_text_size">24sp</dimen>
+    <dimen name="order_content_table_text_size">14sp</dimen>
+    <dimen name="order_content_comment_text_size">14sp</dimen>
+
     <!--Dialog-->
     <dimen name="dialog_title_text_size">24sp</dimen>
     <dimen name="dialog_action_text_size">14sp</dimen>
