@@ -39,10 +39,5 @@
                 android:textSize="@dimen/order_content_comment_text_size" />
 
         </LinearLayout>
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/line"
-            android:background="@color/line" />
     </LinearLayout>
 </layout>

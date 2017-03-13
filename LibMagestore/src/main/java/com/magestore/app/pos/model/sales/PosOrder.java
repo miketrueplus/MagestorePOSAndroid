@@ -593,4 +593,19 @@ public class PosOrder extends PosAbstractModel implements Order {
         }
         return shippingAddress;
     }
+
+    @Override
+    public String getDisplayContent() {
+        return getIncrementId();
+    }
+
+    @Override
+    public String getSubDisplayContent() {
+        if (getCustomerFirstname() != null) {
+            String name = getCustomerFirstname() + " " + getCustomerLastname();
+            return name;
+        } else {
+            return getCustomerEmail();
+        }
+    }
 }

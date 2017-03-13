@@ -21,6 +21,11 @@
             magestore_view:layout_panel="@layout/panel_search_customer"
             magestore_view:layout_progress="@+id/progress_autotext_search_customer" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/line"
+            android:background="@color/line" />
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
