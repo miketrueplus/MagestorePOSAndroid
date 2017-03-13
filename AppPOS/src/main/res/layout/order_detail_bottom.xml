@@ -46,8 +46,7 @@
                     <TableRow
                         android:id="@+id/table_row_subtotal"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/layout_margin_5">
+                        android:layout_height="wrap_content">
 
                         <TextView
                             android:layout_width="0dp"
@@ -202,7 +201,10 @@
                     android:id="@+id/btn_print"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/layout_margin_5"
+                    android:layout_marginBottom="@dimen/layout_margin_5"
+                    android:layout_marginLeft="@dimen/layout_margin_10"
+                    android:layout_marginRight="@dimen/layout_margin_5"
+                    android:layout_marginTop="@dimen/layout_margin_5"
                     android:layout_weight="1"
                     android:background="@drawable/order_history_border_button_print"
                     android:text="@string/print"
@@ -213,7 +215,10 @@
                     android:id="@+id/btn_invoice"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/layout_margin_5"
+                    android:layout_marginBottom="@dimen/layout_margin_5"
+                    android:layout_marginLeft="@dimen/layout_margin_5"
+                    android:layout_marginRight="@dimen/layout_margin_10"
+                    android:layout_marginTop="@dimen/layout_margin_5"
                     android:layout_weight="1"
                     android:background="@drawable/order_history_border_button_invoice"
                     android:text="@string/order_detail_bottom_btn_invoice"

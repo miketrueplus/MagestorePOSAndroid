@@ -247,7 +247,7 @@ public class PosOrderHistoryService extends AbstractService implements OrderHist
         if (status.equals("")) {
             return false;
         }
-        if (status.equals("status") || status.equals("complete") || status.equals("closed"))
+        if (status.equals("status") || status.equals("complete") || status.equals("closed") || status.equals("canceled"))
             return false;
         boolean allInvoiced = true;
         for (CartItem item : order.getOrderItems()) {
