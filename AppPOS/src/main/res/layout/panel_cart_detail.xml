@@ -77,26 +77,27 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/id_btn_cart_item_detail_quantity_add"
+                    android:id="@+id/id_btn_cart_item_detail_quantity_substract"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:onClick="@{panel.onAddQuantity}"
-                    android:text="+" />
+                    android:onClick="@{panel.onSubstractQuantity}"
+                    android:text="-" />
 
                 <EditText
                     android:id="@+id/id_txt_cart_item_detail_quantity"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1.0"
+                    android:enabled="false"
                     android:text="@{ConfigUtil.formatQuantity(cartItem.getQuantity())}"
                     android:textAlignment="viewEnd" />
-
                 <Button
-                    android:id="@+id/id_btn_cart_item_detail_quantity_substract"
+                    android:id="@+id/id_btn_cart_item_detail_quantity_add"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:onClick="@{panel.onSubstractQuantity}"
-                    android:text="-" />
+                    android:onClick="@{panel.onAddQuantity}"
+                    android:text="+" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -105,22 +106,26 @@
                 android:layout_weight="0.33"
                 android:orientation="horizontal">
                 <Button
-                    android:id="@+id/id_btn_cart_item_detail_price_add"
+                    android:id="@+id/id_btn_cart_item_detail_price_substract"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="+" />
+                    android:onClick="@{panel.onSubstractPrice}"
+                    android:text="-" />
+
                 <EditText
                     android:id="@+id/id_txt_cart_item_detail_custom_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.0"
+                    android:enabled="false"
                     android:text="@{ConfigUtil.formatPrice(cartItem.getUnitPrice())}"
                     android:textAlignment="viewEnd" />
                 <Button
-                    android:id="@+id/id_btn_cart_item_detail_price_substract"
+                    android:id="@+id/id_btn_cart_item_detail_price_add"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="-" />
+                    android:onClick="@{panel.onAddPrice}"
+                    android:text="+" />
             </LinearLayout>
 
             <LinearLayout
@@ -134,6 +139,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1.0"
+                    android:enabled="false"
                     android:text="@{ConfigUtil.formatPrice(cartItem.getDiscountAmount())}"
                     android:textAlignment="viewEnd" />
 
@@ -141,12 +147,14 @@
                     android:id="@+id/id_btn_cart_item_detail_discount_money"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:onClick="@{panel.onDiscountChangeToFixed}"
                     android:text="$" />
 
                 <Button
                     android:id="@+id/id_btn_cart_item_detail_discount_percent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:onClick="@{panel.onDiscountChangeToPercent}"
                     android:text="%" />
             </LinearLayout>
         </LinearLayout>

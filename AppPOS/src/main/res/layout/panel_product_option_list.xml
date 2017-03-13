@@ -177,6 +177,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_marginRight="@dimen/layout_margin_5"
+                            android:enabled="false"
                             android:background="@drawable/product_detail_border_edditext"
                             android:gravity="center"
                             android:padding="@dimen/layout_margin_10"

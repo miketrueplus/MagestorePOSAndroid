@@ -78,4 +78,36 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
         ((CartItemListController) getController()).substractQuantity(getItem());
         mBinding.setCartItem(getItem());
     }
+
+    /**
+     * Nhấn nút tăng giá
+     * @param view
+     */
+    public void onAddPrice(View view) {
+
+    }
+
+    /**
+     * Nhấn nút giảm giá
+     * @param view
+     */
+    public void onSubstractPrice(View view) {
+
+    }
+
+    /**
+     * Nhấn nút chuyển discout sang fixed
+     * @param view
+     */
+    public void onDiscountChangeToFixed(View view) {
+
+    }
+
+    /**
+     * Nhấn nút chuyển discout sang percent
+     * @param view
+     */
+    public void onDiscountChangeToPercent(View view) {
+
+    }
 }
