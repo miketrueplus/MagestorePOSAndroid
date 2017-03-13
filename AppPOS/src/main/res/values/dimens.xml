@@ -85,6 +85,9 @@
     <dimen name="order_top_price_text_size">24sp</dimen>
     <dimen name="order_content_table_text_size">14sp</dimen>
     <dimen name="order_content_comment_text_size">14sp</dimen>
+    <dimen name="order_bottom_text_size">14sp</dimen>
+    <dimen name="order_bottom_button_text_size">20sp</dimen>
+    <dimen name="order_bottom_button_radius">3dp</dimen>
 
     <!--Dialog-->
     <dimen name="dialog_title_text_size">24sp</dimen>

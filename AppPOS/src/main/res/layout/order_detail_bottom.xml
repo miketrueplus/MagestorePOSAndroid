@@ -46,20 +46,25 @@
                     <TableRow
                         android:id="@+id/table_row_subtotal"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/layout_margin_5">
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="@string/order_detail_bottom_tb_subtotal" />
+                            android:text="@string/order_detail_bottom_tb_subtotal"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/order_bottom_text_size" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="right"
-                            android:text="@{ConfigUtil.formatPrice(orderDetail.getOrderHistorySubtotal())}" />
+                            android:text="@{ConfigUtil.formatPrice(orderDetail.getOrderHistorySubtotal())}"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/order_bottom_text_size" />
                     </TableRow>
 
                     <TableRow
@@ -71,14 +76,18 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="@string/order_detail_bottom_tb_shipping" />
+                            android:text="@string/order_detail_bottom_tb_shipping"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/order_bottom_text_size" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="right"
-                            android:text="@{ConfigUtil.formatPrice(orderDetail.getShippingAmount())}" />
+                            android:text="@{ConfigUtil.formatPrice(orderDetail.getShippingAmount())}"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/order_bottom_text_size" />
                     </TableRow>
 
                     <TableRow
@@ -90,14 +99,18 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="@string/order_detail_bottom_tb_tax" />
+                            android:text="@string/order_detail_bottom_tb_tax"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/order_bottom_text_size" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="right"
-                            android:text="@{ConfigUtil.formatPrice(orderDetail.getTaxAmount())}" />
+                            android:text="@{ConfigUtil.formatPrice(orderDetail.getTaxAmount())}"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/order_bottom_text_size" />
                     </TableRow>
 
                     <TableRow
@@ -110,14 +123,18 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="@string/order_detail_bottom_tb_discount" />
+                            android:text="@string/order_detail_bottom_tb_discount"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/order_bottom_text_size" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="right"
-                            android:text="@{ConfigUtil.formatPrice(orderDetail.getDiscountAmount())}" />
+                            android:text="@{ConfigUtil.formatPrice(orderDetail.getDiscountAmount())}"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/order_bottom_text_size" />
                     </TableRow>
 
                     <TableRow
@@ -129,14 +146,18 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="@string/order_detail_bottom_tb_grand_total" />
+                            android:text="@string/order_detail_bottom_tb_grand_total"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/order_bottom_text_size" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="right"
-                            android:text="@{ConfigUtil.formatPrice(orderDetail.getGrandTotal())}" />
+                            android:text="@{ConfigUtil.formatPrice(orderDetail.getGrandTotal())}"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/order_bottom_text_size" />
                     </TableRow>
 
                     <TableRow
@@ -148,14 +169,18 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="@string/order_detail_bottom_tb_total_paid" />
+                            android:text="@string/order_detail_bottom_tb_total_paid"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/order_bottom_text_size" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="right"
-                            android:text="@{ConfigUtil.formatPrice(orderDetail.getTotalPaid())}" />
+                            android:text="@{ConfigUtil.formatPrice(orderDetail.getTotalPaid())}"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/order_bottom_text_size" />
                     </TableRow>
                 </TableLayout>
             </LinearLayout>
@@ -177,20 +202,23 @@
                     android:id="@+id/btn_print"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
+                    android:layout_margin="@dimen/layout_margin_5"
                     android:layout_weight="1"
+                    android:background="@drawable/order_history_border_button_print"
                     android:text="@string/print"
-                    android:textAllCaps="true"
-                    android:textSize="18sp" />
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/order_bottom_button_text_size" />
 
                 <Button
                     android:id="@+id/btn_invoice"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
+                    android:layout_margin="@dimen/layout_margin_5"
                     android:layout_weight="1"
+                    android:background="@drawable/order_history_border_button_invoice"
                     android:text="@string/order_detail_bottom_btn_invoice"
-                    android:textSize="18sp" />
+                    android:textColor="@color/order_bottom_button_invoice_text_color"
+                    android:textSize="@dimen/order_bottom_button_text_size" />
 
                 <FrameLayout
                     android:id="@+id/fr_detail_bottom_right"

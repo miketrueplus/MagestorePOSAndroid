@@ -70,6 +70,9 @@
     <color name="checkout_success_btn_text_print_color">#454e57</color>
     <color name="checkout_success_btn_text_new_color">#ffffff</color>
 
+    <!--Order History-->
+    <color name="order_bottom_button_invoice_text_color">#ffffff</color>
+
     <!--Register Shift-->
     <color name="register_shift_dialog_make_adjustment_bg_select">#00a679</color>
     <color name="register_shift_dialog_make_adjustment_text_select">#ffffff</color>
