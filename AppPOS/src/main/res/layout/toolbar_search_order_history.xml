@@ -19,7 +19,7 @@
             android:layout_marginRight="@dimen/layout_margin_10"
             android:src="@drawable/ic_search_order_history" />
 
-        <AutoCompleteTextView
+        <com.magestore.app.lib.view.SearchAutoCompleteTextView
             android:id="@+id/text_search_order"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
