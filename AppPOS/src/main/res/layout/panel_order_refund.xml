@@ -40,26 +40,34 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/order_detail_content_item_title_product" />
+                        android:text="@string/order_detail_content_item_title_product"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/order_content_table_text_size" />
                 </LinearLayout>
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/order_detail_content_item_title_sku" />
+                    android:text="@string/order_detail_content_item_title_sku"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/order_content_table_text_size" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/order_detail_content_item_price" />
+                    android:text="@string/order_detail_content_item_price"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/order_content_table_text_size" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/order_detail_content_item_qty" />
+                    android:text="@string/order_detail_content_item_qty"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/order_content_table_text_size" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -70,7 +78,9 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/order_detail_content_item_qty_to_refund" />
+                        android:text="@string/order_detail_content_item_qty_to_refund"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/order_content_table_text_size" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -82,7 +92,9 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/order_detail_content_item_return_stock" />
+                        android:text="@string/order_detail_content_item_return_stock"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/order_content_table_text_size" />
                 </LinearLayout>
             </TableRow>
         </LinearLayout>

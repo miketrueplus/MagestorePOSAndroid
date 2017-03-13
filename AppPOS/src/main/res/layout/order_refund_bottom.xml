@@ -3,12 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    android:padding="5dp">
+    android:padding="@dimen/layout_margin_5">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="5dp"
+        android:layout_marginRight="@dimen/layout_margin_5"
         android:layout_weight="1"
         android:orientation="vertical">
 
@@ -17,7 +17,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
-            android:text="@string/order_refund_comment_title" />
+            android:text="@string/order_refund_comment_title"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/order_content_table_text_size" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -33,7 +35,9 @@
                 android:background="@color/white"
                 android:gravity="top"
                 android:inputType="textMultiLine"
-                android:minLines="3" />
+                android:minLines="3"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/order_content_table_text_size" />
         </LinearLayout>
     </LinearLayout>
 
@@ -47,62 +51,70 @@
             android:id="@+id/txt_adjust_refund"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:text="@string/order_adjust_refund_title" />
+            android:layout_marginBottom="@dimen/layout_margin_5"
+            android:text="@string/order_adjust_refund_title"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/order_content_table_text_size" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
+            android:layout_marginBottom="@dimen/layout_margin_5"
             android:background="@drawable/boder_linear_layout"
             android:orientation="vertical"
-            android:padding="5dp">
+            android:padding="@dimen/layout_margin_5">
 
             <com.magestore.app.view.FormatTextEdit
                 android:id="@+id/adjust_refund"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:inputType="numberDecimal" />
+                android:inputType="numberDecimal"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/order_content_table_text_size" />
         </LinearLayout>
 
         <TextView
             android:id="@+id/txt_adjust_fee"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
+            android:layout_marginBottom="@dimen/layout_margin_5"
             android:text="@string/order_adjust_fee_title" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
+            android:layout_marginBottom="@dimen/layout_margin_5"
             android:background="@drawable/boder_linear_layout"
             android:orientation="vertical"
-            android:padding="5dp">
+            android:padding="@dimen/layout_margin_5">
 
             <com.magestore.app.view.FormatTextEdit
                 android:id="@+id/adjust_fee"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:inputType="numberDecimal" />
+                android:inputType="numberDecimal"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/order_content_table_text_size" />
         </LinearLayout>
 
         <TextView
             android:id="@+id/txt_store_credit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:text="@string/order_store_credit_title" />
+            android:layout_marginBottom="@dimen/layout_margin_5"
+            android:text="@string/order_store_credit_title"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/order_content_table_text_size" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
+            android:layout_marginBottom="@dimen/layout_margin_5"
             android:background="@drawable/boder_linear_layout"
             android:orientation="vertical"
-            android:padding="5dp">
+            android:padding="@dimen/layout_margin_5">
 
             <com.magestore.app.view.FormatTextEdit
                 android:id="@+id/store_credit"
@@ -118,19 +130,25 @@
 
             <CheckBox
                 android:id="@+id/cb_send_email"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="5dp"
+                android:layout_marginRight="@dimen/layout_margin_5"
                 android:layout_toLeftOf="@+id/btn_submit_refund"
-                android:text="@string/order_shipment_send_email" />
+                android:gravity="center_vertical"
+                android:text="@string/order_shipment_send_email"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/order_content_table_text_size" />
 
             <Button
                 android:id="@+id/btn_submit_refund"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:text="@string/order_refund_btn_submit" />
+                android:background="@drawable/order_history_refund_button_submit"
+                android:padding="@dimen/layout_margin_5"
+                android:text="@string/order_refund_btn_submit"
+                android:textColor="@color/order_refund_button_text_color" />
         </RelativeLayout>
     </LinearLayout>
 </LinearLayout>

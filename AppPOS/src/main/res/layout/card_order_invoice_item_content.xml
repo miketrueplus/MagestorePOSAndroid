@@ -38,13 +38,17 @@
                         android:id="@+id/name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@{orderItem.getName()}" />
+                        android:text="@{orderItem.getName()}"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/order_content_table_text_size" />
 
                     <TextView
                         android:id="@+id/sku"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@{orderItem.getSku()}"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/order_content_table_text_size"
                         android:textStyle="italic" />
 
                 </LinearLayout>
@@ -55,7 +59,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
-                    android:text="@{ConfigUtil.formatPrice(orderItem.getPrice())}" />
+                    android:text="@{ConfigUtil.formatPrice(orderItem.getPrice())}"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/order_content_table_text_size" />
 
                 <TextView
                     android:id="@+id/qty_ordered"
@@ -63,8 +69,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1.2"
-                    android:text='@{@string/order_detail_content_item_row_qty_ordered + " " + String.valueOf(orderItem.getQtyOrdered())}' />
-
+                    android:text='@{@string/order_detail_content_item_row_qty_ordered + " " + String.valueOf(orderItem.getQtyOrdered())}'
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/order_content_table_text_size" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -82,7 +89,9 @@
                         android:background="@color/white"
                         android:gravity="center_horizontal"
                         android:inputType="number"
-                        android:text="@{String.valueOf(orderItem.QtyInvoice())}" />
+                        android:text="@{String.valueOf(orderItem.QtyInvoice())}"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/order_content_table_text_size" />
                 </LinearLayout>
 
                 <TextView
@@ -91,7 +100,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
-                    android:text="@{ConfigUtil.formatPrice(orderItem.getSubtotal())}" />
+                    android:text="@{ConfigUtil.formatPrice(orderItem.getSubtotal())}"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/order_content_table_text_size" />
 
                 <TextView
                     android:id="@+id/tax_amount"
@@ -99,7 +110,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
-                    android:text="@{ConfigUtil.formatPrice(orderItem.getTaxAmount())}" />
+                    android:text="@{ConfigUtil.formatPrice(orderItem.getTaxAmount())}"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/order_content_table_text_size" />
 
                 <TextView
                     android:id="@+id/discount_amount"
@@ -107,7 +120,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
-                    android:text="@{ConfigUtil.formatPrice(orderItem.getDiscountAmount())}" />
+                    android:text="@{ConfigUtil.formatPrice(orderItem.getDiscountAmount())}"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/order_content_table_text_size" />
 
                 <TextView
                     android:id="@+id/row_total"
@@ -115,7 +130,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
-                    android:text="@{ConfigUtil.formatPrice(orderItem.getRowTotal())}" />
+                    android:text="@{ConfigUtil.formatPrice(orderItem.getRowTotal())}"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/order_content_table_text_size" />
             </TableRow>
         </TableLayout>
 
