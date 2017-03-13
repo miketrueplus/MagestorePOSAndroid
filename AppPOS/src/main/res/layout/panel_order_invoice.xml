@@ -23,8 +23,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginBottom="@dimen/layout_margin_10"
+            android:layout_marginTop="@dimen/layout_margin_10"
             android:orientation="horizontal">
 
             <TextView
@@ -34,6 +34,8 @@
                 android:layout_weight="1"
                 android:gravity="right"
                 android:text='@{@string/order_invoice_total_paid + " " + ConfigUtil.formatPrice(orderDetail.getTotalPaid())}'
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/text_size"
                 android:textStyle="bold" />
 
             <TextView
@@ -43,6 +45,8 @@
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
                 android:text='@{@string/order_total_invoiced + " " + ConfigUtil.formatPrice(orderDetail.getTotalInvoiced())}'
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/text_size"
                 android:textStyle="bold" />
 
             <TextView
@@ -52,6 +56,8 @@
                 android:layout_weight="1"
                 android:gravity="left"
                 android:text='@{@string/order_invoiceable + " " + ConfigUtil.formatPrice(orderDetail.getGrandTotal())}'
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/text_size"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -62,7 +68,7 @@
             android:layout_below="@+id/ll_invoice_top"
             android:background="@color/order_shipment_table_title_color"
             android:orientation="horizontal"
-            android:padding="5dp">
+            android:padding="@dimen/layout_margin_5">
 
             <TableRow
                 android:id="@+id/table_row_title"
@@ -78,20 +84,26 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/order_detail_content_item_title_product" />
+                        android:text="@string/order_detail_content_item_title_product"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/order_content_table_text_size" />
                 </LinearLayout>
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/order_detail_content_item_price" />
+                    android:text="@string/order_detail_content_item_price"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/order_content_table_text_size" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.2"
-                    android:text="@string/order_detail_content_item_qty" />
+                    android:text="@string/order_detail_content_item_qty"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/order_content_table_text_size" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -102,32 +114,42 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/order_detail_content_item_qty_to_invoice" />
+                        android:text="@string/order_detail_content_item_qty_to_invoice"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/order_content_table_text_size" />
                 </LinearLayout>
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/order_detail_content_item_subtotal" />
+                    android:text="@string/order_detail_content_item_subtotal"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/order_content_table_text_size" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/order_detail_content_item_tax_amount" />
+                    android:text="@string/order_detail_content_item_tax_amount"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/order_content_table_text_size" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/order_detail_content_item_discount_amount" />
+                    android:text="@string/order_detail_content_item_discount_amount"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/order_content_table_text_size" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/order_detail_content_item_row_total" />
+                    android:text="@string/order_detail_content_item_row_total"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/order_content_table_text_size" />
             </TableRow>
         </LinearLayout>
 
@@ -152,11 +174,11 @@
 
                     <com.magestore.app.pos.panel.OrderInvoiceItemsListPanel
                         android:id="@+id/order_invoice_items"
-                        magestore_view:layout_list="@+id/order_invoice_items_list"
-                        magestore_view:layout_panel="@layout/panel_order_invoice_item_list"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1.0" />
+                        android:layout_weight="1.0"
+                        magestore_view:layout_list="@+id/order_invoice_items_list"
+                        magestore_view:layout_panel="@layout/panel_order_invoice_item_list" />
                 </FrameLayout>
             </ScrollView>
         </LinearLayout>

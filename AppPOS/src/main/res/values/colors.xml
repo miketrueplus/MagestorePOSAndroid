@@ -74,6 +74,7 @@
     <color name="order_bottom_button_invoice_text_color">#ffffff</color>
     <color name="order_ship_button_text_color">#ffffff</color>
     <color name="order_refund_button_text_color">#ffffff</color>
+    <color name="order_invoice_button_text_color">#ffffff</color>
 
     <!--Register Shift-->
     <color name="register_shift_dialog_make_adjustment_bg_select">#00a679</color>
