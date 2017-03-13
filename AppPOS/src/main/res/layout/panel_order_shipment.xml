@@ -40,7 +40,9 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/order_detail_content_item_title_product" />
+                        android:text="@string/order_detail_content_item_title_product"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/order_content_table_text_size" />
                 </LinearLayout>
 
                 <TextView
