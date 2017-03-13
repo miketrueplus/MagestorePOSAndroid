@@ -9,7 +9,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:orientation="horizontal"
         android:padding="@dimen/layout_margin_10">
 
         <ImageView
@@ -20,7 +19,7 @@
             android:layout_marginRight="@dimen/layout_margin_10"
             android:src="@drawable/ic_search_order_history" />
 
-        <com.magestore.app.lib.view.SearchAutoCompleteTextView
+        <AutoCompleteTextView
             android:id="@+id/text_search_order"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -50,7 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/button_hide_search_order"
+            android:layout_alignParentRight="true"
             android:visibility="gone" />
     </RelativeLayout>
 </android.support.design.widget.TextInputLayout>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.TextInputLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.TextInputLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:descendantFocusability="beforeDescendants"
@@ -9,32 +8,37 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:background="@color/white"
+        android:padding="@dimen/layout_margin_10">
+
+        <ImageView
+            android:id="@+id/im_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/layout_margin_10"
+            android:src="@drawable/ic_search_order_history" />
 
         <com.magestore.app.lib.view.SearchAutoCompleteTextView
             android:id="@+id/text_search_customer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/im_search"
             android:hint="@string/customer_search_customer_here"
             android:inputType="text"
-            android:theme="@style/Autocomplete"
-            android:maxLines="1" />
-
-        <ImageButton
-            android:id="@+id/button_camera_customer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:background="@drawable/ic_camera_white" />
+            android:maxLines="1"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/text_size"
+            android:theme="@style/Autocomplete" />
 
         <ImageButton
             android:id="@+id/button_hide_search_customer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/button_camera_customer"
             android:background="@drawable/ic_close_white"
             android:visibility="gone" />
 
@@ -43,8 +47,8 @@
             style="?android:attr/progressBarStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/button_hide_search_customer"
-            android:visibility="gone"/>
+            android:visibility="gone" />
     </RelativeLayout>
 </android.support.design.widget.TextInputLayout>
