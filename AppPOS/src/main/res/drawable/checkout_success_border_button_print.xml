@@ -5,9 +5,7 @@
         android:width="@dimen/line"
         android:color="@color/checkout_line" />
 
-    <corners
-        android:topLeftRadius="@dimen/checkout_success_button_radius"
-        android:topRightRadius="@dimen/checkout_success_button_radius" />
+    <corners android:radius="@dimen/checkout_success_button_radius" />
 
     <solid android:color="@color/checkout_line" />
 </shape>
