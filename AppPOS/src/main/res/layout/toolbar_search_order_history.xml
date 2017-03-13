@@ -36,7 +36,7 @@
             android:theme="@style/Autocomplete" />
 
         <ImageButton
-            android:id="@+id/button_hide_search"
+            android:id="@+id/button_hide_search_order"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -50,7 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/button_hide_search"
+            android:layout_toLeftOf="@+id/button_hide_search_order"
             android:visibility="gone" />
     </RelativeLayout>
 </android.support.design.widget.TextInputLayout>

@@ -40,6 +40,7 @@
                 magestore_view:layout_orientation="vertical"
                 magestore_view:layout_panel="@layout/panel_order_list"
                 magestore_view:layout_progress="@+id/progress_order_list"
+                magestore_view:layout_search="@+id/panel_search_order"
                 magestore_view:layout_span_count="1"
                 magestore_view:page_first="1"
                 magestore_view:page_size="30"
