@@ -46,7 +46,6 @@ public class CheckoutAddPaymentPanel extends AbstractListPanel<CheckoutPayment> 
         setLayoutItem(R.layout.card_payment_method_content);
 
         // Chuẩn bị list danh sách comment
-        // TODO: Mike: tạm khóa đoạn này lại do conflict với recycleview đã có, Phg án là dùng recycle view đang dùng, có colspan = 4
 //        mRecycleView = (RecyclerView) findViewById(R.id.checkout_add_payment_list);
 //        mRecycleView.setLayoutManager(new GridLayoutManager(this.getContext(), 4));
 //        mRecycleView.setAdapter(new AbstractListPanel<CheckoutPayment>.ListRecyclerViewAdapter());

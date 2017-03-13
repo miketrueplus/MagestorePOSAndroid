@@ -67,7 +67,6 @@ public class CheckoutShippingListPanel extends AbstractSimpleListView<CheckoutSh
 
 //    public void getShippingMethodDefault() {
 //        if (mList.size() > 0) {
-//            // TODO: thiếu check có phải shipping default
 //            CheckoutShipping checkoutShipping = mList.get(0);
 //            mCheckoutListController.doInputSaveShipping(checkoutShipping);
 //        }

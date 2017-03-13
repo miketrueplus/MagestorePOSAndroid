@@ -10,7 +10,6 @@ import com.magestore.app.pos.view.MagestoreDialog;
  * Created by Mike on 1/3/2017.
  * Magestore
  * mike@trueplus.vn
- * TODO: Add a class header comment!
  */
 
 public class DialogUtil {

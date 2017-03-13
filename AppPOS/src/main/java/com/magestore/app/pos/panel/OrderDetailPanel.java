@@ -32,7 +32,6 @@ import java.util.Map;
  * Created by Mike on 1/9/2017.
  * Magestore
  * mike@trueplus.vn
- * TODO: Add a class header comment!
  */
 
 public class OrderDetailPanel extends AbstractDetailPanel<Order> {
