@@ -32,7 +32,6 @@ import com.magestore.app.pos.service.user.POSUserService;
  * Created by Mike on 1/6/2017.
  * Magestore
  * mike@trueplus.vn
- * TODO: Add a class header comment!
  */
 
 public class POSServiceFactory extends ServiceFactory {

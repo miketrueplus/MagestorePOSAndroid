@@ -327,7 +327,7 @@ public class CartItemListController extends AbstractChildListController<Checkout
 
         // clear các chosen
         for (ProductOptionCustom productCustomOption : getItem().getProduct().getProductOption().getCustomOptions()) {
-            if (productCustomOption.getOptionValueList() == null) return;
+            if (productCustomOption.getOptionValueList() == null) continue;
             for (ProductOptionCustomValue customValue : productCustomOption.getOptionValueList()) {
                 customValue.setChosen(false);
             }
@@ -339,14 +339,16 @@ public class CartItemListController extends AbstractChildListController<Checkout
      * @param cartItem
      */
     public void setProductOptionChosen(CartItem cartItem) {
-        if (getItem() == null) return;
-        if (getItem().getProduct() == null) return;
-        if (getItem().getProduct().getProductOption() == null) return;
-        if (getItem().getProduct().getProductOption().getCustomOptions() == null) return;
+        if (cartItem == null) return;
+        if (cartItem.getProduct() == null) return;
+        if (cartItem.getProduct().getProductOption() == null) return;
+        if (cartItem.getProduct().getProductOption().getCustomOptions() == null) return;
+        if (cartItem.getChooseProductOptions() == null) return;
 
         // clear các chosen
-        for (ProductOptionCustom optionCustom : getItem().getChooseProductOptions().keySet()) {
-            for (ProductOptionCustomValue optionCustomValue : getItem().getChooseProductOptions().get(optionCustom).productOptionCustomValueList) {
+        for (ProductOptionCustom optionCustom : cartItem.getChooseProductOptions().keySet()) {
+            if (cartItem.getChooseProductOptions().get(optionCustom) == null) continue;
+            for (ProductOptionCustomValue optionCustomValue : cartItem.getChooseProductOptions().get(optionCustom).productOptionCustomValueList) {
                 optionCustomValue.setChosen(true);
             }
         }
