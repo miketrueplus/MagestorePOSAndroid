@@ -66,8 +66,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/layout_margin_5"
                         android:text="@{order.getIncrementId()}"
-                        android:textAppearance="?attr/textAppearanceListItem"
                         android:textColor="@color/text_color"
+                        android:textSize="@dimen/text_size"
                         android:textStyle="bold" />
 
                     <TextView
@@ -75,8 +75,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text='@{order.getCustomerFirstname() != null ? order.getCustomerFirstname() + " " + order.getCustomerLastname() : order.getCustomerEmail()}'
-                        android:textAppearance="?attr/textAppearanceListItem"
-                        android:textColor="@color/text_color" />
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/text_size" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -93,8 +93,8 @@
                         android:layout_marginBottom="@dimen/layout_margin_5"
                         android:gravity="right"
                         android:text="@{ConfigUtil.formatPrice(order.getGrandTotal())}"
-                        android:textAppearance="?attr/textAppearanceListItem"
                         android:textColor="@color/text_color"
+                        android:textSize="@dimen/text_size"
                         android:textStyle="bold" />
 
                     <TextView
@@ -103,8 +103,8 @@
                         android:layout_height="wrap_content"
                         android:gravity="right"
                         android:text="@{ConfigUtil.formatTime(order.getCreatedAt())}"
-                        android:textAppearance="?attr/textAppearanceListItem"
-                        android:textColor="@color/text_color" />
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/text_size" />
                 </LinearLayout>
 
                 <View
