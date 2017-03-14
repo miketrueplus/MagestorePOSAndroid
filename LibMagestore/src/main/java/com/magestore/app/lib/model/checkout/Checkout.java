@@ -3,6 +3,7 @@ package com.magestore.app.lib.model.checkout;
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.customer.Customer;
+import com.magestore.app.lib.model.sales.Order;
 
 import java.util.List;
 
@@ -75,4 +76,7 @@ public interface Checkout extends Model {
 
     int getStatus();
     void setStatus(int intStatus);
+
+    Order getOrderSuccess();
+    void setOrderSuccess(Order orderSuccess);
 }

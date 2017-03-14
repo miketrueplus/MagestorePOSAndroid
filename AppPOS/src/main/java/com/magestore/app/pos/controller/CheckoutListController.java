@@ -293,7 +293,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             CustomerAddress customerAddress = (CustomerAddress) models[0];
             int typeAddress = 3;
             int type_new_address = (int) wraper.get("type_new_address");
-            if(type_new_address == 1){
+            if (type_new_address == 1) {
                 ((CheckoutListPanel) mView).updateCheckoutAddress();
                 Customer customer = (Customer) wraper.get("customer");
                 mCheckoutAddressListPanel.bindListModel((List<Model>) (List<?>) customer.getAddress());
@@ -356,7 +356,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             Checkout checkout = (Checkout) wraper.get("save_payment");
         } else if (success && actionType == ACTION_TYPE_PLACE_ORDER) {
             Order order = (Order) wraper.get("place_order");
-
+            getSelectedItem().setOrderSuccess(order);
             mCheckoutSuccessPanel.bindItem(order);
             doShowDetailSuccess(true);
 
@@ -483,12 +483,16 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         mCartOrderListPanel.bindList(getSelectedItems());
         ((CheckoutListPanel) mView).changeCustomerInToolBar(checkout.getCustomer());
         updateTotalPrice();
-        if (mDetailView.getVisibility() == View.VISIBLE) {
-            if (checkout.getStatus() == STATUS_CHECKOUT_PROCESSING) {
-                doInputSaveCart();
+        if (checkout.getStatus() == STATUS_CHECKOUT_PROCESSING) {
+            if (checkout.getOrderSuccess() != null) {
+                mCheckoutSuccessPanel.bindItem(checkout.getOrderSuccess());
+                doShowDetailSuccess(true);
             } else {
-                onBackTohome();
+                doShowDetailSuccess(false);
+                doInputSaveCart();
             }
+        } else {
+            onBackTohome();
         }
     }
 
@@ -768,6 +772,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         ((CheckoutDetailPanel) mDetailView).showPanelPaymentMethod();
         ((CheckoutDetailPanel) mDetailView).showPanelCheckoutPaymentCreditCard(false);
         removeOrder();
+        addNewOrder();
         onBackTohome();
         doShowDetailSuccess(false);
     }
@@ -837,7 +842,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         ((CheckoutListPanel) mView).checkoutAddNewAddress();
     }
 
-    public void resetPositionAddress(){
+    public void resetPositionAddress() {
         mCheckoutAddressListPanel.setSelectPos(0);
     }
 

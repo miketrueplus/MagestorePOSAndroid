@@ -9,6 +9,7 @@ import com.magestore.app.lib.model.checkout.CheckoutTotals;
 import com.magestore.app.lib.model.checkout.Quote;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.customer.Customer;
+import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.pos.model.PosAbstractModel;
 import com.magestore.app.pos.model.checkout.cart.PosCartItem;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosExclude;
@@ -62,6 +63,8 @@ public class PosCheckout extends PosAbstractModel implements Checkout {
     String create_invoice;
     @Gson2PosExclude
     String note;
+    @Gson2PosExclude
+    Order order_success;
 
     @Expose(serialize = false, deserialize = false)
     float sub_total = 0;
@@ -286,5 +289,15 @@ public class PosCheckout extends PosAbstractModel implements Checkout {
     @Override
     public void setStatus(int intStatus) {
         status = intStatus;
+    }
+
+    @Override
+    public Order getOrderSuccess() {
+        return order_success;
+    }
+
+    @Override
+    public void setOrderSuccess(Order orderSuccess) {
+        order_success = orderSuccess;
     }
 }
