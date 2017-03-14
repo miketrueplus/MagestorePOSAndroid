@@ -125,7 +125,7 @@ public class PosQuoteItems extends PosAbstractModel implements QuoteItems {
                     // thêm quantity
                     if (bundle_option_qty == null) bundle_option_qty = new ArrayList<OptionsValue>();
                     OptionsValue bundleQuantity = new OptionsValue();
-                    bundleQuantity.code = optionCustomValue.getID();
+                    bundleQuantity.code = customOption.getID();
                     bundleQuantity.value = "1";
                     bundle_option_qty.add(bundleQuantity);
                 }
