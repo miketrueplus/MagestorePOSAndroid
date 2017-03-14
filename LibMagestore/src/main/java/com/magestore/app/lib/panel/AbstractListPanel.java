@@ -797,6 +797,25 @@ public abstract class AbstractListPanel<TModel extends Model>
     }
 
     /**
+     *
+     * @param strMsg
+     */
+//    @Override
+//    public void showErrorMsg(String strMsg) {
+//        if (mRecycleView != null) mRecycleView.setVisibility(View.GONE);
+//        super.showErrorMsg(strMsg);
+//    }
+
+    /**
+     * Ẩn thông tin cảnh báo
+     */
+//    @Override
+//    public void hideWarning() {
+//        if (mRecycleView != null) mRecycleView.setVisibility(View.VISIBLE);
+//        super.hideWarning();
+//    }
+
+    /**
      * Adapter map từ danh sách sang recycleview
      */
     public class ListRecyclerViewAdapter

@@ -40,6 +40,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * Gọi các API của Product
@@ -227,6 +228,10 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
      */
     @Override
     public List<Product> retrieve(int page, int pageSize) throws ParseException, ConnectionException, DataAccessException, IOException {
+//        Random random = new Random();
+//        int value = random.nextInt(2) + 1;
+//        if (value == 1) throw new IOException("Time out");
+
         Connection connection = null;
         Statement statement = null;
         ResultReading rp = null;

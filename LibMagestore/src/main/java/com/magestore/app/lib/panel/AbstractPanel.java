@@ -2,6 +2,7 @@ package com.magestore.app.lib.panel;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.TypedArray;
 import android.os.Build;
 import android.support.annotation.AttrRes;
@@ -47,6 +48,8 @@ public abstract class AbstractPanel<TController extends Controller> extends Fram
 
     // tham chiếu id của progress
     private int mintIdProgresBar;
+
+    int mintLayoutModelViewContent;
 
     // progress bar ở top panel
     private ProgressBar mProgressBarTop;
@@ -97,12 +100,24 @@ public abstract class AbstractPanel<TController extends Controller> extends Fram
      */
     public void showErrorMsg(String strMsg) {
         if (mTxtErrorMsg != null) {
+//            String strFinalMsg = strMsg; + getContext().getString(R.string.msg_press_to_reload);
             mTxtErrorMsg.setText(strMsg);
             mTxtErrorMsg.setVisibility(VISIBLE);
-        } else {
+        }
+        else {
             new AlertDialog.Builder(getContext())
-                    .setMessage(strMsg)
                     .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setTitle(R.string.dialog_error)
+                    .setMessage(strMsg)
+                    .setPositiveButton(R.string.ok, null)
+//                    .setPositiveButton(R.string.reload, new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            getController().reload();
+//                        }
+//
+//                    })
+//                    .setNegativeButton(R.string.no, null)
                     .show();
         }
     }
@@ -114,7 +129,7 @@ public abstract class AbstractPanel<TController extends Controller> extends Fram
     @Override
     public void showErrorMsg(Exception exp) {
         exp.printStackTrace();
-        showErrorMsg(exp.getMessage());
+        showErrorMsg(exp.getLocalizedMessage());
     }
 
     /**
@@ -184,6 +199,13 @@ public abstract class AbstractPanel<TController extends Controller> extends Fram
     protected void setTextViewMsg(int idTxtView) {
         mintTxtErrMsg = idTxtView;
         mTxtErrorMsg = (TextView) findViewById(mintTxtErrMsg);
+        if (mTxtErrorMsg == null) return;
+        mTxtErrorMsg.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getController().reload();
+            }
+        });
     }
 
     /**
@@ -219,9 +241,7 @@ public abstract class AbstractPanel<TController extends Controller> extends Fram
         mProgressBarBottom = (View) findViewById(mintIdProgresBarBottom);
 
         // tham chiếu layout của thông báo lỗi
-        if (mintTxtErrMsg > 0) {
-            mTxtErrorMsg = (TextView) findViewById(mintTxtErrMsg);
-        }
+        if (mintTxtErrMsg > 0) setTextViewMsg(mintTxtErrMsg);
     }
 
     @Override
@@ -263,6 +283,20 @@ public abstract class AbstractPanel<TController extends Controller> extends Fram
             mTxtErrorMsg.setText(strMsg);
             mTxtErrorMsg.setVisibility(VISIBLE);
         }
+//        else {
+//            new AlertDialog.Builder(getContext())
+//                    .setIcon(android.R.drawable.ic_dialog_alert)
+//                    .setTitle(R.string.dialog_warning)
+//                    .setMessage(strMsg)
+//                    .setPositiveButton(R.string.reload, new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+////                            close
+//                        }
+//                    })
+//                    .setNegativeButton(R.string.no, null)
+//                    .show();
+//        }
     }
 
     /**

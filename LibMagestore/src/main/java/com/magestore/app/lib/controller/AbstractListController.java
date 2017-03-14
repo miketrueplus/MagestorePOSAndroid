@@ -508,4 +508,9 @@ public class AbstractListController<TModel extends Model>
     public void hideSearch() {
         getView().closeSearchList();
     }
+
+    @Override
+    public void reload() {
+        doRetrieve();
+    }
 }

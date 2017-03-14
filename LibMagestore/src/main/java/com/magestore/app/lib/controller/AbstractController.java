@@ -289,4 +289,7 @@ public abstract class AbstractController<TModel extends Model, TView extends Mag
     public SubjectObserv getSubject() {
         return mSubjectObserv;
     }
+
+    @Override
+    public void reload() {}
 }

@@ -108,10 +108,19 @@ public abstract class AbstractActivity
 
     public void showErrorMsg(Exception exp) {
         exp.printStackTrace();
-        new AlertDialog.Builder(this)
-                .setMessage(exp.getLocalizedMessage())
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show();
+        new AlertDialog.Builder(getContext())
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setTitle(R.string.dialog_warning)
+                    .setMessage(exp.getLocalizedMessage())
+                    .setPositiveButton(R.string.ok, null)
+//                    .setPositiveButton(R.string.reload, new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+////                            close
+//                        }
+//                    })
+//                    .setNegativeButton(R.string.no, null)
+                    .show();
     }
 
     public void close() {

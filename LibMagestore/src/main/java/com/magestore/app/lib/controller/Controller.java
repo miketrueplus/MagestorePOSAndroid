@@ -39,4 +39,6 @@ public interface Controller<TView extends MagestoreView, TService extends Servic
     void setObserveState(State state);
 
     void notifyState(State state);
+
+    void reload();
 }

@@ -31,7 +31,12 @@ public class PosQuoteItems extends PosAbstractModel implements QuoteItems {
     }
 
     List<CustomOptions> options;
-    HashMap<String, String> super_attribute;
+
+    class ConfigOptions {
+        String code;
+        String value;
+    }
+    List<ConfigOptions> super_attribute;
 
     @Override
     public String getItemId() {
@@ -104,8 +109,12 @@ public class PosQuoteItems extends PosAbstractModel implements QuoteItems {
             for (ProductOptionCustomValue optionCustomValue : chooseProductOptions.productOptionCustomValueList) {
                 // với config option
                 if (customOption.isConfigOption()) {
-                    if (super_attribute == null) super_attribute = new HashMap<>();
-                    super_attribute.put(customOption.getID(), optionCustomValue.getID());
+                    // với custom option option
+                    ConfigOptions quoteCustomeOption = new ConfigOptions();
+                    quoteCustomeOption.code = customOption.getID();
+                    quoteCustomeOption.value = optionCustomValue.getID();
+                    if (super_attribute == null) super_attribute = new ArrayList<ConfigOptions>();
+                    super_attribute.add(quoteCustomeOption);
                 } else {
                     // với custom option option
                     CustomOptions quoteCustomeOption = new CustomOptions();
