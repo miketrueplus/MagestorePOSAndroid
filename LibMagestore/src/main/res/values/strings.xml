@@ -82,8 +82,8 @@
     <string name="dialog_cancel">Cancel</string>
     <string name="dialog_save">Save</string>
 
-    <string name="msg_press_to_reload">\nPress here to reload
-</string>
+    <string name="msg_press_to_reload">\nPress here to reload</string>
+    <string name="msg_no_data">No data to display</string>
 
 </resources>
 

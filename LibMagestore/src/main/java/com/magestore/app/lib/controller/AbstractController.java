@@ -178,8 +178,7 @@ public abstract class AbstractController<TModel extends Model, TView extends Mag
      * Sự kiện lúc canceled load data
      */
     public void onCancelledBackground(Exception exp) {
-        if (exp != null)
-            doShowErrorMsg(exp);
+        if (exp != null) doShowErrorMsg(exp);
         mView.hideAllProgressBar();
     }
 

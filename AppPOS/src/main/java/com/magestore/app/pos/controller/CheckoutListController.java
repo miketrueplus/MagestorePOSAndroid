@@ -81,6 +81,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
     @Override
     public List<Checkout> onRetrieveBackground(int page, int pageSize) throws Exception {
+
         if (wraper == null)
             wraper = new HashMap<>();
         doInputGuestCheckout();

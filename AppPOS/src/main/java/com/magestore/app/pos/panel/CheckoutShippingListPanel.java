@@ -65,6 +65,16 @@ public class CheckoutShippingListPanel extends AbstractSimpleListView<CheckoutSh
         return mList.get(selectedPos);
     }
 
+    @Override
+    public void showErrorMsgWithReload(String strMsg) {
+        showErrorMsg(strMsg);
+    }
+
+    @Override
+    public void showErrorMsgWithReload(Exception exp) {
+        showErrorMsg(exp);
+    }
+
 //    public void getShippingMethodDefault() {
 //        if (mList.size() > 0) {
 //            CheckoutShipping checkoutShipping = mList.get(0);

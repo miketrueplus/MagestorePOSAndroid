@@ -16,6 +16,10 @@ public interface MagestoreView<TController extends Controller> {
     void setController(TController controller);
     TController getController();
 
+    void showErrorMsgWithReload(String strMsg);
+
+    void showErrorMsgWithReload(Exception exp);
+
     /**
      * Hiện thông báo lỗi
      * @param msg
