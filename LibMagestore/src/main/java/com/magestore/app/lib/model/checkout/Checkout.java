@@ -72,4 +72,7 @@ public interface Checkout extends Model {
 
     String getCreateAt();
     void setCreateAt(String strCreateAt);
+
+    int getStatus();
+    void setStatus(int intStatus);
 }

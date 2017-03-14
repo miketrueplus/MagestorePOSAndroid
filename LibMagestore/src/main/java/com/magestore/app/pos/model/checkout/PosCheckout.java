@@ -31,6 +31,7 @@ public class PosCheckout extends PosAbstractModel implements Checkout {
     List<PosCheckoutToTals> totals;
     PosQuote quote_init;
     String create_at;
+    int status;
 
     private class CheckoutConfig {
         String apply_promotion = "0";
@@ -275,5 +276,15 @@ public class PosCheckout extends PosAbstractModel implements Checkout {
     @Override
     public void setCreateAt(String strCreateAt) {
         create_at = strCreateAt;
+    }
+
+    @Override
+    public int getStatus() {
+        return status;
+    }
+
+    @Override
+    public void setStatus(int intStatus) {
+        status = intStatus;
     }
 }
