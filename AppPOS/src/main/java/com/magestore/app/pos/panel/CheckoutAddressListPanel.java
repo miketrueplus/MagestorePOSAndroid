@@ -5,8 +5,10 @@ import android.databinding.DataBindingUtil;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.view.AbstractModelRecycleView;
 import com.magestore.app.lib.view.AbstractSimpleRecycleView;
@@ -26,8 +28,12 @@ import java.util.List;
  */
 
 public class CheckoutAddressListPanel extends AbstractModelRecycleView<GenericModelView, CheckoutListController> {
-//    CheckoutListController mCheckoutListController;
+    //    CheckoutListController mCheckoutListController;
     int selectPos = 0;
+    RelativeLayout ll_checkout_address;
+    TextView txt_default_address;
+    RelativeLayout rl_addd_new_address;
+    LinearLayout ll_content;
 
 //    public void setCheckoutListController(CheckoutListController mCheckoutListController) {
 //        this.mCheckoutListController = mCheckoutListController;
@@ -51,13 +57,24 @@ public class CheckoutAddressListPanel extends AbstractModelRecycleView<GenericMo
         CardCheckoutAddressContentBinding binding = DataBindingUtil.bind(view);
         binding.setCustomerAddress((CustomerAddress) item.getModel());
 
-        LinearLayout ll_checkout_address = (LinearLayout) view.findViewById(R.id.ll_checkout_address);
-        TextView txt_default_address = (TextView) view.findViewById(R.id.txt_default_address);
+        ll_checkout_address = (RelativeLayout) view.findViewById(R.id.ll_checkout_address);
+        txt_default_address = (TextView) view.findViewById(R.id.txt_default_address);
+        rl_addd_new_address = (RelativeLayout) view.findViewById(R.id.rl_add_new_address);
+        ll_content = (LinearLayout) view.findViewById(R.id.ll_content);
 
         if (position == 0) {
             txt_default_address.setText(getContext().getString(R.string.checkout_address_item_default));
         } else {
             txt_default_address.setText("");
+        }
+
+        if (item.getViewState().isStateWaitInsert()) {
+            txt_default_address.setText("");
+            rl_addd_new_address.setVisibility(VISIBLE);
+            ll_content.setVisibility(GONE);
+        } else {
+            rl_addd_new_address.setVisibility(GONE);
+            ll_content.setVisibility(VISIBLE);
         }
 
         if (selectPos == position) {
@@ -69,23 +86,38 @@ public class CheckoutAddressListPanel extends AbstractModelRecycleView<GenericMo
 
     @Override
     protected void onClickItem(View view, GenericModelView item, int position) {
-        //
         if (item.getViewState().isStateWaitInsert()) {
-
-        }
-        else {
+            getController().addNewAddress();
+            selectPos = position;
+        } else {
             getController().changeShippingAddress((CustomerAddress) item.getModel());
             selectPos = position;
         }
     }
 
+    public void scrollToPosition(){
+        this.getLayoutManager().scrollToPosition(selectPos);
+    }
+
     @Override
     public void bindListModelView(List<GenericModelView> list) {
-        GenericModelView modelView = new GenericModelView();
-        ViewState viewState = new ViewState();
-        viewState.setStateWaitInsert();
-        modelView.setViewState(viewState);
-        list.add(modelView);
+        String guest_id = getController().getGuestCheckout().getID();
+        Customer customer = getController().getSelectedItem().getCustomer();
+        if (!customer.getID().equals(guest_id)) {
+            GenericModelView modelView = new GenericModelView();
+            ViewState viewState = new ViewState();
+            viewState.setStateWaitInsert();
+            modelView.setViewState(viewState);
+            list.add(modelView);
+        }
         super.bindListModelView(list);
+    }
+
+    public void setSelectPos(int selectPos) {
+        this.selectPos = selectPos;
+    }
+
+    public int getSelectPos() {
+        return selectPos;
     }
 }

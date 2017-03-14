@@ -217,6 +217,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
     }
 
     public void getShippingMethod() {
+        ((CheckoutListController) getController()).resetPositionAddress();
         String code = sp_shipping_method.getSelection();
         isShowLoadingDetail(true);
         ((CheckoutListController) getController()).doInputSaveShipping(code);
