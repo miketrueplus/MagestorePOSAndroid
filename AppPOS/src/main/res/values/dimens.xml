@@ -46,7 +46,7 @@
     <dimen name="product_detail_border_radius">5dp</dimen>
     <dimen name="product_detail_edittext_radius">5dp</dimen>
     <dimen name="product_detail_text_size">28sp</dimen>
-    <dimen name="product_detail_text_quantity_width">80dp</dimen>
+    <dimen name="product_detail_text_quantity_width">120dp</dimen>
 
     <!--Cart List-->
     <dimen name="card_item_image_size">70dp</dimen>
@@ -59,6 +59,8 @@
     <dimen name="sales_list_order_time_text_size">11sp</dimen>
     <dimen name="sales_button_checkout_text_size">25sp</dimen>
     <dimen name="cart_option_title_text_size">16sp</dimen>
+    <dimen name="cart_option_text_quantity_width">120dp</dimen>
+    <dimen name="cart_option_border_radius">5dp</dimen>
 
     <!--Checkout-->
     <dimen name="checkout_remain_text_price_size">18sp</dimen>

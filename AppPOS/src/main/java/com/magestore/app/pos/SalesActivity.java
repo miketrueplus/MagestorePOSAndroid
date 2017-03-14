@@ -229,6 +229,7 @@ public class SalesActivity extends AbstractActivity
         mCheckoutListController.setCheckoutAddressListPanel(mCheckoutAddressListPanel);
         mCheckoutListController.setCheckoutSuccessPanel(mCheckoutSuccessPanel);
         mCheckoutListController.setCheckoutPaymentCreditCardPanel(mCheckoutPaymentCreditCardPanel);
+        mCheckoutListController.setCartItemDetailPanel(mCartItemDetailPanel);
 
         // controller quản lý danh sách khách hàng
         mProductListController = new ProductListController();
@@ -281,6 +282,8 @@ public class SalesActivity extends AbstractActivity
         mCheckoutAddressListPanel.setCheckoutListController(mCheckoutListController);
         mCheckoutSuccessPanel.setCheckoutListController(mCheckoutListController);
         mCheckoutPaymentCreditCardPanel.setCheckoutListController(mCheckoutListController);
+
+        mCartItemDetailPanel.setCheckoutListController(mCheckoutListController);
 
         // TODO: clear quote
 //        DataUtil.removeDataStringToPreferences(getContext(), DataUtil.QUOTE);
@@ -336,11 +339,10 @@ public class SalesActivity extends AbstractActivity
         // Load danh sách sản phẩm, không tự động chọn sản phẩm đầu tiên
         mProductListController.doRetrieve();
         // Load danh sách check out
+        mCheckoutListController.doInputGuestCheckout();
         mCheckoutListController.doRetrieve();
         // load danh sách shipping
 //        mCheckShippingListController.doRetrieve();
-
-        mCheckoutListController.doInputGuestCheckout();
 
         rl_customer.setOnClickListener(new View.OnClickListener() {
             @Override

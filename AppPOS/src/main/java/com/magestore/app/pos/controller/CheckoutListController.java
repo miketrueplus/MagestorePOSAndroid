@@ -16,6 +16,7 @@ import com.magestore.app.lib.observ.State;
 import com.magestore.app.lib.service.checkout.CheckoutService;
 import com.magestore.app.lib.service.customer.CustomerAddressService;
 import com.magestore.app.pos.model.checkout.PosCheckoutPayment;
+import com.magestore.app.pos.panel.CartItemDetailPanel;
 import com.magestore.app.pos.panel.CartOrderListPanel;
 import com.magestore.app.pos.panel.CheckoutAddPaymentPanel;
 import com.magestore.app.pos.panel.CheckoutAddressListPanel;
@@ -66,6 +67,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     CheckoutAddressListPanel mCheckoutAddressListPanel;
     CheckoutSuccessPanel mCheckoutSuccessPanel;
     CheckoutPaymentCreditCardPanel mCheckoutPaymentCreditCardPanel;
+    CartItemDetailPanel mCartItemDetailPanel;
     Context context;
     Customer guest_checkout;
     Currency currency;
@@ -86,18 +88,23 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             wraper.put("customer", customer);
             Checkout checkout = getSelectedItem();
             if (checkout == null) {
-                if (mList == null) {
-                    mList = new ArrayList<>();
-                }
                 Checkout new_checkout = ((CheckoutService) getListService()).create();
                 new_checkout.setCustomer(customer);
                 new_checkout.setCustomerID(customer.getID());
-                mList.add(new_checkout);
-                setSelectedItem(new_checkout);
-                getView().notifyDataSetChanged();
+                ArrayList<Checkout> list;
+                if (getListItems() == null) {
+                    list = new ArrayList<>();
+                    list.add(new_checkout);
+                    bindList(list);
+                } else {
+                    getListItems().add(new_checkout);
+                    bindItem(new_checkout);
+                    getView().insertListAtLast(new_checkout);
+                }
             } else {
                 checkout.setCustomer(customer);
                 checkout.setCustomerID(customer.getID());
+                getView().updateModel(checkout);
             }
             mCartOrderListPanel.notifyDataSetChanged();
             if (((CheckoutDetailPanel) mDetailView).getVisibility() == View.VISIBLE) {
@@ -277,6 +284,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             Customer customer = (Customer) models[0];
             ((CheckoutListPanel) mView).useDefaultGuestCheckout(customer);
             mCartOrderListPanel.bindList(getSelectedItems());
+            mCartItemDetailPanel.setCurrency(currency);
         } else if (success && actionType == ACTION_TYPE_UPDATE_ADDRESS) {
             int typeAddress = (int) wraper.get("type_update_address");
             CustomerAddress customerAddress = (CustomerAddress) wraper.get("old_address");
@@ -583,6 +591,10 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
     public void setCheckoutPaymentCreditCardPanel(CheckoutPaymentCreditCardPanel mCheckoutPaymentCreditCardPanel) {
         this.mCheckoutPaymentCreditCardPanel = mCheckoutPaymentCreditCardPanel;
+    }
+
+    public void setCartItemDetailPanel(CartItemDetailPanel mCartItemDetailPanel) {
+        this.mCartItemDetailPanel = mCartItemDetailPanel;
     }
 
     @Override

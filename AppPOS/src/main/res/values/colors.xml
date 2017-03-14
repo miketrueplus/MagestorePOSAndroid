@@ -53,6 +53,10 @@
     <color name="sales_list_order_item_text_time_color">#ffffff</color>
     <color name="card_swipe_background">#e6eaed</color>
     <color name="card_item_text_option_color">#9b9b9b</color>
+    <color name="card_option_bg_select">#0E86E2</color>
+    <color name="card_option_bg_not_select">#e1e1e1</color>
+    <color name="card_option_text_select">#ffffff</color>
+    <color name="card_option_text_not_select">#48586c</color>
     <color name="sales_background_loading">#80000000</color>
     <color name="sales_discount_bg_select">#0E86E2</color>
     <color name="sales_discount_bg_not_select">#e1e1e1</color>

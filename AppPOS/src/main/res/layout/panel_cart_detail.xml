@@ -60,7 +60,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginRight="@dimen/layout_margin_5"
+                        android:layout_marginRight="@dimen/layout_margin_10"
                         android:background="@drawable/product_detail_border_text"
                         android:onClick="@{panel.onSubstractQuantity}"
                         android:paddingLeft="@dimen/layout_margin_20"
@@ -71,10 +71,10 @@
 
                     <EditText
                         android:id="@+id/id_txt_cart_item_detail_quantity"
-                        android:layout_width="@dimen/product_detail_text_quantity_width"
+                        android:layout_width="@dimen/cart_option_text_quantity_width"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginRight="@dimen/layout_margin_5"
+                        android:layout_marginRight="@dimen/layout_margin_10"
                         android:background="@drawable/product_detail_border_edditext"
                         android:enabled="false"
                         android:gravity="center"
@@ -121,52 +121,40 @@
                     android:layout_weight="2"
                     android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/id_btn_cart_item_detail_price_substract"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginRight="@dimen/layout_margin_5"
-                        android:background="@drawable/product_detail_border_text"
-                        android:onClick="@{panel.onSubstractPrice}"
-                        android:paddingLeft="@dimen/layout_margin_20"
-                        android:paddingRight="@dimen/layout_margin_20"
-                        android:text="@string/minus"
-                        android:textColor="@color/text_color"
-                        android:textSize="@dimen/product_detail_text_size" />
-
                     <EditText
-                        android:id="@+id/id_txt_cart_item_detail_custom_price"
-                        android:layout_width="@dimen/product_detail_text_quantity_width"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginRight="@dimen/layout_margin_5"
-                        android:background="@drawable/product_detail_border_edditext"
-                        android:enabled="false"
-                        android:gravity="center"
-                        android:padding="@dimen/layout_margin_10"
-                        android:text="@{ConfigUtil.formatPrice(cartItem.getUnitPrice())}"
-                        android:textColor="@color/text_color"
-                        android:textSize="@dimen/product_detail_title_text_size" />
-
-                    <TextView
-                        android:id="@+id/id_btn_cart_item_detail_price_add"
+                        android:id="@+id/id_txt_cart_item_detail_custom_dicount"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:background="@drawable/product_detail_border_text"
-                        android:onClick="@{panel.onAddPrice}"
-                        android:paddingLeft="@dimen/layout_margin_20"
-                        android:paddingRight="@dimen/layout_margin_20"
-                        android:text="@string/plus"
-                        android:textColor="@color/text_color"
-                        android:textSize="@dimen/product_detail_text_size" />
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.0"
+                        android:background="@drawable/cart_option_border_edittext"
+                        android:padding="@dimen/layout_margin_5"
+                        android:text="@{ConfigUtil.formatPrice(cartItem.getUnitPrice())}" />
+
+                    <Button
+                        android:id="@+id/id_txt_cart_item_detail_custom_dicount_money"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:background="@color/card_option_bg_select"
+                        android:onClick="@{panel.onDiscountChangeToFixed}"
+                        android:textColor="@color/card_option_text_select"
+                        android:textSize="@dimen/text_size" />
+
+                    <Button
+                        android:id="@+id/id_txt_cart_item_detail_custom_dicount_percent"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:background="@drawable/cart_option_discount_percent_not_select"
+                        android:onClick="@{panel.onDiscountChangeToPercent}"
+                        android:text="@string/percent"
+                        android:textColor="@color/card_option_text_not_select"
+                        android:textSize="@dimen/text_size" />
                 </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/layout_margin_10"
                 android:orientation="horizontal">
 
                 <TextView
@@ -190,25 +178,32 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1.0"
-                        android:enabled="false"
-                        android:text="@{ConfigUtil.formatPrice(cartItem.getDiscountAmount())}"
-                        android:textAlignment="viewEnd" />
+                        android:background="@drawable/cart_option_border_edittext"
+                        android:padding="@dimen/layout_margin_5"
+                        android:text="@{ConfigUtil.formatPrice(cartItem.getDiscountAmount())}" />
 
                     <Button
                         android:id="@+id/id_btn_cart_item_detail_discount_money"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:background="@color/card_option_bg_select"
                         android:onClick="@{panel.onDiscountChangeToFixed}"
-                        android:text="$" />
+                        android:textColor="@color/card_option_text_select"
+                        android:textSize="@dimen/text_size" />
 
                     <Button
                         android:id="@+id/id_btn_cart_item_detail_discount_percent"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:background="@drawable/cart_option_discount_percent_not_select"
                         android:onClick="@{panel.onDiscountChangeToPercent}"
-                        android:text="%" />
+                        android:text="@string/percent"
+                        android:textColor="@color/card_option_text_not_select"
+                        android:textSize="@dimen/text_size" />
                 </LinearLayout>
             </LinearLayout>
+
+
         </LinearLayout>
     </LinearLayout>
 </layout>
