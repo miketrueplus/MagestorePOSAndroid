@@ -26,6 +26,7 @@ import com.magestore.app.lib.service.checkout.CartService;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.CartItemListController;
 import com.magestore.app.pos.databinding.PanelProductOptionListBinding;
+import com.magestore.app.pos.model.catalog.PosProductOption;
 import com.magestore.app.pos.model.catalog.PosProductOptionCustom;
 import com.magestore.app.pos.model.catalog.PosProductOptionCustomValue;
 import com.magestore.app.pos.model.checkout.cart.PosCartItem;
@@ -92,10 +93,10 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
 
     /**
      * Save item vào cart
-     *
      * @param view
      */
     public void onAddToCart(View view) {
+        if (!validateInput()) return;
         ((CartItemListController) getController()).updateToCart(bind2Item());
     }
 
@@ -176,16 +177,31 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
      * @return
      */
     public boolean validateInput() {
+        boolean blnValid = true;
         // duyệt tất cả các option custome để lấy option mà user đã chọn
         for (int i = 0; i < expandableListAdapter.getGroupCount(); i++) {
             ProductOptionCustom productOptionCustom = expandableListAdapter.getGroup(i);
-            for (int j = 0; j < expandableListAdapter.getChildrenCount(i); j++) {
-                ProductOptionCustomValue productOptionCustomValue = expandableListAdapter.getChild(i, j);
-                ProductOptionCustomValueHolder productOptionCustomValueViewHolder = expandableListAdapter.mProductOptionCustomHolderMap.get(productOptionCustom).mProductOptionCustomValueHolderList.get(j);
+            // check xem có option value nào được chọn không
+            boolean haveChoose = false;
+            if (productOptionCustom.getOptionValueList() == null) continue;
+            for (PosProductOptionCustomValue customValue : productOptionCustom.getOptionValueList()) {
+                if (customValue.isChosen()) haveChoose = true;
+            }
+
+            // nếu requored thông báo lỗi
+            TextView txtError =  (expandableListAdapter.mProductOptionCustomHolderMap.get(productOptionCustom)).mtxtError;
+            if (productOptionCustom.isRequired() && !haveChoose) {
+                blnValid = false;
+                txtError.setText(getContext().getString(R.string.err_field_required));
+                txtError.setError(getContext().getString(R.string.err_field_required));
+            }
+            else {
+                txtError.setText(null);
+                txtError.setError(null);
             }
         }
 
-        return true;
+        return blnValid;
     }
 
     @Override
@@ -517,6 +533,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                 viewHolder.productOptionCustom = mCartItem.getProduct().getProductOption().getCustomOptions().get(listPosition);
                 viewHolder.mProductOptionCustomValueHolderList = new ArrayList<>();
                 viewHolder.mtxtTitle = (TextView) convertView.findViewById(R.id.listTitle);
+                viewHolder.mtxtError = (TextView) convertView.findViewById(R.id.listError);
 
                 // lưu hash map cho view holder này
                 mProductOptionCustomHolderMap.put(viewHolder.productOptionCustom, viewHolder);
@@ -555,6 +572,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         public List<ProductOptionCustomValueHolder> mProductOptionCustomValueHolderList;
         public PosProductOptionCustom productOptionCustom;
         public TextView mtxtTitle;
+        public TextView mtxtError;
     }
 
     /**
