@@ -279,7 +279,7 @@ public class SalesActivity extends AbstractActivity
         mCheckoutPaymentListPanel.setCheckoutListController(mCheckoutListController);
         mCheckoutAddPaymentPanel.setCheckoutListController(mCheckoutListController);
         mCartOrderListPanel.setCheckoutListController(mCheckoutListController);
-        mCheckoutAddressListPanel.setCheckoutListController(mCheckoutListController);
+        mCheckoutAddressListPanel.setController(mCheckoutListController);
         mCheckoutSuccessPanel.setCheckoutListController(mCheckoutListController);
         mCheckoutPaymentCreditCardPanel.setCheckoutListController(mCheckoutListController);
 

@@ -8,10 +8,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.magestore.app.lib.model.customer.CustomerAddress;
+import com.magestore.app.lib.view.AbstractModelRecycleView;
 import com.magestore.app.lib.view.AbstractSimpleRecycleView;
+import com.magestore.app.lib.view.item.GenericModelView;
+import com.magestore.app.lib.view.item.ModelView;
+import com.magestore.app.lib.view.item.ViewState;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.CheckoutListController;
 import com.magestore.app.pos.databinding.CardCheckoutAddressContentBinding;
+
+import java.util.List;
 
 /**
  * Created by Johan on 2/23/17.
@@ -19,13 +25,13 @@ import com.magestore.app.pos.databinding.CardCheckoutAddressContentBinding;
  * dong.le@trueplus.vn
  */
 
-public class CheckoutAddressListPanel extends AbstractSimpleRecycleView<CustomerAddress> {
-    CheckoutListController mCheckoutListController;
+public class CheckoutAddressListPanel extends AbstractModelRecycleView<GenericModelView, CheckoutListController> {
+//    CheckoutListController mCheckoutListController;
     int selectPos = 0;
 
-    public void setCheckoutListController(CheckoutListController mCheckoutListController) {
-        this.mCheckoutListController = mCheckoutListController;
-    }
+//    public void setCheckoutListController(CheckoutListController mCheckoutListController) {
+//        this.mCheckoutListController = mCheckoutListController;
+//    }
 
     public CheckoutAddressListPanel(Context context) {
         super(context);
@@ -40,10 +46,10 @@ public class CheckoutAddressListPanel extends AbstractSimpleRecycleView<Customer
     }
 
     @Override
-    protected void bindItem(View view, CustomerAddress item, int position) {
+    protected void bindItem(View view, GenericModelView item, int position) {
         // Đặt các trường text vào danh sách
         CardCheckoutAddressContentBinding binding = DataBindingUtil.bind(view);
-        binding.setCustomerAddress(item);
+        binding.setCustomerAddress((CustomerAddress) item.getModel());
 
         LinearLayout ll_checkout_address = (LinearLayout) view.findViewById(R.id.ll_checkout_address);
         TextView txt_default_address = (TextView) view.findViewById(R.id.txt_default_address);
@@ -62,8 +68,24 @@ public class CheckoutAddressListPanel extends AbstractSimpleRecycleView<Customer
     }
 
     @Override
-    protected void onClickItem(View view, CustomerAddress item, int position) {
-        mCheckoutListController.changeShippingAddress(item);
-        selectPos = position;
+    protected void onClickItem(View view, GenericModelView item, int position) {
+        //
+        if (item.getViewState().isStateWaitInsert()) {
+
+        }
+        else {
+            getController().changeShippingAddress((CustomerAddress) item.getModel());
+            selectPos = position;
+        }
+    }
+
+    @Override
+    public void bindListModelView(List<GenericModelView> list) {
+        GenericModelView modelView = new GenericModelView();
+        ViewState viewState = new ViewState();
+        viewState.setStateWaitInsert();
+        modelView.setViewState(viewState);
+        list.add(modelView);
+        super.bindListModelView(list);
     }
 }

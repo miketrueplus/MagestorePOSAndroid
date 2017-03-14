@@ -325,7 +325,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
             // hiển thị list shipping address
             Customer customer = (Customer) wraper.get("customer");
-            mCheckoutAddressListPanel.bindList(customer.getAddress());
+            mCheckoutAddressListPanel.bindListModel((List<Model>) (List<?>) customer.getAddress());
         } else if (success && actionType == ACTION_TYPE_SAVE_SHIPPING) {
             Checkout checkout = (Checkout) wraper.get("save_shipping");
             // cập nhật list payment
