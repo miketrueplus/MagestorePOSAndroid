@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.magestore.app.lib.controller.Controller;
 import com.magestore.app.lib.controller.ListController;
@@ -49,7 +50,7 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
 
     // các control button
     ImageButton mbtnEditCustomer;
-    Button mbtnSaveCustomer;
+    TextView mbtnSaveCustomer;
     ImageButton mbtnCheckOut;
     ImageButton mbtnNewAddress;
     ImageButton mbtnNewComplain;
@@ -117,7 +118,7 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
         mspinGroupID = (SimpleSpinner) findViewById(R.id.spinner_group_id);
 
         // các button
-        mbtnSaveCustomer = (Button) findViewById(R.id.btn_edit_save_customer);
+        mbtnSaveCustomer = (TextView) findViewById(R.id.btn_edit_save_customer);
         mbtnEditCustomer = (ImageButton) findViewById(R.id.btn_edit_customer);
         mbtnNewAddress = (ImageButton) findViewById(R.id.btn_new_address);
         mbtnCheckOut = (ImageButton) findViewById(R.id.btn_check_out);
@@ -135,7 +136,7 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
             public void onClick(View v) {
                 // hiện nút save
                 mbtnSaveCustomer.setVisibility(VISIBLE);
-                mbtnEditCustomer.setVisibility(INVISIBLE);
+                mbtnEditCustomer.setVisibility(GONE);
 
                 // cho phép edit các textbox
                 mtxtFirstName.setEnabled(true);
@@ -151,7 +152,7 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
             @Override
             public void onClick(View v) {
                 // dấu nút save
-                mbtnSaveCustomer.setVisibility(INVISIBLE);
+                mbtnSaveCustomer.setVisibility(GONE);
                 mbtnEditCustomer.setVisibility(VISIBLE);
 
                 // k0 cho phép edit các textbox

@@ -47,6 +47,7 @@
     <string name="customer_search_customer_here">Search name, email, telephone</string>
     <string name="customer_title_customer_list">Customer</string>
     <string name="customer_title_customer_detail">Customer Detail</string>
+    <string name="customer_title_information">Customer information"</string>
     <string name="customer_title_order_list">Order</string>
     <string name="customer_title_register_shifts">Register Shifts</string>
     <string name="customer_title_settings">Settings</string>

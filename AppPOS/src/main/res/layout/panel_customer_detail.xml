@@ -30,7 +30,8 @@
                     android:layout_height="wrap_content"
                     android:divider="?android:attr/dividerHorizontal"
                     android:orientation="vertical"
-                    android:showDividers="middle">
+                    android:showDividers="middle"
+                    android:visibility="gone">
 
                     <android.support.v7.widget.Toolbar
                         android:layout_width="match_parent"
@@ -51,37 +52,57 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:divider="?android:attr/dividerHorizontal"
-                    android:orientation="vertical"
-                    android:showDividers="middle">
+                    android:layout_margin="@dimen/layout_margin_10"
+                    android:orientation="vertical">
 
-                    <android.support.v7.widget.Toolbar
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="?attr/actionBarSize"
-                        app:popupTheme="@style/AppTheme.PopupOverlay"
-                        app:title="Customer information">
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:padding="@dimen/layout_margin_10">
 
-                        <ImageButton
-                            android:id="@+id/btn_edit_customer"
-                            android:layout_width="wrap_content"
+                        <TextView
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="right"
-                            android:background="@drawable/ic_edit_dark" />
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:text="@string/customer_title_information"
+                            android:textAllCaps="true"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/text_size" />
 
-                        <Button
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="45dp"
+                            android:layout_alignParentRight="true">
+
+                            <ImageButton
+                                android:id="@+id/btn_edit_customer"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:background="@drawable/ic_edit_dark" />
+                        </RelativeLayout>
+
+                        <TextView
                             android:id="@+id/btn_edit_save_customer"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="right"
+                            android:layout_width="50dp"
+                            android:layout_height="45dp"
+                            android:layout_alignParentRight="true"
+                            android:background="@color/app_color"
+                            android:gravity="center"
+                            android:padding="@dimen/layout_margin_5"
                             android:text="@string/save"
-                            android:visible="false" />
-                    </android.support.v7.widget.Toolbar>
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size"
+                            android:visibility="gone" />
+                    </RelativeLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:layout_margin="5dp"
+                        android:layout_margin="@dimen/layout_margin_10"
                         android:orientation="horizontal">
 
                         <LinearLayout
