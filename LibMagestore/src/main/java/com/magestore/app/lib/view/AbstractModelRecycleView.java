@@ -329,7 +329,7 @@ public abstract class AbstractModelRecycleView<TModelView extends ModelView, TCo
 
             public void setItem(TModelView item, int position) {
                 mItem = item;
-                if (item.getViewState().isStateNormal())
+//                if (item.getViewState().isStateNormal())
                     bindItem(mView, item, position);
             }
         }
