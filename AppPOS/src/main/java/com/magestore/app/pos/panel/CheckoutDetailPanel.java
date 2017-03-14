@@ -240,6 +240,10 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         return cb_pick_at_store.isChecked();
     }
 
+    public void setPickAtStoreDefault(){
+        cb_pick_at_store.setChecked(true);
+    }
+
     public void showNotifiSelectPayment() {
         String message = getContext().getString(R.string.sales_show_notifi_select_payment);
 

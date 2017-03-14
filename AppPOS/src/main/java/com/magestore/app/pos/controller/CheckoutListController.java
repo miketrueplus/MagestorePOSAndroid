@@ -56,6 +56,9 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     static final int ACTION_TYPE_SAVE_PAYMENT = 6;
     static final int ACTION_TYPE_PLACE_ORDER = 7;
 
+    static final int STATUS_CHECKOUT_ADD_ITEM = 0;
+    static final int STATUS_CHECKOUT_PROCESSING = 1;
+
     Map<String, Object> wraper;
     CartItemListController mCartItemListController;
     CheckoutShippingListPanel mCheckoutShippingListPanel;
@@ -133,6 +136,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     public void doInputSaveCart() {
         Checkout checkout = getSelectedItem();
         if (checkout.getCartItem().size() > 0) {
+            checkout.setStatus(STATUS_CHECKOUT_PROCESSING);
             ((CheckoutDetailPanel) mDetailView).isShowLoadingDetail(true);
             // ẩn button checkout và hold order
             ((CheckoutListPanel) mView).changeActionButton(true);
@@ -406,7 +410,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             }
             Checkout checkout = getSelectedItems().get(index);
             setSelectedItem(checkout);
-            if (checkout.getCartItem().size() <= 0) {
+            if (checkout.getStatus() == 1) {
                 showSalesShipping();
                 showActionButtonCheckout();
                 doShowDetailPanel(false);
@@ -467,7 +471,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         ((CheckoutListPanel) mView).changeCustomerInToolBar(checkout.getCustomer());
         updateTotalPrice();
         if (mDetailView.getVisibility() == View.VISIBLE) {
-            if (checkout.getCartItem().size() > 0) {
+            if (checkout.getStatus() == STATUS_CHECKOUT_PROCESSING) {
                 doInputSaveCart();
             } else {
                 onBackTohome();
@@ -762,10 +766,12 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         } else {
             listPayment = new ArrayList<>();
         }
+        getSelectedItem().setStatus(STATUS_CHECKOUT_ADD_ITEM);
         wraper.put("list_payment", listPayment);
         mCheckoutPaymentListPanel.bindList(listPayment);
         mCheckoutPaymentListPanel.updateTotal(listPayment);
         mCheckoutPaymentCreditCardPanel.clearDataForm();
+        ((CheckoutDetailPanel) mDetailView).setPickAtStoreDefault();
         ((CheckoutDetailPanel) mDetailView).isEnableButtonAddPayment(false);
         ((CheckoutDetailPanel) mDetailView).isEnableCreateInvoice(false);
         ((CheckoutDetailPanel) mDetailView).showPanelPaymentMethod();
