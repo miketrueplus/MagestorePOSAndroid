@@ -216,6 +216,7 @@ public abstract class AbstractListPanel<TModel extends Model>
             mRecycleView.setLayoutManager(mRecycleViewLayoutManager);
             mRecycleView.setAdapter(new AbstractListPanel<TModel>.ListRecyclerViewAdapter());
             mRecycleView.setNestedScrollingEnabled(!mblnNoScroll);
+            setViewContent(mRecycleView);
             if (haveLazyLoading) {
                 mScrollListener = new EndlessRecyclerOnScrollListener(mRecycleViewLayoutManager) {
                     @Override
@@ -694,12 +695,11 @@ public abstract class AbstractListPanel<TModel extends Model>
         // nếu danh sách không trống
         if (mModelViewList != null && mModelViewList.size() > 0) {
             hideWarning();
-
             // đặt lại scroll listener cho lazy loading
             if (mScrollListener != null) mScrollListener.resetCurrentPage();
         } else {
             // hiện thông báo
-            showWarning("No data to display");
+            showWarning(getContext().getString(R.string.msg_no_data));
         }
 
         // update giao diện trên view
@@ -795,25 +795,6 @@ public abstract class AbstractListPanel<TModel extends Model>
     public void showUpdateItemInput(TModel item) {
 
     }
-
-    /**
-     *
-     * @param strMsg
-     */
-//    @Override
-//    public void showErrorMsg(String strMsg) {
-//        if (mRecycleView != null) mRecycleView.setVisibility(View.GONE);
-//        super.showErrorMsg(strMsg);
-//    }
-
-    /**
-     * Ẩn thông tin cảnh báo
-     */
-//    @Override
-//    public void hideWarning() {
-//        if (mRecycleView != null) mRecycleView.setVisibility(View.VISIBLE);
-//        super.hideWarning();
-//    }
 
     /**
      * Adapter map từ danh sách sang recycleview

@@ -14,7 +14,7 @@ import java.util.List;
 
 public class RetrieveListTask<TModel extends Model>
         extends AbstractListTask<AbstractListController<TModel>, Integer, Void, List<TModel>> {
-
+    int page;
 
     /**
      * Khởi tạo với list controller
@@ -29,6 +29,7 @@ public class RetrieveListTask<TModel extends Model>
     @Override
     protected List<TModel> doInBackground(Integer... params) {
         try {
+            page = params[0];
             return mListController.onRetrieveBackground(params[0], params[1]);
         } catch (Exception exp) {
             mException = exp;
@@ -47,5 +48,11 @@ public class RetrieveListTask<TModel extends Model>
     @Override
     protected void onProgressUpdate(Void... values) {
         super.onProgressUpdate(values);
+    }
+
+    @Override
+    protected void onCancelled() {
+        if (page == 1) mListController.onCancelledLoadData(mException);
+        else mListController.onCancelledBackground(mException);
     }
 }

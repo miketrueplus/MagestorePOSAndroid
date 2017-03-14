@@ -95,6 +95,16 @@ public abstract class AbstractSimpleRecycleView<TModel extends Model>
         return mController;
     }
 
+    @Override
+    public void showErrorMsgWithReload(String strMsg) {
+        showErrorMsg(strMsg);
+    }
+
+    @Override
+    public void showErrorMsgWithReload(Exception exp) {
+        showErrorMsg(exp);
+    }
+
     /**
      * Đọc các thuộc tính của layout
      * @param context

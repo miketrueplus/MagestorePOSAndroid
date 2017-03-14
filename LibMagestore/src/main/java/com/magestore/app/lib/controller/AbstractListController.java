@@ -336,7 +336,8 @@ public class AbstractListController<TModel extends Model>
      * Sự kiện lúc canceled load data
      */
     public void onCancelledLoadData(Exception exp) {
-        onCancelledBackground(exp);
+        getView().hideAllProgressBar();
+        getView().showErrorMsgWithReload(exp);
     }
 
 

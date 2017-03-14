@@ -40,6 +40,9 @@ public abstract class AbstractPanel<TController extends Controller> extends Fram
     // tham chiếu view của layout
     protected View mView;
 
+    // tham chiếu lớp view chính chứa content
+    protected View mViewContent;
+
     // tham chiếu của cả panel
     private int mintPanelLayout;
 
@@ -94,36 +97,67 @@ public abstract class AbstractPanel<TController extends Controller> extends Fram
     }
 
     /**
-     * Hiển thị thông báo lỗi
-     *
+     * Hiển thị thông báo loiõ với reloading
      * @param strMsg
      */
-    public void showErrorMsg(String strMsg) {
+    @Override
+    public void showErrorMsgWithReload(String strMsg) {
+        if (mViewContent != null) mViewContent.setVisibility(View.GONE);
         if (mTxtErrorMsg != null) {
-//            String strFinalMsg = strMsg; + getContext().getString(R.string.msg_press_to_reload);
-            mTxtErrorMsg.setText(strMsg);
+            String strFinalMsg = strMsg + getContext().getString(R.string.msg_press_to_reload);
+            mTxtErrorMsg.setText(strFinalMsg);
             mTxtErrorMsg.setVisibility(VISIBLE);
-        }
-        else {
+            mTxtErrorMsg.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getController().reload();
+                }
+            });
+        } else {
             new AlertDialog.Builder(getContext())
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .setTitle(R.string.dialog_error)
                     .setMessage(strMsg)
                     .setPositiveButton(R.string.ok, null)
-//                    .setPositiveButton(R.string.reload, new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            getController().reload();
-//                        }
-//
-//                    })
-//                    .setNegativeButton(R.string.no, null)
+                    .setPositiveButton(R.string.reload, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            getController().reload();
+                        }
+
+                    })
+                    .setNegativeButton(R.string.no, null)
+                    .show();
+        }
+    }
+
+    @Override
+    public void showErrorMsgWithReload(Exception exp) {
+        exp.printStackTrace();
+        showErrorMsgWithReload(exp.getLocalizedMessage());
+    }
+
+    /**
+     * Hiển thị thông báo lỗi
+     * @param strMsg
+     */
+    public void showErrorMsg(String strMsg) {
+        if (mTxtErrorMsg != null) {
+            mTxtErrorMsg.setText(strMsg);
+            mTxtErrorMsg.setVisibility(VISIBLE);
+        } else {
+            new AlertDialog.Builder(getContext())
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setTitle(R.string.dialog_error)
+                    .setMessage(strMsg)
+                    .setPositiveButton(R.string.ok, null)
                     .show();
         }
     }
 
     /**
      * Hiện thông báo lỗi cho exception
+     *
      * @param exp
      */
     @Override
@@ -134,6 +168,7 @@ public abstract class AbstractPanel<TController extends Controller> extends Fram
 
     /**
      * Ẩn thông báo lỗi
+     *
      * @param exp
      */
     @Override
@@ -166,7 +201,7 @@ public abstract class AbstractPanel<TController extends Controller> extends Fram
         if (mProgressBarBottom == null) return;
         mProgressBarBottom.setVisibility(show ? View.VISIBLE : View.GONE);
         if (mProgressBarBottom instanceof com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar) {
-            ScaleAnimation animation = new ScaleAnimation(0, 1, 0, 1, Animation.RELATIVE_TO_SELF, (float)0.5, Animation.RELATIVE_TO_SELF, (float)0.5);
+            ScaleAnimation animation = new ScaleAnimation(0, 1, 0, 1, Animation.RELATIVE_TO_SELF, (float) 0.5, Animation.RELATIVE_TO_SELF, (float) 0.5);
             animation.setDuration(500);
             animation.setFillAfter(true);
             ((com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar) mProgressBarBottom).startAnimation(animation);
@@ -185,6 +220,7 @@ public abstract class AbstractPanel<TController extends Controller> extends Fram
 
     /**
      * Set progress bar
+     *
      * @param idProgresBar
      */
     protected void setProgressBar(int idProgresBar) {
@@ -194,6 +230,7 @@ public abstract class AbstractPanel<TController extends Controller> extends Fram
 
     /**
      * Set textview thôgn báo khi lỗi hoặc warning
+     *
      * @param idTxtView
      */
     protected void setTextViewMsg(int idTxtView) {
@@ -210,6 +247,7 @@ public abstract class AbstractPanel<TController extends Controller> extends Fram
 
     /**
      * Đọc các thuộc tính từ XML của layout
+     *
      * @param context
      * @param attrs
      */
@@ -229,6 +267,7 @@ public abstract class AbstractPanel<TController extends Controller> extends Fram
 
         a.recycle();
     }
+
     protected void initLayout() {
         // tham chiêu file layout của panel
         if (mintPanelLayout > 0) setLayoutPanel(mintPanelLayout);
@@ -267,6 +306,7 @@ public abstract class AbstractPanel<TController extends Controller> extends Fram
 
     /**
      * Trả lại view
+     *
      * @return
      */
     protected View getView() {
@@ -275,28 +315,31 @@ public abstract class AbstractPanel<TController extends Controller> extends Fram
 
     /**
      * Hiển thị thông tin cảnh báo
+     *
      * @param strMsg
      */
     @Override
     public void showWarning(String strMsg) {
+
+    }
+
+    /**
+     * Hiển thị thông báo trạng thái
+     * @param strMsg
+     */
+    protected void callShowWarning(String strMsg) {
         if (mTxtErrorMsg != null) {
             mTxtErrorMsg.setText(strMsg);
             mTxtErrorMsg.setVisibility(VISIBLE);
         }
-//        else {
-//            new AlertDialog.Builder(getContext())
-//                    .setIcon(android.R.drawable.ic_dialog_alert)
-//                    .setTitle(R.string.dialog_warning)
-//                    .setMessage(strMsg)
-//                    .setPositiveButton(R.string.reload, new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-////                            close
-//                        }
-//                    })
-//                    .setNegativeButton(R.string.no, null)
-//                    .show();
-//        }
+        else {
+            new AlertDialog.Builder(getContext())
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setTitle(R.string.dialog_warning)
+                    .setMessage(strMsg)
+                    .setNegativeButton(R.string.ok, null)
+                    .show();
+        }
     }
 
     /**
@@ -304,7 +347,15 @@ public abstract class AbstractPanel<TController extends Controller> extends Fram
      */
     @Override
     public void hideWarning() {
-        if (mTxtErrorMsg != null)
-            mTxtErrorMsg.setVisibility(GONE);
+        if (mViewContent != null) mViewContent.setVisibility(View.VISIBLE);
+        if (mTxtErrorMsg != null) mTxtErrorMsg.setVisibility(GONE);
     }
+
+    protected void setViewContent(View viewContent) {mViewContent = viewContent;}
+    protected View getViewContent() {return mViewContent;}
+
+    /**
+     *
+     * @param strMsg
+     */
 }
