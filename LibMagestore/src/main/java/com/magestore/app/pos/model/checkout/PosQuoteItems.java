@@ -25,18 +25,15 @@ public class PosQuoteItems extends PosAbstractModel implements QuoteItems {
     int use_discount;
     PosQuoteItemExtension extension_data;
 
-    class CustomOptions {
-        int code;
-        int value;
-    }
-
-    List<CustomOptions> options;
-
-    class ConfigOptions {
+    class OptionsValue {
         String code;
         String value;
     }
-    List<ConfigOptions> super_attribute;
+
+    List<OptionsValue> options;
+    List<OptionsValue> super_attribute;
+    List<OptionsValue> bundle_option;
+    List<OptionsValue> bundle_option_qty;
 
     @Override
     public String getItemId() {
@@ -107,21 +104,30 @@ public class PosQuoteItems extends PosAbstractModel implements QuoteItems {
             PosCartItem.ChooseProductOption chooseProductOptions = cartItem.getChooseProductOptions().get(customOption);
             if (chooseProductOptions.productOptionCustomValueList == null) continue;
             for (ProductOptionCustomValue optionCustomValue : chooseProductOptions.productOptionCustomValueList) {
-                // với config option
-                if (customOption.isConfigOption()) {
-                    // với custom option option
-                    ConfigOptions quoteCustomeOption = new ConfigOptions();
+                    OptionsValue quoteCustomeOption = new OptionsValue();
                     quoteCustomeOption.code = customOption.getID();
                     quoteCustomeOption.value = optionCustomValue.getID();
-                    if (super_attribute == null) super_attribute = new ArrayList<ConfigOptions>();
+                if (customOption.isConfigOption()) {
+                    // với config option option
+                    if (super_attribute == null) super_attribute = new ArrayList<OptionsValue>();
                     super_attribute.add(quoteCustomeOption);
-                } else {
+                }
+                else if (customOption.isCustomOption()) {
                     // với custom option option
-                    CustomOptions quoteCustomeOption = new CustomOptions();
-                    quoteCustomeOption.code = Integer.parseInt(customOption.getID());
-                    quoteCustomeOption.value = Integer.parseInt(optionCustomValue.getID());
-                    if (options == null) options = new ArrayList<CustomOptions>();
+                    if (options == null) options = new ArrayList<OptionsValue>();
                     options.add(quoteCustomeOption);
+                }
+                else if (customOption.isBundleOption()) {
+                    // với bundle
+                    if (bundle_option == null) bundle_option = new ArrayList<OptionsValue>();
+                    bundle_option.add(quoteCustomeOption);
+
+                    // thêm quantity
+                    if (bundle_option_qty == null) bundle_option_qty = new ArrayList<OptionsValue>();
+                    OptionsValue bundleQuantity = new OptionsValue();
+                    bundleQuantity.code = optionCustomValue.getID();
+                    bundleQuantity.value = "1";
+                    bundle_option_qty.add(bundleQuantity);
                 }
             }
         }
