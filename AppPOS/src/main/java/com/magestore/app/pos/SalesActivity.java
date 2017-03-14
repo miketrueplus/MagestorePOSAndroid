@@ -339,7 +339,6 @@ public class SalesActivity extends AbstractActivity
         // Load danh sách sản phẩm, không tự động chọn sản phẩm đầu tiên
         mProductListController.doRetrieve();
         // Load danh sách check out
-        mCheckoutListController.doInputGuestCheckout();
         mCheckoutListController.doRetrieve();
         // load danh sách shipping
 //        mCheckShippingListController.doRetrieve();

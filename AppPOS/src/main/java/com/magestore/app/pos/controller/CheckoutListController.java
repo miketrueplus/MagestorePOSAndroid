@@ -80,32 +80,23 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     public List<Checkout> onRetrieveBackground(int page, int pageSize) throws Exception {
         if (wraper == null)
             wraper = new HashMap<>();
+        doInputGuestCheckout();
         return super.onRetrieveBackground(page, pageSize);
+    }
+
+    @Override
+    public synchronized void onRetrievePostExecute(List<Checkout> list) {
+        super.onRetrievePostExecute(list);
+        bindCustomer(guest_checkout);
     }
 
     public void bindCustomer(Customer customer) {
         if (customer != null) {
             wraper.put("customer", customer);
-            Checkout checkout = getSelectedItem();
-            if (checkout == null) {
-                Checkout new_checkout = ((CheckoutService) getListService()).create();
-                new_checkout.setCustomer(customer);
-                new_checkout.setCustomerID(customer.getID());
-                ArrayList<Checkout> list;
-                if (getListItems() == null) {
-                    list = new ArrayList<>();
-                    list.add(new_checkout);
-                    bindList(list);
-                } else {
-                    getListItems().add(new_checkout);
-                    bindItem(new_checkout);
-                    getView().insertListAtLast(new_checkout);
-                }
-            } else {
-                checkout.setCustomer(customer);
-                checkout.setCustomerID(customer.getID());
-                getView().updateModel(checkout);
-            }
+
+            getSelectedItem().setCustomer(customer);
+            getSelectedItem().setCustomerID(customer.getID());
+            getView().updateModel(getSelectedItem());
             mCartOrderListPanel.notifyDataSetChanged();
             if (((CheckoutDetailPanel) mDetailView).getVisibility() == View.VISIBLE) {
                 doInputSaveCart();
