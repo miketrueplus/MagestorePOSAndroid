@@ -37,6 +37,9 @@ public class PosCustomer extends PosAbstractModel implements Customer {
     List<Complain> complainsa;
 
     @Gson2PosExclude
+    int address_position;
+
+    @Gson2PosExclude
     boolean use_one_address;
 
     @Override
@@ -161,5 +164,15 @@ public class PosCustomer extends PosAbstractModel implements Customer {
     @Override
     public String getSubDisplayContent() {
         return getEmail();
+    }
+
+    @Override
+    public int getAddressPosition() {
+        return address_position;
+    }
+
+    @Override
+    public void setAddressPosition(int intAddressPosition) {
+        address_position = intAddressPosition;
     }
 }

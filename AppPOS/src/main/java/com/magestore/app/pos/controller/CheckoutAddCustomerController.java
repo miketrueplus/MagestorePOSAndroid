@@ -24,6 +24,7 @@ public class CheckoutAddCustomerController extends CustomerListController {
     @Override
     public void onInsertPostExecute(Boolean success, Customer... models) {
         Customer customer = ((Customer) models[0]);
+        customer.setAddressPosition(0);
         if (success && customer != null) {
             mCheckoutAddCustomerPanel.updateCustomerToOrder(customer);
         }

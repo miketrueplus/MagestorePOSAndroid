@@ -346,14 +346,14 @@ public class SalesActivity extends AbstractActivity
         rl_customer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mCheckoutListPanel.showPopUpAddCustomer(-1);
+                mCheckoutListPanel.showPopUpAddCustomer(CheckoutListPanel.NO_TYPE, CheckoutListPanel.NO_TYPE);
             }
         });
 
         rl_change_customer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mCheckoutListPanel.showPopUpAddCustomer(0);
+                mCheckoutListPanel.showPopUpAddCustomer(CheckoutListPanel.CHANGE_CUSTOMER, CheckoutListPanel.NO_TYPE);
             }
         });
     }

@@ -125,8 +125,9 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         doAction(ACTION_TYPE_DELETE_ADDRESS, null, wraper, customerAddress);
     }
 
-    public void doInputNewAddress(Customer customer, CustomerAddress customerAddress) {
+    public void doInputNewAddress(Customer customer, CustomerAddress customerAddress, int type) {
         wraper.put("customer_new_address", customer);
+        wraper.put("type_new_address", type);
         doAction(ACTION_TYPE_NEW_ADDRESS, null, wraper, customerAddress);
     }
 
@@ -291,6 +292,14 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         } else if (success && actionType == ACTION_TYPE_NEW_ADDRESS) {
             CustomerAddress customerAddress = (CustomerAddress) models[0];
             int typeAddress = 3;
+            int type_new_address = (int) wraper.get("type_new_address");
+            if(type_new_address == 1){
+                ((CheckoutListPanel) mView).updateCheckoutAddress();
+                Customer customer = (Customer) wraper.get("customer");
+                mCheckoutAddressListPanel.bindListModel((List<Model>) (List<?>) customer.getAddress());
+                customer.setAddressPosition(mCheckoutAddressListPanel.getSelectPos());
+                changeShippingAddress(customerAddress);
+            }
             ((CheckoutListPanel) mView).updateAddress(0, typeAddress, customerAddress);
         } else if (success && actionType == ACTION_TYPE_SAVE_CART) {
             Checkout checkout = (Checkout) wraper.get("save_cart");
@@ -301,6 +310,13 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             ((CheckoutDetailPanel) mDetailView).setShippingDataSet(listShipping);
             mPaymentMethodListPanel.bindList(listPayment);
             mCheckoutAddPaymentPanel.bindList(listPayment);
+
+            // hiển thị list shipping address
+            Customer customer = (Customer) wraper.get("customer");
+            mCheckoutAddressListPanel.bindListModel((List<Model>) (List<?>) customer.getAddress());
+            mCheckoutAddressListPanel.setSelectPos(customer.getAddressPosition());
+            mCheckoutAddressListPanel.scrollToPosition();
+
             // auto select shipping method
             autoSelectShipping(listShipping);
             // lưu quote data vào system
@@ -318,9 +334,6 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 ((CheckoutListPanel) getView()).updateTotalPrice(checkout);
             }
 
-            // hiển thị list shipping address
-            Customer customer = (Customer) wraper.get("customer");
-            mCheckoutAddressListPanel.bindListModel((List<Model>) (List<?>) customer.getAddress());
         } else if (success && actionType == ACTION_TYPE_SAVE_SHIPPING) {
             Checkout checkout = (Checkout) wraper.get("save_shipping");
             // cập nhật list payment
@@ -818,6 +831,14 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
     public CheckoutPayment createPaymentMethod() {
         return ((CheckoutService) getListService()).createPaymentMethod();
+    }
+
+    public void addNewAddress() {
+        ((CheckoutListPanel) mView).checkoutAddNewAddress();
+    }
+
+    public void resetPositionAddress(){
+        mCheckoutAddressListPanel.setSelectPos(0);
     }
 
     /**
