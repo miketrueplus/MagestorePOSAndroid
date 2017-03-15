@@ -86,6 +86,13 @@
     <dimen name="checkout_success_edditext_margin_top">40dp</dimen>
     <dimen name="checkout_success_button_text_size">20sp</dimen>
 
+    <!--Customer-->
+    <dimen name="customer_title_height">45dp</dimen>
+    <dimen name="customer_button_save_width">60dp</dimen>
+    <dimen name="customer_address_item_width">250dp</dimen>
+    <dimen name="customer_address_item_text_size">13sp</dimen>
+    <dimen name="customer_complain_item_text_size">13sp</dimen>
+
     <!--Order History-->
     <dimen name="order_top_price_text_size">24sp</dimen>
     <dimen name="order_content_table_text_size">14sp</dimen>

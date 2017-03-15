@@ -3,7 +3,6 @@
 
     <data>
 
-
         <variable
             name="complain"
             type="com.magestore.app.lib.model.customer.Complain" />

@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.magestore.app.lib.controller.Controller;
@@ -56,7 +57,7 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
     ImageButton mbtnNewComplain;
 
     // progress
-    View mComplainProgress;
+    RelativeLayout mComplainProgress;
 
     // Edit text trên form
     EditText mtxtFirstName;
@@ -125,7 +126,7 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
         mbtnNewComplain = (ImageButton) findViewById(R.id.btn_new_complain);
 
         // complain progress bar
-        mComplainProgress = findViewById(R.id.progress_complain_list);
+        mComplainProgress = (RelativeLayout) findViewById(R.id.progress_complain_list);
 
         mbtnSaveCustomer.setVisibility(INVISIBLE);
         mbtnEditCustomer.setVisibility(VISIBLE);
