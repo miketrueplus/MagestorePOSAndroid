@@ -34,6 +34,8 @@ import com.magestore.app.pos.parse.gson2pos.Gson2PosConfigParseImplement;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -145,7 +147,7 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         if (mConfig == null) mConfig = new PosConfigDefault();
 
         // Chuyển đối customer
-        ArrayList<LinkedTreeMap> customerGroupList = (ArrayList) mConfig.getValue("customerGroup");
+        List<LinkedTreeMap> customerGroupList = (ArrayList) mConfig.getValue("customerGroup");
         LinkedTreeMap<String, String> returnCustomerGroup = new LinkedTreeMap<String, String>();
         for (LinkedTreeMap customerGroup : customerGroupList) {
             Double id = (Double) customerGroup.get("id");
@@ -169,16 +171,32 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         // nếu chưa load config, cần khởi tạo chế độ default
         if (mConfig == null) mConfig = new PosConfigDefault();
 
-        ArrayList<LinkedTreeMap> countryList = (ArrayList) mConfig.getValue("country");
-        Map<String, ConfigCountry> listConfigCountry = new HashMap<String, ConfigCountry>();
+        List<LinkedTreeMap> countryList = (ArrayList) mConfig.getValue("country");
+        Map<String, ConfigCountry> listConfigCountry = new LinkedTreeMap<>();
+        Collections.sort(countryList, new Comparator<LinkedTreeMap>() {
+            @Override
+            public int compare(LinkedTreeMap linkedTreeMap, LinkedTreeMap linkedTreeMap1) {
+                String name = linkedTreeMap.get("country_name").toString();
+                String name1 = linkedTreeMap1.get("country_name").toString();
+                return name.compareToIgnoreCase(name1);
+            }
+        });
         for (LinkedTreeMap country : countryList) {
             ConfigCountry configCountry = new PosConfigCountry();
             String country_id = country.get("country_id").toString();
             String country_name = country.get("country_name").toString();
             configCountry.setCountryID(country_id);
             configCountry.setCountryName(country_name);
-            ArrayList<LinkedTreeMap> regionList = (ArrayList) country.get("regions");
+            List<LinkedTreeMap> regionList = (ArrayList) country.get("regions");
             if (regionList != null) {
+                Collections.sort(regionList, new Comparator<LinkedTreeMap>() {
+                    @Override
+                    public int compare(LinkedTreeMap linkedTreeMap, LinkedTreeMap linkedTreeMap1) {
+                        String name = linkedTreeMap.get("name").toString();
+                        String name1 = linkedTreeMap1.get("name").toString();
+                        return name.compareToIgnoreCase(name1);
+                    }
+                });
                 List<PosConfigRegion> listConfigRegion = new ArrayList<PosConfigRegion>();
                 for (LinkedTreeMap region : regionList) {
                     ConfigRegion configRegion = new PosConfigRegion();
@@ -194,7 +212,7 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
             }
             listConfigCountry.put(country_id, configCountry);
         }
-        // TODO: chưa sort country, region
+        // TODO: chưa sort region
         return listConfigCountry;
     }
 
@@ -249,7 +267,7 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
     public List<Currency> getCurrencies() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
         if (mConfig == null) mConfig = new PosConfigDefault();
 
-        ArrayList<LinkedTreeMap> currencyList = (ArrayList) mConfig.getValue("currencies");
+        List<LinkedTreeMap> currencyList = (ArrayList) mConfig.getValue("currencies");
         List<Currency> listCurrency = new ArrayList<>();
 
         for (LinkedTreeMap item : currencyList) {
@@ -316,7 +334,7 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
 
         Map<String, Object> cc_types = (Map) mConfig.getValue("cc_types");
 
-        Map<String, String> listCCTypes = new HashMap<>();
+        Map<String, String> listCCTypes = new LinkedTreeMap<>();
 
         for (String key : cc_types.keySet()) {
             if (!key.equals("")) {
@@ -333,6 +351,7 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         if (mConfig == null) mConfig = new PosConfigDefault();
 
         List<String> listCCMonths = (List) mConfig.getValue("cc_months");
+
         for (String month : listCCMonths) {
             if (month.equals("Month") || month.equals("month")) {
                 listCCMonths.remove(month);
@@ -348,7 +367,7 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
 
         Map<String, Object> cc_years = (Map) mConfig.getValue("cc_years");
 
-        Map<String, String> listCCYears = new HashMap<>();
+        Map<String, String> listCCYears = new LinkedTreeMap<>();
 
         for (String key : cc_years.keySet()) {
             if(!key.equals("0")){

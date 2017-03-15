@@ -334,6 +334,10 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
                     if (mCustomerAddNewPanel.getShippingAddress() != null) {
                         dialog.getButtonCancel().setText(getContext().getString(R.string.delete));
                     }
+                } else {
+                    if (typeCustomer == CREATE_NEW_CUSTOMER) {
+                        dialog.getButtonCancel().setText(getContext().getString(R.string.delete));
+                    }
                 }
             }
         });
@@ -347,6 +351,10 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
                 dialog.getDialogTitle().setText(getContext().getString(R.string.customer_add_billing_address));
                 if (mCustomer == null) {
                     if (mCustomerAddNewPanel.getBillingAddress() != null) {
+                        dialog.getButtonCancel().setText(getContext().getString(R.string.delete));
+                    }
+                } else {
+                    if (typeCustomer == CREATE_NEW_CUSTOMER) {
                         dialog.getButtonCancel().setText(getContext().getString(R.string.delete));
                     }
                 }
@@ -496,11 +504,11 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
                     dialog.getDialogTitle().setText(getContext().getString(R.string.customer_add_new));
                 } else if (typeCustomer == CREATE_NEW_ADDRESS) {
                     int type_new_address = 0;
-                    if(other_type == CHECKOUT_ADD_NEW_ADDRESS){
+                    if (other_type == CHECKOUT_ADD_NEW_ADDRESS) {
                         type_new_address = 1;
                     }
                     ((CheckoutListController) getController()).doInputNewAddress(mCustomer, mCustomerAddNewPanel.getBillingAddress(), type_new_address);
-                    if(other_type == CHECKOUT_ADD_NEW_ADDRESS){
+                    if (other_type == CHECKOUT_ADD_NEW_ADDRESS) {
                         dialog.dismiss();
                         return;
                     }
@@ -644,7 +652,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
         }
     }
 
-    public void updateCheckoutAddress(){
+    public void updateCheckoutAddress() {
         updateCustomerToOrder(mCustomer);
     }
 
