@@ -773,7 +773,9 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         ((CheckoutDetailPanel) mDetailView).showPanelPaymentMethod();
         ((CheckoutDetailPanel) mDetailView).showPanelCheckoutPaymentCreditCard(false);
         removeOrder();
-        addNewOrder();
+        if(getSelectedItems().size() > 1){
+            addNewOrder();
+        }
         onBackTohome();
         doShowDetailSuccess(false);
     }
