@@ -158,45 +158,9 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
                     shippingAddress = item.getAddress().get(0);
                 }
 
-                tv_shipping_address.setText(shippingAddress.getShortAddress());
-                s_first_name.setText(shippingAddress.getFirstName());
-                s_last_name.setText(shippingAddress.getLastName());
-                s_company.setText(shippingAddress.getCompany());
-                s_phone.setText(shippingAddress.getTelephone());
-                s_street1.setText(shippingAddress.getStreet1());
-                s_street2.setText(shippingAddress.getStreet2());
-                s_city.setText(shippingAddress.getCity());
-                s_zipcode.setText(shippingAddress.getPostCode());
-                s_spinner_country.setSelection(shippingAddress.getCountry());
-                if (shippingAddress.getRegion().getRegionID() == 0) {
-                    s_state.setVisibility(VISIBLE);
-                    s_spinner_state.setVisibility(GONE);
-                    s_state.setText(shippingAddress.getRegion().getRegionName());
-                } else {
-                    s_state.setVisibility(GONE);
-                    s_spinner_state.setVisibility(VISIBLE);
-                    s_spinner_state.setSelection(shippingAddress.getRegion().getRegionCode());
-                }
+                bindDataShippingAddress(shippingAddress);
+                bindDataBillingAddress(billingAddress);
 
-                tv_billing_address.setText(billingAddress.getShortAddress());
-                b_first_name.setText(billingAddress.getFirstName());
-                b_last_name.setText(billingAddress.getLastName());
-                b_company.setText(billingAddress.getCompany());
-                b_phone.setText(billingAddress.getTelephone());
-                b_street1.setText(billingAddress.getStreet1());
-                b_street2.setText(billingAddress.getStreet2());
-                b_city.setText(billingAddress.getCity());
-                b_zipcode.setText(billingAddress.getPostCode());
-                b_spinner_country.setSelection(billingAddress.getCountry());
-                if (billingAddress.getRegion().getRegionID() == 0) {
-                    b_state.setVisibility(VISIBLE);
-                    b_spinner_state.setVisibility(GONE);
-                    b_state.setText(billingAddress.getRegion().getRegionName());
-                } else {
-                    b_state.setVisibility(GONE);
-                    b_spinner_state.setVisibility(VISIBLE);
-                    b_spinner_state.setSelection(billingAddress.getRegion().getRegionCode());
-                }
                 s_shipping_address.setSelection(shippingAddress.getID());
                 s_billing_address.setSelection(billingAddress.getID());
                 c_shippingAddress = shippingAddress;
@@ -282,6 +246,7 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 c_shippingAddress = getAddressSelect(s_shipping_address);
                 showShortShippingAddress();
+                bindDataShippingAddress(c_shippingAddress);
             }
 
             @Override
@@ -295,6 +260,7 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 c_billingAddress = getAddressSelect(s_billing_address);
                 showShortBillingAddress();
+                bindDataBillingAddress(c_billingAddress);
             }
 
             @Override
@@ -419,6 +385,50 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
      */
     public CustomerAddress getBillingAddress() {
         return billingAddress;
+    }
+
+    public void bindDataShippingAddress(CustomerAddress shippingAddress){
+        tv_shipping_address.setText(shippingAddress.getShortAddress());
+        s_first_name.setText(shippingAddress.getFirstName());
+        s_last_name.setText(shippingAddress.getLastName());
+        s_company.setText(shippingAddress.getCompany());
+        s_phone.setText(shippingAddress.getTelephone());
+        s_street1.setText(shippingAddress.getStreet1());
+        s_street2.setText(shippingAddress.getStreet2());
+        s_city.setText(shippingAddress.getCity());
+        s_zipcode.setText(shippingAddress.getPostCode());
+        s_spinner_country.setSelection(shippingAddress.getCountry());
+        if (shippingAddress.getRegion().getRegionID() == 0) {
+            s_state.setVisibility(VISIBLE);
+            s_spinner_state.setVisibility(GONE);
+            s_state.setText(shippingAddress.getRegion().getRegionName());
+        } else {
+            s_state.setVisibility(GONE);
+            s_spinner_state.setVisibility(VISIBLE);
+            s_spinner_state.setSelection(shippingAddress.getRegion().getRegionCode());
+        }
+    }
+
+    public void bindDataBillingAddress(CustomerAddress billingAddress){
+        tv_billing_address.setText(billingAddress.getShortAddress());
+        b_first_name.setText(billingAddress.getFirstName());
+        b_last_name.setText(billingAddress.getLastName());
+        b_company.setText(billingAddress.getCompany());
+        b_phone.setText(billingAddress.getTelephone());
+        b_street1.setText(billingAddress.getStreet1());
+        b_street2.setText(billingAddress.getStreet2());
+        b_city.setText(billingAddress.getCity());
+        b_zipcode.setText(billingAddress.getPostCode());
+        b_spinner_country.setSelection(billingAddress.getCountry());
+        if (billingAddress.getRegion().getRegionID() == 0) {
+            b_state.setVisibility(VISIBLE);
+            b_spinner_state.setVisibility(GONE);
+            b_state.setText(billingAddress.getRegion().getRegionName());
+        } else {
+            b_state.setVisibility(GONE);
+            b_spinner_state.setVisibility(VISIBLE);
+            b_spinner_state.setSelection(billingAddress.getRegion().getRegionCode());
+        }
     }
 
     /**

@@ -770,6 +770,8 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         mCheckoutPaymentCreditCardPanel.clearDataForm();
         ((CheckoutDetailPanel) mDetailView).isEnableButtonAddPayment(false);
         ((CheckoutDetailPanel) mDetailView).isEnableCreateInvoice(false);
+        ((CheckoutDetailPanel) mDetailView).isCheckCreateInvoice(false);
+        ((CheckoutDetailPanel) mDetailView).isCheckCreateShip(false);
         ((CheckoutDetailPanel) mDetailView).showPanelPaymentMethod();
         ((CheckoutDetailPanel) mDetailView).showPanelCheckoutPaymentCreditCard(false);
         removeOrder();
@@ -794,6 +796,8 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         mCheckoutPaymentCreditCardPanel.clearDataForm();
         ((CheckoutDetailPanel) mDetailView).setPickAtStoreDefault();
         ((CheckoutDetailPanel) mDetailView).isEnableButtonAddPayment(false);
+        ((CheckoutDetailPanel) mDetailView).isCheckCreateInvoice(false);
+        ((CheckoutDetailPanel) mDetailView).isCheckCreateShip(false);
         ((CheckoutDetailPanel) mDetailView).isEnableCreateInvoice(false);
         ((CheckoutDetailPanel) mDetailView).showPanelPaymentMethod();
         ((CheckoutDetailPanel) mDetailView).showPanelCheckoutPaymentCreditCard(false);

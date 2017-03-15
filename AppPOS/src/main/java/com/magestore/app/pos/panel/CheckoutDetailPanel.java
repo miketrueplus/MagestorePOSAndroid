@@ -185,6 +185,14 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         create_invoice.setVisibility(enable ? VISIBLE : GONE);
     }
 
+    public void isCheckCreateInvoice(boolean isCheck) {
+        create_invoice.setChecked(isCheck ? true : false);
+    }
+
+    public void isCheckCreateShip(boolean isCheck) {
+        create_ship.setChecked(isCheck ? true : false);
+    }
+
     public void isShowLoadingDetail(boolean isShow) {
         sales_background_loading.setVisibility(isShow ? VISIBLE : GONE);
     }
@@ -241,7 +249,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         return cb_pick_at_store.isChecked();
     }
 
-    public void setPickAtStoreDefault(){
+    public void setPickAtStoreDefault() {
         cb_pick_at_store.setChecked(true);
     }
 
