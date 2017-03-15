@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:magestore_view="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -10,182 +11,263 @@
             type="com.magestore.app.lib.model.customer.CustomerAddress" />
     </data>
 
-    <TableLayout xmlns:magestore_view="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:descendantFocusability="beforeDescendants"
-        android:focusableInTouchMode="true"
-        android:shrinkColumns="*"
-        android:stretchColumns="*">
 
-        <TableRow
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal">
+            android:layout_margin="@dimen/layout_margin_5"
+            android:orientation="horizontal">
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/layout_margin_5"
+                android:layout_weight="1"
+                android:background="@drawable/boder_linear_layout"
+                android:orientation="vertical"
+                android:padding="@dimen/layout_margin_5">
 
                 <com.magestore.app.view.FormatTextEdit
                     android:id="@+id/firstname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/white"
                     android:hint="@string/first_name"
                     android:text="@{customerAddress.getFirstName()}" />
-            </android.support.design.widget.TextInputLayout>
+            </LinearLayout>
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/boder_linear_layout"
+                android:orientation="vertical"
+                android:padding="@dimen/layout_margin_5">
 
-                <EditText
+                <com.magestore.app.view.FormatTextEdit
                     android:id="@+id/lastname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/white"
                     android:hint="@string/last_name"
                     android:text="@{customerAddress.getLastName()}" />
-            </android.support.design.widget.TextInputLayout>
-        </TableRow>
+            </LinearLayout>
+        </LinearLayout>
 
-        <TableRow
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal">
+            android:layout_margin="@dimen/layout_margin_5"
+            android:orientation="horizontal">
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/layout_margin_5"
+                android:layout_weight="1"
+                android:background="@drawable/boder_linear_layout"
+                android:orientation="vertical"
+                android:padding="@dimen/layout_margin_5">
 
-                <EditText
+                <com.magestore.app.view.FormatTextEdit
                     android:id="@+id/company"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/white"
                     android:hint="@string/company"
                     android:text="@{customerAddress.getCompany()}" />
-            </android.support.design.widget.TextInputLayout>
+            </LinearLayout>
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/boder_linear_layout"
+                android:orientation="vertical"
+                android:padding="@dimen/layout_margin_5">
 
-                <EditText
+                <com.magestore.app.view.FormatTextEdit
                     android:id="@+id/telephone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/white"
                     android:hint="@string/phone"
                     android:text="@{customerAddress.getTelephone()}" />
-            </android.support.design.widget.TextInputLayout>
-        </TableRow>
+            </LinearLayout>
+        </LinearLayout>
 
-        <TableRow
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal">
+            android:layout_margin="@dimen/layout_margin_5"
+            android:orientation="horizontal">
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/layout_margin_5"
+                android:layout_weight="1"
+                android:background="@drawable/boder_linear_layout"
+                android:orientation="vertical"
+                android:padding="@dimen/layout_margin_5">
 
-                <EditText
+                <com.magestore.app.view.FormatTextEdit
                     android:id="@+id/street1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/white"
                     android:hint="@string/street"
                     android:text="@{customerAddress.getStreet1()}" />
-            </android.support.design.widget.TextInputLayout>
+            </LinearLayout>
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/boder_linear_layout"
+                android:orientation="vertical"
+                android:padding="@dimen/layout_margin_5">
 
-                <EditText
+                <com.magestore.app.view.FormatTextEdit
                     android:id="@+id/street2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/white"
                     android:hint="@string/street"
                     android:text="@{customerAddress.getStreet2()}" />
-            </android.support.design.widget.TextInputLayout>
-        </TableRow>
+            </LinearLayout>
+        </LinearLayout>
 
-        <TableRow
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal">
+            android:layout_margin="@dimen/layout_margin_5"
+            android:orientation="horizontal">
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/layout_margin_5"
+                android:layout_weight="1"
+                android:background="@drawable/boder_linear_layout"
+                android:orientation="vertical"
+                android:padding="@dimen/layout_margin_5">
 
-                <EditText
+                <com.magestore.app.view.FormatTextEdit
                     android:id="@+id/city"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/white"
                     android:hint="@string/city"
                     android:text="@{customerAddress.getCity()}" />
+            </LinearLayout>
 
-            </android.support.design.widget.TextInputLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/boder_linear_layout"
+                android:orientation="vertical"
+                android:padding="@dimen/layout_margin_5">
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <EditText
+                <com.magestore.app.view.FormatTextEdit
                     android:id="@+id/postcode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/white"
                     android:hint="@string/zip_code"
                     android:text="@{customerAddress.getPostCode()}" />
-            </android.support.design.widget.TextInputLayout>
-        </TableRow>
+            </LinearLayout>
+        </LinearLayout>
 
-        <TableRow
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal">
+            android:layout_margin="@dimen/layout_margin_5"
+            android:orientation="horizontal">
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/layout_margin_5"
+                android:layout_weight="1"
+                android:background="@drawable/boder_linear_layout"
+                android:orientation="vertical"
+                android:padding="@dimen/layout_margin_5">
 
-                <EditText
-                    android:id="@+id/country_id"
+                <com.magestore.app.lib.view.SimpleSpinner
+                    android:id="@+id/s_spinner_country"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/country"
-                    android:text="@{customerAddress.getCountry()}" />
-            </android.support.design.widget.TextInputLayout>
+                    android:enabled="false"
+                    android:textSize="18sp"
+                    magestore_view:layout_no_scroll="true"
+                    magestore_view:layout_row="@layout/simple_textview_row" />
+            </LinearLayout>
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/boder_linear_layout"
+                android:orientation="vertical"
+                android:padding="@dimen/layout_margin_5">
 
-                <EditText
+                <com.magestore.app.view.FormatTextEdit
                     android:id="@+id/state"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/white"
                     android:hint="@string/state_or_province"
-                    android:text="@{customerAddress.getState()}" />
-            </android.support.design.widget.TextInputLayout>
-        </TableRow>
+                    android:visibility="gone" />
 
-        <TableRow
+                <com.magestore.app.lib.view.SimpleSpinner
+                    android:id="@+id/s_spinner_state"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:textSize="18sp"
+                    magestore_view:layout_no_scroll="true"
+                    magestore_view:layout_row="@layout/simple_textview_row" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="left">
+            android:layout_margin="@dimen/layout_margin_5"
+            android:orientation="horizontal">
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/boder_linear_layout"
+                android:orientation="vertical"
+                android:padding="@dimen/layout_margin_5">
 
-                <EditText
+                <com.magestore.app.view.FormatTextEdit
                     android:id="@+id/vat_id"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/white"
                     android:hint="@string/vat"
                     android:text="@{customerAddress.getVAT()}" />
-            </android.support.design.widget.TextInputLayout>
+            </LinearLayout>
 
-        </TableRow>
-    </TableLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/layout_margin_5"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="@dimen/layout_margin_5" />
+        </LinearLayout>
+
+    </LinearLayout>
 </layout>

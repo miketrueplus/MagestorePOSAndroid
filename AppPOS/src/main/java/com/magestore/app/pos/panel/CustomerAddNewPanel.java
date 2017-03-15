@@ -451,8 +451,7 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
             s_region.setRegionName(shippingRegion.getName());
             s_region.setRegionCode(shippingRegion.getCode());
             shippingAddress.setState(s_spinner_state.getSelection());
-            // TODO: đang remove set region_id vì chưa dùng
-//            shippingAddress.setRegionID(s_spinner_state.getSelection());
+            shippingAddress.setRegionID(shippingRegion.getID());
             shippingAddress.setRegion(s_region);
         }
         shippingAddress.setVAT(s_vat.getText().toString());
@@ -516,8 +515,7 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
             b_region.setRegionName(billingRegion.getName());
             b_region.setRegionCode(billingRegion.getCode());
             billingAddress.setState(b_spinner_state.getSelection());
-            // TODO: đang remove set region_id vì chưa dùng
-//            billingAddress.setRegionID(b_spinner_state.getSelection());
+            billingAddress.setRegionID(billingRegion.getID());
             billingAddress.setRegion(b_region);
         }
         billingAddress.setVAT(b_vat.getText().toString());

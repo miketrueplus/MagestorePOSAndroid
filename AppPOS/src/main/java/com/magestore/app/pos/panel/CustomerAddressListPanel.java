@@ -97,8 +97,8 @@ public class CustomerAddressListPanel extends AbstractListPanel<CustomerAddress>
     public void showInsertItemInput() {
         // Chuẩn bị layout cho dialog
         final CustomerAddressDetailPanel panelAddress = new CustomerAddressDetailPanel(getContext());
-        panelAddress.setLayoutPanel(R.layout.panel_customer_address_detail);
         panelAddress.setController(mController);
+        panelAddress.initValue();
         if (mController instanceof CustomerAddressListController)
             panelAddress.bindItem(((CustomerAddressListController) mController).createNewCustomerAddress());
 
@@ -128,9 +128,9 @@ public class CustomerAddressListPanel extends AbstractListPanel<CustomerAddress>
     public void showUpdateItemInput(final CustomerAddress item) {
         // Chuẩn bị layout cho dialog customerAddress
         final CustomerAddressDetailPanel panelAddress = new CustomerAddressDetailPanel(getContext());
-        panelAddress.setLayoutPanel(R.layout.panel_customer_address_detail);
-        panelAddress.bindItem(item);
         panelAddress.setController(mController);
+        panelAddress.initValue();
+        panelAddress.bindItem(item);
 
         // khởi tạo dialog
         final MagestoreDialog dialog = com.magestore.app.pos.util.DialogUtil.dialog(getContext(),

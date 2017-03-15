@@ -8,17 +8,17 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
+        android:layout_margin="@dimen/layout_margin_5"
         android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
+            android:layout_marginRight="@dimen/layout_margin_5"
             android:layout_weight="1"
             android:background="@drawable/boder_linear_layout"
             android:orientation="vertical"
-            android:padding="5dp">
+            android:padding="@dimen/layout_margin_5">
 
             <com.magestore.app.view.FormatTextEdit
                 android:id="@+id/s_first_name"
@@ -34,7 +34,7 @@
             android:layout_weight="1"
             android:background="@drawable/boder_linear_layout"
             android:orientation="vertical"
-            android:padding="5dp">
+            android:padding="@dimen/layout_margin_5">
 
             <com.magestore.app.view.FormatTextEdit
                 android:id="@+id/s_last_name"
@@ -48,17 +48,17 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
+        android:layout_margin="@dimen/layout_margin_5"
         android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
+            android:layout_marginRight="@dimen/layout_margin_5"
             android:layout_weight="1"
             android:background="@drawable/boder_linear_layout"
             android:orientation="vertical"
-            android:padding="5dp">
+            android:padding="@dimen/layout_margin_5">
 
             <com.magestore.app.view.FormatTextEdit
                 android:id="@+id/s_company"
@@ -74,7 +74,7 @@
             android:layout_weight="1"
             android:background="@drawable/boder_linear_layout"
             android:orientation="vertical"
-            android:padding="5dp">
+            android:padding="@dimen/layout_margin_5">
 
             <com.magestore.app.view.FormatTextEdit
                 android:id="@+id/s_phone"
@@ -88,17 +88,17 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
+        android:layout_margin="@dimen/layout_margin_5"
         android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
+            android:layout_marginRight="@dimen/layout_margin_5"
             android:layout_weight="1"
             android:background="@drawable/boder_linear_layout"
             android:orientation="vertical"
-            android:padding="5dp">
+            android:padding="@dimen/layout_margin_5">
 
             <com.magestore.app.view.FormatTextEdit
                 android:id="@+id/s_street1"
@@ -114,7 +114,7 @@
             android:layout_weight="1"
             android:background="@drawable/boder_linear_layout"
             android:orientation="vertical"
-            android:padding="5dp">
+            android:padding="@dimen/layout_margin_5">
 
             <com.magestore.app.view.FormatTextEdit
                 android:id="@+id/s_street2"
@@ -128,13 +128,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
+        android:layout_margin="@dimen/layout_margin_5"
         android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
+            android:layout_marginRight="@dimen/layout_margin_5"
             android:layout_weight="1"
             android:background="@drawable/boder_linear_layout"
             android:orientation="vertical"
@@ -154,7 +154,7 @@
             android:layout_weight="1"
             android:background="@drawable/boder_linear_layout"
             android:orientation="vertical"
-            android:padding="5dp">
+            android:padding="@dimen/layout_margin_5">
 
             <com.magestore.app.view.FormatTextEdit
                 android:id="@+id/s_zipcode"
@@ -168,17 +168,17 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
+        android:layout_margin="@dimen/layout_margin_5"
         android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
+            android:layout_marginRight="@dimen/layout_margin_5"
             android:layout_weight="1"
             android:background="@drawable/boder_linear_layout"
             android:orientation="vertical"
-            android:padding="5dp">
+            android:padding="@dimen/layout_margin_5">
 
             <com.magestore.app.lib.view.SimpleSpinner
                 android:id="@+id/s_spinner_country"
@@ -196,7 +196,7 @@
             android:layout_weight="1"
             android:background="@drawable/boder_linear_layout"
             android:orientation="vertical"
-            android:padding="5dp">
+            android:padding="@dimen/layout_margin_5">
 
             <com.magestore.app.view.FormatTextEdit
                 android:id="@+id/s_state"
@@ -220,7 +220,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
+        android:layout_margin="@dimen/layout_margin_5"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -229,7 +229,7 @@
             android:layout_weight="1"
             android:background="@drawable/boder_linear_layout"
             android:orientation="vertical"
-            android:padding="5dp">
+            android:padding="@dimen/layout_margin_5">
 
             <com.magestore.app.view.FormatTextEdit
                 android:id="@+id/s_vat"
@@ -242,10 +242,10 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
+            android:layout_marginRight="@dimen/layout_margin_5"
             android:layout_weight="1"
             android:orientation="vertical"
-            android:padding="5dp" />
+            android:padding="@dimen/layout_margin_5" />
     </LinearLayout>
 
     <CheckBox
