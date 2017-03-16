@@ -56,7 +56,7 @@ public class CheckoutDiscountPanel extends AbstractDetailPanel<Checkout> {
 
     @Override
     public void initValue() {
-        if(mCheckoutListController.getCurrency() != null) {
+        if (mCheckoutListController.getCurrency() != null) {
             String currency_symbol = mCheckoutListController.getCurrency().getCurrencySymbol();
             amount_currency.setText(currency_symbol);
         }
@@ -99,12 +99,7 @@ public class CheckoutDiscountPanel extends AbstractDetailPanel<Checkout> {
     }
 
     private void changeColor(boolean isSelect, TextView textView) {
-        if (isSelect) {
-            textView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.sales_discount_bg_select));
-            textView.setTextColor(ContextCompat.getColor(getContext(), R.color.sales_discount_text_select));
-        } else {
-            textView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.sales_discount_bg_not_select));
-            textView.setTextColor(ContextCompat.getColor(getContext(), R.color.sales_discount_text_not_select));
-        }
+        textView.setBackgroundColor(isSelect ? ContextCompat.getColor(getContext(), R.color.sales_discount_bg_select) : ContextCompat.getColor(getContext(), R.color.sales_discount_bg_not_select));
+        textView.setTextColor(isSelect ? ContextCompat.getColor(getContext(), R.color.sales_discount_text_select) : ContextCompat.getColor(getContext(), R.color.sales_discount_text_not_select));
     }
 }

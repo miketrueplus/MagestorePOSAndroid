@@ -145,7 +145,8 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             // show detail panel
             doShowDetailPanel(true);
 //        binCartItem();
-            wraper.put("quote_id", DataUtil.getDataStringToPreferences(context, DataUtil.QUOTE));
+//            wraper.put("quote_id", DataUtil.getDataStringToPreferences(context, DataUtil.QUOTE));
+            wraper.put("quote_id", checkout.getQuoteId());
             doAction(ACTION_TYPE_SAVE_CART, null, wraper, checkout);
         } else {
             ((CheckoutDetailPanel) mDetailView).showNotifiAddItems();
@@ -254,12 +255,14 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             return true;
         } else if (actionType == ACTION_TYPE_SAVE_SHIPPING) {
             String shippingCode = (String) wraper.get("shipping_code");
-            String quoteId = DataUtil.getDataStringToPreferences(context, DataUtil.QUOTE);
+//            String quoteId = DataUtil.getDataStringToPreferences(context, DataUtil.QUOTE);
+            String quoteId = getSelectedItem().getQuoteId();
             wraper.put("save_shipping", ((CheckoutService) getListService()).saveShipping(quoteId, shippingCode));
             return true;
         } else if (actionType == ACTION_TYPE_SAVE_PAYMENT) {
             String paymentCode = ((CheckoutPayment) models[0]).getCode();
-            String quoteId = DataUtil.getDataStringToPreferences(context, DataUtil.QUOTE);
+//            String quoteId = DataUtil.getDataStringToPreferences(context, DataUtil.QUOTE);
+            String quoteId = getSelectedItem().getQuoteId();
             wraper.put("save_payment", ((CheckoutService) getListService()).savePayment(quoteId, paymentCode));
             return true;
         } else if (actionType == ACTION_TYPE_PLACE_ORDER) {
@@ -320,8 +323,9 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
             // auto select shipping method
             autoSelectShipping(listShipping);
-            // lưu quote data vào system
-            DataUtil.saveDataStringToPreferences(context, DataUtil.QUOTE, quoteId);
+            // lưu quote data vào checkout
+            getSelectedItem().setQuoteId(quoteId);
+//            DataUtil.saveDataStringToPreferences(context, DataUtil.QUOTE, quoteId);
             //  cập nhật giá
             ((CheckoutService) getListService()).updateTotal(checkout);
             ((CheckoutDetailPanel) mDetailView).bindTotalPrice(checkout.getGrandTotal());

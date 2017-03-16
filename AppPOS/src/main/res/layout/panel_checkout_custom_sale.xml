@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/layout_margin_5">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/layout_margin_5"
+        android:background="@drawable/cart_discount_border_edittext"
+        android:orientation="vertical"
+        android:padding="@dimen/layout_margin_5">
+
+        <com.magestore.app.view.FormatTextEdit
+            android:id="@+id/custom_sale_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:hint="@string/checkout_custom_sale_name" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/layout_margin_5"
+        android:background="@drawable/cart_discount_border_edittext"
+        android:orientation="vertical"
+        android:padding="@dimen/layout_margin_5">
+
+        <com.magestore.app.view.FormatTextEdit
+            android:id="@+id/custom_sale_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:hint="@string/checkout_custom_sale_name" />
+    </LinearLayout>
+
+    <Switch
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/layout_margin_5"
+        android:text="@string/checkout_custom_sale_ship"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/text_size" />
+
+    <Button
+        android:id="@+id/custom_sale_add_to_cart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/layout_margin_5"
+        android:background="@drawable/checkout_success_border_button_new_order"
+        android:text="@string/add_to_cart"
+        android:textAllCaps="true"
+        android:textColor="@color/checkout_success_btn_text_new_color"
+        android:textSize="@dimen/checkout_success_button_text_size" />
+</LinearLayout>

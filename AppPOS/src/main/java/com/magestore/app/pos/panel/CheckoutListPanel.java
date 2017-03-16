@@ -40,7 +40,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
     Toolbar toolbar_order;
     Customer mCustomer;
     CustomerAddNewPanel mCustomerAddNewPanel;
-    Button btn_create_customer, btn_use_guest, btn_sales_order_checkout, bt_sales_discount;
+    Button btn_create_customer, btn_use_guest, btn_sales_order_checkout, bt_sales_discount, bt_custom_sales;
     FrameLayout fr_sales_new_customer;
     LinearLayout ll_add_new_customer, ll_new_shipping_address, ll_new_billing_address, ll_shipping_address, ll_sales_shipping, ll_add_new_address;
     LinearLayout ll_billing_address, ll_short_shipping_address, ll_short_billing_address, ll_sales_add_customer, ll_action_checkout;
@@ -97,6 +97,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
         rl_add_checkout = (RelativeLayout) findViewById(R.id.rl_add_checkout);
         rl_remove_checkout = (RelativeLayout) findViewById(R.id.rl_remove_checkout);
         bt_sales_discount = (Button) findViewById(R.id.bt_sales_discount);
+        bt_custom_sales = (Button) findViewById(R.id.bt_custom_sales);
 
         initValue();
     }
@@ -149,6 +150,18 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
                 MagestoreDialog dialog = DialogUtil.dialog(getContext(), "", mCheckoutDiscountPanel);
                 dialog.setDialogTitle(getContext().getString(R.string.checkout_discount_all));
                 dialog.setDialogSave(getContext().getString(R.string.apply));
+                dialog.show();
+            }
+        });
+
+        bt_custom_sales.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CheckoutCustomSalePanel mCheckoutCustomSalePanel = new CheckoutCustomSalePanel(getContext());
+                mCheckoutCustomSalePanel.initValue();
+                MagestoreDialog dialog = DialogUtil.dialog(getContext(), "", mCheckoutCustomSalePanel);
+                dialog.setDialogTitle(getContext().getString(R.string.custom_sale));
+                dialog.setGoneButtonSave(true);
                 dialog.show();
             }
         });

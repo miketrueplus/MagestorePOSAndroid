@@ -79,4 +79,7 @@ public interface Checkout extends Model {
 
     Order getOrderSuccess();
     void setOrderSuccess(Order orderSuccess);
+
+    String getQuoteId();
+    void setQuoteId(String quoteId);
 }

@@ -132,8 +132,8 @@
 
                     <Button
                         android:id="@+id/id_txt_cart_item_detail_custom_dicount_money"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
+                        android:layout_width="@dimen/cart_option_edittext_size"
+                        android:layout_height="@dimen/cart_option_edittext_size"
                         android:background="@color/card_option_bg_select"
                         android:onClick="@{panel.onDiscountChangeToFixed}"
                         android:textColor="@color/card_option_text_select"
@@ -141,8 +141,8 @@
 
                     <Button
                         android:id="@+id/id_txt_cart_item_detail_custom_dicount_percent"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
+                        android:layout_width="@dimen/cart_option_edittext_size"
+                        android:layout_height="@dimen/cart_option_edittext_size"
                         android:background="@drawable/cart_option_discount_percent_not_select"
                         android:onClick="@{panel.onDiscountChangeToPercent}"
                         android:text="@string/percent"
@@ -184,8 +184,8 @@
 
                     <Button
                         android:id="@+id/id_btn_cart_item_detail_discount_money"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
+                        android:layout_width="@dimen/cart_option_edittext_size"
+                        android:layout_height="@dimen/cart_option_edittext_size"
                         android:background="@color/card_option_bg_select"
                         android:onClick="@{panel.onDiscountChangeToFixed}"
                         android:textColor="@color/card_option_text_select"
@@ -193,8 +193,8 @@
 
                     <Button
                         android:id="@+id/id_btn_cart_item_detail_discount_percent"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
+                        android:layout_width="@dimen/cart_option_edittext_size"
+                        android:layout_height="@dimen/cart_option_edittext_size"
                         android:background="@drawable/cart_option_discount_percent_not_select"
                         android:onClick="@{panel.onDiscountChangeToPercent}"
                         android:text="@string/percent"

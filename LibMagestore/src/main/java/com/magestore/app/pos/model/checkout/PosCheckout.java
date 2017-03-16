@@ -58,6 +58,8 @@ public class PosCheckout extends PosAbstractModel implements Checkout {
     ArrayList<Model> Sintegration;
 
     @Gson2PosExclude
+    String quote_id;
+    @Gson2PosExclude
     String create_ship;
     @Gson2PosExclude
     String create_invoice;
@@ -299,5 +301,15 @@ public class PosCheckout extends PosAbstractModel implements Checkout {
     @Override
     public void setOrderSuccess(Order orderSuccess) {
         order_success = orderSuccess;
+    }
+
+    @Override
+    public String getQuoteId() {
+        return quote_id;
+    }
+
+    @Override
+    public void setQuoteId(String quoteId) {
+        quote_id = quoteId;
     }
 }

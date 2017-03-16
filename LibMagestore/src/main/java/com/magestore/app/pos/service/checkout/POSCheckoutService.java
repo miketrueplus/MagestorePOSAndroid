@@ -54,9 +54,8 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
     public Checkout saveCart(Checkout checkout, String quoteId) throws IOException, InstantiationException, ParseException, IllegalAccessException {
         QuoteCustomer quoteCustomer = createQuoteCustomer();
         Quote quote = createQuote();
-        // TODO: đang fix nếu start order là new 1 quote
-        quote.setQuoteId("");
-//        quote.setQuoteId(quoteId);
+//        quote.setQuoteId("");
+        quote.setQuoteId(quoteId);
         // TODO: bug server với trường hợp truyền lên có customer id
         quote.setCustomerId("");
         // TODO: Giả data với (store_id = 1 và current_id = USD, till_id = 1) sau fix lại theo config

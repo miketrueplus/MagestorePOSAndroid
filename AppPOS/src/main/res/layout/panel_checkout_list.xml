@@ -252,7 +252,15 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:visibility="gone"
+            android:layout_marginBottom="@dimen/layout_margin_10"
             android:text="@string/discount" />
+
+        <Button
+            android:id="@+id/bt_custom_sales"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/bt_sales_discount"
+            android:text="@string/custom_sale" />
     </RelativeLayout>
 </layout>
