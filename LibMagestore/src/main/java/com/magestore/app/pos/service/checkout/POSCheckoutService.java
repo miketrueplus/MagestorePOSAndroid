@@ -1,5 +1,7 @@
 package com.magestore.app.pos.service.checkout;
 
+import android.text.TextUtils;
+
 import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.lib.model.checkout.CheckoutShipping;
@@ -54,8 +56,11 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
     public Checkout saveCart(Checkout checkout, String quoteId) throws IOException, InstantiationException, ParseException, IllegalAccessException {
         QuoteCustomer quoteCustomer = createQuoteCustomer();
         Quote quote = createQuote();
-//        quote.setQuoteId("");
-        quote.setQuoteId(quoteId);
+        if(!TextUtils.isEmpty(quoteId)){
+            quote.setQuoteId(quoteId);
+        }else{
+            quote.setQuoteId("");
+        }
         // TODO: bug server với trường hợp truyền lên có customer id
         quote.setCustomerId("");
         // TODO: Giả data với (store_id = 1 và current_id = USD, till_id = 1) sau fix lại theo config
@@ -150,6 +155,11 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         CheckoutDataAccess checkoutDataAccess = factory.generateCheckoutDataAccess();
         return checkoutDataAccess.placeOrder(placeOrderParams);
+    }
+
+    @Override
+    public void updateCartItemWithServerRespone(Checkout oldCheckout, Checkout newCheckout) {
+
     }
 
     @Override

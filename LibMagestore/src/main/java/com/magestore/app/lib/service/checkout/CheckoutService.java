@@ -35,6 +35,8 @@ public interface CheckoutService extends ListService<Checkout> {
 
     Order placeOrder(String quoteId, Checkout checkout, List<CheckoutPayment> listCheckoutPayment) throws IOException, InstantiationException, ParseException, IllegalAccessException;
 
+    void updateCartItemWithServerRespone(Checkout oldCheckout, Checkout newCheckout);
+
     boolean addOrderToListCheckout(Checkout checkout) throws IOException, InstantiationException, ParseException, IllegalAccessException;
 
     boolean removeOrderToListCheckout(Checkout checkout) throws IOException, InstantiationException, ParseException, IllegalAccessException;
