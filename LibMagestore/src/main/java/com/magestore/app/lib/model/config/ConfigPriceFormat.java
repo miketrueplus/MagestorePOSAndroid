@@ -9,6 +9,10 @@ import com.magestore.app.lib.model.Model;
  */
 
 public interface ConfigPriceFormat extends Model {
+    String getCurrencySymbol();
+
+    void setCurrencySymbol(String currencySymbol);
+
     String getPattern();
     void setPattern(String strPattern);
     int getPrecision();

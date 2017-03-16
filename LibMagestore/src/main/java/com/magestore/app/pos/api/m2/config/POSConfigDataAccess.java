@@ -1,5 +1,6 @@
 package com.magestore.app.pos.api.m2.config;
 
+import com.google.common.collect.Interner;
 import com.google.gson.internal.LinkedTreeMap;
 import com.magestore.app.lib.connection.Connection;
 import com.magestore.app.lib.connection.ConnectionException;
@@ -33,6 +34,7 @@ import com.magestore.app.pos.model.directory.PosRegion;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosConfigParseImplement;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -291,6 +293,17 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         return listCurrency;
     }
 
+//    public Map<String, String> getPriceFormat() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+
+//        mConfig
+//
+//        // nếu chưa load config, cần khởi tạo chế độ default
+//        if (mConfig == null) mConfig = new PosConfigDefault();
+//
+//        // trả lại giá trị
+//        return mConfig.getValue("priceFormat").toString();
+//    }
+
     @Override
     public Currency getDefaultCurrency() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
         List<Currency> listCurrency = getCurrencies();
@@ -381,13 +394,14 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
     }
 
     private ConfigPriceFormat getPriceFormat(LinkedTreeMap priceFormat) {
+        String currencySymbol = (String) mConfig.getValue("currentCurrencySymbol");
         String pattern = priceFormat.get("pattern").toString();
-        int precision = (int) priceFormat.get("precision");
-        int requiredPrecision = (int) priceFormat.get("requiredPrecision");
+        int precision = ((Double) priceFormat.get("precision")).intValue();
+        int requiredPrecision = ((Double) priceFormat.get("requiredPrecision")).intValue();
         String decimalSymbol = priceFormat.get("decimalSymbol").toString();
         String groupSymbol = priceFormat.get("groupSymbol").toString();
-        int groupLength = (int) priceFormat.get("groupLength");
-        int integerRequired = (int) priceFormat.get("integerRequired");
+        int groupLength = ((Double) priceFormat.get("groupLength")).intValue();
+        int integerRequired = ((Double) priceFormat.get("integerRequired")).intValue();
 
         ConfigPriceFormat configPriceFormat = new PosConfigPriceFormat();
         configPriceFormat.setPattern(pattern);
@@ -397,6 +411,7 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         configPriceFormat.setGroupSymbol(groupSymbol);
         configPriceFormat.setGroupLength(groupLength);
         configPriceFormat.setIntegerRequied(integerRequired);
+        configPriceFormat.setCurrencySymbol(currencySymbol);
 
         return configPriceFormat;
     }

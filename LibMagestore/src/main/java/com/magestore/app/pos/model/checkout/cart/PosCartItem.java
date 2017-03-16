@@ -6,8 +6,11 @@ import com.magestore.app.lib.model.catalog.ProductOptionCustomValue;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.pos.model.PosAbstractModel;
+import com.magestore.app.pos.model.catalog.PosProductOption;
+import com.magestore.app.pos.model.catalog.PosProductOptionCustom;
 import com.magestore.app.pos.model.checkout.PosQuoteItems;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosExclude;
+import com.magestore.app.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +23,76 @@ import java.util.Map;
  */
 
 public class PosCartItem extends PosAbstractModel implements CartItem {
-//    public class ChooseProductOption {
+    String discount;
+    String discout_type;
+    float custom_price;
+    String custom_price_type;
+
+    public float getCustomPrice() {
+        return custom_price;
+    }
+
+    public void setCustomPrice(float custom_price) {
+        this.custom_price = custom_price;
+    }
+
+    public String getCustomPriceType() {
+        return custom_price_type;
+    }
+
+    public void setCustomPriceType(String custom_price_type) {
+        this.custom_price_type = custom_price_type;
+    }
+
+    public void setCustomPriceTypePercent() {
+        setCustomPriceType(StringUtil.TYPE_PERCENT);
+    }
+
+    public void setCustomPriceTypeFixed() {
+        setCustomPriceType(StringUtil.TYPE_FIXED);
+    }
+
+    public boolean isCustomPriceTypePercent() {
+        return StringUtil.TYPE_PERCENT.equals(custom_price_type);
+    }
+
+    public boolean isDCustomPriceTypeFixed() {
+        return !isCustomPriceTypePercent();
+    }
+
+    public String getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(String discount) {
+        this.discount = discount;
+    }
+
+    public String getDiscoutType() {
+        return discout_type;
+    }
+
+    public void setDiscoutType(String discout_type) {
+        this.discout_type = discout_type;
+    }
+
+    public void setDiscoutTypePercent() {
+        setDiscoutType(StringUtil.TYPE_PERCENT);
+    }
+
+    public void setDiscoutTypeFixed() {
+        setDiscoutType(StringUtil.TYPE_FIXED);
+    }
+
+    public boolean isDiscountTypePercent() {
+        return StringUtil.TYPE_PERCENT.equals(discout_type);
+    }
+
+    public boolean isDiscountTypeFixed() {
+        return !isDiscountTypePercent();
+    }
+
+    //    public class ChooseProductOption {
 //        public List<ProductOptionCustomValue> productOptionCustomValueList;
 //        public int qty;
 //    }

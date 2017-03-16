@@ -5,6 +5,7 @@ import com.magestore.app.lib.model.checkout.PaymentMethod;
 import com.magestore.app.lib.model.checkout.ShippingMethod;
 import com.magestore.app.lib.model.config.Config;
 import com.magestore.app.lib.model.config.ConfigCountry;
+import com.magestore.app.lib.model.config.ConfigPriceFormat;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.directory.Currency;
 import com.magestore.app.lib.resourcemodel.config.ConfigDataAccess;
@@ -14,8 +15,12 @@ import com.magestore.app.pos.model.checkout.PosCheckoutPayment;
 import com.magestore.app.pos.model.checkout.PosPaymentMethod;
 import com.magestore.app.pos.model.checkout.PosShippingMethod;
 import com.magestore.app.pos.service.AbstractService;
+import com.magestore.app.util.ConfigUtil;
+import com.magestore.app.util.StringUtil;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,7 +51,36 @@ public class POSConfigService extends AbstractService implements ConfigService {
         // Nếu chưa khởi tạo customer gateway factory
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
-        return configDataAccess.retrieveConfig();
+        Config config = configDataAccess.retrieveConfig();
+
+        // đặt config format tiền
+        ConfigUtil.setCurrencyFormatFormat(getPriceFormat());
+
+        // return config
+        return config;
+    }
+
+    @Override
+    public DecimalFormat getPriceFormat() throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        // khởi tạo config data access
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
+
+        // lấy config
+        ConfigPriceFormat priceFormat = configDataAccess.getPriceFormat();
+
+        // khởi tạo currency format
+        String pattern = (priceFormat.getPattern().indexOf(StringUtil.STRING_CURRENCY) == 0) ? "¤¤ ###,###.#" : "###,###.# ¤¤";
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+        symbols.setDecimalSeparator(priceFormat.getDecimalSymbol().charAt(0));
+        symbols.setGroupingSeparator(priceFormat.getGroupSymbol().charAt(0));
+        symbols.setCurrencySymbol(priceFormat.getCurrencySymbol());
+        symbols.setInternationalCurrencySymbol(priceFormat.getCurrencySymbol());
+        DecimalFormat currencyFormat = new DecimalFormat(pattern, symbols);
+        currencyFormat.setGroupingSize(priceFormat.getGroupLength());
+        currencyFormat.setMaximumFractionDigits(priceFormat.getPrecision());
+        currencyFormat.setMinimumFractionDigits(priceFormat.getRequirePrecision());
+        return currencyFormat;
     }
 
     @Override

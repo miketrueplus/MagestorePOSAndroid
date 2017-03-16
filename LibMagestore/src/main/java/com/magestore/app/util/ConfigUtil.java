@@ -6,6 +6,7 @@ import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Currency;
 import java.util.Date;
 
 /**
@@ -20,6 +21,14 @@ public class ConfigUtil {
     private static DecimalFormat mCurrencyFormat;
     private static DecimalFormat mFloatFormat;
     private static DecimalFormat mIntegerFormat;
+
+    /**
+     *
+     * @param format
+     */
+    public static void setCurrencyFormatFormat(DecimalFormat format) {
+        mCurrencyFormat = format;
+    }
 
     /**
      * Trả lại format price
@@ -103,10 +112,12 @@ public class ConfigUtil {
             DecimalFormatSymbols symbols = new DecimalFormatSymbols();
             symbols.setDecimalSeparator('.');
             symbols.setGroupingSeparator(',');
-            symbols.setCurrencySymbol("$");
+            symbols.setCurrencySymbol("USD");
             symbols.setInternationalCurrencySymbol("USD");
-            String pattern = "'$'###,###.00";
-            mCurrencyFormat = new DecimalFormat(pattern);
+            String pattern = "¤¤###,###.00";
+            mCurrencyFormat = new DecimalFormat(pattern, symbols);
+            mCurrencyFormat.setGroupingSize(3);
+//            mCurrencyFormat.setCurrency();
         }
         return mCurrencyFormat.format(number);
     }

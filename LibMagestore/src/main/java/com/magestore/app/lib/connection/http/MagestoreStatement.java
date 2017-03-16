@@ -17,6 +17,7 @@ import com.magestore.app.pos.model.exception.PosMessageException;
 import com.magestore.app.pos.model.exception.PosMessageException500;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosExclude;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosMesssageExceptionImplement;
+import com.magestore.app.util.StringUtil;
 
 import java.io.IOException;
 import org.apache.commons.lang3.text.StrSubstitutor;
@@ -60,7 +61,7 @@ public class MagestoreStatement implements Statement {
     private static final String CONTENT_TYPE = "Content-Type";
     private static final String APPLICATION_JSON = "application/json";
     private static final String ACCEPT = "Accept";
-    private static final String SLASH = "/";
+    private static final String SLASH = StringUtil.STRING_SLASH;
 
     private static final int HTTP_CODE_RESPONSE_SUCCESS = 200;
 

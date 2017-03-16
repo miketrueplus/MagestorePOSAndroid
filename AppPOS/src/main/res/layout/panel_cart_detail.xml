@@ -122,12 +122,13 @@
                     android:orientation="horizontal">
 
                     <EditText
-                        android:id="@+id/id_txt_cart_item_detail_custom_dicount"
+                        android:id="@+id/id_txt_cart_item_detail_custom_price"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1.0"
                         android:background="@drawable/cart_option_border_edittext"
                         android:padding="@dimen/layout_margin_5"
+                        android:inputType="number"
                         android:text="@{ConfigUtil.formatPrice(cartItem.getUnitPrice())}" />
 
                     <Button
@@ -174,12 +175,13 @@
                     android:orientation="horizontal">
 
                     <EditText
-                        android:id="@+id/id_txt_cart_item_detail_discount"
+                        android:id="@+id/id_txt_cart_item_detail_custom_discount"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1.0"
                         android:background="@drawable/cart_option_border_edittext"
                         android:padding="@dimen/layout_margin_5"
+                        android:inputType="number"
                         android:text="@{ConfigUtil.formatPrice(cartItem.getDiscountAmount())}" />
 
                     <Button

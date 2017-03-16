@@ -17,6 +17,20 @@ public class PosConfigPriceFormat extends PosAbstractModel implements ConfigPric
     String groupSymbol;
     int groupLength;
     int integerRequired;
+    String currencySymbol;
+
+    @Override
+    public String getCurrencySymbol() {
+        return currencySymbol;
+    }
+
+    @Override
+    public void setCurrencySymbol(String currencySymbol) {
+        this.currencySymbol = currencySymbol;
+    }
+
+
+
 
     @Override
     public String getPattern() {

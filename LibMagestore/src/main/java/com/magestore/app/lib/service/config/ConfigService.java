@@ -11,6 +11,7 @@ import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.directory.Currency;
 import com.magestore.app.lib.service.Service;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +32,8 @@ public interface ConfigService extends Service {
      * @throws ParseException
      */
     Config retrieveConfig() throws InstantiationException, IllegalAccessException, IOException, ParseException;
+
+    DecimalFormat getPriceFormat() throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
     /**
      * Trả về CustomerGroup
