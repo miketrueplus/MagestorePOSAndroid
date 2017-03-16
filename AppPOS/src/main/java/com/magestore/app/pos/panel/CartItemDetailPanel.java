@@ -64,37 +64,6 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
         initValue();
     }
 
-    @Override
-    public void initValue() {
-//        custom_dicount_money.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                actionChangeValue(custom_dicount_money, custom_dicount_percent, true);
-//            }
-//        });
-//
-//        discount_percent.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                actionChangeValue(discount_money, discount_percent, false);
-//            }
-//        });
-//
-//        discount_money.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                actionChangeValue(discount_money, discount_percent, true);
-//            }
-//        });
-//
-//        custom_dicount_percent.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                actionChangeValue(custom_dicount_money, custom_dicount_percent, false);
-//            }
-//        });
-    }
-
     private void actionChangeValue(Button money, Button percent, boolean isMoney) {
         money.setBackgroundColor(isMoney ? ContextCompat.getColor(getContext(), R.color.card_option_bg_select) : ContextCompat.getColor(getContext(), R.color.card_option_bg_not_select));
         money.setTextColor(isMoney ? ContextCompat.getColor(getContext(), R.color.card_option_text_select) : ContextCompat.getColor(getContext(), R.color.card_option_text_not_select));
@@ -166,7 +135,6 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
 
     /**
      * Nhấn nút chuyển discout sang fixed
-     *
      * @param view
      */
     public void onDiscountChangeToFixed(View view) {
@@ -175,10 +143,25 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
 
     /**
      * Nhấn nút chuyển discout sang percent
-     *
      * @param view
      */
     public void onDiscountChangeToPercent(View view) {
 
+    }
+
+    /**
+     * Nhấn nút giảm giá
+     * @param view
+     */
+    public void onOptionClick(View view) {
+        ((CartItemListController) getController()).doShowProductOptionInput();
+    }
+
+    /**
+     * Nhấn nút giảm giá
+     * @param view
+     */
+    public void onSaveClick(View view) {
+        ((CartItemListController) getController()).updateToCart(bind2Item());
     }
 }

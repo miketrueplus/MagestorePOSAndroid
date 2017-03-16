@@ -143,6 +143,19 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         return false;
     }
 
+    /**
+     * So sánh cặp code value với cart item
+
+     * @return
+     */
+    public String getOptionValue(String code, List<PosCartItem.OptionsValue> optionsValueList, String defaultReturn) {
+        if (optionsValueList == null) return defaultReturn;
+        for (PosCartItem.OptionsValue optionsValue : optionsValueList) {
+            if (code.equals(optionsValue.code)) return optionsValue.value;
+        }
+        return defaultReturn;
+    }
+
     public void createModelViewList() {
         mModelViewList = new ArrayList<OptionModelView>();
 
@@ -156,6 +169,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
             optionModelView.is_required = true;
             optionModelView.option_type = ProductOptionCustom.OPTION_TYPE_CUSTOM;
             optionModelView.input_type = optionCustom.getType();
+            optionModelView.quantity = Integer.parseInt(getOptionValue(optionCustom.getID(), getItem().getBundleOptionQuantity(), StringUtil.STRING_ONE));
             optionModelView.setModel(optionCustom);
 
             // tạo model view tương ứng mỗi option value
@@ -192,6 +206,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                 optionModelView.is_required = true;
                 optionModelView.option_type = ProductOptionCustom.OPTION_TYPE_CONFIG;
                 optionModelView.input_type = ProductOptionCustom.TYPE_RADIO;
+                optionModelView.quantity = Integer.parseInt(getOptionValue(configOption.getID(), getItem().getBundleOptionQuantity(), StringUtil.STRING_ONE));
                 optionModelView.setModel(configOption);
 
                 // tạo model view tương ứng mỗi option value
@@ -202,7 +217,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                     optionValueModelView.id = key;
                     optionValueModelView.title = configOption.optionValues.get(key);
                     optionValueModelView.price = StringUtil.STRING_ZERO;
-                    optionValueModelView.choose = isChooseValue(optionModelView.getModel().getID(), optionValueModelView.id, getItem().getSuperAttribute());;
+                    optionValueModelView.choose = isChooseValue(optionModelView.getModel().getID(), optionValueModelView.id, getItem().getSuperAttribute());
                     optionModelView.optionValueModelViewList.add(optionValueModelView);
                 }
                 mModelViewList.add(optionModelView);
@@ -220,6 +235,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                 optionModelView.is_required = bundle.isRequired();
                 optionModelView.option_type = ProductOptionCustom.OPTION_TYPE_BUNDLE;
                 optionModelView.input_type = bundle.getType();
+                optionModelView.quantity = Integer.parseInt(getOptionValue(bundle.getID(), getItem().getBundleOptionQuantity(), StringUtil.STRING_ONE));
                 optionModelView.setModel(bundle);
 
                 if (bundle.getItems() == null) continue;
@@ -237,6 +253,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                 // thêm một list giả cuối để đặt số lượng
                 FakeValueModelView optionValueModelView = new FakeValueModelView();
                 optionValueModelView.optionModelView = optionModelView;
+                optionValueModelView.choose = false;
                 optionModelView.optionValueModelViewList.add(optionValueModelView);
 
                 // thêm vào danh sách option
@@ -388,6 +405,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
             }
 
             // nếu k0 có thì báo lỗi thông báo lỗi
+            if (optionModelView.holder == null) continue;
             if (optionModelView.is_required && !haveChoose) {
                 blnValid = false;
                 optionModelView.holder.mtxtError.setText(getContext().getString(R.string.err_field_required));
@@ -464,7 +482,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
             for (OptionValueModelView optionValueModelView : optionModelView.optionValueModelViewList) {
                 // nếu là loại chọn nhiều
                 if (optionValueModelView.choose) {
-                    price += Float.parseFloat(optionValueModelView.price);
+                    price += Float.parseFloat(optionValueModelView.price) * optionModelView.quantity;
                 }
             }
         }
@@ -571,7 +589,9 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
          */
         private void onAddOptionQuantity(OptionModelView optionModelView) {
             optionModelView.quantity++;
+            updateCartItemPrice();
             expandableListAdapter.notifyDataSetChanged();
+            mBinding.setCartItem(getItem());
         }
 
         /**
@@ -580,7 +600,9 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         private void onSubtractOptionQuantity(OptionModelView optionModelView) {
             if (optionModelView.quantity <= 1) return;
             optionModelView.quantity--;
+            updateCartItemPrice();
             expandableListAdapter.notifyDataSetChanged();
+            mBinding.setCartItem(getItem());
         }
 
 
