@@ -569,17 +569,17 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         /**
          * Khi click tăng trên 1 option
          */
-        private void onAddOptionQuantity(OptionValueModelView optionValueModelView) {
-            optionValueModelView.optionModelView.quantity++;
+        private void onAddOptionQuantity(OptionModelView optionModelView) {
+            optionModelView.quantity++;
             expandableListAdapter.notifyDataSetChanged();
         }
 
         /**
          * Khi click giảm trên 1 option
          */
-        private void onSubtractOptionQuantity(OptionValueModelView optionValueModelView) {
-            if (optionValueModelView.optionModelView.quantity <= 1) return;
-            optionValueModelView.optionModelView.quantity--;
+        private void onSubtractOptionQuantity(OptionModelView optionModelView) {
+            if (optionModelView.quantity <= 1) return;
+            optionModelView.quantity--;
             expandableListAdapter.notifyDataSetChanged();
         }
 
@@ -641,19 +641,22 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                             .findViewById(R.id.id_txt_product_option_quantity);
 
                     // khi ấn trừ số lượng
-                    View addView =
-                    (convertView.findViewById(R.id.id_txt_product_option_quantity_substract)).setOnClickListener(new OnClickListener() {
+                    View subView = (convertView.findViewById(R.id.id_txt_product_option_quantity_substract));
+                    subView.setTag(optionModelView);
+                    subView.setOnClickListener(new OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            onAddOptionQuantity((OptionValueModelView) v.getTag());
+                            onSubtractOptionQuantity((OptionModelView) v.getTag());
                         }
                     });
 
                     // khi ấn tăng số lượng
-                    (convertView.findViewById(R.id.id_txt_product_option_quantity_add)).setOnClickListener(new OnClickListener() {
+                    View addView = (convertView.findViewById(R.id.id_txt_product_option_quantity_add));
+                    addView.setTag(optionModelView);
+                    addView.setOnClickListener(new OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            onSubtractOptionQuantity((OptionValueModelView) v.getTag());
+                            onAddOptionQuantity((OptionModelView) v.getTag());
                         }
                     });
                 } else {
