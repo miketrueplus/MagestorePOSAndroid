@@ -1,6 +1,8 @@
 package com.magestore.app.lib.view;
 
 import com.magestore.app.lib.controller.Controller;
+import com.magestore.app.lib.model.Model;
+import com.magestore.app.lib.view.item.ModelView;
 
 /**
  * Created by Mike on 1/11/2017.
@@ -48,4 +50,6 @@ public interface MagestoreView<TController extends Controller> {
     // hiện thông báo lỗi
     void showWarning(String strMsg);
     void hideWarning();
+
+    ModelView createModelView(Model model);
 }

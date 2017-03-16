@@ -38,6 +38,7 @@ public class ConfigUtil {
      * @return
      */
     public static String formatPrice(String quantity) {
+        if (quantity == null || StringUtil.STRING_EMPTY.equals(quantity.trim())) return formatPrice(Float.parseFloat(StringUtil.STRING_ZERO));
         return formatPrice(Float.parseFloat(quantity));
     }
 

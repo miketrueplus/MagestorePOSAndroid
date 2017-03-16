@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/product_detail_margin_size"
+    android:paddingRight="@dimen/product_detail_margin_size">
+
+    <ImageView
+        android:id="@+id/id_img_product_option_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/id_txt_product_option_display"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.0"
+        android:paddingBottom="@dimen/card_item_margin_size"
+        android:paddingTop="@dimen/card_item_margin_size"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/text_size"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/id_txt_product_option_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:gravity="right"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/text_size"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/id_txt_product_option_quantity_substract"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="@dimen/layout_margin_10"
+            android:background="@drawable/product_detail_border_text"
+            android:paddingLeft="@dimen/layout_margin_20"
+            android:paddingRight="@dimen/layout_margin_20"
+            android:text="@string/minus"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/product_detail_text_size" />
+
+        <EditText
+            android:id="@+id/id_txt_product_option_quantity"
+            android:layout_width="@dimen/cart_option_text_quantity_width"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="@dimen/layout_margin_10"
+            android:background="@drawable/product_detail_border_edditext"
+            android:enabled="false"
+            android:gravity="center"
+            android:padding="@dimen/layout_margin_10"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/product_detail_title_text_size" />
+
+        <TextView
+            android:id="@+id/id_txt_product_option_quantity_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/product_detail_border_text"
+            android:paddingLeft="@dimen/layout_margin_20"
+            android:paddingRight="@dimen/layout_margin_20"
+            android:text="@string/plus"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/product_detail_text_size" />
+    </LinearLayout>
+</LinearLayout>

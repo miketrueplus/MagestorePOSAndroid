@@ -216,7 +216,6 @@ public abstract class AbstractListPanel<TModel extends Model>
             mRecycleView.setLayoutManager(mRecycleViewLayoutManager);
             mRecycleView.setAdapter(new AbstractListPanel<TModel>.ListRecyclerViewAdapter());
             mRecycleView.setNestedScrollingEnabled(!mblnNoScroll);
-            setViewContent(mRecycleView);
             if (haveLazyLoading) {
                 mScrollListener = new EndlessRecyclerOnScrollListener(mRecycleViewLayoutManager) {
                     @Override
@@ -686,15 +685,13 @@ public abstract class AbstractListPanel<TModel extends Model>
         // khởi tạo model view
         mModelViewList = new ArrayList<ModelView>();
         for (TModel model : list) {
-            ModelView modelView = new DefaultModelView();
-            modelView.setModel(model);
-            modelView.getViewState().setStateNormal();
-            mModelViewList.add(modelView);
+            mModelViewList.add(createModelView(model));
         }
 
         // nếu danh sách không trống
         if (mModelViewList != null && mModelViewList.size() > 0) {
             hideWarning();
+
             // đặt lại scroll listener cho lazy loading
             if (mScrollListener != null) mScrollListener.resetCurrentPage();
         } else {
@@ -802,14 +799,7 @@ public abstract class AbstractListPanel<TModel extends Model>
     public class ListRecyclerViewAdapter
             extends RecyclerView.Adapter<AbstractListPanel<TModel>.RecycleViewItemHolder> {
 
-        // đánh dấu vị trí đã chọn
-//        private int selectedPos = 0;
-
-        // Danh sách của view
-//        private List<ModelView> mListModelView;
-
-        public ListRecyclerViewAdapter() {
-        }
+        public ListRecyclerViewAdapter() {}
 
         /**
          * Khởi tạo danh sách
@@ -830,7 +820,6 @@ public abstract class AbstractListPanel<TModel extends Model>
 
         /**
          * Map dataset sang view
-         *
          * @param holder
          * @param position
          */
@@ -856,7 +845,6 @@ public abstract class AbstractListPanel<TModel extends Model>
 
         /**
          * Đếm số bản ghi trong view
-         *
          * @return
          */
         @Override

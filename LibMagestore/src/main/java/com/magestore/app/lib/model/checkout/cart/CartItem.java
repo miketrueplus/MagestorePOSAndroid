@@ -5,6 +5,7 @@ import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.model.catalog.ProductOptionCustom;
 import com.magestore.app.pos.model.checkout.cart.PosCartItem;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -14,11 +15,35 @@ import java.util.Map;
  */
 
 public interface CartItem extends Model {
-    Map<ProductOptionCustom, PosCartItem.ChooseProductOption> getChooseProductOptions();
+//    Map<ProductOptionCustom, PosCartItem.ChooseProductOption> getChooseProductOptions();
+//
+//    void setChooseProductOptions(Map<ProductOptionCustom, PosCartItem.ChooseProductOption> choose_product_options);
+//
+//    PosCartItem.ChooseProductOption createChooseProductOption();
 
-    void setChooseProductOptions(Map<ProductOptionCustom, PosCartItem.ChooseProductOption> choose_product_options);
+    List<PosCartItem.OptionsValue> getOptions();
 
-    PosCartItem.ChooseProductOption createChooseProductOption();
+    List<PosCartItem.OptionsValue> getSuperAttribute();
+
+    List<PosCartItem.OptionsValue> getBundleOption();
+
+    List<PosCartItem.OptionsValue> getBundleOptionQuantity();
+
+    void clearOption();
+
+    void clearSuperAtribute();
+
+    void clearBundleOption();
+
+    void clearBundleOptionQuantity();
+
+    void insertOption(String code, String value);
+
+    void insertSuperAttribute(String code, String value);
+
+    void insertBundleOption(String code, String value);
+
+    void insertBundleOptionQuantity(String code, String value);
 
     void setQuantity(int param_quantity);
     void setProduct(Product param_product);

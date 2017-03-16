@@ -6,6 +6,7 @@ import com.magestore.app.lib.model.catalog.ProductOptionCustomValue;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.pos.model.PosAbstractModel;
+import com.magestore.app.pos.model.checkout.PosQuoteItems;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosExclude;
 
 import java.util.ArrayList;
@@ -19,18 +20,107 @@ import java.util.Map;
  */
 
 public class PosCartItem extends PosAbstractModel implements CartItem {
-    public class ChooseProductOption {
-        public List<ProductOptionCustomValue> productOptionCustomValueList;
-        public int qty;
+//    public class ChooseProductOption {
+//        public List<ProductOptionCustomValue> productOptionCustomValueList;
+//        public int qty;
+//    }
+//    Map<ProductOptionCustom, ChooseProductOption> choose_product_options;
+
+    public class OptionsValue {
+        public String code;
+        public String value;
     }
-    Map<ProductOptionCustom, ChooseProductOption> choose_product_options;
+
+    List<OptionsValue> options;
+    List<OptionsValue> super_attribute;
+    List<OptionsValue> bundle_option;
+    List<OptionsValue> bundle_option_qty;
+
+    @Override
+    public List<OptionsValue> getOptions() {
+        return options;
+    }
+
+    @Override
+    public List<OptionsValue> getSuperAttribute() {
+        return super_attribute;
+    }
+
+    @Override
+    public List<OptionsValue> getBundleOption() {
+        return bundle_option;
+    }
+
+    @Override
+    public List<OptionsValue> getBundleOptionQuantity() {
+        return bundle_option_qty;
+    }
+
+    @Override
+    public void clearOption() {
+        options = null;
+        super_attribute = null;
+        bundle_option = null;
+        bundle_option_qty = null;
+    }
+
+    @Override
+    public void clearSuperAtribute() {
+        super_attribute = null;
+    }
+
+    @Override
+    public void clearBundleOption() {
+        bundle_option = null;
+    }
+
+    @Override
+    public void clearBundleOptionQuantity() {
+        bundle_option_qty = null;
+    }
+
+    @Override
+    public void insertOption(String code, String value) {
+        if (options == null) options = new ArrayList<>();
+        OptionsValue quoteCustomeOption = new OptionsValue();
+        quoteCustomeOption.code = code;
+        quoteCustomeOption.value = value;
+        options.add(quoteCustomeOption);
+    }
+
+    @Override
+    public void insertSuperAttribute(String code, String value) {
+        if (super_attribute == null) super_attribute = new ArrayList<>();
+        OptionsValue quoteCustomeOption = new OptionsValue();
+        quoteCustomeOption.code = code;
+        quoteCustomeOption.value = value;
+        super_attribute.add(quoteCustomeOption);
+    }
+
+    @Override
+    public void insertBundleOption(String code, String value) {
+        if (bundle_option == null) bundle_option = new ArrayList<>();
+        OptionsValue quoteCustomeOption = new OptionsValue();
+        quoteCustomeOption.code = code;
+        quoteCustomeOption.value = value;
+        bundle_option.add(quoteCustomeOption);
+    }
+
+    @Override
+    public void insertBundleOptionQuantity(String code, String value) {
+        if (bundle_option_qty == null) bundle_option_qty = new ArrayList<>();
+        OptionsValue quoteCustomeOption = new OptionsValue();
+        quoteCustomeOption.code = code;
+        quoteCustomeOption.value = value;
+        bundle_option_qty.add(quoteCustomeOption);
+    }
 
     Product product;
     int qty;
     @Gson2PosExclude
     String child_id;
-    @Gson2PosExclude
-    String bundle_option;
+//    @Gson2PosExclude
+//    String bundle_option;
     float price;
     float base_price;
     @Gson2PosExclude
@@ -64,8 +154,8 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     float base_original_price;
     @Gson2PosExclude
     float base_unit_price;
-    @Gson2PosExclude
-    int bundle_option_qty;
+//    @Gson2PosExclude
+//    int bundle_option_qty;
     @Gson2PosExclude
     String is_virtual;
     @Gson2PosExclude
@@ -251,28 +341,28 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     public String getReturnToStock() {
         return return_to_stock;
     }
-
-    @Override
-    public Map<ProductOptionCustom, ChooseProductOption> getChooseProductOptions() {
-        return choose_product_options;
-    }
-
-    @Override
-    public void setChooseProductOptions(Map<ProductOptionCustom, ChooseProductOption> choose_product_options) {
-        this.choose_product_options = choose_product_options;
-    }
-
-    /**
-     * Khởi tạo ChooseProductOption
-     * @return
-     */
-    @Override
-    public ChooseProductOption createChooseProductOption() {
-        ChooseProductOption chooseProductOption = new ChooseProductOption();
-        chooseProductOption.productOptionCustomValueList = new ArrayList<ProductOptionCustomValue>();
-        chooseProductOption.qty = 1;
-        return chooseProductOption;
-    }
+//
+//    @Override
+//    public Map<ProductOptionCustom, ChooseProductOption> getChooseProductOptions() {
+//        return choose_product_options;
+//    }
+//
+//    @Override
+//    public void setChooseProductOptions(Map<ProductOptionCustom, ChooseProductOption> choose_product_options) {
+//        this.choose_product_options = choose_product_options;
+//    }
+//
+//    /**
+//     * Khởi tạo ChooseProductOption
+//     * @return
+//     */
+//    @Override
+//    public ChooseProductOption createChooseProductOption() {
+//        ChooseProductOption chooseProductOption = new ChooseProductOption();
+//        chooseProductOption.productOptionCustomValueList = new ArrayList<ProductOptionCustomValue>();
+//        chooseProductOption.qty = 1;
+//        return chooseProductOption;
+//    }
 
     @Override
     public void setItemDescription(String description) {

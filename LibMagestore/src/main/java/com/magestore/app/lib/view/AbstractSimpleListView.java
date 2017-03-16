@@ -16,6 +16,8 @@ import android.widget.ListView;
 import com.magestore.app.lib.R;
 import com.magestore.app.lib.controller.ListController;
 import com.magestore.app.lib.model.Model;
+import com.magestore.app.lib.view.adapter.DefaultModelView;
+import com.magestore.app.lib.view.item.ModelView;
 
 import java.util.List;
 
@@ -291,5 +293,13 @@ public abstract class AbstractSimpleListView<TModel extends Model>
     @Override
     public void showProgressLoadingMore(boolean show) {
 
+    }
+
+    @Override
+    public ModelView createModelView(Model model) {
+        ModelView modelView = new DefaultModelView();
+        modelView.setModel(model);
+        modelView.getViewState().setStateNormal();
+        return modelView;
     }
 }

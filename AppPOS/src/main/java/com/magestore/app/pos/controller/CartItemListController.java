@@ -319,20 +319,20 @@ public class CartItemListController extends AbstractChildListController<Checkout
     /**
      * Clear các chosen
      */
-    public void clearProductOptionChosen() {
-        if (getItem() == null) return;
-        if (getItem().getProduct() == null) return;
-        if (getItem().getProduct().getProductOption() == null) return;
-        if (getItem().getProduct().getProductOption().getCustomOptions() == null) return;
-
-        // clear các chosen
-        for (ProductOptionCustom productCustomOption : getItem().getProduct().getProductOption().getCustomOptions()) {
-            if (productCustomOption.getOptionValueList() == null) continue;
-            for (ProductOptionCustomValue customValue : productCustomOption.getOptionValueList()) {
-                customValue.setChosen(false);
-            }
-        }
-    }
+//    public void clearProductOptionChosen() {
+//        if (getItem() == null) return;
+//        if (getItem().getProduct() == null) return;
+//        if (getItem().getProduct().getProductOption() == null) return;
+//        if (getItem().getProduct().getProductOption().getCustomOptions() == null) return;
+//
+//        // clear các chosen
+//        for (ProductOptionCustom productCustomOption : getItem().getProduct().getProductOption().getCustomOptions()) {
+//            if (productCustomOption.getOptionValueList() == null) continue;
+//            for (ProductOptionCustomValue customValue : productCustomOption.getOptionValueList()) {
+//                customValue.setChosen(false);
+//            }
+//        }
+//    }
 
     /**
      * Đặt lại các chosen trên product tương ứng
@@ -343,15 +343,15 @@ public class CartItemListController extends AbstractChildListController<Checkout
         if (cartItem.getProduct() == null) return;
         if (cartItem.getProduct().getProductOption() == null) return;
         if (cartItem.getProduct().getProductOption().getCustomOptions() == null) return;
-        if (cartItem.getChooseProductOptions() == null) return;
-
-        // clear các chosen
-        for (ProductOptionCustom optionCustom : cartItem.getChooseProductOptions().keySet()) {
-            if (cartItem.getChooseProductOptions().get(optionCustom) == null) continue;
-            for (ProductOptionCustomValue optionCustomValue : cartItem.getChooseProductOptions().get(optionCustom).productOptionCustomValueList) {
-                optionCustomValue.setChosen(true);
-            }
-        }
+//        if (cartItem.getChooseProductOptions() == null) return;
+//
+//        // clear các chosen
+//        for (ProductOptionCustom optionCustom : cartItem.getChooseProductOptions().keySet()) {
+//            if (cartItem.getChooseProductOptions().get(optionCustom) == null) continue;
+//            for (ProductOptionCustomValue optionCustomValue : cartItem.getChooseProductOptions().get(optionCustom).productOptionCustomValueList) {
+//                optionCustomValue.setChosen(true);
+//            }
+//        }
     }
 
     /**
@@ -367,7 +367,6 @@ public class CartItemListController extends AbstractChildListController<Checkout
         }
         mProductOptionDialog.setGoneButtonSave(true);
         // clear list option và hiện thị thông tin product và cart item
-        clearProductOptionChosen();
         setProductOptionChosen(cartItem);
         mProductOptionPanel.clearList();
         mProductOptionPanel.showCartItemInfo(cartItem);
@@ -386,17 +385,23 @@ public class CartItemListController extends AbstractChildListController<Checkout
         else doLoadItem(cartItem);
     }
 
+    /**
+     * Hiển thị progress bar
+     * @param blnShow
+     */
     @Override
     public void doShowProgress(boolean blnShow) {
         super.doShowProgress(blnShow);
         if (mProductOptionPanel != null) mProductOptionPanel.showProgress(blnShow);
     }
 
+    /**
+     * Ẩn các progress bar
+     */
     @Override
     public void hideAllProgressBar() {
         super.hideAllProgressBar();
         if (mProductOptionPanel != null) mProductOptionPanel.hideAllProgressBar();
-
     }
 
     /**

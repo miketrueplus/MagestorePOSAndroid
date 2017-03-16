@@ -47,6 +47,11 @@ public class PosProductOptionBundleItem extends PosAbstractModel implements Prod
     }
 
     @Override
+    public String getID() {
+        return entity_id;
+    }
+
+    @Override
     public String getAttributeSetId() {
         return attribute_set_id;
     }

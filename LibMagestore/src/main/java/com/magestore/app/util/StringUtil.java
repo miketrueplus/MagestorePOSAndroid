@@ -15,7 +15,14 @@ import java.io.InputStreamReader;
 public class StringUtil {
     public static String STRING_EMPTY = "";
     public static String STRING_DOT = ".";
+    public static String STRING_DOT_SPACE = ". ";
+    public static String STRING_COMMA = ",";
+    public static String STRING_COMMA_SPACE = ", ";
     public static String STRING_ZERO = "0";
+    public static String STRING_ONE = "1";
+    public static String STRING_SPACE = " ";
+    public static String STRING_COLON = ":";
+    public static String STRING_COLON_SPACE = ": ";
 
 
     /**

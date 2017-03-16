@@ -393,37 +393,37 @@ public class POSCartService extends AbstractService implements CartService {
      */
     @Override
     public void updatePrice(CartItem cartItem) {
-        float price = cartItem.getProduct().getFinalPrice();
-        float basePrice = cartItem.getProduct().getFinalPrice();
-
-        // sử dụng để tính toán đối với config option
-        List<String> products = new ArrayList<>();
-        String configOptionProductId = null;
-
-        // duyệt từng custome option
-        for (ProductOptionCustom productOptionCustom : cartItem.getChooseProductOptions().keySet()) {
-            if (cartItem.getChooseProductOptions().get(productOptionCustom) == null) continue;
-
-            for (ProductOptionCustomValue productOptionCustomValue : cartItem.getChooseProductOptions().get(productOptionCustom).productOptionCustomValueList) {
-                if (productOptionCustom.isConfigOption()) {
-                    List<PosProductOptionJsonConfigAttributes.Option> configOption = cartItem.getProduct().getProductOption().getJsonConfig().attributes.get(productOptionCustom.getID()).options;
-                    for (PosProductOptionJsonConfigAttributes.Option option : cartItem.getProduct().getProductOption().getJsonConfig().attributes.get(productOptionCustom.getID()).options)
-                        if (option.id.equals(productOptionCustomValue.getID())) {
-                            if (products.size() <= 0) products.addAll(option.products);
-                            else
-                                products.retainAll(option.products);
-                        }
-                    configOptionProductId = (products.size() == 1) ? products.get(0) : null;
-                } else {
-                    price += (productOptionCustom.isPriceTypePercent() ? basePrice : 1) * Float.parseFloat(productOptionCustomValue.getPrice());
-                }
-            }
-        }
-
-        // tính giá theo config option
-        if (configOptionProductId != null) price = cartItem.getProduct().getProductOption().getJsonConfig().optionPrices.get(configOptionProductId).getFinalPrice();
-
-        // cập nhật đơn giá
-        cartItem.setUnitPrice(price);
+//        float price = cartItem.getProduct().getFinalPrice();
+//        float basePrice = cartItem.getProduct().getFinalPrice();
+//
+//        // sử dụng để tính toán đối với config option
+//        List<String> products = new ArrayList<>();
+//        String configOptionProductId = null;
+//
+//        // duyệt từng custome option
+//        for (ProductOptionCustom productOptionCustom : cartItem.getChooseProductOptions().keySet()) {
+//            if (cartItem.getChooseProductOptions().get(productOptionCustom) == null) continue;
+//
+//            for (ProductOptionCustomValue productOptionCustomValue : cartItem.getChooseProductOptions().get(productOptionCustom).productOptionCustomValueList) {
+//                if (productOptionCustom.isConfigOption()) {
+//                    List<PosProductOptionJsonConfigAttributes.Option> configOption = cartItem.getProduct().getProductOption().getJsonConfig().attributes.get(productOptionCustom.getID()).options;
+//                    for (PosProductOptionJsonConfigAttributes.Option option : cartItem.getProduct().getProductOption().getJsonConfig().attributes.get(productOptionCustom.getID()).options)
+//                        if (option.id.equals(productOptionCustomValue.getID())) {
+//                            if (products.size() <= 0) products.addAll(option.products);
+//                            else
+//                                products.retainAll(option.products);
+//                        }
+//                    configOptionProductId = (products.size() == 1) ? products.get(0) : null;
+//                } else {
+//                    price += (productOptionCustom.isPriceTypePercent() ? basePrice : 1) * Float.parseFloat(productOptionCustomValue.getPrice());
+//                }
+//            }
+//        }
+//
+//        // tính giá theo config option
+//        if (configOptionProductId != null) price = cartItem.getProduct().getProductOption().getJsonConfig().optionPrices.get(configOptionProductId).getFinalPrice();
+//
+//        // cập nhật đơn giá
+//        cartItem.setUnitPrice(price);
     }
 }

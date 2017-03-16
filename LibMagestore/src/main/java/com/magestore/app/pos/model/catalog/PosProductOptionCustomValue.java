@@ -22,7 +22,26 @@ public class PosProductOptionCustomValue extends PosAbstractModel implements Pro
     String store_price_type;
     String price;
     String price_type;
+
+    int quantity;
     boolean is_choosen = false;
+    boolean is_quantity = false;
+
+    public boolean isQuantity() {
+        return is_quantity;
+    }
+
+    public void setIsQuantity(boolean is_quantity) {
+        this.is_quantity = is_quantity;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 
     @Override
     public String getID() {

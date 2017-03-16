@@ -214,7 +214,7 @@
                     android:layout_width="@dimen/cart_option_button_width"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/layout_margin_10"
-                    android:background="@drawable/cart_option_border_button"
+                    android:background="@drawable/cart_option_border_button_option"
                     android:text="@string/options"
                     android:textAllCaps="false"
                     android:textColor="@color/card_option_btn_option_text_color"
