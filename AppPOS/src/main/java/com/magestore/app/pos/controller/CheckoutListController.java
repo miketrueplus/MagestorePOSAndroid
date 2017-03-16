@@ -308,6 +308,9 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         } else if (success && actionType == ACTION_TYPE_SAVE_CART) {
             Checkout checkout = (Checkout) wraper.get("save_cart");
             String quoteId = checkout.getQuote().getID();
+            // cập nhật lại id trong cart item
+            ((CheckoutService) getListService()).updateCartItemWithServerRespone(getSelectedItem(), checkout);
+
             // cập nhật list shipping và payment
             List<CheckoutShipping> listShipping = checkout.getCheckoutShipping();
             List<CheckoutPayment> listPayment = checkout.getCheckoutPayment();

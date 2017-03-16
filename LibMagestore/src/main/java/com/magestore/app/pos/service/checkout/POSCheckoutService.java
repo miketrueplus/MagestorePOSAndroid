@@ -56,9 +56,9 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
     public Checkout saveCart(Checkout checkout, String quoteId) throws IOException, InstantiationException, ParseException, IllegalAccessException {
         QuoteCustomer quoteCustomer = createQuoteCustomer();
         Quote quote = createQuote();
-        if(!TextUtils.isEmpty(quoteId)){
+        if (!TextUtils.isEmpty(quoteId)) {
             quote.setQuoteId(quoteId);
-        }else{
+        } else {
             quote.setQuoteId("");
         }
         // TODO: bug server với trường hợp truyền lên có customer id
@@ -124,7 +124,7 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         List<PaymentMethodDataParam> listPaymentMethodParam = placeOrderParams.createPaymentMethodData();
 
         for (CheckoutPayment checkoutPayment : listCheckoutPayment) {
-            if(checkoutPayment.getAdditionalData() == null){
+            if (checkoutPayment.getAdditionalData() == null) {
                 PosCheckoutPayment.AdditionalData paymentAdditionParam = checkoutPayment.createAdditionalData();
                 checkoutPayment.setAdditionalData(paymentAdditionParam);
             }
@@ -159,7 +159,15 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
 
     @Override
     public void updateCartItemWithServerRespone(Checkout oldCheckout, Checkout newCheckout) {
-
+        List<CartItem> listCartNew = newCheckout.getCartItem();
+        List<CartItem> listCartOld = oldCheckout.getCartItem();
+        for (CartItem cartNew : listCartNew) {
+            for (CartItem cartOld : listCartOld) {
+                if (cartOld.getSku().equals(cartNew.getSku())) {
+                    cartOld.setItemId(cartNew.getItemId());
+                }
+            }
+        }
     }
 
     @Override
@@ -309,9 +317,9 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         List<CustomerAddress> listAddress = checkout.getCustomer().getAddress();
         if (listAddress != null && listAddress.size() > 0) {
             if (listAddress.size() > 2) {
-                if(checkout.getCustomer().getUseOneAddress()){
+                if (checkout.getCustomer().getUseOneAddress()) {
                     customerUseOneAddress(listAddress, checkout, quoteCustomer);
-                }else {
+                } else {
                     customerUseDiffentAddress(listAddress, checkout, quoteCustomer);
                 }
             } else {
@@ -320,7 +328,7 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         }
     }
 
-    private void customerUseOneAddress(List<CustomerAddress> listAddress, Checkout checkout, QuoteCustomer quoteCustomer){
+    private void customerUseOneAddress(List<CustomerAddress> listAddress, Checkout checkout, QuoteCustomer quoteCustomer) {
         CustomerAddress address = listAddress.get(0);
         QuoteCustomerAddress customerAddress = createCustomerAddress();
         customerAddress.setCountryId(address.getCountry());
@@ -336,7 +344,7 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         quoteCustomer.setBillingAddress(customerAddress);
     }
 
-    private void customerUseDiffentAddress(List<CustomerAddress> listAddress, Checkout checkout, QuoteCustomer quoteCustomer){
+    private void customerUseDiffentAddress(List<CustomerAddress> listAddress, Checkout checkout, QuoteCustomer quoteCustomer) {
         CustomerAddress shippingAddress = listAddress.get(0);
         QuoteCustomerAddress customerShippingAddress = createCustomerAddress();
         customerShippingAddress.setCountryId(shippingAddress.getCountry());
