@@ -217,6 +217,7 @@
                     android:background="@drawable/cart_option_border_button_option"
                     android:text="@string/options"
                     android:textAllCaps="false"
+                    android:onClick="@{panel.onOptionClick}"
                     android:textColor="@color/card_option_btn_option_text_color"
                     android:textSize="@dimen/text_size" />
 
@@ -226,6 +227,7 @@
                     android:background="@drawable/cart_option_border_button"
                     android:text="@string/save"
                     android:textAllCaps="false"
+                    android:onClick="@{panel.onSaveClick}"
                     android:textColor="@color/card_option_btn_save_text_color"
                     android:textSize="@dimen/text_size" />
             </LinearLayout>
