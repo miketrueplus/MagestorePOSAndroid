@@ -134,7 +134,7 @@
                                     android:textColor="@color/text_color"
                                     android:textSize="@dimen/text_size" />
 
-                                <com.magestore.app.view.FormatTextEdit
+                                <com.magestore.app.view.FormatEditText
                                     android:id="@+id/firstname"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -163,7 +163,7 @@
                                     android:textColor="@color/text_color"
                                     android:textSize="@dimen/text_size" />
 
-                                <com.magestore.app.view.FormatTextEdit
+                                <com.magestore.app.view.FormatEditText
                                     android:id="@+id/email"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -197,7 +197,7 @@
                                     android:textColor="@color/text_color"
                                     android:textSize="@dimen/text_size" />
 
-                                <com.magestore.app.view.FormatTextEdit
+                                <com.magestore.app.view.FormatEditText
                                     android:id="@+id/lastname"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"

@@ -69,6 +69,9 @@ public interface CartItem extends Model {
     float getRowTotal();
     float getTaxAmount();
     float getDiscountAmount();
+
+    void setDiscountAmount(float discount_amount);
+
     int getQtyOrdered();
     int getQtyCanceled();
     int getQtyInvoiced();

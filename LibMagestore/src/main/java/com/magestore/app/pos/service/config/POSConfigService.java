@@ -54,7 +54,10 @@ public class POSConfigService extends AbstractService implements ConfigService {
         Config config = configDataAccess.retrieveConfig();
 
         // đặt config format tiền
-        ConfigUtil.setCurrencyFormatFormat(getPriceFormat());
+        ConfigUtil.setCurrencyFormat(getPriceFormat());
+        ConfigUtil.setCurrencyNoSymbolFormat(getPriceNosymbolFormat());
+        ConfigUtil.setFloatFormat(getFloatFormat());
+        ConfigUtil.setIntegerFormat(getIntegerFormat());
 
         // return config
         return config;
@@ -70,7 +73,7 @@ public class POSConfigService extends AbstractService implements ConfigService {
         ConfigPriceFormat priceFormat = configDataAccess.getPriceFormat();
 
         // khởi tạo currency format
-        String pattern = (priceFormat.getPattern().indexOf(StringUtil.STRING_CURRENCY) == 0) ? "¤¤ ###,###.#" : "###,###.# ¤¤";
+        String pattern = (priceFormat.getPattern().indexOf(StringUtil.STRING_CURRENCY) == 0) ? "¤¤ ###,##0.0" : "###,##0.0 ¤¤";
         DecimalFormatSymbols symbols = new DecimalFormatSymbols();
         symbols.setDecimalSeparator(priceFormat.getDecimalSymbol().charAt(0));
         symbols.setGroupingSeparator(priceFormat.getGroupSymbol().charAt(0));
@@ -81,6 +84,66 @@ public class POSConfigService extends AbstractService implements ConfigService {
         currencyFormat.setMaximumFractionDigits(priceFormat.getPrecision());
         currencyFormat.setMinimumFractionDigits(priceFormat.getRequirePrecision());
         return currencyFormat;
+    }
+
+    @Override
+    public DecimalFormat getPriceNosymbolFormat() throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        // khởi tạo config data access
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
+
+        // lấy config
+        ConfigPriceFormat priceFormat = configDataAccess.getPriceFormat();
+
+        // khởi tạo currency format
+        String pattern = "###,###.#";
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+        symbols.setDecimalSeparator(priceFormat.getDecimalSymbol().charAt(0));
+        symbols.setGroupingSeparator(priceFormat.getGroupSymbol().charAt(0));
+        DecimalFormat currencyFormat = new DecimalFormat(pattern, symbols);
+        currencyFormat.setGroupingSize(priceFormat.getGroupLength());
+        currencyFormat.setMaximumFractionDigits(priceFormat.getPrecision());
+        currencyFormat.setMinimumFractionDigits(priceFormat.getRequirePrecision());
+        return currencyFormat;
+    }
+
+    @Override
+    public DecimalFormat getFloatFormat() throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        // khởi tạo config data access
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
+
+        // lấy config
+        ConfigPriceFormat priceFormat = configDataAccess.getPriceFormat();
+
+        // khởi tạo float format
+        String pattern = "###,###.#";
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+        symbols.setDecimalSeparator(priceFormat.getDecimalSymbol().charAt(0));
+        symbols.setGroupingSeparator(priceFormat.getGroupSymbol().charAt(0));
+        DecimalFormat format = new DecimalFormat(pattern, symbols);
+        format.setGroupingSize(priceFormat.getGroupLength());
+        format.setMaximumFractionDigits(priceFormat.getPrecision());
+        format.setMinimumFractionDigits(priceFormat.getRequirePrecision());
+        return format;
+    }
+
+    @Override
+    public DecimalFormat getIntegerFormat() throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        // khởi tạo config data access
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
+
+        // lấy config
+        ConfigPriceFormat priceFormat = configDataAccess.getPriceFormat();
+
+        // khởi tạo interger format
+        String pattern = "###,###";
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+        symbols.setGroupingSeparator(priceFormat.getGroupSymbol().charAt(0));
+        DecimalFormat format = new DecimalFormat(pattern, symbols);
+        format.setGroupingSize(priceFormat.getGroupLength());
+        return format;
     }
 
     @Override

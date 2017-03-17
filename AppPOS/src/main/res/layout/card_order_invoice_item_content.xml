@@ -82,7 +82,7 @@
                     android:orientation="vertical"
                     android:padding="5dp">
 
-                    <com.magestore.app.view.FormatTextEdit
+                    <com.magestore.app.view.FormatEditText
                         android:id="@+id/qty_to_invoice"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

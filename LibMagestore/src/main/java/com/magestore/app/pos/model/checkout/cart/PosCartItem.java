@@ -191,7 +191,7 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     int qty;
     @Gson2PosExclude
     String child_id;
-//    @Gson2PosExclude
+    //    @Gson2PosExclude
 //    String bundle_option;
     float price;
     float base_price;
@@ -226,7 +226,7 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     float base_original_price;
     @Gson2PosExclude
     float base_unit_price;
-//    @Gson2PosExclude
+    //    @Gson2PosExclude
 //    int bundle_option_qty;
     @Gson2PosExclude
     String is_virtual;
@@ -332,6 +332,11 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     @Override
     public float getDiscountAmount() {
         return discount_amount;
+    }
+
+    @Override
+    public void setDiscountAmount(float discount_amount) {
+        this.discount_amount = discount_amount;
     }
 
     @Override

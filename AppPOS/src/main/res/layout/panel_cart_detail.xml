@@ -121,15 +121,16 @@
                     android:layout_weight="2"
                     android:orientation="horizontal">
 
-                    <EditText
+                    <com.magestore.app.view.EditTextFloat
                         android:id="@+id/id_txt_cart_item_detail_custom_price"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1.0"
                         android:background="@drawable/cart_option_border_edittext"
                         android:padding="@dimen/layout_margin_5"
-                        android:inputType="number"
-                        android:text="@{ConfigUtil.formatPrice(cartItem.getUnitPrice())}" />
+                        android:selectAllOnFocus="true"
+                        android:inputType="number|numberDecimal"
+                        android:text="@{ConfigUtil.formatNumber(cartItem.getUnitPrice())}" />
 
                     <Button
                         android:id="@+id/id_txt_cart_item_detail_custom_dicount_money"
@@ -174,15 +175,16 @@
                     android:layout_weight="2"
                     android:orientation="horizontal">
 
-                    <EditText
+                    <com.magestore.app.view.EditTextFloat
                         android:id="@+id/id_txt_cart_item_detail_custom_discount"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1.0"
                         android:background="@drawable/cart_option_border_edittext"
+                        android:selectAllOnFocus="true"
+                        android:inputType="number|numberDecimal"
                         android:padding="@dimen/layout_margin_5"
-                        android:inputType="number"
-                        android:text="@{ConfigUtil.formatPrice(cartItem.getDiscountAmount())}" />
+                        android:text="@{ConfigUtil.formatNumber(cartItem.getDiscountAmount())}" />
 
                     <Button
                         android:id="@+id/id_btn_cart_item_detail_discount_money"

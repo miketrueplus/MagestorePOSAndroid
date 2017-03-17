@@ -59,7 +59,7 @@
                 android:orientation="vertical"
                 android:padding="@dimen/layout_margin_5">
 
-                <com.magestore.app.view.FormatTextEdit
+                <com.magestore.app.view.FormatEditText
                     android:id="@+id/discount_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -146,7 +146,7 @@
                 android:orientation="vertical"
                 android:padding="@dimen/layout_margin_5">
 
-                <com.magestore.app.view.FormatTextEdit
+                <com.magestore.app.view.FormatEditText
                     android:id="@+id/coupon_code"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -177,7 +177,7 @@
                 android:orientation="vertical"
                 android:padding="@dimen/layout_margin_5">
 
-                <com.magestore.app.view.FormatTextEdit
+                <com.magestore.app.view.FormatEditText
                     android:id="@+id/promotion_amount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

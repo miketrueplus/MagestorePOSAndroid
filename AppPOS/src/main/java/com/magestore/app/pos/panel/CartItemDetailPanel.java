@@ -4,11 +4,19 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
+import android.text.method.DigitsKeyListener;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.directory.Currency;
@@ -19,6 +27,7 @@ import com.magestore.app.pos.controller.CheckoutListController;
 import com.magestore.app.pos.databinding.PanelCartDetailBinding;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.StringUtil;
+import com.magestore.app.view.EditTextFloat;
 
 /**
  * Created by folio on 3/6/2017.
@@ -28,8 +37,8 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
     CheckoutListController mCheckoutListController;
     Button custom_dicount_money, discount_money, custom_dicount_percent, discount_percent;
 
-    EditText mtxtCustomPrice;
-    EditText mtxtCustomDiscount;
+    EditTextFloat mtxtCustomPrice;
+    EditTextFloat mtxtCustomDiscount;
 
     public void setCheckoutListController(CheckoutListController mCheckoutListController) {
         this.mCheckoutListController = mCheckoutListController;
@@ -69,69 +78,8 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
         custom_dicount_percent = (Button) findViewById(R.id.id_txt_cart_item_detail_custom_dicount_percent);
         discount_percent = (Button) findViewById(R.id.id_btn_cart_item_detail_discount_percent);
 
-        mtxtCustomPrice = (EditText) findViewById(R.id.id_txt_cart_item_detail_custom_price);
-        mtxtCustomDiscount = (EditText) findViewById(R.id.id_txt_cart_item_detail_custom_discount);
-
-        mtxtCustomPrice.setOnFocusChangeListener(new OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    getItem().setUnitPrice(Float.parseFloat(mtxtCustomPrice.getText().toString()));
-                    mtxtCustomPrice.setText(ConfigUtil.formatPrice(getItem().getUnitPrice()));
-                }
-                else {
-                    mtxtCustomPrice.setText(StringUtil.STRING_EMPTY + getItem().getUnitPrice());
-                }
-            }
-        });
-
-        mtxtCustomDiscount.setOnFocusChangeListener(new OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    getItem().setUnitPrice(Float.parseFloat(mtxtCustomDiscount.getText().toString()));
-                    mtxtCustomDiscount.setText(ConfigUtil.formatPrice(getItem().getUnitPrice()));
-                }
-                else {
-                    mtxtCustomDiscount.setText(StringUtil.STRING_EMPTY + getItem().getUnitPrice());
-                }
-            }
-        });
-
-//        mtxtCustomPrice.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-////                mtxtCustomPrice.setText(StringUtil.STRING_EMPTY + getItem().getUnitPrice());
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-////                getItem().setUnitPrice(Float.parseFloat(mtxtCustomPrice.getText().toString()));
-////                mtxtCustomPrice.setText(ConfigUtil.formatPrice(getItem().getUnitPrice()));
-//            }
-//        });
-//
-//        mtxtCustomDiscount.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//
-//            }
-//        });
+        mtxtCustomPrice = (EditTextFloat) findViewById(R.id.id_txt_cart_item_detail_custom_price);
+        mtxtCustomDiscount = (EditTextFloat) findViewById(R.id.id_txt_cart_item_detail_custom_discount);
 
         initValue();
     }
@@ -167,12 +115,20 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
         mBinding.setCartItem(item);
     }
 
+    @Override
+    public CartItem bind2Item() {
+        getItem().setUnitPrice(mtxtCustomPrice.getValueFloat());
+        getItem().setDiscountAmount(mtxtCustomDiscount.getValueFloat());
+        return getItem();
+    }
+
     /**
      * Nhấn nút trừ số lượng
      *
      * @param view
      */
     public void onAddQuantity(View view) {
+        bindItem(bind2Item());
         ((CartItemListController) getController()).addQuantity(getItem());
         mBinding.setCartItem(getItem());
     }
@@ -183,6 +139,7 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
      * @param view
      */
     public void onSubstractQuantity(View view) {
+        bindItem(bind2Item());
         ((CartItemListController) getController()).substractQuantity(getItem());
         mBinding.setCartItem(getItem());
     }
@@ -207,6 +164,7 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
 
     /**
      * Nhấn nút chuyển discout sang fixed
+     *
      * @param view
      */
     public void onDiscountChangeToFixed(View view) {
@@ -215,6 +173,7 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
 
     /**
      * Nhấn nút chuyển discout sang percent
+     *
      * @param view
      */
     public void onDiscountChangeToPercent(View view) {
@@ -223,6 +182,7 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
 
     /**
      * Nhấn nút giảm giá
+     *
      * @param view
      */
     public void onOptionClick(View view) {
@@ -231,6 +191,7 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
 
     /**
      * Nhấn nút giảm giá
+     *
      * @param view
      */
     public void onSaveClick(View view) {
