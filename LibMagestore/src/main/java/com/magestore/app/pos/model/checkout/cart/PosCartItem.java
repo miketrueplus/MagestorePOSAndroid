@@ -28,66 +28,82 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     float custom_price;
     String custom_price_type;
 
+    @Override
     public float getCustomPrice() {
         return custom_price;
     }
 
+    @Override
     public void setCustomPrice(float custom_price) {
         this.custom_price = custom_price;
     }
 
+    @Override
     public String getCustomPriceType() {
         return custom_price_type;
     }
 
+    @Override
     public void setCustomPriceType(String custom_price_type) {
         this.custom_price_type = custom_price_type;
     }
 
+    @Override
     public void setCustomPriceTypePercent() {
         setCustomPriceType(StringUtil.TYPE_PERCENT);
     }
 
+    @Override
     public void setCustomPriceTypeFixed() {
         setCustomPriceType(StringUtil.TYPE_FIXED);
     }
 
+    @Override
     public boolean isCustomPriceTypePercent() {
         return StringUtil.TYPE_PERCENT.equals(custom_price_type);
     }
 
-    public boolean isDCustomPriceTypeFixed() {
+    @Override
+    public boolean isCustomPriceTypeFixed() {
         return !isCustomPriceTypePercent();
     }
 
+    @Override
     public String getDiscount() {
         return discount;
     }
 
+    @Override
     public void setDiscount(String discount) {
         this.discount = discount;
     }
 
+    @Override
     public String getDiscoutType() {
         return discout_type;
     }
 
-    public void setDiscoutType(String discout_type) {
+    @Override
+    public void setDiscountType(String discout_type) {
         this.discout_type = discout_type;
     }
 
-    public void setDiscoutTypePercent() {
-        setDiscoutType(StringUtil.TYPE_PERCENT);
+    @Override
+    public void setDiscountTypePercent() {
+        setDiscountType(StringUtil.TYPE_PERCENT);
     }
 
-    public void setDiscoutTypeFixed() {
-        setDiscoutType(StringUtil.TYPE_FIXED);
+    @Override
+    public void setDiscountTypeFixed() {
+        setDiscountType(StringUtil.TYPE_FIXED);
     }
 
+    @Override
     public boolean isDiscountTypePercent() {
         return StringUtil.TYPE_PERCENT.equals(discout_type);
     }
 
+    @Override
     public boolean isDiscountTypeFixed() {
         return !isDiscountTypePercent();
     }

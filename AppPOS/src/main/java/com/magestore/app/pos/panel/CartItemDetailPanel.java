@@ -35,7 +35,7 @@ import com.magestore.app.view.EditTextFloat;
 public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
     PanelCartDetailBinding mBinding;
     CheckoutListController mCheckoutListController;
-    Button custom_dicount_money, discount_money, custom_dicount_percent, discount_percent;
+    Button mbtnCustomPriceFixed, mbtnCustomPricePercent, mbtnDiscountFixed, mbtnDiscountPercent;
 
     EditTextFloat mtxtCustomPrice;
     EditTextFloat mtxtCustomDiscount;
@@ -73,10 +73,10 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
         mBinding = DataBindingUtil.bind(getView());
         mBinding.setPanel(this);
 
-        custom_dicount_money = (Button) findViewById(R.id.id_txt_cart_item_detail_custom_dicount_money);
-        discount_money = (Button) findViewById(R.id.id_btn_cart_item_detail_discount_money);
-        custom_dicount_percent = (Button) findViewById(R.id.id_txt_cart_item_detail_custom_dicount_percent);
-        discount_percent = (Button) findViewById(R.id.id_btn_cart_item_detail_discount_percent);
+        mbtnCustomPriceFixed = (Button) findViewById(R.id.id_btn_cart_item_detail_custom_price_fixed);
+        mbtnCustomPricePercent = (Button) findViewById(R.id.id_btn_cart_item_detail_custom_price_percent);
+        mbtnDiscountFixed = (Button) findViewById(R.id.id_btn_cart_item_detail_discount_fixed);
+        mbtnDiscountPercent = (Button) findViewById(R.id.id_btn_cart_item_detail_discount_percent);
 
         mtxtCustomPrice = (EditTextFloat) findViewById(R.id.id_txt_cart_item_detail_custom_price);
         mtxtCustomDiscount = (EditTextFloat) findViewById(R.id.id_txt_cart_item_detail_custom_discount);
@@ -84,18 +84,18 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
         initValue();
     }
 
-    private void actionChangeValue(Button money, Button percent, boolean isMoney) {
-        money.setBackgroundColor(isMoney ? ContextCompat.getColor(getContext(), R.color.card_option_bg_select) : ContextCompat.getColor(getContext(), R.color.card_option_bg_not_select));
-        money.setTextColor(isMoney ? ContextCompat.getColor(getContext(), R.color.card_option_text_select) : ContextCompat.getColor(getContext(), R.color.card_option_text_not_select));
-        percent.setBackgroundResource(isMoney ? R.drawable.cart_option_discount_percent_not_select : R.drawable.cart_option_discount_percent_select);
-        percent.setTextColor(isMoney ? ContextCompat.getColor(getContext(), R.color.card_option_text_not_select) : ContextCompat.getColor(getContext(), R.color.card_option_text_select));
+    private void actionChangeValue(Button fixed, Button percent, boolean isFixed) {
+        fixed.setBackgroundColor(isFixed ? ContextCompat.getColor(getContext(), R.color.card_option_bg_select) : ContextCompat.getColor(getContext(), R.color.card_option_bg_not_select));
+        fixed.setTextColor(isFixed ? ContextCompat.getColor(getContext(), R.color.card_option_text_select) : ContextCompat.getColor(getContext(), R.color.card_option_text_not_select));
+        percent.setBackgroundResource(isFixed ? R.color.card_option_bg_not_select : R.color.card_option_bg_select);
+        percent.setTextColor(isFixed ? ContextCompat.getColor(getContext(), R.color.card_option_text_not_select) : ContextCompat.getColor(getContext(), R.color.card_option_text_select));
     }
 
     public void setCurrency(Currency currency) {
         if (currency != null) {
             String currency_symbol = currency.getCurrencySymbol();
-            custom_dicount_money.setText(currency_symbol);
-            discount_money.setText(currency_symbol);
+            mbtnCustomPriceFixed.setText(currency_symbol);
+            mbtnDiscountFixed.setText(currency_symbol);
         }
     }
 
@@ -113,12 +113,16 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
     public void bindItem(CartItem item) {
         super.bindItem(item);
         mBinding.setCartItem(item);
+        actionChangeValue(mbtnCustomPriceFixed, mbtnCustomPricePercent, item.isCustomPriceTypeFixed());
+        actionChangeValue(mbtnDiscountFixed, mbtnDiscountPercent, item.isDiscountTypeFixed());
+
     }
 
     @Override
     public CartItem bind2Item() {
-        getItem().setUnitPrice(mtxtCustomPrice.getValueFloat());
+        getItem().setCustomPrice(mtxtCustomPrice.getValueFloat());
         getItem().setDiscountAmount(mtxtCustomDiscount.getValueFloat());
+        getItem().setUnitPrice(getItem().isCustomPriceTypeFixed() ? mtxtCustomPrice.getValueFloat() : getItem().getOriginalPrice() * mtxtCustomPrice.getValueFloat() / 100);
         return getItem();
     }
 
@@ -145,30 +149,13 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
     }
 
     /**
-     * Nhấn nút tăng giá
-     *
-     * @param view
-     */
-    public void onAddPrice(View view) {
-
-    }
-
-    /**
-     * Nhấn nút giảm giá
-     *
-     * @param view
-     */
-    public void onSubstractPrice(View view) {
-
-    }
-
-    /**
      * Nhấn nút chuyển discout sang fixed
      *
      * @param view
      */
     public void onDiscountChangeToFixed(View view) {
-
+        actionChangeValue(mbtnDiscountFixed, mbtnDiscountPercent, true);
+        getItem().setDiscountTypeFixed();
     }
 
     /**
@@ -177,7 +164,29 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
      * @param view
      */
     public void onDiscountChangeToPercent(View view) {
+        actionChangeValue(mbtnDiscountFixed, mbtnDiscountPercent, false);
+        getItem().setDiscountTypePercent();
 
+    }
+
+    /**
+     * Nhấn nút chuyển discout sang fixed
+     *
+     * @param view
+     */
+    public void onCustomPriceChangeToFixed(View view) {
+        actionChangeValue(mbtnCustomPriceFixed, mbtnCustomPricePercent, true);
+        getItem().setCustomPriceTypeFixed();
+    }
+
+    /**
+     * Nhấn nút chuyển discout sang percent
+     *
+     * @param view
+     */
+    public void onCustomPriceChangeToPercent(View view) {
+        actionChangeValue(mbtnCustomPriceFixed, mbtnCustomPricePercent, false);
+        getItem().setCustomPriceTypePercent();
     }
 
     /**
