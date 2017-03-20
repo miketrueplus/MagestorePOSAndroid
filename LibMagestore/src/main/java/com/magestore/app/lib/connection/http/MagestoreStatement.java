@@ -301,7 +301,7 @@ public class MagestoreStatement implements Statement {
         if (mAction == MagestoreStatementAction.ACTION_DELETE)
             mHttpConnection.setRequestMethod(METHOD_DELETE);
         else
-            mHttpConnection.setRequestMethod(METHOD_POST);
+            mHttpConnection.setRequestMethod(METHOD_GET);
 
         // Nếu có object làm tham số. ghi json vào http body
         if (mobjPrepareParam != null) {
