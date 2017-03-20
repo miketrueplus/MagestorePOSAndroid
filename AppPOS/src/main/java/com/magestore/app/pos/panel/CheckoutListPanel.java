@@ -49,7 +49,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
     ImageButton btn_shipping_address, btn_billing_address;
     ImageButton btn_shipping_adrress_edit, btn_billing_adrress_edit;
     ImageButton btn_shipping_address_delete, btn_billing_address_delete;
-    RelativeLayout rl_add_checkout, rl_remove_checkout, rl_sales_total;
+    RelativeLayout rl_add_checkout, rl_remove_checkout, rl_sales_total, cart_background_loading;
     public static int NO_TYPE = -1;
     public static int CHANGE_CUSTOMER = 0;
     public static int CREATE_NEW_CUSTOMER = 1;
@@ -100,7 +100,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
         rl_remove_checkout = (RelativeLayout) findViewById(R.id.rl_remove_checkout);
         bt_sales_discount = (Button) findViewById(R.id.bt_sales_discount);
         bt_custom_sales = (Button) findViewById(R.id.bt_custom_sales);
-
+        cart_background_loading = (RelativeLayout) findViewById(R.id.cart_background_loading);
         initValue();
     }
 
@@ -676,5 +676,9 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
         ll_new_billing_address.setVisibility(VISIBLE);
         ll_new_shipping_address.setVisibility(GONE);
         dialog.getButtonCancel().setText(getContext().getString(R.string.cancel));
+    }
+
+    public void showLoading(boolean isShow){
+        cart_background_loading.setVisibility(isShow ? VISIBLE : GONE);
     }
 }
