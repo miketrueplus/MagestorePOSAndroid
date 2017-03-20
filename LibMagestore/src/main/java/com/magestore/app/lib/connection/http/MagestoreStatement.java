@@ -1,12 +1,9 @@
 package com.magestore.app.lib.connection.http;
 
-import android.util.Log;
-
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.annotations.Expose;
 import com.magestore.app.lib.connection.CacheConnection;
 import com.magestore.app.lib.connection.Connection;
 import com.magestore.app.lib.connection.ConnectionException;
@@ -68,6 +65,7 @@ public class MagestoreStatement implements Statement {
     // mặc định là GET
     private static final String METHOD_GET = "GET";
     private static final String METHOD_POST = "POST";
+    private static final String METHOD_DELETE = "DELETE";
     private String mstrMethod = METHOD_GET;
 
     // Connect JSON quản lý HTTP connection
@@ -81,6 +79,7 @@ public class MagestoreStatement implements Statement {
     //   thì chuỗi kết quả = "http://api.androidhive.info/contacts/name/${name}/age/${age}"
 //    private String mstrPreparedQuery;
     private Object mobjPrepareParam;
+    private MagestoreStatementAction mAction;
 
     // Bảng map chứa các tham số của truy vấn
     private Map mValuesMap = null;
@@ -278,6 +277,10 @@ public class MagestoreStatement implements Statement {
         mobjPrepareParam = parseEntity;
     }
 
+    public void setAction(MagestoreStatementAction action) {
+        mAction = action;
+    }
+
     /**
      *
      * @return
@@ -300,8 +303,12 @@ public class MagestoreStatement implements Statement {
             mHttpConnection.setDoInput(true);
             mHttpConnection.setRequestProperty(CONTENT_TYPE, APPLICATION_JSON);
             mHttpConnection.setRequestProperty(ACCEPT, APPLICATION_JSON);
-            mHttpConnection.setRequestMethod(METHOD_POST);
 
+            // đặt action method cho http connection
+            if (mAction == MagestoreStatementAction.ACTION_DELETE)
+                mHttpConnection.setRequestMethod(METHOD_DELETE);
+            else
+                mHttpConnection.setRequestMethod(METHOD_POST);
             // Viết nội dung của object thành dạng json cho input
             Gson gson = new GsonBuilder().setExclusionStrategies(new MagestoreExclusionStrategy()).create();
             OutputStreamWriter wr = new OutputStreamWriter(mHttpConnection.getOutputStream());
