@@ -310,6 +310,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             String quoteId = checkout.getQuote().getID();
             // cập nhật lại id trong cart item
             ((CheckoutService) getListService()).updateCartItemWithServerRespone(getSelectedItem(), checkout);
+            mCartItemListController.bindList(getSelectedItem().getCartItem());
 
             // cập nhật list shipping và payment
             List<CheckoutShipping> listShipping = checkout.getCheckoutShipping();

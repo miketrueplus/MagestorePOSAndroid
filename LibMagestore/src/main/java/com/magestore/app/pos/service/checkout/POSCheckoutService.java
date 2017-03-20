@@ -165,6 +165,8 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
             for (CartItem cartOld : listCartOld) {
                 if (cartOld.getItemId().equals(cartNew.getOfflineItemId())) {
                     cartOld.setItemId(cartNew.getItemId());
+                    cartOld.setPrice(cartNew.getPrice());
+                    cartOld.setIsSaveCart(true);
                 }
             }
         }
