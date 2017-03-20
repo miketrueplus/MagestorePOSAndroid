@@ -68,7 +68,8 @@ public abstract class AbstractDetailPanel<TModel extends Model>
      * @return
      */
     public TModel bind2Item() {
-        return mItem;
+        bind2Item(getItem());
+        return getItem();
     }
 
     /**

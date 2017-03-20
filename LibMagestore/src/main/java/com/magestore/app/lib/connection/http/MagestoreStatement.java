@@ -10,6 +10,7 @@ import com.magestore.app.lib.connection.ConnectionException;
 import com.magestore.app.lib.connection.ParamBuilder;
 import com.magestore.app.lib.connection.ResultReading;
 import com.magestore.app.lib.connection.Statement;
+import com.magestore.app.lib.connection.StatementAction;
 import com.magestore.app.pos.model.exception.PosMessageException;
 import com.magestore.app.pos.model.exception.PosMessageException500;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosExclude;
@@ -79,7 +80,7 @@ public class MagestoreStatement implements Statement {
     //   thì chuỗi kết quả = "http://api.androidhive.info/contacts/name/${name}/age/${age}"
 //    private String mstrPreparedQuery;
     private Object mobjPrepareParam;
-    private MagestoreStatementAction mAction;
+    private StatementAction mAction;
 
     // Bảng map chứa các tham số của truy vấn
     private Map mValuesMap = null;
@@ -277,7 +278,8 @@ public class MagestoreStatement implements Statement {
         mobjPrepareParam = parseEntity;
     }
 
-    public void setAction(MagestoreStatementAction action) {
+    @Override
+    public void setAction(StatementAction action) {
         mAction = action;
     }
 

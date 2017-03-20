@@ -97,6 +97,8 @@ public interface Statement {
      */
     ResultReading execute(String pstrQuery, Object parseEntity) throws ConnectionException, IOException;
 
+    void setAction(StatementAction action);
+
     /**
      * Thực thi truy vấn với object và param đã truyền trước đó
      */
