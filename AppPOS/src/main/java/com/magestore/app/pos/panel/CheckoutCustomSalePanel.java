@@ -26,18 +26,36 @@ public class CheckoutCustomSalePanel extends AbstractDetailPanel<CartItem> {
     EditTextFloat mtxtPrice;
     EditText mtxtName;
 
+    /**
+     * Khởi tạo
+     * @param context
+     */
     public CheckoutCustomSalePanel(Context context) {
         super(context);
     }
 
+    /**
+     * Khởi tạo
+     * @param context
+     * @param attrs
+     */
     public CheckoutCustomSalePanel(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
+    /**
+     * Khởi tạo
+     * @param context
+     * @param attrs
+     * @param defStyleAttr
+     */
     public CheckoutCustomSalePanel(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
+    /**
+     * Chuẩn bị layout
+     */
     @Override
     protected void initLayout() {
         setLayoutPanel(R.layout.panel_checkout_custom_sale);
@@ -51,6 +69,10 @@ public class CheckoutCustomSalePanel extends AbstractDetailPanel<CartItem> {
         mBinding.setPanel(this);
     }
 
+    /**
+     * Chuyển từ dataset sang giao diện
+     * @param item
+     */
     @Override
     public void bindItem(CartItem item) {
         super.bindItem(item);
@@ -58,9 +80,14 @@ public class CheckoutCustomSalePanel extends AbstractDetailPanel<CartItem> {
         mBinding.setProduct(item.getProduct());
     }
 
+    /**
+     * Chuyển từ giao diện sang data set
+     * @param item
+     */
     @Override
     public void bind2Item(CartItem item) {
         item.setQuantity(1);
+        item.setTypeCustom();
         item.setPrice(mtxtPrice.getValueFloat());
         item.setUnitPrice(mtxtPrice.getValueFloat());
         item.setCustomPrice(mtxtPrice.getValueFloat());
@@ -69,9 +96,13 @@ public class CheckoutCustomSalePanel extends AbstractDetailPanel<CartItem> {
         super.bind2Item(item);
     }
 
+    /**
+     * Kiểm tra nhập vào
+     * @return
+     */
     public boolean validateInput() {
         if (mtxtName.getText().toString().trim().equals(StringUtil.STRING_EMPTY)) {
-            mtxtName.setError("this field required");
+            mtxtName.setError(getResources().getString(R.string.err_field_required));
             return false;
         }
         return true;

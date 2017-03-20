@@ -301,6 +301,8 @@ public class CartItemListController extends AbstractChildListController<Checkout
             mCartItemDetailDialog.dismiss();
         if (mProductOptionDialog != null && mProductOptionDialog.isShowing())
             mProductOptionDialog.dismiss();
+        if (mCustomeSaleDialog != null && mCustomeSaleDialog.isShowing())
+            mCustomeSaleDialog.dismiss();
         updateTotalPrice();
 
     }
