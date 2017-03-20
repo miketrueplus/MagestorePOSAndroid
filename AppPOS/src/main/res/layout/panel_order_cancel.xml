@@ -17,7 +17,7 @@
             android:orientation="vertical"
             android:padding="10dp">
 
-            <com.magestore.app.view.FormatTextEdit
+            <com.magestore.app.view.FormatEditText
                 android:id="@+id/cancel_comment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

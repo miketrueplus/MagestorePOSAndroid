@@ -6,6 +6,7 @@ import com.magestore.app.lib.connection.ConnectionException;
 import com.magestore.app.lib.connection.ParamBuilder;
 import com.magestore.app.lib.connection.Statement;
 import com.magestore.app.lib.model.Model;
+import com.magestore.app.util.StringUtil;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -21,12 +22,12 @@ import java.util.Map;
 
 public class MagestoreParamBuilder implements ParamBuilder {
     // các ký tự
-    private final static String OPEN_SQUARE = "[";
-    private final static String CLOSE_SQUARE = "]";
-    private final static String OPEN_BLANKET = "{";
-    private final static String CLOSE_BLANKET = "}";
-    private final static String CURRENCY_SYMBOL = "$";
-    private final static String EQUAL = "=";
+    private final static String OPEN_SQUARE = StringUtil.STRING_OPEN_SQUARE;
+    private final static String CLOSE_SQUARE = StringUtil.STRING_CLOSE_SQUARE;
+    private final static String OPEN_BLANKET = StringUtil.STRING_OPEN_BLANKET;
+    private final static String CLOSE_BLANKET = StringUtil.STRING_CLOSE_BLANKET;
+    private final static String CURRENCY_SYMBOL = StringUtil.STRING_CURRENCY;
+    private final static String EQUAL = StringUtil.STRING_EQUAL;
 
 
     // phân nhóm cho tìm kiếm
@@ -62,10 +63,10 @@ public class MagestoreParamBuilder implements ParamBuilder {
     // chiều sắp xếp
     private static final String ASC = "asc";
     private static final String DESC = "desc";
-    private static final String GREATER_SYMBOL = ">";
-    private static final String LESS_SYMBOL = "<";
-    private static final String AND_SYMBOL = "&";
-    private static final String UNDERLINE_SYMBOL = "_";
+    private static final String GREATER_SYMBOL = StringUtil.STRING_GREATER;
+    private static final String LESS_SYMBOL = StringUtil.STRING_LESS;
+    private static final String AND_SYMBOL = StringUtil.STRING_AND;
+    private static final String UNDERLINE_SYMBOL = StringUtil.STRING_DASH;
 
     // quản lý các nhóm filter
     Map<String, Table<String, String, String>> mapFilterGroup = new HashMap<String, Table<String, String, String>>();

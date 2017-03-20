@@ -403,6 +403,20 @@ public class SalesActivity extends AbstractActivity
 
     @Override
     public void onBackPressed() {
+        // nếu đang checkout thì back to home
+        if (mCheckoutSuccessPanel.getVisibility() == View.VISIBLE || mCheckoutDetailPanel.getVisibility() == View.VISIBLE) {
+            // nếu đã order success thì tạo new order
+            if (mCheckoutListController.getSelectedItem().getOrderSuccess() != null) {
+                mCheckoutListController.actionNewOrder();
+                return;
+            }
+
+            // nếu đã check out xong thì new order
+            mCheckoutListController.onBackTohome();
+            return;
+        }
+
+        // thoát màn hình
         new AlertDialog.Builder(this)
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setTitle(R.string.dialog_close)

@@ -28,7 +28,7 @@
             android:orientation="vertical"
             android:padding="5dp">
 
-            <com.magestore.app.view.FormatTextEdit
+            <com.magestore.app.view.FormatEditText
                 android:id="@+id/refund_comment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -64,7 +64,7 @@
             android:orientation="vertical"
             android:padding="@dimen/layout_margin_5">
 
-            <com.magestore.app.view.FormatTextEdit
+            <com.magestore.app.view.FormatEditText
                 android:id="@+id/adjust_refund"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -89,7 +89,7 @@
             android:orientation="vertical"
             android:padding="@dimen/layout_margin_5">
 
-            <com.magestore.app.view.FormatTextEdit
+            <com.magestore.app.view.FormatEditText
                 android:id="@+id/adjust_fee"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -116,7 +116,7 @@
             android:orientation="vertical"
             android:padding="@dimen/layout_margin_5">
 
-            <com.magestore.app.view.FormatTextEdit
+            <com.magestore.app.view.FormatEditText
                 android:id="@+id/store_credit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

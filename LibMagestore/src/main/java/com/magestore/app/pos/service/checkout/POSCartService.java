@@ -13,6 +13,7 @@ import com.magestore.app.pos.model.catalog.PosProductOptionConfigOption;
 import com.magestore.app.pos.model.catalog.PosProductOptionJsonConfigAttributes;
 import com.magestore.app.pos.model.checkout.cart.PosCartItem;
 import com.magestore.app.pos.service.AbstractService;
+import com.magestore.app.util.StringUtil;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -105,8 +106,12 @@ public class POSCartService extends AbstractService implements CartService {
         cartItem.setProduct(product);
         cartItem.setQuantity(quantity);
         cartItem.setPrice(price * quantity);
-        cartItem.setOriginalPrice(price * quantity);
+        cartItem.setOriginalPrice(price);
         cartItem.setUnitPrice(price);
+        cartItem.setCustomPrice(price);
+        cartItem.setCustomPriceTypeFixed();
+        cartItem.setDiscount(StringUtil.STRING_ZERO);
+        cartItem.setDiscountTypeFixed();
         cartItem.setId(product.getID());
         cartItem.setItemId(String.valueOf(getItemIdInCurrentTime()));
         return cartItem;

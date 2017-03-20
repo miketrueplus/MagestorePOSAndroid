@@ -6,8 +6,11 @@ import com.magestore.app.lib.model.catalog.ProductOptionCustomValue;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.pos.model.PosAbstractModel;
+import com.magestore.app.pos.model.catalog.PosProductOption;
+import com.magestore.app.pos.model.catalog.PosProductOptionCustom;
 import com.magestore.app.pos.model.checkout.PosQuoteItems;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosExclude;
+import com.magestore.app.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +23,92 @@ import java.util.Map;
  */
 
 public class PosCartItem extends PosAbstractModel implements CartItem {
-//    public class ChooseProductOption {
+    String discount;
+    String discout_type;
+    float custom_price;
+    String custom_price_type;
+
+    @Override
+    public float getCustomPrice() {
+        return custom_price;
+    }
+
+    @Override
+    public void setCustomPrice(float custom_price) {
+        this.custom_price = custom_price;
+    }
+
+    @Override
+    public String getCustomPriceType() {
+        return custom_price_type;
+    }
+
+    @Override
+    public void setCustomPriceType(String custom_price_type) {
+        this.custom_price_type = custom_price_type;
+    }
+
+    @Override
+    public void setCustomPriceTypePercent() {
+        setCustomPriceType(StringUtil.TYPE_PERCENT);
+    }
+
+    @Override
+    public void setCustomPriceTypeFixed() {
+        setCustomPriceType(StringUtil.TYPE_FIXED);
+    }
+
+    @Override
+    public boolean isCustomPriceTypePercent() {
+        return StringUtil.TYPE_PERCENT.equals(custom_price_type);
+    }
+
+    @Override
+    public boolean isCustomPriceTypeFixed() {
+        return !isCustomPriceTypePercent();
+    }
+
+    @Override
+    public String getDiscount() {
+        return discount;
+    }
+
+    @Override
+    public void setDiscount(String discount) {
+        this.discount = discount;
+    }
+
+    @Override
+    public String getDiscoutType() {
+        return discout_type;
+    }
+
+    @Override
+    public void setDiscountType(String discout_type) {
+        this.discout_type = discout_type;
+    }
+
+    @Override
+    public void setDiscountTypePercent() {
+        setDiscountType(StringUtil.TYPE_PERCENT);
+    }
+
+    @Override
+    public void setDiscountTypeFixed() {
+        setDiscountType(StringUtil.TYPE_FIXED);
+    }
+
+    @Override
+    public boolean isDiscountTypePercent() {
+        return StringUtil.TYPE_PERCENT.equals(discout_type);
+    }
+
+    @Override
+    public boolean isDiscountTypeFixed() {
+        return !isDiscountTypePercent();
+    }
+
+    //    public class ChooseProductOption {
 //        public List<ProductOptionCustomValue> productOptionCustomValueList;
 //        public int qty;
 //    }
@@ -119,7 +207,7 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     int qty;
     @Gson2PosExclude
     String child_id;
-//    @Gson2PosExclude
+    //    @Gson2PosExclude
 //    String bundle_option;
     float price;
     float base_price;
@@ -155,7 +243,7 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     float base_original_price;
     @Gson2PosExclude
     float base_unit_price;
-//    @Gson2PosExclude
+    //    @Gson2PosExclude
 //    int bundle_option_qty;
     @Gson2PosExclude
     String is_virtual;
@@ -261,6 +349,11 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     @Override
     public float getDiscountAmount() {
         return discount_amount;
+    }
+
+    @Override
+    public void setDiscountAmount(float discount_amount) {
+        this.discount_amount = discount_amount;
     }
 
     @Override

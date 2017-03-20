@@ -21,6 +21,38 @@ public interface CartItem extends Model {
 //
 //    PosCartItem.ChooseProductOption createChooseProductOption();
 
+    float getCustomPrice();
+
+    void setCustomPrice(float custom_price);
+
+    String getCustomPriceType();
+
+    void setCustomPriceType(String custom_price_type);
+
+    void setCustomPriceTypePercent();
+
+    void setCustomPriceTypeFixed();
+
+    boolean isCustomPriceTypePercent();
+
+    boolean isCustomPriceTypeFixed();
+
+    String getDiscount();
+
+    void setDiscount(String discount);
+
+    String getDiscoutType();
+
+    void setDiscountType(String discout_type);
+
+    void setDiscountTypePercent();
+
+    void setDiscountTypeFixed();
+
+    boolean isDiscountTypePercent();
+
+    boolean isDiscountTypeFixed();
+
     List<PosCartItem.OptionsValue> getOptions();
 
     List<PosCartItem.OptionsValue> getSuperAttribute();
@@ -69,6 +101,9 @@ public interface CartItem extends Model {
     float getRowTotal();
     float getTaxAmount();
     float getDiscountAmount();
+
+    void setDiscountAmount(float discount_amount);
+
     int getQtyOrdered();
     int getQtyCanceled();
     int getQtyInvoiced();

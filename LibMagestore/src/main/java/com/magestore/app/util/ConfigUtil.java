@@ -3,10 +3,13 @@ package com.magestore.app.util;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Currency;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Các tiện ích cấu hình hệ thống, các format
@@ -18,8 +21,38 @@ import java.util.Date;
 public class ConfigUtil {
 //    public static Config mConfig;
     private static DecimalFormat mCurrencyFormat;
+    private static DecimalFormat mCurrencyNoSymbolFormat;
     private static DecimalFormat mFloatFormat;
     private static DecimalFormat mIntegerFormat;
+
+    /**
+     * @param format
+     */
+    public static void setCurrencyFormat(DecimalFormat format) {
+        mCurrencyFormat = format;
+    }
+
+    /**
+     * @param format
+     */
+    public static void setIntegerFormat(DecimalFormat format) {
+        mIntegerFormat = format;
+    }
+
+    /**
+     * @param format
+     */
+    public static void setFloatFormat(DecimalFormat format) {
+        mFloatFormat = format;
+    }
+
+    /**
+     *
+     * @param format
+     */
+    public static void setCurrencyNoSymbolFormat(DecimalFormat format) {
+        mCurrencyNoSymbolFormat = format;
+    }
 
     /**
      * Trả lại format price
@@ -33,8 +66,6 @@ public class ConfigUtil {
 
     /**
      * Trả lại format price
-     *
-     * @param quantity
      * @return
      */
     public static String formatPrice(String quantity) {
@@ -99,34 +130,202 @@ public class ConfigUtil {
      * @return
      */
     private static String formatCurrency(float number) {
+        return getPriceFormat().format(number);
+    }
+
+    private static DecimalFormat getPriceFormat() {
         if (mCurrencyFormat == null) {
-            DecimalFormatSymbols symbols = new DecimalFormatSymbols();
-            symbols.setDecimalSeparator('.');
-            symbols.setGroupingSeparator(',');
-            symbols.setCurrencySymbol("$");
-            symbols.setInternationalCurrencySymbol("USD");
-            String pattern = "'$'###,###.00";
-            mCurrencyFormat = new DecimalFormat(pattern);
+            mCurrencyFormat = new DecimalFormat();
         }
-        return mCurrencyFormat.format(number);
+        return mCurrencyFormat;
+    }
+
+    private static DecimalFormat getPriceNoSymbolFormat() {
+        if (mCurrencyNoSymbolFormat == null) {
+            mCurrencyNoSymbolFormat = new DecimalFormat();
+        }
+        return mCurrencyNoSymbolFormat;
+    }
+
+    private static DecimalFormat getFloatFormat() {
+        if (mFloatFormat == null) {
+            mFloatFormat = new DecimalFormat();
+        }
+        return mFloatFormat;
+    }
+
+    private static DecimalFormat getIntegerFormat() {
+        if (mIntegerFormat == null) {
+            mIntegerFormat = new DecimalFormat();
+        }
+        return mIntegerFormat;
+    }
+
+    public static float parseFloat(String value) {
+        try {
+            return getFloatFormat().parse(truncateFloatDigit(value)).floatValue();
+        } catch (ParseException e) {
+            return 0f;
+        }
+    }
+
+    public static double parseDouble(String value) {
+        try {
+            return getFloatFormat().parse(truncateFloatDigit(value)).doubleValue();
+        } catch (ParseException e) {
+            return 0d;
+        }
+    }
+
+    public static int parseInteger(String value) {
+        try {
+            return getFloatFormat().parse(truncateIntegerDigit(value)).intValue();
+        } catch (ParseException e) {
+            return 0;
+        }
+    }
+
+    /**
+     * Parse value sang integer
+     * @param value
+     * @return
+     */
+    public static int parseIntCurrencyFromEdit(String value) {
+        try {
+            return getPriceFormat().parse(value).intValue();
+        } catch (ParseException e) {
+            return 0;
+        }
+    }
+
+    /**
+     * Parse value sang fliat
+     * @param value
+     * @return
+     */
+    public static float parseFloatCurrencyFromEdit(String value) {
+        try {
+            return getPriceNoSymbolFormat().parse(value).floatValue();
+        } catch (ParseException e) {
+            return 0;
+        }
+    }
+
+    /**
+     * Parse value sang double
+     * @param value
+     * @return
+     */
+    public static double parseDoubleCurrencyFromEdit(String value) {
+        try {
+            return getPriceNoSymbolFormat().parse(value).doubleValue();
+        } catch (ParseException e) {
+            return 0;
+        }
+    }
+
+    /**
+     * Trả lại số number digit
+     * @return
+     */
+    private static String DIGIT_PRICE;
+    private static String DIGIT_REGEX_PRICE;
+    public static String getPriceDigit() {
+        if (DIGIT_PRICE == null) {
+            DecimalFormat decimalFormat = getPriceFormat();
+            DIGIT_PRICE = StringUtil.STRING_DIGIT + decimalFormat.getDecimalFormatSymbols().getDecimalSeparator();// + mCurrencyFormat.getDecimalFormatSymbols().getGroupingSeparator();
+        }
+        return DIGIT_PRICE;
+    }
+
+    public static String truncatePrice(String price) {
+        if (DIGIT_REGEX_PRICE == null) DIGIT_REGEX_PRICE = StringUtil.STRING_OPEN_SQUARE + "^" + ConfigUtil.getPriceDigit() + StringUtil.STRING_CLOSE_SQUARE;
+        return price.replaceAll(DIGIT_REGEX_PRICE, "");
+    }
+
+    /**
+     * Trả lại số number digit
+     * @return
+     */
+    private static String DIGIT_REGEX_FLOAT;
+    private static String DIGIT_FLOAT;
+    public static String getFloatDigit() {
+        if (DIGIT_FLOAT == null) {
+            DecimalFormat decimalFormat = getFloatFormat();
+            DIGIT_FLOAT = StringUtil.STRING_DIGIT + decimalFormat.getDecimalFormatSymbols().getDecimalSeparator();// + mCurrencyFormat.getDecimalFormatSymbols().getGroupingSeparator();
+        }
+        return DIGIT_FLOAT;
+    }
+
+    public static String truncateFloatDigit(String number) {
+        if (DIGIT_REGEX_FLOAT == null) DIGIT_REGEX_FLOAT = StringUtil.STRING_OPEN_SQUARE + "^" + ConfigUtil.getFloatDigit() + StringUtil.STRING_CLOSE_SQUARE;
+        return number.replaceAll(DIGIT_REGEX_FLOAT, "");
+    }
+
+    /**
+     * Trả lại số number digit
+     * @return
+     */
+    private static String DIGIT_REGEX_INTEGER;
+    private static String DIGIT_INTEGER;
+    public static String getIntegerDigit() {
+        if (DIGIT_INTEGER == null) {
+//            DecimalFormat decimalFormat = getIntegerFormat();
+            DIGIT_INTEGER = StringUtil.STRING_DIGIT;// + decimalFormat.getDecimalFormatSymbols().getDecimalSeparator();// + mCurrencyFormat.getDecimalFormatSymbols().getGroupingSeparator();
+        }
+        return DIGIT_INTEGER;
+    }
+
+    public static String truncateIntegerDigit(String number) {
+        if (DIGIT_REGEX_INTEGER == null) DIGIT_REGEX_INTEGER = StringUtil.STRING_OPEN_SQUARE + "^" + ConfigUtil.getIntegerDigit() + StringUtil.STRING_CLOSE_SQUARE;
+        return number.replaceAll(DIGIT_REGEX_INTEGER, "");
     }
 
     /**
      * Format con số
-     *
+     * @param number
+     * @return
+     */
+    public static String formatInteger(String number) {
+        if ((number == null) || (StringUtil.STRING_EMPTY.equals(number))) return getIntegerFormat().format(Integer.parseInt(StringUtil.STRING_ZERO));
+        return getIntegerFormat().format(Integer.parseInt(number));
+    }
+
+    /**
+     * Format con số
+     * @param number
+     * @return
+     */
+    public static String formatFloat(String number) {
+        if ((number == null) || (StringUtil.STRING_EMPTY.equals(number))) return getFloatFormat().format(Double.parseDouble(StringUtil.STRING_ZERO));
+        return getFloatFormat().format(Double.parseDouble(number));
+    }
+
+    /**
+     * Format con số
+     * @param number
+     * @return
+     */
+    public static String formatNumber(String number) {
+        if ((number == null) || (StringUtil.STRING_EMPTY.equals(number))) return getFloatFormat().format(Double.parseDouble(StringUtil.STRING_ZERO));
+        return getIntegerFormat().format(Integer.parseInt(number));
+    }
+    /**
+     * Format con số
      * @param nummber
      * @return
      */
-    private static String formatNumber(float nummber) {
-        if (mFloatFormat == null) {
-            DecimalFormatSymbols symbols = new DecimalFormatSymbols();
-            symbols.setDecimalSeparator('.');
-            symbols.setGroupingSeparator(',');
+    public static String formatNumber(double nummber) {
+        return getFloatFormat().format(nummber);
+    }
 
-            String pattern = "###,###.##";
-            mFloatFormat = new DecimalFormat(pattern, symbols);
-        }
-        return mFloatFormat.format(nummber);
+    /**
+     * Format con số
+     * @param nummber
+     * @return
+     */
+    public static String formatNumber(float nummber) {
+        return getFloatFormat().format(nummber);
     }
 
     /**
@@ -135,16 +334,8 @@ public class ConfigUtil {
      * @param number
      * @return
      */
-    private static String formatNumber(int number) {
-        if (mIntegerFormat == null) {
-            DecimalFormatSymbols symbols = new DecimalFormatSymbols();
-            symbols.setDecimalSeparator('.');
-            symbols.setGroupingSeparator(',');
-
-            String pattern = "###,###.##";
-            mIntegerFormat = new DecimalFormat(pattern, symbols);
-        }
-        return mIntegerFormat.format(number);
+    public static String formatNumber(int number) {
+        return getIntegerFormat().format(number);
     }
 
     /**

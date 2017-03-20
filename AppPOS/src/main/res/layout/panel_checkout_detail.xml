@@ -382,7 +382,7 @@
                     android:orientation="vertical"
                     android:padding="10dp">
 
-                    <com.magestore.app.view.FormatTextEdit
+                    <com.magestore.app.view.FormatEditText
                         android:id="@+id/et_checkout_note"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

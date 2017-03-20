@@ -55,7 +55,7 @@
                     android:orientation="vertical"
                     android:padding="5dp">
 
-                    <com.magestore.app.view.FormatTextEdit
+                    <com.magestore.app.view.FormatEditText
                         android:id="@+id/reference_number"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -77,7 +77,7 @@
                     android:orientation="vertical"
                     android:padding="5dp">
 
-                    <com.magestore.app.view.FormatTextEdit
+                    <com.magestore.app.view.FormatEditText
                         android:id="@+id/checkout_value"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

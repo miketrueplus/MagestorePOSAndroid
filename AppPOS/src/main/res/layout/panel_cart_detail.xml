@@ -121,30 +121,32 @@
                     android:layout_weight="2"
                     android:orientation="horizontal">
 
-                    <EditText
-                        android:id="@+id/id_txt_cart_item_detail_custom_dicount"
+                    <com.magestore.app.view.EditTextFloat
+                        android:id="@+id/id_txt_cart_item_detail_custom_price"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1.0"
                         android:background="@drawable/cart_option_border_edittext"
                         android:padding="@dimen/layout_margin_5"
-                        android:text="@{ConfigUtil.formatPrice(cartItem.getUnitPrice())}" />
+                        android:selectAllOnFocus="true"
+                        android:inputType="number|numberDecimal"
+                        android:text="@{ConfigUtil.formatNumber(cartItem.getCustomPrice())}" />
 
                     <Button
-                        android:id="@+id/id_txt_cart_item_detail_custom_dicount_money"
+                        android:id="@+id/id_btn_cart_item_detail_custom_price_fixed"
                         android:layout_width="@dimen/cart_option_edittext_size"
                         android:layout_height="@dimen/cart_option_edittext_size"
                         android:background="@color/card_option_bg_select"
-                        android:onClick="@{panel.onDiscountChangeToFixed}"
+                        android:onClick="@{panel.onCustomPriceChangeToFixed}"
                         android:textColor="@color/card_option_text_select"
                         android:textSize="@dimen/text_size" />
 
                     <Button
-                        android:id="@+id/id_txt_cart_item_detail_custom_dicount_percent"
+                        android:id="@+id/id_btn_cart_item_detail_custom_price_percent"
                         android:layout_width="@dimen/cart_option_edittext_size"
                         android:layout_height="@dimen/cart_option_edittext_size"
-                        android:background="@drawable/cart_option_discount_percent_not_select"
-                        android:onClick="@{panel.onDiscountChangeToPercent}"
+                        android:background="@color/card_option_bg_not_select"
+                        android:onClick="@{panel.onCustomPriceChangeToPercent}"
                         android:text="@string/percent"
                         android:textColor="@color/card_option_text_not_select"
                         android:textSize="@dimen/text_size" />
@@ -173,17 +175,19 @@
                     android:layout_weight="2"
                     android:orientation="horizontal">
 
-                    <EditText
-                        android:id="@+id/id_txt_cart_item_detail_discount"
+                    <com.magestore.app.view.EditTextFloat
+                        android:id="@+id/id_txt_cart_item_detail_custom_discount"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1.0"
                         android:background="@drawable/cart_option_border_edittext"
+                        android:selectAllOnFocus="true"
+                        android:inputType="number|numberDecimal"
                         android:padding="@dimen/layout_margin_5"
-                        android:text="@{ConfigUtil.formatPrice(cartItem.getDiscountAmount())}" />
+                        android:text="@{ConfigUtil.formatNumber(cartItem.getDiscountAmount())}" />
 
                     <Button
-                        android:id="@+id/id_btn_cart_item_detail_discount_money"
+                        android:id="@+id/id_btn_cart_item_detail_discount_fixed"
                         android:layout_width="@dimen/cart_option_edittext_size"
                         android:layout_height="@dimen/cart_option_edittext_size"
                         android:background="@color/card_option_bg_select"
@@ -195,7 +199,7 @@
                         android:id="@+id/id_btn_cart_item_detail_discount_percent"
                         android:layout_width="@dimen/cart_option_edittext_size"
                         android:layout_height="@dimen/cart_option_edittext_size"
-                        android:background="@drawable/cart_option_discount_percent_not_select"
+                        android:background="@color/card_option_bg_not_select"
                         android:onClick="@{panel.onDiscountChangeToPercent}"
                         android:text="@string/percent"
                         android:textColor="@color/card_option_text_not_select"
