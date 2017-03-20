@@ -119,11 +119,10 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
     }
 
     @Override
-    public CartItem bind2Item() {
-        getItem().setCustomPrice(mtxtCustomPrice.getValueFloat());
-        getItem().setDiscountAmount(mtxtCustomDiscount.getValueFloat());
-        getItem().setUnitPrice(getItem().isCustomPriceTypeFixed() ? mtxtCustomPrice.getValueFloat() : getItem().getOriginalPrice() * mtxtCustomPrice.getValueFloat() / 100);
-        return getItem();
+    public void bind2Item(CartItem item) {
+        item.setCustomPrice(mtxtCustomPrice.getValueFloat());
+        item.setDiscountAmount(mtxtCustomDiscount.getValueFloat());
+        item.setUnitPrice(item.isCustomPriceTypeFixed() ? mtxtCustomPrice.getValueFloat() : item.getOriginalPrice() * mtxtCustomPrice.getValueFloat() / 100);
     }
 
     /**

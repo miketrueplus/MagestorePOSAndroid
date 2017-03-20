@@ -38,6 +38,7 @@ import com.magestore.app.pos.panel.CartOrderListPanel;
 import com.magestore.app.pos.panel.CategoryListPanel;
 import com.magestore.app.pos.panel.CheckoutAddPaymentPanel;
 import com.magestore.app.pos.panel.CheckoutAddressListPanel;
+import com.magestore.app.pos.panel.CheckoutCustomSalePanel;
 import com.magestore.app.pos.panel.CheckoutDetailPanel;
 import com.magestore.app.pos.panel.CheckoutListPanel;
 import com.magestore.app.pos.panel.CheckoutPaymentCreditCardPanel;
@@ -73,6 +74,7 @@ public class SalesActivity extends AbstractActivity
     private CartItemListPanel mCartItemListPanel;
     private CartItemDetailPanel mCartItemDetailPanel;
     private ProductOptionPanel mProductOptionPanel;
+    private CheckoutCustomSalePanel mCheckoutCustomSalePanel;
 
     private CategoryListPanel mCategoryListPanel;
     private PaymentMethodListPanel mPaymentMethodListPanel;
@@ -146,6 +148,7 @@ public class SalesActivity extends AbstractActivity
         mCartItemListPanel = (CartItemListPanel) mCheckoutListPanel.findViewById(R.id.order_item_panel);
         mCartItemDetailPanel = new CartItemDetailPanel(this.getContext());
         mProductOptionPanel = new ProductOptionPanel(getContext());
+        mCheckoutCustomSalePanel = new CheckoutCustomSalePanel(getContext());
 
         mCartOrderListPanel = (CartOrderListPanel) mCheckoutListPanel.findViewById(R.id.checkout_item_panel);
 
@@ -247,6 +250,7 @@ public class SalesActivity extends AbstractActivity
         mCheckoutCartItemListController.setListPanel(mCartItemListPanel);
         mCheckoutCartItemListController.setDetailPanel(mCartItemDetailPanel);
         mCheckoutCartItemListController.setProductOptionPanel(mProductOptionPanel);
+        mCheckoutCartItemListController.setCustomSalePanel(mCheckoutCustomSalePanel);
         mCheckoutCartItemListController.setChildListService(cartService);
         mCheckoutCartItemListController.setProductOptionService(productOptionService);
         mCheckoutCartItemListController.setCheckoutListController(mCheckoutListController);
@@ -303,6 +307,13 @@ public class SalesActivity extends AbstractActivity
                 .setMethodName("bindCategory")
                 .setStateCode(GenericState.DEFAULT_STATE_CODE_ON_SELECT_ITEM)
                 .setControllerState(mCategoryListController);
+
+        // bắt sự kiện nhấn nút custom sales
+        mCheckoutCartItemListController
+                .attachListenerObserve()
+                .setMethodName("addCustomSale")
+                .setStateCode(CheckoutListController.STATE_ADD_CUSTOM_SALE)
+                .setControllerState(mCheckoutListController);
 
         // mỗi khi 1 product trên product list được ấn chọn
         mCheckoutCartItemListController

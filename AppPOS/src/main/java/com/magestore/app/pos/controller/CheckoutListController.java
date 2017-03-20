@@ -12,6 +12,7 @@ import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.model.directory.Currency;
 import com.magestore.app.lib.model.sales.Order;
+import com.magestore.app.lib.observ.GenericState;
 import com.magestore.app.lib.observ.State;
 import com.magestore.app.lib.service.checkout.CheckoutService;
 import com.magestore.app.lib.service.customer.CustomerAddressService;
@@ -870,5 +871,19 @@ public class CheckoutListController extends AbstractListController<Checkout> {
      */
     public void onPlaceOrder() {
         doInsert(getSelectedItem());
+    }
+
+    public static final String STATE_ADD_CUSTOM_SALE = "ON_ADD_CUSTOM_SALE";
+    public void onShowCustomSale() {
+        // báo cho các observ khác về việc bind item
+        GenericState<CheckoutListController> state = new GenericState<CheckoutListController>(this, STATE_ADD_CUSTOM_SALE);
+        if (getSubject() != null) getSubject().setState(state);
+    }
+
+    public static final String STATE_ADD_CUSTOM_DISCOUNT = "ON_ADD_CUSTOM_DISCOUNT";
+    public void onShowCustomDiscount() {
+        // báo cho các observ khác về việc bind item
+        GenericState<CheckoutListController> state = new GenericState<CheckoutListController>(this, STATE_ADD_CUSTOM_DISCOUNT);
+        if (getSubject() != null) getSubject().setState(state);
     }
 }

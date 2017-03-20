@@ -24,22 +24,26 @@ public class EditTextFloat extends EditText {
     public EditTextFloat(Context context) {
         super(context);
         initModel();
+        initEvent();
     }
 
     public EditTextFloat(Context context, AttributeSet attrs) {
         super(context, attrs);
         initModel();
+        initEvent();
     }
 
     public EditTextFloat(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         initModel();
+        initEvent();
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public EditTextFloat(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         initModel();
+        initEvent();
     }
 
 //    @Override

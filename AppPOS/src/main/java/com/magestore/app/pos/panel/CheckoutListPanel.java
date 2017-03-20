@@ -14,8 +14,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.magestore.app.lib.context.MagestoreContext;
+import com.magestore.app.lib.controller.ListController;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.customer.CustomerAddress;
+import com.magestore.app.lib.observ.GenericState;
 import com.magestore.app.lib.service.customer.CustomerService;
 import com.magestore.app.pos.R;
 import com.magestore.app.lib.model.checkout.Checkout;
@@ -157,12 +159,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
         bt_custom_sales.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                CheckoutCustomSalePanel mCheckoutCustomSalePanel = new CheckoutCustomSalePanel(getContext());
-                mCheckoutCustomSalePanel.initValue();
-                MagestoreDialog dialog = DialogUtil.dialog(getContext(), "", mCheckoutCustomSalePanel);
-                dialog.setDialogTitle(getContext().getString(R.string.custom_sale));
-                dialog.setGoneButtonSave(true);
-                dialog.show();
+                ((CheckoutListController) getController()).onShowCustomSale();
             }
         });
     }

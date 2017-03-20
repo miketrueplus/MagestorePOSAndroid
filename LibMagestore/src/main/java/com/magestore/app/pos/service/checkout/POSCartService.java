@@ -11,6 +11,7 @@ import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.resourcemodel.DataAccessFactory;
 import com.magestore.app.lib.resourcemodel.sales.CartDataAccess;
 import com.magestore.app.lib.service.checkout.CartService;
+import com.magestore.app.pos.model.catalog.PosProduct;
 import com.magestore.app.pos.model.catalog.PosProductOptionConfigOption;
 import com.magestore.app.pos.model.catalog.PosProductOptionJsonConfigAttributes;
 import com.magestore.app.pos.model.checkout.cart.PosCartItem;
@@ -91,9 +92,27 @@ public class POSCartService extends AbstractService implements CartService {
     @Override
     public CartItem create(Checkout checkout) throws InstantiationException, IllegalAccessException, ParseException, IOException {
         CartItem cartItem = new PosCartItem();
+        cartItem.setTypeNormal();
 
         // Thêm vào danh sách order cartItem
         insert(checkout, cartItem);
+        return cartItem;
+    }
+
+
+    @Override
+    public CartItem createCustomSale() {
+        CartItem cartItem = new PosCartItem();
+        Product product = new PosProduct();
+        cartItem.setTypeCustom();
+        cartItem.setProduct(product);
+        cartItem.setQuantity(1);
+        cartItem.setPrice(0);
+        cartItem.setOriginalPrice(0);
+        cartItem.setUnitPrice(0);
+        cartItem.setCustomPrice(0);
+        cartItem.setCustomPriceTypeFixed();
+        cartItem.setItemId(String.valueOf(getItemIdInCurrentTime()));
         return cartItem;
     }
 
@@ -105,6 +124,7 @@ public class POSCartService extends AbstractService implements CartService {
     @Override
     public CartItem create(Product product, int quantity, float price) {
         CartItem cartItem = new PosCartItem();
+        cartItem.setTypeNormal();
         cartItem.setProduct(product);
         cartItem.setQuantity(quantity);
         cartItem.setPrice(price * quantity);

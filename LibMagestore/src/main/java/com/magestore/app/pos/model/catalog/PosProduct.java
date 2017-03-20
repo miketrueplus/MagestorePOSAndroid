@@ -136,6 +136,9 @@ public class PosProduct extends PosAbstractModel implements Product {
     public String getName() {return name; }
 
     @Override
+    public void setName(String name) {this.name = name; }
+
+    @Override
     public Bitmap getBitmap() {
         return bitmap;
     }
