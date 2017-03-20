@@ -272,7 +272,8 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             checkout.setCreateShip(((CheckoutDetailPanel) mDetailView).isCreateShip());
             checkout.setCreateInvoice(((CheckoutDetailPanel) mDetailView).isCreateInvoice());
             checkout.setNote(((CheckoutDetailPanel) mDetailView).getNote());
-            String quoteId = DataUtil.getDataStringToPreferences(context, DataUtil.QUOTE);
+//            String quoteId = DataUtil.getDataStringToPreferences(context, DataUtil.QUOTE);
+            String quoteId = getSelectedItem().getQuoteId();
             wraper.put("place_order", ((CheckoutService) getListService()).placeOrder(quoteId, checkout, listCheckoutPayment));
             return true;
         }
