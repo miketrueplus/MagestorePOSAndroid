@@ -94,4 +94,6 @@ public interface CartItem extends Model {
     void setItemDescription(String description);
 
     String getItemDescription();
+
+    String getOfflineItemId();
 }

@@ -123,6 +123,7 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
 //    String bundle_option;
     float price;
     float base_price;
+    String offline_item_id;
     @Gson2PosExclude
     float unit_price;
 
@@ -372,5 +373,10 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     @Override
     public String getItemDescription() {
         return (item_description != null ? item_description : getSku());
+    }
+
+    @Override
+    public String getOfflineItemId() {
+        return offline_item_id;
     }
 }

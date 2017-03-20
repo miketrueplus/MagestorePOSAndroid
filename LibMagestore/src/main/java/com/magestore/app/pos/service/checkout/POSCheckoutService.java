@@ -163,7 +163,7 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         List<CartItem> listCartOld = oldCheckout.getCartItem();
         for (CartItem cartNew : listCartNew) {
             for (CartItem cartOld : listCartOld) {
-                if (cartOld.getSku().equals(cartNew.getSku())) {
+                if (cartOld.getItemId().equals(cartNew.getOfflineItemId())) {
                     cartOld.setItemId(cartNew.getItemId());
                 }
             }
