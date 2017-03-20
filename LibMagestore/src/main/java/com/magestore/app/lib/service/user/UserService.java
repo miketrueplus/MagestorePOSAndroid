@@ -15,4 +15,5 @@ public interface UserService extends Service {
     boolean doLogin(String domain, String proxyUser, String proxyPass, String username, String password) throws InstantiationException, IllegalAccessException, IOException, ParseException;
     void doLogout();
     boolean isLogin();
+    boolean retrieveStore() throws InstantiationException, IllegalAccessException, IOException, ParseException;
 }

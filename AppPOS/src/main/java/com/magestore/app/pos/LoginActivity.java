@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.magestore.app.lib.*;
 import com.magestore.app.lib.task.Task;
 import com.magestore.app.lib.task.TaskListener;
+import com.magestore.app.pos.task.ListStoreTask;
 import com.magestore.app.pos.task.LoginTask;
 import com.magestore.app.pos.ui.AbstractActivity;
 import com.magestore.app.pos.ui.LoginUI;
@@ -35,6 +36,7 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
      * Tác vụ để login
      */
     private LoginTask mAuthTask = null;
+    private ListStoreTask mStoreTask = null;
 
     // UI references.
     private AutoCompleteTextView mDomainView;
@@ -148,6 +150,7 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
 
     /**
      * Dựng base url từ domain do user nhập
+     *
      * @param strDomain
      * @return
      */
@@ -166,12 +169,14 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
                 stringBuilder.append("http://");
             stringBuilder.append(strFinalDomain);
             if (lastIndexOfApp < 0) stringBuilder.append("/").append(BuildConfig.REST_BASE_PAGE);
-            if (lastIndexOfApp == strFinalDomain.length() - 1) stringBuilder.append(BuildConfig.REST_BASE_PAGE);
-        }
-        else {
+            if (lastIndexOfApp == strFinalDomain.length() - 1)
+                stringBuilder.append(BuildConfig.REST_BASE_PAGE);
+        } else {
             stringBuilder.append(strFinalDomain);
-            if (lastIndexOfApp == strFinalDomain.indexOf("://") + 2) stringBuilder.append("/").append(BuildConfig.REST_BASE_PAGE);
-            if (lastIndexOfApp == strFinalDomain.length() - 1) stringBuilder.append(BuildConfig.REST_BASE_PAGE);
+            if (lastIndexOfApp == strFinalDomain.indexOf("://") + 2)
+                stringBuilder.append("/").append(BuildConfig.REST_BASE_PAGE);
+            if (lastIndexOfApp == strFinalDomain.length() - 1)
+                stringBuilder.append(BuildConfig.REST_BASE_PAGE);
         }
         return stringBuilder.toString();
     }
@@ -267,10 +272,14 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
                 // Đăng nhập thành công, lưu domain lại để lần sau không phải nhập
                 saveSharedValue("login_activity_domain", mDomainView.getText().toString().trim());
 
-                // Đăng nhập thành công, mở sẵn form sales
-                Intent intent = new Intent(getContext(), SalesActivity.class);
-                startActivity(intent);
-                finish();
+                mStoreTask = new ListStoreTask(new StoreListener());
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) // Above Api Level 13
+                {
+                    mStoreTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                } else // Below Api Level 13
+                {
+                    mStoreTask.execute();
+                }
             } else {
                 // Đăng nhập không thành công, báo lỗi và yêu cầu nhập lại
                 mPasswordView.setError(getString(R.string.login_error_incorrect_password));
@@ -284,6 +293,34 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
             mAuthTask = null;
             showProgress(false);
             if (exp != null) showErrorMsg(exp);
+        }
+
+        @Override
+        public void onProgressController(Task task, Void... progress) {
+
+        }
+    }
+
+    public class StoreListener implements TaskListener<Void, Void, Boolean> {
+
+        @Override
+        public void onPreController(Task task) {
+
+        }
+
+        @Override
+        public void onPostController(Task task, Boolean success) {
+            if (success) {
+                // Đăng nhập thành công, mở sẵn form sales
+                Intent intent = new Intent(getContext(), SalesActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        }
+
+        @Override
+        public void onCancelController(Task task, Exception exp) {
+
         }
 
         @Override

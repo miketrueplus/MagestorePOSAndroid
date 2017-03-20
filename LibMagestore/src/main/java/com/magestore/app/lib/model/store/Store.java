@@ -10,4 +10,10 @@ import com.magestore.app.lib.model.Model;
  */
 
 public interface Store extends Model {
+    String getCode();
+    String getWebsiteId();
+    String getGroupId();
+    String getName();
+    String getSortOrder();
+    String getIsActive();
 }

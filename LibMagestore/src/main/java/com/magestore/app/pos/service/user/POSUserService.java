@@ -1,6 +1,7 @@
 package com.magestore.app.pos.service.user;
 
 import com.magestore.app.lib.BuildConfig;
+import com.magestore.app.lib.model.store.Store;
 import com.magestore.app.lib.model.user.User;
 import com.magestore.app.lib.resourcemodel.DataAccessFactory;
 import com.magestore.app.lib.resourcemodel.user.UserDataAccess;
@@ -13,6 +14,7 @@ import com.magestore.app.pos.service.AbstractService;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.List;
 
 /**
  * Thực hiện các use case liên quan đến user account như đăng nhập
@@ -110,5 +112,18 @@ public class POSUserService extends AbstractService implements UserService {
      */
     public boolean isLogin() {
         return session != null;
+    }
+
+    @Override
+    public boolean retrieveStore() throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        // Gọi user gateway
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        UserDataAccess userGateway = factory.generateUserDataAccess();
+        List<Store> store = userGateway.retrieveStore();
+
+        if(store != null && store.size() > 0){
+            return true;
+        }
+        return false;
     }
 }
