@@ -81,16 +81,16 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
     @Override
     public List<Checkout> onRetrieveBackground(int page, int pageSize) throws Exception {
-
         if (wraper == null)
             wraper = new HashMap<>();
-        doInputGuestCheckout();
         return super.onRetrieveBackground(page, pageSize);
     }
 
     @Override
     public synchronized void onRetrievePostExecute(List<Checkout> list) {
         super.onRetrievePostExecute(list);
+        bindItem(list.get(0));
+        doInputGuestCheckout();
         bindCustomer(guest_checkout);
     }
 
