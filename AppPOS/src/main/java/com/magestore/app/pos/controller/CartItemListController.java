@@ -215,7 +215,11 @@ public class CartItemListController extends AbstractChildListController<Checkout
             mCartItemDetailDialog = com.magestore.app.pos.util.DialogUtil.dialog(getDetailView().getContext(),
                     getDetailView().getContext().getString(R.string.product_option),
                     getDetailView());
+            mCartItemDetailDialog.setGoneButtonSave(true);
+            mCartItemDetailDialog.setGoneButtonCancel(true);
         }
+
+        // đổi title dialiog theo sản phẩm và hiển thị
         mCartItemDetailDialog.setTitle(getSelectedItem().getProduct().getName());
         mCartItemDetailDialog.setDialogTitle(getSelectedItem().getProduct().getName());
         mCartItemDetailDialog.show();
@@ -386,12 +390,16 @@ public class CartItemListController extends AbstractChildListController<Checkout
             mProductOptionDialog = com.magestore.app.pos.util.DialogUtil.dialog(mProductOptionPanel.getContext(),
                     cartItem.getProduct().getName(),
                     mProductOptionPanel);
+            mProductOptionDialog.setGoneButtonSave(true);
         }
-        mProductOptionDialog.setGoneButtonSave(true);
+
         // clear list option và hiện thị thông tin product và cart item
         setProductOptionChosen(cartItem);
         mProductOptionPanel.clearList();
         mProductOptionPanel.showCartItemInfo(cartItem);
+
+        // đổi title dialog theo tên sản phẩm và hiển thị
+        mProductOptionDialog.setDialogTitle(cartItem.getProduct().getName());
         mProductOptionDialog.show();
 
         // Xử lý khi nhấn save trên dialog
