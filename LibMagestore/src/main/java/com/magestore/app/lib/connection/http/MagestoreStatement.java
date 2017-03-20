@@ -297,6 +297,11 @@ public class MagestoreStatement implements Statement {
 
         // Khởi tạo HTTP Connection với query, giao thức GET
         mHttpConnection = magestoreConnection.openHTTPConnection(mstrExecuteQuery, mstrMethod);
+        // đặt action method cho http connection
+        if (mAction == MagestoreStatementAction.ACTION_DELETE)
+            mHttpConnection.setRequestMethod(METHOD_DELETE);
+        else
+            mHttpConnection.setRequestMethod(METHOD_POST);
 
         // Nếu có object làm tham số. ghi json vào http body
         if (mobjPrepareParam != null) {
