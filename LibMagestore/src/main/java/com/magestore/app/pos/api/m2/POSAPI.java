@@ -60,7 +60,9 @@ public class POSAPI {
     public static final String PARAM_CUSTOMER_ID = "customerID";
 
     // API Cart
-    public static final String REST_CART_DELETE_ITEM = "/rest/default/V1/webpos/checkout/removeItem?";
+    public static final String REST_CART_DELETE_ITEM = "/rest/default/V1/webpos/checkout/removeItem?quote_id=${quoteID}&item_id=${itemID}";
+    public static final String CART_QUOTE_ID = "quoteID";
+    public static final String CART_ITEM_ID = "itemID";
 
     // API checkout
     public static final String REST_CHECKOUT_CREATE = "/rest/default/V1/webpos/checkout/create?";

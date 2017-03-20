@@ -40,15 +40,16 @@ public class POSCartDataAccess extends POSAbstractDataAccess implements CartData
             statement = connection.createStatement();
             statement.setAction(MagestoreStatementAction.ACTION_DELETE);
             statement.prepareQuery(POSAPI.REST_CART_DELETE_ITEM);
-            statement.setParam("quote_id", checkout.getQuoteId());
-            statement.setParam("item_id", product.getItemId());
+            statement.setParam(POSAPI.CART_QUOTE_ID, checkout.getQuoteId());
+            statement.setParam(POSAPI.CART_ITEM_ID, product.getItemId());
 
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
 
-            CartDeleteItemParam cartDeleteItemParam = new PosCartDeleteItemParam();
-            cartDeleteItemParam.setQuoteId(checkout.getQuoteId());
-            cartDeleteItemParam.setItemId(product.getItemId());
+
+//            CartDeleteItemParam cartDeleteItemParam = new PosCartDeleteItemParam();
+//            cartDeleteItemParam.setQuoteId(checkout.getQuoteId());
+//            cartDeleteItemParam.setItemId(product.getItemId());
             // thực thi truy vấn và parse kết quả thành object
             rp = statement.execute();
             rp.setParseImplement(getClassParseImplement());
