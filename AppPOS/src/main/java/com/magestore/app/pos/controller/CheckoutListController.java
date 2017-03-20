@@ -867,6 +867,10 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         ((CheckoutListPanel) getView()).updateTotalPrice(getSelectedItem());
     }
 
+    public void isShowLoadingList(boolean isShow) {
+        ((CheckoutListPanel) mView).showLoading(isShow);
+    }
+
     /**
      * Place thực hiện order
      */
@@ -875,6 +879,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     }
 
     public static final String STATE_ADD_CUSTOM_SALE = "ON_ADD_CUSTOM_SALE";
+
     public void onShowCustomSale() {
         // báo cho các observ khác về việc bind item
         GenericState<CheckoutListController> state = new GenericState<CheckoutListController>(this, STATE_ADD_CUSTOM_SALE);
@@ -882,6 +887,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     }
 
     public static final String STATE_ADD_CUSTOM_DISCOUNT = "ON_ADD_CUSTOM_DISCOUNT";
+
     public void onShowCustomDiscount() {
         // báo cho các observ khác về việc bind item
         GenericState<CheckoutListController> state = new GenericState<CheckoutListController>(this, STATE_ADD_CUSTOM_DISCOUNT);

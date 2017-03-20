@@ -119,7 +119,8 @@ public class CartItemListController extends AbstractChildListController<Checkout
     @Override
     public Boolean doActionBackround(int actionType, String actionCode, Map<String, Object> wraper, Model... models) throws Exception {
         if (actionType == ACTION_CART_DELETE_ITEM) {
-            CartItem cartItem = mCartService.delete(getParent(), (Product) models[0]);
+            Product product = (Product) models[0];
+            CartItem cartItem = mCartService.delete(getParent(), product);
             wraper.put("cart_respone", cartItem);
             return true;
         }
@@ -139,6 +140,7 @@ public class CartItemListController extends AbstractChildListController<Checkout
                     updateTotalPrice();
                 }
             }
+            mCheckoutListController.isShowLoadingList(false);
         }
     }
 
@@ -161,6 +163,9 @@ public class CartItemListController extends AbstractChildListController<Checkout
      * @param product
      */
     public void deleteProduct(Product product) {
+        if (product.getIsSaveCart()) {
+            mCheckoutListController.isShowLoadingList(true);
+        }
         doAction(ACTION_CART_DELETE_ITEM, null, wraper, product);
     }
 
