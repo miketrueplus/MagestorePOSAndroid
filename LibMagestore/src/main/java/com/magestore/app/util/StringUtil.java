@@ -71,6 +71,7 @@ public class StringUtil {
 
     /**
      * Tạo String Builder từ InputStream
+     *
      * @param is
      * @return
      * @throws IOException
@@ -88,11 +89,25 @@ public class StringUtil {
 
     /**
      * Tạo String từ InputStream
+     *
      * @param is
      * @return
      * @throws IOException
      */
     public static String convertStreamToString(InputStream is) throws IOException {
         return convertStreamToStringBuilder(is).toString();
+    }
+
+    /**
+     * Chuyen cac chuoi json thanh dang chuan
+     *
+     * @param json
+     * @return
+     */
+    public static String truncateJson(String json) {
+        return
+                json.replace("\\", "")
+                        .replace("\"{\"", "{\"")
+                        .replace("}\"", "}");
     }
 }
