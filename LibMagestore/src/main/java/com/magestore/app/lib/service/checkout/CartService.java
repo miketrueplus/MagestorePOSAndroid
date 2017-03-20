@@ -28,6 +28,8 @@ public interface CartService extends ChildListService<Checkout, CartItem> {
 
     CartItem create(Product product, int quantity, float price);
 
+    CartItem createCustomSale();
+
     CartItem create(Product product, int quantity);
 
     CartItem create(Checkout checkout, Product product) throws InstantiationException, IllegalAccessException, ParseException, IOException;

@@ -215,6 +215,11 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     @Gson2PosExclude
     float unit_price;
 
+
+    public static final String TYPE_NORMAL = "type_normal";
+    public static final String TYPE_CUSTOM = "type_custom";
+    String type;
+
     // Order history
     String name;
     String sku;
@@ -318,6 +323,36 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     @Override
     public void setItemId(String strItemId) {
         item_id = strItemId;
+    }
+
+    @Override
+    public String getType() {
+        return type;
+    }
+
+    @Override
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    @Override
+    public void setTypeNormal() {
+        setType(TYPE_NORMAL);
+    }
+
+    @Override
+    public void setTypeCustom() {
+        setType(TYPE_CUSTOM);
+    }
+
+    @Override
+    public boolean isTypeNormal() {
+        return TYPE_NORMAL.equals(getType());
+    }
+
+    @Override
+    public boolean isTypeCustom() {
+        return TYPE_CUSTOM.equals(getType());
     }
 
     // Order history

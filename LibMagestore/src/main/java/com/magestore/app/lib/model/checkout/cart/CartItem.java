@@ -94,6 +94,18 @@ public interface CartItem extends Model {
     String getItemId();
     void setItemId(String strItemId);
 
+    String getType();
+
+    void setType(String type);
+
+    void setTypeNormal();
+
+    void setTypeCustom();
+
+    boolean isTypeNormal();
+
+    boolean isTypeCustom();
+
     // Order history
     String getName();
     String getSku();

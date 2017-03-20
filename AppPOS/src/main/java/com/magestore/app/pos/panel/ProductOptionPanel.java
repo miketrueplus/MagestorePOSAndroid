@@ -419,11 +419,60 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         return blnValid;
     }
 
+//    @Override
+//    public CartItem bind2Item() {
+//        // lấy item tham chiếu
+//        CartItem item = super.bind2Item();
+//        if (expandableListAdapter == null) return item;
+//
+//        // để tạo description cho product
+//        StringBuilder descriptionBuilder = new StringBuilder();
+//
+//        // clear các option cũ
+//        item.clearOption();
+//
+//        // duyệt tất cả các option để lấy option mà user đã chọn
+//        boolean firstOption = true;
+//        for (OptionModelView optionModelView : mModelViewList) {
+//            boolean firstOptionValue = true;
+//            for (OptionValueModelView optionValueModelView : optionModelView.optionValueModelViewList) {
+//                if (optionValueModelView instanceof FakeValueModelView) continue;
+//                if (optionValueModelView.choose) {
+//                    // điền description cho cart item
+//                    if (firstOptionValue) {
+//                        descriptionBuilder.append(firstOption ? StringUtil.STRING_EMPTY : StringUtil.STRING_COMMA_SPACE).append(optionModelView.title);
+//                        firstOption = false;
+//                    }
+//                    descriptionBuilder.append(firstOptionValue ? StringUtil.STRING_COLON_SPACE : StringUtil.STRING_COMMA_SPACE).append(optionValueModelView.title);
+//                    firstOptionValue = false;
+//
+//                    if (PosProductOptionCustom.OPTION_TYPE_CUSTOM.equals(optionModelView.option_type))
+//                        getItem().insertOption(optionModelView.getModel().getID(), optionValueModelView.getModel().getID());
+//                    else if (PosProductOptionCustom.OPTION_TYPE_CONFIG.equals(optionModelView.option_type))
+//                        getItem().insertSuperAttribute(optionModelView.getModel().getID(), optionValueModelView.id);
+//                    else if (PosProductOptionCustom.OPTION_TYPE_BUNDLE.equals(optionModelView.option_type)) {
+//                        getItem().insertBundleOption(optionModelView.getModel().getID(), optionValueModelView.id);
+//                    }
+//                }
+//            }
+//
+//            // bổ sung số lượng
+//            if (PosProductOptionCustom.OPTION_TYPE_BUNDLE.equals(optionModelView.option_type)) {
+//                getItem().insertBundleOptionQuantity(optionModelView.getModel().getID(), StringUtil.STRING_EMPTY + optionModelView.quantity);
+//            }
+//        }
+//
+//        // trả lại cart item
+//        item.setItemDescription(descriptionBuilder.toString());
+//        ((CartItemListController) getController()).updateCartItemPrice(item);
+//        return item;
+//    }
+
     @Override
-    public CartItem bind2Item() {
-        // lấy item tham chiếu
-        CartItem item = super.bind2Item();
-        if (expandableListAdapter == null) return item;
+    public void bind2Item(CartItem item) {
+// lấy item tham chiếu
+//        CartItem item = super.bind2Item();
+        if (expandableListAdapter == null) return;
 
         // để tạo description cho product
         StringBuilder descriptionBuilder = new StringBuilder();
@@ -447,25 +496,24 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                     firstOptionValue = false;
 
                     if (PosProductOptionCustom.OPTION_TYPE_CUSTOM.equals(optionModelView.option_type))
-                        getItem().insertOption(optionModelView.getModel().getID(), optionValueModelView.getModel().getID());
+                        item.insertOption(optionModelView.getModel().getID(), optionValueModelView.getModel().getID());
                     else if (PosProductOptionCustom.OPTION_TYPE_CONFIG.equals(optionModelView.option_type))
-                        getItem().insertSuperAttribute(optionModelView.getModel().getID(), optionValueModelView.id);
+                        item.insertSuperAttribute(optionModelView.getModel().getID(), optionValueModelView.id);
                     else if (PosProductOptionCustom.OPTION_TYPE_BUNDLE.equals(optionModelView.option_type)) {
-                        getItem().insertBundleOption(optionModelView.getModel().getID(), optionValueModelView.id);
+                        item.insertBundleOption(optionModelView.getModel().getID(), optionValueModelView.id);
                     }
                 }
             }
 
             // bổ sung số lượng
             if (PosProductOptionCustom.OPTION_TYPE_BUNDLE.equals(optionModelView.option_type)) {
-                getItem().insertBundleOptionQuantity(optionModelView.getModel().getID(), StringUtil.STRING_EMPTY + optionModelView.quantity);
+                item.insertBundleOptionQuantity(optionModelView.getModel().getID(), StringUtil.STRING_EMPTY + optionModelView.quantity);
             }
         }
 
         // trả lại cart item
         item.setItemDescription(descriptionBuilder.toString());
         ((CartItemListController) getController()).updateCartItemPrice(item);
-        return item;
     }
 
     /**

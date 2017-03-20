@@ -19,6 +19,7 @@ import com.magestore.app.lib.service.ChildListService;
 import com.magestore.app.lib.service.catalog.ProductOptionService;
 import com.magestore.app.lib.service.checkout.CartService;
 import com.magestore.app.pos.R;
+import com.magestore.app.pos.panel.CheckoutCustomSalePanel;
 import com.magestore.app.pos.panel.CustomerDetailPanel;
 import com.magestore.app.pos.panel.ProductOptionPanel;
 import com.magestore.app.pos.view.MagestoreDialog;
@@ -37,12 +38,20 @@ import java.util.Map;
 
 public class CartItemListController extends AbstractChildListController<Checkout, CartItem> {
     public static final String STATE_ON_UPDATE_CART_ITEM = "STATE_ON_UPDATE_CART_ITEM";
+
+    // dialog
     MagestoreDialog mCartItemDetailDialog;
     MagestoreDialog mProductOptionDialog;
+    MagestoreDialog mCustomeSaleDialog;
+
+    // serrvice
     CartService mCartService;
     ProductOptionService mProductOptionService;
+
+    // panel
     ProductOptionPanel mProductOptionPanel;
     CheckoutListController mCheckoutListController;
+    CheckoutCustomSalePanel mCheckoutCustomSalePanel;
 
     static final int ACTION_CART_DELETE_ITEM = 0;
     Map<String, Object> wraper;
@@ -318,6 +327,8 @@ public class CartItemListController extends AbstractChildListController<Checkout
             mCartItemDetailDialog.dismiss();
         if (mProductOptionDialog != null && mProductOptionDialog.isShowing())
             mProductOptionDialog.dismiss();
+        if(mCustomeSaleDialog !=null&&mCustomeSaleDialog.isShowing())
+            mCustomeSaleDialog.dismiss();
         updateTotalPrice();
     }
 
@@ -523,4 +534,42 @@ public class CartItemListController extends AbstractChildListController<Checkout
     public void substractQuantity(CartItem cartItem) {
         mCartService.substract(cartItem);
     }
+
+
+    /**
+     * Hiển thị dialog custome sales
+     */
+    public void addCustomSale(State state) {
+        doShowCustomeSale();
+    }
+
+    /**
+     * Hiển thị dialog custome sales
+     */
+    public void doShowCustomeSale() {
+        if (mCustomeSaleDialog == null) {
+            mCustomeSaleDialog = com.magestore.app.pos.util.DialogUtil.dialog(mCheckoutCustomSalePanel.getContext(),
+                    mCheckoutCustomSalePanel.getContext().getString(R.string.custom_sale),
+                    mCheckoutCustomSalePanel);
+            mCustomeSaleDialog.setGoneButtonSave(true);
+        }
+
+        // chèn vào cart item
+        CartItem cartItem = mCartService.createCustomSale();
+        mCheckoutCustomSalePanel.bindItem(cartItem);
+        mCustomeSaleDialog.show();
+    }
+///
+
+
+
+
+    /**
+     * Đặt product option panel
+     */
+    public void setCustomSalePanel(CheckoutCustomSalePanel panel) {
+        mCheckoutCustomSalePanel = panel;
+        mCheckoutCustomSalePanel.setController(this);
+    }
+
 }

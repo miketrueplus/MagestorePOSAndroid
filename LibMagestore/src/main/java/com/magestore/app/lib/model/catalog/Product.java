@@ -37,6 +37,9 @@ public interface Product extends Model, ParseModel {
     String getImage();
     float getStock();
     String getBarcodeString();
+
+    void setName(String name);
+
     Bitmap getBitmap();
     void setBitmap(Bitmap bmp);
 
