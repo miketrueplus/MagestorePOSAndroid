@@ -64,7 +64,7 @@ public class OrderListPanel extends AbstractListPanel<Order> {
 //            @Override
 //            public void onClick(View view) {
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
+//                        .setAction("MagestoreStatementAction", null).show();
 //            }
 //        });
 //

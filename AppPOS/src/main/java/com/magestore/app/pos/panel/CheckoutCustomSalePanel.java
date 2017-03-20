@@ -5,6 +5,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.magestore.app.lib.model.checkout.Checkout;
+import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
 import com.magestore.app.pos.R;
 
@@ -14,7 +15,7 @@ import com.magestore.app.pos.R;
  * dong.le@trueplus.vn
  */
 
-public class CheckoutCustomSalePanel extends AbstractDetailPanel<Checkout> {
+public class CheckoutCustomSalePanel extends AbstractDetailPanel<CartItem> {
     public CheckoutCustomSalePanel(Context context) {
         super(context);
     }

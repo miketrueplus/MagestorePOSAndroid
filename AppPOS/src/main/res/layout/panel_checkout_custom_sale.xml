@@ -29,12 +29,12 @@
         android:orientation="vertical"
         android:padding="@dimen/layout_margin_5">
 
-        <com.magestore.app.view.FormatEditText
-            android:id="@+id/custom_sale_value"
+        <com.magestore.app.view.EditTextFloat
+            android:id="@+id/custom_sale_price"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
-            android:hint="@string/checkout_custom_sale_name" />
+            android:hint="@string/price" />
     </LinearLayout>
 
     <Switch
