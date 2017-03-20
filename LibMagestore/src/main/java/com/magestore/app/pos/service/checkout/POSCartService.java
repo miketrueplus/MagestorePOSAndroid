@@ -8,6 +8,8 @@ import com.magestore.app.lib.model.catalog.ProductOptionCustomValue;
 import com.magestore.app.lib.model.checkout.Cart;
 import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
+import com.magestore.app.lib.resourcemodel.DataAccessFactory;
+import com.magestore.app.lib.resourcemodel.sales.CartDataAccess;
 import com.magestore.app.lib.service.checkout.CartService;
 import com.magestore.app.pos.model.catalog.PosProductOptionConfigOption;
 import com.magestore.app.pos.model.catalog.PosProductOptionJsonConfigAttributes;
@@ -374,20 +376,28 @@ public class POSCartService extends AbstractService implements CartService {
         // Khởi tạo danh sách order cartItem
         List<CartItem> listItems = checkout.getCartItem();
         if (listItems == null) return null;
-
-        // Kiểm tra xem đã có item với mặt hàng tương ứng chưa
         CartItem cartItem = null;
-        for (CartItem item : listItems) {
-            String itemID = item.getProduct().getID();
-            if (itemID == null) continue;
-            if (itemID.equals(product.getID())) {
-                cartItem = item;
-                break;
+        // kiểm tra xem có phải item online ko?
+        if(product.getIsSaveCart()){
+            DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+            CartDataAccess cartDataAccess = factory.generateCartDataAccess();
+            cartItem = cartDataAccess.delete(checkout, product);
+            // xóa khỏi danh sách checkout
+            if (cartItem != null) delete(checkout, cartItem);
+        }else {
+            // Kiểm tra xem đã có item với mặt hàng tương ứng chưa
+            for (CartItem item : listItems) {
+                String itemID = item.getProduct().getID();
+                if (itemID == null) continue;
+                if (itemID.equals(product.getID())) {
+                    cartItem = item;
+                    break;
+                }
             }
-        }
 
-        // xóa khỏi danh sách checkout
-        if (cartItem != null) delete(checkout, cartItem);
+            // xóa khỏi danh sách checkout
+            if (cartItem != null) delete(checkout, cartItem);
+        }
         return cartItem;
     }
 

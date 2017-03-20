@@ -47,4 +47,10 @@ public interface Product extends Model, ParseModel {
     void setQuantityIncrement(float quantityIncrement);
 
     String getJsonConfigOption();
+
+    boolean getIsSaveCart();
+    void setIsSaveCart(boolean isSaveCart);
+
+    String getItemId();
+    void setItemId(String strItemId);
 }

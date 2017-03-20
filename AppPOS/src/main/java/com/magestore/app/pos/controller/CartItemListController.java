@@ -6,6 +6,7 @@ import android.view.View;
 import com.magestore.app.lib.controller.AbstractChildListController;
 import com.magestore.app.lib.controller.AbstractController;
 import com.magestore.app.lib.controller.ListController;
+import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.model.catalog.ProductOption;
 import com.magestore.app.lib.model.catalog.ProductOptionCustom;
@@ -24,7 +25,9 @@ import com.magestore.app.pos.view.MagestoreDialog;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Mike on 1/11/2017.
@@ -39,6 +42,17 @@ public class CartItemListController extends AbstractChildListController<Checkout
     CartService mCartService;
     ProductOptionService mProductOptionService;
     ProductOptionPanel mProductOptionPanel;
+    CheckoutListController mCheckoutListController;
+
+    static final int ACTION_CART_DELETE_ITEM = 0;
+    Map<String, Object> wraper;
+
+    public void setCheckoutListController(CheckoutListController mCheckoutListController) {
+        this.mCheckoutListController = mCheckoutListController;
+        if (wraper == null) {
+            wraper = new HashMap<>();
+        }
+    }
 
     @Override
     protected List<CartItem> loadDataBackground(Void... params) throws Exception {
@@ -93,6 +107,31 @@ public class CartItemListController extends AbstractChildListController<Checkout
         if (service instanceof CartService) mCartService = (CartService) service;
     }
 
+    @Override
+    public Boolean doActionBackround(int actionType, String actionCode, Map<String, Object> wraper, Model... models) throws Exception {
+        if (actionType == ACTION_CART_DELETE_ITEM) {
+            CartItem cartItem = mCartService.delete(getParent(), (Product) models[0]);
+            wraper.put("cart_respone", cartItem);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void onActionPostExecute(boolean success, int actionType, String actionCode, Map<String, Object> wraper, Model... models) {
+        if (success && actionType == ACTION_CART_DELETE_ITEM) {
+            CartItem cartItem = (CartItem) wraper.get("cart_respone");
+            Product product = (Product) models[0];
+            if (cartItem != null) {
+                getView().deleteList(cartItem);
+                if (product.getIsSaveCart()) {
+                    mCheckoutListController.updateTotal();
+                } else {
+                    updateTotalPrice();
+                }
+            }
+        }
+    }
 
     /**
      * Cập nhật lại phần tính giá tiền, discount và tax
@@ -113,21 +152,7 @@ public class CartItemListController extends AbstractChildListController<Checkout
      * @param product
      */
     public void deleteProduct(Product product) {
-        try {
-            CartItem cartItem = mCartService.delete(getParent(), product);
-            getView().deleteList(cartItem);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-//        mCartService.delOrderItem(product);
-//        mView.notifyDataSetChanged();
-        updateTotalPrice();
+        doAction(ACTION_CART_DELETE_ITEM, null, wraper, product);
     }
 
     /**

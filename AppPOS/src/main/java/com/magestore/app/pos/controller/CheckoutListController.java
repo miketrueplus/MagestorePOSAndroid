@@ -783,7 +783,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         ((CheckoutDetailPanel) mDetailView).showPanelPaymentMethod();
         ((CheckoutDetailPanel) mDetailView).showPanelCheckoutPaymentCreditCard(false);
         removeOrder();
-        if(getSelectedItems().size() > 1){
+        if (getSelectedItems().size() > 1) {
             addNewOrder();
         }
         onBackTohome();
@@ -859,6 +859,10 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
     public void resetPositionAddress() {
         mCheckoutAddressListPanel.setSelectPos(0);
+    }
+
+    public void updateTotal() {
+        ((CheckoutListPanel) getView()).updateTotalPrice(getSelectedItem());
     }
 
     /**

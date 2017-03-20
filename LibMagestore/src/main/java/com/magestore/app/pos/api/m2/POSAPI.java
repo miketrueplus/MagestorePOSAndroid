@@ -59,6 +59,9 @@ public class POSAPI {
     public static final String REST_CUSOMTER_COMPLAIN_ADD = "/rest/default/V1/webpos/customers/complain/?";
     public static final String PARAM_CUSTOMER_ID = "customerID";
 
+    // API Cart
+    public static final String REST_CART_DELETE_ITEM = "/rest/default/V1/webpos/checkout/removeItem?";
+
     // API checkout
     public static final String REST_CHECKOUT_CREATE = "/rest/default/V1/webpos/checkout/create?";
     public static final String REST_CHECK_OUT_SAVE_CART = "/rest/default/V1/webpos/checkout/saveCart?";

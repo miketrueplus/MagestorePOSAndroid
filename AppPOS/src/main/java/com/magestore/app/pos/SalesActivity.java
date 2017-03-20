@@ -249,6 +249,7 @@ public class SalesActivity extends AbstractActivity
         mCheckoutCartItemListController.setProductOptionPanel(mProductOptionPanel);
         mCheckoutCartItemListController.setChildListService(cartService);
         mCheckoutCartItemListController.setProductOptionService(productOptionService);
+        mCheckoutCartItemListController.setCheckoutListController(mCheckoutListController);
 
         mCheckoutListController.setCartItemListController(mCheckoutCartItemListController);
         mCheckoutAddPaymentListController = new CheckoutAddPaymentListController();

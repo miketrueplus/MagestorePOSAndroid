@@ -7,6 +7,7 @@ import com.magestore.app.lib.model.catalog.ProductOption;
 import com.magestore.app.pos.model.PosAbstractModel;
 import com.magestore.app.pos.model.PosStock;
 import com.magestore.app.pos.model.PosTierPrice;
+import com.magestore.app.pos.parse.gson2pos.Gson2PosExclude;
 
 import java.util.Date;
 import java.util.List;
@@ -42,6 +43,11 @@ public class PosProduct extends PosAbstractModel implements Product {
     private float price_increment = 0.1f;
     private ProductOption productOption;
     private int options;
+
+    @Gson2PosExclude
+    boolean isSaveCart;
+    @Gson2PosExclude
+    String item_id;
 
     @Override
     public boolean haveProductOption() {
@@ -172,5 +178,25 @@ public class PosProduct extends PosAbstractModel implements Product {
     @Override
     public String getJsonConfigOption() {
         return json_config;
+    }
+
+    @Override
+    public boolean getIsSaveCart() {
+        return isSaveCart;
+    }
+
+    @Override
+    public void setIsSaveCart(boolean isSaveCart) {
+        this.isSaveCart = isSaveCart;
+    }
+
+    @Override
+    public String getItemId() {
+        return item_id;
+    }
+
+    @Override
+    public void setItemId(String strItemId) {
+        item_id = strItemId;
     }
 }

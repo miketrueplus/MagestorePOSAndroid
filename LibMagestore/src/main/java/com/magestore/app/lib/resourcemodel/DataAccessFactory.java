@@ -9,6 +9,7 @@ import com.magestore.app.lib.resourcemodel.customer.CustomerAddressDataAccess;
 import com.magestore.app.lib.resourcemodel.customer.CustomerComplainDataAccess;
 import com.magestore.app.lib.resourcemodel.customer.CustomerDataAccess;
 import com.magestore.app.lib.resourcemodel.registershift.RegisterShiftDataAccess;
+import com.magestore.app.lib.resourcemodel.sales.CartDataAccess;
 import com.magestore.app.lib.resourcemodel.sales.CheckoutDataAccess;
 import com.magestore.app.lib.resourcemodel.sales.OrderDataAccess;
 import com.magestore.app.lib.resourcemodel.user.UserDataAccess;
@@ -33,6 +34,7 @@ public abstract class DataAccessFactory {
     public abstract CustomerAddressDataAccess generateCustomerAddressDataAccess();
     public abstract CustomerComplainDataAccess generateCustomerComplainDataAccess();
     public abstract CategoryDataAccess generateCategoryDataAccess();
+    public abstract CartDataAccess generateCartDataAccess();
     public abstract RegisterShiftDataAccess generateRegisterShiftDataAccess();
     public abstract ConfigDataAccess generateConfigDataAccess();
 
