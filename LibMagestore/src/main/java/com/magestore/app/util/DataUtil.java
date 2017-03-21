@@ -13,6 +13,7 @@ public class DataUtil {
     private static String MAGESTORE_PREFERENCES = "magestore";
     public static String QUOTE = "quote";
     public static String STORE_ID = "store_id";
+    public static String STORE_NAME = "store_name";
     public static String CHOOSE_STORE = "choose_store";
 
     public static void saveDataStringToPreferences(Context context, String key, String data){

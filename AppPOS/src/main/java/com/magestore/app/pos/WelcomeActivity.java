@@ -78,6 +78,14 @@ public class WelcomeActivity extends AbstractActivity {
 
     @Override
     protected void initValue() {
+        if(listStore != null && listStore.size() == 1){
+            Store store = listStore.get(0);
+            DataUtil.saveDataStringToPreferences(getContext(), DataUtil.STORE_ID, store.getID());
+            DataUtil.saveDataStringToPreferences(getContext(), DataUtil.STORE_NAME, store.getName());
+            navigationToSalesActivity();
+            DataUtil.saveDataBooleanToPreferences(getContext(), DataUtil.CHOOSE_STORE, true);
+        }
+
         if (listStore != null) {
             sp_store.bind(listStore.toArray(new Store[0]));
         }
@@ -86,6 +94,7 @@ public class WelcomeActivity extends AbstractActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 DataUtil.saveDataStringToPreferences(getContext(), DataUtil.STORE_ID, sp_store.getSelection());
+                DataUtil.saveDataStringToPreferences(getContext(), DataUtil.STORE_NAME, sp_store.getSelectionValue());
             }
 
             @Override
@@ -98,6 +107,7 @@ public class WelcomeActivity extends AbstractActivity {
             @Override
             public void onClick(View view) {
                 navigationToSalesActivity();
+                DataUtil.saveDataBooleanToPreferences(getContext(), DataUtil.CHOOSE_STORE, true);
             }
         });
     }
