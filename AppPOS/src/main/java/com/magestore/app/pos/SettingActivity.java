@@ -6,6 +6,7 @@ import android.support.v7.widget.Toolbar;
 import com.magestore.app.lib.context.MagestoreContext;
 import com.magestore.app.lib.service.ServiceFactory;
 import com.magestore.app.lib.service.config.ConfigService;
+import com.magestore.app.lib.service.user.UserService;
 import com.magestore.app.pos.controller.SettingListController;
 import com.magestore.app.pos.panel.SettingDetailPanel;
 import com.magestore.app.pos.panel.SettingListPanel;
@@ -63,9 +64,11 @@ public class SettingActivity extends AbstractActivity {
         // chuẩn bị service
         ServiceFactory factory;
         ConfigService service = null;
+        UserService userService = null;
         try {
             factory = ServiceFactory.getFactory(magestoreContext);
             service = factory.generateConfigService();
+            userService = factory.generateUserService();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InstantiationException e) {
@@ -74,6 +77,7 @@ public class SettingActivity extends AbstractActivity {
 
         mSettingListController = new SettingListController();
         mSettingListController.setMagestoreContext(magestoreContext);
+        mSettingListController.setUserService(userService);
         mSettingListController.setConfigService(service);
         mSettingListController.setListPanel(mSettingListPanel);
         mSettingListController.setDetailPanel(mSettingDetailPanel);
@@ -84,6 +88,6 @@ public class SettingActivity extends AbstractActivity {
 
     @Override
     protected void initValue() {
-
+        mSettingListController.doRetrieve();
     }
 }

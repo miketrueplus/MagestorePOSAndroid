@@ -67,6 +67,7 @@
     <string name="ask_are_you_sure_to_remove">Are you sure to remove?</string>
     <string name="ask_are_you_sure_to_cancel">Are you sure to cancel?</string>
     <string name="ask_are_you_sure_to_close">Are you sure to close?</string>
+    <string name="ask_are_you_sure_to_change_store">Are you sure to change store?</string>
 
     <!-- Strings related to dialog title -->
     <string name="title_confirm">Please confirm</string>
@@ -82,6 +83,7 @@
     <string name="dialog_close">Close</string>
     <string name="dialog_cancel">Cancel</string>
     <string name="dialog_save">Save</string>
+    <string name="dialog_change_store">Change Store</string>
 
     <string name="msg_press_to_reload">\nPress here to reload</string>
     <string name="msg_no_data">No data to display</string>

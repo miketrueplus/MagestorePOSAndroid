@@ -206,6 +206,7 @@
     <string name="insert">Insert</string>
     <string name="item">Item</string>
     <string name="last_name">Last Name</string>
+    <string name="logout">Logout</string>
     <string name="minus">-</string>
     <string name="name">Name</string>
     <string name="new_order">New Order</string>
@@ -215,6 +216,7 @@
     <string name="notify">Notify</string>
     <string name="notification">Notification</string>
     <string name="number">Number</string>
+    <string name="order_history">Orders History</string>
     <string name="ok">OK</string>
     <string name="on_hold">OnHold</string>
     <string name="options">Options</string>
@@ -234,8 +236,10 @@
     <string name="reference_number">Reference Number</string>
     <string name="revenue">Revenue</string>
     <string name="save">Save</string>
+    <string name="sales">Sales</string>
     <string name="search">Search</string>
     <string name="send">Send</string>
+    <string name="setting">Settings</string>
     <string name="shipping">Shipping</string>
     <string name="shipping_and_handling">Shipping</string>
     <string name="shipping_method">SHIPPING METHOD</string>

@@ -10,4 +10,26 @@ import com.magestore.app.pos.model.PosAbstractModel;
  */
 
 public class PosSetting extends PosAbstractModel implements Setting {
+    String name;
+    int type;
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public void setName(String strName) {
+        name = strName;
+    }
+
+    @Override
+    public int getType() {
+        return type;
+    }
+
+    @Override
+    public void setType(int intType) {
+        type = intType;
+    }
 }

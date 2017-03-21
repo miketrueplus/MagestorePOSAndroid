@@ -13,8 +13,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
         android:baselineAligned="false"
         android:divider="?android:attr/dividerHorizontal"
         android:orientation="horizontal"
@@ -29,8 +27,6 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
             android:layout_weight="0.35"
             android:orientation="vertical">
 
@@ -38,7 +34,8 @@
                 android:id="@+id/setting_list_panel"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                magestore_view:layout_item="@layout/card_order_history_list_content"
+                android:background="@color/white"
+                magestore_view:layout_item="@layout/card_setting_list_content"
                 magestore_view:layout_list="@+id/setting_list"
                 magestore_view:layout_orientation="vertical"
                 magestore_view:layout_panel="@layout/panel_setting_list"
@@ -55,7 +52,9 @@
             <com.magestore.app.pos.panel.SettingDetailPanel
                 android:id="@+id/setting_detail_panel"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                magestore_view:layout_panel="@layout/panel_setting_detail" />
         </FrameLayout>
     </LinearLayout>
 </FrameLayout>

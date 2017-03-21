@@ -25,6 +25,7 @@
     <color name="product_background_item">#ffffff</color>
     <color name="product_background_price">#1a1d87e5</color>
     <color name="product_search_text_color">#ffffff</color>
+    <color name="product_search_hint_text_color">#70ffffff</color>
     <color name="product_search_bg_color">#1873c3</color>
 
     <!--Product Detail and Option-->

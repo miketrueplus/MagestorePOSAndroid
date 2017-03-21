@@ -14,8 +14,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.magestore.app.pos.LoginActivity;
 import com.magestore.app.pos.RegisterShiftActivity;
 import com.magestore.app.pos.SettingActivity;
+import com.magestore.app.util.DataUtil;
 import com.magestore.app.view.ui.PosUI;
 import com.magestore.app.pos.CustomerActivity;
 import com.magestore.app.pos.OrderActivity;
@@ -156,11 +158,33 @@ public abstract class AbstractActivity
         } else if (id == R.id.nav_settings) {
             Intent intent = new Intent(getContext(), SettingActivity.class);
             startActivity(intent);
+        } else if (id == R.id.nav_logout) {
+            backToLoginActivity();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer != null) drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void backToLoginActivity(){
+        new AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle(R.string.dialog_close)
+                .setMessage(R.string.ask_are_you_sure_to_close)
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        DataUtil.saveDataBooleanToPreferences(getContext(), DataUtil.CHOOSE_STORE, false);
+                        Intent intent = new Intent(getContext(), LoginActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        finish();
+                    }
+
+                })
+                .setNegativeButton(R.string.no, null)
+                .show();
     }
 
     @Override

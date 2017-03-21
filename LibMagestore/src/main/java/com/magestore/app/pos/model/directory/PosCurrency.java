@@ -17,6 +17,11 @@ public class PosCurrency extends PosAbstractModel implements Currency {
     double currency_rate;
 
     @Override
+    public String getID() {
+        return code;
+    }
+
+    @Override
     public String getCode() {
         return code;
     }
@@ -64,5 +69,10 @@ public class PosCurrency extends PosAbstractModel implements Currency {
     @Override
     public void setCurrencyRate(double dCurrencyRate) {
         currency_rate = dCurrencyRate;
+    }
+
+    @Override
+    public String getDisplayContent() {
+        return currency_name;
     }
 }

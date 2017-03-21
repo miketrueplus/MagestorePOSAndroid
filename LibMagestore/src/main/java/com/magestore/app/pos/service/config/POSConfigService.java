@@ -8,12 +8,14 @@ import com.magestore.app.lib.model.config.ConfigCountry;
 import com.magestore.app.lib.model.config.ConfigPriceFormat;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.directory.Currency;
+import com.magestore.app.lib.model.setting.Setting;
 import com.magestore.app.lib.resourcemodel.config.ConfigDataAccess;
 import com.magestore.app.lib.resourcemodel.DataAccessFactory;
 import com.magestore.app.lib.service.config.ConfigService;
 import com.magestore.app.pos.model.checkout.PosCheckoutPayment;
 import com.magestore.app.pos.model.checkout.PosPaymentMethod;
 import com.magestore.app.pos.model.checkout.PosShippingMethod;
+import com.magestore.app.pos.model.setting.PosSetting;
 import com.magestore.app.pos.service.AbstractService;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.StringUtil;
@@ -210,12 +212,33 @@ public class POSConfigService extends AbstractService implements ConfigService {
         return configDataAccess.getConfigCCYears();
     }
 
+    public static String SETTING_CURRENCY = "Currency";
+    public static String SETTING_STORE = "Store";
+
+    @Override
+    public List<Setting> getListSetting() {
+        List<Setting> settingList = new ArrayList<>();
+
+        Setting currencySetting = new PosSetting();
+        currencySetting.setName(SETTING_CURRENCY);
+        currencySetting.setType(0);
+        settingList.add(currencySetting);
+
+        Setting storeSetting = new PosSetting();
+        storeSetting.setName(SETTING_STORE);
+        storeSetting.setType(1);
+        settingList.add(storeSetting);
+
+        return settingList;
+    }
+
     public static String PAYMENT_METHOD_CC_DIRECT_POST = "CC_DIRECT";
     public static String PAYMENT_METHOD_CASH_IN = "CASH_IN";
     public static String PAYMENT_METHOD_CC_CARD = "CC_CARDN";
     public static String PAYMENT_METHOD_CASH_COD = "CASH_ON_DELIVERY";
     public static String PAYMENT_METHOD_CUSTOM_PAYMENT1 = "CUSTOM_PAYMENT1";
     public static String PAYMENT_METHOD_CUSTOM_PAYMENT2 = "CUSTOM_PAYMENT2";
+
     @Override
     public List<PaymentMethod> getPaymentMethodList() throws InstantiationException, IllegalAccessException, IOException, ParseException {
         List<PaymentMethod> paymentMethodList = new ArrayList<PaymentMethod>();
@@ -256,6 +279,7 @@ public class POSConfigService extends AbstractService implements ConfigService {
     public static String SHIPPING_METHOD_FLAT_RATE = "SHIPPING_METHOD_FLAT_RATE";
     public static String PAYMENT_METHOD_FREE_SHIPPING = "PAYMENT_METHOD_FREE_SHIPPING";
     public static String PAYMENT_METHOD_STORE_PICKUP = "PAYMENT_METHOD_STORE_PICKUP";
+
     @Override
     public List<ShippingMethod> getShippingMethodList() throws InstantiationException, IllegalAccessException, IOException, ParseException {
         List<ShippingMethod> shippingMethodList = new ArrayList<ShippingMethod>();

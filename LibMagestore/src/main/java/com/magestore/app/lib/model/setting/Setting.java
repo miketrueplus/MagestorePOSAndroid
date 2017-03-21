@@ -9,4 +9,9 @@ import com.magestore.app.lib.model.Model;
  */
 
 public interface Setting extends Model {
+    String getName();
+    void setName(String strName);
+
+    int getType();
+    void setType(int intType);
 }
