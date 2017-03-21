@@ -34,7 +34,10 @@ public abstract class AbstractController<TModel extends Model, TView extends Mag
     protected MagestoreContext mMagestoreContext;
     private ConfigService mConfigService;
 
-
+    /**
+     * Đặt view
+     * @param view
+     */
     public void setView(TView view) {
         mView = view;
         mView.setController(this);

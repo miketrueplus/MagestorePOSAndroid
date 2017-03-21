@@ -22,6 +22,7 @@ import com.magestore.app.pos.R;
 import com.magestore.app.pos.panel.CheckoutCustomSalePanel;
 import com.magestore.app.pos.panel.CustomerDetailPanel;
 import com.magestore.app.pos.panel.ProductOptionPanel;
+import com.magestore.app.pos.util.DialogUtil;
 import com.magestore.app.pos.view.MagestoreDialog;
 
 import java.io.IOException;
@@ -259,9 +260,8 @@ public class CartItemListController extends AbstractChildListController<Checkout
         }
 
         // đổi title dialiog theo sản phẩm và hiển thị
-        mCartItemDetailDialog.setTitle(getSelectedItem().getProduct().getName());
-        mCartItemDetailDialog.setDialogTitle(getSelectedItem().getProduct().getName());
         mCartItemDetailDialog.show();
+        mCartItemDetailDialog.getDialogTitle().setText(getSelectedItem().getProduct().getName());
 
         // Xử lý khi nhấn save trên dialog
         mCartItemDetailDialog.getButtonSave().setOnClickListener(new View.OnClickListener() {
@@ -334,7 +334,7 @@ public class CartItemListController extends AbstractChildListController<Checkout
             mCartItemDetailDialog.dismiss();
         if (mProductOptionDialog != null && mProductOptionDialog.isShowing())
             mProductOptionDialog.dismiss();
-        if(mCustomeSaleDialog !=null&&mCustomeSaleDialog.isShowing())
+        if (mCustomeSaleDialog != null && mCustomeSaleDialog.isShowing())
             mCustomeSaleDialog.dismiss();
         updateTotalPrice();
     }
@@ -430,10 +430,11 @@ public class CartItemListController extends AbstractChildListController<Checkout
     public void doShowProductOptionInput(CartItem cartItem) {
         // khởi tạo và hiển thị dialog
         if (mProductOptionDialog == null) {
-            mProductOptionDialog = com.magestore.app.pos.util.DialogUtil.dialog(mProductOptionPanel.getContext(),
+            mProductOptionDialog = DialogUtil.dialog(mProductOptionPanel.getContext(),
                     cartItem.getProduct().getName(),
                     mProductOptionPanel);
             mProductOptionDialog.setGoneButtonSave(true);
+            mProductOptionDialog.setDialogTitle(cartItem.getProduct().getName());
         }
 
         // clear list option và hiện thị thông tin product và cart item
@@ -442,8 +443,9 @@ public class CartItemListController extends AbstractChildListController<Checkout
         mProductOptionPanel.showCartItemInfo(cartItem);
 
         // đổi title dialog theo tên sản phẩm và hiển thị
-        mProductOptionDialog.setDialogTitle(cartItem.getProduct().getName());
         mProductOptionDialog.show();
+        mProductOptionDialog.getDialogTitle().setText(cartItem.getProduct().getName());
+
 
         // Xử lý khi nhấn save trên dialog
         mProductOptionDialog.getButtonSave().setOnClickListener(new View.OnClickListener() {
@@ -567,8 +569,6 @@ public class CartItemListController extends AbstractChildListController<Checkout
         mCustomeSaleDialog.show();
     }
 ///
-
-
 
 
     /**

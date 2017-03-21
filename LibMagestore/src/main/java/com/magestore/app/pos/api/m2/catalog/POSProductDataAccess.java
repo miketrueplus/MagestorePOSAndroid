@@ -32,6 +32,7 @@ import com.magestore.app.pos.api.m2.POSDataAccessSession;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosProductOptionParseImplement;
 import com.magestore.app.util.ImageUtil;
 import com.magestore.app.util.SecurityUtil;
+import com.magestore.app.util.StringUtil;
 
 
 import java.io.BufferedInputStream;
@@ -76,10 +77,8 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
 
             // thực thi truy vấn và parse kết quả thành json
             rp = statement.execute();
-            String json = rp.readResult2String()
-                    .replace("\\", "")
-                    .replace("\"{\"", "{\"")
-                    .replace("}\"", "}");
+            String json = rp.readResult2String();
+            json = StringUtil.truncateJson(json);
 
             // tạo json implement
             Gson2PosProductOptionParseImplement implement = new Gson2PosProductOptionParseImplement();
