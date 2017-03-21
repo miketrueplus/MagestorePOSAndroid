@@ -140,12 +140,12 @@
                         android:layout_toLeftOf="@+id/btn_shipping_address"
                         android:text="@string/customer_shipping_address" />
 
-                    <ImageButton
+                    <Image
                         android:id="@+id/btn_shipping_address"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:background="@drawable/ic_add_new" />
+                        android:src="@drawable/ic_add_new" />
                 </RelativeLayout>
 
                 <LinearLayout
@@ -241,12 +241,12 @@
                         android:layout_toLeftOf="@+id/btn_billing_address"
                         android:text="@string/customer_billing_address" />
 
-                    <ImageButton
+                    <Image
                         android:id="@+id/btn_billing_address"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:background="@drawable/ic_add_new" />
+                        android:src="@drawable/ic_add_new" />
                 </RelativeLayout>
 
                 <LinearLayout
