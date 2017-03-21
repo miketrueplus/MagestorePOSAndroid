@@ -3,12 +3,16 @@ package com.magestore.app.lib.panel;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.magestore.app.lib.R;
 import com.magestore.app.lib.controller.ListController;
@@ -16,6 +20,7 @@ import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.view.SearchAutoCompleteTextView;
 import com.magestore.app.lib.view.adapter.SearchAutoCompleteAdapter;
+import com.magestore.app.util.StringUtil;
 
 
 /**
@@ -26,6 +31,11 @@ import com.magestore.app.lib.view.adapter.SearchAutoCompleteAdapter;
  */
 
 public class SearchAutoCompletePanel extends FrameLayout {
+    private final int MODE_FULL = 0;
+    private final int MODE_FILTER = 1;
+    private final int MODE_SUGGEST = 2;
+    private int mintMode;
+
     SearchAutoCompleteTextView mAutoTextView;
     ListController mController;
 
@@ -47,25 +57,47 @@ public class SearchAutoCompletePanel extends FrameLayout {
     // tham chiếu id layout của close
     private int mintCloseLayout;
 
+    /**
+     * Khởi tạo
+     *
+     * @param context
+     */
     public SearchAutoCompletePanel(Context context) {
         super(context);
+        mintMode = MODE_FULL;
         initLayout();
     }
 
+    /**
+     * Khởi tạo
+     *
+     * @param context
+     * @param attrs
+     */
     public SearchAutoCompletePanel(Context context, AttributeSet attrs) {
         super(context, attrs);
         loadAttrs(context, attrs);
+        mintMode = MODE_FULL;
         initLayout();
     }
 
+    /**
+     * Khởi tạo
+     *
+     * @param context
+     * @param attrs
+     * @param defStyle
+     */
     public SearchAutoCompletePanel(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         loadAttrs(context, attrs);
+        mintMode = MODE_FULL;
         initLayout();
     }
 
     /**
      * Load các tham số từ attributes của panel
+     *
      * @param context
      * @param attrs
      */
@@ -81,6 +113,7 @@ public class SearchAutoCompletePanel extends FrameLayout {
         // layout của close
         mintCloseLayout = a.getResourceId(R.styleable.magestore_view_layout_close, -1);
 
+        // giải phóng attributes
         a.recycle();
     }
 
@@ -98,6 +131,19 @@ public class SearchAutoCompletePanel extends FrameLayout {
         if (mintItemLayout > 0) {
             mAutoTextView = (SearchAutoCompleteTextView) mViewLayout.findViewById(mintItemLayout);
             mAutoTextView.setThreshold(3);
+
+            // sự kiện ấn nút search trên bàn phím
+            mAutoTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    boolean handled = false;
+                    if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                        applySearch();
+                        mintMode = MODE_FILTER;
+                    }
+                    return handled;
+                }
+            });
         }
 
         // load progress bar
@@ -111,29 +157,81 @@ public class SearchAutoCompletePanel extends FrameLayout {
             mCloseButton = (ImageButton) mViewLayout.findViewById(mintCloseLayout);
         }
 
+        // sự kiện chọn 1 item trên suggest
         mAutoTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                // xác định model được chọn trên suggest
                 Model model = (Model) adapterView.getItemAtPosition(position);
+
+                // fill giá trị vào text search
                 mAutoTextView.setText(model.getDisplayContent());
+
+                // hiển thị kết quả
                 mController.displaySearch(model);
+
+                // hiển thị nút close
                 if (mCloseButton != null) mCloseButton.setVisibility(VISIBLE);
+
+                // xác định mode là sugest
+                mintMode = MODE_SUGGEST;
             }
         });
 
+        // sự kiện close kết quả tìm kiếm, quay về với list ban đầu
         if (mCloseButton != null)
             mCloseButton.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mAutoTextView.setText("");
-                    mCloseButton.setVisibility(GONE);
-                    if (mCloseButton != null) mController.hideSearch();
+                    // nếu đang thao tác với suggesst
+                    if (mintMode == MODE_SUGGEST) {
+                        // giấu mục tìm kiếm
+                        if (mCloseButton != null) mController.hideSearch();
+
+                        // ô text search được đặt lại giá trị cũ
+                        // gán chuỗi tìm kiếm về null trong controller
+                        boolean haveSearchString = (mController.getSearchString() != null) && !(StringUtil.STRING_EMPTY.equals(mController.getSearchString()));
+                        mAutoTextView.setText(mController.getSearchString());
+
+                        // ẩn nút close tìm kiếm đi nếu trước đó k0 có nội dung search
+                        if (!haveSearchString) {
+                            mCloseButton.setVisibility(GONE);
+                            mintMode = MODE_FULL;
+                        } else
+                            mintMode = MODE_FILTER;
+                    }
+                    // nếu đang thao tác với kết quả filter
+                    else if (mintMode == MODE_FILTER) {
+                        mAutoTextView.setText(StringUtil.STRING_EMPTY);
+                        mController.setSearchString(null);
+                        mController.reload();
+                        mCloseButton.setVisibility(GONE);
+                        mintMode = MODE_FULL;
+                    }
                 }
             });
     }
 
     /**
+     * áp dụng search
+     */
+    public void applySearch() {
+        // dừng search gợi ý lại
+        mAutoTextView.dimissSuggest();
+
+        // đặt chuỗi search
+        mController.setSearchString(mAutoTextView.getText().toString().trim());
+
+        // reload lại, đồng thời clear list
+        mController.reload();
+
+        // hiển thị nút để close kết quả tìm kiếm
+        if (mCloseButton != null) mCloseButton.setVisibility(VISIBLE);
+    }
+
+    /**
      * Đặt controller quản lý
+     *
      * @param controller
      */
     public void setListController(ListController controller) {

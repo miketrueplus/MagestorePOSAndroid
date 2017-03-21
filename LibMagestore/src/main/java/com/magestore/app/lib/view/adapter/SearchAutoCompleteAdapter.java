@@ -24,7 +24,6 @@ import java.util.List;
  * Magestore
  * mike@trueplus.vn
  */
-
 public class SearchAutoCompleteAdapter<TModel extends Model> extends BaseAdapter implements Filterable {
 
     private static final int MAX_RESULTS = 10;
@@ -36,6 +35,11 @@ public class SearchAutoCompleteAdapter<TModel extends Model> extends BaseAdapter
     private int mintText2 = -1;
     private int mintImage = -1;
 
+    /**
+     * Khởi tạo với service chứa hàm search
+     * @param context
+     * @param service
+     */
     public SearchAutoCompleteAdapter(Context context, ListService<TModel> service) {
         mContext = context;
         mService = service;
@@ -105,6 +109,7 @@ public class SearchAutoCompleteAdapter<TModel extends Model> extends BaseAdapter
             protected FilterResults performFiltering(CharSequence constraint) {
                 FilterResults filterResults = new FilterResults();
                 if (constraint != null) {
+                    // thực hiện tìm kiếm suggesst
                     List<TModel> models = search(mContext, constraint.toString());
 
                     // Assign the data to the FilterResults
@@ -114,6 +119,11 @@ public class SearchAutoCompleteAdapter<TModel extends Model> extends BaseAdapter
                 return filterResults;
             }
 
+            /**
+             * Đưa nội dung tìm kiếm suggest được vào list suggest
+             * @param constraint
+             * @param results
+             */
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 if (results != null && results.count > 0) {
@@ -127,7 +137,7 @@ public class SearchAutoCompleteAdapter<TModel extends Model> extends BaseAdapter
     }
 
     /**
-     * Returns a search result for the given book title.
+     * Thực hiện tìm kiếm bằng service
      */
     private List<TModel> search(Context context, String search) {
         try {
