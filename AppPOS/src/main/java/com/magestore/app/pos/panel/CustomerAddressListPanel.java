@@ -35,15 +35,20 @@ public class CustomerAddressListPanel extends AbstractListPanel<CustomerAddress>
 
     /**
      * Các hàm khởi tạo
+     *
      * @param context
      */
     public CustomerAddressListPanel(Context context) {
         super(context);
     }
+
     public CustomerAddressListPanel(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
-    public CustomerAddressListPanel(Context context, AttributeSet attrs, int defStyleAttr) {super(context, attrs, defStyleAttr);}
+
+    public CustomerAddressListPanel(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
 
     @Override
     protected void bindItem(View view, final CustomerAddress item, int position) {
@@ -69,9 +74,9 @@ public class CustomerAddressListPanel extends AbstractListPanel<CustomerAddress>
     }
 
 
-
     /**
      * Hiển thị dialog confirm trước khi delete
+     *
      * @param item
      */
     @Override
@@ -83,7 +88,7 @@ public class CustomerAddressListPanel extends AbstractListPanel<CustomerAddress>
                 R.string.title_confirm_delete,
                 R.string.yes,
                 R.string.no,
-                new DialogInterface.OnClickListener(){
+                new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         mController.doDelete(item);
                     }
@@ -112,6 +117,9 @@ public class CustomerAddressListPanel extends AbstractListPanel<CustomerAddress>
         dialog.getButtonSave().setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (!panelAddress.checkRequiedAddress()) {
+                    return;
+                }
                 CustomerAddress item = ((CustomerAddressListController) mController).createNewCustomerAddress();
                 panelAddress.bind2Item(item);
                 mController.doInsert(item);
@@ -122,6 +130,7 @@ public class CustomerAddressListPanel extends AbstractListPanel<CustomerAddress>
 
     /**
      * Hiển thị dialog edit địa chỉ
+     *
      * @param item
      */
     @Override
@@ -142,6 +151,9 @@ public class CustomerAddressListPanel extends AbstractListPanel<CustomerAddress>
         dialog.getButtonSave().setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (!panelAddress.checkRequiedAddress()) {
+                    return;
+                }
                 CustomerAddress newitem = ((CustomerAddressListController) mController).createNewCustomerAddress();
                 panelAddress.bind2Item(newitem);
                 mController.doUpdate(item, newitem);

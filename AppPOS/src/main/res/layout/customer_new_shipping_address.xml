@@ -65,7 +65,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:hint="@string/company" />
+                android:hint="@string/customer_company_optional" />
         </LinearLayout>
 
         <LinearLayout
@@ -121,7 +121,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:hint="@string/street" />
+                android:hint="@string/customer_street_optional" />
         </LinearLayout>
     </LinearLayout>
 
@@ -185,7 +185,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="false"
-                android:textSize="18sp"
+                android:textSize="@dimen/text_size"
                 magestore_view:layout_no_scroll="true"
                 magestore_view:layout_row="@layout/simple_textview_row" />
         </LinearLayout>
@@ -203,14 +203,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:hint="@string/state_or_province" />
+                android:hint="@string/customer_state_or_province_optional" />
 
             <com.magestore.app.lib.view.SimpleSpinner
                 android:id="@+id/s_spinner_state"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="false"
-                android:textSize="18sp"
+                android:textSize="@dimen/text_size"
                 android:visibility="gone"
                 magestore_view:layout_no_scroll="true"
                 magestore_view:layout_row="@layout/simple_textview_row" />
@@ -236,7 +236,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:hint="@string/vat" />
+                android:hint="@string/customer_vat_optional" />
         </LinearLayout>
 
         <LinearLayout

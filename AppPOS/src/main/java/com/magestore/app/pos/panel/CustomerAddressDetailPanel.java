@@ -17,6 +17,7 @@ import com.magestore.app.lib.view.SimpleSpinner;
 import com.magestore.app.pos.controller.CustomerAddressListController;
 import com.magestore.app.pos.databinding.PanelCustomerAddressDetailBinding;
 import com.magestore.app.pos.R;
+import com.magestore.app.pos.util.EditTextUtil;
 
 import java.util.List;
 import java.util.Map;
@@ -196,5 +197,31 @@ public class CustomerAddressDetailPanel extends AbstractDetailPanel<CustomerAddr
             address.setRegion(s_region);
         }
         address.setVAT(((EditText) findViewById(R.id.vat_id)).getText().toString().trim());
+    }
+
+    public boolean checkRequiedAddress() {
+        if (!isRequied(((EditText) findViewById(R.id.firstname)))) {
+            return false;
+        }
+        if (!isRequied(((EditText) findViewById(R.id.lastname)))) {
+            return false;
+        }
+        if (!isRequied(((EditText) findViewById(R.id.telephone)))) {
+            return false;
+        }
+        if (!isRequied(((EditText) findViewById(R.id.street1)))) {
+            return false;
+        }
+        if (!isRequied(((EditText) findViewById(R.id.city)))) {
+            return false;
+        }
+        if (!isRequied(((EditText) findViewById(R.id.postcode)))) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean isRequied(EditText editText) {
+        return EditTextUtil.checkRequied(getContext(), editText);
     }
 }

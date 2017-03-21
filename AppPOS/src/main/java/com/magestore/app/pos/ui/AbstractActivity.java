@@ -153,9 +153,9 @@ public abstract class AbstractActivity
 //        } else if (id == R.id.nav_register_shift) {
 //            Intent intent = new Intent(getContext(), RegisterShiftActivity.class);
 //            startActivity(intent);
-//        } else if (id == R.id.nav_settings) {
-//            Intent intent = new Intent(getContext(), SettingActivity.class);
-//            startActivity(intent);
+        } else if (id == R.id.nav_settings) {
+            Intent intent = new Intent(getContext(), SettingActivity.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

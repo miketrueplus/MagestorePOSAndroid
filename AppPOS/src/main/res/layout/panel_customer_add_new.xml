@@ -99,6 +99,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:enabled="false"
+                        android:textSize="@dimen/text_size"
                         magestore_view:layout_no_scroll="true"
                         magestore_view:layout_row="@layout/simple_textview_row" />
                 </LinearLayout>
