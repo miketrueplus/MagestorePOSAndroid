@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -46,7 +47,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
     FrameLayout fr_sales_new_customer;
     LinearLayout ll_add_new_customer, ll_new_shipping_address, ll_new_billing_address, ll_shipping_address, ll_sales_shipping, ll_add_new_address;
     LinearLayout ll_billing_address, ll_short_shipping_address, ll_short_billing_address, ll_sales_add_customer, ll_action_checkout;
-    ImageButton btn_shipping_address, btn_billing_address;
+    ImageView btn_shipping_address, btn_billing_address;
     ImageButton btn_shipping_adrress_edit, btn_billing_adrress_edit;
     ImageButton btn_shipping_address_delete, btn_billing_address_delete;
     RelativeLayout rl_add_checkout, rl_remove_checkout, rl_sales_total, cart_background_loading;
@@ -282,8 +283,8 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
         ll_billing_address = (LinearLayout) mCheckoutAddCustomerPanel.findViewById(R.id.ll_billing_address);
         ll_short_shipping_address = (LinearLayout) mCheckoutAddCustomerPanel.findViewById(R.id.ll_short_shipping_address);
         ll_short_billing_address = (LinearLayout) mCheckoutAddCustomerPanel.findViewById(R.id.ll_short_billing_address);
-        btn_shipping_address = (ImageButton) mCheckoutAddCustomerPanel.findViewById(R.id.btn_shipping_address);
-        btn_billing_address = (ImageButton) mCheckoutAddCustomerPanel.findViewById(R.id.btn_billing_address);
+        btn_shipping_address = (ImageView) mCheckoutAddCustomerPanel.findViewById(R.id.btn_shipping_address);
+        btn_billing_address = (ImageView) mCheckoutAddCustomerPanel.findViewById(R.id.btn_billing_address);
         btn_shipping_adrress_edit = (ImageButton) mCheckoutAddCustomerPanel.findViewById(R.id.btn_shipping_adrress_edit);
         btn_billing_adrress_edit = (ImageButton) mCheckoutAddCustomerPanel.findViewById(R.id.btn_billing_adrress_edit);
         btn_shipping_address_delete = (ImageButton) mCheckoutAddCustomerPanel.findViewById(R.id.btn_shipping_address_delete);

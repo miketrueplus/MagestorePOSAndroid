@@ -10,6 +10,7 @@ import android.support.design.widget.Snackbar;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.magestore.app.lib.model.customer.Customer;
@@ -30,7 +31,7 @@ public class CustomerListPanel extends AbstractListPanel<Customer> {
     Customer mCustomer;
     LinearLayout ll_add_new_customer, ll_new_shipping_address, ll_new_billing_address, ll_shipping_address;
     LinearLayout ll_billing_address, ll_short_shipping_address, ll_short_billing_address;
-    ImageButton btn_shipping_address, btn_billing_address;
+    ImageView btn_shipping_address, btn_billing_address;
     ImageButton btn_shipping_adrress_edit, btn_billing_adrress_edit;
     ImageButton btn_shipping_address_delete, btn_billing_address_delete;
     MagestoreDialog dialog;
@@ -197,9 +198,9 @@ public class CustomerListPanel extends AbstractListPanel<Customer> {
 
         ll_short_billing_address = (LinearLayout) dialog.findViewById(R.id.ll_short_billing_address);
 
-        btn_shipping_address = (ImageButton) dialog.findViewById(R.id.btn_shipping_address);
+        btn_shipping_address = (ImageView) dialog.findViewById(R.id.btn_shipping_address);
 
-        btn_billing_address = (ImageButton) dialog.findViewById(R.id.btn_billing_address);
+        btn_billing_address = (ImageView) dialog.findViewById(R.id.btn_billing_address);
 
         btn_shipping_adrress_edit = (ImageButton) dialog.findViewById(R.id.btn_shipping_adrress_edit);
 
