@@ -93,8 +93,6 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
                 attemptLogin();
             }
         });
-        // TODO: pass qua login
-        attemptLogin();
 
         // Tham chiếu đến form và progress
         mLoginFormView = findViewById(R.id.login_form);

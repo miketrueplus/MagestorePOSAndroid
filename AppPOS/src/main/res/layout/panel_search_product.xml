@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.TextInputLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.TextInputLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_centerVertical="true"
@@ -10,54 +9,56 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerVertical="true"
-        android:orientation="horizontal">
+        android:layout_centerVertical="true">
 
-        <com.magestore.app.lib.view.SearchAutoCompleteTextView
-            android:id="@+id/text_search_product"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:hint="@string/sales_search_product_here"
-            android:inputType="textCapSentences"
-            android:theme="@style/Autocomplete"
-            android:imeOptions="flagNoExtractUi|actionSearch"
-            android:maxLines="1"/>
-
-        <ImageButton
-            android:id="@+id/button_barcode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/ic_barcode_white" />
-
-        <ImageButton
-            android:id="@+id/button_camera"
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/button_barcode"
-            android:background="@drawable/ic_camera_white" />
+            android:background="@drawable/product_search_border"
+            android:padding="@dimen/layout_margin_5">
 
-        <ImageButton
-            android:id="@+id/button_hide_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/button_camera"
-            android:background="@drawable/ic_close_white"
-            android:visibility="gone" />
+            <ImageView
+                android:id="@+id/im_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/layout_margin_10"
+                android:src="@drawable/ic_search_order_history" />
 
-        <ProgressBar
-            android:id="@+id/progress_autotext_search_product"
-            style="?android:attr/progressBarStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/button_hide_search"
-            android:visibility="gone"/>
+            <com.magestore.app.lib.view.SearchAutoCompleteTextView
+                android:id="@+id/text_search_product"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/im_search"
+                android:background="@color/product_search_bg_color"
+                android:hint="@string/sales_search_product_here"
+                android:imeOptions="flagNoExtractUi|actionSearch"
+                android:inputType="textCapSentences"
+                android:maxLines="1"
+                android:textColor="@color/product_search_text_color"
+                android:textColorHint="@color/product_search_text_color"
+                android:theme="@style/Autocomplete" />
 
+            <ImageButton
+                android:id="@+id/button_hide_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/ic_close_white"
+                android:visibility="gone" />
 
+            <ProgressBar
+                android:id="@+id/progress_autotext_search_product"
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:visibility="gone" />
+        </RelativeLayout>
     </RelativeLayout>
 </android.support.design.widget.TextInputLayout>

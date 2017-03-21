@@ -41,6 +41,7 @@
     <dimen name="product_price_margin">2dp</dimen>
     <dimen name="product_text_name_size">14sp</dimen>
     <dimen name="product_text_sku_size">14sp</dimen>
+    <dimen name="product_search_border_radius">5dp</dimen>
 
     <!--Product Detail and Option-->
     <dimen name="product_detail_description_text_size">14sp</dimen>
