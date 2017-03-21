@@ -52,4 +52,9 @@ public class PosStore extends PosAbstractModel implements Store {
     public String getIsActive() {
         return is_active;
     }
+
+    @Override
+    public String getDisplayContent() {
+        return name;
+    }
 }

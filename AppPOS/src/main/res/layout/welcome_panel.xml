@@ -1,6 +1,176 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:magestore_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
+    <LinearLayout
+        android:id="@+id/login_form"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2.5" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/border_background_form_login"
+                    android:orientation="vertical"
+                    android:padding="@dimen/login_form_padding_size">
+
+                    <LinearLayout
+                        android:id="@+id/ll_store_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="@dimen/layout_margin_20"
+                            android:layout_weight="1">
+
+                            <ImageView
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_centerVertical="true"
+                                android:layout_marginRight="@dimen/layout_margin_5"
+                                android:src="@drawable/ic_store" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:gravity="right"
+                                android:text="@string/store"
+                                android:textColor="@color/text_color"
+                                android:textSize="@dimen/welcome_text_size" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="2"
+                            android:background="@drawable/welcome_border_linear_layout"
+                            android:padding="@dimen/layout_margin_5">
+
+                            <com.magestore.app.lib.view.SimpleSpinner
+                                android:id="@+id/sp_store"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:enabled="false"
+                                android:textSize="@dimen/welcome_text_size"
+                                magestore_view:layout_no_scroll="true"
+                                magestore_view:layout_row="@layout/simple_textview_row" />
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_cash_drawer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="@dimen/layout_margin_20"
+                            android:layout_weight="1">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginRight="@dimen/layout_margin_5"
+                                android:src="@drawable/ic_store" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:gravity="right"
+                                android:text="@string/store"
+                                android:textColor="@color/text_color"
+                                android:textSize="@dimen/welcome_text_size" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:background="@drawable/welcome_border_linear_layout"
+                            android:padding="@dimen/layout_margin_5">
+
+                            <com.magestore.app.lib.view.SimpleSpinner
+                                android:id="@+id/sp_cash_drawer"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:enabled="false"
+                                android:textSize="@dimen/welcome_text_size"
+                                android:visibility="gone"
+                                magestore_view:layout_no_scroll="true"
+                                magestore_view:layout_row="@layout/simple_textview_row" />
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <FrameLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="@dimen/layout_margin_20"
+                            android:layout_weight="1" />
+
+                        <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2">
+
+                            <Button
+                                android:id="@+id/btn_submit"
+                                android:layout_width="@dimen/welcome_button_width"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginTop="@dimen/layout_margin_30"
+                                android:background="@drawable/login_form_border_button_login"
+                                android:text="@string/submit"
+                                android:textAllCaps="false"
+                                android:textColor="@color/login_form_button_login_text_color" />
+                        </RelativeLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2.5" />
+    </LinearLayout>
 </LinearLayout>

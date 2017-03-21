@@ -60,6 +60,8 @@ public class PosCheckout extends PosAbstractModel implements Checkout {
     @Gson2PosExclude
     String quote_id;
     @Gson2PosExclude
+    String store_id;
+    @Gson2PosExclude
     String create_ship;
     @Gson2PosExclude
     String create_invoice;
@@ -311,5 +313,15 @@ public class PosCheckout extends PosAbstractModel implements Checkout {
     @Override
     public void setQuoteId(String quoteId) {
         quote_id = quoteId;
+    }
+
+    @Override
+    public String getStoreId() {
+        return store_id;
+    }
+
+    @Override
+    public void setStoreId(String strStoreId) {
+        store_id = strStoreId;
     }
 }

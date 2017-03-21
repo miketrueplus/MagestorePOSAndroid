@@ -24,6 +24,7 @@ import com.magestore.app.util.StringUtil;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,6 +36,9 @@ import java.util.List;
 
 public class POSUserDataAccess extends POSAbstractDataAccess implements UserDataAccess {
     // wrap object lại và chuyênr thành json
+    // Cache config đầu tiên
+    private static List<Store> mListStore;
+
     private class Wrap {
         User staff;
     }
@@ -116,7 +120,8 @@ public class POSUserDataAccess extends POSAbstractDataAccess implements UserData
             Gson gson = implement.createGson();
             POSListStoreDataAccess store = gson.fromJson(json, POSListStoreDataAccess.class);
             if (store != null && store.stores.size() > 0) {
-                return (List<Store>) (List<?>) store.stores;
+                mListStore = (List<Store>) (List<?>) store.stores;
+                return mListStore;
             }
             return null;
         } catch (Exception ex) {
@@ -138,5 +143,13 @@ public class POSUserDataAccess extends POSAbstractDataAccess implements UserData
 //            if (connection != null) connection.close();
 //            connection = null;
         }
+    }
+
+    @Override
+    public List<Store> getListStore() throws ParseException, ConnectionException, DataAccessException, IOException {
+        if (mListStore == null) {
+            mListStore = new ArrayList<>();
+        }
+        return mListStore;
     }
 }

@@ -126,4 +126,11 @@ public class POSUserService extends AbstractService implements UserService {
         }
         return false;
     }
+
+    @Override
+    public List<Store> getListStore() throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        UserDataAccess userGateway = factory.generateUserDataAccess();
+        return userGateway.getListStore();
+    }
 }

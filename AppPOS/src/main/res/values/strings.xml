@@ -240,6 +240,8 @@
     <string name="state">State</string>
     <string name="state_or_province">State or Province</string>
     <string name="street">Street</string>
+    <string name="store">Store</string>
+    <string name="submit">Submit</string>
     <string name="sub_total">Sub Total</string>
     <string name="substract">Substract</string>
     <string name="tax">Tax</string>
@@ -255,6 +257,7 @@
     <string name="err_no_network_connection">No network connection, Pls check yout network settings</string>
     <string name="err_field_required">This field is required</string>
     <string name="err_no_data">There is no data to display</string>
+    <string name="err_request">Some errors occurred, Pls try again!</string>
 
 
     <!-- Strings related to confirm message -->

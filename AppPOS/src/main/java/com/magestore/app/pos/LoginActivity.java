@@ -27,6 +27,8 @@ import com.magestore.app.pos.task.LoginTask;
 import com.magestore.app.pos.ui.AbstractActivity;
 import com.magestore.app.pos.ui.LoginUI;
 import com.magestore.app.util.AndroidNetworkUtil;
+import com.magestore.app.util.DataUtil;
+import com.magestore.app.util.DialogUtil;
 
 /**
  * Màn hình login
@@ -272,13 +274,18 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
                 // Đăng nhập thành công, lưu domain lại để lần sau không phải nhập
                 saveSharedValue("login_activity_domain", mDomainView.getText().toString().trim());
 
-                mStoreTask = new ListStoreTask(new StoreListener());
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) // Above Api Level 13
-                {
-                    mStoreTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                } else // Below Api Level 13
-                {
-                    mStoreTask.execute();
+                boolean isChooseStore = DataUtil.getDataBooleanToPreferences(getContext(), DataUtil.CHOOSE_STORE);
+                if (isChooseStore) {
+                    navigationToSalesActivity();
+                } else {
+                    mStoreTask = new ListStoreTask(new StoreListener());
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) // Above Api Level 13
+                    {
+                        mStoreTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                    } else // Below Api Level 13
+                    {
+                        mStoreTask.execute();
+                    }
                 }
             } else {
                 // Đăng nhập không thành công, báo lỗi và yêu cầu nhập lại
@@ -311,10 +318,9 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
         @Override
         public void onPostController(Task task, Boolean success) {
             if (success) {
-                // Đăng nhập thành công, mở sẵn form sales
-                Intent intent = new Intent(getContext(), SalesActivity.class);
-                startActivity(intent);
-                finish();
+                navigationToWelcomeActivity();
+            } else {
+                showAlertRespone();
             }
         }
 
@@ -327,6 +333,27 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
         public void onProgressController(Task task, Void... progress) {
 
         }
+    }
+
+    private void navigationToSalesActivity() {
+        // Đăng nhập thành công, mở sẵn form sales
+        Intent intent = new Intent(getContext(), SalesActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    private void navigationToWelcomeActivity() {
+        // Đăng nhập thành công, mở sẵn form sales
+        Intent intent = new Intent(getContext(), WelcomeActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    public void showAlertRespone() {
+        String message = getContext().getString(R.string.err_request);
+
+        // Tạo dialog và hiển thị
+        DialogUtil.confirm(getContext(), message, R.string.done);
     }
 }
 

@@ -25,4 +25,6 @@ public interface UserDataAccess extends DataAccess {
     String login(String domain, String proxyUser, String proxyPassword, User user) throws ParseException, ConnectionException, DataAccessException, IOException;
 
     List<Store> retrieveStore() throws ParseException, ConnectionException, DataAccessException, IOException;
+
+    List<Store> getListStore() throws ParseException, ConnectionException, DataAccessException, IOException;
 }

@@ -1,9 +1,11 @@
 package com.magestore.app.lib.service.user;
 
+import com.magestore.app.lib.model.store.Store;
 import com.magestore.app.lib.service.Service;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.List;
 
 /**
  * Created by Mike on 12/20/2016.
@@ -16,4 +18,5 @@ public interface UserService extends Service {
     void doLogout();
     boolean isLogin();
     boolean retrieveStore() throws InstantiationException, IllegalAccessException, IOException, ParseException;
+    List<Store> getListStore() throws InstantiationException, IllegalAccessException, IOException, ParseException;
 }

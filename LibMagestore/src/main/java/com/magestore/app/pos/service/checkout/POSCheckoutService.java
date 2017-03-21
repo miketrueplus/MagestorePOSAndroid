@@ -63,9 +63,9 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         }
         // TODO: bug server với trường hợp truyền lên có customer id
         quote.setCustomerId("");
-        // TODO: Giả data với (store_id = 1 và current_id = USD, till_id = 1) sau fix lại theo config
+        // TODO: Giả data với (current_id = USD, till_id = 1) sau fix lại theo config
         quote.setCurrencyId("USD");
-        quote.setStoreId("1");
+        quote.setStoreId(checkout.getStoreId());
         quote.setTillId("1");
         quote.setItems(addItemToQuote(checkout));
 

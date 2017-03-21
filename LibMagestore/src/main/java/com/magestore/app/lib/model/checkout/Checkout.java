@@ -82,4 +82,7 @@ public interface Checkout extends Model {
 
     String getQuoteId();
     void setQuoteId(String quoteId);
+
+    String getStoreId();
+    void setStoreId(String strStoreId);
 }

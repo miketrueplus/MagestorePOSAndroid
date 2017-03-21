@@ -146,7 +146,9 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             // show detail panel
             doShowDetailPanel(true);
 //        binCartItem();
-//            wraper.put("quote_id", DataUtil.getDataStringToPreferences(context, DataUtil.QUOTE));
+//            wraper.put("quote_id", );
+            String store_id = DataUtil.getDataStringToPreferences(context, DataUtil.STORE_ID);
+            checkout.setStoreId(store_id);
             wraper.put("quote_id", checkout.getQuoteId());
             doAction(ACTION_TYPE_SAVE_CART, null, wraper, checkout);
         } else {
