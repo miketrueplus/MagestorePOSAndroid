@@ -78,8 +78,9 @@ public class WelcomeActivity extends AbstractActivity {
 
     @Override
     protected void initValue() {
-        if(listStore != null && listStore.size() == 1){
+        if (listStore != null && listStore.size() == 1) {
             Store store = listStore.get(0);
+            LoginActivity.STORE_ID = store.getID();
             DataUtil.saveDataStringToPreferences(getContext(), DataUtil.STORE_ID, store.getID());
             DataUtil.saveDataStringToPreferences(getContext(), DataUtil.STORE_NAME, store.getName());
             navigationToSalesActivity();
@@ -93,6 +94,7 @@ public class WelcomeActivity extends AbstractActivity {
         sp_store.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                LoginActivity.STORE_ID = sp_store.getSelection();
                 DataUtil.saveDataStringToPreferences(getContext(), DataUtil.STORE_ID, sp_store.getSelection());
                 DataUtil.saveDataStringToPreferences(getContext(), DataUtil.STORE_NAME, sp_store.getSelectionValue());
             }

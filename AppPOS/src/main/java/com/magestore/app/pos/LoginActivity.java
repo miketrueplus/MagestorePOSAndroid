@@ -46,12 +46,15 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    public static String STORE_ID = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Tải view từ template xml
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        STORE_ID = DataUtil.getDataStringToPreferences(getContext(), DataUtil.STORE_ID);
 
         // cấu hình lại các layout control
         initControlLayout();
