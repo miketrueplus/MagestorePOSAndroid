@@ -140,7 +140,7 @@
                         android:layout_toLeftOf="@+id/btn_shipping_address"
                         android:text="@string/customer_shipping_address" />
 
-                    <Image
+                    <ImageView
                         android:id="@+id/btn_shipping_address"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -241,7 +241,7 @@
                         android:layout_toLeftOf="@+id/btn_billing_address"
                         android:text="@string/customer_billing_address" />
 
-                    <Image
+                    <ImageView
                         android:id="@+id/btn_billing_address"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
