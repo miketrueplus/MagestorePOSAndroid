@@ -388,7 +388,7 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
         return billingAddress;
     }
 
-    public void bindDataShippingAddress(CustomerAddress shippingAddress){
+    public void bindDataShippingAddress(CustomerAddress shippingAddress) {
         tv_shipping_address.setText(shippingAddress.getShortAddress());
         s_first_name.setText(shippingAddress.getFirstName());
         s_last_name.setText(shippingAddress.getLastName());
@@ -410,7 +410,7 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
         }
     }
 
-    public void bindDataBillingAddress(CustomerAddress billingAddress){
+    public void bindDataBillingAddress(CustomerAddress billingAddress) {
         tv_billing_address.setText(billingAddress.getShortAddress());
         b_first_name.setText(billingAddress.getFirstName());
         b_last_name.setText(billingAddress.getLastName());
@@ -603,7 +603,7 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
         if (!isRequied(first_name)) {
             return false;
         }
-        if (!isRequied(email)) {
+        if (!isRequied(email) || !isRequiedEmail(email)) {
             return false;
         }
         return true;
@@ -665,6 +665,10 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
 
     public boolean isRequied(EditText editText) {
         return EditTextUtil.checkRequied(getContext(), editText);
+    }
+
+    public boolean isRequiedEmail(EditText editText) {
+        return EditTextUtil.checkRequiedEmail(getContext(), editText);
     }
 
     public void clearText(EditText editText) {

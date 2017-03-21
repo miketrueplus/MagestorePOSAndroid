@@ -55,6 +55,7 @@
     <!-- Strings related to error message -->
     <string name="err_no_network_connection">No network connection, Pls check yout network settings</string>
     <string name="err_field_required">This field is required</string>
+    <string name="err_field_email_required">Invalid email address</string>
     <string name="err_no_data">There is no data to display</string>
 
 

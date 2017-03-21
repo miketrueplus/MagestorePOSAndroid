@@ -469,18 +469,19 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
         if (ll_new_shipping_address.getVisibility() == VISIBLE) {
             mCustomerAddNewPanel.insertShippingAddress();
             if (mCustomer != null) {
-                if (mCustomerAddNewPanel.checkRequiedShippingAddress()) {
-                    if (typeCustomer == CREATE_NEW_CUSTOMER) {
-                        if (!mCustomerAddNewPanel.checkSameBillingAndShipping()) {
-                            return;
-                        }
-                        ll_short_billing_address.setVisibility(VISIBLE);
-                        mCustomerAddNewPanel.showNewShortBillingAddress();
-                        btn_billing_address.setVisibility(GONE);
-                        dialog.getDialogTitle().setText(getContext().getString(R.string.customer_add_new));
-                    } else {
-                        ((CheckoutListController) getController()).doInputEditAddress(0, mCustomer, mCustomerAddNewPanel.getChangeshippingAddress(), mCustomerAddNewPanel.getShippingAddress());
+                if (!mCustomerAddNewPanel.checkRequiedShippingAddress()) {
+                    return;
+                }
+                if (typeCustomer == CREATE_NEW_CUSTOMER) {
+                    if (!mCustomerAddNewPanel.checkSameBillingAndShipping()) {
+                        return;
                     }
+                    ll_short_billing_address.setVisibility(VISIBLE);
+                    mCustomerAddNewPanel.showNewShortBillingAddress();
+                    btn_billing_address.setVisibility(GONE);
+                    dialog.getDialogTitle().setText(getContext().getString(R.string.customer_add_new));
+                } else {
+                    ((CheckoutListController) getController()).doInputEditAddress(0, mCustomer, mCustomerAddNewPanel.getChangeshippingAddress(), mCustomerAddNewPanel.getShippingAddress());
                 }
             } else {
                 if (!mCustomerAddNewPanel.checkRequiedShippingAddress()) {
