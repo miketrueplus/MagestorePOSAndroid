@@ -29,6 +29,7 @@ public class SimpleSpinner extends Spinner {
 
     // chứa dữ liệu
     String[] mListKeys;
+    ArrayList<String> mListValues;
 
     public SimpleSpinner(Context context) {
         super(context);
@@ -114,11 +115,11 @@ public class SimpleSpinner extends Spinner {
      */
     public void bind(Map<String, String> mapValues) {
         // Lập map key và value
-        ArrayList<String> values = new ArrayList<String>();
+        mListValues = new ArrayList<String>();
         mListKeys = mapValues.keySet().toArray(new String[0]);
-        for (String key: mListKeys) values.add(mapValues.get(key));
+        for (String key: mListKeys) mListValues.add(mapValues.get(key));
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), mListLayout, values);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), mListLayout, mListValues);
         setAdapter(adapter);
     }
 
@@ -127,11 +128,11 @@ public class SimpleSpinner extends Spinner {
      */
     public void bindModelMap(Map<String, Model> mapValues) {
         // Lập map key và value
-        ArrayList<String> values = new ArrayList<String>();
+        mListValues = new ArrayList<String>();
         mListKeys = mapValues.keySet().toArray(new String[0]);
-        for (String key: mListKeys) values.add(mapValues.get(key).getDisplayContent());
+        for (String key: mListKeys) mListValues.add(mapValues.get(key).getDisplayContent());
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), mListLayout, values);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), mListLayout, mListValues);
         setAdapter(adapter);
     }
 
@@ -156,5 +157,14 @@ public class SimpleSpinner extends Spinner {
     public String getSelection() {
         int index = getSelectedItemPosition();
         return mListKeys[index];
+    }
+
+    /**
+     * Trả về value
+     * @return
+     */
+    public String getSelectionValue() {
+        int index = getSelectedItemPosition();
+        return mListValues.get(index);
     }
 }
