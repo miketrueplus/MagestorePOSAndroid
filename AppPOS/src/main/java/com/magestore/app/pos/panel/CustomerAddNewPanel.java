@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -50,7 +51,7 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
     CustomerAddress shippingAddress, billingAddress, c_shippingAddress, c_billingAddress;
     TextView tv_shipping_address, tv_billing_address;
     PanelCustomerAddNewBinding mBinding;
-    ImageButton btn_shipping_address, btn_billing_address;
+    ImageView btn_shipping_address, btn_billing_address;
     List<CustomerAddress> listAddress;
 
     public CustomerAddNewPanel(Context context) {
@@ -111,8 +112,8 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
         tv_billing_address = (TextView) findViewById(R.id.tv_billing_address);
         ll_short_shipping_address = (LinearLayout) findViewById(R.id.ll_short_shipping_address);
         ll_short_billing_address = (LinearLayout) findViewById(R.id.ll_short_billing_address);
-        btn_shipping_address = (ImageButton) findViewById(R.id.btn_shipping_address);
-        btn_billing_address = (ImageButton) findViewById(R.id.btn_billing_address);
+        btn_shipping_address = (ImageView) findViewById(R.id.btn_shipping_address);
+        btn_billing_address = (ImageView) findViewById(R.id.btn_billing_address);
         ll_s_shipping_address = (LinearLayout) findViewById(R.id.ll_s_shipping_address);
         ll_s_billing_address = (LinearLayout) findViewById(R.id.ll_s_billing_address);
         mBinding = DataBindingUtil.bind(view);
