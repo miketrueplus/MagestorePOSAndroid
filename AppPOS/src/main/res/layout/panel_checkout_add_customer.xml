@@ -9,23 +9,29 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp">
+        android:paddingLeft="@dimen/layout_margin_10"
+        android:paddingRight="@dimen/layout_margin_10">
 
         <Button
             android:id="@+id/btn_create_customer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
-            android:text="@string/sales_create_customer" />
+            android:layout_marginBottom="@dimen/layout_margin_10"
+            android:layout_marginTop="@dimen/layout_margin_10"
+            android:background="@drawable/checkout_address_border_button"
+            android:text="@string/sales_create_customer"
+            android:textColor="@color/white"
+            android:textSize="@dimen/checkout_address_button_text_size" />
 
         <Button
             android:id="@+id/btn_use_guest"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:text="@string/sales_use_guest" />
+            android:layout_marginBottom="@dimen/layout_margin_10"
+            android:background="@drawable/checkout_address_border_button_guest"
+            android:text="@string/sales_use_guest"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/checkout_address_button_text_size" />
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -38,12 +44,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"
-                magestore_view:layout_search="@+id/panel_search_customer"
                 magestore_view:layout_item="@layout/card_customer_list_content"
                 magestore_view:layout_list="@+id/customer_list"
                 magestore_view:layout_orientation="vertical"
                 magestore_view:layout_panel="@layout/panel_customer_list"
                 magestore_view:layout_progress="@+id/progress_customer_list"
+                magestore_view:layout_search="@+id/panel_search_customer"
                 magestore_view:layout_span_count="1"
                 magestore_view:page_first="1"
                 magestore_view:page_size="15"

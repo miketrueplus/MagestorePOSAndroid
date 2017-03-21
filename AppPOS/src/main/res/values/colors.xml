@@ -73,6 +73,7 @@
     <color name="sales_button_checkout_text_color">#ffffff</color>
     <color name="sales_line">#c7cbd0</color>
     <color name="checkout_line">#d5d9dd</color>
+    <color name="checkout_address_button_guest_color">#e7e7e7</color>
     <color name="checkout_success_msg_text_color">#aeb4ba</color>
     <color name="checkout_success_order_id_color">#454e57</color>
     <color name="checkout_success_text_send_color">#ffffff</color>
