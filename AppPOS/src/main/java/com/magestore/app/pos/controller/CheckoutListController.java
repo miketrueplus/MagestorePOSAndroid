@@ -853,6 +853,17 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         return null;
     }
 
+    public boolean checkListCartItem() {
+        if (getSelectedItem().getCartItem() != null && getSelectedItem().getCartItem().size() > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    public void showButtonDiscount(boolean isShow){
+        ((CheckoutListPanel) mView).showButtonDiscount(isShow);
+    }
+
     public CheckoutPayment createPaymentMethod() {
         return ((CheckoutService) getListService()).createPaymentMethod();
     }

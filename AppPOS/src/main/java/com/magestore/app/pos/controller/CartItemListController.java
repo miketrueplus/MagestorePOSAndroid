@@ -95,6 +95,7 @@ public class CartItemListController extends AbstractChildListController<Checkout
         } else {
             doShowProductOptionInput(product);
         }
+        mCheckoutListController.showButtonDiscount(true);
 //        mView.notifyDataSetChanged();
 
     }
@@ -140,6 +141,9 @@ public class CartItemListController extends AbstractChildListController<Checkout
                 } else {
                     updateTotalPrice();
                 }
+            }
+            if(!mCheckoutListController.checkListCartItem()){
+                mCheckoutListController.showButtonDiscount(false);
             }
             mCheckoutListController.isShowLoadingList(false);
         }

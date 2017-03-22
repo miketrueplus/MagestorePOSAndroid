@@ -65,6 +65,10 @@
     <color name="card_option_btn_option_text_color">#ffffff</color>
     <color name="card_option_btn_save_text_color">#ffffff</color>
     <color name="card_item_quantity_color">#ff7800</color>
+    <color name="card_floating_button_bg"> #ccffffff</color>
+    <color name="card_floating_button_normal">@color/app_color</color>
+    <color name="card_floating_button_press">#2272CD</color>
+    <color name="card_floating_button_riper">#62B2FF</color>
     <color name="sales_background_loading">#80000000</color>
     <color name="sales_discount_bg_select">#0E86E2</color>
     <color name="sales_discount_bg_not_select">#e1e1e1</color>

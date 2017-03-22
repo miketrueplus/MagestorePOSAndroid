@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:magestore_view="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -22,17 +23,57 @@
             android:background="@color/card_background_color"
             android:orientation="vertical">
 
-            <com.magestore.app.pos.panel.CartItemListPanel
-                android:id="@+id/order_item_panel"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_weight="1.0"
-                magestore_view:layout_item="@layout/card_cart_list_content"
-                magestore_view:layout_list="@+id/sales_order_container"
-                magestore_view:layout_orientation="vertical"
-                magestore_view:layout_panel="@layout/panel_cart_list"
-                magestore_view:layout_span_count="1" />
+                android:layout_weight="1.0">
+
+                <com.magestore.app.pos.panel.CartItemListPanel
+                    android:id="@+id/order_item_panel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    magestore_view:layout_item="@layout/card_cart_list_content"
+                    magestore_view:layout_list="@+id/sales_order_container"
+                    magestore_view:layout_orientation="vertical"
+                    magestore_view:layout_panel="@layout/panel_cart_list"
+                    magestore_view:layout_span_count="1" />
+
+                <com.github.clans.fab.FloatingActionMenu
+                    android:id="@+id/bt_sales_menu"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:paddingBottom="@dimen/layout_margin_10"
+                    android:paddingLeft="@dimen/layout_margin_10"
+                    android:paddingRight="@dimen/layout_margin_10"
+                    fab:menu_backgroundColor="@color/card_floating_button_bg"
+                    fab:menu_colorNormal="@color/card_floating_button_normal"
+                    fab:menu_colorPressed="@color/card_floating_button_press"
+                    fab:menu_colorRipple="@color/card_floating_button_riper"
+                    fab:menu_labels_ellipsize="end"
+                    fab:menu_labels_position="left"
+                    fab:menu_labels_singleLine="true">
+
+                    <com.github.clans.fab.FloatingActionButton
+                        android:id="@+id/bt_sales_discount"
+                        style="@style/MenuButtonsSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_store"
+                        fab:fab_label="@string/discount"
+                        android:visibility="gone"/>
+
+                    <com.github.clans.fab.FloatingActionButton
+                        android:id="@+id/bt_custom_sales"
+                        style="@style/MenuButtonsSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_store"
+                        fab:fab_label="@string/custom_sale" />
+                </com.github.clans.fab.FloatingActionMenu>
+            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -246,29 +287,12 @@
                 magestore_view:layout_span_count="1" />
         </LinearLayout>
 
-        <Button
-            android:id="@+id/bt_sales_discount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginBottom="@dimen/layout_margin_10"
-            android:text="@string/discount" />
-
-        <Button
-            android:id="@+id/bt_custom_sales"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/bt_sales_discount"
-            android:text="@string/custom_sale" />
-
         <RelativeLayout
             android:id="@+id/cart_background_loading"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"
-            android:background="@color/sales_background_loading">
+            android:background="@color/sales_background_loading"
+            android:visibility="gone">
 
             <ProgressBar
                 android:layout_width="wrap_content"

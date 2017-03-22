@@ -14,6 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 import com.magestore.app.lib.context.MagestoreContext;
 import com.magestore.app.lib.controller.ListController;
 import com.magestore.app.lib.model.customer.Customer;
@@ -43,7 +45,9 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
     Toolbar toolbar_order;
     Customer mCustomer;
     CustomerAddNewPanel mCustomerAddNewPanel;
-    Button btn_create_customer, btn_use_guest, btn_sales_order_checkout, bt_sales_discount, bt_custom_sales;
+    FloatingActionButton bt_sales_discount, bt_custom_sales;
+    FloatingActionMenu bt_sales_menu;
+    Button btn_create_customer, btn_use_guest, btn_sales_order_checkout;
     FrameLayout fr_sales_new_customer;
     LinearLayout ll_add_new_customer, ll_new_shipping_address, ll_new_billing_address, ll_shipping_address, ll_sales_shipping, ll_add_new_address;
     LinearLayout ll_billing_address, ll_short_shipping_address, ll_short_billing_address, ll_sales_add_customer, ll_action_checkout;
@@ -99,8 +103,9 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
         rl_sales_total = (RelativeLayout) findViewById(R.id.rl_sales_total);
         rl_add_checkout = (RelativeLayout) findViewById(R.id.rl_add_checkout);
         rl_remove_checkout = (RelativeLayout) findViewById(R.id.rl_remove_checkout);
-        bt_sales_discount = (Button) findViewById(R.id.bt_sales_discount);
-        bt_custom_sales = (Button) findViewById(R.id.bt_custom_sales);
+        bt_sales_menu = (FloatingActionMenu) findViewById(R.id.bt_sales_menu);
+        bt_sales_discount = (FloatingActionButton) findViewById(R.id.bt_sales_discount);
+        bt_custom_sales = (FloatingActionButton) findViewById(R.id.bt_custom_sales);
         cart_background_loading = (RelativeLayout) findViewById(R.id.cart_background_loading);
         initValue();
     }
@@ -187,6 +192,10 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
         } else {
             btn_sales_order_checkout.setText(getContext().getString(R.string.checkout));
         }
+    }
+
+    public void showButtonDiscount(boolean isShow){
+        bt_sales_discount.setVisibility(isShow ? VISIBLE : GONE);
     }
 
     /**
