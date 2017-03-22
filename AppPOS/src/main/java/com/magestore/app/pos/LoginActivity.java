@@ -29,6 +29,7 @@ import com.magestore.app.pos.ui.LoginUI;
 import com.magestore.app.util.AndroidNetworkUtil;
 import com.magestore.app.util.DataUtil;
 import com.magestore.app.util.DialogUtil;
+import com.magestore.app.util.StringUtil;
 
 /**
  * Màn hình login
@@ -70,6 +71,30 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
         // Tham chiếu đến các trường và điền các giá trị vào
         mDomainView = (AutoCompleteTextView) findViewById(R.id.domain);
         mUserNameView = (AutoCompleteTextView) findViewById(R.id.user_name);
+
+        // sự kiện nhấn next ở bàn phím
+        mDomainView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                    mUserNameView.requestFocus();
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        // sự kiện nhấn next ở bàn phím
+        mUserNameView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                    mPasswordView.requestFocus();
+                    return true;
+                }
+                return false;
+            }
+        });
 
         // Sự kiện nhấn enter ở ô password, thực hiện login luôn
         mPasswordView = (EditText) findViewById(R.id.password);
@@ -162,24 +187,24 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
     public String buildPOSBaseURL(String strDomain) {
         StringBuilder stringBuilder = new StringBuilder();
         String strFinalDomain = strDomain;
-        if (strFinalDomain == null || strFinalDomain.trim().equals(""))
+        if (strFinalDomain == null || strFinalDomain.trim().equals(StringUtil.STRING_EMPTY))
             strFinalDomain = BuildConfig.REST_BASE_URL;
 
-        int lastIndexOfApp = strFinalDomain.lastIndexOf("/");
+        int lastIndexOfApp = strFinalDomain.lastIndexOf(StringUtil.STRING_SLASH);
 
-        if (!strFinalDomain.startsWith("http://") && !strFinalDomain.startsWith("https://")) {
-            if (BuildConfig.REST_BASE_URL.startsWith("https://"))
-                stringBuilder.append("https://");
+        if (!strFinalDomain.startsWith(StringUtil.STRING_HTTP) && !strFinalDomain.startsWith(StringUtil.STRING_HTTPS)) {
+            if (BuildConfig.REST_BASE_URL.startsWith(StringUtil.STRING_HTTPS))
+                stringBuilder.append(StringUtil.STRING_HTTPS);
             else
-                stringBuilder.append("http://");
+                stringBuilder.append(StringUtil.STRING_HTTP);
             stringBuilder.append(strFinalDomain);
-            if (lastIndexOfApp < 0) stringBuilder.append("/").append(BuildConfig.REST_BASE_PAGE);
+            if (lastIndexOfApp < 0) stringBuilder.append(StringUtil.STRING_SLASH).append(BuildConfig.REST_BASE_PAGE);
             if (lastIndexOfApp == strFinalDomain.length() - 1)
                 stringBuilder.append(BuildConfig.REST_BASE_PAGE);
         } else {
             stringBuilder.append(strFinalDomain);
             if (lastIndexOfApp == strFinalDomain.indexOf("://") + 2)
-                stringBuilder.append("/").append(BuildConfig.REST_BASE_PAGE);
+                stringBuilder.append(StringUtil.STRING_SLASH).append(BuildConfig.REST_BASE_PAGE);
             if (lastIndexOfApp == strFinalDomain.length() - 1)
                 stringBuilder.append(BuildConfig.REST_BASE_PAGE);
         }
@@ -342,14 +367,14 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
         // Đăng nhập thành công, mở sẵn form sales
         Intent intent = new Intent(getContext(), SalesActivity.class);
         startActivity(intent);
-        finish();
+//        finish();
     }
 
     private void navigationToWelcomeActivity() {
         // Đăng nhập thành công, mở sẵn form sales
         Intent intent = new Intent(getContext(), WelcomeActivity.class);
         startActivity(intent);
-        finish();
+//        finish();
     }
 
     public void showAlertRespone() {

@@ -73,6 +73,7 @@
                         android:ellipsize="end"
                         android:hint="@string/login_domain"
                         android:inputType="text"
+                        android:imeOptions="actionNext"
                         android:maxLines="1"
                         android:padding="10dp"
                         android:textSize="@dimen/login_text_size" />
@@ -85,6 +86,7 @@
                         android:background="@drawable/login_form_border_edittext"
                         android:ellipsize="end"
                         android:hint="@string/login_user_name"
+                        android:imeOptions="actionNext"
                         android:inputType="text"
                         android:maxLines="1"
                         android:padding="10dp"
