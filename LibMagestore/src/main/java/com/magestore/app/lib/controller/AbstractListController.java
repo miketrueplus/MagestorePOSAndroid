@@ -3,6 +3,7 @@ package com.magestore.app.lib.controller;
 import android.view.View;
 
 import com.magestore.app.lib.model.Model;
+import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.observ.GenericState;
 import com.magestore.app.lib.observ.State;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
@@ -12,6 +13,7 @@ import com.magestore.app.lib.task.DeleteListTask;
 import com.magestore.app.lib.task.InsertListTask;
 import com.magestore.app.lib.task.RetrieveListTask;
 import com.magestore.app.lib.task.UpdateListTask;
+import com.magestore.app.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +27,8 @@ import java.util.List;
 public class AbstractListController<TModel extends Model>
         extends AbstractController<TModel, AbstractListPanel<TModel>, ListService<TModel>>
         implements ListController<TModel> {
+    // chuỗi seảarch
+    private String mSearchString;
 
     // tự động chọn item đầu tiên trong danh sách
     boolean mblnAutoChooseFirstItem = true;
@@ -86,6 +90,42 @@ public class AbstractListController<TModel extends Model>
         // báo cho các observ khác về việc bind item
         GenericState<ListController<TModel>> state = new GenericState<ListController<TModel>>(this, GenericState.DEFAULT_STATE_CODE_ON_SELECT_ITEM);
         if (getSubject() != null) getSubject().setState(state);
+    }
+
+    @Override
+    public void onLongClickItem(TModel item) {
+        // bind item bình thường
+        super.bindItem(item);
+        setSelectedItem(item);
+        if (mDetailView != null)
+            mDetailView.bindItem(item);
+
+        // báo cho các observ khác về việc long click item
+        GenericState<ListController<TModel>> state = new GenericState<ListController<TModel>>(this, GenericState.DEFAULT_STATE_CODE_ON_LONG_CLICK_ITEM);
+        if (getSubject() != null) getSubject().setState(state);
+    }
+
+    @Override
+    public void onDoubleClickItem(TModel item) {
+        // bind item bình thường
+        super.bindItem(item);
+        setSelectedItem(item);
+        if (mDetailView != null)
+            mDetailView.bindItem(item);
+
+        // báo cho các observ khác về việc double click item
+        GenericState<ListController<TModel>> state = new GenericState<ListController<TModel>>(this, GenericState.DEFAULT_STATE_CODE_ON_DOUBLE_CLICK_ITEM);
+        if (getSubject() != null) getSubject().setState(state);
+    }
+
+    @Override
+    public void setSearchString(String search) {
+        mSearchString = search;
+    }
+
+    @Override
+    public String getSearchString() {
+        return mSearchString;
     }
 
     /**
@@ -151,9 +191,18 @@ public class AbstractListController<TModel extends Model>
     public List<TModel> onRetrieveBackground(int page, int pageSize) throws Exception {
         List<TModel> returnList;
         if (getListService() != null) {
-            if (pageSize > 0)
-                returnList = getListService().retrieve(page, pageSize);
-            else returnList = getListService().retrieve();
+            if (pageSize > 0) {
+                if (mSearchString == null || StringUtil.STRING_EMPTY.equals(mSearchString))
+                    returnList = getListService().retrieve(page, pageSize);
+                else
+                    returnList = getListService().retrieve(mSearchString, page, pageSize);
+            }
+            else {
+                if (mSearchString == null || StringUtil.STRING_EMPTY.equals(mSearchString))
+                    returnList = getListService().retrieve();
+                else
+                    returnList = getListService().retrieve(mSearchString, 1, 500);
+            }
         } else
             returnList = loadDataBackground();
         return returnList;
@@ -512,6 +561,7 @@ public class AbstractListController<TModel extends Model>
 
     @Override
     public void reload() {
+        clearList();
         doRetrieve();
     }
 }

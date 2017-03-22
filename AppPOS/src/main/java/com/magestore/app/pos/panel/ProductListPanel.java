@@ -31,20 +31,41 @@ public class ProductListPanel extends AbstractListPanel<Product> {
     Toolbar toolbar_category;
     ImageView im_category_arrow;
     FrameLayout fr_category;
+
+    // list category
     CategoryListController mCategoryListController;
 
+    /**
+     * Khởi tạo
+     * @param context
+     */
     public ProductListPanel(Context context) {
         super(context);
     }
 
+    /**
+     * Khởi tạo
+     * @param context
+     * @param attrs
+     */
     public ProductListPanel(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
+    /**
+     * Khởi tạo
+     * @param context
+     * @param attrs
+     * @param defStyleAttr
+     */
     public ProductListPanel(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
+    /**
+     * Chỉ định list category
+     * @param mCategoryListController
+     */
     public void setCategoryListController(CategoryListController mCategoryListController) {
         this.mCategoryListController = mCategoryListController;
     }

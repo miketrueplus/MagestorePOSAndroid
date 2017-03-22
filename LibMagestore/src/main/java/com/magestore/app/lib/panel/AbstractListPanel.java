@@ -10,6 +10,7 @@ import android.os.Build;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Layout;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -184,23 +185,6 @@ public abstract class AbstractListPanel<TModel extends Model>
 
         // tham chiếu layout của recycle view
         initListView();
-//        if (mintListLayout > 0) {
-//            mRecycleView = (RecyclerView) findViewById(mintListLayout);
-//            mRecycleViewLayoutManager = new GridLayoutManager(this.getContext(), mintSpanCount, mintOrientation, false);
-//            mRecycleView.setLayoutManager(mRecycleViewLayoutManager);
-//            mRecycleView.setAdapter(new AbstractListPanel<TModel>.ListRecyclerViewAdapter());
-//            mRecycleView.setNestedScrollingEnabled(!mblnNoScroll);
-//            if (haveLazyLoading) {
-//                mScrollListener = new EndlessRecyclerOnScrollListener(mRecycleViewLayoutManager) {
-//                    @Override
-//                    public void onLoadMore(int current_page) {
-//                        // loading dữ liệu
-//                        mController.doRetrieveMore(current_page);
-//                    }
-//                };
-//                mRecycleView.setOnScrollListener(mScrollListener);
-//            }
-//        }
 
         // panel search
         if (mintSearchAutoCompletePanel > 0) {
@@ -322,6 +306,9 @@ public abstract class AbstractListPanel<TModel extends Model>
         // reset lại controll listener
         if (mScrollListener != null) mScrollListener.resetCurrentPage();
         mModelViewList = null;
+
+        // bind list trống
+//        bindList(new ArrayList<TModel>());
 
         // cập nhật giao diện
         notifyDataSetChanged();
@@ -911,6 +898,22 @@ public abstract class AbstractListPanel<TModel extends Model>
                         mController.bindItem((TModel) mModelViewList.get(mintSelectedPos).getModel());
                         mController.doShowDetailPanel(true);
                     }
+                }
+            });
+
+            // khi user hold item
+            mLayoutMainView.setOnLongClickListener(new OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    // Update highlight list đã chọn
+                    mRecycleView.getAdapter().notifyItemChanged(mintSelectedPos);
+                    mintSelectedPos = getAdapterPosition();
+                    mRecycleView.getAdapter().notifyItemChanged(mintSelectedPos);
+
+                    if (mController != null) {
+                        mController.onLongClickItem((TModel) mModelViewList.get(mintSelectedPos).getModel());
+                    }
+                    return true;
                 }
             });
         }

@@ -15,6 +15,7 @@ import java.util.List;
 public class RetrieveListTask<TModel extends Model>
         extends AbstractListTask<AbstractListController<TModel>, Integer, Void, List<TModel>> {
     int page;
+    String mSearchString;
 
     /**
      * Khởi tạo với list controller

@@ -20,7 +20,6 @@ import java.util.List;
 
 public interface ListController<TModel extends Model>
         extends Controller<AbstractListPanel<TModel>, ListService<TModel>> {
-
     /**
      * Tạo mới 1 model
      * @return
@@ -136,6 +135,14 @@ public interface ListController<TModel extends Model>
      * @param view
      */
     void setListPanel(AbstractListPanel<TModel> view);
+
+    void onLongClickItem(TModel item);
+
+    void onDoubleClickItem(TModel item);
+
+    void setSearchString(String search);
+
+    String getSearchString();
 
     /**
      * Chỉ định panel detail

@@ -24,11 +24,20 @@ public class GenericState<TController extends Controller> implements State<TCont
     public static final String DEFAULT_STATE_CODE_8 = "FIRE_STATE_8";
     public static final String DEFAULT_STATE_CODE_9 = "FIRE_STATE_9";
     public static final String DEFAULT_STATE_CODE_ON_SELECT_ITEM = "FIRE_STATE_ON_SELECT_ITEM";
+    public static final String DEFAULT_STATE_CODE_ON_LONG_CLICK_ITEM = "FIRE_STATE_ON_LONG_CLICK_ITEM";
+    public static final String DEFAULT_STATE_CODE_ON_DOUBLE_CLICK_ITEM = "FIRE_STATE_ON_DOUBLE_CLICK_ITEM";
     public static final String DEFAULT_STATE_CODE_ON_RETRIEVE = "FIRE_STATE_ON_RETRIEVE";
     public static final String DEFAULT_STATE_CODE_ON_INSERT = "FIRE_STATE_ON_INSERT";
     public static final String DEFAULT_STATE_CODE_ON_UPDATE = "FIRE_STATE_ON_UPDATE";
     public static final String DEFAULT_STATE_CODE_ON_DELETE = "FIRE_STATE_ON_DELETE";
     public static final String DEFAULT_STATE_CODE_ON_LOAD_ITEM = "DEFAULT_STATE_CODE_ON_LOAD_ITEM";
+
+    public static final String DEFAULT_KEY_ITEM = "DEFAULT_KEY_ITEM";
+    public static final String DEFAULT_KEY_ITEM_0 = "DEFAULT_KEY_ITEM_0";
+    public static final String DEFAULT_KEY_ITEM_1 = "DEFAULT_KEY_ITEM_1";
+    public static final String DEFAULT_KEY_ON_LOAD_ITEM = "DEFAULT_KEY_ON_LOAD_ITEM";
+    public static final String DEFAULT_KEY_ON_LONG_CLICK_ITEM = "DEFAULT_KEY_ON_LONG_CLICK_ITEM";
+    public static final String DEFAULT_KEY_ON_DOUBLE_CLICK_ITEM = "DEFAULT_KEY_ON_DOUBLE_CLICK_ITEM";
 
     // controler nơi xuất phát state
     TController mController;

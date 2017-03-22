@@ -18,14 +18,15 @@ import com.magestore.app.lib.R;
  * Magestore
  * mike@trueplus.vn
  */
-
 public class SearchAutoCompleteTextView extends AutoCompleteTextView {
     private static final int MESSAGE_TEXT_CHANGED = 100;
     private static final int DEFAULT_AUTOCOMPLETE_DELAY = 750;
-
     private int mAutoCompleteDelay = DEFAULT_AUTOCOMPLETE_DELAY;
     private ProgressBar mLoadingIndicator;
 
+    /**
+     * Tiến trình tìm kiếm
+     */
     private final Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -33,22 +34,36 @@ public class SearchAutoCompleteTextView extends AutoCompleteTextView {
         }
     };
 
-
-
+    /**
+     * Khởi tạo
+     * @param context
+     * @param attrs
+     */
     public SearchAutoCompleteTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-
-
+    /**
+     * Thanh progress bar quá trình suggest
+     * @param progressBar
+     */
     public void setLoadingIndicator(ProgressBar progressBar) {
         mLoadingIndicator = progressBar;
     }
 
+    /**
+     * Chỉ định thời gian chờ trễ khi search suggest
+     * @param autoCompleteDelay
+     */
     public void setAutoCompleteDelay(int autoCompleteDelay) {
         mAutoCompleteDelay = autoCompleteDelay;
     }
 
+    /**
+     * Thực hiện search suggest theo nội dung text
+     * @param text
+     * @param keyCode
+     */
     @Override
     protected void performFiltering(CharSequence text, int keyCode) {
         if (mLoadingIndicator != null) {
@@ -58,6 +73,10 @@ public class SearchAutoCompleteTextView extends AutoCompleteTextView {
         mHandler.sendMessageDelayed(mHandler.obtainMessage(MESSAGE_TEXT_CHANGED, text), mAutoCompleteDelay);
     }
 
+    /**
+     *
+     * @param count
+     */
     @Override
     public void onFilterComplete(int count) {
         if (mLoadingIndicator != null) {
@@ -65,4 +84,14 @@ public class SearchAutoCompleteTextView extends AutoCompleteTextView {
         }
         super.onFilterComplete(count);
     }
+
+    /**
+     * dừng suggest
+     */
+    public void dimissSuggest() {
+        if (mHandler != null)  mHandler.removeMessages(MESSAGE_TEXT_CHANGED);
+        dismissDropDown();
+    }
+
+
 }

@@ -240,6 +240,7 @@
             </RelativeLayout>
 
             <Button
+                android:id="@+id/id_btn_product_option_add_to_cart"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"

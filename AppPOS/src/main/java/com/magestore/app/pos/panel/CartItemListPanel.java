@@ -65,11 +65,6 @@ public class CartItemListPanel extends AbstractListPanel<CartItem> {
         // Button
         mCheckoutButton = (Button) findViewById(R.id.btn_sales_order_checkout);
     }
-//
-//    @Override
-//    protected void bindItem(View view, final CartItem item, int position) {
-//        super.bind
-//    }
 
     /**
      * Hold ayout view của iten, gán findview id vào các biến
@@ -125,7 +120,7 @@ public class CartItemListPanel extends AbstractListPanel<CartItem> {
                 }
             });
 
-            // Sự kiện khi swipe in
+            // Sự kiện khi swipe left/right
             swipeLayout.addSwipeListener(new SwipeLayout.SwipeListener() {
                 @Override
                 public void onStartOpen(SwipeLayout layout) {
@@ -162,6 +157,7 @@ public class CartItemListPanel extends AbstractListPanel<CartItem> {
                 }
             });
 
+            // double click trên item
             swipeLayout.setOnDoubleClickListener(new SwipeLayout.DoubleClickListener() {
                 @Override
                 public void onDoubleClick(SwipeLayout layout, boolean surface) {
@@ -186,12 +182,4 @@ public class CartItemListPanel extends AbstractListPanel<CartItem> {
             }
         }
     }
-
-    /*
-     * Trả về controller
-     * @return
-     */
-//    public CartItemListController getOrderItemListController() {
-//        return (CartItemListController) getController();
-//    }
 }
