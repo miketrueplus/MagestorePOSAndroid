@@ -136,6 +136,10 @@ public interface ListController<TModel extends Model>
      */
     void setListPanel(AbstractListPanel<TModel> view);
 
+    void onLongClickItem(TModel item);
+
+    void onDoubleClickItem(TModel item);
+
     void setSearchString(String search);
 
     String getSearchString();

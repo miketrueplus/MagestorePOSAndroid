@@ -10,6 +10,7 @@ import android.os.Build;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Layout;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -897,6 +898,22 @@ public abstract class AbstractListPanel<TModel extends Model>
                         mController.bindItem((TModel) mModelViewList.get(mintSelectedPos).getModel());
                         mController.doShowDetailPanel(true);
                     }
+                }
+            });
+
+            // khi user hold item
+            mLayoutMainView.setOnLongClickListener(new OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    // Update highlight list đã chọn
+                    mRecycleView.getAdapter().notifyItemChanged(mintSelectedPos);
+                    mintSelectedPos = getAdapterPosition();
+                    mRecycleView.getAdapter().notifyItemChanged(mintSelectedPos);
+
+                    if (mController != null) {
+                        mController.onLongClickItem((TModel) mModelViewList.get(mintSelectedPos).getModel());
+                    }
+                    return true;
                 }
             });
         }

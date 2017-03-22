@@ -3,6 +3,7 @@ package com.magestore.app.lib.controller;
 import android.view.View;
 
 import com.magestore.app.lib.model.Model;
+import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.observ.GenericState;
 import com.magestore.app.lib.observ.State;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
@@ -88,6 +89,32 @@ public class AbstractListController<TModel extends Model>
 
         // báo cho các observ khác về việc bind item
         GenericState<ListController<TModel>> state = new GenericState<ListController<TModel>>(this, GenericState.DEFAULT_STATE_CODE_ON_SELECT_ITEM);
+        if (getSubject() != null) getSubject().setState(state);
+    }
+
+    @Override
+    public void onLongClickItem(TModel item) {
+        // bind item bình thường
+        super.bindItem(item);
+        setSelectedItem(item);
+        if (mDetailView != null)
+            mDetailView.bindItem(item);
+
+        // báo cho các observ khác về việc long click item
+        GenericState<ListController<TModel>> state = new GenericState<ListController<TModel>>(this, GenericState.DEFAULT_STATE_CODE_ON_LONG_CLICK_ITEM);
+        if (getSubject() != null) getSubject().setState(state);
+    }
+
+    @Override
+    public void onDoubleClickItem(TModel item) {
+        // bind item bình thường
+        super.bindItem(item);
+        setSelectedItem(item);
+        if (mDetailView != null)
+            mDetailView.bindItem(item);
+
+        // báo cho các observ khác về việc double click item
+        GenericState<ListController<TModel>> state = new GenericState<ListController<TModel>>(this, GenericState.DEFAULT_STATE_CODE_ON_DOUBLE_CLICK_ITEM);
         if (getSubject() != null) getSubject().setState(state);
     }
 

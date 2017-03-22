@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
@@ -52,28 +53,53 @@ import java.util.Map;
  */
 
 public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
+    // binding option, product và cartitem
     PanelProductOptionListBinding mBinding;
 
+    // list view để xem các option
     ExpandableListView expandableListView;
+
+    // button add to card
+    Button mbtnAddToCart;
+
+    // adapter chuyển data set option sang list view
     ProductOptionPanel.CustomExpandableListAdapter expandableListAdapter;
+
+    // danh sách các option
     List<OptionModelView> mModelViewList;
+
+    // ảnh chi tiết product
     ImageView mImageProductDetail;
 
+    /**
+     * Khởi tạo
+     * @param context
+     */
     public ProductOptionPanel(Context context) {
         super(context);
     }
 
+    /**
+     * Khởi tạo
+     * @param context
+     * @param attrs
+     */
     public ProductOptionPanel(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
+    /**
+     * Khởi tạo
+     * @param context
+     * @param attrs
+     * @param defStyleAttr
+     */
     public ProductOptionPanel(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
     /**
      * Đưa item vào giao diện
-     *
      * @param item
      */
     @Override
@@ -88,29 +114,39 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
 
     /**
      * Xử lý hiển thị thông tin product và cart item
-     *
      * @param item
      */
     public void showCartItemInfo(CartItem item) {
+        // đặt cart và product hiển thị lên giao diện
         mBinding.setCartItem(item);
         mBinding.setProduct(item.getProduct());
+
+        // nếu k0 có option, panel được mở trực tiếp từ long click product
+        if (!item.getProduct().haveProductOption())
+            super.bindItem(item);
+
+        // hiển thị ảnh product
         if (item.getProduct().getBitmap() != null)
             mImageProductDetail.setImageBitmap(item.getProduct().getBitmap());
     }
 
     /**
      * Save item vào cart
-     *
      * @param view
      */
     public void onAddToCart(View view) {
+        // validate input trước
         if (!validateInput()) return;
-        ((CartItemListController) getController()).updateToCart(bind2Item());
+
+        // chia làm có option
+        if (getItem().getProduct().haveProductOption())
+            ((CartItemListController) getController()).updateToCart(bind2Item());
+        else // và không option thì add như 1 product
+            ((CartItemListController) getController()).updateToCartNoOption(bind2Item());
     }
 
     /**
      * Nhấn nút trừ số lượng
-     *
      * @param view
      */
     public void onAddQuantity(View view) {
@@ -120,7 +156,6 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
 
     /**
      * Nhấn nút thêm số lượng
-     *
      * @param view
      */
     public void onSubstractQuantity(View view) {
@@ -129,7 +164,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
     }
 
     /**
-     * So sánh cặp code value với cart item
+     * So sánh cặp code value với cart item xem đã được chọn chưa
      * @param code
      * @param value
      * @param optionsValueList
@@ -144,8 +179,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
     }
 
     /**
-     * So sánh cặp code value với cart item
-
+     * Tìm trong option đã chọn là cái option nào
      * @return
      */
     public String getOptionValue(String code, List<PosCartItem.OptionsValue> optionsValueList, String defaultReturn) {
@@ -156,6 +190,9 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         return defaultReturn;
     }
 
+    /**
+     * Tạo model view
+     */
     public void createModelViewList() {
         mModelViewList = new ArrayList<OptionModelView>();
 
@@ -262,6 +299,9 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         }
     }
 
+    /**
+     * Model view cho mỗi option value
+     */
     class OptionModelView extends GenericModelView {
         public OptionModelViewHolder holder;
         public String title;
@@ -304,6 +344,9 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         }
     }
 
+    /**
+     * Model view giả cho phần nhập số lượng
+     */
     class FakeValueModelView extends OptionValueModelView {
     }
 
@@ -363,6 +406,9 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         // imageview
         mImageProductDetail = (ImageView) findViewById(R.id.id_img_product_detail_image);
 
+        // button add to cart
+        mbtnAddToCart = (Button) findViewById(R.id.id_btn_product_option_add_to_cart);
+
         // expan list view
         expandableListView = (ExpandableListView) findViewById(R.id.id_product_option_list);
         expandableListAdapter = new ProductOptionPanel.CustomExpandableListAdapter(getContext());
@@ -391,8 +437,12 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
      * @return
      */
     public boolean validateInput() {
+        // k0 validate nữa nếu là k0 có option
+        if (!getItem().getProduct().haveProductOption()) return true;
+
         boolean blnValid = true;
         // duyệt tất cả các option custome để lấy option mà user đã chọn
+        if (mModelViewList == null) return false;
         for (OptionModelView optionModelView : mModelViewList) {
             // check xem có option value nào được chọn không
             boolean haveChoose = false;
@@ -404,7 +454,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                 }
             }
 
-            // nếu k0 có thì báo lỗi thông báo lỗi
+            // nếu k0 có thì báo lỗi thông báo lỗi chưa chọn option
             if (optionModelView.holder == null) continue;
             if (optionModelView.is_required && !haveChoose) {
                 blnValid = false;
@@ -419,60 +469,12 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         return blnValid;
     }
 
-//    @Override
-//    public CartItem bind2Item() {
-//        // lấy item tham chiếu
-//        CartItem item = super.bind2Item();
-//        if (expandableListAdapter == null) return item;
-//
-//        // để tạo description cho product
-//        StringBuilder descriptionBuilder = new StringBuilder();
-//
-//        // clear các option cũ
-//        item.clearOption();
-//
-//        // duyệt tất cả các option để lấy option mà user đã chọn
-//        boolean firstOption = true;
-//        for (OptionModelView optionModelView : mModelViewList) {
-//            boolean firstOptionValue = true;
-//            for (OptionValueModelView optionValueModelView : optionModelView.optionValueModelViewList) {
-//                if (optionValueModelView instanceof FakeValueModelView) continue;
-//                if (optionValueModelView.choose) {
-//                    // điền description cho cart item
-//                    if (firstOptionValue) {
-//                        descriptionBuilder.append(firstOption ? StringUtil.STRING_EMPTY : StringUtil.STRING_COMMA_SPACE).append(optionModelView.title);
-//                        firstOption = false;
-//                    }
-//                    descriptionBuilder.append(firstOptionValue ? StringUtil.STRING_COLON_SPACE : StringUtil.STRING_COMMA_SPACE).append(optionValueModelView.title);
-//                    firstOptionValue = false;
-//
-//                    if (PosProductOptionCustom.OPTION_TYPE_CUSTOM.equals(optionModelView.option_type))
-//                        getItem().insertOption(optionModelView.getModel().getID(), optionValueModelView.getModel().getID());
-//                    else if (PosProductOptionCustom.OPTION_TYPE_CONFIG.equals(optionModelView.option_type))
-//                        getItem().insertSuperAttribute(optionModelView.getModel().getID(), optionValueModelView.id);
-//                    else if (PosProductOptionCustom.OPTION_TYPE_BUNDLE.equals(optionModelView.option_type)) {
-//                        getItem().insertBundleOption(optionModelView.getModel().getID(), optionValueModelView.id);
-//                    }
-//                }
-//            }
-//
-//            // bổ sung số lượng
-//            if (PosProductOptionCustom.OPTION_TYPE_BUNDLE.equals(optionModelView.option_type)) {
-//                getItem().insertBundleOptionQuantity(optionModelView.getModel().getID(), StringUtil.STRING_EMPTY + optionModelView.quantity);
-//            }
-//        }
-//
-//        // trả lại cart item
-//        item.setItemDescription(descriptionBuilder.toString());
-//        ((CartItemListController) getController()).updateCartItemPrice(item);
-//        return item;
-//    }
-
     @Override
     public void bind2Item(CartItem item) {
-// lấy item tham chiếu
-//        CartItem item = super.bind2Item();
         if (expandableListAdapter == null) return;
+
+        // nếu k0 có option, tương đương product detail, k0 phải chuyển input từ option sang nữa
+        if (!item.getProduct().haveProductOption()) return;
 
         // để tạo description cho product
         StringBuilder descriptionBuilder = new StringBuilder();
@@ -534,10 +536,25 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                 }
             }
         }
-        getItem().setUnitPrice(price);
-//        CartItem item = bind2Item();
-//        mBinding.setCartItem(item);
 
+        // cập nhật lại đơn giá
+        getItem().setUnitPrice(price);
+    }
+
+    @Override
+    public void showProgress(boolean blnShow) {
+        super.showProgress(blnShow);
+
+        // k0 ấn add to cart được nếu vẫn đang load product option
+        mbtnAddToCart.setEnabled(blnShow ? false : true);
+    }
+
+    @Override
+    public void hideAllProgressBar() {
+        super.hideAllProgressBar();
+
+        // k0 ấn add to cart được nếu vẫn đang load product option
+        mbtnAddToCart.setEnabled(true);
     }
 
     /**
@@ -656,7 +673,6 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
 
         /**
          * Khi click trên view
-         *
          * @param v
          */
         private void onClickView(View v) {

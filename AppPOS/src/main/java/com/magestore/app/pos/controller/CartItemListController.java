@@ -243,6 +243,14 @@ public class CartItemListController extends AbstractChildListController<Checkout
     }
 
     /**
+     * Hiển thị mô tả sản phẩm, cho phép add to card
+     * @param state
+     */
+    public void showProductDetail(State state) {
+        doShowProductOptionInput(((ProductListController) state.getController()).getSelectedItem());
+    }
+
+    /**
      * Hiển thị dialog detail cho phép chỉnh số lượng, giá cả, discount
      *
      * @param show
@@ -301,15 +309,55 @@ public class CartItemListController extends AbstractChildListController<Checkout
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
+
+        // chèn model lên đầu
         getView().updateModelToFirstInsertIfNotFound(cartItem);
+
+        // ẩn các dialog đang hiển thị
         if (mCartItemDetailDialog != null && mCartItemDetailDialog.isShowing())
             mCartItemDetailDialog.dismiss();
         if (mProductOptionDialog != null && mProductOptionDialog.isShowing())
             mProductOptionDialog.dismiss();
         if (mCustomeSaleDialog != null && mCustomeSaleDialog.isShowing())
             mCustomeSaleDialog.dismiss();
+
+        // cập nhật giá tổng
         updateTotalPrice();
 
+    }
+
+    /**
+     * Cập nhật cart item hiện tại. Tắt các dialog
+     *
+     * @param cartItem
+     */
+    public void updateToCartNoOption(CartItem cartItem) {
+        try {
+            // chèn vào cart item tùy xem có hoặc chưa có trong cart
+            CartItem newCartItem = mCartService.insert(getParent(), cartItem.getProduct(), cartItem.getQuantity());
+
+            // cập nhật view và giá
+            getView().updateModelToFirstInsertIfNotFound(newCartItem);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+        // ẩn các dialog đang hiển thị
+        if (mCartItemDetailDialog != null && mCartItemDetailDialog.isShowing())
+            mCartItemDetailDialog.dismiss();
+        if (mProductOptionDialog != null && mProductOptionDialog.isShowing())
+            mProductOptionDialog.dismiss();
+        if (mCustomeSaleDialog != null && mCustomeSaleDialog.isShowing())
+            mCustomeSaleDialog.dismiss();
+
+        // cập nhật giá tổng
+        updateTotalPrice();
     }
 
     /**
@@ -329,13 +377,19 @@ public class CartItemListController extends AbstractChildListController<Checkout
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
+
+        // chèn model lên đầu
         getView().updateModelToFirstInsertIfNotFound(cartItem);
+
+        // ẩn các dialog đang hiển thị
         if (mCartItemDetailDialog != null && mCartItemDetailDialog.isShowing())
             mCartItemDetailDialog.dismiss();
         if (mProductOptionDialog != null && mProductOptionDialog.isShowing())
             mProductOptionDialog.dismiss();
         if (mCustomeSaleDialog != null && mCustomeSaleDialog.isShowing())
             mCustomeSaleDialog.dismiss();
+
+        // cập nhật giá tổng
         updateTotalPrice();
     }
 
@@ -377,24 +431,6 @@ public class CartItemListController extends AbstractChildListController<Checkout
     }
 
     /**
-     * Clear các chosen
-     */
-//    public void clearProductOptionChosen() {
-//        if (getItem() == null) return;
-//        if (getItem().getProduct() == null) return;
-//        if (getItem().getProduct().getProductOption() == null) return;
-//        if (getItem().getProduct().getProductOption().getCustomOptions() == null) return;
-//
-//        // clear các chosen
-//        for (ProductOptionCustom productCustomOption : getItem().getProduct().getProductOption().getCustomOptions()) {
-//            if (productCustomOption.getOptionValueList() == null) continue;
-//            for (ProductOptionCustomValue customValue : productCustomOption.getOptionValueList()) {
-//                customValue.setChosen(false);
-//            }
-//        }
-//    }
-
-    /**
      * Đặt lại các chosen trên product tương ứng
      *
      * @param cartItem
@@ -404,15 +440,6 @@ public class CartItemListController extends AbstractChildListController<Checkout
         if (cartItem.getProduct() == null) return;
         if (cartItem.getProduct().getProductOption() == null) return;
         if (cartItem.getProduct().getProductOption().getCustomOptions() == null) return;
-//        if (cartItem.getChooseProductOptions() == null) return;
-//
-//        // clear các chosen
-//        for (ProductOptionCustom optionCustom : cartItem.getChooseProductOptions().keySet()) {
-//            if (cartItem.getChooseProductOptions().get(optionCustom) == null) continue;
-//            for (ProductOptionCustomValue optionCustomValue : cartItem.getChooseProductOptions().get(optionCustom).productOptionCustomValueList) {
-//                optionCustomValue.setChosen(true);
-//            }
-//        }
     }
 
     /**

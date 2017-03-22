@@ -261,15 +261,8 @@ public class SalesActivity extends AbstractActivity
         mCheckoutAddPaymentListController.setListPanel(mCheckoutAddPaymentPanel);
         mCheckoutAddPaymentListController.setCheckoutListController(mCheckoutListController);
 
-//        mProductOptionController = new ProductOptionController();
-//        mProductOptionController.setSubject(subjectObserv);
-//        mProductOptionController.setView(mPanelProductOption);
-//        mProductOptionController.setService(productOptionService);
-//        mProductOptionController.setCartService(cartService);
-
 
         mPaymentMethodListPanel.setCheckoutListController(mCheckoutListController);
-
         mCheckoutDetailPanel.setCheckoutPaymentListPanel(mCheckoutPaymentListPanel);
         mCheckoutDetailPanel.setPaymentMethodListPanel(mPaymentMethodListPanel);
         mCheckoutDetailPanel.setCheckoutShippingListPanel(mCheckoutShippingListPanel);
@@ -320,6 +313,13 @@ public class SalesActivity extends AbstractActivity
                 .attachListenerObserve()
                 .setMethodName("bindProduct")
                 .setStateCode(GenericState.DEFAULT_STATE_CODE_ON_SELECT_ITEM)
+                .setControllerState(mProductListController);
+
+        // mỗi khi 1 product trên product list được ấn chọn
+        mCheckoutCartItemListController
+                .attachListenerObserve()
+                .setMethodName("showProductDetail")
+                .setStateCode(GenericState.DEFAULT_STATE_CODE_ON_LONG_CLICK_ITEM)
                 .setControllerState(mProductListController);
 
         // sự kiện mỗi khi có 1 checkout được chọn
