@@ -9,6 +9,8 @@ import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.model.directory.Region;
 import com.magestore.app.pos.model.PosAbstractModel;
 import com.magestore.app.pos.model.directory.PosRegion;
+import com.magestore.app.pos.parse.gson2pos.Gson2PosExclude;
+import com.magestore.app.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +41,15 @@ public class PosCustomerAddress extends PosAbstractModel implements CustomerAddr
     String state;
     String default_shipping;
     String default_billing;
+
+    @Gson2PosExclude
+    String short_address;
+    @Gson2PosExclude
+    boolean isStoreAddress;
+    @Gson2PosExclude
+    boolean use_shipping_to_checkout;
+    @Gson2PosExclude
+    boolean use_billing_to_checkout;
 
     @Override
     public String getID() {
@@ -196,6 +207,9 @@ public class PosCustomerAddress extends PosAbstractModel implements CustomerAddr
 
     @Override
     public String getShortAddress() {
+        if(short_address != null && !StringUtil.STRING_EMPTY.equals(short_address)){
+            return short_address;
+        }
         String fullName = getFirstName() + " " + getLastName();
         StringBuilder builder = new StringBuilder();
         builder.append(fullName);
@@ -222,7 +236,43 @@ public class PosCustomerAddress extends PosAbstractModel implements CustomerAddr
         builder.append(getPostCode());
         builder.append(", ");
         builder.append(getTelephone());
-        return builder.toString();
+        short_address = builder.toString();
+        return short_address;
+    }
+
+    @Override
+    public void setShortAddress(String strShortAddress) {
+        short_address = strShortAddress;
+    }
+
+    @Override
+    public boolean getIsStoreAddress() {
+        return isStoreAddress;
+    }
+
+    @Override
+    public void setIsStoreAddress(boolean bIsStoreAddress) {
+        isStoreAddress = bIsStoreAddress;
+    }
+
+    @Override
+    public boolean getUseShippingToCheckout() {
+        return use_shipping_to_checkout;
+    }
+
+    @Override
+    public void setUseShippingToCheckout(boolean bUseShippingToCheckout) {
+        use_shipping_to_checkout = bUseShippingToCheckout;
+    }
+
+    @Override
+    public boolean getUseBillingToCheckout() {
+        return use_billing_to_checkout;
+    }
+
+    @Override
+    public void setUseBillingToCheckout(boolean bUseBillingToCheckout) {
+        use_billing_to_checkout = bUseBillingToCheckout;
     }
 
     @Override

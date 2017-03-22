@@ -141,6 +141,19 @@ public class POSCustomerAddressService extends AbstractService implements Custom
         return region;
     }
 
+    @Override
+    public Customer addAddressDefaultToCustomer(Customer customer, Customer guest_customer, String userAddressDefault) {
+        Customer newGuestCustomer = guest_customer;
+        newGuestCustomer.getAddress().get(0).setShortAddress(userAddressDefault);
+        newGuestCustomer.getAddress().get(0).setIsStoreAddress(true);
+        List<CustomerAddress> listCustomerAddress = customer.getAddress();
+        if (listCustomerAddress == null) {
+            listCustomerAddress = new ArrayList<>();
+        }
+        listCustomerAddress.add(0, newGuestCustomer.getAddress().get(0));
+        return customer;
+    }
+
     /**
      * Cập nhật 1 address vào customer, cập nhật API
      *

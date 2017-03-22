@@ -15,4 +15,5 @@ import com.magestore.app.lib.service.ChildListService;
 
 public interface CustomerAddressService extends ChildListService<Customer, CustomerAddress> {
     Region createRegion();
+    Customer addAddressDefaultToCustomer(Customer customer, Customer guest_customer, String userAddressDefault);
 }
