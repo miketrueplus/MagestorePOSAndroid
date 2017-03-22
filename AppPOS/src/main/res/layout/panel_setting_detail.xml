@@ -25,7 +25,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/layout_margin_20"
+            android:background="@drawable/login_form_border_edittext"
             android:hint="@string/setting_account_title_information_name"
+            android:padding="@dimen/layout_margin_10"
             android:textColor="@color/text_color"
             android:textSize="@dimen/text_size" />
 
@@ -42,8 +44,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/layout_margin_10"
+            android:background="@drawable/login_form_border_edittext"
             android:hint="@string/setting_account_title_current_password"
             android:inputType="textPassword"
+            android:padding="@dimen/layout_margin_10"
             android:textColor="@color/text_color"
             android:textSize="@dimen/text_size" />
 
@@ -52,8 +56,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/layout_margin_10"
+            android:background="@drawable/login_form_border_edittext"
             android:hint="@string/setting_account_title_new_password"
             android:inputType="textPassword"
+            android:padding="@dimen/layout_margin_10"
             android:textColor="@color/text_color"
             android:textSize="@dimen/text_size" />
 
@@ -61,35 +67,36 @@
             android:id="@+id/edt_confirm_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/login_form_border_edittext"
             android:hint="@string/setting_account_title_confirm_password"
             android:inputType="textPassword"
+            android:padding="@dimen/layout_margin_10"
             android:textColor="@color/text_color"
             android:textSize="@dimen/text_size" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/layout_margin_40"
+            android:layout_marginTop="@dimen/layout_margin_30"
             android:orientation="horizontal">
 
             <FrameLayout
                 android:id="@+id/fr_detail_bottom_left"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:visibility="gone" />
+                android:layout_weight="1" />
 
             <Button
-                android:id="@+id/btn_invoice"
+                android:id="@+id/btn_save"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/layout_margin_10"
                 android:layout_marginLeft="@dimen/layout_margin_5"
                 android:layout_marginRight="@dimen/layout_margin_10"
-                android:layout_marginTop="@dimen/layout_margin_5"
+                android:layout_marginTop="@dimen/layout_margin_10"
                 android:layout_weight="1"
                 android:background="@drawable/order_history_border_button_invoice"
-                android:text="@string/order_detail_bottom_btn_invoice"
+                android:text="@string/save"
                 android:textColor="@color/order_bottom_button_invoice_text_color"
                 android:textSize="@dimen/order_bottom_button_text_size" />
 
@@ -97,8 +104,7 @@
                 android:id="@+id/fr_detail_bottom_right"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:visibility="gone" />
+                android:layout_weight="1" />
         </LinearLayout>
 
     </LinearLayout>
