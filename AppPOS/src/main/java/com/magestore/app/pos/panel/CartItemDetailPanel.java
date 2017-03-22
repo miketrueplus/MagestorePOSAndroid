@@ -131,9 +131,9 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
      * @param view
      */
     public void onAddQuantity(View view) {
-        bindItem(bind2Item());
         ((CartItemListController) getController()).addQuantity(getItem());
-        mBinding.setCartItem(getItem());
+        bindItem(getItem());
+//        mBinding.setCartItem(getItem());
     }
 
     /**
@@ -142,9 +142,8 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
      * @param view
      */
     public void onSubstractQuantity(View view) {
-        bindItem(bind2Item());
         ((CartItemListController) getController()).substractQuantity(getItem());
-        mBinding.setCartItem(getItem());
+        bindItem(getItem());
     }
 
     /**

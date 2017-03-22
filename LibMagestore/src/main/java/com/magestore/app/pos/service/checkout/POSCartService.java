@@ -222,6 +222,9 @@ public class POSCartService extends AbstractService implements CartService {
     public boolean insert(Checkout checkout, CartItem... childs) throws IOException, InstantiationException, ParseException, IllegalAccessException {
         if (checkout.getCartItem() == null)
             checkout.setCartItem(new ArrayList<CartItem>());
+        // tìm cart có rồi thì thôi
+        for (CartItem item : checkout.getCartItem())
+            if (item == childs[0]) return true;
         checkout.getCartItem().add(childs[0]);
         return true;
     }
