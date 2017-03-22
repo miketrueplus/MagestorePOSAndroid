@@ -46,7 +46,6 @@ public class POSCartService extends AbstractService implements CartService {
 
         float total = 0;
         for (CartItem item : listItems) {
-//            item.setPrice(item.getQuantity() * item.getProduct().getPrice());
             total += item.getPrice();
         }
         checkout.setSubTotal(total);
@@ -100,6 +99,10 @@ public class POSCartService extends AbstractService implements CartService {
     }
 
 
+    /**
+     * Khởi tạo 1 cústom sale
+     * @return
+     */
     @Override
     public CartItem createCustomSale() {
         CartItem cartItem = new PosCartItem();
@@ -116,11 +119,23 @@ public class POSCartService extends AbstractService implements CartService {
         return cartItem;
     }
 
+    /**
+     * Khởi tạo 1 cart item với product
+     * @param product
+     * @return
+     */
     @Override
     public CartItem create(Product product) {
         return create(product, 1, product.getFinalPrice());
     }
 
+    /**
+     * Khởi tạo cart item với product
+     * @param product
+     * @param quantity
+     * @param price
+     * @return
+     */
     @Override
     public CartItem create(Product product, int quantity, float price) {
         CartItem cartItem = new PosCartItem();
@@ -279,8 +294,8 @@ public class POSCartService extends AbstractService implements CartService {
         // có rồi thì cập nhật lại số lượng
         else {
             cartItem.setQuantity(cartItem.getQuantity() + quantity);
-            float totalPrice = cartItem.getPrice();
-            totalPrice += (price * quantity);
+            float unitPrice = cartItem.getUnitPrice();
+            float totalPrice = (unitPrice * cartItem.getQuantity());
             cartItem.setPrice(totalPrice);
         }
         return cartItem;
@@ -304,7 +319,7 @@ public class POSCartService extends AbstractService implements CartService {
      */
     @Override
     public CartItem insert(Checkout checkout, Product product, int quantity) throws IOException, InstantiationException, ParseException, IllegalAccessException {
-        return insert(checkout, product, quantity, product.getPrice());
+        return insert(checkout, product, quantity, product.getFinalPrice());
     }
 
     /**
@@ -378,7 +393,7 @@ public class POSCartService extends AbstractService implements CartService {
 
             // Cập nhật số lượng mới
             cartItem.setQuantity(newQuantity);
-            cartItem.setPrice(newQuantity * product.getPrice());
+            cartItem.setPrice(newQuantity * cartItem.getUnitPrice());
         }
         return cartItem;
     }

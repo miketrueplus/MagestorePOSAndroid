@@ -71,7 +71,6 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
 
             // Xây dựng tham số
             paramBuilder = statement.getParamBuilder()
-
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
 //                .setFilterEqual("name", "Joust Duffle Bag");
 
@@ -108,31 +107,6 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
             if (connection != null) connection.close();
             connection = null;
         }
-    }
-
-    @Override
-    public void loadProductOption(List<Product> listProduct) {
-//        Gson2PosProductParseImplement implement = new Gson2PosProductParseImplement();
-//        Gson gson = implement.createGson();
-//        for (Product product: listProduct) {
-//            if (product.getJsonConfigOption() == null || "".equals(product.getJsonConfigOption().trim())) continue;
-//            PosProductOption productOption = gson.fromJson(product.getJsonConfigOption(), PosProductOption.class);
-//            product.setProductOption((ProductOption) productOption);
-//        }
-    }
-
-    /**
-     * Sắp xếp lại các biến trong product option để thuận tiện truy cập hơn
-     */
-    public void arrangeProductOption(PosProductOption productOption) {
-        // duỵet từng nhóm thuộc tính
-//        for (PosProductConfigOptionAttributes attribute : productOption.attributes.values()) {
-//            // duyệt từng option trong thuộc tính
-//            for (PosProductConfigOptionAttributes.Attributes option: attribute.options ) {
-//                option.images = new ArrayList<PosProductOptionJsonConfigOptionImage>();
-//                option.images.add(attribute.images.get())
-//            }
-//        }
     }
 
     /**
@@ -287,9 +261,6 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
             Gson2PosListProduct listProduct = (Gson2PosListProduct) rp.doParse();
             List<Product> list = (List<Product>) (List<?>) (listProduct.items);
 
-            // đọc nốt thông tin về product option
-            loadProductOption(list);
-
             // return
             if (list.size() >= 1)
                 return list.get(0);
@@ -400,9 +371,6 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
             rp.setParseModel(Gson2PosListProduct.class);
             Gson2PosListProduct listProduct = (Gson2PosListProduct) rp.doParse();
             List<Product> list = (List<Product>) (List<?>) (listProduct.items);
-
-            // đọc nốt thông tin về product option
-            loadProductOption(list);
 
             // return
             return list;

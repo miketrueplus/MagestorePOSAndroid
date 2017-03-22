@@ -24,10 +24,5 @@ public interface ProductDataAccess extends DataAccess, ListDataAccess<Product> {
 
     ProductOption loadProductOption(Product product) throws IOException;
 
-    void loadProductOption(List<Product> listProduct);
-
-    //    List<Product> getProducts(int pageSize, int currentPage) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
-//    void getProducts(Product product);
-//    void updateProduct(Product product);
     List<Product> retrieve(String categoryId, String searchString,int pageSize, int currentPage) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
 }

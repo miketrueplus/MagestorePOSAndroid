@@ -154,12 +154,10 @@ public class CartItemListController extends AbstractChildListController<Checkout
      */
     public void updateTotalPrice() {
         mCartService.calculateLastTotal(getParent());
+
         // thông báo sự kiện update tổng giá
         GenericState<ListController> state = new GenericState<ListController>(this, STATE_ON_UPDATE_CART_ITEM);
         if (getSubject() != null) getSubject().setState(state);
-//        mCartService.calculateLastTotalOrderItems();
-//        if (mParrentController != null && (mParrentController instanceof  CheckoutListController))
-//          ((CheckoutListController) mParrentController).updateTotalPrice();
     }
 
     /**
@@ -327,7 +325,6 @@ public class CartItemListController extends AbstractChildListController<Checkout
 
         // cập nhật giá tổng
         updateTotalPrice();
-
     }
 
     /**
@@ -566,6 +563,7 @@ public class CartItemListController extends AbstractChildListController<Checkout
      */
     public void addQuantity(CartItem cartItem) {
         mCartService.increase(cartItem);
+
     }
 
     /**
