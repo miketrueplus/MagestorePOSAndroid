@@ -595,7 +595,7 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
         if (!isRequied(first_name)) {
             return false;
         }
-        if (!isRequied(first_name)) {
+        if (!isRequied(last_name)) {
             return false;
         }
         if (!isRequied(email) || !isRequiedEmail(email)) {
