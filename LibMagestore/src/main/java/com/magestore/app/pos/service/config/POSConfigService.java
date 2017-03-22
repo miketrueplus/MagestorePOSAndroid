@@ -9,6 +9,7 @@ import com.magestore.app.lib.model.config.ConfigPriceFormat;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.directory.Currency;
 import com.magestore.app.lib.model.setting.Setting;
+import com.magestore.app.lib.model.staff.Staff;
 import com.magestore.app.lib.resourcemodel.config.ConfigDataAccess;
 import com.magestore.app.lib.resourcemodel.DataAccessFactory;
 import com.magestore.app.lib.service.config.ConfigService;
@@ -157,6 +158,14 @@ public class POSConfigService extends AbstractService implements ConfigService {
     }
 
     @Override
+    public Staff getStaff() throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        // Nếu chưa khởi tạo customer gateway factory
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
+        return configDataAccess.getStaff();
+    }
+
+    @Override
     public Map<String, ConfigCountry> getCountry() throws InstantiationException, IllegalAccessException, IOException, ParseException {
         // Nếu chưa khởi tạo customer gateway factory
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
@@ -212,6 +221,7 @@ public class POSConfigService extends AbstractService implements ConfigService {
         return configDataAccess.getConfigCCYears();
     }
 
+    public static String SETTING_ACCOUNT = "My Account";
     public static String SETTING_CURRENCY = "Currency";
     public static String SETTING_STORE = "Store";
 
@@ -219,14 +229,19 @@ public class POSConfigService extends AbstractService implements ConfigService {
     public List<Setting> getListSetting() {
         List<Setting> settingList = new ArrayList<>();
 
+        Setting accountSetting = new PosSetting();
+        accountSetting.setName(SETTING_ACCOUNT);
+        accountSetting.setType(0);
+        settingList.add(accountSetting);
+
         Setting currencySetting = new PosSetting();
         currencySetting.setName(SETTING_CURRENCY);
-        currencySetting.setType(0);
+        currencySetting.setType(1);
         settingList.add(currencySetting);
 
         Setting storeSetting = new PosSetting();
         storeSetting.setName(SETTING_STORE);
-        storeSetting.setType(1);
+        storeSetting.setType(2);
         settingList.add(storeSetting);
 
         return settingList;

@@ -158,6 +158,14 @@
     <string name="register_shift_dialog_make_adjustment_remove">Remove</string>
     <string name="register_shift_dialog_make_adjustment_note">Note</string>
 
+    <!--Strings related to setting-->
+    <string name="setting_account_title_information">Account Information</string>
+    <string name="setting_account_title_information_name">Display Name - Optional</string>
+    <string name="setting_account_title_password">Change Password</string>
+    <string name="setting_account_title_current_password">Current Password - Optional</string>
+    <string name="setting_account_title_new_password">New Password</string>
+    <string name="setting_account_title_confirm_password">Confirm Password</string>
+
     <!-- Strings related to single words -->
     <string name="add">Add</string>
     <string name="add_to_cart">Add To Cart</string>

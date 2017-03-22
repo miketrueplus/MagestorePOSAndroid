@@ -7,6 +7,7 @@ import android.support.v7.app.AlertDialog;
 import com.magestore.app.lib.controller.AbstractListController;
 import com.magestore.app.lib.model.directory.Currency;
 import com.magestore.app.lib.model.setting.Setting;
+import com.magestore.app.lib.model.staff.Staff;
 import com.magestore.app.lib.service.config.ConfigService;
 import com.magestore.app.lib.service.user.UserService;
 import com.magestore.app.pos.LoginActivity;
@@ -26,6 +27,7 @@ public class SettingListController extends AbstractListController<Setting> {
     ConfigService mConfigService;
     UserService mUserService;
     List<Currency> currencyList;
+    Staff mStaff;
 
     public void setConfigService(ConfigService mConfigService) {
         this.mConfigService = mConfigService;
@@ -38,12 +40,14 @@ public class SettingListController extends AbstractListController<Setting> {
     @Override
     public List<Setting> onRetrieveBackground(int page, int pageSize) throws Exception {
         currencyList = mConfigService.getCurrencies();
+        mStaff = mConfigService.getStaff();
         return mConfigService.getListSetting();
     }
 
     @Override
     public synchronized void onRetrievePostExecute(List<Setting> list) {
         super.onRetrievePostExecute(list);
+        ((SettingDetailPanel) mDetailView).setStaffDataSet(mStaff);
         ((SettingDetailPanel) mDetailView).setCurrencyDataSet(currencyList);
     }
 

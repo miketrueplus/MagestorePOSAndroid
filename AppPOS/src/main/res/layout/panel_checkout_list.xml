@@ -49,7 +49,7 @@
                     android:paddingLeft="@dimen/layout_margin_10"
                     android:paddingRight="@dimen/layout_margin_10"
                     fab:menu_backgroundColor="@color/card_floating_button_bg"
-                    fab:menu_colorNormal="@color/card_floating_button_normal"
+                    fab:menu_colorNormal="@color/card_floating_button_menu"
                     fab:menu_colorPressed="@color/card_floating_button_press"
                     fab:menu_colorRipple="@color/card_floating_button_riper"
                     fab:menu_labels_ellipsize="end"
@@ -61,16 +61,16 @@
                         style="@style/MenuButtonsSmall"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_store"
-                        fab:fab_label="@string/discount"
-                        android:visibility="gone"/>
+                        android:src="@drawable/ic_discount"
+                        android:visibility="gone"
+                        fab:fab_label="@string/discount" />
 
                     <com.github.clans.fab.FloatingActionButton
                         android:id="@+id/bt_custom_sales"
                         style="@style/MenuButtonsSmall"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_store"
+                        android:src="@drawable/ic_customer_sale"
                         fab:fab_label="@string/custom_sale" />
                 </com.github.clans.fab.FloatingActionMenu>
             </RelativeLayout>

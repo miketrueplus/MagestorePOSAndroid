@@ -6,6 +6,7 @@ import com.magestore.app.lib.model.config.ConfigCountry;
 import com.magestore.app.lib.model.config.ConfigPriceFormat;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.directory.Currency;
+import com.magestore.app.lib.model.staff.Staff;
 import com.magestore.app.lib.parse.ParseException;
 import com.magestore.app.lib.resourcemodel.DataAccess;
 import com.magestore.app.lib.resourcemodel.DataAccessException;
@@ -24,6 +25,7 @@ public interface ConfigDataAccess extends DataAccess {
     Config retrieveConfig() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     String getConfig(String configPath) throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     Map<String, String> getCustomerGroup() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
+    Staff getStaff() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     Map<String, ConfigCountry> getCountryGroup() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     Customer getGuestCheckout() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     List<Currency> getCurrencies() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;

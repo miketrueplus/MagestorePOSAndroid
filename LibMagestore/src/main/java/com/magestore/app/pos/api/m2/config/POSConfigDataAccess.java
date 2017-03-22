@@ -16,6 +16,7 @@ import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.model.directory.Currency;
 import com.magestore.app.lib.model.directory.Region;
+import com.magestore.app.lib.model.staff.Staff;
 import com.magestore.app.lib.resourcemodel.config.ConfigDataAccess;
 import com.magestore.app.lib.resourcemodel.DataAccessException;
 import com.magestore.app.pos.api.m2.POSAPI;
@@ -31,6 +32,7 @@ import com.magestore.app.pos.model.customer.PosCustomer;
 import com.magestore.app.pos.model.customer.PosCustomerAddress;
 import com.magestore.app.pos.model.directory.PosCurrency;
 import com.magestore.app.pos.model.directory.PosRegion;
+import com.magestore.app.pos.model.staff.PosStaff;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosConfigParseImplement;
 
 import java.io.IOException;
@@ -158,6 +160,21 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
             returnCustomerGroup.put(String.format("%.0f", id), customerGroup.get("code").toString());
         }
         return returnCustomerGroup;
+    }
+
+    @Override
+    public Staff getStaff() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        // nếu chưa load config, cần khởi tạo chế độ default
+        if (mConfig == null) mConfig = new PosConfigDefault();
+
+        String staff_id = (String) mConfig.getValue("staffId");
+        String staff_name = (String) mConfig.getValue("staffName");
+
+        Staff staff = new PosStaff();
+        staff.setStaffId(staff_id);
+        staff.setStaffName(staff_name);
+
+        return staff;
     }
 
     /**
