@@ -109,7 +109,7 @@ public class POSUserDataAccess extends POSAbstractDataAccess implements UserData
             connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
             statement = connection.createStatement();
             statement.prepareQuery(POSAPI.REST_STORE_GET_LISTING);
-            statement.setEnableCache("POSUSerDataAccess.getListStore");
+//            statement.setEnableCache("POSUSerDataAccess.getListStore");
 
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
