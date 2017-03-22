@@ -849,7 +849,10 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
             }
 
             // gán giá trị lên giao diện
-            optionModelView.holder.mtxtTitle.setText(optionModelView.title);
+            if (optionModelView.is_required)
+                optionModelView.holder.mtxtTitle.setText(optionModelView.title);
+            else
+                optionModelView.holder.mtxtTitle.setText(optionModelView.title + getResources().getString(R.string.field_optional));
 
             // luôn mở expand
             ExpandableListView mExpandableListView = (ExpandableListView) parent;
