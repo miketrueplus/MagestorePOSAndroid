@@ -149,15 +149,8 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
                 ll_s_billing_address.setVisibility(VISIBLE);
 
                 setAddressDataSet(item.getAddress());
-                CustomerAddress billingAddress = null;
-                CustomerAddress shippingAddress = null;
-                if (item.getAddress().size() >= 2) {
-                    shippingAddress = item.getAddress().get(0);
-                    billingAddress = item.getAddress().get(1);
-                } else {
-                    billingAddress = item.getAddress().get(0);
-                    shippingAddress = item.getAddress().get(0);
-                }
+                CustomerAddress billingAddress = item.getAddress().get(0);
+                CustomerAddress shippingAddress = item.getAddress().get(0);
 
                 bindDataShippingAddress(shippingAddress);
                 bindDataBillingAddress(billingAddress);
@@ -248,6 +241,7 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
                 c_shippingAddress = getAddressSelect(s_shipping_address);
                 showShortShippingAddress();
                 bindDataShippingAddress(c_shippingAddress);
+                ll_short_shipping_address.setVisibility(c_shippingAddress.getIsStoreAddress() ? GONE : VISIBLE);
             }
 
             @Override
@@ -262,6 +256,7 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
                 c_billingAddress = getAddressSelect(s_billing_address);
                 showShortBillingAddress();
                 bindDataBillingAddress(c_billingAddress);
+                ll_short_billing_address.setVisibility(c_billingAddress.getIsStoreAddress() ? GONE : VISIBLE);
             }
 
             @Override
@@ -600,7 +595,7 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
         if (!isRequied(first_name)) {
             return false;
         }
-        if (!isRequied(first_name)) {
+        if (!isRequied(last_name)) {
             return false;
         }
         if (!isRequied(email) || !isRequiedEmail(email)) {

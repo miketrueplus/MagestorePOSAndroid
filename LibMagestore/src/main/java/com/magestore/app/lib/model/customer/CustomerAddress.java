@@ -78,4 +78,14 @@ public interface CustomerAddress extends Model {
     Customer getCustomer();
 
     String getShortAddress();
+    void setShortAddress(String strShortAddress);
+
+    boolean getIsStoreAddress();
+    void setIsStoreAddress(boolean bIsStoreAddress);
+
+    boolean getUseShippingToCheckout();
+    void setUseShippingToCheckout(boolean bUseShippingToCheckout);
+
+    boolean getUseBillingToCheckout();
+    void setUseBillingToCheckout(boolean bUseBillingToCheckout);
 }
