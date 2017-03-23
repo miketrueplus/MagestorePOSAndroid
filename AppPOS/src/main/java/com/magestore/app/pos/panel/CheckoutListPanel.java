@@ -524,6 +524,9 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
                     }
                     dialog.getDialogTitle().setText(getContext().getString(R.string.customer_add_new));
                 } else if (typeCustomer == CREATE_NEW_ADDRESS) {
+                    if (!mCustomerAddNewPanel.checkRequiedBillingAddress()) {
+                        return;
+                    }
                     int type_new_address = 0;
                     if (other_type == CHECKOUT_ADD_NEW_ADDRESS) {
                         type_new_address = 1;
