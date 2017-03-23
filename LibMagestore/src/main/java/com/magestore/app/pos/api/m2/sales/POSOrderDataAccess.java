@@ -164,6 +164,9 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
                     .setPage(page)
                     .setPageSize(pageSize)
                     .setFilterLike("increment_id", finalSearchString)
+                    .setFilterLike("customer_email", finalSearchString)
+                    .setFilterLike("customer_firstname", finalSearchString)
+                    .setFilterLike("customer_lastname", finalSearchString)
                     .setSortOrderDESC("created_at")
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
 
