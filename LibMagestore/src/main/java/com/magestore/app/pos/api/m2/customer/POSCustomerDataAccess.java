@@ -113,6 +113,7 @@ public class POSCustomerDataAccess
             paramBuilder = statement.getParamBuilder()
                     .setPage(page)
                     .setPageSize(pageSize)
+                    .setSortOrderASC("name")
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
 
             // thực thi truy vấn và parse kết quả thành object
@@ -220,6 +221,7 @@ public class POSCustomerDataAccess
             paramBuilder = statement.getParamBuilder()
                     .setPage(page)
                     .setPageSize(pageSize)
+                    .setSortOrderASC("name")
                     .setFilterLike("name", finalSearch)
                     .setFilterLike("email", finalSearch)
 //                    .setFilterLike("telephone", finalSearch)

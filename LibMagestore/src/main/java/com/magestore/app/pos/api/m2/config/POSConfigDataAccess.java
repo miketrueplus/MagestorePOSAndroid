@@ -34,6 +34,10 @@ import com.magestore.app.pos.model.directory.PosCurrency;
 import com.magestore.app.pos.model.directory.PosRegion;
 import com.magestore.app.pos.model.staff.PosStaff;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosConfigParseImplement;
+import com.magestore.app.util.StringUtil;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -53,6 +57,11 @@ import java.util.Map;
 public class POSConfigDataAccess extends POSAbstractDataAccess implements ConfigDataAccess {
     // Cache config đầu tiên
     private static Config mConfig;
+    private static Staff mStaff;
+
+    private class ConfigEntity {
+        Staff staff;
+    }
 
     /**
      * Trả lại 1 danh sách các config
@@ -173,8 +182,71 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         Staff staff = new PosStaff();
         staff.setStaffId(staff_id);
         staff.setStaffName(staff_name);
+        mStaff = staff;
+        return mStaff;
+    }
 
-        return staff;
+    @Override
+    public void setStaff(Staff staff) throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        mStaff = staff;
+    }
+
+    @Override
+    public Staff changeInformationStaff(Staff staff) throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+        try {
+            // Khởi tạo connection và khởi tạo truy vấn
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPI.REST_SETTING_ACCOUNT);
+
+            paramBuilder = statement.getParamBuilder()
+                    .setSessionID(POSDataAccessSession.REST_SESSION_ID);
+
+            ConfigEntity configEntity = new ConfigEntity();
+            configEntity.staff = staff;
+
+            rp = statement.execute(configEntity);
+
+            String reponse = StringUtil.truncateJson(rp.readResult2String());
+
+            JSONObject jsonObject = new JSONObject(reponse);
+            String error = jsonObject.getString("error");
+            String message = jsonObject.getString("message");
+
+            if (error.equals("0")) {
+                staff.setResponeType(true);
+            } else {
+                staff.setResponeType(false);
+            }
+            staff.setErrorMessage(message);
+            return staff;
+        } catch (ConnectionException ex) {
+            throw ex;
+        } catch (IOException ex) {
+            throw ex;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
+        return null;
     }
 
     /**
@@ -402,7 +474,7 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         Map<String, String> listCCYears = new LinkedTreeMap<>();
 
         for (String key : cc_years.keySet()) {
-            if(!key.equals("0")){
+            if (!key.equals("0")) {
                 double value = (double) cc_years.get(key);
                 int intValue = (int) value;
                 listCCYears.put(key, String.valueOf(intValue));
