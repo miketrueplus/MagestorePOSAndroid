@@ -155,8 +155,6 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
      */
     public void onAddQuantity(View view) {
         mtxtCartItemQuantity.add(getItem().getProduct().getQuantityIncrement());
-//        ((CartItemListController) getController()).addQuantity(getItem());
-//        mBinding.setCartItem(getItem());
     }
 
     /**
@@ -165,8 +163,6 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
      */
     public void onSubstractQuantity(View view) {
         mtxtCartItemQuantity.substract(getItem().getProduct().getQuantityIncrement());
-//        ((CartItemListController) getController()).substractQuantity(getItem());
-//        mBinding.setCartItem(getItem());
     }
 
     /**
@@ -551,6 +547,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
 
         // cập nhật lại đơn giá
         getItem().setUnitPrice(price);
+        getItem().setCustomPrice(price);
     }
 
     @Override

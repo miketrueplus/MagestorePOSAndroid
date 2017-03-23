@@ -216,6 +216,7 @@
                 android:orientation="horizontal">
 
                 <Button
+                    android:id="@+id/id_btn_cart_option"
                     android:layout_width="@dimen/cart_option_button_width"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/layout_margin_10"

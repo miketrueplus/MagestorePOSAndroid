@@ -87,6 +87,12 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
         initValue();
     }
 
+    /**
+     * Đặt đơn vị là % hay $
+     * @param fixed
+     * @param percent
+     * @param isFixed
+     */
     private void actionChangeValue(Button fixed, Button percent, boolean isFixed) {
         fixed.setBackgroundColor(isFixed ? ContextCompat.getColor(getContext(), R.color.card_option_bg_select) : ContextCompat.getColor(getContext(), R.color.card_option_bg_not_select));
         fixed.setTextColor(isFixed ? ContextCompat.getColor(getContext(), R.color.card_option_text_select) : ContextCompat.getColor(getContext(), R.color.card_option_text_not_select));
@@ -94,6 +100,10 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
         percent.setTextColor(isFixed ? ContextCompat.getColor(getContext(), R.color.card_option_text_not_select) : ContextCompat.getColor(getContext(), R.color.card_option_text_select));
     }
 
+    /**
+     * Đơn vị tiền tệ
+     * @param currency
+     */
     public void setCurrency(Currency currency) {
         if (currency != null) {
             String currency_symbol = currency.getCurrencySymbol();
@@ -116,9 +126,16 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
     public void bindItem(CartItem item) {
         super.bindItem(item);
         mBinding.setCartItem(item);
+
+        // đặt % hau $
         actionChangeValue(mbtnCustomPriceFixed, mbtnCustomPricePercent, item.isCustomPriceTypeFixed());
         actionChangeValue(mbtnDiscountFixed, mbtnDiscountPercent, item.isDiscountTypeFixed());
+
+        // nhỏ nhất cho ô số lượng
         mtxtQuantity.setMinValue(item.getProduct().getQuantityIncrement());
+
+        // giấu nút option nếu k0 có product option
+        findViewById(R.id.id_btn_cart_option).setVisibility(item.getProduct().haveProductOption() ? View.VISIBLE : View.GONE);
 
     }
 
@@ -139,10 +156,7 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
      * @param view
      */
     public void onAddQuantity(View view) {
-//        ((CartItemListController) getController()).addQuantity(getItem());
         mtxtQuantity.add(getItem().getProduct().getQuantityIncrement());
-//        bindItem(getItem());
-//        mBinding.setCartItem(getItem());
     }
 
     /**
@@ -151,8 +165,6 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
      */
     public void onSubstractQuantity(View view) {
         mtxtQuantity.substract(getItem().getProduct().getQuantityIncrement());
-//        ((CartItemListController) getController()).substractQuantity(getItem());
-//        bindItem(getItem());
     }
 
     /**
@@ -173,7 +185,6 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
     public void onDiscountChangeToPercent(View view) {
         actionChangeValue(mbtnDiscountFixed, mbtnDiscountPercent, false);
         getItem().setDiscountTypePercent();
-
     }
 
     /**
