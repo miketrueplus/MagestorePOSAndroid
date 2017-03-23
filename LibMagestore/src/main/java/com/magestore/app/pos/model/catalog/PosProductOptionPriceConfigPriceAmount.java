@@ -5,6 +5,6 @@ package com.magestore.app.pos.model.catalog;
  */
 
 public class PosProductOptionPriceConfigPriceAmount {
-    int amount;
+    float amount;
     Object[] adjustments;
 }

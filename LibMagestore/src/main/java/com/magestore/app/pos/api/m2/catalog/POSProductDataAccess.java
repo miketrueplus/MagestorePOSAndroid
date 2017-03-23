@@ -72,7 +72,6 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
             // Xây dựng tham số
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
-//                .setFilterEqual("name", "Joust Duffle Bag");
 
             // thực thi truy vấn và parse kết quả thành json
             rp = statement.execute();
