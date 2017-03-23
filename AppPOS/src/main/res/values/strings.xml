@@ -31,7 +31,7 @@
     <string name="sales_show_notifi_select_payment">Please select the payment method</string>
     <string name="sales_no_payment_method">No payment method is avaible</string>
     <string name="checkout_delete_order">Delete current order</string>
-    <string name="checkout_pick_as_store">Pick at store</string>
+    <string name="checkout_pick_as_store">Does the customer want to ship?</string>
     <string name="checkout_discount_all">Discount - Maximum 100%</string>
     <string name="checkout_custom_sale_name">Enter Product Name</string>
     <string name="checkout_custom_sale_ship">Shippable</string>
