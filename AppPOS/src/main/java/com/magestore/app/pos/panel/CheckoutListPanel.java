@@ -477,12 +477,11 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
                     return;
                 }
                 if (typeCustomer == CREATE_NEW_CUSTOMER) {
-                    if (!mCustomerAddNewPanel.checkSameBillingAndShipping()) {
-                        return;
+                    if (mCustomerAddNewPanel.checkSameBillingAndShipping()) {
+                        ll_short_billing_address.setVisibility(VISIBLE);
+                        mCustomerAddNewPanel.showNewShortBillingAddress();
+                        btn_billing_address.setVisibility(GONE);
                     }
-                    ll_short_billing_address.setVisibility(VISIBLE);
-                    mCustomerAddNewPanel.showNewShortBillingAddress();
-                    btn_billing_address.setVisibility(GONE);
                     dialog.getDialogTitle().setText(getContext().getString(R.string.customer_add_new));
                 } else {
                     ((CheckoutListController) getController()).doInputEditAddress(0, mCustomer, mCustomerAddNewPanel.getChangeshippingAddress(), mCustomerAddNewPanel.getShippingAddress());
@@ -491,12 +490,11 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
                 if (!mCustomerAddNewPanel.checkRequiedShippingAddress()) {
                     return;
                 }
-                if (!mCustomerAddNewPanel.checkSameBillingAndShipping()) {
-                    return;
+                if (mCustomerAddNewPanel.checkSameBillingAndShipping()) {
+                    ll_short_billing_address.setVisibility(VISIBLE);
+                    mCustomerAddNewPanel.showShortBillingAddress();
+                    btn_billing_address.setVisibility(GONE);
                 }
-                ll_short_billing_address.setVisibility(VISIBLE);
-                mCustomerAddNewPanel.showShortBillingAddress();
-                btn_billing_address.setVisibility(GONE);
                 dialog.getDialogTitle().setText(getContext().getString(R.string.customer_add_new));
             }
             btn_shipping_address.setVisibility(GONE);
