@@ -431,13 +431,21 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
     public void insertCustomerNameToAddress() {
         String firstName = first_name.getText().toString().trim();
         String sFirstName = s_first_name.getText().toString().trim();
+        String bFirstName = b_first_name.getText().toString().trim();
         String lastName = last_name.getText().toString().trim();
         String sLastName = s_last_name.getText().toString().trim();
+        String bLastName = b_last_name.getText().toString().trim();
+        if (!StringUtil.STRING_EMPTY.equals(firstName) && StringUtil.STRING_EMPTY.equals(bFirstName)) {
+            b_first_name.setText(firstName);
+        }
         if (!StringUtil.STRING_EMPTY.equals(firstName) && StringUtil.STRING_EMPTY.equals(sFirstName)) {
             s_first_name.setText(firstName);
         }
         if (!StringUtil.STRING_EMPTY.equals(lastName) && StringUtil.STRING_EMPTY.equals(sLastName)) {
             s_last_name.setText(lastName);
+        }
+        if (!StringUtil.STRING_EMPTY.equals(lastName) && StringUtil.STRING_EMPTY.equals(bLastName)) {
+            b_last_name.setText(lastName);
         }
     }
 
