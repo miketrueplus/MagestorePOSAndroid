@@ -70,6 +70,7 @@ public class POSAPI {
     // API checkout
     public static final String REST_CHECKOUT_CREATE = "/rest/default/V1/webpos/checkout/create?";
     public static final String REST_CHECK_OUT_SAVE_CART = "/rest/default/V1/webpos/checkout/saveCart?";
+    public static final String REST_CHECKOUT_SAVE_QUOTE = "rest/default/V1/webpos/checkout/saveQuoteData";
     public static final String REST_CHECK_OUT_SAVE_SHIPPING = "/rest/default/V1/webpos/checkout/saveShippingMethod?";
     public static final String REST_CHECK_OUT_SAVE_PAYMENT = "/rest/default/V1/webpos/checkout/savePaymentMethod?";
     public static final String REST_CHECK_OUT_PLACE_ORDER = "/rest/default/V1/webpos/checkout/placeOrder?";
