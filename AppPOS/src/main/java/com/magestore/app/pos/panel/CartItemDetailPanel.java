@@ -28,6 +28,7 @@ import com.magestore.app.pos.databinding.PanelCartDetailBinding;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.StringUtil;
 import com.magestore.app.view.EditTextFloat;
+import com.magestore.app.view.EditTextInteger;
 
 /**
  * Created by folio on 3/6/2017.
@@ -39,6 +40,7 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
 
     EditTextFloat mtxtCustomPrice;
     EditTextFloat mtxtCustomDiscount;
+    EditTextInteger mtxtQuantity;
 
     public void setCheckoutListController(CheckoutListController mCheckoutListController) {
         this.mCheckoutListController = mCheckoutListController;
@@ -78,6 +80,7 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
         mbtnDiscountFixed = (Button) findViewById(R.id.id_btn_cart_item_detail_discount_fixed);
         mbtnDiscountPercent = (Button) findViewById(R.id.id_btn_cart_item_detail_discount_percent);
 
+        mtxtQuantity = (EditTextInteger) findViewById(R.id.id_txt_cart_item_detail_quantity);
         mtxtCustomPrice = (EditTextFloat) findViewById(R.id.id_txt_cart_item_detail_custom_price);
         mtxtCustomDiscount = (EditTextFloat) findViewById(R.id.id_txt_cart_item_detail_custom_discount);
 
@@ -115,35 +118,41 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
         mBinding.setCartItem(item);
         actionChangeValue(mbtnCustomPriceFixed, mbtnCustomPricePercent, item.isCustomPriceTypeFixed());
         actionChangeValue(mbtnDiscountFixed, mbtnDiscountPercent, item.isDiscountTypeFixed());
+        mtxtQuantity.setMinValue(item.getProduct().getQuantityIncrement());
 
     }
 
+    /**
+     * Bind từ giao diện lên data set
+     * @param item
+     */
     @Override
     public void bind2Item(CartItem item) {
         item.setCustomPrice(mtxtCustomPrice.getValueFloat());
         item.setDiscountAmount(mtxtCustomDiscount.getValueFloat());
         item.setUnitPrice(item.isCustomPriceTypeFixed() ? mtxtCustomPrice.getValueFloat() : item.getOriginalPrice() * mtxtCustomPrice.getValueFloat() / 100);
+        item.setQuantity(mtxtQuantity.getValueInteger());
     }
 
     /**
      * Nhấn nút trừ số lượng
-     *
      * @param view
      */
     public void onAddQuantity(View view) {
-        ((CartItemListController) getController()).addQuantity(getItem());
-        bindItem(getItem());
+//        ((CartItemListController) getController()).addQuantity(getItem());
+        mtxtQuantity.add(getItem().getProduct().getQuantityIncrement());
+//        bindItem(getItem());
 //        mBinding.setCartItem(getItem());
     }
 
     /**
      * Nhấn nút thêm số lượng
-     *
      * @param view
      */
     public void onSubstractQuantity(View view) {
-        ((CartItemListController) getController()).substractQuantity(getItem());
-        bindItem(getItem());
+        mtxtQuantity.substract(getItem().getProduct().getQuantityIncrement());
+//        ((CartItemListController) getController()).substractQuantity(getItem());
+//        bindItem(getItem());
     }
 
     /**

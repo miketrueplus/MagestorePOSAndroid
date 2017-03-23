@@ -39,6 +39,7 @@ import com.magestore.app.pos.model.catalog.PosProductOptionCustomValue;
 import com.magestore.app.pos.model.checkout.cart.PosCartItem;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.StringUtil;
+import com.magestore.app.view.EditTextInteger;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -71,6 +72,8 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
     // ảnh chi tiết product
     ImageView mImageProductDetail;
 
+    // text box số lượng
+    EditTextInteger mtxtCartItemQuantity;
     /**
      * Khởi tạo
      * @param context
@@ -105,6 +108,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
     @Override
     public void bindItem(CartItem item) {
         super.bindItem(item);
+        mtxtCartItemQuantity.setMinValue(item.getProduct().getQuantityIncrement());
         createModelViewList();
         if (expandableListAdapter != null) {
             expandableListAdapter.setCartItem(item);
@@ -150,8 +154,9 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
      * @param view
      */
     public void onAddQuantity(View view) {
-        ((CartItemListController) getController()).addQuantity(getItem());
-        mBinding.setCartItem(getItem());
+        mtxtCartItemQuantity.add(getItem().getProduct().getQuantityIncrement());
+//        ((CartItemListController) getController()).addQuantity(getItem());
+//        mBinding.setCartItem(getItem());
     }
 
     /**
@@ -159,8 +164,9 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
      * @param view
      */
     public void onSubstractQuantity(View view) {
-        ((CartItemListController) getController()).substractQuantity(getItem());
-        mBinding.setCartItem(getItem());
+        mtxtCartItemQuantity.substract(getItem().getProduct().getQuantityIncrement());
+//        ((CartItemListController) getController()).substractQuantity(getItem());
+//        mBinding.setCartItem(getItem());
     }
 
     /**
@@ -414,6 +420,9 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         expandableListAdapter = new ProductOptionPanel.CustomExpandableListAdapter(getContext());
         expandableListView.setAdapter(expandableListAdapter);
 
+        // text box số lượng
+        mtxtCartItemQuantity = (EditTextInteger) findViewById(R.id.id_txt_product_option_cart_item_quantity);
+
         // binding
         mBinding = DataBindingUtil.bind(getView());
         mBinding.setPanel(this);
@@ -472,6 +481,9 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
     @Override
     public void bind2Item(CartItem item) {
         if (expandableListAdapter == null) return;
+
+        // đặt số lượng
+        item.setQuantity(mtxtCartItemQuantity.getValueInteger());
 
         // nếu k0 có option, tương đương product detail, k0 phải chuyển input từ option sang nữa
         if (!item.getProduct().haveProductOption()) return;
@@ -652,8 +664,8 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         /**
          * Khi click tăng trên 1 option
          */
-        private void onAddOptionQuantity(OptionModelView optionModelView) {
-            optionModelView.quantity++;
+        private void onAddOptionQuantity(OptionModelView optionModelView, OptionValueModelViewHolder holder) {
+            optionModelView.quantity = holder.mtxtQuantity.getValueInteger();
             updateCartItemPrice();
             expandableListAdapter.notifyDataSetChanged();
             mBinding.setCartItem(getItem());
@@ -662,9 +674,8 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         /**
          * Khi click giảm trên 1 option
          */
-        private void onSubtractOptionQuantity(OptionModelView optionModelView) {
-            if (optionModelView.quantity <= 1) return;
-            optionModelView.quantity--;
+        private void onSubtractOptionQuantity(OptionModelView optionModelView, OptionValueModelViewHolder holder) {
+            optionModelView.quantity = holder.mtxtQuantity.getValueInteger();
             updateCartItemPrice();
             expandableListAdapter.notifyDataSetChanged();
             mBinding.setCartItem(getItem());
@@ -710,8 +721,8 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                                  boolean isLastChild, View convertView, ViewGroup parent) {
 
             // Tham chiếu option value
-            OptionModelView optionModelView = getGroup(listPosition);
-            OptionValueModelView optionValueModelView = getChild(listPosition, expandedListPosition);
+            final OptionModelView optionModelView = getGroup(listPosition);
+            final OptionValueModelView optionValueModelView = getChild(listPosition, expandedListPosition);
 
             // nếu chưa thì phải khởi tạo holder và view
             if (optionValueModelView.holder == null) {
@@ -723,8 +734,29 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                 // nếu là ô value giả để thêm số lượng
                 if (optionValueModelView instanceof FakeValueModelView) {
                     convertView = layoutInflater.inflate(R.layout.card_product_option_item_quantity, null);
-                    optionValueModelView.holder.mtxtQuantity = (EditText) convertView
+                    optionValueModelView.holder.mtxtQuantity = (EditTextInteger) convertView
                             .findViewById(R.id.id_txt_product_option_quantity);
+                    optionValueModelView.holder.mtxtQuantity.setMinValue(1);
+
+                    // khi thôi focus
+                    optionValueModelView.holder.mtxtQuantity.setOnFocusChangeListener(new OnFocusChangeListener() {
+                        @Override
+                        public void onFocusChange(View v, boolean hasFocus) {
+                            if (!hasFocus) {
+                                // lấy giá trị trong ô text, căn lại giữa max và min
+                                optionModelView.quantity = ConfigUtil.parseInteger(ConfigUtil.truncateIntegerDigit(optionValueModelView.holder.mtxtQuantity.getText().toString()));
+                                if (optionModelView.quantity < 1) optionModelView.quantity = 1;
+                                updateCartItemPrice();
+//                                expandableListAdapter.notifyDataSetChanged();
+                                mBinding.setCartItem(getItem());
+//                                optionValueModelView.holder.mtxtQuantity.setText(ConfigUtil.formatNumber(optionModelView.quantity));
+                                clearFocus();
+                            } else {
+                                // fill giá trị vào, nguyên số để edit, bỏ ký tự tiền
+                                optionValueModelView.holder.mtxtQuantity.selectAll();
+                            }
+                        }
+                    });
 
                     // khi ấn trừ số lượng
                     View subView = (convertView.findViewById(R.id.id_txt_product_option_quantity_substract));
@@ -732,7 +764,8 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                     subView.setOnClickListener(new OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            onSubtractOptionQuantity((OptionModelView) v.getTag());
+                            optionValueModelView.holder.mtxtQuantity.substract(1);
+                            onSubtractOptionQuantity((OptionModelView) v.getTag(), optionValueModelView.holder);
                         }
                     });
 
@@ -742,7 +775,8 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                     addView.setOnClickListener(new OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            onAddOptionQuantity((OptionModelView) v.getTag());
+                            optionValueModelView.holder.mtxtQuantity.add(1);
+                            onAddOptionQuantity((OptionModelView) v.getTag(), optionValueModelView.holder);
                         }
                     });
                 } else {
@@ -893,7 +927,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         public TextView mtxtDisplay;
         //        public TextView mtxtDisplaySub;
         public TextView mtxtPrice;
-        public EditText mtxtQuantity;
+        public EditTextInteger mtxtQuantity;
         public RadioButton mradChoose;
         public CheckBox mchkChoose;
         public DatePicker mdatePicker;

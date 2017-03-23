@@ -266,7 +266,7 @@ public class CartItemListController extends AbstractChildListController<Checkout
                     getDetailView().getContext().getString(R.string.product_option),
                     getDetailView());
             mCartItemDetailDialog.setGoneButtonSave(true);
-            mCartItemDetailDialog.setGoneButtonCancel(true);
+//            mCartItemDetailDialog.setGoneButtonCancel(true);
         }
 
         // đổi title dialiog theo sản phẩm và hiển thị
@@ -274,20 +274,20 @@ public class CartItemListController extends AbstractChildListController<Checkout
         mCartItemDetailDialog.getDialogTitle().setText(getSelectedItem().getProduct().getName());
 
         // Xử lý khi nhấn save trên dialog
-        mCartItemDetailDialog.getButtonSave().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                updateToCart(getDetailView().bind2Item());
-            }
-        });
-
-        // Xử lý khi nhấn cancel trên dialog
-        mCartItemDetailDialog.getButtonCancel().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                updateToCart(getDetailView().bind2Item());
-            }
-        });
+//        mCartItemDetailDialog.getButtonSave().setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                updateToCart(getDetailView().bind2Item());
+//            }
+//        });
+//
+//        // Xử lý khi nhấn cancel trên dialog
+//        mCartItemDetailDialog.getButtonCancel().setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                updateToCart(getDetailView().bind2Item());
+//            }
+//        });
 //        }
 //        else {
 //            doShowProductOptionInput(getSelectedItem());
@@ -461,7 +461,7 @@ public class CartItemListController extends AbstractChildListController<Checkout
             mProductOptionDialog = DialogUtil.dialog(mProductOptionPanel.getContext(),
                     cartItem.getProduct().getName(),
                     mProductOptionPanel);
-            mProductOptionDialog.setGoneButtonSave(true);
+//            mProductOptionDialog.setGoneButtonSave(true);
             mProductOptionDialog.setDialogTitle(cartItem.getProduct().getName());
         }
 
@@ -474,14 +474,13 @@ public class CartItemListController extends AbstractChildListController<Checkout
         mProductOptionDialog.show();
         mProductOptionDialog.getDialogTitle().setText(cartItem.getProduct().getName());
 
-
         // Xử lý khi nhấn save trên dialog
-        mProductOptionDialog.getButtonSave().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addToCart(mProductOptionPanel.bind2Item());
-            }
-        });
+//        mProductOptionDialog.getButtonSave().setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                addToCart(mProductOptionPanel.bind2Item());
+//            }
+//        });
 
         // gán cart item và load product option
         if (cartItem.getProduct().getProductOption() != null) bindItem(cartItem);

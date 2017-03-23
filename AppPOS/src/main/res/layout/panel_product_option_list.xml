@@ -171,13 +171,12 @@
                             android:textColor="@color/text_color"
                             android:textSize="@dimen/product_detail_text_size" />
 
-                        <EditText
-                            android:id="@+id/id_txt_product_option_quantity"
+                        <com.magestore.app.view.EditTextInteger
+                            android:id="@+id/id_txt_product_option_cart_item_quantity"
                             android:layout_width="@dimen/product_detail_text_quantity_width"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_marginRight="@dimen/layout_margin_5"
-                            android:enabled="false"
                             android:background="@drawable/product_detail_border_edditext"
                             android:gravity="center"
                             android:padding="@dimen/layout_margin_10"

@@ -80,7 +80,7 @@ public class EditTextFloat extends EditText {
         return ConfigUtil.parseDouble(super.getText().toString());
     }
 
-    public float getValueInteger() {
+    public int getValueInteger() {
         return ConfigUtil.parseInteger(super.getText().toString());
     }
 
