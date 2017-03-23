@@ -60,6 +60,8 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     static final int STATUS_CHECKOUT_ADD_ITEM = 0;
     static final int STATUS_CHECKOUT_PROCESSING = 1;
 
+    static final String PICK_AT_STORE_CODE = "webpos_shipping_storepickup";
+
     Map<String, Object> wraper;
     CartItemListController mCartItemListController;
     CheckoutShippingListPanel mCheckoutShippingListPanel;
@@ -319,7 +321,10 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             // cập nhật list shipping và payment
             List<CheckoutShipping> listShipping = checkout.getCheckoutShipping();
             List<CheckoutPayment> listPayment = checkout.getCheckoutPayment();
-            ((CheckoutDetailPanel) mDetailView).setShippingDataSet(listShipping);
+
+            // bind data to shipping method list
+            bindDataToShippingMethodList(listShipping);
+
             mPaymentMethodListPanel.bindList(listPayment);
             mCheckoutAddPaymentPanel.bindList(listPayment);
 
@@ -509,13 +514,27 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         }
     }
 
+    private void bindDataToShippingMethodList(List<CheckoutShipping> listShipping) {
+        if (!((CheckoutDetailPanel) mDetailView).getPickAtStore()) {
+            List<CheckoutShipping> nListShipping = listShipping;
+            for (CheckoutShipping shipping : nListShipping) {
+                if (shipping.getCode().equals(PICK_AT_STORE_CODE)) {
+                    nListShipping.remove(shipping);
+                }
+            }
+            ((CheckoutDetailPanel) mDetailView).setShippingDataSet(nListShipping);
+        } else {
+            ((CheckoutDetailPanel) mDetailView).setShippingDataSet(listShipping);
+        }
+    }
+
     private void autoSelectShipping(List<CheckoutShipping> listShipping) {
         if (!((CheckoutDetailPanel) mDetailView).getPickAtStore()) {
             if (listShipping != null && listShipping.size() > 0) {
                 if (listShipping.size() == 1) {
                     ((CheckoutDetailPanel) mDetailView).getShippingMethod();
                 } else {
-                    CheckoutShipping shipping = checkListShippingMethodDefault(listShipping);
+                    CheckoutShipping shipping = checkListShippingMethodDefault(0, listShipping);
                     if (shipping != null) {
                         ((CheckoutDetailPanel) mDetailView).selectDefaultShippingMethod(shipping);
                     } else {
@@ -528,7 +547,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 if (listShipping.size() == 1) {
                     ((CheckoutDetailPanel) mDetailView).getShippingMethod();
                 } else {
-                    CheckoutShipping shipping = checkListShippingMethodDefault(listShipping);
+                    CheckoutShipping shipping = checkListShippingMethodDefault(1, listShipping);
                     if (shipping != null) {
                         ((CheckoutDetailPanel) mDetailView).selectDefaultShippingMethod(shipping);
                     } else {
@@ -769,7 +788,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         ((CheckoutDetailPanel) mDetailView).isEnableButtonAddPayment(enable);
     }
 
-    public void isEnableCreateInvoice(boolean enable){
+    public void isEnableCreateInvoice(boolean enable) {
         ((CheckoutDetailPanel) mDetailView).isEnableCreateInvoice(enable);
     }
 
@@ -848,10 +867,16 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         return false;
     }
 
-    public CheckoutShipping checkListShippingMethodDefault(List<CheckoutShipping> listShipping) {
+    public CheckoutShipping checkListShippingMethodDefault(int type, List<CheckoutShipping> listShipping) {
         for (CheckoutShipping shipping : listShipping) {
-            if (shipping.getIsDefault().equals("1")) {
-                return shipping;
+            if (type == 0) {
+                if (shipping.getCode().equals(PICK_AT_STORE_CODE)) {
+                    return shipping;
+                }
+            } else {
+                if (shipping.getIsDefault().equals("1")) {
+                    return shipping;
+                }
             }
         }
         return null;
@@ -864,7 +889,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         return false;
     }
 
-    public void showButtonDiscount(boolean isShow){
+    public void showButtonDiscount(boolean isShow) {
         ((CheckoutListPanel) mView).showButtonDiscount(isShow);
     }
 
