@@ -769,6 +769,10 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         ((CheckoutDetailPanel) mDetailView).isEnableButtonAddPayment(enable);
     }
 
+    public void isEnableCreateInvoice(boolean enable){
+        ((CheckoutDetailPanel) mDetailView).isEnableCreateInvoice(enable);
+    }
+
     public void actionNewOrder() {
         List<CheckoutPayment> listPayment = (List<CheckoutPayment>) wraper.get("list_payment");
         if (listPayment != null) {

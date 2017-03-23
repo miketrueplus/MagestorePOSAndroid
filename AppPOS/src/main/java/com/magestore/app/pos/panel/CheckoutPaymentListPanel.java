@@ -86,7 +86,7 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
     public void updateTotal(List<CheckoutPayment> listPayment) {
         float totalValue = 0;
 
-        if(mCheckout != null){
+        if (mCheckout != null) {
             float grand_total = mCheckout.getGrandTotal();
 
             for (CheckoutPayment payment : listPayment) {
@@ -221,6 +221,7 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
                     checkoutPayment.setBaseRealAmount(remain_money);
                     // disable add payment
                     mCheckoutListController.isEnableButtonAddPayment(false);
+                    mCheckoutListController.isEnableCreateInvoice(true);
                 } else {
                     float money = grand_total - totalValue;
                     mCheckout.setRemainMoney(money);
@@ -230,6 +231,11 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
                     checkoutPayment.setRealAmount(currentValue);
                     checkoutPayment.setBaseRealAmount(currentValue);
                     mCheckoutListController.isEnableButtonAddPayment(true);
+                    if (totalValue == grand_total) {
+                        mCheckoutListController.isEnableCreateInvoice(true);
+                    } else {
+                        mCheckoutListController.isEnableCreateInvoice(false);
+                    }
                 }
             }
 
