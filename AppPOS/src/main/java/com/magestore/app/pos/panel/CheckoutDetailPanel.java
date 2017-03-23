@@ -114,9 +114,9 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
                 if (!check) {
                     ll_shipping_address.setVisibility(GONE);
                 } else {
-                    getShippingMethod();
                     ll_shipping_address.setVisibility(VISIBLE);
                 }
+                ((CheckoutListController) getController()).changePickAtStoreAndReloadShipping();
             }
         });
 
@@ -235,6 +235,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         isShowLoadingDetail(true);
         if (shipping != null) {
             String code = shipping.getCode();
+            sp_shipping_method.setSelection(code);
             ((CheckoutListController) getController()).doInputSaveShipping(code);
         } else {
             ((CheckoutListController) getController()).doInputSaveShipping("");

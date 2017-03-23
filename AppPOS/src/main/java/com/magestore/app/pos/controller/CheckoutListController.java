@@ -514,6 +514,13 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         }
     }
 
+    public void changePickAtStoreAndReloadShipping(){
+        Checkout checkout = (Checkout) wraper.get("save_cart");
+        List<CheckoutShipping> listShipping = checkout.getCheckoutShipping();
+        bindDataToShippingMethodList(listShipping);
+        autoSelectShipping(listShipping);
+    }
+
     private void bindDataToShippingMethodList(List<CheckoutShipping> listShipping) {
         if (!((CheckoutDetailPanel) mDetailView).getPickAtStore()) {
             List<CheckoutShipping> nListShipping = listShipping;
