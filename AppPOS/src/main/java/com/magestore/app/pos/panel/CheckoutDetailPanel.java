@@ -111,7 +111,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         cb_pick_at_store.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean check) {
-                if (check) {
+                if (!check) {
                     ll_shipping_address.setVisibility(GONE);
                 } else {
                     getShippingMethod();

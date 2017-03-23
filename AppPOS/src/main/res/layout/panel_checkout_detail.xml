@@ -65,7 +65,6 @@
                                 android:id="@+id/cb_pick_at_store"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:checked="true"
                                 android:text="@string/checkout_pick_as_store"
                                 android:textAllCaps="true"
                                 android:textColor="@color/text_color"

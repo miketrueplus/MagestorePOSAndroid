@@ -510,7 +510,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     }
 
     private void autoSelectShipping(List<CheckoutShipping> listShipping) {
-        if (((CheckoutDetailPanel) mDetailView).getPickAtStore()) {
+        if (!((CheckoutDetailPanel) mDetailView).getPickAtStore()) {
             if (listShipping != null && listShipping.size() > 0) {
                 if (listShipping.size() == 1) {
                     ((CheckoutDetailPanel) mDetailView).getShippingMethod();
