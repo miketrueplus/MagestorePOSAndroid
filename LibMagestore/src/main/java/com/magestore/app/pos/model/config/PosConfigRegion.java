@@ -16,7 +16,7 @@ public class PosConfigRegion extends PosAbstractModel implements ConfigRegion {
 
     @Override
     public String getID() {
-        return code;
+        return id;
     }
 
     @Override
