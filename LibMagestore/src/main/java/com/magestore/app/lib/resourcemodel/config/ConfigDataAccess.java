@@ -26,6 +26,8 @@ public interface ConfigDataAccess extends DataAccess {
     String getConfig(String configPath) throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     Map<String, String> getCustomerGroup() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     Staff getStaff() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
+    void setStaff(Staff staff) throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
+    Staff changeInformationStaff(Staff staff) throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     Map<String, ConfigCountry> getCountryGroup() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     Customer getGuestCheckout() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     List<Currency> getCurrencies() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;

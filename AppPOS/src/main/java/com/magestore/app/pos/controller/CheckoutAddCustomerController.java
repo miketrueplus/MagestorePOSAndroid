@@ -3,6 +3,7 @@ package com.magestore.app.pos.controller;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.panel.CheckoutAddCustomerPanel;
+import com.magestore.app.pos.panel.CheckoutListPanel;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -15,6 +16,11 @@ import java.text.ParseException;
 
 public class CheckoutAddCustomerController extends CustomerListController {
     CheckoutAddCustomerPanel mCheckoutAddCustomerPanel;
+    CheckoutListPanel mCheckoutListPanel;
+
+    public void setCheckoutListPanel(CheckoutListPanel mCheckoutListPanel) {
+        this.mCheckoutListPanel = mCheckoutListPanel;
+    }
 
     public void setCheckoutAddCustomerPanel(CheckoutAddCustomerPanel mCheckoutAddCustomerPanel) {
         this.mCheckoutAddCustomerPanel = mCheckoutAddCustomerPanel;
@@ -51,5 +57,13 @@ public class CheckoutAddCustomerController extends CustomerListController {
         }
         mCustomerAddressService.addAddressDefaultToCustomer(newCustomer, guest_customer, userAddressDefault);
         return newCustomer;
+    }
+
+    @Override
+    public void onUpdatePostExecute(Boolean success, Customer oldModel, Customer newModels) {
+        super.onUpdatePostExecute(success, oldModel, newModels);
+        if(mCheckoutListPanel != null){
+            mCheckoutListPanel.updateCustomerToOrder(newModels);
+        }
     }
 }

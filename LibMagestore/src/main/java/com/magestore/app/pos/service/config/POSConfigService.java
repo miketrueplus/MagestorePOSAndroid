@@ -17,6 +17,7 @@ import com.magestore.app.pos.model.checkout.PosCheckoutPayment;
 import com.magestore.app.pos.model.checkout.PosPaymentMethod;
 import com.magestore.app.pos.model.checkout.PosShippingMethod;
 import com.magestore.app.pos.model.setting.PosSetting;
+import com.magestore.app.pos.model.staff.PosStaff;
 import com.magestore.app.pos.service.AbstractService;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.StringUtil;
@@ -163,6 +164,27 @@ public class POSConfigService extends AbstractService implements ConfigService {
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
         return configDataAccess.getStaff();
+    }
+
+    @Override
+    public void setStaff(Staff staff) throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        // Nếu chưa khởi tạo customer gateway factory
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
+        configDataAccess.setStaff(staff);
+    }
+
+    @Override
+    public Staff changeInformationStaff(Staff staff) throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        // Nếu chưa khởi tạo customer gateway factory
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
+        return configDataAccess.changeInformationStaff(staff);
+    }
+
+    @Override
+    public Staff createStaff() {
+        return new PosStaff();
     }
 
     @Override

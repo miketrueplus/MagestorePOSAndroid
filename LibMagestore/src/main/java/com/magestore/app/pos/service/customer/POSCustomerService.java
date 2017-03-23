@@ -85,6 +85,10 @@ public class POSCustomerService extends AbstractService
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         CustomerDataAccess customerDataAccess = factory.generateCustomerDataAccess();
 
+        // set lại id và address của old customer cho new customer
+        newCustomer.setID(oldCustomer.getID());
+        newCustomer.setAddressList(oldCustomer.getAddress());
+
         // kiểm tra có complains không, không thì phải tạo mới
         if (newCustomer.getComplain() == null) {
             List<Complain> listComplain = (List<Complain>) (List<?>) new ArrayList<PosComplain>();

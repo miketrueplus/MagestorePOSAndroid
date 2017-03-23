@@ -82,4 +82,6 @@ public class POSAPI {
     public static final String REST_CONFIG_GET_LISTING = "/rest/default/V1/webpos/configurations?";
     public static final String REST_CONFIG_GET_ = "/rest/default/V1/webpos/configurations/${configID}?path=${configPath}&session=${sessionID}";
 
+    // API Account
+    public static final String REST_SETTING_ACCOUNT = "rest/default/V1/webpos/staff/changepassword?";
 }

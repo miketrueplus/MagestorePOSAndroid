@@ -63,6 +63,12 @@ public interface ConfigService extends Service {
      */
     Staff getStaff() throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
+    void setStaff(Staff staff) throws InstantiationException, IllegalAccessException, IOException, ParseException;
+
+    Staff changeInformationStaff(Staff staff) throws InstantiationException, IllegalAccessException, IOException, ParseException;
+
+    Staff createStaff();
+
     Map<String, ConfigCountry> getCountry() throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
     List<PaymentMethod> getPaymentMethodList() throws InstantiationException, IllegalAccessException, IOException, ParseException;

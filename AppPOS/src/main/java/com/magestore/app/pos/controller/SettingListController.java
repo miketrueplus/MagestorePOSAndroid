@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 
 import com.magestore.app.lib.controller.AbstractListController;
+import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.directory.Currency;
 import com.magestore.app.lib.model.setting.Setting;
 import com.magestore.app.lib.model.staff.Staff;
@@ -15,7 +16,11 @@ import com.magestore.app.pos.R;
 import com.magestore.app.pos.panel.SettingDetailPanel;
 import com.magestore.app.util.DataUtil;
 
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Johan on 2/27/17.
@@ -28,9 +33,12 @@ public class SettingListController extends AbstractListController<Setting> {
     UserService mUserService;
     List<Currency> currencyList;
     Staff mStaff;
+    Map<String, Object> wraper;
+    static int TYPE_ACTION_CHANGE_INFFORMATION = 0;
 
     public void setConfigService(ConfigService mConfigService) {
         this.mConfigService = mConfigService;
+        wraper = new HashMap<>();
     }
 
     public void setUserService(UserService mUserService) {
@@ -51,13 +59,54 @@ public class SettingListController extends AbstractListController<Setting> {
         ((SettingDetailPanel) mDetailView).setCurrencyDataSet(currencyList);
     }
 
+    public void doInputChangeInformation(Staff staff) {
+        ((SettingDetailPanel) mDetailView).isShowLoading(true);
+        doAction(TYPE_ACTION_CHANGE_INFFORMATION, null, wraper, staff);
+    }
+
+    @Override
+    public Boolean doActionBackround(int actionType, String actionCode, Map<String, Object> wraper, Model... models) throws Exception {
+        if (actionType == TYPE_ACTION_CHANGE_INFFORMATION) {
+            Staff staff = (Staff) models[0];
+            wraper.put("staff", mConfigService.changeInformationStaff(staff));
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void onActionPostExecute(boolean success, int actionType, String actionCode, Map<String, Object> wraper, Model... models) {
+        if (success && actionType == TYPE_ACTION_CHANGE_INFFORMATION) {
+            Staff staff = (Staff) wraper.get("staff");
+            if(staff.getResponeType()){
+                try {
+                    mConfigService.setStaff(staff);
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+            ((SettingDetailPanel) mDetailView).showAlertRespone(staff.getErrorMessage());
+        }
+        ((SettingDetailPanel) mDetailView).isShowLoading(false);
+    }
+
     @Override
     public void bindItem(Setting item) {
         super.bindItem(item);
         ((SettingDetailPanel) mDetailView).bindItem(item);
     }
 
-    public void backToLoginActivity(){
+    public Staff createStaff() {
+        return mConfigService.createStaff();
+    }
+
+    public void backToLoginActivity() {
         new AlertDialog.Builder(getMagestoreContext().getActivity())
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setTitle(R.string.dialog_change_store)

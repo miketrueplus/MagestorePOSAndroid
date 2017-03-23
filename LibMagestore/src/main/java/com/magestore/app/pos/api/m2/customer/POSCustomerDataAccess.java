@@ -7,6 +7,7 @@ import com.magestore.app.lib.connection.ParamBuilder;
 import com.magestore.app.lib.connection.ResultReading;
 import com.magestore.app.lib.connection.Statement;
 import com.magestore.app.lib.connection.http.MagestoreResultReadingException;
+import com.magestore.app.lib.connection.http.MagestoreStatementAction;
 import com.magestore.app.lib.model.customer.Complain;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.customer.CustomerAddress;
@@ -113,6 +114,7 @@ public class POSCustomerDataAccess
             paramBuilder = statement.getParamBuilder()
                     .setPage(page)
                     .setPageSize(pageSize)
+                    .setSortOrderASC("name")
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
 
             // thực thi truy vấn và parse kết quả thành object
@@ -220,8 +222,11 @@ public class POSCustomerDataAccess
             paramBuilder = statement.getParamBuilder()
                     .setPage(page)
                     .setPageSize(pageSize)
+                    .setSortOrderASC("name")
                     .setFilterLike("name", finalSearch)
                     .setFilterLike("email", finalSearch)
+                    .setFilterLike("full_name", finalSearch)
+                    .setFilterLike("telephone", finalSearch)
 //                    .setFilterLike("telephone", finalSearch)
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
 
@@ -271,7 +276,7 @@ public class POSCustomerDataAccess
             connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
             statement = connection.createStatement();
             statement.prepareQuery(POSAPI.REST_CUSOMTER_UPDATE);
-            statement.setParam(POSAPI.PARAM_CUSTOMER_ID, oldCustomer.getID());
+//            statement.setParam(POSAPI.PARAM_CUSTOMER_ID, oldCustomer.getID());
 
             // Xây dựng tham số
             paramBuilder = statement.getParamBuilder()

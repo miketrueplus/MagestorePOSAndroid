@@ -3,8 +3,11 @@ package com.magestore.app.pos.panel;
 import android.content.Context;
 import android.content.Intent;
 import android.util.AttributeSet;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.magestore.app.lib.model.directory.Currency;
 import com.magestore.app.lib.model.setting.Setting;
@@ -14,7 +17,10 @@ import com.magestore.app.lib.view.SimpleSpinner;
 import com.magestore.app.pos.LoginActivity;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.SettingListController;
+import com.magestore.app.pos.util.EditTextUtil;
 import com.magestore.app.util.DataUtil;
+import com.magestore.app.util.DialogUtil;
+import com.magestore.app.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +39,8 @@ public class SettingDetailPanel extends AbstractDetailPanel<Setting> {
     List<LinearLayout> listLayout;
     SimpleSpinner sp_currency;
     EditText edt_name, edt_current_password, edt_new_password, edt_confirm_password;
+    Button btn_save;
+    RelativeLayout setting_background_loading;
 
     public SettingDetailPanel(Context context) {
         super(context);
@@ -58,9 +66,32 @@ public class SettingDetailPanel extends AbstractDetailPanel<Setting> {
         ll_setting_currency = (LinearLayout) findViewById(R.id.ll_setting_currency);
         sp_currency = (SimpleSpinner) findViewById(R.id.sp_currency);
         ll_setting_store = (LinearLayout) findViewById(R.id.ll_setting_store);
+        btn_save = (Button) findViewById(R.id.btn_save);
         listLayout.add(ll_setting_account);
         listLayout.add(ll_setting_currency);
         listLayout.add(ll_setting_store);
+
+        setting_background_loading = (RelativeLayout) findViewById(R.id.setting_background_loading);
+
+        initValue();
+    }
+
+    @Override
+    public void initValue() {
+        btn_save.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!checkRequied()) {
+                    return;
+                }
+                Staff staff = ((SettingListController) getController()).createStaff();
+                staff.setStaffName(edt_name.getText().toString().trim());
+                staff.setCurrentPassword(edt_current_password.getText().toString().trim());
+                staff.setNewPassword(edt_new_password.getText().toString().trim());
+                staff.setConfirmPassword(edt_confirm_password.getText().toString().trim());
+                ((SettingListController) getController()).doInputChangeInformation(staff);
+            }
+        });
     }
 
     @Override
@@ -93,5 +124,33 @@ public class SettingDetailPanel extends AbstractDetailPanel<Setting> {
                 layout.setVisibility(GONE);
             }
         }
+    }
+
+    public boolean checkRequied() {
+        if (!isRequied(edt_name)) {
+            return false;
+        }
+
+        if (!isRequied(edt_current_password)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean isRequied(EditText editText) {
+        return EditTextUtil.checkRequied(getContext(), editText);
+    }
+
+    public void isShowLoading(boolean isShow) {
+        setting_background_loading.setVisibility(isShow ? VISIBLE : GONE);
+    }
+
+    public void showAlertRespone(String message) {
+        if(StringUtil.STRING_EMPTY.equals(message)){
+            message = getContext().getString(R.string.err_request);
+        }
+        // Tạo dialog và hiển thị
+        DialogUtil.confirm(getContext(), message, R.string.ok);
     }
 }
