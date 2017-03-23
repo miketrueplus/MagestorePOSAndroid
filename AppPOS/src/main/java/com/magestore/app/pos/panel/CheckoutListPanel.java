@@ -177,13 +177,8 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
     }
 
     public void showSalesShipping(boolean isShow) {
-        if (isShow) {
-//            ll_sales_total.setVisibility(VISIBLE);
-            ll_sales_shipping.setVisibility(VISIBLE);
-        } else {
-//            ll_sales_total.setVisibility(GONE);
-            ll_sales_shipping.setVisibility(GONE);
-        }
+        ll_sales_shipping.setVisibility(isShow ? VISIBLE : GONE);
+//        ll_sales_total.setVisibility(isShow ? VISIBLE : GONE);
     }
 
     public void changeActionButton(boolean ischange) {
