@@ -81,6 +81,7 @@ public class CheckoutAddCustomerPanel extends AbstractDetailPanel<Checkout> {
         mCustomerListController.setMagestoreContext(mMagestoreContext);
         mCustomerListController.setCustomerService(mCustomerService);
         mCustomerListController.setListPanel(mCustomerListPanel);
+        mCustomerListController.setCheckoutListPanel(mCheckoutListPanel);
         mCustomerListController.setCheckoutAddCustomerPanel(this);
 
         // chuẩn bị model cho các panel

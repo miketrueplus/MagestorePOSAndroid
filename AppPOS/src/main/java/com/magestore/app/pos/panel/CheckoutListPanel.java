@@ -575,8 +575,8 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
                         mCustomer.getAddress().remove(billingAddress);
                         mCustomer.getAddress().add(1, billingAddress);
                     }
-                    if (!checkChangeCustomer(customer)) {
-                        mCheckoutAddCustomerPanel.getCustomerListController().doInsert(customer);
+                    if (checkChangeCustomer(customer)) {
+                        mCheckoutAddCustomerPanel.getCustomerListController().doUpdate(mCustomer, customer);
                     }
                 }
                 dialog.dismiss();
