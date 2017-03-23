@@ -25,6 +25,7 @@ import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.CustomerListController;
 import com.magestore.app.pos.databinding.PanelCustomerAddNewBinding;
 import com.magestore.app.pos.util.EditTextUtil;
+import com.magestore.app.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -424,6 +425,19 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
             b_state.setVisibility(GONE);
             b_spinner_state.setVisibility(VISIBLE);
             b_spinner_state.setSelection(billingAddress.getRegion().getRegionCode());
+        }
+    }
+
+    public void insertCustomerNameToAddress() {
+        String firstName = first_name.getText().toString().trim();
+        String sFirstName = s_first_name.getText().toString().trim();
+        String lastName = last_name.getText().toString().trim();
+        String sLastName = s_last_name.getText().toString().trim();
+        if (!StringUtil.STRING_EMPTY.equals(firstName) && StringUtil.STRING_EMPTY.equals(sFirstName)) {
+            s_first_name.setText(firstName);
+        }
+        if (!StringUtil.STRING_EMPTY.equals(lastName) && StringUtil.STRING_EMPTY.equals(sLastName)) {
+            s_last_name.setText(lastName);
         }
     }
 

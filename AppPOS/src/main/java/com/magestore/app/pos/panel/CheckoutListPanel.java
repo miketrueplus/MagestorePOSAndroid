@@ -333,6 +333,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
                 ll_new_billing_address.setVisibility(VISIBLE);
                 ll_new_shipping_address.setVisibility(GONE);
                 dialog.getButtonCancel().setText(getContext().getString(R.string.cancel));
+                mCustomerAddNewPanel.insertCustomerNameToAddress();
             }
         });
     }
@@ -354,6 +355,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
                         dialog.getButtonCancel().setText(getContext().getString(R.string.delete));
                     }
                 }
+                mCustomerAddNewPanel.insertCustomerNameToAddress();
             }
         });
 
@@ -373,6 +375,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
                         dialog.getButtonCancel().setText(getContext().getString(R.string.delete));
                     }
                 }
+                mCustomerAddNewPanel.insertCustomerNameToAddress();
             }
         });
 
