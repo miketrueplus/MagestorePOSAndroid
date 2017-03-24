@@ -778,7 +778,6 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
 
             // cập nhật hiển thị option
             expandableListAdapter.notifyDataSetChanged();
-
 //            mBinding.setCartItem(getItem());
         }
 

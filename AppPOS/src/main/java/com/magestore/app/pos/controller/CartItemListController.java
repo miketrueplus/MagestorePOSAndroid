@@ -588,6 +588,11 @@ public class CartItemListController extends AbstractChildListController<Checkout
     }
 
 
+    private boolean blnAlowRemoveCartItem = true;
+    public void blnAlowRemoveCartItem(State state) {
+        blnAlowRemoveCartItem = (CheckoutListController.STATE_ENABLE_CHANGE_CART_ITEM.equals(state.getStateCode()));
+    }
+
     /**
      * Hiển thị dialog custome sales
      */
