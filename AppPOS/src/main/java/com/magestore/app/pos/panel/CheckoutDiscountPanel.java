@@ -14,6 +14,8 @@ import com.magestore.app.lib.model.checkout.SaveQuoteParam;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.CheckoutListController;
+import com.magestore.app.util.ConfigUtil;
+import com.magestore.app.view.EditTextFloat;
 
 /**
  * Created by Johan on 2/24/17.
@@ -25,7 +27,8 @@ public class CheckoutDiscountPanel extends AbstractDetailPanel<Checkout> {
     TextView txt_sales_discount, txt_sales_promotion, amount_currency, amount_percent;
     LinearLayout ll_sales_discount, ll_sales_promotion;
     CheckoutListController mCheckoutListController;
-    EditText discount_name, discount_amount, coupon_code, promotion_amount;
+    EditText discount_name, coupon_code;
+    EditTextFloat discount_amount, promotion_amount;
     boolean amountType = false;
 
     public void setCheckoutListController(CheckoutListController mCheckoutListController) {
@@ -56,13 +59,16 @@ public class CheckoutDiscountPanel extends AbstractDetailPanel<Checkout> {
         ll_sales_promotion = (LinearLayout) view.findViewById(R.id.ll_sales_promotion);
 
         discount_name = (EditText) view.findViewById(R.id.discount_name);
-        discount_amount = (EditText) view.findViewById(R.id.discount_amount);
+        discount_amount = (EditTextFloat) view.findViewById(R.id.discount_amount);
 
         amount_currency = (TextView) view.findViewById(R.id.amount_currency);
         amount_percent = (TextView) view.findViewById(R.id.amount_percent);
 
         coupon_code = (EditText) view.findViewById(R.id.coupon_code);
-        promotion_amount = (EditText) view.findViewById(R.id.promotion_amount);
+        promotion_amount = (EditTextFloat) view.findViewById(R.id.promotion_amount);
+
+        discount_amount.setText(ConfigUtil.formatNumber(0.00));
+        promotion_amount.setText(ConfigUtil.formatNumber(0.00));
     }
 
     @Override
@@ -78,6 +84,7 @@ public class CheckoutDiscountPanel extends AbstractDetailPanel<Checkout> {
                 changeColor(true, amount_currency);
                 changeColor(false, amount_percent);
                 amountType = false;
+                discount_amount.setMaxValue(mCheckoutListController.getSelectedItem().getGrandTotal());
             }
         });
 
@@ -87,6 +94,8 @@ public class CheckoutDiscountPanel extends AbstractDetailPanel<Checkout> {
                 changeColor(true, amount_percent);
                 changeColor(false, amount_currency);
                 amountType = true;
+                // maximum 100%
+                discount_amount.setMaxValue(100);
             }
         });
     }

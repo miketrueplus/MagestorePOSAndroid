@@ -65,8 +65,7 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         } else {
             quote.setQuoteId("");
         }
-        // TODO: bug server với trường hợp truyền lên có customer id
-        quote.setCustomerId("");
+        quote.setCustomerId(checkout.getCustomerID());
         // TODO: Giả data với (current_id = USD, till_id = 1) sau fix lại theo config
         quote.setCurrencyId("USD");
         quote.setStoreId(checkout.getStoreId());
@@ -90,6 +89,7 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
 
         quoteParam.setQuoteId(checkout.getQuoteId());
         quoteParam.setStoreId(checkout.getStoreId());
+        quoteParam.setCustomerId(checkout.getCustomerID());
         // TODO: đang fix giá trị currency, till_id
         quoteParam.setCurrencyId("USD");
         quoteParam.setTillId("1");
@@ -316,8 +316,8 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
     }
 
     @Override
-    public QuoteItemExtension createQuoteItemExtension() {
-        return new PosQuoteItemExtension();
+    public List<QuoteItemExtension> createQuoteItemExtension() {
+        return new ArrayList<>();
     }
 
     @Override
@@ -352,7 +352,7 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
             quoteItems.setItemId(item.getItemId());
             quoteItems.convertProductOption(item);
 
-            QuoteItemExtension quoteItemExtension = createQuoteItemExtension();
+            List<QuoteItemExtension> quoteItemExtension = createQuoteItemExtension();
             quoteItems.setExtensionData(quoteItemExtension);
             listQuoteItem.add(quoteItems);
         }

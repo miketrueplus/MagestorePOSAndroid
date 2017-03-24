@@ -63,7 +63,7 @@ public interface CheckoutService extends ListService<Checkout> {
 
     QuoteCustomerAddress createCustomerAddress();
 
-    QuoteItemExtension createQuoteItemExtension();
+    List<QuoteItemExtension> createQuoteItemExtension();
 
     PlaceOrderParams createPlaceOrderParams();
 

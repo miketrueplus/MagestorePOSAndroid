@@ -22,8 +22,8 @@ public class PosQuoteItems extends PosAbstractModel implements QuoteItems {
     String item_id;
     int qty;
     int qty_to_ship;
-    int use_discount;
-    PosQuoteItemExtension extension_data;
+    int use_discount = 1;
+    List<PosQuoteItemExtension> extension_data;
 
     List<PosCartItem.OptionsValue> options;
     List<PosCartItem.OptionsValue> super_attribute;
@@ -76,13 +76,13 @@ public class PosQuoteItems extends PosAbstractModel implements QuoteItems {
     }
 
     @Override
-    public QuoteItemExtension getExtensionData() {
-        return extension_data;
+    public List<QuoteItemExtension> getExtensionData() {
+        return (List<QuoteItemExtension>) (List<?>) extension_data;
     }
 
     @Override
-    public void setExtensionData(QuoteItemExtension quoteItemExtension) {
-        extension_data = (PosQuoteItemExtension) quoteItemExtension;
+    public void setExtensionData(List<QuoteItemExtension> quoteItemExtension) {
+        extension_data = (List<PosQuoteItemExtension>) (List<?>) quoteItemExtension;
     }
 
     @Override

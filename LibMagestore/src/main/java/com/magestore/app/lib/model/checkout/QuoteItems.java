@@ -3,6 +3,8 @@ package com.magestore.app.lib.model.checkout;
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 
+import java.util.List;
+
 /**
  * Created by Johan on 2/14/17.
  * Magestore
@@ -19,8 +21,8 @@ public interface QuoteItems extends Model {
     void setQtyToShip(int intQtyToShip);
     int getUserDiscount();
     void setUserDiscount(int intUserDiscount);
-    QuoteItemExtension getExtensionData();
-    void setExtensionData(QuoteItemExtension quoteItemExtension);
+    List<QuoteItemExtension> getExtensionData();
+    void setExtensionData(List<QuoteItemExtension> quoteItemExtension);
 
     CartItem getCartItem();
 
