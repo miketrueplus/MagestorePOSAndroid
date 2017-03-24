@@ -22,13 +22,13 @@ public interface ProductOptionGrouped extends Model {
 
     void setName(String name);
 
-    String getPrice();
+    float getPrice();
 
-    void setPrice(String price);
+    void setPrice(float price);
 
-    String getDefaultQty();
+    int getDefaultQty();
 
-    void setDefaultQty(String default_qty);
+    void setDefaultQty(int default_qty);
 
     String getImage();
 

@@ -3,6 +3,7 @@ package com.magestore.app.pos.model.catalog;
 import com.magestore.app.lib.model.catalog.ProductOption;
 import com.magestore.app.lib.model.catalog.ProductOptionBundle;
 import com.magestore.app.pos.model.PosAbstractModel;
+import com.magestore.app.util.StringUtil;
 
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class PosProductOptionBundle extends PosAbstractModel implements ProductO
 
     @Override
     public boolean isRequired() {
-        return "1".equals(required);
+        return StringUtil.STRING_ONE.equals(required);
     }
 
     @Override

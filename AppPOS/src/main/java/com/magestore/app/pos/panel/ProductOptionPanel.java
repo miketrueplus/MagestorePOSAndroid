@@ -109,12 +109,22 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
     @Override
     public void bindItem(CartItem item) {
         super.bindItem(item);
+
+        // đặt giá trị min
         mtxtCartItemQuantity.setMinValue(item.getProduct().getQuantityIncrement());
+
+        // tạo model view list
         createModelViewList();
+
+        // cập nhật list option
         if (expandableListAdapter != null) {
             expandableListAdapter.setCartItem(item);
             expandableListAdapter.notifyDataSetChanged();
         }
+
+        // cập nhật lại giá
+        updateCartItemPrice();
+        mBinding.setCartItem(item);
     }
 
     /**
@@ -144,8 +154,19 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         if (!validateInput()) return;
 
         // chia làm có option
-        if (getItem().getProduct().haveProductOption())
-            ((CartItemListController) getController()).updateToCart(bind2Item());
+        if (getItem().getProduct().haveProductOption()) {
+            // xem loại option là grouped option hoặc không phải groped option
+            // nếu không phải là grouped option tạo thành 1 cart item
+            if (getItem().getProduct().getProductOption().getGroupedOptions() == null)
+                ((CartItemListController) getController()).updateToCart(bind2Item());
+            else { // nếu là grouped option, thì chia làm 2 cart item
+                for (OptionModelView optionModel : mModelViewList) {
+                    CartItem item = bind2Item();
+                    ((CartItemListController) getController()).updateToCart(item, optionModel.getModel().getID(), optionModel.title, optionModel.quantity * item.getQuantity(), optionModel.price);
+                }
+                ((CartItemListController) getController()).closeAllOpeningDialog();
+            }
+        }
         else // và không option thì add như 1 product
             ((CartItemListController) getController()).updateToCartNoOption(bind2Item());
     }
@@ -279,7 +300,6 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                 OptionModelView optionModelView = new OptionModelView();
                 optionModelView.optionValueModelViewList = new ArrayList<>();
                 optionModelView.title = bundle.getTitle();
-                optionModelView.quantity = 1;
                 optionModelView.is_required = bundle.isRequired();
                 optionModelView.option_type = ProductOptionCustom.OPTION_TYPE_BUNDLE;
                 optionModelView.input_type = bundle.getType();
@@ -318,15 +338,24 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         List<PosProductOptionGrouped> groupedList = getItem().getProduct().getProductOption().getGroupedOptions();
         if (groupedList != null) {
             for (PosProductOptionGrouped groupedOption : groupedList) {
-//                OptionModelView optionModelView = new OptionModelView();
-//                optionModelView.optionValueModelViewList = new ArrayList<>();
-//                optionModelView.title = bundle.getTitle();
-//                optionModelView.quantity = 1;
-//                optionModelView.is_required = bundle.isRequired();
-//                optionModelView.option_type = ProductOptionCustom.OPTION_TYPE_BUNDLE;
-//                optionModelView.input_type = bundle.getType();
-//                optionModelView.quantity = Integer.parseInt(getOptionValue(bundle.getID(), getItem().getBundleOptionQuantity(), StringUtil.STRING_ONE));
-//                optionModelView.setModel(bundle);
+                OptionModelView optionModelView = new OptionModelView();
+                optionModelView.optionValueModelViewList = new ArrayList<>();
+                optionModelView.title = groupedOption.getName();
+                optionModelView.quantity = groupedOption.getDefaultQty();
+                optionModelView.is_required = false;
+                optionModelView.option_type = ProductOptionCustom.OPTION_TYPE_GROUPED;
+                optionModelView.price = groupedOption.getPrice();
+                optionModelView.setModel(groupedOption);
+
+                // thêm một list giả cuối để đặt số lượng
+                FakeValueModelView optionValueModelView = new FakeValueModelView();
+                optionValueModelView.optionModelView = optionModelView;
+                optionValueModelView.choose = true;
+                optionValueModelView.price = Float.toString(groupedOption.getPrice());
+                optionModelView.optionValueModelViewList.add(optionValueModelView);
+
+                // thêm vào danh sách option
+                mModelViewList.add(optionModelView);
 //
 //                if (bundle.getItems() == null) continue;
 //                for (PosProductOptionBundleItem bundleItem : bundle.getItems()) {
@@ -382,6 +411,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         public boolean is_required;
         public List<OptionValueModelView> optionValueModelViewList;
         public int quantity;
+        public float price;
 
         public boolean isCustomOption() {
             return (option_type == null) || ProductOptionCustom.OPTION_TYPE_CUSTOM.equals(option_type);
@@ -960,7 +990,10 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
             if (optionModelView.is_required)
                 optionModelView.holder.mtxtTitle.setText(optionModelView.title);
             else
-                optionModelView.holder.mtxtTitle.setText(optionModelView.title + getResources().getString(R.string.field_optional));
+                optionModelView.holder.mtxtTitle.setText(optionModelView.title + StringUtil.STRING_SPACE + getResources().getString(R.string.field_optional));
+
+            if (ProductOptionCustom.OPTION_TYPE_GROUPED.equals(optionModelView.option_type))
+                optionModelView.holder.mtxtTitle.setText(optionModelView.title + StringUtil.STRING_SPACE + getResources().getString(R.string.field_optional) + StringUtil.STRING_SPACE + ConfigUtil.formatPrice(optionModelView.price));
 
             // luôn mở expand
             ExpandableListView mExpandableListView = (ExpandableListView) parent;

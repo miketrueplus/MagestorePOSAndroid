@@ -258,6 +258,20 @@ public class POSCartService extends AbstractService implements CartService {
         cartItem.setPrice(newPrice);
     }
 
+    @Override
+    public CartItem insert(Checkout checkout, String productID, String productName, int quantity, float price) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+        // nếu chưa có đơn hàng, bo qua
+        if (checkout == null) return null;
+
+        // khởi tạo product
+        Product product = new PosProduct();
+        product.setItemId(productID);
+        product.setName(productName);
+
+        // khởi tạo cart và add vào list
+        return insert(checkout, product, quantity, price);
+    }
+
     /**
      * Thêm 1 order item
      *

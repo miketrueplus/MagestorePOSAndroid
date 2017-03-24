@@ -294,6 +294,36 @@ public class CartItemListController extends AbstractChildListController<Checkout
 //        }
     }
 
+    public void closeAllOpeningDialog() {
+        if (mCartItemDetailDialog != null && mCartItemDetailDialog.isShowing())
+            mCartItemDetailDialog.dismiss();
+        if (mProductOptionDialog != null && mProductOptionDialog.isShowing())
+            mProductOptionDialog.dismiss();
+        if (mCustomeSaleDialog != null && mCustomeSaleDialog.isShowing())
+            mCustomeSaleDialog.dismiss();
+    }
+
+    public void updateToCart(CartItem cartItem, String productID, String productName, int quantity, float price) {
+        try {
+            // chèn vào data set
+            CartItem item = mCartService.insert(getParent(), productID, productName, quantity, price);
+            // chèn model lên đầu
+            getView().updateModelToFirstInsertIfNotFound(item);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+        // cập nhật giá tổng
+        updateTotalPrice();
+    }
+
     /**
      * Cập nhật cart item hiện tại. Tắt các dialog
      *
@@ -316,12 +346,7 @@ public class CartItemListController extends AbstractChildListController<Checkout
         getView().updateModelToFirstInsertIfNotFound(cartItem);
 
         // ẩn các dialog đang hiển thị
-        if (mCartItemDetailDialog != null && mCartItemDetailDialog.isShowing())
-            mCartItemDetailDialog.dismiss();
-        if (mProductOptionDialog != null && mProductOptionDialog.isShowing())
-            mProductOptionDialog.dismiss();
-        if (mCustomeSaleDialog != null && mCustomeSaleDialog.isShowing())
-            mCustomeSaleDialog.dismiss();
+        closeAllOpeningDialog();
 
         // cập nhật giá tổng
         updateTotalPrice();
@@ -350,12 +375,7 @@ public class CartItemListController extends AbstractChildListController<Checkout
         }
 
         // ẩn các dialog đang hiển thị
-        if (mCartItemDetailDialog != null && mCartItemDetailDialog.isShowing())
-            mCartItemDetailDialog.dismiss();
-        if (mProductOptionDialog != null && mProductOptionDialog.isShowing())
-            mProductOptionDialog.dismiss();
-        if (mCustomeSaleDialog != null && mCustomeSaleDialog.isShowing())
-            mCustomeSaleDialog.dismiss();
+        closeAllOpeningDialog();
 
         // cập nhật giá tổng
         updateTotalPrice();
@@ -383,12 +403,7 @@ public class CartItemListController extends AbstractChildListController<Checkout
         getView().updateModelToFirstInsertIfNotFound(cartItem);
 
         // ẩn các dialog đang hiển thị
-        if (mCartItemDetailDialog != null && mCartItemDetailDialog.isShowing())
-            mCartItemDetailDialog.dismiss();
-        if (mProductOptionDialog != null && mProductOptionDialog.isShowing())
-            mProductOptionDialog.dismiss();
-        if (mCustomeSaleDialog != null && mCustomeSaleDialog.isShowing())
-            mCustomeSaleDialog.dismiss();
+        closeAllOpeningDialog();
 
         // cập nhật giá tổng
         updateTotalPrice();

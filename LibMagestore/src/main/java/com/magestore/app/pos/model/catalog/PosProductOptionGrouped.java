@@ -49,23 +49,23 @@ public class PosProductOptionGrouped extends PosAbstractModel implements Product
     }
 
     @Override
-    public String getPrice() {
-        return price;
+    public float getPrice() {
+        return Float.parseFloat(price);
     }
 
     @Override
-    public void setPrice(String price) {
-        this.price = price;
+    public void setPrice(float price) {
+        this.price = Float.toString(price);
     }
 
     @Override
-    public String getDefaultQty() {
-        return default_qty;
+    public int getDefaultQty() {
+        return (int) Float.parseFloat(default_qty);
     }
 
     @Override
-    public void setDefaultQty(String default_qty) {
-        this.default_qty = default_qty;
+    public void setDefaultQty(int default_qty) {
+        this.default_qty = Integer.toString(default_qty);
     }
 
     @Override
