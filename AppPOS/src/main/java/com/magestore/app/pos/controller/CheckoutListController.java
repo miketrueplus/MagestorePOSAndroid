@@ -1068,6 +1068,8 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         ((CheckoutListPanel) mView).showLoading(isShow);
     }
 
+    public void enableRemoveCartItem(boolean isEnable){}
+
     /**
      * Place thực hiện order
      */
