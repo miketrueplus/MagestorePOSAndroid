@@ -251,7 +251,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
     }
 
     public void setPickAtStoreDefault() {
-        cb_pick_at_store.setChecked(true);
+        cb_pick_at_store.setChecked(false);
     }
 
     public void showNotifiSelectPayment() {
