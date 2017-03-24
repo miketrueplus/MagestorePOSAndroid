@@ -141,6 +141,7 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
                     .setPage(page)
                     .setPageSize(pageSize)
 //                .setFilterLike("name", "%Backyard%")
+                    .setSortOrderASC("name")
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
 //                .setFilterEqual("name", "Joust Duffle Bag");
 
@@ -250,6 +251,7 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
             paramBuilder = statement.getParamBuilder()
                     .setPage(1)
                     .setPageSize(1)
+                    .setSortOrderASC("name")
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID)
                     .setFilterEqual("product_id", strID);
 
