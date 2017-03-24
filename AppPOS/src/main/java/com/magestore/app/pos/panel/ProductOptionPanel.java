@@ -23,6 +23,7 @@ import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.model.catalog.ProductOptionCustom;
 import com.magestore.app.lib.model.catalog.ProductOptionCustomValue;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
+import com.magestore.app.lib.model.config.Config;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
 import com.magestore.app.lib.service.checkout.CartService;
 import com.magestore.app.lib.view.item.GenericModelView;
@@ -770,9 +771,15 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
          */
         private void onAddOptionQuantity(OptionModelView optionModelView, OptionValueModelViewHolder holder) {
             optionModelView.quantity = holder.mtxtQuantity.getValueInteger();
+
+            // tính toán cập nhật lại giá
             updateCartItemPrice();
+            mBinding.idTxtProductOptionCartItemPrice.setText(ConfigUtil.formatPrice(getItem().getPrice()));
+
+            // cập nhật hiển thị option
             expandableListAdapter.notifyDataSetChanged();
-            mBinding.setCartItem(getItem());
+
+//            mBinding.setCartItem(getItem());
         }
 
         /**
@@ -780,9 +787,15 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
          */
         private void onSubtractOptionQuantity(OptionModelView optionModelView, OptionValueModelViewHolder holder) {
             optionModelView.quantity = holder.mtxtQuantity.getValueInteger();
+
+            // tính toán cập nhật lại giá
             updateCartItemPrice();
+            mBinding.idTxtProductOptionCartItemPrice.setText(ConfigUtil.formatPrice(getItem().getPrice()));
+
+            // cập nhật hiển thị option
             expandableListAdapter.notifyDataSetChanged();
-            mBinding.setCartItem(getItem());
+
+//            mBinding.setCartItem(getItem());
         }
 
 
@@ -807,7 +820,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
 
             // cập nhật lại giá
             updateCartItemPrice();
-            mBinding.setCartItem(getItem());
+            mBinding.idTxtProductOptionCartItemPrice.setText(ConfigUtil.formatPrice(getItem().getPrice()));
         }
 
         /**
@@ -851,8 +864,9 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                                 optionModelView.quantity = ConfigUtil.parseInteger(ConfigUtil.truncateIntegerDigit(optionValueModelView.holder.mtxtQuantity.getText().toString()));
                                 if (optionModelView.quantity < 1) optionModelView.quantity = 1;
                                 updateCartItemPrice();
+                                mBinding.idTxtProductOptionCartItemPrice.setText(ConfigUtil.formatPrice(getItem().getPrice()));
 //                                expandableListAdapter.notifyDataSetChanged();
-                                mBinding.setCartItem(getItem());
+//                                mBinding.setCartItem(getItem());
 //                                optionValueModelView.holder.mtxtQuantity.setText(ConfigUtil.formatNumber(optionModelView.quantity));
                                 clearFocus();
                             } else {
