@@ -14,6 +14,7 @@ public interface ProductOptionCustom extends Model {
     public static final String OPTION_TYPE_CUSTOM = "custom";
     public static final String OPTION_TYPE_CONFIG = "config";
     public static final String OPTION_TYPE_BUNDLE = "bundle";
+    public static final String OPTION_TYPE_GROUPED = "grouped";
 
     // type
     public static final String TYPE_MULTIPE = "multipe";

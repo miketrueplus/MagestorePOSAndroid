@@ -68,6 +68,15 @@ public class EditTextFloat extends EditText {
 //        super.setText(ConfigUtil.formatFloat(value));
 //    }
 //
+
+    public void setMinValue(float flMin) {
+
+    }
+
+    public void setMaxValue(float flMax) {
+
+    }
+
     public String getValue() {
         return ConfigUtil.truncateFloatDigit(getText().toString());
     }

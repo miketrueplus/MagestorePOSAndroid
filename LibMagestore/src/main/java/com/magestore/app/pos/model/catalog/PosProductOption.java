@@ -16,6 +16,7 @@ public class PosProductOption extends PosAbstractModel implements ProductOption 
     Map<String, PosProductOptionConfigOption> configurable_options;
     List<PosProductOptionCustom> custom_options;
     List<PosProductOptionBundle> bundle_options;
+    List<PosProductOptionGrouped> grouped_options;
     PosProductOptionJsonConfig json_config;
     PosProductOptionPriceConfig price_config;
 
@@ -47,6 +48,11 @@ public class PosProductOption extends PosAbstractModel implements ProductOption 
     @Override
     public void setBundleOptions(List<PosProductOptionBundle> bundle_options) {
         this.bundle_options = bundle_options;
+    }
+
+    @Override
+    public List<PosProductOptionGrouped> getGroupedOptions() {
+        return grouped_options;
     }
 
     @Override

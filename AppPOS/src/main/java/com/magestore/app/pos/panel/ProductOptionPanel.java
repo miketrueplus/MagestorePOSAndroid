@@ -36,6 +36,7 @@ import com.magestore.app.pos.model.catalog.PosProductOptionBundleItem;
 import com.magestore.app.pos.model.catalog.PosProductOptionConfigOption;
 import com.magestore.app.pos.model.catalog.PosProductOptionCustom;
 import com.magestore.app.pos.model.catalog.PosProductOptionCustomValue;
+import com.magestore.app.pos.model.catalog.PosProductOptionGrouped;
 import com.magestore.app.pos.model.checkout.cart.PosCartItem;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.StringUtil;
@@ -193,11 +194,9 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
     }
 
     /**
-     * Tạo model view
+     * Tạo model view list từ option custom
      */
-    public void createModelViewList() {
-        mModelViewList = new ArrayList<OptionModelView>();
-
+    private void createModelViewListFromOptionCustom() {
         // tạo model view tương ứng cho mỗi option custom
         for (ProductOptionCustom optionCustom : getItem().getProduct().getProductOption().getCustomOptions()) {
             // khởi tạo model view
@@ -231,7 +230,12 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
             }
             mModelViewList.add(optionModelView);
         }
+    }
 
+    /**
+     * Tạo model view từ config option
+     */
+    private void createModelViewListFromOptionConfig() {
         // tạo model view tương ứng cho mỗi option custom
         Map<String, PosProductOptionConfigOption> configOptionMap = getItem().getProduct().getProductOption().getConfigurableOptions();
         if (configOptionMap != null) {
@@ -262,7 +266,12 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                 mModelViewList.add(optionModelView);
             }
         }
+    }
 
+    /**
+     * Tạo model view list từ option bundle
+     */
+    private void createModelViewListFromOptionBundle() {
         // convert option theo bundle options sang 1 format thống nhất
         List<PosProductOptionBundle> bundleList = getItem().getProduct().getProductOption().getBundleOptions();
         if (bundleList != null) {
@@ -299,6 +308,67 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                 mModelViewList.add(optionModelView);
             }
         }
+    }
+
+    /**
+     * Tạo model view list từ option grouped
+     */
+    private void createModelViewListFromOptionGrouped() {
+// convert option theo bundle options sang 1 format thống nhất
+        List<PosProductOptionGrouped> groupedList = getItem().getProduct().getProductOption().getGroupedOptions();
+        if (groupedList != null) {
+            for (PosProductOptionGrouped groupedOption : groupedList) {
+//                OptionModelView optionModelView = new OptionModelView();
+//                optionModelView.optionValueModelViewList = new ArrayList<>();
+//                optionModelView.title = bundle.getTitle();
+//                optionModelView.quantity = 1;
+//                optionModelView.is_required = bundle.isRequired();
+//                optionModelView.option_type = ProductOptionCustom.OPTION_TYPE_BUNDLE;
+//                optionModelView.input_type = bundle.getType();
+//                optionModelView.quantity = Integer.parseInt(getOptionValue(bundle.getID(), getItem().getBundleOptionQuantity(), StringUtil.STRING_ONE));
+//                optionModelView.setModel(bundle);
+//
+//                if (bundle.getItems() == null) continue;
+//                for (PosProductOptionBundleItem bundleItem : bundle.getItems()) {
+//                    OptionValueModelView optionValueModelView = new OptionValueModelView();
+//                    optionValueModelView.optionModelView = optionModelView;
+//                    optionValueModelView.id = bundleItem.getEntityId();
+//                    optionValueModelView.title = bundleItem.getName();
+//                    optionValueModelView.price = bundleItem.getPrice();
+//                    optionValueModelView.choose = isChooseValue(optionModelView.getModel().getID(), optionValueModelView.id, getItem().getBundleOption());
+//                    optionValueModelView.setModel(bundleItem);
+//                    optionModelView.optionValueModelViewList.add(optionValueModelView);
+//                }
+//
+//                // thêm một list giả cuối để đặt số lượng
+//                FakeValueModelView optionValueModelView = new FakeValueModelView();
+//                optionValueModelView.optionModelView = optionModelView;
+//                optionValueModelView.choose = false;
+//                optionModelView.optionValueModelViewList.add(optionValueModelView);
+//
+//                // thêm vào danh sách option
+//                mModelViewList.add(optionModelView);
+            }
+        }
+    }
+
+    /**
+     * Tạo model view
+     */
+    public void createModelViewList() {
+        mModelViewList = new ArrayList<OptionModelView>();
+
+        // tạo model view list với custom option
+        createModelViewListFromOptionCustom();
+
+        // tạo model view từ config option
+        createModelViewListFromOptionConfig();
+
+        // tạo model view từ config bundle
+        createModelViewListFromOptionBundle();
+
+        // tạo model view từ config grouped
+        createModelViewListFromOptionGrouped();
     }
 
     /**
@@ -505,6 +575,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                     descriptionBuilder.append(firstOptionValue ? StringUtil.STRING_COLON_SPACE : StringUtil.STRING_COMMA_SPACE).append(optionValueModelView.title);
                     firstOptionValue = false;
 
+                    // chèn các option do user chọn vào cart item
                     if (PosProductOptionCustom.OPTION_TYPE_CUSTOM.equals(optionModelView.option_type))
                         item.insertOption(optionModelView.getModel().getID(), optionValueModelView.getModel().getID());
                     else if (PosProductOptionCustom.OPTION_TYPE_CONFIG.equals(optionModelView.option_type))
@@ -523,7 +594,6 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
 
         // trả lại cart item
         item.setItemDescription(descriptionBuilder.toString());
-        ((CartItemListController) getController()).updateCartItemPrice(item);
     }
 
     /**
@@ -550,6 +620,10 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         getItem().setCustomPrice(price);
     }
 
+    /**
+     * Hiển thị progress
+     * @param blnShow
+     */
     @Override
     public void showProgress(boolean blnShow) {
         super.showProgress(blnShow);
@@ -558,6 +632,9 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         mbtnAddToCart.setEnabled(blnShow ? false : true);
     }
 
+    /**
+     * Tất cả các progress bar
+     */
     @Override
     public void hideAllProgressBar() {
         super.hideAllProgressBar();
