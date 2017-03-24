@@ -1075,7 +1075,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     public void enableRemoveCartItem(boolean isEnable) {
         // báo cho các observ khác về việc enable thay đổi cart item
         String keyObserv = STATE_ENABLE_CHANGE_CART_ITEM;
-        if (isEnable) {
+        if (!isEnable) {
             keyObserv = STATE_ENABLE_CHANGE_CART_ITEM;
         } else {
             keyObserv = STATE_DISABLE_CHANGE_CART_ITEM;

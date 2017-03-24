@@ -115,6 +115,8 @@ public class CartItemListPanel extends AbstractListPanel<CartItem> {
             // Xử lý sự kiện xóa trên swipe
             mDelButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
+                    // không cho xóa nếu trạng thái không cho thay đổi caritem
+                    if (!((CartItemListController)getController()).isAllowChangeCartItem()) return;
                     if (getModelView() == null || getModelView().getModel() == null) return;
                     ((CartItemListController)getController()).deleteProduct(((CartItem)getModelView().getModel()).getProduct());
                 }
@@ -162,6 +164,8 @@ public class CartItemListPanel extends AbstractListPanel<CartItem> {
                 @Override
                 public void onDoubleClick(SwipeLayout layout, boolean surface) {
                     if (getModelView() == null || getModelView().getModel() == null) return;
+                    if (!((CartItemListController)getController()).isAllowChangeCartItem()) return;
+
                     getController().bindItem((CartItem) getModelView().getModel());
                     getController().doShowDetailPanel(true);
                 }

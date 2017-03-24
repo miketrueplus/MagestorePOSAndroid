@@ -259,39 +259,17 @@ public class CartItemListController extends AbstractChildListController<Checkout
      */
     @Override
     public void doShowDetailPanel(boolean show) {
-//        if (!getSelectedItem().getProduct().haveProductOption()) {
         // khởi tạo và hiển thị dialog
         if (mCartItemDetailDialog == null) {
             mCartItemDetailDialog = com.magestore.app.pos.util.DialogUtil.dialog(getDetailView().getContext(),
                     getDetailView().getContext().getString(R.string.product_option),
                     getDetailView());
             mCartItemDetailDialog.setGoneButtonSave(true);
-//            mCartItemDetailDialog.setGoneButtonCancel(true);
         }
 
         // đổi title dialiog theo sản phẩm và hiển thị
         mCartItemDetailDialog.show();
         mCartItemDetailDialog.getDialogTitle().setText(getSelectedItem().getProduct().getName());
-
-        // Xử lý khi nhấn save trên dialog
-//        mCartItemDetailDialog.getButtonSave().setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                updateToCart(getDetailView().bind2Item());
-//            }
-//        });
-//
-//        // Xử lý khi nhấn cancel trên dialog
-//        mCartItemDetailDialog.getButtonCancel().setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                updateToCart(getDetailView().bind2Item());
-//            }
-//        });
-//        }
-//        else {
-//            doShowProductOptionInput(getSelectedItem());
-//        }
     }
 
     public void closeAllOpeningDialog() {
@@ -489,14 +467,6 @@ public class CartItemListController extends AbstractChildListController<Checkout
         mProductOptionDialog.show();
         mProductOptionDialog.getDialogTitle().setText(cartItem.getProduct().getName());
 
-        // Xử lý khi nhấn save trên dialog
-//        mProductOptionDialog.getButtonSave().setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                addToCart(mProductOptionPanel.bind2Item());
-//            }
-//        });
-
         // gán cart item và load product option
         if (cartItem.getProduct().getProductOption() != null) bindItem(cartItem);
         else doLoadItem(cartItem);
@@ -593,6 +563,13 @@ public class CartItemListController extends AbstractChildListController<Checkout
         blnAlowRemoveCartItem = (CheckoutListController.STATE_ENABLE_CHANGE_CART_ITEM.equals(state.getStateCode()));
     }
 
+    /*
+    Cho phép change cart hay không
+     */
+    public boolean isAllowChangeCartItem() {
+        return blnAlowRemoveCartItem;
+    }
+
     /**
      * Hiển thị dialog custome sales
      */
@@ -616,8 +593,6 @@ public class CartItemListController extends AbstractChildListController<Checkout
         mCheckoutCustomSalePanel.bindItem(cartItem);
         mCustomeSaleDialog.show();
     }
-///
-
 
     /**
      * Đặt product option panel
