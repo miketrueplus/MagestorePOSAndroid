@@ -198,7 +198,9 @@
                 android:layout_weight="1"
                 android:background="@drawable/boder_linear_layout"
                 android:orientation="vertical"
-                android:padding="@dimen/layout_margin_5">
+                android:paddingLeft="@dimen/layout_margin_5"
+                android:paddingRight="@dimen/layout_margin_5"
+                android:paddingTop="@dimen/layout_margin_5">
 
                 <com.magestore.app.lib.view.SimpleSpinner
                     android:id="@+id/s_spinner_country"
@@ -215,14 +217,14 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/boder_linear_layout"
-                android:orientation="vertical"
-                android:padding="@dimen/layout_margin_5">
+                android:orientation="vertical">
 
                 <com.magestore.app.view.FormatEditText
                     android:id="@+id/state"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
+                    android:layout_margin="5dp"
                     android:hint="@string/customer_state_or_province_optional"
                     android:visibility="gone" />
 
