@@ -196,6 +196,11 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             checkout.setStoreId(store_id);
             wraper.put("quote_id", checkout.getQuoteId());
             wraper.put("quote_param", quoteParam);
+            if (((CheckoutDetailPanel) mDetailView).getVisibility() == View.VISIBLE) {
+                wraper.put("type_save_quote", 1);
+            } else {
+                wraper.put("type_save_quote", 0);
+            }
             doAction(ACTION_TYPE_SAVE_QUOTE, null, wraper, checkout);
         }
     }
@@ -439,6 +444,34 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             }
         } else if (success && actionType == ACTION_TYPE_SAVE_QUOTE) {
             Checkout checkout = (Checkout) wraper.get("save_quote");
+            int type_save_quote = (int) wraper.get("type_save_quote");
+
+            if(type_save_quote == 1){
+                // cập nhật list shipping và payment
+                List<CheckoutShipping> listShipping = checkout.getCheckoutShipping();
+                List<CheckoutPayment> listPayment = checkout.getCheckoutPayment();
+
+                // bind data to shipping method list
+                bindDataToShippingMethodList(listShipping);
+
+                mPaymentMethodListPanel.bindList(listPayment);
+                mCheckoutAddPaymentPanel.bindList(listPayment);
+
+                // hiển thị list shipping address
+                Customer customer = (Customer) wraper.get("customer");
+                mCheckoutAddressListPanel.bindListModel((List<Model>) (List<?>) customer.getAddress());
+                mCheckoutAddressListPanel.setSelectPos(customer.getAddressPosition());
+                mCheckoutAddressListPanel.scrollToPosition();
+
+                mCheckoutPaymentListPanel.setCheckout(checkout);
+
+                // show shipping total
+                ((CheckoutListPanel) mView).showSalesShipping(true);
+
+                // auto select shipping method
+                autoSelectShipping(listShipping);
+            }
+
             //  cập nhật giá
             ((CheckoutService) getListService()).updateTotal(checkout);
             ((CheckoutListPanel) mView).updateTotalPrice(checkout);
@@ -883,7 +916,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     }
 
     public void showSaleMenu(boolean isShow) {
-        ((CheckoutListPanel) mView).showSalesMenu(isShow);
+        ((CheckoutListPanel) mView).showSalesMenuToCheckout(isShow);
     }
 
     // khi thay đổi value từng payment update giá trị money
