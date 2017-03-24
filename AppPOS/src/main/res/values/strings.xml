@@ -20,7 +20,7 @@
     <string name="sales_navigation_drawer_close">Close navigation drawer</string>
     <string name="sales_action_settings">Settings</string>
     <string name="sales_title_activity_menu">MenuActivity</string>
-    <string name="sales_place_holder">Place Holder</string>
+    <string name="sales_place_holder">Place Order</string>
     <string name="sales_add_payment">Add Payment</string>
     <string name="sales_mark_as_partial">Mark as Partial</string>
     <string name="sales_remain_money">Remain money</string>
