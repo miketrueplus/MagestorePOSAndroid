@@ -308,6 +308,19 @@ public class SalesActivity extends AbstractActivity
                 .setStateCode(CheckoutListController.STATE_ADD_CUSTOM_SALE)
                 .setControllerState(mCheckoutListController);
 
+        // bắt sự kiện cho phép thay đổi cart item
+        mCheckoutCartItemListController
+                .attachListenerObserve()
+                .setMethodName("blnAlowRemoveCartItem")
+                .setStateCode(CheckoutListController.STATE_ENABLE_CHANGE_CART_ITEM)
+                .setControllerState(mCheckoutListController);
+
+        mCheckoutCartItemListController
+                .attachListenerObserve()
+                .setMethodName("blnAlowRemoveCartItem")
+                .setStateCode(CheckoutListController.STATE_DISABLE_CHANGE_CART_ITEM)
+                .setControllerState(mCheckoutListController);
+
         // mỗi khi 1 product trên product list được ấn chọn
         mCheckoutCartItemListController
                 .attachListenerObserve()

@@ -47,6 +47,9 @@ import java.util.Map;
  */
 
 public class CheckoutListController extends AbstractListController<Checkout> {
+    public static final String STATE_ENABLE_CHANGE_CART_ITEM = "STATE_ENABLE_CHANGE_CART_ITEM";
+    public static final String STATE_DISABLE_CHANGE_CART_ITEM = "STATE_DISABLE_CHANGE_CART_ITEM";
+
     public static final String STATE_ON_ADD_PAYMENT = "STATE_ON_ADD_PAYMENT";
     public static final String STATE_ON_PLACE_ORDER = "STATE_ON_PLACE_ORDER";
     public static final String STATE_ON_MARK_AS_PARTIAL = "STATE_ON_MARK_AS_PARTIAL";
