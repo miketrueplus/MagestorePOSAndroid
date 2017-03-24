@@ -358,7 +358,7 @@
                             android:layout_centerVertical="true"
                             android:layout_marginRight="@dimen/layout_margin_5"
                             android:layout_toLeftOf="@+id/txt_remain_value"
-                            android:text="@string/sales_expected_change"
+                            android:text="@string/sales_remain_money"
                             android:textColor="@color/app_color"
                             android:textSize="@dimen/text_size" />
 
