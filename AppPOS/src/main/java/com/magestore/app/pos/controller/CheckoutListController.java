@@ -8,6 +8,8 @@ import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.lib.model.checkout.CheckoutShipping;
+import com.magestore.app.lib.model.checkout.QuoteAddCouponParam;
+import com.magestore.app.lib.model.checkout.SaveQuoteParam;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.model.directory.Currency;
@@ -29,6 +31,7 @@ import com.magestore.app.pos.panel.CheckoutShippingListPanel;
 import com.magestore.app.pos.panel.CheckoutSuccessPanel;
 import com.magestore.app.pos.panel.PaymentMethodListPanel;
 import com.magestore.app.util.DataUtil;
+import com.magestore.app.util.StringUtil;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -53,9 +56,12 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     static final int ACTION_TYPE_DELETE_ADDRESS = 2;
     static final int ACTION_TYPE_NEW_ADDRESS = 3;
     static final int ACTION_TYPE_SAVE_CART = 4;
-    static final int ACTION_TYPE_SAVE_SHIPPING = 5;
-    static final int ACTION_TYPE_SAVE_PAYMENT = 6;
-    static final int ACTION_TYPE_PLACE_ORDER = 7;
+    static final int ACTION_TYPE_SAVE_CART_DISCOUNT = 5;
+    static final int ACTION_TYPE_SAVE_QUOTE = 6;
+    static final int ACTION_TYPE_ADD_COUPON_TO_QUOTE = 7;
+    static final int ACTION_TYPE_SAVE_SHIPPING = 8;
+    static final int ACTION_TYPE_SAVE_PAYMENT = 9;
+    static final int ACTION_TYPE_PLACE_ORDER = 10;
 
     static final int STATUS_CHECKOUT_ADD_ITEM = 0;
     static final int STATUS_CHECKOUT_PROCESSING = 1;
@@ -147,6 +153,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             ((CheckoutListPanel) mView).changeActionButton(true);
             // show detail panel
             doShowDetailPanel(true);
+            showSaleMenu(false);
 //        binCartItem();
 //            wraper.put("quote_id", );
             String store_id = DataUtil.getDataStringToPreferences(context, DataUtil.STORE_ID);
@@ -156,6 +163,57 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         } else {
             ((CheckoutDetailPanel) mDetailView).showNotifiAddItems();
             return;
+        }
+    }
+
+    public void doInputSaveCartDiscount(int type) {
+        Checkout checkout = getSelectedItem();
+        if (checkout.getCartItem().size() > 0) {
+            showSaleMenu(true);
+            ((CheckoutListPanel) mView).showLoading(true);
+            // show detail panel
+            String store_id = DataUtil.getDataStringToPreferences(context, DataUtil.STORE_ID);
+            checkout.setStoreId(store_id);
+            wraper.put("quote_id", checkout.getQuoteId());
+            wraper.put("type_save_cart_discount", type);
+            doAction(ACTION_TYPE_SAVE_CART_DISCOUNT, null, wraper, checkout);
+        } else {
+            ((CheckoutDetailPanel) mDetailView).showNotifiAddItems();
+            return;
+        }
+    }
+
+    public void doInputSaveQuote(SaveQuoteParam quoteParam) {
+        Checkout checkout = getSelectedItem();
+        ((CheckoutListPanel) mView).showLoading(true);
+        if (checkout.getQuoteId() == null || StringUtil.STRING_EMPTY.equals(checkout.getQuoteId())) {
+            String store_id = DataUtil.getDataStringToPreferences(context, DataUtil.STORE_ID);
+            checkout.setStoreId(store_id);
+            wraper.put("quote_param", quoteParam);
+            doInputSaveCartDiscount(0);
+        } else {
+            String store_id = DataUtil.getDataStringToPreferences(context, DataUtil.STORE_ID);
+            checkout.setStoreId(store_id);
+            wraper.put("quote_id", checkout.getQuoteId());
+            wraper.put("quote_param", quoteParam);
+            doAction(ACTION_TYPE_SAVE_QUOTE, null, wraper, checkout);
+        }
+    }
+
+    public void doInputAddCouponToQuote(QuoteAddCouponParam quoteAddCouponParam) {
+        Checkout checkout = getSelectedItem();
+        ((CheckoutListPanel) mView).showLoading(true);
+        if (checkout.getQuoteId() == null || StringUtil.STRING_EMPTY.equals(checkout.getQuoteId())) {
+            String store_id = DataUtil.getDataStringToPreferences(context, DataUtil.STORE_ID);
+            checkout.setStoreId(store_id);
+            wraper.put("quote_add_coupon_param", quoteAddCouponParam);
+            doInputSaveCartDiscount(1);
+        } else {
+            String store_id = DataUtil.getDataStringToPreferences(context, DataUtil.STORE_ID);
+            checkout.setStoreId(store_id);
+            wraper.put("quote_id", checkout.getQuoteId());
+            wraper.put("quote_add_coupon_param", quoteAddCouponParam);
+            doAction(ACTION_TYPE_ADD_COUPON_TO_QUOTE, null, wraper, checkout);
         }
     }
 
@@ -258,6 +316,18 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             String quoteId = (String) wraper.get("quote_id");
             wraper.put("save_cart", ((CheckoutService) getListService()).saveCart((Checkout) models[0], quoteId));
             return true;
+        } else if (actionType == ACTION_TYPE_SAVE_CART_DISCOUNT) {
+            String quoteId = (String) wraper.get("quote_id");
+            wraper.put("save_cart_discount", ((CheckoutService) getListService()).saveCart((Checkout) models[0], quoteId));
+            return true;
+        } else if (actionType == ACTION_TYPE_SAVE_QUOTE) {
+            SaveQuoteParam saveQuoteParam = (SaveQuoteParam) wraper.get("quote_param");
+            wraper.put("save_quote", ((CheckoutService) getListService()).saveQuote((Checkout) models[0], saveQuoteParam));
+            return true;
+        } else if (actionType == ACTION_TYPE_ADD_COUPON_TO_QUOTE) {
+            QuoteAddCouponParam quoteAddCouponParam = (QuoteAddCouponParam) wraper.get("quote_add_coupon_param");
+            wraper.put("save_add_coupon_to_quote", ((CheckoutService) getListService()).addCouponToQuote((Checkout) models[0], quoteAddCouponParam));
+            return true;
         } else if (actionType == ACTION_TYPE_SAVE_SHIPPING) {
             String shippingCode = (String) wraper.get("shipping_code");
 //            String quoteId = DataUtil.getDataStringToPreferences(context, DataUtil.QUOTE);
@@ -345,13 +415,40 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
             mCheckoutPaymentListPanel.setCheckout(checkout);
 
-            if (getView() != null && checkout != null && (getView() instanceof CheckoutListPanel)) {
-                // show shipping total
-                ((CheckoutListPanel) getView()).showSalesShipping(true);
-                // câp nhật giá
-                ((CheckoutListPanel) getView()).updateTotalPrice(checkout);
-            }
+            // show shipping total
+            ((CheckoutListPanel) mView).showSalesShipping(true);
+            // câp nhật giá
+            ((CheckoutListPanel) mView).updateTotalPrice(checkout);
 
+        } else if (success && actionType == ACTION_TYPE_SAVE_CART_DISCOUNT) {
+            Checkout checkout = (Checkout) wraper.get("save_cart_discount");
+            String quoteId = checkout.getQuote().getID();
+            getSelectedItem().setQuoteId(quoteId);
+            // cập nhật lại id trong cart item
+            ((CheckoutService) getListService()).updateCartItemWithServerRespone(getSelectedItem(), checkout);
+            mCartItemListController.bindList(getSelectedItem().getCartItem());
+
+            int type_save_cart_discount = (int) wraper.get("type_save_cart_discount");
+
+            if (type_save_cart_discount == 0) {
+                SaveQuoteParam quoteParam = (SaveQuoteParam) wraper.get("quote_param");
+                doInputSaveQuote(quoteParam);
+            } else {
+                QuoteAddCouponParam quoteAddCouponParam = (QuoteAddCouponParam) wraper.get("quote_add_coupon_param");
+                doInputAddCouponToQuote(quoteAddCouponParam);
+            }
+        } else if (success && actionType == ACTION_TYPE_SAVE_QUOTE) {
+            Checkout checkout = (Checkout) wraper.get("save_quote");
+            //  cập nhật giá
+            ((CheckoutService) getListService()).updateTotal(checkout);
+            ((CheckoutListPanel) mView).updateTotalPrice(checkout);
+            ((CheckoutListPanel) mView).showLoading(false);
+        } else if (success && actionType == ACTION_TYPE_ADD_COUPON_TO_QUOTE) {
+            Checkout checkout = (Checkout) wraper.get("save_add_coupon_to_quote");
+            //  cập nhật giá
+            ((CheckoutService) getListService()).updateTotal(checkout);
+            ((CheckoutListPanel) mView).updateTotalPrice(checkout);
+            ((CheckoutListPanel) mView).showLoading(false);
         } else if (success && actionType == ACTION_TYPE_SAVE_SHIPPING) {
             Checkout checkout = (Checkout) wraper.get("save_shipping");
             // cập nhật list payment
@@ -444,6 +541,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             if (checkout.getStatus() == 1) {
                 showSalesShipping();
                 showActionButtonCheckout();
+                showSaleMenu(false);
                 doShowDetailPanel(false);
             }
             mItem = checkout;
@@ -509,16 +607,19 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 doShowDetailSuccess(false);
                 doInputSaveCart();
             }
+            showSaleMenu(false);
         } else {
             onBackTohome();
         }
     }
 
-    public void changePickAtStoreAndReloadShipping(){
+    public void changePickAtStoreAndReloadShipping() {
         Checkout checkout = (Checkout) wraper.get("save_cart");
-        List<CheckoutShipping> listShipping = checkout.getCheckoutShipping();
-        bindDataToShippingMethodList(listShipping);
-        autoSelectShipping(listShipping);
+        if (checkout != null) {
+            List<CheckoutShipping> listShipping = checkout.getCheckoutShipping();
+            bindDataToShippingMethodList(listShipping);
+            autoSelectShipping(listShipping);
+        }
     }
 
     private void bindDataToShippingMethodList(List<CheckoutShipping> listShipping) {
@@ -781,6 +882,10 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         }
     }
 
+    public void showSaleMenu(boolean isShow) {
+        ((CheckoutListPanel) mView).showSalesMenu(isShow);
+    }
+
     // khi thay đổi value từng payment update giá trị money
     public void updateMoneyTotal(boolean type, float totalPrice) {
         ((CheckoutDetailPanel) mDetailView).updateMoneyTotal(type, totalPrice);
@@ -816,6 +921,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         ((CheckoutDetailPanel) mDetailView).isCheckCreateShip(false);
         ((CheckoutDetailPanel) mDetailView).showPanelPaymentMethod();
         ((CheckoutDetailPanel) mDetailView).showPanelCheckoutPaymentCreditCard(false);
+        showSaleMenu(true);
         removeOrder();
         if (getSelectedItems().size() > 1) {
             addNewOrder();
@@ -843,6 +949,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         ((CheckoutDetailPanel) mDetailView).isEnableCreateInvoice(false);
         ((CheckoutDetailPanel) mDetailView).showPanelPaymentMethod();
         ((CheckoutDetailPanel) mDetailView).showPanelCheckoutPaymentCreditCard(false);
+        showSaleMenu(true);
         showSalesShipping();
         showActionButtonCheckout();
         doShowDetailSuccess(false);
@@ -902,6 +1009,14 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
     public CheckoutPayment createPaymentMethod() {
         return ((CheckoutService) getListService()).createPaymentMethod();
+    }
+
+    public SaveQuoteParam createSaveQuoteParam() {
+        return ((CheckoutService) getListService()).createSaveQuoteParam();
+    }
+
+    public QuoteAddCouponParam createQuoteAddCouponParam() {
+        return ((CheckoutService) getListService()).createQuoteAddCouponParam();
     }
 
     public void addNewAddress() {

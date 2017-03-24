@@ -89,12 +89,13 @@
                 android:layout_weight="1"
                 android:orientation="horizontal">
 
-                <EditText
+                <com.magestore.app.view.EditTextFloat
                     android:id="@+id/discount_amount"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1.0"
                     android:background="@drawable/cart_option_border_edittext"
+                    android:inputType="number|numberDecimal"
                     android:padding="@dimen/layout_margin_5" />
 
                 <Button
@@ -102,6 +103,7 @@
                     android:layout_width="@dimen/cart_option_edittext_size"
                     android:layout_height="@dimen/cart_option_edittext_size"
                     android:background="@color/sales_discount_bg_select"
+                    android:text="@string/sales_discount_currency"
                     android:textColor="@color/sales_discount_text_select"
                     android:textSize="@dimen/text_size" />
 
@@ -177,11 +179,12 @@
                 android:orientation="vertical"
                 android:padding="@dimen/layout_margin_5">
 
-                <com.magestore.app.view.FormatEditText
+                <com.magestore.app.view.EditTextFloat
                     android:id="@+id/promotion_amount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/white" />
+                    android:background="@color/white"
+                    android:inputType="number|numberDecimal" />
             </LinearLayout>
         </LinearLayout>
 

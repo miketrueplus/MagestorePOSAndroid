@@ -6,10 +6,12 @@ import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.lib.model.checkout.PaymentMethodDataParam;
 import com.magestore.app.lib.model.checkout.PlaceOrderParams;
 import com.magestore.app.lib.model.checkout.Quote;
+import com.magestore.app.lib.model.checkout.QuoteAddCouponParam;
 import com.magestore.app.lib.model.checkout.QuoteCustomer;
 import com.magestore.app.lib.model.checkout.QuoteCustomerAddress;
 import com.magestore.app.lib.model.checkout.QuoteItemExtension;
 import com.magestore.app.lib.model.checkout.QuoteItems;
+import com.magestore.app.lib.model.checkout.SaveQuoteParam;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.service.ListService;
 import com.magestore.app.pos.model.checkout.PosPlaceOrderParams;
@@ -28,6 +30,10 @@ public interface CheckoutService extends ListService<Checkout> {
     boolean insert(Checkout... checkouts) throws IOException, InstantiationException, ParseException, IllegalAccessException;
 
     Checkout saveCart(Checkout checkout, String quoteId) throws IOException, InstantiationException, ParseException, IllegalAccessException;
+
+    Checkout saveQuote(Checkout checkout, SaveQuoteParam quoteParam) throws IOException, InstantiationException, ParseException, IllegalAccessException;
+
+    Checkout addCouponToQuote(Checkout checkout, QuoteAddCouponParam quoteAddCouponParam) throws IOException, InstantiationException, ParseException, IllegalAccessException;
 
     Checkout saveShipping(String quoteId, String shippingCode) throws IOException, InstantiationException, ParseException, IllegalAccessException;
 
@@ -62,4 +68,8 @@ public interface CheckoutService extends ListService<Checkout> {
     PlaceOrderParams createPlaceOrderParams();
 
     PaymentMethodDataParam createPaymentMethodParam();
+
+    SaveQuoteParam createSaveQuoteParam();
+
+    QuoteAddCouponParam createQuoteAddCouponParam();
 }

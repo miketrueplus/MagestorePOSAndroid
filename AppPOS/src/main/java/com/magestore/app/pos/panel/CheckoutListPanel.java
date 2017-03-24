@@ -18,6 +18,8 @@ import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.magestore.app.lib.context.MagestoreContext;
 import com.magestore.app.lib.controller.ListController;
+import com.magestore.app.lib.model.checkout.QuoteAddCouponParam;
+import com.magestore.app.lib.model.checkout.SaveQuoteParam;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.observ.GenericState;
@@ -55,6 +57,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
     ImageButton btn_shipping_adrress_edit, btn_billing_adrress_edit;
     ImageButton btn_shipping_address_delete, btn_billing_address_delete;
     RelativeLayout rl_add_checkout, rl_remove_checkout, rl_sales_total, cart_background_loading;
+    TextView txt_sales_discount, txt_sales_promotion;
     public static int NO_TYPE = -1;
     public static int CHANGE_CUSTOMER = 0;
     public static int CREATE_NEW_CUSTOMER = 1;
@@ -152,13 +155,49 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
         bt_sales_discount.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                CheckoutDiscountPanel mCheckoutDiscountPanel = new CheckoutDiscountPanel(getContext());
+                final CheckoutDiscountPanel mCheckoutDiscountPanel = new CheckoutDiscountPanel(getContext());
                 mCheckoutDiscountPanel.setCheckoutListController(((CheckoutListController) mController));
                 mCheckoutDiscountPanel.initValue();
-                MagestoreDialog dialog = DialogUtil.dialog(getContext(), "", mCheckoutDiscountPanel);
+                final MagestoreDialog dialog = DialogUtil.dialog(getContext(), "", mCheckoutDiscountPanel);
                 dialog.setDialogTitle(getContext().getString(R.string.checkout_discount_all));
                 dialog.setDialogSave(getContext().getString(R.string.apply));
                 dialog.show();
+
+                txt_sales_discount = (TextView) dialog.findViewById(R.id.txt_sales_discount);
+                txt_sales_promotion = (TextView) dialog.findViewById(R.id.txt_sales_promotion);
+
+                txt_sales_discount.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.setDialogTitle(getContext().getString(R.string.checkout_discount_all));
+                        mCheckoutDiscountPanel.onClickDiscount();
+                    }
+                });
+
+                txt_sales_promotion.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.setDialogTitle("");
+                        mCheckoutDiscountPanel.onClickPromotion();
+                    }
+                });
+
+                dialog.getButtonSave().setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (mCheckoutDiscountPanel.checkViewDiscount()) {
+                            SaveQuoteParam saveQuoteParam = mCheckoutDiscountPanel.bindSaveQuoteItem();
+                            if (saveQuoteParam.getDiscountValue() > 0) {
+                                ((CheckoutListController) mController).doInputSaveQuote(saveQuoteParam);
+                            }
+                        } else {
+                            QuoteAddCouponParam quoteAddCouponParam = mCheckoutDiscountPanel.binQuoteAddCouponItem();
+                            ((CheckoutListController) mController).doInputAddCouponToQuote(quoteAddCouponParam);
+                        }
+                        bt_sales_menu.toggle(false);
+                        dialog.dismiss();
+                    }
+                });
             }
         });
 
@@ -189,7 +228,11 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
         }
     }
 
-    public void showButtonDiscount(boolean isShow){
+    public void showSalesMenu(boolean isShow) {
+        bt_sales_menu.setVisibility(isShow ? VISIBLE : GONE);
+    }
+
+    public void showButtonDiscount(boolean isShow) {
         bt_sales_discount.setVisibility(isShow ? VISIBLE : GONE);
     }
 
@@ -688,7 +731,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
         dialog.getButtonCancel().setText(getContext().getString(R.string.cancel));
     }
 
-    public void showLoading(boolean isShow){
+    public void showLoading(boolean isShow) {
         cart_background_loading.setVisibility(isShow ? VISIBLE : GONE);
     }
 }

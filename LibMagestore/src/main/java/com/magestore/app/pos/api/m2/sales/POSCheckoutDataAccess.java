@@ -12,6 +12,8 @@ import com.magestore.app.lib.connection.Statement;
 import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.checkout.PlaceOrderParams;
 import com.magestore.app.lib.model.checkout.Quote;
+import com.magestore.app.lib.model.checkout.QuoteAddCouponParam;
+import com.magestore.app.lib.model.checkout.SaveQuoteParam;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.parse.ParseException;
 import com.magestore.app.lib.resourcemodel.sales.CheckoutDataAccess;
@@ -101,6 +103,94 @@ public class POSCheckoutDataAccess extends POSAbstractDataAccess implements Chec
             Log.e("JSON", json.toString());
 
             rp = statement.execute(quote);
+            rp.setParseImplement(getClassParseImplement());
+            rp.setParseModel(PosCheckout.class);
+
+            Checkout checkout = (Checkout) rp.doParse();
+            return checkout;
+        } catch (ConnectionException ex) {
+            throw ex;
+        } catch (IOException ex) {
+            throw ex;
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
+    }
+
+    @Override
+    public Checkout saveQuote(SaveQuoteParam quoteParam) throws ParseException, InstantiationException, IllegalAccessException, IOException {
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+        try {
+            // Khởi tạo connection và khởi tạo truy vấn
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPI.REST_CHECKOUT_SAVE_QUOTE);
+
+            // Xây dựng tham số
+            paramBuilder = statement.getParamBuilder()
+                    .setSessionID(POSDataAccessSession.REST_SESSION_ID);
+
+            rp = statement.execute(quoteParam);
+            rp.setParseImplement(getClassParseImplement());
+            rp.setParseModel(PosCheckout.class);
+
+            Checkout checkout = (Checkout) rp.doParse();
+            return checkout;
+        } catch (ConnectionException ex) {
+            throw ex;
+        } catch (IOException ex) {
+            throw ex;
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
+    }
+
+    @Override
+    public Checkout addCouponToQuote(QuoteAddCouponParam quoteAddCouponParam) throws ParseException, InstantiationException, IllegalAccessException, IOException {
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+        try {
+            // Khởi tạo connection và khởi tạo truy vấn
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPI.REST_CHECKOUT_ADD_COUPON_TO_QUOTE);
+
+            // Xây dựng tham số
+            paramBuilder = statement.getParamBuilder()
+                    .setSessionID(POSDataAccessSession.REST_SESSION_ID);
+
+            rp = statement.execute(quoteAddCouponParam);
             rp.setParseImplement(getClassParseImplement());
             rp.setParseModel(PosCheckout.class);
 

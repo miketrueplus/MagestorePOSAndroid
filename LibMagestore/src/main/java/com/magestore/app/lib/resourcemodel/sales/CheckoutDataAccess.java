@@ -3,6 +3,8 @@ package com.magestore.app.lib.resourcemodel.sales;
 import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.checkout.PlaceOrderParams;
 import com.magestore.app.lib.model.checkout.Quote;
+import com.magestore.app.lib.model.checkout.QuoteAddCouponParam;
+import com.magestore.app.lib.model.checkout.SaveQuoteParam;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.parse.ParseException;
 import com.magestore.app.lib.resourcemodel.DataAccess;
@@ -18,6 +20,10 @@ public interface CheckoutDataAccess extends DataAccess {
     boolean insert(Checkout... models) throws ParseException, InstantiationException, IllegalAccessException, IOException;
 
     Checkout saveCart(Quote quote) throws ParseException, InstantiationException, IllegalAccessException, IOException;
+
+    Checkout saveQuote(SaveQuoteParam quoteParam) throws ParseException, InstantiationException, IllegalAccessException, IOException;
+
+    Checkout addCouponToQuote(QuoteAddCouponParam quoteAddCouponParam) throws ParseException, InstantiationException, IllegalAccessException, IOException;
 
     Checkout saveShipping(String quoteId, String shippingCode) throws ParseException, InstantiationException, IllegalAccessException, IOException;
 

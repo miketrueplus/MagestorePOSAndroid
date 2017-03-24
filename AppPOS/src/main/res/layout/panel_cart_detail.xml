@@ -129,8 +129,7 @@
                         android:inputType="number|numberDecimal"
                         android:padding="@dimen/layout_margin_5"
                         android:selectAllOnFocus="true"
-                        android:text="@{ConfigUtil.formatNumber(cartItem.getCustomPrice())}"
-                        android:textAlignment="textEnd" />
+                        android:text="@{ConfigUtil.formatNumber(cartItem.getCustomPrice())}" />
 
                     <Button
                         android:id="@+id/id_btn_cart_item_detail_custom_price_fixed"
@@ -184,8 +183,7 @@
                         android:inputType="number|numberDecimal"
                         android:padding="@dimen/layout_margin_5"
                         android:selectAllOnFocus="true"
-                        android:text="@{ConfigUtil.formatNumber(cartItem.getDiscountAmount())}"
-                        android:textAlignment="textEnd" />
+                        android:text="@{ConfigUtil.formatNumber(cartItem.getDiscountAmount())}" />
 
                     <Button
                         android:id="@+id/id_btn_cart_item_detail_discount_fixed"
@@ -221,9 +219,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/layout_margin_10"
                     android:background="@drawable/cart_option_border_button_option"
+                    android:onClick="@{panel.onOptionClick}"
                     android:text="@string/options"
                     android:textAllCaps="false"
-                    android:onClick="@{panel.onOptionClick}"
                     android:textColor="@color/card_option_btn_option_text_color"
                     android:textSize="@dimen/text_size" />
 
@@ -231,9 +229,9 @@
                     android:layout_width="@dimen/cart_option_button_width"
                     android:layout_height="wrap_content"
                     android:background="@drawable/cart_option_border_button"
+                    android:onClick="@{panel.onSaveClick}"
                     android:text="@string/save"
                     android:textAllCaps="false"
-                    android:onClick="@{panel.onSaveClick}"
                     android:textColor="@color/card_option_btn_save_text_color"
                     android:textSize="@dimen/text_size" />
             </LinearLayout>

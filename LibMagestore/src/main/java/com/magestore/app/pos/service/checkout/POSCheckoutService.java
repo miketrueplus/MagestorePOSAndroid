@@ -9,10 +9,12 @@ import com.magestore.app.lib.model.checkout.CheckoutTotals;
 import com.magestore.app.lib.model.checkout.PaymentMethodDataParam;
 import com.magestore.app.lib.model.checkout.PlaceOrderParams;
 import com.magestore.app.lib.model.checkout.Quote;
+import com.magestore.app.lib.model.checkout.QuoteAddCouponParam;
 import com.magestore.app.lib.model.checkout.QuoteCustomer;
 import com.magestore.app.lib.model.checkout.QuoteCustomerAddress;
 import com.magestore.app.lib.model.checkout.QuoteItemExtension;
 import com.magestore.app.lib.model.checkout.QuoteItems;
+import com.magestore.app.lib.model.checkout.SaveQuoteParam;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.model.sales.Order;
@@ -25,10 +27,12 @@ import com.magestore.app.pos.model.checkout.PosCheckoutShipping;
 import com.magestore.app.pos.model.checkout.PosPaymentMethodDataParam;
 import com.magestore.app.pos.model.checkout.PosPlaceOrderParams;
 import com.magestore.app.pos.model.checkout.PosQuote;
+import com.magestore.app.pos.model.checkout.PosQuoteAddCouponParam;
 import com.magestore.app.pos.model.checkout.PosQuoteCustomer;
 import com.magestore.app.pos.model.checkout.PosQuoteCustomerAddress;
 import com.magestore.app.pos.model.checkout.PosQuoteItemExtension;
 import com.magestore.app.pos.model.checkout.PosQuoteItems;
+import com.magestore.app.pos.model.checkout.PosSaveQuoteParam;
 import com.magestore.app.pos.service.AbstractService;
 import com.magestore.app.util.ConfigUtil;
 
@@ -76,6 +80,32 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         CheckoutDataAccess checkoutDataAccess = factory.generateCheckoutDataAccess();
 
         return checkoutDataAccess.saveCart(quote);
+    }
+
+    @Override
+    public Checkout saveQuote(Checkout checkout, SaveQuoteParam quoteParam) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+        // Khởi tạo customer gateway factory
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        CheckoutDataAccess checkoutDataAccess = factory.generateCheckoutDataAccess();
+
+        quoteParam.setQuoteId(checkout.getQuoteId());
+        quoteParam.setStoreId(checkout.getStoreId());
+        // TODO: đang fix giá trị currency, till_id
+        quoteParam.setCurrencyId("USD");
+        quoteParam.setTillId("1");
+
+        return checkoutDataAccess.saveQuote(quoteParam);
+    }
+
+    @Override
+    public Checkout addCouponToQuote(Checkout checkout, QuoteAddCouponParam quoteAddCouponParam) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+        // Khởi tạo customer gateway factory
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        CheckoutDataAccess checkoutDataAccess = factory.generateCheckoutDataAccess();
+
+        quoteAddCouponParam.setQuoteId(checkout.getQuoteId());
+
+        return checkoutDataAccess.addCouponToQuote(quoteAddCouponParam);
     }
 
     @Override
@@ -298,6 +328,19 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
     @Override
     public PaymentMethodDataParam createPaymentMethodParam() {
         return new PosPaymentMethodDataParam();
+    }
+
+    @Override
+    public SaveQuoteParam createSaveQuoteParam() {
+        SaveQuoteParam saveQuoteParam = new PosSaveQuoteParam();
+        PosSaveQuoteParam.QuoteData quoteData = saveQuoteParam.createQuoteData();
+        saveQuoteParam.setQuoteData(quoteData);
+        return saveQuoteParam;
+    }
+
+    @Override
+    public QuoteAddCouponParam createQuoteAddCouponParam() {
+        return new PosQuoteAddCouponParam();
     }
 
     private List<QuoteItems> addItemToQuote(Checkout checkout) {
