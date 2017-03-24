@@ -228,6 +228,14 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
         }
     }
 
+    public void showButtonCheckout(boolean isShow) {
+        ll_action_checkout.setVisibility(isShow ? VISIBLE : GONE);
+    }
+
+    public void showSalesMenuDiscount(boolean isShow) {
+        bt_sales_menu.setVisibility(isShow ? VISIBLE : GONE);
+    }
+
     public void showSalesMenuToCheckout(boolean isShow) {
         bt_custom_sales.setVisibility(isShow ? VISIBLE : GONE);
         bt_sales_discount.setVisibility(((CheckoutListController) mController).checkListCartItem() ? VISIBLE : GONE);

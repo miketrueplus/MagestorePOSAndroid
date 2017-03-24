@@ -508,6 +508,8 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         } else if (success && actionType == ACTION_TYPE_PLACE_ORDER) {
             Order order = (Order) wraper.get("place_order");
             getSelectedItem().setOrderSuccess(order);
+            isShowButtonCheckout(false);
+            isShowSalesMenuDiscount(false);
             mCheckoutSuccessPanel.bindItem(order);
             doShowDetailSuccess(true);
 
@@ -531,6 +533,8 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         setSelectedItem(checkout);
         getSelectedItems().add(checkout);
         mItem = checkout;
+        isShowButtonCheckout(true);
+        isShowSalesMenuDiscount(true);
         mCartItemListController.bindList(checkout.getCartItem());
         mCartItemListController.bindParent(checkout);
         mCartItemListController.doRetrieve();
@@ -560,6 +564,8 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             mCartItemListController.bindList(checkout.getCartItem());
             mCartItemListController.bindParent(checkout);
             mCartItemListController.doRetrieve();
+            isShowButtonCheckout(true);
+            isShowSalesMenuDiscount(true);
             int position = getSelectedItems().size() - 1;
             mCartOrderListPanel.setSelectPosition(position);
             mCartOrderListPanel.bindList(getSelectedItems());
@@ -572,13 +578,23 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             if (index == getSelectedItems().size()) {
                 index = index - 1;
             }
+            isShowButtonCheckout(true);
+            isShowSalesMenuDiscount(true);
             Checkout checkout = getSelectedItems().get(index);
             setSelectedItem(checkout);
-            if (checkout.getStatus() == 1) {
+            doShowDetailSuccess(false);
+            if (checkout.getStatus() != STATUS_CHECKOUT_PROCESSING) {
                 showSalesShipping();
                 showActionButtonCheckout();
                 showSaleMenu(false);
                 doShowDetailPanel(false);
+            }else{
+                doInputSaveCart();
+            }
+            if (checkout.getOrderSuccess() != null) {
+                isShowButtonCheckout(false);
+                isShowSalesMenuDiscount(false);
+                doShowDetailSuccess(true);
             }
             mItem = checkout;
             mCartItemListController.bindList(checkout.getCartItem());
@@ -638,8 +654,12 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         if (checkout.getStatus() == STATUS_CHECKOUT_PROCESSING) {
             if (checkout.getOrderSuccess() != null) {
                 mCheckoutSuccessPanel.bindItem(checkout.getOrderSuccess());
+                isShowButtonCheckout(false);
+                isShowSalesMenuDiscount(false);
                 doShowDetailSuccess(true);
             } else {
+                isShowButtonCheckout(true);
+                isShowSalesMenuDiscount(true);
                 doShowDetailSuccess(false);
                 doInputSaveCart();
             }
@@ -979,6 +999,8 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         mCheckoutPaymentListPanel.bindList(listPayment);
         mCheckoutPaymentListPanel.updateTotal(listPayment);
         mCheckoutPaymentCreditCardPanel.clearDataForm();
+        isShowButtonCheckout(true);
+        isShowSalesMenuDiscount(true);
         ((CheckoutDetailPanel) mDetailView).setPickAtStoreDefault();
         ((CheckoutDetailPanel) mDetailView).isEnableButtonAddPayment(false);
         ((CheckoutDetailPanel) mDetailView).isCheckCreateInvoice(false);
@@ -1070,6 +1092,14 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
     public void isShowLoadingList(boolean isShow) {
         ((CheckoutListPanel) mView).showLoading(isShow);
+    }
+
+    public void isShowButtonCheckout(boolean isShow) {
+        ((CheckoutListPanel) mView).showButtonCheckout(isShow);
+    }
+
+    public void isShowSalesMenuDiscount(boolean isShow) {
+        ((CheckoutListPanel) mView).showSalesMenuDiscount(isShow);
     }
 
     public void enableRemoveCartItem(boolean isEnable) {
