@@ -449,7 +449,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             Checkout checkout = (Checkout) wraper.get("save_quote");
             int type_save_quote = (int) wraper.get("type_save_quote");
 
-            if(type_save_quote == 1){
+            if (type_save_quote == 1) {
                 // cập nhật list shipping và payment
                 List<CheckoutShipping> listShipping = checkout.getCheckoutShipping();
                 List<CheckoutPayment> listPayment = checkout.getCheckoutPayment();
@@ -682,7 +682,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                     if (shipping != null) {
                         ((CheckoutDetailPanel) mDetailView).selectDefaultShippingMethod(shipping);
                     } else {
-                        ((CheckoutDetailPanel) mDetailView).selectDefaultShippingMethod(null);
+                        ((CheckoutDetailPanel) mDetailView).selectDefaultShippingMethod(listShipping.get(0));
                     }
                 }
             }
@@ -788,6 +788,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     @Override
     public void doShowDetailPanel(boolean show) {
         super.doShowDetailPanel(show);
+        enableRemoveCartItem(show);
         if (mProductListController != null) mProductListController.doShowListPanel(!show);
     }
 
@@ -1071,7 +1072,17 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         ((CheckoutListPanel) mView).showLoading(isShow);
     }
 
-    public void enableRemoveCartItem(boolean isEnable){}
+    public void enableRemoveCartItem(boolean isEnable) {
+        // báo cho các observ khác về việc enable thay đổi cart item
+        String keyObserv = STATE_ENABLE_CHANGE_CART_ITEM;
+        if (isEnable) {
+            keyObserv = STATE_ENABLE_CHANGE_CART_ITEM;
+        } else {
+            keyObserv = STATE_DISABLE_CHANGE_CART_ITEM;
+        }
+        GenericState<CheckoutListController> state = new GenericState<CheckoutListController>(this, keyObserv);
+        if (getSubject() != null) getSubject().setState(state);
+    }
 
     /**
      * Place thực hiện order
