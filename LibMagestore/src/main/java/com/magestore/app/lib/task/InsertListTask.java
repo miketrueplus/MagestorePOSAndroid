@@ -33,8 +33,20 @@ public class InsertListTask<TModel extends Model>
     }
 
     @Override
+    public void doExecute(TModel... param) {
+        paramsModel = param;
+        super.doExecute(param);
+    }
+
+    @Override
     protected void onPostExecute(Boolean aBoolean) {
         mListController.onInsertPostExecute(aBoolean, paramsModel);
 //        mListController.doShowProgress(false);
+    }
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        mListController.onInsertPreExecute(paramsModel);
     }
 }

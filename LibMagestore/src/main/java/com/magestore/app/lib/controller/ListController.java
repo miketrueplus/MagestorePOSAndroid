@@ -94,6 +94,8 @@ public interface ListController<TModel extends Model>
      */
     void doInsert(TModel... item);
 
+    void onInsertPreExecute(TModel... models);
+
     /**
      * Thực thi insert trên tiến trình background
      * @param models
@@ -222,4 +224,16 @@ public interface ListController<TModel extends Model>
     boolean isInsertAtLast();
 
     void setInsertAtLast(boolean insertAtLast);
+
+    void setInsertAtLast();
+
+    void setInsertAtFirst();
+
+    boolean isInsertAfterSuccess();
+
+    void setInsertAfterSuccess(boolean insertAfterSuccess);
+
+    void setInsertAfterSuccess();
+
+    void setInsertBeforeSuccess();
 }

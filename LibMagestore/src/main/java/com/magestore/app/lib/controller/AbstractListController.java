@@ -29,6 +29,7 @@ public class AbstractListController<TModel extends Model>
         implements ListController<TModel> {
     // xác định khi thêm mới chèn vào cuối hay đầu danh sách, mặc định là cuối
     private boolean isInsertAtLast = true;
+    private boolean isInsertAfterSuccess = true;
 
     // chuỗi seảarch
     private String mSearchString;
@@ -355,6 +356,15 @@ public class AbstractListController<TModel extends Model>
         task.doExecute(models);
     }
 
+    @Override
+    public void onInsertPreExecute(TModel... models) {
+        if (!isInsertAfterSuccess()) {
+            getView().updateModel(models);
+            if (isInsertAtLast()) getView().insertListAtLast(models);
+            else getView().insertListAtFirst(models);
+        }
+    }
+
     /**
      * Overider hàm này để xử lý nghiệp vụ insert
      * @param params
@@ -375,8 +385,11 @@ public class AbstractListController<TModel extends Model>
     @Override
     public void onInsertPostExecute(Boolean success, TModel... models) {
         if (success) {
-            if (isInsertAtLast()) getView().insertListAtLast(models);
-            else getView().insertListAtFirst(models);
+            if (isInsertAfterSuccess()) {
+                getView().updateModel(models);
+                if (isInsertAtLast()) getView().insertListAtLast(models);
+                else getView().insertListAtFirst(models);
+            }
 
             // báo cho các observ khác về việc bind item
             GenericState<ListController<TModel>> state = new GenericState<ListController<TModel>>(this, GenericState.DEFAULT_STATE_CODE_ON_INSERT);
@@ -580,5 +593,35 @@ public class AbstractListController<TModel extends Model>
     @Override
     public void setInsertAtLast(boolean insertAtLast) {
         isInsertAtLast = insertAtLast;
+    }
+
+    @Override
+    public void setInsertAtLast() {
+        setInsertAtLast(true);
+    }
+
+    @Override
+    public void setInsertAtFirst() {
+        setInsertAtLast(false);
+    }
+
+    @Override
+    public boolean isInsertAfterSuccess() {
+        return isInsertAfterSuccess;
+    }
+
+    @Override
+    public void setInsertAfterSuccess(boolean insertAfterSuccess) {
+        isInsertAfterSuccess = insertAfterSuccess;
+    }
+
+    @Override
+    public void setInsertAfterSuccess() {
+        setInsertAfterSuccess(true);
+    }
+
+    @Override
+    public void setInsertBeforeSuccess() {
+        setInsertAfterSuccess(false);
     }
 }
