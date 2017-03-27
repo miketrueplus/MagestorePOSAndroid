@@ -252,7 +252,7 @@ public class ConfigUtil {
     public static String getFloatDigit() {
         if (DIGIT_FLOAT == null) {
             DecimalFormat decimalFormat = getFloatFormat();
-            DIGIT_FLOAT = StringUtil.STRING_DIGIT + decimalFormat.getDecimalFormatSymbols().getDecimalSeparator();// + mCurrencyFormat.getDecimalFormatSymbols().getGroupingSeparator();
+            DIGIT_FLOAT = StringUtil.STRING_DIGIT + decimalFormat.getDecimalFormatSymbols().getDecimalSeparator() + decimalFormat.getDecimalFormatSymbols().getGroupingSeparator();// + mCurrencyFormat.getDecimalFormatSymbols().getGroupingSeparator();
         }
         return DIGIT_FLOAT;
     }
@@ -270,8 +270,8 @@ public class ConfigUtil {
     private static String DIGIT_INTEGER;
     public static String getIntegerDigit() {
         if (DIGIT_INTEGER == null) {
-//            DecimalFormat decimalFormat = getIntegerFormat();
-            DIGIT_INTEGER = StringUtil.STRING_DIGIT;// + decimalFormat.getDecimalFormatSymbols().getDecimalSeparator();// + mCurrencyFormat.getDecimalFormatSymbols().getGroupingSeparator();
+            DecimalFormat decimalFormat = getIntegerFormat();
+            DIGIT_INTEGER = StringUtil.STRING_DIGIT + decimalFormat.getDecimalFormatSymbols().getGroupingSeparator(); // + mCurrencyFormat.getDecimalFormatSymbols().getGroupingSeparator();
         }
         return DIGIT_INTEGER;
     }
@@ -288,7 +288,12 @@ public class ConfigUtil {
      */
     public static String formatInteger(String number) {
         if ((number == null) || (StringUtil.STRING_EMPTY.equals(number))) return getIntegerFormat().format(Integer.parseInt(StringUtil.STRING_ZERO));
-        return getIntegerFormat().format(Integer.parseInt(number));
+//        return getIntegerFormat().format(Integer.parseInt(number));
+        try {
+            return getIntegerFormat().format(getIntegerFormat().parse(number));
+        } catch (ParseException e) {
+            return getIntegerFormat().format(0);
+        }
     }
 
     /**
@@ -298,7 +303,12 @@ public class ConfigUtil {
      */
     public static String formatFloat(String number) {
         if ((number == null) || (StringUtil.STRING_EMPTY.equals(number))) return getFloatFormat().format(Double.parseDouble(StringUtil.STRING_ZERO));
-        return getFloatFormat().format(Double.parseDouble(number));
+//        return getFloatFormat().format(Double.parseDouble(number));
+        try {
+            return getFloatFormat().format(getFloatFormat().parse(number));
+        } catch (ParseException e) {
+            return getFloatFormat().format(0);
+        }
     }
 
     /**
@@ -308,7 +318,12 @@ public class ConfigUtil {
      */
     public static String formatNumber(String number) {
         if ((number == null) || (StringUtil.STRING_EMPTY.equals(number))) return getFloatFormat().format(Double.parseDouble(StringUtil.STRING_ZERO));
-        return getIntegerFormat().format(Integer.parseInt(number));
+//        return getIntegerFormat().format(Integer.parseInt(number));
+        try {
+            return getIntegerFormat().format(getIntegerFormat().parse(number));
+        } catch (ParseException e) {
+            return getIntegerFormat().format(0);
+        }
     }
     /**
      * Format con số

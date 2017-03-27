@@ -129,7 +129,8 @@
                         android:inputType="number|numberDecimal"
                         android:padding="@dimen/layout_margin_5"
                         android:selectAllOnFocus="true"
-                        android:text="@{ConfigUtil.formatNumber(cartItem.getCustomPrice())}" />
+                        android:text="@{ConfigUtil.formatNumber(cartItem.getCustomPrice())}"
+                        android:textAlignment="textEnd" />
 
                     <Button
                         android:id="@+id/id_btn_cart_item_detail_custom_price_fixed"
@@ -183,7 +184,8 @@
                         android:inputType="number|numberDecimal"
                         android:padding="@dimen/layout_margin_5"
                         android:selectAllOnFocus="true"
-                        android:text="@{ConfigUtil.formatNumber(cartItem.getDiscountAmount())}" />
+                        android:text="@{ConfigUtil.formatNumber(cartItem.getDiscountAmount())}"
+                        android:textAlignment="textEnd" />
 
                     <Button
                         android:id="@+id/id_btn_cart_item_detail_discount_fixed"
