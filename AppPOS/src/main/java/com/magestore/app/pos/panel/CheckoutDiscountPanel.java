@@ -73,10 +73,10 @@ public class CheckoutDiscountPanel extends AbstractDetailPanel<Checkout> {
 
     @Override
     public void initValue() {
-//        if (mCheckoutListController.getCurrency() != null) {
-//            String currency_symbol = mCheckoutListController.getCurrency().getCurrencySymbol();
-//            amount_currency.setText(currency_symbol);
-//        }
+        if (mCheckoutListController.getCurrency() != null) {
+            String currency_symbol = mCheckoutListController.getCurrency().getCurrencySymbol();
+            amount_currency.setText(currency_symbol);
+        }
 
         amount_currency.setOnClickListener(new OnClickListener() {
             @Override
