@@ -73,6 +73,7 @@
     <string name="customer_state_or_province_optional">State or Province - Optional</string>
     <string name="customer_vat_optional">VAT - Optional</string>
     <string name="customer_default_address">User Store Address</string>
+    <string name="customer_create_success">The customer is saved successfully</string>
 
     <!-- Strings related to order -->
     <string name="order_detail_top_status">Status:</string>

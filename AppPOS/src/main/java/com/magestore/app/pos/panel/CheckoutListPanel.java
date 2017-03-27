@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
@@ -743,5 +744,16 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
 
     public void showLoading(boolean isShow) {
         cart_background_loading.setVisibility(isShow ? VISIBLE : GONE);
+    }
+
+    public void showToastMessage(int type) {
+        String message = "";
+        if (type == 0) {
+            message = getContext().getString(R.string.customer_create_success);
+            Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+        } else if (type == 1) {
+            message = getContext().getString(R.string.customer_create_success);
+            Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+        }
     }
 }

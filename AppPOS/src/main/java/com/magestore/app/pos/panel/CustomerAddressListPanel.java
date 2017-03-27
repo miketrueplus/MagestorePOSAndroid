@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.customer.CustomerAddress;
@@ -160,5 +161,10 @@ public class CustomerAddressListPanel extends AbstractListPanel<CustomerAddress>
                 dialog.dismiss();
             }
         });
+    }
+
+    public void showToastNotify(){
+        String message = getContext().getString(R.string.customer_create_success);
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
 }

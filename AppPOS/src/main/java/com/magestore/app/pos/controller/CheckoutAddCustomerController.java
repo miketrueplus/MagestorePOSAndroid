@@ -38,6 +38,9 @@ public class CheckoutAddCustomerController extends CustomerListController {
         if (success && customer != null) {
             mCheckoutAddCustomerPanel.updateCustomerToOrder(addAddressDefaultToCustomer(customer));
         }
+        if (mCheckoutListPanel != null) {
+            mCheckoutListPanel.showToastMessage(0);
+        }
     }
 
     public Customer addAddressDefaultToCustomer(Customer item) {
@@ -62,8 +65,9 @@ public class CheckoutAddCustomerController extends CustomerListController {
     @Override
     public void onUpdatePostExecute(Boolean success, Customer oldModel, Customer newModels) {
         super.onUpdatePostExecute(success, oldModel, newModels);
-        if(mCheckoutListPanel != null){
+        if (mCheckoutListPanel != null) {
             mCheckoutListPanel.updateCustomerToOrder(newModels);
+            mCheckoutListPanel.showToastMessage(1);
         }
     }
 }

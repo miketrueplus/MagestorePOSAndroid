@@ -11,6 +11,8 @@ import com.magestore.app.lib.service.ServiceFactory;
 import com.magestore.app.lib.service.config.ConfigService;
 import com.magestore.app.lib.service.customer.CustomerAddressService;
 import com.magestore.app.lib.service.customer.CustomerService;
+import com.magestore.app.pos.panel.CustomerAddressListPanel;
+
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Map;
@@ -26,6 +28,7 @@ public class CustomerAddressListController
         implements ChildListController<Customer, CustomerAddress> {
 
     ConfigService mConfigService;
+
     /**
      * Thiết lập service
      *
@@ -44,6 +47,7 @@ public class CustomerAddressListController
 
     /**
      * Gán customer cho address list
+     *
      * @param customer
      */
     public void bindCustomer(Customer customer) {
@@ -52,6 +56,7 @@ public class CustomerAddressListController
 
     /**
      * Gán customer cho address list thông qua cơ chế state observe
+     *
      * @param state
      */
     public void bindCustomer(State state) {
@@ -60,6 +65,7 @@ public class CustomerAddressListController
 
     /**
      * Khởi tạo 1 customer address
+     *
      * @return
      */
     public CustomerAddress createNewCustomerAddress() {
@@ -94,5 +100,17 @@ public class CustomerAddressListController
 
     public Region createRegion() {
         return ((CustomerAddressService) getChildListService()).createRegion();
+    }
+
+    @Override
+    public void onInsertPostExecute(Boolean success, CustomerAddress... models) {
+        super.onInsertPostExecute(success, models);
+        ((CustomerAddressListPanel) mView).showToastNotify();
+    }
+
+    @Override
+    public void onUpdatePostExecute(Boolean success, CustomerAddress oldModel, CustomerAddress newModels) {
+        super.onUpdatePostExecute(success, oldModel, newModels);
+        ((CustomerAddressListPanel) mView).showToastNotify();
     }
 }
