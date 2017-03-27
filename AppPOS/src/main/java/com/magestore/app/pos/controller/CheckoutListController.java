@@ -408,7 +408,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
             // hiển thị list shipping address
             Customer customer = (Customer) wraper.get("customer");
-            mCheckoutAddressListPanel.bindListModel((List<Model>) (List<?>) customer.getAddress());
+            mCheckoutAddressListPanel.bindListModel((List<Model>) (List<?>) ((CheckoutService) getListService()).checkListAddress(customer, guest_checkout));
             mCheckoutAddressListPanel.setSelectPos(customer.getAddressPosition());
             mCheckoutAddressListPanel.scrollToPosition();
 
@@ -530,6 +530,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         Checkout checkout = ((CheckoutService) getListService()).create();
         checkout.setCustomerID(guest_checkout.getID());
         checkout.setCustomer(guest_checkout);
+        bindCustomer(guest_checkout);
         setSelectedItem(checkout);
         getSelectedItems().add(checkout);
         mItem = checkout;
@@ -557,6 +558,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             Checkout checkout = ((CheckoutService) getListService()).create();
             checkout.setCustomerID(guest_checkout.getID());
             checkout.setCustomer(guest_checkout);
+            bindCustomer(guest_checkout);
             getSelectedItems().clear();
             setSelectedItem(checkout);
             getSelectedItems().add(checkout);
@@ -604,6 +606,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             mCartOrderListPanel.bindList(getSelectedItems());
             mCartOrderListPanel.scrollToPosition(index);
             ((CheckoutListPanel) mView).changeCustomerInToolBar(checkout.getCustomer());
+            bindCustomer(checkout.getCustomer());
             updateTotalPrice();
         }
     }
@@ -649,6 +652,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         mCartItemListController.bindParent(checkout);
         mCartItemListController.doRetrieve();
         mCartOrderListPanel.bindList(getSelectedItems());
+        bindCustomer(checkout.getCustomer());
         ((CheckoutListPanel) mView).changeCustomerInToolBar(checkout.getCustomer());
         updateTotalPrice();
         if (checkout.getStatus() == STATUS_CHECKOUT_PROCESSING) {

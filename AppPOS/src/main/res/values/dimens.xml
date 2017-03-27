@@ -59,6 +59,7 @@
     <dimen name="card_item_image_size">70dp</dimen>
     <dimen name="card_item_text_option_size">13sp</dimen>
     <dimen name="card_item_margin_size">10dp</dimen>
+    <dimen name="card_margin_bottom">80dp</dimen>
     <dimen name="sales_list_order_item_margin">0.5dp</dimen>
     <dimen name="sales_total_text_size">24sp</dimen>
     <dimen name="sales_price_text_size">14sp</dimen>

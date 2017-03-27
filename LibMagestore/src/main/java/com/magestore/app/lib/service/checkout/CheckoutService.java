@@ -12,6 +12,8 @@ import com.magestore.app.lib.model.checkout.QuoteCustomerAddress;
 import com.magestore.app.lib.model.checkout.QuoteItemExtension;
 import com.magestore.app.lib.model.checkout.QuoteItems;
 import com.magestore.app.lib.model.checkout.SaveQuoteParam;
+import com.magestore.app.lib.model.customer.Customer;
+import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.service.ListService;
 import com.magestore.app.pos.model.checkout.PosPlaceOrderParams;
@@ -72,4 +74,6 @@ public interface CheckoutService extends ListService<Checkout> {
     SaveQuoteParam createSaveQuoteParam();
 
     QuoteAddCouponParam createQuoteAddCouponParam();
+
+    List<CustomerAddress> checkListAddress(Customer customer, Customer guest_customer);
 }

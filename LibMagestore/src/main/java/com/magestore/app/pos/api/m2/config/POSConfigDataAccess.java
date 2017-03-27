@@ -58,6 +58,8 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
     // Cache config đầu tiên
     private static Config mConfig;
     private static Staff mStaff;
+    private static Customer guest;
+    private static CustomerAddress customerAddress;
 
     private class ConfigEntity {
         Staff staff;
@@ -325,7 +327,9 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         String zip_code = (String) mConfig.getValue("webpos/guest_checkout/zip");
         String telephone = (String) mConfig.getValue("webpos/guest_checkout/telephone");
 
-        Customer guest = new PosCustomer();
+        if(guest == null) {
+            guest = new PosCustomer();
+        }
         guest.setID(customer_id);
         guest.setEmail(email);
         guest.setFirstName(first_name);
@@ -333,7 +337,9 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         guest.setName(full_name);
         guest.setTelephone(telephone);
         List<CustomerAddress> listAddress = new ArrayList<CustomerAddress>();
-        CustomerAddress customerAddress = new PosCustomerAddress();
+        if (customerAddress == null) {
+            customerAddress = new PosCustomerAddress();
+        }
         customerAddress.setCustomer(customer_id);
         customerAddress.setFirstName(first_name);
         customerAddress.setLastName(last_name);

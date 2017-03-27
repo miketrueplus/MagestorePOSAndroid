@@ -16,6 +16,7 @@ import com.magestore.app.lib.model.checkout.QuoteItemExtension;
 import com.magestore.app.lib.model.checkout.QuoteItems;
 import com.magestore.app.lib.model.checkout.SaveQuoteParam;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
+import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.resourcemodel.DataAccessFactory;
@@ -342,6 +343,23 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
     @Override
     public QuoteAddCouponParam createQuoteAddCouponParam() {
         return new PosQuoteAddCouponParam();
+    }
+
+    @Override
+    public List<CustomerAddress> checkListAddress(Customer customer, Customer guest_customer) {
+        if (customer.getID().equals(guest_customer.getID())) {
+            return customer.getAddress();
+        } else {
+            List<CustomerAddress> nListAddress = new ArrayList<>();
+            CustomerAddress guest_address = guest_customer.getAddress().get(0);
+            String guest_address_id = guest_address.getID();
+            for (CustomerAddress customerAddress : customer.getAddress()) {
+                if (!customerAddress.getID().equals(guest_address_id)) {
+                    nListAddress.add(customerAddress);
+                }
+            }
+            return nListAddress;
+        }
     }
 
     private List<QuoteItems> addItemToQuote(Checkout checkout) {
