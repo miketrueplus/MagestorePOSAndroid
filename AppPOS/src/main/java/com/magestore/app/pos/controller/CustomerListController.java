@@ -14,6 +14,7 @@ import com.magestore.app.lib.service.config.ConfigService;
 import com.magestore.app.lib.service.customer.CustomerAddressService;
 import com.magestore.app.lib.service.customer.CustomerComplainService;
 import com.magestore.app.lib.service.customer.CustomerService;
+import com.magestore.app.lib.task.GenericActionModelTask;
 import com.magestore.app.pos.model.customer.PosComplain;
 import com.magestore.app.pos.panel.CustomerDetailPanel;
 
@@ -202,6 +203,7 @@ public class CustomerListController extends AbstractListController<Customer> {
     @Override
     public void bindItem(Customer item) {
         super.bindItem(item);
+//        GenericActionModelTask<Complain, Complain> action = new GenericActionModelTask<Complain, Complain>(this, Pos);
         doAction(ACTION_CODE_GET_COMPLAIN, null, null, item);
         if (mDetailView instanceof CustomerDetailPanel)
             ((CustomerDetailPanel) mDetailView).showComplainProgress(true);

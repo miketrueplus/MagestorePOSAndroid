@@ -26,7 +26,7 @@ public class OrderCommentListController extends AbstractListController<OrderStat
      */
     public void setOrderHistoryListController(OrderHistoryListController mOrderHistoryListController) {
         this.mOrderHistoryListController = mOrderHistoryListController;
-        setParentController(mOrderHistoryListController);
+//        setParentController(mOrderHistoryListController);
     }
 
     /**

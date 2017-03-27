@@ -454,7 +454,7 @@ public class CartItemListController extends AbstractChildListController<Checkout
             mProductOptionDialog = DialogUtil.dialog(mProductOptionPanel.getContext(),
                     cartItem.getProduct().getName(),
                     mProductOptionPanel);
-//            mProductOptionDialog.setGoneButtonSave(true);
+            mProductOptionDialog.setGoneButtonSave(true);
             mProductOptionDialog.setDialogTitle(cartItem.getProduct().getName());
         }
 

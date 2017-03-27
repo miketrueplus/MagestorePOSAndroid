@@ -25,7 +25,7 @@ public class RegisterShiftSaleListController extends AbstractListController<Sale
      */
     public void setRegisterShiftListController(RegisterShiftListController mRegisterShiftListController) {
         this.mRegisterShiftListController = mRegisterShiftListController;
-        setParentController(mRegisterShiftListController);
+//        setParentController(mRegisterShiftListController);
     }
 
     /**

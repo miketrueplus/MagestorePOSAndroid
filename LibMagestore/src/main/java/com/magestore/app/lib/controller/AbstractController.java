@@ -28,7 +28,7 @@ public abstract class AbstractController<TModel extends Model, TView extends Mag
     protected TView mView;
 
     // Controller chủ
-    private Controller mParrentController;
+//    private Controller mParrentController;
 
     // context
     protected MagestoreContext mMagestoreContext;
@@ -57,10 +57,10 @@ public abstract class AbstractController<TModel extends Model, TView extends Mag
         return mMagestoreContext;
     }
 
-    @Deprecated
-    public void setParentController(Controller controller) {
-        mParrentController = controller;
-    }
+//    @Deprecated
+//    public void setParentController(Controller controller) {
+//        mParrentController = controller;
+//    }
 
 
     @Override
@@ -137,6 +137,10 @@ public abstract class AbstractController<TModel extends Model, TView extends Mag
         // báo cho các observ khác về việc bind item
         GenericState<AbstractController<TModel, TView, TService>> state = new GenericState<AbstractController<TModel, TView, TService>>(this, GenericState.DEFAULT_STATE_CODE_ON_LOAD_ITEM);
         if (getSubject() != null) getSubject().setState(state);
+    }
+
+    public void doAction(String functionPreExecute, String functionBackground, String functionPostExcute, Map<String, Object> wraper, Model... models) {
+
     }
 
     /**

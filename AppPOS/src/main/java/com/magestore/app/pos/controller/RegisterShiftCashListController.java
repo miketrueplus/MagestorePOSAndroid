@@ -28,7 +28,7 @@ public class RegisterShiftCashListController extends AbstractListController<Cash
      */
     public void setRegisterShiftListController(RegisterShiftListController mRegisterShiftListController) {
         this.mRegisterShiftListController = mRegisterShiftListController;
-        setParentController(mRegisterShiftListController);
+//        setParentController(mRegisterShiftListController);
     }
 
     /**

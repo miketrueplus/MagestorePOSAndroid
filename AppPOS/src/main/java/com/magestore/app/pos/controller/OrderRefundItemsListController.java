@@ -25,7 +25,7 @@ public class OrderRefundItemsListController extends AbstractListController<CartI
      */
     public void setOrderHistoryListController(OrderHistoryListController mOrderHistoryListController) {
         this.mOrderHistoryListController = mOrderHistoryListController;
-        setParentController(mOrderHistoryListController);
+//        setParentController(mOrderHistoryListController);
     }
 
     /**

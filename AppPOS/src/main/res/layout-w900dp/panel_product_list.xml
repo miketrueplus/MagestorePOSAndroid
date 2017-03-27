@@ -127,14 +127,14 @@
                 android:visibility="gone" />
 
             <ProgressBar
-                android:id="@+id/progress_product_list_bottom"
-                style="?android:attr/progressBarStyleSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:layout_gravity="center"
-                android:visibility="gone" />
+            android:id="@+id/progress_product_list_bottom"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:visibility="gone" />
         </RelativeLayout>
     </LinearLayout>
 
