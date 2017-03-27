@@ -17,6 +17,7 @@
     <dimen name="layout_margin_20">20dp</dimen>
     <dimen name="layout_margin_30">30dp</dimen>
     <dimen name="layout_margin_40">40dp</dimen>
+    <dimen name="layout_margin_50">50dp</dimen>
     <dimen name="line">1dp</dimen>
     <dimen name="text_size">15sp</dimen>
 
