@@ -30,6 +30,7 @@ import com.magestore.app.lib.view.item.GenericModelView;
 import com.magestore.app.lib.view.item.ModelView;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.CartItemListController;
+import com.magestore.app.pos.controller.CheckoutListController;
 import com.magestore.app.pos.databinding.PanelProductOptionListBinding;
 import com.magestore.app.pos.model.catalog.PosProductOption;
 import com.magestore.app.pos.model.catalog.PosProductOptionBundle;
@@ -82,6 +83,12 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
      */
     public ProductOptionPanel(Context context) {
         super(context);
+    }
+
+    CheckoutListController mCheckoutListController;
+
+    public void setCheckoutListController(CheckoutListController mCheckoutListController) {
+        this.mCheckoutListController = mCheckoutListController;
     }
 
     /**
@@ -170,6 +177,8 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         }
         else // và không option thì add như 1 product
             ((CartItemListController) getController()).updateToCartNoOption(bind2Item());
+
+        mCheckoutListController.showButtonDiscount(true);
     }
 
     /**

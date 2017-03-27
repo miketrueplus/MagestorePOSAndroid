@@ -83,6 +83,7 @@ public class CartItemListController extends AbstractChildListController<Checkout
                 // cập nhật view và giá
                 getView().updateModelToFirstInsertIfNotFound(cartItem);
                 updateTotalPrice();
+                mCheckoutListController.showButtonDiscount(true);
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (InstantiationException e) {
@@ -95,7 +96,6 @@ public class CartItemListController extends AbstractChildListController<Checkout
         } else {
             doShowProductOptionInput(product);
         }
-        mCheckoutListController.showButtonDiscount(true);
 //        mView.notifyDataSetChanged();
 
     }
@@ -459,6 +459,7 @@ public class CartItemListController extends AbstractChildListController<Checkout
         }
 
         // clear list option và hiện thị thông tin product và cart item
+        mProductOptionPanel.setCheckoutListController(mCheckoutListController);
         setProductOptionChosen(cartItem);
         mProductOptionPanel.clearList();
         mProductOptionPanel.showCartItemInfo(cartItem);
