@@ -23,14 +23,21 @@ public class EditTextUtil {
     }
 
     public static boolean checkRequiedEmail(Context context, EditText editText) {
-        if (TextUtils.isEmpty(editText.getText().toString().trim())) {
+        String email_validation_match = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
+        String email = editText.getText().toString().trim();
+        if (TextUtils.isEmpty(email)) {
             editText.setError(context.getString(R.string.err_field_required));
             return false;
         }
 
-        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(editText.getText().toString().trim()).matches()) {
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             editText.setError(context.getString(R.string.err_field_email_required));
             return false;
+        } else {
+            if (!email.matches(email_validation_match)) {
+                editText.setError(context.getString(R.string.err_field_email_required));
+                return false;
+            }
         }
 
         return true;

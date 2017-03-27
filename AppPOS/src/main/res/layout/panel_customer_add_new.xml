@@ -91,10 +91,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@drawable/boder_linear_layout"
-                    android:orientation="vertical"
-                    android:paddingLeft="@dimen/layout_margin_5"
-                    android:paddingRight="@dimen/layout_margin_5"
-                    android:paddingTop="@dimen/layout_margin_5">
+                    android:orientation="vertical">
 
                     <com.magestore.app.lib.view.SimpleSpinner
                         android:id="@+id/spinner_group_id"
