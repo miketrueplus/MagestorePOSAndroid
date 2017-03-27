@@ -302,11 +302,7 @@ public class SalesActivity extends AbstractActivity
                 .setControllerState(mCategoryListController);
 
         // bắt sự kiện nhấn nút custom sales
-        mCheckoutCartItemListController
-                .attachListenerObserve()
-                .setMethodName("addCustomSale")
-                .setStateCode(CheckoutListController.STATE_ADD_CUSTOM_SALE)
-                .setControllerState(mCheckoutListController);
+
 
         // bắt sự kiện cho phép thay đổi cart item
         mCheckoutCartItemListController
@@ -334,6 +330,12 @@ public class SalesActivity extends AbstractActivity
                 .setMethodName("showProductDetail")
                 .setStateCode(GenericState.DEFAULT_STATE_CODE_ON_LONG_CLICK_ITEM)
                 .setControllerState(mProductListController);
+
+        mCheckoutCartItemListController
+                .attachListenerObserve()
+                .setMethodName("addCustomSale")
+                .setStateCode(CheckoutListController.STATE_ADD_CUSTOM_SALE)
+                .setControllerState(mCheckoutListController);
 
         // sự kiện mỗi khi có 1 checkout được chọn
         mCheckoutCartItemListController

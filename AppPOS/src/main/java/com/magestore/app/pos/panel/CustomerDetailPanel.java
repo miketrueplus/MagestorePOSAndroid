@@ -193,6 +193,11 @@ public class CustomerDetailPanel extends AbstractDetailPanel<Customer> {
         });
     }
 
+    public boolean validateInput() {
+        return true;
+    }
+
+
     @Override
     public void initModel() {
         // Load layout view thông tin khách hàng chi tiết

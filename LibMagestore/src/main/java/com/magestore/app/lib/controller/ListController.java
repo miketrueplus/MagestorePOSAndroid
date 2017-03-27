@@ -218,4 +218,8 @@ public interface ListController<TModel extends Model>
     void displaySearch(List<TModel> model);
 
     void hideSearch();
+
+    boolean isInsertAtLast();
+
+    void setInsertAtLast(boolean insertAtLast);
 }

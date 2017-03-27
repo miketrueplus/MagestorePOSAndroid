@@ -27,6 +27,9 @@ import java.util.List;
 public class AbstractListController<TModel extends Model>
         extends AbstractController<TModel, AbstractListPanel<TModel>, ListService<TModel>>
         implements ListController<TModel> {
+    // xác định khi thêm mới chèn vào cuối hay đầu danh sách, mặc định là cuối
+    private boolean isInsertAtLast = true;
+
     // chuỗi seảarch
     private String mSearchString;
 
@@ -372,7 +375,8 @@ public class AbstractListController<TModel extends Model>
     @Override
     public void onInsertPostExecute(Boolean success, TModel... models) {
         if (success) {
-            getView().insertListAtLast(models);
+            if (isInsertAtLast()) getView().insertListAtLast(models);
+            else getView().insertListAtFirst(models);
 
             // báo cho các observ khác về việc bind item
             GenericState<ListController<TModel>> state = new GenericState<ListController<TModel>>(this, GenericState.DEFAULT_STATE_CODE_ON_INSERT);
@@ -559,9 +563,22 @@ public class AbstractListController<TModel extends Model>
         getView().closeSearchList();
     }
 
+    /**
+     * Reload data lại từ đầu, từ trang 1
+     */
     @Override
     public void reload() {
         clearList();
         doRetrieve();
+    }
+
+    @Override
+    public boolean isInsertAtLast() {
+        return isInsertAtLast;
+    }
+
+    @Override
+    public void setInsertAtLast(boolean insertAtLast) {
+        isInsertAtLast = insertAtLast;
     }
 }
