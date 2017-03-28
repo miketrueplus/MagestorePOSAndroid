@@ -45,6 +45,7 @@ public class OrderActivity extends AbstractActivity {
         initLayout();
         initModel();
         initValue();
+        super.setheader();
     }
 
     @Override

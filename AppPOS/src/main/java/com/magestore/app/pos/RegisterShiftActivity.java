@@ -39,6 +39,8 @@ public class RegisterShiftActivity extends AbstractActivity {
         initLayout();
         initModel();
         initValue();
+
+        super.setheader();
     }
 
     @Override

@@ -62,7 +62,7 @@ public class POSConfigService extends AbstractService implements ConfigService {
         ConfigUtil.setCurrencyNoSymbolFormat(getPriceNosymbolFormat());
         ConfigUtil.setFloatFormat(getFloatFormat());
         ConfigUtil.setIntegerFormat(getIntegerFormat());
-
+        ConfigUtil.setStaff(getStaff());
         // return config
         return config;
     }

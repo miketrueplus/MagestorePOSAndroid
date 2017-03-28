@@ -16,6 +16,7 @@ import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.model.directory.Currency;
 import com.magestore.app.lib.model.directory.Region;
+import com.magestore.app.lib.model.staff.Location;
 import com.magestore.app.lib.model.staff.Staff;
 import com.magestore.app.lib.resourcemodel.config.ConfigDataAccess;
 import com.magestore.app.lib.resourcemodel.DataAccessException;
@@ -32,6 +33,7 @@ import com.magestore.app.pos.model.customer.PosCustomer;
 import com.magestore.app.pos.model.customer.PosCustomerAddress;
 import com.magestore.app.pos.model.directory.PosCurrency;
 import com.magestore.app.pos.model.directory.PosRegion;
+import com.magestore.app.pos.model.staff.PosLocation;
 import com.magestore.app.pos.model.staff.PosStaff;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosConfigParseImplement;
 import com.magestore.app.util.StringUtil;
@@ -180,10 +182,18 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
 
         String staff_id = (String) mConfig.getValue("staffId");
         String staff_name = (String) mConfig.getValue("staffName");
+        String location_id = (String) mConfig.getValue("locationId");
+        String location_name = (String) mConfig.getValue("location_name");
+        String location_address = (String) mConfig.getValue("location_address");
 
         Staff staff = new PosStaff();
         staff.setStaffId(staff_id);
         staff.setStaffName(staff_name);
+        Location location = new PosLocation();
+        location.setLocationId(location_id);
+        location.setLocationName(location_name);
+        location.setLocationAddress(location_address);
+        staff.setStaffLocation(location);
         mStaff = staff;
         return mStaff;
     }

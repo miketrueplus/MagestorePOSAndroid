@@ -38,6 +38,8 @@ public class SettingActivity extends AbstractActivity {
         initLayout();
         initModel();
         initValue();
+
+        super.setheader();
     }
 
     @Override

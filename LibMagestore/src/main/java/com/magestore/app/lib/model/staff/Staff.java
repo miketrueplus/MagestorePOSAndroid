@@ -22,4 +22,6 @@ public interface Staff extends Model {
     void setResponeType(boolean bResponeType);
     String getErrorMessage();
     void setErrorMessage(String strErrorMessage);
+    Location getStaffLocation();
+    void setStaffLocation(Location staffLocation);
 }

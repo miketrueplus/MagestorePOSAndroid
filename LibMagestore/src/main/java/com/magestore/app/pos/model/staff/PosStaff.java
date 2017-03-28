@@ -1,5 +1,6 @@
 package com.magestore.app.pos.model.staff;
 
+import com.magestore.app.lib.model.staff.Location;
 import com.magestore.app.lib.model.staff.Staff;
 import com.magestore.app.pos.model.PosAbstractModel;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosExclude;
@@ -22,6 +23,8 @@ public class PosStaff extends PosAbstractModel implements Staff {
     boolean respone_type;
     @Gson2PosExclude
     String error_message;
+    @Gson2PosExclude
+    Location staff_location;
 
     @Override
     public String getID() {
@@ -91,5 +94,15 @@ public class PosStaff extends PosAbstractModel implements Staff {
     @Override
     public void setErrorMessage(String strErrorMessage) {
         error_message = strErrorMessage;
+    }
+
+    @Override
+    public Location getStaffLocation() {
+        return staff_location;
+    }
+
+    @Override
+    public void setStaffLocation(Location staffLocation) {
+        staff_location = staffLocation;
     }
 }

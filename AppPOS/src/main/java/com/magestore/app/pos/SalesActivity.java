@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.magestore.app.lib.context.MagestoreContext;
 import com.magestore.app.lib.observ.GenericState;
@@ -97,6 +98,7 @@ public class SalesActivity extends AbstractActivity
     RelativeLayout rl_customer;
     ImageButton rl_change_customer;
     CustomerService customerService = null;
+    ConfigService configService = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +112,8 @@ public class SalesActivity extends AbstractActivity
 
         // chuản bị các value trong layout
         initValue();
+
+        super.setheader();
     }
 
     @Override
@@ -119,6 +123,7 @@ public class SalesActivity extends AbstractActivity
         rl_customer = (RelativeLayout) toolbar_order.findViewById(R.id.rl_customer);
         rl_change_customer = (ImageButton) toolbar_order.findViewById(R.id.rl_change_customer);
         initToolbarMenu(toolbar_order);
+
         // Nút tab để tạo đơn hàng mới
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -187,7 +192,6 @@ public class SalesActivity extends AbstractActivity
         CheckoutService checkoutService = null;
         CartService cartService = null;
         CategoryService categoryService = null;
-        ConfigService configService = null;
         ProductOptionService productOptionService = null;
         CustomerAddressService customerAddressService = null;
         try {

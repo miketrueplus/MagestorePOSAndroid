@@ -13,10 +13,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.magestore.app.pos.LoginActivity;
 import com.magestore.app.pos.RegisterShiftActivity;
 import com.magestore.app.pos.SettingActivity;
+import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.DataUtil;
 import com.magestore.app.view.ui.PosUI;
 import com.magestore.app.pos.CustomerActivity;
@@ -35,6 +38,7 @@ public abstract class AbstractActivity
         implements
         PosUI,
         NavigationView.OnNavigationItemSelectedListener {
+    TextView staff_name, staff_location;
     /**
      * Cấu hình lại các control layout
      */
@@ -63,6 +67,15 @@ public abstract class AbstractActivity
      */
     protected boolean validControlValue() {
         return false;
+    }
+
+    public void setheader(){
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View header_layout = navigationView.inflateHeaderView(R.layout.nav_header_menu);
+        staff_name = (TextView) header_layout.findViewById(R.id.staff_name);
+        staff_location = (TextView) header_layout.findViewById(R.id.staff_location);
+        staff_name.setText(ConfigUtil.getStaff().getStaffName());
+        staff_location.setText(ConfigUtil.getStaff().getStaffLocation().getLocationName());
     }
 
     /**

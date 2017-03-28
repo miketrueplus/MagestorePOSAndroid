@@ -52,6 +52,8 @@ public class CustomerActivity extends AbstractActivity {
         initLayout();
         initModel();
         initValue();
+
+        super.setheader();
     }
 
     @Override
