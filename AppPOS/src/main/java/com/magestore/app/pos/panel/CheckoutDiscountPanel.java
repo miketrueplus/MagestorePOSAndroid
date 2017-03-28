@@ -30,6 +30,7 @@ public class CheckoutDiscountPanel extends AbstractDetailPanel<Checkout> {
     EditText discount_name, coupon_code;
     EditTextFloat discount_amount, promotion_amount;
     boolean amountType = false;
+    float maximum_discount_currency, maximum_discount_percent, grand_total;
 
     public void setCheckoutListController(CheckoutListController mCheckoutListController) {
         this.mCheckoutListController = mCheckoutListController;
@@ -73,9 +74,17 @@ public class CheckoutDiscountPanel extends AbstractDetailPanel<Checkout> {
 
     @Override
     public void initValue() {
+        grand_total = mCheckoutListController.getSelectedItem().getGrandTotal();
+
         if (mCheckoutListController.getCurrency() != null) {
             String currency_symbol = mCheckoutListController.getCurrency().getCurrencySymbol();
             amount_currency.setText(currency_symbol);
+        }
+
+        if (mCheckoutListController.getMaximumDiscount() >= 0) {
+            float maximum_discount = mCheckoutListController.getMaximumDiscount();
+            maximum_discount_percent = maximum_discount;
+            maximum_discount_currency = ((grand_total * maximum_discount) / 100);
         }
 
         amount_currency.setOnClickListener(new OnClickListener() {
@@ -84,7 +93,11 @@ public class CheckoutDiscountPanel extends AbstractDetailPanel<Checkout> {
                 changeColor(true, amount_currency);
                 changeColor(false, amount_percent);
                 amountType = false;
-                discount_amount.setMaxValue(mCheckoutListController.getSelectedItem().getGrandTotal());
+                if (maximum_discount_percent <= 0) {
+                    discount_amount.setMaxValue(grand_total);
+                } else {
+                    discount_amount.setMaxValue(maximum_discount_currency);
+                }
             }
         });
 
@@ -95,7 +108,12 @@ public class CheckoutDiscountPanel extends AbstractDetailPanel<Checkout> {
                 changeColor(false, amount_currency);
                 amountType = true;
                 // maximum 100%
-                discount_amount.setMaxValue(100);
+                if (maximum_discount_percent <= 0) {
+                    discount_amount.setMaxValue(100);
+                } else {
+                    discount_amount.setMaxValue(maximum_discount_percent);
+                }
+
             }
         });
     }

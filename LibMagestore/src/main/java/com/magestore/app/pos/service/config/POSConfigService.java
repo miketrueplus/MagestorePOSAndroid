@@ -243,6 +243,14 @@ public class POSConfigService extends AbstractService implements ConfigService {
         return configDataAccess.getConfigCCYears();
     }
 
+    @Override
+    public float getConfigMaximumDiscount() throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        // Nếu chưa khởi tạo customer gateway factory
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
+        return configDataAccess.getConfigMaximumDiscount();
+    }
+
     public static String SETTING_ACCOUNT = "My Account";
     public static String SETTING_CURRENCY = "Currency";
     public static String SETTING_STORE = "Store";

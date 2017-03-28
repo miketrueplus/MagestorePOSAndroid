@@ -37,4 +37,5 @@ public interface ConfigDataAccess extends DataAccess {
     Map<String, String> getConfigCCTypes() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     List<String> getConfigMonths() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     Map<String, String> getConfigCCYears() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
+    float getConfigMaximumDiscount() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
 }

@@ -86,6 +86,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     Context context;
     Customer guest_checkout;
     Currency currency;
+    float maximum_discount;
     Map<String, String> configCCTypes;
     List<String> configMonths;
     Map<String, String> configCCYears;
@@ -285,6 +286,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             configCCTypes = getConfigService().getConfigCCTypes();
             configMonths = getConfigService().getConfigMonths();
             configCCYears = getConfigService().getConfigCCYears();
+            maximum_discount = getConfigService().getConfigMaximumDiscount();
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
@@ -1116,6 +1118,10 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         }
         GenericState<CheckoutListController> state = new GenericState<CheckoutListController>(this, keyObserv);
         if (getSubject() != null) getSubject().setState(state);
+    }
+
+    public float getMaximumDiscount() {
+        return maximum_discount;
     }
 
     /**

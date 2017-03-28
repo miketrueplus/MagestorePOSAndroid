@@ -490,6 +490,15 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         return listCCYears;
     }
 
+    @Override
+    public float getConfigMaximumDiscount() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        if (mConfig == null) mConfig = new PosConfigDefault();
+
+        float maximum_discount = (float) mConfig.getValue("maximum_discount_percent");
+
+        return maximum_discount;
+    }
+
     private ConfigPriceFormat getPriceFormat(LinkedTreeMap priceFormat) {
         String currencySymbol = (String) mConfig.getValue("currentCurrencySymbol");
         String pattern = priceFormat.get("pattern").toString();

@@ -89,5 +89,7 @@ public interface ConfigService extends Service {
 
     Map<String, String> getConfigCCYears() throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
+    float getConfigMaximumDiscount() throws InstantiationException, IllegalAccessException, IOException, ParseException;
+
     List<Setting> getListSetting();
 }
