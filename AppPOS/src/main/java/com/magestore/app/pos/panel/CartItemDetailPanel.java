@@ -42,6 +42,9 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
     EditTextFloat mtxtCustomDiscount;
     EditTextInteger mtxtQuantity;
 
+    boolean mblnCustomPriceFixed;
+    boolean mblnCustomDiscountFixed;
+
     public void setCheckoutListController(CheckoutListController mCheckoutListController) {
         this.mCheckoutListController = mCheckoutListController;
     }
@@ -128,8 +131,10 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
         mBinding.setCartItem(item);
 
         // đặt % hau $
-        actionChangeValue(mbtnCustomPriceFixed, mbtnCustomPricePercent, item.isCustomPriceTypeFixed());
-        actionChangeValue(mbtnDiscountFixed, mbtnDiscountPercent, item.isDiscountTypeFixed());
+        mblnCustomPriceFixed = item.isCustomPriceTypeFixed();
+        mblnCustomDiscountFixed = item.isDiscountTypeFixed();
+        actionChangeValue(mbtnCustomPriceFixed, mbtnCustomPricePercent, mblnCustomPriceFixed);
+        actionChangeValue(mbtnDiscountFixed, mbtnDiscountPercent, mblnCustomDiscountFixed);
 
         // nhỏ nhất cho ô số lượng
         mtxtQuantity.setMinValue(item.getProduct().getQuantityIncrement());
@@ -147,8 +152,17 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
     public void bind2Item(CartItem item) {
         item.setCustomPrice(mtxtCustomPrice.getValueFloat());
         item.setDiscountAmount(mtxtCustomDiscount.getValueFloat());
-        item.setUnitPrice(item.isCustomPriceTypeFixed() ? mtxtCustomPrice.getValueFloat() : item.getOriginalPrice() * mtxtCustomPrice.getValueFloat() / 100);
+        item.setUnitPrice(mblnCustomPriceFixed ? mtxtCustomPrice.getValueFloat() : item.getOriginalPrice() * mtxtCustomPrice.getValueFloat() / 100);
+        item.setUnitPrice(mblnCustomDiscountFixed ? item.getUnitPrice() - mtxtCustomDiscount.getValueFloat() : item.getUnitPrice() - item.getUnitPrice() * mtxtCustomDiscount.getValueFloat() / 100);
         item.setQuantity(mtxtQuantity.getValueInteger());
+
+        // đặt loại với custom price
+        if (mblnCustomPriceFixed) item.setCustomPriceTypeFixed();
+        else item.setCustomPriceTypePercent();
+
+        // đặt loại với custom discount
+        if (mblnCustomDiscountFixed) item.setDiscountTypeFixed();
+        else item.setDiscountTypePercent();
     }
 
     /**
@@ -173,8 +187,9 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
      * @param view
      */
     public void onDiscountChangeToFixed(View view) {
+        mblnCustomDiscountFixed = true;
         actionChangeValue(mbtnDiscountFixed, mbtnDiscountPercent, true);
-        getItem().setDiscountTypeFixed();
+//        getItem().setDiscountTypeFixed();
     }
 
     /**
@@ -183,8 +198,9 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
      * @param view
      */
     public void onDiscountChangeToPercent(View view) {
+        mblnCustomDiscountFixed = false;
         actionChangeValue(mbtnDiscountFixed, mbtnDiscountPercent, false);
-        getItem().setDiscountTypePercent();
+//        getItem().setDiscountTypePercent();
     }
 
     /**
@@ -193,8 +209,9 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
      * @param view
      */
     public void onCustomPriceChangeToFixed(View view) {
+        mblnCustomPriceFixed = true;
         actionChangeValue(mbtnCustomPriceFixed, mbtnCustomPricePercent, true);
-        getItem().setCustomPriceTypeFixed();
+//        getItem().setCustomPriceTypeFixed();
     }
 
     /**
@@ -203,8 +220,9 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
      * @param view
      */
     public void onCustomPriceChangeToPercent(View view) {
+        mblnCustomPriceFixed = false;
         actionChangeValue(mbtnCustomPriceFixed, mbtnCustomPricePercent, false);
-        getItem().setCustomPriceTypePercent();
+//        getItem().setCustomPriceTypePercent();
     }
 
     /**
@@ -222,6 +240,48 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
      * @param view
      */
     public void onSaveClick(View view) {
+        if (!validateInput()) return;
         ((CartItemListController) getController()).updateToCart(bind2Item());
+    }
+
+    /**
+     * Kiểm tra số liệu đầu vào, đảm bảo nhập chính xác
+     * @return
+     */
+    private boolean validateInput() {
+        boolean blnRight = true;
+        // valid số lượng
+        if (mtxtQuantity.getValueInteger() <= 0) {
+            mtxtQuantity.setError(String.format(getResources().getString(R.string.err_field_must_greater_than), ConfigUtil.formatQuantity(0)));
+            blnRight = false;
+        }
+
+        // valid custom price
+        if (mtxtCustomPrice.getValueFloat() < 0.0f) {
+            mtxtCustomPrice.setError(String.format(getResources().getString(R.string.err_field_must_greater_than), ConfigUtil.formatPrice(0.0f)));
+            blnRight = false;
+        }
+
+        // valid discount
+        if (mblnCustomDiscountFixed && mtxtCustomDiscount.getValueFloat() < 0.0f) {
+            mtxtCustomDiscount.setError(String.format(getResources().getString(R.string.err_field_must_greater_than), ConfigUtil.formatNumber(0.0f)));
+            blnRight = false;
+        }
+
+        // valid custom discount k0 được
+        if (mblnCustomDiscountFixed) {
+            float tempPrice = mblnCustomPriceFixed ? mtxtCustomPrice.getValueFloat() : getItem().getOriginalPrice() * mtxtCustomPrice.getValueFloat() / 100;
+            if (mtxtCustomDiscount.getValueFloat() > tempPrice) {
+                mtxtCustomDiscount.setError(String.format(getResources().getString(R.string.err_field_must_less_than), ConfigUtil.formatNumber(tempPrice)));
+                blnRight = false;
+            }
+        }
+
+        // valid % của discount k0 được hơn 100%
+        if (!mblnCustomDiscountFixed && mtxtCustomDiscount.getValueFloat() > 100) {
+            mtxtCustomDiscount.setError(String.format(getResources().getString(R.string.err_field_must_less_than), ConfigUtil.formatNumber(100)));
+            blnRight = false;
+        }
+        return blnRight;
     }
 }
