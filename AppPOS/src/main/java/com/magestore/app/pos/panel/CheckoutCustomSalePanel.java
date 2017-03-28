@@ -28,6 +28,7 @@ public class CheckoutCustomSalePanel extends AbstractDetailPanel<CartItem> {
 
     /**
      * Khởi tạo
+     *
      * @param context
      */
     public CheckoutCustomSalePanel(Context context) {
@@ -36,6 +37,7 @@ public class CheckoutCustomSalePanel extends AbstractDetailPanel<CartItem> {
 
     /**
      * Khởi tạo
+     *
      * @param context
      * @param attrs
      */
@@ -45,6 +47,7 @@ public class CheckoutCustomSalePanel extends AbstractDetailPanel<CartItem> {
 
     /**
      * Khởi tạo
+     *
      * @param context
      * @param attrs
      * @param defStyleAttr
@@ -71,6 +74,7 @@ public class CheckoutCustomSalePanel extends AbstractDetailPanel<CartItem> {
 
     /**
      * Chuyển từ dataset sang giao diện
+     *
      * @param item
      */
     @Override
@@ -82,6 +86,7 @@ public class CheckoutCustomSalePanel extends AbstractDetailPanel<CartItem> {
 
     /**
      * Chuyển từ giao diện sang data set
+     *
      * @param item
      */
     @Override
@@ -98,11 +103,11 @@ public class CheckoutCustomSalePanel extends AbstractDetailPanel<CartItem> {
 
     /**
      * Kiểm tra nhập vào
+     *
      * @return
      */
     public boolean validateInput() {
         if (mtxtName.getText().toString().trim().equals(StringUtil.STRING_EMPTY)) {
-            mtxtName.setError(getResources().getString(R.string.err_field_required));
             return false;
         }
         return true;
@@ -110,10 +115,13 @@ public class CheckoutCustomSalePanel extends AbstractDetailPanel<CartItem> {
 
     /**
      * Nhất nút save
+     *
      * @param v
      */
     public void onSaveClick(View v) {
-        if (!validateInput()) return;
+        if (!validateInput()) {
+            bind2Item().getProduct().setName(getContext().getString(R.string.sales_custom_sales_product));
+        }
         ((CartItemListController) getController()).updateToCart(bind2Item());
     }
 }
