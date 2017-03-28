@@ -138,9 +138,8 @@ public class CartItemListController extends AbstractChildListController<Checkout
                 getView().deleteList(cartItem);
                 if (product.getIsSaveCart()) {
                     mCheckoutListController.updateTotal();
-                } else {
-                    updateTotalPrice();
                 }
+                updateTotalPrice();
             }
             if(!mCheckoutListController.checkListCartItem()){
                 mCheckoutListController.showButtonDiscount(false);

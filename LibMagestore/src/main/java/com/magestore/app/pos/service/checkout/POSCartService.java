@@ -102,6 +102,7 @@ public class POSCartService extends AbstractService implements CartService {
 
     /**
      * Khởi tạo 1 cústom sale
+     *
      * @return
      */
     @Override
@@ -122,6 +123,7 @@ public class POSCartService extends AbstractService implements CartService {
 
     /**
      * Khởi tạo 1 cart item với product
+     *
      * @param product
      * @return
      */
@@ -132,6 +134,7 @@ public class POSCartService extends AbstractService implements CartService {
 
     /**
      * Khởi tạo cart item với product
+     *
      * @param product
      * @param quantity
      * @param price
@@ -431,20 +434,24 @@ public class POSCartService extends AbstractService implements CartService {
         if (listItems == null) return null;
         CartItem cartItem = null;
         // kiểm tra xem có phải item online ko?
-        if(product.getIsSaveCart()){
+        if (product.getIsSaveCart()) {
             DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
             CartDataAccess cartDataAccess = factory.generateCartDataAccess();
             cartItem = cartDataAccess.delete(checkout, product);
             // xóa khỏi danh sách checkout
             if (cartItem != null) delete(checkout, cartItem);
-        }else {
+        } else {
             // Kiểm tra xem đã có item với mặt hàng tương ứng chưa
             for (CartItem item : listItems) {
-                String itemID = item.getProduct().getID();
-                if (itemID == null) continue;
-                if (itemID.equals(product.getID())) {
+                if (item.isTypeCustom()) {
                     cartItem = item;
-                    break;
+                } else {
+                    String itemID = item.getProduct().getID();
+                    if (itemID == null) continue;
+                    if (itemID.equals(product.getID())) {
+                        cartItem = item;
+                        break;
+                    }
                 }
             }
 
