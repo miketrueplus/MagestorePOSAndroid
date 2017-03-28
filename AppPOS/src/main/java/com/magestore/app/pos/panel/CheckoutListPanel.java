@@ -32,6 +32,7 @@ import com.magestore.app.pos.controller.CheckoutListController;
 import com.magestore.app.pos.databinding.PanelCheckoutListBinding;
 import com.magestore.app.pos.util.DialogUtil;
 import com.magestore.app.pos.view.MagestoreDialog;
+import com.magestore.app.util.ConfigUtil;
 
 /**
  * Created by Mike on 2/7/2017.
@@ -160,8 +161,11 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
                 final CheckoutDiscountPanel mCheckoutDiscountPanel = new CheckoutDiscountPanel(getContext());
                 mCheckoutDiscountPanel.setCheckoutListController(((CheckoutListController) mController));
                 mCheckoutDiscountPanel.initValue();
+
+                final int maxumum_discount = (int)((CheckoutListController) mController).getMaximumDiscount();
+
                 final MagestoreDialog dialog = DialogUtil.dialog(getContext(), "", mCheckoutDiscountPanel);
-                dialog.setDialogTitle(getContext().getString(R.string.checkout_discount_all));
+                dialog.setDialogTitle(getContext().getString(R.string.checkout_discount_all, String.valueOf(maxumum_discount)));
                 dialog.setDialogSave(getContext().getString(R.string.apply));
                 dialog.show();
 
@@ -171,7 +175,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
                 txt_sales_discount.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        dialog.setDialogTitle(getContext().getString(R.string.checkout_discount_all));
+                        dialog.setDialogTitle(getContext().getString(R.string.checkout_discount_all, String.valueOf(maxumum_discount)));
                         mCheckoutDiscountPanel.onClickDiscount();
                     }
                 });

@@ -494,9 +494,14 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
     public float getConfigMaximumDiscount() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
         if (mConfig == null) mConfig = new PosConfigDefault();
 
-        float maximum_discount = (float) mConfig.getValue("maximum_discount_percent");
-
-        return maximum_discount;
+        String maximum_discount = (String) mConfig.getValue("maximum_discount_percent");
+        float cmaximum = 0;
+        try {
+            cmaximum = Float.parseFloat(maximum_discount);
+        }catch (Exception e){
+            cmaximum = 0;
+        }
+        return cmaximum;
     }
 
     private ConfigPriceFormat getPriceFormat(LinkedTreeMap priceFormat) {
