@@ -62,6 +62,8 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
 
         // thiết lập các giá trị ban đầu
         initControlValue();
+
+        showProgress(false);
     }
 
     /**
@@ -297,7 +299,6 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
         @Override
         public void onPostController(Task task, Boolean success) {
             mAuthTask = null;
-            showProgress(false);
             if (success) {
                 // Đăng nhập thành công, lưu domain lại để lần sau không phải nhập
                 saveSharedValue("login_activity_domain", mDomainView.getText().toString().trim());
@@ -319,7 +320,6 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
                 // Đăng nhập không thành công, báo lỗi và yêu cầu nhập lại
                 mPasswordView.setError(getString(R.string.login_error_incorrect_password));
                 mPasswordView.requestFocus();
-
             }
         }
 
@@ -382,6 +382,12 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
 
         // Tạo dialog và hiển thị
         DialogUtil.confirm(getContext(), message, R.string.done);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        showProgress(false);
     }
 }
 
