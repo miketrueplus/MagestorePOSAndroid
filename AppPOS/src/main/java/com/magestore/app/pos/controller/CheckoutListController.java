@@ -190,40 +190,42 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     public void doInputSaveQuote(SaveQuoteParam quoteParam) {
         Checkout checkout = getSelectedItem();
         ((CheckoutListPanel) mView).showLoading(true);
-        if (checkout.getQuoteId() == null || StringUtil.STRING_EMPTY.equals(checkout.getQuoteId())) {
+        // TODO: luôn save cart trước vì có trường hợp remove online xong save lại quote chưa có sản phẩm nên total = 0
+//        if (checkout.getQuoteId() == null || StringUtil.STRING_EMPTY.equals(checkout.getQuoteId())) {
             String store_id = DataUtil.getDataStringToPreferences(context, DataUtil.STORE_ID);
             checkout.setStoreId(store_id);
             wraper.put("quote_param", quoteParam);
             doInputSaveCartDiscount(0);
-        } else {
-            String store_id = DataUtil.getDataStringToPreferences(context, DataUtil.STORE_ID);
-            checkout.setStoreId(store_id);
-            wraper.put("quote_id", checkout.getQuoteId());
-            wraper.put("quote_param", quoteParam);
-            if (((CheckoutDetailPanel) mDetailView).getVisibility() == View.VISIBLE) {
-                wraper.put("type_save_quote", 1);
-            } else {
-                wraper.put("type_save_quote", 0);
-            }
-            doAction(ACTION_TYPE_SAVE_QUOTE, null, wraper, checkout);
-        }
+//        } else {
+//            String store_id = DataUtil.getDataStringToPreferences(context, DataUtil.STORE_ID);
+//            checkout.setStoreId(store_id);
+//            wraper.put("quote_id", checkout.getQuoteId());
+//            wraper.put("quote_param", quoteParam);
+//            if (((CheckoutDetailPanel) mDetailView).getVisibility() == View.VISIBLE) {
+//                wraper.put("type_save_quote", 1);
+//            } else {
+//                wraper.put("type_save_quote", 0);
+//            }
+//            doAction(ACTION_TYPE_SAVE_QUOTE, null, wraper, checkout);
+//        }
     }
 
     public void doInputAddCouponToQuote(QuoteAddCouponParam quoteAddCouponParam) {
         Checkout checkout = getSelectedItem();
         ((CheckoutListPanel) mView).showLoading(true);
-        if (checkout.getQuoteId() == null || StringUtil.STRING_EMPTY.equals(checkout.getQuoteId())) {
+        // TODO: luôn save cart trước vì có trường hợp remove online xong save lại quote chưa có sản phẩm nên total = 0
+//        if (checkout.getQuoteId() == null || StringUtil.STRING_EMPTY.equals(checkout.getQuoteId())) {
             String store_id = DataUtil.getDataStringToPreferences(context, DataUtil.STORE_ID);
             checkout.setStoreId(store_id);
             wraper.put("quote_add_coupon_param", quoteAddCouponParam);
             doInputSaveCartDiscount(1);
-        } else {
-            String store_id = DataUtil.getDataStringToPreferences(context, DataUtil.STORE_ID);
-            checkout.setStoreId(store_id);
-            wraper.put("quote_id", checkout.getQuoteId());
-            wraper.put("quote_add_coupon_param", quoteAddCouponParam);
-            doAction(ACTION_TYPE_ADD_COUPON_TO_QUOTE, null, wraper, checkout);
-        }
+//        } else {
+//            String store_id = DataUtil.getDataStringToPreferences(context, DataUtil.STORE_ID);
+//            checkout.setStoreId(store_id);
+//            wraper.put("quote_id", checkout.getQuoteId());
+//            wraper.put("quote_add_coupon_param", quoteAddCouponParam);
+//            doAction(ACTION_TYPE_ADD_COUPON_TO_QUOTE, null, wraper, checkout);
+//        }
     }
 
     /**
