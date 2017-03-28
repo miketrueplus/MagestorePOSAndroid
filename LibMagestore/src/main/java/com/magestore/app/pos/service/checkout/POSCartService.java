@@ -111,7 +111,7 @@ public class POSCartService extends AbstractService implements CartService {
         Product product = new PosProduct();
         cartItem.setTypeCustom();
         cartItem.setProduct(product);
-        cartItem.setQuantity(1);
+        cartItem.setQuantity(product.getQuantityIncrement());
         cartItem.setPrice(0);
         cartItem.setOriginalPrice(0);
         cartItem.setUnitPrice(0);
@@ -129,7 +129,7 @@ public class POSCartService extends AbstractService implements CartService {
      */
     @Override
     public CartItem create(Product product) {
-        return create(product, 1, product.getFinalPrice());
+        return create(product, product.getQuantityIncrement(), product.getFinalPrice());
     }
 
     /**
@@ -268,8 +268,14 @@ public class POSCartService extends AbstractService implements CartService {
 
         // khởi tạo product
         Product product = new PosProduct();
-        product.setItemId(productID);
+        product.setID(productID);
         product.setName(productName);
+
+        // kiểm tra trước xem trong checkout đã có sẵn product chưa
+        if (checkout.getCartItem() != null)
+            for (CartItem item: checkout.getCartItem()) {
+                if (item.getProduct().getID().equals(productID)) product = item.getProduct();
+            }
 
         // khởi tạo cart và add vào list
         return insert(checkout, product, quantity, price);

@@ -468,7 +468,10 @@ public class CartItemListController extends AbstractChildListController<Checkout
         mProductOptionDialog.getDialogTitle().setText(cartItem.getProduct().getName());
 
         // gán cart item và load product option
-        if (cartItem.getProduct().getProductOption() != null) bindItem(cartItem);
+        if (cartItem.getProduct().getProductOption() != null) {
+            bindItem(cartItem);
+            hideAllProgressBar();
+        }
         else doLoadItem(cartItem);
     }
 

@@ -8,6 +8,7 @@ import com.magestore.app.pos.model.PosAbstractModel;
 import com.magestore.app.pos.model.PosStock;
 import com.magestore.app.pos.model.PosTierPrice;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosExclude;
+import com.magestore.app.util.StringUtil;
 
 import java.util.Date;
 import java.util.List;
@@ -39,7 +40,7 @@ public class PosProduct extends PosAbstractModel implements Product {
     private String category_ids;
     private PosStock[] stock;
     private PosTierPrice[] tier_prices;
-    private float qty_increment = 1;
+    private String qty_increment = StringUtil.STRING_ONE;
     private float price_increment = 0.1f;
     private ProductOption productOption;
     private int options;
@@ -165,7 +166,8 @@ public class PosProduct extends PosAbstractModel implements Product {
 
     @Override
     public int getQuantityIncrement() {
-        return 1;
+        if (qty_increment == null || StringUtil.STRING_EMPTY.equals(qty_increment)) return 1;
+        return Integer.parseInt(qty_increment);
     }
 
     @Override
@@ -175,7 +177,7 @@ public class PosProduct extends PosAbstractModel implements Product {
 
     @Override
     public void setQuantityIncrement(float quantityIncrement) {
-        this.qty_increment = quantityIncrement;
+        this.qty_increment =  "" + (int) quantityIncrement;
     }
 
     @Override

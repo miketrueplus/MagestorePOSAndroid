@@ -18,6 +18,7 @@ public interface ProductOptionCustom extends Model {
 
     // type
     public static final String TYPE_MULTIPE = "multipe";
+    public static final String TYPE_MULTI = "multi";
     public static final String TYPE_DROP_DOWN = "drop_down";
     public static final String TYPE_RADIO = "radio";
     public static final String TYPE_CHECKBOX = "checkbox";

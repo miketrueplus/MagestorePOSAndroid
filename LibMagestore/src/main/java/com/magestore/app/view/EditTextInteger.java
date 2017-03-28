@@ -83,7 +83,7 @@ public class EditTextInteger extends EditText {
     public void add(int addValue) {
         int value = ConfigUtil.parseInteger(super.getText().toString());
         value += addValue;
-        if (mblnHaveMaxValue && value > mintMaxValue) value = mintMaxValue;
+        if (mblnHaveMaxValue && value > mintMaxValue) return;
         setText(ConfigUtil.formatNumber(value));
     }
 
@@ -94,7 +94,7 @@ public class EditTextInteger extends EditText {
     public void substract(int addValue) {
         int value = ConfigUtil.parseInteger(super.getText().toString());
         value -= addValue;
-        if (mblnHaveMinValue && value < mintMinValue) value = mintMinValue;
+        if (mblnHaveMinValue && value < mintMinValue) return;
         setText(ConfigUtil.formatNumber(value));
     }
 

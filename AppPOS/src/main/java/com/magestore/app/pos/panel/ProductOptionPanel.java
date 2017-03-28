@@ -120,6 +120,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
 
         // đặt giá trị min
         mtxtCartItemQuantity.setMinValue(item.getProduct().getQuantityIncrement());
+        mtxtCartItemQuantity.setError(null);
 
         // tạo model view list
         createModelViewList();
@@ -168,8 +169,8 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
             if (getItem().getProduct().getProductOption().getGroupedOptions() == null)
                 ((CartItemListController) getController()).updateToCart(bind2Item());
             else { // nếu là grouped option, thì chia làm 2 cart item
+                CartItem item = bind2Item();
                 for (OptionModelView optionModel : mModelViewList) {
-                    CartItem item = bind2Item();
                     ((CartItemListController) getController()).updateToCart(item, optionModel.getModel().getID(), optionModel.title, optionModel.quantity * item.getQuantity(), optionModel.price);
                 }
                 ((CartItemListController) getController()).closeAllOpeningDialog();
@@ -424,35 +425,35 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         public float price;
 
         public boolean isCustomOption() {
-            return (option_type == null) || ProductOptionCustom.OPTION_TYPE_CUSTOM.equals(option_type);
+            return (option_type == null) || ProductOptionCustom.OPTION_TYPE_CUSTOM.compareToIgnoreCase(option_type) == 0;
         }
 
         public boolean isConfigOption() {
-            return ProductOptionCustom.OPTION_TYPE_CONFIG.equals(option_type);
+            return ProductOptionCustom.OPTION_TYPE_CONFIG.compareToIgnoreCase(option_type) == 0;
         }
 
         public boolean isBundleOption() {
-            return ProductOptionCustom.OPTION_TYPE_BUNDLE.equals(option_type);
+            return ProductOptionCustom.OPTION_TYPE_BUNDLE.compareToIgnoreCase(option_type) == 0;
         }
 
         public boolean isTypeSelectOne() {
-            return ProductOptionCustom.TYPE_RADIO.equals(input_type) || ProductOptionCustom.TYPE_DROP_DOWN.equals(input_type);
+            return ProductOptionCustom.TYPE_RADIO.compareToIgnoreCase(input_type) == 0 || ProductOptionCustom.TYPE_DROP_DOWN.compareToIgnoreCase(input_type) == 0;
         }
 
         public boolean isTypeSelectMultipe() {
-            return ProductOptionCustom.TYPE_CHECKBOX.equals(input_type) || ProductOptionCustom.TYPE_MULTIPE.equals(input_type);
+            return ProductOptionCustom.TYPE_CHECKBOX.compareToIgnoreCase(input_type) == 0 || ProductOptionCustom.TYPE_MULTIPE.compareToIgnoreCase(input_type) == 0 || ProductOptionCustom.TYPE_MULTI.compareToIgnoreCase(input_type) == 0;
         }
 
         public boolean isTypeTime() {
-            return ProductOptionCustom.TYPE_TIME.equals(input_type);
+            return ProductOptionCustom.TYPE_TIME.compareToIgnoreCase(input_type) == 0;
         }
 
         public boolean isTypeDate() {
-            return ProductOptionCustom.TYPE_DATE.equals(input_type);
+            return ProductOptionCustom.TYPE_DATE.compareToIgnoreCase(input_type) == 0;
         }
 
         public boolean isTypeDateTime() {
-            return ProductOptionCustom.TYPE_DATETIME.equals(input_type);
+            return ProductOptionCustom.TYPE_DATETIME.compareToIgnoreCase(input_type) == 0;
         }
     }
 
@@ -556,6 +557,14 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         if (!getItem().getProduct().haveProductOption()) return true;
 
         boolean blnValid = true;
+
+        // kiểm tra số lượng zero
+        if (mtxtCartItemQuantity.getValueInteger() < getItem().getProduct().getQuantityIncrement())
+        {
+            blnValid = false;
+            mtxtCartItemQuantity.setError(String.format(getResources().getString(R.string.err_field_must_greater_than), ConfigUtil.formatQuantity(getItem().getProduct().getQuantityIncrement())));
+        }
+
         // duyệt tất cả các option custome để lấy option mà user đã chọn
         if (mModelViewList == null) return false;
         for (OptionModelView optionModelView : mModelViewList) {
@@ -579,6 +588,8 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                 optionModelView.holder.mtxtError.setText(null);
                 optionModelView.holder.mtxtError.setError(null);
             }
+
+            // nếu có lỗi số lượng nhưng nhập zero
         }
 
         return blnValid;

@@ -138,6 +138,9 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
 
         // nhỏ nhất cho ô số lượng
         mtxtQuantity.setMinValue(item.getProduct().getQuantityIncrement());
+        mtxtQuantity.setError(null);
+        mtxtCustomDiscount.setError(null);
+        mtxtCustomPrice.setError(null);
 
         // giấu nút option nếu k0 có product option
         findViewById(R.id.id_btn_cart_option).setVisibility(item.getProduct().haveProductOption() ? View.VISIBLE : View.GONE);
@@ -251,8 +254,8 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
     private boolean validateInput() {
         boolean blnRight = true;
         // valid số lượng
-        if (mtxtQuantity.getValueInteger() <= 0) {
-            mtxtQuantity.setError(String.format(getResources().getString(R.string.err_field_must_greater_than), ConfigUtil.formatQuantity(0)));
+        if (mtxtQuantity.getValueInteger() < getItem().getProduct().getQuantityIncrement()) {
+            mtxtQuantity.setError(String.format(getResources().getString(R.string.err_field_must_greater_than), ConfigUtil.formatQuantity(getItem().getProduct().getQuantityIncrement())));
             blnRight = false;
         }
 

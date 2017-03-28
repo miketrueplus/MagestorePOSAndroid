@@ -9,6 +9,9 @@ import android.os.Parcelable;
 
 public interface Model extends Parcelable {
     String getID();
+
+    void setID(String id);
+
     String getDisplayContent();
     String getSubDisplayContent();
     Bitmap getDisplayBitmap();
