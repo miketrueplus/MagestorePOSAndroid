@@ -23,7 +23,7 @@ import java.util.List;
  */
 
 public class PosCustomerAddress extends PosAbstractModel implements CustomerAddress {
-    @Expose(serialize = false, deserialize = false)
+    @Gson2PosExclude
     Customer customer;
 
     String customer_id;

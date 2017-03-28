@@ -15,7 +15,10 @@ import com.magestore.app.lib.resourcemodel.customer.CustomerAddressDataAccess;
 import com.magestore.app.pos.api.m2.POSAPI;
 import com.magestore.app.pos.api.m2.POSAbstractDataAccess;
 import com.magestore.app.pos.api.m2.POSDataAccessSession;
+import com.magestore.app.pos.model.customer.PosCustomer;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListAddress;
+import com.magestore.app.util.ConfigUtil;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,10 +31,14 @@ import java.util.List;
 
 public class POSCustomerAddressDataAccess extends POSAbstractDataAccess implements CustomerAddressDataAccess {
     // wrap object lại và chuyênr thành json
-    private class Wrap {Customer customer; Complain complain;};
+    private class Wrap {
+        Customer customer;
+        Complain complain;
+    }
 
     /**
      * Đếm số lượng address
+     *
      * @param customer
      * @return
      * @throws ParseException
@@ -90,6 +97,7 @@ public class POSCustomerAddressDataAccess extends POSAbstractDataAccess implemen
 
     /**
      * Lấy danh sách address theo phân trang
+     *
      * @param customer
      * @param page
      * @param pageSize
@@ -151,6 +159,7 @@ public class POSCustomerAddressDataAccess extends POSAbstractDataAccess implemen
 
     /**
      * Lấy danh sách address toàn bộ theo customer
+     *
      * @param customer
      * @return
      * @throws DataAccessException
@@ -212,6 +221,7 @@ public class POSCustomerAddressDataAccess extends POSAbstractDataAccess implemen
 
     /**
      * Trả về customer address theo id
+     *
      * @param customer
      * @param strID
      * @return
@@ -227,6 +237,7 @@ public class POSCustomerAddressDataAccess extends POSAbstractDataAccess implemen
 
     /**
      * Search customer address theo chuỗi
+     *
      * @param customer
      * @param searchString
      * @param page
@@ -244,6 +255,7 @@ public class POSCustomerAddressDataAccess extends POSAbstractDataAccess implemen
 
     /**
      * Cập nhật thông tin khách hàng
+     *
      * @param pcustomer
      * @param oldCustomerAddress
      * @param address
@@ -271,6 +283,9 @@ public class POSCustomerAddressDataAccess extends POSAbstractDataAccess implemen
         List<Complain> backupComplain = pcustomer.getComplain();
         pcustomer.setComplain(null);
 
+        // Gỡ Address default
+
+
         try {
             // Khởi tạo connection và khởi tạo truy vấn
             connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
@@ -285,9 +300,8 @@ public class POSCustomerAddressDataAccess extends POSAbstractDataAccess implemen
 
             // thực thi truy vấn và parse kết quả thành object
             Wrap wrapCustomer = new Wrap();
-            wrapCustomer.customer = pcustomer;
+            wrapCustomer.customer = removeAddressDefault(pcustomer);
             rp = statement.execute(wrapCustomer);
-            String result = rp.readResult2String();
             return true;
         } catch (ConnectionException ex) {
             pcustomer.getAddress().remove(address);
@@ -300,6 +314,8 @@ public class POSCustomerAddressDataAccess extends POSAbstractDataAccess implemen
             pcustomer.getAddress().set(indexAddress, oldCustomerAddress);
             // khôi phục lại complain
             pcustomer.setComplain(backupComplain);
+            // khôi phục address default
+            addAddressDefault(pcustomer);
 
             // đóng result reading
             if (rp != null) rp.close();
@@ -361,10 +377,9 @@ public class POSCustomerAddressDataAccess extends POSAbstractDataAccess implemen
 
             // thực thi truy vấn và parse kết quả thành object
             Wrap wrapCustomer = new Wrap();
-            wrapCustomer.customer = pcustomer;
+            wrapCustomer.customer = removeAddressDefault(pcustomer);
 
             rp = statement.execute(wrapCustomer);
-            String result = rp.readResult2String();
             return true;
         } catch (ConnectionException ex) {
             throw ex;
@@ -375,6 +390,8 @@ public class POSCustomerAddressDataAccess extends POSAbstractDataAccess implemen
             pcustomer.getAddress().remove(address[0]);
             // khôi phục lại complain
             pcustomer.setComplain(backupComplain);
+            // khôi phục address default
+            addAddressDefault(pcustomer);
 
             // đóng result reading
             if (rp != null) rp.close();
@@ -427,7 +444,6 @@ public class POSCustomerAddressDataAccess extends POSAbstractDataAccess implemen
             wrapCustomer.customer = pcustomer;
 
             rp = statement.execute(wrapCustomer);
-            String result = rp.readResult2String();
             return true;
         } catch (ConnectionException ex) {
             pcustomer.getAddress().remove(address);
@@ -440,6 +456,8 @@ public class POSCustomerAddressDataAccess extends POSAbstractDataAccess implemen
             pcustomer.getAddress().add(indexAddress, address[0]);
             // khôi phục complain lại
             pcustomer.setComplain(backupComplain);
+            // khôi phục address default
+            addAddressDefault(pcustomer);
 
             // đóng result reading
             if (rp != null) rp.close();
@@ -456,5 +474,24 @@ public class POSCustomerAddressDataAccess extends POSAbstractDataAccess implemen
             if (connection != null) connection.close();
             connection = null;
         }
+    }
+
+    private Customer removeAddressDefault(Customer customer) {
+        Customer nCustomer = customer;
+        CustomerAddress guest_address = ConfigUtil.getCustomerGuest().getAddress().get(0);
+        String guest_address_id = guest_address.getID();
+        List<CustomerAddress> listAddress = nCustomer.getAddress();
+        for (CustomerAddress customerAddress : listAddress) {
+            if (customerAddress.getID().equals(guest_address_id)) {
+                listAddress.remove(customerAddress);
+                break;
+            }
+        }
+        return nCustomer;
+    }
+
+    private void addAddressDefault(Customer customer) {
+        CustomerAddress guest_address = ConfigUtil.getCustomerGuest().getAddress().get(0);
+        customer.getAddress().add(0, guest_address);
     }
 }

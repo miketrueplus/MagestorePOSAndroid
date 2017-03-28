@@ -1,5 +1,6 @@
 package com.magestore.app.util;
 
+import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.staff.Staff;
 
 import java.text.DateFormat;
@@ -27,6 +28,7 @@ public class ConfigUtil {
     private static DecimalFormat mFloatFormat;
     private static DecimalFormat mIntegerFormat;
     private static Staff mStaff;
+    private static Customer mCustomerGuest;
 
     /**
      * @param format
@@ -463,5 +465,13 @@ public class ConfigUtil {
 
     public static Staff getStaff() {
         return mStaff;
+    }
+
+    public static Customer getCustomerGuest() {
+        return mCustomerGuest;
+    }
+
+    public static void setCustomerGuest(Customer customerGuest) {
+        mCustomerGuest = customerGuest;
     }
 }

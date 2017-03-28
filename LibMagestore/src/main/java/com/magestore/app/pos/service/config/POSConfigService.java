@@ -63,6 +63,7 @@ public class POSConfigService extends AbstractService implements ConfigService {
         ConfigUtil.setFloatFormat(getFloatFormat());
         ConfigUtil.setIntegerFormat(getIntegerFormat());
         ConfigUtil.setStaff(getStaff());
+        ConfigUtil.setCustomerGuest(getGuestCheckout());
         // return config
         return config;
     }
