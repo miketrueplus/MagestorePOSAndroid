@@ -226,11 +226,171 @@ public class POSCartService extends AbstractService implements CartService {
     public boolean insert(Checkout checkout, CartItem... childs) throws IOException, InstantiationException, ParseException, IllegalAccessException {
         if (checkout.getCartItem() == null)
             checkout.setCartItem(new ArrayList<CartItem>());
-        // tìm cart có rồi thì thôi
+
+        // tìm cart có rồi thì thôi, vì cart đã được ăn theo bind từ giao diện
         for (CartItem item : checkout.getCartItem())
             if (item == childs[0]) return true;
+
         checkout.getCartItem().add(childs[0]);
         return true;
+    }
+
+    @Override
+    public CartItem insertWithOption(Checkout checkout, CartItem cartItem) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+        if (checkout.getCartItem() == null)
+            checkout.setCartItem(new ArrayList<CartItem>());
+
+        // tìm cart có rồi thì thôi, vì cart đã được ăn theo bind từ giao diện
+        for (CartItem itemInList : checkout.getCartItem())
+            if (itemInList == cartItem) return itemInList;
+
+        // tìm xem có cart item trùng option không
+        CartItem itemInList = findCartItem(checkout, cartItem);
+
+        // nếu không trùng option
+        if (itemInList == null) {
+            // thêm cart item thẳng vào danh sách
+            checkout.getCartItem().add(cartItem);
+            return cartItem;
+        }
+        // nếu trùng option, chỉ cập nhật tăng thêm số lượng
+        else {
+            itemInList.setQuantity(itemInList.getQuantity() + cartItem.getQuantity());
+            return itemInList;
+        }
+    }
+
+    /**
+     * Tìm xem có cart item nào tương tự k0,
+     * Tương tự là cùng product id và cùng product option
+     *
+     * @param checkout
+     * @param findItem
+     * @return
+     */
+    @Override
+    public CartItem findCartItem(Checkout checkout, CartItem findItem) {
+        // nếu danh sách rỗng
+        if (checkout.getCartItem() == null) return null;
+
+        // tìm cart trong danh sách
+        for (CartItem item : checkout.getCartItem()) {
+            if (compareCartItem(item, findItem)) return item;
+        }
+
+        // không thấy trả về null
+        return null;
+    }
+
+    /**
+     * So sánh xem liệu 2 item có giống nhau hay không
+     * Nếu cùng tham chiếu, cùng product id hoặc cùng product option id
+     *
+     * @param itemOld
+     * @param itemNew
+     * @return
+     */
+    @Override
+    public boolean compareCartItem(CartItem itemOld, CartItem itemNew) {
+        // nếu cùng tham chiếu
+        if (itemOld == itemNew) return true;
+
+        // nếu không có product option
+        if (itemOld.getProduct().getProductOption() == null)
+            if (itemOld.getProduct().getID().equals(itemNew.getProduct().getID())) return true;
+
+        // nếu có product option, 2 item trùng nhau nếu có product id trùng nhau và các cặp code value trong option trùng nhau
+        if (itemOld.getProduct().getProductOption() != null) {
+            if (!itemOld.getProduct().getID().equals(itemNew.getProduct().getID())) return false;
+
+            // so sánh từng cặp code value với custom option
+            // nếu 2 danh sách không cùng độ dài thì return false
+            int lenOld = itemOld.getOptions() == null ? 0 : itemOld.getOptions().size();
+            int lenNew = itemNew.getOptions() == null ? 0 : itemNew.getOptions().size();
+            if (lenOld != lenNew) return false;
+            // còn cùng độ dài thì so sánh từng phần tử
+            if (itemOld.getOptions() != null)
+                for (PosCartItem.OptionsValue optionOldValue : itemOld.getOptions()) {
+                    boolean blnMatchThis = false;
+                    if (itemNew.getOptions() != null)
+                        for (PosCartItem.OptionsValue optionNewValue : itemNew.getOptions()) {
+                            // nếu tìm thấy cặp tương ứng thì thì break ra luôn
+                            if (optionOldValue.code.equals(optionNewValue.code) && optionOldValue.value.equals(optionNewValue.value)) {
+                                blnMatchThis = true;
+                                break;
+                            }
+                        }
+                    if (!blnMatchThis)
+                        return false;
+                }
+
+            // so sánh các cặp bundle options
+            // nếu 2 danh sách không cùng độ dài thì return false
+            lenOld = itemOld.getBundleOption() == null ? 0 : itemOld.getBundleOption().size();
+            lenNew = itemNew.getBundleOption() == null ? 0 : itemNew.getBundleOption().size();
+            // ngược lại thì so sánh từng phần tử
+            if (lenOld != lenNew) return false;
+            if (itemOld.getBundleOption() != null)
+                for (PosCartItem.OptionsValue optionOldValue : itemOld.getBundleOption()) {
+                    boolean blnMatchThis = false;
+                    if (itemNew.getBundleOption() != null)
+                        for (PosCartItem.OptionsValue optionNewValue : itemNew.getBundleOption()) {
+                            // nếu tìm thấy cặp tương ứng thì thì break ra luôn
+                            if (optionOldValue.code.equals(optionNewValue.code) && optionOldValue.value.equals(optionNewValue.value)) {
+                                blnMatchThis = true;
+                                break;
+                            }
+                        }
+                    if (!blnMatchThis)
+                        return false;
+                }
+
+            // so sánh các cặp bundle options về khối lượng
+            // nếu 2 danh sách không cùng độ dài thì return false
+            lenOld = itemOld.getBundleOptionQuantity() == null ? 0 : itemOld.getBundleOptionQuantity().size();
+            lenNew = itemNew.getBundleOptionQuantity() == null ? 0 : itemNew.getBundleOptionQuantity().size();
+            if (lenOld != lenNew) return false;
+            // ngược lại thì so sánh từng phần tử
+            if (itemOld.getBundleOptionQuantity() != null)
+                for (PosCartItem.OptionsValue optionOldValue : itemOld.getBundleOptionQuantity()) {
+                    boolean blnMatchThis = false;
+                    if (itemNew.getBundleOptionQuantity() != null)
+                        for (PosCartItem.OptionsValue optionNewValue : itemNew.getBundleOptionQuantity()) {
+                            // nếu tìm thấy cặp tương ứng thì thì break ra luôn
+                            if (optionOldValue.code.equals(optionNewValue.code) && optionOldValue.value.equals(optionNewValue.value)) {
+                                blnMatchThis = true;
+                                break;
+                            }
+                        }
+                    if (!blnMatchThis)
+                        return false;
+                }
+
+            // so sánh các cặp bundle options config
+            // nếu 2 danh sách không cùng độ dài thì return false
+            lenOld = itemOld.getSuperAttribute() == null ? 0 : itemOld.getSuperAttribute().size();
+            lenNew = itemNew.getSuperAttribute() == null ? 0 : itemNew.getSuperAttribute().size();
+            if (lenOld != lenNew) return false;
+            // ngược lại thì so sánh từng phần tử
+            if (itemOld.getSuperAttribute() != null)
+                for (PosCartItem.OptionsValue optionOldValue : itemOld.getSuperAttribute()) {
+                boolean blnMatchThis = false;
+                if (itemNew.getSuperAttribute() != null)
+                    for (PosCartItem.OptionsValue optionNewValue : itemNew.getSuperAttribute()) {
+                    // nếu tìm thấy cặp tương ứng thì thì break ra luôn
+                    if (optionOldValue.code.equals(optionNewValue.code) && optionOldValue.value.equals(optionNewValue.value)) {
+                        blnMatchThis = true;
+                        break;
+                    }
+                }
+                if (!blnMatchThis)
+                    return false;
+            }
+            return true;
+        }
+
+        // false không tìm thấy
+        return false;
     }
 
     @Override
@@ -273,7 +433,7 @@ public class POSCartService extends AbstractService implements CartService {
 
         // kiểm tra trước xem trong checkout đã có sẵn product chưa
         if (checkout.getCartItem() != null)
-            for (CartItem item: checkout.getCartItem()) {
+            for (CartItem item : checkout.getCartItem()) {
                 if (item.getProduct().getID().equals(productID)) product = item.getProduct();
             }
 

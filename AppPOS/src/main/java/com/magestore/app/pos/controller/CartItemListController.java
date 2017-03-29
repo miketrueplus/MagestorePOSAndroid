@@ -285,7 +285,6 @@ public class CartItemListController extends AbstractChildListController<Checkout
             // chèn vào data set
             CartItem item = mCartService.insert(getParent(), productID, productName, quantity, price);
             item.getProduct().setQuantityIncrement(qtyIncrement);
-
             // chèn model lên đầu
             getView().updateModelToFirstInsertIfNotFound(item);
 
@@ -310,7 +309,9 @@ public class CartItemListController extends AbstractChildListController<Checkout
      */
     public void updateToCart(CartItem cartItem) {
         try {
-            mCartService.insert(getParent(), cartItem);
+            CartItem itemInList = mCartService.insertWithOption(getParent(), cartItem);
+            // chèn model lên đầu
+            getView().updateModelToFirstInsertIfNotFound(itemInList);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InstantiationException e) {
@@ -321,8 +322,7 @@ public class CartItemListController extends AbstractChildListController<Checkout
             e.printStackTrace();
         }
 
-        // chèn model lên đầu
-        getView().updateModelToFirstInsertIfNotFound(cartItem);
+
 
         // ẩn các dialog đang hiển thị
         closeAllOpeningDialog();

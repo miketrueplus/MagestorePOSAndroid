@@ -37,6 +37,12 @@ public interface CartService extends ChildListService<Checkout, CartItem> {
     CartItem findItem(Checkout checkout, Product product) throws IOException, InstantiationException, ParseException, IllegalAccessException;
 
 
+    CartItem insertWithOption(Checkout checkout, CartItem cartItem) throws IOException, InstantiationException, ParseException, IllegalAccessException;
+
+    CartItem findCartItem(Checkout checkout, CartItem findItem);
+
+    boolean compareCartItem(CartItem itemOld, CartItem itemNew);
+
     void increase(CartItem cartItem);
 
     void increase(CartItem cartItem, int quantity);
