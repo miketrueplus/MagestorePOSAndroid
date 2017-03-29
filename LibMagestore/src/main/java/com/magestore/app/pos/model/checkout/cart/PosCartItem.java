@@ -27,6 +27,27 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     String discout_type;
     float custom_price;
     String custom_price_type;
+    String is_shipable = StringUtil.STRING_ZERO;
+
+    @Override
+    public boolean isShipable() {
+        return StringUtil.STRING_ONE.equals(is_shipable);
+    }
+
+    @Override
+    public void setShipable(boolean shipable) {
+        is_shipable = shipable ? StringUtil.STRING_ONE : StringUtil.STRING_ZERO;
+    }
+
+    @Override
+    public void setShipable() {
+        is_shipable = StringUtil.STRING_ONE;
+    }
+
+    @Override
+    public void setShipunable() {
+        is_shipable = StringUtil.STRING_ZERO;
+    }
 
     @Override
     public float getCustomPrice() {

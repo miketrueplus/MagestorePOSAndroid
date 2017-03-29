@@ -21,6 +21,14 @@ public interface CartItem extends Model {
 //
 //    PosCartItem.ChooseProductOption createChooseProductOption();
 
+    boolean isShipable();
+
+    void setShipable(boolean shipable);
+
+    void setShipable();
+
+    void setShipunable();
+
     float getCustomPrice();
 
     void setCustomPrice(float custom_price);

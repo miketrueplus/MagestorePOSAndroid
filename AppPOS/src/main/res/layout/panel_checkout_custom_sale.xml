@@ -63,6 +63,7 @@
         </LinearLayout>
 
         <Switch
+            android:id="@+id/id_switch_custom_shipable"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/layout_margin_5"
@@ -72,6 +73,7 @@
             android:layout_marginTop="@dimen/layout_margin_10"
             android:text="@string/checkout_custom_sale_ship"
             android:textColor="@color/text_color"
+            android:checked="@{cartItem.isShipable()}"
             android:textSize="@dimen/card_custom_sale_ship_text_size" />
 
         <Button

@@ -120,6 +120,7 @@ public class POSCartService extends AbstractService implements CartService {
         cartItem.setItemId(String.valueOf(getItemIdInCurrentTime()));
         cartItem.setID("customsale");
         cartItem.getProduct().setCustomSale();
+        cartItem.setShipunable();
         return cartItem;
     }
 
@@ -252,7 +253,7 @@ public class POSCartService extends AbstractService implements CartService {
         // insert thêm thông tin như option
         cartItem.getProduct().setCustomSale();
         cartItem.insertOption("name", cartItem.getProduct().getName());
-        cartItem.insertOption("is_virtual", StringUtil.STRING_ONE);
+        cartItem.insertOption("is_virtual", cartItem.isShipable() ? StringUtil.STRING_ZERO : StringUtil.STRING_ONE);
         cartItem.insertOption("price", Float.toString(cartItem.getUnitPrice()));
         cartItem.insertOption("tax_class_id", StringUtil.STRING_ZERO);
 

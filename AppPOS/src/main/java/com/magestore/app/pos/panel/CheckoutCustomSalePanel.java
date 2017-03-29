@@ -98,7 +98,7 @@ public class CheckoutCustomSalePanel extends AbstractDetailPanel<CartItem> {
         item.setUnitPrice(mtxtPrice.getValueFloat());
         item.setCustomPrice(mtxtPrice.getValueFloat());
         item.setOriginalPrice(mtxtPrice.getValueFloat());
-
+        item.setShipable(mBinding.idSwitchCustomShipable.isChecked());
         String strName = mtxtName.getText().toString().trim();
         strName = (StringUtil.isNullOrEmpty(strName)) ? getResources().getString(R.string.custom_sale) : strName;
         item.getProduct().setName(strName);
