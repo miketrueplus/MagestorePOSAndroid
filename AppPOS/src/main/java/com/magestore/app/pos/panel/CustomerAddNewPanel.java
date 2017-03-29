@@ -173,11 +173,11 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
         s_spinner_country.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                List<ConfigRegion> listRegion = countryDataSet.get(s_spinner_country.getSelection()).getRegions();
+                Map<String, ConfigRegion> listRegion = countryDataSet.get(s_spinner_country.getSelection()).getRegions();
                 if (listRegion != null && listRegion.size() > 0) {
                     s_state.setVisibility(GONE);
                     s_spinner_state.setVisibility(VISIBLE);
-                    s_spinner_state.bind(listRegion.toArray(new ConfigRegion[0]));
+                    s_spinner_state.bindModelMap((Map<String, Model>) (Map<?, ?>) listRegion);
                 } else {
                     s_state.setVisibility(VISIBLE);
                     s_spinner_state.setVisibility(GONE);
@@ -193,11 +193,11 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
         b_spinner_country.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                List<ConfigRegion> listRegion = countryDataSet.get(b_spinner_country.getSelection()).getRegions();
+                Map<String, ConfigRegion> listRegion = countryDataSet.get(b_spinner_country.getSelection()).getRegions();
                 if (listRegion != null && listRegion.size() > 0) {
                     b_state.setVisibility(GONE);
                     b_spinner_state.setVisibility(VISIBLE);
-                    b_spinner_state.bind(listRegion.toArray(new ConfigRegion[0]));
+                    b_spinner_state.bindModelMap((Map<String, Model>) (Map<?, ?>) listRegion);
                 } else {
                     b_state.setVisibility(VISIBLE);
                     b_spinner_state.setVisibility(GONE);
@@ -213,8 +213,8 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
         s_spinner_state.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                List<ConfigRegion> listRegion = countryDataSet.get(s_spinner_country.getSelection()).getRegions();
-                shippingRegion = listRegion.get(i);
+                Map<String, ConfigRegion> listRegion = countryDataSet.get(s_spinner_country.getSelection()).getRegions();
+                shippingRegion = listRegion.get(s_spinner_state.getSelection());
             }
 
             @Override
@@ -226,8 +226,8 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
         b_spinner_state.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                List<ConfigRegion> listRegion = countryDataSet.get(b_spinner_country.getSelection()).getRegions();
-                billingRegion = listRegion.get(i);
+                Map<String, ConfigRegion> listRegion = countryDataSet.get(b_spinner_country.getSelection()).getRegions();
+                billingRegion = listRegion.get(b_spinner_state.getSelection());
             }
 
             @Override

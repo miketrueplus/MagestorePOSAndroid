@@ -391,7 +391,7 @@ public class POSCustomerAddressDataAccess extends POSAbstractDataAccess implemen
             // khôi phục lại complain
             pcustomer.setComplain(backupComplain);
             // khôi phục address default
-            addAddressDefault(pcustomer);
+//            addAddressDefault(pcustomer);
 
             // đóng result reading
             if (rp != null) rp.close();

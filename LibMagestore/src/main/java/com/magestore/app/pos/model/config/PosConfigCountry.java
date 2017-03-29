@@ -5,6 +5,7 @@ import com.magestore.app.lib.model.config.ConfigRegion;
 import com.magestore.app.pos.model.PosAbstractModel;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Mike on 1/14/2017.
@@ -15,7 +16,7 @@ import java.util.List;
 public class PosConfigCountry extends PosAbstractModel implements ConfigCountry {
     String country_id;
     String country_name;
-    List<PosConfigRegion> regions;
+    Map<String, ConfigRegion> regions;
 
     @Override
     public String getID() {
@@ -43,12 +44,12 @@ public class PosConfigCountry extends PosAbstractModel implements ConfigCountry 
     }
 
     @Override
-    public List<ConfigRegion> getRegions() {
-        return (List<ConfigRegion>)(List<?>) (regions);
+    public Map<String, ConfigRegion> getRegions() {
+        return regions;
     }
 
     @Override
-    public void setRegions(List<PosConfigRegion> regions) {
+    public void setRegions(Map<String, ConfigRegion> regions) {
         this.regions = regions;
     }
 

@@ -294,6 +294,7 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
             configCountry.setCountryName(country_name);
             List<LinkedTreeMap> regionList = (ArrayList) country.get("regions");
             if (regionList != null) {
+                Map<String, ConfigRegion> listConfigRegion = new LinkedTreeMap<>();
                 Collections.sort(regionList, new Comparator<LinkedTreeMap>() {
                     @Override
                     public int compare(LinkedTreeMap linkedTreeMap, LinkedTreeMap linkedTreeMap1) {
@@ -302,7 +303,6 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
                         return name.compareToIgnoreCase(name1);
                     }
                 });
-                List<PosConfigRegion> listConfigRegion = new ArrayList<PosConfigRegion>();
                 for (LinkedTreeMap region : regionList) {
                     ConfigRegion configRegion = new PosConfigRegion();
                     String code = region.get("code").toString();
@@ -311,13 +311,12 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
                     configRegion.setID(id);
                     configRegion.setCode(code);
                     configRegion.setName(name);
-                    listConfigRegion.add((PosConfigRegion) configRegion);
+                    listConfigRegion.put(id , configRegion);
                 }
                 configCountry.setRegions(listConfigRegion);
             }
             listConfigCountry.put(country_id, configCountry);
         }
-        // TODO: chưa sort region
         return listConfigCountry;
     }
 

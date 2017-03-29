@@ -4,6 +4,7 @@ import com.magestore.app.lib.model.Model;
 import com.magestore.app.pos.model.config.PosConfigRegion;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Mike on 1/14/2017.
@@ -16,6 +17,6 @@ public interface ConfigCountry extends Model {
     void setCountryID(String strCountryID);
     String getName();
     void setCountryName(String strCountryName);
-    List<ConfigRegion> getRegions();
-    void setRegions(List<PosConfigRegion> regions);
+    Map<String, ConfigRegion> getRegions();
+    void setRegions(Map<String, ConfigRegion> regions);
 }
