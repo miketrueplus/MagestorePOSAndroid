@@ -51,7 +51,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
     CustomerAddNewPanel mCustomerAddNewPanel;
     FloatingActionButton bt_sales_discount, bt_custom_sales;
     FloatingActionMenu bt_sales_menu;
-    Button btn_create_customer, btn_use_guest, btn_sales_order_checkout;
+    Button btn_create_customer, btn_use_guest, btn_sales_order_checkout, btn_apply_discount;
     FrameLayout fr_sales_new_customer;
     LinearLayout ll_add_new_customer, ll_new_shipping_address, ll_new_billing_address, ll_shipping_address, ll_sales_shipping, ll_add_new_address;
     LinearLayout ll_billing_address, ll_short_shipping_address, ll_short_billing_address, ll_sales_add_customer, ll_action_checkout;
@@ -166,16 +166,17 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
 
                 final MagestoreDialog dialog = DialogUtil.dialog(getContext(), "", mCheckoutDiscountPanel);
                 dialog.setDialogTitle(getContext().getString(R.string.checkout_discount_all, String.valueOf(maxumum_discount)));
-                dialog.setDialogSave(getContext().getString(R.string.apply));
+                dialog.setGoneButtonSave(true);
                 dialog.show();
 
+                btn_apply_discount = (Button) dialog.findViewById(R.id.btn_apply_discount);
                 txt_sales_discount = (TextView) dialog.findViewById(R.id.txt_sales_discount);
                 txt_sales_promotion = (TextView) dialog.findViewById(R.id.txt_sales_promotion);
 
                 txt_sales_discount.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        dialog.setDialogTitle(getContext().getString(R.string.checkout_discount_all, String.valueOf(maxumum_discount)));
+                        dialog.getDialogTitle().setText(getContext().getString(R.string.checkout_discount_all, String.valueOf(maxumum_discount)));
                         mCheckoutDiscountPanel.onClickDiscount();
                     }
                 });
@@ -183,12 +184,12 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
                 txt_sales_promotion.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        dialog.setDialogTitle("");
+                        dialog.getDialogTitle().setText("");
                         mCheckoutDiscountPanel.onClickPromotion();
                     }
                 });
 
-                dialog.getButtonSave().setOnClickListener(new OnClickListener() {
+                btn_apply_discount.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         if (mCheckoutDiscountPanel.checkViewDiscount()) {

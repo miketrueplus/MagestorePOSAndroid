@@ -75,6 +75,7 @@
     <dimen name="cart_option_edittext_size">40dp</dimen>
     <dimen name="cart_quantity_size">25dp</dimen>
     <dimen name="card_discount_border_radius">3dp</dimen>
+    <dimen name="card_custom_sale_ship_text_size">18sp</dimen>
 
     <!--Checkout-->
     <dimen name="checkout_remain_text_price_size">18sp</dimen>

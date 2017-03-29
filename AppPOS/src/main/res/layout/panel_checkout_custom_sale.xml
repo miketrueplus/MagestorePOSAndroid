@@ -34,15 +34,15 @@
             android:layout_margin="@dimen/layout_margin_5"
             android:background="@drawable/cart_discount_border_edittext"
             android:orientation="vertical"
-            android:padding="@dimen/layout_margin_5">
+            android:padding="@dimen/layout_margin_10">
 
             <EditText
                 android:id="@+id/id_txt_custom_sale_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:text="@{product.getName()}"
-                android:hint="@string/checkout_custom_sale_name" />
+                android:hint="@string/checkout_custom_sale_name"
+                android:text="@{product.getName()}" />
         </LinearLayout>
 
         <LinearLayout
@@ -51,7 +51,7 @@
             android:layout_margin="@dimen/layout_margin_5"
             android:background="@drawable/cart_discount_border_edittext"
             android:orientation="vertical"
-            android:padding="@dimen/layout_margin_5">
+            android:padding="@dimen/layout_margin_10">
 
             <com.magestore.app.view.EditTextFloat
                 android:id="@+id/id_txt_custom_sale_price"
@@ -59,28 +59,34 @@
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:hint="@string/price"
-                android:text="@{ConfigUtil.formatNumber(cartItem.getUnitPrice())}"
-                android:textAlignment="textEnd" />
+                android:text="@{ConfigUtil.formatNumber(cartItem.getUnitPrice())}" />
         </LinearLayout>
 
         <Switch
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/layout_margin_5"
+            android:layout_marginBottom="@dimen/layout_margin_50"
+            android:layout_marginLeft="@dimen/layout_margin_5"
+            android:layout_marginRight="@dimen/layout_margin_5"
+            android:layout_marginTop="@dimen/layout_margin_10"
             android:text="@string/checkout_custom_sale_ship"
             android:textColor="@color/text_color"
-            android:textSize="@dimen/text_size" />
+            android:textSize="@dimen/card_custom_sale_ship_text_size" />
 
         <Button
             android:id="@+id/custom_sale_add_to_cart"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/layout_margin_5"
-            android:background="@drawable/checkout_success_border_button_new_order"
+            android:layout_marginBottom="@dimen/layout_margin_10"
+            android:layout_marginLeft="@dimen/layout_margin_5"
+            android:layout_marginRight="@dimen/layout_margin_5"
+            android:layout_marginTop="@dimen/layout_margin_20"
+            android:background="@drawable/cart_discount_border_button"
+            android:onClick="@{panel.onSaveClick}"
             android:text="@string/add_to_cart"
             android:textAllCaps="true"
             android:textColor="@color/checkout_success_btn_text_new_color"
-            android:onClick="@{panel.onSaveClick}"
             android:textSize="@dimen/checkout_success_button_text_size" />
     </LinearLayout>
 </layout>

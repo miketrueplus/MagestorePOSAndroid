@@ -35,6 +35,7 @@
         android:id="@+id/ll_sales_discount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/layout_margin_20"
         android:orientation="vertical">
 
         <LinearLayout
@@ -123,6 +124,7 @@
         android:id="@+id/ll_sales_promotion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/layout_margin_10"
         android:orientation="vertical"
         android:visibility="gone">
 
@@ -195,4 +197,17 @@
             android:layout_margin="@dimen/layout_margin_10"
             android:text="@string/check" />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_apply_discount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/layout_margin_10"
+        android:layout_marginLeft="@dimen/layout_margin_10"
+        android:layout_marginRight="@dimen/layout_margin_10"
+        android:background="@drawable/cart_discount_border_button"
+        android:text="@string/apply"
+        android:textAllCaps="true"
+        android:textColor="@color/checkout_success_btn_text_new_color"
+        android:textSize="@dimen/checkout_success_button_text_size" />
 </LinearLayout>
