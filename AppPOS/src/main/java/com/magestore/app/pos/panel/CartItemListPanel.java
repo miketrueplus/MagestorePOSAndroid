@@ -10,6 +10,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.daimajia.swipe.SwipeLayout;
 import com.magestore.app.lib.model.catalog.Product;
@@ -25,6 +26,8 @@ import com.magestore.app.pos.databinding.CardProductListContentBinding;
 import com.magestore.app.pos.databinding.PanelCartListBinding;
 import com.magestore.app.pos.task.LoadProductImageTask;
 import com.magestore.app.util.ConfigUtil;
+
+import java.util.List;
 
 /**
  * Quản lý hiển thị danh sách các hàng chọn trong cart
@@ -79,6 +82,19 @@ public class CartItemListPanel extends AbstractListPanel<CartItem> {
     }
 
     /**
+     * Enable hoặc disable swipe
+     * @param enable
+     */
+    public void enableSwipeItem(boolean enable) {
+        List<ModelView> viewList = getModelViewList();
+        if (viewList == null) return;
+        for (ModelView view : viewList) {
+            if (view.getViewHolder() == null || !(view.getViewHolder() instanceof CartItemListPanel.RecycleViewCartItemHolder)) return;
+            ((RecycleViewCartItemHolder) view.getViewHolder()).swipeLayout.setSwipeEnabled(enable);
+        }
+    }
+
+    /**
      * Hold layout và nội dung các item trong view
      */
     public class RecycleViewCartItemHolder extends RecycleViewItemHolder {
@@ -86,6 +102,7 @@ public class CartItemListPanel extends AbstractListPanel<CartItem> {
         ImageView imageView;
         SwipeLayout swipeLayout;
         RelativeLayout mDelButton;
+        boolean mblnOnSwipe = false;
 
         public RecycleViewCartItemHolder(View view) {
             super(view);
@@ -122,11 +139,25 @@ public class CartItemListPanel extends AbstractListPanel<CartItem> {
                 }
             });
 
+            // double click trên item
+            swipeLayout.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!((CartItemListController)getController()).isAllowChangeCartItem()) return;
+                    if (getModelView() == null || getModelView().getModel() == null) return;
+                    if (mblnOnSwipe) return;
+
+                    getController().bindItem((CartItem) getModelView().getModel());
+                    getController().doShowDetailPanel(true);
+
+                }
+            });
+
             // Sự kiện khi swipe left/right
             swipeLayout.addSwipeListener(new SwipeLayout.SwipeListener() {
                 @Override
                 public void onStartOpen(SwipeLayout layout) {
-
+                    mblnOnSwipe = true;
                 }
 
                 @Override
@@ -145,7 +176,7 @@ public class CartItemListPanel extends AbstractListPanel<CartItem> {
                  */
                 @Override
                 public void onClose(SwipeLayout swipeLayout) {
-//                    CartItemListPanel.this.notifyDataSetChanged();
+                    mblnOnSwipe = false;
                 }
 
                 @Override
@@ -155,19 +186,6 @@ public class CartItemListPanel extends AbstractListPanel<CartItem> {
 
                 @Override
                 public void onHandRelease(SwipeLayout layout, float xvel, float yvel) {
-
-                }
-            });
-
-            // double click trên item
-            swipeLayout.setOnDoubleClickListener(new SwipeLayout.DoubleClickListener() {
-                @Override
-                public void onDoubleClick(SwipeLayout layout, boolean surface) {
-                    if (getModelView() == null || getModelView().getModel() == null) return;
-                    if (!((CartItemListController)getController()).isAllowChangeCartItem()) return;
-
-                    getController().bindItem((CartItem) getModelView().getModel());
-                    getController().doShowDetailPanel(true);
                 }
             });
         }

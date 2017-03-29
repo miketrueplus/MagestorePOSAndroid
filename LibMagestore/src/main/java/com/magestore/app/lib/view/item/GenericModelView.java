@@ -9,6 +9,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.magestore.app.lib.model.Model;
+import com.magestore.app.lib.view.adapter.MagestoreHolder;
 
 /**
  * View data nắm giữ và quản lý view cho các ô trong 1 list
@@ -17,6 +18,7 @@ import com.magestore.app.lib.model.Model;
  * mike@trueplus.vn
  */
 public class GenericModelView implements ModelView {
+    private MagestoreHolder mViewHolder;
     protected ProgressBar mProgressBar = null;
     protected TextView mTxtMsg = null;
     protected Model mModel;
@@ -24,6 +26,16 @@ public class GenericModelView implements ModelView {
     protected View mLayoutMainView;
     protected View mLayoutContentView;
     protected int mintMainLayout = -1;
+
+    @Override
+    public MagestoreHolder getViewHolder() {
+        return mViewHolder;
+    }
+
+    @Override
+    public void setViewHolder(MagestoreHolder holder) {
+        mViewHolder = holder;
+    }
 
     /**
      * Trả tham chiếu đến layout main view

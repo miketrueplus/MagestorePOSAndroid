@@ -28,6 +28,7 @@ import com.magestore.app.lib.controller.ListController;
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.view.adapter.DefaultModelView;
+import com.magestore.app.lib.view.adapter.MagestoreHolder;
 import com.magestore.app.lib.view.item.ModelView;
 import com.magestore.app.lib.view.listener.EndlessRecyclerOnScrollListener;
 import com.magestore.app.lib.view.MagestoreView;
@@ -781,6 +782,14 @@ public abstract class AbstractListPanel<TModel extends Model>
     }
 
     /**
+     * Trả lại model view list
+     * @return
+     */
+    public List<ModelView> getModelViewList() {
+        return mModelViewList;
+    }
+
+    /**
      * Adapter map từ danh sách sang recycleview
      */
     public class ListRecyclerViewAdapter
@@ -813,10 +822,12 @@ public abstract class AbstractListPanel<TModel extends Model>
         @Override
         public void onBindViewHolder(final AbstractListPanel<TModel>.RecycleViewItemHolder holder, final int position) {
             // lấy item trên row
-            final ModelView modelView = mModelViewList.get(position);
+            ModelView modelView = mModelViewList.get(position);
 
             // hiển thị item
             holder.mModelView = modelView;
+            holder.mModelView.setViewHolder(holder);
+
             // xử lý hiển thị progress bar nếu có
             holder.displayProgressBar(modelView);
 
@@ -844,7 +855,7 @@ public abstract class AbstractListPanel<TModel extends Model>
     /**
      * Nắm giữ từng view con trong list
      */
-    public class RecycleViewItemHolder extends RecyclerView.ViewHolder {
+    public class RecycleViewItemHolder extends RecyclerView.ViewHolder implements MagestoreHolder {
         ModelView mModelView;
         // view chính cho toàn bộ holder
         View mLayoutMainView;

@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.view.View;
 
 import com.magestore.app.lib.model.Model;
+import com.magestore.app.lib.view.adapter.MagestoreHolder;
 import com.magestore.app.lib.view.item.ViewState;
 
 /**
@@ -13,6 +14,9 @@ import com.magestore.app.lib.view.item.ViewState;
  */
 
 public interface ModelView {
+    MagestoreHolder getViewHolder();
+    void setViewHolder(MagestoreHolder holder);
+
     View getLayoutMainView();
 
     void setViewState(ViewState state);

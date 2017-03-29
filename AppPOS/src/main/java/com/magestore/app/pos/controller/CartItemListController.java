@@ -19,6 +19,7 @@ import com.magestore.app.lib.service.ChildListService;
 import com.magestore.app.lib.service.catalog.ProductOptionService;
 import com.magestore.app.lib.service.checkout.CartService;
 import com.magestore.app.pos.R;
+import com.magestore.app.pos.panel.CartItemListPanel;
 import com.magestore.app.pos.panel.CheckoutCustomSalePanel;
 import com.magestore.app.pos.panel.CustomerDetailPanel;
 import com.magestore.app.pos.panel.ProductOptionPanel;
@@ -566,6 +567,7 @@ public class CartItemListController extends AbstractChildListController<Checkout
     private boolean blnAlowRemoveCartItem = true;
     public void blnAlowRemoveCartItem(State state) {
         blnAlowRemoveCartItem = (CheckoutListController.STATE_ENABLE_CHANGE_CART_ITEM.equals(state.getStateCode()));
+        ((CartItemListPanel) getView()).enableSwipeItem(blnAlowRemoveCartItem);
     }
 
     /*
