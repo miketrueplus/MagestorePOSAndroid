@@ -118,6 +118,8 @@ public class POSCartService extends AbstractService implements CartService {
         cartItem.setCustomPrice(0);
         cartItem.setCustomPriceTypeFixed();
         cartItem.setItemId(String.valueOf(getItemIdInCurrentTime()));
+        cartItem.setID("customsale");
+        cartItem.getProduct().setCustomSale();
         return cartItem;
     }
 
@@ -235,6 +237,28 @@ public class POSCartService extends AbstractService implements CartService {
         return true;
     }
 
+    /**
+     *
+     * @param checkout
+     * @param cartItem
+     * @return
+     * @throws IOException
+     * @throws InstantiationException
+     * @throws ParseException
+     * @throws IllegalAccessException
+     */
+    @Override
+    public CartItem insertWithCustomSale(Checkout checkout, CartItem cartItem) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+        // insert thêm thông tin như option
+        cartItem.getProduct().setCustomSale();
+        cartItem.insertOption("name", cartItem.getProduct().getName());
+        cartItem.insertOption("is_virtual", StringUtil.STRING_ONE);
+        cartItem.insertOption("price", Float.toString(cartItem.getUnitPrice()));
+        cartItem.insertOption("tax_class_id", StringUtil.STRING_ZERO);
+
+        return insertWithOption(checkout, cartItem);
+    }
+
     @Override
     public CartItem insertWithOption(Checkout checkout, CartItem cartItem) throws IOException, InstantiationException, ParseException, IllegalAccessException {
         if (checkout.getCartItem() == null)
@@ -296,12 +320,12 @@ public class POSCartService extends AbstractService implements CartService {
         if (itemOld == itemNew) return true;
 
         // nếu không có product option
-        if (itemOld.getProduct().getProductOption() == null)
+        if (itemOld.getProduct().getProductOption() == null && itemOld.getProduct().getID() != null)
             if (itemOld.getProduct().getID().equals(itemNew.getProduct().getID())) return true;
 
         // nếu có product option, 2 item trùng nhau nếu có product id trùng nhau và các cặp code value trong option trùng nhau
-        if (itemOld.getProduct().getProductOption() != null) {
-            if (!itemOld.getProduct().getID().equals(itemNew.getProduct().getID())) return false;
+        if (itemOld.getProduct().getProductOption() != null || (itemOld.getProduct().isCustomSale() && itemNew.getProduct().isCustomSale())) {
+            if (itemOld.getProduct().getID() != null && !itemOld.getProduct().getID().equals(itemNew.getProduct().getID())) return false;
 
             // so sánh từng cặp code value với custom option
             // nếu 2 danh sách không cùng độ dài thì return false

@@ -18,6 +18,10 @@ public interface Product extends Model, ParseModel {
     String getID();
     String getName();
 
+    boolean isCustomSale();
+
+    void setCustomSale();
+
     boolean haveProductOption();
 
     ProductOption getProductOption();

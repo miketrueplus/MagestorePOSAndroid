@@ -21,6 +21,7 @@ import java.util.List;
  */
 
 public class PosProduct extends PosAbstractModel implements Product {
+    private String is_custom_sale = StringUtil.STRING_ZERO;
     private String type_id;
     private String sku;
     private float price;
@@ -49,6 +50,16 @@ public class PosProduct extends PosAbstractModel implements Product {
     boolean isSaveCart;
     @Gson2PosExclude
     String item_id;
+
+    @Override
+    public boolean isCustomSale() {
+        return StringUtil.STRING_ONE.equals(is_custom_sale);
+    }
+
+    @Override
+    public void setCustomSale() {
+        is_custom_sale = StringUtil.STRING_ONE;
+    }
 
     @Override
     public boolean haveProductOption() {

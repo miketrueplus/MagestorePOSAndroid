@@ -308,6 +308,33 @@ public class CartItemListController extends AbstractChildListController<Checkout
      *
      * @param cartItem
      */
+    public void updateCustomeSaleToCart(CartItem cartItem) {
+        try {
+            CartItem itemInList = mCartService.insertWithCustomSale(getParent(), cartItem);
+            // chèn model lên đầu
+            getView().updateModelToFirstInsertIfNotFound(itemInList);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+        // ẩn các dialog đang hiển thị
+        closeAllOpeningDialog();
+
+        // cập nhật giá tổng
+        updateTotalPrice();
+    }
+
+    /**
+     * Cập nhật cart item hiện tại. Tắt các dialog
+     *
+     * @param cartItem
+     */
     public void updateToCart(CartItem cartItem) {
         try {
             CartItem itemInList = mCartService.insertWithOption(getParent(), cartItem);

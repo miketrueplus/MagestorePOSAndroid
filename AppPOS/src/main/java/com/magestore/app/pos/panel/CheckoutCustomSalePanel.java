@@ -82,6 +82,7 @@ public class CheckoutCustomSalePanel extends AbstractDetailPanel<CartItem> {
         super.bindItem(item);
         mBinding.setCartItem(item);
         mBinding.setProduct(item.getProduct());
+        if (StringUtil.isNullOrEmpty( mBinding.idTxtCustomSaleName.getText().toString().trim())) mBinding.idTxtCustomSaleName.setText(R.string.custom_sale);
     }
 
     /**
@@ -97,7 +98,11 @@ public class CheckoutCustomSalePanel extends AbstractDetailPanel<CartItem> {
         item.setUnitPrice(mtxtPrice.getValueFloat());
         item.setCustomPrice(mtxtPrice.getValueFloat());
         item.setOriginalPrice(mtxtPrice.getValueFloat());
-        item.getProduct().setName(mtxtName.getText().toString().trim());
+
+        String strName = mtxtName.getText().toString().trim();
+        strName = (StringUtil.isNullOrEmpty(strName)) ? getResources().getString(R.string.custom_sale) : strName;
+        item.getProduct().setName(strName);
+
         super.bind2Item(item);
     }
 
@@ -107,9 +112,9 @@ public class CheckoutCustomSalePanel extends AbstractDetailPanel<CartItem> {
      * @return
      */
     public boolean validateInput() {
-        if (mtxtName.getText().toString().trim().equals(StringUtil.STRING_EMPTY)) {
-            return false;
-        }
+//        if (mtxtName.getText().toString().trim().equals(StringUtil.STRING_EMPTY)) {
+//            return false;
+//        }
         return true;
     }
 
@@ -120,8 +125,8 @@ public class CheckoutCustomSalePanel extends AbstractDetailPanel<CartItem> {
      */
     public void onSaveClick(View v) {
         if (!validateInput()) {
-            bind2Item().getProduct().setName(getContext().getString(R.string.sales_custom_sales_product));
+            return;
         }
-        ((CartItemListController) getController()).updateToCart(bind2Item());
+        ((CartItemListController) getController()).updateCustomeSaleToCart(bind2Item());
     }
 }
