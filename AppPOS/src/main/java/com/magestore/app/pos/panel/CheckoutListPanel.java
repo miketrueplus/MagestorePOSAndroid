@@ -194,11 +194,11 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
                         if (mCheckoutDiscountPanel.checkViewDiscount()) {
                             SaveQuoteParam saveQuoteParam = mCheckoutDiscountPanel.bindSaveQuoteItem();
                             if (saveQuoteParam.getDiscountValue() > 0) {
-                                ((CheckoutListController) mController).doInputSaveQuote(saveQuoteParam);
+                                ((CheckoutListController) mController).doInputSaveCartDiscount(0, saveQuoteParam, null);
                             }
                         } else {
                             QuoteAddCouponParam quoteAddCouponParam = mCheckoutDiscountPanel.binQuoteAddCouponItem();
-                            ((CheckoutListController) mController).doInputAddCouponToQuote(quoteAddCouponParam);
+                            ((CheckoutListController) mController).doInputSaveCartDiscount(1, null, quoteAddCouponParam);
                         }
                         bt_sales_menu.toggle(false);
                         dialog.dismiss();

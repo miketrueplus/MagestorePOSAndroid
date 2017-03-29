@@ -170,7 +170,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         }
     }
 
-    public void doInputSaveCartDiscount(int type) {
+    public void doInputSaveCartDiscount(int type, SaveQuoteParam quoteParam, QuoteAddCouponParam quoteAddCouponParam) {
         Checkout checkout = getSelectedItem();
         if (checkout.getCartItem().size() > 0) {
             showSaleMenu(true);
@@ -178,7 +178,11 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             // show detail panel
             String store_id = DataUtil.getDataStringToPreferences(context, DataUtil.STORE_ID);
             checkout.setStoreId(store_id);
-            wraper.put("quote_id", checkout.getQuoteId());
+            if (type == 0) {
+                wraper.put("quote_param", quoteParam);
+            } else {
+                wraper.put("quote_add_coupon_param", quoteAddCouponParam);
+            }
             wraper.put("type_save_cart_discount", type);
             doAction(ACTION_TYPE_SAVE_CART_DISCOUNT, null, wraper, checkout);
         } else {
@@ -191,41 +195,27 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         Checkout checkout = getSelectedItem();
         ((CheckoutListPanel) mView).showLoading(true);
         // TODO: luôn save cart trước vì có trường hợp remove online xong save lại quote chưa có sản phẩm nên total = 0
-//        if (checkout.getQuoteId() == null || StringUtil.STRING_EMPTY.equals(checkout.getQuoteId())) {
-            String store_id = DataUtil.getDataStringToPreferences(context, DataUtil.STORE_ID);
-            checkout.setStoreId(store_id);
-            wraper.put("quote_param", quoteParam);
-            doInputSaveCartDiscount(0);
-//        } else {
-//            String store_id = DataUtil.getDataStringToPreferences(context, DataUtil.STORE_ID);
-//            checkout.setStoreId(store_id);
-//            wraper.put("quote_id", checkout.getQuoteId());
-//            wraper.put("quote_param", quoteParam);
-//            if (((CheckoutDetailPanel) mDetailView).getVisibility() == View.VISIBLE) {
-//                wraper.put("type_save_quote", 1);
-//            } else {
-//                wraper.put("type_save_quote", 0);
-//            }
-//            doAction(ACTION_TYPE_SAVE_QUOTE, null, wraper, checkout);
-//        }
+        String store_id = DataUtil.getDataStringToPreferences(context, DataUtil.STORE_ID);
+        checkout.setStoreId(store_id);
+        wraper.put("quote_id", checkout.getQuoteId());
+        wraper.put("quote_param", quoteParam);
+        if (((CheckoutDetailPanel) mDetailView).getVisibility() == View.VISIBLE) {
+            wraper.put("type_save_quote", 1);
+        } else {
+            wraper.put("type_save_quote", 0);
+        }
+        doAction(ACTION_TYPE_SAVE_QUOTE, null, wraper, checkout);
     }
 
     public void doInputAddCouponToQuote(QuoteAddCouponParam quoteAddCouponParam) {
         Checkout checkout = getSelectedItem();
         ((CheckoutListPanel) mView).showLoading(true);
         // TODO: luôn save cart trước vì có trường hợp remove online xong save lại quote chưa có sản phẩm nên total = 0
-//        if (checkout.getQuoteId() == null || StringUtil.STRING_EMPTY.equals(checkout.getQuoteId())) {
-            String store_id = DataUtil.getDataStringToPreferences(context, DataUtil.STORE_ID);
-            checkout.setStoreId(store_id);
-            wraper.put("quote_add_coupon_param", quoteAddCouponParam);
-            doInputSaveCartDiscount(1);
-//        } else {
-//            String store_id = DataUtil.getDataStringToPreferences(context, DataUtil.STORE_ID);
-//            checkout.setStoreId(store_id);
-//            wraper.put("quote_id", checkout.getQuoteId());
-//            wraper.put("quote_add_coupon_param", quoteAddCouponParam);
-//            doAction(ACTION_TYPE_ADD_COUPON_TO_QUOTE, null, wraper, checkout);
-//        }
+        String store_id = DataUtil.getDataStringToPreferences(context, DataUtil.STORE_ID);
+        checkout.setStoreId(store_id);
+        wraper.put("quote_id", checkout.getQuoteId());
+        wraper.put("quote_add_coupon_param", quoteAddCouponParam);
+        doAction(ACTION_TYPE_ADD_COUPON_TO_QUOTE, null, wraper, checkout);
     }
 
     /**
@@ -594,7 +584,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 showActionButtonCheckout();
                 showSaleMenu(false);
                 doShowDetailPanel(false);
-            }else{
+            } else {
                 doInputSaveCart();
             }
             if (checkout.getOrderSuccess() != null) {
