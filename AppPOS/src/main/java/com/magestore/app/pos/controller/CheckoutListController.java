@@ -344,7 +344,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             return true;
         } else if (actionType == ACTION_TYPE_PLACE_ORDER) {
             List<CheckoutPayment> listCheckoutPayment = (List<CheckoutPayment>) wraper.get("list_payment");
-            Checkout checkout = (Checkout) wraper.get("save_shipping");
+            Checkout checkout = checkDataCheckout((Checkout) wraper.get("save_shipping"));
             checkout.setCreateShip(((CheckoutDetailPanel) mDetailView).isCreateShip());
             checkout.setCreateInvoice(((CheckoutDetailPanel) mDetailView).isCreateInvoice());
             checkout.setNote(((CheckoutDetailPanel) mDetailView).getNote());
@@ -394,8 +394,18 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             List<CheckoutShipping> listShipping = checkout.getCheckoutShipping();
             List<CheckoutPayment> listPayment = checkout.getCheckoutPayment();
 
-            // bind data to shipping method list
-            bindDataToShippingMethodList(listShipping);
+            if (((CheckoutService) getListService()).checkIsVirtual(checkout.getCartItem())) {
+                ((CheckoutDetailPanel) mDetailView).showPickAtStore(false);
+            } else {
+                ((CheckoutDetailPanel) mDetailView).showPickAtStore(true);
+            }
+
+            if (listShipping != null && listShipping.size() > 0) {
+                // bind data to shipping method list
+                bindDataToShippingMethodList(listShipping);
+                // auto select shipping method
+                autoSelectShipping(listShipping);
+            }
 
             mPaymentMethodListPanel.bindList(listPayment);
             mCheckoutAddPaymentPanel.bindList(listPayment);
@@ -406,8 +416,6 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             mCheckoutAddressListPanel.setSelectPos(customer.getAddressPosition());
             mCheckoutAddressListPanel.scrollToPosition();
 
-            // auto select shipping method
-            autoSelectShipping(listShipping);
             // lưu quote data vào checkout
             getSelectedItem().setQuoteId(quoteId);
 //            DataUtil.saveDataStringToPreferences(context, DataUtil.QUOTE, quoteId);
@@ -421,7 +429,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             ((CheckoutListPanel) mView).showSalesShipping(true);
             // câp nhật giá
             ((CheckoutListPanel) mView).updateTotalPrice(checkout);
-
+            ((CheckoutDetailPanel) mDetailView).isShowLoadingDetail(false);
         } else if (success && actionType == ACTION_TYPE_SAVE_CART_DISCOUNT) {
             Checkout checkout = (Checkout) wraper.get("save_cart_discount");
             String quoteId = checkout.getQuote().getID();
@@ -441,6 +449,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             }
         } else if (success && actionType == ACTION_TYPE_SAVE_QUOTE) {
             Checkout checkout = (Checkout) wraper.get("save_quote");
+            wraper.put("save_cart", checkout);
             int type_save_quote = (int) wraper.get("type_save_quote");
 
             if (type_save_quote == 1) {
@@ -448,8 +457,21 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 List<CheckoutShipping> listShipping = checkout.getCheckoutShipping();
                 List<CheckoutPayment> listPayment = checkout.getCheckoutPayment();
 
-                // bind data to shipping method list
-                bindDataToShippingMethodList(listShipping);
+                // cập nhật lại id trong cart item
+                ((CheckoutService) getListService()).updateCartItemWithServerRespone(getSelectedItem(), checkout);
+                mCartItemListController.bindList(getSelectedItem().getCartItem());
+                if (((CheckoutService) getListService()).checkIsVirtual(checkout.getCartItem())) {
+                    ((CheckoutDetailPanel) mDetailView).showPickAtStore(false);
+                } else {
+                    ((CheckoutDetailPanel) mDetailView).showPickAtStore(true);
+                }
+
+                if (listShipping != null && listShipping.size() > 0) {
+                    // bind data to shipping method list
+                    bindDataToShippingMethodList(listShipping);
+                    // auto select shipping method
+                    autoSelectShipping(listShipping);
+                }
 
                 mPaymentMethodListPanel.bindList(listPayment);
                 mCheckoutAddPaymentPanel.bindList(listPayment);
@@ -464,9 +486,6 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
                 // show shipping total
                 ((CheckoutListPanel) mView).showSalesShipping(true);
-
-                // auto select shipping method
-                autoSelectShipping(listShipping);
             }
 
             //  cập nhật giá
@@ -842,7 +861,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
      */
     public void onAddPaymentMethod(CheckoutPayment method) {
         List<CheckoutPayment> listPayment = (List<CheckoutPayment>) wraper.get("list_payment");
-        Checkout checkout = (Checkout) wraper.get("save_shipping");
+        Checkout checkout = checkDataCheckout((Checkout) wraper.get("save_shipping"));
         if (method.getType().equals("1")) {
             updateMoneyTotal(true, 0);
             float total = checkout.getGrandTotal();
@@ -896,7 +915,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
      */
     public void onRemovePaymentMethod() {
         List<CheckoutPayment> listPayment = (List<CheckoutPayment>) wraper.get("list_payment");
-        Checkout checkout = (Checkout) wraper.get("save_shipping");
+        Checkout checkout = checkDataCheckout((Checkout) wraper.get("save_shipping"));
         if (listPayment.size() == 0) {
             ((CheckoutDetailPanel) mDetailView).showPanelPaymentMethod();
             ((CheckoutDetailPanel) mDetailView).bindTotalPrice(checkout.getGrandTotal());
@@ -1013,6 +1032,14 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         doShowDetailPanel(false);
     }
 
+    private Checkout checkDataCheckout(Checkout checkout) {
+        if (checkout == null) {
+            return (Checkout) wraper.get("save_cart");
+        }
+
+        return checkout;
+    }
+
     /**
      * check list payment nếu còn thiếu money thì cho phép add thêm payment
      *
@@ -1020,7 +1047,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
      */
     public boolean checkListPaymentDialog() {
         List<CheckoutPayment> listPayment = (List<CheckoutPayment>) wraper.get("list_payment");
-        Checkout checkout = (Checkout) wraper.get("save_shipping");
+        Checkout checkout = checkDataCheckout((Checkout) wraper.get("save_shipping"));
         List<CheckoutPayment> listAllPayment = checkout.getCheckoutPayment();
         List<CheckoutPayment> listPaymentDialog = new ArrayList<>();
         listPaymentDialog.addAll(listAllPayment);

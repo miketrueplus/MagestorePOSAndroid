@@ -442,6 +442,11 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     }
 
     @Override
+    public void setIsVirtual(String strIsVirtual) {
+        is_virtual = strIsVirtual;
+    }
+
+    @Override
     public String getParentItemId() {
         return parent_item_id;
     }

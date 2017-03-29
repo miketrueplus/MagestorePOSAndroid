@@ -3,6 +3,7 @@ package com.magestore.app.pos.model.checkout;
 import com.magestore.app.lib.model.checkout.PaymentMethodDataParam;
 import com.magestore.app.lib.model.checkout.PlaceOrderParams;
 import com.magestore.app.pos.model.PosAbstractModel;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class PosPlaceOrderParams extends PosAbstractModel implements PlaceOrderP
     PlaceOrderActionParam actions;
     PlaceOrderQuoteDataParam quote_data;
     PlaceOrderPaymentParam payment;
+    List<PlaceOrderExtensionParam> extension_data;
 
     @Override
     public void setQuoteId(String strQuoteId) {
@@ -115,5 +117,10 @@ public class PosPlaceOrderParams extends PosAbstractModel implements PlaceOrderP
     public class PlaceOrderPaymentParam {
         String method;
         List<PaymentMethodDataParam> method_data;
+    }
+
+    public class PlaceOrderExtensionParam {
+        String key;
+        String value;
     }
 }

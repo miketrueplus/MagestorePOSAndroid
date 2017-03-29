@@ -126,6 +126,7 @@ public interface CartItem extends Model {
     int QtyInvoice();
     String getProductType();
     String getIsVirtual();
+    void setIsVirtual(String strIsVirtual);
     String getParentItemId();
 
     void setId(String strID);

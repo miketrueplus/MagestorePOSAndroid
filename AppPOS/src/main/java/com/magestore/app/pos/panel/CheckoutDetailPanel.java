@@ -197,6 +197,10 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         sales_background_loading.setVisibility(isShow ? VISIBLE : GONE);
     }
 
+    public void showPickAtStore(boolean isShow){
+        cb_pick_at_store.setVisibility(isShow ? VISIBLE : GONE);
+    }
+
     public void showNotifiAddItems() {
         String message = getContext().getString(R.string.checkout_add_items);
 

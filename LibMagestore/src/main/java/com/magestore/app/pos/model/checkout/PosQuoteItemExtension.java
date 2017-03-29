@@ -10,4 +10,26 @@ import com.magestore.app.pos.model.PosAbstractModel;
  */
 
 public class PosQuoteItemExtension extends PosAbstractModel implements QuoteItemExtension {
+    String key;
+    String value;
+
+    @Override
+    public String getKey() {
+        return key;
+    }
+
+    @Override
+    public void setKey(String strKey) {
+        key = strKey;
+    }
+
+    @Override
+    public String getValue() {
+        return value;
+    }
+
+    @Override
+    public void setValue(String strValue) {
+        value = strValue;
+    }
 }

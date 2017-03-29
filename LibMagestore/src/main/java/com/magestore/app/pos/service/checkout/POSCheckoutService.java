@@ -200,6 +200,7 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
                     cartOld.setPrice(cartNew.getPrice());
                     cartOld.getProduct().setItemId(cartNew.getItemId());
                     cartOld.getProduct().setIsSaveCart(true);
+                    cartOld.setIsVirtual(cartNew.getIsVirtual());
                 }
             }
         }
@@ -360,6 +361,16 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
             }
             return nListAddress;
         }
+    }
+
+    @Override
+    public boolean checkIsVirtual(List<CartItem> cartItems) {
+        for (CartItem item : cartItems) {
+            if (item.getIsVirtual().equals("0")) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private List<QuoteItems> addItemToQuote(Checkout checkout) {

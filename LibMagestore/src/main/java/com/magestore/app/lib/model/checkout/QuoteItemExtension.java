@@ -9,4 +9,8 @@ import com.magestore.app.lib.model.Model;
  */
 
 public interface QuoteItemExtension extends Model {
+    String getKey();
+    void setKey(String strKey);
+    String getValue();
+    void setValue(String strValue);
 }

@@ -65,8 +65,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
     public static int CREATE_NEW_CUSTOMER = 1;
     public static int CREATE_NEW_ADDRESS = 2;
     public static int CHECKOUT_ADD_NEW_ADDRESS = 3;
-    int typeCustomer;
-    int other_type;
+    int typeCustomer, other_type;
 
     public CheckoutListPanel(Context context) {
         super(context);
