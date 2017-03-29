@@ -7,6 +7,7 @@ import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.lib.model.checkout.CheckoutShipping;
 import com.magestore.app.lib.model.checkout.CheckoutTotals;
 import com.magestore.app.lib.model.checkout.PaymentMethodDataParam;
+import com.magestore.app.lib.model.checkout.PlaceOrderExtensionParam;
 import com.magestore.app.lib.model.checkout.PlaceOrderParams;
 import com.magestore.app.lib.model.checkout.Quote;
 import com.magestore.app.lib.model.checkout.QuoteAddCouponParam;
@@ -26,6 +27,7 @@ import com.magestore.app.pos.model.checkout.PosCheckout;
 import com.magestore.app.pos.model.checkout.PosCheckoutPayment;
 import com.magestore.app.pos.model.checkout.PosCheckoutShipping;
 import com.magestore.app.pos.model.checkout.PosPaymentMethodDataParam;
+import com.magestore.app.pos.model.checkout.PosPlaceOrderExtensionParam;
 import com.magestore.app.pos.model.checkout.PosPlaceOrderParams;
 import com.magestore.app.pos.model.checkout.PosQuote;
 import com.magestore.app.pos.model.checkout.PosQuoteAddCouponParam;
@@ -36,6 +38,7 @@ import com.magestore.app.pos.model.checkout.PosQuoteItems;
 import com.magestore.app.pos.model.checkout.PosSaveQuoteParam;
 import com.magestore.app.pos.service.AbstractService;
 import com.magestore.app.util.ConfigUtil;
+import com.magestore.app.util.StringUtil;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -131,6 +134,9 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         return checkoutDataAccess.savePayment(quoteId, paymentCode);
     }
 
+    private static String KEY_EXTENSION_WEBPOS_STAFF_ID = "webpos_staff_id";
+    private static String KEY_EXTENSION_WEBPOS_STAFF_NAME = "webpos_staff_name";
+
     @Override
     public Order placeOrder(String quoteId, Checkout checkout, List<CheckoutPayment> listCheckoutPayment) throws IOException, InstantiationException, ParseException, IllegalAccessException {
         PlaceOrderParams placeOrderParams = createPlaceOrderParams();
@@ -182,6 +188,21 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
 
         placeOrderParams.setMethodData(listPaymentMethodParam);
         placeOrderParams.setPayment(placeOrderPaymentParam);
+
+        List<PlaceOrderExtensionParam> listExtension = new ArrayList<>();
+
+        PlaceOrderExtensionParam extensionParamStaffID = createExtensionParam();
+        extensionParamStaffID.setKey(KEY_EXTENSION_WEBPOS_STAFF_ID);
+        extensionParamStaffID.setValue(ConfigUtil.getStaff().getID());
+
+        PlaceOrderExtensionParam extensionParamStaffName = createExtensionParam();
+        extensionParamStaffName.setKey(KEY_EXTENSION_WEBPOS_STAFF_NAME);
+        extensionParamStaffName.setValue(ConfigUtil.getStaff().getStaffName());
+
+        listExtension.add(extensionParamStaffID);
+        listExtension.add(extensionParamStaffName);
+
+        placeOrderParams.setPlaceOrderExtensionData(listExtension);
 
         // Khởi tạo customer gateway factory
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
@@ -334,6 +355,11 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
     }
 
     @Override
+    public PlaceOrderExtensionParam createExtensionParam() {
+        return new PosPlaceOrderExtensionParam();
+    }
+
+    @Override
     public SaveQuoteParam createSaveQuoteParam() {
         SaveQuoteParam saveQuoteParam = new PosSaveQuoteParam();
         PosSaveQuoteParam.QuoteData quoteData = saveQuoteParam.createQuoteData();
@@ -366,7 +392,7 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
     @Override
     public boolean checkIsVirtual(List<CartItem> cartItems) {
         for (CartItem item : cartItems) {
-            if (item.getIsVirtual().equals("0")) {
+            if (item.getIsVirtual() != null || StringUtil.STRING_EMPTY.equals(item.getIsVirtual()) || item.getIsVirtual().equals("0")) {
                 return false;
             }
         }

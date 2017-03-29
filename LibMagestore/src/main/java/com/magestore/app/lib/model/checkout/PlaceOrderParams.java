@@ -22,6 +22,7 @@ public interface PlaceOrderParams extends Model {
     void setCustomerNote(String strCustomerNote);
     void setMethod(String strMethod);
     void setMethodData(List<PaymentMethodDataParam> methodData);
+    void setPlaceOrderExtensionData(List<PlaceOrderExtensionParam> listExtension);
     PosPlaceOrderParams.PlaceOrderActionParam createPlaceOrderActionParam();
     PosPlaceOrderParams.PlaceOrderQuoteDataParam createPlaceOrderQuoteDataParam();
     PosPlaceOrderParams.PlaceOrderPaymentParam createPlaceOrderPaymentParam();

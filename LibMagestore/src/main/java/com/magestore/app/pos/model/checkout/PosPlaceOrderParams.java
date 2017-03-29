@@ -1,6 +1,7 @@
 package com.magestore.app.pos.model.checkout;
 
 import com.magestore.app.lib.model.checkout.PaymentMethodDataParam;
+import com.magestore.app.lib.model.checkout.PlaceOrderExtensionParam;
 import com.magestore.app.lib.model.checkout.PlaceOrderParams;
 import com.magestore.app.pos.model.PosAbstractModel;
 
@@ -72,6 +73,11 @@ public class PosPlaceOrderParams extends PosAbstractModel implements PlaceOrderP
     }
 
     @Override
+    public void setPlaceOrderExtensionData(List<PlaceOrderExtensionParam> listExtension) {
+        extension_data = listExtension;
+    }
+
+    @Override
     public PlaceOrderActionParam createPlaceOrderActionParam() {
         actions = new PlaceOrderActionParam();
         return actions;
@@ -117,10 +123,5 @@ public class PosPlaceOrderParams extends PosAbstractModel implements PlaceOrderP
     public class PlaceOrderPaymentParam {
         String method;
         List<PaymentMethodDataParam> method_data;
-    }
-
-    public class PlaceOrderExtensionParam {
-        String key;
-        String value;
     }
 }
