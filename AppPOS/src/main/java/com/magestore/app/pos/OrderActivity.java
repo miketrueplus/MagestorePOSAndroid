@@ -12,9 +12,15 @@ import android.view.View;
 import com.magestore.app.lib.context.MagestoreContext;
 import com.magestore.app.lib.service.ServiceFactory;
 import com.magestore.app.lib.service.order.OrderHistoryService;
+import com.magestore.app.pos.controller.OrderCommentListController;
+import com.magestore.app.pos.controller.OrderHistoryItemsListController;
 import com.magestore.app.pos.controller.OrderHistoryListController;
+import com.magestore.app.pos.controller.OrderPaymentListController;
+import com.magestore.app.pos.panel.OrderCommentHistoryListPanel;
 import com.magestore.app.pos.panel.OrderDetailPanel;
+import com.magestore.app.pos.panel.OrderHistoryItemsListPanel;
 import com.magestore.app.pos.panel.OrderListPanel;
+import com.magestore.app.pos.panel.OrderPaymentListPanel;
 import com.magestore.app.pos.ui.AbstractActivity;
 
 /**
@@ -30,6 +36,16 @@ public class OrderActivity extends AbstractActivity {
     private OrderListPanel mOrderListPanel = null;
     private OrderHistoryListController mOrderListController = null;
     private OrderDetailPanel mOrderDetailPanel = null;
+
+    OrderPaymentListPanel mOrderPaymentListPanel;
+    // panel hiển thị history comment của 1 order
+    OrderCommentHistoryListPanel mOrderCommentHistoryListPanel;
+    // panel hiển thị danh sách item/product trong order
+    OrderHistoryItemsListPanel mOrderHistoryItemsListPanel;
+
+    OrderPaymentListController mOrderPaymentListController;
+    OrderCommentListController mOrderCommentHistoryController;
+    OrderHistoryItemsListController mOrderHistoryItemsListController;
 
     // Toolbar ứng dụng
     private Toolbar mToolbar;
@@ -61,6 +77,15 @@ public class OrderActivity extends AbstractActivity {
         // chuẩn bị panel thông tin đơn hàng chi tiết
         mOrderDetailPanel = (OrderDetailPanel) findViewById(R.id.order_detail_panel);
 
+        // chuẩn bị panel view danh sách payment
+        mOrderPaymentListPanel = (OrderPaymentListPanel) mOrderDetailPanel.findViewById(R.id.order_payment);
+
+        // chuẩn bị panel view danh sách comment
+        mOrderCommentHistoryListPanel = (OrderCommentHistoryListPanel) mOrderDetailPanel.findViewById(R.id.order_comment);
+
+        // chuẩn bị panel view danh sách items
+        mOrderHistoryItemsListPanel = (OrderHistoryItemsListPanel) mOrderDetailPanel.findViewById(R.id.order_items);
+
         // xem giao diện 2 pane hay 1 pane
         mblnTwoPane = findViewById(R.id.two_pane) != null;
     }
@@ -83,12 +108,33 @@ public class OrderActivity extends AbstractActivity {
             e.printStackTrace();
         }
 
+        // Controller Payment
+        mOrderPaymentListController = new OrderPaymentListController();
+        mOrderPaymentListController.setView(mOrderPaymentListPanel);
+        mOrderPaymentListController.setOrderService(service);
+        mOrderPaymentListController.setMagestoreContext(magestoreContext);
+
+        // Controller Comment
+        mOrderCommentHistoryController = new OrderCommentListController();
+        mOrderCommentHistoryController.setView(mOrderCommentHistoryListPanel);
+        mOrderCommentHistoryController.setOrderService(service);
+        mOrderCommentHistoryController.setMagestoreContext(magestoreContext);
+
+        // Controller CartItem
+        mOrderHistoryItemsListController = new OrderHistoryItemsListController();
+        mOrderHistoryItemsListController.setView(mOrderHistoryItemsListPanel);
+        mOrderHistoryItemsListController.setOrderService(service);
+        mOrderHistoryItemsListController.setMagestoreContext(magestoreContext);
+
         // Tạo list controller
         mOrderListController = new OrderHistoryListController();
         mOrderListController.setMagestoreContext(magestoreContext);
         mOrderListController.setOrderService(service);
         mOrderListController.setListPanel(mOrderListPanel);
         mOrderListController.setDetailPanel(mOrderDetailPanel);
+        mOrderListController.setOrderCommentListController(mOrderCommentHistoryController);
+        mOrderListController.setOrderHistoryItemsListController(mOrderHistoryItemsListController);
+        mOrderListController.setOrderPaymentListController(mOrderPaymentListController);
 
         // chuẩn bị model cho các panel
         mOrderListPanel.initModel();

@@ -40,16 +40,6 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
     Button btn_invoice;
     MagestoreDialog dialog;
     PanelOrderDetailBinding mBinding;
-    OrderPaymentListPanel mOrderPaymentListPanel;
-    OrderPaymentListController mOrderPaymentListController;
-
-    // panel hiển thị history comment của 1 order
-    OrderCommentHistoryListPanel mOrderCommentHistoryListPanel;
-    OrderCommentListController mOrderCommentHistoryController;
-
-    // panel hiển thị danh sách item/product trong order
-    OrderHistoryItemsListPanel mOrderHistoryItemsListPanel;
-    OrderHistoryItemsListController mOrderHistoryItemsListController;
 
     FrameLayout fr_detail_bottom_left, fr_detail_bottom_right;
     ImageView im_status;
@@ -80,15 +70,6 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         fr_detail_bottom_right = (FrameLayout) v.findViewById(R.id.fr_detail_bottom_right);
 
         mBinding = DataBindingUtil.bind(v);
-
-        // chuẩn bị panel view danh sách payment
-        mOrderPaymentListPanel = (OrderPaymentListPanel) findViewById(R.id.order_payment);
-
-        // chuẩn bị panel view danh sách comment
-        mOrderCommentHistoryListPanel = (OrderCommentHistoryListPanel) findViewById(R.id.order_comment);
-
-        // chuẩn bị panel view danh sách items
-        mOrderHistoryItemsListPanel = (OrderHistoryItemsListPanel) findViewById(R.id.order_items);
     }
 
     /**
@@ -96,29 +77,6 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
      */
     @Override
     public void initModel() {
-        // Lấy lại customer service từ controller của panel
-        Controller controller = getController();
-
-        // Controller Payment
-        mOrderPaymentListController = new OrderPaymentListController();
-        mOrderPaymentListController.setView(mOrderPaymentListPanel);
-        mOrderPaymentListController.setMagestoreContext(controller.getMagestoreContext());
-
-        // Controller Comment
-        mOrderCommentHistoryController = new OrderCommentListController();
-        mOrderCommentHistoryController.setView(mOrderCommentHistoryListPanel);
-        mOrderCommentHistoryController.setMagestoreContext(controller.getMagestoreContext());
-
-        // Controller CartItem
-        mOrderHistoryItemsListController = new OrderHistoryItemsListController();
-        mOrderHistoryItemsListController.setView(mOrderHistoryItemsListPanel);
-        mOrderHistoryItemsListController.setMagestoreContext(controller.getMagestoreContext());
-
-        if (controller instanceof OrderHistoryListController) {
-            mOrderPaymentListController.setOrderService(((OrderHistoryListController) controller).getOrderService());
-            mOrderCommentHistoryController.setOrderService(((OrderHistoryListController) controller).getOrderService());
-            mOrderHistoryItemsListController.setOrderService(((OrderHistoryListController) controller).getOrderService());
-        }
     }
 
     private void initControlValue() {
@@ -143,9 +101,10 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
             fr_detail_bottom_right.setVisibility(VISIBLE);
             fr_detail_bottom_left.setVisibility(VISIBLE);
         }
-        mOrderPaymentListController.doSelectOrder(item);
-        mOrderCommentHistoryController.doSelectOrder(item);
-        mOrderHistoryItemsListController.doSelectOrder(item);
+
+        ((OrderHistoryListController) mController).getOrderPaymentListController().doSelectOrder(item);
+        ((OrderHistoryListController) mController).getOrderCommentListController().doSelectOrder(item);
+        ((OrderHistoryListController) mController).getOrderHistoryItemsListController().doSelectOrder(item);
 
         status = (TextView) v.findViewById(R.id.status);
         im_status = (ImageView) v.findViewById(R.id.im_status);
@@ -315,7 +274,6 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         }
 
         ((OrderHistoryListController) mController).setOrderAddCommentPanel(mOrderAddCommentPanel);
-        ((OrderHistoryListController) mController).setOrderCommentListController(mOrderCommentHistoryController);
         ((OrderHistoryListController) mController).doInputInsertStatus(order);
     }
 
@@ -335,8 +293,6 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
             public void onClick(View view) {
                 Order order = mOrderShipmentPanel.bind2Item();
                 ((OrderHistoryListController) mController).setOrderShipmentPanel(mOrderShipmentPanel);
-                ((OrderHistoryListController) mController).setOrderCommentListController(mOrderCommentHistoryController);
-                ((OrderHistoryListController) mController).setOrderHistoryItemsListController(mOrderHistoryItemsListController);
                 ((OrderHistoryListController) mController).doInputCreateShipment(order);
                 dialog.dismiss();
             }
@@ -359,8 +315,6 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
             public void onClick(View view) {
                 Order order = mOrderRefundPanel.bind2Item();
                 ((OrderHistoryListController) mController).setOrderRefundPanel(mOrderRefundPanel);
-                ((OrderHistoryListController) mController).setOrderCommentListController(mOrderCommentHistoryController);
-                ((OrderHistoryListController) mController).setOrderHistoryItemsListController(mOrderHistoryItemsListController);
                 ((OrderHistoryListController) mController).doInputRefund(order);
                 dialog.dismiss();
             }
@@ -384,8 +338,6 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
             public void onClick(View view) {
                 Order order = mOrderInvoicePanel.bind2Item();
                 ((OrderHistoryListController) mController).setOrderInvoicePanel(mOrderInvoicePanel);
-                ((OrderHistoryListController) mController).setOrderCommentListController(mOrderCommentHistoryController);
-                ((OrderHistoryListController) mController).setOrderHistoryItemsListController(mOrderHistoryItemsListController);
                 ((OrderHistoryListController) mController).doInputInvoice(order);
             }
         });
@@ -404,8 +356,6 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
             public void onClick(View view) {
                 Order order = mOrderCancelPanel.bind2Item();
                 ((OrderHistoryListController) mController).setOrderCancelPanel(mOrderCancelPanel);
-                ((OrderHistoryListController) mController).setOrderCommentListController(mOrderCommentHistoryController);
-                ((OrderHistoryListController) mController).setOrderHistoryItemsListController(mOrderHistoryItemsListController);
                 ((OrderHistoryListController) mController).doInputCancel(order);
                 dialog.dismiss();
             }

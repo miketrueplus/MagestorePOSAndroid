@@ -34,6 +34,7 @@ public class OrderHistoryListController extends AbstractListController<Order> {
     OrderAddCommentPanel mOrderAddCommentPanel;
     OrderCommentListController mOrderCommentListController;
     OrderHistoryItemsListController mOrderHistoryItemsListController;
+    OrderPaymentListController mOrderPaymentListController;
 
     OrderShipmentPanel mOrderShipmentPanel;
     OrderRefundPanel mOrderRefundPanel;
@@ -91,8 +92,24 @@ public class OrderHistoryListController extends AbstractListController<Order> {
         this.mOrderCommentListController = mOrderCommentListController;
     }
 
+    public OrderCommentListController getOrderCommentListController() {
+        return mOrderCommentListController;
+    }
+
+    public OrderHistoryItemsListController getOrderHistoryItemsListController() {
+        return mOrderHistoryItemsListController;
+    }
+
     public void setOrderHistoryItemsListController(OrderHistoryItemsListController mOrderHistoryItemsListController) {
         this.mOrderHistoryItemsListController = mOrderHistoryItemsListController;
+    }
+
+    public void setOrderPaymentListController(OrderPaymentListController mOrderPaymentListController) {
+        this.mOrderPaymentListController = mOrderPaymentListController;
+    }
+
+    public OrderPaymentListController getOrderPaymentListController() {
+        return mOrderPaymentListController;
     }
 
     public void setOrderShipmentPanel(OrderShipmentPanel mOrderShipmentPanel) {
