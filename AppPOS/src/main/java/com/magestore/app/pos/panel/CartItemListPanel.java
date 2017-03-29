@@ -3,6 +3,8 @@ package com.magestore.app.pos.panel;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
+import android.os.Handler;
+import android.os.Message;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
@@ -18,6 +20,7 @@ import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.panel.AbstractListPanel;
+import com.magestore.app.lib.view.SearchAutoCompleteTextView;
 import com.magestore.app.lib.view.item.ModelView;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.CartItemListController;
@@ -103,6 +106,7 @@ public class CartItemListPanel extends AbstractListPanel<CartItem> {
         SwipeLayout swipeLayout;
         RelativeLayout mDelButton;
         boolean mblnOnSwipe = false;
+        boolean mblnLockMsgSwipe = false;
 
         public RecycleViewCartItemHolder(View view) {
             super(view);
@@ -158,6 +162,7 @@ public class CartItemListPanel extends AbstractListPanel<CartItem> {
                 @Override
                 public void onStartOpen(SwipeLayout layout) {
                     mblnOnSwipe = true;
+                    mblnLockMsgSwipe = true;
                 }
 
                 @Override
@@ -176,7 +181,7 @@ public class CartItemListPanel extends AbstractListPanel<CartItem> {
                  */
                 @Override
                 public void onClose(SwipeLayout swipeLayout) {
-                    mblnOnSwipe = false;
+
                 }
 
                 @Override
@@ -186,6 +191,15 @@ public class CartItemListPanel extends AbstractListPanel<CartItem> {
 
                 @Override
                 public void onHandRelease(SwipeLayout layout, float xvel, float yvel) {
+                    mblnLockMsgSwipe = false;
+                    final Handler mHandler = new Handler() {
+                        @Override
+                        public void handleMessage(Message msg) {
+                            if (mblnLockMsgSwipe) return;
+                            mblnOnSwipe = false;
+                        }
+                    };
+                    mHandler.sendEmptyMessageDelayed(0, 300);
                 }
             });
         }
