@@ -325,6 +325,7 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         mOrderShipmentPanel.setController(mController);
         mOrderShipmentPanel.initModel();
         dialog = DialogUtil.dialog(getContext(), getContext().getString(R.string.order_shipment_title), mOrderShipmentPanel);
+        dialog.setDialogWidth(getContext().getResources().getDimensionPixelSize(R.dimen.order_dialog_ship_width));
         dialog.setGoneButtonSave(true);
         dialog.show();
 
@@ -348,6 +349,7 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         mOrderRefundPanel.setController(mController);
         mOrderRefundPanel.initModel();
         dialog = DialogUtil.dialog(getContext(), getContext().getString(R.string.order_refund_title), mOrderRefundPanel);
+        dialog.setDialogWidth(getContext().getResources().getDimensionPixelSize(R.dimen.order_dialog_refund_width));
         dialog.setDialogSave(getContext().getString(R.string.order_refund_btn_save));
         dialog.show();
 
@@ -372,6 +374,7 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         mOrderInvoicePanel.initModel();
 
         dialog = DialogUtil.dialog(getContext(), getContext().getString(R.string.order_invoice_title), mOrderInvoicePanel);
+        dialog.setDialogWidth(getContext().getResources().getDimensionPixelSize(R.dimen.order_dialog_invoice_width));
         dialog.setGoneButtonSave(true);
         dialog.show();
 

@@ -77,10 +77,11 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/layout_margin_5"
                     android:layout_weight="1"
                     android:background="@drawable/boder_linear_layout"
                     android:orientation="vertical"
-                    android:padding="5dp">
+                    android:padding="@dimen/layout_margin_5">
 
                     <com.magestore.app.view.FormatEditText
                         android:id="@+id/qty_to_invoice"

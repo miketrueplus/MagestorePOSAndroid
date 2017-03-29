@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -39,6 +40,8 @@ public class MagestoreDialog extends Dialog {
     String dialogCancel;
     String dialogSave;
 
+    int dialog_width = 0;
+    int dialog_height = 0;
     int dialogTitleColor = -1;
     int dialogCancelColor = -1;
     int dialogSaveColor = -1;
@@ -73,7 +76,7 @@ public class MagestoreDialog extends Dialog {
         return dialog_cancel;
     }
 
-    public TextView getDialogTitle(){
+    public TextView getDialogTitle() {
         return dialog_title;
     }
 
@@ -95,6 +98,14 @@ public class MagestoreDialog extends Dialog {
 
     public void setDialogCancelColor(int dialogCancelColor) {
         this.dialogCancelColor = dialogCancelColor;
+    }
+
+    public void setDialogWidth(int dialog_width) {
+        this.dialog_width = dialog_width;
+    }
+
+    public void setDialogHeight(int dialog_height) {
+        this.dialog_height = dialog_height;
     }
 
     public void setDialogSaveColor(int dialogSaveColor) {
@@ -122,6 +133,15 @@ public class MagestoreDialog extends Dialog {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.magestore_dialog);
+
+        if (dialog_width > 0 || dialog_height > 0) {
+            ViewGroup.LayoutParams params = getWindow().getAttributes();
+            if (dialog_width > 0)
+                params.width = dialog_width;
+            if (dialog_height > 0)
+                params.height = dialog_height;
+            getWindow().setAttributes((android.view.WindowManager.LayoutParams) params);
+        }
 
         ll_dialog = (LinearLayout) findViewById(R.id.ll_dialog);
         rl_dialog_title = (RelativeLayout) findViewById(R.id.rl_dialog_title);

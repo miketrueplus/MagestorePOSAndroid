@@ -304,9 +304,13 @@ public class POSCustomerAddressDataAccess extends POSAbstractDataAccess implemen
             rp = statement.execute(wrapCustomer);
             return true;
         } catch (ConnectionException ex) {
+            // khôi phục address default
+            addAddressDefault(pcustomer);
             pcustomer.getAddress().remove(address);
             throw ex;
         } catch (IOException ex) {
+            // khôi phục address default
+            addAddressDefault(pcustomer);
             pcustomer.getAddress().remove(address);
             throw ex;
         } finally {
@@ -382,8 +386,12 @@ public class POSCustomerAddressDataAccess extends POSAbstractDataAccess implemen
             rp = statement.execute(wrapCustomer);
             return true;
         } catch (ConnectionException ex) {
+            // khôi phục address default
+            addAddressDefault(pcustomer);
             throw ex;
         } catch (IOException ex) {
+            // khôi phục address default
+            addAddressDefault(pcustomer);
             throw ex;
         } finally {
             // gỡ address ra
@@ -446,9 +454,13 @@ public class POSCustomerAddressDataAccess extends POSAbstractDataAccess implemen
             rp = statement.execute(wrapCustomer);
             return true;
         } catch (ConnectionException ex) {
+            // khôi phục address default
+            addAddressDefault(pcustomer);
             pcustomer.getAddress().remove(address);
             throw ex;
         } catch (IOException ex) {
+            // khôi phục address default
+            addAddressDefault(pcustomer);
             pcustomer.getAddress().remove(address);
             throw ex;
         } finally {
