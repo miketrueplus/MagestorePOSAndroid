@@ -3,6 +3,7 @@ package com.magestore.app.lib.model.catalog;
 import android.graphics.Bitmap;
 
 import com.magestore.app.lib.model.Model;
+import com.magestore.app.lib.model.inventory.Stock;
 import com.magestore.app.lib.parse.ParseModel;
 import com.magestore.app.pos.model.catalog.PosProductOption;
 
@@ -35,7 +36,6 @@ public interface Product extends Model, ParseModel {
     String getExtensionAttributes();
     String getCategoryIDs();
     String getImage();
-    float getStock();
     String getBarcodeString();
 
     void setName(String name);
@@ -44,6 +44,8 @@ public interface Product extends Model, ParseModel {
     void setBitmap(Bitmap bmp);
 
     int getQuantityIncrement();
+
+    void setQuantityIncrement(int quantityIncrement);
 
     float getPriceIncrement();
 
@@ -56,4 +58,6 @@ public interface Product extends Model, ParseModel {
 
     String getItemId();
     void setItemId(String strItemId);
+
+    List<Stock> getStock();
 }

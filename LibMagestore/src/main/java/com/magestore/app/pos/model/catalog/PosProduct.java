@@ -4,15 +4,15 @@ import android.graphics.Bitmap;
 
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.model.catalog.ProductOption;
+import com.magestore.app.lib.model.inventory.Stock;
 import com.magestore.app.pos.model.PosAbstractModel;
-import com.magestore.app.pos.model.PosStock;
+import com.magestore.app.pos.model.inventory.PosStock;
 import com.magestore.app.pos.model.PosTierPrice;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosExclude;
 import com.magestore.app.util.StringUtil;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Mike on 12/15/2016.
@@ -38,7 +38,7 @@ public class PosProduct extends PosAbstractModel implements Product {
     private int max_characters;
     private PosProduct[] custom_options;
     private String category_ids;
-    private PosStock[] stock;
+    private List<PosStock> stock;
     private PosTierPrice[] tier_prices;
     private String qty_increment = StringUtil.STRING_ONE;
     private float price_increment = 0.1f;
@@ -124,11 +124,6 @@ public class PosProduct extends PosAbstractModel implements Product {
     }
 
     @Override
-    public float getStock() {
-        return 0;
-    }
-
-    @Override
     public String getBarcodeString() {
         return null;
     }
@@ -167,7 +162,12 @@ public class PosProduct extends PosAbstractModel implements Product {
     @Override
     public int getQuantityIncrement() {
         if (qty_increment == null || StringUtil.STRING_EMPTY.equals(qty_increment)) return 1;
-        return Integer.parseInt(qty_increment);
+        return (int) Float.parseFloat(qty_increment);
+    }
+
+    @Override
+    public void setQuantityIncrement(int quantityIncrement) {
+        qty_increment = Integer.toString(quantityIncrement);
     }
 
     @Override
@@ -177,7 +177,7 @@ public class PosProduct extends PosAbstractModel implements Product {
 
     @Override
     public void setQuantityIncrement(float quantityIncrement) {
-        this.qty_increment =  "" + (int) quantityIncrement;
+        this.qty_increment =  Float.toString(quantityIncrement);
     }
 
     @Override
@@ -203,5 +203,10 @@ public class PosProduct extends PosAbstractModel implements Product {
     @Override
     public void setItemId(String strItemId) {
         item_id = strItemId;
+    }
+
+    @Override
+    public List<Stock> getStock() {
+        return (List<Stock>) (List<?>) stock;
     }
 }

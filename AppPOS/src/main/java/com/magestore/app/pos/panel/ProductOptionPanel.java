@@ -171,7 +171,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
             else { // nếu là grouped option, thì chia làm 2 cart item
                 CartItem item = bind2Item();
                 for (OptionModelView optionModel : mModelViewList) {
-                    ((CartItemListController) getController()).updateToCart(item, optionModel.getModel().getID(), optionModel.title, optionModel.quantity * item.getQuantity(), optionModel.price);
+                    ((CartItemListController) getController()).updateToCart(item, optionModel.getModel().getID(), optionModel.title, optionModel.quantity * item.getQuantity(), optionModel.price, optionModel.quantity_increment);
                 }
                 ((CartItemListController) getController()).closeAllOpeningDialog();
             }
@@ -353,6 +353,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                 optionModelView.optionValueModelViewList = new ArrayList<>();
                 optionModelView.title = groupedOption.getName();
                 optionModelView.quantity = groupedOption.getDefaultQty();
+                optionModelView.quantity_increment = groupedOption.getQuantityIncrement();
                 optionModelView.is_required = false;
                 optionModelView.option_type = ProductOptionCustom.OPTION_TYPE_GROUPED;
                 optionModelView.price = groupedOption.getPrice();
@@ -422,6 +423,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         public boolean is_required;
         public List<OptionValueModelView> optionValueModelViewList;
         public int quantity;
+        public int quantity_increment = 1;
         public float price;
 
         public boolean isCustomOption() {
@@ -872,7 +874,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                     convertView = layoutInflater.inflate(R.layout.card_product_option_item_quantity, null);
                     optionValueModelView.holder.mtxtQuantity = (EditTextInteger) convertView
                             .findViewById(R.id.id_txt_product_option_quantity);
-                    optionValueModelView.holder.mtxtQuantity.setMinValue(1);
+                    optionValueModelView.holder.mtxtQuantity.setMinValue(optionModelView.quantity_increment);
 
                     // khi thôi focus
                     optionValueModelView.holder.mtxtQuantity.setOnFocusChangeListener(new OnFocusChangeListener() {
@@ -901,7 +903,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                     subView.setOnClickListener(new OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            optionValueModelView.holder.mtxtQuantity.substract(1);
+                            optionValueModelView.holder.mtxtQuantity.substract(optionModelView.quantity_increment);
                             onSubtractOptionQuantity((OptionModelView) v.getTag(), optionValueModelView.holder);
                         }
                     });
@@ -912,7 +914,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                     addView.setOnClickListener(new OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            optionValueModelView.holder.mtxtQuantity.add(1);
+                            optionValueModelView.holder.mtxtQuantity.add(optionModelView.quantity_increment);
                             onAddOptionQuantity((OptionModelView) v.getTag(), optionValueModelView.holder);
                         }
                     });

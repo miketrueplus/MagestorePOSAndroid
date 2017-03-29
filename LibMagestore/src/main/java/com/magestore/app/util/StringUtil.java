@@ -110,4 +110,13 @@ public class StringUtil {
                         .replace("\"{\"", "{\"")
                         .replace("}\"", "}");
     }
+
+    /**
+     * Chuỗi null hoặc toàn ký tự trắng
+     * @param str
+     * @return
+     */
+    public static boolean isNullOrEmpty(String str) {
+        return str == null || STRING_EMPTY.equals(str.trim());
+    }
 }

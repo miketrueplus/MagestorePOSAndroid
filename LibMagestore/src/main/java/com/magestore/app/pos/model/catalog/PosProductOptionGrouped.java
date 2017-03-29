@@ -2,7 +2,9 @@ package com.magestore.app.pos.model.catalog;
 
 import com.magestore.app.lib.model.catalog.ProductOptionBundle;
 import com.magestore.app.lib.model.catalog.ProductOptionGrouped;
+import com.magestore.app.lib.model.inventory.Stock;
 import com.magestore.app.pos.model.PosAbstractModel;
+import com.magestore.app.pos.model.inventory.PosStock;
 
 import java.util.List;
 
@@ -17,6 +19,9 @@ public class PosProductOptionGrouped extends PosAbstractModel implements Product
     String default_qty;
     String image;
     String tax_class_id;
+
+    private List<PosStock> stock;
+
 
     @Override
     public String getTypeID() {
@@ -90,5 +95,16 @@ public class PosProductOptionGrouped extends PosAbstractModel implements Product
     @Override
     public void setTaxClassID(String tax_class_id) {
         this.tax_class_id = tax_class_id;
+    }
+
+    @Override
+    public List<Stock> getStock() {
+        return (List<Stock>) (List<?>) stock;
+    }
+
+    @Override
+    public int getQuantityIncrement() {
+        if ((stock == null) || (stock.size() <= 0)) return 1;
+        return stock.get(0).getQuantityIncrement();
     }
 }
