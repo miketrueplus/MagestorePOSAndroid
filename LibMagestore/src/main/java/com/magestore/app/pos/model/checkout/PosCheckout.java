@@ -70,14 +70,24 @@ public class PosCheckout extends PosAbstractModel implements Checkout {
     @Gson2PosExclude
     Order order_success;
 
+    @Gson2PosExclude
+    String sub_title;
     @Expose(serialize = false, deserialize = false)
     float sub_total = 0;
+    @Gson2PosExclude
+    String shipping_title;
     @Expose(serialize = false, deserialize = false)
     float shipping_total = 0;
+    @Gson2PosExclude
+    String tax_title;
     @Expose(serialize = false, deserialize = false)
     float tax_total = 0;
+    @Gson2PosExclude
+    String discount_title;
     @Expose(serialize = false, deserialize = false)
     float discount_total = 0;
+    @Gson2PosExclude
+    String grand_title;
     @Expose(serialize = false, deserialize = false)
     float grand_total = 0;
     @Gson2PosExclude
@@ -136,6 +146,16 @@ public class PosCheckout extends PosAbstractModel implements Checkout {
     }
 
     @Override
+    public String getSubTitle() {
+        return sub_title;
+    }
+
+    @Override
+    public void setSubTitle(String strSubTitle) {
+        sub_title = strSubTitle;
+    }
+
+    @Override
     public float getSubTotal() {
         return sub_total;
     }
@@ -143,6 +163,16 @@ public class PosCheckout extends PosAbstractModel implements Checkout {
     @Override
     public void setSubTotal(float total) {
         sub_total = total;
+    }
+
+    @Override
+    public String getShippingTitle() {
+        return shipping_title;
+    }
+
+    @Override
+    public void setShippingTitle(String strShippingTitle) {
+        shipping_title = strShippingTitle;
     }
 
     @Override
@@ -156,6 +186,16 @@ public class PosCheckout extends PosAbstractModel implements Checkout {
     }
 
     @Override
+    public String getTaxTitle() {
+        return tax_title;
+    }
+
+    @Override
+    public void setTaxTitle(String strTaxTitle) {
+        tax_title = strTaxTitle;
+    }
+
+    @Override
     public float getTaxTotal() {
         return tax_total;
     }
@@ -166,6 +206,16 @@ public class PosCheckout extends PosAbstractModel implements Checkout {
     }
 
     @Override
+    public String getDiscountTitle() {
+        return discount_title;
+    }
+
+    @Override
+    public void setDiscountTitle(String strDiscountTitle) {
+        discount_title = strDiscountTitle;
+    }
+
+    @Override
     public float getDiscountTotal() {
         return discount_total;
     }
@@ -173,6 +223,16 @@ public class PosCheckout extends PosAbstractModel implements Checkout {
     @Override
     public void setDiscountTotal(float total) {
         discount_total = total;
+    }
+
+    @Override
+    public String getGrandTitle() {
+        return grand_title;
+    }
+
+    @Override
+    public void setGrandTitle(String strGrandTitle) {
+        grand_title = strGrandTitle;
     }
 
     @Override

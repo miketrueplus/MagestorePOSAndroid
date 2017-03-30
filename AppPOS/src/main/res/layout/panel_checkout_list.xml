@@ -7,6 +7,8 @@
 
         <import type="com.magestore.app.util.ConfigUtil" />
 
+        <import type="com.magestore.app.util.StringUtil" />
+
         <variable
             name="checkout"
             type="com.magestore.app.lib.model.checkout.Checkout" />
@@ -148,7 +150,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="left"
-                            android:text="@string/shipping_and_handling"
+                            android:text='@{StringUtil.isNullOrEmpty(checkout.getShippingTitle()) ? @string/shipping_and_handling : checkout.getShippingTitle()}'
                             android:textColor="@color/text_color"
                             android:textSize="@dimen/sales_price_text_size" />
 
@@ -173,7 +175,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="left"
-                            android:text="@string/tax"
+                            android:text='@{StringUtil.isNullOrEmpty(checkout.getTaxTitle()) ? @string/tax : checkout.getTaxTitle()}'
                             android:textColor="@color/text_color"
                             android:textSize="@dimen/sales_price_text_size" />
 
@@ -199,7 +201,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="left"
-                            android:text="@string/discount"
+                            android:text='@{StringUtil.isNullOrEmpty(checkout.getDiscountTitle()) ? @string/discount : checkout.getDiscountTitle()}'
                             android:textColor="@color/text_color"
                             android:textSize="@dimen/sales_price_text_size" />
 
@@ -224,7 +226,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="left"
-                            android:text="@string/sub_total"
+                            android:text='@{StringUtil.isNullOrEmpty(checkout.getSubTitle()) ? @string/sub_total : checkout.getSubTitle()}'
                             android:textColor="@color/text_color"
                             android:textSize="@dimen/sales_price_text_size" />
 

@@ -246,18 +246,23 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         for (CheckoutTotals checkoutTotals : checkout.getTotals()) {
             if (checkoutTotals.getCode().equals("subtotal")) {
                 checkout.setSubTotal(checkoutTotals.getValue());
+                checkout.setSubTitle(checkoutTotals.getTitle());
             }
             if (checkoutTotals.getCode().equals("shipping")) {
                 checkout.setShippingTotal(checkoutTotals.getValue());
+                checkout.setShippingTitle(checkoutTotals.getTitle());
             }
             if (checkoutTotals.getCode().equals("discount")) {
                 checkout.setDiscountTotal(checkoutTotals.getValue());
+                checkout.setDiscountTitle(checkoutTotals.getTitle());
             }
             if (checkoutTotals.getCode().equals("tax")) {
                 checkout.setTaxTotal(checkoutTotals.getValue());
+                checkout.setTaxTitle(checkoutTotals.getTitle());
             }
             if (checkoutTotals.getCode().equals("grand_total")) {
                 checkout.setGrandTotal(checkoutTotals.getValue());
+                checkout.setGrandTitle(checkoutTotals.getTitle());
             }
         }
         return checkout;

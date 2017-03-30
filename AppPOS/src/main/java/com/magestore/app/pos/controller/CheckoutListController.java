@@ -332,13 +332,11 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             return true;
         } else if (actionType == ACTION_TYPE_SAVE_SHIPPING) {
             String shippingCode = (String) wraper.get("shipping_code");
-//            String quoteId = DataUtil.getDataStringToPreferences(context, DataUtil.QUOTE);
             String quoteId = getSelectedItem().getQuoteId();
             wraper.put("save_shipping", ((CheckoutService) getListService()).saveShipping(quoteId, shippingCode));
             return true;
         } else if (actionType == ACTION_TYPE_SAVE_PAYMENT) {
             String paymentCode = ((CheckoutPayment) models[0]).getCode();
-//            String quoteId = DataUtil.getDataStringToPreferences(context, DataUtil.QUOTE);
             String quoteId = getSelectedItem().getQuoteId();
             wraper.put("save_payment", ((CheckoutService) getListService()).savePayment(quoteId, paymentCode));
             return true;
@@ -348,7 +346,6 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             checkout.setCreateShip(((CheckoutDetailPanel) mDetailView).isCreateShip());
             checkout.setCreateInvoice(((CheckoutDetailPanel) mDetailView).isCreateInvoice());
             checkout.setNote(((CheckoutDetailPanel) mDetailView).getNote());
-//            String quoteId = DataUtil.getDataStringToPreferences(context, DataUtil.QUOTE);
             String quoteId = getSelectedItem().getQuoteId();
             wraper.put("place_order", ((CheckoutService) getListService()).placeOrder(quoteId, checkout, listCheckoutPayment));
             return true;
@@ -411,7 +408,6 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
             // lưu quote data vào checkout
             getSelectedItem().setQuoteId(quoteId);
-//            DataUtil.saveDataStringToPreferences(context, DataUtil.QUOTE, quoteId);
             //  cập nhật giá
             ((CheckoutService) getListService()).updateTotal(checkout);
             ((CheckoutDetailPanel) mDetailView).bindTotalPrice(checkout.getGrandTotal());
@@ -448,6 +444,8 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 QuoteAddCouponParam quoteAddCouponParam = (QuoteAddCouponParam) wraper.get("quote_add_coupon_param");
                 doInputAddCouponToQuote(quoteAddCouponParam);
             }
+
+
         } else if (success && actionType == ACTION_TYPE_SAVE_QUOTE) {
             Checkout checkout = (Checkout) wraper.get("save_quote");
             wraper.put("save_cart", checkout);
@@ -1088,6 +1086,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
     /**
      * kiểm tra và chọn shipping default
+     *
      * @param type
      * @param listShipping
      * @return
@@ -1109,6 +1108,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
     /**
      * check list cart xem còn sản phẩm hay không
+     *
      * @return
      */
     public boolean checkListCartItem() {
@@ -1118,8 +1118,13 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         return false;
     }
 
+    public void showButtonRemoveDiscount(boolean isShow) {
+        ((CheckoutListPanel) mView).showButtonRemoveDiscount(isShow );
+    }
+
     /**
      * ẩn hiện button discount
+     *
      * @param isShow
      */
     public void showButtonDiscount(boolean isShow) {
@@ -1128,6 +1133,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
     /**
      * khởi tạo payment method
+     *
      * @return
      */
     public CheckoutPayment createPaymentMethod() {
@@ -1136,6 +1142,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
     /**
      * khởi tạo saveQuoteData
+     *
      * @return
      */
     public SaveQuoteParam createSaveQuoteParam() {
@@ -1144,6 +1151,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
     /**
      * khởi tạo quoteAddCouponParam
+     *
      * @return
      */
     public QuoteAddCouponParam createQuoteAddCouponParam() {
@@ -1173,6 +1181,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
     /**
      * ẩn hiện loading cart list
+     *
      * @param isShow
      */
     public void isShowLoadingList(boolean isShow) {
@@ -1181,6 +1190,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
     /**
      * ẩn hiện button checkout
+     *
      * @param isShow
      */
     public void isShowButtonCheckout(boolean isShow) {
@@ -1189,6 +1199,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
     /**
      * ẩn hiện button sales menu discount
+     *
      * @param isShow
      */
     public void isShowSalesMenuDiscount(boolean isShow) {
@@ -1197,14 +1208,16 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
     /**
      * toggle sales menu
+     *
      * @param isShow
      */
-    public void isShowSalesMenuToggle(boolean isShow){
+    public void isShowSalesMenuToggle(boolean isShow) {
         ((CheckoutListPanel) mView).showSalesMenuToggle(isShow);
     }
 
     /**
      * disable hoặc enable remove item cart
+     *
      * @param isEnable
      */
     public void enableRemoveCartItem(boolean isEnable) {

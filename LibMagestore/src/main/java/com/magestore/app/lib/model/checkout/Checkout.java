@@ -29,17 +29,32 @@ public interface Checkout extends Model {
     String getCouponCode();
     void setCouponCode(String strCouponCode);
 
+    String getSubTitle();
+    void setSubTitle(String strSubTitle);
+
     float getSubTotal();
     void setSubTotal(float total);
+
+    String getShippingTitle();
+    void setShippingTitle(String strShippingTitle);
 
     float getShippingTotal();
     void setShippingTotal(float shipping);
 
+    String getTaxTitle();
+    void setTaxTitle(String strTaxTitle);
+
     float getTaxTotal();
     void setTaxTotal(float total);
 
+    String getDiscountTitle();
+    void setDiscountTitle(String strDiscountTitle);
+
     float getDiscountTotal();
     void setDiscountTotal(float total);
+
+    String getGrandTitle();
+    void setGrandTitle(String strGrandTitle);
 
     float getGrandTotal();
     void setGrandTotal(float total);

@@ -235,6 +235,10 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
         }
     }
 
+    public void showButtonRemoveDiscount(boolean isShow){
+        bt_remove_discount.setVisibility(isShow ? VISIBLE : GONE);
+    }
+
     public void showButtonCheckout(boolean isShow) {
         ll_action_checkout.setVisibility(isShow ? VISIBLE : GONE);
     }
