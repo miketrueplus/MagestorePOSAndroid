@@ -193,6 +193,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
     public void doInputSaveQuote(SaveQuoteParam quoteParam) {
         Checkout checkout = getSelectedItem();
+        showButtonRemoveDiscount(true);
         ((CheckoutListPanel) mView).showLoading(true);
         // TODO: luôn save cart trước vì có trường hợp remove online xong save lại quote chưa có sản phẩm nên total = 0
         String store_id = DataUtil.getDataStringToPreferences(context, DataUtil.STORE_ID);
@@ -216,6 +217,26 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         wraper.put("quote_id", checkout.getQuoteId());
         wraper.put("quote_add_coupon_param", quoteAddCouponParam);
         doAction(ACTION_TYPE_ADD_COUPON_TO_QUOTE, null, wraper, checkout);
+    }
+
+    public void doInputRemoveDiscount(String type_discount) {
+        isShowSalesMenuToggle(false);
+        Checkout checkout = getSelectedItem();
+        ((CheckoutListPanel) mView).showLoading(true);
+        SaveQuoteParam quoteParam = createSaveQuoteParam();
+        quoteParam.setDiscountName("");
+        quoteParam.setDiscountValue(0);
+        quoteParam.setDiscountType(type_discount);
+        String store_id = DataUtil.getDataStringToPreferences(context, DataUtil.STORE_ID);
+        checkout.setStoreId(store_id);
+        wraper.put("quote_id", checkout.getQuoteId());
+        wraper.put("quote_param", quoteParam);
+        if (((CheckoutDetailPanel) mDetailView).getVisibility() == View.VISIBLE) {
+            wraper.put("type_save_quote", 1);
+        } else {
+            wraper.put("type_save_quote", 0);
+        }
+        doAction(ACTION_TYPE_SAVE_QUOTE, null, wraper, checkout);
     }
 
     /**
@@ -410,6 +431,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             getSelectedItem().setQuoteId(quoteId);
             //  cập nhật giá
             ((CheckoutService) getListService()).updateTotal(checkout);
+            showButtonRemoveDiscount(checkDiscount(checkout) ? true : false);
             ((CheckoutDetailPanel) mDetailView).bindTotalPrice(checkout.getGrandTotal());
 
             mCheckoutPaymentListPanel.setCheckout(checkout);
@@ -444,8 +466,6 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 QuoteAddCouponParam quoteAddCouponParam = (QuoteAddCouponParam) wraper.get("quote_add_coupon_param");
                 doInputAddCouponToQuote(quoteAddCouponParam);
             }
-
-
         } else if (success && actionType == ACTION_TYPE_SAVE_QUOTE) {
             Checkout checkout = (Checkout) wraper.get("save_quote");
             wraper.put("save_cart", checkout);
@@ -485,10 +505,17 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
                 // show shipping total
                 ((CheckoutListPanel) mView).showSalesShipping(true);
+
+                ((CheckoutListPanel) mView).showButtonCustomSales(false);
             }
 
             //  cập nhật giá
             ((CheckoutService) getListService()).updateTotal(checkout);
+
+            if (!checkDiscount(checkout)) {
+                showButtonRemoveDiscount(false);
+            }
+
             ((CheckoutListPanel) mView).updateTotalPrice(checkout);
             ((CheckoutListPanel) mView).showLoading(false);
         } else if (success && actionType == ACTION_TYPE_ADD_COUPON_TO_QUOTE) {
@@ -504,6 +531,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             mCheckoutAddPaymentPanel.bindList(checkout.getCheckoutPayment());
             //  cập nhật giá
             ((CheckoutService) getListService()).updateTotal(checkout);
+            showButtonRemoveDiscount(checkDiscount(checkout) ? true : false);
             ((CheckoutDetailPanel) mDetailView).bindTotalPrice(checkout.getGrandTotal());
 
             mCheckoutPaymentListPanel.setCheckout(checkout);
@@ -1118,8 +1146,26 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         return false;
     }
 
+    /**
+     * check discount có hay ko
+     *
+     * @param checkout
+     * @return
+     */
+    public boolean checkDiscount(Checkout checkout) {
+        if (checkout.getDiscountTotal() != 0) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * ẩn hiện button remove discount
+     *
+     * @param isShow
+     */
     public void showButtonRemoveDiscount(boolean isShow) {
-        ((CheckoutListPanel) mView).showButtonRemoveDiscount(isShow );
+        ((CheckoutListPanel) mView).showButtonRemoveDiscount(isShow);
     }
 
     /**
@@ -1176,6 +1222,8 @@ public class CheckoutListController extends AbstractListController<Checkout> {
      * cập nhật total
      */
     public void updateTotal() {
+        Checkout checkout = checkDataCheckout((Checkout) wraper.get("save_shipping"));
+        ((CheckoutService) getListService()).updateTotal(checkout);
         ((CheckoutListPanel) getView()).updateTotalPrice(getSelectedItem());
     }
 

@@ -214,6 +214,13 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
                 ((CheckoutListController) getController()).onShowCustomSale();
             }
         });
+
+        bt_remove_discount.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((CheckoutListController) mController).doInputRemoveDiscount(getContext().getString(R.string.sales_discount_currency));
+            }
+        });
     }
 
     public void useDefaultGuestCheckout(Customer customer) {
@@ -254,6 +261,10 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
     public void showSalesMenuToCheckout(boolean isShow) {
         bt_custom_sales.setVisibility(isShow ? VISIBLE : GONE);
         bt_sales_discount.setVisibility(((CheckoutListController) mController).checkListCartItem() ? VISIBLE : GONE);
+    }
+
+    public void showButtonCustomSales(boolean isShow){
+        bt_custom_sales.setVisibility(isShow ? VISIBLE : GONE);
     }
 
     public void showButtonDiscount(boolean isShow) {
