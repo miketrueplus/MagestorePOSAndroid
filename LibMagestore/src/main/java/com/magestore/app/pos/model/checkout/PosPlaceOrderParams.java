@@ -63,6 +63,11 @@ public class PosPlaceOrderParams extends PosAbstractModel implements PlaceOrderP
     }
 
     @Override
+    public void setDeliveryTime(String strDeliveryTime) {
+        actions.delivery_time = strDeliveryTime;
+    }
+
+    @Override
     public void setMethod(String strMethod) {
         payment.method = strMethod;
     }
@@ -114,6 +119,7 @@ public class PosPlaceOrderParams extends PosAbstractModel implements PlaceOrderP
     public class PlaceOrderActionParam {
         String create_invoice;
         String create_shipment;
+        String delivery_time;
     }
 
     public class PlaceOrderQuoteDataParam {

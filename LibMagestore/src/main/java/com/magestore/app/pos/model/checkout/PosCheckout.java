@@ -96,6 +96,8 @@ public class PosCheckout extends PosAbstractModel implements Checkout {
     float remain_money;
     @Gson2PosExclude
     float exchange_money;
+    @Gson2PosExclude
+    String delivery_date;
 
     @Override
     public String getCustomerID() {
@@ -383,5 +385,15 @@ public class PosCheckout extends PosAbstractModel implements Checkout {
     @Override
     public void setStoreId(String strStoreId) {
         store_id = strStoreId;
+    }
+
+    @Override
+    public String getDeliveryDate() {
+        return delivery_date;
+    }
+
+    @Override
+    public void setDeliveryDate(String strDeliveryDate) {
+        delivery_date = strDeliveryDate;
     }
 }

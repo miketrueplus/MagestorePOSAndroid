@@ -100,4 +100,7 @@ public interface Checkout extends Model {
 
     String getStoreId();
     void setStoreId(String strStoreId);
+
+    String getDeliveryDate();
+    void setDeliveryDate(String strDeliveryDate);
 }

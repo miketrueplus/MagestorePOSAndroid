@@ -53,7 +53,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/checkout_border_linear_layout"
                     android:orientation="vertical"
-                    android:padding="5dp">
+                    android:padding="@dimen/layout_margin_5">
 
                     <com.magestore.app.view.FormatEditText
                         android:id="@+id/reference_number"
@@ -75,7 +75,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/checkout_border_linear_layout"
                     android:orientation="vertical"
-                    android:padding="5dp">
+                    android:padding="@dimen/layout_margin_5">
 
                     <com.magestore.app.view.FormatEditText
                         android:id="@+id/checkout_value"

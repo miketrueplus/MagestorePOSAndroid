@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -36,8 +37,8 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
     CheckoutShippingListPanel mCheckoutShippingListPanel;
     CheckoutAddPaymentPanel mCheckoutAddPaymentPanel;
     CheckoutPaymentCreditCardPanel mCheckoutPaymentCreditCardPanel;
-    TextView txt_grand_total, txt_remain_title, txt_remain_value, txt_payment_creditcard;
-    RelativeLayout rl_content_payment_method, sales_background_loading, rl_remove_payment_credit_card;
+    TextView txt_grand_total, txt_remain_title, txt_remain_value, txt_payment_creditcard, tv_delivery_date_time;
+    RelativeLayout rl_content_payment_method, sales_background_loading, rl_remove_payment_credit_card, rl_delivery;
     MagestoreDialog dialog;
     Switch create_ship, create_invoice;
     ImageButton im_back;
@@ -80,6 +81,10 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         ll_payment_credit_card = (LinearLayout) findViewById(R.id.ll_payment_credit_card);
         txt_payment_creditcard = (TextView) findViewById(R.id.txt_payment_creditcard);
         rl_remove_payment_credit_card = (RelativeLayout) findViewById(R.id.rl_remove_payment_credit_card);
+
+        // delivery
+        rl_delivery = (RelativeLayout) findViewById(R.id.rl_delivery);
+        tv_delivery_date_time = (TextView) findViewById(R.id.tv_delivery_date_time);
 
         im_back.setOnClickListener(new OnClickListener() {
             @Override
@@ -124,6 +129,38 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
             @Override
             public void onClick(View view) {
                 ((CheckoutListController) getController()).onRemovePaymentCreditCard();
+            }
+        });
+
+        rl_delivery.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final CheckoutDeliveryPanel mCheckoutDeliveryPanel = new CheckoutDeliveryPanel(getContext());
+                mCheckoutDeliveryPanel.initValue();
+                final MagestoreDialog dialog = DialogUtil.dialog(getContext(), "", mCheckoutDeliveryPanel);
+                dialog.setGoneDialogTitle(true);
+                dialog.show();
+
+                Button btn_time_now = (Button) dialog.findViewById(R.id.btn_time_now);
+                Button btn_done = (Button) dialog.findViewById(R.id.btn_done);
+
+                btn_time_now.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        tv_delivery_date_time.setText(mCheckoutDeliveryPanel.showDataNow());
+                        ((CheckoutListController) getController()).getSelectedItem().setDeliveryDate(mCheckoutDeliveryPanel.bindDateTimeNow());
+                        dialog.dismiss();
+                    }
+                });
+
+                btn_done.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        tv_delivery_date_time.setText(mCheckoutDeliveryPanel.showData());
+                        ((CheckoutListController) getController()).getSelectedItem().setDeliveryDate(mCheckoutDeliveryPanel.bindDateTime());
+                        dialog.dismiss();
+                    }
+                });
             }
         });
     }
@@ -197,7 +234,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         sales_background_loading.setVisibility(isShow ? VISIBLE : GONE);
     }
 
-    public void showPickAtStore(boolean isShow){
+    public void showPickAtStore(boolean isShow) {
         cb_pick_at_store.setVisibility(isShow ? VISIBLE : GONE);
     }
 

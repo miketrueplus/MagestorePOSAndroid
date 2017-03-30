@@ -116,6 +116,10 @@ public class MagestoreDialog extends Dialog {
         this.dialog_content = dialog_content;
     }
 
+    public void setGoneDialogTitle(boolean goneDialogTitle) {
+        this.goneDialogTitle = goneDialogTitle;
+    }
+
     public MagestoreDialog(Context context) {
         super(context);
     }

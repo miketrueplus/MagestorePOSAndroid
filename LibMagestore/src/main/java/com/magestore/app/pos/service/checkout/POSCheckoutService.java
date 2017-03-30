@@ -149,6 +149,9 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         placeOrderParams.setActions(placeOrderActionParam);
         PosPlaceOrderParams.PlaceOrderQuoteDataParam placeOrderQuoteDataParam = placeOrderParams.createPlaceOrderQuoteDataParam();
         placeOrderParams.setCustomerNote(checkout.getNote());
+        if(!StringUtil.isNullOrEmpty(checkout.getDeliveryDate())){
+            placeOrderParams.setDeliveryTime(checkout.getDeliveryDate());
+        }
         placeOrderParams.setQuoteData(placeOrderQuoteDataParam);
 
         PosPlaceOrderParams.PlaceOrderPaymentParam placeOrderPaymentParam = placeOrderParams.createPlaceOrderPaymentParam();

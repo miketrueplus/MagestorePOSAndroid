@@ -20,6 +20,7 @@ public interface PlaceOrderParams extends Model {
     void setCreateInvoice(String strCreateInvoice);
     void setCreateShipment(String strCreateShipment);
     void setCustomerNote(String strCustomerNote);
+    void setDeliveryTime(String strDeliveryTime);
     void setMethod(String strMethod);
     void setMethodData(List<PaymentMethodDataParam> methodData);
     void setPlaceOrderExtensionData(List<PlaceOrderExtensionParam> listExtension);

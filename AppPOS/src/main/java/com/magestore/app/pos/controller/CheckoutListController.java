@@ -367,6 +367,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             checkout.setCreateShip(((CheckoutDetailPanel) mDetailView).isCreateShip());
             checkout.setCreateInvoice(((CheckoutDetailPanel) mDetailView).isCreateInvoice());
             checkout.setNote(((CheckoutDetailPanel) mDetailView).getNote());
+            checkout.setDeliveryDate(getSelectedItem().getDeliveryDate());
             String quoteId = getSelectedItem().getQuoteId();
             wraper.put("place_order", ((CheckoutService) getListService()).placeOrder(quoteId, checkout, listCheckoutPayment));
             return true;
