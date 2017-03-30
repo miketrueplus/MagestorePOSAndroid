@@ -400,13 +400,6 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 ((CheckoutDetailPanel) mDetailView).showPickAtStore(true);
             }
 
-            if (listShipping != null && listShipping.size() > 0) {
-                // bind data to shipping method list
-                bindDataToShippingMethodList(listShipping);
-                // auto select shipping method
-                autoSelectShipping(listShipping);
-            }
-
             mPaymentMethodListPanel.bindList(listPayment);
             mCheckoutAddPaymentPanel.bindList(listPayment);
 
@@ -429,7 +422,15 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             ((CheckoutListPanel) mView).showSalesShipping(true);
             // câp nhật giá
             ((CheckoutListPanel) mView).updateTotalPrice(checkout);
-            ((CheckoutDetailPanel) mDetailView).isShowLoadingDetail(false);
+
+            if (listShipping != null && listShipping.size() > 0) {
+                // bind data to shipping method list
+                bindDataToShippingMethodList(listShipping);
+                // auto select shipping method
+                autoSelectShipping(listShipping);
+            } else {
+                ((CheckoutDetailPanel) mDetailView).isShowLoadingDetail(false);
+            }
         } else if (success && actionType == ACTION_TYPE_SAVE_CART_DISCOUNT) {
             Checkout checkout = (Checkout) wraper.get("save_cart_discount");
             String quoteId = checkout.getQuote().getID();
