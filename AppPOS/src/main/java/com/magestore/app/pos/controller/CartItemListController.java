@@ -636,4 +636,11 @@ public class CartItemListController extends AbstractChildListController<Checkout
         mCheckoutCustomSalePanel.setController(this);
     }
 
+    /**
+     * hidden sales menu
+     * @param isShow
+     */
+    public void showSalesMenuToggle(boolean isShow){
+        mCheckoutListController.isShowSalesMenuToggle(isShow);
+    }
 }

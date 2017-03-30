@@ -49,7 +49,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
     Toolbar toolbar_order;
     Customer mCustomer;
     CustomerAddNewPanel mCustomerAddNewPanel;
-    FloatingActionButton bt_sales_discount, bt_custom_sales;
+    FloatingActionButton bt_sales_discount, bt_custom_sales, bt_remove_discount;
     FloatingActionMenu bt_sales_menu;
     Button btn_create_customer, btn_use_guest, btn_sales_order_checkout, btn_apply_discount;
     FrameLayout fr_sales_new_customer;
@@ -110,6 +110,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
         bt_sales_menu = (FloatingActionMenu) findViewById(R.id.bt_sales_menu);
         bt_sales_discount = (FloatingActionButton) findViewById(R.id.bt_sales_discount);
         bt_custom_sales = (FloatingActionButton) findViewById(R.id.bt_custom_sales);
+        bt_remove_discount = (FloatingActionButton) findViewById(R.id.bt_remove_discount);
         bt_sales_menu.setClosedOnTouchOutside(true);
         cart_background_loading = (RelativeLayout) findViewById(R.id.cart_background_loading);
         initValue();
@@ -240,6 +241,10 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
 
     public void showSalesMenuDiscount(boolean isShow) {
         bt_sales_menu.setVisibility(isShow ? VISIBLE : GONE);
+    }
+
+    public void showSalesMenuToggle(boolean isShow){
+        bt_sales_menu.toggle(isShow ? true : false);
     }
 
     public void showSalesMenuToCheckout(boolean isShow) {

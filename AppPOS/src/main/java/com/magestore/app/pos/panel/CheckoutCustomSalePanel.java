@@ -128,5 +128,6 @@ public class CheckoutCustomSalePanel extends AbstractDetailPanel<CartItem> {
             return;
         }
         ((CartItemListController) getController()).updateCustomeSaleToCart(bind2Item());
+        ((CartItemListController) getController()).showSalesMenuToggle(false);
     }
 }

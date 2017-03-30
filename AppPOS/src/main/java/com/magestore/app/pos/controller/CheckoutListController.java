@@ -1196,6 +1196,14 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     }
 
     /**
+     * toggle sales menu
+     * @param isShow
+     */
+    public void isShowSalesMenuToggle(boolean isShow){
+        ((CheckoutListPanel) mView).showSalesMenuToggle(isShow);
+    }
+
+    /**
      * disable hoặc enable remove item cart
      * @param isEnable
      */
