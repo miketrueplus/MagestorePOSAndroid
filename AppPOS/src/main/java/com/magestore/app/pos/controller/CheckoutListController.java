@@ -925,6 +925,9 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         }
     }
 
+    /**
+     * xóa payment creditcard method  checkout
+     */
     public void onRemovePaymentCreditCard() {
         List<CheckoutPayment> listPayment = (List<CheckoutPayment>) wraper.get("list_payment");
         if (listPayment != null) {
@@ -975,10 +978,18 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         ((CheckoutDetailPanel) mDetailView).isEnableButtonAddPayment(enable);
     }
 
+    /**
+     * ẩn hoặc hiện button create invoice
+     *
+     * @param enable
+     */
     public void isEnableCreateInvoice(boolean enable) {
         ((CheckoutDetailPanel) mDetailView).isEnableCreateInvoice(enable);
     }
 
+    /**
+     * add 1 order mới vào list order
+     */
     public void actionNewOrder() {
         List<CheckoutPayment> listPayment = (List<CheckoutPayment>) wraper.get("list_payment");
         if (listPayment != null) {
@@ -1005,6 +1016,9 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         doShowDetailSuccess(false);
     }
 
+    /**
+     * back trở về trang home
+     */
     public void onBackTohome() {
         List<CheckoutPayment> listPayment = (List<CheckoutPayment>) wraper.get("list_payment");
         if (listPayment != null) {
@@ -1034,6 +1048,11 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         doShowDetailPanel(false);
     }
 
+    /**
+     * checkdata nếu không có shipping thì dùng data khi save cart
+     *
+     * @param checkout
+     */
     private Checkout checkDataCheckout(Checkout checkout) {
         if (checkout == null) {
             return (Checkout) wraper.get("save_cart");
@@ -1067,6 +1086,12 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         return false;
     }
 
+    /**
+     * kiểm tra và chọn shipping default
+     * @param type
+     * @param listShipping
+     * @return
+     */
     public CheckoutShipping checkListShippingMethodDefault(int type, List<CheckoutShipping> listShipping) {
         for (CheckoutShipping shipping : listShipping) {
             if (type == 0) {
@@ -1082,6 +1107,10 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         return null;
     }
 
+    /**
+     * check list cart xem còn sản phẩm hay không
+     * @return
+     */
     public boolean checkListCartItem() {
         if (getSelectedItem().getCartItem() != null && getSelectedItem().getCartItem().size() > 0) {
             return true;
@@ -1089,46 +1118,87 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         return false;
     }
 
+    /**
+     * ẩn hiện button discount
+     * @param isShow
+     */
     public void showButtonDiscount(boolean isShow) {
         ((CheckoutListPanel) mView).showButtonDiscount(isShow);
     }
 
+    /**
+     * khởi tạo payment method
+     * @return
+     */
     public CheckoutPayment createPaymentMethod() {
         return ((CheckoutService) getListService()).createPaymentMethod();
     }
 
+    /**
+     * khởi tạo saveQuoteData
+     * @return
+     */
     public SaveQuoteParam createSaveQuoteParam() {
         return ((CheckoutService) getListService()).createSaveQuoteParam();
     }
 
+    /**
+     * khởi tạo quoteAddCouponParam
+     * @return
+     */
     public QuoteAddCouponParam createQuoteAddCouponParam() {
         return ((CheckoutService) getListService()).createQuoteAddCouponParam();
     }
 
+    /**
+     * add một address mới cho customer
+     */
     public void addNewAddress() {
         ((CheckoutListPanel) mView).checkoutAddNewAddress();
     }
 
+    /**
+     * reset position của list address về 0
+     */
     public void resetPositionAddress() {
         mCheckoutAddressListPanel.setSelectPos(0);
     }
 
+    /**
+     * cập nhật total
+     */
     public void updateTotal() {
         ((CheckoutListPanel) getView()).updateTotalPrice(getSelectedItem());
     }
 
+    /**
+     * ẩn hiện loading cart list
+     * @param isShow
+     */
     public void isShowLoadingList(boolean isShow) {
         ((CheckoutListPanel) mView).showLoading(isShow);
     }
 
+    /**
+     * ẩn hiện button checkout
+     * @param isShow
+     */
     public void isShowButtonCheckout(boolean isShow) {
         ((CheckoutListPanel) mView).showButtonCheckout(isShow);
     }
 
+    /**
+     * ẩn hiện button sales menu discount
+     * @param isShow
+     */
     public void isShowSalesMenuDiscount(boolean isShow) {
         ((CheckoutListPanel) mView).showSalesMenuDiscount(isShow);
     }
 
+    /**
+     * disable hoặc enable remove item cart
+     * @param isEnable
+     */
     public void enableRemoveCartItem(boolean isEnable) {
         // báo cho các observ khác về việc enable thay đổi cart item
         String keyObserv = STATE_ENABLE_CHANGE_CART_ITEM;
