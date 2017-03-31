@@ -10,6 +10,7 @@ import com.magestore.app.lib.connection.ParamBuilder;
 import com.magestore.app.lib.connection.ResultReading;
 import com.magestore.app.lib.connection.Statement;
 import com.magestore.app.lib.model.Model;
+import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.model.sales.OrderCommentParams;
 import com.magestore.app.lib.model.sales.OrderInvoiceParams;
@@ -24,6 +25,7 @@ import com.magestore.app.pos.api.m2.POSAbstractDataAccess;
 import com.magestore.app.pos.api.m2.POSDataAccessSession;
 import com.magestore.app.pos.model.sales.PosOrder;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListOrder;
+import com.magestore.app.pos.parse.gson2pos.Gson2PosListPaymentMethod;
 
 import java.io.IOException;
 import java.util.List;
@@ -497,6 +499,49 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
             rp.setParseImplement(getClassParseImplement());
             rp.setParseModel(PosOrder.class);
             return (Order) rp.doParse();
+        } catch (Exception e) {
+            throw new DataAccessException(e);
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
+    }
+
+    @Override
+    public List<CheckoutPayment> retrievePaymentMethod() throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+
+        try {
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPI.REST_PAYMENT_METHOD_GET_LISTING);
+
+            // Xây dựng tham số
+            paramBuilder = statement.getParamBuilder()
+                    .setSessionID(POSDataAccessSession.REST_SESSION_ID);
+
+            rp = statement.execute();
+            rp.setParseImplement(getClassParseImplement());
+            rp.setParseModel(Gson2PosListPaymentMethod.class);
+            Gson2PosListPaymentMethod listPayment = (Gson2PosListPaymentMethod) rp.doParse();
+            List<CheckoutPayment> list = (List<CheckoutPayment>) (List<?>) (listPayment.items);
+
+            return list;
         } catch (Exception e) {
             throw new DataAccessException(e);
         } finally {

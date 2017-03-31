@@ -1,6 +1,7 @@
 package com.magestore.app.lib.resourcemodel.sales;
 
 import com.magestore.app.lib.connection.ConnectionException;
+import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.model.sales.OrderCommentParams;
 import com.magestore.app.lib.model.sales.OrderInvoiceParams;
@@ -33,4 +34,6 @@ public interface OrderDataAccess extends DataAccess, ListDataAccess<Order> {
     Order orderInvoice(OrderInvoiceParams invoiceParams) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
 
     Order orderCancel(OrderCommentParams cancelParams, String orderID) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
+
+    List<CheckoutPayment> retrievePaymentMethod() throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
 }
