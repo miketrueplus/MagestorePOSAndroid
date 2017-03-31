@@ -106,6 +106,7 @@ public class CustomerActivity extends AbstractActivity {
         mCustomerListController.setDetailPanel(mCustomerDetailPanel);
         mCustomerListController.setInsertAtFirst();
         mCustomerListController.setInsertBeforeSuccess();
+        mCustomerListPanel.setAllowShowWarningWhileEmptyList();
 
         // Chuẩn bị controller quản lý danh sách địa chỉ khách hàng
         mCustomerAddressListController = new CustomerAddressListController();

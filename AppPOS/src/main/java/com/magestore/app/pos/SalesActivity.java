@@ -246,6 +246,7 @@ public class SalesActivity extends AbstractActivity
         mProductListController.setListPanel(mProductListPanel);
         mProductListController.setSubject(subjectObserv);
         mCheckoutListController.setProductListController(mProductListController);
+        mProductListPanel.setAllowShowWarningWhileEmptyList();
 
         // controller quản lý đơn hàng
         mCheckoutCartItemListController = new CartItemListController();

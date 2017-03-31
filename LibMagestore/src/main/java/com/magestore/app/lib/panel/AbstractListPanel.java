@@ -97,6 +97,8 @@ public abstract class AbstractListPanel<TModel extends Model>
     // scroll litsenr cho lazy loading
     EndlessRecyclerOnScrollListener mScrollListener;
 
+    // hiện thông báo khi không có dữ liệu hay không?
+    boolean mblnShowWarningWhileEmptyData = false;
     /**
      * Khởi tạo
      *
@@ -683,13 +685,29 @@ public abstract class AbstractListPanel<TModel extends Model>
             // đặt lại scroll listener cho lazy loading
             if (mScrollListener != null) mScrollListener.resetCurrentPage();
         } else {
-            // hiện thông báo
-            showWarning(getContext().getString(R.string.msg_no_data));
+            // hiện thông báo nếu cho phép
+            if (mblnShowWarningWhileEmptyData)
+                callShowWarning(getContext().getString(R.string.msg_no_data));
         }
 
         // update giao diện trên view
         mRecycleView.getAdapter().notifyDataSetChanged();
     }
+
+    /**
+     * Cho phép hiện thông báo nếu danh sách trống
+     */
+    public void setAllowShowWarningWhileEmptyList() {
+        mblnShowWarningWhileEmptyData = true;
+    }
+
+    /**
+     * Kkông cho phép hiện thông báo nếu danh sách trống
+     */
+    public void setDisallowShowWarningWhileEmptyList() {
+        mblnShowWarningWhileEmptyData = false;
+    }
+
 
     /**
      * Có sử dụng lazy loading hay không
