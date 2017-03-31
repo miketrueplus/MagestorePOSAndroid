@@ -2,6 +2,7 @@ package com.magestore.app.pos.controller;
 
 import com.magestore.app.lib.controller.AbstractListController;
 import com.magestore.app.lib.model.Model;
+import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.model.sales.OrderCommentParams;
 import com.magestore.app.lib.model.sales.OrderInvoiceParams;
@@ -14,10 +15,14 @@ import com.magestore.app.pos.panel.OrderAddCommentPanel;
 import com.magestore.app.pos.panel.OrderCancelPanel;
 import com.magestore.app.pos.panel.OrderDetailPanel;
 import com.magestore.app.pos.panel.OrderInvoicePanel;
+import com.magestore.app.pos.panel.OrderAddPaymentPanel;
+import com.magestore.app.pos.panel.OrderListChoosePaymentPanel;
 import com.magestore.app.pos.panel.OrderRefundPanel;
 import com.magestore.app.pos.panel.OrderSendEmailPanel;
 import com.magestore.app.pos.panel.OrderShipmentPanel;
+import com.magestore.app.pos.panel.OrderTakePaymentPanel;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +45,9 @@ public class OrderHistoryListController extends AbstractListController<Order> {
     OrderRefundPanel mOrderRefundPanel;
     OrderInvoicePanel mOrderInvoicePanel;
     OrderCancelPanel mOrderCancelPanel;
+    OrderTakePaymentPanel mOrderTakePaymentPanel;
+    OrderAddPaymentPanel mOrderAddPaymentPanel;
+    OrderListChoosePaymentPanel mOrderListChoosePaymentPanel;
 
     public static int SENT_EMAIL_TYPE = 1;
     public static String SENT_EMAIL_CODE = "send_email";
@@ -53,6 +61,8 @@ public class OrderHistoryListController extends AbstractListController<Order> {
     public static String ORDER_INVOICE_CODE = "order_invoice";
     public static int ORDER_CANCEL_TYPE = 6;
     public static String ORDER_CANCEL_CODE = "order_cancel";
+    public static int RETRIEVE_PAYMENT_METHOD_TYPE = 7;
+    public static String RETRIEVE_PAYMENT_METHOD_CODE = "retrieve_payment_method";
 
     Map<String, Object> wraper;
 
@@ -128,10 +138,24 @@ public class OrderHistoryListController extends AbstractListController<Order> {
         this.mOrderCancelPanel = mOrderCancelPanel;
     }
 
+    public void setOrderTakePaymentPanel(OrderTakePaymentPanel mOrderTakePaymentPanel) {
+        this.mOrderTakePaymentPanel = mOrderTakePaymentPanel;
+    }
+
+    public void setOrderAddPaymentPanel(OrderAddPaymentPanel mOrderAddPaymentPanel) {
+        this.mOrderAddPaymentPanel = mOrderAddPaymentPanel;
+    }
+
+    public void setOrderListChoosePaymentPanel(OrderListChoosePaymentPanel mOrderListChoosePaymentPanel) {
+        this.mOrderListChoosePaymentPanel = mOrderListChoosePaymentPanel;
+    }
+
     @Override
     public void onRetrievePostExecute(List<Order> list) {
         super.onRetrievePostExecute(list);
-        wraper = new HashMap<>();
+        if (wraper == null) {
+            wraper = new HashMap<>();
+        }
     }
 
     public void doInputSendEmail(Map<String, Object> paramSendEmail) {
@@ -158,6 +182,13 @@ public class OrderHistoryListController extends AbstractListController<Order> {
         doAction(ORDER_CANCEL_TYPE, ORDER_CANCEL_CODE, wraper, order);
     }
 
+    public void doRetrievePaymentMethod() {
+        if (wraper == null) {
+            wraper = new HashMap<>();
+        }
+        doAction(RETRIEVE_PAYMENT_METHOD_TYPE, RETRIEVE_PAYMENT_METHOD_CODE, wraper, null);
+    }
+
     @Override
     public Boolean doActionBackround(int actionType, String actionCode, Map<String, Object> wraper, Model... models) throws Exception {
         if (actionType == SENT_EMAIL_TYPE) {
@@ -179,6 +210,9 @@ public class OrderHistoryListController extends AbstractListController<Order> {
         } else if (actionType == ORDER_CANCEL_TYPE) {
             wraper.put("cancel_respone", mOrderService.orderCancel((Order) models[0]));
             return true;
+        } else if (actionType == RETRIEVE_PAYMENT_METHOD_TYPE) {
+            wraper.put("list_payment", mOrderService.retrievePaymentMethod());
+            return true;
         }
         return false;
     }
@@ -188,75 +222,131 @@ public class OrderHistoryListController extends AbstractListController<Order> {
         super.onActionPostExecute(success, actionType, actionCode, wraper, models);
         if (actionType == SENT_EMAIL_TYPE) {
             mOrderSendEmailPanel.showAlertRespone(success);
-        } else if (actionType == CREATE_SHIPMENT_TYPE) {
-            if (success) {
-                Order order = (Order) wraper.get("shipment_respone");
-                mOrderShipmentPanel.showAlertRespone();
-                mOrderHistoryItemsListController.doSelectOrder(order);
-                mOrderCommentListController.doSelectOrder(order);
-                mOrderHistoryItemsListController.notifyDataSetChanged();
-                mOrderCommentListController.notifyDataSetChanged();
-                mList.set(mList.indexOf(((Order) models[0])), order);
-                mView.notifyDataSetChanged();
-                ((OrderDetailPanel) mDetailView).changeColorStatusOrder(order.getStatus());
-                ((OrderDetailPanel) mDetailView).changeStatusTopOrder(order.getStatus());
-                ((OrderDetailPanel) mDetailView).bindDataRespone(order);
-                ((OrderDetailPanel) mDetailView).setOrder(order);
-            }
-        } else if (actionType == INSERT_STATUS_TYPE) {
-            if (success) {
-                Order order = (Order) wraper.get("status_respone");
-                mOrderAddCommentPanel.showAlertRespone();
-                mOrderCommentListController.doSelectOrder(order);
-                mOrderCommentListController.notifyDataSetChanged();
-                ((OrderDetailPanel) mDetailView).bindDataRespone(order);
-            }
-        } else if (actionType == ORDER_REFUND_TYPE) {
-            if (success) {
-                Order order = (Order) wraper.get("refund_respone");
-                mOrderRefundPanel.showAlertRespone();
-                mOrderHistoryItemsListController.doSelectOrder(order);
-                mOrderCommentListController.doSelectOrder(order);
-                mOrderHistoryItemsListController.notifyDataSetChanged();
-                mOrderCommentListController.notifyDataSetChanged();
-                mList.set(mList.indexOf(((Order) models[0])), order);
-                mView.notifyDataSetChanged();
-                ((OrderDetailPanel) mDetailView).changeColorStatusOrder(order.getStatus());
-                ((OrderDetailPanel) mDetailView).changeStatusTopOrder(order.getStatus());
-                ((OrderDetailPanel) mDetailView).bindDataRespone(order);
-                ((OrderDetailPanel) mDetailView).setOrder(order);
-            }
-        } else if (actionType == ORDER_INVOICE_TYPE) {
-            if (success) {
-                Order order = (Order) wraper.get("invoice_respone");
-                mOrderInvoicePanel.showAlertRespone();
-                mOrderHistoryItemsListController.doSelectOrder(order);
-                mOrderCommentListController.doSelectOrder(order);
-                mOrderHistoryItemsListController.notifyDataSetChanged();
-                mOrderCommentListController.notifyDataSetChanged();
-                mList.set(mList.indexOf(((Order) models[0])), order);
-                mView.notifyDataSetChanged();
-                ((OrderDetailPanel) mDetailView).changeColorStatusOrder(order.getStatus());
-                ((OrderDetailPanel) mDetailView).changeStatusTopOrder(order.getStatus());
-                ((OrderDetailPanel) mDetailView).bindDataRespone(order);
-                ((OrderDetailPanel) mDetailView).setOrder(order);
-            }
-        } else if (actionType == ORDER_CANCEL_TYPE) {
-            if (success) {
-                Order order = (Order) wraper.get("cancel_respone");
-                mOrderCancelPanel.showAlertRespone();
-                mOrderHistoryItemsListController.doSelectOrder(order);
-                mOrderCommentListController.doSelectOrder(order);
-                mOrderHistoryItemsListController.notifyDataSetChanged();
-                mOrderCommentListController.notifyDataSetChanged();
-                mList.set(mList.indexOf(((Order) models[0])), order);
-                mView.notifyDataSetChanged();
-                ((OrderDetailPanel) mDetailView).changeColorStatusOrder(order.getStatus());
-                ((OrderDetailPanel) mDetailView).changeStatusTopOrder(order.getStatus());
-                ((OrderDetailPanel) mDetailView).bindDataRespone(order);
-                ((OrderDetailPanel) mDetailView).setOrder(order);
-            }
+        } else if (success && actionType == CREATE_SHIPMENT_TYPE) {
+            Order order = (Order) wraper.get("shipment_respone");
+            mOrderShipmentPanel.showAlertRespone();
+            mOrderHistoryItemsListController.doSelectOrder(order);
+            mOrderCommentListController.doSelectOrder(order);
+            mOrderHistoryItemsListController.notifyDataSetChanged();
+            mOrderCommentListController.notifyDataSetChanged();
+            mList.set(mList.indexOf(((Order) models[0])), order);
+            mView.notifyDataSetChanged();
+            ((OrderDetailPanel) mDetailView).changeColorStatusOrder(order.getStatus());
+            ((OrderDetailPanel) mDetailView).changeStatusTopOrder(order.getStatus());
+            ((OrderDetailPanel) mDetailView).bindDataRespone(order);
+            ((OrderDetailPanel) mDetailView).setOrder(order);
+        } else if (success && actionType == INSERT_STATUS_TYPE) {
+            Order order = (Order) wraper.get("status_respone");
+            mOrderAddCommentPanel.showAlertRespone();
+            mOrderCommentListController.doSelectOrder(order);
+            mOrderCommentListController.notifyDataSetChanged();
+            ((OrderDetailPanel) mDetailView).bindDataRespone(order);
+        } else if (success && actionType == ORDER_REFUND_TYPE) {
+            Order order = (Order) wraper.get("refund_respone");
+            mOrderRefundPanel.showAlertRespone();
+            mOrderHistoryItemsListController.doSelectOrder(order);
+            mOrderCommentListController.doSelectOrder(order);
+            mOrderHistoryItemsListController.notifyDataSetChanged();
+            mOrderCommentListController.notifyDataSetChanged();
+            mList.set(mList.indexOf(((Order) models[0])), order);
+            mView.notifyDataSetChanged();
+            ((OrderDetailPanel) mDetailView).changeColorStatusOrder(order.getStatus());
+            ((OrderDetailPanel) mDetailView).changeStatusTopOrder(order.getStatus());
+            ((OrderDetailPanel) mDetailView).bindDataRespone(order);
+            ((OrderDetailPanel) mDetailView).setOrder(order);
+        } else if (success && actionType == ORDER_INVOICE_TYPE) {
+            Order order = (Order) wraper.get("invoice_respone");
+            mOrderInvoicePanel.showAlertRespone();
+            mOrderHistoryItemsListController.doSelectOrder(order);
+            mOrderCommentListController.doSelectOrder(order);
+            mOrderHistoryItemsListController.notifyDataSetChanged();
+            mOrderCommentListController.notifyDataSetChanged();
+            mList.set(mList.indexOf(((Order) models[0])), order);
+            mView.notifyDataSetChanged();
+            ((OrderDetailPanel) mDetailView).changeColorStatusOrder(order.getStatus());
+            ((OrderDetailPanel) mDetailView).changeStatusTopOrder(order.getStatus());
+            ((OrderDetailPanel) mDetailView).bindDataRespone(order);
+            ((OrderDetailPanel) mDetailView).setOrder(order);
+        } else if (success && actionType == ORDER_CANCEL_TYPE) {
+            Order order = (Order) wraper.get("cancel_respone");
+            mOrderCancelPanel.showAlertRespone();
+            mOrderHistoryItemsListController.doSelectOrder(order);
+            mOrderCommentListController.doSelectOrder(order);
+            mOrderHistoryItemsListController.notifyDataSetChanged();
+            mOrderCommentListController.notifyDataSetChanged();
+            mList.set(mList.indexOf(((Order) models[0])), order);
+            mView.notifyDataSetChanged();
+            ((OrderDetailPanel) mDetailView).changeColorStatusOrder(order.getStatus());
+            ((OrderDetailPanel) mDetailView).changeStatusTopOrder(order.getStatus());
+            ((OrderDetailPanel) mDetailView).bindDataRespone(order);
+            ((OrderDetailPanel) mDetailView).setOrder(order);
+        } else if (success && actionType == RETRIEVE_PAYMENT_METHOD_TYPE) {
+
         }
+    }
+
+    public void bindDataListChoosePayment(){
+        List<CheckoutPayment> list_payment = (List<CheckoutPayment>) wraper.get("list_payment");
+        mOrderAddPaymentPanel.bindList(list_payment);
+    }
+
+    // khi thay đổi value từng payment update giá trị money
+    public void updateMoneyTotal(boolean type, float totalPrice) {
+        mOrderTakePaymentPanel.updateMoneyTotal(type, totalPrice);
+    }
+
+    /**
+     * add thêm payment trongvaof checkout
+     *
+     * @param method
+     */
+    public void onAddPaymentMethod(CheckoutPayment method) {
+        Order mOrder = ((OrderDetailPanel) mDetailView).getOrder();
+        List<CheckoutPayment> listPayment = (List<CheckoutPayment>) wraper.get("list_choose_payment");
+        float total = 0;
+        if (mOrder.getRemainMoney() > 0) {
+            total = mOrder.getRemainMoney();
+            isEnableButtonAddPayment(true);
+        } else {
+            total = mOrder.getTotalDue();
+            isEnableButtonAddPayment(false);
+        }
+
+        method.setAmount(total);
+        method.setBaseAmount(total);
+        method.setRealAmount(total);
+        method.setBaseRealAmount(total);
+
+        if (listPayment == null) {
+            listPayment = new ArrayList<>();
+        }
+        listPayment.add(method);
+        wraper.put("list_choose_payment", listPayment);
+        mOrderListChoosePaymentPanel.bindList(listPayment);
+        mOrderListChoosePaymentPanel.updateTotal(listPayment);
+        mOrderTakePaymentPanel.showPanelListChoosePayment();
+    }
+
+    /**
+     * xóa 1 payment method  checkout
+     */
+    public void onRemovePaymentMethod() {
+        List<CheckoutPayment> listPayment = (List<CheckoutPayment>) wraper.get("list_choose_payment");
+        Order mOrder = ((OrderDetailPanel) mDetailView).getOrder();
+        if (listPayment.size() == 0) {
+            mOrderTakePaymentPanel.showPanelAddPaymentMethod();
+            mOrderTakePaymentPanel.bindTotalPrice(mOrder.getTotalDue());
+            isEnableButtonAddPayment(false);
+        }
+    }
+
+    /**
+     * ẩn hoặc hiện button add payment
+     *
+     * @param enable
+     */
+    public void isEnableButtonAddPayment(boolean enable) {
+        mOrderTakePaymentPanel.isEnableButtonAddPayment(enable);
     }
 
     public OrderStatus createOrderStatus() {

@@ -170,8 +170,16 @@ public class PosOrderHistoryService extends AbstractService implements OrderHist
     public List<CheckoutPayment> retrievePaymentMethod() throws InstantiationException, IllegalAccessException, IOException, ParseException {
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         OrderDataAccess orderDataAccess = factory.generateOrderDataAccess();
-
-        return orderDataAccess.retrievePaymentMethod();
+        List<CheckoutPayment> nListPayment = new ArrayList<>();
+        List<CheckoutPayment> listPayment = orderDataAccess.retrievePaymentMethod();
+        if (listPayment.size() > 0) {
+            for (CheckoutPayment payment : listPayment) {
+                if (!payment.getType().equals("1")) {
+                    nListPayment.add(payment);
+                }
+            }
+        }
+        return nListPayment;
     }
 
     @Override

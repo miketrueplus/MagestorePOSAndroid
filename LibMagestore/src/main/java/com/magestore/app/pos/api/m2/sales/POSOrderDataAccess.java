@@ -28,6 +28,7 @@ import com.magestore.app.pos.parse.gson2pos.Gson2PosListOrder;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListPaymentMethod;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,6 +38,7 @@ import java.util.List;
  */
 
 public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDataAccess {
+    private static List<CheckoutPayment> mListPayment;
 
     private class OrderEntity {
         String email = null;
@@ -521,6 +523,10 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
 
     @Override
     public List<CheckoutPayment> retrievePaymentMethod() throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
+        if (mListPayment != null) {
+            return mListPayment;
+        }
+
         Connection connection = null;
         Statement statement = null;
         ResultReading rp = null;
@@ -540,8 +546,11 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
             rp.setParseModel(Gson2PosListPaymentMethod.class);
             Gson2PosListPaymentMethod listPayment = (Gson2PosListPaymentMethod) rp.doParse();
             List<CheckoutPayment> list = (List<CheckoutPayment>) (List<?>) (listPayment.items);
-
-            return list;
+            mListPayment = new ArrayList<>();
+            if (list != null && list.size() > 0) {
+                mListPayment.addAll(list);
+            }
+            return mListPayment;
         } catch (Exception e) {
             throw new DataAccessException(e);
         } finally {

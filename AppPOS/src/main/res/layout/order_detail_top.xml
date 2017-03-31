@@ -3,7 +3,11 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <import type="com.magestore.app.util.ConfigUtil" />
+
+        <import type="com.magestore.app.util.StringUtil" />
 
         <variable
             name="orderDetail"
@@ -13,109 +17,164 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/order_detail_top_background"
-        android:padding="@dimen/layout_margin_10">
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/grand_total"
+        <RelativeLayout
+            android:id="@+id/rl_information"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:text="@{ConfigUtil.formatPrice(orderDetail.getGrandTotal())}"
-            android:textSize="@dimen/order_top_price_text_size"
-            android:textStyle="bold" />
+            android:background="@color/order_detail_top_background"
+            android:padding="@dimen/layout_margin_10">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/grand_total"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:text="@{ConfigUtil.formatPrice(orderDetail.getGrandTotal())}"
+                android:textSize="@dimen/order_top_price_text_size"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/layout_margin_5"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/lb_status"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginBottom="@dimen/layout_margin_5"
-                    android:text="@string/order_detail_top_status"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/text_size" />
-
-                <TextView
-                    android:id="@+id/lb_created_at"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginBottom="@dimen/layout_margin_5"
-                    android:text="@string/order_detail_top_create_at"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/text_size" />
-
-                <TextView
-                    android:id="@+id/lb_webpos_staff_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:text="@string/order_detail_top_staff_name"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/text_size" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_order_detail_top_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_alignParentRight="true"
+                android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/layout_margin_5"
-                    android:orientation="horizontal">
+                    android:layout_marginRight="@dimen/layout_margin_5"
+                    android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/status"
+                        android:id="@+id/lb_status"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginRight="@dimen/layout_margin_5"
+                        android:layout_marginBottom="@dimen/layout_margin_5"
+                        android:text="@string/order_detail_top_status"
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/text_size" />
 
-                    <ImageView
-                        android:id="@+id/im_status"
-                        android:layout_width="@dimen/layout_margin_10"
-                        android:layout_height="@dimen/layout_margin_10"
-                        android:layout_gravity="center_vertical" />
+                    <TextView
+                        android:id="@+id/lb_created_at"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginBottom="@dimen/layout_margin_5"
+                        android:text="@string/order_detail_top_create_at"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/text_size" />
+
+                    <TextView
+                        android:id="@+id/lb_webpos_staff_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/order_detail_top_staff_name"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/text_size"
+                        android:visibility="@{StringUtil.isNullOrEmpty(orderDetail.getWebposStaffName()) ? View.GONE : View.VISIBLE}" />
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/created_at"
+                <LinearLayout
+                    android:id="@+id/ll_order_detail_top_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginBottom="@dimen/layout_margin_5"
-                    android:text="@{ConfigUtil.formatDate(orderDetail.getCreatedAt())}"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/layout_margin_5"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="@dimen/layout_margin_5"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/text_size" />
+
+                        <ImageView
+                            android:id="@+id/im_status"
+                            android:layout_width="@dimen/layout_margin_10"
+                            android:layout_height="@dimen/layout_margin_10"
+                            android:layout_gravity="center_vertical" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/created_at"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginBottom="@dimen/layout_margin_5"
+                        android:text="@{ConfigUtil.formatDate(orderDetail.getCreatedAt())}"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/text_size" />
+
+                    <TextView
+                        android:id="@+id/webpos_staff_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="@{orderDetail.getWebposStaffName()}"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/text_size"
+                        android:visibility="@{StringUtil.isNullOrEmpty(orderDetail.getWebposStaffName()) ? View.GONE : View.VISIBLE}" />
+                </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_take_payment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_information"
+            android:padding="@dimen/layout_margin_10"
+            android:visibility="@{(orderDetail.getTotalDue() > 0) ? View.VISIBLE : View.GONE}">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/layout_margin_5"
+                    android:text="@string/order_detail_top_total_due"
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/text_size" />
 
                 <TextView
-                    android:id="@+id/webpos_staff_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:text="@{orderDetail.getWebposStaffName()}"
-                    android:textColor="@color/text_color"
+                    android:text="@{ConfigUtil.formatPrice(orderDetail.getTotalDue())}"
+                    android:textColor="@color/order_detail_top_total_due_text_color"
                     android:textSize="@dimen/text_size" />
             </LinearLayout>
-        </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_take_payment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/order_history_take_payment_button"
+                android:paddingBottom="@dimen/layout_margin_5"
+                android:paddingLeft="@dimen/layout_margin_10"
+                android:paddingRight="@dimen/layout_margin_10"
+                android:paddingTop="@dimen/layout_margin_5"
+                android:text="@string/order_detail_top_take_payment"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size" />
+        </RelativeLayout>
     </RelativeLayout>
 </layout>

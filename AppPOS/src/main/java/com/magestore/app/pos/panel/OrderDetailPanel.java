@@ -37,7 +37,7 @@ import java.util.Map;
 public class OrderDetailPanel extends AbstractDetailPanel<Order> {
     View v;
     Order mOrder;
-    Button btn_invoice;
+    Button btn_invoice, btn_take_payment;
     MagestoreDialog dialog;
     PanelOrderDetailBinding mBinding;
 
@@ -62,6 +62,8 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         // Load layout view danh sách khách hàng
         v = inflate(getContext(), R.layout.panel_order_detail, null);
         addView(v);
+
+        btn_take_payment = (Button) v.findViewById(R.id.btn_take_payment);
 
         btn_invoice = (Button) v.findViewById(R.id.btn_invoice);
 
@@ -120,6 +122,13 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
                 onClickInvoice();
             }
         });
+
+        btn_take_payment.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClickTakePayment();
+            }
+        });
     }
 
     public void changeColorStatusOrder(String status) {
@@ -147,6 +156,10 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
 
     public void setOrder(Order mOrder) {
         this.mOrder = mOrder;
+    }
+
+    public Order getOrder() {
+        return mOrder;
     }
 
     public void changeStatusTopOrder(String item_status) {
@@ -360,5 +373,18 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
                 dialog.dismiss();
             }
         });
+    }
+
+    private void onClickTakePayment(){
+        OrderTakePaymentPanel mOrderTakePaymentPanel = new OrderTakePaymentPanel(getContext());
+        ((OrderHistoryListController) mController).setOrderTakePaymentPanel(mOrderTakePaymentPanel);
+        mOrderTakePaymentPanel.setController(mController);
+        mOrderTakePaymentPanel.initModel();
+        mOrderTakePaymentPanel.bindItem(mOrder);
+
+        MagestoreDialog dialog = DialogUtil.dialog(getContext(), getContext().getString(R.string.order_detail_top_take_payment), mOrderTakePaymentPanel);
+        dialog.setDialogWidth(getContext().getResources().getDimensionPixelSize(R.dimen.order_dialog_take_payment_width));
+        dialog.setDialogSave(getContext().getString(R.string.submit));
+        dialog.show();
     }
 }

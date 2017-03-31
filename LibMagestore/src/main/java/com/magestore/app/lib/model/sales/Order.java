@@ -117,6 +117,8 @@ public interface Order extends Model {
 
     float getDiscountAmount();
 
+    float getTotalDue();
+
     float getTotalPaid();
 
     float getTotalRefunded();
@@ -161,4 +163,13 @@ public interface Order extends Model {
     OrderCommentParams getParamCancel();
 
     void setParamCancel(OrderCommentParams paramCancel);
+
+    float getRealAmount();
+    void setRealAmount(float fRealAmount);
+
+    float getRemainMoney();
+    void setRemainMoney(float fRemainMoney);
+
+    float getExchangeMoney();
+    void setExchangeMoney(float fExchangeMoney);
 }

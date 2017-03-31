@@ -10,6 +10,7 @@ import com.magestore.app.lib.model.sales.OrderStatus;
 import com.magestore.app.lib.model.sales.OrderWebposPayment;
 import com.magestore.app.pos.model.PosAbstractModel;
 import com.magestore.app.pos.model.checkout.cart.PosCartItem;
+import com.magestore.app.pos.parse.gson2pos.Gson2PosExclude;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -134,6 +135,13 @@ public class PosOrder extends PosAbstractModel implements Order {
 
     // Param request cancel
     PosOrderCommentParams param_cancel;
+
+    @Gson2PosExclude
+    float real_amount;
+    @Gson2PosExclude
+    float remain_money;
+    @Gson2PosExclude
+    float exchange_money;
 
     @Override
     public String getID() {
@@ -438,6 +446,11 @@ public class PosOrder extends PosAbstractModel implements Order {
     }
 
     @Override
+    public float getTotalDue() {
+        return total_due;
+    }
+
+    @Override
     public float getTotalPaid() {
         return total_paid;
     }
@@ -607,5 +620,35 @@ public class PosOrder extends PosAbstractModel implements Order {
         } else {
             return getCustomerEmail();
         }
+    }
+
+    @Override
+    public float getRealAmount() {
+        return real_amount;
+    }
+
+    @Override
+    public void setRealAmount(float fRealAmount) {
+        real_amount = fRealAmount;
+    }
+
+    @Override
+    public float getRemainMoney() {
+        return remain_money;
+    }
+
+    @Override
+    public void setRemainMoney(float fRemainMoney) {
+        remain_money = fRemainMoney;
+    }
+
+    @Override
+    public float getExchangeMoney() {
+        return exchange_money;
+    }
+
+    @Override
+    public void setExchangeMoney(float fExchangeMoney) {
+        exchange_money = fExchangeMoney;
     }
 }

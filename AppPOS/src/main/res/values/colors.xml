@@ -38,6 +38,8 @@
 
     <!--Order Detail-->
     <color name="order_detail_top_background">#ffffff</color>
+    <color name="order_detail_top_total_due_text_color">#ff0000</color>
+    <color name="order_detail_top_take_payment_bg_color">#6f7d90</color>
     <color name="order_detail_content_card_background">#ffffff</color>
     <color name="order_detail_bottom_background">#ffffff</color>
     <color name="order_status_pending">#ff7800</color>

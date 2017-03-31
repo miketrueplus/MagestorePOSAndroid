@@ -145,6 +145,8 @@ public class OrderActivity extends AbstractActivity {
     protected void initValue() {
         // load danh sách order
         mOrderListController.doRetrieve();
+        // load danh sách payment method
+        mOrderListController.doRetrievePaymentMethod();
     }
 
     @Override

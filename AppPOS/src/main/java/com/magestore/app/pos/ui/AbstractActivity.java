@@ -74,8 +74,10 @@ public abstract class AbstractActivity
         View header_layout = navigationView.inflateHeaderView(R.layout.nav_header_menu);
         staff_name = (TextView) header_layout.findViewById(R.id.staff_name);
         staff_location = (TextView) header_layout.findViewById(R.id.staff_location);
-        staff_name.setText(ConfigUtil.getStaff().getStaffName());
-        staff_location.setText(ConfigUtil.getStaff().getStaffLocation().getLocationName());
+        if(ConfigUtil.getStaff() != null){
+            staff_name.setText(ConfigUtil.getStaff().getStaffName());
+            staff_location.setText(ConfigUtil.getStaff().getStaffLocation().getLocationName());
+        }
     }
 
     /**

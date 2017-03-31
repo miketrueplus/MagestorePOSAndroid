@@ -51,7 +51,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
-                    android:background="@drawable/checkout_border_linear_layout"
                     android:orientation="vertical"
                     android:padding="@dimen/layout_margin_5">
 
@@ -59,9 +58,9 @@
                         android:id="@+id/reference_number"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/layout_margin_5"
-                        android:background="@color/white"
+                        android:background="@drawable/checkout_border_linear_layout"
                         android:hint="@string/reference_number"
+                        android:padding="@dimen/layout_margin_10"
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/text_size"
                         android:visibility="@{checkoutPayment.checkReference() ? View.VISIBLE : View.GONE}" />
@@ -73,7 +72,6 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="@dimen/checkout_margin"
                     android:layout_weight="1"
-                    android:background="@drawable/checkout_border_linear_layout"
                     android:orientation="vertical"
                     android:padding="@dimen/layout_margin_5">
 
@@ -81,10 +79,11 @@
                         android:id="@+id/checkout_value"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/layout_margin_5"
-                        android:background="@color/white"
+                        android:background="@drawable/checkout_border_linear_layout"
                         android:gravity="right"
                         android:inputType="numberDecimal"
+                        android:padding="@dimen/layout_margin_10"
+                        android:text="0"
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/text_size"
                         android:visibility="@{checkoutPayment.checkIsPayLater() ? View.GONE : View.VISIBLE}" />

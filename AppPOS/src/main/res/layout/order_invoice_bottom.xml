@@ -236,7 +236,10 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:background="@drawable/order_history_invoice_button_submit"
-                    android:padding="@dimen/layout_margin_5"
+                    android:paddingBottom="@dimen/layout_margin_5"
+                    android:paddingLeft="@dimen/layout_margin_10"
+                    android:paddingRight="@dimen/layout_margin_10"
+                    android:paddingTop="@dimen/layout_margin_5"
                     android:text="@string/order_invoice_btn_submit"
                     android:textColor="@color/order_invoice_button_text_color" />
             </RelativeLayout>

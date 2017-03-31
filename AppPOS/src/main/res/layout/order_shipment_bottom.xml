@@ -97,7 +97,10 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:background="@drawable/order_history_ship_button_submit"
-                android:padding="@dimen/layout_margin_5"
+                android:paddingBottom="@dimen/layout_margin_5"
+                android:paddingLeft="@dimen/layout_margin_10"
+                android:paddingRight="@dimen/layout_margin_10"
+                android:paddingTop="@dimen/layout_margin_5"
                 android:text="@string/order_shipment_btn_submit"
                 android:textColor="@color/order_ship_button_text_color"
                 android:textSize="@dimen/text_size" />

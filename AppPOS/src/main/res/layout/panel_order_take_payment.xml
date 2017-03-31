@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:magestore_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/layout_margin_10">
+
+    <com.magestore.app.pos.panel.OrderAddPaymentPanel
+        android:id="@+id/order_add_payment_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="4"
+        app:layoutManager="GridLayoutManager"
+        magestore_view:layout_row="@layout/card_payment_method_content"
+        magestore_view:layout_span_count="4" />
+
+    <com.magestore.app.pos.panel.OrderListChoosePaymentPanel
+        android:id="@+id/order_payment_list_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/layout_margin_5"
+        android:visibility="gone"
+        magestore_view:layout_row="@layout/card_checkout_payment_content" />
+
+    <LinearLayout
+        android:id="@+id/ll_order_add_payment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/checkout_add_payment_margin"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/checkout_margin"
+            android:layout_weight="1" />
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/fr_add_payment"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/checkout_border_linear_layout"
+                    android:padding="@dimen/layout_margin_5">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/layout_margin_5"
+                        android:text="@string/sales_add_payment"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/text_size" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_checkout_add_payment" />
+                </RelativeLayout>
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/checkout_margin"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <FrameLayout
+                android:id="@+id/fr_add_payment"
+                android:layout_width="@dimen/checkout_im_remove_payment_width"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="@dimen/checkout_margin" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="@dimen/layout_margin_20">
+
+        <TextView
+            android:id="@+id/txt_remain_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/layout_margin_5"
+            android:layout_toLeftOf="@+id/txt_remain_value"
+            android:text="@string/sales_remain_money"
+            android:textColor="@color/app_color"
+            android:textSize="@dimen/text_size" />
+
+        <TextView
+            android:id="@+id/txt_remain_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/checkout_remain_text_price_size" />
+    </RelativeLayout>
+</LinearLayout>
