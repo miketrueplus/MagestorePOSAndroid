@@ -448,6 +448,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 // auto select shipping method
                 autoSelectShipping(listShipping);
             } else {
+                autoSelectPaymentMethod(listPayment);
                 ((CheckoutDetailPanel) mDetailView).isShowLoadingDetail(false);
             }
         } else if (success && actionType == ACTION_TYPE_SAVE_CART_DISCOUNT) {
@@ -491,6 +492,8 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                     bindDataToShippingMethodList(listShipping);
                     // auto select shipping method
                     autoSelectShipping(listShipping);
+                } else {
+                    autoSelectPaymentMethod(listPayment);
                 }
 
                 mPaymentMethodListPanel.bindList(listPayment);
@@ -541,6 +544,8 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 ((CheckoutListPanel) mView).updateTotalPrice(checkout);
             // show payment method
             ((CheckoutDetailPanel) mDetailView).showPaymentMethod();
+
+            autoSelectPaymentMethod(checkout.getCheckoutPayment());
 
             // hoàn thành save shipping  hiden progressbar
             ((CheckoutDetailPanel) mDetailView).isShowLoadingDetail(false);
@@ -737,6 +742,11 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         }
     }
 
+    /**
+     * Tự động chọn shipping default
+     *
+     * @param listShipping
+     */
     private void autoSelectShipping(List<CheckoutShipping> listShipping) {
         if (!((CheckoutDetailPanel) mDetailView).getPickAtStore()) {
             if (listShipping != null && listShipping.size() > 0) {
@@ -763,6 +773,20 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                         ((CheckoutDetailPanel) mDetailView).selectDefaultShippingMethod(listShipping.get(0));
                     }
                 }
+            }
+        }
+    }
+
+    /**
+     * tự động chọn payment default
+     *
+     * @param listPayment
+     */
+    private void autoSelectPaymentMethod(List<CheckoutPayment> listPayment) {
+        if (listPayment != null && listPayment.size() > 0) {
+            CheckoutPayment paymentDefault = checkListPaymentDefault(listPayment);
+            if (paymentDefault != null) {
+                onAddPaymentMethod(paymentDefault);
             }
         }
     }
@@ -1100,6 +1124,9 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         List<CheckoutPayment> listPaymentDialog = new ArrayList<>();
         listPaymentDialog.addAll(listAllPayment);
         for (CheckoutPayment checkoutPayment : listAllPayment) {
+            if(checkoutPayment.getType().equals("1")){
+                listPaymentDialog.remove(checkoutPayment);
+            }
             for (CheckoutPayment paymentMethod : listPayment) {
                 if (checkoutPayment.getCode().equals(paymentMethod.getCode())) {
                     listPaymentDialog.remove(checkoutPayment);
@@ -1130,6 +1157,21 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 if (shipping.getIsDefault().equals("1")) {
                     return shipping;
                 }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * kiểm tra và chọn payment default
+     *
+     * @param listPayment
+     * @return
+     */
+    public CheckoutPayment checkListPaymentDefault(List<CheckoutPayment> listPayment) {
+        for (CheckoutPayment payment : listPayment) {
+            if (payment.getIsDefault().equals("1")) {
+                return payment;
             }
         }
         return null;
