@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/product_detail_margin_size"
+    android:paddingRight="@dimen/product_detail_margin_size">
+
+    <ImageView
+        android:id="@+id/id_img_product_option_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/id_txt_product_option_field"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.0"
+        android:paddingBottom="@dimen/card_item_margin_size"
+        android:paddingTop="@dimen/card_item_margin_size"
+        android:textColor="@color/text_color"
+        android:maxLength="67"
+        android:hint="@string/err_field_max_character"
+        android:textSize="@dimen/text_size" />
+
+    <TextView
+        android:id="@+id/id_txt_product_option_display"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.0"
+        android:paddingBottom="@dimen/card_item_margin_size"
+        android:paddingTop="@dimen/card_item_margin_size"
+        android:textColor="@color/text_color"
+        android:visibility="gone"
+        android:textSize="@dimen/text_size" />
+
+    <TextView
+        android:id="@+id/id_txt_product_option_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:gravity="right"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/text_size" />
+</LinearLayout>

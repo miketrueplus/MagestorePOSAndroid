@@ -288,7 +288,7 @@
     <string name="err_field_must_greater_than_zero">This field must greater than zero</string>
     <string name="err_field_must_greater_than">This field must greater than %s</string>
     <string name="err_field_must_less_than">This field must less than %s</string>
-
+    <string name="err_field_max_character">This field have max %s characters</string>
 
 
     <!-- Strings related to confirm message -->
