@@ -46,6 +46,58 @@ public class PosProduct extends PosAbstractModel implements Product {
     private ProductOption productOption;
     private int options;
 
+    private String is_in_stock = StringUtil.STRING_ONE;
+    private String minimum_qty = StringUtil.STRING_ONE;
+    private String maximum_qty = StringUtil.STRING_TEN_THOUSAND;
+    private String qty = maximum_qty;
+
+    @Override
+    public boolean isInStock() {
+        return StringUtil.STRING_ONE.equals(is_in_stock);
+    }
+
+    @Override
+    public float getMinimumQty() {
+        return Float.parseFloat(minimum_qty);
+    }
+
+    @Override
+    public void setMinimumQty(float minimum_qty) {
+        this.minimum_qty = Float.toString(minimum_qty);
+    }
+
+    @Override
+    public float getMaximumQty() {
+        return Float.parseFloat(maximum_qty);
+    }
+
+    @Override
+    public void setMaximumQty(float maximum_qty) {
+        this.maximum_qty = Float.toString(maximum_qty);
+    }
+
+    @Override
+    public int getAllowMinQty() {
+        return getQuantityIncrement();
+    }
+
+    @Override
+    public int getAllowMaxQty() {
+        int allowMax = (int) (getQty() - getMinimumQty());
+        int maxQty = (int) getMaximumQty();
+        return (int) allowMax < maxQty ? allowMax : maxQty;
+    }
+
+    @Override
+    public float getQty() {
+        return Float.parseFloat(qty);
+    }
+
+    @Override
+    public void setQty(float qty) {
+        this.qty = Float.toString(qty);
+    }
+
     @Gson2PosExclude
     boolean isSaveCart;
     @Gson2PosExclude

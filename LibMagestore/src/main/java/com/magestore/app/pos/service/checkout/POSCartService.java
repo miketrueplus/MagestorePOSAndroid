@@ -10,6 +10,7 @@ import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.resourcemodel.DataAccessFactory;
 import com.magestore.app.lib.resourcemodel.sales.CartDataAccess;
+import com.magestore.app.lib.service.ServiceException;
 import com.magestore.app.lib.service.checkout.CartService;
 import com.magestore.app.pos.model.catalog.PosProduct;
 import com.magestore.app.pos.model.catalog.PosProductOptionConfigOption;
@@ -234,6 +235,10 @@ public class POSCartService extends AbstractService implements CartService {
         for (CartItem item : checkout.getCartItem())
             if (item == childs[0]) return true;
 
+        // kiểm tra trước với số lượng thêm như vậy có đủ điều kiện cho vào kho hay khônh
+//        if (!validateStock(checkout, childs[0].getProduct(), childs[0].getQuantity())) throw new ServiceException("Not enought quantity");
+
+        // chèn vào cart item
         checkout.getCartItem().add(childs[0]);
         return true;
     }
@@ -474,7 +479,7 @@ public class POSCartService extends AbstractService implements CartService {
      * @param price
      */
     @Override
-    public CartItem insert(Checkout checkout, Product product, int quantity, float price) throws InstantiationException, IllegalAccessException, ParseException, IOException {
+    public CartItem insert(Checkout checkout, Product product, int quantity, float price) throws InstantiationException, IllegalAccessException, ParseException, IOException, ServiceException {
         // nếu chưa có đơn hàng, bo qua
         if (checkout == null) return null;
 
@@ -498,6 +503,9 @@ public class POSCartService extends AbstractService implements CartService {
 
         // nếu chưa thì thêm mới
         if (cartItem == null) {
+            // kiểm tra số lượng còn trong kho không đã
+            if (!validateStock(checkout, product, quantity)) throw new ServiceException("Not enough quantity");
+
             // Khởi tạo product order item
             cartItem = create(product, quantity, price);
             // Thêm vào danh sách order cartItem
@@ -505,7 +513,12 @@ public class POSCartService extends AbstractService implements CartService {
         }
         // có rồi thì cập nhật lại số lượng
         else {
-            cartItem.setQuantity(cartItem.getQuantity() + quantity);
+            // tính toán số lượng mới
+            int newQuantity = cartItem.getQuantity() + quantity;
+            // kiểm tra số lượng trước có đủ trong kho không
+            if (!validateStock(checkout, product, newQuantity)) throw new ServiceException("Not enough quantity");
+            // cập nhật số lượng
+            cartItem.setQuantity(newQuantity);
             float unitPrice = cartItem.getUnitPrice();
             float totalPrice = (unitPrice * cartItem.getQuantity());
             cartItem.setPrice(totalPrice);
@@ -691,5 +704,20 @@ public class POSCartService extends AbstractService implements CartService {
 //
 //        // cập nhật đơn giá
 //        cartItem.setUnitPrice(price);
+    }
+
+    /**
+     * Kiểm tra số lượng trong kho đủ để bán không
+     * @param checkout
+     * @param product
+     * @param quantity
+     * @return
+     */
+    @Override
+    public boolean validateStock(Checkout checkout, Product product, int quantity) {
+        if (!product.isInStock()) return false;
+        if (quantity > product.getAllowMaxQty()) return false;
+        if (quantity < product.getAllowMinQty()) return false;
+        return true;
     }
 }

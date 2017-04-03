@@ -159,10 +159,11 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
             super.bindItem(item);
 
         // hiển thị ảnh product
-//        ImageView productImgView = ((ImageView) item.getProduct().getRefer(LoadProductImageTask.KEY_IMAGEVIEW));
-//        if (productImgView != null) mImageProductDetail.setImageDrawable(productImgView.getDrawable());
         Picasso.with(getContext()).load(item.getProduct().getImage()).centerInside().resizeDimen(R.dimen.product_image_detail_width, R.dimen.product_image_detail_height).into(mImageProductDetail);
 //        Glide.with(getContext()).load(item.getProduct().getImage()).centerCrop().into(mImageProductDetail);
+
+//        ImageView productImgView = ((ImageView) item.getProduct().getRefer(LoadProductImageTask.KEY_IMAGEVIEW));
+//        if (productImgView != null) mImageProductDetail.setImageDrawable(productImgView.getDrawable());
 
 //        if (item.getProduct().getBitmap() != null)
 //            mImageProductDetail.setImageBitmap(item.getProduct().getBitmap());

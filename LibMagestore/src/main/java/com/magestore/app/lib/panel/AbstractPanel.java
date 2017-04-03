@@ -99,6 +99,22 @@ public abstract class AbstractPanel<TController extends Controller> extends Fram
         return mController;
     }
 
+    @Override
+    public void showErrMsgDialog(String strMsg) {
+        new AlertDialog.Builder(getContext())
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle(R.string.dialog_error)
+                .setMessage(strMsg)
+                .setPositiveButton(R.string.ok, null)
+                .show();
+    }
+
+    @Override
+    public void showErrMsgDialog(Exception exp) {
+        exp.printStackTrace();
+        showErrMsgDialog(exp.getLocalizedMessage());
+    }
+
     /**
      * Hiển thị thông báo loiõ với reloading
      * @param strMsg
@@ -121,7 +137,6 @@ public abstract class AbstractPanel<TController extends Controller> extends Fram
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .setTitle(R.string.dialog_error)
                     .setMessage(strMsg)
-                    .setPositiveButton(R.string.ok, null)
                     .setPositiveButton(R.string.reload, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -149,12 +164,7 @@ public abstract class AbstractPanel<TController extends Controller> extends Fram
             mTxtErrorMsg.setText(strMsg);
             mTxtErrorMsg.setVisibility(VISIBLE);
         } else {
-            new AlertDialog.Builder(getContext())
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setTitle(R.string.dialog_error)
-                    .setMessage(strMsg)
-                    .setPositiveButton(R.string.ok, null)
-                    .show();
+            showErrMsgDialog(strMsg);
         }
     }
 

@@ -78,6 +78,10 @@ public class CartItemListController extends AbstractChildListController<Checkout
     public void bindProduct(Product product) {
         if (!product.haveProductOption()) {
             try {
+                if (!mCartService.validateStock(getParent(), product, product.getQuantityIncrement())) {
+                    getView().showErrMsgDialog(getView().getContext().getString(R.string.err_cannot_add_more_item));
+                    return;
+                }
                 // chèn vào cart item
                 CartItem cartItem = mCartService.insert(getParent(), product, product.getQuantityIncrement());
 
@@ -85,14 +89,9 @@ public class CartItemListController extends AbstractChildListController<Checkout
                 getView().updateModelToFirstInsertIfNotFound(cartItem);
                 updateTotalPrice();
                 mCheckoutListController.showButtonDiscount(true);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (ParseException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                getView().showErrMsgDialog(e);
+                return;
             }
         } else {
             doShowProductOptionInput(product);
@@ -180,27 +179,26 @@ public class CartItemListController extends AbstractChildListController<Checkout
      * @param quantity
      * @param price
      */
-    public void addProduct(Product product, int quantity, float price) {
-        try {
-            CartItem cartItem = mCartService.insert(getParent(), product, quantity, price);
-//            mView.updateModelInsertAtLastIfNotFound(cartItem);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-//        mView.notifyDataSetChanged();
-        updateTotalPrice();
-    }
-
-    /**
-     * Thêm 1 sản phẩm vào đơn hàng
-     *
-     * @param product
-     * @param quantity
-     */
-    public void addProduct(Product product, int quantity) {
-        addProduct(product, quantity, product.getPrice());
-    }
+//    public void addProduct(Product product, int quantity, float price) {
+//        try {
+//            CartItem cartItem = mCartService.insert(getParent(), product, quantity, price);
+////            mView.updateModelInsertAtLastIfNotFound(cartItem);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        updateTotalPrice();
+//    }
+//
+//    /**
+//     * Thêm 1 sản phẩm vào đơn hàng
+//     *
+//     * @param product
+//     * @param quantity
+//     */
+//    public void addProduct(Product product, int quantity) {
+//        addProduct(product, quantity, product.getPrice());
+//    }
 
     /**
      * Thêm 1 sản phẩm vào đơn hàng
@@ -290,14 +288,9 @@ public class CartItemListController extends AbstractChildListController<Checkout
             // chèn model lên đầu
             getView().updateModelToFirstInsertIfNotFound(item);
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            getView().showErrMsgDialog(e);
+            return;
         }
 
         // cập nhật giá tổng
@@ -314,14 +307,9 @@ public class CartItemListController extends AbstractChildListController<Checkout
             CartItem itemInList = mCartService.insertWithCustomSale(getParent(), cartItem);
             // chèn model lên đầu
             getView().updateModelToFirstInsertIfNotFound(itemInList);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+           getView().showErrMsgDialog(e);
+            return;
         }
 
         // ẩn các dialog đang hiển thị
@@ -341,14 +329,9 @@ public class CartItemListController extends AbstractChildListController<Checkout
             CartItem itemInList = mCartService.insertWithOption(getParent(), cartItem);
             // chèn model lên đầu
             getView().updateModelToFirstInsertIfNotFound(itemInList);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            getView().showErrMsgDialog(e);
+            return;
         }
 
 
@@ -358,6 +341,15 @@ public class CartItemListController extends AbstractChildListController<Checkout
 
         // cập nhật giá tổng
         updateTotalPrice();
+    }
+
+    /**
+     * Kiểm tra số lượng trong kho đủ để add stock hay khônh
+     * @param product
+     * @param quantity
+     */
+    public boolean validateStock(Product product, int quantity) {
+        return  mCartService.validateStock(getParent(), product, quantity);
     }
 
     /**
@@ -372,14 +364,9 @@ public class CartItemListController extends AbstractChildListController<Checkout
 
             // cập nhật view và giá
             getView().updateModelToFirstInsertIfNotFound(newCartItem);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            getView().showErrMsgDialog(e);
+            return;
         }
 
         // ẩn các dialog đang hiển thị
@@ -397,14 +384,9 @@ public class CartItemListController extends AbstractChildListController<Checkout
     public void addToCart(CartItem cartItem) {
         try {
             mCartService.insert(getParent(), cartItem);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            getView().showErrMsgDialog(e);
+            return;
         }
 
         // chèn model lên đầu

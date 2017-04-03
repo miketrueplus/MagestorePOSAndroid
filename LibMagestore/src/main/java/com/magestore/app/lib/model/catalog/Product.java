@@ -18,6 +18,19 @@ public interface Product extends Model, ParseModel {
     String getID();
     String getName();
 
+    boolean isInStock();
+    float getMinimumQty();
+    void setMinimumQty(float minimum_qty);
+    float getMaximumQty();
+    void setMaximumQty(float maximum_qty);
+
+    int getAllowMinQty();
+
+    int getAllowMaxQty();
+
+    float getQty();
+    void setQty(float qty);
+
     boolean isCustomSale();
 
     void setCustomSale();
