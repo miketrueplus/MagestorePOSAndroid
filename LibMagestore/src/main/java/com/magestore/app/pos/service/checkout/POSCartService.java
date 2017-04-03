@@ -716,8 +716,8 @@ public class POSCartService extends AbstractService implements CartService {
     @Override
     public boolean validateStock(Checkout checkout, Product product, int quantity) {
         if (!product.isInStock()) return false;
-        if (quantity > product.getAllowMaxQty()) return false;
         if (quantity < product.getAllowMinQty()) return false;
+        if (quantity > product.getAllowMaxQty() && product.getAllowMaxQty() > product.getAllowMinQty()) return false;
         return true;
     }
 }
