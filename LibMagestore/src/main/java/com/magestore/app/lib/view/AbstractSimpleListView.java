@@ -71,6 +71,16 @@ public abstract class AbstractSimpleListView<TModel extends Model>
         return mController;
     }
 
+    @Override
+    public void showErrMsgDialog(String strMsg) {
+
+    }
+
+    @Override
+    public void showErrMsgDialog(Exception exp) {
+
+    }
+
     /**
      * Đọc các thuộc tính của layout
      * @param context

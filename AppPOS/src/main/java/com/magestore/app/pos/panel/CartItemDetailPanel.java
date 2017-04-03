@@ -253,9 +253,16 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
      */
     private boolean validateInput() {
         boolean blnRight = true;
-        // valid số lượng
-        if (mtxtQuantity.getValueInteger() < getItem().getProduct().getQuantityIncrement()) {
-            mtxtQuantity.setError(String.format(getResources().getString(R.string.err_field_must_greater_than), ConfigUtil.formatQuantity(getItem().getProduct().getQuantityIncrement())));
+        // valid số lượng phải lớn hơn mức tối thiểu
+        int quantity = mtxtQuantity.getValueInteger();
+        if (quantity < getItem().getProduct().getAllowMinQty()) {
+            mtxtQuantity.setError(String.format(getResources().getString(R.string.err_field_must_greater_than), ConfigUtil.formatQuantity(getItem().getProduct().getAllowMinQty())));
+            blnRight = false;
+        }
+
+        // valid số lượng phải lớn hơn mức được phép trong kho
+        if (quantity > getItem().getProduct().getAllowMaxQty()) {
+            mtxtQuantity.setError(String.format(getResources().getString(R.string.err_field_must_less_than), ConfigUtil.formatQuantity(getItem().getProduct().getAllowMaxQty())));
             blnRight = false;
         }
 

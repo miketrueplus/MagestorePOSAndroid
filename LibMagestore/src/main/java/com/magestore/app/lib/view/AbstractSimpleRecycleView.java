@@ -98,6 +98,16 @@ public abstract class AbstractSimpleRecycleView<TModel extends Model>
     }
 
     @Override
+    public void showErrMsgDialog(String strMsg) {
+
+    }
+
+    @Override
+    public void showErrMsgDialog(Exception exp) {
+
+    }
+
+    @Override
     public void showErrorMsgWithReload(String strMsg) {
         showErrorMsg(strMsg);
     }

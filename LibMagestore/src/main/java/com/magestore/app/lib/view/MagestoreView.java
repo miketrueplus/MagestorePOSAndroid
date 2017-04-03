@@ -18,6 +18,10 @@ public interface MagestoreView<TController extends Controller> {
     void setController(TController controller);
     TController getController();
 
+    void showErrMsgDialog(String strMsg);
+
+    void showErrMsgDialog(Exception exp);
+
     void showErrorMsgWithReload(String strMsg);
 
     void showErrorMsgWithReload(Exception exp);

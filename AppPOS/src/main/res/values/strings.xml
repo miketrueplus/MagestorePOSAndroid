@@ -289,6 +289,7 @@
     <string name="err_field_must_greater_than">This field must greater than %s</string>
     <string name="err_field_must_less_than">This field must less than %s</string>
     <string name="err_field_max_character">This field have max %s characters</string>
+    <string name="err_cannot_add_more_item">Cannot add more item</string>
 
 
     <!-- Strings related to confirm message -->

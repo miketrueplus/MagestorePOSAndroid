@@ -17,7 +17,18 @@ public class StringUtil {
     public static final String STRING_DIGIT = "0123456789";
     public static final String STRING_ZERO = "0";
     public static final String STRING_ONE = "1";
+    public static final String STRING_FIVE = "5";
     public static final String STRING_NINE = "9";
+    public static final String STRING_TEN = "10";
+    public static final String STRING_DOZEN = "12";
+    public static final String STRING_HUNDRED = "100";
+    public static final String STRING_THOUSAND = "1000";
+    public static final String STRING_TEN_THOUSAND = "10000";
+    public static final String STRING_HUNDRED_THOUSAND = "100000";
+    public static final String STRING_MILLION = "1000000";
+    public static final String STRING_TEN_MILLION = "10000000";
+    public static final String STRING_HUNDRED_MILLION = "100000000";
+    public static final String STRING_BILLION = "1000000000";
     public static final String STRING_SPACE = " ";
 
     public static final String STRING_DOT = ".";
