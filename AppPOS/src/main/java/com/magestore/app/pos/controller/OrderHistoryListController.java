@@ -63,6 +63,8 @@ public class OrderHistoryListController extends AbstractListController<Order> {
     public static String ORDER_CANCEL_CODE = "order_cancel";
     public static int RETRIEVE_PAYMENT_METHOD_TYPE = 7;
     public static String RETRIEVE_PAYMENT_METHOD_CODE = "retrieve_payment_method";
+    public static int ORDER_TAKE_PAYMENT_TYPE = 8;
+    public static String ORDER_TAKE_PAYMENT_CODE = "order_take_payment";
 
     Map<String, Object> wraper;
 
@@ -189,6 +191,16 @@ public class OrderHistoryListController extends AbstractListController<Order> {
         doAction(RETRIEVE_PAYMENT_METHOD_TYPE, RETRIEVE_PAYMENT_METHOD_CODE, wraper, null);
     }
 
+    public void doInputTakePayment(Order order) {
+        // Check payment khác null hay ko
+        List<CheckoutPayment> listCheckoutPayment = (List<CheckoutPayment>) wraper.get("list_choose_payment");
+        if (listCheckoutPayment != null && listCheckoutPayment.size() > 0) {
+            doAction(ORDER_TAKE_PAYMENT_TYPE, ORDER_TAKE_PAYMENT_CODE, wraper, order);
+        } else {
+            // show notifi
+        }
+    }
+
     @Override
     public Boolean doActionBackround(int actionType, String actionCode, Map<String, Object> wraper, Model... models) throws Exception {
         if (actionType == SENT_EMAIL_TYPE) {
@@ -213,6 +225,9 @@ public class OrderHistoryListController extends AbstractListController<Order> {
         } else if (actionType == RETRIEVE_PAYMENT_METHOD_TYPE) {
             wraper.put("list_payment", mOrderService.retrievePaymentMethod());
             return true;
+        } else if (actionType == ORDER_TAKE_PAYMENT_TYPE) {
+            List<CheckoutPayment> listCheckoutPayment = (List<CheckoutPayment>) wraper.get("list_choose_payment");
+            wraper.put("take_payment_respone", mOrderService.orderTakePayment(((Order) models[0]), listCheckoutPayment));
         }
         return false;
     }
@@ -280,12 +295,24 @@ public class OrderHistoryListController extends AbstractListController<Order> {
             ((OrderDetailPanel) mDetailView).changeStatusTopOrder(order.getStatus());
             ((OrderDetailPanel) mDetailView).bindDataRespone(order);
             ((OrderDetailPanel) mDetailView).setOrder(order);
-        } else if (success && actionType == RETRIEVE_PAYMENT_METHOD_TYPE) {
-
+        } else if (success && actionType == ORDER_TAKE_PAYMENT_TYPE) {
+            Order order = (Order) wraper.get("take_payment_respone");
+            mOrderHistoryItemsListController.doSelectOrder(order);
+            mOrderCommentListController.doSelectOrder(order);
+            mOrderPaymentListController.doSelectOrder(order);
+            mOrderHistoryItemsListController.notifyDataSetChanged();
+            mOrderCommentListController.notifyDataSetChanged();
+            mOrderPaymentListController.notifyDataSetChanged();
+            mList.set(mList.indexOf(((Order) models[0])), order);
+            mView.notifyDataSetChanged();
+            ((OrderDetailPanel) mDetailView).changeColorStatusOrder(order.getStatus());
+            ((OrderDetailPanel) mDetailView).changeStatusTopOrder(order.getStatus());
+            ((OrderDetailPanel) mDetailView).bindDataRespone(order);
+            ((OrderDetailPanel) mDetailView).setOrder(order);
         }
     }
 
-    public void bindDataListChoosePayment(){
+    public void bindDataListChoosePayment() {
         List<CheckoutPayment> list_payment = (List<CheckoutPayment>) wraper.get("list_payment");
         mOrderAddPaymentPanel.bindList(list_payment);
     }

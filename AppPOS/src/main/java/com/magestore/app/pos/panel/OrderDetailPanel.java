@@ -382,9 +382,17 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         mOrderTakePaymentPanel.initModel();
         mOrderTakePaymentPanel.bindItem(mOrder);
 
-        MagestoreDialog dialog = DialogUtil.dialog(getContext(), getContext().getString(R.string.order_detail_top_take_payment), mOrderTakePaymentPanel);
+        final MagestoreDialog dialog = DialogUtil.dialog(getContext(), getContext().getString(R.string.order_detail_top_take_payment), mOrderTakePaymentPanel);
         dialog.setDialogWidth(getContext().getResources().getDimensionPixelSize(R.dimen.order_dialog_take_payment_width));
         dialog.setDialogSave(getContext().getString(R.string.submit));
         dialog.show();
+
+        dialog.getButtonSave().setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((OrderHistoryListController) mController).doInputTakePayment(mOrder);
+                dialog.dismiss();
+            }
+        });
     }
 }

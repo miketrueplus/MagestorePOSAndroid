@@ -1,6 +1,7 @@
 package com.magestore.app.lib.service.order;
 
 import com.magestore.app.lib.model.checkout.CheckoutPayment;
+import com.magestore.app.lib.model.checkout.PaymentMethodDataParam;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.model.sales.OrderCommentParams;
@@ -10,6 +11,7 @@ import com.magestore.app.lib.model.sales.OrderRefundParams;
 import com.magestore.app.lib.model.sales.OrderShipmentParams;
 import com.magestore.app.lib.model.sales.OrderShipmentTrackParams;
 import com.magestore.app.lib.model.sales.OrderStatus;
+import com.magestore.app.lib.model.sales.OrderTakePaymentParam;
 import com.magestore.app.lib.service.ListService;
 import com.magestore.app.lib.service.Service;
 
@@ -40,6 +42,8 @@ public interface OrderHistoryService extends Service, ListService<Order> {
 
     List<CheckoutPayment> retrievePaymentMethod() throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
+    Order orderTakePayment(Order order, List<CheckoutPayment> listCheckoutPayment) throws InstantiationException, IllegalAccessException, IOException, ParseException;
+
     OrderStatus createOrderStatus();
 
     OrderShipmentParams createOrderShipmentParams();
@@ -57,6 +61,10 @@ public interface OrderHistoryService extends Service, ListService<Order> {
     OrderRefundParams createOrderRefundParams();
 
     OrderInvoiceParams createOrderInvoiceParams();
+
+    OrderTakePaymentParam createOrderTakePaymentParams();
+
+    PaymentMethodDataParam createPaymentMethodParam();
 
     boolean checkCanInvoice(Order order);
 

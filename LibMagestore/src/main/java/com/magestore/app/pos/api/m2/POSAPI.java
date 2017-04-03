@@ -44,6 +44,7 @@ public class POSAPI {
     public static final String REST_ORDER_SHIPMENT = "/rest/default/V1/webpos/shipment/create?";
     public static final String REST_ORDER_REFUND = "/rest/default/V1/webpos/creditmemo/create?";
     public static final String REST_PAYMENT_METHOD_GET_LISTING = "/rest/default/V1/webpos/payments?";
+    public static final String REST_ORDER_TAKE_PAYMENT = "/rest/default/V1/webpos/orders/${orderID}/payments?";
     public static final String PARAM_ORDER_ID = "orderID";
 
     // API customer

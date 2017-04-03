@@ -3,6 +3,7 @@ package com.magestore.app.pos.service.order;
 import android.text.TextUtils;
 
 import com.magestore.app.lib.model.checkout.CheckoutPayment;
+import com.magestore.app.lib.model.checkout.PaymentMethodDataParam;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.sales.Order;
@@ -13,9 +14,11 @@ import com.magestore.app.lib.model.sales.OrderRefundParams;
 import com.magestore.app.lib.model.sales.OrderShipmentParams;
 import com.magestore.app.lib.model.sales.OrderShipmentTrackParams;
 import com.magestore.app.lib.model.sales.OrderStatus;
+import com.magestore.app.lib.model.sales.OrderTakePaymentParam;
 import com.magestore.app.lib.resourcemodel.DataAccessFactory;
 import com.magestore.app.lib.resourcemodel.sales.OrderDataAccess;
 import com.magestore.app.lib.service.order.OrderHistoryService;
+import com.magestore.app.pos.model.checkout.PosPaymentMethodDataParam;
 import com.magestore.app.pos.model.sales.PosOrderCommentParams;
 import com.magestore.app.pos.model.sales.PosOrderInvoiceParams;
 import com.magestore.app.pos.model.sales.PosOrderItemParams;
@@ -23,7 +26,9 @@ import com.magestore.app.pos.model.sales.PosOrderRefundParams;
 import com.magestore.app.pos.model.sales.PosOrderShipmentParams;
 import com.magestore.app.pos.model.sales.PosOrderShipmentTrackParams;
 import com.magestore.app.pos.model.sales.PosOrderStatus;
+import com.magestore.app.pos.model.sales.PosOrderTakePaymentParam;
 import com.magestore.app.pos.service.AbstractService;
+import com.magestore.app.util.ConfigUtil;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -183,6 +188,36 @@ public class PosOrderHistoryService extends AbstractService implements OrderHist
     }
 
     @Override
+    public Order orderTakePayment(Order order, List<CheckoutPayment> listCheckoutPayment) throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        OrderTakePaymentParam orderTakePaymentParam = createOrderTakePaymentParams();
+
+        PosOrderTakePaymentParam.PlaceOrderPaymentParam placeOrderPaymentParam = orderTakePaymentParam.createPlaceOrderPaymentParam();
+
+        List<PaymentMethodDataParam> listPaymentMethodParam = orderTakePaymentParam.createPaymentMethodData();
+
+        for (CheckoutPayment checkoutPayment : listCheckoutPayment) {
+            PaymentMethodDataParam paymentMethodDataParam = createPaymentMethodParam();
+            PosPaymentMethodDataParam.PaymentMethodAdditionalParam additionalParam = paymentMethodDataParam.createAddition();
+            paymentMethodDataParam.setPaymentMethodAdditionalParam(additionalParam);
+            paymentMethodDataParam.setReferenceNumber(checkoutPayment.getReferenceNumber());
+            paymentMethodDataParam.setAmount(checkoutPayment.getAmount());
+            paymentMethodDataParam.setBaseAmount(ConfigUtil.convertToBasePrice(checkoutPayment.getBaseAmount()));
+            paymentMethodDataParam.setBaseRealAmount(ConfigUtil.convertToBasePrice(checkoutPayment.getRealAmount()));
+            paymentMethodDataParam.setRealAmount(checkoutPayment.getBaseRealAmount());
+            paymentMethodDataParam.setCode(checkoutPayment.getCode());
+            paymentMethodDataParam.setIsPayLater(checkoutPayment.isPaylater());
+            paymentMethodDataParam.setTitle(checkoutPayment.getTitle());
+            listPaymentMethodParam.add(paymentMethodDataParam);
+        }
+        orderTakePaymentParam.setMethodData(listPaymentMethodParam);
+        orderTakePaymentParam.setPayment(placeOrderPaymentParam);
+
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        OrderDataAccess orderDataAccess = factory.generateOrderDataAccess();
+        return orderDataAccess.orderTakePayment(orderTakePaymentParam, order.getID());
+    }
+
+    @Override
     public OrderStatus createOrderStatus() {
         PosOrderStatus orderStatus = new PosOrderStatus();
         return orderStatus;
@@ -234,6 +269,17 @@ public class PosOrderHistoryService extends AbstractService implements OrderHist
     public OrderInvoiceParams createOrderInvoiceParams() {
         PosOrderInvoiceParams orderInvoiceParams = new PosOrderInvoiceParams();
         return orderInvoiceParams;
+    }
+
+    @Override
+    public OrderTakePaymentParam createOrderTakePaymentParams() {
+        PosOrderTakePaymentParam orderTakePaymentParam = new PosOrderTakePaymentParam();
+        return orderTakePaymentParam;
+    }
+
+    @Override
+    public PaymentMethodDataParam createPaymentMethodParam() {
+        return new PosPaymentMethodDataParam();
     }
 
     @Override

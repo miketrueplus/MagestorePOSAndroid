@@ -54,4 +54,7 @@ public class OrderPaymentListController extends AbstractListController<OrderWebp
         mView.bindList(mList);
     }
 
+    public void notifyDataSetChanged() {
+        mView.notifyDataSetChanged();
+    }
 }
