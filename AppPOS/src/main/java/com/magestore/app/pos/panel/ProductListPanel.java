@@ -20,6 +20,7 @@ import com.magestore.app.pos.controller.ProductListController;
 import com.magestore.app.pos.databinding.CardProductListContentBinding;
 import com.magestore.app.pos.task.LoadProductImageTask;
 import com.magestore.app.util.ConfigUtil;
+import com.squareup.picasso.Picasso;
 
 /**
  * Giao diện quản lý danh mục sản phẩm
@@ -157,8 +158,10 @@ public class ProductListPanel extends AbstractListPanel<Product> {
 //            txtSKU.setText(product.getSKU());
 
             // gán ảnh vào
-            Bitmap bmp = product.getBitmap();
-            if (bmp != null && !bmp.isRecycled() && imgBitmap != null) imgBitmap.setImageBitmap(bmp);
+            Picasso.with(getContext()).load(product.getImage()).resize(200, 200).centerCrop().into(imgBitmap);
+
+//            Bitmap bmp = product.getBitmap();
+//            if (bmp != null && !bmp.isRecycled() && imgBitmap != null) imgBitmap.setImageBitmap(bmp);
 
             // Đặt tham chiếu imageview sang product
             product.setRefer(LoadProductImageTask.KEY_IMAGEVIEW, imgBitmap);

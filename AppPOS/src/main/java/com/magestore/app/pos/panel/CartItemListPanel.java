@@ -29,6 +29,7 @@ import com.magestore.app.pos.databinding.CardProductListContentBinding;
 import com.magestore.app.pos.databinding.PanelCartListBinding;
 import com.magestore.app.pos.task.LoadProductImageTask;
 import com.magestore.app.util.ConfigUtil;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -212,9 +213,9 @@ public class CartItemListPanel extends AbstractListPanel<CartItem> {
         public void setItem(ModelView item, int position) {
             binding.setCartItem((CartItem)item.getModel());
             if (((CartItem)item.getModel()).getProduct() != null) {
-                Bitmap bmp = ((CartItem)item.getModel()).getProduct().getBitmap();
-                if (bmp != null && !bmp.isRecycled() && imageView != null)
-                    imageView.setImageBitmap(bmp);
+                Product product = ((CartItem)item.getModel()).getProduct();
+                ImageView productImgView = ((ImageView) product.getRefer(LoadProductImageTask.KEY_IMAGEVIEW));
+                if (productImgView != null) imageView.setImageDrawable(productImgView.getDrawable());
             }
         }
     }

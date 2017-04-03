@@ -40,9 +40,11 @@ import com.magestore.app.pos.model.catalog.PosProductOptionCustom;
 import com.magestore.app.pos.model.catalog.PosProductOptionCustomValue;
 import com.magestore.app.pos.model.catalog.PosProductOptionGrouped;
 import com.magestore.app.pos.model.checkout.cart.PosCartItem;
+import com.magestore.app.pos.task.LoadProductImageTask;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.StringUtil;
 import com.magestore.app.view.EditTextInteger;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -156,8 +158,11 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
             super.bindItem(item);
 
         // hiển thị ảnh product
-        if (item.getProduct().getBitmap() != null)
-            mImageProductDetail.setImageBitmap(item.getProduct().getBitmap());
+        ImageView productImgView = ((ImageView) item.getProduct().getRefer(LoadProductImageTask.KEY_IMAGEVIEW));
+        if (productImgView != null) mImageProductDetail.setImageDrawable(productImgView.getDrawable());
+//        Picasso.with(getContext()).load(item.getProduct().getImage()).centerCrop().into(mImageProductDetail);
+//        if (item.getProduct().getBitmap() != null)
+//            mImageProductDetail.setImageBitmap(item.getProduct().getBitmap());
     }
 
     /**

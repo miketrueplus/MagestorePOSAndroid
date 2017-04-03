@@ -58,7 +58,7 @@ public class ProductListController extends AbstractListController<Product> {
     public void onRetrievePostExecute(List<Product> list) {
         super.onRetrievePostExecute(list);
         // load ảnh
-        doLoadProductsImage();
+//        doLoadProductsImage();
     }
 
     /**
