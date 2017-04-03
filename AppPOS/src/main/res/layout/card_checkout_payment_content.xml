@@ -51,8 +51,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:padding="@dimen/layout_margin_5">
+                    android:orientation="vertical">
 
                     <com.magestore.app.view.FormatEditText
                         android:id="@+id/reference_number"
@@ -72,8 +71,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="@dimen/checkout_margin"
                     android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:padding="@dimen/layout_margin_5">
+                    android:orientation="vertical">
 
                     <com.magestore.app.view.FormatEditText
                         android:id="@+id/checkout_value"
