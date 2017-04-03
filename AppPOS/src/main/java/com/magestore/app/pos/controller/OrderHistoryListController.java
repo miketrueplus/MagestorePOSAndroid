@@ -228,6 +228,7 @@ public class OrderHistoryListController extends AbstractListController<Order> {
         } else if (actionType == ORDER_TAKE_PAYMENT_TYPE) {
             List<CheckoutPayment> listCheckoutPayment = (List<CheckoutPayment>) wraper.get("list_choose_payment");
             wraper.put("take_payment_respone", mOrderService.orderTakePayment(((Order) models[0]), listCheckoutPayment));
+            return true;
         }
         return false;
     }
