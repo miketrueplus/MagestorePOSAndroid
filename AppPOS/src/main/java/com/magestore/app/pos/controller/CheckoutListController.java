@@ -936,13 +936,22 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             isEnableCreateInvoice(true);
             ((CheckoutDetailPanel) mDetailView).showPanelCheckoutPaymentCreditCard(true);
         } else {
+            checkIsPayLater(method, listPayment);
             float total = 0;
-            if (checkout.getRemainMoney() > 0) {
-                total = checkout.getRemainMoney();
-                isEnableButtonAddPayment(true);
+            if (method.isPaylater().equals("1")) {
+                if (checkout.getRemainMoney() > 0) {
+                    isEnableButtonAddPayment(true);
+                } else {
+                    isEnableButtonAddPayment(false);
+                }
             } else {
-                total = checkout.getGrandTotal();
-                isEnableButtonAddPayment(false);
+                if (checkout.getRemainMoney() > 0) {
+                    total = checkout.getRemainMoney();
+                    isEnableButtonAddPayment(true);
+                } else {
+                    total = checkout.getGrandTotal();
+                    isEnableButtonAddPayment(false);
+                }
             }
 
             method.setAmount(total);
@@ -1124,7 +1133,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         List<CheckoutPayment> listPaymentDialog = new ArrayList<>();
         listPaymentDialog.addAll(listAllPayment);
         for (CheckoutPayment checkoutPayment : listAllPayment) {
-            if(checkoutPayment.getType().equals("1")){
+            if (checkoutPayment.getType().equals("1")) {
                 listPaymentDialog.remove(checkoutPayment);
             }
             for (CheckoutPayment paymentMethod : listPayment) {
@@ -1178,6 +1187,25 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     }
 
     /**
+     * kiểm tra nếu payment truyền vào ko phải pay later thì remove all payment is_pay_later
+     * @param checkoutPayment
+     * @param listPayment
+     */
+    public void checkIsPayLater(CheckoutPayment checkoutPayment, List<CheckoutPayment> listPayment) {
+        if (!checkoutPayment.isPaylater().equals("1")) {
+            if (listPayment != null && listPayment.size() > 0) {
+                for (int i = 0; i < listPayment.size(); i++) {
+                    CheckoutPayment payment = listPayment.get(i);
+                    if (payment.isPaylater().equals("1")) {
+                        listPayment.remove(payment);
+                        i--;
+                    }
+                }
+            }
+        }
+    }
+
+    /**0
      * check list cart xem còn sản phẩm hay không
      *
      * @return

@@ -198,7 +198,9 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1.0"
+                                magestore_view:layout_item="@layout/card_order_payment_content"
                                 magestore_view:layout_list="@+id/order_payment_list"
+                                magestore_view:layout_no_scroll="true"
                                 magestore_view:layout_panel="@layout/panel_order_payment_list" />
 
                         </FrameLayout>

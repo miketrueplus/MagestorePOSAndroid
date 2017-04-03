@@ -236,6 +236,7 @@ public class OrderHistoryListController extends AbstractListController<Order> {
         } else if (actionType == ORDER_TAKE_PAYMENT_TYPE) {
             List<CheckoutPayment> listCheckoutPayment = (List<CheckoutPayment>) wraper.get("list_choose_payment");
             wraper.put("take_payment_respone", mOrderService.orderTakePayment(((Order) models[0]), listCheckoutPayment));
+            return true;
         }
         return false;
     }
@@ -343,13 +344,22 @@ public class OrderHistoryListController extends AbstractListController<Order> {
     public void onAddPaymentMethod(CheckoutPayment method) {
         Order mOrder = ((OrderDetailPanel) mDetailView).getOrder();
         List<CheckoutPayment> listPayment = (List<CheckoutPayment>) wraper.get("list_choose_payment");
+        checkIsPayLater(method, listPayment);
         float total = 0;
-        if (mOrder.getRemainMoney() > 0) {
-            total = mOrder.getRemainMoney();
-            isEnableButtonAddPayment(true);
+        if (method.isPaylater().equals("1")) {
+            if (mOrder.getRemainMoney() > 0) {
+                isEnableButtonAddPayment(true);
+            } else {
+                isEnableButtonAddPayment(false);
+            }
         } else {
-            total = mOrder.getTotalDue();
-            isEnableButtonAddPayment(false);
+            if (mOrder.getRemainMoney() > 0) {
+                total = mOrder.getRemainMoney();
+                isEnableButtonAddPayment(true);
+            } else {
+                total = mOrder.getTotalDue();
+                isEnableButtonAddPayment(false);
+            }
         }
 
         method.setAmount(total);
@@ -377,6 +387,25 @@ public class OrderHistoryListController extends AbstractListController<Order> {
             mOrderTakePaymentPanel.showPanelAddPaymentMethod();
             mOrderTakePaymentPanel.bindTotalPrice(mOrder.getTotalDue());
             isEnableButtonAddPayment(false);
+        }
+    }
+
+    /**
+     * kiểm tra nếu payment truyền vào ko phải pay later thì remove all payment is_pay_later
+     * @param checkoutPayment
+     * @param listPayment
+     */
+    public void checkIsPayLater(CheckoutPayment checkoutPayment, List<CheckoutPayment> listPayment) {
+        if (!checkoutPayment.isPaylater().equals("1")) {
+            if (listPayment != null && listPayment.size() > 0) {
+                for (int i = 0; i < listPayment.size(); i++) {
+                    CheckoutPayment payment = listPayment.get(i);
+                    if (payment.isPaylater().equals("1")) {
+                        listPayment.remove(payment);
+                        i--;
+                    }
+                }
+            }
         }
     }
 
