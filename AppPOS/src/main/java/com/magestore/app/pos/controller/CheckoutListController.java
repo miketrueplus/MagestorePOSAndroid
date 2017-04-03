@@ -448,6 +448,11 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 // auto select shipping method
                 autoSelectShipping(listShipping);
             } else {
+                List<CheckoutPayment> listChoosePayment = (List<CheckoutPayment>) wraper.get("list_payment");
+                if(listChoosePayment != null){
+                    listChoosePayment = new ArrayList<>();
+                    wraper.put("list_payment", listChoosePayment);
+                }
                 autoSelectPaymentMethod(listPayment);
                 ((CheckoutDetailPanel) mDetailView).isShowLoadingDetail(false);
             }
@@ -493,6 +498,11 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                     // auto select shipping method
                     autoSelectShipping(listShipping);
                 } else {
+                    List<CheckoutPayment> listChoosePayment = (List<CheckoutPayment>) wraper.get("list_payment");
+                    if(listChoosePayment != null){
+                        listChoosePayment = new ArrayList<>();
+                        wraper.put("list_payment", listChoosePayment);
+                    }
                     autoSelectPaymentMethod(listPayment);
                 }
 
@@ -544,7 +554,11 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 ((CheckoutListPanel) mView).updateTotalPrice(checkout);
             // show payment method
             ((CheckoutDetailPanel) mDetailView).showPaymentMethod();
-
+            List<CheckoutPayment> listChoosePayment = (List<CheckoutPayment>) wraper.get("list_payment");
+            if(listChoosePayment != null){
+                listChoosePayment = new ArrayList<>();
+                wraper.put("list_payment", listChoosePayment);
+            }
             autoSelectPaymentMethod(checkout.getCheckoutPayment());
 
             // hoàn thành save shipping  hiden progressbar
