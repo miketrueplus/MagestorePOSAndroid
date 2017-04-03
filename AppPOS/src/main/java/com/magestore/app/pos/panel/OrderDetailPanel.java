@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.magestore.app.lib.controller.Controller;
@@ -45,6 +46,8 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
     ImageView im_status;
     TextView status;
 
+    RelativeLayout detail_order_loading;
+
     public OrderDetailPanel(Context context) {
         super(context);
     }
@@ -70,6 +73,8 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         fr_detail_bottom_left = (FrameLayout) v.findViewById(R.id.fr_detail_bottom_left);
 
         fr_detail_bottom_right = (FrameLayout) v.findViewById(R.id.fr_detail_bottom_right);
+
+        detail_order_loading = (RelativeLayout) v.findViewById(R.id.detail_order_loading);
 
         mBinding = DataBindingUtil.bind(v);
     }
@@ -395,4 +400,11 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
             }
         });
     }
+
+    /* Felix 3/4/2017 Start */
+    public void showDetailOrderLoading(boolean visible){
+        detail_order_loading.setVisibility(visible ? VISIBLE : INVISIBLE);
+    }
+     /* Felix 3/4/2017 End */
+
 }

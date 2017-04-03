@@ -1,5 +1,7 @@
 package com.magestore.app.pos.controller;
 
+import android.widget.RelativeLayout;
+
 import com.magestore.app.lib.controller.AbstractListController;
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.checkout.CheckoutPayment;
@@ -72,6 +74,7 @@ public class OrderHistoryListController extends AbstractListController<Order> {
      * Service xử lý các vấn đề liên quan đến order
      */
     OrderHistoryService mOrderService;
+    RelativeLayout mLayoutOrderCommentLoading;
 
     /**
      * Thiết lập service
@@ -161,18 +164,22 @@ public class OrderHistoryListController extends AbstractListController<Order> {
     }
 
     public void doInputSendEmail(Map<String, Object> paramSendEmail) {
+        showDetailOrderLoading(true);
         doAction(SENT_EMAIL_TYPE, SENT_EMAIL_CODE, paramSendEmail, null);
     }
 
     public void doInputCreateShipment(Order order) {
+        showDetailOrderLoading(true);
         doAction(CREATE_SHIPMENT_TYPE, CREATE_SHIPMENT_CODE, wraper, order);
     }
 
     public void doInputInsertStatus(Order order) {
+        showDetailOrderLoading(true);
         doAction(INSERT_STATUS_TYPE, INSERT_STATUS_CODE, wraper, order);
     }
 
     public void doInputRefund(Order order) {
+        showDetailOrderLoading(true);
         doAction(ORDER_REFUND_TYPE, ORDER_REFUND_CODE, wraper, order);
     }
 
@@ -181,6 +188,7 @@ public class OrderHistoryListController extends AbstractListController<Order> {
     }
 
     public void doInputCancel(Order order) {
+        showDetailOrderLoading(true);
         doAction(ORDER_CANCEL_TYPE, ORDER_CANCEL_CODE, wraper, order);
     }
 
@@ -237,6 +245,7 @@ public class OrderHistoryListController extends AbstractListController<Order> {
         super.onActionPostExecute(success, actionType, actionCode, wraper, models);
         if (actionType == SENT_EMAIL_TYPE) {
             mOrderSendEmailPanel.showAlertRespone(success);
+            showDetailOrderLoading(false);
         } else if (success && actionType == CREATE_SHIPMENT_TYPE) {
             Order order = (Order) wraper.get("shipment_respone");
             mOrderShipmentPanel.showAlertRespone();
@@ -250,12 +259,14 @@ public class OrderHistoryListController extends AbstractListController<Order> {
             ((OrderDetailPanel) mDetailView).changeStatusTopOrder(order.getStatus());
             ((OrderDetailPanel) mDetailView).bindDataRespone(order);
             ((OrderDetailPanel) mDetailView).setOrder(order);
+            showDetailOrderLoading(false);
         } else if (success && actionType == INSERT_STATUS_TYPE) {
             Order order = (Order) wraper.get("status_respone");
             mOrderAddCommentPanel.showAlertRespone();
             mOrderCommentListController.doSelectOrder(order);
             mOrderCommentListController.notifyDataSetChanged();
             ((OrderDetailPanel) mDetailView).bindDataRespone(order);
+            showDetailOrderLoading(false);
         } else if (success && actionType == ORDER_REFUND_TYPE) {
             Order order = (Order) wraper.get("refund_respone");
             mOrderRefundPanel.showAlertRespone();
@@ -269,6 +280,7 @@ public class OrderHistoryListController extends AbstractListController<Order> {
             ((OrderDetailPanel) mDetailView).changeStatusTopOrder(order.getStatus());
             ((OrderDetailPanel) mDetailView).bindDataRespone(order);
             ((OrderDetailPanel) mDetailView).setOrder(order);
+            showDetailOrderLoading(false);
         } else if (success && actionType == ORDER_INVOICE_TYPE) {
             Order order = (Order) wraper.get("invoice_respone");
             mOrderInvoicePanel.showAlertRespone();
@@ -295,6 +307,7 @@ public class OrderHistoryListController extends AbstractListController<Order> {
             ((OrderDetailPanel) mDetailView).changeStatusTopOrder(order.getStatus());
             ((OrderDetailPanel) mDetailView).bindDataRespone(order);
             ((OrderDetailPanel) mDetailView).setOrder(order);
+            showDetailOrderLoading(false);
         } else if (success && actionType == ORDER_TAKE_PAYMENT_TYPE) {
             Order order = (Order) wraper.get("take_payment_respone");
             mOrderHistoryItemsListController.doSelectOrder(order);
@@ -407,6 +420,12 @@ public class OrderHistoryListController extends AbstractListController<Order> {
     public OrderInvoiceParams createOrderInvoiceParams() {
         return mOrderService.createOrderInvoiceParams();
     }
+
+    /*Felix 3/4/2017 Start*/
+    public void showDetailOrderLoading(boolean visible){
+        ((OrderDetailPanel) mDetailView).showDetailOrderLoading(visible);
+    }
+    /*Felix 3/4/2017 End*/
 
     public boolean checkCanInvoice(Order order) {
         return mOrderService.checkCanInvoice(order);
