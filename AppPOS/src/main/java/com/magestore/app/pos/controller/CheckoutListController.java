@@ -164,6 +164,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             checkout.setStoreId(store_id);
             wraper.put("quote_id", checkout.getQuoteId());
             doAction(ACTION_TYPE_SAVE_CART, null, wraper, checkout);
+            ((CheckoutDetailPanel) mDetailView).hideCheckPaymenrRequired();
         } else {
             ((CheckoutDetailPanel) mDetailView).showNotifiAddItems();
             return;
@@ -969,6 +970,8 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             isEnableCreateInvoice(true);
             ((CheckoutDetailPanel) mDetailView).showPanelCheckoutPayment();
         }
+
+        ((CheckoutDetailPanel) mDetailView).hideCheckPaymenrRequired();
     }
 
     /**

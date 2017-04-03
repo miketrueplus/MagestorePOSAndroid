@@ -37,7 +37,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
     CheckoutShippingListPanel mCheckoutShippingListPanel;
     CheckoutAddPaymentPanel mCheckoutAddPaymentPanel;
     CheckoutPaymentCreditCardPanel mCheckoutPaymentCreditCardPanel;
-    TextView txt_grand_total, txt_remain_title, txt_remain_value, txt_payment_creditcard, tv_delivery_date_time;
+    TextView txt_grand_total, txt_remain_title, txt_remain_value, txt_payment_creditcard, tv_delivery_date_time, tv_check_payment_required;
     RelativeLayout rl_content_payment_method, sales_background_loading, rl_remove_payment_credit_card, rl_delivery;
     MagestoreDialog dialog;
     Switch create_ship, create_invoice;
@@ -85,6 +85,9 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         // delivery
         rl_delivery = (RelativeLayout) findViewById(R.id.rl_delivery);
         tv_delivery_date_time = (TextView) findViewById(R.id.tv_delivery_date_time);
+
+        //check payment method
+        tv_check_payment_required = (TextView) findViewById(R.id.tv_check_payment_required);
 
         im_back.setOnClickListener(new OnClickListener() {
             @Override
@@ -300,6 +303,12 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
 
         // Tạo dialog và hiển thị
         com.magestore.app.util.DialogUtil.confirm(getContext(), message, R.string.ok);
+
+        // Felix 3/4/2017 : Hiển thị text khi chưa chọn Payment
+        tv_check_payment_required.setText(getContext().getString(R.string.sales_show_notifi_select_payment));
+        tv_check_payment_required.setError(getContext().getString(R.string.sales_show_notifi_select_payment));
+        // Felix 3/4/2017 : End
+
     }
 
     /**
@@ -347,4 +356,11 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
     public void dismissDialogAddPayment() {
         dialog.dismiss();
     }
+
+    public void hideCheckPaymenrRequired(){
+        if(tv_check_payment_required.getText().length() > 0) {
+            tv_check_payment_required.setText("") ;
+            tv_check_payment_required.setError(null);
+        }
+    };
 }
