@@ -246,6 +246,10 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
         });
     }
 
+    public void resetListPayment(){
+        mapTextId = new HashMap<>();
+    }
+
     public void setCheckout(Checkout mCheckout) {
         this.mCheckout = mCheckout;
     }

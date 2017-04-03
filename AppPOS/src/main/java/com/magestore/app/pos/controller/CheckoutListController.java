@@ -454,6 +454,11 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                     listChoosePayment = new ArrayList<>();
                     wraper.put("list_payment", listChoosePayment);
                 }
+                checkout.setRemainMoney(0);
+                checkout.setRealAmount(0);
+                checkout.setExchangeMoney(0);
+                mCheckoutPaymentListPanel.setCheckout(checkout);
+                mCheckoutPaymentListPanel.resetListPayment();
                 autoSelectPaymentMethod(listPayment);
                 ((CheckoutDetailPanel) mDetailView).isShowLoadingDetail(false);
             }
@@ -504,6 +509,11 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                         listChoosePayment = new ArrayList<>();
                         wraper.put("list_payment", listChoosePayment);
                     }
+                    checkout.setRemainMoney(0);
+                    checkout.setRealAmount(0);
+                    checkout.setExchangeMoney(0);
+                    wraper.put("save_quote", checkout);
+                    mCheckoutPaymentListPanel.resetListPayment();
                     autoSelectPaymentMethod(listPayment);
                 }
 
@@ -549,8 +559,6 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             showButtonRemoveDiscount(checkDiscount(checkout) ? true : false);
             ((CheckoutDetailPanel) mDetailView).bindTotalPrice(checkout.getGrandTotal());
 
-            mCheckoutPaymentListPanel.setCheckout(checkout);
-
             if (mView != null && checkout != null && (mView instanceof CheckoutListPanel))
                 ((CheckoutListPanel) mView).updateTotalPrice(checkout);
             // show payment method
@@ -560,6 +568,12 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 listChoosePayment = new ArrayList<>();
                 wraper.put("list_payment", listChoosePayment);
             }
+            checkout.setRemainMoney(0);
+            checkout.setRealAmount(0);
+            checkout.setExchangeMoney(0);
+            mCheckoutPaymentListPanel.resetListPayment();
+            mCheckoutPaymentListPanel.setCheckout(checkout);
+            wraper.put("save_shipping", checkout);
             autoSelectPaymentMethod(checkout.getCheckoutPayment());
 
             // hoàn thành save shipping  hiden progressbar
