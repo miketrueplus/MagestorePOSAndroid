@@ -19,6 +19,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.bumptech.glide.Glide;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.model.catalog.ProductOptionCustom;
 import com.magestore.app.lib.model.catalog.ProductOptionCustomValue;
@@ -158,9 +159,11 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
             super.bindItem(item);
 
         // hiển thị ảnh product
-        ImageView productImgView = ((ImageView) item.getProduct().getRefer(LoadProductImageTask.KEY_IMAGEVIEW));
-        if (productImgView != null) mImageProductDetail.setImageDrawable(productImgView.getDrawable());
-//        Picasso.with(getContext()).load(item.getProduct().getImage()).centerCrop().into(mImageProductDetail);
+//        ImageView productImgView = ((ImageView) item.getProduct().getRefer(LoadProductImageTask.KEY_IMAGEVIEW));
+//        if (productImgView != null) mImageProductDetail.setImageDrawable(productImgView.getDrawable());
+        Picasso.with(getContext()).load(item.getProduct().getImage()).centerInside().resizeDimen(R.dimen.product_image_detail_width, R.dimen.product_image_detail_height).into(mImageProductDetail);
+//        Glide.with(getContext()).load(item.getProduct().getImage()).centerCrop().into(mImageProductDetail);
+
 //        if (item.getProduct().getBitmap() != null)
 //            mImageProductDetail.setImageBitmap(item.getProduct().getBitmap());
     }

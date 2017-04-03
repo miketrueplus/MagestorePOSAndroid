@@ -10,6 +10,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.magestore.app.lib.model.catalog.Category;
 import com.magestore.app.lib.panel.AbstractListPanel;
 import com.magestore.app.lib.model.catalog.Product;
@@ -158,10 +159,8 @@ public class ProductListPanel extends AbstractListPanel<Product> {
 //            txtSKU.setText(product.getSKU());
 
             // gán ảnh vào
-            Picasso.with(getContext()).load(product.getImage()).resize(200, 200).centerCrop().into(imgBitmap);
-
-//            Bitmap bmp = product.getBitmap();
-//            if (bmp != null && !bmp.isRecycled() && imgBitmap != null) imgBitmap.setImageBitmap(bmp);
+            Picasso.with(getContext()).load(product.getImage()).centerInside().resizeDimen(R.dimen.product_image_width, R.dimen.product_image_height).into(imgBitmap);
+//            Glide.with(getContext()).load(product.getImage()).fitCenter().override(120, 120).into(imgBitmap);
 
             // Đặt tham chiếu imageview sang product
             product.setRefer(LoadProductImageTask.KEY_IMAGEVIEW, imgBitmap);
