@@ -204,10 +204,24 @@ public class OrderHistoryListController extends AbstractListController<Order> {
         List<CheckoutPayment> listCheckoutPayment = (List<CheckoutPayment>) wraper.get("list_choose_payment");
         if (listCheckoutPayment != null && listCheckoutPayment.size() > 0) {
             doAction(ORDER_TAKE_PAYMENT_TYPE, ORDER_TAKE_PAYMENT_CODE, wraper, order);
+            showDetailOrderLoading(true);
         } else {
             // show notifi
+            mOrderTakePaymentPanel.showNotifiSelectPayment();
         }
     }
+
+   /* Felix 3/4/2017 Start*/
+    public boolean checkDimissDialogTakePayment(Order order){
+
+        List<CheckoutPayment> listCheckoutPayment = (List<CheckoutPayment>) wraper.get("list_choose_payment");
+        if (listCheckoutPayment != null && listCheckoutPayment.size() > 0) {
+           return  true;
+        }
+
+        return false;
+    }
+    /* Felix 3/4/2017 End*/
 
     @Override
     public Boolean doActionBackround(int actionType, String actionCode, Map<String, Object> wraper, Model... models) throws Exception {
@@ -323,6 +337,7 @@ public class OrderHistoryListController extends AbstractListController<Order> {
             ((OrderDetailPanel) mDetailView).changeStatusTopOrder(order.getStatus());
             ((OrderDetailPanel) mDetailView).bindDataRespone(order);
             ((OrderDetailPanel) mDetailView).setOrder(order);
+            showDetailOrderLoading(false);
         }
     }
 
@@ -375,6 +390,7 @@ public class OrderHistoryListController extends AbstractListController<Order> {
         mOrderListChoosePaymentPanel.bindList(listPayment);
         mOrderListChoosePaymentPanel.updateTotal(listPayment);
         mOrderTakePaymentPanel.showPanelListChoosePayment();
+        mOrderTakePaymentPanel.hideCheckPaymenrRequired();
     }
 
     /**

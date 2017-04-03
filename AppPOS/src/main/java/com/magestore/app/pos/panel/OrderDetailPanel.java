@@ -396,7 +396,12 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
             @Override
             public void onClick(View view) {
                 ((OrderHistoryListController) mController).doInputTakePayment(mOrder);
-                dialog.dismiss();
+
+                if( ((OrderHistoryListController) mController).
+                        checkDimissDialogTakePayment(mOrder)) {
+                    dialog.dismiss();
+                }
+
             }
         });
     }

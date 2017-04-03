@@ -306,7 +306,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
 
         // Felix 3/4/2017 : Hiển thị text khi chưa chọn Payment
         tv_check_payment_required.setText(getContext().getString(R.string.sales_show_notifi_select_payment));
-        tv_check_payment_required.setError(getContext().getString(R.string.sales_show_notifi_select_payment));
+        tv_check_payment_required.setError(getContext().getString(R.string.err_field_required));
         // Felix 3/4/2017 : End
 
     }

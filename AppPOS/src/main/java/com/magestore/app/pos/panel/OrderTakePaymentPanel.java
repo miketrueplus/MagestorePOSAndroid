@@ -21,7 +21,7 @@ import com.magestore.app.util.ConfigUtil;
 public class OrderTakePaymentPanel extends AbstractDetailPanel<Order> {
     OrderAddPaymentPanel mOrderAddPaymentPanel;
     OrderListChoosePaymentPanel mOrderListChoosePaymentPanel;
-    TextView txt_remain_title, txt_remain_value;
+    TextView txt_remain_title, txt_remain_value, tv_check_take_payment_required;
     LinearLayout ll_order_add_payment;
 
     public OrderTakePaymentPanel(Context context) {
@@ -46,6 +46,7 @@ public class OrderTakePaymentPanel extends AbstractDetailPanel<Order> {
         ll_order_add_payment = (LinearLayout) view.findViewById(R.id.ll_order_add_payment);
         txt_remain_title = (TextView) view.findViewById(R.id.txt_remain_title);
         txt_remain_value = (TextView) view.findViewById(R.id.txt_remain_value);
+        tv_check_take_payment_required = (TextView) view.findViewById(R.id.tv_check_take_payment_required);
     }
 
     @Override
@@ -93,4 +94,19 @@ public class OrderTakePaymentPanel extends AbstractDetailPanel<Order> {
         String total = ConfigUtil.formatPrice(totalPrice);
         txt_remain_value.setText(total);
     }
+
+    // Felix 3/4/2017 : Hiển thị text khi chưa chọn Payment
+    public void showNotifiSelectPayment() {
+
+        tv_check_take_payment_required.setText(getContext().getString(R.string.sales_show_notifi_select_payment));
+        tv_check_take_payment_required.setError(getContext().getString(R.string.sales_show_notifi_select_payment));
+    }
+
+    public void hideCheckPaymenrRequired(){
+        if(tv_check_take_payment_required.getText().length() > 0) {
+            tv_check_take_payment_required.setText("") ;
+            tv_check_take_payment_required.setError(null);
+        }
+    }
+    // Felix 3/4/2017 : End
 }
