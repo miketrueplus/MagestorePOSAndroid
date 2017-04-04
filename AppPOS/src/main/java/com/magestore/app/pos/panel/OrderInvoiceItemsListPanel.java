@@ -83,7 +83,7 @@ public class OrderInvoiceItemsListPanel extends AbstractListPanel<CartItem> {
                     qty_invoiced = 0;
                 }
 
-                float qty = item.QtyInvoice();
+                int qty = item.QtyInvoice();
                 if (qty_invoiced < 0 || qty_invoiced > qty) {
                     qty_to_invoice.setText(String.valueOf(qty));
                     item.setQuantity(qty);

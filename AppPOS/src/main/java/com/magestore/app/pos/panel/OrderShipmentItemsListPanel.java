@@ -92,7 +92,7 @@ public class OrderShipmentItemsListPanel extends AbstractListPanel<CartItem> {
                     qty_shipped = 0;
                 }
 
-                float qty = item.QtyShip();
+                int qty = item.QtyShip();
                 if (qty_shipped < 0 || qty_shipped > qty) {
                     qty_to_ship.setText(String.valueOf(qty));
                     item.setQuantity(qty);
@@ -104,7 +104,7 @@ public class OrderShipmentItemsListPanel extends AbstractListPanel<CartItem> {
     }
 
     public List<OrderItemParams> bind2List() {
-        List<CartItem> listCartItems = ((OrderShipmentItemsListController) mController).getSelectedItems();
+        List<CartItem> listCartItems = ((OrderShipmentItemsListController) mController).getListItem();
         if (listCartItems != null && listCartItems.size() > 0) {
             for (CartItem item : listCartItems) {
                 OrderItemParams param = ((OrderShipmentItemsListController) mController).createOrderShipmentItemParams();

@@ -71,4 +71,8 @@ public class OrderShipmentItemsListController extends AbstractListController<Car
     public OrderItemParams createOrderShipmentItemParams() {
         return mOrderService.createOrderItemParams();
     }
+
+    public List<CartItem> getListItem(){
+        return mList;
+    }
 }
