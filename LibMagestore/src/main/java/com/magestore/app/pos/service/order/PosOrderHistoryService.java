@@ -347,9 +347,9 @@ public class PosOrderHistoryService extends AbstractService implements OrderHist
         }
         boolean allShip = true;
         for (CartItem item : order.getOrderItems()) {
-            if (item.getProductType().equals("customsale") && item.getIsVirtual().equals("1")) {
-                return true;
-            }
+//            if (item.getProductType().equals("customsale") && item.getIsVirtual().equals("1")) {
+//                return true;
+//            }
             if (item.getProductType().equals("simple") && !TextUtils.isEmpty(item.getParentItemId())) {
                 return true;
             }

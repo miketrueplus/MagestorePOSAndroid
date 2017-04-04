@@ -69,13 +69,11 @@ public class OrderShipmentPanel extends AbstractDetailPanel<Order> {
 
     @Override
     public void initModel() {
-        Controller controller = getController();
-
         mOrderShipmentItemsListController = new OrderShipmentItemsListController();
         mOrderShipmentItemsListController.setView(mOrderShipmentItemsListPanel);
 
-        if (controller instanceof OrderHistoryListController)
-            mOrderShipmentItemsListController.setOrderService(((OrderHistoryListController) controller).getOrderService());
+        if (mController instanceof OrderHistoryListController)
+            mOrderShipmentItemsListController.setOrderService(((OrderHistoryListController) mController).getOrderService());
     }
 
     @Override

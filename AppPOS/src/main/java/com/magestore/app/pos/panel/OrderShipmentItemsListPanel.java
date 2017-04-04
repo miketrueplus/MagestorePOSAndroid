@@ -68,7 +68,7 @@ public class OrderShipmentItemsListPanel extends AbstractListPanel<CartItem> {
 
         EditText qty_to_ship = (EditText) view.findViewById(R.id.qty_to_ship);
         actionQtyToShip(item, qty_to_ship);
-        item.setOrderItemId(item.getID());
+        item.setOrderItemId(item.getItemId());
     }
 
     private void actionQtyToShip(final CartItem item, final EditText qty_to_ship) {
@@ -104,7 +104,7 @@ public class OrderShipmentItemsListPanel extends AbstractListPanel<CartItem> {
     }
 
     public List<OrderItemParams> bind2List() {
-        List<CartItem> listCartItems = ((OrderShipmentItemsListController) mController).getSelectedItems();
+        List<CartItem> listCartItems = ((OrderShipmentItemsListController) mController).getListItem();
         if (listCartItems != null && listCartItems.size() > 0) {
             for (CartItem item : listCartItems) {
                 OrderItemParams param = ((OrderShipmentItemsListController) mController).createOrderShipmentItemParams();

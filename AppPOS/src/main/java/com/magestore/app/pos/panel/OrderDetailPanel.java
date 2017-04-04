@@ -234,8 +234,8 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
 
     private void onClickSendEmail() {
         final OrderSendEmailPanel mOrderSendEmailPanel = new OrderSendEmailPanel(getContext());
-        mOrderSendEmailPanel.bindItem(mOrder);
         mOrderSendEmailPanel.setController(mController);
+        mOrderSendEmailPanel.bindItem(mOrder);
         dialog = DialogUtil.dialog(getContext(), getContext().getString(R.string.order_send_email_title), mOrderSendEmailPanel);
         dialog.show();
 
@@ -268,8 +268,8 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
 
     private void onClickAddComment() {
         final OrderAddCommentPanel mOrderAddCommentPanel = new OrderAddCommentPanel(getContext());
-        mOrderAddCommentPanel.bindItem(mOrder);
         mOrderAddCommentPanel.setController(mController);
+        mOrderAddCommentPanel.bindItem(mOrder);
         dialog = DialogUtil.dialog(getContext(), getContext().getString(R.string.order_add_comment_title), mOrderAddCommentPanel);
         dialog.show();
 
@@ -297,9 +297,9 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
 
     private void onClickShipment() {
         final OrderShipmentPanel mOrderShipmentPanel = new OrderShipmentPanel(getContext());
-        mOrderShipmentPanel.bindItem(mOrder);
         mOrderShipmentPanel.setController(mController);
         mOrderShipmentPanel.initModel();
+        mOrderShipmentPanel.bindItem(mOrder);
         dialog = DialogUtil.dialog(getContext(), getContext().getString(R.string.order_shipment_title), mOrderShipmentPanel);
         dialog.setDialogWidth(getContext().getResources().getDimensionPixelSize(R.dimen.order_dialog_ship_width));
         dialog.setGoneButtonSave(true);
@@ -319,9 +319,9 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
 
     private void onClickRefund() {
         final OrderRefundPanel mOrderRefundPanel = new OrderRefundPanel(getContext());
-        mOrderRefundPanel.bindItem(mOrder);
         mOrderRefundPanel.setController(mController);
         mOrderRefundPanel.initModel();
+        mOrderRefundPanel.bindItem(mOrder);
         dialog = DialogUtil.dialog(getContext(), getContext().getString(R.string.order_refund_title), mOrderRefundPanel);
         dialog.setDialogWidth(getContext().getResources().getDimensionPixelSize(R.dimen.order_dialog_refund_width));
         dialog.setDialogSave(getContext().getString(R.string.order_refund_btn_save));

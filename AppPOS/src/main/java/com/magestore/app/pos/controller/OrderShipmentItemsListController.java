@@ -1,5 +1,7 @@
 package com.magestore.app.pos.controller;
 
+import android.util.Log;
+
 import com.magestore.app.lib.controller.AbstractListController;
 import com.magestore.app.lib.controller.ListController;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
@@ -20,6 +22,7 @@ public class OrderShipmentItemsListController extends AbstractListController<Car
     Order mSelectedOrder;
     OrderHistoryListController mOrderHistoryListController;
     OrderHistoryService mOrderService;
+    List<CartItem> listCartItems;
 
     /**
      * Thiết lập controller
@@ -48,6 +51,7 @@ public class OrderShipmentItemsListController extends AbstractListController<Car
     public void doSelectOrder(Order order) {
         mSelectedOrder = order;
         mList = checkListShipment(order);
+        bindList(mList);
         mView.bindList(mList);
     }
 
@@ -66,5 +70,9 @@ public class OrderShipmentItemsListController extends AbstractListController<Car
 
     public OrderItemParams createOrderShipmentItemParams() {
         return mOrderService.createOrderItemParams();
+    }
+
+    public List<CartItem> getListItem(){
+        return mList;
     }
 }
