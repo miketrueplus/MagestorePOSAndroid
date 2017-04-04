@@ -16,12 +16,15 @@ import com.magestore.app.lib.model.checkout.QuoteAddCouponParam;
 import com.magestore.app.lib.model.checkout.SaveQuoteParam;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.parse.ParseException;
+import com.magestore.app.lib.resourcemodel.DataAccessException;
 import com.magestore.app.lib.resourcemodel.sales.CheckoutDataAccess;
 import com.magestore.app.pos.api.m2.POSAPI;
 import com.magestore.app.pos.api.m2.POSAbstractDataAccess;
 import com.magestore.app.pos.api.m2.POSDataAccessSession;
 import com.magestore.app.pos.model.checkout.PosCheckout;
 import com.magestore.app.pos.model.sales.PosOrder;
+import com.magestore.app.pos.parse.gson2pos.Gson2PosAbstractParseImplement;
+import com.magestore.app.util.StringUtil;
 
 import java.io.IOException;
 
@@ -36,6 +39,10 @@ public class POSCheckoutDataAccess extends POSAbstractDataAccess implements Chec
         String quote_id = null;
         String shipping_method = null;
         String payment_method = null;
+        String email = null;
+        String increment_id = null;
+        boolean error = false;
+        String message = null;
     }
 
     @Override
@@ -371,6 +378,51 @@ public class POSCheckoutDataAccess extends POSAbstractDataAccess implements Chec
     @Override
     public boolean removeOrderToListCheckout(Checkout checkout) throws ParseException, InstantiationException, IllegalAccessException, IOException {
         return false;
+    }
+
+    @Override
+    public String sendEmail(String email, String increment_id) throws ParseException, InstantiationException, IllegalAccessException, IOException{
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+
+        try {
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPI.REST_CHECK_OUT_SEND_EMAIL);
+
+            // Xây dựng tham số
+            paramBuilder = statement.getParamBuilder()
+                    .setSessionID(POSDataAccessSession.REST_SESSION_ID);
+
+            CheckoutEntity checkoutEntity = new CheckoutEntity();
+            checkoutEntity.email = email;
+            checkoutEntity.increment_id = increment_id ;
+            rp = statement.execute(checkoutEntity);
+
+            String json = StringUtil.truncateJson(rp.readResult2String());
+            CheckoutEntity ck = new Gson().fromJson(json,CheckoutEntity.class);
+
+            return ck != null ? ck.message : "";
+        } catch (Exception e) {
+            throw new DataAccessException(e);
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
     }
 
 }

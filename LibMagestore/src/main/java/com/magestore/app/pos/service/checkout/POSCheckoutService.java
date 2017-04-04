@@ -245,6 +245,13 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
     }
 
     @Override
+    public String sendEmail(String email, String increment_id) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        CheckoutDataAccess checkoutDataAccess = factory.generateCheckoutDataAccess();
+        return checkoutDataAccess.sendEmail(email, increment_id);
+    }
+
+    @Override
     public Checkout updateTotal(Checkout checkout) {
         for (CheckoutTotals checkoutTotals : checkout.getTotals()) {
             if (checkoutTotals.getCode().equals("subtotal")) {

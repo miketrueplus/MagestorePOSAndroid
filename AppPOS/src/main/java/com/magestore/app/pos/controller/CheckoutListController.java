@@ -1,6 +1,7 @@
 package com.magestore.app.pos.controller;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 
 import com.magestore.app.lib.controller.AbstractListController;
@@ -65,6 +66,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     static final int ACTION_TYPE_SAVE_SHIPPING = 8;
     static final int ACTION_TYPE_SAVE_PAYMENT = 9;
     static final int ACTION_TYPE_PLACE_ORDER = 10;
+    static final int ACTION_TYPE_SEND_EMAIL = 11;
 
     static final int STATUS_CHECKOUT_ADD_ITEM = 0;
     static final int STATUS_CHECKOUT_PROCESSING = 1;
@@ -316,6 +318,15 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         doAction(ACTION_TYPE_USER_GUEST, null, wraper, guest_checkout);
     }
 
+    public void doInputSendEmail(Map<String, Object> paramSendEmail) {
+        showDetailOrderLoading(true);
+        doAction(ACTION_TYPE_SEND_EMAIL,null, paramSendEmail, null);
+    }
+
+    private void showDetailOrderLoading(boolean b) {
+        mCheckoutSuccessPanel.showDetailOrderLoading(b);
+    }
+
     @Override
     public Boolean doActionBackround(int actionType, String actionCode, Map<String, Object> wraper, Model... models) throws Exception {
         if (actionType == ACTION_TYPE_USER_GUEST) {
@@ -372,12 +383,19 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             String quoteId = getSelectedItem().getQuoteId();
             wraper.put("place_order", ((CheckoutService) getListService()).placeOrder(quoteId, checkout, listCheckoutPayment));
             return true;
+        }else if (actionType == ACTION_TYPE_SEND_EMAIL) {
+            String email = (String) wraper.get("email");
+            String increment_id = (String) wraper.get("increment_id");
+            String responServer = ((CheckoutService) getListService()).sendEmail(email, increment_id);
+            wraper.put("send_email_response",responServer);
+            return true;
         }
         return false;
     }
 
     @Override
     public void onActionPostExecute(boolean success, int actionType, String actionCode, Map<String, Object> wraper, Model... models) {
+
         if (success && actionType == ACTION_TYPE_USER_GUEST) {
             Customer customer = (Customer) models[0];
             ((CheckoutListPanel) mView).useDefaultGuestCheckout(customer);
@@ -580,17 +598,21 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             ((CheckoutDetailPanel) mDetailView).isShowLoadingDetail(false);
         } else if (success && actionType == ACTION_TYPE_SAVE_PAYMENT) {
             Checkout checkout = (Checkout) wraper.get("save_payment");
-        } else if (success && actionType == ACTION_TYPE_PLACE_ORDER) {
+        }else if (success && actionType == ACTION_TYPE_PLACE_ORDER) {
             Order order = (Order) wraper.get("place_order");
             getSelectedItem().setOrderSuccess(order);
             isShowButtonCheckout(false);
             isShowSalesMenuDiscount(false);
             mCheckoutSuccessPanel.bindItem(order);
-            doShowDetailSuccess(true);
+            doShowDetailSuccess(true,order);
 
             // hoàn thành place order hiden progressbar
             ((CheckoutDetailPanel) mDetailView).isShowLoadingDetail(false);
-        } else {
+        }else if (success && actionType == ACTION_TYPE_SEND_EMAIL) {
+            //Show dialog khi gửi email thành công
+            showDetailOrderLoading(false);
+            mCheckoutSuccessPanel.showAlertRespone(true,(String) wraper.get("send_email_response"));
+        }else {
             ((CheckoutDetailPanel) mDetailView).isShowLoadingDetail(false);
         }
     }
@@ -671,7 +693,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             if (checkout.getOrderSuccess() != null) {
                 isShowButtonCheckout(false);
                 isShowSalesMenuDiscount(false);
-                doShowDetailSuccess(true);
+                doShowDetailSuccess(true,checkout.getOrderSuccess());
             }
             mItem = checkout;
             mCartItemListController.bindList(checkout.getCartItem());
@@ -735,7 +757,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 mCheckoutSuccessPanel.bindItem(checkout.getOrderSuccess());
                 isShowButtonCheckout(false);
                 isShowSalesMenuDiscount(false);
-                doShowDetailSuccess(true);
+                doShowDetailSuccess(true,checkout.getOrderSuccess());
             } else {
                 isShowButtonCheckout(true);
                 isShowSalesMenuDiscount(true);
@@ -908,6 +930,11 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         super.doShowDetailPanel(show);
         enableRemoveCartItem(show);
         if (mProductListController != null) mProductListController.doShowListPanel(!show);
+    }
+
+    public void doShowDetailSuccess(boolean show, Order order) {
+        mCheckoutSuccessPanel.setVisibility(show ? View.VISIBLE : View.GONE);
+        if(show && order!=null) mCheckoutSuccessPanel.fillEmailCustomer(order);
     }
 
     public void doShowDetailSuccess(boolean show) {

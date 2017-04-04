@@ -51,6 +51,8 @@ public interface CheckoutService extends ListService<Checkout> {
 
     boolean removeOrderToListCheckout(Checkout checkout) throws IOException, InstantiationException, ParseException, IllegalAccessException;
 
+    String sendEmail(String email , String increment_id) throws IOException, InstantiationException, ParseException, IllegalAccessException;
+
     Checkout updateTotal(Checkout checkout);
 
     Checkout create();

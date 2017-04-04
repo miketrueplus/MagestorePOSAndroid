@@ -77,6 +77,7 @@ public class POSAPI {
     public static final String REST_CHECK_OUT_SAVE_SHIPPING = "/rest/default/V1/webpos/checkout/saveShippingMethod?";
     public static final String REST_CHECK_OUT_SAVE_PAYMENT = "/rest/default/V1/webpos/checkout/savePaymentMethod?";
     public static final String REST_CHECK_OUT_PLACE_ORDER = "/rest/default/V1/webpos/checkout/placeOrder?";
+    public static final String REST_CHECK_OUT_SEND_EMAIL = "rest/default/V1/webpos/checkout/sendEmail?";
 
     // API register shifts
     public static final String REST_REGISTER_SHIFTS_GET_LISTING = "/rest/default/V1/webpos/shifts/getlist?";
