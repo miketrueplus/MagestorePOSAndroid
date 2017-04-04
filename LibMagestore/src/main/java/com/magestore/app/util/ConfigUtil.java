@@ -1,5 +1,7 @@
 package com.magestore.app.util;
 
+import android.text.format.Time;
+
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.staff.Staff;
 
@@ -13,6 +15,7 @@ import java.util.Calendar;
 import java.util.Currency;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  * Các tiện ích cấu hình hệ thống, các format
@@ -392,6 +395,7 @@ public class ConfigUtil {
             return "";
         }
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        format.setTimeZone(TimeZone.getTimeZone("GMT"));
         Date dateFormat = null;
         try {
             dateFormat = format.parse(date);
@@ -415,6 +419,7 @@ public class ConfigUtil {
             return "";
         }
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        format.setTimeZone(TimeZone.getTimeZone("GMT"));
         Date dateFormat = null;
         try {
             dateFormat = format.parse(date);
@@ -438,6 +443,7 @@ public class ConfigUtil {
             return "";
         }
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        format.setTimeZone(TimeZone.getTimeZone("GMT"));
         Date dateFormat = null;
         try {
             dateFormat = format.parse(date);
@@ -454,6 +460,27 @@ public class ConfigUtil {
         DateFormat df = new SimpleDateFormat("hh:mm");
         String date = df.format(Calendar.getInstance().getTime());
         return date;
+    }
+
+    /**
+     * convert current time to default
+     * @param date_time
+     * @return
+     */
+    public static String convertToGMTTime(String date_time){
+        String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss" ;
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+        sdf.setTimeZone(TimeZone.getTimeZone(Time.getCurrentTimezone()));
+        Date dateFormat = null;
+        try {
+            dateFormat = sdf.parse(date_time);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        SimpleDateFormat sdf1 = new SimpleDateFormat(DATE_FORMAT);
+        sdf1.setTimeZone(TimeZone.getTimeZone("GMT"));
+        String dateTimeString =  sdf1.format(dateFormat);
+        return dateTimeString;
     }
 
     public static float convertToBasePrice(float number) {

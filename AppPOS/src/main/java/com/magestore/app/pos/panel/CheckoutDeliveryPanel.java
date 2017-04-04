@@ -5,11 +5,10 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
-
 import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
 import com.magestore.app.pos.R;
-
+import com.magestore.app.util.ConfigUtil;
 import java.util.Calendar;
 
 /**
@@ -95,10 +94,14 @@ public class CheckoutDeliveryPanel extends AbstractDetailPanel<Checkout> {
     }
 
     public String bindDateTime() {
-        return date_delivery + " " + time_delivery + ":" + "00";
+        String date_time = date_delivery + " " + time_delivery + ":" + "00";
+        String convert_time = ConfigUtil.convertToGMTTime(date_time);
+        return convert_time;
     }
 
     public String bindDateTimeNow() {
-        return current_date_time + ":" + second;
+        String date_time_now = current_date_time + ":" + second;
+        String convert_time_now = ConfigUtil.convertToGMTTime(date_time_now);
+        return convert_time_now;
     }
 }
