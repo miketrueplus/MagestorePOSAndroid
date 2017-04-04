@@ -280,7 +280,7 @@ public class CartItemListController extends AbstractChildListController<Checkout
             mCustomeSaleDialog.dismiss();
     }
 
-    public void updateToCart(CartItem cartItem, String productID, String productName, int quantity, float price, int qtyIncrement) {
+    public void updateToCart(CartItem cartItem, String productID, String productName, float quantity, float price, int qtyIncrement) {
         try {
             // chèn vào data set
             CartItem item = mCartService.insert(getParent(), productID, productName, quantity, price);

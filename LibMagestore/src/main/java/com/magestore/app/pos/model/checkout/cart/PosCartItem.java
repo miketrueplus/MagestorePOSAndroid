@@ -225,7 +225,7 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     }
 
     Product product;
-    int qty;
+    float qty;
     @Gson2PosExclude
     String child_id;
     //    @Gson2PosExclude
@@ -251,15 +251,15 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     float tax_amount = 0;
     float discount_amount = 0;
     @Gson2PosExclude
-    int qty_ordered;
+    float qty_ordered;
     @Gson2PosExclude
-    int qty_canceled;
+    float qty_canceled;
     @Gson2PosExclude
-    int qty_invoiced;
+    float qty_invoiced;
     @Gson2PosExclude
-    int qty_refunded;
+    float qty_refunded;
     @Gson2PosExclude
-    int qty_shipped;
+    float qty_shipped;
     @Gson2PosExclude
     String product_type;
     @Gson2PosExclude
@@ -285,7 +285,7 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     String return_to_stock;
 
     @Override
-    public void setQuantity(int param_quantity) {
+    public void setQuantity(float param_quantity) {
         qty = param_quantity;
         price = unit_price * param_quantity;
     }
@@ -317,7 +317,7 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     }
 
     @Override
-    public int getQuantity() {
+    public float getQuantity() {
         return qty;
     }
 
@@ -413,42 +413,42 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     }
 
     @Override
-    public int getQtyOrdered() {
+    public float getQtyOrdered() {
         return qty_ordered;
     }
 
     @Override
-    public int getQtyCanceled() {
+    public float getQtyCanceled() {
         return qty_canceled;
     }
 
     @Override
-    public int getQtyInvoiced() {
+    public float getQtyInvoiced() {
         return qty_invoiced;
     }
 
     @Override
-    public int getQtyRefunded() {
+    public float getQtyRefunded() {
         return qty_refunded;
     }
 
     @Override
-    public int getQtyShipped() {
+    public float getQtyShipped() {
         return qty_shipped;
     }
 
     @Override
-    public int QtyShip() {
+    public float QtyShip() {
         return qty_ordered - qty_shipped;
     }
 
     @Override
-    public int QtyRefund() {
+    public float QtyRefund() {
         return qty_ordered - qty_refunded;
     }
 
     @Override
-    public int QtyInvoice() {
+    public float QtyInvoice() {
         return qty_ordered - qty_invoiced;
     }
 

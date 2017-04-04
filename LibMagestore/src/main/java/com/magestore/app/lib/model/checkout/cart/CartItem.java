@@ -85,7 +85,7 @@ public interface CartItem extends Model {
 
     void insertBundleOptionQuantity(String code, String value);
 
-    void setQuantity(int param_quantity);
+    void setQuantity(float param_quantity);
     void setProduct(Product param_product);
     void setPrice(float param_price);
     void setOriginalPrice(float param_price);
@@ -93,7 +93,7 @@ public interface CartItem extends Model {
     void setUnitPrice(float param_price);
 
     Product getProduct();
-    int getQuantity();
+    float getQuantity();
 
     float getUnitPrice();
 
@@ -124,14 +124,14 @@ public interface CartItem extends Model {
 
     void setDiscountAmount(float discount_amount);
 
-    int getQtyOrdered();
-    int getQtyCanceled();
-    int getQtyInvoiced();
-    int getQtyRefunded();
-    int getQtyShipped();
-    int QtyShip();
-    int QtyRefund();
-    int QtyInvoice();
+    float getQtyOrdered();
+    float getQtyCanceled();
+    float getQtyInvoiced();
+    float getQtyRefunded();
+    float getQtyShipped();
+    float QtyShip();
+    float QtyRefund();
+    float QtyInvoice();
     String getProductType();
     String getIsVirtual();
     void setIsVirtual(String strIsVirtual);

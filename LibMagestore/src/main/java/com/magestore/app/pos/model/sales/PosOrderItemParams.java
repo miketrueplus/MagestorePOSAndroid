@@ -11,7 +11,7 @@ import com.magestore.app.pos.model.PosAbstractModel;
 
 public class PosOrderItemParams extends PosAbstractModel implements OrderItemParams {
     String orderItemId;
-    int qty;
+    float qty;
     String additionalData;
 
     @Override
@@ -25,12 +25,12 @@ public class PosOrderItemParams extends PosAbstractModel implements OrderItemPar
     }
 
     @Override
-    public int getQty() {
+    public float getQty() {
         return qty;
     }
 
     @Override
-    public void setQty(int strQty) {
+    public void setQty(float strQty) {
         qty = strQty;
     }
 

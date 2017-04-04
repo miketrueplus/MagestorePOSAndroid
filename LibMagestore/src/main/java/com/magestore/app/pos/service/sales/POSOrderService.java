@@ -230,7 +230,7 @@ public class POSOrderService extends AbstractService implements OrderService {
         // đã có item, giảm trừ số lượng xuống nhưng không thể ít hơn 1
         if (cartItem != null) {
             // Tính số lượng item mới
-            int newQuantity = cartItem.getQuantity() - subQuantity;
+            float newQuantity = cartItem.getQuantity() - subQuantity;
             if (newQuantity < 0) newQuantity = 1;
 
             // Cập nhật số lượng mới
