@@ -72,7 +72,7 @@ public class OrderRefundItemsListPanel extends AbstractListPanel<CartItem> {
         CheckBox cb_return_to_stock = (CheckBox) view.findViewById(R.id.return_to_stock);
 
         actionQtyToRefund(item, edt_qty_to_refund);
-        item.setOrderItemId(item.getID());
+        item.setOrderItemId(item.getItemId());
         actionReturnToStock(item, cb_return_to_stock);
     }
 
