@@ -13,6 +13,7 @@ import com.magestore.app.lib.service.user.UserService;
 import com.magestore.app.lib.view.SimpleSpinner;
 import com.magestore.app.pos.ui.AbstractActivity;
 import com.magestore.app.util.DataUtil;
+import com.magestore.app.util.StringUtil;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -89,6 +90,10 @@ public class WelcomeActivity extends AbstractActivity {
 
         if (listStore != null) {
             sp_store.bind(listStore.toArray(new Store[0]));
+            String default_store = setDefaultStore(listStore);
+            if (!StringUtil.STRING_EMPTY.equals(default_store)) {
+                sp_store.setSelection(default_store);
+            }
         }
 
         sp_store.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -119,5 +124,14 @@ public class WelcomeActivity extends AbstractActivity {
         Intent intent = new Intent(getContext(), SalesActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    private String setDefaultStore(List<Store> listStore) {
+        for (Store store : listStore) {
+            if (store.getSortOrder().equals("0")) {
+                return store.getID();
+            }
+        }
+        return "";
     }
 }
