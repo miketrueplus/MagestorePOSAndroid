@@ -34,6 +34,7 @@ public class PosOrder extends PosAbstractModel implements Order {
     float customercredit_discount = 0;
     private String webpos_staff_id;
     private String webpos_staff_name;
+    private String webpos_delivery_date;
 
     private List<PosCartItem> items;
 
@@ -337,6 +338,11 @@ public class PosOrder extends PosAbstractModel implements Order {
     @Override
     public String getWebposStaffName() {
         return webpos_staff_name;
+    }
+
+    @Override
+    public String getWebposDeliveryDate() {
+        return webpos_delivery_date;
     }
 
     @Override

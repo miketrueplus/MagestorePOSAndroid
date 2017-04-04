@@ -91,6 +91,8 @@ public interface Order extends Model {
 
     String getWebposStaffName();
 
+    String getWebposDeliveryDate();
+
     String getBillingAddressName();
 
     String getBillingAddressFullAddress();

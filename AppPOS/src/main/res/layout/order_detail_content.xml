@@ -8,6 +8,8 @@
 
         <import type="com.magestore.app.util.ConfigUtil" />
 
+        <import type="com.magestore.app.util.StringUtil" />
+
         <variable
             name="orderDetail"
             type="com.magestore.app.lib.model.sales.Order" />
@@ -188,6 +190,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
+                            android:layout_marginBottom="@dimen/layout_margin_5"
                             android:layout_marginLeft="@dimen/layout_margin_10"
                             android:layout_marginRight="@dimen/layout_margin_5"
                             android:layout_marginTop="@dimen/layout_margin_5"
@@ -240,6 +243,27 @@
                             android:text="@{orderDetail.getShippingDescription()}"
                             android:textColor="@color/text_color"
                             android:textSize="@dimen/text_size" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/layout_margin_5"
+                            android:layout_marginLeft="@dimen/layout_margin_5"
+                            android:layout_marginRight="@dimen/layout_margin_5"
+                            android:orientation="horizontal"
+                            android:visibility="@{StringUtil.isNullOrEmpty(orderDetail.getWebposDeliveryDate()) ? View.GONE : View.VISIBLE}">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="@dimen/layout_margin_5"
+                                android:text="@string/order_detail_content_shipping_delivery" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{ConfigUtil.formatDateTime(orderDetail.getWebposDeliveryDate())}" />
+                        </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
 

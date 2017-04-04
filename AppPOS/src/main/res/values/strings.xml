@@ -87,6 +87,7 @@
     <string name="order_detail_top_take_payment">Take Payment</string>
     <string name="order_detail_content_billing_address">BILLING ADDRESS</string>
     <string name="order_detail_content_shipping_address">SHIPPING ADDRESS</string>
+    <string name="order_detail_content_shipping_delivery">Delivery Time:</string>
     <string name="order_detail_content_payment_paid">PAID</string>
     <string name="order_detail_content_comment_history">COMMENT HISTORY</string>
     <string name="order_detail_content_item_title_product">Product</string>
