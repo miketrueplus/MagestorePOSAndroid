@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <import type="com.magestore.app.util.ConfigUtil" />
 
         <variable
@@ -122,6 +124,7 @@
                                 </LinearLayout>
 
                                 <LinearLayout
+                                    android:id="@+id/ll_delivery_time"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/layout_margin_10"
@@ -187,9 +190,9 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="top"
-                                android:orientation="vertical"
                                 android:layout_marginRight="@dimen/layout_margin_5"
-                                android:layout_weight="1">
+                                android:layout_weight="1"
+                                android:orientation="vertical">
 
                                 <TextView
                                     android:id="@+id/tv_payment_method"
@@ -200,10 +203,10 @@
                                     android:textColor="@color/text_color"
                                     android:textSize="@dimen/text_size" />
 
-                                 <TextView
-                                     android:id="@+id/tv_check_payment_required"
-                                     android:layout_width="wrap_content"
-                                     android:layout_height="wrap_content" />
+                                <TextView
+                                    android:id="@+id/tv_check_payment_required"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
                             </LinearLayout>
 
                             <RelativeLayout

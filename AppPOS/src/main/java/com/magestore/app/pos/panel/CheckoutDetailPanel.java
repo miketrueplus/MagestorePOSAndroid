@@ -42,7 +42,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
     MagestoreDialog dialog;
     Switch create_ship, create_invoice;
     ImageButton im_back;
-    LinearLayout ll_checkout_add_payment, ll_shipping_address, ll_payment_credit_card;
+    LinearLayout ll_checkout_add_payment, ll_shipping_address, ll_payment_credit_card, ll_delivery_time;
     SimpleSpinner sp_shipping_method;
     Switch cb_pick_at_store;
     EditText et_checkout_note;
@@ -83,6 +83,8 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         rl_remove_payment_credit_card = (RelativeLayout) findViewById(R.id.rl_remove_payment_credit_card);
 
         // delivery
+        ll_delivery_time = (LinearLayout) findViewById(R.id.ll_delivery_time);
+        ll_delivery_time.setVisibility(ConfigUtil.isShowDeliveryTime() ? VISIBLE : GONE);
         rl_delivery = (RelativeLayout) findViewById(R.id.rl_delivery);
         tv_delivery_date_time = (TextView) findViewById(R.id.tv_delivery_date_time);
 

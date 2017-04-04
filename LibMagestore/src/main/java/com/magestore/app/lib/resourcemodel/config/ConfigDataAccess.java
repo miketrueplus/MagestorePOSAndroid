@@ -38,4 +38,5 @@ public interface ConfigDataAccess extends DataAccess {
     List<String> getConfigMonths() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     Map<String, String> getConfigCCYears() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     float getConfigMaximumDiscount() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
+    boolean getConfigDeliveryTime() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
 }

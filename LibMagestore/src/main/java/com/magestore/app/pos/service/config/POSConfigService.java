@@ -64,6 +64,7 @@ public class POSConfigService extends AbstractService implements ConfigService {
         ConfigUtil.setIntegerFormat(getIntegerFormat());
         ConfigUtil.setStaff(getStaff());
         ConfigUtil.setCustomerGuest(getGuestCheckout());
+        ConfigUtil.setShowDeliveryTime(getConfigDeliveryTime());
         // return config
         return config;
     }
@@ -250,6 +251,13 @@ public class POSConfigService extends AbstractService implements ConfigService {
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
         return configDataAccess.getConfigMaximumDiscount();
+    }
+
+    @Override
+    public boolean getConfigDeliveryTime() throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
+        return configDataAccess.getConfigDeliveryTime();
     }
 
     public static String SETTING_ACCOUNT = "My Account";

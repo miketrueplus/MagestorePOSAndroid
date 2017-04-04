@@ -29,6 +29,7 @@ public class ConfigUtil {
     private static DecimalFormat mIntegerFormat;
     private static Staff mStaff;
     private static Customer mCustomerGuest;
+    private static boolean mShowDeliveryTime;
 
     /**
      * @param format
@@ -473,5 +474,13 @@ public class ConfigUtil {
 
     public static void setCustomerGuest(Customer customerGuest) {
         mCustomerGuest = customerGuest;
+    }
+
+    public static void setShowDeliveryTime(boolean showDeliveryTime) {
+        mShowDeliveryTime = showDeliveryTime;
+    }
+
+    public static boolean isShowDeliveryTime() {
+        return mShowDeliveryTime;
     }
 }

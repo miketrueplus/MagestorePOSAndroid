@@ -312,7 +312,7 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
                     configRegion.setID(id);
                     configRegion.setCode(code);
                     configRegion.setName(name);
-                    listConfigRegion.put(id , configRegion);
+                    listConfigRegion.put(id, configRegion);
                 }
                 configCountry.setRegions(listConfigRegion);
             }
@@ -337,7 +337,7 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         String zip_code = (String) mConfig.getValue("webpos/guest_checkout/zip");
         String telephone = (String) mConfig.getValue("webpos/guest_checkout/telephone");
 
-        if(guest == null) {
+        if (guest == null) {
             guest = new PosCustomer();
         }
         guest.setID(customer_id);
@@ -508,10 +508,26 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         float cmaximum = 0;
         try {
             cmaximum = Float.parseFloat(maximum_discount);
-        }catch (Exception e){
+        } catch (Exception e) {
             cmaximum = 0;
         }
         return cmaximum;
+    }
+
+    @Override
+    public boolean getConfigDeliveryTime() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        if (mConfig == null) mConfig = new PosConfigDefault();
+
+        String enable_delivery_time = (String) mConfig.getValue("webpos/general/enable_delivery_date");
+        boolean isShowDelivery;
+        if (!StringUtil.isNullOrEmpty(enable_delivery_time)) {
+            if (enable_delivery_time.equals("1")) {
+                isShowDelivery = true;
+                return isShowDelivery;
+            }
+        }
+
+        return false;
     }
 
     private ConfigPriceFormat getPriceFormat(LinkedTreeMap priceFormat) {
