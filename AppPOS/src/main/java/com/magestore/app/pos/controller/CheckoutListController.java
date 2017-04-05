@@ -475,6 +475,8 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 checkout.setRemainMoney(0);
                 checkout.setRealAmount(0);
                 checkout.setExchangeMoney(0);
+                checkout.setCustomer(getSelectedItem().getCustomer());
+                checkout.setCustomerID(getSelectedItem().getCustomerID());
                 mCheckoutPaymentListPanel.setCheckout(checkout);
                 mCheckoutPaymentListPanel.resetListPayment();
                 autoSelectPaymentMethod(listPayment);
@@ -530,6 +532,8 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                     checkout.setRemainMoney(0);
                     checkout.setRealAmount(0);
                     checkout.setExchangeMoney(0);
+                    checkout.setCustomer(getSelectedItem().getCustomer());
+                    checkout.setCustomerID(getSelectedItem().getCustomerID());
                     wraper.put("save_quote", checkout);
                     mCheckoutPaymentListPanel.resetListPayment();
                     autoSelectPaymentMethod(listPayment);
@@ -589,6 +593,8 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             checkout.setRemainMoney(0);
             checkout.setRealAmount(0);
             checkout.setExchangeMoney(0);
+            checkout.setCustomer(getSelectedItem().getCustomer());
+            checkout.setCustomerID(getSelectedItem().getCustomerID());
             mCheckoutPaymentListPanel.resetListPayment();
             mCheckoutPaymentListPanel.setCheckout(checkout);
             wraper.put("save_shipping", checkout);
@@ -770,6 +776,9 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         }
     }
 
+    /**
+     * khi switch pick at store load lại shipping
+     */
     public void changePickAtStoreAndReloadShipping() {
         Checkout checkout = (Checkout) wraper.get("save_cart");
         if (checkout != null) {
@@ -779,6 +788,11 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         }
     }
 
+    /**
+     * bind data vào spinner shipping
+     *
+     * @param listShipping
+     */
     private void bindDataToShippingMethodList(List<CheckoutShipping> listShipping) {
         if (!((CheckoutDetailPanel) mDetailView).getPickAtStore()) {
             List<CheckoutShipping> nListShipping = listShipping;

@@ -462,6 +462,14 @@ public class ConfigUtil {
         return date;
     }
 
+    public static String getCurrentDateTime(){
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        String date = df.format(calendar.getTime());
+        return date;
+    }
+
     /**
      * convert current time to default
      * @param date_time

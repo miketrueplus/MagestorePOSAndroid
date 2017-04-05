@@ -134,8 +134,16 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         return checkoutDataAccess.savePayment(quoteId, paymentCode);
     }
 
+    private static String KEY_EXTENSION_GRAND_TOTAL = "grand_total";
+    private static String KEY_EXTENSION_BASE_GRAND_TOTAL = "base_grand_total";
+    private static String KEY_EXTENSION_TAX_AMOUNT = "tax_amount";
+    private static String KEY_EXTENSION_BASE_TAX_AMOUNT = "base_tax_amount";
+    private static String KEY_EXTENSION_SHIPPING_AMOUNT = "shipping_amount";
+    private static String KEY_EXTENSION_BASE_SHIPPING_AMOUNT = "base_shipping_amount";
     private static String KEY_EXTENSION_WEBPOS_STAFF_ID = "webpos_staff_id";
     private static String KEY_EXTENSION_WEBPOS_STAFF_NAME = "webpos_staff_name";
+    private static String KEY_EXTENSION_CREATE_AT = "created_at";
+    private static String KEY_EXTENSION_CUSTOMER_FULLNAME = "customer_fullname";
 
     @Override
     public Order placeOrder(String quoteId, Checkout checkout, List<CheckoutPayment> listCheckoutPayment) throws IOException, InstantiationException, ParseException, IllegalAccessException {
@@ -149,7 +157,7 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         placeOrderParams.setActions(placeOrderActionParam);
         PosPlaceOrderParams.PlaceOrderQuoteDataParam placeOrderQuoteDataParam = placeOrderParams.createPlaceOrderQuoteDataParam();
         placeOrderParams.setCustomerNote(checkout.getNote());
-        if(!StringUtil.isNullOrEmpty(checkout.getDeliveryDate())){
+        if (!StringUtil.isNullOrEmpty(checkout.getDeliveryDate())) {
             placeOrderParams.setDeliveryTime(checkout.getDeliveryDate());
         }
         placeOrderParams.setQuoteData(placeOrderQuoteDataParam);
@@ -192,7 +200,45 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         placeOrderParams.setMethodData(listPaymentMethodParam);
         placeOrderParams.setPayment(placeOrderPaymentParam);
 
+        // Extension data
         List<PlaceOrderExtensionParam> listExtension = new ArrayList<>();
+
+        PlaceOrderExtensionParam extensionParamGrandTotal = createExtensionParam();
+        extensionParamGrandTotal.setKey(KEY_EXTENSION_GRAND_TOTAL);
+        extensionParamGrandTotal.setValue(String.valueOf(checkout.getGrandTotal()));
+
+        // TODO: hiện tại đang lấy theo bằng grand total
+        PlaceOrderExtensionParam extensionParamBaseGrandTotal = createExtensionParam();
+        extensionParamBaseGrandTotal.setKey(KEY_EXTENSION_BASE_GRAND_TOTAL);
+        extensionParamBaseGrandTotal.setValue(String.valueOf(ConfigUtil.convertToBasePrice(checkout.getGrandTotal())));
+
+        PlaceOrderExtensionParam extensionParamTaxAmount = createExtensionParam();
+        extensionParamTaxAmount.setKey(KEY_EXTENSION_TAX_AMOUNT);
+        extensionParamTaxAmount.setValue(String.valueOf(checkout.getTaxTotal()));
+
+        // TODO: hiện tại đang lấy theo bằng tax total
+        PlaceOrderExtensionParam extensionParamBaseTaxAmount = createExtensionParam();
+        extensionParamBaseTaxAmount.setKey(KEY_EXTENSION_BASE_TAX_AMOUNT);
+        extensionParamBaseTaxAmount.setValue(String.valueOf(ConfigUtil.convertToBasePrice(checkout.getTaxTotal())));
+
+        PlaceOrderExtensionParam extensionParamShipping = createExtensionParam();
+        extensionParamShipping.setKey(KEY_EXTENSION_SHIPPING_AMOUNT);
+        extensionParamShipping.setValue(String.valueOf(checkout.getShippingTotal()));
+
+        // TODO: hiện tại đang lấy theo bằng shipping total
+        PlaceOrderExtensionParam extensionParamBaseShipping = createExtensionParam();
+        extensionParamBaseTaxAmount.setKey(KEY_EXTENSION_BASE_SHIPPING_AMOUNT);
+        extensionParamBaseTaxAmount.setValue(String.valueOf(ConfigUtil.convertToBasePrice(checkout.getShippingTotal())));
+
+        PlaceOrderExtensionParam extensionParamCustomerName = createExtensionParam();
+        extensionParamCustomerName.setKey(KEY_EXTENSION_CUSTOMER_FULLNAME);
+        if (!checkout.getCustomerID().equals(ConfigUtil.getStaff().getID())) {
+            extensionParamCustomerName.setValue(checkout.getCustomer().getName());
+        }
+
+        PlaceOrderExtensionParam extensionParamCreateAt = createExtensionParam();
+        extensionParamCreateAt.setKey(KEY_EXTENSION_CREATE_AT);
+        extensionParamCreateAt.setValue(ConfigUtil.convertToGMTTime(ConfigUtil.getCurrentDateTime()));
 
         PlaceOrderExtensionParam extensionParamStaffID = createExtensionParam();
         extensionParamStaffID.setKey(KEY_EXTENSION_WEBPOS_STAFF_ID);
@@ -202,6 +248,14 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         extensionParamStaffName.setKey(KEY_EXTENSION_WEBPOS_STAFF_NAME);
         extensionParamStaffName.setValue(ConfigUtil.getStaff().getStaffName());
 
+        listExtension.add(extensionParamGrandTotal);
+        listExtension.add(extensionParamBaseGrandTotal);
+        listExtension.add(extensionParamTaxAmount);
+        listExtension.add(extensionParamBaseTaxAmount);
+        listExtension.add(extensionParamShipping);
+        listExtension.add(extensionParamBaseShipping);
+        listExtension.add(extensionParamCustomerName);
+        listExtension.add(extensionParamCreateAt);
         listExtension.add(extensionParamStaffID);
         listExtension.add(extensionParamStaffName);
 
