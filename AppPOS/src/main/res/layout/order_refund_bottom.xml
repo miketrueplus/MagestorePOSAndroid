@@ -74,6 +74,40 @@
                 android:textSize="@dimen/order_content_table_text_size" />
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/ll_refund_shipping"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txt_refund_shipping"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/layout_margin_5"
+                android:text="@string/order_refund_shipping_title"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/order_content_table_text_size" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/layout_margin_5"
+                android:background="@drawable/boder_linear_layout"
+                android:orientation="vertical"
+                android:padding="@dimen/layout_margin_5">
+
+                <com.magestore.app.view.FormatEditText
+                    android:id="@+id/refund_shipping"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:inputType="numberDecimal"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/order_content_table_text_size" />
+            </LinearLayout>
+        </LinearLayout>
+
         <TextView
             android:id="@+id/txt_adjust_fee"
             android:layout_width="wrap_content"
@@ -99,29 +133,68 @@
                 android:textSize="@dimen/order_content_table_text_size" />
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/txt_store_credit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/layout_margin_5"
-            android:text="@string/order_store_credit_title"
-            android:textColor="@color/text_color"
-            android:textSize="@dimen/order_content_table_text_size" />
-
         <LinearLayout
+            android:id="@+id/ll_store_credit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/layout_margin_5"
-            android:background="@drawable/boder_linear_layout"
-            android:orientation="vertical"
-            android:padding="@dimen/layout_margin_5">
+            android:orientation="vertical">
 
-            <com.magestore.app.view.FormatEditText
-                android:id="@+id/store_credit"
+            <TextView
+                android:id="@+id/txt_store_credit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/layout_margin_5"
+                android:text="@string/order_store_credit_title"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/order_content_table_text_size" />
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:inputType="numberDecimal" />
+                android:layout_marginBottom="@dimen/layout_margin_5"
+                android:background="@drawable/boder_linear_layout"
+                android:orientation="vertical"
+                android:padding="@dimen/layout_margin_5">
+
+                <com.magestore.app.view.FormatEditText
+                    android:id="@+id/store_credit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:inputType="numberDecimal" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_gift_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txt_giftcard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/layout_margin_5"
+                android:text="@string/order_gift_card_title"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/order_content_table_text_size" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/layout_margin_5"
+                android:background="@drawable/boder_linear_layout"
+                android:orientation="vertical"
+                android:padding="@dimen/layout_margin_5">
+
+                <com.magestore.app.view.FormatEditText
+                    android:id="@+id/gift_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:inputType="numberDecimal" />
+            </LinearLayout>
         </LinearLayout>
 
         <RelativeLayout

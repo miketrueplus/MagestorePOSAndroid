@@ -19,6 +19,10 @@ public interface Order extends Model {
 
     List<CartItem> getOrderItems();
 
+    float getGiftVoucherDiscount();
+
+    float getBaseGiftVoucherDiscount();
+
     float getBaseDiscountAmount();
 
     float getBaseGrandTotal();
@@ -32,6 +36,8 @@ public interface Order extends Model {
     float getBaseSubtotal();
 
     float getBaseSubtotalInclTax();
+
+    float getBaseShippingRefunded();
 
     String getBillingAddressId();
 

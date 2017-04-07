@@ -508,4 +508,16 @@ public class OrderHistoryListController extends AbstractListController<Order> {
     public boolean checkCanShip(Order order) {
         return mOrderService.checkCanShip(order);
     }
+
+    public float checkShippingRefund(Order order){
+        return mOrderService.checkShippingRefund(order);
+    }
+
+    public boolean checkCanRefundGiftcard(Order order){
+        return mOrderService.checkCanRefundGiftcard(order);
+    }
+
+    public boolean checkCanStoreCredit(Order order){
+        return mOrderService.checkCanStoreCredit(order);
+    }
 }

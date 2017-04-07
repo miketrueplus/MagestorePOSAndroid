@@ -337,6 +337,7 @@ public class PosOrderHistoryService extends AbstractService implements OrderHist
         return true;
     }
 
+
     @Override
     public boolean checkCanShip(Order order) {
         String status = order.getStatus();
@@ -390,6 +391,31 @@ public class PosOrderHistoryService extends AbstractService implements OrderHist
         }
 
         return false;
+    }
+
+    @Override
+    public float checkShippingRefund(Order order) {
+        if (order.getBaseShippingRefunded() > 0) {
+            return ConfigUtil.convertToPrice(order.getBaseShippingAmount());
+        } else if ((order.getBaseShippingAmount() - order.getBaseShippingRefunded()) > 0) {
+            return (order.getBaseShippingAmount() - order.getBaseShippingRefunded());
+        }
+        return 0;
+    }
+
+    @Override
+    public boolean checkCanRefundGiftcard(Order order) {
+        boolean enableGiftCard = ConfigUtil.isEnableGiftCard();
+        boolean orderUsedVoucher = (order.getBaseGiftVoucherDiscount() < 0) ? true : false;
+        if (enableGiftCard && orderUsedVoucher) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean checkCanStoreCredit(Order order) {
+        return ConfigUtil.isEnableStoreCredit();
     }
 
     private boolean canUnhold(String status) {

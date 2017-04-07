@@ -33,6 +33,8 @@ public class ConfigUtil {
     private static Staff mStaff;
     private static Customer mCustomerGuest;
     private static boolean mShowDeliveryTime;
+    private static boolean mEnableStoreCredit;
+    private static boolean mEnableGiftCard;
 
     /**
      * @param format
@@ -495,6 +497,10 @@ public class ConfigUtil {
         return number;
     }
 
+    public static float convertToPrice(float number) {
+        return number;
+    }
+
     public static void setStaff(Staff staff) {
         mStaff = staff;
     }
@@ -517,5 +523,21 @@ public class ConfigUtil {
 
     public static boolean isShowDeliveryTime() {
         return mShowDeliveryTime;
+    }
+
+    public static void setEnableGiftCard(boolean enableGiftCard) {
+        mEnableGiftCard = enableGiftCard;
+    }
+
+    public static void setEnableStoreCredit(boolean enableStoreCredit) {
+        mEnableStoreCredit = enableStoreCredit;
+    }
+
+    public static boolean isEnableGiftCard() {
+        return mEnableGiftCard;
+    }
+
+    public static boolean isEnableStoreCredit() {
+        return mEnableStoreCredit;
     }
 }

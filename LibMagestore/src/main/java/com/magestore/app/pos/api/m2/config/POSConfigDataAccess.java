@@ -530,6 +530,38 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         return false;
     }
 
+    @Override
+    public boolean getConfigStoreCredit() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        if (mConfig == null) mConfig = new PosConfigDefault();
+
+        String enable_store_credit = (String) mConfig.getValue("customercredit/general/enable");
+        boolean isShowStoreCredit;
+        if (!StringUtil.isNullOrEmpty(enable_store_credit)) {
+            if (enable_store_credit.equals("1")) {
+                isShowStoreCredit = true;
+                return isShowStoreCredit;
+            }
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean getConfigGiftCard() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        if (mConfig == null) mConfig = new PosConfigDefault();
+
+        String enable_gift_card = (String) mConfig.getValue("giftvoucher/general/active");
+        boolean isShowGiftCard;
+        if (!StringUtil.isNullOrEmpty(enable_gift_card)) {
+            if (enable_gift_card.equals("1")) {
+                isShowGiftCard = true;
+                return isShowGiftCard;
+            }
+        }
+
+        return false;
+    }
+
     private ConfigPriceFormat getPriceFormat(LinkedTreeMap priceFormat) {
         String currencySymbol = (String) mConfig.getValue("currentCurrencySymbol");
         String pattern = priceFormat.get("pattern").toString();

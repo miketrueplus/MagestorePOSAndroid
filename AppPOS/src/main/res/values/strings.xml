@@ -135,8 +135,10 @@
     <string name="order_refund_title">Refund</string>
     <string name="order_refund_btn_save">Refund Offline</string>
     <string name="order_adjust_refund_title">Adjust refund</string>
+    <string name="order_refund_shipping_title">Refund Shipping</string>
     <string name="order_adjust_fee_title">Adjust fee</string>
     <string name="order_store_credit_title">Store Credit</string>
+    <string name="order_gift_card_title">Refund to gift voucher code used</string>
     <string name="order_refund_comment_title">Refund Comment</string>
     <string name="order_refund_btn_submit">SUBMIT REFUND</string>
     <string name="order_refund_success">A creditmemo has been created!</string>

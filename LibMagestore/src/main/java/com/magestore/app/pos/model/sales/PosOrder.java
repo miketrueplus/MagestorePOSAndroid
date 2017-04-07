@@ -55,6 +55,7 @@ public class PosOrder extends PosAbstractModel implements Order {
     float base_shipping_discount_tax_compensation_amnt;
     float base_shipping_incl_tax;
     float base_shipping_invoiced;
+    float base_shipping_refunded;
     float base_shipping_tax_amount;
     float base_subtotal;
     float base_subtotal_incl_tax;
@@ -161,6 +162,16 @@ public class PosOrder extends PosAbstractModel implements Order {
     }
 
     @Override
+    public float getGiftVoucherDiscount() {
+        return gift_voucher_discount;
+    }
+
+    @Override
+    public float getBaseGiftVoucherDiscount() {
+        return base_gift_voucher_discount;
+    }
+
+    @Override
     public float getBaseDiscountAmount() {
         return base_discount_amount;
     }
@@ -193,6 +204,11 @@ public class PosOrder extends PosAbstractModel implements Order {
     @Override
     public float getBaseSubtotalInclTax() {
         return base_subtotal_incl_tax;
+    }
+
+    @Override
+    public float getBaseShippingRefunded() {
+        return base_shipping_refunded;
     }
 
     @Override
