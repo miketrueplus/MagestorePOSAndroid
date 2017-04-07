@@ -355,11 +355,40 @@ public class PosOrderHistoryService extends AbstractService implements OrderHist
             }
             if (item.getQtyOrdered() - item.getQtyShipped() - item.getQtyRefunded() - item.getQtyCanceled() > 0)
                 allShip = false;
-
         }
         if (!allShip) {
             return true;
         }
+        return false;
+    }
+
+    @Override
+    public boolean checkCanTakePayment(Order order) {
+        String status = order.getStatus();
+        if (status.equals("canceled") || this.canUnhold(status)) {
+            return false;
+        }
+
+        boolean allInvoicedAndCanceled = true;
+        List<CartItem> listCart = order.getOrderItems();
+        if (listCart != null && listCart.size() > 0) {
+            for (CartItem item : order.getOrderItems()) {
+                if (item.getQtyOrdered() > (item.getQtyInvoiced() + item.getQtyCanceled())) {
+                    allInvoicedAndCanceled = false;
+                }
+            }
+        }
+        if (allInvoicedAndCanceled)
+            return false;
+        if (order.getTotalDue() > 0) {
+            return true;
+        }
+        if (order.getTotalPaid() > 0) {
+            if ((order.getGrandTotal() - order.getTotalPaid()) > 0) {
+                return true;
+            }
+        }
+
         return false;
     }
 

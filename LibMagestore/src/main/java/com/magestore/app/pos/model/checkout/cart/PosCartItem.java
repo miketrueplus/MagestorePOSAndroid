@@ -23,10 +23,15 @@ import java.util.Map;
  */
 
 public class PosCartItem extends PosAbstractModel implements CartItem {
+    @Gson2PosExclude
     String discount;
+    @Gson2PosExclude
     String discout_type;
+    @Gson2PosExclude
     float custom_price;
+    @Gson2PosExclude
     String custom_price_type;
+    @Gson2PosExclude
     String is_shipable = StringUtil.STRING_ZERO;
 
     @Override
@@ -232,6 +237,7 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
 //    String bundle_option;
     float price;
     float base_price;
+    @Gson2PosExclude
     String offline_item_id;
     @Gson2PosExclude
     float unit_price;

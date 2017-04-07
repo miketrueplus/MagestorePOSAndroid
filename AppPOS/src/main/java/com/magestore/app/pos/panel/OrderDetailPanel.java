@@ -121,6 +121,8 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         changeStatusTopOrder(item_status);
         changeColorStatusOrder(item_status);
 
+        btn_take_payment.setVisibility(checkCanTakePayment(mOrder) ? VISIBLE : GONE);
+
         btn_invoice.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -232,6 +234,10 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         return ((OrderHistoryListController) mController).checkCanInvoice(order);
     }
 
+    private boolean checkCanTakePayment(Order order){
+        return ((OrderHistoryListController) mController).checkCanTakePayment(order);
+    }
+
     private void onClickSendEmail() {
         final OrderSendEmailPanel mOrderSendEmailPanel = new OrderSendEmailPanel(getContext());
         mOrderSendEmailPanel.setController(mController);
@@ -341,9 +347,9 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
 
     private void onClickInvoice() {
         final OrderInvoicePanel mOrderInvoicePanel = new OrderInvoicePanel(getContext());
-        mOrderInvoicePanel.bindItem(mOrder);
         mOrderInvoicePanel.setController(mController);
         mOrderInvoicePanel.initModel();
+        mOrderInvoicePanel.bindItem(mOrder);
 
         dialog = DialogUtil.dialog(getContext(), getContext().getString(R.string.order_invoice_title), mOrderInvoicePanel);
         dialog.setDialogWidth(getContext().getResources().getDimensionPixelSize(R.dimen.order_dialog_invoice_width));
@@ -357,14 +363,15 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
                 Order order = mOrderInvoicePanel.bind2Item();
                 ((OrderHistoryListController) mController).setOrderInvoicePanel(mOrderInvoicePanel);
                 ((OrderHistoryListController) mController).doInputInvoice(order);
+                dialog.dismiss();
             }
         });
     }
 
     private void onClickCancel() {
         final OrderCancelPanel mOrderCancelPanel = new OrderCancelPanel(getContext());
-        mOrderCancelPanel.bindItem(mOrder);
         mOrderCancelPanel.setController(mController);
+        mOrderCancelPanel.bindItem(mOrder);
 
         dialog = DialogUtil.dialog(getContext(), getContext().getString(R.string.order_cancel_title), mOrderCancelPanel);
         dialog.show();

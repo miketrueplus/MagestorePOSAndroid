@@ -73,4 +73,6 @@ public interface OrderHistoryService extends Service, ListService<Order> {
     boolean checkCanRefund(Order order);
 
     boolean checkCanShip(Order order);
+
+    boolean checkCanTakePayment(Order order);
 }

@@ -135,6 +135,8 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
     protected void initControlValue() {
         // Lấy domain là domain của lần đăng nhập cuối mà thành công
         mDomainView.setText(getSharedValue("login_activity_domain", BuildConfig.REST_BASE_URL).trim());
+        mUserNameView.setText(getSharedValue("login_activity_username", "demo").trim());
+        mPasswordView.setText(getSharedValue("login_activity_password", "demo123").trim());
     }
 
     /**
@@ -302,6 +304,8 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
             if (success) {
                 // Đăng nhập thành công, lưu domain lại để lần sau không phải nhập
                 saveSharedValue("login_activity_domain", mDomainView.getText().toString().trim());
+                saveSharedValue("login_activity_username", mUserNameView.getText().toString().trim());
+                saveSharedValue("login_activity_password", mPasswordView.getText().toString().trim());
 
                 boolean isChooseStore = DataUtil.getDataBooleanToPreferences(getContext(), DataUtil.CHOOSE_STORE);
                 if (isChooseStore) {

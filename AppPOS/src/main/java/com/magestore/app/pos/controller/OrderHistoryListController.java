@@ -19,6 +19,7 @@ import com.magestore.app.pos.panel.OrderDetailPanel;
 import com.magestore.app.pos.panel.OrderInvoicePanel;
 import com.magestore.app.pos.panel.OrderAddPaymentPanel;
 import com.magestore.app.pos.panel.OrderListChoosePaymentPanel;
+import com.magestore.app.pos.panel.OrderListPanel;
 import com.magestore.app.pos.panel.OrderRefundPanel;
 import com.magestore.app.pos.panel.OrderSendEmailPanel;
 import com.magestore.app.pos.panel.OrderShipmentPanel;
@@ -184,6 +185,7 @@ public class OrderHistoryListController extends AbstractListController<Order> {
     }
 
     public void doInputInvoice(Order order) {
+        showDetailOrderLoading(true);
         doAction(ORDER_INVOICE_TYPE, ORDER_INVOICE_CODE, wraper, order);
     }
 
@@ -210,18 +212,6 @@ public class OrderHistoryListController extends AbstractListController<Order> {
             mOrderTakePaymentPanel.showNotifiSelectPayment();
         }
     }
-
-   /* Felix 3/4/2017 Start*/
-    public boolean checkDimissDialogTakePayment(Order order){
-
-        List<CheckoutPayment> listCheckoutPayment = (List<CheckoutPayment>) wraper.get("list_choose_payment");
-        if (listCheckoutPayment != null && listCheckoutPayment.size() > 0) {
-           return  true;
-        }
-
-        return false;
-    }
-    /* Felix 3/4/2017 End*/
 
     @Override
     public Boolean doActionBackround(int actionType, String actionCode, Map<String, Object> wraper, Model... models) throws Exception {
@@ -268,7 +258,7 @@ public class OrderHistoryListController extends AbstractListController<Order> {
             mOrderCommentListController.doSelectOrder(order);
             mOrderHistoryItemsListController.notifyDataSetChanged();
             mOrderCommentListController.notifyDataSetChanged();
-            mList.set(mList.indexOf(((Order) models[0])), order);
+            setNewOrderToList(((Order) models[0]), order);
             mView.notifyDataSetChanged();
             ((OrderDetailPanel) mDetailView).changeColorStatusOrder(order.getStatus());
             ((OrderDetailPanel) mDetailView).changeStatusTopOrder(order.getStatus());
@@ -289,7 +279,7 @@ public class OrderHistoryListController extends AbstractListController<Order> {
             mOrderCommentListController.doSelectOrder(order);
             mOrderHistoryItemsListController.notifyDataSetChanged();
             mOrderCommentListController.notifyDataSetChanged();
-            mList.set(mList.indexOf(((Order) models[0])), order);
+            setNewOrderToList(((Order) models[0]), order);
             mView.notifyDataSetChanged();
             ((OrderDetailPanel) mDetailView).changeColorStatusOrder(order.getStatus());
             ((OrderDetailPanel) mDetailView).changeStatusTopOrder(order.getStatus());
@@ -303,12 +293,12 @@ public class OrderHistoryListController extends AbstractListController<Order> {
             mOrderCommentListController.doSelectOrder(order);
             mOrderHistoryItemsListController.notifyDataSetChanged();
             mOrderCommentListController.notifyDataSetChanged();
-            mList.set(mList.indexOf(((Order) models[0])), order);
-            mView.notifyDataSetChanged();
+            setNewOrderToList(((Order) models[0]), order);
             ((OrderDetailPanel) mDetailView).changeColorStatusOrder(order.getStatus());
             ((OrderDetailPanel) mDetailView).changeStatusTopOrder(order.getStatus());
             ((OrderDetailPanel) mDetailView).bindDataRespone(order);
             ((OrderDetailPanel) mDetailView).setOrder(order);
+            showDetailOrderLoading(false);
         } else if (success && actionType == ORDER_CANCEL_TYPE) {
             Order order = (Order) wraper.get("cancel_respone");
             mOrderCancelPanel.showAlertRespone();
@@ -316,8 +306,8 @@ public class OrderHistoryListController extends AbstractListController<Order> {
             mOrderCommentListController.doSelectOrder(order);
             mOrderHistoryItemsListController.notifyDataSetChanged();
             mOrderCommentListController.notifyDataSetChanged();
-            mList.set(mList.indexOf(((Order) models[0])), order);
-            mView.notifyDataSetChanged();
+            setNewOrderToList(((Order) models[0]), order);
+            ((OrderListPanel) mView).notifyDataSetChanged();
             ((OrderDetailPanel) mDetailView).changeColorStatusOrder(order.getStatus());
             ((OrderDetailPanel) mDetailView).changeStatusTopOrder(order.getStatus());
             ((OrderDetailPanel) mDetailView).bindDataRespone(order);
@@ -331,7 +321,7 @@ public class OrderHistoryListController extends AbstractListController<Order> {
             mOrderHistoryItemsListController.notifyDataSetChanged();
             mOrderCommentListController.notifyDataSetChanged();
             mOrderPaymentListController.notifyDataSetChanged();
-            mList.set(mList.indexOf(((Order) models[0])), order);
+            setNewOrderToList(((Order) models[0]), order);
             mView.notifyDataSetChanged();
             ((OrderDetailPanel) mDetailView).changeColorStatusOrder(order.getStatus());
             ((OrderDetailPanel) mDetailView).changeStatusTopOrder(order.getStatus());
@@ -341,6 +331,21 @@ public class OrderHistoryListController extends AbstractListController<Order> {
         }
     }
 
+    /**
+     * cập nhật lại order trong list
+     * @param oldOrder
+     * @param newOrder
+     */
+    private void setNewOrderToList(Order oldOrder, Order newOrder){
+        int index = mList.indexOf(oldOrder);
+        mList.remove(index);
+        mList.add(index, newOrder);
+        bindList(mList);
+    }
+
+    /**
+     * set data cho list choose payment
+     */
     public void bindDataListChoosePayment() {
         List<CheckoutPayment> list_payment = (List<CheckoutPayment>) wraper.get("list_payment");
         mOrderAddPaymentPanel.bindList(list_payment);
@@ -352,7 +357,7 @@ public class OrderHistoryListController extends AbstractListController<Order> {
     }
 
     /**
-     * add thêm payment trongvaof checkout
+     * add thêm payment trong vào checkout
      *
      * @param method
      */
@@ -408,6 +413,7 @@ public class OrderHistoryListController extends AbstractListController<Order> {
 
     /**
      * kiểm tra nếu payment truyền vào ko phải pay later thì remove all payment is_pay_later
+     *
      * @param checkoutPayment
      * @param listPayment
      */
@@ -424,6 +430,17 @@ public class OrderHistoryListController extends AbstractListController<Order> {
             }
         }
     }
+
+    /* Felix 3/4/2017 Start*/
+    public boolean checkDimissDialogTakePayment(Order order) {
+        List<CheckoutPayment> listCheckoutPayment = (List<CheckoutPayment>) wraper.get("list_choose_payment");
+        if (listCheckoutPayment != null && listCheckoutPayment.size() > 0) {
+            return true;
+        }
+
+        return false;
+    }
+    /* Felix 3/4/2017 End*/
 
     /**
      * ẩn hoặc hiện button add payment
@@ -467,13 +484,17 @@ public class OrderHistoryListController extends AbstractListController<Order> {
     }
 
     /*Felix 3/4/2017 Start*/
-    public void showDetailOrderLoading(boolean visible){
+    public void showDetailOrderLoading(boolean visible) {
         ((OrderDetailPanel) mDetailView).showDetailOrderLoading(visible);
     }
     /*Felix 3/4/2017 End*/
 
     public boolean checkCanInvoice(Order order) {
         return mOrderService.checkCanInvoice(order);
+    }
+
+    public boolean checkCanTakePayment(Order order) {
+        return mOrderService.checkCanTakePayment(order);
     }
 
     public boolean checkCanCancel(Order order) {
