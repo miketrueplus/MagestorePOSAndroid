@@ -101,9 +101,9 @@ public class CheckoutAddressListPanel extends AbstractModelRecycleView<GenericMo
 
     @Override
     public void bindListModelView(List<GenericModelView> list) {
-        String guest_id = getController().getGuestCheckout().getID();
+        Customer guest_customer = getController().getGuestCheckout();
         Customer customer = getController().getSelectedItem().getCustomer();
-        if (!customer.getID().equals(guest_id)) {
+        if (getController().checkCustomerID(customer, guest_customer)) {
             GenericModelView modelView = new GenericModelView();
             ViewState viewState = new ViewState();
             viewState.setStateWaitInsert();

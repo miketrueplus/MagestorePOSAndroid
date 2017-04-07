@@ -280,8 +280,8 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
 
     public void showPopUpAddCustomer(int type, int other_type) {
         // TODO: check cơ chế customer dialog
-        String guest_id = ((CheckoutListController) mController).getGuestCheckout().getID();
-        if (mCustomer != null && mCustomer.getID().equals(guest_id)) {
+        Customer guest_customer = ((CheckoutListController) mController).getGuestCheckout();
+        if (mCustomer != null && ((CheckoutListController) mController).checkCustomerID(mCustomer, guest_customer)) {
             type = CHANGE_CUSTOMER;
         }
         this.other_type = other_type;

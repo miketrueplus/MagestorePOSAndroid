@@ -84,4 +84,6 @@ public interface CheckoutService extends ListService<Checkout> {
     List<CustomerAddress> checkListAddress(Customer customer, Customer guest_customer);
 
     boolean checkIsVirtual(List<CartItem> cartItems);
+
+    boolean checkCustomerID(Customer customer, Customer guest_customer);
 }

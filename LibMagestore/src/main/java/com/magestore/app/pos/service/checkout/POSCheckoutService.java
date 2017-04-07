@@ -232,7 +232,7 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
 
         PlaceOrderExtensionParam extensionParamCustomerName = createExtensionParam();
         extensionParamCustomerName.setKey(KEY_EXTENSION_CUSTOMER_FULLNAME);
-        if (!checkout.getCustomerID().equals(ConfigUtil.getStaff().getID())) {
+        if (!checkCustomerID(checkout.getCustomer(), ConfigUtil.getCustomerGuest())) {
             extensionParamCustomerName.setValue(checkout.getCustomer().getName());
         }
 
@@ -443,7 +443,7 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
 
     @Override
     public List<CustomerAddress> checkListAddress(Customer customer, Customer guest_customer) {
-        if (customer.getID().equals(guest_customer.getID())) {
+        if (checkCustomerID(customer, guest_customer)) {
             return customer.getAddress();
         } else {
             List<CustomerAddress> nListAddress = new ArrayList<>();
@@ -466,6 +466,32 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
             }
         }
         return true;
+    }
+
+    @Override
+    public boolean checkCustomerID(Customer customer, Customer guest_customer) {
+        if (StringUtil.isNullOrEmpty(getCustomerId(customer)) && StringUtil.isNullOrEmpty(getCustomerId(guest_customer))) {
+            return false;
+        }
+
+        if (getCustomerId(customer).equals(getCustomerId(guest_customer))) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private String getCustomerId(Customer customer) {
+        String customerId = "";
+        String customerEmail = customer.getEmail();
+        if (StringUtil.isNullOrEmpty(customer.getID())) {
+            if (StringUtil.isNullOrEmpty(customerEmail)) {
+                customerId = customerEmail;
+            }
+        } else {
+            customerId = customer.getID();
+        }
+        return customerId;
     }
 
     private List<QuoteItems> addItemToQuote(Checkout checkout) {

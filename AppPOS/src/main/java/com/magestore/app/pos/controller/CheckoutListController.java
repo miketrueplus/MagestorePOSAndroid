@@ -1302,6 +1302,10 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         return false;
     }
 
+    public boolean checkCustomerID(Customer customer, Customer guest_customer){
+        return ((CheckoutService) getListService()).checkCustomerID(customer, guest_customer);
+    }
+
     /**
      * ẩn hiện button remove discount
      *
