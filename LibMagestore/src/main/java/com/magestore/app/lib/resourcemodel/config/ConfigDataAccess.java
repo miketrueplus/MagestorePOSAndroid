@@ -40,5 +40,6 @@ public interface ConfigDataAccess extends DataAccess {
     float getConfigMaximumDiscount() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     boolean getConfigDeliveryTime() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     boolean getConfigStoreCredit() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
+    boolean getConfigRewardPoint() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     boolean getConfigGiftCard() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
 }

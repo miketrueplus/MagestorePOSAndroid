@@ -67,6 +67,7 @@ public class POSConfigService extends AbstractService implements ConfigService {
         ConfigUtil.setShowDeliveryTime(getConfigDeliveryTime());
         ConfigUtil.setEnableGiftCard(getConfigGiftCard());
         ConfigUtil.setEnableStoreCredit(getConfigStoreCredit());
+        ConfigUtil.setEnableRewardPoint(getConfigRewardPoint());
         // return config
         return config;
     }
@@ -267,6 +268,13 @@ public class POSConfigService extends AbstractService implements ConfigService {
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
         return configDataAccess.getConfigStoreCredit();
+    }
+
+    @Override
+    public boolean getConfigRewardPoint() throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
+        return configDataAccess.getConfigRewardPoint();
     }
 
     @Override

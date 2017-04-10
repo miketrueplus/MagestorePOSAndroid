@@ -14,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.magestore.app.lib.context.MagestoreContext;
 import com.magestore.app.lib.observ.GenericState;
@@ -28,10 +27,12 @@ import com.magestore.app.lib.service.checkout.CheckoutService;
 import com.magestore.app.lib.service.config.ConfigService;
 import com.magestore.app.lib.service.customer.CustomerAddressService;
 import com.magestore.app.lib.service.customer.CustomerService;
+import com.magestore.app.lib.service.plugins.PluginsService;
 import com.magestore.app.pos.controller.CartItemListController;
 import com.magestore.app.pos.controller.CategoryListController;
 import com.magestore.app.pos.controller.CheckoutAddPaymentListController;
 import com.magestore.app.pos.controller.CheckoutListController;
+import com.magestore.app.pos.controller.PluginGiftCardController;
 import com.magestore.app.pos.controller.ProductListController;
 import com.magestore.app.pos.panel.CartItemDetailPanel;
 import com.magestore.app.pos.panel.CartItemListPanel;
@@ -47,6 +48,8 @@ import com.magestore.app.pos.panel.CheckoutPaymentListPanel;
 import com.magestore.app.pos.panel.CheckoutShippingListPanel;
 import com.magestore.app.pos.panel.CheckoutSuccessPanel;
 import com.magestore.app.pos.panel.PaymentMethodListPanel;
+import com.magestore.app.pos.panel.PluginGiftCardListPanel;
+import com.magestore.app.pos.panel.PluginGiftCardPanel;
 import com.magestore.app.pos.panel.ProductListPanel;
 import com.magestore.app.pos.panel.ProductOptionPanel;
 import com.magestore.app.pos.ui.AbstractActivity;
@@ -60,14 +63,14 @@ public class SalesActivity extends AbstractActivity
         implements
         PosUI {
     MagestoreContext magestoreContext;
-
+    ServiceFactory factory;
     // 2 pane
     private boolean mTwoPane;
 
     // Panel chứa danh sách mặt hàng và đơn hàng
     private ProductListPanel mProductListPanel;
     private CheckoutListPanel mCheckoutListPanel;
-    private CheckoutDetailPanel mCheckoutDetailPanel;
+    protected CheckoutDetailPanel mCheckoutDetailPanel;
     private CheckoutShippingListPanel mCheckoutShippingListPanel;
     private CheckoutPaymentListPanel mCheckoutPaymentListPanel;
 
@@ -92,6 +95,10 @@ public class SalesActivity extends AbstractActivity
     private CategoryListController mCategoryListController;
     private CheckoutAddPaymentListController mCheckoutAddPaymentListController;
 //    private ProductOptionController mProductOptionController;
+
+    PluginGiftCardPanel mPluginGiftCardPanel;
+    PluginGiftCardListPanel mPluginGiftCardListPanel;
+    PluginGiftCardController mPluginGiftCardController;
 
     // Toolbar Order
     Toolbar toolbar_order;
@@ -176,6 +183,10 @@ public class SalesActivity extends AbstractActivity
         // category list panel
         mCategoryListPanel = (CategoryListPanel) mProductListPanel.findViewById(R.id.category);
 
+        // plugins giftcard
+        mPluginGiftCardPanel = (PluginGiftCardPanel) mCheckoutDetailPanel.findViewById(R.id.rl_gift_card);
+        mPluginGiftCardListPanel = (PluginGiftCardListPanel) mPluginGiftCardPanel.findViewById(R.id.gift_card_list_panel);
+
     }
 
     protected void initModel() {
@@ -187,13 +198,13 @@ public class SalesActivity extends AbstractActivity
         SubjectObserv subjectObserv = new SubjectObserv();
 
         // chuẩn bị service
-        ServiceFactory factory;
         ProductService productService = null;
         CheckoutService checkoutService = null;
         CartService cartService = null;
         CategoryService categoryService = null;
         ProductOptionService productOptionService = null;
         CustomerAddressService customerAddressService = null;
+        PluginsService pluginsService = null;
         try {
             factory = ServiceFactory.getFactory(magestoreContext);
             productService = factory.generateProductService();
@@ -204,6 +215,7 @@ public class SalesActivity extends AbstractActivity
             customerService = factory.generateCustomerService();
             productOptionService = factory.generateProductOptionService();
             customerAddressService = factory.generateCustomerAddressService();
+            pluginsService = factory.generatePluginsService();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InstantiationException e) {
@@ -266,6 +278,11 @@ public class SalesActivity extends AbstractActivity
         mCheckoutAddPaymentListController.setListPanel(mCheckoutAddPaymentPanel);
         mCheckoutAddPaymentListController.setCheckoutListController(mCheckoutListController);
 
+        // controller
+        mPluginGiftCardController = new PluginGiftCardController();
+        mPluginGiftCardController.setMagestoreContext(magestoreContext);
+        mPluginGiftCardController.setPluginsService(pluginsService);
+        mPluginGiftCardController.setPluginGiftCardListPanel(mPluginGiftCardListPanel);
 
         mPaymentMethodListPanel.setCheckoutListController(mCheckoutListController);
         mCheckoutDetailPanel.setCheckoutPaymentListPanel(mCheckoutPaymentListPanel);
@@ -287,6 +304,9 @@ public class SalesActivity extends AbstractActivity
         mCheckoutPaymentCreditCardPanel.setCheckoutListController(mCheckoutListController);
 
         mCartItemDetailPanel.setCheckoutListController(mCheckoutListController);
+
+        mPluginGiftCardPanel.setPluginGiftCardController(mPluginGiftCardController);
+        mPluginGiftCardListPanel.setPluginGiftCardController(mPluginGiftCardController);
 
         // TODO: clear quote
 //        DataUtil.removeDataStringToPreferences(getContext(), DataUtil.QUOTE);
@@ -374,6 +394,9 @@ public class SalesActivity extends AbstractActivity
         mCheckoutListController.doRetrieve();
         // load danh sách shipping
 //        mCheckShippingListController.doRetrieve();
+
+        // controller giftcard bind data
+        mPluginGiftCardController.bindDataToGiftCardList();
 
         rl_customer.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -533,8 +533,9 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
     @Override
     public boolean getConfigStoreCredit() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
         if (mConfig == null) mConfig = new PosConfigDefault();
-
-        String enable_store_credit = (String) mConfig.getValue("customercredit/general/enable");
+        LinkedTreeMap plugins_config = (LinkedTreeMap) mConfig.getValue("plugins_config");
+        LinkedTreeMap os_store_credit = (LinkedTreeMap) plugins_config.get("os_store_credit");
+        String enable_store_credit = (String) os_store_credit.get("customercredit/general/enable");
         boolean isShowStoreCredit;
         if (!StringUtil.isNullOrEmpty(enable_store_credit)) {
             if (enable_store_credit.equals("1")) {
@@ -547,10 +548,27 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
     }
 
     @Override
+    public boolean getConfigRewardPoint() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        if (mConfig == null) mConfig = new PosConfigDefault();
+        LinkedTreeMap plugins_config = (LinkedTreeMap) mConfig.getValue("plugins_config");
+        LinkedTreeMap os_reward_points = (LinkedTreeMap) plugins_config.get("os_reward_points");
+        String enable_store_credit = (String) os_reward_points.get("rewardpoints/general/enable");
+        boolean isShowStoreCredit;
+        if (!StringUtil.isNullOrEmpty(enable_store_credit)) {
+            if (enable_store_credit.equals("1")) {
+                isShowStoreCredit = true;
+                return isShowStoreCredit;
+            }
+        }
+        return false;
+    }
+
+    @Override
     public boolean getConfigGiftCard() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
         if (mConfig == null) mConfig = new PosConfigDefault();
-
-        String enable_gift_card = (String) mConfig.getValue("giftvoucher/general/active");
+        LinkedTreeMap plugins_config = (LinkedTreeMap) mConfig.getValue("plugins_config");
+        LinkedTreeMap os_gift_card = (LinkedTreeMap) plugins_config.get("os_gift_card");
+        String enable_gift_card = (String) os_gift_card.get("giftvoucher/general/active");
         boolean isShowGiftCard;
         if (!StringUtil.isNullOrEmpty(enable_gift_card)) {
             if (enable_gift_card.equals("1")) {

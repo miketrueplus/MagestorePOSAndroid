@@ -97,6 +97,8 @@ public interface ConfigService extends Service {
 
     boolean getConfigStoreCredit() throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
+    boolean getConfigRewardPoint() throws InstantiationException, IllegalAccessException, IOException, ParseException;
+
     boolean getConfigGiftCard() throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
     List<Setting> getListSetting();

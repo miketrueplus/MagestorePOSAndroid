@@ -10,6 +10,7 @@ import com.magestore.app.lib.service.customer.CustomerAddressService;
 import com.magestore.app.lib.service.customer.CustomerComplainService;
 import com.magestore.app.lib.service.customer.CustomerService;
 import com.magestore.app.lib.service.order.OrderHistoryService;
+import com.magestore.app.lib.service.plugins.PluginsService;
 import com.magestore.app.lib.service.registershift.RegisterShiftService;
 import com.magestore.app.lib.service.checkout.CheckoutService;
 import com.magestore.app.lib.service.sales.OrderService;
@@ -38,6 +39,7 @@ public abstract class ServiceFactory {
     public abstract CustomerComplainService generateCustomerComplainService();
     public abstract ConfigService generateConfigService();
     public abstract CheckoutService generateCheckoutService();
+    public abstract PluginsService generatePluginsService();
     public abstract CategoryService generateCategoryService();
 
     /**

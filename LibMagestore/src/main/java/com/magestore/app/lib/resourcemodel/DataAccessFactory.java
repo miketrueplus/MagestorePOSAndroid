@@ -8,6 +8,7 @@ import com.magestore.app.lib.resourcemodel.config.ConfigDataAccess;
 import com.magestore.app.lib.resourcemodel.customer.CustomerAddressDataAccess;
 import com.magestore.app.lib.resourcemodel.customer.CustomerComplainDataAccess;
 import com.magestore.app.lib.resourcemodel.customer.CustomerDataAccess;
+import com.magestore.app.lib.resourcemodel.plugins.PluginsDataAccess;
 import com.magestore.app.lib.resourcemodel.registershift.RegisterShiftDataAccess;
 import com.magestore.app.lib.resourcemodel.sales.CartDataAccess;
 import com.magestore.app.lib.resourcemodel.sales.CheckoutDataAccess;
@@ -37,7 +38,7 @@ public abstract class DataAccessFactory {
     public abstract CartDataAccess generateCartDataAccess();
     public abstract RegisterShiftDataAccess generateRegisterShiftDataAccess();
     public abstract ConfigDataAccess generateConfigDataAccess();
-
+    public abstract PluginsDataAccess generatePluginsDataAccess();
     public abstract CheckoutDataAccess generateCheckoutDataAccess();
 
     public MagestoreContext getContext() {

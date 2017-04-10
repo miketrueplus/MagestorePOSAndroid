@@ -34,6 +34,7 @@ public class ConfigUtil {
     private static Customer mCustomerGuest;
     private static boolean mShowDeliveryTime;
     private static boolean mEnableStoreCredit;
+    private static boolean mEnableRewardPoint;
     private static boolean mEnableGiftCard;
 
     /**
@@ -533,11 +534,19 @@ public class ConfigUtil {
         mEnableStoreCredit = enableStoreCredit;
     }
 
+    public static void setEnableRewardPoint(boolean mEnableRewardPoint) {
+        ConfigUtil.mEnableRewardPoint = mEnableRewardPoint;
+    }
+
     public static boolean isEnableGiftCard() {
         return mEnableGiftCard;
     }
 
     public static boolean isEnableStoreCredit() {
         return mEnableStoreCredit;
+    }
+
+    public static boolean isEnableRewardPoint() {
+        return mEnableRewardPoint;
     }
 }

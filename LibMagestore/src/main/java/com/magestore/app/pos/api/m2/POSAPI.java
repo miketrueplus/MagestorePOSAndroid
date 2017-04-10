@@ -83,6 +83,9 @@ public class POSAPI {
     public static final String REST_REGISTER_SHIFTS_GET_LISTING = "/rest/default/V1/webpos/shifts/getlist?";
     public static final String REST_REGISTER_SHIFTS_MAKE_ADJUSTMENT = "/rest/default/V1/webpos/cash_transaction/save?";
 
+    // API plugins
+    public static final String REST_PLUGIN_ADD_GIFTCARD = "/rest/default/V1/webpos/integration/applyGiftcard?";
+
     // API config
     public static final String REST_CONFIG_GET_LISTING = "/rest/default/V1/webpos/configurations?";
     public static final String REST_CONFIG_GET_ = "/rest/default/V1/webpos/configurations/${configID}?path=${configPath}&session=${sessionID}";

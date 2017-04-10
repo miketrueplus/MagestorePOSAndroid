@@ -395,7 +395,6 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
     @Override
     public void onActionPostExecute(boolean success, int actionType, String actionCode, Map<String, Object> wraper, Model... models) {
-
         if (success && actionType == ACTION_TYPE_USER_GUEST) {
             Customer customer = (Customer) models[0];
             ((CheckoutListPanel) mView).useDefaultGuestCheckout(customer);

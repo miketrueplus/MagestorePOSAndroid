@@ -184,46 +184,98 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/checkout_margin"
-                            android:orientation="horizontal">
+                            android:orientation="vertical">
 
                             <LinearLayout
-                                android:layout_width="0dp"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="top"
-                                android:layout_marginRight="@dimen/layout_margin_5"
-                                android:layout_weight="1"
                                 android:orientation="vertical">
 
-                                <TextView
-                                    android:id="@+id/tv_payment_method"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="top"
-                                    android:text="@string/payment_method"
-                                    android:textColor="@color/text_color"
-                                    android:textSize="@dimen/text_size" />
-
-                                <TextView
-                                    android:id="@+id/tv_check_payment_required"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content" />
-                            </LinearLayout>
-
-                            <RelativeLayout
-                                android:id="@+id/rl_content_payment_method"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="2">
-
-                                <com.magestore.app.pos.panel.PaymentMethodListPanel
-                                    android:id="@+id/payment_method_list_panel"
+                                <RelativeLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:columnCount="4"
-                                    app:layoutManager="GridLayoutManager"
-                                    magestore_view:layout_row="@layout/card_payment_method_content"
-                                    magestore_view:layout_span_count="4" />
-                            </RelativeLayout>
+                                    android:layout_gravity="top"
+                                    android:layout_marginBottom="@dimen/layout_margin_10"
+                                    android:layout_marginRight="@dimen/layout_margin_5"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:id="@+id/tv_payment_method"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="top"
+                                        android:layout_toLeftOf="@+id/tv_check_payment_required"
+                                        android:text="@string/payment_method"
+                                        android:textColor="@color/text_color"
+                                        android:textSize="@dimen/text_size" />
+
+                                    <TextView
+                                        android:id="@+id/tv_check_payment_required"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentRight="true" />
+                                </RelativeLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/rl_plugins"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical">
+
+                                    <include
+                                        android:id="@+id/rl_store_credit"
+                                        layout="@layout/plugin_store_credit_panel"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginBottom="@dimen/layout_margin_10"
+                                        android:visibility="@{ConfigUtil.isEnableStoreCredit() ? View.VISIBLE : View.GONE}" />
+
+                                    <include
+                                        android:id="@+id/rl_reward_point"
+                                        layout="@layout/plugin_reward_point_panel"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginBottom="@dimen/layout_margin_10"
+                                        android:visibility="@{ConfigUtil.isEnableRewardPoint() ? View.VISIBLE : View.GONE}" />
+
+                                    <com.magestore.app.pos.panel.PluginGiftCardPanel
+                                        android:id="@+id/rl_gift_card"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginBottom="@dimen/layout_margin_10"
+                                        android:visibility="@{ConfigUtil.isEnableGiftCard() ? View.VISIBLE : View.GONE}"
+                                        magestore_view:layout_panel="@layout/plugin_gift_card_panel" />
+                                </LinearLayout>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <FrameLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="top"
+                                    android:layout_marginRight="@dimen/layout_margin_5"
+                                    android:layout_weight="1" />
+
+                                <RelativeLayout
+                                    android:id="@+id/rl_content_payment_method"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="2">
+
+                                    <com.magestore.app.pos.panel.PaymentMethodListPanel
+                                        android:id="@+id/payment_method_list_panel"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:columnCount="4"
+                                        app:layoutManager="GridLayoutManager"
+                                        magestore_view:layout_row="@layout/card_payment_method_content"
+                                        magestore_view:layout_span_count="4" />
+                                </RelativeLayout>
+                            </LinearLayout>
                         </LinearLayout>
 
                         <com.magestore.app.pos.panel.CheckoutPaymentListPanel
@@ -232,6 +284,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/layout_margin_5"
                             android:visibility="gone"
+                            magestore_view:layout_no_scroll="true"
                             magestore_view:layout_row="@layout/card_checkout_payment_content" />
 
                         <LinearLayout

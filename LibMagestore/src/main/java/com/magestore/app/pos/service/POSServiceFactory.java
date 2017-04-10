@@ -10,6 +10,7 @@ import com.magestore.app.lib.service.checkout.CartService;
 import com.magestore.app.lib.service.catalog.ProductService;
 import com.magestore.app.lib.service.ServiceFactory;
 import com.magestore.app.lib.service.order.OrderHistoryService;
+import com.magestore.app.lib.service.plugins.PluginsService;
 import com.magestore.app.lib.service.registershift.RegisterShiftService;
 import com.magestore.app.lib.service.checkout.CheckoutService;
 import com.magestore.app.lib.service.sales.OrderService;
@@ -23,6 +24,7 @@ import com.magestore.app.pos.service.customer.POSCustomerAddressService;
 import com.magestore.app.pos.service.customer.POSCustomerComplainService;
 import com.magestore.app.pos.service.customer.POSCustomerService;
 import com.magestore.app.pos.service.order.PosOrderHistoryService;
+import com.magestore.app.pos.service.plugins.POSPluginsService;
 import com.magestore.app.pos.service.registershift.POSRegisterShiftService;
 import com.magestore.app.pos.service.checkout.POSCheckoutService;
 import com.magestore.app.pos.service.sales.POSOrderService;
@@ -115,6 +117,13 @@ public class POSServiceFactory extends ServiceFactory {
     @Override
     public CheckoutService generateCheckoutService() {
         CheckoutService service = new POSCheckoutService();
+        service.setContext(getContext());
+        return service;
+    }
+
+    @Override
+    public PluginsService generatePluginsService() {
+        PluginsService service = new POSPluginsService();
         service.setContext(getContext());
         return service;
     }
