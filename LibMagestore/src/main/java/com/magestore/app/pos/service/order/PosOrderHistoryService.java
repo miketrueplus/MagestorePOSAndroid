@@ -366,7 +366,7 @@ public class PosOrderHistoryService extends AbstractService implements OrderHist
     @Override
     public boolean checkCanTakePayment(Order order) {
         String status = order.getStatus();
-        if (status.equals("canceled") || this.canUnhold(status)) {
+        if (status.equals("canceled") || this.canUnhold(status) || status.equals("closed") || status.equals("complete")) {
             return false;
         }
 

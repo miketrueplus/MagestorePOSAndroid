@@ -445,17 +445,17 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
 
     @Override
     public int QtyShip() {
-        return qty_ordered - qty_shipped;
+        return qty_ordered - qty_shipped - qty_refunded - qty_canceled;
     }
 
     @Override
     public int QtyRefund() {
-        return qty_ordered - qty_refunded;
+        return qty_invoiced - qty_refunded;
     }
 
     @Override
     public int QtyInvoice() {
-        return qty_ordered - qty_invoiced;
+        return qty_ordered - qty_invoiced - qty_refunded - qty_canceled;
     }
 
     @Override
