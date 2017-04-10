@@ -10,11 +10,13 @@ import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.model.sales.OrderCommentParams;
 import com.magestore.app.lib.model.sales.OrderInvoiceParams;
 import com.magestore.app.lib.model.sales.OrderItemParams;
+import com.magestore.app.lib.model.sales.OrderItemUpdateQtyParam;
 import com.magestore.app.lib.model.sales.OrderRefundParams;
 import com.magestore.app.lib.model.sales.OrderShipmentParams;
 import com.magestore.app.lib.model.sales.OrderShipmentTrackParams;
 import com.magestore.app.lib.model.sales.OrderStatus;
 import com.magestore.app.lib.model.sales.OrderTakePaymentParam;
+import com.magestore.app.lib.model.sales.OrderUpdateQtyParam;
 import com.magestore.app.lib.resourcemodel.DataAccessFactory;
 import com.magestore.app.lib.resourcemodel.sales.OrderDataAccess;
 import com.magestore.app.lib.service.order.OrderHistoryService;
@@ -22,11 +24,13 @@ import com.magestore.app.pos.model.checkout.PosPaymentMethodDataParam;
 import com.magestore.app.pos.model.sales.PosOrderCommentParams;
 import com.magestore.app.pos.model.sales.PosOrderInvoiceParams;
 import com.magestore.app.pos.model.sales.PosOrderItemParams;
+import com.magestore.app.pos.model.sales.PosOrderItemUpdateQtyParam;
 import com.magestore.app.pos.model.sales.PosOrderRefundParams;
 import com.magestore.app.pos.model.sales.PosOrderShipmentParams;
 import com.magestore.app.pos.model.sales.PosOrderShipmentTrackParams;
 import com.magestore.app.pos.model.sales.PosOrderStatus;
 import com.magestore.app.pos.model.sales.PosOrderTakePaymentParam;
+import com.magestore.app.pos.model.sales.PosOrderUpdateQtyParam;
 import com.magestore.app.pos.service.AbstractService;
 import com.magestore.app.util.ConfigUtil;
 
@@ -148,6 +152,13 @@ public class PosOrderHistoryService extends AbstractService implements OrderHist
         OrderDataAccess orderDataAccess = factory.generateOrderDataAccess();
 
         return orderDataAccess.orderRefund(refundParams);
+    }
+
+    @Override
+    public Order orderInvoiceUpdateQty(OrderUpdateQtyParam orderUpdateQtyParam) throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        OrderDataAccess orderDataAccess = factory.generateOrderDataAccess();
+        return orderDataAccess.orderInvoiceUpdateQty(orderUpdateQtyParam);
     }
 
     @Override
@@ -280,6 +291,16 @@ public class PosOrderHistoryService extends AbstractService implements OrderHist
     @Override
     public PaymentMethodDataParam createPaymentMethodParam() {
         return new PosPaymentMethodDataParam();
+    }
+
+    @Override
+    public OrderUpdateQtyParam createOrderUpdateQtyParam() {
+        return new PosOrderUpdateQtyParam();
+    }
+
+    @Override
+    public OrderItemUpdateQtyParam createOrderItemUpdateQtyParam() {
+        return new PosOrderItemUpdateQtyParam();
     }
 
     @Override

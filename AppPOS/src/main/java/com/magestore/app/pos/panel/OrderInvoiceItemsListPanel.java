@@ -25,6 +25,8 @@ import java.util.List;
  */
 
 public class OrderInvoiceItemsListPanel extends AbstractListPanel<CartItem> {
+    List<CartItem> listItems;
+    List<CartItem> listCurrentItem;
 
     public OrderInvoiceItemsListPanel(Context context) {
         super(context);
@@ -63,8 +65,8 @@ public class OrderInvoiceItemsListPanel extends AbstractListPanel<CartItem> {
         mBinding.setOrderItem(item);
 
         EditText edt_qty_to_invoice = (EditText) view.findViewById(R.id.qty_to_invoice);
-
-        actionQtyToInvoice(item, edt_qty_to_invoice);
+        CartItem cartItem = listItems.get(position);
+        actionQtyToInvoice(cartItem, edt_qty_to_invoice);
     }
 
     private void actionQtyToInvoice(final CartItem item, final EditText qty_to_invoice) {
@@ -87,9 +89,14 @@ public class OrderInvoiceItemsListPanel extends AbstractListPanel<CartItem> {
                 if (qty_invoiced < 0 || qty_invoiced > qty) {
                     qty_to_invoice.setText(String.valueOf(qty));
                     item.setQuantity(qty);
+                    item.setQtyChange(qty);
                 } else {
                     item.setQuantity(qty_invoiced);
+                    item.setQtyChange(qty_invoiced);
                 }
+
+                ((OrderInvoiceItemsListController) mController).isShowButtonUpdateQty(checkChangeQtyItem() ? true : false);
+                ((OrderInvoiceItemsListController) mController).isEnableButtonSubmitInvoice(checkChangeQtyItem() ? false : true);
             }
 
             @Override
@@ -99,7 +106,23 @@ public class OrderInvoiceItemsListPanel extends AbstractListPanel<CartItem> {
         });
     }
 
+    public void setDataListItem(List<CartItem> orderItems){
+        listItems = orderItems;
+        listCurrentItem = listItems;
+    }
+
     public List<CartItem> bind2List() {
-        return ((OrderInvoiceItemsListController) mController).getSelectedItems();
+        return listItems;
+    }
+
+    private boolean checkChangeQtyItem() {
+        for (CartItem currentItem: listCurrentItem) {
+            for (CartItem item: listItems) {
+                if(item.getQtyChange() != currentItem.QtyInvoice()){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

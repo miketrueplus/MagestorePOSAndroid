@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.magestore.app.lib.controller.Controller;
 import com.magestore.app.lib.model.sales.Order;
+import com.magestore.app.lib.model.sales.OrderUpdateQtyParam;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.OrderCommentListController;
@@ -357,6 +358,17 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         dialog.show();
 
         Button btn_submit_invoice = (Button) dialog.findViewById(R.id.btn_submit_invoice);
+        Button btn_update_qty = (Button) dialog.findViewById(R.id.btn_update_qty);
+
+        btn_update_qty.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                OrderUpdateQtyParam orderUpdateQtyParam = mOrderInvoicePanel.bindOrderUpdateQty();
+                ((OrderHistoryListController) mController).setOrderInvoicePanel(mOrderInvoicePanel);
+                ((OrderHistoryListController) mController).doInputInvoiceUpdateQty(orderUpdateQtyParam);
+            }
+        });
+
         btn_submit_invoice.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {

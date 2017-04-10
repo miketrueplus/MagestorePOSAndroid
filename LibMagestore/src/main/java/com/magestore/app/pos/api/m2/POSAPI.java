@@ -40,6 +40,7 @@ public class POSAPI {
     public static final String REST_ORDER_CANCEL = "/rest/default/V1/webpos/orders/${orderID}/cancel?";
     public static final String REST_ORDER_EMAIL = "/rest/default/V1/webpos/orders/${orderID}/emails?";
     public static final String REST_ORDER_COMMENTS = "/rest/default/V1/webpos/orders/${orderID}/comments?";
+    public static final String REST_ORDER_INVOICE_UPDATE_QTY = "/rest/default/V1/webpos/invoices/updateqty?";
     public static final String REST_ORDER_INVOICE = "/rest/default/V1/webpos/invoices/create?";
     public static final String REST_ORDER_SHIPMENT = "/rest/default/V1/webpos/shipment/create?";
     public static final String REST_ORDER_REFUND = "/rest/default/V1/webpos/creditmemo/create?";

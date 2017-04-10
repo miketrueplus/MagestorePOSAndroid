@@ -5,13 +5,17 @@ import android.databinding.DataBindingUtil;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.magestore.app.lib.controller.Controller;
+import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.model.sales.OrderCommentParams;
 import com.magestore.app.lib.model.sales.OrderInvoiceParams;
+import com.magestore.app.lib.model.sales.OrderItemUpdateQtyParam;
+import com.magestore.app.lib.model.sales.OrderUpdateQtyParam;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.OrderHistoryListController;
@@ -19,6 +23,7 @@ import com.magestore.app.pos.controller.OrderInvoiceItemsListController;
 import com.magestore.app.pos.databinding.PanelOrderInvoiceBinding;
 import com.magestore.app.util.DialogUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,6 +39,8 @@ public class OrderInvoicePanel extends AbstractDetailPanel<Order> {
     OrderInvoiceItemsListController mOrderInvoiceItemsListController;
     CheckBox cb_send_email;
     EditText invoice_comment;
+    Button btn_update_qty, btn_submit_invoice;
+    View view;
 
     public OrderInvoicePanel(Context context) {
         super(context);
@@ -49,7 +56,7 @@ public class OrderInvoicePanel extends AbstractDetailPanel<Order> {
 
     @Override
     protected void initLayout() {
-        View view = inflate(getContext(), R.layout.panel_order_invoice, null);
+        view = inflate(getContext(), R.layout.panel_order_invoice, null);
         addView(view);
 
         cb_send_email = (CheckBox) view.findViewById(R.id.cb_send_email);
@@ -59,7 +66,8 @@ public class OrderInvoicePanel extends AbstractDetailPanel<Order> {
         mBinding = DataBindingUtil.bind(view);
 
         mOrderInvoiceItemsListPanel = (OrderInvoiceItemsListPanel) findViewById(R.id.order_invoice_items);
-
+        btn_update_qty = (Button) view.findViewById(R.id.btn_update_qty);
+        btn_submit_invoice = (Button) view.findViewById(R.id.btn_submit_invoice);
         initModel();
     }
 
@@ -69,6 +77,7 @@ public class OrderInvoicePanel extends AbstractDetailPanel<Order> {
 
         mOrderInvoiceItemsListController = new OrderInvoiceItemsListController();
         mOrderInvoiceItemsListController.setView(mOrderInvoiceItemsListPanel);
+        mOrderInvoiceItemsListController.setOrderInvoicePanel(this);
 
         if (controller instanceof OrderHistoryListController)
             mOrderInvoiceItemsListController.setOrderService(((OrderHistoryListController) controller).getOrderService());
@@ -81,6 +90,11 @@ public class OrderInvoicePanel extends AbstractDetailPanel<Order> {
         mBinding.setOrderDetail(item);
         mOrder = item;
         mOrderInvoiceItemsListController.doSelectOrder(item);
+    }
+
+    public void bindTotal(Order item){
+        mOrder = item;
+        mBinding.setOrderDetail(item);
     }
 
     @Override
@@ -145,10 +159,37 @@ public class OrderInvoicePanel extends AbstractDetailPanel<Order> {
         return mOrder;
     }
 
+    public OrderUpdateQtyParam bindOrderUpdateQty() {
+        OrderHistoryListController orderHistoryListController = ((OrderHistoryListController) mController);
+        OrderUpdateQtyParam mOrderUpdateQtyParam = orderHistoryListController.createOrderUpdateQtyParam();
+        mOrderUpdateQtyParam.setOrderId(mOrder.getID());
+        List<OrderItemUpdateQtyParam> listOrderItem = new ArrayList<>();
+        setDataToOrderUpdateQty(listOrderItem, orderHistoryListController);
+        return mOrderUpdateQtyParam;
+    }
+
+    public void setDataToOrderUpdateQty(List<OrderItemUpdateQtyParam> listOrderItem, OrderHistoryListController orderHistoryListController) {
+        List<CartItem> listItem = mOrderInvoiceItemsListPanel.bind2List();
+        for (CartItem cartItem : listItem) {
+            OrderItemUpdateQtyParam item = orderHistoryListController.creaOrderItemUpdateQtyParam();
+            item.setEntityId(cartItem.getItemId());
+            item.setQty(cartItem.getQuantity());
+            listOrderItem.add(item);
+        }
+    }
+
     public void showAlertRespone() {
         String message = getContext().getString(R.string.order_invoice_success);
 
         // Tạo dialog và hiển thị
         DialogUtil.confirm(getContext(), message, R.string.ok);
+    }
+
+    public void isShowButtonUpdateQty(boolean isShow) {
+        btn_update_qty.setVisibility(isShow ? VISIBLE : GONE);
+    }
+
+    public void isEnableButtonSubmitInvoice(boolean isEnable) {
+        btn_submit_invoice.setEnabled(isEnable ? true : false);
     }
 }

@@ -145,6 +145,7 @@
     <string name="order_invoice_title">Invoice</string>
     <string name="order_invoice_comment_title">Invoice Comment</string>
     <string name="order_invoice_btn_submit">SUBMIT INVOICE</string>
+    <string name="order_invoice_btn_update_qty">Update Qty</string>
     <string name="order_invoice_total_paid">Total Paid:</string>
     <string name="order_total_invoiced">Total Invoiced:</string>
     <string name="order_invoiceable">Invoiceable:</string>

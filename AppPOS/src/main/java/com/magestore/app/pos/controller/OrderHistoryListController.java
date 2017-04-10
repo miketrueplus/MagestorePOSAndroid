@@ -8,10 +8,12 @@ import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.model.sales.OrderCommentParams;
 import com.magestore.app.lib.model.sales.OrderInvoiceParams;
+import com.magestore.app.lib.model.sales.OrderItemUpdateQtyParam;
 import com.magestore.app.lib.model.sales.OrderRefundParams;
 import com.magestore.app.lib.model.sales.OrderShipmentParams;
 import com.magestore.app.lib.model.sales.OrderShipmentTrackParams;
 import com.magestore.app.lib.model.sales.OrderStatus;
+import com.magestore.app.lib.model.sales.OrderUpdateQtyParam;
 import com.magestore.app.lib.service.order.OrderHistoryService;
 import com.magestore.app.pos.panel.OrderAddCommentPanel;
 import com.magestore.app.pos.panel.OrderCancelPanel;
@@ -60,13 +62,15 @@ public class OrderHistoryListController extends AbstractListController<Order> {
     public static String CREATE_SHIPMENT_CODE = "create_shipment";
     public static int ORDER_REFUND_TYPE = 4;
     public static String ORDER_REFUND_CODE = "order_refund";
-    public static int ORDER_INVOICE_TYPE = 5;
+    public static int ORDER_INVOICE_UPDATE_QTY_TYPE = 5;
+    public static String ORDER_INVOICE_UPDATE_QTY_CODE = "order_invoice_update_qty";
+    public static int ORDER_INVOICE_TYPE = 6;
     public static String ORDER_INVOICE_CODE = "order_invoice";
-    public static int ORDER_CANCEL_TYPE = 6;
+    public static int ORDER_CANCEL_TYPE = 7;
     public static String ORDER_CANCEL_CODE = "order_cancel";
-    public static int RETRIEVE_PAYMENT_METHOD_TYPE = 7;
+    public static int RETRIEVE_PAYMENT_METHOD_TYPE = 8;
     public static String RETRIEVE_PAYMENT_METHOD_CODE = "retrieve_payment_method";
-    public static int ORDER_TAKE_PAYMENT_TYPE = 8;
+    public static int ORDER_TAKE_PAYMENT_TYPE = 9;
     public static String ORDER_TAKE_PAYMENT_CODE = "order_take_payment";
 
     Map<String, Object> wraper;
@@ -184,6 +188,10 @@ public class OrderHistoryListController extends AbstractListController<Order> {
         doAction(ORDER_REFUND_TYPE, ORDER_REFUND_CODE, wraper, order);
     }
 
+    public void doInputInvoiceUpdateQty(OrderUpdateQtyParam orderUpdateQtyParam) {
+        doAction(ORDER_INVOICE_UPDATE_QTY_TYPE, ORDER_INVOICE_UPDATE_QTY_CODE, wraper, orderUpdateQtyParam);
+    }
+
     public void doInputInvoice(Order order) {
         showDetailOrderLoading(true);
         doAction(ORDER_INVOICE_TYPE, ORDER_INVOICE_CODE, wraper, order);
@@ -227,6 +235,9 @@ public class OrderHistoryListController extends AbstractListController<Order> {
             return true;
         } else if (actionType == ORDER_REFUND_TYPE) {
             wraper.put("refund_respone", mOrderService.orderRefund((Order) models[0]));
+            return true;
+        } else if (actionType == ORDER_INVOICE_UPDATE_QTY_TYPE) {
+            wraper.put("invoice_update_qty_respone", mOrderService.orderInvoiceUpdateQty((OrderUpdateQtyParam) models[0]));
             return true;
         } else if (actionType == ORDER_INVOICE_TYPE) {
             wraper.put("invoice_respone", mOrderService.orderInvoice((Order) models[0]));
@@ -286,6 +297,9 @@ public class OrderHistoryListController extends AbstractListController<Order> {
             ((OrderDetailPanel) mDetailView).bindDataRespone(order);
             ((OrderDetailPanel) mDetailView).setOrder(order);
             showDetailOrderLoading(false);
+        } else if (success && actionType == ORDER_INVOICE_UPDATE_QTY_TYPE) {
+            Order order = (Order) wraper.get("invoice_update_qty_respone");
+            mOrderInvoicePanel.bindTotal(order);
         } else if (success && actionType == ORDER_INVOICE_TYPE) {
             Order order = (Order) wraper.get("invoice_respone");
             mOrderInvoicePanel.showAlertRespone();
@@ -333,10 +347,11 @@ public class OrderHistoryListController extends AbstractListController<Order> {
 
     /**
      * cập nhật lại order trong list
+     *
      * @param oldOrder
      * @param newOrder
      */
-    private void setNewOrderToList(Order oldOrder, Order newOrder){
+    private void setNewOrderToList(Order oldOrder, Order newOrder) {
         int index = mList.indexOf(oldOrder);
         mList.remove(index);
         mList.add(index, newOrder);
@@ -483,6 +498,14 @@ public class OrderHistoryListController extends AbstractListController<Order> {
         return mOrderService.createOrderInvoiceParams();
     }
 
+    public OrderUpdateQtyParam createOrderUpdateQtyParam() {
+        return mOrderService.createOrderUpdateQtyParam();
+    }
+
+    public OrderItemUpdateQtyParam creaOrderItemUpdateQtyParam() {
+        return mOrderService.createOrderItemUpdateQtyParam();
+    }
+
     /*Felix 3/4/2017 Start*/
     public void showDetailOrderLoading(boolean visible) {
         ((OrderDetailPanel) mDetailView).showDetailOrderLoading(visible);
@@ -509,15 +532,15 @@ public class OrderHistoryListController extends AbstractListController<Order> {
         return mOrderService.checkCanShip(order);
     }
 
-    public float checkShippingRefund(Order order){
+    public float checkShippingRefund(Order order) {
         return mOrderService.checkShippingRefund(order);
     }
 
-    public boolean checkCanRefundGiftcard(Order order){
+    public boolean checkCanRefundGiftcard(Order order) {
         return mOrderService.checkCanRefundGiftcard(order);
     }
 
-    public boolean checkCanStoreCredit(Order order){
+    public boolean checkCanStoreCredit(Order order) {
         return mOrderService.checkCanStoreCredit(order);
     }
 }

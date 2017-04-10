@@ -5,6 +5,8 @@ import com.magestore.app.lib.controller.ListController;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.service.order.OrderHistoryService;
+import com.magestore.app.pos.panel.OrderInvoiceItemsListPanel;
+import com.magestore.app.pos.panel.OrderInvoicePanel;
 
 /**
  * Created by Johan on 2/3/17.
@@ -16,6 +18,11 @@ public class OrderInvoiceItemsListController extends AbstractListController<Cart
     Order mSelectedOrder;
     OrderHistoryListController mOrderHistoryListController;
     OrderHistoryService mOrderService;
+    OrderInvoicePanel mOrderInvoicePanel;
+
+    public void setOrderInvoicePanel(OrderInvoicePanel mOrderInvoicePanel) {
+        this.mOrderInvoicePanel = mOrderInvoicePanel;
+    }
 
     /**
      * Thiết lập controller
@@ -44,6 +51,15 @@ public class OrderInvoiceItemsListController extends AbstractListController<Cart
     public void doSelectOrder(Order order) {
         mSelectedOrder = order;
         mList = order.getOrderItems();
+        ((OrderInvoiceItemsListPanel) mView).setDataListItem(mList);
         mView.bindList(mList);
+    }
+
+    public void isShowButtonUpdateQty(boolean isShow) {
+        mOrderInvoicePanel.isShowButtonUpdateQty(isShow);
+    }
+
+    public void isEnableButtonSubmitInvoice(boolean isEnable) {
+        mOrderInvoicePanel.isEnableButtonSubmitInvoice(isEnable);
     }
 }

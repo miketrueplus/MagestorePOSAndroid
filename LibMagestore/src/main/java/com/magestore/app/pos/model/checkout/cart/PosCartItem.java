@@ -270,6 +270,8 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     String product_type;
     @Gson2PosExclude
     String parent_item_id;
+    @Gson2PosExclude
+    int qty_change;
 
     @Gson2PosExclude
     float base_original_price;
@@ -456,6 +458,16 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     @Override
     public int QtyInvoice() {
         return qty_ordered - qty_invoiced - qty_refunded - qty_canceled;
+    }
+
+    @Override
+    public int getQtyChange() {
+        return qty_change;
+    }
+
+    @Override
+    public void setQtyChange(int intQtyChange) {
+        qty_change = intQtyChange;
     }
 
     @Override

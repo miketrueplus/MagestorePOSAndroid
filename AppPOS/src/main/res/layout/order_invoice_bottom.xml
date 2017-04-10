@@ -20,10 +20,10 @@
         android:padding="@dimen/layout_margin_5">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/layout_margin_5"
-            android:layout_weight="1"
+            android:layout_weight="1.4"
             android:orientation="vertical">
 
             <TextView
@@ -56,9 +56,9 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="1.6"
             android:orientation="vertical">
 
             <LinearLayout
@@ -226,22 +226,43 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/layout_margin_5"
-                    android:layout_toLeftOf="@+id/btn_submit_invoice"
+                    android:layout_toLeftOf="@+id/rl_invoice_action"
                     android:gravity="center_vertical"
                     android:text="@string/order_shipment_send_email" />
 
-                <Button
-                    android:id="@+id/btn_submit_invoice"
+                <LinearLayout
+                    android:id="@+id/rl_invoice_action"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:background="@drawable/order_history_invoice_button_submit"
-                    android:paddingBottom="@dimen/layout_margin_5"
-                    android:paddingLeft="@dimen/layout_margin_10"
-                    android:paddingRight="@dimen/layout_margin_10"
-                    android:paddingTop="@dimen/layout_margin_5"
-                    android:text="@string/order_invoice_btn_submit"
-                    android:textColor="@color/order_invoice_button_text_color" />
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btn_update_qty"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/layout_margin_10"
+                        android:background="@drawable/order_history_invoice_button_submit"
+                        android:paddingBottom="@dimen/layout_margin_5"
+                        android:paddingLeft="@dimen/layout_margin_5"
+                        android:paddingRight="@dimen/layout_margin_5"
+                        android:paddingTop="@dimen/layout_margin_5"
+                        android:text="@string/order_invoice_btn_update_qty"
+                        android:textColor="@color/order_invoice_button_text_color"
+                        android:visibility="gone" />
+
+                    <Button
+                        android:id="@+id/btn_submit_invoice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/order_history_invoice_button_submit"
+                        android:paddingBottom="@dimen/layout_margin_5"
+                        android:paddingLeft="@dimen/layout_margin_5"
+                        android:paddingRight="@dimen/layout_margin_5"
+                        android:paddingTop="@dimen/layout_margin_5"
+                        android:text="@string/order_invoice_btn_submit"
+                        android:textColor="@color/order_invoice_button_text_color" />
+                </LinearLayout>
             </RelativeLayout>
         </LinearLayout>
     </LinearLayout>
