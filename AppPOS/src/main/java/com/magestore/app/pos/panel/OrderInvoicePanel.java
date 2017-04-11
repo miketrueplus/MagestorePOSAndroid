@@ -165,6 +165,7 @@ public class OrderInvoicePanel extends AbstractDetailPanel<Order> {
         mOrderUpdateQtyParam.setOrderId(mOrder.getID());
         List<OrderItemUpdateQtyParam> listOrderItem = new ArrayList<>();
         setDataToOrderUpdateQty(listOrderItem, orderHistoryListController);
+        mOrderUpdateQtyParam.setItems(listOrderItem);
         return mOrderUpdateQtyParam;
     }
 

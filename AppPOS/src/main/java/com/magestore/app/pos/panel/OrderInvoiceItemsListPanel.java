@@ -66,6 +66,7 @@ public class OrderInvoiceItemsListPanel extends AbstractListPanel<CartItem> {
 
         EditText edt_qty_to_invoice = (EditText) view.findViewById(R.id.qty_to_invoice);
         CartItem cartItem = listItems.get(position);
+        cartItem.setQtyChange(item.QtyInvoice());
         actionQtyToInvoice(cartItem, edt_qty_to_invoice);
     }
 
@@ -106,7 +107,7 @@ public class OrderInvoiceItemsListPanel extends AbstractListPanel<CartItem> {
         });
     }
 
-    public void setDataListItem(List<CartItem> orderItems){
+    public void setDataListItem(List<CartItem> orderItems) {
         listItems = orderItems;
         listCurrentItem = listItems;
     }
@@ -116,10 +117,12 @@ public class OrderInvoiceItemsListPanel extends AbstractListPanel<CartItem> {
     }
 
     private boolean checkChangeQtyItem() {
-        for (CartItem currentItem: listCurrentItem) {
-            for (CartItem item: listItems) {
-                if(item.getQtyChange() != currentItem.QtyInvoice()){
-                    return true;
+        for (CartItem currentItem : listCurrentItem) {
+            for (CartItem item : listItems) {
+                if (item.getItemId().equals(currentItem.getItemId())) {
+                    if (item.getQtyChange() != currentItem.QtyInvoice()) {
+                        return true;
+                    }
                 }
             }
         }
