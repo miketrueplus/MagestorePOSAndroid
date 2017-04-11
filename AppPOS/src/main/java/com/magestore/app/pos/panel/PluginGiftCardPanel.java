@@ -6,7 +6,9 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.magestore.app.lib.model.checkout.Checkout;
+import com.magestore.app.lib.model.plugins.GiftCard;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
+import com.magestore.app.lib.panel.AbstractListPanel;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.PluginGiftCardController;
 
@@ -16,7 +18,7 @@ import com.magestore.app.pos.controller.PluginGiftCardController;
  * dong.le@trueplus.vn
  */
 
-public class PluginGiftCardPanel extends AbstractDetailPanel<Checkout> {
+public class PluginGiftCardPanel extends AbstractListPanel<GiftCard> {
     PluginGiftCardController mPluginGiftCardController;
 
     public void setPluginGiftCardController(PluginGiftCardController mPluginGiftCardController) {

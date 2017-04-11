@@ -1,7 +1,7 @@
 package com.magestore.app.lib.service.plugins;
 
+import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.plugins.GiftCard;
-import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.service.Service;
 
 import java.io.IOException;
@@ -16,5 +16,7 @@ import java.text.ParseException;
 public interface PluginsService extends Service {
     GiftCard createGiftCard();
 
-    Order addGiftCard(GiftCard giftCard) throws IOException, InstantiationException, ParseException, IllegalAccessException;
+    Checkout addGiftCard(GiftCard giftCard) throws IOException, InstantiationException, ParseException, IllegalAccessException;
+
+    Checkout removeGiftCard(GiftCard giftCard) throws IOException, InstantiationException, ParseException, IllegalAccessException;
 }

@@ -13,6 +13,8 @@ public interface GiftCard extends Model {
     void setQuoteId(String strQuoteId);
     String getCouponCode();
     void setCouponCode(String strCouponCode);
+    float getAmount();
+    void setAmount(float fAmount);
     float getBalance();
     void setBalance(float fBalance);
 }

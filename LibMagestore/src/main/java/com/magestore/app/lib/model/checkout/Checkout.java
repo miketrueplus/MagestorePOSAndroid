@@ -3,6 +3,7 @@ package com.magestore.app.lib.model.checkout;
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.customer.Customer;
+import com.magestore.app.lib.model.plugins.GiftCardRespone;
 import com.magestore.app.lib.model.sales.Order;
 
 import java.util.List;
@@ -103,4 +104,12 @@ public interface Checkout extends Model {
 
     String getDeliveryDate();
     void setDeliveryDate(String strDeliveryDate);
+
+    String getGiftCardTitle();
+    void setGiftCardTitle(String strGiftCardTitle);
+
+    float getGiftCardDiscount();
+    void setGiftCardDiscount(float fGiftCardDiscount);
+
+    GiftCardRespone getGiftCard();
 }

@@ -1,7 +1,7 @@
 package com.magestore.app.pos.service.plugins;
 
+import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.plugins.GiftCard;
-import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.resourcemodel.DataAccessFactory;
 import com.magestore.app.lib.resourcemodel.plugins.PluginsDataAccess;
 import com.magestore.app.lib.service.plugins.PluginsService;
@@ -25,10 +25,18 @@ public class POSPluginsService extends AbstractService implements PluginsService
     }
 
     @Override
-    public Order addGiftCard(GiftCard giftCard) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+    public Checkout addGiftCard(GiftCard giftCard) throws IOException, InstantiationException, ParseException, IllegalAccessException {
         // Khởi tạo plugin gateway factory
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         PluginsDataAccess pluginsDataAccess = factory.generatePluginsDataAccess();
         return pluginsDataAccess.addGiftCard(giftCard);
+    }
+
+    @Override
+    public Checkout removeGiftCard(GiftCard giftCard) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+        // Khởi tạo plugin gateway factory
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        PluginsDataAccess pluginsDataAccess = factory.generatePluginsDataAccess();
+        return pluginsDataAccess.removeGiftCard(giftCard);
     }
 }

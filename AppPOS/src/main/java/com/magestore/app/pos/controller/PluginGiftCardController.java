@@ -19,13 +19,18 @@ import java.util.Map;
  * dong.le@trueplus.vn
  */
 
-public class PluginGiftCardController extends AbstractListController<Checkout> {
+public class PluginGiftCardController extends AbstractListController<GiftCard> {
     static final int ACTION_TYPE_ADD_GIFTCARD = 0;
     static final int ACTION_TYPE_REMOVE_GIFTCARD = 1;
+    CheckoutListController mCheckoutListController;
     PluginGiftCardListPanel mPluginGiftCardListPanel;
     PluginsService pluginsService;
     List<GiftCard> listGiftCard;
     Map<String, Object> wraper;
+
+    public void setCheckoutListController(CheckoutListController mCheckoutListController) {
+        this.mCheckoutListController = mCheckoutListController;
+    }
 
     public void setPluginGiftCardListPanel(PluginGiftCardListPanel mPluginGiftCardListPanel) {
         this.mPluginGiftCardListPanel = mPluginGiftCardListPanel;
@@ -42,10 +47,15 @@ public class PluginGiftCardController extends AbstractListController<Checkout> {
     }
 
     public void doInputAddGiftCard(GiftCard giftCard) {
+        String quote_id = mCheckoutListController.getSelectedItem().getQuoteId();
+        giftCard.setQuoteId(quote_id);
         doAction(ACTION_TYPE_ADD_GIFTCARD, null, wraper, giftCard);
     }
 
     public void doInputRemoveGiftCard(GiftCard giftCard) {
+        String quote_id = mCheckoutListController.getSelectedItem().getQuoteId();
+        giftCard.setQuoteId(quote_id);
+        giftCard.setAmount(0);
         if (!StringUtil.isNullOrEmpty(giftCard.getCouponCode())) {
             doAction(ACTION_TYPE_REMOVE_GIFTCARD, null, wraper, giftCard);
         } else {
@@ -64,7 +74,7 @@ public class PluginGiftCardController extends AbstractListController<Checkout> {
             wraper.put("add_gift_card_respone", pluginsService.addGiftCard((GiftCard) models[0]));
             return true;
         } else if (actionType == ACTION_TYPE_REMOVE_GIFTCARD) {
-            wraper.put("remove_gift_card_respone", pluginsService.addGiftCard((GiftCard) models[0]));
+            wraper.put("remove_gift_card_respone", pluginsService.removeGiftCard((GiftCard) models[0]));
             return true;
         }
         return false;
@@ -72,9 +82,15 @@ public class PluginGiftCardController extends AbstractListController<Checkout> {
 
     @Override
     public void onActionPostExecute(boolean success, int actionType, String actionCode, Map<String, Object> wraper, Model... models) {
+        super.onActionPostExecute(success, actionType, actionCode, wraper, models);
         if (success && actionType == ACTION_TYPE_ADD_GIFTCARD) {
-            // TODO: action sau khi respone order của giftcard
+            Checkout checkout = (Checkout) wraper.get("add_gift_card_respone");
+            GiftCard giftCard = (GiftCard) models[0];
+            mCheckoutListController.updateToTal(checkout);
+            setAmountToGiftCard(checkout, giftCard);
+            mPluginGiftCardListPanel.enableGiftCodeValue(giftCard);
         } else if (success && actionType == ACTION_TYPE_REMOVE_GIFTCARD) {
+            Checkout checkout = (Checkout) wraper.get("remove_gift_card_respone");
             if (listGiftCard.size() == 1) {
                 addFirstGiftCard();
             } else {
@@ -82,6 +98,7 @@ public class PluginGiftCardController extends AbstractListController<Checkout> {
             }
 
             mPluginGiftCardListPanel.bindList(listGiftCard);
+            mCheckoutListController.updateToTal(checkout);
         }
     }
 
@@ -95,5 +112,19 @@ public class PluginGiftCardController extends AbstractListController<Checkout> {
         GiftCard giftCard = pluginsService.createGiftCard();
         listGiftCard.add(giftCard);
         mPluginGiftCardListPanel.bindList(listGiftCard);
+    }
+
+    private void setAmountToGiftCard(Checkout checkout, GiftCard giftCard) {
+        if (checkout.getGiftCard() != null) {
+            List<GiftCard> giftCardList = checkout.getGiftCard().getUsedCodes();
+            if (giftCardList != null && giftCardList.size() > 0) {
+                for (GiftCard item : giftCardList) {
+                    if(item.getCouponCode().equals(giftCard.getCouponCode())){
+                        giftCard.setAmount(item.getAmount());
+                        giftCard.setBalance(item.getBalance());
+                    }
+                }
+            }
+        }
     }
 }

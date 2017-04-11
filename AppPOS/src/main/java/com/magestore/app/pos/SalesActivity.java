@@ -278,11 +278,13 @@ public class SalesActivity extends AbstractActivity
         mCheckoutAddPaymentListController.setListPanel(mCheckoutAddPaymentPanel);
         mCheckoutAddPaymentListController.setCheckoutListController(mCheckoutListController);
 
-        // controller
+        // controller plugin giftcard
         mPluginGiftCardController = new PluginGiftCardController();
         mPluginGiftCardController.setMagestoreContext(magestoreContext);
         mPluginGiftCardController.setPluginsService(pluginsService);
         mPluginGiftCardController.setPluginGiftCardListPanel(mPluginGiftCardListPanel);
+        mPluginGiftCardController.setCheckoutListController(mCheckoutListController);
+        mPluginGiftCardController.setView(mPluginGiftCardPanel);
 
         mPaymentMethodListPanel.setCheckoutListController(mCheckoutListController);
         mCheckoutDetailPanel.setCheckoutPaymentListPanel(mCheckoutPaymentListPanel);

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="com.magestore.app.util.ConfigUtil" />
+
+        <import type="com.magestore.app.util.StringUtil" />
+
+        <variable
+            name="checkout"
+            type="com.magestore.app.lib.model.checkout.Checkout" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/ll_plugin_giftcard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <com.magestore.app.view.FormatTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:text='@{StringUtil.isNullOrEmpty(checkout.getGiftCardTitle()) ? @string/plugin_gift_card_title : checkout.getGiftCardTitle()}'
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/sales_price_text_size" />
+
+            <com.magestore.app.view.FormatTextView
+                android:id="@+id/text_sales_order_shipping"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="@{ConfigUtil.formatPrice(checkout.getGiftCardDiscount())}"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/sales_price_text_size" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

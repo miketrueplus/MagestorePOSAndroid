@@ -2,6 +2,7 @@ package com.magestore.app.pos.model.plugins;
 
 import com.magestore.app.lib.model.plugins.GiftCard;
 import com.magestore.app.pos.model.PosAbstractModel;
+import com.magestore.app.pos.parse.gson2pos.Gson2PosExclude;
 
 /**
  * Created by Johan on 4/10/17.
@@ -11,7 +12,9 @@ import com.magestore.app.pos.model.PosAbstractModel;
 
 public class PosGiftCard extends PosAbstractModel implements GiftCard {
     String quote_id;
-    String coupon_code;
+    String code;
+    float amount;
+    @Gson2PosExclude
     float balance;
 
     @Override
@@ -26,12 +29,22 @@ public class PosGiftCard extends PosAbstractModel implements GiftCard {
 
     @Override
     public String getCouponCode() {
-        return coupon_code;
+        return code;
     }
 
     @Override
     public void setCouponCode(String strCouponCode) {
-        coupon_code = strCouponCode;
+        code = strCouponCode;
+    }
+
+    @Override
+    public float getAmount() {
+        return amount;
+    }
+
+    @Override
+    public void setAmount(float fAmount) {
+        amount = fAmount;
     }
 
     @Override

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fab="http://schemas.android.com/apk/res-auto"
-    xmlns:magestore_view="http://schemas.android.com/apk/res-auto">
+    xmlns:magestore_view="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -164,6 +165,13 @@
                             android:textColor="@color/text_color"
                             android:textSize="@dimen/sales_price_text_size" />
                     </LinearLayout>
+
+                    <include
+                        android:id="@+id/rl_checkout_plugins"
+                        layout="@layout/checkout_plugins"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        bind:checkout="@{checkout}" />
 
                     <LinearLayout
                         android:layout_width="match_parent"

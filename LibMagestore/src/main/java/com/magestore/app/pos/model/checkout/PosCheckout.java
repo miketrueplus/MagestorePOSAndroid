@@ -9,9 +9,11 @@ import com.magestore.app.lib.model.checkout.CheckoutTotals;
 import com.magestore.app.lib.model.checkout.Quote;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.customer.Customer;
+import com.magestore.app.lib.model.plugins.GiftCardRespone;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.pos.model.PosAbstractModel;
 import com.magestore.app.pos.model.checkout.cart.PosCartItem;
+import com.magestore.app.pos.model.plugins.PosGiftCardRespone;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosExclude;
 
 import java.util.ArrayList;
@@ -98,6 +100,14 @@ public class PosCheckout extends PosAbstractModel implements Checkout {
     float exchange_money;
     @Gson2PosExclude
     String delivery_date;
+    @Gson2PosExclude
+    String giftcard_title;
+
+    // plugin giftcard
+    @Gson2PosExclude
+    float giftcard_discount;
+    @Gson2PosExclude
+    PosGiftCardRespone giftcard;
 
     @Override
     public String getCustomerID() {
@@ -395,5 +405,30 @@ public class PosCheckout extends PosAbstractModel implements Checkout {
     @Override
     public void setDeliveryDate(String strDeliveryDate) {
         delivery_date = strDeliveryDate;
+    }
+
+    @Override
+    public String getGiftCardTitle() {
+        return giftcard_title;
+    }
+
+    @Override
+    public void setGiftCardTitle(String strGiftCardTitle) {
+        giftcard_title = strGiftCardTitle;
+    }
+
+    @Override
+    public float getGiftCardDiscount() {
+        return giftcard_discount;
+    }
+
+    @Override
+    public void setGiftCardDiscount(float fGiftCardDiscount) {
+        giftcard_discount = fGiftCardDiscount;
+    }
+
+    @Override
+    public GiftCardRespone getGiftCard() {
+        return (GiftCardRespone) giftcard;
     }
 }

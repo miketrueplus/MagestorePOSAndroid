@@ -141,10 +141,12 @@ public class OrderInvoicePanel extends AbstractDetailPanel<Order> {
         orderInvoiceParams.setItems(mOrderInvoiceItemsListPanel.bind2List());
 
         orderInvoiceParams.setOrderCurrencyCode(mOrder.getOrderCurrencyCode());
+        // TODO: check shipping address id
         orderInvoiceParams.setShippingAddressId(mOrder.getBillingAddressId());
         orderInvoiceParams.setShippingAmount(mOrder.getShippingAmount());
         orderInvoiceParams.setShippingInclTax(mOrder.getShippingInclTax());
         orderInvoiceParams.setShippingTaxAmount(mOrder.getShippingTaxAmount());
+        // TODO: check state
         orderInvoiceParams.setState("2");
         orderInvoiceParams.setStoreCurrencyCode(mOrder.getStoreCurrencyCode());
         orderInvoiceParams.setStoreId(mOrder.getStoreId());

@@ -622,6 +622,13 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         }
     }
 
+    public void updateToTal(Checkout checkout){
+        ((CheckoutService) getListService()).updateTotal(checkout);
+        showButtonRemoveDiscount(checkDiscount(checkout) ? true : false);
+        ((CheckoutDetailPanel) mDetailView).bindTotalPrice(checkout.getGrandTotal());
+        ((CheckoutListPanel) mView).updateTotalPrice(checkout);
+    }
+
     /**
      * add checkout to list order
      */

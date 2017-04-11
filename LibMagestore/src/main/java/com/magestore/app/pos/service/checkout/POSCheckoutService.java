@@ -328,6 +328,12 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
                 checkout.setGrandTotal(checkoutTotals.getValue());
                 checkout.setGrandTitle(checkoutTotals.getTitle());
             }
+
+            // plugins
+            if (checkoutTotals.getCode().equals("giftvoucheraftertax")) {
+                checkout.setGrandTotal(checkoutTotals.getValue());
+                checkout.setGrandTitle(checkoutTotals.getTitle());
+            }
         }
         return checkout;
     }

@@ -15,6 +15,9 @@ import com.magestore.app.lib.view.AbstractSimpleRecycleView;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.PluginGiftCardController;
 import com.magestore.app.pos.databinding.PluginGiftCardContentLayoutBinding;
+import com.magestore.app.util.ConfigUtil;
+
+import java.util.HashMap;
 
 /**
  * Created by Johan on 4/10/17.
@@ -24,6 +27,8 @@ import com.magestore.app.pos.databinding.PluginGiftCardContentLayoutBinding;
 
 public class PluginGiftCardListPanel extends AbstractSimpleRecycleView<GiftCard> {
     PluginGiftCardController mPluginGiftCardController;
+    HashMap<GiftCard, EditText> mTextGiftCode;
+    HashMap<GiftCard, EditText> mTextGiftCodeValue;
 
     public void setPluginGiftCardController(PluginGiftCardController mPluginGiftCardController) {
         this.mPluginGiftCardController = mPluginGiftCardController;
@@ -42,13 +47,22 @@ public class PluginGiftCardListPanel extends AbstractSimpleRecycleView<GiftCard>
     }
 
     @Override
+    public void initLayout() {
+        mTextGiftCode = new HashMap<>();
+        mTextGiftCodeValue = new HashMap<>();
+    }
+
+    @Override
     protected void bindItem(View view, final GiftCard item, int position) {
         PluginGiftCardContentLayoutBinding mBinding = DataBindingUtil.bind(view);
         mBinding.setGiftCard(item);
 
         EditText gift_code = (EditText) view.findViewById(R.id.gift_code);
+        mTextGiftCode.put(item, gift_code);
+        EditText gift_code_value = (EditText) view.findViewById(R.id.gift_code_value);
+        mTextGiftCodeValue.put(item, gift_code_value);
         Button bt_apply = (Button) view.findViewById(R.id.bt_apply);
-        actionChangeGiftCode(gift_code, bt_apply);
+        actionChangeGiftCode(item, gift_code, bt_apply);
 
         bt_apply.setOnClickListener(new OnClickListener() {
             @Override
@@ -71,7 +85,7 @@ public class PluginGiftCardListPanel extends AbstractSimpleRecycleView<GiftCard>
 
     }
 
-    private void actionChangeGiftCode(final EditText gift_code, final Button bt_apply) {
+    private void actionChangeGiftCode(final GiftCard item, final EditText gift_code, final Button bt_apply) {
         gift_code.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -80,8 +94,10 @@ public class PluginGiftCardListPanel extends AbstractSimpleRecycleView<GiftCard>
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (gift_code.getText().length() > 0) {
+                String coupon_code = gift_code.getText().toString();
+                if (coupon_code.length() > 0) {
                     bt_apply.setEnabled(true);
+                    item.setCouponCode(coupon_code);
                 } else {
                     bt_apply.setEnabled(false);
                 }
@@ -100,5 +116,10 @@ public class PluginGiftCardListPanel extends AbstractSimpleRecycleView<GiftCard>
 
     private void actionRemoveGiftCode(GiftCard giftCard){
         mPluginGiftCardController.doInputRemoveGiftCard(giftCard);
+    }
+
+    public void enableGiftCodeValue(GiftCard giftCard){
+        EditText gift_code_value = mTextGiftCodeValue.get(giftCard);
+        gift_code_value.setText(ConfigUtil.formatNumber(giftCard.getBalance()));
     }
 }
