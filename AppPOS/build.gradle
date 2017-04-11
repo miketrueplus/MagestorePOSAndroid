@@ -18,14 +18,14 @@ android {
             buildConfigField  "String", "REST_BASE_URL", '"demo-magento2.magestore.com"'
             buildConfigField  "String", "REST_USER_NAME", '""'
             buildConfigField  "String", "REST_PASSWORD", '""'
-            buildConfigField  "String", "REST_BASE_PAGE", '""'
+            buildConfigField  "String", "REST_BASE_PAGE", '"pos-app"'
         }
 
         debug {
             buildConfigField  "String", "REST_BASE_URL", '"demo-magento2.magestore.com"'
             buildConfigField  "String", "REST_USER_NAME", '""'
             buildConfigField  "String", "REST_PASSWORD", '""'
-            buildConfigField  "String", "REST_BASE_PAGE", '""'
+            buildConfigField  "String", "REST_BASE_PAGE", '"pos-app"'
         }
     }
     dataBinding {

@@ -28,6 +28,8 @@ import com.magestore.app.pos.api.m2.POSDataAccessSession;
 import com.magestore.app.pos.model.sales.PosOrder;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListOrder;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListPaymentMethod;
+import com.magestore.app.pos.parse.gson2pos.Gson2PosOrderUpdateParseImplement;
+import com.magestore.app.util.StringUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -457,9 +459,11 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
 
             rp = statement.execute(orderUpdateQtyParam);
-            rp.setParseImplement(getClassParseImplement());
-            rp.setParseModel(PosOrder.class);
-            return (Order) rp.doParse();
+            String json = StringUtil.truncateJson(rp.readResult2String());
+            Gson2PosOrderUpdateParseImplement implement = new Gson2PosOrderUpdateParseImplement();
+            Gson gson = implement.createGson();
+            Order order = gson.fromJson(json, PosOrder.class);
+            return order;
         } catch (Exception e) {
             throw new DataAccessException(e);
         } finally {
