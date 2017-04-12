@@ -202,6 +202,10 @@ public class SearchAutoCompletePanel extends FrameLayout {
                     }
                     // nếu đang thao tác với kết quả filter
                     else if (mintMode == MODE_FILTER) {
+                        if (mintProgresLayout > 0) {
+                            if (mViewLayout.findViewById(mintProgresLayout) instanceof ProgressBar)
+                                mViewLayout.findViewById(mintProgresLayout).setVisibility(GONE);
+                        }
                         mAutoTextView.setText(StringUtil.STRING_EMPTY);
                         mController.setSearchString(null);
                         mController.reload();
@@ -230,6 +234,25 @@ public class SearchAutoCompletePanel extends FrameLayout {
     }
 
     /**
+     * áp dụng search
+     */
+    public void actionSearch() {
+        // dừng search gợi ý lại
+        mAutoTextView.dimissSuggest();
+
+        // đặt chuỗi search
+        mController.setSearchString(mAutoTextView.getText().toString().trim());
+
+        // reload lại, đồng thời clear list
+        mController.reload();
+
+        // hiển thị nút để close kết quả tìm kiếm
+        if (mCloseButton != null) mCloseButton.setVisibility(VISIBLE);
+
+        mintMode = MODE_FILTER;
+    }
+
+    /**
      * Đặt controller quản lý
      *
      * @param controller
@@ -237,5 +260,9 @@ public class SearchAutoCompletePanel extends FrameLayout {
     public void setListController(ListController controller) {
         mController = controller;
         mAutoTextView.setAdapter(new SearchAutoCompleteAdapter<Product>(getContext(), mController.getListService()));
+    }
+
+    public SearchAutoCompleteTextView getAutoTextView() {
+        return mAutoTextView;
     }
 }

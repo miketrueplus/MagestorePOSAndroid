@@ -17,10 +17,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content">
 
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/toolbar_category"
@@ -37,9 +36,9 @@
                     android:id="@+id/toolbar_search_product"
                     android:layout_width="wrap_content"
                     android:layout_height="?attr/actionBarSize"
-                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/toolbar_category"
+                    android:layout_toLeftOf="@+id/toolbar_barcode"
                     android:layout_weight="1.0">
 
                     <com.magestore.app.lib.panel.SearchAutoCompletePanel
@@ -52,7 +51,21 @@
                         magestore_view:layout_panel="@layout/panel_search_product"
                         magestore_view:layout_progress="@+id/progress_autotext_search_product" />
                 </android.support.v7.widget.Toolbar>
-            </LinearLayout>
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar_barcode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="?attr/actionBarSize"
+                    android:layout_alignParentRight="true"
+                    app:popupTheme="@style/AppTheme.PopupOverlay">
+
+                    <ImageView
+                        android:id="@+id/barcode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_barcode"/>
+                </android.support.v7.widget.Toolbar>
+            </RelativeLayout>
         </android.support.design.widget.AppBarLayout>
 
         <RelativeLayout
@@ -78,8 +91,8 @@
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:layout_gravity="center"
-                android:textAlignment="center"
                 android:layout_margin="@dimen/layout_margin_5"
+                android:textAlignment="center"
                 android:visibility="gone" />
 
             <FrameLayout
@@ -109,12 +122,12 @@
                 android:id="@+id/product_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_above="@+id/progress_product_list_bottom"
                 android:layout_below="@+id/fr_category"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:layout_gravity="center"
                 app:layoutManager="LinearLayoutManager"
-                android:layout_above="@+id/progress_product_list_bottom"
                 magestore_view:layout_item_content="@+id/content_product_list_card_view"
                 tools:listitem="@layout/card_product_list_content" />
 
@@ -123,11 +136,11 @@
                 style="?android:attr/progressBarStyleSmall"
                 android:layout_width="@dimen/layout_margin_50"
                 android:layout_height="@dimen/layout_margin_50"
-                android:layout_marginTop="@dimen/layout_margin_5"
-                android:layout_marginBottom="@dimen/layout_margin_5"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/layout_margin_5"
+                android:layout_marginTop="@dimen/layout_margin_5"
                 android:visibility="gone" />
 
             <ProgressBar

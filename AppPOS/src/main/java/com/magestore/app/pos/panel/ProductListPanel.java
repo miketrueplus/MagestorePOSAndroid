@@ -1,19 +1,19 @@
 package com.magestore.app.pos.panel;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.bumptech.glide.Glide;
+import com.edwardvanraak.materialbarcodescanner.MaterialBarcodeScanner;
+import com.edwardvanraak.materialbarcodescanner.MaterialBarcodeScannerBuilder;
+import com.google.android.gms.vision.barcode.Barcode;
 import com.magestore.app.lib.model.catalog.Category;
 import com.magestore.app.lib.panel.AbstractListPanel;
 import com.magestore.app.lib.model.catalog.Product;
+import com.magestore.app.lib.panel.SearchAutoCompletePanel;
 import com.magestore.app.lib.view.item.ModelView;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.CategoryListController;
@@ -30,9 +30,10 @@ import com.squareup.picasso.Picasso;
  * mike@trueplus.vn
  */
 public class ProductListPanel extends AbstractListPanel<Product> {
-    Toolbar toolbar_category;
+    Toolbar toolbar_category, toolbar_barcode;
     ImageView im_category_arrow;
     FrameLayout fr_category;
+    SearchAutoCompletePanel mSearchAutoCompletePanel;
 
     // list category
     CategoryListController mCategoryListController;
@@ -84,6 +85,9 @@ public class ProductListPanel extends AbstractListPanel<Product> {
         toolbar_category = (Toolbar) findViewById(R.id.toolbar_category);
         im_category_arrow = (ImageView) findViewById(R.id.im_category_arrow);
 
+        mSearchAutoCompletePanel = (SearchAutoCompletePanel) findViewById(R.id.panel_search_product);
+        toolbar_barcode = (Toolbar) findViewById(R.id.toolbar_barcode);
+
         toolbar_category.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -98,6 +102,34 @@ public class ProductListPanel extends AbstractListPanel<Product> {
                 }
             }
         });
+
+        toolbar_barcode.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startScan(mSearchAutoCompletePanel);
+            }
+        });
+    }
+
+    private void startScan(final SearchAutoCompletePanel panelSearch) {
+        /**
+         * Build a new MaterialBarcodeScanner
+         */
+        final MaterialBarcodeScanner materialBarcodeScanner = new MaterialBarcodeScannerBuilder()
+                .withActivity(((ProductListController) mController).getMagestoreContext().getActivity())
+                .withEnableAutoFocus(true)
+                .withBleepEnabled(true)
+                .withBackfacingCamera()
+                .withCenterTracker()
+                .withResultListener(new MaterialBarcodeScanner.OnResultListener() {
+                    @Override
+                    public void onResult(Barcode barcode) {
+                        panelSearch.getAutoTextView().setText(barcode.rawValue);
+                        panelSearch.actionSearch();
+                    }
+                })
+                .build();
+        materialBarcodeScanner.startScan();
     }
 
     /**

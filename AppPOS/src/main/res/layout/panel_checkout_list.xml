@@ -169,7 +169,7 @@
                     </LinearLayout>
 
                     <include
-                        android:id="@+id/rl_checkout_plugins"
+                        android:id="@+id/ll_checkout_plugins"
                         layout="@layout/checkout_plugins"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
