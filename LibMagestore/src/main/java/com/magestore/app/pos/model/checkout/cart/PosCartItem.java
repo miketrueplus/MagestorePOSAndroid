@@ -287,7 +287,7 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     float original_price;
 
     // Params Order Shipment
-    String orderItemId;
+    String order_item_id;
 
     // Params Order Refund
     String return_to_stock;
@@ -497,12 +497,12 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
 
     @Override
     public void setOrderItemId(String strOrderItemId) {
-        orderItemId = strOrderItemId;
+        order_item_id = strOrderItemId;
     }
 
     @Override
     public String getOrderItemId() {
-        return orderItemId;
+        return order_item_id;
     }
 
     @Override

@@ -66,6 +66,7 @@ public class OrderInvoiceItemsListPanel extends AbstractListPanel<CartItem> {
 
         EditText edt_qty_to_invoice = (EditText) view.findViewById(R.id.qty_to_invoice);
         CartItem cartItem = listItems.get(position);
+        cartItem.setOrderItemId(cartItem.getItemId());
         cartItem.setQtyChange(item.QtyInvoice());
         actionQtyToInvoice(cartItem, edt_qty_to_invoice);
     }
