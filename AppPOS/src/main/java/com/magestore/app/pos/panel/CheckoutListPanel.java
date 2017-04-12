@@ -53,7 +53,8 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
     FloatingActionMenu bt_sales_menu;
     Button btn_create_customer, btn_use_guest, btn_sales_order_checkout, btn_apply_discount;
     FrameLayout fr_sales_new_customer;
-    LinearLayout ll_add_new_customer, ll_new_shipping_address, ll_new_billing_address, ll_shipping_address, ll_sales_shipping, ll_add_new_address, ll_plugins;
+    LinearLayout ll_add_new_customer, ll_new_shipping_address, ll_new_billing_address, ll_shipping_address, ll_sales_shipping, ll_add_new_address;
+    View ll_plugins;
     LinearLayout ll_billing_address, ll_short_shipping_address, ll_short_billing_address, ll_sales_add_customer, ll_action_checkout;
     ImageView btn_shipping_address, btn_billing_address;
     ImageButton btn_shipping_adrress_edit, btn_billing_adrress_edit;
@@ -104,7 +105,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
         btn_sales_order_checkout = (Button) findViewById(R.id.btn_sales_order_checkout);
         ll_action_checkout = (LinearLayout) findViewById(R.id.ll_action_checkout);
         ll_sales_shipping = (LinearLayout) findViewById(R.id.ll_sales_shipping);
-        ll_plugins = (LinearLayout) findViewById(R.id.ll_plugins);
+        ll_plugins = (View) findViewById(R.id.ll_checkout_plugins);
         rl_sales_total = (RelativeLayout) findViewById(R.id.rl_sales_total);
         rl_add_checkout = (RelativeLayout) findViewById(R.id.rl_add_checkout);
         rl_remove_checkout = (RelativeLayout) findViewById(R.id.rl_remove_checkout);

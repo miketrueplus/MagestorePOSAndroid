@@ -229,8 +229,9 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
     }
 
     public void isShowPaymentMethod(boolean isShow){
-        mPaymentMethodListPanel.setVisibility(isShow ? VISIBLE : GONE);
+        mCheckoutPaymentListPanel.setVisibility(isShow ? VISIBLE : GONE);
         ll_payment_method.setVisibility(isShow ? VISIBLE : GONE);
+        ll_payment_credit_card.setVisibility(isShow ? VISIBLE : GONE);
     }
 
     public void isCheckCreateInvoice(boolean isCheck) {
