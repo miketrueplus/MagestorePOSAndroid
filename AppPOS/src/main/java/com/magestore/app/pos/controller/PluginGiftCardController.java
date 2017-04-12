@@ -4,6 +4,7 @@ import com.magestore.app.lib.controller.AbstractListController;
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.plugins.GiftCard;
+import com.magestore.app.lib.model.plugins.GiftCardRemoveParam;
 import com.magestore.app.lib.service.plugins.PluginsService;
 import com.magestore.app.pos.panel.PluginGiftCardListPanel;
 import com.magestore.app.util.StringUtil;
@@ -47,15 +48,16 @@ public class PluginGiftCardController extends AbstractListController<GiftCard> {
     }
 
     public void doInputAddGiftCard(GiftCard giftCard) {
+        mCheckoutListController.isShowLoadingDetail(true);
         String quote_id = mCheckoutListController.getSelectedItem().getQuoteId();
         giftCard.setQuoteId(quote_id);
         doAction(ACTION_TYPE_ADD_GIFTCARD, null, wraper, giftCard);
     }
 
     public void doInputRemoveGiftCard(GiftCard giftCard) {
+        mCheckoutListController.isShowLoadingDetail(true);
         String quote_id = mCheckoutListController.getSelectedItem().getQuoteId();
         giftCard.setQuoteId(quote_id);
-        giftCard.setAmount(0);
         if (!StringUtil.isNullOrEmpty(giftCard.getCouponCode())) {
             doAction(ACTION_TYPE_REMOVE_GIFTCARD, null, wraper, giftCard);
         } else {
@@ -74,7 +76,11 @@ public class PluginGiftCardController extends AbstractListController<GiftCard> {
             wraper.put("add_gift_card_respone", pluginsService.addGiftCard((GiftCard) models[0]));
             return true;
         } else if (actionType == ACTION_TYPE_REMOVE_GIFTCARD) {
-            wraper.put("remove_gift_card_respone", pluginsService.removeGiftCard((GiftCard) models[0]));
+            GiftCard giftCard = (GiftCard) models[0];
+            GiftCardRemoveParam giftCardRemoveParam = pluginsService.createGiftCardRemoveParam();
+            giftCardRemoveParam.setQuoteId(giftCard.getQuoteId());
+            giftCardRemoveParam.setCode(giftCard.getCouponCode());
+            wraper.put("remove_gift_card_respone", pluginsService.removeGiftCard(giftCardRemoveParam));
             return true;
         }
         return false;
@@ -89,6 +95,8 @@ public class PluginGiftCardController extends AbstractListController<GiftCard> {
             mCheckoutListController.updateToTal(checkout);
             setAmountToGiftCard(checkout, giftCard);
             mPluginGiftCardListPanel.enableGiftCodeValue(giftCard);
+            mPluginGiftCardListPanel.enableUseMaxPoint(giftCard);
+            mCheckoutListController.isShowLoadingDetail(false);
         } else if (success && actionType == ACTION_TYPE_REMOVE_GIFTCARD) {
             Checkout checkout = (Checkout) wraper.get("remove_gift_card_respone");
             if (listGiftCard.size() == 1) {
@@ -99,6 +107,7 @@ public class PluginGiftCardController extends AbstractListController<GiftCard> {
 
             mPluginGiftCardListPanel.bindList(listGiftCard);
             mCheckoutListController.updateToTal(checkout);
+            mCheckoutListController.isShowLoadingDetail(false);
         }
     }
 

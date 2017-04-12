@@ -59,6 +59,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/checkout_border_linear_layout"
+                        android:enabled="false"
                         android:gravity="right"
                         android:inputType="numberDecimal"
                         android:padding="@dimen/layout_margin_10"
@@ -86,7 +87,8 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/layout_margin_5">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -100,7 +102,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/layout_margin_5"
-                    android:text="@string/plugin_gift_card_use_max_credit" />
+                    android:text="@string/plugin_gift_card_use_max_credit"
+                    android:visibility="gone" />
 
                 <Button
                     android:id="@+id/bt_apply"

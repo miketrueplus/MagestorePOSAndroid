@@ -181,6 +181,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/ll_payment_method"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/checkout_margin"
@@ -217,7 +218,7 @@
                                 </RelativeLayout>
 
                                 <LinearLayout
-                                    android:id="@+id/rl_plugins"
+                                    android:id="@+id/ll_plugins"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:orientation="vertical">
@@ -457,6 +458,7 @@
                             android:text="@string/create_invoice"
                             android:textColor="@color/text_color"
                             android:textSize="@dimen/text_size"
+                            android:checked="true"
                             android:visibility="gone" />
                     </LinearLayout>
 

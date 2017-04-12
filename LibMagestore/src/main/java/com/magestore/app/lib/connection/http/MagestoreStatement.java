@@ -18,15 +18,20 @@ import com.magestore.app.pos.parse.gson2pos.Gson2PosMesssageExceptionImplement;
 import com.magestore.app.util.StringUtil;
 
 import java.io.IOException;
+
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.StrSubstitutor;
 
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.lang.annotation.Annotation;
+import java.net.CookieManager;
+import java.net.HttpCookie;
 import java.net.HttpURLConnection;
 import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -73,6 +78,8 @@ public class MagestoreStatement implements Statement {
     private MagestoreConnection mConnection = null;
     private HttpURLConnection mHttpConnection = null;
 
+    static final String COOKIES_HEADER = "Set-Cookie";
+
     // Chuỗi truy vấn bao gồm base url
     // Ví dụ
     //   BaseURL = "http://api.androidhive.info/"
@@ -84,6 +91,8 @@ public class MagestoreStatement implements Statement {
 
     // Bảng map chứa các tham số của truy vấn
     private Map mValuesMap = null;
+
+    static CookieManager msCookieManager = new CookieManager();
 
     class MagestoreExclusionStrategy implements ExclusionStrategy {
 
@@ -297,6 +306,9 @@ public class MagestoreStatement implements Statement {
 
         // Khởi tạo HTTP Connection với query, giao thức GET
         mHttpConnection = magestoreConnection.openHTTPConnection(mstrExecuteQuery, mstrMethod);
+        // set cookie to header
+        setCookieToHeaderField();
+
         // đặt action method cho http connection
         if (mAction == MagestoreStatementAction.ACTION_DELETE)
             mHttpConnection.setRequestMethod(METHOD_DELETE);
@@ -329,6 +341,8 @@ public class MagestoreStatement implements Statement {
         InputStream is = null;
 
         if (statusCode == HTTP_CODE_RESPONSE_SUCCESS) {
+            // save cookie
+            saveCookie();
             return new MagestoreResultReading(mHttpConnection.getInputStream());
         }
         else {
@@ -342,6 +356,42 @@ public class MagestoreStatement implements Statement {
             else {
                 rp.setParseModel(PosMessageException.class);
                 throw new ConnectionException(((PosMessageException) rp.doParse()).getMessage());
+            }
+        }
+    }
+
+    private void saveCookie(){
+        Map<String, List<String>> header = mHttpConnection.getHeaderFields();
+        List<String> cookiesHeader = header.get(COOKIES_HEADER);
+        if (cookiesHeader != null) {
+            for (String cookieHeader : cookiesHeader) {
+                List<HttpCookie> cookies;
+                try {
+                    cookies = HttpCookie.parse(cookieHeader);
+                } catch (NullPointerException e) {
+                    //ignore the Null cookie header and proceed to the next cookie header
+                    continue;
+                }
+
+                if (cookies != null) {
+                    if (cookies.size() > 0) {
+                        msCookieManager.getCookieStore().add(null, HttpCookie.parse(cookieHeader).get(0));
+                    }
+                }
+            }
+        }
+    }
+
+    private void setCookieToHeaderField(){
+        if (msCookieManager != null) {
+            //getting cookies(if any) and manually adding them to the request header
+            List<HttpCookie> cookies = msCookieManager.getCookieStore().getCookies();
+
+            if (cookies != null) {
+                if (cookies.size() > 0) {
+                    //adding the cookie header
+                    mHttpConnection.setRequestProperty("Cookie", StringUtils.join(cookies, ";"));
+                }
             }
         }
     }

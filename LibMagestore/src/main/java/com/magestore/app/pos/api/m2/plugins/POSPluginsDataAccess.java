@@ -8,6 +8,7 @@ import com.magestore.app.lib.connection.ResultReading;
 import com.magestore.app.lib.connection.Statement;
 import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.plugins.GiftCard;
+import com.magestore.app.lib.model.plugins.GiftCardRemoveParam;
 import com.magestore.app.lib.parse.ParseException;
 import com.magestore.app.lib.resourcemodel.DataAccessException;
 import com.magestore.app.lib.resourcemodel.plugins.PluginsDataAccess;
@@ -69,7 +70,7 @@ public class POSPluginsDataAccess extends POSAbstractDataAccess implements Plugi
     }
 
     @Override
-    public Checkout removeGiftCard(GiftCard giftCard) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
+    public Checkout removeGiftCard(GiftCardRemoveParam giftCard) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
         Connection connection = null;
         Statement statement = null;
         ResultReading rp = null;

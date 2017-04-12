@@ -3,6 +3,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <import type="com.magestore.app.util.ConfigUtil" />
 
         <import type="com.magestore.app.util.StringUtil" />
@@ -22,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:visibility="gone">
+            android:visibility="@{StringUtil.isNullOrEmpty(checkout.getGiftCardTitle()) ? View.VISIBLE : View.GONE}">
 
             <com.magestore.app.view.FormatTextView
                 android:layout_width="0dp"

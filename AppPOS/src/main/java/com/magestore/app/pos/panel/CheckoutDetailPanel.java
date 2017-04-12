@@ -42,7 +42,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
     MagestoreDialog dialog;
     Switch create_ship, create_invoice;
     ImageButton im_back;
-    LinearLayout ll_checkout_add_payment, ll_shipping_address, ll_payment_credit_card, ll_delivery_time;
+    LinearLayout ll_checkout_add_payment, ll_shipping_address, ll_payment_credit_card, ll_delivery_time, ll_payment_method;
     SimpleSpinner sp_shipping_method;
     Switch cb_pick_at_store;
     EditText et_checkout_note;
@@ -73,6 +73,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         txt_remain_value = (TextView) findViewById(R.id.txt_remain_value);
         create_ship = (Switch) findViewById(R.id.create_ship);
         create_invoice = (Switch) findViewById(R.id.create_invoice);
+        ll_payment_method = (LinearLayout) findViewById(R.id.ll_payment_method);
         ll_checkout_add_payment = (LinearLayout) findViewById(R.id.ll_checkout_add_payment);
         sales_background_loading = (RelativeLayout) findViewById(R.id.sales_background_loading);
         sp_shipping_method = (SimpleSpinner) findViewById(R.id.sp_shipping_method);
@@ -227,6 +228,11 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         create_invoice.setVisibility(enable ? VISIBLE : GONE);
     }
 
+    public void isShowPaymentMethod(boolean isShow){
+        mPaymentMethodListPanel.setVisibility(isShow ? VISIBLE : GONE);
+        ll_payment_method.setVisibility(isShow ? VISIBLE : GONE);
+    }
+
     public void isCheckCreateInvoice(boolean isCheck) {
         create_invoice.setChecked(isCheck ? true : false);
     }
@@ -337,17 +343,17 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
     }
 
     public void showPanelCheckoutPayment() {
-        mPaymentMethodListPanel.setVisibility(GONE);
+        rl_content_payment_method.setVisibility(GONE);
         mCheckoutPaymentListPanel.setVisibility(VISIBLE);
     }
 
     public void showPanelPaymentMethod() {
-        mPaymentMethodListPanel.setVisibility(VISIBLE);
+        rl_content_payment_method.setVisibility(VISIBLE);
         mCheckoutPaymentListPanel.setVisibility(GONE);
     }
 
     public void showPanelCheckoutPaymentCreditCard(boolean isShow) {
-        mPaymentMethodListPanel.setVisibility(isShow ? GONE : VISIBLE);
+        rl_content_payment_method.setVisibility(isShow ? GONE : VISIBLE);
         ll_payment_credit_card.setVisibility(isShow ? VISIBLE : GONE);
     }
 
