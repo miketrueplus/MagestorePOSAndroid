@@ -113,6 +113,7 @@
     <string name="order_detail_bottom_tb_discount">Discount</string>
     <string name="order_detail_bottom_tb_grand_total">Grand Total</string>
     <string name="order_detail_bottom_tb_total_paid">Total Paid</string>
+    <string name="order_detail_bottom_tb_total_refund">Total Refunded</string>
     <string name="order_detail_bottom_btn_invoice">INVOICE</string>
     <string name="order_menu_send_email">Send Email</string>
     <string name="order_menu_ship">Ship</string>
@@ -146,6 +147,7 @@
     <string name="order_invoice_comment_title">Invoice Comment</string>
     <string name="order_invoice_btn_submit">SUBMIT INVOICE</string>
     <string name="order_invoice_btn_update_qty">Update Qty</string>
+    <string name="order_invoice_total_due">Total Due:</string>
     <string name="order_invoice_total_paid">Total Paid:</string>
     <string name="order_total_invoiced">Total Invoiced:</string>
     <string name="order_invoiceable">Invoiceable:</string>
@@ -185,6 +187,10 @@
     <string name="plugin_gift_code_hint_text">Gift Code</string>
     <string name="plugin_gift_card_use_max_credit">Use max Credit</string>
     <string name="plugin_add_giftcard">Add Gift Card</string>
+    <string name="plugin_order_detail_bottom_giftcard_discount">Gift Voucher</string>
+    <string name="plugin_order_detail_bottom_reward_earn">Earned Points</string>
+    <string name="plugin_order_detail_bottom_reward_spend">Spent Points</string>
+    <string name="plugin_order_detail_bottom_reward_discount">Points Discount</string>
 
     <!-- Strings related to single words -->
     <string name="add">Add</string>

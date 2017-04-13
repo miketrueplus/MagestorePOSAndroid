@@ -67,9 +67,58 @@
                     </TableRow>
 
                     <TableRow
+                        android:id="@+id/table_row_reward_point_earn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="@{orderDetail.getRewardPointsEarn() != 0 ? View.VISIBLE : View.GONE}">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/plugin_order_detail_bottom_reward_earn"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/order_bottom_text_size" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:text="@{ConfigUtil.formatPrice(orderDetail.getRewardPointsEarn())}"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/order_bottom_text_size" />
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/table_row_reward_point_spend"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="@{orderDetail.getRewardPointsSpent() != 0 ? View.VISIBLE : View.GONE}">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/plugin_order_detail_bottom_reward_spend"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/order_bottom_text_size" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:text="@{ConfigUtil.formatPrice(orderDetail.getRewardPointsSpent())}"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/order_bottom_text_size" />
+                    </TableRow>
+
+                    <TableRow
                         android:id="@+id/table_row_shipping"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:visibility="@{orderDetail.getShippingAmount() != 0 ? View.VISIBLE : View.GONE}">
 
                         <TextView
                             android:layout_width="0dp"
@@ -92,7 +141,8 @@
                     <TableRow
                         android:id="@+id/table_row_tax"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:visibility="@{orderDetail.getTaxAmount() != 0 ? View.VISIBLE : View.GONE}">
 
                         <TextView
                             android:layout_width="0dp"
@@ -137,6 +187,54 @@
                     </TableRow>
 
                     <TableRow
+                        android:id="@+id/table_row_giftcard_discount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="@{orderDetail.getGiftVoucherDiscount() != 0 ? View.VISIBLE : View.GONE}">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/plugin_order_detail_bottom_giftcard_discount"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/order_bottom_text_size" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:text="@{ConfigUtil.formatPrice(orderDetail.getGiftVoucherDiscount())}"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/order_bottom_text_size" />
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/table_row_reward_point_discount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="@{orderDetail.getRewardPointsDiscount() != 0 ? View.VISIBLE : View.GONE}">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/plugin_order_detail_bottom_reward_discount"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/order_bottom_text_size" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:text="@{ConfigUtil.formatPrice(orderDetail.getRewardPointsDiscount())}"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/order_bottom_text_size" />
+                    </TableRow>
+
+                    <TableRow
                         android:id="@+id/table_row_grand_total"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
@@ -162,7 +260,8 @@
                     <TableRow
                         android:id="@+id/table_row_total_paid"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:visibility="@{orderDetail.getTotalPaid() != 0 ? View.VISIBLE : View.GONE}">
 
                         <TextView
                             android:layout_width="0dp"
@@ -178,6 +277,30 @@
                             android:layout_weight="1"
                             android:gravity="right"
                             android:text="@{ConfigUtil.formatPrice(orderDetail.getTotalPaid())}"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/order_bottom_text_size" />
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/table_row_total_refund"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="@{orderDetail.getTotalRefunded() != 0 ? View.VISIBLE : View.GONE}">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/order_detail_bottom_tb_total_refund"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/order_bottom_text_size" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:text="@{ConfigUtil.formatPrice(orderDetail.getTotalRefunded())}"
                             android:textColor="@color/text_color"
                             android:textSize="@dimen/order_bottom_text_size" />
                     </TableRow>

@@ -167,6 +167,21 @@ public class PosOrder extends PosAbstractModel implements Order {
     }
 
     @Override
+    public float getRewardPointsEarn() {
+        return rewardpoints_earn;
+    }
+
+    @Override
+    public float getRewardPointsSpent() {
+        return rewardpoints_spent;
+    }
+
+    @Override
+    public float getRewardPointsDiscount() {
+        return rewardpoints_discount;
+    }
+
+    @Override
     public float getBaseGiftVoucherDiscount() {
         return base_gift_voucher_discount;
     }

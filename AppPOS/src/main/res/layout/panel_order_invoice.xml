@@ -28,6 +28,18 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/total_due"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text='@{@string/order_invoice_total_due + " " + ConfigUtil.formatPrice(orderDetail.getTotalDue())}'
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/text_size"
+                android:textStyle="bold"
+                android:visibility="@{orderDetail.getTotalDue() != 0 ? View.VISIBLE : View.GONE}"/>
+
+            <TextView
                 android:id="@+id/total_paid"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
