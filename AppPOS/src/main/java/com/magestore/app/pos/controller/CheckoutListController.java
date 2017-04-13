@@ -34,6 +34,7 @@ import com.magestore.app.pos.panel.CheckoutShippingListPanel;
 import com.magestore.app.pos.panel.CheckoutSuccessPanel;
 import com.magestore.app.pos.panel.PaymentMethodListPanel;
 import com.magestore.app.pos.panel.PluginRewardPointPanel;
+import com.magestore.app.pos.panel.PluginStoreCreditPanel;
 import com.magestore.app.util.DataUtil;
 import com.magestore.app.util.StringUtil;
 
@@ -100,6 +101,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     // plugins
     PluginsService pluginsService;
     PluginRewardPointPanel mPluginRewardPointPanel;
+    PluginStoreCreditPanel mPluginStoreCreditPanel;
 
     @Override
     public List<Checkout> onRetrieveBackground(int page, int pageSize) throws Exception {
@@ -497,8 +499,11 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 autoSelectPaymentMethod(listPayment);
                 isShowPaymentMethod((checkout.getGrandTotal() == 0) ? false : true);
                 // plugins
-                if(checkout.getRewardPoint() != null){
+                if (checkout.getRewardPoint() != null) {
                     mPluginRewardPointPanel.bindItem(checkout.getRewardPoint());
+                }
+                if (checkout.getStoreCredit() != null) {
+                    mPluginStoreCreditPanel.bindItem(checkout.getStoreCredit());
                 }
                 isShowLoadingDetail(false);
             }
@@ -559,8 +564,11 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                     autoSelectPaymentMethod(listPayment);
                     isShowPaymentMethod((checkout.getGrandTotal() == 0) ? false : true);
                     // plugins
-                    if(checkout.getRewardPoint() != null){
+                    if (checkout.getRewardPoint() != null) {
                         mPluginRewardPointPanel.bindItem(checkout.getRewardPoint());
+                    }
+                    if (checkout.getStoreCredit() != null) {
+                        mPluginStoreCreditPanel.bindItem(checkout.getStoreCredit());
                     }
                 }
 
@@ -627,8 +635,11 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             isShowPaymentMethod((checkout.getGrandTotal() == 0) ? false : true);
 
             // plugins
-            if(checkout.getRewardPoint() != null){
+            if (checkout.getRewardPoint() != null) {
                 mPluginRewardPointPanel.bindItem(checkout.getRewardPoint());
+            }
+            if (checkout.getStoreCredit() != null) {
+                mPluginStoreCreditPanel.bindItem(checkout.getStoreCredit());
             }
             // hoàn thành save shipping  hiden progressbar
             isShowLoadingDetail(false);
@@ -1402,7 +1413,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         mCheckoutAddressListPanel.setSelectPos(0);
     }
 
-    public RewardPoint createRewardPoint(){
+    public RewardPoint createRewardPoint() {
         return pluginsService.createRewardPoint();
     }
 
@@ -1533,6 +1544,10 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
     public void setPluginRewardPointPanel(PluginRewardPointPanel mPluginRewardPointPanel) {
         this.mPluginRewardPointPanel = mPluginRewardPointPanel;
+    }
+
+    public void setPluginStoreCreditPanel(PluginStoreCreditPanel mPluginStoreCreditPanel) {
+        this.mPluginStoreCreditPanel = mPluginStoreCreditPanel;
     }
 
     public void setPluginsService(PluginsService pluginsService) {

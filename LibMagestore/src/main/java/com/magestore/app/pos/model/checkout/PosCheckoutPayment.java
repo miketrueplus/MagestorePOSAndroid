@@ -42,6 +42,8 @@ public class PosCheckoutPayment extends PosAbstractModel implements CheckoutPaym
     String check_is_pay_late;
     @Gson2PosExclude
     float current_value;
+    @Gson2PosExclude
+    boolean is_not_enable_edit_value;
 
     AdditionalData additional_data;
 
@@ -275,5 +277,15 @@ public class PosCheckoutPayment extends PosAbstractModel implements CheckoutPaym
     @Override
     public void setAdditionalData(AdditionalData additionalData) {
         additional_data = additionalData;
+    }
+
+    @Override
+    public boolean IsNotEnableEditValue() {
+        return is_not_enable_edit_value;
+    }
+
+    @Override
+    public void setIsNotEnableEditValue(boolean bIsNotEnableValue) {
+        is_not_enable_edit_value = bIsNotEnableValue;
     }
 }

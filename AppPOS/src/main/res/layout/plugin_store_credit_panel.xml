@@ -14,7 +14,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="top"
-            android:layout_marginRight="@dimen/layout_margin_5"
+            android:layout_marginRight="@dimen/layout_margin_20"
             android:layout_weight="1"
             android:orientation="vertical">
 
@@ -34,6 +34,80 @@
             android:layout_height="wrap_content"
             android:layout_weight="2">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/rl_remove_store_credit"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <com.magestore.app.view.FormatEditText
+                        android:id="@+id/store_credit_value"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/checkout_border_linear_layout"
+                        android:gravity="right"
+                        android:inputType="numberDecimal"
+                        android:padding="@dimen/layout_margin_10"
+                        android:text="0"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/text_size" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/checkout_margin"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <CheckBox
+                            android:id="@+id/cb_use_max_credit"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/layout_margin_5"
+                            android:layout_toLeftOf="@+id/bt_apply"
+                            android:layout_centerVertical="true"
+                            android:text="@string/plugin_use_max_credit" />
+
+                        <Button
+                            android:id="@+id/bt_apply"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:text="@string/apply" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_remove_store_credit"
+                android:layout_width="@dimen/checkout_im_remove_payment_width"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/checkout_margin">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_checkout_remove_payment" />
+            </RelativeLayout>
         </RelativeLayout>
     </LinearLayout>
 </LinearLayout>

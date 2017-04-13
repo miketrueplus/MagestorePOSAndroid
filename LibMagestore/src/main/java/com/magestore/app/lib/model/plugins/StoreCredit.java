@@ -10,4 +10,6 @@ import com.magestore.app.lib.model.Model;
 
 public interface StoreCredit extends Model {
     float getBalance();
+    float getAmount();
+    void setAmount(float fAmount);
 }

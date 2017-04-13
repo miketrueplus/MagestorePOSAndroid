@@ -223,13 +223,13 @@
                                     android:layout_height="wrap_content"
                                     android:orientation="vertical">
 
-                                    <include
+                                    <com.magestore.app.pos.panel.PluginStoreCreditPanel
                                         android:id="@+id/rl_store_credit"
-                                        layout="@layout/plugin_store_credit_panel"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_marginBottom="@dimen/layout_margin_10"
-                                        android:visibility="@{ConfigUtil.isEnableStoreCredit() ? View.VISIBLE : View.GONE}" />
+                                        android:visibility="@{ConfigUtil.isEnableStoreCredit() ? View.VISIBLE : View.GONE}"
+                                        magestore_view:layout_panel="@layout/plugin_store_credit_panel" />
 
                                     <com.magestore.app.pos.panel.PluginRewardPointPanel
                                         android:id="@+id/rl_reward_point"

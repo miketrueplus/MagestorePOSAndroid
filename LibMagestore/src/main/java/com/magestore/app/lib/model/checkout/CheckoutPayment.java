@@ -95,4 +95,7 @@ public interface CheckoutPayment extends Model {
     PosCheckoutPayment.AdditionalData createAdditionalData();
     PosCheckoutPayment.AdditionalData getAdditionalData();
     void setAdditionalData(PosCheckoutPayment.AdditionalData additionalData);
+
+    boolean IsNotEnableEditValue();
+    void setIsNotEnableEditValue(boolean bIsNotEnableValue);
 }

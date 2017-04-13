@@ -181,8 +181,9 @@
     <string name="setting_account_title_confirm_password">Confirm Password</string>
 
     <!--Strings related to plugins-->
-    <string name="plugin_store_credit_title">Store Credit</string>
-    <string name="plugin_reward_point_title">Reward point (%1$s points)</string>
+    <string name="plugin_store_credit">Customer Credit</string>
+    <string name="plugin_store_credit_title">Customer Credit (%1$s credits)</string>
+    <string name="plugin_reward_point_title">Customer reward point (%1$s points)</string>
     <string name="plugin_reward_point_earn">You earn %1$s points for this order</string>
     <string name="plugin_reward_point_use_point">Use Point</string>
     <string name="plugin_gift_card_title">Gift Card</string>
