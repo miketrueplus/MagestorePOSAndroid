@@ -85,6 +85,7 @@ public class POSAPI {
     public static final String REST_REGISTER_SHIFTS_MAKE_ADJUSTMENT = "/rest/default/V1/webpos/cash_transaction/save?";
 
     // API plugins
+    public static final String REST_PLUGIN_APPLY_REWARD_POINT = "/rest/default/V1/webpos/integration/spendPoint?";
     public static final String REST_PLUGIN_ADD_GIFTCARD = "/rest/default/V1/webpos/integration/applyGiftcard?";
     public static final String REST_PLUGIN_REMOVE_GIFTCARD = "/rest/default/V1/webpos/integration/removeGiftcard?";
 

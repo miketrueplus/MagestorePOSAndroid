@@ -182,10 +182,12 @@
 
     <!--Strings related to plugins-->
     <string name="plugin_store_credit_title">Store Credit</string>
-    <string name="plugin_reward_point_title">Reward point %1$s</string>
+    <string name="plugin_reward_point_title">Reward point (%1$s points)</string>
+    <string name="plugin_reward_point_earn">You earn %1$s points for this order</string>
+    <string name="plugin_reward_point_use_point">Use Point</string>
     <string name="plugin_gift_card_title">Gift Card</string>
     <string name="plugin_gift_code_hint_text">Gift Code</string>
-    <string name="plugin_gift_card_use_max_credit">Use max Credit</string>
+    <string name="plugin_use_max_credit">Max Credit</string>
     <string name="plugin_add_giftcard">Add Gift Card</string>
     <string name="plugin_order_detail_bottom_giftcard_discount">Gift Voucher</string>
     <string name="plugin_order_detail_bottom_reward_earn">Earned Points</string>

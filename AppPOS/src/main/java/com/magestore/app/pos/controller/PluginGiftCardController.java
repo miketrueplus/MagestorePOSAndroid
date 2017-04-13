@@ -55,10 +55,10 @@ public class PluginGiftCardController extends AbstractListController<GiftCard> {
     }
 
     public void doInputRemoveGiftCard(GiftCard giftCard) {
-        mCheckoutListController.isShowLoadingDetail(true);
         String quote_id = mCheckoutListController.getSelectedItem().getQuoteId();
         giftCard.setQuoteId(quote_id);
         if (!StringUtil.isNullOrEmpty(giftCard.getCouponCode())) {
+            mCheckoutListController.isShowLoadingDetail(true);
             doAction(ACTION_TYPE_REMOVE_GIFTCARD, null, wraper, giftCard);
         } else {
             if (listGiftCard.size() == 1) {

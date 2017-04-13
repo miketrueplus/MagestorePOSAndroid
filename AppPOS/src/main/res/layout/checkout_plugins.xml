@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:visibility="@{StringUtil.isNullOrEmpty(checkout.getGiftCardTitle()) ? View.VISIBLE : View.GONE}">
+            android:visibility="@{(checkout.getGiftCardDiscount() != 0) ? View.VISIBLE : View.GONE}">
 
             <com.magestore.app.view.FormatTextView
                 android:layout_width="0dp"
@@ -36,12 +36,39 @@
                 android:textSize="@dimen/sales_price_text_size" />
 
             <com.magestore.app.view.FormatTextView
-                android:id="@+id/text_sales_order_shipping"
+                android:id="@+id/text_gift_card"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="right"
                 android:text="@{ConfigUtil.formatPrice(checkout.getGiftCardDiscount())}"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/sales_price_text_size" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_plugin_reward_point"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="@{(checkout.getRewardPointUsePointValue()) != 0 ? View.VISIBLE : View.GONE}">
+
+            <com.magestore.app.view.FormatTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:text='@{StringUtil.isNullOrEmpty(checkout.getRewardPointUsePointTitle()) ? @string/plugin_reward_point_use_point : checkout.getRewardPointUsePointTitle()}'
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/sales_price_text_size" />
+
+            <com.magestore.app.view.FormatTextView
+                android:id="@+id/text_reward_point"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="@{ConfigUtil.formatPrice(checkout.getRewardPointUsePointValue())}"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/sales_price_text_size" />
         </LinearLayout>

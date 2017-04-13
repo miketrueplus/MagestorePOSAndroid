@@ -4,6 +4,8 @@ import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.plugins.GiftCardRespone;
+import com.magestore.app.lib.model.plugins.RewardPoint;
+import com.magestore.app.lib.model.plugins.StoreCredit;
 import com.magestore.app.lib.model.sales.Order;
 
 import java.util.List;
@@ -111,5 +113,18 @@ public interface Checkout extends Model {
     float getGiftCardDiscount();
     void setGiftCardDiscount(float fGiftCardDiscount);
 
+    String getRewardPointUsePointTitle();
+    void setRewardPointUsePointTitle(String strRewardPointUsePointTitle);
+
+    float getRewardPointUsePointValue();
+    void setRewardPointUsePointValue(float fRewardPointUsePointValue);
+
+    int getRewardPointEarnPointValue();
+    void setRewardPointEarnPointValue(int fRewardPointEarnPointValue);
+
     GiftCardRespone getGiftCard();
+
+    RewardPoint getRewardPoint();
+
+    StoreCredit getStoreCredit();
 }

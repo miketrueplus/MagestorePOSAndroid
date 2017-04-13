@@ -102,7 +102,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/layout_margin_5"
-                    android:text="@string/plugin_gift_card_use_max_credit"
+                    android:text="@string/plugin_use_max_credit"
                     android:visibility="gone" />
 
                 <Button

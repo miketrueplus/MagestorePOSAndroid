@@ -102,4 +102,7 @@
     <color name="register_shift_dialog_make_adjustment_text_select">#ffffff</color>
     <color name="register_shift_dialog_make_adjustment_bg_not_select">#e1e1e1</color>
     <color name="register_shift_dialog_make_adjustment_text_not_select">#48586c</color>
+
+    <!--Plugins-->
+    <color name="plugin_reward_point_earn_point_text_color">#1e88e5</color>
 </resources>

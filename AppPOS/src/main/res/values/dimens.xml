@@ -125,6 +125,9 @@
     <!--Setting-->
     <dimen name="setting_text_size">17sp</dimen>
 
+    <!--Plugins-->
+    <dimen name="plugin_reward_point_earn_text_size">18sp</dimen>
+
     <!--Dialog-->
     <dimen name="dialog_title_text_size">24sp</dimen>
     <dimen name="dialog_action_text_size">14sp</dimen>

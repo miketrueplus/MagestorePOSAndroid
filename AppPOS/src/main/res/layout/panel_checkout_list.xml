@@ -45,48 +45,68 @@
                     magestore_view:layout_panel="@layout/panel_cart_list"
                     magestore_view:layout_span_count="1" />
 
-                <com.github.clans.fab.FloatingActionMenu
-                    android:id="@+id/bt_sales_menu"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentRight="true"
-                    android:paddingLeft="@dimen/layout_margin_10"
-                    android:paddingRight="@dimen/layout_margin_10"
-                    fab:menu_backgroundColor="@color/card_floating_button_bg"
-                    fab:menu_colorNormal="@color/card_floating_button_menu"
-                    fab:menu_colorPressed="@color/card_floating_button_press"
-                    fab:menu_colorRipple="@color/card_floating_button_riper"
-                    fab:menu_labels_ellipsize="end"
-                    fab:menu_labels_position="left"
-                    fab:menu_labels_singleLine="true">
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true">
 
-                    <com.github.clans.fab.FloatingActionButton
-                        android:id="@+id/bt_remove_discount"
-                        style="@style/MenuButtonsSmall"
+                    <TextView
+                        android:id="@+id/text_reward_point_earn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_delete_discount"
-                        android:visibility="gone"
-                        fab:fab_label="@string/sales_remove_discount" />
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentLeft="true"
+                        android:paddingBottom="@dimen/layout_margin_10"
+                        android:layout_marginLeft="@dimen/layout_margin_10"
+                        android:layout_marginRight="@dimen/card_margin_bottom"
+                        android:textSize="@dimen/plugin_reward_point_earn_text_size"
+                        android:textColor="@color/plugin_reward_point_earn_point_text_color"
+                        android:textStyle="italic"
+                        android:visibility="@{checkout.getRewardPointEarnPointValue() != 0 ? View.VISIBLE : View.GONE}" />
 
-                    <com.github.clans.fab.FloatingActionButton
-                        android:id="@+id/bt_sales_discount"
-                        style="@style/MenuButtonsSmall"
+                    <com.github.clans.fab.FloatingActionMenu
+                        android:id="@+id/bt_sales_menu"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_discount"
-                        android:visibility="gone"
-                        fab:fab_label="@string/discount" />
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentRight="true"
+                        android:paddingLeft="@dimen/layout_margin_10"
+                        android:paddingRight="@dimen/layout_margin_10"
+                        fab:menu_backgroundColor="@color/card_floating_button_bg"
+                        fab:menu_colorNormal="@color/card_floating_button_menu"
+                        fab:menu_colorPressed="@color/card_floating_button_press"
+                        fab:menu_colorRipple="@color/card_floating_button_riper"
+                        fab:menu_labels_ellipsize="end"
+                        fab:menu_labels_position="left"
+                        fab:menu_labels_singleLine="true">
 
-                    <com.github.clans.fab.FloatingActionButton
-                        android:id="@+id/bt_custom_sales"
-                        style="@style/MenuButtonsSmall"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_customer_sale"
-                        fab:fab_label="@string/custom_sale" />
-                </com.github.clans.fab.FloatingActionMenu>
+                        <com.github.clans.fab.FloatingActionButton
+                            android:id="@+id/bt_remove_discount"
+                            style="@style/MenuButtonsSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_delete_discount"
+                            android:visibility="gone"
+                            fab:fab_label="@string/sales_remove_discount" />
+
+                        <com.github.clans.fab.FloatingActionButton
+                            android:id="@+id/bt_sales_discount"
+                            style="@style/MenuButtonsSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_discount"
+                            android:visibility="gone"
+                            fab:fab_label="@string/discount" />
+
+                        <com.github.clans.fab.FloatingActionButton
+                            android:id="@+id/bt_custom_sales"
+                            style="@style/MenuButtonsSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_customer_sale"
+                            fab:fab_label="@string/custom_sale" />
+                    </com.github.clans.fab.FloatingActionMenu>
+                </RelativeLayout>
             </RelativeLayout>
 
             <LinearLayout

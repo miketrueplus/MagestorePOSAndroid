@@ -50,6 +50,7 @@ import com.magestore.app.pos.panel.CheckoutSuccessPanel;
 import com.magestore.app.pos.panel.PaymentMethodListPanel;
 import com.magestore.app.pos.panel.PluginGiftCardListPanel;
 import com.magestore.app.pos.panel.PluginGiftCardPanel;
+import com.magestore.app.pos.panel.PluginRewardPointPanel;
 import com.magestore.app.pos.panel.ProductListPanel;
 import com.magestore.app.pos.panel.ProductOptionPanel;
 import com.magestore.app.pos.ui.AbstractActivity;
@@ -96,9 +97,12 @@ public class SalesActivity extends AbstractActivity
     private CheckoutAddPaymentListController mCheckoutAddPaymentListController;
 //    private ProductOptionController mProductOptionController;
 
+    // plugin giftcard
     PluginGiftCardPanel mPluginGiftCardPanel;
     PluginGiftCardListPanel mPluginGiftCardListPanel;
     PluginGiftCardController mPluginGiftCardController;
+    // plugin reward point
+    PluginRewardPointPanel mPluginRewardPointPanel;
 
     // Toolbar Order
     Toolbar toolbar_order;
@@ -187,6 +191,8 @@ public class SalesActivity extends AbstractActivity
         mPluginGiftCardPanel = (PluginGiftCardPanel) mCheckoutDetailPanel.findViewById(R.id.rl_gift_card);
         mPluginGiftCardListPanel = (PluginGiftCardListPanel) mPluginGiftCardPanel.findViewById(R.id.gift_card_list_panel);
 
+        // plugins reward point
+        mPluginRewardPointPanel = (PluginRewardPointPanel) mCheckoutDetailPanel.findViewById(R.id.rl_reward_point);
     }
 
     protected void initModel() {
@@ -249,6 +255,8 @@ public class SalesActivity extends AbstractActivity
         mCheckoutListController.setCheckoutSuccessPanel(mCheckoutSuccessPanel);
         mCheckoutListController.setCheckoutPaymentCreditCardPanel(mCheckoutPaymentCreditCardPanel);
         mCheckoutListController.setCartItemDetailPanel(mCartItemDetailPanel);
+        mCheckoutListController.setPluginsService(pluginsService);
+        mCheckoutListController.setPluginRewardPointPanel(mPluginRewardPointPanel);
 
         // controller quản lý danh sách khách hàng
         mProductListController = new ProductListController();
@@ -307,8 +315,10 @@ public class SalesActivity extends AbstractActivity
 
         mCartItemDetailPanel.setCheckoutListController(mCheckoutListController);
 
+        // plugins
         mPluginGiftCardPanel.setPluginGiftCardController(mPluginGiftCardController);
         mPluginGiftCardListPanel.setPluginGiftCardController(mPluginGiftCardController);
+        mPluginRewardPointPanel.setCheckoutListController(mCheckoutListController);
 
         // TODO: clear quote
 //        DataUtil.removeDataStringToPreferences(getContext(), DataUtil.QUOTE);

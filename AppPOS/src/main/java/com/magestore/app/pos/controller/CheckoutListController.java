@@ -14,11 +14,13 @@ import com.magestore.app.lib.model.checkout.SaveQuoteParam;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.model.directory.Currency;
+import com.magestore.app.lib.model.plugins.RewardPoint;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.observ.GenericState;
 import com.magestore.app.lib.observ.State;
 import com.magestore.app.lib.service.checkout.CheckoutService;
 import com.magestore.app.lib.service.customer.CustomerAddressService;
+import com.magestore.app.lib.service.plugins.PluginsService;
 import com.magestore.app.pos.model.checkout.PosCheckoutPayment;
 import com.magestore.app.pos.panel.CartItemDetailPanel;
 import com.magestore.app.pos.panel.CartOrderListPanel;
@@ -31,6 +33,7 @@ import com.magestore.app.pos.panel.CheckoutPaymentListPanel;
 import com.magestore.app.pos.panel.CheckoutShippingListPanel;
 import com.magestore.app.pos.panel.CheckoutSuccessPanel;
 import com.magestore.app.pos.panel.PaymentMethodListPanel;
+import com.magestore.app.pos.panel.PluginRewardPointPanel;
 import com.magestore.app.util.DataUtil;
 import com.magestore.app.util.StringUtil;
 
@@ -67,6 +70,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     static final int ACTION_TYPE_SAVE_PAYMENT = 9;
     static final int ACTION_TYPE_PLACE_ORDER = 10;
     static final int ACTION_TYPE_SEND_EMAIL = 11;
+    static final int ACTION_TYPE_APPLY_REWARD_POINT = 12;
 
     static final int STATUS_CHECKOUT_ADD_ITEM = 0;
     static final int STATUS_CHECKOUT_PROCESSING = 1;
@@ -93,6 +97,9 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     List<String> configMonths;
     Map<String, String> configCCYears;
     CustomerAddressService mCustomerAddressService;
+    // plugins
+    PluginsService pluginsService;
+    PluginRewardPointPanel mPluginRewardPointPanel;
 
     @Override
     public List<Checkout> onRetrieveBackground(int page, int pageSize) throws Exception {
@@ -320,7 +327,12 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
     public void doInputSendEmail(Map<String, Object> paramSendEmail) {
         showDetailOrderLoading(true);
-        doAction(ACTION_TYPE_SEND_EMAIL,null, paramSendEmail, null);
+        doAction(ACTION_TYPE_SEND_EMAIL, null, paramSendEmail, null);
+    }
+
+    public void doInputApplyRewardPoint(RewardPoint rewardPoint) {
+        isShowLoadingDetail(true);
+        doAction(ACTION_TYPE_APPLY_REWARD_POINT, null, wraper, rewardPoint);
     }
 
     private void showDetailOrderLoading(boolean b) {
@@ -383,11 +395,15 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             String quoteId = getSelectedItem().getQuoteId();
             wraper.put("place_order", ((CheckoutService) getListService()).placeOrder(quoteId, checkout, listCheckoutPayment));
             return true;
-        }else if (actionType == ACTION_TYPE_SEND_EMAIL) {
+        } else if (actionType == ACTION_TYPE_SEND_EMAIL) {
             String email = (String) wraper.get("email");
             String increment_id = (String) wraper.get("increment_id");
             String responServer = ((CheckoutService) getListService()).sendEmail(email, increment_id);
-            wraper.put("send_email_response",responServer);
+            wraper.put("send_email_response", responServer);
+            return true;
+        } else if (actionType == ACTION_TYPE_APPLY_REWARD_POINT) {
+            RewardPoint rewardPoint = (RewardPoint) models[0];
+            wraper.put("save_reward_point", pluginsService.applyRewarPoint(rewardPoint));
             return true;
         }
         return false;
@@ -467,7 +483,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 autoSelectShipping(listShipping);
             } else {
                 List<CheckoutPayment> listChoosePayment = (List<CheckoutPayment>) wraper.get("list_payment");
-                if(listChoosePayment != null){
+                if (listChoosePayment != null) {
                     listChoosePayment = new ArrayList<>();
                     wraper.put("list_payment", listChoosePayment);
                 }
@@ -480,6 +496,10 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 mCheckoutPaymentListPanel.resetListPayment();
                 autoSelectPaymentMethod(listPayment);
                 isShowPaymentMethod((checkout.getGrandTotal() == 0) ? false : true);
+                // plugins
+                if(checkout.getRewardPoint() != null){
+                    mPluginRewardPointPanel.bindItem(checkout.getRewardPoint());
+                }
                 isShowLoadingDetail(false);
             }
         } else if (success && actionType == ACTION_TYPE_SAVE_CART_DISCOUNT) {
@@ -525,7 +545,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                     autoSelectShipping(listShipping);
                 } else {
                     List<CheckoutPayment> listChoosePayment = (List<CheckoutPayment>) wraper.get("list_payment");
-                    if(listChoosePayment != null){
+                    if (listChoosePayment != null) {
                         listChoosePayment = new ArrayList<>();
                         wraper.put("list_payment", listChoosePayment);
                     }
@@ -538,6 +558,10 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                     mCheckoutPaymentListPanel.resetListPayment();
                     autoSelectPaymentMethod(listPayment);
                     isShowPaymentMethod((checkout.getGrandTotal() == 0) ? false : true);
+                    // plugins
+                    if(checkout.getRewardPoint() != null){
+                        mPluginRewardPointPanel.bindItem(checkout.getRewardPoint());
+                    }
                 }
 
                 mPaymentMethodListPanel.bindList(listPayment);
@@ -587,7 +611,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             // show payment method
             ((CheckoutDetailPanel) mDetailView).showPaymentMethod();
             List<CheckoutPayment> listChoosePayment = (List<CheckoutPayment>) wraper.get("list_payment");
-            if(listChoosePayment != null){
+            if (listChoosePayment != null) {
                 listChoosePayment = new ArrayList<>();
                 wraper.put("list_payment", listChoosePayment);
             }
@@ -601,30 +625,39 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             wraper.put("save_shipping", checkout);
             autoSelectPaymentMethod(checkout.getCheckoutPayment());
             isShowPaymentMethod((checkout.getGrandTotal() == 0) ? false : true);
+
+            // plugins
+            if(checkout.getRewardPoint() != null){
+                mPluginRewardPointPanel.bindItem(checkout.getRewardPoint());
+            }
             // hoàn thành save shipping  hiden progressbar
             isShowLoadingDetail(false);
         } else if (success && actionType == ACTION_TYPE_SAVE_PAYMENT) {
             Checkout checkout = (Checkout) wraper.get("save_payment");
-        }else if (success && actionType == ACTION_TYPE_PLACE_ORDER) {
+        } else if (success && actionType == ACTION_TYPE_PLACE_ORDER) {
             Order order = (Order) wraper.get("place_order");
             getSelectedItem().setOrderSuccess(order);
             isShowButtonCheckout(false);
             isShowSalesMenuDiscount(false);
             mCheckoutSuccessPanel.bindItem(order);
-            doShowDetailSuccess(true,order);
+            doShowDetailSuccess(true, order);
 
             // hoàn thành place order hiden progressbar
             isShowLoadingDetail(false);
-        }else if (success && actionType == ACTION_TYPE_SEND_EMAIL) {
+        } else if (success && actionType == ACTION_TYPE_SEND_EMAIL) {
             //Show dialog khi gửi email thành công
             showDetailOrderLoading(false);
-            mCheckoutSuccessPanel.showAlertRespone(true,(String) wraper.get("send_email_response"));
-        }else {
+            mCheckoutSuccessPanel.showAlertRespone(true, (String) wraper.get("send_email_response"));
+        } else if (success && actionType == ACTION_TYPE_APPLY_REWARD_POINT) {
+            Checkout checkout = (Checkout) wraper.get("save_reward_point");
+            updateToTal(checkout);
+            isShowLoadingDetail(false);
+        } else {
             isShowLoadingDetail(false);
         }
     }
 
-    public void updateToTal(Checkout checkout){
+    public void updateToTal(Checkout checkout) {
         ((CheckoutService) getListService()).updateTotal(checkout);
         showButtonRemoveDiscount(checkDiscount(checkout) ? true : false);
         ((CheckoutDetailPanel) mDetailView).bindTotalPrice(checkout.getGrandTotal());
@@ -633,7 +666,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         mPaymentMethodListPanel.bindList(listPayment);
         mCheckoutAddPaymentPanel.bindList(listPayment);
         List<CheckoutPayment> listChoosePayment = (List<CheckoutPayment>) wraper.get("list_payment");
-        if(listChoosePayment != null){
+        if (listChoosePayment != null) {
             listChoosePayment = new ArrayList<>();
             wraper.put("list_payment", listChoosePayment);
         }
@@ -726,7 +759,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             if (checkout.getOrderSuccess() != null) {
                 isShowButtonCheckout(false);
                 isShowSalesMenuDiscount(false);
-                doShowDetailSuccess(true,checkout.getOrderSuccess());
+                doShowDetailSuccess(true, checkout.getOrderSuccess());
             }
             mItem = checkout;
             mCartItemListController.bindList(checkout.getCartItem());
@@ -790,7 +823,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 mCheckoutSuccessPanel.bindItem(checkout.getOrderSuccess());
                 isShowButtonCheckout(false);
                 isShowSalesMenuDiscount(false);
-                doShowDetailSuccess(true,checkout.getOrderSuccess());
+                doShowDetailSuccess(true, checkout.getOrderSuccess());
             } else {
                 isShowButtonCheckout(true);
                 isShowSalesMenuDiscount(true);
@@ -930,42 +963,6 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         updateTotalPrice();
     }
 
-    public void setCartOrderListPanel(CartOrderListPanel mCartOrderListPanel) {
-        this.mCartOrderListPanel = mCartOrderListPanel;
-    }
-
-    public void setCheckoutShippingListPanel(CheckoutShippingListPanel panel) {
-        mCheckoutShippingListPanel = panel;
-    }
-
-    public void setCheckoutPaymentListPanel(CheckoutPaymentListPanel panel) {
-        mCheckoutPaymentListPanel = panel;
-    }
-
-    public void setProductListController(ProductListController controller) {
-        mProductListController = controller;
-    }
-
-    public void setCheckoutAddPaymentPanel(CheckoutAddPaymentPanel mCheckoutAddPaymentPanel) {
-        this.mCheckoutAddPaymentPanel = mCheckoutAddPaymentPanel;
-    }
-
-    public void setCheckoutAddressListPanel(CheckoutAddressListPanel mCheckoutAddressListPanel) {
-        this.mCheckoutAddressListPanel = mCheckoutAddressListPanel;
-    }
-
-    public void setCheckoutSuccessPanel(CheckoutSuccessPanel mCheckoutSuccessPanel) {
-        this.mCheckoutSuccessPanel = mCheckoutSuccessPanel;
-    }
-
-    public void setCheckoutPaymentCreditCardPanel(CheckoutPaymentCreditCardPanel mCheckoutPaymentCreditCardPanel) {
-        this.mCheckoutPaymentCreditCardPanel = mCheckoutPaymentCreditCardPanel;
-    }
-
-    public void setCartItemDetailPanel(CartItemDetailPanel mCartItemDetailPanel) {
-        this.mCartItemDetailPanel = mCartItemDetailPanel;
-    }
-
     @Override
     public void doShowDetailPanel(boolean show) {
         super.doShowDetailPanel(show);
@@ -975,7 +972,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
     public void doShowDetailSuccess(boolean show, Order order) {
         mCheckoutSuccessPanel.setVisibility(show ? View.VISIBLE : View.GONE);
-        if(show && order!=null) mCheckoutSuccessPanel.fillEmailCustomer(order);
+        if (show && order != null) mCheckoutSuccessPanel.fillEmailCustomer(order);
     }
 
     public void doShowDetailSuccess(boolean show) {
@@ -1088,6 +1085,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
      * xóa payment creditcard method  checkout
      */
     public void onRemovePaymentCreditCard() {
+        Checkout checkout = checkDataCheckout((Checkout) wraper.get("save_shipping"));
         List<CheckoutPayment> listPayment = (List<CheckoutPayment>) wraper.get("list_payment");
         if (listPayment != null) {
             listPayment.clear();
@@ -1095,6 +1093,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             listPayment = new ArrayList<>();
         }
         wraper.put("list_payment", listPayment);
+        ((CheckoutDetailPanel) mDetailView).bindTotalPrice(checkout.getGrandTotal());
         ((CheckoutDetailPanel) mDetailView).isEnableCreateInvoice(false);
         ((CheckoutDetailPanel) mDetailView).showPanelCheckoutPaymentCreditCard(false);
     }
@@ -1119,11 +1118,11 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         }
     }
 
-    public void isShowLoadingDetail(boolean iShow){
+    public void isShowLoadingDetail(boolean iShow) {
         ((CheckoutDetailPanel) mDetailView).isShowLoadingDetail(iShow);
     }
 
-    public void isShowPaymentMethod(boolean isShow){
+    public void isShowPaymentMethod(boolean isShow) {
         ((CheckoutDetailPanel) mDetailView).isEnableCreateInvoice(true);
         ((CheckoutDetailPanel) mDetailView).isShowPaymentMethod(isShow);
     }
@@ -1296,6 +1295,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
     /**
      * kiểm tra nếu payment truyền vào ko phải pay later thì remove all payment is_pay_later
+     *
      * @param checkoutPayment
      * @param listPayment
      */
@@ -1313,7 +1313,8 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         }
     }
 
-    /**0
+    /**
+     * 0
      * check list cart xem còn sản phẩm hay không
      *
      * @return
@@ -1338,7 +1339,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         return false;
     }
 
-    public boolean checkCustomerID(Customer customer, Customer guest_customer){
+    public boolean checkCustomerID(Customer customer, Customer guest_customer) {
         return ((CheckoutService) getListService()).checkCustomerID(customer, guest_customer);
     }
 
@@ -1399,6 +1400,10 @@ public class CheckoutListController extends AbstractListController<Checkout> {
      */
     public void resetPositionAddress() {
         mCheckoutAddressListPanel.setSelectPos(0);
+    }
+
+    public RewardPoint createRewardPoint(){
+        return pluginsService.createRewardPoint();
     }
 
     /**
@@ -1488,5 +1493,49 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         // báo cho các observ khác về việc bind item
         GenericState<CheckoutListController> state = new GenericState<CheckoutListController>(this, STATE_ADD_CUSTOM_DISCOUNT);
         if (getSubject() != null) getSubject().setState(state);
+    }
+
+    public void setCartOrderListPanel(CartOrderListPanel mCartOrderListPanel) {
+        this.mCartOrderListPanel = mCartOrderListPanel;
+    }
+
+    public void setCheckoutShippingListPanel(CheckoutShippingListPanel panel) {
+        mCheckoutShippingListPanel = panel;
+    }
+
+    public void setCheckoutPaymentListPanel(CheckoutPaymentListPanel panel) {
+        mCheckoutPaymentListPanel = panel;
+    }
+
+    public void setProductListController(ProductListController controller) {
+        mProductListController = controller;
+    }
+
+    public void setCheckoutAddPaymentPanel(CheckoutAddPaymentPanel mCheckoutAddPaymentPanel) {
+        this.mCheckoutAddPaymentPanel = mCheckoutAddPaymentPanel;
+    }
+
+    public void setCheckoutAddressListPanel(CheckoutAddressListPanel mCheckoutAddressListPanel) {
+        this.mCheckoutAddressListPanel = mCheckoutAddressListPanel;
+    }
+
+    public void setCheckoutSuccessPanel(CheckoutSuccessPanel mCheckoutSuccessPanel) {
+        this.mCheckoutSuccessPanel = mCheckoutSuccessPanel;
+    }
+
+    public void setCheckoutPaymentCreditCardPanel(CheckoutPaymentCreditCardPanel mCheckoutPaymentCreditCardPanel) {
+        this.mCheckoutPaymentCreditCardPanel = mCheckoutPaymentCreditCardPanel;
+    }
+
+    public void setCartItemDetailPanel(CartItemDetailPanel mCartItemDetailPanel) {
+        this.mCartItemDetailPanel = mCartItemDetailPanel;
+    }
+
+    public void setPluginRewardPointPanel(PluginRewardPointPanel mPluginRewardPointPanel) {
+        this.mPluginRewardPointPanel = mPluginRewardPointPanel;
+    }
+
+    public void setPluginsService(PluginsService pluginsService) {
+        this.pluginsService = pluginsService;
     }
 }

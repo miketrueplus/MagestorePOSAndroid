@@ -60,7 +60,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
     ImageButton btn_shipping_adrress_edit, btn_billing_adrress_edit;
     ImageButton btn_shipping_address_delete, btn_billing_address_delete;
     RelativeLayout rl_add_checkout, rl_remove_checkout, rl_sales_total, cart_background_loading;
-    TextView txt_sales_discount, txt_sales_promotion;
+    TextView txt_sales_discount, txt_sales_promotion, text_reward_point_earn;
     public static int NO_TYPE = -1;
     public static int CHANGE_CUSTOMER = 0;
     public static int CREATE_NEW_CUSTOMER = 1;
@@ -106,6 +106,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
         ll_action_checkout = (LinearLayout) findViewById(R.id.ll_action_checkout);
         ll_sales_shipping = (LinearLayout) findViewById(R.id.ll_sales_shipping);
         ll_plugins = (View) findViewById(R.id.ll_checkout_plugins);
+        text_reward_point_earn = (TextView) findViewById(R.id.text_reward_point_earn);
         rl_sales_total = (RelativeLayout) findViewById(R.id.rl_sales_total);
         rl_add_checkout = (RelativeLayout) findViewById(R.id.rl_add_checkout);
         rl_remove_checkout = (RelativeLayout) findViewById(R.id.rl_remove_checkout);
@@ -234,6 +235,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
     public void showSalesShipping(boolean isShow) {
         ll_sales_shipping.setVisibility(isShow ? VISIBLE : GONE);
         ll_plugins.setVisibility(isShow ? VISIBLE : GONE);
+        text_reward_point_earn.setVisibility(isShow ? VISIBLE : GONE);
     }
 
     public void changeActionButton(boolean ischange) {
@@ -278,6 +280,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
      */
     public void updateTotalPrice(Checkout checkout) {
         mBinding.setCheckout(checkout);
+        text_reward_point_earn.setText(getContext().getString(R.string.plugin_reward_point_earn, ConfigUtil.formatNumber(checkout.getRewardPointEarnPointValue())));
     }
 
     public void showPopUpAddCustomer(int type, int other_type) {

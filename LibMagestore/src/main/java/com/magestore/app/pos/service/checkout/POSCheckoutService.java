@@ -70,7 +70,11 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
             quote.setQuoteId("");
         }
         // TODO: bug server khi truyền customer_id vào
-        quote.setCustomerId(checkout.getCustomerID());
+        if (StringUtil.isNullOrEmpty(checkout.getCustomerID())) {
+            quote.setCustomerId("");
+        } else {
+            quote.setCustomerId(checkout.getCustomerID());
+        }
         // TODO: Giả data với (current_id = USD, till_id = 1) sau fix lại theo config
         quote.setCurrencyId("USD");
         quote.setStoreId(checkout.getStoreId());
@@ -333,6 +337,13 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
             if (checkoutTotals.getCode().equals("giftvoucheraftertax")) {
                 checkout.setGiftCardDiscount(checkoutTotals.getValue());
                 checkout.setGiftCardTitle(checkoutTotals.getTitle());
+            }
+            if (checkoutTotals.getCode().equals("rewardpoints_label")) {
+                checkout.setRewardPointEarnPointValue((int) checkoutTotals.getValue());
+            }
+            if (checkoutTotals.getCode().equals("use-point")) {
+                checkout.setRewardPointUsePointValue(checkoutTotals.getValue());
+                checkout.setRewardPointUsePointTitle(checkoutTotals.getTitle());
             }
         }
         return checkout;

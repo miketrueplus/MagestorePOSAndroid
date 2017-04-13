@@ -231,13 +231,13 @@
                                         android:layout_marginBottom="@dimen/layout_margin_10"
                                         android:visibility="@{ConfigUtil.isEnableStoreCredit() ? View.VISIBLE : View.GONE}" />
 
-                                    <include
+                                    <com.magestore.app.pos.panel.PluginRewardPointPanel
                                         android:id="@+id/rl_reward_point"
-                                        layout="@layout/plugin_reward_point_panel"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_marginBottom="@dimen/layout_margin_10"
-                                        android:visibility="@{ConfigUtil.isEnableRewardPoint() ? View.VISIBLE : View.GONE}" />
+                                        android:visibility="@{ConfigUtil.isEnableRewardPoint() ? View.VISIBLE : View.GONE}"
+                                        magestore_view:layout_panel="@layout/plugin_reward_point_panel" />
 
                                     <com.magestore.app.pos.panel.PluginGiftCardPanel
                                         android:id="@+id/rl_gift_card"

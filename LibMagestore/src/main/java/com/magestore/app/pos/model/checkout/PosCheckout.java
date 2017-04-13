@@ -10,10 +10,14 @@ import com.magestore.app.lib.model.checkout.Quote;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.plugins.GiftCardRespone;
+import com.magestore.app.lib.model.plugins.RewardPoint;
+import com.magestore.app.lib.model.plugins.StoreCredit;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.pos.model.PosAbstractModel;
 import com.magestore.app.pos.model.checkout.cart.PosCartItem;
 import com.magestore.app.pos.model.plugins.PosGiftCardRespone;
+import com.magestore.app.pos.model.plugins.PosRewardPoint;
+import com.magestore.app.pos.model.plugins.PosStoreCredit;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosExclude;
 
 import java.util.ArrayList;
@@ -100,14 +104,24 @@ public class PosCheckout extends PosAbstractModel implements Checkout {
     float exchange_money;
     @Gson2PosExclude
     String delivery_date;
+    // plugin giftcard
     @Gson2PosExclude
     String giftcard_title;
-
-    // plugin giftcard
     @Gson2PosExclude
     float giftcard_discount;
     @Gson2PosExclude
+    String reward_point_use_point_title;
+    @Gson2PosExclude
+    float reward_point_use_point_value;
+    @Gson2PosExclude
+    int reward_point_earn_point_value;
+
+    @Gson2PosExclude
     PosGiftCardRespone giftcard;
+    @Gson2PosExclude
+    PosRewardPoint rewardpoints;
+    @Gson2PosExclude
+    PosStoreCredit storecredit;
 
     @Override
     public String getCustomerID() {
@@ -428,7 +442,47 @@ public class PosCheckout extends PosAbstractModel implements Checkout {
     }
 
     @Override
+    public String getRewardPointUsePointTitle() {
+        return reward_point_use_point_title;
+    }
+
+    @Override
+    public void setRewardPointUsePointTitle(String strRewardPointUsePointTitle) {
+        reward_point_use_point_title = strRewardPointUsePointTitle;
+    }
+
+    @Override
+    public float getRewardPointUsePointValue() {
+        return reward_point_use_point_value;
+    }
+
+    @Override
+    public void setRewardPointUsePointValue(float fRewardPointUsePointValue) {
+        reward_point_use_point_value = fRewardPointUsePointValue;
+    }
+
+    @Override
+    public int getRewardPointEarnPointValue() {
+        return reward_point_earn_point_value;
+    }
+
+    @Override
+    public void setRewardPointEarnPointValue(int fRewardPointEarnPointValue) {
+        reward_point_earn_point_value = fRewardPointEarnPointValue;
+    }
+
+    @Override
     public GiftCardRespone getGiftCard() {
         return (GiftCardRespone) giftcard;
+    }
+
+    @Override
+    public RewardPoint getRewardPoint() {
+        return (RewardPoint) rewardpoints;
+    }
+
+    @Override
+    public StoreCredit getStoreCredit() {
+        return (StoreCredit) storecredit;
     }
 }
