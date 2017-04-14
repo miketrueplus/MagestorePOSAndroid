@@ -12,4 +12,6 @@ public interface StoreCredit extends Model {
     float getBalance();
     float getAmount();
     void setAmount(float fAmount);
+    float getMaxAmount();
+    void setMaxAmount(float fMaxAmount);
 }

@@ -27,7 +27,7 @@ import com.magestore.app.util.StringUtil;
  */
 
 public class PluginStoreCreditPanel extends AbstractDetailPanel<StoreCredit> {
-    static String STORE_CREDIT_PAYMENT_CODE = "storecredit";
+    public static String STORE_CREDIT_PAYMENT_CODE = "storecredit";
     CheckoutListController mCheckoutListController;
     StoreCredit mStoreCredit;
     EditText store_credit_value;
@@ -66,7 +66,12 @@ public class PluginStoreCreditPanel extends AbstractDetailPanel<StoreCredit> {
         store_credit_value.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                String credit = store_credit_value.getText().toString().trim();
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                String credit = store_credit_value.getText().toString();
                 if (!StringUtil.isNullOrEmpty(credit)) {
                     float credit_value;
                     try {
@@ -74,16 +79,20 @@ public class PluginStoreCreditPanel extends AbstractDetailPanel<StoreCredit> {
                     } catch (Exception e) {
                         credit_value = 0;
                     }
-                    mStoreCredit.setAmount(credit_value);
+                    if (credit_value == 0) {
+                        bt_apply.setEnabled(false);
+                    } else {
+                        bt_apply.setEnabled(true);
+                        if (credit_value <= mStoreCredit.getMaxAmount()) {
+                            mStoreCredit.setAmount(credit_value);
+                        } else {
+                            mStoreCredit.setAmount(mStoreCredit.getMaxAmount());
+                        }
+                    }
                 } else {
-                    store_credit_value.setText(ConfigUtil.formatNumber(0));
                     mStoreCredit.setAmount(0);
+                    bt_apply.setEnabled(false);
                 }
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override
@@ -95,7 +104,7 @@ public class PluginStoreCreditPanel extends AbstractDetailPanel<StoreCredit> {
         cb_use_max_credit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                store_credit_value.setText(ConfigUtil.formatNumber(mStoreCredit.getBalance()));
+                store_credit_value.setText(String.valueOf(mStoreCredit.getMaxAmount()));
             }
         });
 
@@ -105,6 +114,7 @@ public class PluginStoreCreditPanel extends AbstractDetailPanel<StoreCredit> {
                 CheckoutPayment payment = mCheckoutListController.createPaymentMethod();
                 payment.setTitle(getContext().getString(R.string.plugin_store_credit));
                 payment.setCode(STORE_CREDIT_PAYMENT_CODE);
+                payment.setAmount(mStoreCredit.getAmount());
                 payment.setIsNotEnableEditValue(true);
                 payment.setPaylater("0");
                 payment.setReferenceNumber("0");
@@ -120,7 +130,7 @@ public class PluginStoreCreditPanel extends AbstractDetailPanel<StoreCredit> {
             public void onClick(View view) {
                 store_credit_value.setText(ConfigUtil.formatNumber(0));
                 mStoreCredit.setAmount(0);
-                // TODO: remove payment
+                mCheckoutListController.removePaymentStoreCredit();
             }
         });
     }
@@ -129,7 +139,15 @@ public class PluginStoreCreditPanel extends AbstractDetailPanel<StoreCredit> {
     public void bindItem(StoreCredit item) {
         super.bindItem(item);
         mStoreCredit = item;
+        mStoreCredit.setMaxAmount(mStoreCredit.getBalance());
         tv_store_credit.setText(getContext().getString(R.string.plugin_store_credit_title, ConfigUtil.formatPrice(item.getBalance())));
-        store_credit_value.setText(ConfigUtil.formatNumber(item.getBalance()));
+        store_credit_value.setText(String.valueOf(item.getBalance()));
+    }
+
+    public void updateMaxAmountStoreCredit(float total) {
+        if (mStoreCredit != null) {
+            mStoreCredit.setMaxAmount(total);
+            store_credit_value.setText(String.valueOf(mStoreCredit.getMaxAmount()));
+        }
     }
 }

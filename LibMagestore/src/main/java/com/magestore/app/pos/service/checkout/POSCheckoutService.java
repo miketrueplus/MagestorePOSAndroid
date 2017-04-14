@@ -70,10 +70,14 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
             quote.setQuoteId("");
         }
         // TODO: bug server khi truyền customer_id vào
-        if (StringUtil.isNullOrEmpty(checkout.getCustomerID())) {
-            quote.setCustomerId("");
+        if (checkout.getCustomer() != null) {
+            if (StringUtil.isNullOrEmpty(checkout.getCustomerID()) || checkCustomerID(checkout.getCustomer(), ConfigUtil.getCustomerGuest())) {
+                quote.setCustomerId("");
+            } else {
+                quote.setCustomerId(checkout.getCustomerID());
+            }
         } else {
-            quote.setCustomerId(checkout.getCustomerID());
+            quote.setCustomerId("");
         }
         // TODO: Giả data với (current_id = USD, till_id = 1) sau fix lại theo config
         quote.setCurrencyId("USD");

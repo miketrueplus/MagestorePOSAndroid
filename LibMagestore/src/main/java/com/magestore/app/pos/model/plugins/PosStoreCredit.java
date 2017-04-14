@@ -12,6 +12,7 @@ import com.magestore.app.pos.model.PosAbstractModel;
 public class PosStoreCredit extends PosAbstractModel implements StoreCredit {
     float balance;
     float amount;
+    float maxAmount;
 
     @Override
     public float getBalance() {
@@ -26,5 +27,15 @@ public class PosStoreCredit extends PosAbstractModel implements StoreCredit {
     @Override
     public void setAmount(float fAmount) {
         amount = fAmount;
+    }
+
+    @Override
+    public float getMaxAmount() {
+        return maxAmount;
+    }
+
+    @Override
+    public void setMaxAmount(float fMaxAmount) {
+        maxAmount = fMaxAmount;
     }
 }

@@ -97,12 +97,14 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
                 float money = totalValue - grand_total;
                 mCheckout.setExchangeMoney(money);
                 mCheckoutListController.updateMoneyTotal(true, money);
+                mCheckoutListController.updateMaxAmountStoreCredit(grand_total);
                 // disable add payment
                 mCheckoutListController.isEnableButtonAddPayment(false);
             } else {
                 float money = grand_total - totalValue;
                 mCheckout.setRemainMoney(money);
                 mCheckoutListController.updateMoneyTotal(false, money);
+                mCheckoutListController.updateMaxAmountStoreCredit(money);
                 mCheckoutListController.isEnableButtonAddPayment(true);
             }
         }
@@ -129,13 +131,18 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
             float money = totalValue - grand_total;
             mCheckout.setExchangeMoney(money);
             mCheckoutListController.updateMoneyTotal(true, money);
+            mCheckoutListController.updateMaxAmountStoreCredit(grand_total);
             // disable add payment
             mCheckoutListController.isEnableButtonAddPayment(false);
         } else {
             float money = grand_total - totalValue;
             mCheckout.setRemainMoney(money);
             mCheckoutListController.updateMoneyTotal(false, money);
+            mCheckoutListController.updateMaxAmountStoreCredit(money);
             mCheckoutListController.isEnableButtonAddPayment(true);
+        }
+        if (checkPaymentStoreCredit()) {
+            mCheckoutListController.isShowPluginStoreCredit(false);
         }
         notifyDataSetChanged();
         mCheckoutListController.onRemovePaymentMethod();
@@ -230,10 +237,13 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
                     checkoutPayment.setBaseAmount(currentValue);
                     checkoutPayment.setRealAmount(currentValue);
                     checkoutPayment.setBaseRealAmount(currentValue);
-                    mCheckoutListController.isEnableButtonAddPayment(true);
                     if (totalValue == grand_total) {
+                        mCheckoutListController.updateMaxAmountStoreCredit(grand_total);
+                        mCheckoutListController.isEnableButtonAddPayment(false);
                         mCheckoutListController.isEnableCreateInvoice(true);
                     } else {
+                        mCheckoutListController.updateMaxAmountStoreCredit(money);
+                        mCheckoutListController.isEnableButtonAddPayment(true);
                         mCheckoutListController.isEnableCreateInvoice(false);
                     }
                 }
@@ -246,7 +256,32 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
         });
     }
 
-    public void resetListPayment(){
+    // plugin store credit
+    private boolean checkPaymentStoreCredit() {
+        for (CheckoutPayment payment : mList) {
+            if (payment.getCode().equals(PluginStoreCreditPanel.STORE_CREDIT_PAYMENT_CODE)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void removePaymentStoreCredit() {
+        int count = 0;
+        boolean checkPayment = false;
+        for (CheckoutPayment payment : mList) {
+            if(payment.getCode().equals(PluginStoreCreditPanel.STORE_CREDIT_PAYMENT_CODE)){
+                checkPayment = true;
+                break;
+            }
+            count ++;
+        }
+        if(checkPayment) {
+            actionRemovePayment(count);
+        }
+    }
+
+    public void resetListPayment() {
         mapTextId = new HashMap<>();
     }
 

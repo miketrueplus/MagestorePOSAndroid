@@ -500,10 +500,18 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 isShowPaymentMethod((checkout.getGrandTotal() == 0) ? false : true);
                 // plugins
                 if (checkout.getRewardPoint() != null) {
-                    mPluginRewardPointPanel.bindItem(checkout.getRewardPoint());
+                    if (checkout.getRewardPoint().getBalance() != 0) {
+                        mPluginRewardPointPanel.bindItem(checkout.getRewardPoint());
+                    } else {
+                        mPluginRewardPointPanel.setVisibility(View.GONE);
+                    }
                 }
                 if (checkout.getStoreCredit() != null) {
-                    mPluginStoreCreditPanel.bindItem(checkout.getStoreCredit());
+                    if (checkout.getStoreCredit().getBalance() != 0) {
+                        mPluginStoreCreditPanel.bindItem(checkout.getStoreCredit());
+                    } else {
+                        mPluginStoreCreditPanel.setVisibility(View.GONE);
+                    }
                 }
                 isShowLoadingDetail(false);
             }
@@ -565,10 +573,18 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                     isShowPaymentMethod((checkout.getGrandTotal() == 0) ? false : true);
                     // plugins
                     if (checkout.getRewardPoint() != null) {
-                        mPluginRewardPointPanel.bindItem(checkout.getRewardPoint());
+                        if (checkout.getRewardPoint().getBalance() != 0) {
+                            mPluginRewardPointPanel.bindItem(checkout.getRewardPoint());
+                        } else {
+                            mPluginRewardPointPanel.setVisibility(View.GONE);
+                        }
                     }
                     if (checkout.getStoreCredit() != null) {
-                        mPluginStoreCreditPanel.bindItem(checkout.getStoreCredit());
+                        if (checkout.getStoreCredit().getBalance() != 0) {
+                            mPluginStoreCreditPanel.bindItem(checkout.getStoreCredit());
+                        } else {
+                            mPluginStoreCreditPanel.setVisibility(View.GONE);
+                        }
                     }
                 }
 
@@ -636,10 +652,18 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
             // plugins
             if (checkout.getRewardPoint() != null) {
-                mPluginRewardPointPanel.bindItem(checkout.getRewardPoint());
+                if (checkout.getRewardPoint().getBalance() != 0) {
+                    mPluginRewardPointPanel.bindItem(checkout.getRewardPoint());
+                } else {
+                    mPluginRewardPointPanel.setVisibility(View.GONE);
+                }
             }
             if (checkout.getStoreCredit() != null) {
-                mPluginStoreCreditPanel.bindItem(checkout.getStoreCredit());
+                if (checkout.getStoreCredit().getBalance() != 0) {
+                    mPluginStoreCreditPanel.bindItem(checkout.getStoreCredit());
+                } else {
+                    mPluginStoreCreditPanel.setVisibility(View.GONE);
+                }
             }
             // hoàn thành save shipping  hiden progressbar
             isShowLoadingDetail(false);
@@ -1050,27 +1074,52 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                     isEnableButtonAddPayment(false);
                 }
             } else {
-                if (checkout.getRemainMoney() > 0) {
-                    total = checkout.getRemainMoney();
+                float remain_money = checkout.getRemainMoney();
+                if (remain_money > 0) {
                     isEnableButtonAddPayment(true);
+                    if (method.getCode().equals(PluginStoreCreditPanel.STORE_CREDIT_PAYMENT_CODE)) {
+                        if (method.getAmount() == remain_money) {
+                            total = remain_money;
+                        } else {
+                            total = method.getAmount();
+                            float money = remain_money - method.getAmount();
+                            checkout.setRemainMoney(money);
+                        }
+                    } else {
+                        total = remain_money;
+                    }
                 } else {
                     total = checkout.getGrandTotal();
                     isEnableButtonAddPayment(false);
                 }
             }
 
-            method.setAmount(total);
-            method.setBaseAmount(total);
-            method.setRealAmount(total);
-            method.setBaseRealAmount(total);
+            CheckoutPayment paymentStoreCredit = getPaymentStoreCredit(listPayment);
+            if (paymentStoreCredit == null) {
+                method.setAmount(total);
+                method.setBaseAmount(total);
+                method.setRealAmount(total);
+                method.setBaseRealAmount(total);
 
-            if (listPayment == null) {
-                listPayment = new ArrayList<>();
+                if (listPayment == null) {
+                    listPayment = new ArrayList<>();
+                }
+                listPayment.add(method);
+            } else {
+                paymentStoreCredit.setAmount(total);
+                paymentStoreCredit.setBaseAmount(total);
+                paymentStoreCredit.setRealAmount(total);
+                paymentStoreCredit.setBaseRealAmount(total);
+                if (listPayment == null) {
+                    listPayment = new ArrayList<>();
+                }
             }
-            listPayment.add(method);
             wraper.put("list_payment", listPayment);
             mCheckoutPaymentListPanel.bindList(listPayment);
             mCheckoutPaymentListPanel.updateTotal(listPayment);
+            if (method.getCode().equals(PluginStoreCreditPanel.STORE_CREDIT_PAYMENT_CODE)) {
+                isShowPluginStoreCredit(false);
+            }
             isEnableCreateInvoice(true);
             ((CheckoutDetailPanel) mDetailView).showPanelCheckoutPayment();
         }
@@ -1088,6 +1137,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             ((CheckoutDetailPanel) mDetailView).showPanelPaymentMethod();
             ((CheckoutDetailPanel) mDetailView).bindTotalPrice(checkout.getGrandTotal());
             isEnableButtonAddPayment(false);
+            isShowPluginStoreCredit(true);
             ((CheckoutDetailPanel) mDetailView).isEnableCreateInvoice(false);
         }
     }
@@ -1106,6 +1156,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         wraper.put("list_payment", listPayment);
         ((CheckoutDetailPanel) mDetailView).bindTotalPrice(checkout.getGrandTotal());
         ((CheckoutDetailPanel) mDetailView).isEnableCreateInvoice(false);
+        isShowPluginStoreCredit(true);
         ((CheckoutDetailPanel) mDetailView).showPanelCheckoutPaymentCreditCard(false);
     }
 
@@ -1154,6 +1205,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
      */
     public void isEnableButtonAddPayment(boolean enable) {
         ((CheckoutDetailPanel) mDetailView).isEnableButtonAddPayment(enable);
+        isShowPluginStoreCredit(enable);
     }
 
     /**
@@ -1324,6 +1376,17 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         }
     }
 
+    public CheckoutPayment getPaymentStoreCredit(List<CheckoutPayment> listPayment) {
+        if (listPayment != null) {
+            for (CheckoutPayment payment : listPayment) {
+                if (payment.getCode().equals(PluginStoreCreditPanel.STORE_CREDIT_PAYMENT_CODE)) {
+                    return payment;
+                }
+            }
+        }
+        return null;
+    }
+
     /**
      * 0
      * check list cart xem còn sản phẩm hay không
@@ -1460,6 +1523,23 @@ public class CheckoutListController extends AbstractListController<Checkout> {
      */
     public void isShowSalesMenuToggle(boolean isShow) {
         ((CheckoutListPanel) mView).showSalesMenuToggle(isShow);
+    }
+
+    public void isShowPluginStoreCredit(boolean isShow) {
+        Checkout checkout = checkDataCheckout((Checkout) wraper.get("save_shipping"));
+        if (checkout.getStoreCredit() != null && checkout.getStoreCredit().getBalance() != 0) {
+            mPluginStoreCreditPanel.setVisibility(isShow ? View.VISIBLE : View.GONE);
+        } else {
+            mPluginStoreCreditPanel.setVisibility(View.GONE);
+        }
+    }
+
+    public void updateMaxAmountStoreCredit(float total) {
+        mPluginStoreCreditPanel.updateMaxAmountStoreCredit(total);
+    }
+
+    public void removePaymentStoreCredit() {
+        mCheckoutPaymentListPanel.removePaymentStoreCredit();
     }
 
     /**
