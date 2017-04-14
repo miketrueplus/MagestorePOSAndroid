@@ -2,6 +2,7 @@ package com.magestore.app.pos.service.order;
 
 import android.text.TextUtils;
 
+import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.lib.model.checkout.PaymentMethodDataParam;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
@@ -180,6 +181,13 @@ public class PosOrderHistoryService extends AbstractService implements OrderHist
         OrderDataAccess orderDataAccess = factory.generateOrderDataAccess();
 
         return orderDataAccess.orderCancel(cancelParams, orderID);
+    }
+
+    @Override
+    public List<Product> retrieveOrderItem(String Ids) throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        OrderDataAccess orderDataAccess = factory.generateOrderDataAccess();
+        return orderDataAccess.retrieveOrderItem(Ids);
     }
 
     @Override

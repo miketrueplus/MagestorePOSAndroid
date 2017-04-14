@@ -4,6 +4,7 @@ import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.model.sales.OrderCommentParams;
 import com.magestore.app.lib.model.sales.OrderInvoiceParams;
+import com.magestore.app.lib.model.sales.OrderItemsInfoBuy;
 import com.magestore.app.lib.model.sales.OrderRefundParams;
 import com.magestore.app.lib.model.sales.OrderShipmentParams;
 import com.magestore.app.lib.model.sales.OrderStatus;
@@ -37,6 +38,7 @@ public class PosOrder extends PosAbstractModel implements Order {
     private String webpos_delivery_date;
 
     private List<PosCartItem> items;
+    private PosOrderItemsInfoBuy items_info_buy;
 
     float sub_total = 0;
     float tax_total = 0;
@@ -159,6 +161,11 @@ public class PosOrder extends PosAbstractModel implements Order {
     public List<CartItem> getOrderItems() {
         return (List<CartItem>) (List<?>) items;
 
+    }
+
+    @Override
+    public OrderItemsInfoBuy getItemsInfoBuy() {
+        return items_info_buy;
     }
 
     @Override

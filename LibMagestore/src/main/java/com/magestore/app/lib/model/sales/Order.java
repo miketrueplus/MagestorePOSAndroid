@@ -19,6 +19,8 @@ public interface Order extends Model {
 
     List<CartItem> getOrderItems();
 
+    OrderItemsInfoBuy getItemsInfoBuy();
+
     float getGiftVoucherDiscount();
 
     float getRewardPointsEarn();

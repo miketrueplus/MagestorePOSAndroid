@@ -1,5 +1,6 @@
 package com.magestore.app.lib.service.order;
 
+import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.lib.model.checkout.PaymentMethodDataParam;
 import com.magestore.app.lib.model.customer.Customer;
@@ -43,6 +44,8 @@ public interface OrderHistoryService extends Service, ListService<Order> {
     Order orderInvoice(Order order) throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
     Order orderCancel(Order order) throws InstantiationException, IllegalAccessException, IOException, ParseException;
+
+    List<Product> retrieveOrderItem(String Ids) throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
     List<CheckoutPayment> retrievePaymentMethod() throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
