@@ -28,7 +28,7 @@ public class PosCurrency extends PosAbstractModel implements Currency {
 
     @Override
     public void setCode(String strCode) {
-
+        code = strCode;
     }
 
     @Override

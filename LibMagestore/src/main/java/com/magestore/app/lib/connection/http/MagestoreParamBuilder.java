@@ -59,6 +59,7 @@ public class MagestoreParamBuilder implements ParamBuilder {
     private static final String SEARCH_CONDITION_GREATER = "gt";
     private static final String SEARCH_CONDITION_LESS = "lt";
     private static final String SEARCH_CONDITION_LIKE = "like";
+    private static final String SEARCH_CONDITION_IN = "in";
 
     // chiều sắp xếp
     private static final String ASC = "asc";
@@ -270,6 +271,11 @@ public class MagestoreParamBuilder implements ParamBuilder {
     @Override
     public ParamBuilder setFilterLike(String strFieldName, String strValue) {
         return setFilter(SEARCH_DEFAULT_GROUP_NAME, strFieldName, SEARCH_CONDITION_LIKE, strValue);
+    }
+
+    @Override
+    public ParamBuilder setFilterIn(String strFieldName, String strValue) {
+        return setFilter(SEARCH_DEFAULT_GROUP_NAME, strFieldName, SEARCH_CONDITION_IN, strValue);
     }
 
     /**

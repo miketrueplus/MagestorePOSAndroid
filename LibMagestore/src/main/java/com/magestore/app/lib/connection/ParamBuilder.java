@@ -34,6 +34,7 @@ public interface ParamBuilder {
     ParamBuilder setFilterGreater(String strFieldName, String strValue);
     ParamBuilder setFilterLess(String strFieldName, String strValue);
     ParamBuilder setFilterLike(String strFieldName, String strValue);
+    ParamBuilder setFilterIn(String strFieldName, String strValue);
     ParamBuilder setFilter(String strFieldName, String strValue);
 
     /**
