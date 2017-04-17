@@ -73,7 +73,6 @@ public class ConfigUtil {
      * @return
      */
     public static String formatPrice(float number) {
-        number = convertToPrice(number);
         return formatCurrency(number);
     }
 

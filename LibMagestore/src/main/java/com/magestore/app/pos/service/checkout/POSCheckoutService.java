@@ -320,33 +320,27 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
                     if (checkoutTotals.getCode().equals("subtotal")) {
                         checkout.setSubTotal(checkoutTotals.getValue());
                         checkout.setSubTitle(checkoutTotals.getTitle());
-                    }
-                    if (checkoutTotals.getCode().equals("shipping")) {
+                    } else if (checkoutTotals.getCode().equals("shipping")) {
                         checkout.setShippingTotal(checkoutTotals.getValue());
                         checkout.setShippingTitle(checkoutTotals.getTitle());
-                    }
-                    if (checkoutTotals.getCode().equals("discount")) {
+                    } else if (checkoutTotals.getCode().equals("discount")) {
                         checkout.setDiscountTotal(checkoutTotals.getValue());
                         checkout.setDiscountTitle(checkoutTotals.getTitle());
-                    }
-                    if (checkoutTotals.getCode().equals("tax")) {
+                    } else if (checkoutTotals.getCode().equals("tax")) {
                         checkout.setTaxTotal(checkoutTotals.getValue());
                         checkout.setTaxTitle(checkoutTotals.getTitle());
-                    }
-                    if (checkoutTotals.getCode().equals("grand_total")) {
+                    } else if (checkoutTotals.getCode().equals("grand_total")) {
                         checkout.setGrandTotal(checkoutTotals.getValue());
                         checkout.setGrandTitle(checkoutTotals.getTitle());
                     }
 
                     // plugins
-                    if (checkoutTotals.getCode().equals("giftvoucheraftertax")) {
+                    else if (checkoutTotals.getCode().equals("giftvoucheraftertax")) {
                         checkout.setGiftCardDiscount(checkoutTotals.getValue());
                         checkout.setGiftCardTitle(checkoutTotals.getTitle());
-                    }
-                    if (checkoutTotals.getCode().equals("rewardpoints_label")) {
+                    } else if (checkoutTotals.getCode().equals("rewardpoints_label")) {
                         checkout.setRewardPointEarnPointValue((int) checkoutTotals.getValue());
-                    }
-                    if (checkoutTotals.getCode().equals("use-point")) {
+                    } else if (checkoutTotals.getCode().equals("use-point")) {
                         checkout.setRewardPointUsePointValue(checkoutTotals.getValue());
                         checkout.setRewardPointUsePointTitle(checkoutTotals.getTitle());
                     }
@@ -523,7 +517,7 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         for (CartItem item : checkout.getCartItem()) {
             QuoteItems quoteItems = createQuoteItems();
             quoteItems.setQty(item.getQuantity());
-            quoteItems.setCustomPrice(item.getCustomPrice());
+            quoteItems.setCustomPrice(0);
             quoteItems.setAmount(item.getQuantity());
             quoteItems.setId(item.getID());
             quoteItems.setItemId(item.getItemId());

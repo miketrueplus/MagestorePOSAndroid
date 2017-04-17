@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -179,6 +180,7 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 float grand_total = mCheckout.getGrandTotal();
+                Log.e("Grand total", grand_total + "");
                 float totalValue = 0;
                 float currentValue;
                 float allRowTotal;

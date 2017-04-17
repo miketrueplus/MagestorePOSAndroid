@@ -633,8 +633,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             showButtonRemoveDiscount(checkDiscount(checkout) ? true : false);
             ((CheckoutDetailPanel) mDetailView).bindTotalPrice(checkout.getGrandTotal());
 
-            if (mView != null && checkout != null && (mView instanceof CheckoutListPanel))
-                ((CheckoutListPanel) mView).updateTotalPrice(checkout);
+            ((CheckoutListPanel) mView).updateTotalPrice(checkout);
             // show payment method
             ((CheckoutDetailPanel) mDetailView).showPaymentMethod();
             List<CheckoutPayment> listChoosePayment = (List<CheckoutPayment>) wraper.get("list_payment");

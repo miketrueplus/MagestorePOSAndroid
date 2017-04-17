@@ -7,6 +7,7 @@ import com.magestore.app.lib.model.checkout.QuoteItems;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.pos.model.PosAbstractModel;
 import com.magestore.app.pos.model.checkout.cart.PosCartItem;
+import com.magestore.app.pos.parse.gson2pos.Gson2PosExclude;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,6 +25,7 @@ public class PosQuoteItems extends PosAbstractModel implements QuoteItems {
     int qty_to_ship;
     int use_discount = 1;
     float amount;
+    @Gson2PosExclude
     float custom_price;
 
     List<PosQuoteItemExtension> extension_data;
