@@ -164,6 +164,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         if (checkout.getCartItem().size() > 0) {
             checkout.setStatus(STATUS_CHECKOUT_PROCESSING);
             isShowLoadingDetail(true);
+            ((CheckoutDetailPanel) mDetailView).isCheckCreateInvoice(true);
             // ẩn button checkout và hold order
             ((CheckoutListPanel) mView).changeActionButton(true);
             // show detail panel
@@ -502,6 +503,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 if (checkout.getRewardPoint() != null) {
                     if (checkout.getRewardPoint().getBalance() != 0) {
                         mPluginRewardPointPanel.bindItem(checkout.getRewardPoint());
+                        mPluginRewardPointPanel.setVisibility(View.VISIBLE);
                     } else {
                         mPluginRewardPointPanel.setVisibility(View.GONE);
                     }
@@ -575,6 +577,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                     if (checkout.getRewardPoint() != null) {
                         if (checkout.getRewardPoint().getBalance() != 0) {
                             mPluginRewardPointPanel.bindItem(checkout.getRewardPoint());
+                            mPluginRewardPointPanel.setVisibility(View.VISIBLE);
                         } else {
                             mPluginRewardPointPanel.setVisibility(View.GONE);
                         }
@@ -654,6 +657,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             if (checkout.getRewardPoint() != null) {
                 if (checkout.getRewardPoint().getBalance() != 0) {
                     mPluginRewardPointPanel.bindItem(checkout.getRewardPoint());
+                    mPluginRewardPointPanel.setVisibility(View.VISIBLE);
                 } else {
                     mPluginRewardPointPanel.setVisibility(View.GONE);
                 }

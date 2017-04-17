@@ -506,6 +506,7 @@ public class ConfigUtil {
     }
 
     public static float convertToBasePrice(float number) {
+        number = number / ((float) currentCurrency.getCurrencyRate());
         return number;
     }
 

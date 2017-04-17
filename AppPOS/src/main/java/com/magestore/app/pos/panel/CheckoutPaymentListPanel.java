@@ -15,6 +15,7 @@ import com.magestore.app.lib.view.AbstractSimpleRecycleView;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.CheckoutListController;
 import com.magestore.app.pos.databinding.CardCheckoutPaymentContentBinding;
+import com.magestore.app.util.ConfigUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;

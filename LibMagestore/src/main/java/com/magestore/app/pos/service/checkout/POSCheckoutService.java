@@ -69,7 +69,6 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         } else {
             quote.setQuoteId("");
         }
-        // TODO: bug server khi truyền customer_id vào
         if (checkout.getCustomer() != null) {
             if (StringUtil.isNullOrEmpty(checkout.getCustomerID()) || checkCustomerID(checkout.getCustomer(), ConfigUtil.getCustomerGuest())) {
                 quote.setCustomerId("");
@@ -79,8 +78,8 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         } else {
             quote.setCustomerId("");
         }
-        // TODO: Giả data với (current_id = USD, till_id = 1) sau fix lại theo config
-        quote.setCurrencyId("USD");
+        // TODO: Giả data với (till_id = 1) sau fix lại theo config
+        quote.setCurrencyId(ConfigUtil.getCurrentCurrency().getCode());
         quote.setStoreId(checkout.getStoreId());
         quote.setTillId("1");
         quote.setItems(addItemToQuote(checkout));
@@ -103,8 +102,8 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         quoteParam.setQuoteId(checkout.getQuoteId());
         quoteParam.setStoreId(checkout.getStoreId());
         quoteParam.setCustomerId(checkout.getCustomerID());
-        // TODO: đang fix giá trị currency, till_id
-        quoteParam.setCurrencyId("USD");
+        // TODO: đang fix giá trị till_id
+        quoteParam.setCurrencyId(ConfigUtil.getCurrentCurrency().getCode());
         quoteParam.setTillId("1");
 
         return checkoutDataAccess.saveQuote(quoteParam);

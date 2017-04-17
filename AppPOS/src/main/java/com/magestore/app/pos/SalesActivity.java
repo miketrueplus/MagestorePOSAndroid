@@ -115,6 +115,8 @@ public class SalesActivity extends AbstractActivity
     // plugin store credit
     PluginStoreCreditPanel mPluginStoreCreditPanel;
 
+    public static Order mOrder;
+
     // Toolbar Order
     Toolbar toolbar_order;
     RelativeLayout rl_customer;
@@ -439,8 +441,10 @@ public class SalesActivity extends AbstractActivity
             }
         });
 
-        IntentFilter filter = new IntentFilter(SettingListController.RESET_DATA_TO_SALE_ACTIVITY);
-        registerReceiver(receiver_data, filter);
+        IntentFilter filter_setting = new IntentFilter(SettingListController.RESET_DATA_TO_SALE_ACTIVITY);
+        IntentFilter filter_order = new IntentFilter(OrderHistoryListController.SEND_ORDER_TO_SALE_ACTIVITY);
+        registerReceiver(receiver_data_setting, filter_setting);
+        registerReceiver(receiver_data_order, filter_order);
     }
 
 //    @Override
@@ -518,8 +522,8 @@ public class SalesActivity extends AbstractActivity
                 .show();
     }
 
-    // nhận data trả về từ order history
-    BroadcastReceiver receiver_data = new BroadcastReceiver() {
+    // nhận data trả về từ setting
+    BroadcastReceiver receiver_data_setting = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             mCheckoutListController.getView().notifyDataSetChanged();
@@ -527,6 +531,14 @@ public class SalesActivity extends AbstractActivity
             mProductListPanel.notifyDataSetChanged();
             mCartItemListPanel.notifyDataSetChanged();
             mCheckoutListPanel.notifyDataSetChanged();
+        }
+    };
+
+    // nhận data trả về từ order history
+    BroadcastReceiver receiver_data_order = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            //  nhận sự kiện khi click vào re-order trong order history, mOorder là static đã được gán ở bên OrderHistoryController
         }
     };
 }

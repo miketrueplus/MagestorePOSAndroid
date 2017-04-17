@@ -19,6 +19,7 @@ import com.magestore.app.lib.model.sales.OrderShipmentTrackParams;
 import com.magestore.app.lib.model.sales.OrderStatus;
 import com.magestore.app.lib.model.sales.OrderUpdateQtyParam;
 import com.magestore.app.lib.service.order.OrderHistoryService;
+import com.magestore.app.pos.SalesActivity;
 import com.magestore.app.pos.panel.OrderAddCommentPanel;
 import com.magestore.app.pos.panel.OrderCancelPanel;
 import com.magestore.app.pos.panel.OrderDetailPanel;
@@ -350,9 +351,10 @@ public class OrderHistoryListController extends AbstractListController<Order> {
             List<Product> listProduct = (List<Product>) wraper.get("list_product");
             Order order = (Order) models[0];
             order.setListProductReorder(listProduct);
+            // chuyển order sang cho sales activity để re-order
+            SalesActivity.mOrder = order;
             Intent intent = new Intent();
             intent.setAction(SEND_ORDER_TO_SALE_ACTIVITY);
-            intent.putExtra("order", (Serializable) order);
             getMagestoreContext().getActivity().sendBroadcast(intent);
             getMagestoreContext().getActivity().finish();
         } else if (success && actionType == ORDER_TAKE_PAYMENT_TYPE) {
@@ -474,6 +476,7 @@ public class OrderHistoryListController extends AbstractListController<Order> {
         }
     }
 
+    // lấy toàn bị id item để lấy full thông tin product
     private String getIdsItemInfoBuy(Order order) {
 //        List<CartItem> listItems = order.getItemsInfoBuy().getListItems();
         String Ids = "";
