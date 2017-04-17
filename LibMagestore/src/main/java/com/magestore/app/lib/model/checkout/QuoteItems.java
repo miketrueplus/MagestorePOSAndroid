@@ -12,6 +12,14 @@ import java.util.List;
  */
 
 public interface QuoteItems extends Model {
+    float getAmount();
+
+    void setAmount(float amount);
+
+    float getCustomPrice();
+
+    void setCustomPrice(float custom_price);
+
     String getItemId();
     void setItemId(String strItemId);
     void setId(String strId);

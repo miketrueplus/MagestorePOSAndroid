@@ -23,12 +23,35 @@ public class PosQuoteItems extends PosAbstractModel implements QuoteItems {
     int qty;
     int qty_to_ship;
     int use_discount = 1;
+    float amount;
+    float custom_price;
+
     List<PosQuoteItemExtension> extension_data;
 
     List<PosCartItem.OptionsValue> options;
     List<PosCartItem.OptionsValue> super_attribute;
     List<PosCartItem.OptionsValue> bundle_option;
     List<PosCartItem.OptionsValue> bundle_option_qty;
+
+    @Override
+    public float getAmount() {
+        return amount;
+    }
+
+    @Override
+    public void setAmount(float amount) {
+        this.amount = amount;
+    }
+
+    @Override
+    public float getCustomPrice() {
+        return custom_price;
+    }
+
+    @Override
+    public void setCustomPrice(float custom_price) {
+        this.custom_price = custom_price;
+    }
 
     @Override
     public String getItemId() {
@@ -96,40 +119,5 @@ public class PosQuoteItems extends PosAbstractModel implements QuoteItems {
         options = cartItem.getOptions();
         super_attribute = cartItem.getSuperAttribute();
         bundle_option_qty = cartItem.getBundleOptionQuantity();
-//        this.bun
-//        if (cartItem.getChooseProductOptions() == null) return;
-//        if (!cartItem.getProduct().haveProductOption()) return;
-//
-//        for (ProductOptionCustom customOption : cartItem.getChooseProductOptions().keySet()) {
-//            PosCartItem.ChooseProductOption chooseProductOptions = cartItem.getChooseProductOptions().get(customOption);
-//            if (chooseProductOptions.productOptionCustomValueList == null) continue;
-//            for (ProductOptionCustomValue optionCustomValue : chooseProductOptions.productOptionCustomValueList) {
-//                    OptionsValue quoteCustomeOption = new OptionsValue();
-//                    quoteCustomeOption.code = customOption.getID();
-//                    quoteCustomeOption.value = optionCustomValue.getID();
-//                if (customOption.isConfigOption()) {
-//                    // với config option option
-//                    if (super_attribute == null) super_attribute = new ArrayList<OptionsValue>();
-//                    super_attribute.add(quoteCustomeOption);
-//                }
-//                else if (customOption.isCustomOption()) {
-//                    // với custom option option
-//                    if (options == null) options = new ArrayList<OptionsValue>();
-//                    options.add(quoteCustomeOption);
-//                }
-//                else if (customOption.isBundleOption()) {
-//                    // với bundle
-//                    if (bundle_option == null) bundle_option = new ArrayList<OptionsValue>();
-//                    bundle_option.add(quoteCustomeOption);
-//
-//                    // thêm quantity
-//                    if (bundle_option_qty == null) bundle_option_qty = new ArrayList<OptionsValue>();
-//                    OptionsValue bundleQuantity = new OptionsValue();
-//                    bundleQuantity.code = customOption.getID();
-//                    bundleQuantity.value = "1";
-//                    bundle_option_qty.add(bundleQuantity);
-//                }
-//            }
-//        }
     }
 }

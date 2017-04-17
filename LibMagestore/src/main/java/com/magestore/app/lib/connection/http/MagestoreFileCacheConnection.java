@@ -47,54 +47,6 @@ extends AbstractFileCacheConnection {
         return this;
     }
 
-    /**
-     * Xác định phương thức parse implement sang model
-     * @param clazzParseImplement
-     * @return
-     */
-//    public MagestoreFileCacheConnection setParseImplement(Class<TParseImplement> clazzParseImplement) {
-//        this.clazzParseImplement = clazzParseImplement;
-//        return this;
-//    }
-//
-//    /**
-//     * Xác định model để parse
-//     * @param clazzParseModel
-//     * @return
-//     */
-//    public MagestoreFileCacheConnection setParseModel(Class<TParseModel> clazzParseModel) {
-//        this.clazzParseModel = clazzParseModel;
-//        return this;
-//    }
-
-
-
-    /**
-     * Parse dữ liệu, lấy kết quả từ cache hoặc từ API
-     *
-     * @return
-     * @throws IOException
-     */
-//    public synchronized ParseModel excute() throws ParseException, IOException {
-//        ParseModel model;
-//        ResultReading rp = new MagestoreResultReading(openInputStream());
-//        rp.setParseImplement(clazzParseImplement);
-//        rp.setParseModel(clazzParseModel);
-//        model = rp.doParse();
-//        return model;
-//    }
-
-//    /**
-//     * Thực hiện execute từ cache
-//     *
-//     * @return
-//     * @throws IOException
-//     */
-//    private ResultReading excuteFromCache() throws IOException {
-//        File cachedFile = FileUtil.getCachedFile(cacheFileName);
-//        return new MagestoreResultReading(new FileInputStream(cachedFile));
-//    }
-
     @Override
     protected InputStream openInputStreamIgnoreCache() throws IOException {
         return statement.doExecute().getInputStream();
