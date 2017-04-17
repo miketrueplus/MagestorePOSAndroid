@@ -79,6 +79,17 @@ public class ConfigUtil {
     /**
      * Trả lại format price
      *
+     * @param number
+     * @return
+     */
+    public static String formatPriceProduct(float number) {
+        number = convertToPrice(number);
+        return formatCurrency(number);
+    }
+
+    /**
+     * Trả lại format price
+     *
      * @return
      */
     public static String formatPrice(String quantity) {

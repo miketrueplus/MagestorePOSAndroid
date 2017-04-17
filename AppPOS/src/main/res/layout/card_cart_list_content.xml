@@ -143,7 +143,7 @@
                                     android:layout_marginRight="@dimen/layout_margin_5"
                                     android:gravity="bottom"
                                     android:maxLines="2"
-                                    android:text="@{ConfigUtil.formatPrice(cartItem.getPrice())}"
+                                    android:text="@{ConfigUtil.formatPriceProduct(cartItem.getPrice())}"
                                     android:textColor="@color/text_color"
                                     android:textSize="@dimen/text_size" />
 
@@ -154,7 +154,7 @@
                                     android:layout_gravity="right"
                                     android:layout_marginLeft="@dimen/layout_margin_5"
                                     android:layout_marginRight="@dimen/layout_margin_5"
-                                    android:text='@{ConfigUtil.formatPrice(cartItem.getUnitPrice()) + " x " + cartItem.getQuantity()}'
+                                    android:text='@{ConfigUtil.formatPriceProduct(cartItem.getUnitPrice()) + " x " + cartItem.getQuantity()}'
                                     android:textColor="@color/card_item_text_option_color"
                                     android:textSize="@dimen/card_item_text_option_size"
                                     android:textStyle="italic" />
