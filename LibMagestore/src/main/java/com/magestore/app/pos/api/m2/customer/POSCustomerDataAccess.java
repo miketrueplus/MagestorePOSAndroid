@@ -335,7 +335,10 @@ public class POSCustomerDataAccess
             wrapCustomer.customer = customers[0];
 
             rp = statement.execute(wrapCustomer);
-            String result = rp.readResult2String();
+            rp.setParseImplement(getClassParseImplement());
+            rp.setParseModel(PosCustomer.class);
+            Customer customer_respone = (Customer) rp.doParse();
+            customers[0].setID(customer_respone.getID());
 
             return true;
         } catch (ConnectionException ex) {

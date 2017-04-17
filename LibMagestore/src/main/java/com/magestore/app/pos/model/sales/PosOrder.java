@@ -1,5 +1,6 @@
 package com.magestore.app.pos.model.sales;
 
+import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.model.sales.OrderCommentParams;
@@ -139,6 +140,9 @@ public class PosOrder extends PosAbstractModel implements Order {
 
     // Param request cancel
     PosOrderCommentParams param_cancel;
+
+    // list product re-order
+    List<Product> list_product_reorder;
 
     @Gson2PosExclude
     float real_amount;
@@ -694,5 +698,15 @@ public class PosOrder extends PosAbstractModel implements Order {
     @Override
     public void setExchangeMoney(float fExchangeMoney) {
         exchange_money = fExchangeMoney;
+    }
+
+    @Override
+    public List<Product> getListProductReorder() {
+        return list_product_reorder;
+    }
+
+    @Override
+    public void setListProductReorder(List<Product> listProduct) {
+        list_product_reorder = listProduct;
     }
 }

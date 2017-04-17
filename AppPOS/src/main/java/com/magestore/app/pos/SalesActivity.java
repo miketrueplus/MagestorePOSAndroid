@@ -1,7 +1,11 @@
 package com.magestore.app.pos;
 
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -9,6 +13,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +21,7 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
 import com.magestore.app.lib.context.MagestoreContext;
+import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.observ.GenericState;
 import com.magestore.app.lib.observ.SubjectObserv;
 import com.magestore.app.lib.service.ServiceFactory;
@@ -32,8 +38,10 @@ import com.magestore.app.pos.controller.CartItemListController;
 import com.magestore.app.pos.controller.CategoryListController;
 import com.magestore.app.pos.controller.CheckoutAddPaymentListController;
 import com.magestore.app.pos.controller.CheckoutListController;
+import com.magestore.app.pos.controller.OrderHistoryListController;
 import com.magestore.app.pos.controller.PluginGiftCardController;
 import com.magestore.app.pos.controller.ProductListController;
+import com.magestore.app.pos.controller.SettingListController;
 import com.magestore.app.pos.panel.CartItemDetailPanel;
 import com.magestore.app.pos.panel.CartItemListPanel;
 import com.magestore.app.pos.panel.CartOrderListPanel;
@@ -430,6 +438,9 @@ public class SalesActivity extends AbstractActivity
                 mCheckoutListPanel.showPopUpAddCustomer(CheckoutListPanel.CHANGE_CUSTOMER, CheckoutListPanel.NO_TYPE);
             }
         });
+
+        IntentFilter filter = new IntentFilter(SettingListController.RESET_DATA_TO_SALE_ACTIVITY);
+        registerReceiver(receiver_data, filter);
     }
 
 //    @Override
@@ -440,6 +451,7 @@ public class SalesActivity extends AbstractActivity
 //        } else {
 //            super.onBackPressed();
 //        }
+
 //    }
 
     @Override
@@ -505,4 +517,16 @@ public class SalesActivity extends AbstractActivity
                 .setNegativeButton(R.string.no, null)
                 .show();
     }
+
+    // nhận data trả về từ order history
+    BroadcastReceiver receiver_data = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            mCheckoutListController.getView().notifyDataSetChanged();
+            mCheckoutListController.updateTotal();
+            mProductListPanel.notifyDataSetChanged();
+            mCartItemListPanel.notifyDataSetChanged();
+            mCheckoutListPanel.notifyDataSetChanged();
+        }
+    };
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -18,6 +19,7 @@ import com.magestore.app.pos.LoginActivity;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.SettingListController;
 import com.magestore.app.pos.util.EditTextUtil;
+import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.DataUtil;
 import com.magestore.app.util.DialogUtil;
 import com.magestore.app.util.StringUtil;
@@ -41,6 +43,7 @@ public class SettingDetailPanel extends AbstractDetailPanel<Setting> {
     EditText edt_name, edt_current_password, edt_new_password, edt_confirm_password;
     Button btn_save;
     RelativeLayout setting_background_loading;
+    boolean checkFirst;
 
     public SettingDetailPanel(Context context) {
         super(context);
@@ -92,6 +95,23 @@ public class SettingDetailPanel extends AbstractDetailPanel<Setting> {
                 ((SettingListController) getController()).doInputChangeInformation(staff);
             }
         });
+
+        sp_currency.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (checkFirst) {
+                    String code = sp_currency.getSelection();
+                    ((SettingListController) getController()).doInputChangeCurrency(code);
+                } else {
+                    checkFirst = true;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
     @Override
@@ -108,6 +128,7 @@ public class SettingDetailPanel extends AbstractDetailPanel<Setting> {
 
     public void setCurrencyDataSet(List<Currency> currencyList) {
         sp_currency.bind(currencyList.toArray(new Currency[0]));
+        sp_currency.setSelection(ConfigUtil.getCurrentCurrency().getCode());
     }
 
     public void setStaffDataSet(Staff staff) {
@@ -147,7 +168,7 @@ public class SettingDetailPanel extends AbstractDetailPanel<Setting> {
     }
 
     public void showAlertRespone(String message) {
-        if(StringUtil.STRING_EMPTY.equals(message)){
+        if (StringUtil.STRING_EMPTY.equals(message)) {
             message = getContext().getString(R.string.err_request);
         }
         // Tạo dialog và hiển thị

@@ -173,6 +173,7 @@ public abstract class AbstractActivity
         } else if (id == R.id.nav_settings) {
             Intent intent = new Intent(getContext(), SettingActivity.class);
             startActivity(intent);
+            if (!(this instanceof SalesActivity)) finish();
         } else if (id == R.id.nav_logout) {
             backToLoginActivity();
         }

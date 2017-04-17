@@ -8,6 +8,7 @@ import com.magestore.app.lib.model.config.ConfigCountry;
 import com.magestore.app.lib.model.config.ConfigPriceFormat;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.directory.Currency;
+import com.magestore.app.lib.model.setting.ChangeCurrency;
 import com.magestore.app.lib.model.setting.Setting;
 import com.magestore.app.lib.model.staff.Staff;
 import com.magestore.app.lib.resourcemodel.config.ConfigDataAccess;
@@ -23,6 +24,7 @@ import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.StringUtil;
 
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
@@ -68,6 +70,7 @@ public class POSConfigService extends AbstractService implements ConfigService {
         ConfigUtil.setEnableGiftCard(getConfigGiftCard());
         ConfigUtil.setEnableStoreCredit(getConfigStoreCredit());
         ConfigUtil.setEnableRewardPoint(getConfigRewardPoint());
+        ConfigUtil.setCurrentCurrency(getDefaultCurrency());
         // return config
         return config;
     }
@@ -81,6 +84,10 @@ public class POSConfigService extends AbstractService implements ConfigService {
         // lấy config
         ConfigPriceFormat priceFormat = configDataAccess.getPriceFormat();
 
+        return currencyFormat(priceFormat);
+    }
+
+    private DecimalFormat currencyFormat(ConfigPriceFormat priceFormat){
         // khởi tạo currency format
         String pattern = (priceFormat.getPattern().indexOf(StringUtil.STRING_CURRENCY) == 0) ? "¤¤ ###,##0.0" : "###,##0.0 ¤¤";
         DecimalFormatSymbols symbols = new DecimalFormatSymbols();
@@ -104,6 +111,10 @@ public class POSConfigService extends AbstractService implements ConfigService {
         // lấy config
         ConfigPriceFormat priceFormat = configDataAccess.getPriceFormat();
 
+        return currencyNosymbolFormat(priceFormat);
+    }
+
+    private DecimalFormat currencyNosymbolFormat(ConfigPriceFormat priceFormat){
         // khởi tạo currency format
         String pattern = "###,###.#";
         DecimalFormatSymbols symbols = new DecimalFormatSymbols();
@@ -125,6 +136,10 @@ public class POSConfigService extends AbstractService implements ConfigService {
         // lấy config
         ConfigPriceFormat priceFormat = configDataAccess.getPriceFormat();
 
+        return floatFormat(priceFormat);
+    }
+
+    private DecimalFormat floatFormat(ConfigPriceFormat priceFormat){
         // khởi tạo float format
         String pattern = "###,###.#";
         DecimalFormatSymbols symbols = new DecimalFormatSymbols();
@@ -146,6 +161,10 @@ public class POSConfigService extends AbstractService implements ConfigService {
         // lấy config
         ConfigPriceFormat priceFormat = configDataAccess.getPriceFormat();
 
+        return integetFormat(priceFormat);
+    }
+
+    private DecimalFormat integetFormat(ConfigPriceFormat priceFormat){
         // khởi tạo interger format
         String pattern = "###,###";
         DecimalFormatSymbols symbols = new DecimalFormatSymbols();
@@ -246,6 +265,24 @@ public class POSConfigService extends AbstractService implements ConfigService {
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
         return configDataAccess.getConfigCCYears();
+    }
+
+    @Override
+    public ChangeCurrency changeCurrency(String code) throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
+        ChangeCurrency changeCurrency = configDataAccess.changeCurrency(code);
+        ConfigPriceFormat configPriceFormat = changeCurrency.getPriceFormat();
+        Currency currency = changeCurrency.getCurrency();
+        configPriceFormat.setCurrencySymbol(currency.getCurrencySymbol());
+
+        ConfigUtil.setCurrencyFormat(currencyFormat(configPriceFormat));
+        ConfigUtil.setCurrencyNoSymbolFormat(currencyNosymbolFormat(configPriceFormat));
+        ConfigUtil.setFloatFormat(floatFormat(configPriceFormat));
+        ConfigUtil.setIntegerFormat(integetFormat(configPriceFormat));
+        ConfigUtil.setCurrentCurrency(getDefaultCurrency());
+
+        return changeCurrency;
     }
 
     @Override

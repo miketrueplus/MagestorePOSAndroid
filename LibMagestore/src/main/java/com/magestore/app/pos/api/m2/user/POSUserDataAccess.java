@@ -1,7 +1,6 @@
 package com.magestore.app.pos.api.m2.user;
 
 import com.google.gson.Gson;
-import com.magestore.app.lib.BuildConfig;
 import com.magestore.app.lib.connection.Connection;
 import com.magestore.app.lib.connection.ConnectionException;
 import com.magestore.app.lib.connection.ConnectionFactory;

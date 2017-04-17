@@ -4,6 +4,7 @@ import android.text.format.Time;
 
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.staff.Staff;
+import com.magestore.app.lib.model.directory.Currency;
 
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -12,7 +13,6 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Currency;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -30,6 +30,7 @@ public class ConfigUtil {
     private static DecimalFormat mCurrencyNoSymbolFormat;
     private static DecimalFormat mFloatFormat;
     private static DecimalFormat mIntegerFormat;
+    private static Currency currentCurrency;
     private static Staff mStaff;
     private static Customer mCustomerGuest;
     private static boolean mShowDeliveryTime;
@@ -72,6 +73,7 @@ public class ConfigUtil {
      * @return
      */
     public static String formatPrice(float number) {
+        number = convertToPrice(number);
         return formatCurrency(number);
     }
 
@@ -465,7 +467,7 @@ public class ConfigUtil {
         return date;
     }
 
-    public static String getCurrentDateTime(){
+    public static String getCurrentDateTime() {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
@@ -475,11 +477,12 @@ public class ConfigUtil {
 
     /**
      * convert current time to default
+     *
      * @param date_time
      * @return
      */
-    public static String convertToGMTTime(String date_time){
-        String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss" ;
+    public static String convertToGMTTime(String date_time) {
+        String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
         SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
         sdf.setTimeZone(TimeZone.getTimeZone(Time.getCurrentTimezone()));
         Date dateFormat = null;
@@ -490,8 +493,16 @@ public class ConfigUtil {
         }
         SimpleDateFormat sdf1 = new SimpleDateFormat(DATE_FORMAT);
         sdf1.setTimeZone(TimeZone.getTimeZone("GMT"));
-        String dateTimeString =  sdf1.format(dateFormat);
+        String dateTimeString = sdf1.format(dateFormat);
         return dateTimeString;
+    }
+
+    public static void setCurrentCurrency(Currency currentCurrency) {
+        ConfigUtil.currentCurrency = currentCurrency;
+    }
+
+    public static Currency getCurrentCurrency() {
+        return currentCurrency;
     }
 
     public static float convertToBasePrice(float number) {
@@ -499,6 +510,7 @@ public class ConfigUtil {
     }
 
     public static float convertToPrice(float number) {
+        number = number * ((float) currentCurrency.getCurrencyRate());
         return number;
     }
 

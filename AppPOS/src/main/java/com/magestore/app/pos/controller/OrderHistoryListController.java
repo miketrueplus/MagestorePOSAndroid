@@ -1,10 +1,14 @@
 package com.magestore.app.pos.controller;
 
+import android.content.Intent;
+import android.os.Parcelable;
 import android.widget.RelativeLayout;
 
 import com.magestore.app.lib.controller.AbstractListController;
 import com.magestore.app.lib.model.Model;
+import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.model.checkout.CheckoutPayment;
+import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.model.sales.OrderCommentParams;
 import com.magestore.app.lib.model.sales.OrderInvoiceParams;
@@ -27,6 +31,7 @@ import com.magestore.app.pos.panel.OrderSendEmailPanel;
 import com.magestore.app.pos.panel.OrderShipmentPanel;
 import com.magestore.app.pos.panel.OrderTakePaymentPanel;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -68,10 +73,14 @@ public class OrderHistoryListController extends AbstractListController<Order> {
     public static String ORDER_INVOICE_CODE = "order_invoice";
     public static int ORDER_CANCEL_TYPE = 7;
     public static String ORDER_CANCEL_CODE = "order_cancel";
-    public static int RETRIEVE_PAYMENT_METHOD_TYPE = 8;
+    public static int ORDER_REORDER_TYPE = 8;
+    public static String ORDER_REORDER_CODE = "order_reorder";
+    public static int RETRIEVE_PAYMENT_METHOD_TYPE = 9;
     public static String RETRIEVE_PAYMENT_METHOD_CODE = "retrieve_payment_method";
-    public static int ORDER_TAKE_PAYMENT_TYPE = 9;
+    public static int ORDER_TAKE_PAYMENT_TYPE = 10;
     public static String ORDER_TAKE_PAYMENT_CODE = "order_take_payment";
+
+    public static String SEND_ORDER_TO_SALE_ACTIVITY = "com.magestore.app.pos.controller.orderhistory.reorder";
 
     Map<String, Object> wraper;
 
@@ -202,6 +211,11 @@ public class OrderHistoryListController extends AbstractListController<Order> {
         doAction(ORDER_CANCEL_TYPE, ORDER_CANCEL_CODE, wraper, order);
     }
 
+    public void doInputReorder(Order order) {
+        showDetailOrderLoading(true);
+        doAction(ORDER_REORDER_TYPE, ORDER_REORDER_CODE, wraper, order);
+    }
+
     public void doRetrievePaymentMethod() {
         if (wraper == null) {
             wraper = new HashMap<>();
@@ -244,6 +258,11 @@ public class OrderHistoryListController extends AbstractListController<Order> {
             return true;
         } else if (actionType == ORDER_CANCEL_TYPE) {
             wraper.put("cancel_respone", mOrderService.orderCancel((Order) models[0]));
+            return true;
+        } else if (actionType == ORDER_REORDER_TYPE) {
+            Order order = (Order) models[0];
+            String Ids = getIdsItemInfoBuy(order);
+            wraper.put("list_product", mOrderService.retrieveOrderItem(Ids));
             return true;
         } else if (actionType == RETRIEVE_PAYMENT_METHOD_TYPE) {
             wraper.put("list_payment", mOrderService.retrievePaymentMethod());
@@ -327,6 +346,15 @@ public class OrderHistoryListController extends AbstractListController<Order> {
             ((OrderDetailPanel) mDetailView).bindDataRespone(order);
             ((OrderDetailPanel) mDetailView).setOrder(order);
             showDetailOrderLoading(false);
+        } else if (success && actionType == ORDER_REORDER_TYPE) {
+            List<Product> listProduct = (List<Product>) wraper.get("list_product");
+            Order order = (Order) models[0];
+            order.setListProductReorder(listProduct);
+            Intent intent = new Intent();
+            intent.setAction(SEND_ORDER_TO_SALE_ACTIVITY);
+            intent.putExtra("order", (Serializable) order);
+            getMagestoreContext().getActivity().sendBroadcast(intent);
+            getMagestoreContext().getActivity().finish();
         } else if (success && actionType == ORDER_TAKE_PAYMENT_TYPE) {
             Order order = (Order) wraper.get("take_payment_respone");
             mOrderHistoryItemsListController.doSelectOrder(order);
@@ -444,6 +472,17 @@ public class OrderHistoryListController extends AbstractListController<Order> {
                 }
             }
         }
+    }
+
+    private String getIdsItemInfoBuy(Order order) {
+//        List<CartItem> listItems = order.getItemsInfoBuy().getListItems();
+        String Ids = "";
+//        for (CartItem item : listItems) {
+//            if (!item.getID().equals("custom_item")) {
+//                Ids = item.getID() + ",";
+//            }
+//        }
+        return Ids;
     }
 
     /* Felix 3/4/2017 Start*/

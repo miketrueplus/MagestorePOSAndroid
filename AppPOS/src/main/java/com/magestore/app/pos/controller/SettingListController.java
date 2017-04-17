@@ -35,6 +35,8 @@ public class SettingListController extends AbstractListController<Setting> {
     Staff mStaff;
     Map<String, Object> wraper;
     static int TYPE_ACTION_CHANGE_INFFORMATION = 0;
+    static int TYPE_ACTION_CHANGE_CURRENCY = 1;
+    public static String RESET_DATA_TO_SALE_ACTIVITY = "com.magestore.app.pos.controller.settting.resetdata";
 
     public void setConfigService(ConfigService mConfigService) {
         this.mConfigService = mConfigService;
@@ -64,11 +66,21 @@ public class SettingListController extends AbstractListController<Setting> {
         doAction(TYPE_ACTION_CHANGE_INFFORMATION, null, wraper, staff);
     }
 
+    public void doInputChangeCurrency(String code) {
+        ((SettingDetailPanel) mDetailView).isShowLoading(true);
+        wraper.put("currency_code", code);
+        doAction(TYPE_ACTION_CHANGE_CURRENCY, null, wraper, null);
+    }
+
     @Override
     public Boolean doActionBackround(int actionType, String actionCode, Map<String, Object> wraper, Model... models) throws Exception {
         if (actionType == TYPE_ACTION_CHANGE_INFFORMATION) {
             Staff staff = (Staff) models[0];
             wraper.put("staff", mConfigService.changeInformationStaff(staff));
+            return true;
+        } else if (actionType == TYPE_ACTION_CHANGE_CURRENCY) {
+            String code = (String) wraper.get("currency_code");
+            mConfigService.changeCurrency(code);
             return true;
         }
         return false;
@@ -78,7 +90,7 @@ public class SettingListController extends AbstractListController<Setting> {
     public void onActionPostExecute(boolean success, int actionType, String actionCode, Map<String, Object> wraper, Model... models) {
         if (success && actionType == TYPE_ACTION_CHANGE_INFFORMATION) {
             Staff staff = (Staff) wraper.get("staff");
-            if(staff.getResponeType()){
+            if (staff.getResponeType()) {
                 try {
                     mConfigService.setStaff(staff);
                 } catch (InstantiationException e) {
@@ -92,6 +104,11 @@ public class SettingListController extends AbstractListController<Setting> {
                 }
             }
             ((SettingDetailPanel) mDetailView).showAlertRespone(staff.getErrorMessage());
+        }else{
+            Intent intent = new Intent();
+            intent.setAction(RESET_DATA_TO_SALE_ACTIVITY);
+            getMagestoreContext().getActivity().sendBroadcast(intent);
+            getMagestoreContext().getActivity().finish();
         }
         ((SettingDetailPanel) mDetailView).isShowLoading(false);
     }

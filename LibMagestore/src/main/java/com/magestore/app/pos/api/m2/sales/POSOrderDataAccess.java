@@ -595,7 +595,7 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
             // thực thi truy vấn và parse kết quả thành object
             rp = statement.execute();
             rp.setParseImplement(getClassParseImplement());
-            rp.setParseModel(Gson2PosListOrder.class);
+            rp.setParseModel(Gson2PosListProduct.class);
             Gson2PosListProduct listProduct = (Gson2PosListProduct) rp.doParse();
             List<Product> list = (List<Product>) (List<?>) (listProduct.items);
             return list;

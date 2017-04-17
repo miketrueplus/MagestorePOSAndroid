@@ -13,20 +13,14 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.magestore.app.lib.controller.Controller;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.model.sales.OrderUpdateQtyParam;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
 import com.magestore.app.pos.R;
-import com.magestore.app.pos.controller.OrderCommentListController;
-import com.magestore.app.pos.controller.OrderHistoryItemsListController;
 import com.magestore.app.pos.controller.OrderHistoryListController;
-import com.magestore.app.pos.controller.OrderPaymentListController;
 import com.magestore.app.pos.databinding.PanelOrderDetailBinding;
 import com.magestore.app.pos.util.DialogUtil;
 import com.magestore.app.pos.view.MagestoreDialog;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -207,6 +201,7 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
                         onClickAddComment();
                         return true;
                     case R.id.action_re_order:
+                        onClickReorder();
                         return true;
                     case R.id.action_refund:
                         onClickRefund();
@@ -235,7 +230,7 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         return ((OrderHistoryListController) mController).checkCanInvoice(order);
     }
 
-    private boolean checkCanTakePayment(Order order){
+    private boolean checkCanTakePayment(Order order) {
         return ((OrderHistoryListController) mController).checkCanTakePayment(order);
     }
 
@@ -399,7 +394,11 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         });
     }
 
-    private void onClickTakePayment(){
+    private void onClickReorder() {
+        ((OrderHistoryListController) mController).doInputReorder(mOrder);
+    }
+
+    private void onClickTakePayment() {
         OrderTakePaymentPanel mOrderTakePaymentPanel = new OrderTakePaymentPanel(getContext());
         ((OrderHistoryListController) mController).setOrderTakePaymentPanel(mOrderTakePaymentPanel);
         mOrderTakePaymentPanel.setController(mController);
@@ -416,7 +415,7 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
             public void onClick(View view) {
                 ((OrderHistoryListController) mController).doInputTakePayment(mOrder);
 
-                if( ((OrderHistoryListController) mController).
+                if (((OrderHistoryListController) mController).
                         checkDimissDialogTakePayment(mOrder)) {
                     dialog.dismiss();
                 }
@@ -426,7 +425,7 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
     }
 
     /* Felix 3/4/2017 Start */
-    public void showDetailOrderLoading(boolean visible){
+    public void showDetailOrderLoading(boolean visible) {
         detail_order_loading.setVisibility(visible ? VISIBLE : INVISIBLE);
     }
      /* Felix 3/4/2017 End */

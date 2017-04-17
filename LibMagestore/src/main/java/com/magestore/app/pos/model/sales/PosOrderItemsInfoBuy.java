@@ -1,5 +1,6 @@
 package com.magestore.app.pos.model.sales;
 
+import com.google.gson.JsonArray;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.sales.OrderItemsInfoBuy;
 import com.magestore.app.pos.model.PosAbstractModel;
@@ -14,10 +15,5 @@ import java.util.List;
  */
 
 public class PosOrderItemsInfoBuy extends PosAbstractModel implements OrderItemsInfoBuy {
-    List<PosCartItem> items;
-
-    @Override
-    public List<CartItem> getListItems() {
-        return (List<CartItem>) (List<?>) items;
-    }
+    JsonArray items;
 }

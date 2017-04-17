@@ -1,6 +1,7 @@
 package com.magestore.app.pos.api.m2.config;
 
 import com.google.common.collect.Interner;
+import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 import com.magestore.app.lib.connection.Connection;
 import com.magestore.app.lib.connection.ConnectionException;
@@ -16,6 +17,7 @@ import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.model.directory.Currency;
 import com.magestore.app.lib.model.directory.Region;
+import com.magestore.app.lib.model.setting.ChangeCurrency;
 import com.magestore.app.lib.model.staff.Location;
 import com.magestore.app.lib.model.staff.Staff;
 import com.magestore.app.lib.resourcemodel.config.ConfigDataAccess;
@@ -33,9 +35,11 @@ import com.magestore.app.pos.model.customer.PosCustomer;
 import com.magestore.app.pos.model.customer.PosCustomerAddress;
 import com.magestore.app.pos.model.directory.PosCurrency;
 import com.magestore.app.pos.model.directory.PosRegion;
+import com.magestore.app.pos.model.setting.PosChangeCurrency;
 import com.magestore.app.pos.model.staff.PosLocation;
 import com.magestore.app.pos.model.staff.PosStaff;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosConfigParseImplement;
+import com.magestore.app.pos.parse.gson2pos.Gson2PosPriceFormatParseImplement;
 import com.magestore.app.util.StringUtil;
 
 import org.json.JSONException;
@@ -62,9 +66,15 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
     private static Staff mStaff;
     private static Customer guest;
     private static CustomerAddress customerAddress;
+    private static Currency currentCurrency;
 
     private class ConfigEntity {
         Staff staff;
+        String currency;
+    }
+
+    private class POSConfigPriceDataAcess {
+        ConfigPriceFormat priceFormat;
     }
 
     /**
@@ -413,21 +423,25 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
 
     @Override
     public Currency getDefaultCurrency() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
-        List<Currency> listCurrency = getCurrencies();
-        Currency dCurrentcy = new PosCurrency();
-        if (listCurrency != null && listCurrency.size() > 0) {
-            boolean checkCurrency = false;
-            for (Currency currency : listCurrency) {
-                if (currency.getIsDefault().equals("1")) {
-                    checkCurrency = true;
-                    dCurrentcy = currency;
+        if (currentCurrency == null) {
+            List<Currency> listCurrency = getCurrencies();
+            Currency dCurrentcy = new PosCurrency();
+            if (listCurrency != null && listCurrency.size() > 0) {
+                boolean checkCurrency = false;
+                for (Currency currency : listCurrency) {
+                    if (currency.getIsDefault().equals("1")) {
+                        checkCurrency = true;
+                        dCurrentcy = currency;
+                    }
                 }
-            }
-            if (!checkCurrency) {
-                dCurrentcy = listCurrency.get(0);
+                if (!checkCurrency) {
+                    dCurrentcy = listCurrency.get(0);
+                }
+                currentCurrency = dCurrentcy;
             }
         }
-        return dCurrentcy;
+
+        return currentCurrency;
     }
 
     @Override
@@ -498,6 +512,55 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         }
 
         return listCCYears;
+    }
+
+    @Override
+    public ChangeCurrency changeCurrency(String code) throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+        try {
+            // Khởi tạo connection và khởi tạo truy vấn
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPI.REST_SETTING_CHANGE_CURRENCY);
+
+            paramBuilder = statement.getParamBuilder()
+                    .setSessionID(POSDataAccessSession.REST_SESSION_ID);
+
+            ConfigEntity configEntity = new ConfigEntity();
+            configEntity.currency = code;
+
+            rp = statement.execute(configEntity);
+
+            String reponse = StringUtil.truncateJson(rp.readResult2String());
+
+            Gson2PosPriceFormatParseImplement implement = new Gson2PosPriceFormatParseImplement();
+            Gson gson = implement.createGson();
+            PosChangeCurrency priceFormat = gson.fromJson(reponse, PosChangeCurrency.class);
+            currentCurrency = priceFormat.getCurrency();
+            return priceFormat;
+        } catch (ConnectionException ex) {
+            throw ex;
+        } catch (IOException ex) {
+            throw ex;
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
     }
 
     @Override

@@ -154,7 +154,7 @@
                                     android:layout_gravity="right"
                                     android:layout_marginLeft="@dimen/layout_margin_5"
                                     android:layout_marginRight="@dimen/layout_margin_5"
-                                    android:text='@{cartItem.getUnitPrice() + " x " + cartItem.getQuantity()}'
+                                    android:text='@{ConfigUtil.formatPrice(cartItem.getUnitPrice()) + " x " + cartItem.getQuantity()}'
                                     android:textColor="@color/card_item_text_option_color"
                                     android:textSize="@dimen/card_item_text_option_size"
                                     android:textStyle="italic" />

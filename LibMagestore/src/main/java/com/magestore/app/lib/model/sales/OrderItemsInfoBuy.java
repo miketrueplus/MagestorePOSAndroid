@@ -12,5 +12,4 @@ import java.util.List;
  */
 
 public interface OrderItemsInfoBuy extends Model {
-    List<CartItem> getListItems();
 }
