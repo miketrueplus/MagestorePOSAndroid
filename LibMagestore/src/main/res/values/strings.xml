@@ -58,7 +58,6 @@
     <string name="err_field_email_required">Invalid email address</string>
     <string name="err_no_data">There is no data to display</string>
 
-
     <!-- Strings related to confirm message -->
     <string name="ask_are_you_sure">Are you sure?</string>
     <string name="ask_are_you_sure_to_delete">Are you sure to delete?</string>
@@ -78,6 +77,7 @@
     <string name="title_confirm_cancel">Please confirm cancel</string>
     <string name="title_confirm_close">Please confirm close</string>
 
+    <!-- Strings related to dialog error -->
     <string name="dialog_error">Error</string>
     <string name="dialog_warning">Warning</string>
     <string name="dialog_close">Close</string>

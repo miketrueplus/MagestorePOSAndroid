@@ -28,6 +28,18 @@ public class PosMessageException500 extends PosAbstractModel implements MessageE
      * @return
      */
     @Override
+    public String getCode() {
+        if (messages == null) return "Unknow exception";
+        if (messages.error == null) return "Unknow exception";
+        if (messages.error.size() == 0) return "Unknow exception";
+        return messages.error.get(0).code;
+    }
+
+    /**
+     * get message
+     * @return
+     */
+    @Override
     public String getMessage() {
         if (messages == null) return "Unknow exception";
         if (messages.error == null) return "Unknow exception";

@@ -8,6 +8,8 @@ package com.magestore.app.lib.model.exception;
  */
 
 public interface MessageException {
+    String getCode();
+
     String getMessage();
     String getTrace();
 }
