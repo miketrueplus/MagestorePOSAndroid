@@ -6,6 +6,7 @@ import com.magestore.app.lib.model.checkout.ShippingMethod;
 import com.magestore.app.lib.model.config.Config;
 import com.magestore.app.lib.model.config.ConfigCountry;
 import com.magestore.app.lib.model.config.ConfigPriceFormat;
+import com.magestore.app.lib.model.config.ConfigPrint;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.directory.Currency;
 import com.magestore.app.lib.model.setting.ChangeCurrency;
@@ -64,6 +65,7 @@ public class POSConfigService extends AbstractService implements ConfigService {
         ConfigUtil.setCurrencyNoSymbolFormat(getPriceNosymbolFormat());
         ConfigUtil.setFloatFormat(getFloatFormat());
         ConfigUtil.setIntegerFormat(getIntegerFormat());
+        ConfigUtil.setConfigPrint(getConfigPrint());
         ConfigUtil.setStaff(getStaff());
         ConfigUtil.setCustomerGuest(getGuestCheckout());
         ConfigUtil.setShowDeliveryTime(getConfigDeliveryTime());
@@ -265,6 +267,14 @@ public class POSConfigService extends AbstractService implements ConfigService {
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
         return configDataAccess.getConfigCCYears();
+    }
+
+    @Override
+    public ConfigPrint getConfigPrint() throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        // Nếu chưa khởi tạo customer gateway factory
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
+        return configDataAccess.getConfigPrint();
     }
 
     @Override

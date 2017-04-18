@@ -113,7 +113,9 @@
     <string name="order_detail_bottom_tb_discount">Discount</string>
     <string name="order_detail_bottom_tb_grand_total">Grand Total</string>
     <string name="order_detail_bottom_tb_total_paid">Total Paid</string>
+    <string name="order_detail_bottom_tb_total_due">Total Due</string>
     <string name="order_detail_bottom_tb_total_refund">Total Refunded</string>
+    <string name="order_detail_bottom_tb_total_change">Change</string>
     <string name="order_detail_bottom_btn_invoice">INVOICE</string>
     <string name="order_menu_send_email">Send Email</string>
     <string name="order_menu_ship">Ship</string>
@@ -194,6 +196,12 @@
     <string name="plugin_order_detail_bottom_reward_earn">Earned Points</string>
     <string name="plugin_order_detail_bottom_reward_spend">Spent Points</string>
     <string name="plugin_order_detail_bottom_reward_discount">Points Discount</string>
+
+    <!--Print-->
+    <string name="print_header_cashier">CASHIER:</string>
+    <string name="print_header_customer">CUSTOMER:</string>
+    <string name="print_header_shipping">SHIPPING:</string>
+    <string name="print_footer_default">Thank you for shopping at our stoe. We hope you enjoy your purchase and look forward to serving you again.</string>
 
     <!-- Strings related to single words -->
     <string name="add">Add</string>

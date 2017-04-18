@@ -2,6 +2,7 @@ package com.magestore.app.util;
 
 import android.text.format.Time;
 
+import com.magestore.app.lib.model.config.ConfigPrint;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.staff.Staff;
 import com.magestore.app.lib.model.directory.Currency;
@@ -30,6 +31,7 @@ public class ConfigUtil {
     private static DecimalFormat mCurrencyNoSymbolFormat;
     private static DecimalFormat mFloatFormat;
     private static DecimalFormat mIntegerFormat;
+    private static ConfigPrint mConfigPrint;
     private static Currency currentCurrency;
     private static Staff mStaff;
     private static Customer mCustomerGuest;
@@ -571,5 +573,13 @@ public class ConfigUtil {
 
     public static boolean isEnableRewardPoint() {
         return mEnableRewardPoint;
+    }
+
+    public static void setConfigPrint(ConfigPrint mConfigPrint) {
+        ConfigUtil.mConfigPrint = mConfigPrint;
+    }
+
+    public static ConfigPrint getConfigPrint() {
+        return mConfigPrint;
     }
 }

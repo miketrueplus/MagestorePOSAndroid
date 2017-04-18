@@ -135,8 +135,8 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
     protected void initControlValue() {
         // Lấy domain là domain của lần đăng nhập cuối mà thành công
         mDomainView.setText(getSharedValue("login_activity_domain", BuildConfig.REST_BASE_URL).trim());
-        mUserNameView.setText(getSharedValue("login_activity_username", "demo").trim());
-        mPasswordView.setText(getSharedValue("login_activity_password", "demo123").trim());
+        mUserNameView.setText(getSharedValue("login_activity_username", "ravi").trim());
+        mPasswordView.setText(getSharedValue("login_activity_password", "ravi123").trim());
     }
 
     /**

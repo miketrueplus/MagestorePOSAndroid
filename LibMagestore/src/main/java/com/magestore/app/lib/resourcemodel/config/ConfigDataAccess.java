@@ -4,6 +4,7 @@ import com.magestore.app.lib.connection.ConnectionException;
 import com.magestore.app.lib.model.config.Config;
 import com.magestore.app.lib.model.config.ConfigCountry;
 import com.magestore.app.lib.model.config.ConfigPriceFormat;
+import com.magestore.app.lib.model.config.ConfigPrint;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.directory.Currency;
 import com.magestore.app.lib.model.setting.ChangeCurrency;
@@ -38,6 +39,7 @@ public interface ConfigDataAccess extends DataAccess {
     Map<String, String> getConfigCCTypes() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     List<String> getConfigMonths() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     Map<String, String> getConfigCCYears() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
+    ConfigPrint getConfigPrint() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     ChangeCurrency changeCurrency(String code) throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     float getConfigMaximumDiscount() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     boolean getConfigDeliveryTime() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;

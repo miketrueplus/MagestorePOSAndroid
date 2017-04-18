@@ -9,6 +9,7 @@ import com.magestore.app.lib.model.config.Config;
 import com.magestore.app.lib.model.config.ConfigCountry;
 import com.magestore.app.lib.model.config.ConfigCustomerGroup;
 import com.magestore.app.lib.model.config.ConfigPriceFormat;
+import com.magestore.app.lib.model.config.ConfigPrint;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.directory.Currency;
 import com.magestore.app.lib.model.setting.ChangeCurrency;
@@ -92,6 +93,8 @@ public interface ConfigService extends Service {
     List<String> getConfigMonths() throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
     Map<String, String> getConfigCCYears() throws InstantiationException, IllegalAccessException, IOException, ParseException;
+
+    ConfigPrint getConfigPrint() throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
     ChangeCurrency changeCurrency(String code) throws InstantiationException, IllegalAccessException, IOException, ParseException;
 

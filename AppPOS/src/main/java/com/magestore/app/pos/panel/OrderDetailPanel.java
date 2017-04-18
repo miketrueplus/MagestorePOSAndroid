@@ -20,6 +20,7 @@ import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.OrderHistoryListController;
 import com.magestore.app.pos.databinding.PanelOrderDetailBinding;
 import com.magestore.app.pos.util.DialogUtil;
+import com.magestore.app.pos.util.PrintUtil;
 import com.magestore.app.pos.view.MagestoreDialog;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,7 +34,7 @@ import java.util.Map;
 public class OrderDetailPanel extends AbstractDetailPanel<Order> {
     View v;
     Order mOrder;
-    Button btn_invoice, btn_take_payment;
+    Button btn_invoice, btn_take_payment, btn_print;
     MagestoreDialog dialog;
     PanelOrderDetailBinding mBinding;
 
@@ -64,6 +65,7 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         btn_take_payment = (Button) v.findViewById(R.id.btn_take_payment);
 
         btn_invoice = (Button) v.findViewById(R.id.btn_invoice);
+        btn_print = (Button) v.findViewById(R.id.btn_print);
 
         fr_detail_bottom_left = (FrameLayout) v.findViewById(R.id.fr_detail_bottom_left);
 
@@ -129,6 +131,13 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
             @Override
             public void onClick(View view) {
                 onClickTakePayment();
+            }
+        });
+
+        btn_print.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PrintUtil.doPint(getContext(), mOrder);
             }
         });
     }

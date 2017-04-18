@@ -12,6 +12,7 @@ import com.magestore.app.lib.connection.Statement;
 import com.magestore.app.lib.model.config.Config;
 import com.magestore.app.lib.model.config.ConfigCountry;
 import com.magestore.app.lib.model.config.ConfigPriceFormat;
+import com.magestore.app.lib.model.config.ConfigPrint;
 import com.magestore.app.lib.model.config.ConfigRegion;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.customer.CustomerAddress;
@@ -30,6 +31,7 @@ import com.magestore.app.lib.parse.ParseException;
 import com.magestore.app.pos.model.config.PosConfigCountry;
 import com.magestore.app.pos.model.config.PosConfigDefault;
 import com.magestore.app.pos.model.config.PosConfigPriceFormat;
+import com.magestore.app.pos.model.config.PosConfigPrint;
 import com.magestore.app.pos.model.config.PosConfigRegion;
 import com.magestore.app.pos.model.customer.PosCustomer;
 import com.magestore.app.pos.model.customer.PosCustomerAddress;
@@ -512,6 +514,30 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         }
 
         return listCCYears;
+    }
+
+    @Override
+    public ConfigPrint getConfigPrint() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        if (mConfig == null) mConfig = new PosConfigDefault();
+
+        String auto_print = (String) mConfig.getValue("webpos/receipt/general/auto_print");
+        String font_type = (String) mConfig.getValue("webpos/receipt/content/font_type");
+        String header_text = (String) mConfig.getValue("webpos/receipt/content/header_text");
+        String footer_text = (String) mConfig.getValue("webpos/receipt/content/footer_text");
+        String show_receipt_logo = (String) mConfig.getValue("webpos/receipt/optional/show_receipt_logo");
+        String show_cashier_name = (String) mConfig.getValue("webpos/receipt/optional/show_cashier_name");
+        String show_comment = (String) mConfig.getValue("webpos/receipt/optional/show_comment");
+
+        ConfigPrint configPrint = new PosConfigPrint();
+        configPrint.setAutoPrint(auto_print);
+        configPrint.setFontType(font_type);
+        configPrint.setHeaderText(header_text);
+        configPrint.setFooterText(footer_text);
+        configPrint.setShowReceiptLogo(show_receipt_logo);
+        configPrint.setShowCashierName(show_cashier_name);
+        configPrint.setShowComment(show_comment);
+
+        return configPrint;
     }
 
     @Override
