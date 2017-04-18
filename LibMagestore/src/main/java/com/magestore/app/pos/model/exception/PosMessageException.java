@@ -11,8 +11,14 @@ import com.magestore.app.pos.model.PosAbstractModel;
  */
 
 public class PosMessageException extends PosAbstractModel implements MessageException {
+    String code;
     String message;
     String trace;
+
+    @Override
+    public String getCode() {
+        return code;
+    }
 
     @Override
     public String getMessage() {

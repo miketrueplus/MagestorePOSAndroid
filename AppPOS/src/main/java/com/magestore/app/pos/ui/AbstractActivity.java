@@ -16,9 +16,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.magestore.app.lib.connection.ConnectionException;
+import com.magestore.app.lib.exception.MagestoreException;
 import com.magestore.app.pos.LoginActivity;
 import com.magestore.app.pos.RegisterShiftActivity;
 import com.magestore.app.pos.SettingActivity;
+import com.magestore.app.pos.view.MagestoreDialog;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.DataUtil;
 import com.magestore.app.view.ui.PosUI;
@@ -123,12 +126,39 @@ public abstract class AbstractActivity
                 .show();
     }
 
+    /**
+     *
+     * @param aString
+     * @return
+     */
+    private String getStringResourceByName(String aString) {
+        String packageName = getPackageName();
+        int resId = getResources().getIdentifier(aString, "string", packageName);
+        return getString(resId);
+    }
+
+    /**
+     * Dịch thông báo lỗi
+     */
+    public String getExceptionMessage(Exception exp) {
+        if (exp instanceof MagestoreException) {
+            String packageName = getPackageName();
+            int resId = getResources().getIdentifier(((MagestoreException) exp).getCode(), "string", packageName);
+            if (resId > 0) return getString(resId);
+        }
+        return exp.getLocalizedMessage();
+    }
+
+    /**
+     * Hiện thông báo lỗi
+     * @param exp
+     */
     public void showErrorMsg(Exception exp) {
         exp.printStackTrace();
         new AlertDialog.Builder(getContext())
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .setTitle(R.string.dialog_warning)
-                    .setMessage(exp.getLocalizedMessage())
+                    .setMessage(getExceptionMessage(exp))
                     .setPositiveButton(R.string.ok, null)
 //                    .setPositiveButton(R.string.reload, new DialogInterface.OnClickListener() {
 //                        @Override

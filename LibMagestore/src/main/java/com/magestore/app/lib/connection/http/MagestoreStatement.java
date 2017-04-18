@@ -351,11 +351,16 @@ public class MagestoreStatement implements Statement {
             rp.setParseImplement(Gson2PosMesssageExceptionImplement.class);
             if (statusCode == 500)  {
                 rp.setParseModel(PosMessageException500.class);
-                throw new ConnectionException(((PosMessageException500) rp.doParse()).getMessage());
+                PosMessageException500 messageException500 = ((PosMessageException500) rp.doParse());
+                throw new ConnectionException(messageException500.getCode(), messageException500.getMessage());
+            }
+            else if (statusCode == 404) {
+                rp.setParseModel(PosMessageException.class);
+                throw new ConnectionException(ConnectionException.EXCEPTION_PAGE_NOT_FOUND, "");
             }
             else {
-                rp.setParseModel(PosMessageException.class);
-                throw new ConnectionException(((PosMessageException) rp.doParse()).getMessage());
+//                rp.setParseModel(PosMessageException.class);
+                throw new ConnectionException(Integer.toString(statusCode), "");
             }
         }
     }

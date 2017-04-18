@@ -352,4 +352,8 @@
 
     <string name="field_optional"> (Optional)</string>
 
+    <!-- Strings related to exception -->
+    <string name="com.magestore.app.lib.connection.ConnectionException.PageNotFoundException">Server is temprory shutting down. Come back later please</string>
+    <string name="com.magestore.app.lib.connection.ConnectionException.UnknowHostException">Server is temprory shutting down. Come back later please</string>
+
 </resources>
