@@ -525,6 +525,7 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         String header_text = (String) mConfig.getValue("webpos/receipt/content/header_text");
         String footer_text = (String) mConfig.getValue("webpos/receipt/content/footer_text");
         String show_receipt_logo = (String) mConfig.getValue("webpos/receipt/optional/show_receipt_logo");
+        String path_logo = (String) mConfig.getValue("webpos/general/webpos_logo_url");
         String show_cashier_name = (String) mConfig.getValue("webpos/receipt/optional/show_cashier_name");
         String show_comment = (String) mConfig.getValue("webpos/receipt/optional/show_comment");
 
@@ -534,6 +535,7 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         configPrint.setHeaderText(header_text);
         configPrint.setFooterText(footer_text);
         configPrint.setShowReceiptLogo(show_receipt_logo);
+        configPrint.setPathLogo(path_logo);
         configPrint.setShowCashierName(show_cashier_name);
         configPrint.setShowComment(show_comment);
 

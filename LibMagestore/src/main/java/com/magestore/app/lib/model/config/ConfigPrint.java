@@ -19,6 +19,8 @@ public interface ConfigPrint extends Model {
     void setFooterText(String strFooterText);
     String getShowReceiptLogo();
     void setShowReceiptLogo(String strShowReceiptLogo);
+    String getPathLogo();
+    void setPathLogo(String strPathLogo);
     String getShowCashierName();
     void setShowCashierName(String strShowCashierName);
     String getShowComment();

@@ -15,6 +15,7 @@ public class PosConfigPrint extends PosAbstractModel implements ConfigPrint {
     String header_text;
     String footer_text;
     String show_receipt_logo;
+    String path_logo;
     String show_cashier_name;
     String show_comment;
 
@@ -66,6 +67,16 @@ public class PosConfigPrint extends PosAbstractModel implements ConfigPrint {
     @Override
     public void setShowReceiptLogo(String strShowReceiptLogo) {
         show_receipt_logo = strShowReceiptLogo;
+    }
+
+    @Override
+    public String getPathLogo() {
+        return path_logo;
+    }
+
+    @Override
+    public void setPathLogo(String strPathLogo) {
+        path_logo = strPathLogo;
     }
 
     @Override

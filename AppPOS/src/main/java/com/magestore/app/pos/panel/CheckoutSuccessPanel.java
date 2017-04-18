@@ -13,6 +13,7 @@ import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.CheckoutListController;
+import com.magestore.app.pos.util.PrintUtil;
 import com.magestore.app.util.DialogUtil;
 
 import java.util.HashMap;
@@ -26,7 +27,7 @@ import java.util.Map;
 
 public class CheckoutSuccessPanel extends AbstractDetailPanel<Order> {
     TextView txt_order_id;
-    Button btn_new_order, btn_send_email;
+    Button btn_new_order, btn_send_email, btn_print;
     CheckoutListController mCheckoutListController;
     EditText edt_email_customer;
     RelativeLayout email_checkout_loading;
@@ -51,6 +52,7 @@ public class CheckoutSuccessPanel extends AbstractDetailPanel<Order> {
     protected void initLayout() {
         super.initLayout();
         txt_order_id = (TextView) findViewById(R.id.order_id);
+        btn_print = (Button) findViewById(R.id.btn_print);
         btn_new_order = (Button) findViewById(R.id.btn_new_order);
         edt_email_customer = (EditText) findViewById(R.id.edt_email_customer);
         btn_send_email = (Button) findViewById(R.id.btn_send_email);
@@ -85,9 +87,15 @@ public class CheckoutSuccessPanel extends AbstractDetailPanel<Order> {
     }
 
     @Override
-    public void bindItem(Order item) {
+    public void bindItem(final Order item) {
         super.bindItem(item);
         txt_order_id.setText(getContext().getString(R.string.checkout_order_id, item.getIncrementId()));
+        btn_print.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PrintUtil.doPint(getContext(), item);
+            }
+        });
     }
 
     /*Felix 4-4-2017 start*/

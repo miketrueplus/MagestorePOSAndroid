@@ -85,7 +85,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="right"
-                            android:text="@{ConfigUtil.formatPrice(orderDetail.getRewardPointsEarn())}"
+                            android:text='@{orderDetail.getRewardPointsEarn() + " " + @string/plugin_reward_title_point}'
                             android:textColor="@color/text_color"
                             android:textSize="@dimen/order_bottom_text_size" />
                     </TableRow>
@@ -109,7 +109,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="right"
-                            android:text="@{ConfigUtil.formatPrice(orderDetail.getRewardPointsSpent())}"
+                            android:text='@{orderDetail.getRewardPointsSpent() + " " + @string/plugin_reward_title_point}'
                             android:textColor="@color/text_color"
                             android:textSize="@dimen/order_bottom_text_size" />
                     </TableRow>
