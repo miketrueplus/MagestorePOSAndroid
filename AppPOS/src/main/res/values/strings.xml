@@ -202,7 +202,7 @@
     <string name="print_header_cashier">CASHIER:</string>
     <string name="print_header_customer">CUSTOMER:</string>
     <string name="print_header_shipping">SHIPPING:</string>
-    <string name="print_footer_default">Thank you for shopping at our stoe. We hope you enjoy your purchase and look forward to serving you again.</string>
+    <string name="print_footer_default">Thank you for shopping at our store. We hope you enjoy your purchase and look forward to serving you again.</string>
 
     <!-- Strings related to single words -->
     <string name="add">Add</string>
