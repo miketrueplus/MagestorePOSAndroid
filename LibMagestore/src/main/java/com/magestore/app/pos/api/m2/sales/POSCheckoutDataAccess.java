@@ -9,11 +9,13 @@ import com.magestore.app.lib.connection.ConnectionFactory;
 import com.magestore.app.lib.connection.ParamBuilder;
 import com.magestore.app.lib.connection.ResultReading;
 import com.magestore.app.lib.connection.Statement;
+import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.checkout.PlaceOrderParams;
 import com.magestore.app.lib.model.checkout.Quote;
 import com.magestore.app.lib.model.checkout.QuoteAddCouponParam;
 import com.magestore.app.lib.model.checkout.SaveQuoteParam;
+import com.magestore.app.lib.model.checkout.payment.Authorizenet;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.parse.ParseException;
 import com.magestore.app.lib.resourcemodel.DataAccessException;
@@ -22,8 +24,10 @@ import com.magestore.app.pos.api.m2.POSAPI;
 import com.magestore.app.pos.api.m2.POSAbstractDataAccess;
 import com.magestore.app.pos.api.m2.POSDataAccessSession;
 import com.magestore.app.pos.model.checkout.PosCheckout;
+import com.magestore.app.pos.model.checkout.payment.PosAuthorizenet;
 import com.magestore.app.pos.model.sales.PosOrder;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosAbstractParseImplement;
+import com.magestore.app.pos.parse.gson2pos.Gson2PosAuthorizenetParseModel;
 import com.magestore.app.util.StringUtil;
 
 import java.io.IOException;
@@ -35,6 +39,8 @@ import java.io.IOException;
  */
 
 public class POSCheckoutDataAccess extends POSAbstractDataAccess implements CheckoutDataAccess {
+    static String CODE_PAYMENT_AUTHORIZENET = "authorizenet_directpost";
+
     private class CheckoutEntity {
         String quote_id = null;
         String shipping_method = null;
@@ -322,7 +328,7 @@ public class POSCheckoutDataAccess extends POSAbstractDataAccess implements Chec
     }
 
     @Override
-    public Order placeOrder(PlaceOrderParams placeOrderParams) throws ParseException, InstantiationException, IllegalAccessException, IOException {
+    public Model placeOrder(PlaceOrderParams placeOrderParams) throws ParseException, InstantiationException, IllegalAccessException, IOException {
         Connection connection = null;
         Statement statement = null;
         ResultReading rp = null;
@@ -337,12 +343,15 @@ public class POSCheckoutDataAccess extends POSAbstractDataAccess implements Chec
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
 
-            // TODO: log params request
-            Gson gson = new Gson();
-            String json = gson.toJson(placeOrderParams);
-            Log.e("JSON", json.toString());
-
             rp = statement.execute(placeOrderParams);
+            if (placeOrderParams.getMethod().equals(CODE_PAYMENT_AUTHORIZENET)) {
+                String json = rp.readResult2String();
+                json = StringUtil.truncateJson(json);
+                Gson2PosAuthorizenetParseModel implement = new Gson2PosAuthorizenetParseModel();
+                Gson gson = implement.createGson();
+                PosAuthorizenet authorizenet = gson.fromJson(json, PosAuthorizenet.class);
+                return (Authorizenet) authorizenet;
+            }
             rp.setParseImplement(getClassParseImplement());
             rp.setParseModel(PosOrder.class);
 
@@ -381,7 +390,7 @@ public class POSCheckoutDataAccess extends POSAbstractDataAccess implements Chec
     }
 
     @Override
-    public String sendEmail(String email, String increment_id) throws ParseException, InstantiationException, IllegalAccessException, IOException{
+    public String sendEmail(String email, String increment_id) throws ParseException, InstantiationException, IllegalAccessException, IOException {
         Connection connection = null;
         Statement statement = null;
         ResultReading rp = null;
@@ -398,11 +407,11 @@ public class POSCheckoutDataAccess extends POSAbstractDataAccess implements Chec
 
             CheckoutEntity checkoutEntity = new CheckoutEntity();
             checkoutEntity.email = email;
-            checkoutEntity.increment_id = increment_id ;
+            checkoutEntity.increment_id = increment_id;
             rp = statement.execute(checkoutEntity);
 
             String json = StringUtil.truncateJson(rp.readResult2String());
-            CheckoutEntity ck = new Gson().fromJson(json,CheckoutEntity.class);
+            CheckoutEntity ck = new Gson().fromJson(json, CheckoutEntity.class);
 
             return ck != null ? ck.message : "";
         } catch (Exception e) {

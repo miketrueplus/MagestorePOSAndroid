@@ -2,6 +2,7 @@ package com.magestore.app.pos.service.checkout;
 
 import android.text.TextUtils;
 
+import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.lib.model.checkout.CheckoutShipping;
@@ -153,7 +154,7 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
     private static String KEY_EXTENSION_CUSTOMER_FULLNAME = "customer_fullname";
 
     @Override
-    public Order placeOrder(String quoteId, Checkout checkout, List<CheckoutPayment> listCheckoutPayment) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+    public Model placeOrder(String quoteId, Checkout checkout, List<CheckoutPayment> listCheckoutPayment) throws IOException, InstantiationException, ParseException, IllegalAccessException {
         PlaceOrderParams placeOrderParams = createPlaceOrderParams();
         placeOrderParams.setQuoteId(quoteId);
         PosPlaceOrderParams.PlaceOrderIntegration placeOrderIntegration = placeOrderParams.createPlaceOrderIntegration();

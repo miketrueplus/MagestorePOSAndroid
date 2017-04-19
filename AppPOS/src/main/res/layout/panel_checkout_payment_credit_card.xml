@@ -28,6 +28,7 @@
             android:background="@drawable/login_form_border_edittext"
             android:lines="1"
             android:padding="@dimen/layout_margin_5"
+            android:text="test"
             android:textColor="@color/text_color"
             android:textSize="@dimen/text_size" />
     </LinearLayout>
@@ -88,6 +89,7 @@
             android:background="@drawable/login_form_border_edittext"
             android:lines="1"
             android:padding="@dimen/layout_margin_5"
+            android:text="4111111111111111"
             android:textColor="@color/text_color"
             android:textSize="@dimen/text_size" />
     </LinearLayout>
@@ -171,6 +173,7 @@
             android:background="@drawable/login_form_border_edittext"
             android:lines="1"
             android:padding="@dimen/layout_margin_5"
+            android:text="123"
             android:textColor="@color/text_color"
             android:textSize="@dimen/text_size" />
     </LinearLayout>

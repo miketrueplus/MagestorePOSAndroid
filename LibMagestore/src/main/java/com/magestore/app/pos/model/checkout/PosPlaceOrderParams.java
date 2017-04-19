@@ -68,6 +68,11 @@ public class PosPlaceOrderParams extends PosAbstractModel implements PlaceOrderP
     }
 
     @Override
+    public String getMethod() {
+        return payment.method;
+    }
+
+    @Override
     public void setMethod(String strMethod) {
         payment.method = strMethod;
     }

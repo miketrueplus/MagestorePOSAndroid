@@ -10,92 +10,104 @@
     tools:context="com.magestore.app.pos.SalesActivity"
     tools:openDrawer="start">
 
-    <LinearLayout
-        android:id="@+id/frameLayout"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:divider="?android:attr/dividerHorizontal"
-        android:orientation="horizontal"
-        android:showDividers="middle"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:id="@+id/frameLayout"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="0.4"
-            android:orientation="vertical">
+            android:divider="?android:attr/dividerHorizontal"
+            android:orientation="horizontal"
+            android:showDividers="middle"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <android.support.design.widget.AppBarLayout
-                android:id="@+id/app_bar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:theme="@style/AppTheme.AppBarOverlay">
-
-                <android.support.v7.widget.Toolbar
-                    android:id="@+id/toolbar_order"
-                    android:layout_width="wrap_content"
-                    android:layout_height="?attr/actionBarSize"
-                    android:layout_alignParentRight="true"
-                    android:layout_gravity="right"
-                    android:gravity="right">
-
-                    <include layout="@layout/toolbar_order" />
-                </android.support.v7.widget.Toolbar>
-            </android.support.design.widget.AppBarLayout>
-
-            <com.magestore.app.pos.panel.CheckoutListPanel
-                android:id="@+id/checkout_list_panel"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                magestore_view:layout_orientation="vertical"
-                magestore_view:layout_panel="@layout/panel_checkout_list"
-                magestore_view:layout_span_count="1" />
-        </LinearLayout>
+                android:layout_weight="0.4"
+                android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.6"
-            android:orientation="vertical">
+                <android.support.design.widget.AppBarLayout
+                    android:id="@+id/app_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/AppTheme.AppBarOverlay">
 
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent">
+                    <android.support.v7.widget.Toolbar
+                        android:id="@+id/toolbar_order"
+                        android:layout_width="wrap_content"
+                        android:layout_height="?attr/actionBarSize"
+                        android:layout_alignParentRight="true"
+                        android:layout_gravity="right"
+                        android:gravity="right">
 
-                <com.magestore.app.pos.panel.ProductListPanel
-                    android:id="@+id/product_list_panel"
+                        <include layout="@layout/toolbar_order" />
+                    </android.support.v7.widget.Toolbar>
+                </android.support.design.widget.AppBarLayout>
+
+                <com.magestore.app.pos.panel.CheckoutListPanel
+                    android:id="@+id/checkout_list_panel"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    magestore_view:layout_item="@layout/card_product_list_content"
-                    magestore_view:layout_item_content="@+id/content_product_list_card_view"
-                    magestore_view:layout_list="@+id/product_list"
-                    magestore_view:layout_msg="@+id/txt_msg_product_list"
                     magestore_view:layout_orientation="vertical"
-                    magestore_view:layout_panel="@layout/panel_product_list"
-                    magestore_view:layout_progress="@+id/progress_product_list"
-                    magestore_view:layout_progress_bottom="@+id/progress_product_list_bottom"
-                    magestore_view:layout_progress_top="@+id/progress_product_list_top"
-                    magestore_view:layout_search="@+id/panel_search_product"
-                    magestore_view:layout_span_count="4"
-                    magestore_view:page_first="1"
-                    magestore_view:page_size="20"
-                    magestore_view:page_size_max="500" />
+                    magestore_view:layout_panel="@layout/panel_checkout_list"
+                    magestore_view:layout_span_count="1" />
+            </LinearLayout>
 
-                <com.magestore.app.pos.panel.CheckoutDetailPanel
-                    android:id="@+id/checkout_detail_panel"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:visibility="gone"
-                    magestore_view:layout_panel="@layout/panel_checkout_detail" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.6"
+                android:orientation="vertical">
 
-                <com.magestore.app.pos.panel.CheckoutSuccessPanel
-                    android:id="@+id/checkout_success_panel"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:visibility="gone"
-                    magestore_view:layout_panel="@layout/panel_checkout_success" />
-            </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
+
+                    <com.magestore.app.pos.panel.ProductListPanel
+                        android:id="@+id/product_list_panel"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        magestore_view:layout_item="@layout/card_product_list_content"
+                        magestore_view:layout_item_content="@+id/content_product_list_card_view"
+                        magestore_view:layout_list="@+id/product_list"
+                        magestore_view:layout_msg="@+id/txt_msg_product_list"
+                        magestore_view:layout_orientation="vertical"
+                        magestore_view:layout_panel="@layout/panel_product_list"
+                        magestore_view:layout_progress="@+id/progress_product_list"
+                        magestore_view:layout_progress_bottom="@+id/progress_product_list_bottom"
+                        magestore_view:layout_progress_top="@+id/progress_product_list_top"
+                        magestore_view:layout_search="@+id/panel_search_product"
+                        magestore_view:layout_span_count="4"
+                        magestore_view:page_first="1"
+                        magestore_view:page_size="20"
+                        magestore_view:page_size_max="500" />
+
+                    <com.magestore.app.pos.panel.CheckoutDetailPanel
+                        android:id="@+id/checkout_detail_panel"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:visibility="gone"
+                        magestore_view:layout_panel="@layout/panel_checkout_detail" />
+
+                    <com.magestore.app.pos.panel.CheckoutSuccessPanel
+                        android:id="@+id/checkout_success_panel"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:visibility="gone"
+                        magestore_view:layout_panel="@layout/panel_checkout_success" />
+                </RelativeLayout>
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
+
+        <com.magestore.app.pos.panel.CheckoutPaymentWebviewPanel
+            android:id="@+id/checkout_webview_panel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            magestore_view:layout_panel="@layout/panel_checkout_webview" />
+    </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>
 

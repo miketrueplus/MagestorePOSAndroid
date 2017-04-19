@@ -1,5 +1,6 @@
 package com.magestore.app.lib.service.checkout;
 
+import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.checkout.CheckoutShipping;
 import com.magestore.app.lib.model.checkout.CheckoutPayment;
@@ -43,7 +44,7 @@ public interface CheckoutService extends ListService<Checkout> {
 
     Checkout savePayment(String quoteId, String paymentCode) throws IOException, InstantiationException, ParseException, IllegalAccessException;
 
-    Order placeOrder(String quoteId, Checkout checkout, List<CheckoutPayment> listCheckoutPayment) throws IOException, InstantiationException, ParseException, IllegalAccessException;
+    Model placeOrder(String quoteId, Checkout checkout, List<CheckoutPayment> listCheckoutPayment) throws IOException, InstantiationException, ParseException, IllegalAccessException;
 
     void updateCartItemWithServerRespone(Checkout oldCheckout, Checkout newCheckout);
 

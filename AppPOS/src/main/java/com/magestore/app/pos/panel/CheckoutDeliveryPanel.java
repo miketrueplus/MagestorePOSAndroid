@@ -39,7 +39,7 @@ public class CheckoutDeliveryPanel extends AbstractDetailPanel<Checkout> {
 
     @Override
     protected void initLayout() {
-        View view = inflate(getContext(), R.layout.panel_checkout_delivery_panel, null);
+        View view = inflate(getContext(), R.layout.panel_checkout_delivery, null);
         addView(view);
 
         delivery_date = (DatePicker) view.findViewById(R.id.delivery_date);

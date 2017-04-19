@@ -1,12 +1,15 @@
 package com.magestore.app.pos;
 
 
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
@@ -20,6 +23,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
+import com.edwardvanraak.materialbarcodescanner.MaterialBarcodeScanner;
 import com.magestore.app.lib.context.MagestoreContext;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.observ.GenericState;
@@ -53,6 +57,7 @@ import com.magestore.app.pos.panel.CheckoutDetailPanel;
 import com.magestore.app.pos.panel.CheckoutListPanel;
 import com.magestore.app.pos.panel.CheckoutPaymentCreditCardPanel;
 import com.magestore.app.pos.panel.CheckoutPaymentListPanel;
+import com.magestore.app.pos.panel.CheckoutPaymentWebviewPanel;
 import com.magestore.app.pos.panel.CheckoutShippingListPanel;
 import com.magestore.app.pos.panel.CheckoutSuccessPanel;
 import com.magestore.app.pos.panel.PaymentMethodListPanel;
@@ -74,13 +79,16 @@ public class SalesActivity extends AbstractActivity
         PosUI {
     MagestoreContext magestoreContext;
     ServiceFactory factory;
+    public static int REQUEST_PERMISSON_CAMERA = 12;
+
     // 2 pane
     private boolean mTwoPane;
 
     // Panel chứa danh sách mặt hàng và đơn hàng
     private ProductListPanel mProductListPanel;
     private CheckoutListPanel mCheckoutListPanel;
-    protected CheckoutDetailPanel mCheckoutDetailPanel;
+    private CheckoutDetailPanel mCheckoutDetailPanel;
+    private CheckoutPaymentWebviewPanel mCheckoutPaymentWebviewPanel;
     private CheckoutShippingListPanel mCheckoutShippingListPanel;
     private CheckoutPaymentListPanel mCheckoutPaymentListPanel;
 
@@ -172,6 +180,8 @@ public class SalesActivity extends AbstractActivity
 
         // order success panel
         mCheckoutSuccessPanel = (CheckoutSuccessPanel) findViewById(R.id.checkout_success_panel);
+        // checkout payment webview
+        mCheckoutPaymentWebviewPanel = (CheckoutPaymentWebviewPanel) findViewById(R.id.checkout_webview_panel);
 
         // cart item panel
         mCartItemListPanel = (CartItemListPanel) mCheckoutListPanel.findViewById(R.id.order_item_panel);
@@ -268,6 +278,7 @@ public class SalesActivity extends AbstractActivity
         mCheckoutListController.setCartOrderListPanel(mCartOrderListPanel);
         mCheckoutListController.setCheckoutAddressListPanel(mCheckoutAddressListPanel);
         mCheckoutListController.setCheckoutSuccessPanel(mCheckoutSuccessPanel);
+        mCheckoutListController.setCheckoutPaymentWebviewPanel(mCheckoutPaymentWebviewPanel);
         mCheckoutListController.setCheckoutPaymentCreditCardPanel(mCheckoutPaymentCreditCardPanel);
         mCheckoutListController.setCartItemDetailPanel(mCartItemDetailPanel);
         mCheckoutListController.setPluginsService(pluginsService);
@@ -327,6 +338,7 @@ public class SalesActivity extends AbstractActivity
         mCartOrderListPanel.setCheckoutListController(mCheckoutListController);
         mCheckoutAddressListPanel.setController(mCheckoutListController);
         mCheckoutSuccessPanel.setCheckoutListController(mCheckoutListController);
+        mCheckoutPaymentWebviewPanel.setCheckoutListController(mCheckoutListController);
         mCheckoutPaymentCreditCardPanel.setCheckoutListController(mCheckoutListController);
 
         mCartItemDetailPanel.setCheckoutListController(mCheckoutListController);
@@ -541,4 +553,20 @@ public class SalesActivity extends AbstractActivity
             //  nhận sự kiện khi click vào re-order trong order history, mOorder là static đã được gán ở bên OrderHistoryController
         }
     };
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode != MaterialBarcodeScanner.RC_HANDLE_CAMERA_PERM) {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            return;
+        }
+        if (requestCode == REQUEST_PERMISSON_CAMERA) {
+            for (int i = 0; i < permissions.length; i++) {
+                if (permissions[i].equals(Manifest.permission.CAMERA)
+                        && grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                    mProductListPanel.scanBarcode();
+                }
+            }
+        }
+    }
 }

@@ -1,12 +1,17 @@
 package com.magestore.app.pos.panel;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.edwardvanraak.materialbarcodescanner.MaterialBarcodeScanner;
 import com.edwardvanraak.materialbarcodescanner.MaterialBarcodeScannerBuilder;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -16,6 +21,7 @@ import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.panel.SearchAutoCompletePanel;
 import com.magestore.app.lib.view.item.ModelView;
 import com.magestore.app.pos.R;
+import com.magestore.app.pos.SalesActivity;
 import com.magestore.app.pos.controller.CategoryListController;
 import com.magestore.app.pos.controller.ProductListController;
 import com.magestore.app.pos.databinding.CardProductListContentBinding;
@@ -40,6 +46,7 @@ public class ProductListPanel extends AbstractListPanel<Product> {
 
     /**
      * Khởi tạo
+     *
      * @param context
      */
     public ProductListPanel(Context context) {
@@ -48,6 +55,7 @@ public class ProductListPanel extends AbstractListPanel<Product> {
 
     /**
      * Khởi tạo
+     *
      * @param context
      * @param attrs
      */
@@ -57,6 +65,7 @@ public class ProductListPanel extends AbstractListPanel<Product> {
 
     /**
      * Khởi tạo
+     *
      * @param context
      * @param attrs
      * @param defStyleAttr
@@ -67,6 +76,7 @@ public class ProductListPanel extends AbstractListPanel<Product> {
 
     /**
      * Chỉ định list category
+     *
      * @param mCategoryListController
      */
     public void setCategoryListController(CategoryListController mCategoryListController) {
@@ -91,12 +101,12 @@ public class ProductListPanel extends AbstractListPanel<Product> {
         toolbar_category.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(fr_category.getVisibility() == VISIBLE){
+                if (fr_category.getVisibility() == VISIBLE) {
                     im_category_arrow.setRotation(0);
                     fr_category.setVisibility(GONE);
 //                    mController.doRetrieve();
                     ((ProductListController) mController).bindCategory((Category) null);
-                }else{
+                } else {
                     im_category_arrow.setRotation(180);
                     fr_category.setVisibility(VISIBLE);
                 }
@@ -106,15 +116,27 @@ public class ProductListPanel extends AbstractListPanel<Product> {
         toolbar_barcode.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                startScan(mSearchAutoCompletePanel);
+                startScan();
             }
         });
     }
 
-    private void startScan(final SearchAutoCompletePanel panelSearch) {
+    private void startScan() {
         /**
          * Build a new MaterialBarcodeScanner
          */
+        String cameraPermission = Manifest.permission.CAMERA;
+        int permissionCheck = ContextCompat.checkSelfPermission(((ProductListController) mController).getMagestoreContext().getActivity(), cameraPermission);
+        if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
+            scanBarcode();
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                ((ProductListController) mController).getMagestoreContext().getActivity().requestPermissions(new String[]{cameraPermission}, SalesActivity.REQUEST_PERMISSON_CAMERA);
+            }
+        }
+    }
+
+    public void scanBarcode(){
         final MaterialBarcodeScanner materialBarcodeScanner = new MaterialBarcodeScannerBuilder()
                 .withActivity(((ProductListController) mController).getMagestoreContext().getActivity())
                 .withEnableAutoFocus(true)
@@ -124,8 +146,8 @@ public class ProductListPanel extends AbstractListPanel<Product> {
                 .withResultListener(new MaterialBarcodeScanner.OnResultListener() {
                     @Override
                     public void onResult(Barcode barcode) {
-                        panelSearch.getAutoTextView().setText(barcode.rawValue);
-                        panelSearch.actionSearch();
+                        mSearchAutoCompletePanel.getAutoTextView().setText(barcode.rawValue);
+                        mSearchAutoCompletePanel.actionSearch();
                     }
                 })
                 .build();
@@ -134,6 +156,7 @@ public class ProductListPanel extends AbstractListPanel<Product> {
 
     /**
      * Hold ayout view của iten, gán findview id vào các biến
+     *
      * @param view
      * @return
      */
@@ -160,6 +183,7 @@ public class ProductListPanel extends AbstractListPanel<Product> {
 
         /**
          * Hold layout item trong view
+         *
          * @param view
          */
         @Override
@@ -175,6 +199,7 @@ public class ProductListPanel extends AbstractListPanel<Product> {
 
         /**
          * Đặt nội dung item trong view
+         *
          * @param item
          * @param position
          */

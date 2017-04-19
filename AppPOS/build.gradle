@@ -3,6 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 24
     buildToolsVersion '25.0.2'
+    useLibrary 'org.apache.http.legacy'
     defaultConfig {
         applicationId "com.magestore.app.pos"
         minSdkVersion 15
@@ -51,4 +52,5 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.edwardvanraak:MaterialBarcodeScanner:0.0.6-ALPHA'
     compile 'com.google.android:flexbox:0.2.6'
+    compile 'org.apache.httpcomponents:httpclient:4.5'
 }

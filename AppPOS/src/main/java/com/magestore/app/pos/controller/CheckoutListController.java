@@ -11,6 +11,7 @@ import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.lib.model.checkout.CheckoutShipping;
 import com.magestore.app.lib.model.checkout.QuoteAddCouponParam;
 import com.magestore.app.lib.model.checkout.SaveQuoteParam;
+import com.magestore.app.lib.model.checkout.payment.Authorizenet;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.model.directory.Currency;
@@ -30,6 +31,7 @@ import com.magestore.app.pos.panel.CheckoutDetailPanel;
 import com.magestore.app.pos.panel.CheckoutListPanel;
 import com.magestore.app.pos.panel.CheckoutPaymentCreditCardPanel;
 import com.magestore.app.pos.panel.CheckoutPaymentListPanel;
+import com.magestore.app.pos.panel.CheckoutPaymentWebviewPanel;
 import com.magestore.app.pos.panel.CheckoutShippingListPanel;
 import com.magestore.app.pos.panel.CheckoutSuccessPanel;
 import com.magestore.app.pos.panel.PaymentMethodListPanel;
@@ -88,6 +90,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     CartOrderListPanel mCartOrderListPanel;
     CheckoutAddressListPanel mCheckoutAddressListPanel;
     CheckoutSuccessPanel mCheckoutSuccessPanel;
+    CheckoutPaymentWebviewPanel mCheckoutPaymentWebviewPanel;
     CheckoutPaymentCreditCardPanel mCheckoutPaymentCreditCardPanel;
     CartItemDetailPanel mCartItemDetailPanel;
     Context context;
@@ -395,6 +398,8 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             checkout.setCreateInvoice(((CheckoutDetailPanel) mDetailView).isCreateInvoice());
             checkout.setNote(((CheckoutDetailPanel) mDetailView).getNote());
             checkout.setDeliveryDate(getSelectedItem().getDeliveryDate());
+            wraper.put("save_shipping", checkout);
+            wraper.put("save_cart", checkout);
             String quoteId = getSelectedItem().getQuoteId();
             wraper.put("place_order", ((CheckoutService) getListService()).placeOrder(quoteId, checkout, listCheckoutPayment));
             return true;
@@ -673,12 +678,27 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         } else if (success && actionType == ACTION_TYPE_SAVE_PAYMENT) {
             Checkout checkout = (Checkout) wraper.get("save_payment");
         } else if (success && actionType == ACTION_TYPE_PLACE_ORDER) {
-            Order order = (Order) wraper.get("place_order");
-            getSelectedItem().setOrderSuccess(order);
-            isShowButtonCheckout(false);
-            isShowSalesMenuDiscount(false);
-            mCheckoutSuccessPanel.bindItem(order);
-            doShowDetailSuccess(true, order);
+            Checkout checkout = checkDataCheckout((Checkout) wraper.get("save_shipping"));
+            List<CheckoutPayment> listCheckoutPayment = (List<CheckoutPayment>) wraper.get("list_payment");
+            String payment_code = "";
+            if (listCheckoutPayment != null && listCheckoutPayment.size() > 0) {
+                payment_code = listCheckoutPayment.get(0).getCode();
+            }
+            if (!StringUtil.isNullOrEmpty(payment_code) && payment_code.equals("authorizenet_directpost")) {
+                Authorizenet authorizenet = (Authorizenet) wraper.get("place_order");
+                isShowButtonCheckout(false);
+                isShowSalesMenuDiscount(false);
+                mCheckoutPaymentWebviewPanel.setAuthorizenet(authorizenet);
+                mCheckoutPaymentWebviewPanel.initValue();
+                doShowCheckoutWebview(true);
+            } else {
+                Order order = (Order) wraper.get("place_order");
+                getSelectedItem().setOrderSuccess(order);
+                isShowButtonCheckout(false);
+                isShowSalesMenuDiscount(false);
+                mCheckoutSuccessPanel.bindItem(order);
+                doShowDetailSuccess(true, order);
+            }
 
             // hoàn thành place order hiden progressbar
             isShowLoadingDetail(false);
@@ -920,7 +940,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                     if (shipping != null) {
                         ((CheckoutDetailPanel) mDetailView).selectDefaultShippingMethod(shipping);
                     } else {
-                        ((CheckoutDetailPanel) mDetailView).selectDefaultShippingMethod(listShipping.get(0));
+                        ((CheckoutDetailPanel) mDetailView).selectDefaultShippingMethod(null);
                     }
                 }
             }
@@ -1011,6 +1031,10 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     public void doShowDetailSuccess(boolean show, Order order) {
         mCheckoutSuccessPanel.setVisibility(show ? View.VISIBLE : View.GONE);
         if (show && order != null) mCheckoutSuccessPanel.fillEmailCustomer(order);
+    }
+
+    public void doShowCheckoutWebview(boolean show){
+        mCheckoutPaymentWebviewPanel.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
     public void doShowDetailSuccess(boolean show) {
@@ -1615,6 +1639,10 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
     public void setCheckoutSuccessPanel(CheckoutSuccessPanel mCheckoutSuccessPanel) {
         this.mCheckoutSuccessPanel = mCheckoutSuccessPanel;
+    }
+
+    public void setCheckoutPaymentWebviewPanel(CheckoutPaymentWebviewPanel mCheckoutPaymentWebviewPanel) {
+        this.mCheckoutPaymentWebviewPanel = mCheckoutPaymentWebviewPanel;
     }
 
     public void setCheckoutPaymentCreditCardPanel(CheckoutPaymentCreditCardPanel mCheckoutPaymentCreditCardPanel) {
