@@ -28,6 +28,18 @@
             android:layout_alignParentBottom="true"
             android:background="@color/line" />
 
+        <include
+            android:id="@+id/rl_order_status"
+            layout="@layout/order_list_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/line"
+            android:layout_alignParentBottom="true"
+            android:background="@color/line" />
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">

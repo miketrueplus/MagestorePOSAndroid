@@ -157,6 +157,12 @@
     <string name="order_cancel_title">Cancel Comment</string>
     <string name="order_cancel_comment_title">Reason to cancel order</string>
     <string name="order_cancel_success">The order has been canceled successfully.</string>
+    <string name="order_status_pending">Pending</string>
+    <string name="order_status_processing">Processing</string>
+    <string name="order_status_complete">Complete</string>
+    <string name="order_status_cancelled">Cancelled</string>
+    <string name="order_status_closed">Closed</string>
+    <string name="order_status_not_sync">Not Sync</string>
 
     <!--Strings related to register shift-->
     <string name="register_shift_list_open"> - OPEN</string>
