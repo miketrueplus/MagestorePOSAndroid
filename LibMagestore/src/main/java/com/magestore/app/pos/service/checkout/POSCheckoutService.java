@@ -527,7 +527,7 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         for (CartItem item : checkout.getCartItem()) {
             QuoteItems quoteItems = createQuoteItems();
             quoteItems.setQty(item.getQuantity());
-            quoteItems.setCustomPrice(0);
+            quoteItems.setCustomPrice(item.getUnitPrice());
             quoteItems.setAmount(item.getQuantity());
             quoteItems.setId(item.getID());
             quoteItems.setItemId(item.getItemId());

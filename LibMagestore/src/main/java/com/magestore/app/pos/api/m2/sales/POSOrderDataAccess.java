@@ -177,6 +177,7 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
                     .setFilterLike("customer_email", finalSearchString)
                     .setFilterLike("customer_firstname", finalSearchString)
                     .setFilterLike("customer_lastname", finalSearchString)
+                    .setFilterIn("status", finalSearchString)
                     .setSortOrderDESC("created_at")
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
 

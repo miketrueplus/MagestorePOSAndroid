@@ -324,6 +324,7 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
                 // Đăng nhập không thành công, báo lỗi và yêu cầu nhập lại
                 mPasswordView.setError(getString(R.string.login_error_incorrect_password));
                 mPasswordView.requestFocus();
+                showProgress(false);
             }
         }
 
