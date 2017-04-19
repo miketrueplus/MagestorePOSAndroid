@@ -261,7 +261,7 @@ public class POSCartService extends AbstractService implements CartService {
         cartItem.insertOption("is_virtual", cartItem.isShipable() ? StringUtil.STRING_ZERO : StringUtil.STRING_ONE);
         cartItem.insertOption("price", Float.toString(cartItem.getUnitPrice()));
         cartItem.insertOption("tax_class_id", StringUtil.STRING_ZERO);
-
+        cartItem.getProduct().setID(cartItem.getProduct().getName() + "_" + Float.toString(cartItem.getUnitPrice()));
         return insertWithOption(checkout, cartItem);
     }
 
@@ -647,16 +647,16 @@ public class POSCartService extends AbstractService implements CartService {
         } else {
             // Kiểm tra xem đã có item với mặt hàng tương ứng chưa
             for (CartItem item : listItems) {
-                if (item.isTypeCustom()) {
-                    cartItem = item;
-                } else {
+//                if (item.isTypeCustom()) {
+//                    cartItem = item;
+//                } else {
                     String itemID = item.getProduct().getID();
                     if (itemID == null) continue;
                     if (itemID.equals(product.getID())) {
                         cartItem = item;
                         break;
                     }
-                }
+//                }
             }
 
             // xóa khỏi danh sách checkout
