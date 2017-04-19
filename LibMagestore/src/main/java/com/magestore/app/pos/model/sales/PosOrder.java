@@ -34,6 +34,8 @@ public class PosOrder extends PosAbstractModel implements Order {
     float base_gift_voucher_discount = 0;
     float base_customercredit_discount = 0;
     float customercredit_discount = 0;
+    float webpos_change = 0;
+    float webpos_base_change = 0;
     private String webpos_staff_id;
     private String webpos_staff_name;
     private String webpos_delivery_date;
@@ -170,6 +172,16 @@ public class PosOrder extends PosAbstractModel implements Order {
     @Override
     public OrderItemsInfoBuy getItemsInfoBuy() {
         return items_info_buy;
+    }
+
+    @Override
+    public float getWebposChange() {
+        return webpos_change;
+    }
+
+    @Override
+    public float getWebposBaseChange() {
+        return webpos_base_change;
     }
 
     @Override

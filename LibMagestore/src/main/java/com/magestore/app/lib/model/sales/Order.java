@@ -22,6 +22,10 @@ public interface Order extends Model {
 
     OrderItemsInfoBuy getItemsInfoBuy();
 
+    float getWebposChange();
+
+    float getWebposBaseChange();
+
     float getGiftVoucherDiscount();
 
     float getRewardPointsEarn();

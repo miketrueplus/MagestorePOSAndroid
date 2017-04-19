@@ -166,11 +166,11 @@ public class PrintUtil {
         // change
         String body_content_change = "";
         String title_total_change = context.getString(R.string.order_detail_bottom_tb_total_change).toUpperCase();
-        float total_change = order.getTotalPaid() - order.getGrandTotal();
+        float total_change = order.getWebposChange();
         if (total_change > 0) {
             body_content_change = "<tr><td style=\"font-family: monospace;\">" + title_total_change + "</td><td align=\"right\" style=\"font-family: monospace;\"><strong style=\"font-family: monospace;\">" + ConfigUtil.formatPrice(total_change) + "</strong></td></tr>";
         }
-        String body_content_total = "<tbody style=\"display: table-row-group;\">" + body_content_line + body_content_total_subtotal + body_content_earn_point + body_content_spend_point + body_content_total_shipping + body_content_total_tax + body_content_total_discount + body_content_giftcard_discount + body_content_reward_discount + body_content_grandtotal + body_content_total_paid + body_content_total_due + body_content_line + body_content_payment + body_content_change + "</tbody>";
+        String body_content_total = "<tbody style=\"display: table-row-group;\">" + body_content_total_subtotal + body_content_earn_point + body_content_spend_point + body_content_total_shipping + body_content_total_tax + body_content_total_discount + body_content_giftcard_discount + body_content_reward_discount + body_content_grandtotal + body_content_total_paid + body_content_total_due + body_content_line + body_content_payment + body_content_change + "</tbody>";
         String body_content_totals = "<div style=\"font-size: 13px; display: block; font-family: monospace; margin-bottom: 7px;\"><table style=\"width: 100%;\">" + body_content_total + "</table></div>";
         // comments
         String title_comment = context.getString(R.string.order_add_comment_title);
