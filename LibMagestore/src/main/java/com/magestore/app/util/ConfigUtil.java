@@ -181,6 +181,11 @@ public class ConfigUtil {
         return mFloatFormat;
     }
 
+//    private static boolean isPriceEqual(float a, float b) {
+//         Math.abs(a - b)
+//        getFloatFormat().getMinimumFractionDigits()
+//    }
+
     private static DecimalFormat getIntegerFormat() {
         if (mIntegerFormat == null) {
             mIntegerFormat = new DecimalFormat();
