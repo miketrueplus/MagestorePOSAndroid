@@ -62,6 +62,7 @@ public class OrderActivity extends AbstractActivity {
         initModel();
         initValue();
         super.setheader();
+        super.changeBackgroundSelect();
     }
 
     @Override

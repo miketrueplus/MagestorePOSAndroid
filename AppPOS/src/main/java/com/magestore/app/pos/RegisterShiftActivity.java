@@ -41,6 +41,7 @@ public class RegisterShiftActivity extends AbstractActivity {
         initValue();
 
         super.setheader();
+        super.changeBackgroundSelect();
     }
 
     @Override

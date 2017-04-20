@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -31,6 +32,11 @@ import com.magestore.app.pos.OrderActivity;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.SalesActivity;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Created by Mike on 12/24/2016.
  * Magestore
@@ -43,6 +49,8 @@ public abstract class AbstractActivity
         PosUI,
         NavigationView.OnNavigationItemSelectedListener {
     TextView staff_name, staff_location;
+    private static int positionSelectActivity = -1;
+    Map<Integer, LinearLayout> listActivity = new HashMap<>();
 
     /**
      * Cấu hình lại các control layout
@@ -281,6 +289,11 @@ public abstract class AbstractActivity
         nav_order_history.setOnClickListener(onClickNav);
         nav_customer.setOnClickListener(onClickNav);
         nav_general.setOnClickListener(onClickNav);
+        listActivity.put(0, nav_logout);
+        listActivity.put(-1, nav_checkout);
+        listActivity.put(1, nav_order_history);
+        listActivity.put(2, nav_customer);
+        listActivity.put(3, nav_general);
     }
 
     View.OnClickListener onClickNav = new View.OnClickListener() {
@@ -288,6 +301,7 @@ public abstract class AbstractActivity
         public void onClick(View view) {
             int id = view.getId();
             if (id == R.id.nav_customer) {
+                positionSelectActivity = 2;
                 if (!(AbstractActivity.this instanceof CustomerActivity)) {
                     Intent intent = new Intent(getContext(), CustomerActivity.class);
                     startActivity(intent);
@@ -296,6 +310,7 @@ public abstract class AbstractActivity
                 if (!(AbstractActivity.this instanceof SalesActivity)) finish();
             } else if (id == R.id.nav_order_history) {
                 if (!(AbstractActivity.this instanceof OrderActivity)) {
+                    positionSelectActivity = 1;
                     Intent intent = new Intent(getContext(), OrderActivity.class);
                     startActivity(intent);
                 }
@@ -306,11 +321,13 @@ public abstract class AbstractActivity
 //            Intent intent = new Intent(getContext(), RegisterShiftActivity.class);
 //            startActivity(intent);
             } else if (id == R.id.nav_general) {
+                positionSelectActivity = 3;
                 if (!(AbstractActivity.this instanceof SettingActivity)) {
                     Intent intent = new Intent(getContext(), SettingActivity.class);
                     startActivity(intent);
                 }
             } else if (id == R.id.nav_logout) {
+                positionSelectActivity = 0;
                 backToLoginActivity();
             }
 
@@ -318,4 +335,14 @@ public abstract class AbstractActivity
             if (drawer != null) drawer.closeDrawer(GravityCompat.START);
         }
     };
+
+    public void changeBackgroundSelect() {
+        for (Map.Entry<Integer, LinearLayout> entry : listActivity.entrySet()) {
+            int position = entry.getKey();
+            if (position == positionSelectActivity) {
+                LinearLayout layout = entry.getValue();
+                layout.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.menu_left_select_color));
+            }
+        }
+    }
 }

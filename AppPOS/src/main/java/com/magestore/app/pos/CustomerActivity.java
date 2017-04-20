@@ -54,6 +54,7 @@ public class CustomerActivity extends AbstractActivity {
         initValue();
 
         super.setheader();
+        super.changeBackgroundSelect();
     }
 
     @Override

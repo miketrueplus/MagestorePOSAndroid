@@ -40,6 +40,7 @@ public class SettingActivity extends AbstractActivity {
         initValue();
 
         super.setheader();
+        super.changeBackgroundSelect();
     }
 
     @Override

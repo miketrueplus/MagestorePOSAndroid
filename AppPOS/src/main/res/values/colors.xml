@@ -23,6 +23,7 @@
     <color name="menu_left_header_background">#202835</color>
     <color name="menu_left_line">#343E4A</color>
     <color name="menu_left_title_text_color">#fff</color>
+    <color name="menu_left_select_color">#90ffffff</color>
     <color name="menu_left_text_color">#76808d</color>
     <color name="menu_category_text_color">#ffffff</color>
 
