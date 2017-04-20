@@ -66,7 +66,7 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
 
     @Override
     public boolean haveCustomPriceOrDiscount() {
-        return  Float.compare(getUnitPrice(), getOriginalPrice()) == 0;
+        return  Float.compare(getUnitPrice(), getOriginalPrice()) != 0;
     }
 
     @Override
