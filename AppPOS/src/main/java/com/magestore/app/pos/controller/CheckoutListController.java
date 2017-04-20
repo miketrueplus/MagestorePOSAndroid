@@ -756,8 +756,8 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         Checkout checkout = ((CheckoutService) getListService()).create();
         checkout.setCustomerID(guest_checkout.getID());
         checkout.setCustomer(guest_checkout);
-        bindCustomer(guest_checkout);
         setSelectedItem(checkout);
+        bindCustomer(guest_checkout);
         getSelectedItems().add(checkout);
         mItem = checkout;
         isShowButtonCheckout(true);

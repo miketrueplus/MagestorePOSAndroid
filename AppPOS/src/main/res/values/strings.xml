@@ -73,7 +73,7 @@
     <string name="customer_add_new_success">The customer is saved successfully.</string>
     <string name="customer_add_new_address">Add Address</string>
     <string name="customer_company_optional">Company (Optional)</string>
-    <string name="customer_street_optional">Street (Optional)</string>
+    <string name="customer_street_optional">Street2 (Optional)</string>
     <string name="customer_state_or_province_optional">State or Province (Optional)</string>
     <string name="customer_vat_optional">VAT (Optional)</string>
     <string name="customer_default_address">User Store Address</string>
@@ -303,7 +303,7 @@
     <string name="sku">SKU</string>
     <string name="state">State</string>
     <string name="state_or_province">State or Province</string>
-    <string name="street">Street</string>
+    <string name="street">Street1</string>
     <string name="store">Store</string>
     <string name="submit">Submit</string>
     <string name="sub_total">Sub Total</string>
