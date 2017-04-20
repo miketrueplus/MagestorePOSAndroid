@@ -140,7 +140,8 @@ public class CartItemListPanel extends AbstractListPanel<CartItem> {
                     // không cho xóa nếu trạng thái không cho thay đổi caritem
                     if (!((CartItemListController)getController()).isAllowChangeCartItem()) return;
                     if (getModelView() == null || getModelView().getModel() == null) return;
-                    ((CartItemListController)getController()).deleteProduct(((CartItem)getModelView().getModel()).getProduct());
+                    ((CartItemListController)getController()).deleteCartITem((CartItem)getModelView().getModel());
+//                    ((CartItemListController)getController()).deleteProduct(((CartItem)getModelView().getModel()).getProduct());
                 }
             });
 
