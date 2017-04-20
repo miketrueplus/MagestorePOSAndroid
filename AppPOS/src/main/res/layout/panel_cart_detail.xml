@@ -138,6 +138,7 @@
                         android:layout_height="@dimen/cart_option_edittext_size"
                         android:background="@color/card_option_bg_select"
                         android:onClick="@{panel.onCustomPriceChangeToFixed}"
+                        android:text="@{ConfigUtil.getCurrencySymbol()}"
                         android:textColor="@color/card_option_text_select"
                         android:textSize="@dimen/text_size" />
 
@@ -194,6 +195,7 @@
                         android:background="@color/card_option_bg_select"
                         android:onClick="@{panel.onDiscountChangeToFixed}"
                         android:textColor="@color/card_option_text_select"
+                        android:text="@{ConfigUtil.getCurrencySymbol()}"
                         android:textSize="@dimen/text_size" />
 
                     <Button
