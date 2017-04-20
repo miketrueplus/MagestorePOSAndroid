@@ -615,17 +615,22 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
             //  cập nhật giá
             ((CheckoutService) getListService()).updateTotal(checkout);
+            getSelectedItem().setDiscountTitle(checkout.getDiscountTitle());
+            getSelectedItem().setDiscountTotal(checkout.getDiscountTotal());
 
             if (!checkDiscount(checkout)) {
                 showButtonRemoveDiscount(false);
             }
 
             ((CheckoutListPanel) mView).updateTotalPrice(checkout);
+            mCartItemListController.updateTotalPrice();
             ((CheckoutListPanel) mView).showLoading(false);
         } else if (success && actionType == ACTION_TYPE_ADD_COUPON_TO_QUOTE) {
             Checkout checkout = (Checkout) wraper.get("save_add_coupon_to_quote");
             //  cập nhật giá
             ((CheckoutService) getListService()).updateTotal(checkout);
+            getSelectedItem().setDiscountTitle(checkout.getDiscountTitle());
+            getSelectedItem().setDiscountTotal(checkout.getDiscountTotal());
             ((CheckoutListPanel) mView).updateTotalPrice(checkout);
             ((CheckoutListPanel) mView).showLoading(false);
         } else if (success && actionType == ACTION_TYPE_SAVE_SHIPPING) {

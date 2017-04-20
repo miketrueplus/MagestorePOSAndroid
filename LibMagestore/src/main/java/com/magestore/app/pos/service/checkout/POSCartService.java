@@ -74,8 +74,8 @@ public class POSCartService extends AbstractService implements CartService {
      */
     @Override
     public synchronized float calculateDiscountTotal(Checkout checkout) {
-        checkout.setDiscountTotal(0);
-        return 0;
+        checkout.setDiscountTotal(checkout.getDiscountTotal());
+        return checkout.getDiscountTotal();
     }
 
     /**
@@ -85,7 +85,7 @@ public class POSCartService extends AbstractService implements CartService {
      */
     @Override
     public synchronized float calculateLastTotal(Checkout checkout) {
-        float last_total = calculateSubTotal(checkout) + calculateTaxTotal(checkout) - calculateDiscountTotal(checkout);
+        float last_total = calculateSubTotal(checkout) + calculateTaxTotal(checkout) + calculateDiscountTotal(checkout);
         checkout.setGrandTotal(last_total);
         return last_total;
     }
