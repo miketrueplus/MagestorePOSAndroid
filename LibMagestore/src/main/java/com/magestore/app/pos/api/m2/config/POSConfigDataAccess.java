@@ -395,7 +395,10 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
             Currency currency = new PosCurrency();
             String code = item.get("code").toString();
             String currency_name = item.get("currency_name").toString();
-            String currency_symbol = item.get("currency_symbol").toString();
+            String currency_symbol = "";
+            if (item.get("currency_symbol") != null) {
+                currency_symbol = item.get("currency_symbol").toString();
+            }
             String is_default = item.get("is_default").toString();
             String currency_rate = item.get("currency_rate").toString();
             currency.setCode(code);

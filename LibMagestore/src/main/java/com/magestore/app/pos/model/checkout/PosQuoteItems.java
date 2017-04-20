@@ -25,7 +25,6 @@ public class PosQuoteItems extends PosAbstractModel implements QuoteItems {
     int qty_to_ship;
     int use_discount = 1;
     float amount;
-    @Gson2PosExclude
     float custom_price;
 
     List<PosQuoteItemExtension> extension_data;
