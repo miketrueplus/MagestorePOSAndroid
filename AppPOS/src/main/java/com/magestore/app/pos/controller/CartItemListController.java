@@ -129,8 +129,7 @@ public class CartItemListController extends AbstractChildListController<Checkout
 
         if (actionType == ACTION_CART_DELETE_ITEM) {
             CartItem cartItem = (CartItem) models[0];
-            mCartService.delete(getParent(), cartItem);
-            wraper.put("cart_respone", cartItem);
+            wraper.put("cart_respone", mCartService.delete(getParent(), cartItem));
             return true;
         }
 
@@ -140,11 +139,12 @@ public class CartItemListController extends AbstractChildListController<Checkout
     @Override
     public void onActionPostExecute(boolean success, int actionType, String actionCode, Map<String, Object> wraper, Model... models) {
         if (success && actionType == ACTION_CART_DELETE_ITEM) {
-            CartItem cartItem = (CartItem) wraper.get("cart_respone");
+            CartItem cartItem = (CartItem) models[0];
+            boolean isDeleteCartItem = (boolean) wraper.get("cart_respone");
 //            Product product = (Product) models[0];
-            if (cartItem != null) {
+            if (isDeleteCartItem) {
                 getView().deleteList(cartItem);
-                if (cartItem.getProduct().getIsSaveCart()) {
+                if (cartItem.getIsSaveCart()) {
                     mCheckoutListController.updateTotal();
                     mCheckoutListController.showButtonRemoveDiscount(mCheckoutListController.checkDiscount(getParent()) ? true : false);
                 }
@@ -181,9 +181,9 @@ public class CartItemListController extends AbstractChildListController<Checkout
     }
 
     public void deleteCartITem(CartItem cartItem) {
-//        if (product.getIsSaveCart()) {
-//            mCheckoutListController.isShowLoadingList(true);
-//        }
+        if (cartItem.getIsSaveCart()) {
+            mCheckoutListController.isShowLoadingList(true);
+        }
         doAction(ACTION_CART_DELETE_ITEM, null, wraper, cartItem);
     }
 

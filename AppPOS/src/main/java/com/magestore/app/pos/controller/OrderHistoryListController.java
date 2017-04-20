@@ -302,6 +302,7 @@ public class OrderHistoryListController extends AbstractListController<Order> {
             mOrderCommentListController.doSelectOrder(order);
             mOrderCommentListController.notifyDataSetChanged();
             ((OrderDetailPanel) mDetailView).bindDataRespone(order);
+            ((OrderDetailPanel) mDetailView).setOrder(order);
             showDetailOrderLoading(false);
         } else if (success && actionType == ORDER_REFUND_TYPE) {
             Order order = (Order) wraper.get("refund_respone");

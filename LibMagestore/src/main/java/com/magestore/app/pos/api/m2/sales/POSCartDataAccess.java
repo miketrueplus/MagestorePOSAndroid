@@ -30,7 +30,7 @@ import java.util.List;
 
 public class POSCartDataAccess extends POSAbstractDataAccess implements CartDataAccess {
     @Override
-    public CartItem delete(Checkout checkout, Product product) throws ParseException, InstantiationException, IllegalAccessException, IOException {
+    public boolean delete(Checkout checkout, CartItem cartItem) throws ParseException, InstantiationException, IllegalAccessException, IOException {
         Connection connection = null;
         Statement statement = null;
         ResultReading rp = null;
@@ -41,7 +41,7 @@ public class POSCartDataAccess extends POSAbstractDataAccess implements CartData
             statement.setAction(MagestoreStatementAction.ACTION_DELETE);
             statement.prepareQuery(POSAPI.REST_CART_DELETE_ITEM);
             statement.setParam(POSAPI.CART_QUOTE_ID, checkout.getQuoteId());
-            statement.setParam(POSAPI.CART_ITEM_ID, product.getItemId());
+            statement.setParam(POSAPI.CART_ITEM_ID, cartItem.getItemId());
 
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
@@ -56,26 +56,17 @@ public class POSCartDataAccess extends POSAbstractDataAccess implements CartData
             rp.setParseModel(PosCheckout.class);
 
             Checkout checkoutRespone = (Checkout) rp.doParse();
-            CartItem cartItem = null;
+            CartItem cartItemResponse = null;
             if (checkoutRespone != null) {
-                List<CartItem> listItems = checkout.getCartItem();
-                for (CartItem item : listItems) {
-                    String itemID = item.getProduct().getID();
-                    if (itemID == null) continue;
-                    if (itemID.equals(product.getID())) {
-                        cartItem = item;
-                        break;
-                    }
-                }
                 checkout.setTotals(checkoutRespone.getTotals());
-                return cartItem;
+                return true;
             } else {
-                return null;
+                return false;
             }
         } catch (ConnectionException ex) {
-            throw ex;
+            return false;
         } catch (IOException ex) {
-            throw ex;
+            return false;
         } finally {
             // đóng result reading
             if (rp != null) rp.close();

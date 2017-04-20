@@ -284,6 +284,8 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     @Gson2PosExclude
     String item_id;
     @Gson2PosExclude
+    boolean isSaveCart;
+    @Gson2PosExclude
     float original_price;
 
     // Params Order Shipment
@@ -550,5 +552,15 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     @Override
     public String getOfflineItemId() {
         return offline_item_id;
+    }
+
+    @Override
+    public boolean getIsSaveCart() {
+        return isSaveCart;
+    }
+
+    @Override
+    public void setIsSaveCart(boolean isSaveCart) {
+        this.isSaveCart = isSaveCart;
     }
 }

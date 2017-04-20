@@ -244,7 +244,6 @@ public class POSCartService extends AbstractService implements CartService {
     }
 
     /**
-     *
      * @param checkout
      * @param cartItem
      * @return
@@ -331,7 +330,8 @@ public class POSCartService extends AbstractService implements CartService {
 
         // nếu có product option, 2 item trùng nhau nếu có product id trùng nhau và các cặp code value trong option trùng nhau
         if (itemOld.getProduct().getProductOption() != null || (itemOld.getProduct().isCustomSale() && itemNew.getProduct().isCustomSale())) {
-            if (itemOld.getProduct().getID() != null && !itemOld.getProduct().getID().equals(itemNew.getProduct().getID())) return false;
+            if (itemOld.getProduct().getID() != null && !itemOld.getProduct().getID().equals(itemNew.getProduct().getID()))
+                return false;
 
             // so sánh từng cặp code value với custom option
             // nếu 2 danh sách không cùng độ dài thì return false
@@ -404,18 +404,18 @@ public class POSCartService extends AbstractService implements CartService {
             // ngược lại thì so sánh từng phần tử
             if (itemOld.getSuperAttribute() != null)
                 for (PosCartItem.OptionsValue optionOldValue : itemOld.getSuperAttribute()) {
-                boolean blnMatchThis = false;
-                if (itemNew.getSuperAttribute() != null)
-                    for (PosCartItem.OptionsValue optionNewValue : itemNew.getSuperAttribute()) {
-                    // nếu tìm thấy cặp tương ứng thì thì break ra luôn
-                    if (optionOldValue.code.equals(optionNewValue.code) && optionOldValue.value.equals(optionNewValue.value)) {
-                        blnMatchThis = true;
-                        break;
-                    }
+                    boolean blnMatchThis = false;
+                    if (itemNew.getSuperAttribute() != null)
+                        for (PosCartItem.OptionsValue optionNewValue : itemNew.getSuperAttribute()) {
+                            // nếu tìm thấy cặp tương ứng thì thì break ra luôn
+                            if (optionOldValue.code.equals(optionNewValue.code) && optionOldValue.value.equals(optionNewValue.value)) {
+                                blnMatchThis = true;
+                                break;
+                            }
+                        }
+                    if (!blnMatchThis)
+                        return false;
                 }
-                if (!blnMatchThis)
-                    return false;
-            }
             return true;
         }
 
@@ -504,7 +504,8 @@ public class POSCartService extends AbstractService implements CartService {
         // nếu chưa thì thêm mới
         if (cartItem == null) {
             // kiểm tra số lượng còn trong kho không đã
-            if (!validateStock(checkout, product, quantity)) throw new ServiceException("Not enough quantity");
+            if (!validateStock(checkout, product, quantity))
+                throw new ServiceException("Not enough quantity");
 
             // Khởi tạo product order item
             cartItem = create(product, quantity, price);
@@ -516,7 +517,8 @@ public class POSCartService extends AbstractService implements CartService {
             // tính toán số lượng mới
             int newQuantity = cartItem.getQuantity() + quantity;
             // kiểm tra số lượng trước có đủ trong kho không
-            if (!validateStock(checkout, product, newQuantity)) throw new ServiceException("Not enough quantity");
+            if (!validateStock(checkout, product, newQuantity))
+                throw new ServiceException("Not enough quantity");
             // cập nhật số lượng
             cartItem.setQuantity(newQuantity);
             float unitPrice = cartItem.getUnitPrice();
@@ -580,7 +582,18 @@ public class POSCartService extends AbstractService implements CartService {
     @Override
     public boolean delete(Checkout checkout, CartItem... childs) throws IOException, InstantiationException, ParseException, IllegalAccessException {
         if (checkout.getCartItem() == null) return false;
-        checkout.getCartItem().remove(childs[0]);
+        CartItem cartItem = childs[0];
+        if (cartItem.getIsSaveCart()) {
+            DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+            CartDataAccess cartDataAccess = factory.generateCartDataAccess();
+            boolean isRemove = cartDataAccess.delete(checkout, cartItem);
+            if (isRemove) {
+                checkout.getCartItem().remove(cartItem);
+            }
+            return isRemove;
+        } else {
+            checkout.getCartItem().remove(cartItem);
+        }
         return true;
     }
 
@@ -641,7 +654,7 @@ public class POSCartService extends AbstractService implements CartService {
         if (product.getIsSaveCart()) {
             DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
             CartDataAccess cartDataAccess = factory.generateCartDataAccess();
-            cartItem = cartDataAccess.delete(checkout, product);
+//            cartItem = cartDataAccess.delete(checkout, product);
             // xóa khỏi danh sách checkout
             if (cartItem != null) delete(checkout, cartItem);
         } else {
@@ -650,12 +663,12 @@ public class POSCartService extends AbstractService implements CartService {
 //                if (item.isTypeCustom()) {
 //                    cartItem = item;
 //                } else {
-                    String itemID = item.getProduct().getID();
-                    if (itemID == null) continue;
-                    if (itemID.equals(product.getID())) {
-                        cartItem = item;
-                        break;
-                    }
+                String itemID = item.getProduct().getID();
+                if (itemID == null) continue;
+                if (itemID.equals(product.getID())) {
+                    cartItem = item;
+                    break;
+                }
 //                }
             }
 
@@ -708,6 +721,7 @@ public class POSCartService extends AbstractService implements CartService {
 
     /**
      * Kiểm tra số lượng trong kho đủ để bán không
+     *
      * @param checkout
      * @param product
      * @param quantity
@@ -717,7 +731,8 @@ public class POSCartService extends AbstractService implements CartService {
     public boolean validateStock(Checkout checkout, Product product, int quantity) {
         if (!product.isInStock()) return false;
         if (quantity < product.getAllowMinQty()) return false;
-        if (quantity > product.getAllowMaxQty() && product.getAllowMaxQty() > product.getAllowMinQty()) return false;
+        if (quantity > product.getAllowMaxQty() && product.getAllowMaxQty() > product.getAllowMinQty())
+            return false;
         return true;
     }
 }
