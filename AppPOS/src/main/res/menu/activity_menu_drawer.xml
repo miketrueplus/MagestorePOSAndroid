@@ -10,6 +10,7 @@
             android:id="@+id/nav_logout"
             android:icon="@drawable/ic_exit_to_app"
             android:title="@string/logout" />
+
         <item
             android:id="@+id/nav_sales"
             android:icon="@drawable/ic_shopping_cart_white"

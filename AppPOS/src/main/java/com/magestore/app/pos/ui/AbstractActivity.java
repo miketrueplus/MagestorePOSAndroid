@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.magestore.app.lib.connection.ConnectionException;
@@ -42,6 +43,7 @@ public abstract class AbstractActivity
         PosUI,
         NavigationView.OnNavigationItemSelectedListener {
     TextView staff_name, staff_location;
+
     /**
      * Cấu hình lại các control layout
      */
@@ -72,12 +74,12 @@ public abstract class AbstractActivity
         return false;
     }
 
-    public void setheader(){
+    public void setheader() {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        View header_layout = navigationView.inflateHeaderView(R.layout.nav_header_menu);
+        View header_layout = navigationView.findViewById(R.id.nav_header_menu);
         staff_name = (TextView) header_layout.findViewById(R.id.staff_name);
         staff_location = (TextView) header_layout.findViewById(R.id.staff_location);
-        if(ConfigUtil.getStaff() != null){
+        if (ConfigUtil.getStaff() != null) {
             staff_name.setText(ConfigUtil.getStaff().getStaffName());
             staff_location.setText(ConfigUtil.getStaff().getStaffLocation().getLocationName());
         }
@@ -127,7 +129,6 @@ public abstract class AbstractActivity
     }
 
     /**
-     *
      * @param aString
      * @return
      */
@@ -151,15 +152,16 @@ public abstract class AbstractActivity
 
     /**
      * Hiện thông báo lỗi
+     *
      * @param exp
      */
     public void showErrorMsg(Exception exp) {
         exp.printStackTrace();
         new AlertDialog.Builder(getContext())
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setTitle(R.string.dialog_warning)
-                    .setMessage(getExceptionMessage(exp))
-                    .setPositiveButton(R.string.ok, null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle(R.string.dialog_warning)
+                .setMessage(getExceptionMessage(exp))
+                .setPositiveButton(R.string.ok, null)
 //                    .setPositiveButton(R.string.reload, new DialogInterface.OnClickListener() {
 //                        @Override
 //                        public void onClick(DialogInterface dialog, int which) {
@@ -167,7 +169,7 @@ public abstract class AbstractActivity
 //                        }
 //                    })
 //                    .setNegativeButton(R.string.no, null)
-                    .show();
+                .show();
     }
 
     public void close() {
@@ -213,7 +215,7 @@ public abstract class AbstractActivity
         return true;
     }
 
-    public void backToLoginActivity(){
+    public void backToLoginActivity() {
         new AlertDialog.Builder(this)
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setTitle(R.string.dialog_close)
@@ -268,6 +270,52 @@ public abstract class AbstractActivity
 
         // lấy menu và đặt các event xử lý menu
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+
+        LinearLayout nav_logout = (LinearLayout) navigationView.findViewById(R.id.nav_logout);
+        LinearLayout nav_checkout = (LinearLayout) navigationView.findViewById(R.id.nav_checkout);
+        LinearLayout nav_order_history = (LinearLayout) navigationView.findViewById(R.id.nav_order_history);
+        LinearLayout nav_customer = (LinearLayout) navigationView.findViewById(R.id.nav_customer);
+        LinearLayout nav_general = (LinearLayout) navigationView.findViewById(R.id.nav_general);
+        nav_logout.setOnClickListener(onClickNav);
+        nav_checkout.setOnClickListener(onClickNav);
+        nav_order_history.setOnClickListener(onClickNav);
+        nav_customer.setOnClickListener(onClickNav);
+        nav_general.setOnClickListener(onClickNav);
     }
+
+    View.OnClickListener onClickNav = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            int id = view.getId();
+            if (id == R.id.nav_customer) {
+                if (!(AbstractActivity.this instanceof CustomerActivity)) {
+                    Intent intent = new Intent(getContext(), CustomerActivity.class);
+                    startActivity(intent);
+                }
+            } else if (id == R.id.nav_checkout) {
+                if (!(AbstractActivity.this instanceof SalesActivity)) finish();
+            } else if (id == R.id.nav_order_history) {
+                if (!(AbstractActivity.this instanceof OrderActivity)) {
+                    Intent intent = new Intent(getContext(), OrderActivity.class);
+                    startActivity(intent);
+                }
+//        }/ else if (id == R.id.nav_onhold_orders) {
+//            Intent intent = new Intent(getContext(), OrderActivity.class);
+//            startActivity(intent);
+//        } else if (id == R.id.nav_register_shift) {
+//            Intent intent = new Intent(getContext(), RegisterShiftActivity.class);
+//            startActivity(intent);
+            } else if (id == R.id.nav_general) {
+                if (!(AbstractActivity.this instanceof SettingActivity)) {
+                    Intent intent = new Intent(getContext(), SettingActivity.class);
+                    startActivity(intent);
+                }
+            } else if (id == R.id.nav_logout) {
+                backToLoginActivity();
+            }
+
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            if (drawer != null) drawer.closeDrawer(GravityCompat.START);
+        }
+    };
 }

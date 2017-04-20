@@ -11,6 +11,7 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="nav_header_vertical_spacing">16dp</dimen>
     <dimen name="nav_header_height">100dp</dimen>
+    <dimen name="nav_section_height">60dp</dimen>
     <dimen name="layout_margin_2">2dp</dimen>
     <dimen name="layout_margin_3">3dp</dimen>
     <dimen name="layout_margin_5">5dp</dimen>
@@ -21,6 +22,7 @@
     <dimen name="layout_margin_50">50dp</dimen>
     <dimen name="line">1dp</dimen>
     <dimen name="text_size">15sp</dimen>
+    <dimen name="text_size_18">18sp</dimen>
 
     <!--Login-->
     <dimen name="login_form_background_border_size">2dp</dimen>

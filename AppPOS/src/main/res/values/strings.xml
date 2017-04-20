@@ -225,7 +225,7 @@
     <string name="cancel">Cancel</string>
     <string name="check">Check</string>
     <string name="checkin">Check in</string>
-    <string name="checkout">Check out</string>
+    <string name="checkout">Checkout</string>
     <string name="city">City</string>
     <string name="clear">Clear</string>
     <string name="close">Close</string>
@@ -236,6 +236,7 @@
     <string name="coupon">Coupon</string>
     <string name="coupon_code">Coupon Code</string>
     <string name="customer">Customer</string>
+    <string name="customers">Customers</string>
     <string name="customerAddress">Address</string>
     <string name="custom_price">Custom Price</string>
     <string name="custom_sale">Custom Sale</string>
@@ -250,6 +251,7 @@
     <string name="email">Email</string>
     <string name="error">Error</string>
     <string name="first_name">First Name</string>
+    <string name="general">General</string>
     <string name="good">Good</string>
     <string name="group">Group</string>
     <string name="guest">Guest</string>
@@ -277,6 +279,7 @@
     <string name="optional">Optional</string>
     <string name="options">Options</string>
     <string name="order">Order</string>
+    <string name="orders">Orders</string>
     <string name="payment">Payment</string>
     <string name="payment_method">PAYMENT METHOD</string>
     <string name="percent">%</string>
