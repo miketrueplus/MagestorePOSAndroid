@@ -79,6 +79,52 @@ public class StringUtil {
     public static final String TYPE_PERCENT = "percent";
     public static final String TYPE_FIXED = "fixed";
 
+    // các kiểu status
+    public static final String STATUS_PENDING = "pending";
+    public static final String STATUS_COMPLETE = "complete";
+    public static final String STATUS_DONE = "done";
+    public static final String STATUS_PROCESSING = "processing";
+    public static final String STATUS_CLOSED = "closed";
+    public static final String STATUS_CANCELLED = "cancelled";
+    public static final String STATUS_ACTIVE = "active";
+    public static final String STATUS_INACTIVE = "inactive";
+    public static final String STATUS_ENABLE = "enable";
+    public static final String STATUS_DISABLE = "disable";
+    public static final String STATUS_ON = "on";
+    public static final String STATUS_OFF = "off";
+    public static final String STATUS_RIGHT = "right";
+    public static final String STATUS_WRONG = "wrong";
+    public static final String STATUS_VISIBLE = "visible";
+    public static final String STATUS_INVISIBLE = "invisible";
+    public static final String STATUS_TRUE = "true";
+    public static final String STATUS_FALSE = "false";
+    public static final String STATUS_UP = "up";
+    public static final String STATUS_DOWN = "down";
+    public static final String STATUS_NaN = "nan";
+
+    /**
+     * Thêm một element trong 1 chuỗi mảng
+     * @param builder
+     * @param element
+     * @return
+     */
+    public static StringBuilder addStringElement(StringBuilder builder, String element) {
+        if (builder.length() == 0) builder.append(element);
+        else builder.append(STRING_COMMA).append(element);
+        return builder;
+    }
+
+    /**
+     * Thêm 1 element trong 1 chuỗi mảng chỉ nếu status true
+     * @param builder
+     * @param status
+     * @param element
+     * @return
+     */
+    public static StringBuilder addStringElement(StringBuilder builder, boolean status, String element) {
+        if (!status) return builder;
+        return addStringElement(builder, element);
+    }
 
     /**
      * Tạo String Builder từ InputStream

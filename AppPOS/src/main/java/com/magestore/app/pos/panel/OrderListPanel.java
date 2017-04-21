@@ -12,7 +12,9 @@ import android.widget.TextView;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.panel.AbstractListPanel;
 import com.magestore.app.pos.R;
+import com.magestore.app.pos.controller.OrderHistoryListController;
 import com.magestore.app.pos.databinding.CardOrderHistoryListContentBinding;
+import com.magestore.app.util.StringUtil;
 
 import java.util.List;
 
@@ -255,5 +257,17 @@ public class OrderListPanel extends AbstractListPanel<Order> implements View.OnC
                 changeColorBackGroundStatus(R.id.ll_status_not_sync, isNotSync, ll_status_not_sync, im_status_not_sync, tv_status_not_sync);
                 break;
         }
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder = StringUtil.addStringElement(stringBuilder, isPending, StringUtil.STATUS_PENDING);
+        stringBuilder = StringUtil.addStringElement(stringBuilder, isProcessing, StringUtil.STATUS_PROCESSING);
+        stringBuilder = StringUtil.addStringElement(stringBuilder, isComplete, StringUtil.STATUS_COMPLETE);
+        stringBuilder = StringUtil.addStringElement(stringBuilder, isCancelled, StringUtil.STATUS_CANCELLED);
+        stringBuilder = StringUtil.addStringElement(stringBuilder, isClosed, StringUtil.STATUS_CLOSED);
+        String status = stringBuilder.toString();
+        if (getController() instanceof OrderHistoryListController) {
+            ((OrderHistoryListController) getController()).doSearchStatus(status);
+        }
+//        stringBuilder = StringUtil.addStringElement(stringBuilder, isNotSync, StringUtil.STATUS_PENDING);
+
     }
 }

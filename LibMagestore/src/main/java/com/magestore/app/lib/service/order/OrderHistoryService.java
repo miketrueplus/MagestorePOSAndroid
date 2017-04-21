@@ -29,6 +29,10 @@ import java.util.List;
  */
 
 public interface OrderHistoryService extends Service, ListService<Order> {
+    List<Order> retrieve(int page, int pageSize, String status) throws IOException, InstantiationException, ParseException, IllegalAccessException;
+
+    List<Order> retrieve(String searchString, int page, int pageSize, String status) throws IOException, InstantiationException, ParseException, IllegalAccessException;
+
     List<Order> retrieveOrderLastMonth(Customer customer) throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
     String sendEmail(String email, String orderId) throws InstantiationException, IllegalAccessException, IOException, ParseException;

@@ -31,6 +31,7 @@ import com.magestore.app.pos.panel.OrderRefundPanel;
 import com.magestore.app.pos.panel.OrderSendEmailPanel;
 import com.magestore.app.pos.panel.OrderShipmentPanel;
 import com.magestore.app.pos.panel.OrderTakePaymentPanel;
+import com.magestore.app.util.StringUtil;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -45,6 +46,7 @@ import java.util.Map;
  */
 
 public class OrderHistoryListController extends AbstractListController<Order> {
+    String mSearchStatus;
     OrderSendEmailPanel mOrderSendEmailPanel;
 
     OrderAddCommentPanel mOrderAddCommentPanel;
@@ -585,5 +587,34 @@ public class OrderHistoryListController extends AbstractListController<Order> {
 
     public boolean checkCanStoreCredit(Order order) {
         return mOrderService.checkCanStoreCredit(order);
+    }
+
+    /**
+     * Thực hiện search theo status
+     * @param searchStatus
+     */
+    public void doSearchStatus(String searchStatus) {
+        mSearchStatus = searchStatus;
+        reload();
+    }
+
+    /**
+     * Hướng tìm kiếm theo status
+     * @param page
+     * @param pageSize
+     * @return
+     * @throws Exception
+     */
+    @Override
+    protected List<Order> callRetrieveService(int page, int pageSize) throws Exception {
+        if (StringUtil.isNullOrEmpty(mSearchStatus) || !(getListService() instanceof OrderHistoryService))
+            return super.callRetrieveService(page, pageSize);
+        else {
+            OrderHistoryService service = (OrderHistoryService) getListService();
+            if (StringUtil.isNullOrEmpty(getSearchString()))
+                return service.retrieve(page, pageSize, mSearchStatus);
+            else
+                return service.retrieve(getSearchString(), page, pageSize, mSearchStatus);
+        }
     }
 }

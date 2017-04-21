@@ -74,6 +74,14 @@ public class PosOrderHistoryService extends AbstractService implements OrderHist
     }
 
     @Override
+    public List<Order> retrieve(int page, int pageSize, String status) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+        // Khởi tạo order gateway factory
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        OrderDataAccess orderDataAccess = factory.generateOrderDataAccess();
+        return orderDataAccess.retrieve(page, pageSize, status);
+    }
+
+    @Override
     public List<Order> retrieve() throws IOException, InstantiationException, ParseException, IllegalAccessException {
         return null;
     }
@@ -83,6 +91,13 @@ public class PosOrderHistoryService extends AbstractService implements OrderHist
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         OrderDataAccess orderDataAccess = factory.generateOrderDataAccess();
         return orderDataAccess.retrieve(searchString, page, pageSize);
+    }
+
+    @Override
+    public List<Order> retrieve(String searchString, int page, int pageSize, String status) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        OrderDataAccess orderDataAccess = factory.generateOrderDataAccess();
+        return orderDataAccess.retrieve(searchString, page, pageSize, status);
     }
 
     @Override

@@ -195,21 +195,27 @@ public class AbstractListController<TModel extends Model>
     public List<TModel> onRetrieveBackground(int page, int pageSize) throws Exception {
         List<TModel> returnList;
         if (getListService() != null) {
-            if (pageSize > 0) {
-                if (mSearchString == null || StringUtil.STRING_EMPTY.equals(mSearchString))
-                    returnList = getListService().retrieve(page, pageSize);
-                else
-                    returnList = getListService().retrieve(mSearchString, page, pageSize);
-            }
-            else {
-                if (mSearchString == null || StringUtil.STRING_EMPTY.equals(mSearchString))
-                    returnList = getListService().retrieve();
-                else
-                    returnList = getListService().retrieve(mSearchString, 1, 500);
-            }
+            if (pageSize > 0)
+                return callRetrieveService(page, pageSize);
+            else
+                return callRetrieveService(1, 500);
+
         } else
-            returnList = loadDataBackground();
-        return returnList;
+            return loadDataBackground();
+    }
+
+    /**
+     * Gọi service để xử lý
+     * @param page
+     * @param pageSize
+     * @return
+     * @throws Exception
+     */
+    protected List<TModel> callRetrieveService(int page, int pageSize) throws Exception {
+        if (StringUtil.isNullOrEmpty(mSearchString))
+            return getListService().retrieve(page, pageSize);
+        else
+            return getListService().retrieve(mSearchString, page, pageSize);
     }
 
     /**
