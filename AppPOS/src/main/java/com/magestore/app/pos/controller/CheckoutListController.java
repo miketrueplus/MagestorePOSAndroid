@@ -77,6 +77,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     static final int ACTION_TYPE_SEND_EMAIL = 11;
     static final int ACTION_TYPE_APPLY_REWARD_POINT = 12;
     static final int ACTION_TYPE_CHECK_APPROVED_PAYMENT_PAYPAL = 13;
+    static final int ACTION_TYPE_CHECK_APPROVED_PAYMENT_AUTHORIZENET = 14;
 
     static final int STATUS_CHECKOUT_ADD_ITEM = 0;
     static final int STATUS_CHECKOUT_PROCESSING = 1;
@@ -264,6 +265,10 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         doAction(ACTION_TYPE_CHECK_APPROVED_PAYMENT_PAYPAL, null, wraper, null);
     }
 
+    public void doInputApprovedAuthorizenet(Authorizenet authorizenet){
+        doAction(ACTION_TYPE_CHECK_APPROVED_PAYMENT_AUTHORIZENET, null, wraper, authorizenet);
+    }
+
     /**
      * khi chọn shipping request saveshipping và quote lưu lại shipping được chọn
      *
@@ -434,6 +439,11 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         } else if (actionType == ACTION_TYPE_CHECK_APPROVED_PAYMENT_PAYPAL) {
             String payment_id = (String) wraper.get("payment_id");
             wraper.put("paypal_transaction_id", ((CheckoutService) getListService()).approvedPaymentPayPal(payment_id));
+            return true;
+        } else if(actionType == ACTION_TYPE_CHECK_APPROVED_PAYMENT_AUTHORIZENET){
+            List<CheckoutPayment> listCheckoutPayment = (List<CheckoutPayment>) wraper.get("list_payment");
+            Authorizenet authorizenet = (Authorizenet) models[0];
+            wraper.put("authorize_respone", ((CheckoutService) getListService()).approvedAuthorizenet(authorizenet, listCheckoutPayment));
             return true;
         }
         return false;
@@ -713,11 +723,12 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             }
             if (!StringUtil.isNullOrEmpty(payment_code) && payment_code.equals("authorizenet_directpost")) {
                 Authorizenet authorizenet = (Authorizenet) wraper.get("place_order");
-                isShowButtonCheckout(false);
-                isShowSalesMenuDiscount(false);
-                mCheckoutPaymentWebviewPanel.setAuthorizenet(authorizenet);
-                mCheckoutPaymentWebviewPanel.initValue();
-                doShowCheckoutWebview(true);
+                doInputApprovedAuthorizenet(authorizenet);
+//                isShowButtonCheckout(false);
+//                isShowSalesMenuDiscount(false);
+//                mCheckoutPaymentWebviewPanel.setAuthorizenet(authorizenet);
+//                mCheckoutPaymentWebviewPanel.initValue();
+//                doShowCheckoutWebview(true);
             } else {
                 Order order = (Order) wraper.get("place_order");
                 getSelectedItem().setOrderSuccess(order);
@@ -725,10 +736,9 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 isShowSalesMenuDiscount(false);
                 mCheckoutSuccessPanel.bindItem(order);
                 doShowDetailSuccess(true, order);
+                // hoàn thành place order hiden progressbar
+                isShowLoadingDetail(false);
             }
-
-            // hoàn thành place order hiden progressbar
-            isShowLoadingDetail(false);
         } else if (success && actionType == ACTION_TYPE_SEND_EMAIL) {
             //Show dialog khi gửi email thành công
             showDetailOrderLoading(false);

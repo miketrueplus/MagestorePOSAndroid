@@ -15,6 +15,7 @@ import com.magestore.app.lib.model.checkout.QuoteItemExtension;
 import com.magestore.app.lib.model.checkout.QuoteItems;
 import com.magestore.app.lib.model.checkout.SaveQuoteParam;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
+import com.magestore.app.lib.model.checkout.payment.Authorizenet;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.model.sales.Order;
@@ -53,6 +54,8 @@ public interface CheckoutService extends ListService<Checkout> {
     boolean removeOrderToListCheckout(Checkout checkout) throws IOException, InstantiationException, ParseException, IllegalAccessException;
 
     String sendEmail(String email , String increment_id) throws IOException, InstantiationException, ParseException, IllegalAccessException;
+
+    String approvedAuthorizenet(Authorizenet authorizenet, List<CheckoutPayment> listCheckoutPayment) throws IOException, InstantiationException, ParseException, IllegalAccessException;
 
     String approvedPaymentPayPal(String payment_id) throws IOException, InstantiationException, ParseException, IllegalAccessException;
 

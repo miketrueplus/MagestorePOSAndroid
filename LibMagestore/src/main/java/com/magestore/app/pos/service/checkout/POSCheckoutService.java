@@ -18,6 +18,7 @@ import com.magestore.app.lib.model.checkout.QuoteItemExtension;
 import com.magestore.app.lib.model.checkout.QuoteItems;
 import com.magestore.app.lib.model.checkout.SaveQuoteParam;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
+import com.magestore.app.lib.model.checkout.payment.Authorizenet;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.model.sales.Order;
@@ -42,9 +43,11 @@ import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.StringUtil;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Mike on 2/7/2017.
@@ -177,9 +180,9 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
             // TODO: trường hợp 2 payment trở lên thì truyền tham số "multipaymentforpos"
             placeOrderParams.setMethod("multipaymentforpos");
         } else {
-            if(listCheckoutPayment.get(0).getCode().equals("paypal_integration")){
+            if (listCheckoutPayment.get(0).getCode().equals("paypal_integration")) {
                 placeOrderParams.setMethod("multipaymentforpos");
-            }else {
+            } else {
                 placeOrderParams.setMethod(listCheckoutPayment.get(0).getCode());
             }
         }
@@ -325,6 +328,30 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         CheckoutDataAccess checkoutDataAccess = factory.generateCheckoutDataAccess();
         return checkoutDataAccess.sendEmail(email, increment_id);
+    }
+
+    @Override
+    public String approvedAuthorizenet(Authorizenet authorizenet, List<CheckoutPayment> listCheckoutPayment) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+        String url = authorizenet.getPaymentInformation().getUrl();
+        Map<String, String> params = authorizenet.getPaymentInformation().getParams();
+        CheckoutPayment payment = listCheckoutPayment.get(0);
+        params.put("x_exp_date", (payment.getCCExpMonth() + "/" + payment.getCCExpYear()));
+        params.put("x_card_code", payment.getCode());
+        params.put("x_card_num", payment.getCCNumber());
+        params.put("cc_owner", payment.getCCOwner());
+        params.put("cc_type", payment.getCCType());
+        StringBuilder postData = new StringBuilder();
+        for (Map.Entry<String, String> param : params.entrySet()) {
+            if (postData.length() != 0) postData.append('&');
+            postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
+            postData.append('=');
+            postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
+        }
+        String urlParameters = postData.toString();
+
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        CheckoutDataAccess checkoutDataAccess = factory.generateCheckoutDataAccess();
+        return checkoutDataAccess.approvedAuthorizenet(url, urlParameters);
     }
 
     @Override
