@@ -445,7 +445,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             Customer customer = (Customer) models[0];
             ((CheckoutListPanel) mView).useDefaultGuestCheckout(customer);
             mCartOrderListPanel.bindList(getSelectedItems());
-            mCartItemDetailPanel.setCurrency(currency);
+//            mCartItemDetailPanel.setCurrency(currency);
         } else if (success && actionType == ACTION_TYPE_UPDATE_ADDRESS) {
             int typeAddress = (int) wraper.get("type_update_address");
             CustomerAddress customerAddress = (CustomerAddress) wraper.get("old_address");

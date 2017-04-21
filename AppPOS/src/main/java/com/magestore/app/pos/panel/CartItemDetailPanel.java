@@ -105,13 +105,13 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
 
     /**
      * Đơn vị tiền tệ
-     * @param currency
      */
-    public void setCurrency(Currency currency) {
-        if (currency != null) {
-            String currency_symbol = currency.getCurrencySymbol();
-            mbtnCustomPriceFixed.setText(currency_symbol);
-            mbtnDiscountFixed.setText(currency_symbol);
+    public void setCurrency() {
+        String sym = ConfigUtil.getCurrencySymbol();
+        if (sym != null) {
+//            String currency_symbol = currency.getCurrencySymbol();
+            mbtnCustomPriceFixed.setText(sym);
+            mbtnDiscountFixed.setText(sym);
         }
     }
 
@@ -129,6 +129,7 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
     public void bindItem(CartItem item) {
         super.bindItem(item);
         mBinding.setCartItem(item);
+        setCurrency();
 
         // đặt % hau $
         mblnCustomPriceFixed = item.isCustomPriceTypeFixed();

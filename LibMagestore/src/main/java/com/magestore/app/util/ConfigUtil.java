@@ -80,6 +80,14 @@ public class ConfigUtil {
     }
 
     /**
+     * Trả lại currency symbol
+     * @return
+     */
+    public static String getCurrencySymbol() {
+        return getPriceFormat().getDecimalFormatSymbols().getCurrencySymbol();
+    }
+
+    /**
      * Trả lại format price
      *
      * @param number
@@ -165,8 +173,11 @@ public class ConfigUtil {
         if (mCurrencyFormat == null) {
             mCurrencyFormat = new DecimalFormat();
         }
+//        String sym = mCurrencyFormat.getCurrency().getSymbol();
         return mCurrencyFormat;
     }
+
+
 
     private static DecimalFormat getPriceNoSymbolFormat() {
         if (mCurrencyNoSymbolFormat == null) {

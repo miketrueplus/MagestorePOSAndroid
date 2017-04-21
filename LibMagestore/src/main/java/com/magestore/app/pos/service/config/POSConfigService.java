@@ -24,6 +24,8 @@ import com.magestore.app.pos.service.AbstractService;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.StringUtil;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.text.DecimalFormat;
@@ -96,8 +98,14 @@ public class POSConfigService extends AbstractService implements ConfigService {
         DecimalFormatSymbols symbols = new DecimalFormatSymbols();
         symbols.setDecimalSeparator(priceFormat.getDecimalSymbol().charAt(0));
         symbols.setGroupingSeparator(priceFormat.getGroupSymbol().charAt(0));
-        symbols.setCurrencySymbol(priceFormat.getCurrencySymbol());
-        symbols.setInternationalCurrencySymbol(priceFormat.getCurrencySymbol());
+
+        String symbol = priceFormat.getCurrencySymbol();
+        if (symbol.startsWith("u")) symbol = "\\" + symbol;
+//        symbols.setCurrencySymbol(priceFormat.getCurrencySymbol());
+//        symbols.setInternationalCurrencySymbol(priceFormat.getCurrencySymbol());
+        symbols.setCurrencySymbol(StringEscapeUtils.unescapeJava(symbol));
+        symbols.setInternationalCurrencySymbol(StringEscapeUtils.unescapeJava(symbol));
+
         DecimalFormat currencyFormat = new DecimalFormat(pattern, symbols);
         currencyFormat.setGroupingSize(priceFormat.getGroupLength());
         currencyFormat.setMaximumFractionDigits(priceFormat.getPrecision());
