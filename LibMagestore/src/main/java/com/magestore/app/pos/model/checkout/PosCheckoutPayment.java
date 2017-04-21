@@ -44,6 +44,10 @@ public class PosCheckoutPayment extends PosAbstractModel implements CheckoutPaym
     float current_value;
     @Gson2PosExclude
     boolean is_not_enable_edit_value;
+    @Gson2PosExclude
+    String client_id;
+    @Gson2PosExclude
+    String is_sandbox;
 
     AdditionalData additional_data;
 
@@ -287,5 +291,15 @@ public class PosCheckoutPayment extends PosAbstractModel implements CheckoutPaym
     @Override
     public void setIsNotEnableEditValue(boolean bIsNotEnableValue) {
         is_not_enable_edit_value = bIsNotEnableValue;
+    }
+
+    @Override
+    public String getClientId() {
+        return client_id;
+    }
+
+    @Override
+    public String getIsSandbox() {
+        return is_sandbox;
     }
 }

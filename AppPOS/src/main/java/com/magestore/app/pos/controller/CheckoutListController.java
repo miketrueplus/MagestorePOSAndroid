@@ -1,6 +1,7 @@
 package com.magestore.app.pos.controller;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 
@@ -22,6 +23,7 @@ import com.magestore.app.lib.observ.State;
 import com.magestore.app.lib.service.checkout.CheckoutService;
 import com.magestore.app.lib.service.customer.CustomerAddressService;
 import com.magestore.app.lib.service.plugins.PluginsService;
+import com.magestore.app.pos.PaymentPayPalActivity;
 import com.magestore.app.pos.model.checkout.PosCheckoutPayment;
 import com.magestore.app.pos.panel.CartItemDetailPanel;
 import com.magestore.app.pos.panel.CartOrderListPanel;
@@ -74,6 +76,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     static final int ACTION_TYPE_PLACE_ORDER = 10;
     static final int ACTION_TYPE_SEND_EMAIL = 11;
     static final int ACTION_TYPE_APPLY_REWARD_POINT = 12;
+    static final int ACTION_TYPE_CHECK_APPROVED_PAYMENT_PAYPAL = 13;
 
     static final int STATUS_CHECKOUT_ADD_ITEM = 0;
     static final int STATUS_CHECKOUT_PROCESSING = 1;
@@ -255,6 +258,12 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         doAction(ACTION_TYPE_SAVE_QUOTE, null, wraper, checkout);
     }
 
+    public void doInputApprovedPaymentPaypal(String payment_id) {
+        isShowLoadingDetail(true);
+        wraper.put("payment_id", payment_id);
+        doAction(ACTION_TYPE_CHECK_APPROVED_PAYMENT_PAYPAL, null, wraper, null);
+    }
+
     /**
      * khi chọn shipping request saveshipping và quote lưu lại shipping được chọn
      *
@@ -296,8 +305,17 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 doAction(ACTION_TYPE_PLACE_ORDER, null, wraper, null);
                 isShowLoadingDetail(true);
             } else {
-                doAction(ACTION_TYPE_PLACE_ORDER, null, wraper, null);
-                isShowLoadingDetail(true);
+                CheckoutPayment paymentPayPal = checkTypePaymenPaypal(listCheckoutPayment);
+                if (paymentPayPal != null) {
+                    Intent i = new Intent(getMagestoreContext().getActivity(), PaymentPayPalActivity.class);
+                    i.putExtra("total", paymentPayPal.getAmount());
+                    i.putExtra("client_id", paymentPayPal.getClientId());
+                    i.putExtra("sandbox", paymentPayPal.getIsSandbox());
+                    getMagestoreContext().getActivity().startActivity(i);
+                } else {
+                    isShowLoadingDetail(true);
+                    doAction(ACTION_TYPE_PLACE_ORDER, null, wraper, null);
+                }
             }
         } else {
             // hiển thị thông báo chọn payment
@@ -412,6 +430,10 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         } else if (actionType == ACTION_TYPE_APPLY_REWARD_POINT) {
             RewardPoint rewardPoint = (RewardPoint) models[0];
             wraper.put("save_reward_point", pluginsService.applyRewarPoint(rewardPoint));
+            return true;
+        } else if (actionType == ACTION_TYPE_CHECK_APPROVED_PAYMENT_PAYPAL) {
+            String payment_id = (String) wraper.get("payment_id");
+            wraper.put("paypal_transaction_id", ((CheckoutService) getListService()).approvedPaymentPayPal(payment_id));
             return true;
         }
         return false;
@@ -715,8 +737,13 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             Checkout checkout = (Checkout) wraper.get("save_reward_point");
             updateToTal(checkout);
             isShowLoadingDetail(false);
-        } else {
-            isShowLoadingDetail(false);
+        } else if(success && actionType == ACTION_TYPE_CHECK_APPROVED_PAYMENT_PAYPAL){
+            String transaction_id = (String) wraper.get("paypal_transaction_id");
+            List<CheckoutPayment> listCheckoutPayment = (List<CheckoutPayment>) wraper.get("list_payment");
+            CheckoutPayment paymentPayPal = checkTypePaymenPaypal(listCheckoutPayment);
+            paymentPayPal.setIsReferenceNumber(transaction_id.trim());
+            wraper.put("list_payment", listCheckoutPayment);
+            doAction(ACTION_TYPE_PLACE_ORDER, null, wraper, null);
         }
     }
 
@@ -941,12 +968,12 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 //                if (listShipping.size() == 1) {
 //                    ((CheckoutDetailPanel) mDetailView).getShippingMethod();
 //                } else {
-                    CheckoutShipping shipping = checkListShippingMethodDefault(0, listShipping);
-                    if (shipping != null) {
-                        ((CheckoutDetailPanel) mDetailView).selectDefaultShippingMethod(shipping);
-                    } else {
-                        ((CheckoutDetailPanel) mDetailView).selectDefaultShippingMethod(null);
-                    }
+                CheckoutShipping shipping = checkListShippingMethodDefault(0, listShipping);
+                if (shipping != null) {
+                    ((CheckoutDetailPanel) mDetailView).selectDefaultShippingMethod(shipping);
+                } else {
+                    ((CheckoutDetailPanel) mDetailView).selectDefaultShippingMethod(null);
+                }
 //                }
             }
         } else {
@@ -1038,7 +1065,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         if (show && order != null) mCheckoutSuccessPanel.fillEmailCustomer(order);
     }
 
-    public void doShowCheckoutWebview(boolean show){
+    public void doShowCheckoutWebview(boolean show) {
         mCheckoutPaymentWebviewPanel.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
@@ -1408,12 +1435,27 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         }
     }
 
+    /**
+     * check payment store credit
+     *
+     * @param listPayment
+     * @return
+     */
     public CheckoutPayment getPaymentStoreCredit(List<CheckoutPayment> listPayment) {
         if (listPayment != null) {
             for (CheckoutPayment payment : listPayment) {
                 if (payment.getCode().equals(PluginStoreCreditPanel.STORE_CREDIT_PAYMENT_CODE)) {
                     return payment;
                 }
+            }
+        }
+        return null;
+    }
+
+    public CheckoutPayment checkTypePaymenPaypal(List<CheckoutPayment> listCheckoutPayment) {
+        for (CheckoutPayment payment : listCheckoutPayment) {
+            if (payment.getType().equals("2") && payment.getCode().equals("paypal_integration")) {
+                return payment;
             }
         }
         return null;

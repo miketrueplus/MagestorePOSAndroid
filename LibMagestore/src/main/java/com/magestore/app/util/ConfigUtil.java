@@ -33,6 +33,7 @@ public class ConfigUtil {
     private static DecimalFormat mIntegerFormat;
     private static ConfigPrint mConfigPrint;
     private static Currency currentCurrency;
+    private static String mBaseCurrencyCode;
     private static Staff mStaff;
     private static Customer mCustomerGuest;
     private static boolean mShowDeliveryTime;
@@ -564,8 +565,8 @@ public class ConfigUtil {
         mEnableStoreCredit = enableStoreCredit;
     }
 
-    public static void setEnableRewardPoint(boolean mEnableRewardPoint) {
-        ConfigUtil.mEnableRewardPoint = mEnableRewardPoint;
+    public static void setEnableRewardPoint(boolean enableRewardPoint) {
+        mEnableRewardPoint = enableRewardPoint;
     }
 
     public static boolean isEnableGiftCard() {
@@ -586,5 +587,13 @@ public class ConfigUtil {
 
     public static ConfigPrint getConfigPrint() {
         return mConfigPrint;
+    }
+
+    public static void setBaseCurrencyCode(String mBaseCurrencyCode) {
+        ConfigUtil.mBaseCurrencyCode = mBaseCurrencyCode;
+    }
+
+    public static String getBaseCurrencyCode() {
+        return mBaseCurrencyCode;
     }
 }

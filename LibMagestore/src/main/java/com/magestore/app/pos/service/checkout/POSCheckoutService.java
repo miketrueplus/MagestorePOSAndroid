@@ -177,7 +177,11 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
             // TODO: trường hợp 2 payment trở lên thì truyền tham số "multipaymentforpos"
             placeOrderParams.setMethod("multipaymentforpos");
         } else {
-            placeOrderParams.setMethod(listCheckoutPayment.get(0).getCode());
+            if(listCheckoutPayment.get(0).getCode().equals("paypal_integration")){
+                placeOrderParams.setMethod("multipaymentforpos");
+            }else {
+                placeOrderParams.setMethod(listCheckoutPayment.get(0).getCode());
+            }
         }
 
         List<PaymentMethodDataParam> listPaymentMethodParam = placeOrderParams.createPaymentMethodData();
@@ -190,7 +194,7 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
             PaymentMethodDataParam paymentMethodDataParam = createPaymentMethodParam();
             PosPaymentMethodDataParam.PaymentMethodAdditionalParam additionalParam = paymentMethodDataParam.createAddition();
             paymentMethodDataParam.setPaymentMethodAdditionalParam(additionalParam);
-            paymentMethodDataParam.setReferenceNumber(checkoutPayment.getReferenceNumber());
+            paymentMethodDataParam.setReferenceNumber(checkoutPayment.getIsReferenceNumber());
             paymentMethodDataParam.setAmount(checkoutPayment.getAmount());
             paymentMethodDataParam.setBaseAmount(ConfigUtil.convertToBasePrice(checkoutPayment.getBaseAmount()));
             paymentMethodDataParam.setBaseRealAmount(ConfigUtil.convertToBasePrice(checkoutPayment.getRealAmount()));
@@ -321,6 +325,13 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         CheckoutDataAccess checkoutDataAccess = factory.generateCheckoutDataAccess();
         return checkoutDataAccess.sendEmail(email, increment_id);
+    }
+
+    @Override
+    public String approvedPaymentPayPal(String payment_id) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        CheckoutDataAccess checkoutDataAccess = factory.generateCheckoutDataAccess();
+        return checkoutDataAccess.approvedPaymentPayPal(payment_id);
     }
 
     @Override

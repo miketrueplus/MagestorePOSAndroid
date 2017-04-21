@@ -37,4 +37,6 @@ public interface CheckoutDataAccess extends DataAccess {
     boolean removeOrderToListCheckout(Checkout checkout) throws ParseException, InstantiationException, IllegalAccessException, IOException;
 
     String sendEmail(String email, String increment_id) throws ParseException, InstantiationException, IllegalAccessException, IOException;
+
+    String approvedPaymentPayPal(String payment_id) throws ParseException, InstantiationException, IllegalAccessException, IOException;
 }

@@ -96,4 +96,7 @@ public class POSAPI {
     // API Account
     public static final String REST_SETTING_ACCOUNT = "rest/default/V1/webpos/staff/changepassword?";
     public static final String REST_SETTING_CHANGE_CURRENCY = "rest/default/V1/webpos/currencies/change?";
+
+    // API approved payment paypal
+    public static final String REST_APPROVED_PAYMENT_PAYPAL = "rest/default/V1/webpos/paypal/finishPayment?";
 }

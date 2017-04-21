@@ -79,6 +79,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.magestore.app.pos.OrderActivity" />
         </activity>
+        <activity
+            android:name=".PaymentPayPalActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/paypal"
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

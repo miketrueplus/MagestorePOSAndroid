@@ -41,6 +41,7 @@ public interface ConfigDataAccess extends DataAccess {
     Map<String, String> getConfigCCYears() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     ConfigPrint getConfigPrint() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     ChangeCurrency changeCurrency(String code) throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
+    String getBaseCurrencyCode() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     float getConfigMaximumDiscount() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     boolean getConfigDeliveryTime() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     boolean getConfigStoreCredit() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;

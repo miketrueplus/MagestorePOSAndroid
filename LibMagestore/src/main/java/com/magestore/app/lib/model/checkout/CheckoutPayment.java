@@ -98,4 +98,7 @@ public interface CheckoutPayment extends Model {
 
     boolean IsNotEnableEditValue();
     void setIsNotEnableEditValue(boolean bIsNotEnableValue);
+
+    String getClientId();
+    String getIsSandbox();
 }

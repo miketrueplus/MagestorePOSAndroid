@@ -68,6 +68,8 @@ import com.magestore.app.pos.panel.PluginStoreCreditPanel;
 import com.magestore.app.pos.panel.ProductListPanel;
 import com.magestore.app.pos.panel.ProductOptionPanel;
 import com.magestore.app.pos.ui.AbstractActivity;
+import com.magestore.app.util.ConfigUtil;
+import com.magestore.app.util.DialogUtil;
 import com.magestore.app.view.ui.PosUI;
 
 /**
@@ -344,6 +346,9 @@ public class SalesActivity extends AbstractActivity
         mCartItemDetailPanel.setCheckoutListController(mCheckoutListController);
 
         // plugins
+        mPluginGiftCardPanel.setVisibility(ConfigUtil.isEnableGiftCard() ? View.VISIBLE : View.GONE);
+        mPluginRewardPointPanel.setVisibility(ConfigUtil.isEnableRewardPoint() ? View.VISIBLE : View.GONE);
+        mPluginStoreCreditPanel.setVisibility(ConfigUtil.isEnableStoreCredit() ? View.VISIBLE : View.GONE);
         mPluginGiftCardPanel.setPluginGiftCardController(mPluginGiftCardController);
         mPluginGiftCardListPanel.setPluginGiftCardController(mPluginGiftCardController);
         mPluginRewardPointPanel.setCheckoutListController(mCheckoutListController);
@@ -455,8 +460,12 @@ public class SalesActivity extends AbstractActivity
 
         IntentFilter filter_setting = new IntentFilter(SettingListController.RESET_DATA_TO_SALE_ACTIVITY);
         IntentFilter filter_order = new IntentFilter(OrderHistoryListController.SEND_ORDER_TO_SALE_ACTIVITY);
+        IntentFilter filter_payment_id = new IntentFilter(PaymentPayPalActivity.SEND_PAYMENT_ID_TO_SALE_ACTIVITY);
+        IntentFilter filter_error_paypal = new IntentFilter(PaymentPayPalActivity.SEND_ERROR_TO_SALE_ACTIVITY);
         registerReceiver(receiver_data_setting, filter_setting);
         registerReceiver(receiver_data_order, filter_order);
+        registerReceiver(receiver_data_payment_paypal, filter_payment_id);
+        registerReceiver(receiver_data_error_paypal, filter_error_paypal);
     }
 
 //    @Override
@@ -551,6 +560,28 @@ public class SalesActivity extends AbstractActivity
         @Override
         public void onReceive(Context context, Intent intent) {
             //  nhận sự kiện khi click vào re-order trong order history, mOorder là static đã được gán ở bên OrderHistoryController
+        }
+    };
+
+    // nhận data trả về từ Payment Paypal
+    BroadcastReceiver receiver_data_payment_paypal = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(intent != null){
+                String payment_id = intent.getStringExtra("payment_id");
+                mCheckoutListController.doInputApprovedPaymentPaypal(payment_id);
+            }
+        }
+    };
+
+    // nhận thông báo lỗi trả về từ Payment Paypal
+    BroadcastReceiver receiver_data_error_paypal = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(intent != null){
+                String message = intent.getStringExtra("message");
+                DialogUtil.confirm(getContext(), message, R.string.done);
+            }
         }
     };
 

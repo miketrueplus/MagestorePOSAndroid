@@ -228,7 +228,6 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_marginBottom="@dimen/layout_margin_10"
-                                        android:visibility="@{ConfigUtil.isEnableStoreCredit() ? View.VISIBLE : View.GONE}"
                                         magestore_view:layout_panel="@layout/plugin_store_credit_panel" />
 
                                     <com.magestore.app.pos.panel.PluginRewardPointPanel
@@ -236,7 +235,6 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_marginBottom="@dimen/layout_margin_10"
-                                        android:visibility="@{ConfigUtil.isEnableRewardPoint() ? View.VISIBLE : View.GONE}"
                                         magestore_view:layout_panel="@layout/plugin_reward_point_panel" />
 
                                     <com.magestore.app.pos.panel.PluginGiftCardPanel
@@ -244,7 +242,6 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_marginBottom="@dimen/layout_margin_10"
-                                        android:visibility="@{ConfigUtil.isEnableGiftCard() ? View.VISIBLE : View.GONE}"
                                         magestore_view:layout_panel="@layout/plugin_gift_card_panel" />
                                 </LinearLayout>
                             </LinearLayout>

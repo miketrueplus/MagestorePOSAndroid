@@ -54,6 +54,8 @@ public interface CheckoutService extends ListService<Checkout> {
 
     String sendEmail(String email , String increment_id) throws IOException, InstantiationException, ParseException, IllegalAccessException;
 
+    String approvedPaymentPayPal(String payment_id) throws IOException, InstantiationException, ParseException, IllegalAccessException;
+
     Checkout updateTotal(Checkout checkout);
 
     Checkout create();

@@ -68,6 +68,7 @@ public class POSConfigService extends AbstractService implements ConfigService {
         ConfigUtil.setConfigPrint(getConfigPrint());
         ConfigUtil.setStaff(getStaff());
         ConfigUtil.setCustomerGuest(getGuestCheckout());
+        ConfigUtil.setBaseCurrencyCode(getBaseCurrencyCode());
         ConfigUtil.setShowDeliveryTime(getConfigDeliveryTime());
         ConfigUtil.setEnableGiftCard(getConfigGiftCard());
         ConfigUtil.setEnableStoreCredit(getConfigStoreCredit());
@@ -89,7 +90,7 @@ public class POSConfigService extends AbstractService implements ConfigService {
         return currencyFormat(priceFormat);
     }
 
-    private DecimalFormat currencyFormat(ConfigPriceFormat priceFormat){
+    private DecimalFormat currencyFormat(ConfigPriceFormat priceFormat) {
         // khởi tạo currency format
         String pattern = (priceFormat.getPattern().indexOf(StringUtil.STRING_CURRENCY) == 0) ? "¤¤ ###,##0.0" : "###,##0.0 ¤¤";
         DecimalFormatSymbols symbols = new DecimalFormatSymbols();
@@ -116,7 +117,7 @@ public class POSConfigService extends AbstractService implements ConfigService {
         return currencyNosymbolFormat(priceFormat);
     }
 
-    private DecimalFormat currencyNosymbolFormat(ConfigPriceFormat priceFormat){
+    private DecimalFormat currencyNosymbolFormat(ConfigPriceFormat priceFormat) {
         // khởi tạo currency format
         String pattern = "###,###.#";
         DecimalFormatSymbols symbols = new DecimalFormatSymbols();
@@ -141,7 +142,7 @@ public class POSConfigService extends AbstractService implements ConfigService {
         return floatFormat(priceFormat);
     }
 
-    private DecimalFormat floatFormat(ConfigPriceFormat priceFormat){
+    private DecimalFormat floatFormat(ConfigPriceFormat priceFormat) {
         // khởi tạo float format
         String pattern = "###,###.#";
         DecimalFormatSymbols symbols = new DecimalFormatSymbols();
@@ -166,7 +167,7 @@ public class POSConfigService extends AbstractService implements ConfigService {
         return integetFormat(priceFormat);
     }
 
-    private DecimalFormat integetFormat(ConfigPriceFormat priceFormat){
+    private DecimalFormat integetFormat(ConfigPriceFormat priceFormat) {
         // khởi tạo interger format
         String pattern = "###,###";
         DecimalFormatSymbols symbols = new DecimalFormatSymbols();
@@ -293,6 +294,13 @@ public class POSConfigService extends AbstractService implements ConfigService {
         ConfigUtil.setCurrentCurrency(getDefaultCurrency());
 
         return changeCurrency;
+    }
+
+    @Override
+    public String getBaseCurrencyCode() throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
+        return configDataAccess.getBaseCurrencyCode();
     }
 
     @Override
