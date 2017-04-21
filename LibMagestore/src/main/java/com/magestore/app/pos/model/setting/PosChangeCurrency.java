@@ -26,4 +26,9 @@ public class PosChangeCurrency extends PosAbstractModel implements ChangeCurrenc
     public Currency getCurrency() {
         return currency;
     }
+
+    @Override
+    public void setCurrency(Currency currency) {
+        this.currency = (PosCurrency) currency;
+    }
 }

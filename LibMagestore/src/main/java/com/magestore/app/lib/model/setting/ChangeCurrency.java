@@ -13,4 +13,5 @@ import com.magestore.app.lib.model.directory.Currency;
 public interface ChangeCurrency extends Model {
     ConfigPriceFormat getPriceFormat();
     Currency getCurrency();
+    void setCurrency(Currency currency);
 }

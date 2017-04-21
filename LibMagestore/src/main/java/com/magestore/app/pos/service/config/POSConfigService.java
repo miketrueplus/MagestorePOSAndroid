@@ -34,6 +34,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -95,16 +96,18 @@ public class POSConfigService extends AbstractService implements ConfigService {
     private DecimalFormat currencyFormat(ConfigPriceFormat priceFormat) {
         // khởi tạo currency format
         String pattern = (priceFormat.getPattern().indexOf(StringUtil.STRING_CURRENCY) == 0) ? "¤¤ ###,##0.0" : "###,##0.0 ¤¤";
-        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+
+        Locale locale = new Locale("en", "UK");
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(locale);
         symbols.setDecimalSeparator(priceFormat.getDecimalSymbol().charAt(0));
         symbols.setGroupingSeparator(priceFormat.getGroupSymbol().charAt(0));
 
-        String symbol = priceFormat.getCurrencySymbol();
-        if (symbol.startsWith("u")) symbol = "\\" + symbol;
-//        symbols.setCurrencySymbol(priceFormat.getCurrencySymbol());
-//        symbols.setInternationalCurrencySymbol(priceFormat.getCurrencySymbol());
-        symbols.setCurrencySymbol(StringEscapeUtils.unescapeJava(symbol));
-        symbols.setInternationalCurrencySymbol(StringEscapeUtils.unescapeJava(symbol));
+//        String symbol = priceFormat.getCurrencySymbol();
+//        if (symbol.startsWith("u")) symbol = "\\" + symbol;
+        symbols.setCurrencySymbol(priceFormat.getCurrencySymbol());
+        symbols.setInternationalCurrencySymbol(priceFormat.getCurrencySymbol());
+//        symbols.setCurrencySymbol(StringEscapeUtils.unescapeJava(symbol));
+//        symbols.setInternationalCurrencySymbol(StringEscapeUtils.unescapeJava(symbol));
 
         DecimalFormat currencyFormat = new DecimalFormat(pattern, symbols);
         currencyFormat.setGroupingSize(priceFormat.getGroupLength());
@@ -128,7 +131,8 @@ public class POSConfigService extends AbstractService implements ConfigService {
     private DecimalFormat currencyNosymbolFormat(ConfigPriceFormat priceFormat) {
         // khởi tạo currency format
         String pattern = "###,###.#";
-        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+        Locale locale = new Locale("en", "UK");
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(locale);
         symbols.setDecimalSeparator(priceFormat.getDecimalSymbol().charAt(0));
         symbols.setGroupingSeparator(priceFormat.getGroupSymbol().charAt(0));
         DecimalFormat currencyFormat = new DecimalFormat(pattern, symbols);
@@ -153,7 +157,8 @@ public class POSConfigService extends AbstractService implements ConfigService {
     private DecimalFormat floatFormat(ConfigPriceFormat priceFormat) {
         // khởi tạo float format
         String pattern = "###,###.#";
-        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+        Locale locale = new Locale("en", "UK");
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(locale);
         symbols.setDecimalSeparator(priceFormat.getDecimalSymbol().charAt(0));
         symbols.setGroupingSeparator(priceFormat.getGroupSymbol().charAt(0));
         DecimalFormat format = new DecimalFormat(pattern, symbols);
@@ -178,7 +183,8 @@ public class POSConfigService extends AbstractService implements ConfigService {
     private DecimalFormat integetFormat(ConfigPriceFormat priceFormat) {
         // khởi tạo interger format
         String pattern = "###,###";
-        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+        Locale locale = new Locale("en", "UK");
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(locale);
         symbols.setGroupingSeparator(priceFormat.getGroupSymbol().charAt(0));
         DecimalFormat format = new DecimalFormat(pattern, symbols);
         format.setGroupingSize(priceFormat.getGroupLength());

@@ -570,7 +570,16 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
             Gson2PosPriceFormatParseImplement implement = new Gson2PosPriceFormatParseImplement();
             Gson gson = implement.createGson();
             PosChangeCurrency priceFormat = gson.fromJson(reponse, PosChangeCurrency.class);
+            List<Currency> listCurrency = getCurrencies();
             currentCurrency = priceFormat.getCurrency();
+            if (listCurrency != null && listCurrency.size() > 0) {
+                for (Currency currency : listCurrency) {
+                    if (currency.getCode().equals(code)) {
+                        currentCurrency = currency;
+                        priceFormat.setCurrency(currency);
+                    }
+                }
+            }
             return priceFormat;
         } catch (ConnectionException ex) {
             throw ex;

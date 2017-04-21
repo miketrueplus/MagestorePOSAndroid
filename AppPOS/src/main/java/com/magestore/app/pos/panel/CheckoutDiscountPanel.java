@@ -76,10 +76,9 @@ public class CheckoutDiscountPanel extends AbstractDetailPanel<Checkout> {
     public void initValue() {
         grand_total = mCheckoutListController.getSelectedItem().getGrandTotal();
 
-        if (mCheckoutListController.getCurrency() != null) {
-            String currency_symbol = mCheckoutListController.getCurrency().getCurrencySymbol();
-            amount_currency.setText(currency_symbol);
-        }
+        String sym = ConfigUtil.getCurrencySymbol();
+        if(sym != null)
+            amount_currency.setText(ConfigUtil.getCurrencySymbol());
 
         if (mCheckoutListController.getMaximumDiscount() >= 0) {
             float maximum_discount = mCheckoutListController.getMaximumDiscount();
