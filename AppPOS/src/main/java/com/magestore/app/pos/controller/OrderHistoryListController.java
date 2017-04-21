@@ -214,7 +214,13 @@ public class OrderHistoryListController extends AbstractListController<Order> {
 
     public void doInputReorder(Order order) {
         showDetailOrderLoading(true);
-        doAction(ORDER_REORDER_TYPE, ORDER_REORDER_CODE, wraper, order);
+//        doAction(ORDER_REORDER_TYPE, ORDER_REORDER_CODE, wraper, order);
+        // chuyển order sang cho sales activity để re-order
+        SalesActivity.mOrder = order;
+        Intent intent = new Intent();
+        intent.setAction(SEND_ORDER_TO_SALE_ACTIVITY);
+        getMagestoreContext().getActivity().sendBroadcast(intent);
+        getMagestoreContext().getActivity().finish();
     }
 
     public void doRetrievePaymentMethod() {
