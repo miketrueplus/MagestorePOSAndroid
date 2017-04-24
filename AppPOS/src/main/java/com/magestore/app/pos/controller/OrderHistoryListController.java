@@ -617,4 +617,5 @@ public class OrderHistoryListController extends AbstractListController<Order> {
                 return service.retrieve(getSearchString(), page, pageSize, mSearchStatus);
         }
     }
+
 }
