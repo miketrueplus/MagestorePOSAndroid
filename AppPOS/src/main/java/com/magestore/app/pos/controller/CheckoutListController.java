@@ -507,7 +507,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             //  cập nhật giá
             ((CheckoutService) getListService()).updateTotal(checkout);
             showButtonRemoveDiscount(checkDiscount(checkout) ? true : false);
-            showButtonDiscount(checkout.getGrandTotal() != 0 ? true : false);
+            showButtonDiscount(checkout.getGrandTotal()  != 0 && checkListCartItem() ? true : false);
             ((CheckoutDetailPanel) mDetailView).bindTotalPrice(checkout.getGrandTotal());
 
             mCheckoutPaymentListPanel.setCheckout(checkout);
@@ -654,7 +654,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             if (!checkDiscount(checkout)) {
                 showButtonRemoveDiscount(false);
             }
-            showButtonDiscount(checkout.getGrandTotal() != 0 ? true : false);
+            showButtonDiscount(checkout.getGrandTotal()  != 0 && checkListCartItem() ? true : false);
 
             ((CheckoutListPanel) mView).updateTotalPrice(checkout);
             mCartItemListController.updateTotalPrice();
@@ -675,7 +675,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             //  cập nhật giá
             ((CheckoutService) getListService()).updateTotal(checkout);
             showButtonRemoveDiscount(checkDiscount(checkout) ? true : false);
-            showButtonDiscount(checkout.getGrandTotal() != 0 ? true : false);
+            showButtonDiscount(checkout.getGrandTotal()  != 0 && checkListCartItem() ? true : false);
             ((CheckoutDetailPanel) mDetailView).bindTotalPrice(checkout.getGrandTotal());
 
             ((CheckoutListPanel) mView).updateTotalPrice(checkout);
@@ -774,7 +774,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         showButtonRemoveDiscount(checkDiscount(checkout) ? true : false);
         ((CheckoutDetailPanel) mDetailView).bindTotalPrice(checkout.getGrandTotal());
         ((CheckoutListPanel) mView).updateTotalPrice(checkout);
-        showButtonDiscount(checkout.getGrandTotal() != 0 ? true : false);
+        showButtonDiscount(checkout.getGrandTotal()  != 0 && checkListCartItem() ? true : false);
         List<CheckoutPayment> listPayment = checkout.getCheckoutPayment();
         mPaymentMethodListPanel.bindList(listPayment);
         mCheckoutAddPaymentPanel.bindList(listPayment);
@@ -810,6 +810,8 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         mItem = checkout;
         isShowButtonCheckout(true);
         isShowSalesMenuDiscount(true);
+        showButtonRemoveDiscount(checkDiscount(checkout) ? true : false);
+        showButtonDiscount(checkout.getGrandTotal()  != 0 && checkListCartItem() ? true : false);
         mCartItemListController.bindList(checkout.getCartItem());
         mCartItemListController.bindParent(checkout);
         mCartItemListController.doRetrieve();
@@ -843,6 +845,8 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             mCartItemListController.bindList(checkout.getCartItem());
             mCartItemListController.bindParent(checkout);
             mCartItemListController.doRetrieve();
+            showButtonRemoveDiscount(checkDiscount(checkout) ? true : false);
+            showButtonDiscount(checkout.getGrandTotal()  != 0 && checkListCartItem() ? true : false);
             isShowButtonCheckout(true);
             isShowSalesMenuDiscount(true);
             int position = getSelectedItems().size() - 1;
@@ -862,6 +866,8 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             Checkout checkout = getSelectedItems().get(index);
             setSelectedItem(checkout);
             doShowDetailSuccess(false);
+            showButtonRemoveDiscount(checkDiscount(checkout) ? true : false);
+            showButtonDiscount(checkout.getGrandTotal()  != 0 && checkListCartItem() ? true : false);
             if (checkout.getStatus() != STATUS_CHECKOUT_PROCESSING) {
                 showSalesShipping();
                 showActionButtonCheckout();
@@ -934,6 +940,8 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         bindCustomer(checkout.getCustomer());
         ((CheckoutListPanel) mView).changeCustomerInToolBar(checkout.getCustomer());
         updateTotalPrice();
+        showButtonRemoveDiscount(checkDiscount(checkout) ? true : false);
+        showButtonDiscount(checkout.getGrandTotal()  != 0 && checkListCartItem() ? true : false);
         if (checkout.getStatus() == STATUS_CHECKOUT_PROCESSING) {
             if (checkout.getOrderSuccess() != null) {
                 mCheckoutSuccessPanel.bindItem(checkout.getOrderSuccess());
