@@ -133,7 +133,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             getSelectedItem().setCustomerID(customer.getID());
             getView().updateModel(getSelectedItem());
             mCartOrderListPanel.notifyDataSetChanged();
-            if (((CheckoutDetailPanel) mDetailView).getVisibility() == View.VISIBLE) {
+            if (((CheckoutDetailPanel) mDetailView).getVisibility() == View.VISIBLE && getSelectedItem().getStatus() == STATUS_CHECKOUT_PROCESSING) {
                 doInputSaveCart();
             }
         }
@@ -787,12 +787,10 @@ public class CheckoutListController extends AbstractListController<Checkout> {
      * add checkout to list order
      */
     public void addNewOrder() {
-        if (mDetailView.getVisibility() == View.VISIBLE) {
-            onBackTohome();
-        }
         Checkout checkout = ((CheckoutService) getListService()).create();
         checkout.setCustomerID(guest_checkout.getID());
         checkout.setCustomer(guest_checkout);
+        checkout.setStatus(STATUS_CHECKOUT_ADD_ITEM);
         setSelectedItem(checkout);
         bindCustomer(guest_checkout);
         getSelectedItems().add(checkout);
@@ -808,6 +806,9 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         mCartOrderListPanel.scrollToPosition(position);
         ((CheckoutListPanel) mView).changeCustomerInToolBar(guest_checkout);
         updateTotalPrice();
+        if (mDetailView.getVisibility() == View.VISIBLE) {
+            onBackTohome();
+        }
     }
 
     /**
