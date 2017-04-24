@@ -82,7 +82,7 @@ public class CheckoutPaymentCreditCardPanel extends AbstractDetailPanel<Checkout
         String ccYear = s_card_year.getSelection();
         String ccCvv = card_cvv.getText().toString();
         checkoutPayment.setCCOwner(ccOwner);
-        checkoutPayment.setType(ccType);
+        checkoutPayment.setCCType(ccType);
         checkoutPayment.setCCNumber(ccNumber);
         checkoutPayment.setCCExpMonth(ccMonth);
         checkoutPayment.setCCExpYear(ccYear);

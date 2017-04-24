@@ -301,7 +301,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 PosCheckoutPayment.AdditionalData additionalData = paymentCreditCard.createAdditionalData();
                 paymentCreditCard.setAdditionalData(additionalData);
                 paymentCreditCard.setCCOwner(payment.getCCOwner());
-                paymentCreditCard.setType(payment.getCCType());
+                paymentCreditCard.setCCType(payment.getCCType());
                 paymentCreditCard.setCCNumber(payment.getCCNumber());
                 paymentCreditCard.setCCExpMonth(payment.getCCExpMonth());
                 paymentCreditCard.setCCExpYear(payment.getCCExpYear());
