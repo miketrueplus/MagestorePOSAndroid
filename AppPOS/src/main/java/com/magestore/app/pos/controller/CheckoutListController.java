@@ -265,7 +265,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         doAction(ACTION_TYPE_CHECK_APPROVED_PAYMENT_PAYPAL, null, wraper, null);
     }
 
-    public void doInputApprovedAuthorizenet(Authorizenet authorizenet){
+    public void doInputApprovedAuthorizenet(Authorizenet authorizenet) {
         doAction(ACTION_TYPE_CHECK_APPROVED_PAYMENT_AUTHORIZENET, null, wraper, authorizenet);
     }
 
@@ -440,7 +440,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             String payment_id = (String) wraper.get("payment_id");
             wraper.put("paypal_transaction_id", ((CheckoutService) getListService()).approvedPaymentPayPal(payment_id));
             return true;
-        } else if(actionType == ACTION_TYPE_CHECK_APPROVED_PAYMENT_AUTHORIZENET){
+        } else if (actionType == ACTION_TYPE_CHECK_APPROVED_PAYMENT_AUTHORIZENET) {
             List<CheckoutPayment> listCheckoutPayment = (List<CheckoutPayment>) wraper.get("list_payment");
             Authorizenet authorizenet = (Authorizenet) models[0];
             wraper.put("authorize_respone", ((CheckoutService) getListService()).approvedAuthorizenet(authorizenet, listCheckoutPayment));
@@ -747,13 +747,22 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             Checkout checkout = (Checkout) wraper.get("save_reward_point");
             updateToTal(checkout);
             isShowLoadingDetail(false);
-        } else if(success && actionType == ACTION_TYPE_CHECK_APPROVED_PAYMENT_PAYPAL){
+        } else if (success && actionType == ACTION_TYPE_CHECK_APPROVED_PAYMENT_PAYPAL) {
             String transaction_id = (String) wraper.get("paypal_transaction_id");
             List<CheckoutPayment> listCheckoutPayment = (List<CheckoutPayment>) wraper.get("list_payment");
             CheckoutPayment paymentPayPal = checkTypePaymenPaypal(listCheckoutPayment);
             paymentPayPal.setIsReferenceNumber(transaction_id.trim());
             wraper.put("list_payment", listCheckoutPayment);
             doAction(ACTION_TYPE_PLACE_ORDER, null, wraper, null);
+        } else if (success && actionType == ACTION_TYPE_CHECK_APPROVED_PAYMENT_AUTHORIZENET) {
+            Authorizenet authorizenet = (Authorizenet) wraper.get("place_order");
+            Order order = authorizenet.getOrder();
+            isShowButtonCheckout(false);
+            isShowSalesMenuDiscount(false);
+            mCheckoutSuccessPanel.bindItem(order);
+            doShowDetailSuccess(true, order);
+            // hoàn thành place order hiden progressbar
+            isShowLoadingDetail(false);
         }
     }
 
