@@ -624,6 +624,14 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         customerShippingAddress.setEmail(checkout.getCustomer().getEmail());
         quoteCustomer.setShippingAddress(customerShippingAddress);
         CustomerAddress billingAddress = listAddress.get(1);
+        CustomerAddress guest_address = ConfigUtil.getCustomerGuest().getAddress().get(0);
+        if (billingAddress.getID().equals(guest_address.getID())) {
+            if (listAddress.size() >= 3) {
+                billingAddress = listAddress.get(2);
+            } else {
+                billingAddress = listAddress.get(0);
+            }
+        }
         QuoteCustomerAddress customerBillingAddress = createCustomerAddress();
         customerBillingAddress.setCountryId(billingAddress.getCountry());
         customerBillingAddress.setRegionId(billingAddress.getRegion().getRegionID());
