@@ -38,11 +38,11 @@ import java.util.Map;
  * Tạo các truy vấn đến API, điền các tham số vào
  * Truy vấn được tạo từ BaseURL, query và tham số
  * Tham số truy vấn có dạng ${tên_tham_số}
- *  Ví dụ
- *    BaseURL = "http://api.androidhive.info/"
- *    query = "/contacts/name/${name}/age/${age}"
- *    thì chuỗi truy vấn kết quả = "http://api.androidhive.info/contacts/name/${name}/age/${age}"
- *    Trong đó ${name} và ${age} là tham số
+ * Ví dụ
+ * BaseURL = "http://api.androidhive.info/"
+ * query = "/contacts/name/${name}/age/${age}"
+ * thì chuỗi truy vấn kết quả = "http://api.androidhive.info/contacts/name/${name}/age/${age}"
+ * Trong đó ${name} và ${age} là tham số
  * Created by Mike on 12/12/2016.
  * Magestore
  * mike@trueplus.vn
@@ -63,6 +63,7 @@ public class MagestoreStatement implements Statement {
     // http header
     private static final String CONTENT_TYPE = "Content-Type";
     private static final String APPLICATION_JSON = "application/json";
+    private static final String APPLICATION_FORM_URLENCODEED = "application/x-www-form-urlencoded";
     private static final String ACCEPT = "Accept";
     private static final String SLASH = StringUtil.STRING_SLASH;
 
@@ -117,6 +118,7 @@ public class MagestoreStatement implements Statement {
 
     /**
      * Khởi tạo với 1 JSON Connection tương ứng
+     *
      * @param connection
      */
     protected MagestoreStatement(MagestoreConnection connection) {
@@ -125,6 +127,7 @@ public class MagestoreStatement implements Statement {
 
     /**
      * Getter connection json
+     *
      * @return Connection
      */
     @Override
@@ -134,6 +137,7 @@ public class MagestoreStatement implements Statement {
 
     /**
      * Class xử lý vấn đề xây dựng tham số theo GET
+     *
      * @return
      */
     @Override
@@ -149,6 +153,7 @@ public class MagestoreStatement implements Statement {
     /**
      * Chuẩn bị câu truy vấn
      * Nếu truy vấn có tham số thì các tham số được đặt them mẫu ${tên_tham_số}
+     *
      * @param pstrQuery là chuỗi truy vấn, không bao gồm base url, ví dụ "/contacts/name/${name}/age/${age}"
      * @throws ConnectionException
      */
@@ -160,13 +165,14 @@ public class MagestoreStatement implements Statement {
         //   query = "/contacts/name/${name}/age/${age}"
         //   thì chuỗi kết quả = "http://api.androidhive.info/contacts/name/${name}/age/${age}"
         mstrLastPreparedQuery = pstrQuery;
-        String strBaseURL = ((MagestoreConnection)getConnection()).getBaseURL();
+        String strBaseURL = ((MagestoreConnection) getConnection()).getBaseURL();
         mstrPreparedQuery = new StringBuilder(strBaseURL);
-        if (!pstrQuery.startsWith(SLASH) && !strBaseURL.endsWith(SLASH)) {
-            mstrPreparedQuery.append(SLASH);
-        }
-        else if (pstrQuery.startsWith(SLASH) && strBaseURL.endsWith(SLASH)) {
-            mstrPreparedQuery.deleteCharAt(mstrPreparedQuery.length() - 1);
+        if(!StringUtil.isNullOrEmpty(pstrQuery)){
+            if (!pstrQuery.startsWith(SLASH) && !strBaseURL.endsWith(SLASH)) {
+                mstrPreparedQuery.append(SLASH);
+            } else if (pstrQuery.startsWith(SLASH) && strBaseURL.endsWith(SLASH)) {
+                mstrPreparedQuery.deleteCharAt(mstrPreparedQuery.length() - 1);
+            }
         }
         mstrPreparedQuery.append(pstrQuery);
 
@@ -190,6 +196,7 @@ public class MagestoreStatement implements Statement {
     /**
      * Gán các tham số cho truy vấn
      * Tham số trong URL có dạng ${tên_tham_số}
+     *
      * @param pstrName
      * @param pstrValue
      * @throws ConnectionException
@@ -208,6 +215,7 @@ public class MagestoreStatement implements Statement {
     /**
      * Gán các tham số cho truy vấn
      * Tham số trong URL có dạng ${tên_tham_số}
+     *
      * @param pstrName
      * @param pintValue
      * @throws ConnectionException
@@ -222,12 +230,13 @@ public class MagestoreStatement implements Statement {
     /**
      * Gán các tham số cho truy vấn
      * Tham số trong URL có dạng ${tên_tham_số}
+     *
      * @param params
      * @throws ConnectionException
      */
-    public void setParams(String ...params) throws ConnectionException {
+    public void setParams(String... params) throws ConnectionException {
         String strName = null;
-        for (String param:params) {
+        for (String param : params) {
             if (strName == null) strName = param;
             else {
                 setParam(strName, param);
@@ -238,8 +247,8 @@ public class MagestoreStatement implements Statement {
 
     /**
      * Trả lại excutequery trên url
-     * @return
-     * TODO: cần cải thiện thuật toán tránh build lại query nhiều lần
+     *
+     * @return TODO: cần cải thiện thuật toán tránh build lại query nhiều lần
      */
     public String buildFinalQuery() {
         mstrExecuteQuery = null;
@@ -252,8 +261,7 @@ public class MagestoreStatement implements Statement {
         if (mValuesMap != null) {
             StrSubstitutor sub = new StrSubstitutor(mValuesMap);
             mstrExecuteQuery = sub.replace(strFinalBuilderQuery);
-        }
-        else
+        } else
             mstrExecuteQuery = strFinalBuilderQuery.toString();
 
         return mstrExecuteQuery;
@@ -279,6 +287,7 @@ public class MagestoreStatement implements Statement {
 
     /**
      * Chuẩn bị HTTP connection với method post và object
+     *
      * @param parseEntity
      * @throws IOException
      */
@@ -293,7 +302,6 @@ public class MagestoreStatement implements Statement {
     }
 
     /**
-     *
      * @return
      * @throws ConnectionException
      * @throws IOException
@@ -320,8 +328,13 @@ public class MagestoreStatement implements Statement {
             // Đặt lại các tham số cho HTTP Connection
             mHttpConnection.setDoOutput(true);
             mHttpConnection.setDoInput(true);
-            mHttpConnection.setRequestProperty(CONTENT_TYPE, APPLICATION_JSON);
-            mHttpConnection.setRequestProperty(ACCEPT, APPLICATION_JSON);
+            if (mstrPreparedQuery.toString().contains("authorize")) {
+                mHttpConnection.setRequestProperty(CONTENT_TYPE, APPLICATION_FORM_URLENCODEED);
+                mHttpConnection.setRequestProperty(ACCEPT, APPLICATION_FORM_URLENCODEED);
+            } else {
+                mHttpConnection.setRequestProperty(CONTENT_TYPE, APPLICATION_JSON);
+                mHttpConnection.setRequestProperty(ACCEPT, APPLICATION_JSON);
+            }
 
             // đặt action method cho http connection
             if (mAction == MagestoreStatementAction.ACTION_DELETE)
@@ -331,7 +344,11 @@ public class MagestoreStatement implements Statement {
             // Viết nội dung của object thành dạng json cho input
             Gson gson = new GsonBuilder().setExclusionStrategies(new MagestoreExclusionStrategy()).create();
             OutputStreamWriter wr = new OutputStreamWriter(mHttpConnection.getOutputStream());
-            gson.toJson(mobjPrepareParam, wr);
+            if (mstrPreparedQuery.toString().contains("authorize")) {
+                wr.write(mobjPrepareParam.toString());
+            } else {
+                gson.toJson(mobjPrepareParam, wr);
+            }
             wr.flush();
             wr.close();
         }
@@ -344,28 +361,25 @@ public class MagestoreStatement implements Statement {
             // save cookie
             saveCookie();
             return new MagestoreResultReading(mHttpConnection.getInputStream());
-        }
-        else {
+        } else {
             // có lỗi, ném ra exception
             MagestoreResultReadingException rp = new MagestoreResultReadingException(mHttpConnection.getErrorStream(), statusCode);
             rp.setParseImplement(Gson2PosMesssageExceptionImplement.class);
-            if (statusCode == 500)  {
+            if (statusCode == 500) {
                 rp.setParseModel(PosMessageException500.class);
                 PosMessageException500 messageException500 = ((PosMessageException500) rp.doParse());
                 throw new ConnectionException(messageException500.getCode(), messageException500.getMessage());
-            }
-            else if (statusCode == 404) {
+            } else if (statusCode == 404) {
                 rp.setParseModel(PosMessageException.class);
                 throw new ConnectionException(ConnectionException.EXCEPTION_PAGE_NOT_FOUND, "");
-            }
-            else {
+            } else {
 //                rp.setParseModel(PosMessageException.class);
                 throw new ConnectionException(Integer.toString(statusCode), "");
             }
         }
     }
 
-    private void saveCookie(){
+    private void saveCookie() {
         Map<String, List<String>> header = mHttpConnection.getHeaderFields();
         List<String> cookiesHeader = header.get(COOKIES_HEADER);
         if (cookiesHeader != null) {
@@ -387,7 +401,7 @@ public class MagestoreStatement implements Statement {
         }
     }
 
-    private void setCookieToHeaderField(){
+    private void setCookieToHeaderField() {
         if (msCookieManager != null) {
             //getting cookies(if any) and manually adding them to the request header
             List<HttpCookie> cookies = msCookieManager.getCookieStore().getCookies();
@@ -403,6 +417,7 @@ public class MagestoreStatement implements Statement {
 
     /**
      * Thực hiện truy vấn đến server
+     *
      * @return ResultReading
      * @throws ConnectionException
      */
@@ -422,6 +437,7 @@ public class MagestoreStatement implements Statement {
 
     /**
      * Thực thi truy vấn luôn, theo câu query
+     *
      * @param pstrQuery
      * @return ResultReading
      * @throws ConnectionException
@@ -434,6 +450,7 @@ public class MagestoreStatement implements Statement {
 
     /**
      * Thực thi truy vấn luôn, tham số là 1 object
+     *
      * @param parseEntity
      * @return
      * @throws ConnectionException
@@ -447,6 +464,7 @@ public class MagestoreStatement implements Statement {
 
     /**
      * Thực thi truy vấn luôn, tham số là 1 object với câu query
+     *
      * @param pstrQuery
      * @param parseEntity
      * @return
@@ -462,6 +480,7 @@ public class MagestoreStatement implements Statement {
 
     /**
      * Thực thi truy vấn luôn với các cặp tahm số
+     *
      * @param params
      * @return
      * @throws ConnectionException
@@ -475,6 +494,7 @@ public class MagestoreStatement implements Statement {
 
     /**
      * Thực thi truy vấn luôn với tham số là params và object
+     *
      * @param parseEntity
      * @param params
      * @return
@@ -490,6 +510,7 @@ public class MagestoreStatement implements Statement {
 
     /**
      * Thực thi truy vấn luôn với tham số là params và object và câu truy vấn
+     *
      * @param pstrQuery
      * @param parseEntity
      * @param params
@@ -507,6 +528,7 @@ public class MagestoreStatement implements Statement {
 
     /**
      * Thực thi truy vấn luôn với tham số là params và object và câu truy vấn
+     *
      * @param pstrQuery
      * @param params
      * @return
@@ -522,6 +544,7 @@ public class MagestoreStatement implements Statement {
 
     /**
      * Đóng statement lại, giải phóng bộ nhớ
+     *
      * @throws ConnectionException
      */
     @Override
