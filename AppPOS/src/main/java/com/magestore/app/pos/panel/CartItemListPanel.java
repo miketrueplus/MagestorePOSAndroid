@@ -75,6 +75,7 @@ public class CartItemListPanel extends AbstractListPanel<CartItem> {
 
     /**
      * Hold ayout view của iten, gán findview id vào các biến
+     *
      * @param view
      * @return
      */
@@ -87,13 +88,15 @@ public class CartItemListPanel extends AbstractListPanel<CartItem> {
 
     /**
      * Enable hoặc disable swipe
+     *
      * @param enable
      */
     public void enableSwipeItem(boolean enable) {
         List<ModelView> viewList = getModelViewList();
         if (viewList == null) return;
         for (ModelView view : viewList) {
-            if (view.getViewHolder() == null || !(view.getViewHolder() instanceof CartItemListPanel.RecycleViewCartItemHolder)) return;
+            if (view.getViewHolder() == null || !(view.getViewHolder() instanceof CartItemListPanel.RecycleViewCartItemHolder))
+                return;
             ((RecycleViewCartItemHolder) view.getViewHolder()).swipeLayout.setSwipeEnabled(enable);
         }
     }
@@ -115,6 +118,7 @@ public class CartItemListPanel extends AbstractListPanel<CartItem> {
 
         /**
          * Hold layout item trong view
+         *
          * @param view
          */
         @Override
@@ -138,9 +142,9 @@ public class CartItemListPanel extends AbstractListPanel<CartItem> {
             mDelButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     // không cho xóa nếu trạng thái không cho thay đổi caritem
-                    if (!((CartItemListController)getController()).isAllowChangeCartItem()) return;
+                    if (!((CartItemListController) getController()).isAllowChangeCartItem()) return;
                     if (getModelView() == null || getModelView().getModel() == null) return;
-                    ((CartItemListController)getController()).deleteCartITem((CartItem)getModelView().getModel());
+                    ((CartItemListController) getController()).deleteCartITem((CartItem) getModelView().getModel());
 //                    ((CartItemListController)getController()).deleteProduct(((CartItem)getModelView().getModel()).getProduct());
                 }
             });
@@ -149,7 +153,7 @@ public class CartItemListPanel extends AbstractListPanel<CartItem> {
             swipeLayout.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (!((CartItemListController)getController()).isAllowChangeCartItem()) return;
+                    if (!((CartItemListController) getController()).isAllowChangeCartItem()) return;
                     if (getModelView() == null || getModelView().getModel() == null) return;
                     if (mblnOnSwipe) return;
 
@@ -208,15 +212,20 @@ public class CartItemListPanel extends AbstractListPanel<CartItem> {
 
         /**
          * Đặt nội dung item trong view
+         *
          * @param item
          * @param position
          */
         public void setItem(ModelView item, int position) {
-            binding.setCartItem((CartItem)item.getModel());
-            if (((CartItem)item.getModel()).getProduct() != null) {
-                Product product = ((CartItem)item.getModel()).getProduct();
+            binding.setCartItem((CartItem) item.getModel());
+            if (((CartItem) item.getModel()).getProduct() != null) {
+                Product product = ((CartItem) item.getModel()).getProduct();
                 ImageView productImgView = ((ImageView) product.getRefer(LoadProductImageTask.KEY_IMAGEVIEW));
-                if (productImgView != null) imageView.setImageDrawable(productImgView.getDrawable());
+                if (productImgView != null) {
+                    imageView.setImageDrawable(productImgView.getDrawable());
+                } else {
+                    imageView.setImageResource(R.mipmap.ic_unknow);
+                }
             }
         }
     }

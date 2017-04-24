@@ -16,9 +16,9 @@ public interface QuoteItems extends Model {
 
     void setAmount(float amount);
 
-    float getCustomPrice();
+    String getCustomPrice();
 
-    void setCustomPrice(float custom_price);
+    void setCustomPrice(String custom_price);
 
     String getItemId();
     void setItemId(String strItemId);
