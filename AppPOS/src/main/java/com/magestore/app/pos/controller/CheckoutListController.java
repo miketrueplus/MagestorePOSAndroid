@@ -633,7 +633,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
                 // hiển thị list shipping address
                 Customer customer = (Customer) wraper.get("customer");
-                mCheckoutAddressListPanel.bindListModel((List<Model>) (List<?>) customer.getAddress());
+                mCheckoutAddressListPanel.bindListModel(((List<Model>) (List<?>) ((CheckoutService) getListService()).checkListAddress(customer, guest_checkout)));
                 mCheckoutAddressListPanel.setSelectPos(customer.getAddressPosition());
                 mCheckoutAddressListPanel.scrollToPosition();
 

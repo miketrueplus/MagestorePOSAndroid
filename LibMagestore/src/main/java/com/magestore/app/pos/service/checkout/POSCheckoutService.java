@@ -511,7 +511,7 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
 
     @Override
     public List<CustomerAddress> checkListAddress(Customer customer, Customer guest_customer) {
-        if (checkCustomerID(customer, guest_customer)) {
+        if (!checkCustomerID(customer, guest_customer)) {
             return customer.getAddress();
         } else {
             List<CustomerAddress> nListAddress = new ArrayList<>();
