@@ -108,7 +108,7 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
 //            statement.setEnableCache("POSConfigDataAccess.getConfig");
 //            statement.getCacheConnection().setReloadCacheLater(true);
 //            statement.getCacheConnection().setForceOutOfDate(true);
-            
+
 //            statement.getCacheConnection().deleteCache();
 
             // Xây dựng tham số
