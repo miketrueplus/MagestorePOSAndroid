@@ -537,15 +537,11 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
 
     @Override
     public boolean checkCustomerID(Customer customer, Customer guest_customer) {
-        if (StringUtil.isNullOrEmpty(getCustomerId(customer)) && StringUtil.isNullOrEmpty(getCustomerId(guest_customer))) {
+        if (getCustomerId(customer).equals(getCustomerId(guest_customer))) {
             return false;
         }
 
-        if (getCustomerId(customer).equals(getCustomerId(guest_customer))) {
-            return true;
-        }
-
-        return false;
+        return true;
     }
 
     private String getCustomerId(Customer customer) {
