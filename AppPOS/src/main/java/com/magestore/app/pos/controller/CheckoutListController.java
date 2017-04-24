@@ -906,7 +906,9 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         if (listAddress.size() > 1) {
             for (CustomerAddress address : listAddress) {
                 if (address.getID().equals(customerAddress.getID())) {
-                    listAddress.set(0, address);
+                    listAddress.remove(address);
+                    listAddress.add(0, address);
+                    break;
                 }
             }
             doInputSaveCart();
