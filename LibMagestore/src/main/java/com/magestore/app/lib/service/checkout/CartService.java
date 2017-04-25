@@ -3,10 +3,12 @@ package com.magestore.app.lib.service.checkout;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
+import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.service.ChildListService;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.List;
 
 /**
  * Giao diện các nghiệp vụ của đơn hàng
@@ -68,4 +70,6 @@ public interface CartService extends ChildListService<Checkout, CartItem> {
     void updatePrice(CartItem cartItem);
 
     boolean validateStock(Checkout checkout, Product product, int quantity);
+
+    List<CartItem> reOrder(Checkout checkout, Order order) throws IOException, InstantiationException, ParseException, IllegalAccessException;
 }

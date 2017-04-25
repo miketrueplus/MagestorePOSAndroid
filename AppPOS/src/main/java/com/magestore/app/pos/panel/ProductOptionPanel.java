@@ -395,9 +395,10 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
      * Tạo model view list từ option grouped
      */
     private void createModelViewListFromOptionGrouped() {
-        // convert option theo bundle options sang 1 format thống nhất
+        // convert option theo group options sang 1 format thống nhất
         List<PosProductOptionGrouped> groupedList = getItem().getProduct().getProductOption().getGroupedOptions();
         if (groupedList != null) {
+            findViewById(R.id.id_layout_product_option_cart_item_quantity).setVisibility(View.GONE);
             for (PosProductOptionGrouped groupedOption : groupedList) {
                 OptionModelView optionModelView = new OptionModelView();
                 optionModelView.optionValueModelViewList = new ArrayList<>();
@@ -427,6 +428,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
      */
     public void createModelViewList() {
         mModelViewList = new ArrayList<OptionModelView>();
+        findViewById(R.id.id_layout_product_option_cart_item_quantity).setVisibility(View.VISIBLE);
 
         // tạo model view list với custom option
         createModelViewListFromOptionCustom();
@@ -465,6 +467,10 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
 
         public boolean isBundleOption() {
             return ProductOptionCustom.OPTION_TYPE_BUNDLE.compareToIgnoreCase(option_type) == 0;
+        }
+
+        public boolean isGroupOption() {
+            return ProductOptionCustom.OPTION_TYPE_GROUPED.compareToIgnoreCase(option_type) == 0;
         }
 
         public boolean isTypeField() {
@@ -574,6 +580,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
 
         // binding
         mBinding = DataBindingUtil.bind(getView());
+
         mBinding.setPanel(this);
 
         initValue();

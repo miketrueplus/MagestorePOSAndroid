@@ -154,6 +154,7 @@
                         android:textSize="@dimen/product_detail_title_text_size" />
 
                     <LinearLayout
+                        android:id="@+id/id_layout_product_option_cart_item_quantity"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"

@@ -8,6 +8,7 @@ import com.magestore.app.lib.model.catalog.ProductOptionCustomValue;
 import com.magestore.app.lib.model.checkout.Cart;
 import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
+import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.resourcemodel.DataAccessFactory;
 import com.magestore.app.lib.resourcemodel.sales.CartDataAccess;
 import com.magestore.app.lib.service.ServiceException;
@@ -734,5 +735,18 @@ public class POSCartService extends AbstractService implements CartService {
         if (quantity > product.getAllowMaxQty() && product.getAllowMaxQty() > product.getAllowMinQty())
             return false;
         return true;
+    }
+
+    @Override
+    public List<CartItem> reOrder(Checkout checkout, Order order) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+        // xử lý từng item trong order
+        for (CartItem item : order.getOrderItems()) {
+            // xử lý
+            CartItem newItem = create(checkout);
+
+            // xử lý xong thì insert lại vào checkout
+            insert(checkout, item);
+        }
+        return checkout.getCartItem();
     }
 }

@@ -301,6 +301,7 @@ public class SalesActivity extends AbstractActivity
         mCheckoutCartItemListController = new CartItemListController();
         mCheckoutCartItemListController.setSubject(subjectObserv);
         mCheckoutCartItemListController.setMagestoreContext(magestoreContext);
+        mCheckoutCartItemListController.setAutoSelectFirstItem(false);
         mCheckoutCartItemListController.setListPanel(mCartItemListPanel);
         mCheckoutCartItemListController.setDetailPanel(mCartItemDetailPanel);
         mCheckoutCartItemListController.setProductOptionPanel(mProductOptionPanel);
@@ -413,6 +414,13 @@ public class SalesActivity extends AbstractActivity
                 .attachListenerObserve()
                 .setMethodName("bindParent")
                 .setStateCode(GenericState.DEFAULT_STATE_CODE_ON_SELECT_ITEM)
+                .setControllerState(mCheckoutListController);
+
+        // sự kiện mỗi khi có 1 re-order
+        mCheckoutCartItemListController
+                .attachListenerObserve()
+                .setMethodName("reOrder")
+                .setStateCode(CheckoutListController.STATE_CODE_REORDER)
                 .setControllerState(mCheckoutListController);
 
 //        // hiển thị production opption nếu product có option
@@ -559,7 +567,10 @@ public class SalesActivity extends AbstractActivity
     BroadcastReceiver receiver_data_order = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            if (mOrder == null) return;
             //  nhận sự kiện khi click vào re-order trong order history, mOorder là static đã được gán ở bên OrderHistoryController
+            // checkout controller -> tạo new order
+            mCheckoutListController.reOrder(mOrder);
         }
     };
 

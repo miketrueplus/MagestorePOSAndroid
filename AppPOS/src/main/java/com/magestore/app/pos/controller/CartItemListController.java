@@ -13,6 +13,7 @@ import com.magestore.app.lib.model.catalog.ProductOptionCustom;
 import com.magestore.app.lib.model.catalog.ProductOptionCustomValue;
 import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
+import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.observ.GenericState;
 import com.magestore.app.lib.observ.State;
 import com.magestore.app.lib.service.ChildListService;
@@ -56,6 +57,8 @@ public class CartItemListController extends AbstractChildListController<Checkout
     CheckoutCustomSalePanel mCheckoutCustomSalePanel;
 
     static final int ACTION_CART_DELETE_ITEM = 0;
+    static final int ACTION_CART_REORDER = 1;
+
     Map<String, Object> wraper;
 
     public void setCheckoutListController(CheckoutListController mCheckoutListController) {
@@ -133,6 +136,12 @@ public class CartItemListController extends AbstractChildListController<Checkout
             return true;
         }
 
+        if (actionType == ACTION_CART_REORDER) {
+            List<CartItem> list = mCartService.reOrder(getParent(), (Order) models[0]);
+            wraper.put("cart_respone", list);
+            return true;
+        }
+
         return false;
     }
 
@@ -150,10 +159,19 @@ public class CartItemListController extends AbstractChildListController<Checkout
                 }
                 updateTotalPrice();
             }
-            if(!mCheckoutListController.checkListCartItem()){
+            if (!mCheckoutListController.checkListCartItem()) {
                 mCheckoutListController.showButtonDiscount(false);
             }
             mCheckoutListController.isShowLoadingList(false);
+            return;
+        }
+
+        // với trường hợp re-order
+        if (success && actionType == ACTION_CART_REORDER) {
+            List<CartItem> list = (List<CartItem>) wraper.get("cart_respone");
+            onRetrievePostExecute(list);
+            updateTotalPrice();
+            return;
         }
     }
 
@@ -260,6 +278,7 @@ public class CartItemListController extends AbstractChildListController<Checkout
 
     /**
      * Hiển thị mô tả sản phẩm, cho phép add to card
+     *
      * @param state
      */
     public void showProductDetail(State state) {
@@ -323,7 +342,7 @@ public class CartItemListController extends AbstractChildListController<Checkout
             // chèn model lên đầu
             getView().updateModelToFirstInsertIfNotFound(itemInList);
         } catch (Exception e) {
-           getView().showErrMsgDialog(e);
+            getView().showErrMsgDialog(e);
             return;
         }
 
@@ -350,7 +369,6 @@ public class CartItemListController extends AbstractChildListController<Checkout
         }
 
 
-
         // ẩn các dialog đang hiển thị
         closeAllOpeningDialog();
 
@@ -360,11 +378,12 @@ public class CartItemListController extends AbstractChildListController<Checkout
 
     /**
      * Kiểm tra số lượng trong kho đủ để add stock hay khônh
+     *
      * @param product
      * @param quantity
      */
     public boolean validateStock(Product product, int quantity) {
-        return  mCartService.validateStock(getParent(), product, quantity);
+        return mCartService.validateStock(getParent(), product, quantity);
     }
 
     /**
@@ -499,8 +518,7 @@ public class CartItemListController extends AbstractChildListController<Checkout
         if (cartItem.getProduct().getProductOption() != null) {
             bindItem(cartItem);
             hideAllProgressBar();
-        }
-        else doLoadItem(cartItem);
+        } else doLoadItem(cartItem);
     }
 
     /**
@@ -590,6 +608,7 @@ public class CartItemListController extends AbstractChildListController<Checkout
 
 
     private boolean blnAlowRemoveCartItem = true;
+
     public void blnAlowRemoveCartItem(State state) {
         blnAlowRemoveCartItem = (CheckoutListController.STATE_ENABLE_CHANGE_CART_ITEM.equals(state.getStateCode()));
         ((CartItemListPanel) getView()).enableSwipeItem(blnAlowRemoveCartItem);
@@ -607,6 +626,17 @@ public class CartItemListController extends AbstractChildListController<Checkout
      */
     public void addCustomSale(State state) {
         doShowCustomeSale();
+    }
+
+    /**
+     * Thực hiện re-order
+     *
+     * @param state
+     */
+    public void reOrder(State state) {
+        // lấy order cần thực hiện re-order
+        Order order = (Order) state.getTag(CheckoutListController.STATE_CODE_REORDER);
+        doAction(ACTION_CART_REORDER, null, new HashMap<String, Object>(), order);
     }
 
     /**
@@ -636,9 +666,10 @@ public class CartItemListController extends AbstractChildListController<Checkout
 
     /**
      * hidden sales menu
+     *
      * @param isShow
      */
-    public void showSalesMenuToggle(boolean isShow){
+    public void showSalesMenuToggle(boolean isShow) {
         mCheckoutListController.isShowSalesMenuToggle(isShow);
     }
 }

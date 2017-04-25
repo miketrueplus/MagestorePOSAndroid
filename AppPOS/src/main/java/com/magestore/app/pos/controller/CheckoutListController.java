@@ -1786,4 +1786,19 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     public void setPluginsService(PluginsService pluginsService) {
         this.pluginsService = pluginsService;
     }
+
+    /**
+     * Xử lý Re-order
+     * @param order
+     */
+    public static final String STATE_CODE_REORDER = "STATE_CODE_REORDER";
+    public void reOrder(Order order) {
+        // khởi tạo 1 check out
+        addNewOrder();
+
+        // báo state re-order cho các controller khác
+        GenericState<CheckoutListController> state = new GenericState<CheckoutListController>(this, STATE_CODE_REORDER);
+        state.setTag(STATE_CODE_REORDER, order);
+        if (getSubject() != null) getSubject().setState(state);
+    }
 }
