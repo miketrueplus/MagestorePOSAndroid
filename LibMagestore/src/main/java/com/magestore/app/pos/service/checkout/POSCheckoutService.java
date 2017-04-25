@@ -74,7 +74,7 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
             quote.setQuoteId("");
         }
         if (checkout.getCustomer() != null) {
-            if (StringUtil.isNullOrEmpty(checkout.getCustomerID()) || checkCustomerID(checkout.getCustomer(), ConfigUtil.getCustomerGuest())) {
+            if (StringUtil.isNullOrEmpty(checkout.getCustomerID()) || !checkCustomerID(checkout.getCustomer(), ConfigUtil.getCustomerGuest())) {
                 quote.setCustomerId("");
             } else {
                 quote.setCustomerId(checkout.getCustomerID());

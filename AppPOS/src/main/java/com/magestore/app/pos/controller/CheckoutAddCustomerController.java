@@ -37,6 +37,10 @@ public class CheckoutAddCustomerController extends CustomerListController {
         customer.setAddressPosition(0);
         if (success && customer != null) {
             mCheckoutAddCustomerPanel.updateCustomerToOrder(addAddressDefaultToCustomer(customer));
+            mList.add(0, customer);
+            bindList(mList);
+            mCheckoutAddCustomerPanel.notifiDataListCustomer();
+            mCheckoutAddCustomerPanel.scrollToTop();
         }
         if (mCheckoutListPanel != null) {
             mCheckoutListPanel.showToastMessage(0);

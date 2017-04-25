@@ -1051,4 +1051,8 @@ public abstract class AbstractListPanel<TModel extends Model>
         if (mRecycleView.getAdapter() != null)
             mRecycleView.getAdapter().notifyDataSetChanged();
     }
+
+    public LinearLayoutManager getRecycleViewLayoutManager() {
+        return mRecycleViewLayoutManager;
+    }
 }

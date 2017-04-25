@@ -96,4 +96,12 @@ public class CheckoutAddCustomerPanel extends AbstractDetailPanel<Checkout> {
     public void updateCustomerToOrder(Customer customer) {
         mCheckoutListPanel.updateCustomerToOrder(customer);
     }
+
+    public void notifiDataListCustomer(){
+        mCustomerListPanel.notifyDataSetChanged();
+    }
+
+    public void scrollToTop(){
+        mCustomerListPanel.getRecycleViewLayoutManager().scrollToPosition(0);
+    }
 }
