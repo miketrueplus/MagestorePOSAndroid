@@ -336,8 +336,7 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         Map<String, String> params = authorizenet.getPaymentInformation().getParams();
         CheckoutPayment payment = listCheckoutPayment.get(0);
         String month = payment.getCCExpMonth().substring(0, 2);
-        String year = payment.getCCExpYear().substring(2, 4);
-        params.put("x_exp_date", (month + "/" + year));
+        params.put("x_exp_date", (month + "/" + payment.getCCExpYear()));
         params.put("x_card_code", payment.getCID());
         params.put("x_card_num", payment.getCCNumber());
         params.put("cc_owner", payment.getCCOwner());

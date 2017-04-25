@@ -12,8 +12,6 @@ import com.magestore.app.lib.panel.AbstractDetailPanel;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.CheckoutListController;
 
-import org.apache.http.util.EncodingUtils;
-
 import java.util.Map;
 
 /**
@@ -70,7 +68,6 @@ public class CheckoutPaymentWebviewPanel extends AbstractDetailPanel<Checkout> {
         Log.e("CheckoutWebviewPanel", "Params: " + url_params);
         mUrl = url + "?" + url_params;
         Log.e("CheckoutWebviewPanel", "Url: " + mUrl);
-        payment_webview.postUrl(url, EncodingUtils.getBytes(url_params, "base64"));
         payment_webview.setWebViewClient(new WebViewClient() {
             public boolean shouldOverrideUrlLoading(WebView viewx, String urlx) {
                 viewx.loadUrl(urlx);

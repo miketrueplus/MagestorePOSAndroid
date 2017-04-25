@@ -60,6 +60,14 @@ public class CheckoutPaymentCreditCardPanel extends AbstractDetailPanel<Checkout
 
     public void setCardTypeDataSet(Map<String, String> listCardType) {
         s_card_type.bind(listCardType);
+        if (listCardType.size() > 0) {
+            for (String key : listCardType.keySet()) {
+                if (key.equals("VI")) {
+                    s_card_type.setSelection(key);
+                    break;
+                }
+            }
+        }
     }
 
     public void setCardMonthDataSet(List<String> listCardMonth) {
@@ -90,7 +98,7 @@ public class CheckoutPaymentCreditCardPanel extends AbstractDetailPanel<Checkout
         return checkoutPayment;
     }
 
-    public void clearDataForm(){
+    public void clearDataForm() {
         card_name.setText("");
         card_number.setText("");
         card_cvv.setText("");
