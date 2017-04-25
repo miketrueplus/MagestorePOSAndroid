@@ -615,29 +615,50 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
 
         // duyệt tất cả các option custome để lấy option mà user đã chọn
         if (mModelViewList == null) return false;
-        for (OptionModelView optionModelView : mModelViewList) {
-            // check xem có option value nào được chọn không
-            boolean haveChoose = false;
-            if (optionModelView.optionValueModelViewList == null) continue;
-            for (OptionValueModelView valueModelView : optionModelView.optionValueModelViewList) {
-                if (valueModelView.choose) {
-                    haveChoose = true;
+        if (mModelViewList.size() == 0) return false;
+        if (!mModelViewList.get(0).isGroupOption()) {
+            for (OptionModelView optionModelView : mModelViewList) {
+                // check xem có option value nào được chọn không
+                boolean haveChoose = false;
+                if (optionModelView.optionValueModelViewList == null) continue;
+                for (OptionValueModelView valueModelView : optionModelView.optionValueModelViewList) {
+                    if (valueModelView.choose) {
+                        haveChoose = true;
+                        break;
+                    }
+                }
+
+                // nếu k0 có thì báo lỗi thông báo lỗi chưa chọn option
+                if (optionModelView.holder == null) continue;
+                if (optionModelView.is_required && !haveChoose) {
+                    blnValid = false;
+                    optionModelView.holder.mtxtError.setText(getContext().getString(R.string.err_field_required));
+                    optionModelView.holder.mtxtError.setError(getContext().getString(R.string.err_field_required));
+                } else {
+                    optionModelView.holder.mtxtError.setText(null);
+                    optionModelView.holder.mtxtError.setError(null);
+                }
+            }
+        }
+        else {
+            // với tình huống group không chấp nhận tất cả zero
+            blnValid = false;
+            for (OptionModelView optionModelView : mModelViewList) {
+                if (optionModelView.quantity > 0) {
+                    blnValid = true;
                     break;
                 }
             }
 
-            // nếu k0 có thì báo lỗi thông báo lỗi chưa chọn option
-            if (optionModelView.holder == null) continue;
-            if (optionModelView.is_required && !haveChoose) {
-                blnValid = false;
-                optionModelView.holder.mtxtError.setText(getContext().getString(R.string.err_field_required));
-                optionModelView.holder.mtxtError.setError(getContext().getString(R.string.err_field_required));
-            } else {
-                optionModelView.holder.mtxtError.setText(null);
-                optionModelView.holder.mtxtError.setError(null);
+            for (OptionModelView optionModelView : mModelViewList) {
+                if (blnValid) {
+                    optionModelView.holder.mtxtError.setText(null);
+                    optionModelView.holder.mtxtError.setError(null);
+                } else {
+                    optionModelView.holder.mtxtError.setText(getContext().getString(R.string.err_field_quantity_not_specific));
+                    optionModelView.holder.mtxtError.setError(getContext().getString(R.string.err_field_quantity_not_specific));
+                }
             }
-
-            // nếu có lỗi số lượng nhưng nhập zero
         }
 
         return blnValid;

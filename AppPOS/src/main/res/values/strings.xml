@@ -327,6 +327,7 @@
     <!-- Strings related to error message -->
     <string name="err_no_network_connection">No network connection, Pls check yout network settings</string>
     <string name="err_field_required">This field is required</string>
+    <string name="err_field_quantity_not_specific">Please specify the quantity of product(s)</string>
     <string name="err_no_data">There is no data to display</string>
     <string name="err_request">Some errors occurred, Pls try again!</string>
     <string name="err_field_must_greater_than_zero">This field must greater than zero</string>
