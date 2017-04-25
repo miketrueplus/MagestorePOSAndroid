@@ -331,6 +331,7 @@ public class MagestoreStatement implements Statement {
             if (mstrPreparedQuery.toString().contains("authorize")) {
                 mHttpConnection.setRequestProperty(CONTENT_TYPE, APPLICATION_FORM_URLENCODEED);
                 mHttpConnection.setRequestProperty(ACCEPT, APPLICATION_FORM_URLENCODEED);
+                mHttpConnection.setRequestProperty("charset", "utf-8");
             } else {
                 mHttpConnection.setRequestProperty(CONTENT_TYPE, APPLICATION_JSON);
                 mHttpConnection.setRequestProperty(ACCEPT, APPLICATION_JSON);

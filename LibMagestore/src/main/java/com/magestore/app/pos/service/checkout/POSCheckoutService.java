@@ -331,16 +331,18 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
     }
 
     @Override
-    public String approvedAuthorizenet(Authorizenet authorizenet, List<CheckoutPayment> listCheckoutPayment) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+    public boolean approvedAuthorizenet(Authorizenet authorizenet, List<CheckoutPayment> listCheckoutPayment) throws IOException, InstantiationException, ParseException, IllegalAccessException {
         String url = authorizenet.getPaymentInformation().getUrl();
         Map<String, String> params = authorizenet.getPaymentInformation().getParams();
         CheckoutPayment payment = listCheckoutPayment.get(0);
         String month = payment.getCCExpMonth().substring(0, 2);
-        params.put("x_exp_date", (month + "/" + payment.getCCExpYear()));
+        String year = payment.getCCExpYear().substring(2, 4);
+        params.put("x_exp_date", (month + "/" + year));
         params.put("x_card_code", payment.getCID());
         params.put("x_card_num", payment.getCCNumber());
         params.put("cc_owner", payment.getCCOwner());
         params.put("cc_type", payment.getCCType());
+        params.put("x_relay_url", "");
         StringBuilder postData = new StringBuilder();
         for (Map.Entry<String, String> param : params.entrySet()) {
             if (postData.length() != 0) postData.append('&');

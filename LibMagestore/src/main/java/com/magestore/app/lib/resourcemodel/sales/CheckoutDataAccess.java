@@ -38,7 +38,7 @@ public interface CheckoutDataAccess extends DataAccess {
 
     String sendEmail(String email, String increment_id) throws ParseException, InstantiationException, IllegalAccessException, IOException;
 
-    String approvedAuthorizenet(String url, String params) throws ParseException, InstantiationException, IllegalAccessException, IOException;
+    boolean approvedAuthorizenet(String url, String params) throws ParseException, InstantiationException, IllegalAccessException, IOException;
 
     String approvedPaymentPayPal(String payment_id) throws ParseException, InstantiationException, IllegalAccessException, IOException;
 }

@@ -436,7 +436,7 @@ public class POSCheckoutDataAccess extends POSAbstractDataAccess implements Chec
     }
 
     @Override
-    public String approvedAuthorizenet(String url, String params) throws ParseException, InstantiationException, IllegalAccessException, IOException {
+    public boolean approvedAuthorizenet(String url, String params) throws ParseException, InstantiationException, IllegalAccessException, IOException {
         Connection connection = null;
         Statement statement = null;
         ResultReading rp = null;
@@ -450,7 +450,10 @@ public class POSCheckoutDataAccess extends POSAbstractDataAccess implements Chec
             o = params;
             rp = statement.execute(o);
             String respone = rp.readResult2String();
-            return respone;
+            if(respone.contains("Transaction ID")){
+                return true;
+            }
+            return false;
         } catch (Exception ex) {
             throw new DataAccessException(ex);
         } finally {
