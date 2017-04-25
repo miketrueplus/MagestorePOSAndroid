@@ -166,7 +166,11 @@ public class PosOrder extends PosAbstractModel implements Order {
     @Override
     public List<CartItem> getOrderItems() {
         return (List<CartItem>) (List<?>) items;
+    }
 
+    @Override
+    public void setOrderItem(List<CartItem> listTtem) {
+        items = (List<PosCartItem>) (List<?>) listTtem;
     }
 
     @Override

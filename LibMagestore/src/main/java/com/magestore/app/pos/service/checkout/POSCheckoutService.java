@@ -357,6 +357,20 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
     }
 
     @Override
+    public boolean invoicesPaymentAuthozire(String orderID) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        CheckoutDataAccess checkoutDataAccess = factory.generateCheckoutDataAccess();
+        return checkoutDataAccess.invoicesPaymentAuthozire(orderID);
+    }
+
+    @Override
+    public boolean cancelPaymentAuthozire(String orderID) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        CheckoutDataAccess checkoutDataAccess = factory.generateCheckoutDataAccess();
+        return checkoutDataAccess.cancelPaymentAuthozire(orderID);
+    }
+
+    @Override
     public String approvedPaymentPayPal(String payment_id) throws IOException, InstantiationException, ParseException, IllegalAccessException {
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         CheckoutDataAccess checkoutDataAccess = factory.generateCheckoutDataAccess();

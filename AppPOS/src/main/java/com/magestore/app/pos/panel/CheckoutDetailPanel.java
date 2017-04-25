@@ -371,5 +371,10 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
             tv_check_payment_required.setText("") ;
             tv_check_payment_required.setError(null);
         }
-    };
+    }
+
+    public void showDialogErrorAuthozire(){
+        String message = getContext().getString(R.string.authorize_cancel_payment);
+        com.magestore.app.util.DialogUtil.confirm(getContext(), message, R.string.ok);
+    }
 }

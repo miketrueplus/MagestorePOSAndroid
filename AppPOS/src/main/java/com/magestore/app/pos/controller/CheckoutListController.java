@@ -78,6 +78,8 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     static final int ACTION_TYPE_APPLY_REWARD_POINT = 12;
     static final int ACTION_TYPE_CHECK_APPROVED_PAYMENT_PAYPAL = 13;
     static final int ACTION_TYPE_CHECK_APPROVED_PAYMENT_AUTHORIZENET = 14;
+    static final int ACTION_TYPE_INVOICE_PAYMENT_AUTHORIZENET = 15;
+    static final int ACTION_TYPE_CANCEL_PAYMENT_AUTHORIZENET = 16;
 
     static final int STATUS_CHECKOUT_ADD_ITEM = 0;
     static final int STATUS_CHECKOUT_PROCESSING = 1;
@@ -269,6 +271,14 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         doAction(ACTION_TYPE_CHECK_APPROVED_PAYMENT_AUTHORIZENET, null, wraper, authorizenet);
     }
 
+    public void doInputInvoiceAuthorize() {
+        doAction(ACTION_TYPE_INVOICE_PAYMENT_AUTHORIZENET, null, wraper, null);
+    }
+
+    public void doInputCancelAuthorize() {
+        doAction(ACTION_TYPE_CANCEL_PAYMENT_AUTHORIZENET, null, wraper, null);
+    }
+
     /**
      * khi chọn shipping request saveshipping và quote lưu lại shipping được chọn
      *
@@ -444,6 +454,16 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             List<CheckoutPayment> listCheckoutPayment = (List<CheckoutPayment>) wraper.get("list_payment");
             Authorizenet authorizenet = (Authorizenet) models[0];
             wraper.put("authorize_respone", ((CheckoutService) getListService()).approvedAuthorizenet(authorizenet, listCheckoutPayment));
+            return true;
+        } else if (actionType == ACTION_TYPE_INVOICE_PAYMENT_AUTHORIZENET) {
+            Authorizenet authorizenet = (Authorizenet) wraper.get("place_order");
+            String order_id = authorizenet.getOrder().getID();
+            ((CheckoutService) getListService()).invoicesPaymentAuthozire(order_id);
+            return true;
+        } else if (actionType == ACTION_TYPE_CANCEL_PAYMENT_AUTHORIZENET) {
+            Authorizenet authorizenet = (Authorizenet) wraper.get("place_order");
+            String order_id = authorizenet.getOrder().getID();
+            ((CheckoutService) getListService()).cancelPaymentAuthozire(order_id);
             return true;
         }
         return false;
@@ -762,18 +782,23 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             if (authorize_respone) {
                 Authorizenet authorizenet = (Authorizenet) wraper.get("place_order");
                 Order order = authorizenet.getOrder();
+                order.setOrderItem(getSelectedItem().getCartItem());
                 getSelectedItem().setOrderSuccess(order);
                 isShowButtonCheckout(false);
                 isShowSalesMenuDiscount(false);
                 mCheckoutSuccessPanel.bindItem(order);
                 doShowDetailSuccess(true, order);
+                // request ngầm invoice order
+                doInputInvoiceAuthorize();
+                // hoàn thành place order hiden progressbar
+                isShowLoadingDetail(false);
             } else {
+                // request ngầm cancel order
+                doInputCancelAuthorize();
+                ((CheckoutDetailPanel) mDetailView).showDialogErrorAuthozire();
                 getSelectedItem().setQuoteId("");
-                getSelectedItem().setStatus(STATUS_CHECKOUT_ADD_ITEM);
-                onBackTohome();
+                doInputSaveCart();
             }
-            // hoàn thành place order hiden progressbar
-            isShowLoadingDetail(false);
         }
     }
 

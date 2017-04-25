@@ -57,6 +57,10 @@ public interface CheckoutService extends ListService<Checkout> {
 
     boolean approvedAuthorizenet(Authorizenet authorizenet, List<CheckoutPayment> listCheckoutPayment) throws IOException, InstantiationException, ParseException, IllegalAccessException;
 
+    boolean invoicesPaymentAuthozire(String orderID) throws IOException, InstantiationException, ParseException, IllegalAccessException;
+
+    boolean cancelPaymentAuthozire(String orderID) throws IOException, InstantiationException, ParseException, IllegalAccessException;
+
     String approvedPaymentPayPal(String payment_id) throws IOException, InstantiationException, ParseException, IllegalAccessException;
 
     Checkout updateTotal(Checkout checkout);

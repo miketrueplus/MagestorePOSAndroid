@@ -212,6 +212,7 @@
 
     <!--PayPal-->
     <string name="paypal">Paypal</string>
+    <string name="authorize_cancel_payment">Can't place order.</string>
 
     <!-- Strings related to single words -->
     <string name="add">Add</string>
