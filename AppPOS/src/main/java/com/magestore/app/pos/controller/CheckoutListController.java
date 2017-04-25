@@ -975,8 +975,10 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         Checkout checkout = (Checkout) wraper.get("save_cart");
         if (checkout != null) {
             List<CheckoutShipping> listShipping = checkout.getCheckoutShipping();
-            bindDataToShippingMethodList(listShipping);
-            autoSelectShipping(listShipping);
+            if (listShipping != null && listShipping.size() > 0) {
+                bindDataToShippingMethodList(listShipping);
+                autoSelectShipping(listShipping);
+            }
         }
     }
 
@@ -1548,7 +1550,13 @@ public class CheckoutListController extends AbstractListController<Checkout> {
      * @param isShow
      */
     public void showButtonDiscount(boolean isShow) {
-        ((CheckoutListPanel) mView).showButtonDiscount(isShow);
+        if (((CheckoutDetailPanel) mDetailView).getVisibility() == View.VISIBLE) {
+            if (!isShow) {
+                ((CheckoutListPanel) mView).showButtonDiscount(isShow);
+            }
+        } else {
+            ((CheckoutListPanel) mView).showButtonDiscount(isShow);
+        }
     }
 
     /**
