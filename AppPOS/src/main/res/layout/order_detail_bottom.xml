@@ -304,6 +304,30 @@
                             android:textColor="@color/text_color"
                             android:textSize="@dimen/order_bottom_text_size" />
                     </TableRow>
+
+                    <TableRow
+                        android:id="@+id/table_row_total_change"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="@{orderDetail.getWebposChange() != 0 ? View.VISIBLE : View.GONE}">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/order_detail_bottom_tb_total_change"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/order_bottom_text_size" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:text="@{ConfigUtil.formatPrice(orderDetail.getWebposChange())}"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/order_bottom_text_size" />
+                    </TableRow>
                 </TableLayout>
             </LinearLayout>
 
