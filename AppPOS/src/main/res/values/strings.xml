@@ -80,7 +80,7 @@
     <string name="customer_create_success">The customer is saved successfully</string>
 
     <!-- Strings related to order -->
-    <string name="order_search_order_here">Search orderID, name, email, telephone</string>
+    <string name="order_search_order_here">Search orderID, name, email</string>
     <string name="order_detail_top_status">Status:</string>
     <string name="order_detail_top_create_at">Created Date:</string>
     <string name="order_detail_top_staff_name">Served by:</string>
@@ -346,6 +346,7 @@
     <string name="ask_are_you_sure_to_remove">Are you sure to remove?</string>
     <string name="ask_are_you_sure_to_cancel">Are you sure to cancel?</string>
     <string name="ask_are_you_sure_to_close">Are you sure to close?</string>
+    <string name="ask_are_you_sure_to_cancel_order">Are you sure to cancel order?</string>
 
 
     <!-- Strings related to dialog title -->

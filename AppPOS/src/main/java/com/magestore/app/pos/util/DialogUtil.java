@@ -93,6 +93,22 @@ public class DialogUtil {
                 listener);
     }
 
+    /**
+     * Confirm cancel
+     *
+     * @param context
+     * @param strMsgDetail
+     * @param listener
+     */
+    public static void confirm(Context context, String strMsgDetail, DialogInterface.OnClickListener listener) {
+        com.magestore.app.util.DialogUtil.confirm(context,
+                R.string.title_confirm_cancel,
+                strMsgDetail,
+                R.string.yes,
+                R.string.no,
+                listener);
+    }
+
     public static MagestoreDialog dialog(Context context, String title, View panel) {
         MagestoreDialog dialog = new MagestoreDialog(context);
         dialog.setDialogTitle(title);

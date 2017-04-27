@@ -333,8 +333,13 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 }
             }
         } else {
-            // hiển thị thông báo chọn payment
-            ((CheckoutDetailPanel) mDetailView).showNotifiSelectPayment();
+            if (getSelectedItem().getGrandTotal() == 0) {
+                doAction(ACTION_TYPE_PLACE_ORDER, null, wraper, null);
+                isShowLoadingDetail(true);
+            } else {
+                // hiển thị thông báo chọn payment
+                ((CheckoutDetailPanel) mDetailView).showNotifiSelectPayment();
+            }
         }
     }
 
@@ -1068,7 +1073,12 @@ public class CheckoutListController extends AbstractListController<Checkout> {
      */
     private void autoSelectPaymentMethod(List<CheckoutPayment> listPayment) {
         if (listPayment != null && listPayment.size() > 0) {
-            CheckoutPayment paymentDefault = checkListPaymentDefault(listPayment);
+            CheckoutPayment paymentDefault = null;
+            if (getSelectedItem().getGrandTotal() == 0) {
+                paymentDefault = checkListPaymentNoInformation(listPayment);
+            } else {
+                paymentDefault = checkListPaymentDefault(listPayment);
+            }
             if (paymentDefault != null) {
                 onAddPaymentMethod(paymentDefault);
             } else {
@@ -1481,6 +1491,15 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     public CheckoutPayment checkListPaymentDefault(List<CheckoutPayment> listPayment) {
         for (CheckoutPayment payment : listPayment) {
             if (payment.getIsDefault().equals("1")) {
+                return payment;
+            }
+        }
+        return null;
+    }
+
+    public CheckoutPayment checkListPaymentNoInformation(List<CheckoutPayment> listPayment) {
+        for (CheckoutPayment payment : listPayment) {
+            if (payment.getType().equals("0")) {
                 return payment;
             }
         }

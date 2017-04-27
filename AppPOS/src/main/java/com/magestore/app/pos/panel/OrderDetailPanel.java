@@ -1,6 +1,7 @@
 package com.magestore.app.pos.panel;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.PopupMenu;
@@ -396,10 +397,15 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         dialog.getButtonSave().setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Order order = mOrderCancelPanel.bind2Item();
-                ((OrderHistoryListController) mController).setOrderCancelPanel(mOrderCancelPanel);
-                ((OrderHistoryListController) mController).doInputCancel(order);
-                dialog.dismiss();
+                DialogUtil.confirm(getContext(), getContext().getString(R.string.ask_are_you_sure_to_cancel_order), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Order order = mOrderCancelPanel.bind2Item();
+                        ((OrderHistoryListController) mController).setOrderCancelPanel(mOrderCancelPanel);
+                        ((OrderHistoryListController) mController).doInputCancel(order);
+                        dialog.dismiss();
+                    }
+                });
             }
         });
     }
