@@ -85,7 +85,7 @@ public class StringUtil {
     public static final String STATUS_DONE = "done";
     public static final String STATUS_PROCESSING = "processing";
     public static final String STATUS_CLOSED = "closed";
-    public static final String STATUS_CANCELLED = "cancelled";
+    public static final String STATUS_CANCELLED = "canceled";
     public static final String STATUS_ACTIVE = "active";
     public static final String STATUS_INACTIVE = "inactive";
     public static final String STATUS_ENABLE = "enable";
