@@ -93,7 +93,7 @@ public class CheckoutSuccessPanel extends AbstractDetailPanel<Order> {
         btn_print.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                PrintUtil.doPint(getContext(), item);
+                PrintUtil.doPrint(getContext(), item);
             }
         });
     }

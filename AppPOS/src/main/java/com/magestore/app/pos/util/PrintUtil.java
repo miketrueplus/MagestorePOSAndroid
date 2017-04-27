@@ -26,7 +26,7 @@ import java.util.List;
 public class PrintUtil {
     private static WebView mWebView;
 
-    public static void doPint(final Context context, Order order) {
+    public static void doPrint(final Context context, Order order) {
         // Create a WebView object specifically for printing
         final WebView webView = new WebView(context);
         webView.getSettings().setJavaScriptEnabled(true);
