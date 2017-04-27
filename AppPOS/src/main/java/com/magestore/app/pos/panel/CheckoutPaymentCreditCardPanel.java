@@ -105,9 +105,9 @@ public class CheckoutPaymentCreditCardPanel extends AbstractDetailPanel<Checkout
     }
 
     public boolean checkRequiedCard() {
-        if (!isRequied(card_name)) {
-            return false;
-        }
+//        if (!isRequied(card_name)) {
+//            return false;
+//        }
         if (!isRequied(card_number)) {
             return false;
         }

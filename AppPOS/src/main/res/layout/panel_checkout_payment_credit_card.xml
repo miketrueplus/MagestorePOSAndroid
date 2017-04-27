@@ -30,6 +30,7 @@
             android:lines="1"
             android:padding="@dimen/layout_margin_10"
             android:textColor="@color/text_color"
+            android:inputType="textCapCharacters"
             android:textSize="@dimen/text_size" />
     </LinearLayout>
 
@@ -45,7 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:text="@string/checkout_payment_cc_number"
+            android:text="@string/checkout_payment_cc_type"
             android:textColor="@color/text_color"
             android:textSize="@dimen/text_size" />
 
