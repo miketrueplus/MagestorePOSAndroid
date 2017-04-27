@@ -573,12 +573,14 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 }
                 if (checkout.getStoreCredit() != null) {
                     if (checkout.getStoreCredit().getBalance() != 0) {
+                        mPluginStoreCreditPanel.setVisibility(View.VISIBLE);
                         mPluginStoreCreditPanel.bindItem(checkout.getStoreCredit());
                     } else {
                         mPluginStoreCreditPanel.setVisibility(View.GONE);
                     }
                 }
                 autoSelectPaymentMethod(listPayment);
+                isShowPluginStoreCredit(true);
                 isShowPaymentMethod((checkout.getGrandTotal() == 0) ? false : true);
                 isShowLoadingDetail(false);
             }
@@ -649,12 +651,14 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                     }
                     if (checkout.getStoreCredit() != null) {
                         if (checkout.getStoreCredit().getBalance() != 0) {
+                            mPluginStoreCreditPanel.setVisibility(View.VISIBLE);
                             mPluginStoreCreditPanel.bindItem(checkout.getStoreCredit());
                         } else {
                             mPluginStoreCreditPanel.setVisibility(View.GONE);
                         }
                     }
                     autoSelectPaymentMethod(listPayment);
+                    isShowPluginStoreCredit(true);
                     isShowPaymentMethod((checkout.getGrandTotal() == 0) ? false : true);
                 }
 
@@ -743,6 +747,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 }
             }
             autoSelectPaymentMethod(checkout.getCheckoutPayment());
+            isShowPluginStoreCredit(true);
             isShowPaymentMethod((checkout.getGrandTotal() == 0) ? false : true);
             // hoàn thành save shipping  hiden progressbar
             isShowLoadingDetail(false);
@@ -1206,7 +1211,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
             listPayment.add(method);
             wraper.put("list_payment", listPayment);
-
+            isShowPluginStoreCredit(false);
             ((CheckoutDetailPanel) mDetailView).updateTitlePaymentCreditCard(method.getTitle());
             isEnableCreateInvoice(true);
             ((CheckoutDetailPanel) mDetailView).showPanelCheckoutPaymentCreditCard(true);
