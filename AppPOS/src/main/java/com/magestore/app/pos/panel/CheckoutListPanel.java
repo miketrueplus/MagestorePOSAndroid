@@ -324,6 +324,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
                 ll_add_new_address.setVisibility(GONE);
             }
         }
+        mCheckoutAddCustomerPanel.scrollToTop();
 
         if (dialog == null) {
             dialog = DialogUtil.dialog(getContext(), "", mCheckoutAddCustomerPanel);
