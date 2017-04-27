@@ -45,6 +45,8 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
     boolean mblnCustomPriceFixed;
     boolean mblnCustomDiscountFixed;
 
+    CartItem mCartItem;
+
     public void setCheckoutListController(CheckoutListController mCheckoutListController) {
         this.mCheckoutListController = mCheckoutListController;
     }
@@ -92,6 +94,7 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
 
     /**
      * Đặt đơn vị là % hay $
+     *
      * @param fixed
      * @param percent
      * @param isFixed
@@ -129,6 +132,7 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
     public void bindItem(CartItem item) {
         super.bindItem(item);
         mBinding.setCartItem(item);
+        mCartItem = item;
         setCurrency();
 
         // đặt % hau $
@@ -145,11 +149,65 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
 
         // giấu nút option nếu k0 có product option
         findViewById(R.id.id_btn_cart_option).setVisibility(item.getProduct().haveProductOption() ? View.VISIBLE : View.GONE);
+        actionChangeCustomDiscount(item);
+        actionChangeCustomPrice(item);
+    }
 
+    private void actionChangeCustomDiscount(final CartItem cartItem) {
+        mtxtCustomDiscount.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (mtxtCustomDiscount.getValueFloat() != 0) {
+                    mblnCustomPriceFixed = true;
+                    actionChangeValue(mbtnCustomPriceFixed, mbtnCustomPricePercent, mblnCustomPriceFixed);
+                    mtxtCustomPrice.setText(ConfigUtil.formatNumber(ConfigUtil.formatNumber(mCartItem.getCustomPrice())));
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+    }
+
+    private void actionChangeCustomPrice(final CartItem cartItem) {
+        mtxtCustomPrice.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                mblnCustomDiscountFixed = true;
+                actionChangeValue(mbtnDiscountFixed, mbtnDiscountPercent, mblnCustomDiscountFixed);
+                if (mblnCustomPriceFixed) {
+                    if (mtxtCustomPrice.getValueFloat() != cartItem.getCustomPrice()) {
+                        mtxtCustomDiscount.setText(ConfigUtil.formatNumber(mCartItem.getDiscountAmount()));
+                    }
+                } else {
+                    if (mtxtCustomPrice.getValueFloat() != 0) {
+                        mtxtCustomDiscount.setText(ConfigUtil.formatNumber(mCartItem.getDiscountAmount()));
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
     }
 
     /**
      * Bind từ giao diện lên data set
+     *
      * @param item
      */
     @Override
@@ -171,6 +229,7 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
 
     /**
      * Nhấn nút trừ số lượng
+     *
      * @param view
      */
     public void onAddQuantity(View view) {
@@ -179,6 +238,7 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
 
     /**
      * Nhấn nút thêm số lượng
+     *
      * @param view
      */
     public void onSubstractQuantity(View view) {
@@ -192,6 +252,7 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
      */
     public void onDiscountChangeToFixed(View view) {
         mblnCustomDiscountFixed = true;
+        mtxtCustomDiscount.setText(ConfigUtil.formatNumber(mCartItem.getDiscountAmount()));
         actionChangeValue(mbtnDiscountFixed, mbtnDiscountPercent, true);
 //        getItem().setDiscountTypeFixed();
     }
@@ -203,6 +264,7 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
      */
     public void onDiscountChangeToPercent(View view) {
         mblnCustomDiscountFixed = false;
+        mtxtCustomDiscount.setText(ConfigUtil.formatNumber(0));
         actionChangeValue(mbtnDiscountFixed, mbtnDiscountPercent, false);
 //        getItem().setDiscountTypePercent();
     }
@@ -214,6 +276,7 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
      */
     public void onCustomPriceChangeToFixed(View view) {
         mblnCustomPriceFixed = true;
+        mtxtCustomPrice.setText(ConfigUtil.formatNumber(mCartItem.getCustomPrice()));
         actionChangeValue(mbtnCustomPriceFixed, mbtnCustomPricePercent, true);
 //        getItem().setCustomPriceTypeFixed();
     }
@@ -225,6 +288,7 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
      */
     public void onCustomPriceChangeToPercent(View view) {
         mblnCustomPriceFixed = false;
+        mtxtCustomPrice.setText(ConfigUtil.formatNumber(0));
         actionChangeValue(mbtnCustomPriceFixed, mbtnCustomPricePercent, false);
 //        getItem().setCustomPriceTypePercent();
     }
@@ -250,6 +314,7 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
 
     /**
      * Kiểm tra số liệu đầu vào, đảm bảo nhập chính xác
+     *
      * @return
      */
     private boolean validateInput() {
