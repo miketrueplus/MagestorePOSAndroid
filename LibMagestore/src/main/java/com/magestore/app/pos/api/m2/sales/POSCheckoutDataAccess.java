@@ -28,6 +28,7 @@ import com.magestore.app.pos.model.checkout.payment.PosAuthorizenet;
 import com.magestore.app.pos.model.sales.PosOrder;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosAbstractParseImplement;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosAuthorizenetParseModel;
+import com.magestore.app.pos.parse.gson2pos.Gson2PosOrderParseModel;
 import com.magestore.app.util.StringUtil;
 
 import java.io.IOException;
@@ -354,9 +355,10 @@ public class POSCheckoutDataAccess extends POSAbstractDataAccess implements Chec
                 return (Authorizenet) authorizenet;
             }
             rp.setParseImplement(getClassParseImplement());
-            rp.setParseModel(PosOrder.class);
-
-            Order order = (Order) rp.doParse();
+            String json = StringUtil.truncateJson(rp.readResult2String());
+            Gson2PosOrderParseModel implement =  new Gson2PosOrderParseModel();
+            Gson gson = implement.createGson();
+            Order order = gson.fromJson(json, PosOrder.class);
             return order;
         } catch (ConnectionException ex) {
             throw ex;
