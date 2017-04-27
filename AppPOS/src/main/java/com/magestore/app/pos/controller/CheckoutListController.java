@@ -1497,6 +1497,12 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         return null;
     }
 
+    /**
+     * nếu grand total = 0 chọn payment type = 0 add list
+     *
+     * @param listPayment
+     * @return
+     */
     public CheckoutPayment checkListPaymentNoInformation(List<CheckoutPayment> listPayment) {
         for (CheckoutPayment payment : listPayment) {
             if (payment.getType().equals("0")) {

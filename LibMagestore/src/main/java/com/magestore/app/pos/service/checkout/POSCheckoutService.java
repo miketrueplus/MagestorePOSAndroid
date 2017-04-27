@@ -250,9 +250,9 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
             extensionParamCustomerName.setValue(checkout.getCustomer().getName());
         }
 
-        PlaceOrderExtensionParam extensionParamCreateAt = createExtensionParam();
-        extensionParamCreateAt.setKey(KEY_EXTENSION_CREATE_AT);
-        extensionParamCreateAt.setValue(ConfigUtil.convertToGMTTime(ConfigUtil.getCurrentDateTime()));
+//        PlaceOrderExtensionParam extensionParamCreateAt = createExtensionParam();
+//        extensionParamCreateAt.setKey(KEY_EXTENSION_CREATE_AT);
+//        extensionParamCreateAt.setValue(ConfigUtil.convertToGMTTime(ConfigUtil.getCurrentDateTime()));
 
         PlaceOrderExtensionParam extensionParamStaffID = createExtensionParam();
         extensionParamStaffID.setKey(KEY_EXTENSION_WEBPOS_STAFF_ID);
@@ -277,7 +277,7 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         listExtension.add(extensionParamShipping);
         listExtension.add(extensionParamBaseShipping);
         listExtension.add(extensionParamCustomerName);
-        listExtension.add(extensionParamCreateAt);
+//        listExtension.add(extensionParamCreateAt);
         listExtension.add(extensionParamStaffID);
         listExtension.add(extensionParamStaffName);
         listExtension.add(extensionParamChange);

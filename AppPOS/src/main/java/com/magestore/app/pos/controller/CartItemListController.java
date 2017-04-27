@@ -180,6 +180,8 @@ public class CartItemListController extends AbstractChildListController<Checkout
      */
     public void updateTotalPrice() {
         mCartService.calculateLastTotal(getParent());
+        // check button discount
+        mCheckoutListController.showButtonDiscount(getParent().getGrandTotal() != 0 ? true : false);
 
         // thông báo sự kiện update tổng giá
         GenericState<ListController> state = new GenericState<ListController>(this, STATE_ON_UPDATE_CART_ITEM);
