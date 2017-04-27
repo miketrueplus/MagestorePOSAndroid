@@ -108,7 +108,7 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
                 mCheckout.setRemainMoney(money);
                 mCheckoutListController.updateMoneyTotal(false, money);
                 mCheckoutListController.updateMaxAmountStoreCredit(money);
-                mCheckoutListController.isEnableButtonAddPayment(true);
+                mCheckoutListController.isEnableButtonAddPayment(totalValue > 0 ? true : false);
                 mCheckoutListController.isEnableCreateInvoice(false);
             }
         }
@@ -144,7 +144,7 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
             mCheckout.setRemainMoney(money);
             mCheckoutListController.updateMoneyTotal(false, money);
             mCheckoutListController.updateMaxAmountStoreCredit(money);
-            mCheckoutListController.isEnableButtonAddPayment(true);
+            mCheckoutListController.isEnableButtonAddPayment(totalValue > 0 ? true : false);
             mCheckoutListController.isEnableCreateInvoice(false);
         }
         if (checkPaymentStoreCredit()) {

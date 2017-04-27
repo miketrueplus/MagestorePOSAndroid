@@ -558,6 +558,8 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 checkout.setExchangeMoney(0);
                 checkout.setCustomer(getSelectedItem().getCustomer());
                 checkout.setCustomerID(getSelectedItem().getCustomerID());
+                ((CheckoutDetailPanel) mDetailView).showPanelCheckoutPaymentCreditCard(false);
+                ((CheckoutDetailPanel) mDetailView).showPanelPaymentMethod();
                 mCheckoutPaymentListPanel.setCheckout(checkout);
                 mCheckoutPaymentListPanel.resetListPayment();
                 // plugins
@@ -632,6 +634,8 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                     checkout.setExchangeMoney(0);
                     checkout.setCustomer(getSelectedItem().getCustomer());
                     checkout.setCustomerID(getSelectedItem().getCustomerID());
+                    ((CheckoutDetailPanel) mDetailView).showPanelCheckoutPaymentCreditCard(false);
+                    ((CheckoutDetailPanel) mDetailView).showPanelPaymentMethod();
                     wraper.put("save_quote", checkout);
                     mCheckoutPaymentListPanel.resetListPayment();
                     // plugins
@@ -716,6 +720,8 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             checkout.setExchangeMoney(0);
             checkout.setCustomer(getSelectedItem().getCustomer());
             checkout.setCustomerID(getSelectedItem().getCustomerID());
+            ((CheckoutDetailPanel) mDetailView).showPanelCheckoutPaymentCreditCard(false);
+            ((CheckoutDetailPanel) mDetailView).showPanelPaymentMethod();
             mCheckoutPaymentListPanel.resetListPayment();
             mCheckoutPaymentListPanel.setCheckout(checkout);
             wraper.put("save_shipping", checkout);
