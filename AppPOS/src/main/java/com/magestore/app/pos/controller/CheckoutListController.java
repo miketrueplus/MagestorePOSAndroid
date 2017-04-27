@@ -1343,6 +1343,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
      */
     public void isEnableCreateInvoice(boolean enable) {
         ((CheckoutDetailPanel) mDetailView).isEnableCreateInvoice(enable);
+        ((CheckoutDetailPanel) mDetailView).isCheckCreateInvoice(enable);
     }
 
     /**
