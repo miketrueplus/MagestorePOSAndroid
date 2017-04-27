@@ -26,7 +26,7 @@
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/im_search"
             android:background="@color/white"
-            android:hint="@string/customer_search_customer_here"
+            android:hint="@string/order_search_order_here"
             android:imeOptions="flagNoExtractUi|actionSearch"
             android:inputType="text"
             android:maxLines="1"

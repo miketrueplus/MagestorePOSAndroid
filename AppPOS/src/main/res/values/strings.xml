@@ -80,6 +80,7 @@
     <string name="customer_create_success">The customer is saved successfully</string>
 
     <!-- Strings related to order -->
+    <string name="order_search_order_here">Search orderID, name, email, telephone</string>
     <string name="order_detail_top_status">Status:</string>
     <string name="order_detail_top_create_at">Created Date:</string>
     <string name="order_detail_top_staff_name">Served by:</string>
