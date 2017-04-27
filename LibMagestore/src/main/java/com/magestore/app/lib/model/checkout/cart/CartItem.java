@@ -3,6 +3,7 @@ package com.magestore.app.lib.model.checkout.cart;
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.model.catalog.ProductOptionCustom;
+import com.magestore.app.lib.model.sales.OrderParentItem;
 import com.magestore.app.pos.model.checkout.cart.PosCartItem;
 
 import java.util.List;
@@ -159,4 +160,6 @@ public interface CartItem extends Model {
 
     boolean getIsSaveCart();
     void setIsSaveCart(boolean isSaveCart);
+
+    OrderParentItem getOrderParentItem();
 }

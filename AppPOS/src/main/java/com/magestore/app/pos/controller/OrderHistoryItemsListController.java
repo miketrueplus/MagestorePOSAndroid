@@ -6,6 +6,7 @@ import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.service.order.OrderHistoryService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -50,8 +51,18 @@ public class OrderHistoryItemsListController extends AbstractListController<Cart
      */
     public void doSelectOrder(Order order) {
         mSelectedOrder = order;
-        mList = order.getOrderItems();
+        mList = checkParentItem(order);
         mView.bindList(mList);
+    }
+
+    private List<CartItem> checkParentItem(Order order) {
+        List<CartItem> listCartItems = new ArrayList<>();
+        for (CartItem cart : order.getOrderItems()) {
+            if (cart.getOrderParentItem() == null) {
+                listCartItems.add(cart);
+            }
+        }
+        return listCartItems;
     }
 
     public void notifyDataSetChanged() {

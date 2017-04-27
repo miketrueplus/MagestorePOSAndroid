@@ -5,10 +5,12 @@ import com.magestore.app.lib.model.catalog.ProductOptionCustom;
 import com.magestore.app.lib.model.catalog.ProductOptionCustomValue;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.catalog.Product;
+import com.magestore.app.lib.model.sales.OrderParentItem;
 import com.magestore.app.pos.model.PosAbstractModel;
 import com.magestore.app.pos.model.catalog.PosProductOption;
 import com.magestore.app.pos.model.catalog.PosProductOptionCustom;
 import com.magestore.app.pos.model.checkout.PosQuoteItems;
+import com.magestore.app.pos.model.sales.PosOrderParentItem;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosExclude;
 import com.magestore.app.util.StringUtil;
 
@@ -292,6 +294,8 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     boolean isSaveCart;
     @Gson2PosExclude
     float original_price;
+    @Gson2PosExclude
+    PosOrderParentItem parent_item;
 
     // Params Order Shipment
     String order_item_id;
@@ -567,5 +571,10 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     @Override
     public void setIsSaveCart(boolean isSaveCart) {
         this.isSaveCart = isSaveCart;
+    }
+
+    @Override
+    public OrderParentItem getOrderParentItem() {
+        return parent_item;
     }
 }
