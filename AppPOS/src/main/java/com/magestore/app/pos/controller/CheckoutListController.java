@@ -39,6 +39,7 @@ import com.magestore.app.pos.panel.CheckoutSuccessPanel;
 import com.magestore.app.pos.panel.PaymentMethodListPanel;
 import com.magestore.app.pos.panel.PluginRewardPointPanel;
 import com.magestore.app.pos.panel.PluginStoreCreditPanel;
+import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.DataUtil;
 import com.magestore.app.util.StringUtil;
 
@@ -563,7 +564,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 mCheckoutPaymentListPanel.resetListPayment();
                 // plugins
                 if (checkout.getRewardPoint() != null) {
-                    if (checkout.getRewardPoint().getBalance() != 0) {
+                    if (checkout.getRewardPoint().getBalance() != 0 && ConfigUtil.isEnableRewardPoint()) {
                         mPluginRewardPointPanel.bindItem(checkout.getRewardPoint());
                         mPluginRewardPointPanel.setVisibility(View.VISIBLE);
                     } else {
@@ -571,7 +572,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                     }
                 }
                 if (checkout.getStoreCredit() != null) {
-                    if (checkout.getStoreCredit().getBalance() != 0) {
+                    if (checkout.getStoreCredit().getBalance() != 0 && ConfigUtil.isEnableStoreCredit()) {
                         mPluginStoreCreditPanel.setVisibility(View.VISIBLE);
                         mPluginStoreCreditPanel.bindItem(checkout.getStoreCredit());
                     } else {
@@ -641,7 +642,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                     mCheckoutPaymentListPanel.resetListPayment();
                     // plugins
                     if (checkout.getRewardPoint() != null) {
-                        if (checkout.getRewardPoint().getBalance() != 0) {
+                        if (checkout.getRewardPoint().getBalance() != 0 && ConfigUtil.isEnableRewardPoint()) {
                             mPluginRewardPointPanel.bindItem(checkout.getRewardPoint());
                             mPluginRewardPointPanel.setVisibility(View.VISIBLE);
                         } else {
@@ -649,7 +650,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                         }
                     }
                     if (checkout.getStoreCredit() != null) {
-                        if (checkout.getStoreCredit().getBalance() != 0) {
+                        if (checkout.getStoreCredit().getBalance() != 0 && ConfigUtil.isEnableStoreCredit()) {
                             mPluginStoreCreditPanel.setVisibility(View.VISIBLE);
                             mPluginStoreCreditPanel.bindItem(checkout.getStoreCredit());
                         } else {
@@ -730,7 +731,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             wraper.put("save_shipping", checkout);
             // plugins
             if (checkout.getRewardPoint() != null) {
-                if (checkout.getRewardPoint().getBalance() != 0) {
+                if (checkout.getRewardPoint().getBalance() != 0 && ConfigUtil.isEnableRewardPoint()) {
                     mPluginRewardPointPanel.bindItem(checkout.getRewardPoint());
                     mPluginRewardPointPanel.setVisibility(View.VISIBLE);
                 } else {
@@ -738,7 +739,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 }
             }
             if (checkout.getStoreCredit() != null) {
-                if (checkout.getStoreCredit().getBalance() != 0) {
+                if (checkout.getStoreCredit().getBalance() != 0 && ConfigUtil.isEnableStoreCredit()) {
                     mPluginStoreCreditPanel.bindItem(checkout.getStoreCredit());
                     mPluginStoreCreditPanel.setVisibility(View.VISIBLE);
                 } else {
