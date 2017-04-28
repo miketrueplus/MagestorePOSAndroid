@@ -5,6 +5,7 @@ import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.model.sales.OrderCommentParams;
+import com.magestore.app.lib.model.sales.OrderCredit;
 import com.magestore.app.lib.model.sales.OrderInvoiceParams;
 import com.magestore.app.lib.model.sales.OrderRefundParams;
 import com.magestore.app.lib.model.sales.OrderShipmentParams;
@@ -15,6 +16,7 @@ import com.magestore.app.lib.parse.ParseException;
 import com.magestore.app.lib.resourcemodel.DataAccess;
 import com.magestore.app.lib.resourcemodel.DataAccessException;
 import com.magestore.app.lib.resourcemodel.ListDataAccess;
+import com.magestore.app.pos.model.sales.PosOrderCredit;
 
 import java.io.IOException;
 import java.util.List;
@@ -49,4 +51,6 @@ public interface OrderDataAccess extends DataAccess, ListDataAccess<Order> {
     List<CheckoutPayment> retrievePaymentMethod() throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
 
     Order orderTakePayment(OrderTakePaymentParam orderTakePaymentParam, String orderID) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
+
+    OrderCredit orderByCredit() throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
 }

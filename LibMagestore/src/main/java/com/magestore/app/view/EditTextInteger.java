@@ -55,8 +55,8 @@ public class EditTextInteger extends EditText {
 //    }
 
     protected void initModel() {
-        setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        setKeyListener(DigitsKeyListener.getInstance(ConfigUtil.getIntegerDigit()));
+//        setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+//        setKeyListener(DigitsKeyListener.getInstance(ConfigUtil.getFloatDigit()));
         mblnHaveMaxValue = false;
         mblnHaveMinValue = false;
     }

@@ -70,6 +70,8 @@
                         android:textSize="@dimen/product_detail_text_size" />
 
                     <com.magestore.app.view.EditTextInteger
+                        android:inputType="numberDecimal"
+                        android:digits="0123456789.,"
                         android:id="@+id/id_txt_cart_item_detail_quantity"
                         android:layout_width="@dimen/cart_option_text_quantity_width"
                         android:layout_height="wrap_content"
@@ -126,7 +128,8 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1.0"
                         android:background="@drawable/cart_option_border_edittext"
-                        android:inputType="number|numberDecimal"
+                        android:inputType="numberDecimal"
+                        android:digits="0123456789.,"
                         android:padding="@dimen/layout_margin_5"
                         android:selectAllOnFocus="true"
                         android:text="@{ConfigUtil.formatNumber(cartItem.getCustomPrice())}"
@@ -182,7 +185,8 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1.0"
                         android:background="@drawable/cart_option_border_edittext"
-                        android:inputType="number|numberDecimal"
+                        android:inputType="numberDecimal"
+                        android:digits="0123456789.,"
                         android:padding="@dimen/layout_margin_5"
                         android:selectAllOnFocus="true"
                         android:text="@{ConfigUtil.formatNumber(cartItem.getDiscountAmount())}"

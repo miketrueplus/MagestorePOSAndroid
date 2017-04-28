@@ -2,6 +2,12 @@ package com.magestore.app.pos.service.order;
 
 import android.text.TextUtils;
 
+import com.magestore.app.lib.connection.Connection;
+import com.magestore.app.lib.connection.ConnectionException;
+import com.magestore.app.lib.connection.ConnectionFactory;
+import com.magestore.app.lib.connection.ParamBuilder;
+import com.magestore.app.lib.connection.ResultReading;
+import com.magestore.app.lib.connection.Statement;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.lib.model.checkout.PaymentMethodDataParam;
@@ -9,6 +15,7 @@ import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.model.sales.OrderCommentParams;
+import com.magestore.app.lib.model.sales.OrderCredit;
 import com.magestore.app.lib.model.sales.OrderInvoiceParams;
 import com.magestore.app.lib.model.sales.OrderItemParams;
 import com.magestore.app.lib.model.sales.OrderItemUpdateQtyParam;
@@ -18,10 +25,14 @@ import com.magestore.app.lib.model.sales.OrderShipmentTrackParams;
 import com.magestore.app.lib.model.sales.OrderStatus;
 import com.magestore.app.lib.model.sales.OrderTakePaymentParam;
 import com.magestore.app.lib.model.sales.OrderUpdateQtyParam;
+import com.magestore.app.lib.resourcemodel.DataAccessException;
 import com.magestore.app.lib.resourcemodel.DataAccessFactory;
 import com.magestore.app.lib.resourcemodel.sales.OrderDataAccess;
 import com.magestore.app.lib.service.order.OrderHistoryService;
+import com.magestore.app.pos.api.m2.POSAPI;
+import com.magestore.app.pos.api.m2.POSDataAccessSession;
 import com.magestore.app.pos.model.checkout.PosPaymentMethodDataParam;
+import com.magestore.app.pos.model.sales.PosOrder;
 import com.magestore.app.pos.model.sales.PosOrderCommentParams;
 import com.magestore.app.pos.model.sales.PosOrderInvoiceParams;
 import com.magestore.app.pos.model.sales.PosOrderItemParams;
@@ -159,6 +170,14 @@ public class PosOrderHistoryService extends AbstractService implements OrderHist
 
         return orderDataAccess.createShipment(shipmentParams);
     }
+
+    @Override
+    public OrderCredit doOrderRefundByCredit() throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        OrderDataAccess orderDataAccess = factory.generateOrderDataAccess();
+        return orderDataAccess.orderByCredit();
+    }
+
 
     @Override
     public Order orderRefund(Order order) throws InstantiationException, IllegalAccessException, IOException, ParseException {
@@ -461,6 +480,7 @@ public class PosOrderHistoryService extends AbstractService implements OrderHist
     public boolean checkCanStoreCredit(Order order) {
         return ConfigUtil.isEnableStoreCredit();
     }
+
 
     private boolean canUnhold(String status) {
         if (status.equals("payment_review")) {

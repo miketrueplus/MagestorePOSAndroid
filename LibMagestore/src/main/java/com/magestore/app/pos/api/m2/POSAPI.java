@@ -43,6 +43,7 @@ public class POSAPI {
     public static final String REST_ORDER_INVOICE_UPDATE_QTY = "/rest/default/V1/webpos/invoices/updateqty?";
     public static final String REST_ORDER_INVOICE = "/rest/default/V1/webpos/invoices/create?";
     public static final String REST_ORDER_SHIPMENT = "/rest/default/V1/webpos/shipment/create?";
+    public static final String REST_ORDER_BY_CREDIT = "rest/default/V1/webpos/integration/refundByCredit?session=${sessionID}";
     public static final String REST_ORDER_REFUND = "/rest/default/V1/webpos/creditmemo/create?";
     public static final String REST_PAYMENT_METHOD_GET_LISTING = "/rest/default/V1/webpos/payments?";
     public static final String REST_ORDER_TAKE_PAYMENT = "/rest/default/V1/webpos/orders/${orderID}/payments?";
@@ -100,4 +101,5 @@ public class POSAPI {
     // API approved payment paypal
     public static final String REST_APPROVED_PAYMENT_PAYPAL = "rest/default/V1/webpos/paypal/finishPayment?";
     public static final String REST_INVOICE_PAYMENT_AUTHORIZE = "rest/default/V1/webpos/invoices/${orderID}/create?";
+
 }
