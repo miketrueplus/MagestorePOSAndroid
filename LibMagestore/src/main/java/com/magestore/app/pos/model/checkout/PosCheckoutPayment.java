@@ -48,6 +48,8 @@ public class PosCheckoutPayment extends PosAbstractModel implements CheckoutPaym
     String client_id;
     @Gson2PosExclude
     String is_sandbox;
+    @Gson2PosExclude
+    String usecvv;
 
     AdditionalData additional_data;
 
@@ -179,6 +181,16 @@ public class PosCheckoutPayment extends PosAbstractModel implements CheckoutPaym
     @Override
     public String getCCOwner() {
         return this.additional_data.cc_owner;
+    }
+
+    @Override
+    public void setUserCVV(String userCVV) {
+        this.usecvv = userCVV;
+    }
+
+    @Override
+    public String getUserCVV() {
+        return usecvv;
     }
 
     @Override

@@ -104,14 +104,14 @@ public class CheckoutPaymentCreditCardPanel extends AbstractDetailPanel<Checkout
         card_cvv.setText("");
     }
 
-    public boolean checkRequiedCard() {
+    public boolean checkRequiedCard(boolean checkCVV) {
 //        if (!isRequied(card_name)) {
 //            return false;
 //        }
         if (!isRequied(card_number)) {
             return false;
         }
-        if (!isRequied(card_cvv)) {
+        if (!isRequied(card_cvv) && checkCVV) {
             return false;
         }
         return true;

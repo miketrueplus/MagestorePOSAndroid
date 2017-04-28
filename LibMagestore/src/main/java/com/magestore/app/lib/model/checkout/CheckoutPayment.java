@@ -62,6 +62,11 @@ public interface CheckoutPayment extends Model {
 
     String getCCOwner();
 
+    void setUserCVV(String userCVV);
+
+    String getUserCVV();
+
+
     void setCCType(String type);
 
     String getCCType();
