@@ -58,6 +58,14 @@ public class PluginRewardPointPanel extends AbstractDetailPanel<RewardPoint> {
         cb_use_max_credit = (CheckBox) findViewById(R.id.cb_use_max_credit);
         bt_apply = (Button) findViewById(R.id.bt_apply);
         rl_remove_reward_point = (RelativeLayout) findViewById(R.id.rl_remove_reward_point);
+    }
+
+    @Override
+    public void bindItem(RewardPoint item) {
+        super.bindItem(item);
+        mRewardPoint = item;
+        tv_reward_point.setText(getContext().getString(R.string.plugin_reward_point_title, ConfigUtil.formatNumber(item.getBalance())));
+        reward_point_value.setText(ConfigUtil.formatNumber(item.getBalance()));
 
         reward_point_value.addTextChangedListener(new TextWatcher() {
             @Override
@@ -140,13 +148,5 @@ public class PluginRewardPointPanel extends AbstractDetailPanel<RewardPoint> {
                 }
             }
         });
-    }
-
-    @Override
-    public void bindItem(RewardPoint item) {
-        super.bindItem(item);
-        mRewardPoint = item;
-        tv_reward_point.setText(getContext().getString(R.string.plugin_reward_point_title, ConfigUtil.formatNumber(item.getBalance())));
-        reward_point_value.setText(ConfigUtil.formatNumber(item.getBalance()));
     }
 }
