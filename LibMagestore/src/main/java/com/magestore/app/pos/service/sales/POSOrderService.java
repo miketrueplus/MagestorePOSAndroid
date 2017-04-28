@@ -3,11 +3,18 @@ package com.magestore.app.pos.service.sales;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.model.catalog.Product;
+import com.magestore.app.lib.model.sales.OrderCredit;
+import com.magestore.app.lib.resourcemodel.DataAccessFactory;
+import com.magestore.app.lib.resourcemodel.catalog.CategoryDataAccess;
+import com.magestore.app.lib.resourcemodel.catalog.ProductDataAccess;
+import com.magestore.app.lib.resourcemodel.sales.OrderDataAccess;
 import com.magestore.app.lib.service.sales.OrderService;
 import com.magestore.app.pos.model.checkout.cart.PosCartItem;
 import com.magestore.app.pos.model.sales.PosOrder;
 import com.magestore.app.pos.service.AbstractService;
 
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +31,7 @@ public class POSOrderService extends AbstractService implements OrderService {
 
     /**
      * Khởi tạo 1 đơn hàng mới để bán hàng và lưu đơn đang có vào OnHold
+     *
      * @return
      */
     @Override
@@ -65,7 +73,7 @@ public class POSOrderService extends AbstractService implements OrderService {
 
         // Kiểm tra đơn hiện tại đã được hold chưa
         boolean isHold = false;
-        for (Order order: mOnHoldOrders) {
+        for (Order order : mOnHoldOrders) {
             isHold = (order == mOrder);
             if (isHold) break;
         }
@@ -76,6 +84,7 @@ public class POSOrderService extends AbstractService implements OrderService {
 
     /**
      * Khởi tạo 1 đơn hàng mới để bán hàng và lưu đơn đang có vào OnHold
+     *
      * @return
      */
     @Override
@@ -87,12 +96,13 @@ public class POSOrderService extends AbstractService implements OrderService {
 
     /**
      * Tính toán tổng giá trị sub total của đơn hàng
+     *
      * @return
      */
     @Override
     public synchronized float calculateSubTotalOrderItems() {
         // Khởi tạo danh sách order items
-        List<CartItem> listItems =  mOrder.getOrderItems();
+        List<CartItem> listItems = mOrder.getOrderItems();
         if (listItems == null) return 0;
 
         float total = 0;
@@ -106,6 +116,7 @@ public class POSOrderService extends AbstractService implements OrderService {
 
     /**
      * Tính toán thuế
+     *
      * @return
      */
     @Override
@@ -118,6 +129,7 @@ public class POSOrderService extends AbstractService implements OrderService {
 
     /**
      * Tính toán tổng discount
+     *
      * @return
      */
     @Override
@@ -128,19 +140,20 @@ public class POSOrderService extends AbstractService implements OrderService {
 
     /**
      * Tính toán tổng giá trị cuối cùng của đơn hàng
+     *
      * @return
      */
     @Override
     public synchronized float calculateLastTotalOrderItems() {
-        float last_total = calculateSubTotalOrderItems() + calculateTaxOrderItems() - calculateDiscountTotalOrderItems() ;
+        float last_total = calculateSubTotalOrderItems() + calculateTaxOrderItems() - calculateDiscountTotalOrderItems();
         mOrder.setValue("last_total", last_total);
         return last_total;
     }
 
 
-
     /**
      * Thêm 1 order item
+     *
      * @param product
      * @param quantity
      * @param price
@@ -151,7 +164,7 @@ public class POSOrderService extends AbstractService implements OrderService {
         if (mOrder == null) return;
 
         // Khởi tạo danh sách order cartItem
-        List<CartItem> listItems =  mOrder.getOrderItems();
+        List<CartItem> listItems = mOrder.getOrderItems();
         if (listItems == null) {
             mOrder.newOrderItems();
             listItems = mOrder.getOrderItems();
@@ -191,6 +204,7 @@ public class POSOrderService extends AbstractService implements OrderService {
 
     /**
      * Thêm product
+     *
      * @param product
      * @param quantity
      */
@@ -201,6 +215,7 @@ public class POSOrderService extends AbstractService implements OrderService {
 
     /**
      * Trừ số lượng một mặt hàng trên đơn hàng
+     *
      * @param product
      * @param subQuantity
      */
@@ -210,7 +225,7 @@ public class POSOrderService extends AbstractService implements OrderService {
         if (mOrder == null) return;
 
         // Khởi tạo danh sách order cartItem
-        List<CartItem> listItems =  mOrder.getOrderItems();
+        List<CartItem> listItems = mOrder.getOrderItems();
         if (listItems == null) {
             mOrder.newOrderItems();
             listItems = mOrder.getOrderItems();
@@ -244,6 +259,7 @@ public class POSOrderService extends AbstractService implements OrderService {
 
     /**
      * Xóa 1 mặt hàng trong order item
+     *
      * @param position
      */
     public void delOrderItem(int position) {
@@ -251,7 +267,7 @@ public class POSOrderService extends AbstractService implements OrderService {
         if (mOrder == null) return;
 
         // Khởi tạo danh sách order items
-        List<CartItem> listItems =  mOrder.getOrderItems();
+        List<CartItem> listItems = mOrder.getOrderItems();
         if (listItems == null) return;
 
         // remove order item vị trí thứ n
@@ -259,7 +275,6 @@ public class POSOrderService extends AbstractService implements OrderService {
     }
 
     /**
-     *
      * @param cartItem
      */
     public void delOrderItem(CartItem cartItem) {
@@ -267,7 +282,7 @@ public class POSOrderService extends AbstractService implements OrderService {
         if (mOrder == null) return;
 
         // Khởi tạo danh sách order cartItem
-        List<CartItem> listItems =  mOrder.getOrderItems();
+        List<CartItem> listItems = mOrder.getOrderItems();
         if (listItems == null) return;
 
         // remove order item vị trí thứ n
@@ -280,7 +295,7 @@ public class POSOrderService extends AbstractService implements OrderService {
         if (mOrder == null) return;
 
         // Khởi tạo danh sách order cartItem
-        List<CartItem> listItems =  mOrder.getOrderItems();
+        List<CartItem> listItems = mOrder.getOrderItems();
         if (listItems == null) {
             mOrder.newOrderItems();
             listItems = mOrder.getOrderItems();
@@ -309,4 +324,8 @@ public class POSOrderService extends AbstractService implements OrderService {
     public void doPaymentOrder() {
 
     }
+
+
+
+
 }

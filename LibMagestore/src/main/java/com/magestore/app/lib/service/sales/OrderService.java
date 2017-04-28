@@ -3,6 +3,7 @@ package com.magestore.app.lib.service.sales;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.sales.Order;
+import com.magestore.app.lib.model.sales.OrderCredit;
 import com.magestore.app.lib.service.Service;
 
 /**
@@ -13,19 +14,25 @@ import com.magestore.app.lib.service.Service;
 
 public interface OrderService extends Service {
     void setOrder(Order order);
+
     Order getOrder();
 
     /**
      * Khởi tạo 1 phiên sales mới
+     *
      * @param order
      */
     void newSales(Order order);
+
     void newSales();
+
     void newOrder();
+
     public Order createOrder();
 
     /**
      * Thêm 1 item vào đơn hàng
+     *
      * @param product
      * @param quantity
      * @param price
@@ -34,6 +41,7 @@ public interface OrderService extends Service {
 
     /**
      * Thêm 1 item vào đơn hàng
+     *
      * @param product
      * @param quantity
      */
@@ -41,6 +49,7 @@ public interface OrderService extends Service {
 
     /**
      * Trừ số lượng của 1 item trong đơn hàng
+     *
      * @param product
      * @param subQuantity
      */
@@ -48,42 +57,45 @@ public interface OrderService extends Service {
 
     /**
      * Loại 1 order item khỏi đơn hàng
+     *
      * @param position
      */
     public void delOrderItem(int position);
 
     /**
-     *
      * @param cartItem
      */
     public void delOrderItem(CartItem cartItem);
 
     /**
-     *
      * @param product
      */
     public void delOrderItem(Product product);
 
     /**
      * Tính toán sub total
+     *
      * @return
      */
     float calculateSubTotalOrderItems();
 
     /**
      * Tính toán thuế
+     *
      * @return
      */
     float calculateTaxOrderItems();
 
     /**
      * Tính toán tổng cuối cùng
+     *
      * @return
      */
     float calculateLastTotalOrderItems();
 
     /**
      * Tính toán tổng discount
+     *
      * @return
      */
     float calculateDiscountTotalOrderItems();
@@ -97,4 +109,7 @@ public interface OrderService extends Service {
      * Thực hiện thanh toán
      */
     void doPaymentOrder();
+
+
+
 }
