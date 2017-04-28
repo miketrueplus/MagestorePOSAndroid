@@ -7,6 +7,6 @@
     android:clickable="false"
     android:gravity="left"
     android:longClickable="false"
-    android:padding="5dp"
+    android:padding="@dimen/layout_margin_5"
     android:textColor="@color/text_color"
     android:textSize="@dimen/text_size" />

@@ -18,9 +18,9 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="All Products"
-            android:textColor="#fff"
-            android:textSize="17sp" />
+            android:text="@string/category_all_product"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size" />
 
 
         <ImageView

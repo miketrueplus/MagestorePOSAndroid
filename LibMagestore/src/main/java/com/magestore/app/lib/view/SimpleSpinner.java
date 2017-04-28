@@ -2,16 +2,11 @@ package com.magestore.app.lib.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.v7.widget.AppCompatSpinner;
 import android.util.AttributeSet;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-
-import com.google.gson.internal.LinkedTreeMap;
 import com.magestore.app.lib.R;
 import com.magestore.app.lib.model.Model;
-import com.magestore.app.lib.model.catalog.Category;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +18,7 @@ import java.util.Map;
  * mike@trueplus.vn
  */
 
-public class SimpleSpinner extends AppCompatSpinner {
+public class SimpleSpinner extends Spinner {
     // ID Layout của rowview
     int mListLayout;
     boolean mNoScroll;
@@ -101,32 +96,6 @@ public class SimpleSpinner extends AppCompatSpinner {
             mapModel.put(model.getID(), model.getDisplayContent());
         bind(mapModel);
     }
-
-
-
-    // Start Felix update 27/4
-    public void bindCategory(List<Category> datas, int layout, int layoutDropdown) {
-        ArrayList<String> list = new ArrayList<>();
-        for (Category category : datas) {
-            if (category.getLevel() == 2) {
-                list.add("   " + category.getName());
-            } else if (category.getLevel() == 3) {
-                list.add("      " + category.getName());
-            } else if (category.getLevel() == 4) {
-                list.add("         " + category.getName());
-            }else{
-                list.add(category.getName());
-            }
-        }
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),layout, list);
-        adapter.setDropDownViewResource(layoutDropdown);
-
-        setAdapter(adapter);
-    }
-
-    //End Felix update 27/4
-
 
     /**
      * Sử dụng 1 list models để hiển thị trên spinner
