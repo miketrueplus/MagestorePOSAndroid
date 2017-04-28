@@ -442,7 +442,7 @@ public class PosOrderHistoryService extends AbstractService implements OrderHist
         if (order.getBaseShippingRefunded() > 0) {
             return ConfigUtil.convertToPrice(order.getBaseShippingAmount());
         } else if ((order.getBaseShippingAmount() - order.getBaseShippingRefunded()) > 0) {
-            return (order.getBaseShippingAmount() - order.getBaseShippingRefunded());
+            return ConfigUtil.convertToPrice((order.getBaseShippingAmount() - order.getBaseShippingRefunded()));
         }
         return 0;
     }
