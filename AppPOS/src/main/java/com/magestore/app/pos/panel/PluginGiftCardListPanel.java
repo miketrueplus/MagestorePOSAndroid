@@ -69,6 +69,8 @@ public class PluginGiftCardListPanel extends AbstractSimpleRecycleView<GiftCard>
         mUserMaxPoint.put(item, cb_use_max_credit);
         actionCheckUseMaxPoint(item, cb_use_max_credit, gift_code_value);
         Button bt_apply = (Button) view.findViewById(R.id.bt_apply);
+        bt_apply.setBackground(getResources().getDrawable(R.drawable.backgound_buton_apply_disable));
+
         actionChangeGiftCode(item, gift_code, bt_apply);
         actionChangeGiftValue(item, gift_code_value, bt_apply);
 

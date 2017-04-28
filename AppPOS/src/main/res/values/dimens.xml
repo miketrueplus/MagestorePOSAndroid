@@ -139,4 +139,6 @@
     <dimen name="layout_margin_150">150dp</dimen>
     <dimen name="layout_margin_130">130dp</dimen>
     <dimen name="text_size_17">17sp</dimen>
+    <dimen name="text_size_15">15sp</dimen>
+    <dimen name="radius_button_apply_3dp">3dp</dimen>
 </resources>

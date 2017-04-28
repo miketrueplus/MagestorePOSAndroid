@@ -111,4 +111,6 @@
 
     <!--Plugins-->
     <color name="plugin_reward_point_earn_point_text_color">#1e88e5</color>
+    <color name="color_button_apply_disable">#cbced1</color>
+    <color name="color_button_apply_enable">#1e88e5</color>
 </resources>

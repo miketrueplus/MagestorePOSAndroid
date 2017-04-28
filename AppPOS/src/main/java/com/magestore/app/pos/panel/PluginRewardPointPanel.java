@@ -11,6 +11,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.magestore.app.lib.model.plugins.RewardPoint;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
 import com.magestore.app.pos.R;
@@ -57,6 +58,7 @@ public class PluginRewardPointPanel extends AbstractDetailPanel<RewardPoint> {
         reward_point_value = (EditText) findViewById(R.id.reward_point_value);
         cb_use_max_credit = (CheckBox) findViewById(R.id.cb_use_max_credit);
         bt_apply = (Button) findViewById(R.id.bt_apply);
+        bt_apply.setBackground(getResources().getDrawable(R.drawable.backgound_buton_apply_disable));
         rl_remove_reward_point = (RelativeLayout) findViewById(R.id.rl_remove_reward_point);
 
         reward_point_value.addTextChangedListener(new TextWatcher() {

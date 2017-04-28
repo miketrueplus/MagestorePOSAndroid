@@ -61,6 +61,8 @@ public class PluginStoreCreditPanel extends AbstractDetailPanel<StoreCredit> {
         store_credit_value = (EditText) findViewById(R.id.store_credit_value);
         cb_use_max_credit = (CheckBox) findViewById(R.id.cb_use_max_credit);
         bt_apply = (Button) findViewById(R.id.bt_apply);
+        bt_apply.setBackground(getResources().getDrawable(R.drawable.backgound_buton_apply_disable));
+
         rl_remove_store_credit = (RelativeLayout) findViewById(R.id.rl_remove_store_credit);
 
         store_credit_value.addTextChangedListener(new TextWatcher() {
@@ -80,9 +82,10 @@ public class PluginStoreCreditPanel extends AbstractDetailPanel<StoreCredit> {
                         credit_value = 0;
                     }
                     if (credit_value == 0) {
-                        bt_apply.setEnabled(false);
+                        disableApply(false);
+
                     } else {
-                        bt_apply.setEnabled(true);
+                        disableApply(true);
                         if (credit_value <= mStoreCredit.getMaxAmount()) {
                             mStoreCredit.setAmount(credit_value);
                         } else {
@@ -91,7 +94,7 @@ public class PluginStoreCreditPanel extends AbstractDetailPanel<StoreCredit> {
                     }
                 } else {
                     mStoreCredit.setAmount(0);
-                    bt_apply.setEnabled(false);
+                    disableApply(false);
                 }
             }
 
@@ -133,6 +136,12 @@ public class PluginStoreCreditPanel extends AbstractDetailPanel<StoreCredit> {
                 mCheckoutListController.removePaymentStoreCredit();
             }
         });
+    }
+
+    private void disableApply(boolean b) {
+        bt_apply.setTextColor(b ? getResources().getColor(R.color.white) : getResources().getColor(R.color.text_color));
+        bt_apply.setEnabled(b);
+        bt_apply.setBackground(b ? getResources().getDrawable(R.drawable.backgound_buton_apply_enable) : getResources().getDrawable(R.drawable.backgound_buton_apply_disable));
     }
 
     @Override
