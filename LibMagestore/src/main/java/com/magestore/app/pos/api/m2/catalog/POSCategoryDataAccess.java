@@ -1,5 +1,7 @@
 package com.magestore.app.pos.api.m2.catalog;
 
+import android.util.Log;
+
 import com.magestore.app.lib.connection.Connection;
 import com.magestore.app.lib.connection.ConnectionException;
 import com.magestore.app.lib.connection.ConnectionFactory;
@@ -13,6 +15,7 @@ import com.magestore.app.lib.resourcemodel.catalog.CategoryDataAccess;
 import com.magestore.app.pos.api.m2.POSAPI;
 import com.magestore.app.pos.api.m2.POSAbstractDataAccess;
 import com.magestore.app.pos.api.m2.POSDataAccessSession;
+import com.magestore.app.pos.model.catalog.PosCategory;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListCategory;
 
 import java.io.IOException;
@@ -50,12 +53,14 @@ public class POSCategoryDataAccess extends POSAbstractDataAccess implements Cate
             connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
             statement = connection.createStatement();
             statement.prepareQuery(POSAPI.REST_GET_CATEGORY_LISTING);
-
             // Xây dựng tham số
             paramBuilder = statement.getParamBuilder()
                     .setPage(page)
                     .setPageSize(pageSize)
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
+
+            Log.i(getClass().getName().toString(), " Query : " + POSAPI.REST_GET_CATEGORY_LISTING);
+            Log.i(getClass().getName().toString(), " Param : " + statement.getParamBuilder());
 
             // thực thi truy vấn và parse kết quả thành object
             rp = statement.execute();
@@ -111,44 +116,43 @@ public class POSCategoryDataAccess extends POSAbstractDataAccess implements Cate
         return false;
     }
 
-
+    //Start Felix Edit 27/04
     @Override
     public List<Category> getListCategory(Category category) throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
         if (mListCategory == null) mListCategory = new ArrayList<Category>();
         if (mListDefaultCategory == null) mListDefaultCategory = new ArrayList<Category>();
-        if (category == null) {
-            if (mListDefaultCategory.size() <= 0) {
-                for (Category categoryAll : mListCategory) {
-                    if (categoryAll.getLevel() == 1) {
-                        for (String category_id : categoryAll.getChildren()) {
-                            for (Category category_child : mListCategory) {
-                                if (category_id.equals(category_child.getID())) {
-                                    mListDefaultCategory.add(category_child);
-                                }
-                            }
-                        }
+        PosCategory cateFirst = new PosCategory();
+        cateFirst.setName("All Products");
+        mListDefaultCategory.add(cateFirst);
+        for (Category c : mListCategory) {
+            if (c.getLevel() == 1) {
+                mListDefaultCategory.add(c);
+                if (c.getChildren() != null) {
+                    for (String IdChild : c.getChildren()) {
+                        mListDefaultCategory = findChildLv2(mListDefaultCategory, IdChild, mListCategory, 2);
                     }
                 }
-            }
-            return mListDefaultCategory;
-        } else {
-            List<Category> listSubCategory = category.getSubCategory();
-            if (listSubCategory != null && listSubCategory.size() > 0) {
-                return listSubCategory;
-            } else {
-                listSubCategory = new ArrayList<Category>();
-                List<String> listCategoryID = category.getChildren();
-                if (listCategoryID != null && listCategoryID.size() > 0) {
-                    for (String category_id : listCategoryID) {
-                        for (Category category_child : mListCategory) {
-                            if (category_id.equals(category_child.getID())) {
-                                listSubCategory.add(category_child);
-                            }
-                        }
-                    }
-                }
-                return listSubCategory;
             }
         }
+        return mListDefaultCategory;
     }
+
+
+    private List<Category> findChildLv2(List<Category> resultList, String idChild, List<Category> categories, int level) {
+        for (Category category : categories) {
+            if (category.getLevel() == level && category.getID().equals(idChild)) {
+                resultList.add(category);
+                if (category.getChildren() != null) {
+                    level++;
+                    for (String idSubChild : category.getChildren()) {
+                        resultList = findChildLv2(resultList, idSubChild, categories, level);
+                    }
+                }
+            }
+        }
+        return resultList;
+    }
+
+    //end Felix Edit 27/04
+
 }

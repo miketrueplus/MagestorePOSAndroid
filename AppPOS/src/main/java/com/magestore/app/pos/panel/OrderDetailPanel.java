@@ -21,7 +21,6 @@ import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.OrderHistoryListController;
 import com.magestore.app.pos.databinding.PanelOrderDetailBinding;
 import com.magestore.app.pos.util.DialogUtil;
-import com.magestore.app.pos.util.PrintOrder;
 import com.magestore.app.pos.util.PrintUtil;
 import com.magestore.app.pos.view.MagestoreDialog;
 import java.util.HashMap;
