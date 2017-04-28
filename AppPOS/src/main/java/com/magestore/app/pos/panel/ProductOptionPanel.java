@@ -372,7 +372,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                 for (PosProductOptionBundleItem bundleItem : bundle.getItems()) {
                     OptionValueModelView optionValueModelView = new OptionValueModelView();
                     optionValueModelView.optionModelView = optionModelView;
-                    optionValueModelView.id = bundleItem.getEntityId();
+                    optionValueModelView.id = bundleItem.getSelectionId();
                     optionValueModelView.title = bundleItem.getName();
                     optionValueModelView.price = bundleItem.getPrice();
                     optionValueModelView.choose = isChooseValue(optionModelView.getModel().getID(), optionValueModelView.id, getItem().getBundleOption());
