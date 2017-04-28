@@ -243,6 +243,21 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
     }
 
     /**
+     * So sánh cặp code value với cart item xem có cái nào được chọn chưa
+     *
+     * @param code
+     * @param optionsValueList
+     * @return
+     */
+    public boolean haveChooseValue(String code, List<PosCartItem.OptionsValue> optionsValueList) {
+        if (optionsValueList == null) return false;
+        for (PosCartItem.OptionsValue optionsValue : optionsValueList) {
+            if (code.equals(optionsValue.code)) return true;
+        }
+        return false;
+    }
+
+    /**
      * Tìm trong option đã chọn là cái option nào
      *
      * @return
@@ -369,13 +384,16 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                 optionModelView.setModel(bundle);
 
                 if (bundle.getItems() == null) continue;
+                boolean hasChooseValue =  haveChooseValue(optionModelView.getModel().getID(), getItem().getBundleOption());
                 for (PosProductOptionBundleItem bundleItem : bundle.getItems()) {
                     OptionValueModelView optionValueModelView = new OptionValueModelView();
                     optionValueModelView.optionModelView = optionModelView;
                     optionValueModelView.id = bundleItem.getSelectionId();
                     optionValueModelView.title = bundleItem.getName();
                     optionValueModelView.price = bundleItem.getPrice();
-                    optionValueModelView.choose = isChooseValue(optionModelView.getModel().getID(), optionValueModelView.id, getItem().getBundleOption());
+                    optionValueModelView.choose = isChooseValue(optionModelView.getModel().getID(), optionValueModelView.id, getItem().getBundleOption()) ?
+                            true :
+                            (hasChooseValue ? false : bundleItem.isDefault());// nếu không được chọn thì xem thử có phải là mặc định hay không
                     optionValueModelView.setModel(bundleItem);
                     optionModelView.optionValueModelViewList.add(optionValueModelView);
                 }
