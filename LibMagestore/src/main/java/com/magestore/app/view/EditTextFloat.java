@@ -6,6 +6,7 @@ import android.os.Build;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.method.DigitsKeyListener;
+import android.text.method.MetaKeyKeyListener;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.EditText;
@@ -52,8 +53,9 @@ public class EditTextFloat extends EditText {
 //    }
 
     protected void initModel() {
-        setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        setKeyListener(DigitsKeyListener.getInstance(ConfigUtil.getFloatDigit()));
+//        setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+//        DigitsKeyListener.getInstance("123");
+//        setKeyListener(DigitsKeyListener.getInstance(ConfigUtil.getFloatDigit()));
     }
 
 //    public void setValue(double value) {

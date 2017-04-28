@@ -189,7 +189,8 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
             else { // nếu là grouped option, thì chia làm 2 cart item
                 CartItem item = bind2Item();
                 for (OptionModelView optionModel : mModelViewList) {
-                    ((CartItemListController) getController()).updateToCart(item, optionModel.getModel().getID(), optionModel.title, optionModel.quantity * item.getQuantity(), optionModel.price, optionModel.quantity_increment);
+                    if (optionModel.quantity > 0)
+                        ((CartItemListController) getController()).updateToCart(item, optionModel.getModel().getID(), optionModel.title, optionModel.quantity * item.getQuantity(), optionModel.price, optionModel.quantity_increment);
                 }
                 ((CartItemListController) getController()).closeAllOpeningDialog();
             }

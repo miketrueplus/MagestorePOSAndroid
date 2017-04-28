@@ -152,8 +152,10 @@ public abstract class AbstractActivity
     public String getExceptionMessage(Exception exp) {
         if (exp instanceof MagestoreException) {
             String packageName = getPackageName();
-            int resId = getResources().getIdentifier(((MagestoreException) exp).getCode(), "string", packageName);
-            if (resId > 0) return getString(resId);
+            if (((MagestoreException) exp).getCode() != null) {
+                int resId = getResources().getIdentifier(((MagestoreException) exp).getCode(), "string", packageName);
+                if (resId > 0) return getString(resId);
+            }
         }
         return exp.getLocalizedMessage();
     }
