@@ -67,6 +67,7 @@ import com.magestore.app.pos.panel.PluginRewardPointPanel;
 import com.magestore.app.pos.panel.PluginStoreCreditPanel;
 import com.magestore.app.pos.panel.ProductListPanel;
 import com.magestore.app.pos.panel.ProductOptionPanel;
+import com.magestore.app.pos.panel.SpinnerListPanel;
 import com.magestore.app.pos.ui.AbstractActivity;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.DialogUtil;
@@ -82,6 +83,7 @@ public class SalesActivity extends AbstractActivity
     MagestoreContext magestoreContext;
     ServiceFactory factory;
     public static int REQUEST_PERMISSON_CAMERA = 12;
+    SpinnerListPanel mSpinnerListPanel;
 
     // 2 pane
     private boolean mTwoPane;
@@ -211,6 +213,7 @@ public class SalesActivity extends AbstractActivity
 
         // category list panel
         mCategoryListPanel = (CategoryListPanel) mProductListPanel.findViewById(R.id.category);
+        mSpinnerListPanel = (SpinnerListPanel) findViewById(R.id.panel_category);
 
         // plugins giftcard
         mPluginGiftCardPanel = (PluginGiftCardPanel) mCheckoutDetailPanel.findViewById(R.id.rl_gift_card);
@@ -258,7 +261,11 @@ public class SalesActivity extends AbstractActivity
         // controller quản lý category
         mCategoryListController = new CategoryListController();
         mCategoryListController.setMagestoreContext(magestoreContext);
-        mCategoryListController.setListPanel(mCategoryListPanel);
+        //Felix Edit 27/4
+//        mCategoryListController.setListPanel(mCategoryListPanel);
+        mCategoryListController.setListPanel(mSpinnerListPanel);
+        //End Felix Edit 27/4
+
         mCategoryListController.setCategoryService(categoryService);
         mCategoryListController.setSubject(subjectObserv);
 
@@ -372,6 +379,7 @@ public class SalesActivity extends AbstractActivity
                 .setMethodName("bindCategory")
                 .setStateCode(GenericState.DEFAULT_STATE_CODE_ON_SELECT_ITEM)
                 .setControllerState(mCategoryListController);
+        mSpinnerListPanel.setProductListController(mProductListController);
 
         // bắt sự kiện nhấn nút custom sales
 

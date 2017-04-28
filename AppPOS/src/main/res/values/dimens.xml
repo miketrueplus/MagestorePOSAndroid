@@ -20,6 +20,7 @@
     <dimen name="layout_margin_30">30dp</dimen>
     <dimen name="layout_margin_40">40dp</dimen>
     <dimen name="layout_margin_50">50dp</dimen>
+    <dimen name="layout_margin_75">75dp</dimen>
     <dimen name="line">1dp</dimen>
     <dimen name="text_size">15sp</dimen>
     <dimen name="text_size_18">18sp</dimen>
@@ -133,4 +134,9 @@
     <!--Dialog-->
     <dimen name="dialog_title_text_size">24sp</dimen>
     <dimen name="dialog_action_text_size">14sp</dimen>
+    <dimen name="layout_margin_250">250dp</dimen>
+    <dimen name="layout_margin_170">170dp</dimen>
+    <dimen name="layout_margin_150">150dp</dimen>
+    <dimen name="layout_margin_130">130dp</dimen>
+    <dimen name="text_size_17">17sp</dimen>
 </resources>

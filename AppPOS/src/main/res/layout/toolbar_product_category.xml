@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:magestore_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
@@ -10,12 +11,24 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:text="@string/category"
-        android:textColor="@color/menu_category_text_color" />
+        android:textColor="@color/menu_category_text_color"
+        android:visibility="gone" />
 
     <ImageView
         android:id="@+id/im_category_arrow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:src="@drawable/ic_expand_more_white" />
+        android:src="@drawable/ic_expand_more_white"
+        android:visibility="gone" />
+
+
+    <com.magestore.app.pos.panel.SpinnerListPanel
+        android:id="@+id/panel_category"
+        android:layout_width="wrap_content"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentLeft="true"
+        magestore_view:layout_panel="@layout/panel_category_spinner" />
+
+
 </LinearLayout>

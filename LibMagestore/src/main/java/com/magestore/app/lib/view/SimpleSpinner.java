@@ -5,16 +5,12 @@ import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-
-import com.google.gson.internal.LinkedTreeMap;
 import com.magestore.app.lib.R;
 import com.magestore.app.lib.model.Model;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 /**
  * Spinner đơn giản, cho phép set luôn nội dung dưới dạng chuỗi String hoặc Map
  * Created by Mike on 2/2/2017.

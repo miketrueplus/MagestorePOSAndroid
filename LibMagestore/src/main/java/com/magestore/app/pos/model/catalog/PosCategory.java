@@ -26,6 +26,10 @@ public class PosCategory extends PosAbstractModel implements Category {
     @Expose(serialize = false, deserialize = false)
     List<Category> list_sub;
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public String getName() {
         return name;
