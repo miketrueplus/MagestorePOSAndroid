@@ -276,15 +276,17 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
     public void removePaymentStoreCredit() {
         int count = 0;
         boolean checkPayment = false;
-        for (CheckoutPayment payment : mList) {
-            if(payment.getCode().equals(PluginStoreCreditPanel.STORE_CREDIT_PAYMENT_CODE)){
-                checkPayment = true;
-                break;
+        if (mList != null && mList.size() > 0) {
+            for (CheckoutPayment payment : mList) {
+                if (payment.getCode().equals(PluginStoreCreditPanel.STORE_CREDIT_PAYMENT_CODE)) {
+                    checkPayment = true;
+                    break;
+                }
+                count++;
             }
-            count ++;
-        }
-        if(checkPayment) {
-            actionRemovePayment(count);
+            if (checkPayment) {
+                actionRemovePayment(count);
+            }
         }
     }
 
