@@ -24,11 +24,11 @@
 
 
     <com.magestore.app.pos.panel.SpinnerListPanel
-        android:id="@+id/category_custom"
+        android:id="@+id/panel_category"
         android:layout_width="wrap_content"
         android:layout_height="?attr/actionBarSize"
         android:layout_alignParentLeft="true"
-        magestore_view:layout_panel="@layout/layout_spinner_custom" />
+        magestore_view:layout_panel="@layout/panel_category_spinner" />
 
 
 </LinearLayout>

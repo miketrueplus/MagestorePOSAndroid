@@ -34,7 +34,7 @@ public class CategoryAdapter extends BaseAdapter {
             LayoutInflater lInflater = (LayoutInflater) context.getSystemService(
                     Activity.LAYOUT_INFLATER_SERVICE);
 
-            convertView = lInflater.inflate(R.layout.item_list_category, null);
+            convertView = lInflater.inflate(R.layout.panel_category_option_item, null);
 
             viewHolder = new ViewHolder();
             viewHolder.holdView(convertView);
@@ -73,7 +73,7 @@ public class CategoryAdapter extends BaseAdapter {
             LayoutInflater lInflater = (LayoutInflater) context.getSystemService(
                     Activity.LAYOUT_INFLATER_SERVICE);
 
-            convertView = lInflater.inflate(R.layout.item_list_category, null);
+            convertView = lInflater.inflate(R.layout.panel_category_option_item, null);
 
             viewHolder = new ViewHolder();
             viewHolder.holdView(convertView);
@@ -92,8 +92,8 @@ public class CategoryAdapter extends BaseAdapter {
 
         public void holdView(View view) {
             //find view
-            tvTitle = (TextView) view.findViewById(R.id.text_category);
-            imgDropdownId = (ImageView) view.findViewById(R.id.icon_category);
+            tvTitle = (TextView) view.findViewById(R.id.id_title_option_category);
+            imgDropdownId = (ImageView) view.findViewById(R.id.id_icon_option_category);
         }
 
         public void setItem(Category category) {

@@ -213,7 +213,7 @@ public class SalesActivity extends AbstractActivity
 
         // category list panel
         mCategoryListPanel = (CategoryListPanel) mProductListPanel.findViewById(R.id.category);
-        mSpinnerListPanel = (SpinnerListPanel) findViewById(R.id.category_custom);
+        mSpinnerListPanel = (SpinnerListPanel) findViewById(R.id.panel_category);
 
         // plugins giftcard
         mPluginGiftCardPanel = (PluginGiftCardPanel) mCheckoutDetailPanel.findViewById(R.id.rl_gift_card);

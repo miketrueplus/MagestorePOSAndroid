@@ -12,19 +12,19 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/text_category"
+            android:id="@+id/id_title_option_category"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/layout_margin_20"
-            android:text="All Product"
-            android:textColor="#333"
-            android:textSize="17sp" />
+            android:text="@string/category_all_product"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_17" />
 
 
         <ImageView
-            android:id="@+id/icon_category"
+            android:id="@+id/id_icon_option_category"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
