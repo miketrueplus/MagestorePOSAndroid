@@ -42,7 +42,7 @@ public class CategoryListPanel extends AbstractListPanel<Category> {
         rl_select_category.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((CategoryListController) mController).selectCategoryChild(item);
+//                ((CategoryListController) mController).selectCategoryChild(item);
             }
         });
     }
