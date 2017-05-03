@@ -69,42 +69,15 @@ public class PluginRewardPointPanel extends AbstractDetailPanel<RewardPoint> {
         super.bindItem(item);
         mRewardPoint = item;
         tv_reward_point.setText(getContext().getString(R.string.plugin_reward_point_title, ConfigUtil.formatNumber(item.getBalance())));
-        reward_point_value.setText(ConfigUtil.formatNumber(item.getBalance()));
+        reward_point_value.setText(ConfigUtil.formatNumber(item.getMaxPoints()));
 
-        reward_point_value.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                String point = reward_point_value.getText().toString().trim();
-                if (!StringUtil.isNullOrEmpty(point)) {
-                    int point_value;
-                    try {
-                        point_value = Integer.parseInt(point);
-                    } catch (Exception e) {
-                        point_value = 0;
-                    }
-                    mRewardPoint.setAmount(point_value);
-                } else {
-                    reward_point_value.setText("0");
-                    mRewardPoint.setAmount(0);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
+        actionChangeRewardPoint(item);
 
         cb_use_max_credit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean check) {
                 if (check) {
-                    reward_point_value.setText(ConfigUtil.formatNumber(mRewardPoint.getBalance()));
+                    reward_point_value.setText(ConfigUtil.formatNumber(mRewardPoint.getMaxPoints()));
                 }
             }
         });
@@ -150,6 +123,41 @@ public class PluginRewardPointPanel extends AbstractDetailPanel<RewardPoint> {
                     mRewardPoint.setQuoteId(quote_id);
                     mCheckoutListController.doInputApplyRewardPoint(mRewardPoint);
                 }
+            }
+        });
+    }
+
+    private void actionChangeRewardPoint(final RewardPoint item){
+        reward_point_value.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                String point = reward_point_value.getText().toString().trim();
+                if (!StringUtil.isNullOrEmpty(point)) {
+                    int point_value = 0;
+                    try {
+                        point_value = Integer.parseInt(point);
+                    } catch (Exception e) {
+                    }
+                    if (point_value > item.getMaxPoints()) {
+                        reward_point_value.setText(ConfigUtil.formatNumber(mRewardPoint.getMaxPoints()));
+                        item.setAmount(item.getMaxPoints());
+                    } else {
+                        item.setAmount(point_value);
+                    }
+                } else {
+                    reward_point_value.setText("0");
+                    item.setAmount(0);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
             }
         });
     }

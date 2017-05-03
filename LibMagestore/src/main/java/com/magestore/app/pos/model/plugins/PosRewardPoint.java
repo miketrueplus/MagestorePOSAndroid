@@ -17,6 +17,8 @@ public class PosRewardPoint extends PosAbstractModel implements RewardPoint {
 
     @Gson2PosExclude
     int balance;
+    @Gson2PosExclude
+    int max_points;
 
     @Override
     public int getBalance() {
@@ -31,5 +33,10 @@ public class PosRewardPoint extends PosAbstractModel implements RewardPoint {
     @Override
     public void setAmount(int intAmount) {
         used_point = intAmount;
+    }
+
+    @Override
+    public int getMaxPoints() {
+        return max_points;
     }
 }

@@ -12,4 +12,5 @@ public interface RewardPoint extends Model {
     int getBalance();
     void setQuoteId(String strQuoteId);
     void setAmount(int intAmount);
+    int getMaxPoints();
 }
