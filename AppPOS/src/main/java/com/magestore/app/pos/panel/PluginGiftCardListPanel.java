@@ -2,6 +2,7 @@ package com.magestore.app.pos.panel;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
@@ -69,7 +70,8 @@ public class PluginGiftCardListPanel extends AbstractSimpleRecycleView<GiftCard>
         mUserMaxPoint.put(item, cb_use_max_credit);
         actionCheckUseMaxPoint(item, cb_use_max_credit, gift_code_value);
         Button bt_apply = (Button) view.findViewById(R.id.bt_apply);
-        bt_apply.setBackground(getResources().getDrawable(R.drawable.backgound_buton_apply_disable));
+        bt_apply.setBackground(getResources().getDrawable(R.drawable.backgound_buton_apply_enable));
+        bt_apply.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
 
         actionChangeGiftCode(item, gift_code, bt_apply);
         actionChangeGiftValue(item, gift_code_value, bt_apply);
@@ -115,10 +117,12 @@ public class PluginGiftCardListPanel extends AbstractSimpleRecycleView<GiftCard>
                 if (f_gift_value > 0 && f_gift_value <= item.getBalance()) {
                     bt_apply.setEnabled(true);
                     bt_apply.setBackground(getResources().getDrawable(R.drawable.backgound_buton_apply_enable));
+                    bt_apply.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
                     item.setAmount(f_gift_value);
                 } else {
                     bt_apply.setEnabled(false);
                     bt_apply.setBackground(getResources().getDrawable(R.drawable.backgound_buton_apply_disable));
+                    bt_apply.setTextColor(ContextCompat.getColor(getContext(), R.color.text_color));
                 }
             }
 
@@ -141,9 +145,13 @@ public class PluginGiftCardListPanel extends AbstractSimpleRecycleView<GiftCard>
                 String coupon_code = gift_code.getText().toString();
                 if (coupon_code.length() > 0) {
                     bt_apply.setEnabled(true);
+                    bt_apply.setBackground(getResources().getDrawable(R.drawable.backgound_buton_apply_enable));
+                    bt_apply.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
                     item.setCouponCode(coupon_code);
                 } else {
                     bt_apply.setEnabled(false);
+                    bt_apply.setBackground(getResources().getDrawable(R.drawable.backgound_buton_apply_disable));
+                    bt_apply.setTextColor(ContextCompat.getColor(getContext(), R.color.text_color));
                 }
             }
 

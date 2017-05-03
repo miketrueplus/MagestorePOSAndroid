@@ -1,6 +1,7 @@
 package com.magestore.app.pos.panel;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
@@ -138,10 +139,10 @@ public class PluginStoreCreditPanel extends AbstractDetailPanel<StoreCredit> {
         });
     }
 
-    private void disableApply(boolean b) {
-        bt_apply.setTextColor(b ? getResources().getColor(R.color.white) : getResources().getColor(R.color.text_color));
-        bt_apply.setEnabled(b);
-        bt_apply.setBackground(b ? getResources().getDrawable(R.drawable.backgound_buton_apply_enable) : getResources().getDrawable(R.drawable.backgound_buton_apply_disable));
+    private void disableApply(boolean isEnable) {
+        bt_apply.setTextColor(isEnable ? ContextCompat.getColor(getContext(), R.color.white) : ContextCompat.getColor(getContext(), R.color.text_color));
+        bt_apply.setEnabled(isEnable);
+        bt_apply.setBackground(isEnable ? ContextCompat.getDrawable(getContext(), R.drawable.backgound_buton_apply_enable) : ContextCompat.getDrawable(getContext(), R.drawable.backgound_buton_apply_disable));
     }
 
     @Override
