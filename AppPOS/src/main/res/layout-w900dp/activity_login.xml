@@ -47,90 +47,98 @@
                 android:layout_height="0dp"
                 android:layout_weight="2.5" />
 
-            <RelativeLayout
-                android:id="@+id/email_login_form"
+            <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="5"
-                android:background="@drawable/border_background_form_login"
-                android:padding="@dimen/login_form_padding_size">
+                android:layout_weight="5">
 
-                <LinearLayout
+
+                <RelativeLayout
+                    android:id="@+id/email_login_form"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:descendantFocusability="beforeDescendants"
-                    android:focusableInTouchMode="true"
-                    android:orientation="vertical">
-
-                    <AutoCompleteTextView
-                        android:id="@+id/domain"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:background="@drawable/login_form_border_edittext"
-                        android:ellipsize="end"
-                        android:hint="@string/login_domain"
-                        android:inputType="text"
-                        android:maxLines="1"
-                        android:padding="@dimen/login_edditext_padding_size" />
-
-                    <AutoCompleteTextView
-                        android:id="@+id/user_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:background="@drawable/login_form_border_edittext"
-                        android:ellipsize="end"
-                        android:hint="@string/login_user_name"
-                        android:inputType="text"
-                        android:maxLines="1"
-                        android:padding="@dimen/login_edditext_padding_size" />
-
-                    <EditText
-                        android:id="@+id/password"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/login_form_border_edittext"
-                        android:ellipsize="end"
-                        android:hint="@string/login_password"
-                        android:imeActionId="@+id/login"
-                        android:imeActionLabel="@string/login_action_sign_in_short"
-                        android:imeOptions="actionUnspecified"
-                        android:inputType="textPassword"
-                        android:maxLines="1"
-                        android:padding="@dimen/login_edditext_padding_size" />
+                    android:layout_height="0dp"
+                    android:layout_weight="5"
+                    android:background="@drawable/border_background_form_login"
+                    android:padding="@dimen/login_form_padding_size">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:layout_centerVertical="true"
+                        android:descendantFocusability="beforeDescendants"
+                        android:focusableInTouchMode="true"
+                        android:orientation="vertical">
 
-                        <Button
-                            android:id="@+id/sign_in_button"
-                            android:layout_width="0dp"
+                        <AutoCompleteTextView
+                            android:id="@+id/domain"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="@dimen/login_button_margin_right"
-                            android:layout_marginTop="@dimen/login_form_button_margin_top"
-                            android:layout_weight="1"
-                            android:background="@drawable/login_form_border_button_login"
-                            android:text="@string/login_action_sign_in"
-                            android:textAllCaps="false"
-                            android:textColor="@color/login_form_button_login_text_color" />
+                            android:layout_marginBottom="10dp"
+                            android:background="@drawable/login_form_border_edittext"
+                            android:ellipsize="end"
+                            android:hint="@string/login_domain"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:padding="@dimen/login_edditext_padding_size" />
 
-                        <Button
-                            android:id="@+id/demo_button"
-                            android:layout_width="0dp"
+                        <AutoCompleteTextView
+                            android:id="@+id/user_name"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/login_form_button_margin_top"
-                            android:layout_weight="1"
-                            android:background="@drawable/login_form_border_button_demo"
-                            android:text="@string/demo"
-                            android:textAllCaps="false"
-                            android:textColor="@color/text_color" />
+                            android:layout_marginBottom="10dp"
+                            android:background="@drawable/login_form_border_edittext"
+                            android:ellipsize="end"
+                            android:hint="@string/login_user_name"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:padding="@dimen/login_edditext_padding_size" />
+
+                        <EditText
+                            android:id="@+id/password"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/login_form_border_edittext"
+                            android:ellipsize="end"
+                            android:hint="@string/login_password"
+                            android:imeActionId="@+id/login"
+                            android:imeActionLabel="@string/login_action_sign_in_short"
+                            android:imeOptions="actionUnspecified"
+                            android:inputType="textPassword"
+                            android:maxLines="1"
+                            android:padding="@dimen/login_edditext_padding_size" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <Button
+                                android:id="@+id/sign_in_button"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="@dimen/login_button_margin_right"
+                                android:layout_marginTop="@dimen/login_form_button_margin_top"
+                                android:layout_weight="1"
+                                android:background="@drawable/login_form_border_button_login"
+                                android:text="@string/login_action_sign_in"
+                                android:textAllCaps="false"
+                                android:textColor="@color/login_form_button_login_text_color" />
+
+                            <Button
+                                android:id="@+id/demo_button"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/login_form_button_margin_top"
+                                android:layout_weight="1"
+                                android:background="@drawable/login_form_border_button_demo"
+                                android:text="@string/demo"
+                                android:textAllCaps="false"
+                                android:textColor="@color/text_color" />
+                        </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
-            </RelativeLayout>
+                </RelativeLayout>
+            </ScrollView>
+
 
             <FrameLayout
                 android:layout_width="match_parent"

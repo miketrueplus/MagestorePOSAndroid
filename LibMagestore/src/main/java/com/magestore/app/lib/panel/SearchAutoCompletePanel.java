@@ -2,6 +2,11 @@ package com.magestore.app.lib.panel;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Looper;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.View;
@@ -21,6 +26,9 @@ import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.view.SearchAutoCompleteTextView;
 import com.magestore.app.lib.view.adapter.SearchAutoCompleteAdapter;
 import com.magestore.app.util.StringUtil;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 /**
@@ -62,6 +70,10 @@ public class SearchAutoCompletePanel extends FrameLayout {
      *
      * @param context
      */
+
+    Handler handler = new Handler(Looper.getMainLooper() /*UI thread*/);
+    Runnable workRunnable;
+
     public SearchAutoCompletePanel(Context context) {
         super(context);
         mintMode = MODE_FULL;
@@ -259,8 +271,39 @@ public class SearchAutoCompletePanel extends FrameLayout {
      */
     public void setListController(ListController controller) {
         mController = controller;
-        mAutoTextView.setAdapter(new SearchAutoCompleteAdapter<Product>(getContext(), mController.getListService()));
+        mAutoTextView.setAdapter(new SearchAutoCompleteAdapter(getContext(), mController.getListService()));
+
+        //Felix edit 03/05/2015
+        mAutoTextView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().equals("")) {
+                    mCloseButton.setVisibility(GONE);
+                    return;
+                }
+                handler.removeCallbacks(workRunnable);
+                workRunnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        actionSearch();
+                    }
+                };
+                handler.postDelayed(workRunnable, 500 /*delay*/);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        //End Felix edit 03/05/2015
     }
+
 
     public SearchAutoCompleteTextView getAutoTextView() {
         return mAutoTextView;

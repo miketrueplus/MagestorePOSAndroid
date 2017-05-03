@@ -38,6 +38,7 @@
                 android:imeOptions="flagNoExtractUi|actionSearch"
                 android:inputType="textCapSentences"
                 android:maxLines="1"
+                android:padding="@dimen/layout_margin_2"
                 android:textSize="@dimen/text_size"
                 android:textColor="@color/product_search_text_color"
                 android:textColorHint="@color/product_search_hint_text_color"

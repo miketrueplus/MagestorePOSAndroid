@@ -147,7 +147,6 @@ public class ProductListPanel extends AbstractListPanel<Product> {
                     @Override
                     public void onResult(Barcode barcode) {
                         mSearchAutoCompletePanel.getAutoTextView().setText(barcode.rawValue);
-                        mSearchAutoCompletePanel.actionSearch();
                     }
                 })
                 .build();
