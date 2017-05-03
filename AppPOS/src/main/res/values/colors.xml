@@ -9,6 +9,7 @@
     <color name="black">#000000</color>
 
     <color name="app_color">#1e88e5</color>
+    <color name="app_color_effect">#62abea</color>
     <color name="text_color">#273746</color>
     <color name="background_default">#f4f4f4</color>
 
@@ -17,6 +18,7 @@
     <color name="login_form_border_color">#eceef0</color>
     <color name="login_form_button_login_text_color">#ffffff</color>
     <color name="login_form_button_demo_background">#d5d9dd</color>
+    <color name="login_form_button_demo_background_effect">#efefef</color>
 
     <!--Menu-->
     <color name="menu_left_background">#2b3340</color>
@@ -73,7 +75,7 @@
     <color name="card_option_btn_option_text_color">#ffffff</color>
     <color name="card_option_btn_save_text_color">#ffffff</color>
     <color name="card_item_quantity_color">#ff7800</color>
-    <color name="card_floating_button_bg"> #ccffffff</color>
+    <color name="card_floating_button_bg">#ccffffff</color>
     <color name="card_floating_button_menu">#00a659</color>
     <color name="card_floating_button_menu_press">@android:color/transparent</color>
     <color name="card_floating_button_normal">#ffffff</color>
@@ -94,6 +96,8 @@
     <color name="checkout_success_text_send_color">#ffffff</color>
     <color name="checkout_success_button_send_color">#00a65a</color>
     <color name="checkout_success_button_new_color">#00a65a</color>
+    <color name="checkout_success_button_new_color_effect" >#14d17b</color>
+
     <color name="checkout_success_btn_text_print_color">#454e57</color>
     <color name="checkout_success_btn_text_new_color">#ffffff</color>
 
