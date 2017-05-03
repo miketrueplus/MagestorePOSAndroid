@@ -2,6 +2,7 @@ package com.magestore.app.pos.panel;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
@@ -92,7 +93,7 @@ public class OrderInvoicePanel extends AbstractDetailPanel<Order> {
         mOrderInvoiceItemsListController.doSelectOrder(item);
     }
 
-    public void bindTotal(Order item){
+    public void bindTotal(Order item) {
         mOrder = item;
         mBinding.setOrderDetail(item);
     }
@@ -192,7 +193,12 @@ public class OrderInvoicePanel extends AbstractDetailPanel<Order> {
         btn_update_qty.setVisibility(isShow ? VISIBLE : GONE);
     }
 
+    //Felix edit 03/05/2017
     public void isEnableButtonSubmitInvoice(boolean isEnable) {
         btn_submit_invoice.setEnabled(isEnable ? true : false);
+        btn_submit_invoice.setBackground(isEnable ? ContextCompat.getDrawable(getContext(), R.drawable.order_history_invoice_button_submit) : ContextCompat.getDrawable(getContext(), R.drawable.order_history_invoice_button_submit_disable));
+        btn_submit_invoice.setTextColor(isEnable ? ContextCompat.getColor(getContext(), R.color.white) : ContextCompat.getColor(getContext(), R.color.text_color));
     }
+    //end Felix edit 03/05/2017
+
 }
