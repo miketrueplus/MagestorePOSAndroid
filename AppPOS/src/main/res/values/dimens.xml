@@ -141,4 +141,5 @@
     <dimen name="text_size_17">17sp</dimen>
     <dimen name="text_size_15">15sp</dimen>
     <dimen name="radius_button_apply_3dp">3dp</dimen>
+    <dimen name="bt_apply_size">40dp</dimen>
 </resources>

@@ -86,10 +86,11 @@
                         <Button
                             android:id="@+id/bt_apply"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="@dimen/bt_apply_size"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
                             android:textSize="@dimen/text_size_15"
+                            android:textAllCaps="false"
                             android:text="@string/apply" />
                     </RelativeLayout>
                 </LinearLayout>
