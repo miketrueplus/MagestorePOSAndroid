@@ -99,6 +99,10 @@ public class OrderRefundItemsListPanel extends AbstractListPanel<CartItem> {
                 } else {
                     item.setQuantity(qty_refunded);
                 }
+
+                if (qty_refunded != qty) {
+                    ((OrderRefundItemsListController) mController).changeMaxStoreCreditRefund();
+                }
             }
 
             @Override

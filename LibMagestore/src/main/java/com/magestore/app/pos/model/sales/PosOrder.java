@@ -70,6 +70,7 @@ public class PosOrder extends PosAbstractModel implements Order {
     float base_total_due;
     float base_total_invoiced;
     float base_total_invoiced_cost;
+    float base_total_refunded;
     float base_total_paid;
     String base_to_global_rate;
     String base_to_order_rate;
@@ -152,6 +153,18 @@ public class PosOrder extends PosAbstractModel implements Order {
     float remain_money;
     @Gson2PosExclude
     float exchange_money;
+    @Gson2PosExclude
+    float max_storecredit_refunded;
+    @Gson2PosExclude
+    float total_price_change_qty_refund;
+    @Gson2PosExclude
+    float adjust_refund;
+    @Gson2PosExclude
+    float adjust_free;
+    @Gson2PosExclude
+    float refund_shipping;
+    @Gson2PosExclude
+    float store_credit_refund;
 
     @Override
     public String getID() {
@@ -369,6 +382,11 @@ public class PosOrder extends PosAbstractModel implements Order {
     }
 
     @Override
+    public String getCustomerId() {
+        return customer_id;
+    }
+
+    @Override
     public float getGrandTotal() {
         return grand_total;
     }
@@ -520,8 +538,18 @@ public class PosOrder extends PosAbstractModel implements Order {
     }
 
     @Override
+    public float getBaseTotalPaid() {
+        return base_total_paid;
+    }
+
+    @Override
     public float getTotalRefunded() {
         return total_refunded;
+    }
+
+    @Override
+    public float getBaseTotalRefunded() {
+        return base_total_refunded;
     }
 
     @Override
@@ -724,5 +752,70 @@ public class PosOrder extends PosAbstractModel implements Order {
     @Override
     public void setListProductReorder(List<Product> listProduct) {
         list_product_reorder = listProduct;
+    }
+
+    @Override
+    public float getMaxRefunded() {
+        return (getBaseTotalPaid() - getBaseTotalRefunded() - getWebposBaseChange());
+    }
+
+    @Override
+    public float getMaxStoreCreditRefund() {
+        return max_storecredit_refunded;
+    }
+
+    @Override
+    public void setMaxStoreCreditRefund(float fMaxStoreCreditRefund) {
+        max_storecredit_refunded = fMaxStoreCreditRefund;
+    }
+
+    @Override
+    public float getTotalPriceChangeQtyRefund() {
+        return total_price_change_qty_refund;
+    }
+
+    @Override
+    public void setTotalPriceChangeQtyRefund(float fTotalPriceChangeQtyRefund) {
+        total_price_change_qty_refund = fTotalPriceChangeQtyRefund;
+    }
+
+    @Override
+    public float getAdjustRefund() {
+        return adjust_refund;
+    }
+
+    @Override
+    public void setAdjustRefund(float fAdjustRefund) {
+        adjust_refund = fAdjustRefund;
+    }
+
+    @Override
+    public float getAdjustFree() {
+        return adjust_free;
+    }
+
+    @Override
+    public void setAdjustFree(float fAdjustFree) {
+        adjust_free = fAdjustFree;
+    }
+
+    @Override
+    public float getRefundShipping() {
+        return refund_shipping;
+    }
+
+    @Override
+    public void setRefundShipping(float fRefundShipping) {
+        refund_shipping = fRefundShipping;
+    }
+
+    @Override
+    public float getStoreCreditRefund() {
+        return store_credit_refund;
+    }
+
+    @Override
+    public void setStoreCreditRefund(float fStoreCreditRefund) {
+        store_credit_refund = fStoreCreditRefund;
     }
 }

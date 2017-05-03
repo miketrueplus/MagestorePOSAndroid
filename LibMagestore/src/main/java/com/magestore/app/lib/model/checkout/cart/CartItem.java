@@ -101,6 +101,7 @@ public interface CartItem extends Model {
     float getUnitPrice();
 
     float getPrice();
+    float getBasePriceInclTax();
     float getOriginalPrice();
     String getItemId();
     void setItemId(String strItemId);

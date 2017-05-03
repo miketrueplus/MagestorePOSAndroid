@@ -14,7 +14,7 @@ import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.model.sales.OrderCommentParams;
-import com.magestore.app.lib.model.sales.OrderCredit;
+import com.magestore.app.lib.model.sales.OrderRefundCreditParams;
 import com.magestore.app.lib.model.sales.OrderInvoiceParams;
 import com.magestore.app.lib.model.sales.OrderRefundParams;
 import com.magestore.app.lib.model.sales.OrderShipmentParams;
@@ -28,12 +28,13 @@ import com.magestore.app.pos.api.m2.POSAPI;
 import com.magestore.app.pos.api.m2.POSAbstractDataAccess;
 import com.magestore.app.pos.api.m2.POSDataAccessSession;
 import com.magestore.app.pos.model.sales.PosOrder;
-import com.magestore.app.pos.model.sales.PosOrderCredit;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListOrder;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListPaymentMethod;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListProduct;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosOrderUpdateParseImplement;
 import com.magestore.app.util.StringUtil;
+
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -510,6 +511,47 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
     }
 
     @Override
+    public boolean orderRefundByCredit(OrderRefundCreditParams orderRefundCreditParams) throws DataAccessException, ConnectionException, com.magestore.app.lib.parse.ParseException, IOException, java.text.ParseException {
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+
+        try {
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPI.REST_ORDER_BY_CREDIT);
+
+            // Xây dựng tham số
+            paramBuilder = statement.getParamBuilder()
+                    .setSessionID(POSDataAccessSession.REST_SESSION_ID);
+
+            rp = statement.execute(orderRefundCreditParams);
+            String respone = StringUtil.truncateJson(rp.readResult2String());
+            JSONObject json = new JSONObject(respone);
+            boolean success = json.getBoolean("success");
+            return success;
+        } catch (Exception e) {
+            throw new DataAccessException(e);
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
+    }
+
+    @Override
     public Order orderRefund(OrderRefundParams refundParams) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
         Connection connection = null;
         Statement statement = null;
@@ -800,47 +842,6 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
             rp.setParseImplement(getClassParseImplement());
             rp.setParseModel(PosOrder.class);
             return (Order) rp.doParse();
-        } catch (Exception e) {
-            throw new DataAccessException(e);
-        } finally {
-            // đóng result reading
-            if (rp != null) rp.close();
-            rp = null;
-
-            if (paramBuilder != null) paramBuilder.clear();
-            paramBuilder = null;
-
-            // đóng statement
-            if (statement != null) statement.close();
-            statement = null;
-
-            // đóng connection
-            if (connection != null) connection.close();
-            connection = null;
-        }
-    }
-
-    @Override
-    public OrderCredit orderByCredit() throws DataAccessException, ConnectionException, com.magestore.app.lib.parse.ParseException, IOException, java.text.ParseException {
-        Connection connection = null;
-        Statement statement = null;
-        ResultReading rp = null;
-        ParamBuilder paramBuilder = null;
-
-        try {
-            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
-            statement = connection.createStatement();
-            statement.prepareQuery(POSAPI.REST_ORDER_BY_CREDIT);
-
-            // Xây dựng tham số
-            paramBuilder = statement.getParamBuilder()
-                    .setSessionID(POSDataAccessSession.REST_SESSION_ID);
-
-            rp = statement.execute();
-            rp.setParseImplement(getClassParseImplement());
-            rp.setParseModel(PosOrder.class);
-            return (OrderCredit) rp.doParse();
-
         } catch (Exception e) {
             throw new DataAccessException(e);
         } finally {

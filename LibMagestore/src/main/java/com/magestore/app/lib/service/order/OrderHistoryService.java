@@ -6,7 +6,7 @@ import com.magestore.app.lib.model.checkout.PaymentMethodDataParam;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.model.sales.OrderCommentParams;
-import com.magestore.app.lib.model.sales.OrderCredit;
+import com.magestore.app.lib.model.sales.OrderRefundCreditParams;
 import com.magestore.app.lib.model.sales.OrderInvoiceParams;
 import com.magestore.app.lib.model.sales.OrderItemParams;
 import com.magestore.app.lib.model.sales.OrderItemUpdateQtyParam;
@@ -42,7 +42,7 @@ public interface OrderHistoryService extends Service, ListService<Order> {
 
     Order createShipment(Order order) throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
-    OrderCredit doOrderRefundByCredit() throws InstantiationException, IllegalAccessException, IOException, ParseException;
+    boolean orderRefundByCredit(Order order) throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
     Order orderRefund(Order order) throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
@@ -72,6 +72,8 @@ public interface OrderHistoryService extends Service, ListService<Order> {
 
     OrderItemParams createOrderItemParams();
 
+    OrderRefundCreditParams createOrderRefundCreditParams();
+
     OrderRefundParams createOrderRefundParams();
 
     OrderInvoiceParams createOrderInvoiceParams();
@@ -83,7 +85,6 @@ public interface OrderHistoryService extends Service, ListService<Order> {
     OrderUpdateQtyParam createOrderUpdateQtyParam();
 
     OrderItemUpdateQtyParam createOrderItemUpdateQtyParam();
-
 
     boolean checkCanInvoice(Order order);
 
@@ -100,9 +101,4 @@ public interface OrderHistoryService extends Service, ListService<Order> {
     boolean checkCanRefundGiftcard(Order order);
 
     boolean checkCanStoreCredit(Order order);
-
-    /**
-     * Thực hiện order bằng credit
-     */
-
 }

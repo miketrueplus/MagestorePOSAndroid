@@ -245,6 +245,8 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     float price;
     float base_price;
     @Gson2PosExclude
+    float base_price_incl_tax;
+    @Gson2PosExclude
     String offline_item_id;
     @Gson2PosExclude
     float unit_price;
@@ -348,6 +350,11 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     @Override
     public float getPrice() {
         return price;
+    }
+
+    @Override
+    public float getBasePriceInclTax() {
+        return base_price_incl_tax;
     }
 
     @Override

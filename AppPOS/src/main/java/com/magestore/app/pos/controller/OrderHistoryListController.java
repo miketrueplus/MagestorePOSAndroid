@@ -31,6 +31,7 @@ import com.magestore.app.pos.panel.OrderRefundPanel;
 import com.magestore.app.pos.panel.OrderSendEmailPanel;
 import com.magestore.app.pos.panel.OrderShipmentPanel;
 import com.magestore.app.pos.panel.OrderTakePaymentPanel;
+import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.StringUtil;
 
 import java.io.Serializable;
@@ -68,19 +69,21 @@ public class OrderHistoryListController extends AbstractListController<Order> {
     public static String INSERT_STATUS_CODE = "insert_status";
     public static int CREATE_SHIPMENT_TYPE = 3;
     public static String CREATE_SHIPMENT_CODE = "create_shipment";
-    public static int ORDER_REFUND_TYPE = 4;
+    public static int ORDER_REFUND_BY_CREDIT_TYPE = 4;
+    public static String ORDER_REFUND_BY_CREDIT_CODE = "order_refund_by_credit";
+    public static int ORDER_REFUND_TYPE = 5;
     public static String ORDER_REFUND_CODE = "order_refund";
-    public static int ORDER_INVOICE_UPDATE_QTY_TYPE = 5;
+    public static int ORDER_INVOICE_UPDATE_QTY_TYPE = 6;
     public static String ORDER_INVOICE_UPDATE_QTY_CODE = "order_invoice_update_qty";
-    public static int ORDER_INVOICE_TYPE = 6;
+    public static int ORDER_INVOICE_TYPE = 7;
     public static String ORDER_INVOICE_CODE = "order_invoice";
-    public static int ORDER_CANCEL_TYPE = 7;
+    public static int ORDER_CANCEL_TYPE = 8;
     public static String ORDER_CANCEL_CODE = "order_cancel";
-    public static int ORDER_REORDER_TYPE = 8;
+    public static int ORDER_REORDER_TYPE = 9;
     public static String ORDER_REORDER_CODE = "order_reorder";
-    public static int RETRIEVE_PAYMENT_METHOD_TYPE = 9;
+    public static int RETRIEVE_PAYMENT_METHOD_TYPE = 10;
     public static String RETRIEVE_PAYMENT_METHOD_CODE = "retrieve_payment_method";
-    public static int ORDER_TAKE_PAYMENT_TYPE = 10;
+    public static int ORDER_TAKE_PAYMENT_TYPE = 11;
     public static String ORDER_TAKE_PAYMENT_CODE = "order_take_payment";
 
     public static String SEND_ORDER_TO_SALE_ACTIVITY = "com.magestore.app.pos.controller.orderhistory.reorder";
@@ -195,6 +198,11 @@ public class OrderHistoryListController extends AbstractListController<Order> {
         doAction(INSERT_STATUS_TYPE, INSERT_STATUS_CODE, wraper, order);
     }
 
+    public void doInputRefundByCredit(Order order) {
+        showDetailOrderLoading(true);
+        doAction(ORDER_REFUND_BY_CREDIT_TYPE, ORDER_REFUND_BY_CREDIT_CODE, wraper, order);
+    }
+
     public void doInputRefund(Order order) {
         showDetailOrderLoading(true);
         doAction(ORDER_REFUND_TYPE, ORDER_REFUND_CODE, wraper, order);
@@ -256,6 +264,9 @@ public class OrderHistoryListController extends AbstractListController<Order> {
         } else if (actionType == INSERT_STATUS_TYPE) {
             wraper.put("status_respone", mOrderService.insertOrderStatus((Order) models[0]));
             return true;
+        } else if (actionType == ORDER_REFUND_BY_CREDIT_TYPE) {
+            wraper.put("refund_by_credit_respone", mOrderService.orderRefundByCredit((Order) models[0]));
+            return true;
         } else if (actionType == ORDER_REFUND_TYPE) {
             wraper.put("refund_respone", mOrderService.orderRefund((Order) models[0]));
             return true;
@@ -311,6 +322,10 @@ public class OrderHistoryListController extends AbstractListController<Order> {
             mOrderCommentListController.notifyDataSetChanged();
             ((OrderDetailPanel) mDetailView).bindDataRespone(order);
             ((OrderDetailPanel) mDetailView).setOrder(order);
+            showDetailOrderLoading(false);
+        } else if (success && actionType == ORDER_REFUND_BY_CREDIT_TYPE) {
+            Order order = (Order) models[0];
+            doInputRefund(order);
             showDetailOrderLoading(false);
         } else if (success && actionType == ORDER_REFUND_TYPE) {
             Order order = (Order) wraper.get("refund_respone");
@@ -597,6 +612,7 @@ public class OrderHistoryListController extends AbstractListController<Order> {
 
     /**
      * Thực hiện search theo status
+     *
      * @param searchStatus
      */
     public void doSearchStatus(String searchStatus) {
@@ -606,6 +622,7 @@ public class OrderHistoryListController extends AbstractListController<Order> {
 
     /**
      * Hướng tìm kiếm theo status
+     *
      * @param page
      * @param pageSize
      * @return
@@ -622,5 +639,41 @@ public class OrderHistoryListController extends AbstractListController<Order> {
             else
                 return service.retrieve(getSearchString(), page, pageSize, mSearchStatus);
         }
+    }
+
+    public void getTotalItem() {
+        Order order = ((OrderDetailPanel) mDetailView).getOrder();
+        float total_item_price = 0;
+        for (CartItem cart : order.getOrderItems()) {
+            total_item_price += (cart.getBasePriceInclTax() * cart.QtyRefund());
+        }
+        updateToTalPriceChangeQtyRefund(total_item_price);
+    }
+
+    public void updateToTalPriceChangeQtyRefund(float total) {
+        ((OrderDetailPanel) mDetailView).getOrder().setTotalPriceChangeQtyRefund(total);
+        chaneMaxStoreCreditRefund();
+    }
+
+    public void chaneMaxStoreCreditRefund() {
+        Order order = ((OrderDetailPanel) mDetailView).getOrder();
+        float total_price_qty_item = order.getTotalPriceChangeQtyRefund();
+        float price_shipping = order.getRefundShipping();
+        float adjust_refund = order.getAdjustRefund();
+        float adjust_free = order.getAdjustFree();
+        float max_store_credit = ((total_price_qty_item + price_shipping + adjust_refund) - adjust_free);
+        float max_refunded = order.getMaxRefunded();
+        order.setMaxStoreCreditRefund(max_store_credit);
+        if (max_store_credit <= max_refunded) {
+            mOrderRefundPanel.updateTotalStoreCredit(max_store_credit);
+            order.setStoreCreditRefund(max_store_credit);
+        } else {
+            mOrderRefundPanel.updateTotalStoreCredit(order.getMaxRefunded());
+            order.setStoreCreditRefund(order.getMaxRefunded());
+        }
+    }
+
+    public Order getOrder() {
+        return ((OrderDetailPanel) mDetailView).getOrder();
     }
 }

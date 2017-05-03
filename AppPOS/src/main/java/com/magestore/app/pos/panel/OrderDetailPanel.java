@@ -14,6 +14,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.model.sales.OrderUpdateQtyParam;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
@@ -23,6 +24,9 @@ import com.magestore.app.pos.databinding.PanelOrderDetailBinding;
 import com.magestore.app.pos.util.DialogUtil;
 import com.magestore.app.pos.util.PrintUtil;
 import com.magestore.app.pos.view.MagestoreDialog;
+import com.magestore.app.util.ConfigUtil;
+import com.magestore.app.util.StringUtil;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -331,6 +335,7 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
 
     private void onClickRefund() {
         final OrderRefundPanel mOrderRefundPanel = new OrderRefundPanel(getContext());
+        ((OrderHistoryListController) mController).setOrderRefundPanel(mOrderRefundPanel);
         mOrderRefundPanel.setController(mController);
         mOrderRefundPanel.initModel();
         mOrderRefundPanel.bindItem(mOrder);
@@ -338,15 +343,26 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         dialog.setDialogWidth(getContext().getResources().getDimensionPixelSize(R.dimen.order_dialog_refund_width));
         dialog.setDialogSave(getContext().getString(R.string.order_refund_btn_save));
         dialog.show();
-
         Button btn_submit_refund = (Button) dialog.findViewById(R.id.btn_submit_refund);
         btn_submit_refund.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Order order = mOrderRefundPanel.bind2Item();
-                ((OrderHistoryListController) mController).setOrderRefundPanel(mOrderRefundPanel);
-                ((OrderHistoryListController) mController).doInputRefund(order);
-                dialog.dismiss();
+                String customer_id = mOrder.getCustomerId();
+                if (!StringUtil.isNullOrEmpty(customer_id) && !customer_id.equals(ConfigUtil.getCustomerGuest().getID())) {
+                    if (mOrder.getMaxStoreCreditRefund() <= mOrder.getMaxRefunded()) {
+                        Order order = mOrderRefundPanel.bind2Item();
+                        ((OrderHistoryListController) mController).doInputRefundByCredit(order);
+                        dialog.dismiss();
+                    } else {
+                        String message = getContext().getString(R.string.order_refund_limit, ConfigUtil.formatPrice(mOrder.getMaxRefunded()));
+                        // Tạo dialog và hiển thị
+                        com.magestore.app.util.DialogUtil.confirm(getContext(), message, R.string.done);
+                    }
+                } else {
+                    Order order = mOrderRefundPanel.bind2Item();
+                    ((OrderHistoryListController) mController).doInputRefund(order);
+                    dialog.dismiss();
+                }
             }
         });
     }

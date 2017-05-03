@@ -100,6 +100,8 @@ public interface Order extends Model {
 
     String getCustomerLastname();
 
+    String getCustomerId();
+
     float getGrandTotal();
 
     String getCreatedAt();
@@ -144,7 +146,11 @@ public interface Order extends Model {
 
     float getTotalPaid();
 
+    float getBaseTotalPaid();
+
     float getTotalRefunded();
+
+    float getBaseTotalRefunded();
 
     float getOrderHistorySubtotal();
 
@@ -198,4 +204,25 @@ public interface Order extends Model {
 
     List<Product> getListProductReorder();
     void setListProductReorder(List<Product> listProduct);
+
+    float getMaxRefunded();
+
+    float getMaxStoreCreditRefund();
+
+    void setMaxStoreCreditRefund(float fMaxStoreCreditRefund);
+
+    float getTotalPriceChangeQtyRefund();
+    void setTotalPriceChangeQtyRefund(float fTotalPriceChangeQtyRefund);
+
+    float getAdjustRefund();
+    void setAdjustRefund(float fAdjustRefund);
+
+    float getAdjustFree();
+    void setAdjustFree(float fAdjustFree);
+
+    float getRefundShipping();
+    void setRefundShipping(float fRefundShipping);
+
+    float getStoreCreditRefund();
+    void setStoreCreditRefund(float fStoreCreditRefund);
 }
