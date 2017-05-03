@@ -8,6 +8,9 @@ import com.magestore.app.lib.service.order.OrderHistoryService;
 import com.magestore.app.pos.panel.OrderInvoiceItemsListPanel;
 import com.magestore.app.pos.panel.OrderInvoicePanel;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Johan on 2/3/17.
  * Magestore
@@ -50,9 +53,19 @@ public class OrderInvoiceItemsListController extends AbstractListController<Cart
      */
     public void doSelectOrder(Order order) {
         mSelectedOrder = order;
-        mList = order.getOrderItems();
+        mList = checkParentItem(order);
         ((OrderInvoiceItemsListPanel) mView).setDataListItem(mList);
         mView.bindList(mList);
+    }
+
+    private List<CartItem> checkParentItem(Order order) {
+        List<CartItem> listCartItems = new ArrayList<>();
+        for (CartItem cart : order.getOrderItems()) {
+            if (cart.getOrderParentItem() == null) {
+                listCartItems.add(cart);
+            }
+        }
+        return listCartItems;
     }
 
     public void isShowButtonUpdateQty(boolean isShow) {

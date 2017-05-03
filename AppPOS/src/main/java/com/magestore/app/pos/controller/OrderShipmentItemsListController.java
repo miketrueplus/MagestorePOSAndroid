@@ -60,7 +60,7 @@ public class OrderShipmentItemsListController extends AbstractListController<Car
         List<CartItem> nListItem = new ArrayList<>();
 
         for (CartItem item : listItem) {
-            if (item.QtyShip() > 0) {
+            if (item.QtyShip() > 0 && item.getOrderParentItem() == null) {
                 nListItem.add(item);
             }
         }

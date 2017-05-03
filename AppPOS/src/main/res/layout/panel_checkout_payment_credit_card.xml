@@ -27,10 +27,10 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:background="@drawable/login_form_border_edittext"
+            android:inputType="textCapCharacters"
             android:lines="1"
             android:padding="@dimen/layout_margin_10"
             android:textColor="@color/text_color"
-            android:inputType="textCapCharacters"
             android:textSize="@dimen/text_size" />
     </LinearLayout>
 
@@ -93,6 +93,7 @@
             android:layout_weight="1"
             android:background="@drawable/login_form_border_edittext"
             android:lines="1"
+            android:maxLength="@integer/max_length_credit_card_number"
             android:padding="@dimen/layout_margin_10"
             android:textColor="@color/text_color"
             android:textSize="@dimen/text_size" />
@@ -182,6 +183,7 @@
             android:layout_weight="1"
             android:background="@drawable/login_form_border_edittext"
             android:lines="1"
+            android:maxLength="@integer/max_length_cvv"
             android:padding="@dimen/layout_margin_10"
             android:textColor="@color/text_color"
             android:textSize="@dimen/text_size" />
