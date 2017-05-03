@@ -1214,7 +1214,13 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             wraper.put("list_payment", listPayment);
             isShowPluginStoreCredit(false);
             ((CheckoutDetailPanel) mDetailView).updateTitlePaymentCreditCard(method.getTitle());
-            isEnableCreateInvoice(true);
+           //Felix edit 03/05/2017
+            if (method.getCode().equals("authorizenet_directpost")) {
+                isEnableCreateInvoice(false);
+            } else {
+                isEnableCreateInvoice(true);
+            }
+            //End Felix edit 03/05/2017
             ((CheckoutDetailPanel) mDetailView).showPanelCheckoutPaymentCreditCard(true);
         } else {
             checkIsPayLater(method, listPayment);

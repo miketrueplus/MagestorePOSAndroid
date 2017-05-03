@@ -127,7 +127,7 @@
                         android:id="@+id/btn_sales_order_checkout"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/sales_button_checkout_background_color"
+                        android:background="@drawable/sales_button_checkout_backgound"
                         android:text="@string/checkout"
                         android:textColor="@color/sales_button_checkout_text_color"
                         android:textSize="@dimen/sales_button_checkout_text_size" />

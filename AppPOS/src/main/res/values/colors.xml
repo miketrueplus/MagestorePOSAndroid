@@ -18,7 +18,7 @@
     <color name="login_form_border_color">#eceef0</color>
     <color name="login_form_button_login_text_color">#ffffff</color>
     <color name="login_form_button_demo_background">#d5d9dd</color>
-    <color name="login_form_button_demo_background_effect">#efefef</color>
+    <color name="login_form_button_demo_background_effect">#eaeaea</color>
 
     <!--Menu-->
     <color name="menu_left_background">#2b3340</color>
