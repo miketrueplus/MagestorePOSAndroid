@@ -767,12 +767,26 @@ public class POSCartService extends AbstractService implements CartService {
         for (OrderCartItem orderitem : order.getItemsInfoBuy().getListOrderCartItems()) {
             // fill thông tin product vào
             Product product = productDataAccess.retrieve(orderitem.getID());
+            product.setProductOption(productDataAccess.loadProductOption(product));
+
             CartItem newItem = create(product, orderitem.getQty(), orderitem.getUnitPrice());
             newItem.setOriginalPrice(orderitem.getOriginalPrice());
+            newItem.setOptions(mapOptionValueID2Code(orderitem.getOptions()));
+            newItem.setBundleOption(mapOptionValueID2Code(orderitem.getBundleOption()));
+            newItem.setBundleOptionQty(mapOptionValueID2Code(orderitem.getBundleOptionQty()));
+            newItem.setSuperAttribute(mapOptionValueID2Code(orderitem.getSuperAttribute()));
 
             // xử lý xong thì insert lại vào checkout
             insert(checkout, newItem);
         }
         return checkout.getCartItem();
+    }
+
+    private List<PosCartItem.OptionsValue> mapOptionValueID2Code(List<PosCartItem.OptionsValue> options) {
+        if (options == null) return options;
+        for(PosCartItem.OptionsValue option : options) {
+            option.code = option.id;
+        }
+        return options;
     }
 }

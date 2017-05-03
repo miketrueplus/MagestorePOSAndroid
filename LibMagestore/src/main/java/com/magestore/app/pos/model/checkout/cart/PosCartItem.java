@@ -1,5 +1,6 @@
 package com.magestore.app.pos.model.checkout.cart;
 
+import com.google.gson.annotations.SerializedName;
 import com.magestore.app.lib.model.catalog.ProductOption;
 import com.magestore.app.lib.model.catalog.ProductOptionCustom;
 import com.magestore.app.lib.model.catalog.ProductOptionCustomValue;
@@ -148,6 +149,8 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
 //    Map<ProductOptionCustom, ChooseProductOption> choose_product_options;
 
     public class OptionsValue {
+        @Gson2PosExclude(toJson = false, fromJson = true)
+        public String id;
         public String code;
         public String value;
     }
@@ -175,6 +178,26 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     @Override
     public List<OptionsValue> getBundleOptionQuantity() {
         return bundle_option_qty;
+    }
+
+    @Override
+    public void setOptions(List<OptionsValue> options) {
+        this.options = options;
+    }
+
+    @Override
+    public void setSuperAttribute(List<OptionsValue> super_attribute) {
+        this.super_attribute = super_attribute;
+    }
+
+    @Override
+    public void setBundleOption(List<OptionsValue> bundle_option) {
+        this.bundle_option = bundle_option;
+    }
+
+    @Override
+    public void setBundleOptionQty(List<OptionsValue> bundle_option_qty) {
+        this.bundle_option_qty = bundle_option_qty;
     }
 
     @Override

@@ -72,6 +72,14 @@ public interface CartItem extends Model {
 
     List<PosCartItem.OptionsValue> getBundleOptionQuantity();
 
+    void setOptions(List<PosCartItem.OptionsValue> options);
+
+    void setSuperAttribute(List<PosCartItem.OptionsValue> super_attribute);
+
+    void setBundleOption(List<PosCartItem.OptionsValue> bundle_option);
+
+    void setBundleOptionQty(List<PosCartItem.OptionsValue> bundle_option_qty);
+
     void clearOption();
 
     void clearSuperAtribute();

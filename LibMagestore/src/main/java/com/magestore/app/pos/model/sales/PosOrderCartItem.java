@@ -2,7 +2,10 @@ package com.magestore.app.pos.model.sales;
 
 import com.magestore.app.lib.model.sales.OrderCartItem;
 import com.magestore.app.pos.model.PosAbstractModel;
+import com.magestore.app.pos.model.checkout.cart.PosCartItem;
 import com.magestore.app.util.StringUtil;
+
+import java.util.List;
 
 /**
  * Created by folio on 5/3/2017.
@@ -17,6 +20,36 @@ public class PosOrderCartItem extends PosAbstractModel implements OrderCartItem 
     String base_original_price;
     String options_label;
     String custom_sales_info;
+
+//    public class OptionsValue {
+//        public String code;
+//        public String value;
+//    }
+
+    List<PosCartItem.OptionsValue> options;
+    List<PosCartItem.OptionsValue> super_attribute;
+    List<PosCartItem.OptionsValue> bundle_option;
+    List<PosCartItem.OptionsValue> bundle_option_qty;
+
+    @Override
+    public List<PosCartItem.OptionsValue> getOptions() {
+        return options;
+    }
+
+    @Override
+    public List<PosCartItem.OptionsValue> getSuperAttribute() {
+        return super_attribute;
+    }
+
+    @Override
+    public List<PosCartItem.OptionsValue> getBundleOption() {
+        return bundle_option;
+    }
+
+    @Override
+    public List<PosCartItem.OptionsValue> getBundleOptionQty() {
+        return bundle_option_qty;
+    }
 
     @Override
     public String getChildId() {
