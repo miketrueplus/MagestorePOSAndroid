@@ -71,5 +71,7 @@ public interface CartService extends ChildListService<Checkout, CartItem> {
 
     boolean validateStock(Checkout checkout, Product product, int quantity);
 
+    boolean validateStock(Checkout checkout, CartItem item, int quantity);
+
     List<CartItem> reOrder(Checkout checkout, Order order) throws IOException, InstantiationException, ParseException, IllegalAccessException;
 }

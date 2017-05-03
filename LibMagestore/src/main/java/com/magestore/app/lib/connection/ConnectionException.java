@@ -10,9 +10,9 @@ import com.magestore.app.lib.exception.MagestoreException;
  */
 
 public class ConnectionException extends MagestoreException {
-    public static final String EXCEPTION_INTERNAL_HOST = "UnknowHostException";
+    public static final String EXCEPTION_INTERNAL_HOST = "com.magestore.app.lib.connection.ConnectionException.UnknowHostException";
     public static final String EXCEPTION_PAGE_NOT_FOUND = "com.magestore.app.lib.connection.ConnectionException.PageNotFoundException";
-    public static final String EXCEPTION_TIMEOUT = "TimeoutException";
+    public static final String EXCEPTION_TIMEOUT = "com.magestore.app.lib.connection.ConnectionException.TimeoutException";
 
     public ConnectionException(String strCode, String message) {
         super(strCode, message);

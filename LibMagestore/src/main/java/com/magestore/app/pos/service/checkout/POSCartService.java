@@ -506,7 +506,7 @@ public class POSCartService extends AbstractService implements CartService {
         if (cartItem == null) {
             // kiểm tra số lượng còn trong kho không đã
             if (!validateStock(checkout, product, quantity))
-                throw new ServiceException("Not enough quantity");
+                throw new ServiceException(ServiceException.EXCEPTION_QUANTITY_NOT_ENOUGH, "");
 
             // Khởi tạo product order item
             cartItem = create(product, quantity, price);
@@ -518,8 +518,8 @@ public class POSCartService extends AbstractService implements CartService {
             // tính toán số lượng mới
             int newQuantity = cartItem.getQuantity() + quantity;
             // kiểm tra số lượng trước có đủ trong kho không
-            if (!validateStock(checkout, product, newQuantity))
-                throw new ServiceException("Not enough quantity");
+            validateStock(checkout, cartItem, newQuantity);
+//                throw new ServiceException("Not enough quantity");
             // cập nhật số lượng
             cartItem.setQuantity(newQuantity);
             float unitPrice = cartItem.getUnitPrice();
@@ -734,6 +734,24 @@ public class POSCartService extends AbstractService implements CartService {
         if (quantity < product.getAllowMinQty()) return false;
         if (quantity > product.getAllowMaxQty() && product.getAllowMaxQty() > product.getAllowMinQty())
             return false;
+        return true;
+    }
+
+    /**
+     * Kiểm tra số lượng trong kho đủ để bán không
+     *
+     * @param checkout
+     * @param quantity
+     * @return
+     */
+    @Override
+    public boolean validateStock(Checkout checkout, CartItem item, int quantity) throws ServiceException {
+        int newQuantity = item.getQuantity() + quantity;
+        Product product = item.getProduct();
+
+        if (!item.getProduct().isInStock()) throw new ServiceException(ServiceException.EXCEPTION_QUANTITY_OUT_OF_STOCK, "");
+        if (newQuantity > product.getMaximumQty()) throw new ServiceException(ServiceException.EXCEPTION_QUANTITY_REACH_MAXIMUM, "");
+        if (newQuantity < product.getAllowMinQty()) throw new ServiceException(ServiceException.EXCEPTION_QUANTITY_REACH_MINIMUM, "");
         return true;
     }
 
