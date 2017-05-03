@@ -12,6 +12,7 @@ import com.magestore.app.lib.connection.ResultReading;
 import com.magestore.app.lib.connection.Statement;
 import com.magestore.app.lib.connection.StatementAction;
 import com.magestore.app.pos.model.exception.PosMessageException;
+import com.magestore.app.pos.model.exception.PosMessageException400;
 import com.magestore.app.pos.model.exception.PosMessageException500;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosExclude;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosMesssageExceptionImplement;
@@ -372,10 +373,18 @@ public class MagestoreStatement implements Statement {
                 throw new ConnectionException(messageException500.getCode(), messageException500.getMessage());
             } else if (statusCode == 404) {
                 rp.setParseModel(PosMessageException.class);
-                throw new ConnectionException(ConnectionException.EXCEPTION_PAGE_NOT_FOUND, "");
+                PosMessageException messageException = ((PosMessageException) rp.doParse());
+                throw new ConnectionException(ConnectionException.EXCEPTION_PAGE_NOT_FOUND, messageException.getMessage());
+            } else if (statusCode == 400) {
+                rp.setParseModel(PosMessageException400.class);
+                PosMessageException400 messageException = ((PosMessageException400) rp.doParse());
+                throw new ConnectionException(messageException.getCode(), messageException.getMessage());
             } else {
+                rp.setParseModel(PosMessageException.class);
+                PosMessageException messageException = ((PosMessageException) rp.doParse());
+                throw new ConnectionException(messageException.getCode(), messageException.getMessage());
 //                rp.setParseModel(PosMessageException.class);
-                throw new ConnectionException(Integer.toString(statusCode), "");
+//                throw new ConnectionException(Integer.toString(statusCode), "");
             }
         }
     }

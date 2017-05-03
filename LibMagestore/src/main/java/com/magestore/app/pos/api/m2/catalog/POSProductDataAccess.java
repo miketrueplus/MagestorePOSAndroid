@@ -253,7 +253,7 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
                     .setPageSize(1)
                     .setSortOrderASC("name")
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID)
-                    .setFilterEqual("product_id", strID);
+                    .setFilterEqual("entity_id", strID);
 
             // thực thi truy vấn và parse kết quả thành object
             rp = statement.execute();

@@ -22,11 +22,12 @@ public class PosMessageException extends PosAbstractModel implements MessageExce
 
     @Override
     public String getMessage() {
-        return null;
+        if (message == null) return "Unknow exception";
+        return message;
     }
 
     @Override
     public String getTrace() {
-        return null;
+        return trace;
     }
 }

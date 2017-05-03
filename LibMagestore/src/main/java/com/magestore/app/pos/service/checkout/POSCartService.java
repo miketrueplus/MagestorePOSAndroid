@@ -9,7 +9,9 @@ import com.magestore.app.lib.model.checkout.Cart;
 import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.sales.Order;
+import com.magestore.app.lib.model.sales.OrderCartItem;
 import com.magestore.app.lib.resourcemodel.DataAccessFactory;
+import com.magestore.app.lib.resourcemodel.catalog.ProductDataAccess;
 import com.magestore.app.lib.resourcemodel.sales.CartDataAccess;
 import com.magestore.app.lib.service.ServiceException;
 import com.magestore.app.lib.service.checkout.CartService;
@@ -17,6 +19,7 @@ import com.magestore.app.pos.model.catalog.PosProduct;
 import com.magestore.app.pos.model.catalog.PosProductOptionConfigOption;
 import com.magestore.app.pos.model.catalog.PosProductOptionJsonConfigAttributes;
 import com.magestore.app.pos.model.checkout.cart.PosCartItem;
+import com.magestore.app.pos.model.sales.PosOrderCartItem;
 import com.magestore.app.pos.service.AbstractService;
 import com.magestore.app.util.StringUtil;
 
@@ -757,13 +760,18 @@ public class POSCartService extends AbstractService implements CartService {
 
     @Override
     public List<CartItem> reOrder(Checkout checkout, Order order) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        ProductDataAccess productDataAccess = factory.generateProductDataAccess();
+
         // xử lý từng item trong order
-        for (CartItem item : order.getOrderItems()) {
-            // xử lý
-            CartItem newItem = create(checkout);
+        for (OrderCartItem orderitem : order.getItemsInfoBuy().getListOrderCartItems()) {
+            // fill thông tin product vào
+            Product product = productDataAccess.retrieve(orderitem.getID());
+            CartItem newItem = create(product, orderitem.getQty(), orderitem.getUnitPrice());
+            newItem.setOriginalPrice(orderitem.getOriginalPrice());
 
             // xử lý xong thì insert lại vào checkout
-            insert(checkout, item);
+            insert(checkout, newItem);
         }
         return checkout.getCartItem();
     }

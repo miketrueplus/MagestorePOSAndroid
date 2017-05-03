@@ -19,7 +19,9 @@ public class POSAPI {
     // API get product
     public static final String REST_PRODUCT_GET_LISTING = "/rest/default/V1/webpos/productlist/?";
     //        public static final String REST_PRODUCT_GET_LISTING = "/rest/default/V1/webpos/products/?";
-    public static final String REST_PRODUCT_GET = "/rest/default/V1/webpos/products/?";
+//    public static final String REST_PRODUCT_GET = "/rest/default/V1/webpos/products/?";
+    public static final String REST_PRODUCT_GET = "/rest/default/V1/webpos/productlist/?";
+
 
 
     // API get product options
