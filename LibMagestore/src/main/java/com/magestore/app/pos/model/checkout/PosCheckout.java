@@ -104,6 +104,8 @@ public class PosCheckout extends PosAbstractModel implements Checkout {
     float exchange_money;
     @Gson2PosExclude
     String delivery_date;
+    @Gson2PosExclude
+    boolean is_pick_at_store;
     // plugin giftcard
     @Gson2PosExclude
     String giftcard_title;
@@ -484,5 +486,15 @@ public class PosCheckout extends PosAbstractModel implements Checkout {
     @Override
     public StoreCredit getStoreCredit() {
         return (StoreCredit) storecredit;
+    }
+
+    @Override
+    public boolean isPickAtStore() {
+        return is_pick_at_store;
+    }
+
+    @Override
+    public void setIsPickAtStore(boolean bIsPickAtStore) {
+        is_pick_at_store = bIsPickAtStore;
     }
 }

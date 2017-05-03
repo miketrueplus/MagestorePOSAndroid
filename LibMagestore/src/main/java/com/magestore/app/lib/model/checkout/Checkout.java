@@ -127,4 +127,7 @@ public interface Checkout extends Model {
     RewardPoint getRewardPoint();
 
     StoreCredit getStoreCredit();
+
+    boolean isPickAtStore();
+    void setIsPickAtStore(boolean bIsPickAtStore);
 }

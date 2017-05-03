@@ -348,6 +348,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
      */
     public void doInputGuestCheckout() {
         try {
+            getSelectedItem().setIsPickAtStore(((CheckoutDetailPanel) mDetailView).getPickAtStore());
             guest_checkout = getConfigService().getGuestCheckout();
             currency = getConfigService().getDefaultCurrency();
             configCCTypes = getConfigService().getConfigCCTypes();

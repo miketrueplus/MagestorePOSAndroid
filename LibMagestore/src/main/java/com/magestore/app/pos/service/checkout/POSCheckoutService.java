@@ -596,15 +596,31 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
 
     private void addCustomerAddressToQuote(Checkout checkout, QuoteCustomer quoteCustomer) {
         List<CustomerAddress> listAddress = checkout.getCustomer().getAddress();
-        if (listAddress != null && listAddress.size() > 0) {
-            if (listAddress.size() > 2) {
-                if (checkout.getCustomer().getUseOneAddress()) {
-                    customerUseOneAddress(listAddress, checkout, quoteCustomer);
+        if (checkout.isPickAtStore()) {
+            CustomerAddress address = ConfigUtil.getCustomerGuest().getAddress().get(0);
+            QuoteCustomerAddress customerAddress = createCustomerAddress();
+            customerAddress.setCountryId(address.getCountry());
+            customerAddress.setRegionId(address.getRegion().getRegionID());
+            customerAddress.setPostcode(address.getPostCode());
+            customerAddress.setStreet(address.getStreet());
+            customerAddress.setTelephone(address.getTelephone());
+            customerAddress.setCity(address.getCity());
+            customerAddress.setFirstname(address.getFirstName());
+            customerAddress.setLastname(address.getLastName());
+            customerAddress.setEmail(checkout.getCustomer().getEmail());
+            quoteCustomer.setShippingAddress(customerAddress);
+            quoteCustomer.setBillingAddress(customerAddress);
+        } else {
+            if (listAddress != null && listAddress.size() > 0) {
+                if (listAddress.size() > 2) {
+                    if (checkout.getCustomer().getUseOneAddress()) {
+                        customerUseOneAddress(listAddress, checkout, quoteCustomer);
+                    } else {
+                        customerUseDiffentAddress(listAddress, checkout, quoteCustomer);
+                    }
                 } else {
-                    customerUseDiffentAddress(listAddress, checkout, quoteCustomer);
+                    customerUseOneAddress(listAddress, checkout, quoteCustomer);
                 }
-            } else {
-                customerUseOneAddress(listAddress, checkout, quoteCustomer);
             }
         }
     }
