@@ -121,13 +121,14 @@ public class PluginRewardPointPanel extends AbstractDetailPanel<RewardPoint> {
         rl_remove_reward_point.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                reward_point_value.setText(ConfigUtil.formatNumber(0));
                 String quote_id = mCheckoutListController.getSelectedItem().getQuoteId();
                 if (mRewardPoint != null) {
+                    reward_point_value.setText(ConfigUtil.formatNumber(mRewardPoint.getMaxPoints()));
                     mRewardPoint.setQuoteId(quote_id);
                     mRewardPoint.setAmount(0);
                     mCheckoutListController.doInputApplyRewardPoint(mRewardPoint);
                 } else {
+                    reward_point_value.setText(ConfigUtil.formatNumber(mRewardPoint.getMaxPoints()));
                     mRewardPoint = mCheckoutListController.createRewardPoint();
                     mRewardPoint.setAmount(0);
                     mRewardPoint.setQuoteId(quote_id);
