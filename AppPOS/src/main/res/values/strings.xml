@@ -378,8 +378,8 @@
     <string name="com.magestore.app.lib.connection.ConnectionException.TimeoutException">Network may have problems. Come back later please</string>
     <string name="com.magestore.app.lib.connection.ServiceException.QuantityNotEnough">Not enough quantity</string>
     <string name="com.magestore.app.lib.connection.ServiceException.QuantityOutOfStock">This product is currently out of stock</string>
-    <string name="com.magestore.app.lib.connection.ServiceException.QuantityReachMaximum">The maximum you may purchase is %s.</string>
-    <string name="com.magestore.app.lib.connection.ServiceException.QuantityReachMinimum">The minimum you may purchase is %s.</string>
+    <string name="com.magestore.app.lib.connection.ServiceException.QuantityReachMaximum">The maximum you may purchase is: </string>
+    <string name="com.magestore.app.lib.connection.ServiceException.QuantityReachMinimum">The minimum you may purchase is: </string>
 
 
 </resources>

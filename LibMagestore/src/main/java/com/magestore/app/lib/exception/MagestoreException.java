@@ -3,6 +3,7 @@ package com.magestore.app.lib.exception;
 import com.magestore.app.lib.connection.Connection;
 import com.magestore.app.lib.connection.ResultReading;
 import com.magestore.app.lib.connection.Statement;
+import com.magestore.app.util.StringUtil;
 
 /**
  * Quản lý các exception của Connection
@@ -50,7 +51,7 @@ public class MagestoreException extends RuntimeException {
     }
 
     public MagestoreException(String message) {
-        this("", message);
+        this(StringUtil.STRING_EMPTY, message);
     }
 
     public MagestoreException(Throwable cause) {

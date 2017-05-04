@@ -509,24 +509,31 @@ public class POSCartService extends AbstractService implements CartService {
 
         // nếu chưa thì thêm mới
         if (cartItem == null) {
+//            if (!validateStock(checkout, product, quantity))
+//                throw new ServiceException(ServiceException.EXCEPTION_QUANTITY_NOT_ENOUGH, "");
+
             // kiểm tra số lượng còn trong kho không đã
-            if (!validateStock(checkout, product, quantity))
-                throw new ServiceException(ServiceException.EXCEPTION_QUANTITY_NOT_ENOUGH, "");
+            quantity = calculateValidStock(checkout, product, quantity);
 
             // Khởi tạo product order item
             cartItem = create(product, quantity, price);
+
             // Thêm vào danh sách order cartItem
             insert(checkout, cartItem);
         }
         // có rồi thì cập nhật lại số lượng
         else {
             // tính toán số lượng mới
-            int newQuantity = cartItem.getQuantity() + quantity;
+//            int newQuantity = cartItem.getQuantity() + quantity;
             // kiểm tra số lượng trước có đủ trong kho không
-            validateStock(checkout, cartItem, newQuantity);
+//            validateStock(checkout, cartItem, quantity);
 //                throw new ServiceException("Not enough quantity");
+
+            // kiểm tra số lượng còn trong kho không đã
+            quantity = calculateValidStock(checkout, cartItem, quantity);
+
             // cập nhật số lượng
-            cartItem.setQuantity(newQuantity);
+            cartItem.setQuantity(cartItem.getQuantity() + quantity);
             float unitPrice = cartItem.getUnitPrice();
             float totalPrice = (unitPrice * cartItem.getQuantity());
             cartItem.setPrice(totalPrice);
@@ -744,7 +751,7 @@ public class POSCartService extends AbstractService implements CartService {
 
     /**
      * Kiểm tra số lượng trong kho đủ để bán không
-     *
+     * Nếu đủ, trả lại số lượng khả dĩ cho phép có thể add vào cart
      * @param checkout
      * @param quantity
      * @return
@@ -758,6 +765,47 @@ public class POSCartService extends AbstractService implements CartService {
         if (newQuantity > product.getMaximumQty()) throw new ServiceException(ServiceException.EXCEPTION_QUANTITY_REACH_MAXIMUM, "");
         if (newQuantity < product.getAllowMinQty()) throw new ServiceException(ServiceException.EXCEPTION_QUANTITY_REACH_MINIMUM, "");
         return true;
+    }
+
+    /**
+     * Trả lại số lượng phù hợp khi add 1 item vào cart
+     * @param checkout
+     * @param item
+     * @param quantity
+     * @return
+     * @throws ServiceException
+     */
+    @Override
+    public int calculateValidStock(Checkout checkout, CartItem item, int quantity) throws ServiceException {
+        int newQuantity = item.getQuantity() + quantity;
+        Product product = item.getProduct();
+
+        if (!item.getProduct().isInStock()) throw new ServiceException(ServiceException.EXCEPTION_QUANTITY_OUT_OF_STOCK, "");
+        if (newQuantity > product.getMaximumQty()) throw new ServiceException(ServiceException.EXCEPTION_QUANTITY_REACH_MAXIMUM, "");
+        if (newQuantity < product.getAllowMinQty()) {
+            newQuantity = product.getAllowMinQty() > product.getQuantityIncrement() ? product.getAllowMinQty() : product.getQuantityIncrement();
+            quantity = newQuantity - quantity;
+            if (quantity <= 0) quantity = 1;
+        }
+        return quantity;
+    }
+
+    /**
+     * Trả lại số lượng phù hợp khi add 1 item vào cart
+     * @param checkout
+     * @param quantity
+     * @return
+     * @throws ServiceException
+     */
+    @Override
+    public int calculateValidStock(Checkout checkout, Product product, int quantity) throws ServiceException {
+        if (!product.isInStock()) throw new ServiceException(ServiceException.EXCEPTION_QUANTITY_OUT_OF_STOCK, "");
+        if (quantity > product.getMaximumQty()) throw new ServiceException(ServiceException.EXCEPTION_QUANTITY_REACH_MAXIMUM, Float.toString(product.getMaximumQty()));
+        if (quantity < product.getAllowMinQty()) {
+            quantity = product.getAllowMinQty() > product.getQuantityIncrement() ? product.getAllowMinQty() : product.getQuantityIncrement();
+            if (quantity <= 0) quantity = 1;
+        }
+        return quantity;
     }
 
     /**

@@ -21,10 +21,12 @@ import android.widget.TextView;
 
 import com.magestore.app.lib.R;
 import com.magestore.app.lib.controller.Controller;
+import com.magestore.app.lib.exception.MagestoreException;
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.view.MagestoreView;
 import com.magestore.app.lib.view.adapter.DefaultModelView;
 import com.magestore.app.lib.view.item.ModelView;
+import com.magestore.app.util.StringUtil;
 
 /**
  * Created by folio on 3/3/2017.
@@ -112,7 +114,24 @@ public abstract class AbstractPanel<TController extends Controller> extends Fram
     @Override
     public void showErrMsgDialog(Exception exp) {
         exp.printStackTrace();
-        showErrMsgDialog(exp.getLocalizedMessage());
+        showErrMsgDialog(getExceptionMessage(exp));
+    }
+
+    /**
+     * Dịch thông báo lỗi
+     */
+    public String getExceptionMessage(Exception exp) {
+        String strReturn = exp.getLocalizedMessage();
+        if (StringUtil.isNullOrEmpty(strReturn)) strReturn = StringUtil.STRING_EMPTY;
+
+        if (exp instanceof MagestoreException) {
+            String packageName = getContext().getPackageName();
+            if (((MagestoreException) exp).getCode() != null) {
+                int resId = getResources().getIdentifier(((MagestoreException) exp).getCode(), "string", packageName);
+                if (resId > 0) return getContext().getString(resId) + strReturn;
+            }
+        }
+        return strReturn;
     }
 
     /**

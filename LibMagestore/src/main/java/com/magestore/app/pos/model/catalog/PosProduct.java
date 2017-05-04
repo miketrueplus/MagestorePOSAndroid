@@ -78,14 +78,15 @@ public class PosProduct extends PosAbstractModel implements Product {
 
     @Override
     public int getAllowMinQty() {
-        return getQuantityIncrement();
+        return (int) getMinimumQty();
     }
 
     @Override
     public int getAllowMaxQty() {
-        int allowMax = (int) (getQty() - getMinimumQty());
-        int maxQty = (int) getMaximumQty();
-        return (int) allowMax < maxQty ? allowMax : maxQty;
+        return (int) getMaximumQty();
+//        int allowMax = (int) (getQty() - getMinimumQty());
+//        int maxQty = (int) getMaximumQty();
+//        return (int) allowMax < maxQty ? allowMax : maxQty;
     }
 
     @Override
