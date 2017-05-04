@@ -59,7 +59,7 @@ public class PosOrderCartItem extends PosAbstractModel implements OrderCartItem 
 
     @Override
     public int getQty() {
-        return Integer.parseInt(qty);
+        return (int) Float.parseFloat(qty);
     }
 
     @Override

@@ -10,6 +10,7 @@ import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.model.sales.OrderCartItem;
+import com.magestore.app.lib.model.sales.OrderCustomSalesInfo;
 import com.magestore.app.lib.resourcemodel.DataAccessFactory;
 import com.magestore.app.lib.resourcemodel.catalog.ProductDataAccess;
 import com.magestore.app.lib.resourcemodel.sales.CartDataAccess;
@@ -20,6 +21,7 @@ import com.magestore.app.pos.model.catalog.PosProductOptionConfigOption;
 import com.magestore.app.pos.model.catalog.PosProductOptionJsonConfigAttributes;
 import com.magestore.app.pos.model.checkout.cart.PosCartItem;
 import com.magestore.app.pos.model.sales.PosOrderCartItem;
+import com.magestore.app.pos.model.sales.PosOrderCustomSalesInfo;
 import com.magestore.app.pos.service.AbstractService;
 import com.magestore.app.util.StringUtil;
 
@@ -758,6 +760,16 @@ public class POSCartService extends AbstractService implements CartService {
         return true;
     }
 
+    /**
+     * Thực hiện re-order, tạo lại các cart item tương ứng đối với checkout mới
+     * @param checkout
+     * @param order
+     * @return
+     * @throws IOException
+     * @throws InstantiationException
+     * @throws ParseException
+     * @throws IllegalAccessException
+     */
     @Override
     public List<CartItem> reOrder(Checkout checkout, Order order) throws IOException, InstantiationException, ParseException, IllegalAccessException {
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
@@ -765,23 +777,49 @@ public class POSCartService extends AbstractService implements CartService {
 
         // xử lý từng item trong order
         for (OrderCartItem orderitem : order.getItemsInfoBuy().getListOrderCartItems()) {
-            // fill thông tin product vào
-            Product product = productDataAccess.retrieve(orderitem.getID());
-            product.setProductOption(productDataAccess.loadProductOption(product));
+            // nếu không phải custome sales
+            if (orderitem.getCustomSalesInfo() == null) {
+                // fill thông tin product vào
+                Product product = productDataAccess.retrieve(orderitem.getID());
+                product.setProductOption(productDataAccess.loadProductOption(product));
 
-            CartItem newItem = create(product, orderitem.getQty(), orderitem.getUnitPrice());
-            newItem.setOriginalPrice(orderitem.getOriginalPrice());
-            newItem.setOptions(mapOptionValueID2Code(orderitem.getOptions()));
-            newItem.setBundleOption(mapOptionValueID2Code(orderitem.getBundleOption()));
-            newItem.setBundleOptionQty(mapOptionValueID2Code(orderitem.getBundleOptionQty()));
-            newItem.setSuperAttribute(mapOptionValueID2Code(orderitem.getSuperAttribute()));
+                // tạo item theo product truy xuất được
+                CartItem newItem = create(product, orderitem.getQty(), orderitem.getUnitPrice());
+                newItem.setOriginalPrice(orderitem.getOriginalPrice());
+                newItem.setOptions(mapOptionValueID2Code(orderitem.getOptions()));
+                newItem.setBundleOption(mapOptionValueID2Code(orderitem.getBundleOption()));
+                newItem.setBundleOptionQty(mapOptionValueID2Code(orderitem.getBundleOptionQty()));
+                newItem.setSuperAttribute(mapOptionValueID2Code(orderitem.getSuperAttribute()));
 
-            // xử lý xong thì insert lại vào checkout
-            insert(checkout, newItem);
+                // xử lý xong thì insert lại vào checkout
+                insert(checkout, newItem);
+            }
+            // nếu là custom sales
+            else {
+                if (orderitem.getCustomSalesInfo().size() <= 0) continue;
+                OrderCustomSalesInfo customSalesInfo = orderitem.getCustomSalesInfo().get(0);
+                CartItem newItem = createCustomSale();
+                newItem.setQuantity(customSalesInfo.getQty());
+                newItem.setTypeCustom();
+                newItem.setPrice(customSalesInfo.getUnitPrice());
+                newItem.setUnitPrice(customSalesInfo.getUnitPrice());
+                newItem.setCustomPrice(customSalesInfo.getUnitPrice());
+                newItem.setOriginalPrice(customSalesInfo.getUnitPrice());
+                newItem.getProduct().setName(customSalesInfo.getProductName());
+                newItem.setShipable(!customSalesInfo.isVirtual());
+
+                // xử lý xong thì insert lại vào checkout
+                insertWithCustomSale(checkout, newItem);
+            }
         }
         return checkout.getCartItem();
     }
 
+    /**
+     * Map ID sang Code đối với mỗi option value khi re order
+     * @param options
+     * @return
+     */
     private List<PosCartItem.OptionsValue> mapOptionValueID2Code(List<PosCartItem.OptionsValue> options) {
         if (options == null) return options;
         for(PosCartItem.OptionsValue option : options) {
