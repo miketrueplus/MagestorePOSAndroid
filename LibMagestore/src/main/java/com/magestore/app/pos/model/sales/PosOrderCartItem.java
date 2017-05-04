@@ -1,6 +1,7 @@
 package com.magestore.app.pos.model.sales;
 
 import com.magestore.app.lib.model.sales.OrderCartItem;
+import com.magestore.app.lib.model.sales.OrderCustomSalesInfo;
 import com.magestore.app.pos.model.PosAbstractModel;
 import com.magestore.app.pos.model.checkout.cart.PosCartItem;
 import com.magestore.app.util.StringUtil;
@@ -19,7 +20,7 @@ public class PosOrderCartItem extends PosAbstractModel implements OrderCartItem 
     String original_price;
     String base_original_price;
     String options_label;
-    String custom_sales_info;
+    List<PosOrderCustomSalesInfo> custom_sales_info;
 
 //    public class OptionsValue {
 //        public String code;
@@ -91,7 +92,7 @@ public class PosOrderCartItem extends PosAbstractModel implements OrderCartItem 
     }
 
     @Override
-    public String getCustomSalesInfo() {
-        return custom_sales_info;
+    public List<OrderCustomSalesInfo> getCustomSalesInfo() {
+        return (List<OrderCustomSalesInfo>) (List<?>) custom_sales_info;
     }
 }

@@ -2,6 +2,7 @@ package com.magestore.app.lib.model.sales;
 
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.pos.model.checkout.cart.PosCartItem;
+import com.magestore.app.pos.model.sales.PosOrderCustomSalesInfo;
 
 import java.util.List;
 
@@ -33,5 +34,5 @@ public interface OrderCartItem extends Model {
 
     String getOptionsLabel();
 
-    String getCustomSalesInfo();
+    List<OrderCustomSalesInfo> getCustomSalesInfo();
 }
