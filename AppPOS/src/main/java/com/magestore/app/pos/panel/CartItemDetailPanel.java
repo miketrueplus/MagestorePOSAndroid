@@ -45,6 +45,8 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
     boolean mblnCustomPriceFixed;
     boolean mblnCustomDiscountFixed;
 
+    boolean changePrice = false;
+
     CartItem mCartItem;
 
     public void setCheckoutListController(CheckoutListController mCheckoutListController) {
@@ -162,10 +164,13 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (mtxtCustomDiscount.getValueFloat() != 0) {
-                    mblnCustomPriceFixed = true;
-                    actionChangeValue(mbtnCustomPriceFixed, mbtnCustomPricePercent, mblnCustomPriceFixed);
-                    mtxtCustomPrice.setText(ConfigUtil.formatNumber(ConfigUtil.formatNumber(mCartItem.getCustomPrice())));
+                if (!changePrice) {
+                    if (mtxtCustomDiscount.getValueFloat() != 0) {
+                        mblnCustomPriceFixed = true;
+                        actionChangeValue(mbtnCustomPriceFixed, mbtnCustomPricePercent, mblnCustomPriceFixed);
+                        mtxtCustomPrice.setText(ConfigUtil.formatNumber(ConfigUtil.formatNumber(mCartItem.getCustomPrice())));
+                    }
+                    changePrice = false;
                 }
             }
 
@@ -187,7 +192,7 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 mblnCustomDiscountFixed = true;
                 actionChangeValue(mbtnDiscountFixed, mbtnDiscountPercent, mblnCustomDiscountFixed);
-                if (mblnCustomPriceFixed) {
+                if (mblnCustomDiscountFixed) {
                     if (mtxtCustomPrice.getValueFloat() != cartItem.getCustomPrice()) {
                         mtxtCustomDiscount.setText(ConfigUtil.formatNumber(mCartItem.getDiscountAmount()));
                     }
@@ -196,6 +201,7 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
                         mtxtCustomDiscount.setText(ConfigUtil.formatNumber(mCartItem.getDiscountAmount()));
                     }
                 }
+                changePrice = true;
             }
 
             @Override
@@ -252,6 +258,7 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
      */
     public void onDiscountChangeToFixed(View view) {
         mblnCustomDiscountFixed = true;
+        changePrice = false;
         mtxtCustomDiscount.setText(ConfigUtil.formatNumber(mCartItem.getDiscountAmount()));
         actionChangeValue(mbtnDiscountFixed, mbtnDiscountPercent, true);
 //        getItem().setDiscountTypeFixed();
@@ -264,6 +271,7 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
      */
     public void onDiscountChangeToPercent(View view) {
         mblnCustomDiscountFixed = false;
+        changePrice = false;
         mtxtCustomDiscount.setText(ConfigUtil.formatNumber(0));
         actionChangeValue(mbtnDiscountFixed, mbtnDiscountPercent, false);
 //        getItem().setDiscountTypePercent();
@@ -276,6 +284,7 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
      */
     public void onCustomPriceChangeToFixed(View view) {
         mblnCustomPriceFixed = true;
+        changePrice = false;
         mtxtCustomPrice.setText(ConfigUtil.formatNumber(mCartItem.getCustomPrice()));
         actionChangeValue(mbtnCustomPriceFixed, mbtnCustomPricePercent, true);
 //        getItem().setCustomPriceTypeFixed();
@@ -288,6 +297,7 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
      */
     public void onCustomPriceChangeToPercent(View view) {
         mblnCustomPriceFixed = false;
+        changePrice = false;
         mtxtCustomPrice.setText(ConfigUtil.formatNumber(0));
         actionChangeValue(mbtnCustomPriceFixed, mbtnCustomPricePercent, false);
 //        getItem().setCustomPriceTypePercent();
