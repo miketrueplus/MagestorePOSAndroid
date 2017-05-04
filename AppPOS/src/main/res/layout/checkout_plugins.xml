@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="right"
-                android:text="@{ConfigUtil.formatPrice(checkout.getGiftCardDiscount())}"
+                android:text="@{ConfigUtil.formatPriceProduct(checkout.getGiftCardDiscount())}"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/sales_price_text_size" />
         </LinearLayout>
@@ -68,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="right"
-                android:text='@{ConfigUtil.formatPrice(checkout.getRewardPointUsePointValue())}'
+                android:text='@{ConfigUtil.formatPriceProduct(checkout.getRewardPointUsePointValue())}'
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/sales_price_text_size" />
         </LinearLayout>

@@ -85,7 +85,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="3"
-                        android:text="@{ConfigUtil.formatPrice(cartItem.getUnitPrice())}"
+                        android:text="@{ConfigUtil.formatPriceProduct(cartItem.getUnitPrice())}"
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/product_detail_content_text_size" />
                 </LinearLayout>
