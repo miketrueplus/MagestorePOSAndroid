@@ -87,6 +87,16 @@ public class PluginRewardPointPanel extends AbstractDetailPanel<RewardPoint> {
             public void onClick(View view) {
                 String quote_id = mCheckoutListController.getSelectedItem().getQuoteId();
                 if (mRewardPoint != null) {
+                    String point = reward_point_value.getText().toString().trim();
+                    if (!StringUtil.isNullOrEmpty(point)) {
+                        int point_value;
+                        try {
+                            point_value = Integer.parseInt(point);
+                        } catch (Exception e) {
+                            point_value = 0;
+                        }
+                        mRewardPoint.setAmount(point_value);
+                    }
                     mRewardPoint.setQuoteId(quote_id);
                     mCheckoutListController.doInputApplyRewardPoint(mRewardPoint);
                 } else {
