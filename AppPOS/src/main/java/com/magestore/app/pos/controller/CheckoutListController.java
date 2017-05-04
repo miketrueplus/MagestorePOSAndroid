@@ -844,6 +844,14 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         wraper.put("save_shipping", checkout);
         autoSelectPaymentMethod(checkout.getCheckoutPayment());
         isShowPaymentMethod((checkout.getGrandTotal() == 0) ? false : true);
+        if (checkout.getStoreCredit() != null) {
+            if (checkout.getStoreCredit().getBalance() != 0 && ConfigUtil.isEnableStoreCredit()) {
+                mPluginStoreCreditPanel.bindItem(checkout.getStoreCredit());
+                mPluginStoreCreditPanel.setVisibility(View.VISIBLE);
+            } else {
+                mPluginStoreCreditPanel.setVisibility(View.GONE);
+            }
+        }
     }
 
     /**

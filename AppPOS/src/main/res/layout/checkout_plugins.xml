@@ -68,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="right"
-                android:text='@{checkout.getRewardPointUsePointValue() + " " + @string/plugin_reward_title_point}'
+                android:text='@{ConfigUtil.formatPrice(checkout.getRewardPointUsePointValue())}'
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/sales_price_text_size" />
         </LinearLayout>
