@@ -38,7 +38,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
     CheckoutAddPaymentPanel mCheckoutAddPaymentPanel;
     CheckoutPaymentCreditCardPanel mCheckoutPaymentCreditCardPanel;
     TextView txt_grand_total, txt_remain_title, txt_remain_value, txt_payment_creditcard, tv_delivery_date_time, tv_check_payment_required;
-    RelativeLayout rl_content_payment_method, sales_background_loading, rl_remove_payment_credit_card, rl_delivery;
+    RelativeLayout rl_content_payment_method, sales_background_loading, rl_remove_payment_credit_card, rl_delivery, rl_payment_title;
     MagestoreDialog dialog;
     Switch create_ship, create_invoice;
     ImageButton im_back;
@@ -74,6 +74,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         create_ship = (Switch) findViewById(R.id.create_ship);
         create_invoice = (Switch) findViewById(R.id.create_invoice);
         ll_payment_method = (LinearLayout) findViewById(R.id.ll_payment_method);
+        rl_payment_title = (RelativeLayout) findViewById(R.id.rl_payment_title);
         ll_checkout_add_payment = (LinearLayout) findViewById(R.id.ll_checkout_add_payment);
         sales_background_loading = (RelativeLayout) findViewById(R.id.sales_background_loading);
         sp_shipping_method = (SimpleSpinner) findViewById(R.id.sp_shipping_method);
@@ -232,6 +233,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
     public void isShowPaymentMethod(boolean isShow){
         mCheckoutPaymentListPanel.setVisibility(isShow ? VISIBLE : GONE);
         ll_payment_method.setVisibility(isShow ? VISIBLE : GONE);
+        rl_payment_title.setVisibility(isShow ? VISIBLE : GONE);
 //        ll_payment_credit_card.setVisibility(isShow ? VISIBLE : GONE);
     }
 

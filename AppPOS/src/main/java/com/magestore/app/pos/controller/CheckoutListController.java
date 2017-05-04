@@ -583,6 +583,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 autoSelectPaymentMethod(listPayment);
                 isShowPluginStoreCredit(true);
                 isShowPaymentMethod((checkout.getGrandTotal() == 0) ? false : true);
+                mPluginStoreCreditPanel.setVisibility(checkout.getGrandTotal() == 0 ? View.GONE : View.VISIBLE);
                 isShowLoadingDetail(false);
             }
         } else if (success && actionType == ACTION_TYPE_SAVE_CART_DISCOUNT) {
@@ -661,6 +662,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                     autoSelectPaymentMethod(listPayment);
                     isShowPluginStoreCredit(true);
                     isShowPaymentMethod((checkout.getGrandTotal() == 0) ? false : true);
+                    mPluginStoreCreditPanel.setVisibility(checkout.getGrandTotal() == 0 ? View.GONE : View.VISIBLE);
                 }
 
                 mPaymentMethodListPanel.bindList(listPayment);
@@ -750,6 +752,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             autoSelectPaymentMethod(checkout.getCheckoutPayment());
             isShowPluginStoreCredit(true);
             isShowPaymentMethod((checkout.getGrandTotal() == 0) ? false : true);
+            mPluginStoreCreditPanel.setVisibility(checkout.getGrandTotal() == 0 ? View.GONE : View.VISIBLE);
             // hoàn thành save shipping  hiden progressbar
             isShowLoadingDetail(false);
         } else if (success && actionType == ACTION_TYPE_SAVE_PAYMENT) {
@@ -845,7 +848,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         autoSelectPaymentMethod(checkout.getCheckoutPayment());
         isShowPaymentMethod((checkout.getGrandTotal() == 0) ? false : true);
         if (checkout.getStoreCredit() != null) {
-            if (checkout.getStoreCredit().getBalance() != 0 && ConfigUtil.isEnableStoreCredit()) {
+            if (checkout.getStoreCredit().getBalance() != 0 && ConfigUtil.isEnableStoreCredit() && checkout.getGrandTotal() != 0) {
                 mPluginStoreCreditPanel.bindItem(checkout.getStoreCredit());
                 mPluginStoreCreditPanel.setVisibility(View.VISIBLE);
             } else {
