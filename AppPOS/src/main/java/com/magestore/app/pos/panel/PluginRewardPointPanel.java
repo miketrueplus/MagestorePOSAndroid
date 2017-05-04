@@ -69,9 +69,8 @@ public class PluginRewardPointPanel extends AbstractDetailPanel<RewardPoint> {
         super.bindItem(item);
         mRewardPoint = item;
         tv_reward_point.setText(getContext().getString(R.string.plugin_reward_point_title, ConfigUtil.formatNumber(item.getBalance())));
-        reward_point_value.setText(ConfigUtil.formatNumber(item.getMaxPoints()));
-
         actionChangeRewardPoint(item);
+        reward_point_value.setText(ConfigUtil.formatNumber(item.getMaxPoints()));
 
         cb_use_max_credit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -171,5 +170,9 @@ public class PluginRewardPointPanel extends AbstractDetailPanel<RewardPoint> {
 
             }
         });
+    }
+
+    public void resetPointValue(){
+        reward_point_value.setText("0");
     }
 }

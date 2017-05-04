@@ -1431,6 +1431,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         mCheckoutPaymentListPanel.bindList(listPayment);
         mCheckoutPaymentListPanel.updateTotal(listPayment);
         mCheckoutPaymentCreditCardPanel.clearDataForm();
+        mPluginRewardPointPanel.resetPointValue();
         isShowButtonCheckout(true);
         isShowSalesMenuDiscount(true);
         ((CheckoutDetailPanel) mDetailView).showPickAtStore(true);
