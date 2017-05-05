@@ -61,7 +61,8 @@ public class ActionModelTask extends AsyncTask<Model, Void, Boolean> {
     @Override
     protected void onCancelled() {
         super.onCancelled();
-        mController.onCancelledBackground(mException);
+        mController.onCancelledBackground(mException, mActionType, mActionCode, mWrapper, models);
+//        mController.onCancelledBackground(mException);
     }
 
     @Override

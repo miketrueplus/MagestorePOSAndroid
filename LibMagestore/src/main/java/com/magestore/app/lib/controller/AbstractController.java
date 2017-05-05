@@ -190,6 +190,19 @@ public abstract class AbstractController<TModel extends Model, TView extends Mag
     }
 
     /**
+     * Xử lý exception
+     * @param exp
+     * @param actionType
+     * @param actionCode
+     * @param wraper
+     * @param models
+     * @throws Exception
+     */
+    public void onCancelledBackground(Exception exp, int actionType, String actionCode, Map<String, Object> wraper, Model... models) {
+        onCancelledBackground(exp);
+    }
+
+    /**
      * Đặt config service để sử dụng
      * @param service
      */
