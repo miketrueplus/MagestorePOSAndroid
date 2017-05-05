@@ -327,6 +327,7 @@
     <string name="zip_code">Zip Code</string>
 
     <!-- Strings related to error message -->
+    <string name="err_cannot_choose_these_options">Cannot choose these(this) option(s)</string>
     <string name="err_no_network_connection">No network connection, Pls check yout network settings</string>
     <string name="err_field_required">This field is required</string>
     <string name="err_field_quantity_not_specific">Please specify the quantity of product(s)</string>
@@ -373,8 +374,10 @@
     <string name="category_all_product">All Products</string>
 
     <!-- Strings related to exception -->
-    <string name="com.magestore.app.lib.connection.ConnectionException.UnknowHostException">Server is temprory shutting down. Come back later please</string>
-    <string name="com.magestore.app.lib.connection.ConnectionException.PageNotFoundException">Server is temprory shutting down. Come back later please</string>
+    <string name="java.net.UnknownHostException">Cannot find service. Come back later please or check your URL!</string>
+    <string name="java.net.SocketTimeoutException">Network connection have error!</string>
+    <string name="com.magestore.app.lib.connection.ConnectionException.InternalHostException">Service internal error!</string>
+    <string name="com.magestore.app.lib.connection.ConnectionException.PageNotFoundException">Cannot find service. Come back later please or check your URL!</string>
     <string name="com.magestore.app.lib.connection.ConnectionException.TimeoutException">Network may have problems. Come back later please</string>
     <string name="com.magestore.app.lib.connection.ServiceException.QuantityNotEnough">Not enough quantity</string>
     <string name="com.magestore.app.lib.connection.ServiceException.QuantityOutOfStock">This product is currently out of stock</string>

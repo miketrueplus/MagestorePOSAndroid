@@ -16,6 +16,7 @@ public class MagestoreException extends RuntimeException {
     // Mã lỗi để sử dụng trong từ điển
     String mstrCode;
 
+
     /**
      * Khởi tạo
      *
@@ -24,7 +25,7 @@ public class MagestoreException extends RuntimeException {
      */
     public MagestoreException(String code, String message) {
         super(message);
-        mstrCode = code;
+        setCode(code);
     }
 
     /**
@@ -36,7 +37,7 @@ public class MagestoreException extends RuntimeException {
      */
     public MagestoreException(String code, String message, Throwable cause) {
         super(message, cause);
-        mstrCode = code;
+        setCode(code);
     }
 
     /**
@@ -47,17 +48,26 @@ public class MagestoreException extends RuntimeException {
      */
     public MagestoreException(String code, Throwable cause) {
         super(cause);
-        mstrCode = code;
+        setCode(code);
     }
 
-    public MagestoreException(String message) {
-        this(StringUtil.STRING_EMPTY, message);
+    /**
+     * Khởi tạo code
+     * @param code
+     */
+    public MagestoreException(String code) {
+        super();
+        setCode(code);
     }
 
     public MagestoreException(Throwable cause) {
         super(cause);
+        setCode(cause.getClass().getName());
         if (cause instanceof MagestoreException) {
             setCode(((MagestoreException) cause).getCode());
+        }
+        else {
+            setCode(cause.getClass().getName());
         }
     }
 

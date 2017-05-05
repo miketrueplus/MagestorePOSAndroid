@@ -128,7 +128,7 @@ public abstract class AbstractPanel<TController extends Controller> extends Fram
             String packageName = getContext().getPackageName();
             if (((MagestoreException) exp).getCode() != null) {
                 int resId = getResources().getIdentifier(((MagestoreException) exp).getCode(), "string", packageName);
-                if (resId > 0) return getContext().getString(resId) + strReturn;
+                if (resId > 0) return getContext().getString(resId) + "\n" + strReturn;
             }
         }
         return strReturn;

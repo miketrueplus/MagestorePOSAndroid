@@ -683,6 +683,12 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
             }
         }
 
+        // nếu config option nhưng không có product do bị disable
+        if (blnValid && StringUtil.STRING_EMPTY.equals(getConfigOptionProductID())) {
+            blnValid = false;
+            showErrMsgDialog(getContext().getString(R.string.err_cannot_choose_these_options));
+        }
+
         return blnValid;
     }
 
@@ -750,7 +756,9 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         float basePrice = getItem().getProduct().getFinalPrice();
         float addPrice = 0.0f;
 
+        // sử dụng để tính price với config option
         List<String> productsList = null;
+
         // duyệt tất cả các option custome để tính lại đơn giá
         for (OptionModelView optionModelView : mModelViewList) {
             // với config option, price sẽ được tính căn cứ mô hình khác
@@ -758,7 +766,10 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                 for (OptionValueModelView optionValueModelView : optionModelView.optionValueModelViewList) {
                     // nếu là loại chọn nhiều
                     if (optionValueModelView.choose) {
-                        if (productsList == null) productsList = optionValueModelView.productList;
+                        if (productsList == null) {
+                            productsList = new ArrayList<>();
+                            productsList.addAll(optionValueModelView.productList);
+                        }
                         else productsList.retainAll(optionValueModelView.productList);
                     }
                 }
@@ -776,6 +787,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
             }
         }
 
+        // với price của option config thì chọn ra 1 product chung và tính lại price
         if (productsList != null && productsList.size() == 1) {
             String productID = productsList.get(0);
             try {
@@ -791,6 +803,34 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         price += addPrice;
         getItem().setUnitPrice(price);
         getItem().setCustomPrice(price);
+    }
+
+    private String getConfigOptionProductID() {
+        if (getItem().getProduct().getProductOption().getJsonConfig() == null) return null;
+
+        // sử dụng để tính price với config option
+        List<String> productsList = null;
+
+        // duyệt tất cả các option custome để tính lại đơn giá
+        for (OptionModelView optionModelView : mModelViewList) {
+            // với config option, price sẽ được tính căn cứ mô hình khác
+            if (optionModelView.isConfigOption()) {
+                for (OptionValueModelView optionValueModelView : optionModelView.optionValueModelViewList) {
+                    // nếu là loại chọn nhiều
+                    if (optionValueModelView.choose) {
+                        if (productsList == null) {
+                            productsList = new ArrayList<>();
+                            productsList.addAll(optionValueModelView.productList);
+                        }
+                        else productsList.retainAll(optionValueModelView.productList);
+                    }
+                }
+                continue;
+            }
+        }
+
+        if (productsList == null || productsList.size() <= 0) return StringUtil.STRING_EMPTY;
+        return productsList.get(0);
     }
 
     /**
