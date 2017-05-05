@@ -743,8 +743,8 @@ public class POSCartService extends AbstractService implements CartService {
     @Override
     public boolean validateStock(Checkout checkout, Product product, int quantity) {
         if (!product.isInStock()) return false;
-        if (quantity < product.getAllowMinQty()) return false;
-        if (quantity > product.getAllowMaxQty() && product.getAllowMaxQty() > product.getAllowMinQty())
+//        if (quantity < product.getAllowMinQty()) return false;
+        if (quantity > product.getMaximumQty() && ((int) product.getMaximumQty() > 0))
             return false;
         return true;
     }
@@ -762,8 +762,8 @@ public class POSCartService extends AbstractService implements CartService {
         Product product = item.getProduct();
 
         if (!item.getProduct().isInStock()) throw new ServiceException(ServiceException.EXCEPTION_QUANTITY_OUT_OF_STOCK, "");
-        if (newQuantity > product.getMaximumQty()) throw new ServiceException(ServiceException.EXCEPTION_QUANTITY_REACH_MAXIMUM, "");
-        if (newQuantity < product.getAllowMinQty()) throw new ServiceException(ServiceException.EXCEPTION_QUANTITY_REACH_MINIMUM, "");
+        if (newQuantity > product.getMaximumQty() && ((int) product.getMaximumQty() > 0)) throw new ServiceException(ServiceException.EXCEPTION_QUANTITY_REACH_MAXIMUM, "");
+//        if (newQuantity < product.getAllowMinQty()) throw new ServiceException(ServiceException.EXCEPTION_QUANTITY_REACH_MINIMUM, "");
         return true;
     }
 
@@ -781,7 +781,7 @@ public class POSCartService extends AbstractService implements CartService {
         Product product = item.getProduct();
 
         if (!item.getProduct().isInStock()) throw new ServiceException(ServiceException.EXCEPTION_QUANTITY_OUT_OF_STOCK, "");
-        if (newQuantity > product.getMaximumQty()) throw new ServiceException(ServiceException.EXCEPTION_QUANTITY_REACH_MAXIMUM, "");
+        if (newQuantity > product.getMaximumQty() && ((int) product.getMaximumQty() > 0)) throw new ServiceException(ServiceException.EXCEPTION_QUANTITY_REACH_MAXIMUM, "");
         if (newQuantity < product.getAllowMinQty()) {
             newQuantity = product.getAllowMinQty() > product.getQuantityIncrement() ? product.getAllowMinQty() : product.getQuantityIncrement();
             quantity = newQuantity - quantity;
@@ -800,7 +800,7 @@ public class POSCartService extends AbstractService implements CartService {
     @Override
     public int calculateValidStock(Checkout checkout, Product product, int quantity) throws ServiceException {
         if (!product.isInStock()) throw new ServiceException(ServiceException.EXCEPTION_QUANTITY_OUT_OF_STOCK, "");
-        if (quantity > product.getMaximumQty()) throw new ServiceException(ServiceException.EXCEPTION_QUANTITY_REACH_MAXIMUM, Float.toString(product.getMaximumQty()));
+        if (quantity > product.getMaximumQty() && ((int) product.getMaximumQty() > 0)) throw new ServiceException(ServiceException.EXCEPTION_QUANTITY_REACH_MAXIMUM, Float.toString(product.getMaximumQty()));
         if (quantity < product.getAllowMinQty()) {
             quantity = product.getAllowMinQty() > product.getQuantityIncrement() ? product.getAllowMinQty() : product.getQuantityIncrement();
             if (quantity <= 0) quantity = 1;

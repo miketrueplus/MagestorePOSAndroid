@@ -48,7 +48,7 @@ public class PosProduct extends PosAbstractModel implements Product {
 
     private String is_in_stock = StringUtil.STRING_ONE;
     private String minimum_qty = StringUtil.STRING_ONE;
-    private String maximum_qty = StringUtil.STRING_TEN_THOUSAND;
+    private String maximum_qty;
     private String qty = maximum_qty;
 
     @Override
@@ -68,6 +68,7 @@ public class PosProduct extends PosAbstractModel implements Product {
 
     @Override
     public float getMaximumQty() {
+        if (StringUtil.isNullOrEmpty(maximum_qty)) return Float.parseFloat(StringUtil.STRING_TEN_THOUSAND);
         return Float.parseFloat(maximum_qty);
     }
 
