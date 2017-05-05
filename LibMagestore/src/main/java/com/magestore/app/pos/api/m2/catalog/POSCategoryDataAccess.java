@@ -60,7 +60,7 @@ public class POSCategoryDataAccess extends POSAbstractDataAccess implements Cate
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
 
             Log.i(getClass().getName().toString(), " Query : " + POSAPI.REST_GET_CATEGORY_LISTING);
-            Log.i(getClass().getName().toString(), " Param : " + statement.getParamBuilder());
+            Log.i(getClass().getName().toString(), " Param : " + statement.getParamBuilder().getValueMap().toString());
 
             // thực thi truy vấn và parse kết quả thành object
             rp = statement.execute();
@@ -141,12 +141,20 @@ public class POSCategoryDataAccess extends POSAbstractDataAccess implements Cate
     private List<Category> findChildLv2(List<Category> resultList, String idChild, List<Category> categories, int level) {
         for (Category category : categories) {
             if (category.getLevel() == level && category.getID().equals(idChild)) {
-                resultList.add(category);
                 if (category.getChildren() != null) {
+                    for (int i = 0; i < category.getChildren().size(); i++) {
+                        category.setID(category.getChildren().get(i) + ",");
+                        if (i == category.getChildren().size() - 1) {
+                            category.setID(category.getChildren().get(i));
+                        }
+                    }
+                    resultList.add(category);
                     level++;
                     for (String idSubChild : category.getChildren()) {
                         resultList = findChildLv2(resultList, idSubChild, categories, level);
                     }
+                } else {
+                    resultList.add(category);
                 }
             }
         }
