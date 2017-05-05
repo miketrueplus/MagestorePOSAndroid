@@ -376,6 +376,7 @@
     <!-- Strings related to exception -->
     <string name="java.net.UnknownHostException">Cannot find service. Come back later please or check your URL!</string>
     <string name="java.net.SocketTimeoutException">Network connection have error!</string>
+    <string name="com.magestore.app.lib.parse.ParseException.FormatException">Server have some error! Come back later please!</string>
     <string name="com.magestore.app.lib.connection.ConnectionException.InternalHostException">Service internal error!</string>
     <string name="com.magestore.app.lib.connection.ConnectionException.PageNotFoundException">Cannot find service. Come back later please or check your URL!</string>
     <string name="com.magestore.app.lib.connection.ConnectionException.TimeoutException">Network may have problems. Come back later please</string>

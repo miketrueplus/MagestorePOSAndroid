@@ -19,6 +19,9 @@ public interface Product extends Model, ParseModel {
     String getName();
 
     boolean isInStock();
+
+    boolean isBackOrders();
+
     float getMinimumQty();
     void setMinimumQty(float minimum_qty);
     float getMaximumQty();

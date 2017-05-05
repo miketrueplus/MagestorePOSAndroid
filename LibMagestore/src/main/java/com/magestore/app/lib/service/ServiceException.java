@@ -15,15 +15,24 @@ public class ServiceException extends MagestoreException {
     public static final String EXCEPTION_QUANTITY_REACH_MAXIMUM = "com.magestore.app.lib.connection.ServiceException.QuantityReachMaximum";
     public static final String EXCEPTION_QUANTITY_REACH_MINIMUM = "com.magestore.app.lib.connection.ServiceException.QuantityReachMinimum";
 
-    public ServiceException(String strCode, String message) {
-        super(strCode, message);
+
+    public ServiceException(String code, String message) {
+        super(code, message);
     }
 
-    public ServiceException(String strCode, String message, Throwable cause) {
-        super(strCode, message, cause);
+    public ServiceException(String code, String message, Throwable cause) {
+        super(code, message, cause);
     }
 
-    public ServiceException(String strCode, Throwable cause) {
-        super(strCode, cause);
+    public ServiceException(String code, Throwable cause) {
+        super(code, cause);
+    }
+
+    public ServiceException(String code) {
+        super(code);
+    }
+
+    public ServiceException(Throwable cause) {
+        super(cause);
     }
 }

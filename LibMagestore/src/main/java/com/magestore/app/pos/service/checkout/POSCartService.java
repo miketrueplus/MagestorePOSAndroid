@@ -744,7 +744,7 @@ public class POSCartService extends AbstractService implements CartService {
     public boolean validateStock(Checkout checkout, Product product, int quantity) {
         if (!product.isInStock()) return false;
 //        if (quantity < product.getAllowMinQty()) return false;
-        if (quantity > product.getMaximumQty() && ((int) product.getMaximumQty() > 0))
+        if (quantity > product.getAllowMaxQty() && ((int) product.getAllowMaxQty() > 0))
             return false;
         return true;
     }
@@ -752,6 +752,7 @@ public class POSCartService extends AbstractService implements CartService {
     /**
      * Kiểm tra số lượng trong kho đủ để bán không
      * Nếu đủ, trả lại số lượng khả dĩ cho phép có thể add vào cart
+     *
      * @param checkout
      * @param quantity
      * @return
@@ -761,14 +762,23 @@ public class POSCartService extends AbstractService implements CartService {
         int newQuantity = item.getQuantity() + quantity;
         Product product = item.getProduct();
 
-        if (!item.getProduct().isInStock()) throw new ServiceException(ServiceException.EXCEPTION_QUANTITY_OUT_OF_STOCK, "");
-        if (newQuantity > product.getMaximumQty() && ((int) product.getMaximumQty() > 0)) throw new ServiceException(ServiceException.EXCEPTION_QUANTITY_REACH_MAXIMUM, "");
+        if (!item.getProduct().isInStock())
+            throw new ServiceException(ServiceException.EXCEPTION_QUANTITY_OUT_OF_STOCK);
+
+        // nếu không đặt backorder thì quan tâm quantity phải nằm trong khoản qty ... max_quantity
+        if (!product.isBackOrders() && newQuantity > product.getAllowMaxQty() && (product.getAllowMaxQty() > 0))
+            throw new ServiceException(ServiceException.EXCEPTION_QUANTITY_REACH_MAXIMUM, Float.toString(product.getAllowMaxQty()));
+        // nếu không đật backorder thì quantity phải nằm trong khoản zero đến maximum quantity
+        if (product.isBackOrders() && newQuantity > product.getMaximumQty() && (product.getMaximumQty() > 0))
+            throw new ServiceException(ServiceException.EXCEPTION_QUANTITY_REACH_MAXIMUM, Float.toString(product.getMaximumQty()));
+
 //        if (newQuantity < product.getAllowMinQty()) throw new ServiceException(ServiceException.EXCEPTION_QUANTITY_REACH_MINIMUM, "");
         return true;
     }
 
     /**
      * Trả lại số lượng phù hợp khi add 1 item vào cart
+     *
      * @param checkout
      * @param item
      * @param quantity
@@ -780,8 +790,13 @@ public class POSCartService extends AbstractService implements CartService {
         int newQuantity = item.getQuantity() + quantity;
         Product product = item.getProduct();
 
-        if (!item.getProduct().isInStock()) throw new ServiceException(ServiceException.EXCEPTION_QUANTITY_OUT_OF_STOCK, "");
-        if (newQuantity > product.getMaximumQty() && ((int) product.getMaximumQty() > 0)) throw new ServiceException(ServiceException.EXCEPTION_QUANTITY_REACH_MAXIMUM, "");
+        if (!item.getProduct().isInStock())
+            throw new ServiceException(ServiceException.EXCEPTION_QUANTITY_OUT_OF_STOCK);
+        if (!product.isBackOrders() && newQuantity > product.getAllowMaxQty() && ((int) product.getAllowMaxQty() > 0))
+            throw new ServiceException(ServiceException.EXCEPTION_QUANTITY_REACH_MAXIMUM, Float.toString(product.getAllowMaxQty()));
+        if (product.isBackOrders() && newQuantity > product.getMaximumQty() && (product.getMaximumQty() > 0))
+            throw new ServiceException(ServiceException.EXCEPTION_QUANTITY_REACH_MAXIMUM, Float.toString(product.getMaximumQty()));
+
         if (newQuantity < product.getAllowMinQty()) {
             newQuantity = product.getAllowMinQty() > product.getQuantityIncrement() ? product.getAllowMinQty() : product.getQuantityIncrement();
             quantity = newQuantity - quantity;
@@ -792,6 +807,7 @@ public class POSCartService extends AbstractService implements CartService {
 
     /**
      * Trả lại số lượng phù hợp khi add 1 item vào cart
+     *
      * @param checkout
      * @param quantity
      * @return
@@ -799,8 +815,13 @@ public class POSCartService extends AbstractService implements CartService {
      */
     @Override
     public int calculateValidStock(Checkout checkout, Product product, int quantity) throws ServiceException {
-        if (!product.isInStock()) throw new ServiceException(ServiceException.EXCEPTION_QUANTITY_OUT_OF_STOCK, "");
-        if (quantity > product.getMaximumQty() && ((int) product.getMaximumQty() > 0)) throw new ServiceException(ServiceException.EXCEPTION_QUANTITY_REACH_MAXIMUM, Float.toString(product.getMaximumQty()));
+        if (!product.isInStock())
+            throw new ServiceException(ServiceException.EXCEPTION_QUANTITY_OUT_OF_STOCK);
+        if (!product.isBackOrders() && quantity > product.getAllowMaxQty() && ((int) product.getAllowMaxQty() > 0))
+            throw new ServiceException(ServiceException.EXCEPTION_QUANTITY_REACH_MAXIMUM, Float.toString(product.getAllowMaxQty()));
+        if (product.isBackOrders() && quantity > product.getMaximumQty() && (product.getMaximumQty() > 0))
+            throw new ServiceException(ServiceException.EXCEPTION_QUANTITY_REACH_MAXIMUM, Float.toString(product.getMaximumQty()));
+
         if (quantity < product.getAllowMinQty()) {
             quantity = product.getAllowMinQty() > product.getQuantityIncrement() ? product.getAllowMinQty() : product.getQuantityIncrement();
             if (quantity <= 0) quantity = 1;
@@ -810,6 +831,7 @@ public class POSCartService extends AbstractService implements CartService {
 
     /**
      * Thực hiện re-order, tạo lại các cart item tương ứng đối với checkout mới
+     *
      * @param checkout
      * @param order
      * @return
@@ -865,12 +887,13 @@ public class POSCartService extends AbstractService implements CartService {
 
     /**
      * Map ID sang Code đối với mỗi option value khi re order
+     *
      * @param options
      * @return
      */
     private List<PosCartItem.OptionsValue> mapOptionValueID2Code(List<PosCartItem.OptionsValue> options) {
         if (options == null) return options;
-        for(PosCartItem.OptionsValue option : options) {
+        for (PosCartItem.OptionsValue option : options) {
             option.code = option.id;
         }
         return options;

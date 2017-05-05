@@ -33,19 +33,21 @@ public class Gson2PosAbstractParseImplement extends DefaultHandler implements Pa
 
     /**
      * Khởi tạo gson
+     *
      * @param input
      * @param typeOf
      * @throws ParseException
      */
     @Override
     public void prepareParse(InputStream input, Type typeOf) throws ParseException {
-        mReader =  new BufferedReader(new InputStreamReader(input));
+        mReader = new BufferedReader(new InputStreamReader(input));
         mtypeOf = typeOf;
         mGSON = createGson();
     }
 
     /**
      * Khởi tạo parse đầu vào là inputstream và model
+     *
      * @param input
      * @param parseModel
      * @throws ParseException
@@ -59,6 +61,7 @@ public class Gson2PosAbstractParseImplement extends DefaultHandler implements Pa
 
     /**
      * Khởi tạo parse đầu vào là inputstream/gson và model/class
+     *
      * @param input
      * @param cl
      * @throws ParseException
@@ -70,6 +73,7 @@ public class Gson2PosAbstractParseImplement extends DefaultHandler implements Pa
 
     /**
      * Tạo Gson builder
+     *
      * @return
      */
     protected Gson createGson() {
@@ -79,13 +83,35 @@ public class Gson2PosAbstractParseImplement extends DefaultHandler implements Pa
 
     /**
      * Thực hiện parse từ InputStream/Gson sang Model
+     *
      * @throws ParseException
      * @throws IOException
      */
     @Override
     public void doParse() throws ParseException, IOException {
-        mParseModel = mGSON.fromJson(mReader, mtypeOf);
-        close();
+        try {
+            mParseModel = mGSON.fromJson(mReader, mtypeOf);
+        } catch (Exception ex) {
+            throw new ParseException(ParseException.EXCEPTION_RESPONSE_FORMAT, ex);
+        } finally {
+            close();
+        }
+    }
+
+    /**
+     * Thực hiện parse từ InputStream/Gson sang Model
+     *
+     * @throws ParseException
+     * @throws IOException
+     */
+    public void doParse(String strInput) throws ParseException, IOException {
+        try {
+            mParseModel = mGSON.fromJson(strInput, mtypeOf);
+        } catch (Exception ex) {
+            throw new ParseException(ParseException.EXCEPTION_RESPONSE_FORMAT, ex);
+        } finally {
+            close();
+        }
     }
 
     /**
@@ -102,6 +128,7 @@ public class Gson2PosAbstractParseImplement extends DefaultHandler implements Pa
 
     /**
      * Kiểm tra xem đã đóng stream chưa
+     *
      * @return
      */
     @Override
@@ -111,6 +138,7 @@ public class Gson2PosAbstractParseImplement extends DefaultHandler implements Pa
 
     /**
      * Kiểm tra xem còn mở stream không
+     *
      * @return
      */
     @Override
@@ -120,6 +148,7 @@ public class Gson2PosAbstractParseImplement extends DefaultHandler implements Pa
 
     /**
      * Nhận kết quả trả về
+     *
      * @return
      */
     @Override

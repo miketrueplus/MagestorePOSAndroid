@@ -47,6 +47,8 @@ public class PosProduct extends PosAbstractModel implements Product {
     private int options;
 
     private String is_in_stock = StringUtil.STRING_ONE;
+
+    private String backorders = StringUtil.STRING_ONE;
     private String minimum_qty = StringUtil.STRING_ONE;
     private String maximum_qty;
     private String qty = maximum_qty;
@@ -54,6 +56,11 @@ public class PosProduct extends PosAbstractModel implements Product {
     @Override
     public boolean isInStock() {
         return StringUtil.STRING_ONE.equals(is_in_stock);
+    }
+
+    @Override
+    public boolean isBackOrders() {
+        return StringUtil.STRING_ONE.equals(backorders);
     }
 
     @Override
@@ -84,7 +91,8 @@ public class PosProduct extends PosAbstractModel implements Product {
 
     @Override
     public int getAllowMaxQty() {
-        return (int) getMaximumQty();
+        return  (int) ((getQty() > getMaximumQty()) ? getMaximumQty() : getQty());
+//        return (int) getMaximumQty();
 //        int allowMax = (int) (getQty() - getMinimumQty());
 //        int maxQty = (int) getMaximumQty();
 //        return (int) allowMax < maxQty ? allowMax : maxQty;
