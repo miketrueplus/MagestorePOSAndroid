@@ -5,6 +5,7 @@ import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.service.ChildListService;
+import com.magestore.app.lib.service.ServiceException;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -72,6 +73,10 @@ public interface CartService extends ChildListService<Checkout, CartItem> {
     boolean validateStock(Checkout checkout, Product product, int quantity);
 
     boolean validateStock(Checkout checkout, CartItem item, int quantity);
+
+    int calculateValidStock(Checkout checkout, CartItem item, int quantity) throws ServiceException;
+
+    int calculateValidStock(Checkout checkout, Product product, int quantity) throws ServiceException;
 
     List<CartItem> reOrder(Checkout checkout, Order order) throws IOException, InstantiationException, ParseException, IllegalAccessException;
 }

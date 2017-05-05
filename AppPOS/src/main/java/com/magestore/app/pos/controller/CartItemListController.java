@@ -81,10 +81,10 @@ public class CartItemListController extends AbstractChildListController<Checkout
     public void bindProduct(Product product) {
         if (!product.haveProductOption()) {
             try {
-                if (!mCartService.validateStock(getParent(), product, product.getQuantityIncrement())) {
-                    getView().showErrMsgDialog(getView().getContext().getString(R.string.err_cannot_add_more_item));
-                    return;
-                }
+//                if (!mCartService.validateStock(getParent(), product, product.getQuantityIncrement())) {
+//                    getView().showErrMsgDialog(getView().getContext().getString(R.string.err_cannot_add_more_item));
+//                    return;
+//                }
                 // chèn vào cart item
                 CartItem cartItem = mCartService.insert(getParent(), product, product.getQuantityIncrement());
 

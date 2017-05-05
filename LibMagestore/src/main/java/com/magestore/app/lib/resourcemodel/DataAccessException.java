@@ -23,8 +23,8 @@ public class DataAccessException extends MagestoreException {
         super(code, cause);
     }
 
-    public DataAccessException(String message) {
-        super(message);
+    public DataAccessException(String code) {
+        super(code);
     }
 
     public DataAccessException(Throwable cause) {

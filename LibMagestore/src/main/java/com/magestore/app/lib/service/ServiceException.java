@@ -20,7 +20,7 @@ public class ServiceException extends MagestoreException {
     }
 
     public ServiceException(String strCode, String message, Throwable cause) {
-        super(message, cause);
+        super(strCode, message, cause);
     }
 
     public ServiceException(String strCode, Throwable cause) {

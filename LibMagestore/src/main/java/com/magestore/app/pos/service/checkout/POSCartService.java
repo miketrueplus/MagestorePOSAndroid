@@ -10,6 +10,7 @@ import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.model.sales.OrderCartItem;
+import com.magestore.app.lib.model.sales.OrderCustomSalesInfo;
 import com.magestore.app.lib.resourcemodel.DataAccessFactory;
 import com.magestore.app.lib.resourcemodel.catalog.ProductDataAccess;
 import com.magestore.app.lib.resourcemodel.sales.CartDataAccess;
@@ -20,6 +21,7 @@ import com.magestore.app.pos.model.catalog.PosProductOptionConfigOption;
 import com.magestore.app.pos.model.catalog.PosProductOptionJsonConfigAttributes;
 import com.magestore.app.pos.model.checkout.cart.PosCartItem;
 import com.magestore.app.pos.model.sales.PosOrderCartItem;
+import com.magestore.app.pos.model.sales.PosOrderCustomSalesInfo;
 import com.magestore.app.pos.service.AbstractService;
 import com.magestore.app.util.StringUtil;
 
@@ -507,24 +509,31 @@ public class POSCartService extends AbstractService implements CartService {
 
         // nếu chưa thì thêm mới
         if (cartItem == null) {
+//            if (!validateStock(checkout, product, quantity))
+//                throw new ServiceException(ServiceException.EXCEPTION_QUANTITY_NOT_ENOUGH, "");
+
             // kiểm tra số lượng còn trong kho không đã
-            if (!validateStock(checkout, product, quantity))
-                throw new ServiceException(ServiceException.EXCEPTION_QUANTITY_NOT_ENOUGH, "");
+            quantity = calculateValidStock(checkout, product, quantity);
 
             // Khởi tạo product order item
             cartItem = create(product, quantity, price);
+
             // Thêm vào danh sách order cartItem
             insert(checkout, cartItem);
         }
         // có rồi thì cập nhật lại số lượng
         else {
             // tính toán số lượng mới
-            int newQuantity = cartItem.getQuantity() + quantity;
+//            int newQuantity = cartItem.getQuantity() + quantity;
             // kiểm tra số lượng trước có đủ trong kho không
-            validateStock(checkout, cartItem, newQuantity);
+//            validateStock(checkout, cartItem, quantity);
 //                throw new ServiceException("Not enough quantity");
+
+            // kiểm tra số lượng còn trong kho không đã
+            quantity = calculateValidStock(checkout, cartItem, quantity);
+
             // cập nhật số lượng
-            cartItem.setQuantity(newQuantity);
+            cartItem.setQuantity(cartItem.getQuantity() + quantity);
             float unitPrice = cartItem.getUnitPrice();
             float totalPrice = (unitPrice * cartItem.getQuantity());
             cartItem.setPrice(totalPrice);
@@ -734,15 +743,15 @@ public class POSCartService extends AbstractService implements CartService {
     @Override
     public boolean validateStock(Checkout checkout, Product product, int quantity) {
         if (!product.isInStock()) return false;
-        if (quantity < product.getAllowMinQty()) return false;
-        if (quantity > product.getAllowMaxQty() && product.getAllowMaxQty() > product.getAllowMinQty())
+//        if (quantity < product.getAllowMinQty()) return false;
+        if (quantity > product.getMaximumQty() && ((int) product.getMaximumQty() > 0))
             return false;
         return true;
     }
 
     /**
      * Kiểm tra số lượng trong kho đủ để bán không
-     *
+     * Nếu đủ, trả lại số lượng khả dĩ cho phép có thể add vào cart
      * @param checkout
      * @param quantity
      * @return
@@ -753,11 +762,62 @@ public class POSCartService extends AbstractService implements CartService {
         Product product = item.getProduct();
 
         if (!item.getProduct().isInStock()) throw new ServiceException(ServiceException.EXCEPTION_QUANTITY_OUT_OF_STOCK, "");
-        if (newQuantity > product.getMaximumQty()) throw new ServiceException(ServiceException.EXCEPTION_QUANTITY_REACH_MAXIMUM, "");
-        if (newQuantity < product.getAllowMinQty()) throw new ServiceException(ServiceException.EXCEPTION_QUANTITY_REACH_MINIMUM, "");
+        if (newQuantity > product.getMaximumQty() && ((int) product.getMaximumQty() > 0)) throw new ServiceException(ServiceException.EXCEPTION_QUANTITY_REACH_MAXIMUM, "");
+//        if (newQuantity < product.getAllowMinQty()) throw new ServiceException(ServiceException.EXCEPTION_QUANTITY_REACH_MINIMUM, "");
         return true;
     }
 
+    /**
+     * Trả lại số lượng phù hợp khi add 1 item vào cart
+     * @param checkout
+     * @param item
+     * @param quantity
+     * @return
+     * @throws ServiceException
+     */
+    @Override
+    public int calculateValidStock(Checkout checkout, CartItem item, int quantity) throws ServiceException {
+        int newQuantity = item.getQuantity() + quantity;
+        Product product = item.getProduct();
+
+        if (!item.getProduct().isInStock()) throw new ServiceException(ServiceException.EXCEPTION_QUANTITY_OUT_OF_STOCK, "");
+        if (newQuantity > product.getMaximumQty() && ((int) product.getMaximumQty() > 0)) throw new ServiceException(ServiceException.EXCEPTION_QUANTITY_REACH_MAXIMUM, "");
+        if (newQuantity < product.getAllowMinQty()) {
+            newQuantity = product.getAllowMinQty() > product.getQuantityIncrement() ? product.getAllowMinQty() : product.getQuantityIncrement();
+            quantity = newQuantity - quantity;
+            if (quantity <= 0) quantity = 1;
+        }
+        return quantity;
+    }
+
+    /**
+     * Trả lại số lượng phù hợp khi add 1 item vào cart
+     * @param checkout
+     * @param quantity
+     * @return
+     * @throws ServiceException
+     */
+    @Override
+    public int calculateValidStock(Checkout checkout, Product product, int quantity) throws ServiceException {
+        if (!product.isInStock()) throw new ServiceException(ServiceException.EXCEPTION_QUANTITY_OUT_OF_STOCK, "");
+        if (quantity > product.getMaximumQty() && ((int) product.getMaximumQty() > 0)) throw new ServiceException(ServiceException.EXCEPTION_QUANTITY_REACH_MAXIMUM, Float.toString(product.getMaximumQty()));
+        if (quantity < product.getAllowMinQty()) {
+            quantity = product.getAllowMinQty() > product.getQuantityIncrement() ? product.getAllowMinQty() : product.getQuantityIncrement();
+            if (quantity <= 0) quantity = 1;
+        }
+        return quantity;
+    }
+
+    /**
+     * Thực hiện re-order, tạo lại các cart item tương ứng đối với checkout mới
+     * @param checkout
+     * @param order
+     * @return
+     * @throws IOException
+     * @throws InstantiationException
+     * @throws ParseException
+     * @throws IllegalAccessException
+     */
     @Override
     public List<CartItem> reOrder(Checkout checkout, Order order) throws IOException, InstantiationException, ParseException, IllegalAccessException {
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
@@ -765,23 +825,49 @@ public class POSCartService extends AbstractService implements CartService {
 
         // xử lý từng item trong order
         for (OrderCartItem orderitem : order.getItemsInfoBuy().getListOrderCartItems()) {
-            // fill thông tin product vào
-            Product product = productDataAccess.retrieve(orderitem.getID());
-            product.setProductOption(productDataAccess.loadProductOption(product));
+            // nếu không phải custome sales
+            if (orderitem.getCustomSalesInfo() == null) {
+                // fill thông tin product vào
+                Product product = productDataAccess.retrieve(orderitem.getID());
+                product.setProductOption(productDataAccess.loadProductOption(product));
 
-            CartItem newItem = create(product, orderitem.getQty(), orderitem.getUnitPrice());
-            newItem.setOriginalPrice(orderitem.getOriginalPrice());
-            newItem.setOptions(mapOptionValueID2Code(orderitem.getOptions()));
-            newItem.setBundleOption(mapOptionValueID2Code(orderitem.getBundleOption()));
-            newItem.setBundleOptionQty(mapOptionValueID2Code(orderitem.getBundleOptionQty()));
-            newItem.setSuperAttribute(mapOptionValueID2Code(orderitem.getSuperAttribute()));
+                // tạo item theo product truy xuất được
+                CartItem newItem = create(product, orderitem.getQty(), orderitem.getUnitPrice());
+                newItem.setOriginalPrice(orderitem.getOriginalPrice());
+                newItem.setOptions(mapOptionValueID2Code(orderitem.getOptions()));
+                newItem.setBundleOption(mapOptionValueID2Code(orderitem.getBundleOption()));
+                newItem.setBundleOptionQty(mapOptionValueID2Code(orderitem.getBundleOptionQty()));
+                newItem.setSuperAttribute(mapOptionValueID2Code(orderitem.getSuperAttribute()));
 
-            // xử lý xong thì insert lại vào checkout
-            insert(checkout, newItem);
+                // xử lý xong thì insert lại vào checkout
+                insert(checkout, newItem);
+            }
+            // nếu là custom sales
+            else {
+                if (orderitem.getCustomSalesInfo().size() <= 0) continue;
+                OrderCustomSalesInfo customSalesInfo = orderitem.getCustomSalesInfo().get(0);
+                CartItem newItem = createCustomSale();
+                newItem.setQuantity(customSalesInfo.getQty());
+                newItem.setTypeCustom();
+                newItem.setPrice(customSalesInfo.getUnitPrice());
+                newItem.setUnitPrice(customSalesInfo.getUnitPrice());
+                newItem.setCustomPrice(customSalesInfo.getUnitPrice());
+                newItem.setOriginalPrice(customSalesInfo.getUnitPrice());
+                newItem.getProduct().setName(customSalesInfo.getProductName());
+                newItem.setShipable(!customSalesInfo.isVirtual());
+
+                // xử lý xong thì insert lại vào checkout
+                insertWithCustomSale(checkout, newItem);
+            }
         }
         return checkout.getCartItem();
     }
 
+    /**
+     * Map ID sang Code đối với mỗi option value khi re order
+     * @param options
+     * @return
+     */
     private List<PosCartItem.OptionsValue> mapOptionValueID2Code(List<PosCartItem.OptionsValue> options) {
         if (options == null) return options;
         for(PosCartItem.OptionsValue option : options) {

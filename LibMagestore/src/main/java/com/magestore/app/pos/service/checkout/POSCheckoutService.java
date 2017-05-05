@@ -301,6 +301,7 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
                     cartOld.setItemId(cartNew.getItemId());
                     cartOld.setIsSaveCart(true);
                     cartOld.setPrice(cartNew.getPrice());
+                    cartOld.setUnitPrice(cartNew.getPrice());
                     cartOld.getProduct().setItemId(cartNew.getItemId());
                     cartOld.getProduct().setIsSaveCart(true);
                     cartOld.setIsVirtual(cartNew.getIsVirtual());

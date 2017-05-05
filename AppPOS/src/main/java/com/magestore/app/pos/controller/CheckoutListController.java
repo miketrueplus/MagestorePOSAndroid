@@ -1225,7 +1225,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             wraper.put("list_payment", listPayment);
             isShowPluginStoreCredit(false);
             ((CheckoutDetailPanel) mDetailView).updateTitlePaymentCreditCard(method.getTitle());
-           //Felix edit 03/05/2017
+            //Felix edit 03/05/2017
             if (method.getCode().equals("authorizenet_directpost")) {
                 isEnableCreateInvoice(false);
             } else {
@@ -1431,6 +1431,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         mCheckoutPaymentListPanel.bindList(listPayment);
         mCheckoutPaymentListPanel.updateTotal(listPayment);
         mCheckoutPaymentCreditCardPanel.clearDataForm();
+        mPluginRewardPointPanel.resetPointValue();
         isShowButtonCheckout(true);
         isShowSalesMenuDiscount(true);
         ((CheckoutDetailPanel) mDetailView).showPickAtStore(true);
@@ -1729,6 +1730,10 @@ public class CheckoutListController extends AbstractListController<Checkout> {
      */
     public void isShowSalesMenuToggle(boolean isShow) {
         ((CheckoutListPanel) mView).showSalesMenuToggle(isShow);
+    }
+
+    public void changeTitlePlaceOrder(boolean ischange) {
+        ((CheckoutListPanel) mView).changeTitlePlaceOrder(ischange);
     }
 
     public void isShowPluginStoreCredit(boolean isShow) {

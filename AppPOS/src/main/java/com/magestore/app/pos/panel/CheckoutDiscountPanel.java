@@ -2,6 +2,8 @@ package com.magestore.app.pos.panel;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.EditText;
@@ -77,7 +79,7 @@ public class CheckoutDiscountPanel extends AbstractDetailPanel<Checkout> {
         grand_total = mCheckoutListController.getSelectedItem().getGrandTotal();
 
         String sym = ConfigUtil.getCurrencySymbol();
-        if(sym != null)
+        if (sym != null)
             amount_currency.setText(ConfigUtil.getCurrencySymbol());
 
         if (mCheckoutListController.getMaximumDiscount() >= 0) {
@@ -112,6 +114,41 @@ public class CheckoutDiscountPanel extends AbstractDetailPanel<Checkout> {
                 } else {
                     discount_amount.setMaxValue(maximum_discount_percent);
                 }
+
+            }
+        });
+
+        actionChangeDiscountAmount();
+    }
+
+    private void actionChangeDiscountAmount() {
+        discount_amount.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                float amount = 0;
+                String value = discount_amount.getText().toString();
+                try {
+                    amount = Float.parseFloat(value);
+                } catch (Exception e) {
+                }
+                if (amountType) {
+                    if (amount > maximum_discount_percent) {
+                        discount_amount.setText(ConfigUtil.formatNumber(maximum_discount_percent));
+                    }
+                } else {
+                    if (amount > maximum_discount_currency) {
+                        discount_amount.setText(ConfigUtil.formatNumber(maximum_discount_currency));
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
 
             }
         });

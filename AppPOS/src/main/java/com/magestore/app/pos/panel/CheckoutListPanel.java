@@ -125,7 +125,8 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
             @Override
             public void onClick(View v) {
                 String place_order = getContext().getString(R.string.sales_place_holder);
-                if (btn_sales_order_checkout.getText().equals(place_order)) {
+                String mark_as_partial = getContext().getString(R.string.sales_mark_as_partial);
+                if (btn_sales_order_checkout.getText().equals(place_order) || btn_sales_order_checkout.getText().equals(mark_as_partial)) {
                     ((CheckoutListController) getController()).doInputPlaceOrder();
                 } else {
                     ((CheckoutListController) getController()).doInputSaveCart();
@@ -165,7 +166,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
                 mCheckoutDiscountPanel.setCheckoutListController(((CheckoutListController) mController));
                 mCheckoutDiscountPanel.initValue();
 
-                final int maxumum_discount = (int)((CheckoutListController) mController).getMaximumDiscount();
+                final int maxumum_discount = (int) ((CheckoutListController) mController).getMaximumDiscount();
 
                 final MagestoreDialog dialog = DialogUtil.dialog(getContext(), "", mCheckoutDiscountPanel);
                 dialog.setDialogTitle(getContext().getString(R.string.checkout_discount_all, String.valueOf(maxumum_discount)));
@@ -246,7 +247,15 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
         }
     }
 
-    public void showButtonRemoveDiscount(boolean isShow){
+    public void changeTitlePlaceOrder(boolean ischange) {
+        if (ischange) {
+            btn_sales_order_checkout.setText(getContext().getString(R.string.sales_mark_as_partial));
+        } else {
+            btn_sales_order_checkout.setText(getContext().getString(R.string.sales_place_holder));
+        }
+    }
+
+    public void showButtonRemoveDiscount(boolean isShow) {
         bt_remove_discount.setVisibility(isShow ? VISIBLE : GONE);
     }
 
@@ -258,7 +267,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
         bt_sales_menu.setVisibility(isShow ? VISIBLE : GONE);
     }
 
-    public void showSalesMenuToggle(boolean isShow){
+    public void showSalesMenuToggle(boolean isShow) {
         bt_sales_menu.toggle(isShow ? true : false);
     }
 
@@ -267,7 +276,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
         bt_sales_discount.setVisibility(((CheckoutListController) mController).checkListCartItem() ? VISIBLE : GONE);
     }
 
-    public void showButtonCustomSales(boolean isShow){
+    public void showButtonCustomSales(boolean isShow) {
         bt_custom_sales.setVisibility(isShow ? VISIBLE : GONE);
     }
 

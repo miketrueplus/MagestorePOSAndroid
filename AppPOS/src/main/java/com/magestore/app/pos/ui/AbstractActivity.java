@@ -26,6 +26,7 @@ import com.magestore.app.pos.SettingActivity;
 import com.magestore.app.pos.view.MagestoreDialog;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.DataUtil;
+import com.magestore.app.util.StringUtil;
 import com.magestore.app.view.ui.PosUI;
 import com.magestore.app.pos.CustomerActivity;
 import com.magestore.app.pos.OrderActivity;
@@ -150,14 +151,17 @@ public abstract class AbstractActivity
      * Dịch thông báo lỗi
      */
     public String getExceptionMessage(Exception exp) {
+        String strReturn = exp.getLocalizedMessage();
+        if (StringUtil.isNullOrEmpty(strReturn)) strReturn = StringUtil.STRING_EMPTY;
+
         if (exp instanceof MagestoreException) {
             String packageName = getPackageName();
             if (((MagestoreException) exp).getCode() != null) {
                 int resId = getResources().getIdentifier(((MagestoreException) exp).getCode(), "string", packageName);
-                if (resId > 0) return getString(resId);
+                if (resId > 0) return getString(resId) + "\n" + strReturn;
             }
         }
-        return exp.getLocalizedMessage();
+        return strReturn;
     }
 
     /**

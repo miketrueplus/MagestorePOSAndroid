@@ -373,8 +373,8 @@ public class MagestoreStatement implements Statement {
                 throw new ConnectionException(messageException500.getCode(), messageException500.getMessage());
             } else if (statusCode == 404) {
                 rp.setParseModel(PosMessageException.class);
-                PosMessageException messageException = ((PosMessageException) rp.doParse());
-                throw new ConnectionException(ConnectionException.EXCEPTION_PAGE_NOT_FOUND, messageException.getMessage());
+//                PosMessageException messageException = ((PosMessageException) rp.doParse());
+                throw new ConnectionException(ConnectionException.EXCEPTION_PAGE_NOT_FOUND);
             } else if (statusCode == 400) {
                 rp.setParseModel(PosMessageException400.class);
                 PosMessageException400 messageException = ((PosMessageException400) rp.doParse());

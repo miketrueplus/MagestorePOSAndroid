@@ -362,7 +362,7 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
             paramBuilder = statement.getParamBuilder()
                     .setPage(currentPage)
                     .setPageSize(pageSize)
-                    .setFilterEqual("category_id", categoryId)
+                    .setFilterIn("category_id", categoryId)
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
 
 
