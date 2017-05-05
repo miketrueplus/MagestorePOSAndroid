@@ -418,6 +418,8 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         List<PosProductOptionGrouped> groupedList = getItem().getProduct().getProductOption().getGroupedOptions();
         if (groupedList != null) {
             findViewById(R.id.id_layout_product_option_cart_item_quantity).setVisibility(View.GONE);
+            findViewById(R.id.id_layout_product_option_cart_item_quantity_label).setVisibility(View.GONE);
+
             for (PosProductOptionGrouped groupedOption : groupedList) {
                 OptionModelView optionModelView = new OptionModelView();
                 optionModelView.optionValueModelViewList = new ArrayList<>();
@@ -448,6 +450,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
     public void createModelViewList() {
         mModelViewList = new ArrayList<OptionModelView>();
         findViewById(R.id.id_layout_product_option_cart_item_quantity).setVisibility(View.VISIBLE);
+        findViewById(R.id.id_layout_product_option_cart_item_quantity_label).setVisibility(View.VISIBLE);
 
         // tạo model view list với custom option
         createModelViewListFromOptionCustom();
