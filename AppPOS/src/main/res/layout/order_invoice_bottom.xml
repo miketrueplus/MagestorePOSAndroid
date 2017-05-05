@@ -89,6 +89,7 @@
                             android:textSize="@dimen/order_content_table_text_size" />
 
                         <TextView
+                            android:id="@+id/invoice_subtotal"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -112,6 +113,7 @@
                             android:textSize="@dimen/order_content_table_text_size" />
 
                         <TextView
+                            android:id="@+id/invoice_shipping"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -135,6 +137,7 @@
                             android:textSize="@dimen/order_content_table_text_size" />
 
                         <TextView
+                            android:id="@+id/invoice_tax"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -159,6 +162,7 @@
                             android:textSize="@dimen/order_content_table_text_size" />
 
                         <TextView
+                            android:id="@+id/invoice_discount"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -182,6 +186,7 @@
                             android:textSize="@dimen/order_content_table_text_size" />
 
                         <TextView
+                            android:id="@+id/invoice_grandtotal"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"

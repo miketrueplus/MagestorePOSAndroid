@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.magestore.app.lib.controller.Controller;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
@@ -22,6 +23,7 @@ import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.OrderHistoryListController;
 import com.magestore.app.pos.controller.OrderInvoiceItemsListController;
 import com.magestore.app.pos.databinding.PanelOrderInvoiceBinding;
+import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.DialogUtil;
 
 import java.util.ArrayList;
@@ -42,6 +44,7 @@ public class OrderInvoicePanel extends AbstractDetailPanel<Order> {
     EditText invoice_comment;
     Button btn_update_qty, btn_submit_invoice;
     View view;
+    TextView invoice_grandtotal, invoice_discount, invoice_tax, invoice_shipping, invoice_subtotal;
 
     public OrderInvoicePanel(Context context) {
         super(context);
@@ -67,6 +70,13 @@ public class OrderInvoicePanel extends AbstractDetailPanel<Order> {
         mBinding = DataBindingUtil.bind(view);
 
         mOrderInvoiceItemsListPanel = (OrderInvoiceItemsListPanel) findViewById(R.id.order_invoice_items);
+
+        invoice_grandtotal = (TextView) findViewById(R.id.invoice_grandtotal);
+        invoice_discount = (TextView) findViewById(R.id.invoice_discount);
+        invoice_tax = (TextView) findViewById(R.id.invoice_tax);
+        invoice_shipping = (TextView) findViewById(R.id.invoice_shipping);
+        invoice_subtotal = (TextView) findViewById(R.id.invoice_subtotal);
+
         btn_update_qty = (Button) view.findViewById(R.id.btn_update_qty);
         btn_submit_invoice = (Button) view.findViewById(R.id.btn_submit_invoice);
         initModel();
@@ -88,14 +98,19 @@ public class OrderInvoicePanel extends AbstractDetailPanel<Order> {
     public void bindItem(Order item) {
         if (item == null) return;
         super.bindItem(item);
+        mOrderInvoiceItemsListController.doSelectOrder(item);
         mBinding.setOrderDetail(item);
         mOrder = item;
-        mOrderInvoiceItemsListController.doSelectOrder(item);
     }
 
     public void bindTotal(Order item) {
-        mOrder = item;
-        mBinding.setOrderDetail(item);
+        isShowButtonUpdateQty(false);
+        isEnableButtonSubmitInvoice(true);
+        invoice_grandtotal.setText(ConfigUtil.formatPrice(item.getGrandTotal()));
+        invoice_discount.setText(ConfigUtil.formatPrice(item.getDiscountAmount()));
+        invoice_tax.setText(ConfigUtil.formatPrice(item.getTaxAmount()));
+        invoice_shipping.setText(ConfigUtil.formatPrice(item.getShippingAmount()));
+        invoice_subtotal.setText(ConfigUtil.formatPrice(item.getOrderHistorySubtotal()));
     }
 
     @Override
