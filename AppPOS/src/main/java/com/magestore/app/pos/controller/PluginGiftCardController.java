@@ -113,9 +113,8 @@ public class PluginGiftCardController extends AbstractListController<GiftCard> {
 
     @Override
     public void onCancelledBackground(Exception exp, int actionType, String actionCode, Map<String, Object> wraper, Model... models) {
-        if (actionType == ACTION_TYPE_ADD_GIFTCARD) {
-
-        }
+        mCheckoutListController.isShowLoadingDetail(false);
+        mPluginGiftCardListPanel.showError(exp.getMessage());
     }
 
     private void addFirstGiftCard() {

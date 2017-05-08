@@ -19,6 +19,7 @@ import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.PluginGiftCardController;
 import com.magestore.app.pos.databinding.PluginGiftCardContentLayoutBinding;
 import com.magestore.app.util.ConfigUtil;
+import com.magestore.app.util.DialogUtil;
 
 import java.util.HashMap;
 
@@ -190,5 +191,10 @@ public class PluginGiftCardListPanel extends AbstractSimpleRecycleView<GiftCard>
     public void enableUseMaxPoint(GiftCard giftCard) {
         CheckBox cb_useMaxPoint = mUserMaxPoint.get(giftCard);
         cb_useMaxPoint.setVisibility(VISIBLE);
+    }
+
+    public void showError(String message){
+        // Tạo dialog và hiển thị
+        DialogUtil.confirm(getContext(), message, R.string.ok);
     }
 }
