@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.magestore.app.lib.model.catalog.Category;
 import com.magestore.app.pos.model.PosAbstractModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,7 +25,7 @@ public class PosCategory extends PosAbstractModel implements Category {
     String path;
 
     @Expose(serialize = false, deserialize = false)
-    List<Category> list_sub;
+    List<Category> list_sub = new ArrayList<>();
 
     public void setName(String name) {
         this.name = name;

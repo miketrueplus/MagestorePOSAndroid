@@ -293,6 +293,7 @@ public class SalesActivity extends AbstractActivity
         mCheckoutListController.setPluginsService(pluginsService);
         mCheckoutListController.setPluginRewardPointPanel(mPluginRewardPointPanel);
         mCheckoutListController.setPluginStoreCreditPanel(mPluginStoreCreditPanel);
+        mCheckoutListController.setPluginGiftCardPanel(mPluginGiftCardPanel);
 
         // controller quản lý danh sách khách hàng
         mProductListController = new ProductListController();
