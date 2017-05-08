@@ -93,7 +93,7 @@ public class PluginGiftCardController extends AbstractListController<GiftCard> {
             Checkout checkout = (Checkout) wraper.get("add_gift_card_respone");
             GiftCard giftCard = (GiftCard) models[0];
             mCheckoutListController.updateToTal(checkout);
-            setAmountToGiftCard(checkout, giftCard);
+            setAmountToGiftCard(checkout, listGiftCard.get(listGiftCard.indexOf(giftCard)));
             mPluginGiftCardListPanel.enableGiftCodeValue(giftCard);
             mPluginGiftCardListPanel.enableUseMaxPoint(giftCard);
             mCheckoutListController.isShowLoadingDetail(false);
@@ -134,7 +134,7 @@ public class PluginGiftCardController extends AbstractListController<GiftCard> {
             List<GiftCard> giftCardList = checkout.getGiftCard().getUsedCodes();
             if (giftCardList != null && giftCardList.size() > 0) {
                 for (GiftCard item : giftCardList) {
-                    if (item.getCouponCode().equals(giftCard.getCouponCode())) {
+                    if (item.getCouponCode().equals(giftCard.getCouponCode().toUpperCase())) {
                         giftCard.setAmount(item.getAmount());
                         giftCard.setBalance(item.getBalance());
                     }

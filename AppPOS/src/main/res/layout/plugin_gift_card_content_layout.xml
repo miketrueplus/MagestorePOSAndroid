@@ -42,6 +42,7 @@
                         android:background="@drawable/checkout_border_linear_layout"
                         android:hint="@string/plugin_gift_code_hint_text"
                         android:padding="@dimen/layout_margin_10"
+                        android:text="@{giftCard.getCouponCode()}"
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/text_size" />
                 </LinearLayout>
@@ -63,7 +64,7 @@
                         android:gravity="right"
                         android:inputType="numberDecimal"
                         android:padding="@dimen/layout_margin_10"
-                        android:text="0"
+                        android:text="@{ConfigUtil.formatNumber(giftCard.getAmount())}"
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/text_size" />
                 </LinearLayout>
@@ -88,6 +89,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/layout_margin_5"
             android:layout_marginTop="@dimen/layout_margin_5">
 
             <LinearLayout

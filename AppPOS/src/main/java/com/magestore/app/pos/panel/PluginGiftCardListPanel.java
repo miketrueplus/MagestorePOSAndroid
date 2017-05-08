@@ -59,28 +59,28 @@ public class PluginGiftCardListPanel extends AbstractSimpleRecycleView<GiftCard>
     }
 
     @Override
-    protected void bindItem(View view, final GiftCard item, int position) {
+    protected void bindItem(View view, GiftCard item, int position) {
         PluginGiftCardContentLayoutBinding mBinding = DataBindingUtil.bind(view);
         mBinding.setGiftCard(item);
-
+        final GiftCard giftCard = mList.get(position);
         EditText gift_code = (EditText) view.findViewById(R.id.gift_code);
-        mTextGiftCode.put(item, gift_code);
+        mTextGiftCode.put(giftCard, gift_code);
         EditText gift_code_value = (EditText) view.findViewById(R.id.gift_code_value);
-        mTextGiftCodeValue.put(item, gift_code_value);
+        mTextGiftCodeValue.put(giftCard, gift_code_value);
         CheckBox cb_use_max_credit = (CheckBox) view.findViewById(R.id.cb_use_max_credit);
-        mUserMaxPoint.put(item, cb_use_max_credit);
+        mUserMaxPoint.put(giftCard, cb_use_max_credit);
         actionCheckUseMaxPoint(item, cb_use_max_credit, gift_code_value);
         Button bt_apply = (Button) view.findViewById(R.id.bt_apply);
         bt_apply.setBackground(getResources().getDrawable(R.drawable.backgound_buton_apply_disable));
         bt_apply.setTextColor(ContextCompat.getColor(getContext(), R.color.text_color));
 
-        actionChangeGiftCode(item, gift_code, bt_apply);
-        actionChangeGiftValue(item, gift_code_value, bt_apply);
+        actionChangeGiftCode(giftCard, gift_code, bt_apply);
+        actionChangeGiftValue(giftCard, gift_code_value, bt_apply);
 
         bt_apply.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                onClickButtonApply(item);
+                onClickButtonApply(giftCard);
             }
         });
 
@@ -88,7 +88,7 @@ public class PluginGiftCardListPanel extends AbstractSimpleRecycleView<GiftCard>
         rl_remove_payment.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                actionRemoveGiftCode(item);
+                actionRemoveGiftCode(giftCard);
             }
         });
     }
