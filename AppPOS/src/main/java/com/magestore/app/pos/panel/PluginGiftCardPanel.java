@@ -48,4 +48,8 @@ public class PluginGiftCardPanel extends AbstractListPanel<GiftCard> {
             }
         });
     }
+
+    public void resetListGiftCard() {
+        mPluginGiftCardController.resetListGiftCard();
+    }
 }

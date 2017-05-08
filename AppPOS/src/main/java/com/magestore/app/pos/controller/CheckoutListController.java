@@ -37,6 +37,7 @@ import com.magestore.app.pos.panel.CheckoutPaymentWebviewPanel;
 import com.magestore.app.pos.panel.CheckoutShippingListPanel;
 import com.magestore.app.pos.panel.CheckoutSuccessPanel;
 import com.magestore.app.pos.panel.PaymentMethodListPanel;
+import com.magestore.app.pos.panel.PluginGiftCardPanel;
 import com.magestore.app.pos.panel.PluginRewardPointPanel;
 import com.magestore.app.pos.panel.PluginStoreCreditPanel;
 import com.magestore.app.util.ConfigUtil;
@@ -112,6 +113,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     PluginsService pluginsService;
     PluginRewardPointPanel mPluginRewardPointPanel;
     PluginStoreCreditPanel mPluginStoreCreditPanel;
+    PluginGiftCardPanel mPluginGiftCardPanel;
 
     @Override
     public List<Checkout> onRetrieveBackground(int page, int pageSize) throws Exception {
@@ -564,6 +566,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 ((CheckoutDetailPanel) mDetailView).showPanelPaymentMethod();
                 mCheckoutPaymentListPanel.setCheckout(checkout);
                 mCheckoutPaymentListPanel.resetListPayment();
+                mPluginGiftCardPanel.resetListGiftCard();
                 // plugins
                 if (checkout.getRewardPoint() != null) {
                     if (checkout.getRewardPoint().getBalance() != 0 && ConfigUtil.isEnableRewardPoint()) {
@@ -585,7 +588,6 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 autoSelectPaymentMethod(listPayment);
                 isShowPluginStoreCredit(true);
                 isShowPaymentMethod((checkout.getGrandTotal() == 0) ? false : true);
-                mPluginStoreCreditPanel.setVisibility(checkout.getGrandTotal() == 0 ? View.GONE : View.VISIBLE);
                 isShowLoadingDetail(false);
             }
         } else if (success && actionType == ACTION_TYPE_SAVE_CART_DISCOUNT) {
@@ -645,6 +647,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                     ((CheckoutDetailPanel) mDetailView).showPanelPaymentMethod();
                     wraper.put("save_quote", checkout);
                     mCheckoutPaymentListPanel.resetListPayment();
+                    mPluginGiftCardPanel.resetListGiftCard();
                     // plugins
                     if (checkout.getRewardPoint() != null) {
                         if (checkout.getRewardPoint().getBalance() != 0 && ConfigUtil.isEnableRewardPoint()) {
@@ -666,7 +669,6 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                     autoSelectPaymentMethod(listPayment);
                     isShowPluginStoreCredit(true);
                     isShowPaymentMethod((checkout.getGrandTotal() == 0) ? false : true);
-                    mPluginStoreCreditPanel.setVisibility(checkout.getGrandTotal() == 0 ? View.GONE : View.VISIBLE);
                 }
 
                 mPaymentMethodListPanel.bindList(listPayment);
@@ -737,6 +739,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             mCheckoutPaymentListPanel.resetListPayment();
             mCheckoutPaymentListPanel.setCheckout(checkout);
             wraper.put("save_shipping", checkout);
+            mPluginGiftCardPanel.resetListGiftCard();
             // plugins
             if (checkout.getRewardPoint() != null) {
                 if (checkout.getRewardPoint().getBalance() != 0 && ConfigUtil.isEnableRewardPoint()) {
@@ -758,7 +761,6 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             autoSelectPaymentMethod(checkout.getCheckoutPayment());
             isShowPluginStoreCredit(true);
             isShowPaymentMethod((checkout.getGrandTotal() == 0) ? false : true);
-            mPluginStoreCreditPanel.setVisibility(checkout.getGrandTotal() == 0 ? View.GONE : View.VISIBLE);
             // hoàn thành save shipping  hiden progressbar
             isShowLoadingDetail(false);
         } else if (success && actionType == ACTION_TYPE_SAVE_PAYMENT) {
@@ -1454,6 +1456,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         ((CheckoutDetailPanel) mDetailView).isEnableCreateInvoice(false);
         ((CheckoutDetailPanel) mDetailView).showPanelPaymentMethod();
         ((CheckoutDetailPanel) mDetailView).showPanelCheckoutPaymentCreditCard(false);
+        mPluginGiftCardPanel.resetListGiftCard();
         showSaleMenu(true);
         showSalesShipping();
         showActionButtonCheckout();
@@ -1750,7 +1753,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
     public void isShowPluginStoreCredit(boolean isShow) {
         Checkout checkout = checkDataCheckout((Checkout) wraper.get("save_shipping"));
-        if (checkout.getStoreCredit() != null && checkout.getStoreCredit().getBalance() != 0) {
+        if (checkout.getStoreCredit() != null && checkout.getStoreCredit().getBalance() != 0 && checkout.getGrandTotal() != 0) {
             mPluginStoreCreditPanel.setVisibility(isShow ? View.VISIBLE : View.GONE);
         } else {
             mPluginStoreCreditPanel.setVisibility(View.GONE);
@@ -1855,6 +1858,10 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
     public void setPluginStoreCreditPanel(PluginStoreCreditPanel mPluginStoreCreditPanel) {
         this.mPluginStoreCreditPanel = mPluginStoreCreditPanel;
+    }
+
+    public void setPluginGiftCardPanel(PluginGiftCardPanel mPluginGiftCardPanel) {
+        this.mPluginGiftCardPanel = mPluginGiftCardPanel;
     }
 
     public void setPluginsService(PluginsService pluginsService) {

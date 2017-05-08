@@ -1,7 +1,5 @@
 package com.magestore.app.pos.api.m2.catalog;
 
-import android.util.Log;
-
 import com.magestore.app.lib.connection.Connection;
 import com.magestore.app.lib.connection.ConnectionException;
 import com.magestore.app.lib.connection.ConnectionFactory;
@@ -17,7 +15,6 @@ import com.magestore.app.pos.api.m2.POSAbstractDataAccess;
 import com.magestore.app.pos.api.m2.POSDataAccessSession;
 import com.magestore.app.pos.model.catalog.PosCategory;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListCategory;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,9 +55,6 @@ public class POSCategoryDataAccess extends POSAbstractDataAccess implements Cate
                     .setPage(page)
                     .setPageSize(pageSize)
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
-
-            Log.i(getClass().getName().toString(), " Query : " + POSAPI.REST_GET_CATEGORY_LISTING);
-            Log.i(getClass().getName().toString(), " Param : " + statement.getParamBuilder().getValueMap().toString());
 
             // thực thi truy vấn và parse kết quả thành object
             rp = statement.execute();

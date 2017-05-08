@@ -193,6 +193,12 @@ public class PluginGiftCardListPanel extends AbstractSimpleRecycleView<GiftCard>
         cb_useMaxPoint.setVisibility(VISIBLE);
     }
 
+    public void resetListGiftCard(){
+        mTextGiftCode = new HashMap<>();
+        mTextGiftCodeValue = new HashMap<>();
+        mUserMaxPoint = new HashMap<>();
+    }
+
     public void showError(String message){
         // Tạo dialog và hiển thị
         DialogUtil.confirm(getContext(), message, R.string.ok);
