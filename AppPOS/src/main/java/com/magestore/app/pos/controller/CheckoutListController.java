@@ -567,6 +567,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 // plugins
                 if (checkout.getRewardPoint() != null) {
                     if (checkout.getRewardPoint().getBalance() != 0 && ConfigUtil.isEnableRewardPoint()) {
+                        mPluginRewardPointPanel.resetPointValue();
                         mPluginRewardPointPanel.bindItem(checkout.getRewardPoint());
                         mPluginRewardPointPanel.setVisibility(View.VISIBLE);
                     } else {
@@ -647,6 +648,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                     // plugins
                     if (checkout.getRewardPoint() != null) {
                         if (checkout.getRewardPoint().getBalance() != 0 && ConfigUtil.isEnableRewardPoint()) {
+                            mPluginRewardPointPanel.resetPointValue();
                             mPluginRewardPointPanel.bindItem(checkout.getRewardPoint());
                             mPluginRewardPointPanel.setVisibility(View.VISIBLE);
                         } else {
@@ -738,6 +740,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             // plugins
             if (checkout.getRewardPoint() != null) {
                 if (checkout.getRewardPoint().getBalance() != 0 && ConfigUtil.isEnableRewardPoint()) {
+                    mPluginRewardPointPanel.resetPointValue();
                     mPluginRewardPointPanel.bindItem(checkout.getRewardPoint());
                     mPluginRewardPointPanel.setVisibility(View.VISIBLE);
                 } else {
@@ -825,7 +828,13 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         }
     }
 
+    @Override
+    public void onCancelledBackground(Exception exp, int actionType, String actionCode, Map<String, Object> wraper, Model... models) {
+        super.onCancelledBackground(exp, actionType, actionCode, wraper, models);
+    }
+
     public void updateToTal(Checkout checkout) {
+        mPluginRewardPointPanel.resetPointValue();
         ((CheckoutService) getListService()).updateTotal(checkout);
         showButtonRemoveDiscount(checkDiscount(checkout) ? true : false);
         ((CheckoutDetailPanel) mDetailView).bindTotalPrice(checkout.getGrandTotal());

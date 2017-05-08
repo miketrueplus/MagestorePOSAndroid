@@ -401,7 +401,7 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
                     }
 
                     // plugins
-                    else if (checkoutTotals.getCode().equals("giftvoucheraftertax")) {
+                    else if (checkoutTotals.getCode().equals("giftvoucher")) {
                         checkout.setGiftCardDiscount(checkoutTotals.getValue());
                         checkout.setGiftCardTitle(checkoutTotals.getTitle());
                     } else if (checkoutTotals.getCode().equals("rewardpoints_label")) {

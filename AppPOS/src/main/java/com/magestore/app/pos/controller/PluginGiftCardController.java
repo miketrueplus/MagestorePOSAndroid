@@ -111,6 +111,13 @@ public class PluginGiftCardController extends AbstractListController<GiftCard> {
         }
     }
 
+    @Override
+    public void onCancelledBackground(Exception exp, int actionType, String actionCode, Map<String, Object> wraper, Model... models) {
+        if (actionType == ACTION_TYPE_ADD_GIFTCARD) {
+
+        }
+    }
+
     private void addFirstGiftCard() {
         listGiftCard = new ArrayList<>();
         GiftCard firstGiftCard = pluginsService.createGiftCard();
@@ -128,7 +135,7 @@ public class PluginGiftCardController extends AbstractListController<GiftCard> {
             List<GiftCard> giftCardList = checkout.getGiftCard().getUsedCodes();
             if (giftCardList != null && giftCardList.size() > 0) {
                 for (GiftCard item : giftCardList) {
-                    if(item.getCouponCode().equals(giftCard.getCouponCode())){
+                    if (item.getCouponCode().equals(giftCard.getCouponCode())) {
                         giftCard.setAmount(item.getAmount());
                         giftCard.setBalance(item.getBalance());
                     }
