@@ -56,7 +56,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
-                android:text='@{@string/order_total_invoiced + " " + ConfigUtil.formatPrice(orderDetail.getTotalPaid())}'
+                android:text='@{@string/order_total_invoiced + " " + ConfigUtil.formatPrice(orderDetail.getTotalInvoiced())}'
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/text_size"
                 android:textStyle="bold" />
@@ -67,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="left"
-                android:text='@{@string/order_invoiceable + " " + ConfigUtil.formatPrice(orderDetail.getGrandTotal())}'
+                android:text='@{@string/order_invoiceable + " " + ConfigUtil.formatPrice(orderDetail.getTotalPaid())}'
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/text_size"
                 android:textStyle="bold" />

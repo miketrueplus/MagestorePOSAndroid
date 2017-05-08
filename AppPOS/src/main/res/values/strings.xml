@@ -156,6 +156,8 @@
     <string name="order_total_invoiced">Total Invoiced:</string>
     <string name="order_invoiceable">Invoiceable:</string>
     <string name="order_invoice_success">The invoice has been created successfully.</string>
+    <string name="order_invoice_take_payment">You must take payment on this order before creating invoice!</string>
+    <string name="order_invoice_choose_item">Please choose an item to invoice!</string>
     <string name="order_cancel_title">Cancel Comment</string>
     <string name="order_cancel_comment_title">Reason to cancel order</string>
     <string name="order_cancel_success">The order has been canceled successfully.</string>

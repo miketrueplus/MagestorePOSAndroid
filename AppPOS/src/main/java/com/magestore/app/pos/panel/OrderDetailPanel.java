@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.model.sales.OrderUpdateQtyParam;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
@@ -325,12 +326,34 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         btn_submit_shipment.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Order order = mOrderShipmentPanel.bind2Item();
-                ((OrderHistoryListController) mController).setOrderShipmentPanel(mOrderShipmentPanel);
-                ((OrderHistoryListController) mController).doInputCreateShipment(order);
-                dialog.dismiss();
+                if (mOrder.getTotalPaid() == 0) {
+                    String message = getContext().getString(R.string.order_invoice_take_payment);
+                    // Tạo dialog và hiển thị
+                    com.magestore.app.util.DialogUtil.confirm(getContext(), message, R.string.ok);
+                } else {
+                    Order order = mOrderShipmentPanel.bind2Item();
+                    if (checkItemInvoice(order)) {
+                        ((OrderHistoryListController) mController).setOrderShipmentPanel(mOrderShipmentPanel);
+                        ((OrderHistoryListController) mController).doInputCreateShipment(order);
+                        dialog.dismiss();
+                    } else {
+                        String message = getContext().getString(R.string.order_invoice_choose_item);
+                        // Tạo dialog và hiển thị
+                        com.magestore.app.util.DialogUtil.confirm(getContext(), message, R.string.ok);
+                    }
+                }
             }
         });
+    }
+
+    private boolean checkItemInvoice(Order order) {
+        boolean checkItem = false;
+        for (CartItem item : order.getOrderItems()) {
+            if (item.getQuantity() > 0) {
+                checkItem = true;
+            }
+        }
+        return checkItem;
     }
 
     private void onClickRefund() {
@@ -371,6 +394,7 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         final OrderInvoicePanel mOrderInvoicePanel = new OrderInvoicePanel(getContext());
         mOrderInvoicePanel.setController(mController);
         mOrderInvoicePanel.initModel();
+        ((OrderHistoryListController) mController).setOrderInvoicePanel(mOrderInvoicePanel);
         mOrderInvoicePanel.bindItem(mOrder);
 
         dialog = DialogUtil.dialog(getContext(), getContext().getString(R.string.order_invoice_title), mOrderInvoicePanel);
@@ -385,7 +409,6 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
             @Override
             public void onClick(View view) {
                 OrderUpdateQtyParam orderUpdateQtyParam = mOrderInvoicePanel.bindOrderUpdateQty();
-                ((OrderHistoryListController) mController).setOrderInvoicePanel(mOrderInvoicePanel);
                 ((OrderHistoryListController) mController).doInputInvoiceUpdateQty(orderUpdateQtyParam);
             }
         });
@@ -394,7 +417,6 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
             @Override
             public void onClick(View view) {
                 Order order = mOrderInvoicePanel.bind2Item();
-                ((OrderHistoryListController) mController).setOrderInvoicePanel(mOrderInvoicePanel);
                 ((OrderHistoryListController) mController).doInputInvoice(order);
                 dialog.dismiss();
             }

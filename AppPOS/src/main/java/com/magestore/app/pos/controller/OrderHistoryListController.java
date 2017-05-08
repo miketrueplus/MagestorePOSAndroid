@@ -673,6 +673,10 @@ public class OrderHistoryListController extends AbstractListController<Order> {
         }
     }
 
+    public void setTotalOrder(Order newOrder, Order oldOrder){
+        mOrderService.setTotalOrder(newOrder, oldOrder);
+    }
+
     public Order getOrder() {
         return ((OrderDetailPanel) mDetailView).getOrder();
     }

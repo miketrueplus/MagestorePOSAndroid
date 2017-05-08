@@ -109,6 +109,9 @@ public interface CartItem extends Model {
     float getUnitPrice();
 
     float getPrice();
+    float getPriceInclTax();
+    float getPriceInvoice();
+    void setPriceInvoice(float fPriceInvoice);
     float getBasePriceInclTax();
     float getOriginalPrice();
     String getItemId();
@@ -144,6 +147,8 @@ public interface CartItem extends Model {
     int QtyShip();
     int QtyRefund();
     int QtyInvoice();
+    int QtyInvoiceable();
+    void setQtyInvoiceable(int intQtyInvoice);
     int getQtyChange();
     void setQtyChange(int intQtyChange);
     String getProductType();

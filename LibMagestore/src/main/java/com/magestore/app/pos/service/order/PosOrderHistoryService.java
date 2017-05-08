@@ -347,6 +347,26 @@ public class PosOrderHistoryService extends AbstractService implements OrderHist
     }
 
     @Override
+    public void setTotalOrder(Order newOrder, Order oldOrder) {
+        oldOrder.setOrderHistorySubtotal(newOrder.getOrderHistorySubtotal());
+        oldOrder.setBaseSubtotal(newOrder.getBaseSubtotal());
+        oldOrder.setSubtotalInclTax(newOrder.getSubtotalInclTax());
+        oldOrder.setBaseSubtotalInclTax(newOrder.getBaseSubtotalInclTax());
+        oldOrder.setGrandTotal(newOrder.getGrandTotal());
+        oldOrder.setBaseGrandTotal(newOrder.getBaseGrandTotal());
+        oldOrder.setDiscountAmount(newOrder.getDiscountAmount());
+        oldOrder.setBaseDiscountAmount(newOrder.getBaseDiscountAmount());
+        oldOrder.setShippingAmount(newOrder.getShippingAmount());
+        oldOrder.setBaseShippingAmount(newOrder.getBaseShippingAmount());
+        oldOrder.setShippingInclTax(newOrder.getShippingInclTax());
+        oldOrder.setBaseShippingInclTax(newOrder.getBaseShippingInclTax());
+        oldOrder.setShippingTaxAmount(newOrder.getShippingTaxAmount());
+        oldOrder.setBaseShippingTaxAmount(newOrder.getBaseShippingTaxAmount());
+        oldOrder.setTaxAmount(newOrder.getTaxAmount());
+        oldOrder.setBaseTaxAmount(newOrder.getBaseTaxAmount());
+    }
+
+    @Override
     public boolean checkCanInvoice(Order order) {
         String status = order.getStatus();
         if (this.canUnhold(status) || status.equals("holded"))

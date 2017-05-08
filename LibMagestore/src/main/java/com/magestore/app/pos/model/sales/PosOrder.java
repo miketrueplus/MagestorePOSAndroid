@@ -165,6 +165,8 @@ public class PosOrder extends PosAbstractModel implements Order {
     float refund_shipping;
     @Gson2PosExclude
     float store_credit_refund;
+    @Gson2PosExclude
+    boolean check_request_update_invoice;
 
     @Override
     public String getID() {
@@ -232,8 +234,18 @@ public class PosOrder extends PosAbstractModel implements Order {
     }
 
     @Override
+    public void setBaseDiscountAmount(float fBaseDiscountAmount) {
+        base_discount_amount = fBaseDiscountAmount;
+    }
+
+    @Override
     public float getBaseGrandTotal() {
         return base_grand_total;
+    }
+
+    @Override
+    public void setBaseGrandTotal(float fBaseGrandTotal) {
+        base_grand_total = fBaseGrandTotal;
     }
 
     @Override
@@ -242,8 +254,18 @@ public class PosOrder extends PosAbstractModel implements Order {
     }
 
     @Override
+    public void setBaseShippingAmount(float fBaseShippingAmount) {
+        base_shipping_amount = fBaseShippingAmount;
+    }
+
+    @Override
     public float getBaseShippingInclTax() {
         return base_shipping_incl_tax;
+    }
+
+    @Override
+    public void setBaseShippingInclTax(float fBaseShippingInclTax) {
+        base_shipping_incl_tax = fBaseShippingInclTax;
     }
 
     @Override
@@ -252,13 +274,38 @@ public class PosOrder extends PosAbstractModel implements Order {
     }
 
     @Override
+    public void setBaseShippingTaxAmount(float fBaseShippingTaxAmount) {
+        base_shipping_tax_amount = fBaseShippingTaxAmount;
+    }
+
+    @Override
+    public float getBaseTaxAmount() {
+        return base_tax_amount;
+    }
+
+    @Override
+    public void setBaseTaxAmount(float fBaseTaxAmount) {
+        base_tax_amount = fBaseTaxAmount;
+    }
+
+    @Override
     public float getBaseSubtotal() {
         return base_subtotal;
     }
 
     @Override
+    public void setBaseSubtotal(float fBaseSubtotal) {
+        base_subtotal = fBaseSubtotal;
+    }
+
+    @Override
     public float getBaseSubtotalInclTax() {
         return base_subtotal_incl_tax;
+    }
+
+    @Override
+    public void setBaseSubtotalInclTax(float fBaseSubtotalInclTax) {
+        base_subtotal_incl_tax = fBaseSubtotalInclTax;
     }
 
     @Override
@@ -297,8 +344,18 @@ public class PosOrder extends PosAbstractModel implements Order {
     }
 
     @Override
+    public void setShippingInclTax(float fShippingInclTax) {
+        shipping_incl_tax = fShippingInclTax;
+    }
+
+    @Override
     public float getShippingTaxAmount() {
         return shipping_tax_amount;
+    }
+
+    @Override
+    public void setShippingTaxAmount(float fShippingTaxAmount) {
+        shipping_tax_amount = fShippingTaxAmount;
     }
 
     @Override
@@ -324,6 +381,11 @@ public class PosOrder extends PosAbstractModel implements Order {
     @Override
     public float getSubtotalInclTax() {
         return subtotal_incl_tax;
+    }
+
+    @Override
+    public void setSubtotalInclTax(float fSubtotalInclTax) {
+        subtotal_incl_tax = fSubtotalInclTax;
     }
 
     @Override
@@ -389,6 +451,11 @@ public class PosOrder extends PosAbstractModel implements Order {
     @Override
     public float getGrandTotal() {
         return grand_total;
+    }
+
+    @Override
+    public void setGrandTotal(float fGrandTotal) {
+        grand_total = fGrandTotal;
     }
 
     @Override
@@ -518,13 +585,28 @@ public class PosOrder extends PosAbstractModel implements Order {
     }
 
     @Override
+    public void setTaxAmount(float fTaxAmount) {
+        tax_amount = fTaxAmount;
+    }
+
+    @Override
     public float getShippingAmount() {
         return shipping_amount;
     }
 
     @Override
+    public void setShippingAmount(float fShippingAmount) {
+        shipping_amount = fShippingAmount;
+    }
+
+    @Override
     public float getDiscountAmount() {
         return discount_amount;
+    }
+
+    @Override
+    public void setDiscountAmount(float fDiscountAmount) {
+        discount_amount = fDiscountAmount;
     }
 
     @Override
@@ -555,6 +637,11 @@ public class PosOrder extends PosAbstractModel implements Order {
     @Override
     public float getOrderHistorySubtotal() {
         return subtotal;
+    }
+
+    @Override
+    public void setOrderHistorySubtotal(float fOrderHistorySubtotal) {
+        subtotal = fOrderHistorySubtotal;
     }
 
     @Override
@@ -817,5 +904,15 @@ public class PosOrder extends PosAbstractModel implements Order {
     @Override
     public void setStoreCreditRefund(float fStoreCreditRefund) {
         store_credit_refund = fStoreCreditRefund;
+    }
+
+    @Override
+    public boolean checkRequestUpdateInvoice() {
+        return check_request_update_invoice;
+    }
+
+    @Override
+    public void setCheckRequestUpdateInvoice(boolean bRequestUpdateInvoice) {
+        check_request_update_invoice = bRequestUpdateInvoice;
     }
 }

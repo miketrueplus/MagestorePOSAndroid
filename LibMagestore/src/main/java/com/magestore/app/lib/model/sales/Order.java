@@ -39,18 +39,28 @@ public interface Order extends Model {
     float getBaseGiftVoucherDiscount();
 
     float getBaseDiscountAmount();
+    void setBaseDiscountAmount(float fBaseDiscountAmount);
 
     float getBaseGrandTotal();
+    void setBaseGrandTotal(float fBaseGrandTotal);
 
     float getBaseShippingAmount();
+    void setBaseShippingAmount(float fBaseShippingAmount);
 
     float getBaseShippingInclTax();
+    void setBaseShippingInclTax(float fBaseShippingInclTax);
 
     float getBaseShippingTaxAmount();
+    void setBaseShippingTaxAmount(float fBaseShippingTaxAmount);
+
+    float getBaseTaxAmount();
+    void setBaseTaxAmount(float fBaseTaxAmount);
 
     float getBaseSubtotal();
+    void setBaseSubtotal(float fBaseSubtotal);
 
     float getBaseSubtotalInclTax();
+    void setBaseSubtotalInclTax(float fBaseSubtotalInclTax);
 
     float getBaseShippingRefunded();
 
@@ -65,8 +75,10 @@ public interface Order extends Model {
     String getOrderCurrencyCode();
 
     float getShippingInclTax();
+    void setShippingInclTax(float fShippingInclTax);
 
     float getShippingTaxAmount();
+    void setShippingTaxAmount(float fShippingTaxAmount);
 
     String getState();
 
@@ -77,6 +89,7 @@ public interface Order extends Model {
     String getStoreToOrderRate();
 
     float getSubtotalInclTax();
+    void setSubtotalInclTax(float fSubtotalInclTax);
 
     int getTotalQtyOrdered();
 
@@ -103,6 +116,7 @@ public interface Order extends Model {
     String getCustomerId();
 
     float getGrandTotal();
+    void setGrandTotal(float fGrandTotal);
 
     String getCreatedAt();
 
@@ -137,10 +151,13 @@ public interface Order extends Model {
     boolean checkComment();
 
     float getTaxAmount();
+    void setTaxAmount(float fTaxAmount);
 
     float getShippingAmount();
+    void setShippingAmount(float fShippingAmount);
 
     float getDiscountAmount();
+    void setDiscountAmount(float fDiscountAmount);
 
     float getTotalDue();
 
@@ -153,6 +170,7 @@ public interface Order extends Model {
     float getBaseTotalRefunded();
 
     float getOrderHistorySubtotal();
+    void setOrderHistorySubtotal(float fOrderHistorySubtotal);
 
     boolean checkListShipment();
 
@@ -225,4 +243,7 @@ public interface Order extends Model {
 
     float getStoreCreditRefund();
     void setStoreCreditRefund(float fStoreCreditRefund);
+
+    boolean checkRequestUpdateInvoice();
+    void setCheckRequestUpdateInvoice(boolean bRequestUpdateInvoice);
 }

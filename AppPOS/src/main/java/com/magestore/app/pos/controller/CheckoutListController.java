@@ -559,6 +559,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 checkout.setExchangeMoney(0);
                 checkout.setCustomer(getSelectedItem().getCustomer());
                 checkout.setCustomerID(getSelectedItem().getCustomerID());
+                mCheckoutPaymentListPanel.bindList(listChoosePayment);
                 ((CheckoutDetailPanel) mDetailView).showPanelCheckoutPaymentCreditCard(false);
                 ((CheckoutDetailPanel) mDetailView).showPanelPaymentMethod();
                 mCheckoutPaymentListPanel.setCheckout(checkout);
@@ -638,6 +639,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                     checkout.setExchangeMoney(0);
                     checkout.setCustomer(getSelectedItem().getCustomer());
                     checkout.setCustomerID(getSelectedItem().getCustomerID());
+                    mCheckoutPaymentListPanel.bindList(listChoosePayment);
                     ((CheckoutDetailPanel) mDetailView).showPanelCheckoutPaymentCreditCard(false);
                     ((CheckoutDetailPanel) mDetailView).showPanelPaymentMethod();
                     wraper.put("save_quote", checkout);
@@ -727,6 +729,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             checkout.setExchangeMoney(0);
             checkout.setCustomer(getSelectedItem().getCustomer());
             checkout.setCustomerID(getSelectedItem().getCustomerID());
+            mCheckoutPaymentListPanel.bindList(listChoosePayment);
             ((CheckoutDetailPanel) mDetailView).showPanelCheckoutPaymentCreditCard(false);
             ((CheckoutDetailPanel) mDetailView).showPanelPaymentMethod();
             mCheckoutPaymentListPanel.resetListPayment();

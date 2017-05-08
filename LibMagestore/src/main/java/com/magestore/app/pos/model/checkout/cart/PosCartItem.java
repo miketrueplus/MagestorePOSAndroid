@@ -266,6 +266,7 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     //    @Gson2PosExclude
 //    String bundle_option;
     float price;
+    float price_incl_tax;
     float base_price;
     @Gson2PosExclude
     float base_price_incl_tax;
@@ -304,6 +305,8 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     String parent_item_id;
     @Gson2PosExclude
     int qty_change;
+    @Gson2PosExclude
+    int qty_invoiceable;
 
     @Gson2PosExclude
     float base_original_price;
@@ -321,6 +324,8 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     float original_price;
     @Gson2PosExclude
     PosOrderParentItem parent_item;
+    @Gson2PosExclude
+    float price_invoice;
 
     // Params Order Shipment
     String order_item_id;
@@ -373,6 +378,21 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     @Override
     public float getPrice() {
         return price;
+    }
+
+    @Override
+    public float getPriceInclTax() {
+        return price_incl_tax;
+    }
+
+    @Override
+    public float getPriceInvoice() {
+        return price_invoice;
+    }
+
+    @Override
+    public void setPriceInvoice(float fPriceInvoice) {
+        price_invoice = fPriceInvoice;
     }
 
     @Override
@@ -499,6 +519,16 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     @Override
     public int QtyInvoice() {
         return qty_ordered - qty_invoiced - qty_refunded - qty_canceled;
+    }
+
+    @Override
+    public int QtyInvoiceable() {
+        return qty_invoiceable;
+    }
+
+    @Override
+    public void setQtyInvoiceable(int intQtyInvoice) {
+        qty_invoiceable = intQtyInvoice;
     }
 
     @Override

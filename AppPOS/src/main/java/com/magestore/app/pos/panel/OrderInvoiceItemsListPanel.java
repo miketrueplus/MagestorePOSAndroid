@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.magestore.app.lib.model.checkout.cart.CartItem;
+import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.panel.AbstractListPanel;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.OrderInvoiceItemsListController;
@@ -27,6 +28,12 @@ import java.util.List;
 public class OrderInvoiceItemsListPanel extends AbstractListPanel<CartItem> {
     List<CartItem> listItems;
     List<CartItem> listCurrentItem;
+    Order mOrder;
+    float total_price = 0;
+
+    public void setOrder(Order mOrder) {
+        this.mOrder = mOrder;
+    }
 
     public OrderInvoiceItemsListPanel(Context context) {
         super(context);
@@ -61,11 +68,13 @@ public class OrderInvoiceItemsListPanel extends AbstractListPanel<CartItem> {
 
     @Override
     protected void bindItem(View view, CartItem item, int position) {
+        if (item.getPriceInvoice() == 0) {
+            item.setPriceInvoice(item.getPrice());
+        }
         CardOrderInvoiceItemContentBinding mBinding = DataBindingUtil.bind(view);
         mBinding.setOrderItem(item);
-
-        EditText edt_qty_to_invoice = (EditText) view.findViewById(R.id.qty_to_invoice);
         CartItem cartItem = listItems.get(position);
+        EditText edt_qty_to_invoice = (EditText) view.findViewById(R.id.qty_to_invoice);
         cartItem.setOrderItemId(cartItem.getItemId());
         cartItem.setQtyChange(item.QtyInvoice());
         actionQtyToInvoice(cartItem, edt_qty_to_invoice);
@@ -87,7 +96,12 @@ public class OrderInvoiceItemsListPanel extends AbstractListPanel<CartItem> {
                     qty_invoiced = 0;
                 }
 
-                int qty = item.QtyInvoice();
+                int qty;
+                if (mOrder.getTotalDue() > 0) {
+                    qty = item.QtyInvoiceable();
+                } else {
+                    qty = item.QtyInvoice();
+                }
                 if (qty_invoiced < 0 || qty_invoiced > qty) {
                     qty_to_invoice.setText(String.valueOf(qty));
                     item.setQuantity(qty);
@@ -121,8 +135,14 @@ public class OrderInvoiceItemsListPanel extends AbstractListPanel<CartItem> {
         for (CartItem currentItem : listCurrentItem) {
             for (CartItem item : listItems) {
                 if (item.getItemId().equals(currentItem.getItemId())) {
-                    if (item.getQtyChange() != currentItem.QtyInvoice()) {
-                        return true;
+                    if (mOrder.getTotalDue() > 0) {
+                        if (item.getQtyChange() != currentItem.QtyInvoiceable()) {
+                            return true;
+                        }
+                    } else {
+                        if (item.getQtyChange() != currentItem.QtyInvoice()) {
+                            return true;
+                        }
                     }
                 }
             }

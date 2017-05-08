@@ -44,6 +44,8 @@ public class OrderInvoicePanel extends AbstractDetailPanel<Order> {
     EditText invoice_comment;
     Button btn_update_qty, btn_submit_invoice;
     View view;
+    float total_price = 0;
+    boolean check_request_update_invoice = false;
     TextView invoice_grandtotal, invoice_discount, invoice_tax, invoice_shipping, invoice_subtotal;
 
     public OrderInvoicePanel(Context context) {
@@ -98,14 +100,19 @@ public class OrderInvoicePanel extends AbstractDetailPanel<Order> {
     public void bindItem(Order item) {
         if (item == null) return;
         super.bindItem(item);
+        mOrderInvoiceItemsListPanel.setOrder(item);
         mOrderInvoiceItemsListController.doSelectOrder(item);
         mBinding.setOrderDetail(item);
         mOrder = item;
+        if (!mOrder.checkRequestUpdateInvoice()) {
+            requestUpdateQtyTotalDue();
+        }
     }
 
     public void bindTotal(Order item) {
         isShowButtonUpdateQty(false);
         isEnableButtonSubmitInvoice(true);
+        ((OrderHistoryListController) getController()).setTotalOrder(item, mOrder);
         invoice_grandtotal.setText(ConfigUtil.formatPrice(item.getGrandTotal()));
         invoice_discount.setText(ConfigUtil.formatPrice(item.getDiscountAmount()));
         invoice_tax.setText(ConfigUtil.formatPrice(item.getTaxAmount()));
@@ -177,6 +184,15 @@ public class OrderInvoicePanel extends AbstractDetailPanel<Order> {
         return mOrder;
     }
 
+    public void requestUpdateQtyTotalDue() {
+        if (mOrder.getTotalDue() > 0) {
+            OrderUpdateQtyParam orderUpdateQtyParam = bindOrderUpdateQty();
+            if (check_request_update_invoice) {
+                ((OrderHistoryListController) getController()).doInputInvoiceUpdateQty(orderUpdateQtyParam);
+            }
+        }
+    }
+
     public OrderUpdateQtyParam bindOrderUpdateQty() {
         OrderHistoryListController orderHistoryListController = ((OrderHistoryListController) mController);
         OrderUpdateQtyParam mOrderUpdateQtyParam = orderHistoryListController.createOrderUpdateQtyParam();
@@ -188,13 +204,60 @@ public class OrderInvoicePanel extends AbstractDetailPanel<Order> {
     }
 
     public void setDataToOrderUpdateQty(List<OrderItemUpdateQtyParam> listOrderItem, OrderHistoryListController orderHistoryListController) {
-        List<CartItem> listItem = mOrderInvoiceItemsListPanel.bind2List();
+        List<CartItem> listItem;
+        if (!mOrder.checkRequestUpdateInvoice()) {
+            listItem = listItemInvoice();
+            mOrder.setCheckRequestUpdateInvoice(true);
+        } else {
+            listItem = mOrderInvoiceItemsListPanel.bind2List();
+        }
         for (CartItem cartItem : listItem) {
             OrderItemUpdateQtyParam item = orderHistoryListController.creaOrderItemUpdateQtyParam();
             item.setEntityId(cartItem.getItemId());
             item.setQty(cartItem.getQuantity());
             listOrderItem.add(item);
         }
+    }
+
+    private List<CartItem> listItemInvoice() {
+        List<CartItem> listCartItem = new ArrayList<>();
+        for (CartItem item : mOrderInvoiceItemsListController.getListItems()) {
+            CartItem nitem = checkQtyInvoice(item);
+            if (nitem.getQuantity() > 0) {
+                check_request_update_invoice = true;
+            }
+            listCartItem.add(nitem);
+        }
+        return listCartItem;
+    }
+
+    public CartItem checkQtyInvoice(CartItem item) {
+        if (item.getPriceInvoice() == 0) {
+            item.setPriceInvoice(item.getPrice());
+        }
+        float total_paid = mOrder.getTotalPaid();
+        if (total_price < total_paid) {
+            if (item.QtyInvoice() > 0) {
+                int qty = 0;
+                float total_invoice = 0;
+
+                while (total_invoice < total_paid) {
+                    total_invoice += qty * item.getPriceInvoice();
+                    total_price = total_invoice + total_price;
+                    if (total_invoice > total_paid) {
+                        break;
+                    }
+                    qty++;
+                }
+                item.setQtyInvoiceable(qty - 1);
+                item.setQuantity(qty - 1);
+            }
+        } else {
+            item.setQtyInvoiceable(0);
+            item.setQuantity(0);
+        }
+
+        return item;
     }
 
     public void showAlertRespone() {

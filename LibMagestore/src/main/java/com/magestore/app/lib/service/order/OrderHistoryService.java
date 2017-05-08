@@ -86,6 +86,8 @@ public interface OrderHistoryService extends Service, ListService<Order> {
 
     OrderItemUpdateQtyParam createOrderItemUpdateQtyParam();
 
+    void setTotalOrder(Order newOrder, Order oldOrder);
+
     boolean checkCanInvoice(Order order);
 
     boolean checkCanCancel(Order order);
