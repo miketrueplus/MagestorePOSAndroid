@@ -435,9 +435,9 @@ public class PosOrderHistoryService extends AbstractService implements OrderHist
 //            if (item.getProductType().equals("customsale") && item.getIsVirtual().equals("1")) {
 //                return true;
 //            }
-            if (item.getProductType().equals("simple") && !TextUtils.isEmpty(item.getParentItemId())) {
-                return true;
-            }
+//            if (item.getProductType().equals("simple") && !TextUtils.isEmpty(item.getParentItemId())) {
+//                return true;
+//            }
             if (item.getQtyOrdered() - item.getQtyShipped() - item.getQtyRefunded() - item.getQtyCanceled() > 0)
                 allShip = false;
         }

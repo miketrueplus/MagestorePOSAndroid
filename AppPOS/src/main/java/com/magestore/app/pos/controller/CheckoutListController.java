@@ -833,6 +833,8 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     @Override
     public void onCancelledBackground(Exception exp, int actionType, String actionCode, Map<String, Object> wraper, Model... models) {
         super.onCancelledBackground(exp, actionType, actionCode, wraper, models);
+        ((CheckoutListPanel) mView).showLoading(false);
+        isShowLoadingDetail(false);
     }
 
     public void updateToTal(Checkout checkout) {
