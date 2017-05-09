@@ -75,7 +75,7 @@ public class PluginGiftCardListPanel extends AbstractSimpleRecycleView<GiftCard>
         bt_apply.setTextColor(ContextCompat.getColor(getContext(), R.color.text_color));
 
         actionChangeGiftCode(giftCard, gift_code, bt_apply);
-        actionChangeGiftValue(giftCard, gift_code_value, bt_apply);
+        actionChangeGiftValue(giftCard, gift_code_value, bt_apply, cb_use_max_credit);
 
         bt_apply.setOnClickListener(new OnClickListener() {
             @Override
@@ -98,7 +98,7 @@ public class PluginGiftCardListPanel extends AbstractSimpleRecycleView<GiftCard>
 
     }
 
-    private void actionChangeGiftValue(final GiftCard item, final EditText gift_code_value, final Button bt_apply) {
+    private void actionChangeGiftValue(final GiftCard item, final EditText gift_code_value, final Button bt_apply, final CheckBox use_max_point) {
         gift_code_value.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -120,7 +120,10 @@ public class PluginGiftCardListPanel extends AbstractSimpleRecycleView<GiftCard>
                     bt_apply.setBackground(getResources().getDrawable(R.drawable.backgound_buton_apply_enable));
                     bt_apply.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
                     item.setAmount(f_gift_value);
+                    use_max_point.setChecked(f_gift_value == item.getBalance() ? true : false);
                 } else {
+                    gift_code_value.setText(ConfigUtil.formatNumber(item.getBalance()));
+                    use_max_point.setChecked(true);
                     bt_apply.setEnabled(false);
                     bt_apply.setBackground(getResources().getDrawable(R.drawable.backgound_buton_apply_disable));
                     bt_apply.setTextColor(ContextCompat.getColor(getContext(), R.color.text_color));
@@ -163,11 +166,14 @@ public class PluginGiftCardListPanel extends AbstractSimpleRecycleView<GiftCard>
         });
     }
 
-    private void actionCheckUseMaxPoint(final GiftCard item, CheckBox use_max_point, final EditText gift_code_value) {
-        use_max_point.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+    private void actionCheckUseMaxPoint(final GiftCard item, final CheckBox use_max_point, final EditText gift_code_value) {
+        use_max_point.setOnClickListener(new OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isCheck) {
-                if (isCheck) {
+            public void onClick(View view) {
+                if(!use_max_point.isChecked()){
+                    use_max_point.setChecked(false);
+                }else{
+                    use_max_point.setChecked(true);
                     gift_code_value.setText(ConfigUtil.formatNumber(item.getBalance()));
                 }
             }

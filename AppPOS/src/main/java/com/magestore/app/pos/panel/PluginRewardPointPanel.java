@@ -74,8 +74,11 @@ public class PluginRewardPointPanel extends AbstractDetailPanel<RewardPoint> {
 
         cb_use_max_credit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean check) {
-                if (check) {
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (!cb_use_max_credit.isChecked()) {
+                    cb_use_max_credit.setChecked(false);
+                } else {
+                    cb_use_max_credit.setChecked(true);
                     reward_point_value.setText(ConfigUtil.formatNumber(mRewardPoint.getMaxPoints()));
                 }
             }
@@ -137,7 +140,7 @@ public class PluginRewardPointPanel extends AbstractDetailPanel<RewardPoint> {
         });
     }
 
-    private void actionChangeRewardPoint(final RewardPoint item){
+    private void actionChangeRewardPoint(final RewardPoint item) {
         reward_point_value.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -156,8 +159,10 @@ public class PluginRewardPointPanel extends AbstractDetailPanel<RewardPoint> {
                     if (point_value > mRewardPoint.getMaxPoints()) {
                         reward_point_value.setText(ConfigUtil.formatNumber(mRewardPoint.getMaxPoints()));
                         mRewardPoint.setAmount(mRewardPoint.getMaxPoints());
+                        cb_use_max_credit.setChecked(true);
                     } else {
                         mRewardPoint.setAmount(point_value);
+                        cb_use_max_credit.setChecked(point_value == mRewardPoint.getMaxPoints() ? true : false);
                     }
                 } else {
                     reward_point_value.setText("0");
@@ -172,7 +177,7 @@ public class PluginRewardPointPanel extends AbstractDetailPanel<RewardPoint> {
         });
     }
 
-    public void resetPointValue(){
+    public void resetPointValue() {
         reward_point_value.setText("0");
     }
 }

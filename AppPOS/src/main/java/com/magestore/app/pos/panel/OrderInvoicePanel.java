@@ -113,11 +113,11 @@ public class OrderInvoicePanel extends AbstractDetailPanel<Order> {
         isShowButtonUpdateQty(false);
         isEnableButtonSubmitInvoice(true);
         ((OrderHistoryListController) getController()).setTotalOrder(item, mOrder);
-        invoice_grandtotal.setText(ConfigUtil.formatPrice(item.getGrandTotal()));
-        invoice_discount.setText(ConfigUtil.formatPrice(item.getDiscountAmount()));
-        invoice_tax.setText(ConfigUtil.formatPrice(item.getTaxAmount()));
-        invoice_shipping.setText(ConfigUtil.formatPrice(item.getShippingAmount()));
-        invoice_subtotal.setText(ConfigUtil.formatPrice(item.getOrderHistorySubtotal()));
+        invoice_grandtotal.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(item.getBaseGrandTotal())));
+        invoice_discount.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(item.getBaseDiscountAmount())));
+        invoice_tax.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(item.getBaseTaxAmount())));
+        invoice_shipping.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(item.getShippingInclTax())));
+        invoice_subtotal.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(item.getBaseSubtotalInclTax())));
     }
 
     @Override
@@ -240,9 +240,9 @@ public class OrderInvoicePanel extends AbstractDetailPanel<Order> {
 
     public CartItem checkQtyInvoice(CartItem item) {
         if (item.getPriceInvoice() == 0) {
-            item.setPriceInvoice(item.getPrice());
+            item.setPriceInvoice(item.getPriceInclTax());
         }
-        float total_paid = (mOrder.getTotalPaid() - mOrder.getBaseTotalInvoiced() - mOrder.getWebposBaseChange() - mOrder.getBaseTotalRefunded());
+        float total_paid = (mOrder.getBaseTotalPaid() - mOrder.getBaseTotalInvoiced() - mOrder.getWebposBaseChange() - mOrder.getBaseTotalRefunded());
         if (total_price < total_paid) {
             if (item.QtyInvoice() > 0) {
                 int qty = 0;

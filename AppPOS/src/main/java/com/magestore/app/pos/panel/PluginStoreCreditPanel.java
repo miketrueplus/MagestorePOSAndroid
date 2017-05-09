@@ -87,9 +87,11 @@ public class PluginStoreCreditPanel extends AbstractDetailPanel<StoreCredit> {
 
                     } else {
                         disableApply(true);
-                        if (credit_value <= mStoreCredit.getMaxAmount()) {
+                        if (credit_value < mStoreCredit.getMaxAmount()) {
+                            cb_use_max_credit.setChecked(false);
                             mStoreCredit.setAmount(credit_value);
                         } else {
+                            cb_use_max_credit.setChecked(true);
                             mStoreCredit.setAmount(mStoreCredit.getMaxAmount());
                         }
                     }
@@ -105,10 +107,15 @@ public class PluginStoreCreditPanel extends AbstractDetailPanel<StoreCredit> {
             }
         });
 
-        cb_use_max_credit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        cb_use_max_credit.setOnClickListener(new OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                store_credit_value.setText(String.valueOf(mStoreCredit.getMaxAmount()));
+            public void onClick(View view) {
+                if (!cb_use_max_credit.isChecked()) {
+                    cb_use_max_credit.setChecked(false);
+                } else {
+                    cb_use_max_credit.setChecked(true);
+                    store_credit_value.setText(String.valueOf(mStoreCredit.getMaxAmount()));
+                }
             }
         });
 

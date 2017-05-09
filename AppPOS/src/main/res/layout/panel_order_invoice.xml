@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="right"
-                android:text='@{@string/order_invoice_total_due + " " + ConfigUtil.formatPrice(orderDetail.getTotalDue())}'
+                android:text='@{@string/order_invoice_total_due + " " + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderDetail.getBaseTotalDue()))}'
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/text_size"
                 android:textStyle="bold"
@@ -45,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="right"
-                android:text='@{@string/order_invoice_total_paid + " " + ConfigUtil.formatPrice(orderDetail.getTotalPaid())}'
+                android:text='@{@string/order_invoice_total_paid + " " + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderDetail.getBaseTotalPaid()))}'
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/text_size"
                 android:textStyle="bold" />
@@ -56,7 +56,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
-                android:text='@{@string/order_total_invoiced + " " + ConfigUtil.formatPrice(orderDetail.getTotalInvoiced())}'
+                android:text='@{@string/order_total_invoiced + " " + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderDetail.getBaseTotalInvoiced()))}'
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/text_size"
                 android:textStyle="bold" />
@@ -67,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="left"
-                android:text='@{@string/order_invoiceable + " " + ConfigUtil.formatPrice(orderDetail.getTotalPaid())}'
+                android:text='@{@string/order_invoiceable + " " + ConfigUtil.formatPrice((orderDetail.getBaseTotalPaid() - orderDetail.getBaseTotalInvoiced() - orderDetail.getWebposBaseChange() - orderDetail.getBaseTotalRefunded()))}'
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/text_size"
                 android:textStyle="bold" />

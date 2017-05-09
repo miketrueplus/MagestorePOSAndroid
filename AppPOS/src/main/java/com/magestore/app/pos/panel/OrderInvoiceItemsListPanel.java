@@ -69,7 +69,7 @@ public class OrderInvoiceItemsListPanel extends AbstractListPanel<CartItem> {
     @Override
     protected void bindItem(View view, CartItem item, int position) {
         if (item.getPriceInvoice() == 0) {
-            item.setPriceInvoice(item.getPrice());
+            item.setPriceInvoice(item.getPriceInclTax());
         }
         CardOrderInvoiceItemContentBinding mBinding = DataBindingUtil.bind(view);
         mBinding.setOrderItem(item);
