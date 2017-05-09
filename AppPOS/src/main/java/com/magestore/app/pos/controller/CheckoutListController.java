@@ -1609,6 +1609,12 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         return null;
     }
 
+    /**
+     * check payment paypal
+     *
+     * @param listCheckoutPayment
+     * @return
+     */
     public CheckoutPayment checkTypePaymenPaypal(List<CheckoutPayment> listCheckoutPayment) {
         for (CheckoutPayment payment : listCheckoutPayment) {
             if (payment.getType().equals("2") && payment.getCode().equals("paypal_integration")) {
@@ -1642,6 +1648,17 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             return true;
         }
         return false;
+    }
+
+    public void changeCustomerShippingAdrress(boolean isChange) {
+        if(checkCustomerID(getSelectedItem().getCustomer(), guest_checkout)){
+            return;
+        }
+        if (isChange) {
+
+        } else {
+
+        }
     }
 
     public boolean checkCustomerID(Customer customer, Customer guest_customer) {

@@ -226,6 +226,25 @@ public class SearchAutoCompletePanel extends FrameLayout {
                     }
                 }
             });
+
+        mAutoTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if(actionId == EditorInfo.IME_ACTION_DONE)
+                {
+                    //value form keyboard
+                    actionSearch();
+                }
+                if(actionId == EditorInfo.IME_ACTION_UNSPECIFIED)
+                {
+                    //value form barcode scanner
+                    String valueFromKeyboard = mAutoTextView.getText().toString();
+                    actionSearch();
+                }
+                return true;
+
+            }
+        });
     }
 
     /**
@@ -271,36 +290,38 @@ public class SearchAutoCompletePanel extends FrameLayout {
      */
     public void setListController(ListController controller) {
         mController = controller;
-        mAutoTextView.setAdapter(new SearchAutoCompleteAdapter(getContext(), mController.getListService()));
+        mAutoTextView.setAdapter(new SearchAutoCompleteAdapter<Product>(getContext(), mController.getListService()));
+
+//        mAutoTextView.setAdapter(new SearchAutoCompleteAdapter(getContext(), mController.getListService()));
 
         //Felix edit 03/05/2015
-        mAutoTextView.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().equals("")) {
-                    mCloseButton.setVisibility(GONE);
-                    return;
-                }
-                handler.removeCallbacks(workRunnable);
-                workRunnable = new Runnable() {
-                    @Override
-                    public void run() {
-                        actionSearch();
-                    }
-                };
-                handler.postDelayed(workRunnable, 500 /*delay*/);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
+//        mAutoTextView.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                if (s.toString().equals("")) {
+//                    mCloseButton.setVisibility(GONE);
+//                    return;
+//                }
+//                handler.removeCallbacks(workRunnable);
+//                workRunnable = new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        actionSearch();
+//                    }
+//                };
+//                handler.postDelayed(workRunnable, 500 /*delay*/);
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//
+//            }
+//        });
         //End Felix edit 03/05/2015
     }
 

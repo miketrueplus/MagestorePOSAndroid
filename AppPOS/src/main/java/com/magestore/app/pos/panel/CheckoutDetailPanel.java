@@ -128,6 +128,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
                 } else {
                     ll_shipping_address.setVisibility(VISIBLE);
                 }
+                ((CheckoutListController) getController()).changeCustomerShippingAdrress(check);
                 ((CheckoutListController) getController()).getSelectedItem().setIsPickAtStore(check);
                 ((CheckoutListController) getController()).changePickAtStoreAndReloadShipping();
             }

@@ -201,6 +201,6 @@ public class PluginGiftCardListPanel extends AbstractSimpleRecycleView<GiftCard>
 
     public void showError(String message){
         // Tạo dialog và hiển thị
-        DialogUtil.confirm(getContext(), message, R.string.ok);
+        DialogUtil.confirm(getContext(), getContext().getString(R.string.plugin_giftcard_error), R.string.ok);
     }
 }
