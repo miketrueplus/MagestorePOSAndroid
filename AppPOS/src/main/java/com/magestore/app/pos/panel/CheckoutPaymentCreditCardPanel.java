@@ -111,8 +111,10 @@ public class CheckoutPaymentCreditCardPanel extends AbstractDetailPanel<Checkout
         if (!isRequied(card_number)) {
             return false;
         }
-        if (!isRequied(card_cvv) && checkCVV) {
-            return false;
+        if (checkCVV) {
+            if (!isRequied(card_cvv)) {
+                return false;
+            }
         }
         return true;
     }

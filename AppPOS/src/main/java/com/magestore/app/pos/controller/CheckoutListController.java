@@ -534,6 +534,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             getSelectedItem().setQuoteId(quoteId);
             //  cập nhật giá
             ((CheckoutService) getListService()).updateTotal(checkout);
+            getSelectedItem().setGrandTotal(checkout.getGrandTotal());
             showButtonRemoveDiscount(checkDiscount(checkout) ? true : false);
             showButtonDiscount(checkout.getGrandTotal() != 0 && checkListCartItem() ? true : false);
             ((CheckoutDetailPanel) mDetailView).bindTotalPrice(checkout.getGrandTotal());
@@ -690,6 +691,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
             //  cập nhật giá
             ((CheckoutService) getListService()).updateTotal(checkout);
+            getSelectedItem().setGrandTotal(checkout.getGrandTotal());
             getSelectedItem().setDiscountTitle(checkout.getDiscountTitle());
             getSelectedItem().setDiscountTotal(checkout.getDiscountTotal());
 
@@ -705,6 +707,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             Checkout checkout = (Checkout) wraper.get("save_add_coupon_to_quote");
             //  cập nhật giá
             ((CheckoutService) getListService()).updateTotal(checkout);
+            getSelectedItem().setGrandTotal(checkout.getGrandTotal());
             getSelectedItem().setDiscountTitle(checkout.getDiscountTitle());
             getSelectedItem().setDiscountTotal(checkout.getDiscountTotal());
             ((CheckoutListPanel) mView).updateTotalPrice(checkout);
@@ -716,6 +719,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             mCheckoutAddPaymentPanel.bindList(checkout.getCheckoutPayment());
             //  cập nhật giá
             ((CheckoutService) getListService()).updateTotal(checkout);
+            getSelectedItem().setGrandTotal(checkout.getGrandTotal());
             showButtonRemoveDiscount(checkDiscount(checkout) ? true : false);
             showButtonDiscount(checkout.getGrandTotal() != 0 && checkListCartItem() ? true : false);
             ((CheckoutDetailPanel) mDetailView).bindTotalPrice(checkout.getGrandTotal());
@@ -840,6 +844,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     public void updateToTal(Checkout checkout) {
         mPluginRewardPointPanel.resetPointValue();
         ((CheckoutService) getListService()).updateTotal(checkout);
+        getSelectedItem().setGrandTotal(checkout.getGrandTotal());
         showButtonRemoveDiscount(checkDiscount(checkout) ? true : false);
         ((CheckoutDetailPanel) mDetailView).bindTotalPrice(checkout.getGrandTotal());
         ((CheckoutListPanel) mView).updateTotalPrice(checkout);
@@ -861,7 +866,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         mCheckoutPaymentListPanel.setCheckout(checkout);
         wraper.put("save_cart", checkout);
         wraper.put("save_shipping", checkout);
-        autoSelectPaymentMethod(checkout.getCheckoutPayment());
+        autoSelectPaymentMethod(listPayment);
         isShowPaymentMethod((checkout.getGrandTotal() == 0) ? false : true);
         if (checkout.getStoreCredit() != null) {
             if (checkout.getStoreCredit().getBalance() != 0 && ConfigUtil.isEnableStoreCredit() && checkout.getGrandTotal() != 0) {
