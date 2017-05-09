@@ -203,6 +203,7 @@
     <string name="plugin_gift_code_hint_text">Gift Code</string>
     <string name="plugin_use_max_credit">Max Credit</string>
     <string name="plugin_add_giftcard">Add Gift Card</string>
+    <string name="plugin_giftcard_error">Add Gift Card Failed!</string>
     <string name="plugin_order_detail_bottom_giftcard_discount">Gift Voucher</string>
     <string name="plugin_order_detail_bottom_reward_earn">Earned Points</string>
     <string name="plugin_order_detail_bottom_reward_spend">Spent Points</string>
