@@ -94,7 +94,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="right"
-                            android:text="@{ConfigUtil.formatPrice(orderDetail.getOrderHistorySubtotal())}"
+                            android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderDetail.getBaseSubtotalInclTax()))}"
                             android:textColor="@color/text_color"
                             android:textSize="@dimen/order_content_table_text_size" />
                     </TableRow>
@@ -118,7 +118,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="right"
-                            android:text="@{ConfigUtil.formatPrice(orderDetail.getShippingAmount())}"
+                            android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderDetail.getBaseShippingInclTax()))}"
                             android:textColor="@color/text_color"
                             android:textSize="@dimen/order_content_table_text_size" />
                     </TableRow>
@@ -142,7 +142,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="right"
-                            android:text="@{ConfigUtil.formatPrice(orderDetail.getTaxAmount())}"
+                            android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderDetail.getBaseTaxAmount()))}"
                             android:textColor="@color/text_color"
                             android:textSize="@dimen/order_content_table_text_size" />
                     </TableRow>
@@ -167,7 +167,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="right"
-                            android:text="@{ConfigUtil.formatPrice(orderDetail.getDiscountAmount())}"
+                            android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderDetail.getBaseDiscountAmount()))}"
                             android:textColor="@color/text_color"
                             android:textSize="@dimen/order_content_table_text_size" />
                     </TableRow>
@@ -191,7 +191,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="right"
-                            android:text="@{ConfigUtil.formatPrice(orderDetail.getGrandTotal())}"
+                            android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderDetail.getBaseGrandTotal()))}"
                             android:textColor="@color/text_color"
                             android:textSize="@dimen/order_content_table_text_size" />
                     </TableRow>
@@ -214,7 +214,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="right"
-                            android:text="@{ConfigUtil.formatPrice(orderDetail.getTotalPaid())}"
+                            android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderDetail.getBaseTotalPaid()))}"
                             android:textColor="@color/text_color"
                             android:textSize="@dimen/order_content_table_text_size" />
                     </TableRow>

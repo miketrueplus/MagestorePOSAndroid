@@ -253,7 +253,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="right"
-                            android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderDetail.getBaseTotalPaid()))}"
+                            android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderDetail.getBaseGrandTotal()))}"
                             android:textColor="@color/text_color"
                             android:textSize="@dimen/order_bottom_text_size" />
                     </TableRow>

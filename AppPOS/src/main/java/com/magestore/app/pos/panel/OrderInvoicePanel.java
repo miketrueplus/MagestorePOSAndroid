@@ -189,6 +189,13 @@ public class OrderInvoicePanel extends AbstractDetailPanel<Order> {
             OrderUpdateQtyParam orderUpdateQtyParam = bindOrderUpdateQty();
             if (check_request_update_invoice) {
                 ((OrderHistoryListController) getController()).doInputInvoiceUpdateQty(orderUpdateQtyParam);
+            } else {
+                mOrder.setBaseSubtotalInclTax(0);
+                mOrder.setBaseShippingInclTax(0);
+                mOrder.setBaseTaxAmount(0);
+                mOrder.setBaseDiscountAmount(0);
+                mOrder.setBaseGrandTotal(0);
+                mBinding.setOrderDetail(mOrder);
             }
         }
     }
@@ -235,14 +242,14 @@ public class OrderInvoicePanel extends AbstractDetailPanel<Order> {
         if (item.getPriceInvoice() == 0) {
             item.setPriceInvoice(item.getPrice());
         }
-        float total_paid = mOrder.getTotalPaid();
+        float total_paid = (mOrder.getTotalPaid() - mOrder.getBaseTotalInvoiced() - mOrder.getWebposBaseChange() - mOrder.getBaseTotalRefunded());
         if (total_price < total_paid) {
             if (item.QtyInvoice() > 0) {
                 int qty = 0;
                 float total_invoice = 0;
 
                 while (total_invoice < total_paid) {
-                    total_invoice += qty * item.getPriceInvoice();
+                    total_invoice += qty * (item.getPriceInvoice() - item.getBaseDiscountAmount() - item.getBaseGiftVoucherDiscount() - item.getRewardpointsBaseDiscount());
                     total_price = total_invoice + total_price;
                     if (total_invoice > total_paid) {
                         break;

@@ -162,6 +162,8 @@ public interface Order extends Model {
     float getTotalDue();
     float getBaseTotalDue();
 
+    float getBaseTotalInvoiced();
+
     float getTotalPaid();
 
     float getBaseTotalPaid();

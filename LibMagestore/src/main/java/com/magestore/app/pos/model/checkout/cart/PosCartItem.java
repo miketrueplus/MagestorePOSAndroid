@@ -335,6 +335,11 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     @Gson2PosExclude
     float price_invoice;
 
+    @Gson2PosExclude
+    float base_gift_voucher_discount;
+    @Gson2PosExclude
+    float rewardpoints_base_discount;
+
     // Params Order Shipment
     String order_item_id;
 
@@ -669,5 +674,15 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     @Override
     public OrderParentItem getOrderParentItem() {
         return parent_item;
+    }
+
+    @Override
+    public float getBaseGiftVoucherDiscount() {
+        return base_gift_voucher_discount;
+    }
+
+    @Override
+    public float getRewardpointsBaseDiscount() {
+        return rewardpoints_base_discount;
     }
 }

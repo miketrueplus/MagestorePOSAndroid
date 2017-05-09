@@ -181,4 +181,7 @@ public interface CartItem extends Model {
     void setIsSaveCart(boolean isSaveCart);
 
     OrderParentItem getOrderParentItem();
+
+    float getBaseGiftVoucherDiscount();
+    float getRewardpointsBaseDiscount();
 }
