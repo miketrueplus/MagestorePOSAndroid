@@ -9,6 +9,7 @@ import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.observ.State;
 import com.magestore.app.lib.service.catalog.ProductService;
 import com.magestore.app.pos.task.LoadProductImageTask;
+import com.magestore.app.util.StringUtil;
 
 import java.util.HashMap;
 import java.util.List;
@@ -90,8 +91,16 @@ public class ProductListController extends AbstractListController<Product> {
     public List<Product> onRetrieveBackground(int page, int pageSize) throws Exception {
         if (mCategory == null || !(getListService() instanceof ProductService))
             return super.onRetrieveBackground(page, pageSize);
-        else
-            return ((ProductService) getListService()).retrieve(mCategory.getID(), null, page, pageSize);
+        else {
+            StringBuilder categoryID = new StringBuilder();
+            categoryID.append(mCategory.getID());
+            if (mCategory.getSubCategory() != null) {
+                for (Category category : mCategory.getSubCategory()) {
+                    categoryID.append(StringUtil.STRING_COMMA).append(category.getID());
+                }
+            }
+            return ((ProductService) getListService()).retrieve(categoryID.toString(), null, page, pageSize);
+        }
     }
 
 
