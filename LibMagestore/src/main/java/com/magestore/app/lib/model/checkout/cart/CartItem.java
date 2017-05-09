@@ -109,6 +109,8 @@ public interface CartItem extends Model {
     float getUnitPrice();
 
     float getPrice();
+    float getBasePrice();
+    float getBaseSubTotal();
     float getPriceInclTax();
     float getPriceInvoice();
     void setPriceInvoice(float fPriceInvoice);
@@ -134,8 +136,11 @@ public interface CartItem extends Model {
     String getSku();
     float getSubtotal();
     float getRowTotal();
+    float getBaseTaxAmount();
     float getTaxAmount();
+    float getBaseRowTotalInclTax();
     float getDiscountAmount();
+    float getBaseDiscountAmount();
 
     void setDiscountAmount(float discount_amount);
 

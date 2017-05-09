@@ -73,7 +73,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@{ConfigUtil.formatPrice(orderItem.getPrice())}"
+                    android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderItem.getBasePriceInclTax()))}"
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/order_content_table_text_size" />
 
@@ -124,7 +124,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@{ConfigUtil.formatPrice(orderItem.getSubtotal())}"
+                    android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderItem.getBaseSubTotal()))}"
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/order_content_table_text_size" />
 
@@ -133,7 +133,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@{ConfigUtil.formatPrice(orderItem.getTaxAmount())}"
+                    android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderItem.getBaseTaxAmount()))}"
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/order_content_table_text_size" />
 
@@ -142,7 +142,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@{ConfigUtil.formatPrice(orderItem.getDiscountAmount())}"
+                    android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderItem.getBaseDiscountAmount()))}"
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/order_content_table_text_size" />
 
@@ -151,7 +151,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@{ConfigUtil.formatPrice(orderItem.getRowTotal())}"
+                    android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderItem.getBaseRowTotalInclTax()))}"
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/order_content_table_text_size" />
             </TableRow>

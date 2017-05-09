@@ -92,7 +92,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/layout_margin_5"
                         android:gravity="right"
-                        android:text="@{ConfigUtil.formatPrice(order.getGrandTotal())}"
+                        android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(order.getBaseGrandTotal()))}"
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/text_size"
                         android:textStyle="bold" />

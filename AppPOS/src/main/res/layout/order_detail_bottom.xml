@@ -46,6 +46,7 @@
                     <TableRow
                         android:id="@+id/table_row_subtotal"
                         android:layout_width="match_parent"
+                        android:visibility="@{orderDetail.getBaseSubtotalInclTax() != 0 ? View.VISIBLE : View.GONE}"
                         android:layout_height="wrap_content">
 
                         <TextView
@@ -61,7 +62,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="right"
-                            android:text="@{ConfigUtil.formatPrice(orderDetail.getOrderHistorySubtotal())}"
+                            android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderDetail.getBaseSubtotalInclTax()))}"
                             android:textColor="@color/text_color"
                             android:textSize="@dimen/order_bottom_text_size" />
                     </TableRow>
@@ -118,7 +119,7 @@
                         android:id="@+id/table_row_shipping"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="@{orderDetail.getShippingAmount() != 0 ? View.VISIBLE : View.GONE}">
+                        android:visibility="@{orderDetail.getBaseShippingInclTax() != 0 ? View.VISIBLE : View.GONE}">
 
                         <TextView
                             android:layout_width="0dp"
@@ -133,7 +134,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="right"
-                            android:text="@{ConfigUtil.formatPrice(orderDetail.getShippingAmount())}"
+                            android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderDetail.getBaseShippingInclTax()))}"
                             android:textColor="@color/text_color"
                             android:textSize="@dimen/order_bottom_text_size" />
                     </TableRow>
@@ -142,7 +143,7 @@
                         android:id="@+id/table_row_tax"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="@{orderDetail.getTaxAmount() != 0 ? View.VISIBLE : View.GONE}">
+                        android:visibility="@{orderDetail.getBaseTaxAmount() != 0 ? View.VISIBLE : View.GONE}">
 
                         <TextView
                             android:layout_width="0dp"
@@ -157,7 +158,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="right"
-                            android:text="@{ConfigUtil.formatPrice(orderDetail.getTaxAmount())}"
+                            android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderDetail.getBaseTaxAmount()))}"
                             android:textColor="@color/text_color"
                             android:textSize="@dimen/order_bottom_text_size" />
                     </TableRow>
@@ -166,7 +167,7 @@
                         android:id="@+id/table_row_discount"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="@{orderDetail.getDiscountAmount() != 0 ? View.VISIBLE : View.GONE}">
+                        android:visibility="@{orderDetail.getBaseDiscountAmount() != 0 ? View.VISIBLE : View.GONE}">
 
                         <TextView
                             android:layout_width="0dp"
@@ -181,7 +182,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="right"
-                            android:text="@{ConfigUtil.formatPrice(orderDetail.getDiscountAmount())}"
+                            android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderDetail.getBaseDiscountAmount()))}"
                             android:textColor="@color/text_color"
                             android:textSize="@dimen/order_bottom_text_size" />
                     </TableRow>
@@ -252,7 +253,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="right"
-                            android:text="@{ConfigUtil.formatPrice(orderDetail.getGrandTotal())}"
+                            android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderDetail.getBaseTotalPaid()))}"
                             android:textColor="@color/text_color"
                             android:textSize="@dimen/order_bottom_text_size" />
                     </TableRow>
@@ -261,7 +262,7 @@
                         android:id="@+id/table_row_total_paid"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="@{orderDetail.getTotalPaid() != 0 ? View.VISIBLE : View.GONE}">
+                        android:visibility="@{orderDetail.getBaseTotalPaid() != 0 ? View.VISIBLE : View.GONE}">
 
                         <TextView
                             android:layout_width="0dp"
@@ -276,7 +277,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="right"
-                            android:text="@{ConfigUtil.formatPrice(orderDetail.getTotalPaid())}"
+                            android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderDetail.getBaseTotalPaid()))}"
                             android:textColor="@color/text_color"
                             android:textSize="@dimen/order_bottom_text_size" />
                     </TableRow>
@@ -285,7 +286,7 @@
                         android:id="@+id/table_row_total_refund"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="@{orderDetail.getTotalRefunded() != 0 ? View.VISIBLE : View.GONE}">
+                        android:visibility="@{orderDetail.getBaseTotalRefunded() != 0 ? View.VISIBLE : View.GONE}">
 
                         <TextView
                             android:layout_width="0dp"
@@ -300,7 +301,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="right"
-                            android:text="@{ConfigUtil.formatPrice(orderDetail.getTotalRefunded())}"
+                            android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderDetail.getBaseTotalRefunded()))}"
                             android:textColor="@color/text_color"
                             android:textSize="@dimen/order_bottom_text_size" />
                     </TableRow>
@@ -309,7 +310,7 @@
                         android:id="@+id/table_row_total_change"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="@{orderDetail.getWebposChange() != 0 ? View.VISIBLE : View.GONE}">
+                        android:visibility="@{orderDetail.getWebposBaseChange() != 0 ? View.VISIBLE : View.GONE}">
 
                         <TextView
                             android:layout_width="0dp"
@@ -324,7 +325,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="right"
-                            android:text="@{ConfigUtil.formatPrice(orderDetail.getWebposChange())}"
+                            android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderDetail.getWebposBaseChange()))}"
                             android:textColor="@color/text_color"
                             android:textSize="@dimen/order_bottom_text_size" />
                     </TableRow>

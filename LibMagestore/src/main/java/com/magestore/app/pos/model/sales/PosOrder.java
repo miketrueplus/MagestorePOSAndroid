@@ -615,6 +615,11 @@ public class PosOrder extends PosAbstractModel implements Order {
     }
 
     @Override
+    public float getBaseTotalDue() {
+        return base_total_due;
+    }
+
+    @Override
     public float getTotalPaid() {
         return total_paid;
     }

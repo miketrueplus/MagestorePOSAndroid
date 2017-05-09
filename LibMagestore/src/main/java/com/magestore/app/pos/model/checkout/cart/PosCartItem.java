@@ -290,6 +290,14 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     float tax_amount = 0;
     float discount_amount = 0;
     @Gson2PosExclude
+    float base_row_total_incl_tax;
+    @Gson2PosExclude
+    float base_discount_amount;
+    @Gson2PosExclude
+    float base_tax_amount;
+    @Gson2PosExclude
+    float base_row_total;
+    @Gson2PosExclude
     int qty_ordered;
     @Gson2PosExclude
     int qty_canceled;
@@ -381,6 +389,16 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     }
 
     @Override
+    public float getBasePrice() {
+        return base_price;
+    }
+
+    @Override
+    public float getBaseSubTotal() {
+        return base_row_total;
+    }
+
+    @Override
     public float getPriceInclTax() {
         return price_incl_tax;
     }
@@ -467,13 +485,28 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     }
 
     @Override
+    public float getBaseTaxAmount() {
+        return base_tax_amount;
+    }
+
+    @Override
     public float getTaxAmount() {
         return tax_amount;
     }
 
     @Override
+    public float getBaseRowTotalInclTax() {
+        return base_row_total_incl_tax;
+    }
+
+    @Override
     public float getDiscountAmount() {
         return discount_amount;
+    }
+
+    @Override
+    public float getBaseDiscountAmount() {
+        return base_discount_amount;
     }
 
     @Override

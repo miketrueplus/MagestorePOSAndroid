@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                android:text="@{ConfigUtil.formatPrice(orderDetail.getGrandTotal())}"
+                android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderDetail.getBaseGrandTotal()))}"
                 android:textSize="@dimen/order_top_price_text_size"
                 android:textStyle="bold" />
 
@@ -136,7 +136,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/rl_information"
             android:padding="@dimen/layout_margin_10"
-            android:visibility="@{(orderDetail.getTotalDue() > 0) ? View.VISIBLE : View.GONE}">
+            android:visibility="@{(orderDetail.getBaseTotalDue() > 0) ? View.VISIBLE : View.GONE}">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -155,7 +155,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{ConfigUtil.formatPrice(orderDetail.getTotalDue())}"
+                    android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderDetail.getBaseTotalDue()))}"
                     android:textColor="@color/order_detail_top_total_due_text_color"
                     android:textSize="@dimen/text_size" />
             </LinearLayout>

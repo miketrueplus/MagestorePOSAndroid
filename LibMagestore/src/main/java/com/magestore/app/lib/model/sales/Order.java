@@ -160,6 +160,7 @@ public interface Order extends Model {
     void setDiscountAmount(float fDiscountAmount);
 
     float getTotalDue();
+    float getBaseTotalDue();
 
     float getTotalPaid();
 
