@@ -1291,13 +1291,21 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 }
                 listPayment.add(method);
             } else {
-                paymentStoreCredit.setAmount(total);
-                paymentStoreCredit.setBaseAmount(total);
-                paymentStoreCredit.setRealAmount(total);
-                paymentStoreCredit.setBaseRealAmount(total);
+                if (method.getCode().equals(PluginStoreCreditPanel.STORE_CREDIT_PAYMENT_CODE)) {
+                    paymentStoreCredit.setAmount(total);
+                    paymentStoreCredit.setBaseAmount(total);
+                    paymentStoreCredit.setRealAmount(total);
+                    paymentStoreCredit.setBaseRealAmount(total);
+                } else {
+                    method.setAmount(total);
+                    method.setBaseAmount(total);
+                    method.setRealAmount(total);
+                    method.setBaseRealAmount(total);
+                }
                 if (listPayment == null) {
                     listPayment = new ArrayList<>();
                 }
+                listPayment.add(method);
             }
             isEnableCreateInvoice(true);
             wraper.put("list_payment", listPayment);
