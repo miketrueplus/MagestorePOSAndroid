@@ -645,7 +645,7 @@ public class OrderHistoryListController extends AbstractListController<Order> {
         Order order = ((OrderDetailPanel) mDetailView).getOrder();
         float total_item_price = 0;
         for (CartItem cart : order.getOrderItems()) {
-            total_item_price += (cart.getBasePriceInclTax() * cart.QtyRefund());
+            total_item_price += ((cart.getBasePriceInclTax() - ((cart.getBaseDiscountAmount() + cart.getBaseGiftVoucherDiscount() + cart.getRewardpointsBaseDiscount()) / cart.getQtyOrdered())) * cart.QtyRefund());
         }
         updateToTalPriceChangeQtyRefund(total_item_price);
     }
@@ -673,7 +673,7 @@ public class OrderHistoryListController extends AbstractListController<Order> {
         }
     }
 
-    public void setTotalOrder(Order newOrder, Order oldOrder){
+    public void setTotalOrder(Order newOrder, Order oldOrder) {
         mOrderService.setTotalOrder(newOrder, oldOrder);
     }
 

@@ -249,7 +249,7 @@ public class OrderInvoicePanel extends AbstractDetailPanel<Order> {
                 float total_invoice = 0;
 
                 while (total_invoice < total_paid) {
-                    total_invoice += qty * (item.getPriceInvoice() - item.getBaseDiscountAmount() - item.getBaseGiftVoucherDiscount() - item.getRewardpointsBaseDiscount());
+                    total_invoice += qty * (item.getPriceInvoice() - ((item.getBaseDiscountAmount() + item.getBaseGiftVoucherDiscount() + item.getRewardpointsBaseDiscount()) / item.getQtyOrdered()));
                     total_price = total_invoice + total_price;
                     if (total_invoice > total_paid) {
                         break;

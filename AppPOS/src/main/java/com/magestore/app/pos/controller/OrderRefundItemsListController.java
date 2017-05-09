@@ -68,7 +68,7 @@ public class OrderRefundItemsListController extends AbstractListController<CartI
     public void changeMaxStoreCreditRefund() {
         float total_item_price = 0;
         for (CartItem cart : mList) {
-            total_item_price += (cart.getBasePriceInclTax() * cart.getQuantity());
+            total_item_price += ((cart.getBasePriceInclTax() - ((cart.getBaseDiscountAmount() + cart.getBaseGiftVoucherDiscount() + cart.getRewardpointsBaseDiscount()) / cart.getQtyOrdered())) * cart.QtyRefund());;
         }
         mOrderHistoryListController.updateToTalPriceChangeQtyRefund(total_item_price);
     }
