@@ -39,7 +39,7 @@ public class PosProduct extends PosAbstractModel implements Product {
     private int max_characters;
     private PosProduct[] custom_options;
     private String category_ids;
-    private List<PosStock> stock;
+//    private List<PosStock> stock;
 //    private PosTierPrice[] tier_prices;
     private String qty_increment = StringUtil.STRING_ONE;
     private float price_increment = 0.1f;
@@ -278,8 +278,8 @@ public class PosProduct extends PosAbstractModel implements Product {
         item_id = strItemId;
     }
 
-    @Override
-    public List<Stock> getStock() {
-        return (List<Stock>) (List<?>) stock;
-    }
+//    @Override
+//    public List<Stock> getStock() {
+//        return (List<Stock>) (List<?>) stock;
+//    }
 }

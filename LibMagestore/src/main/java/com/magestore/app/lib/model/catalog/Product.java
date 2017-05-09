@@ -79,5 +79,5 @@ public interface Product extends Model, ParseModel {
     String getItemId();
     void setItemId(String strItemId);
 
-    List<Stock> getStock();
+//    List<Stock> getStock();
 }
