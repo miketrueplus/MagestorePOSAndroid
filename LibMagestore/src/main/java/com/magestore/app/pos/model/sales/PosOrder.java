@@ -26,8 +26,8 @@ import java.util.List;
 
 public class PosOrder extends PosAbstractModel implements Order {
     String entity_id;
-    float rewardpoints_earn = 0;
-    float rewardpoints_spent = 0;
+    int rewardpoints_earn = 0;
+    int rewardpoints_spent = 0;
     float rewardpoints_discount = 0;
     float rewardpoints_base_discount = 0;
     float gift_voucher_discount = 0;
@@ -209,12 +209,12 @@ public class PosOrder extends PosAbstractModel implements Order {
     }
 
     @Override
-    public float getRewardPointsEarn() {
+    public int getRewardPointsEarn() {
         return rewardpoints_earn;
     }
 
     @Override
-    public float getRewardPointsSpent() {
+    public int getRewardPointsSpent() {
         return rewardpoints_spent;
     }
 

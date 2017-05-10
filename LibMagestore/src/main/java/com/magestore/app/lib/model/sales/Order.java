@@ -30,9 +30,9 @@ public interface Order extends Model {
 
     float getGiftVoucherDiscount();
 
-    float getRewardPointsEarn();
+    int getRewardPointsEarn();
 
-    float getRewardPointsSpent();
+    int getRewardPointsSpent();
 
     float getRewardPointsDiscount();
     float getRewardPointsBaseDiscount();
