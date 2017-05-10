@@ -22,6 +22,7 @@ import com.magestore.app.pos.controller.OrderRefundItemsListController;
 import com.magestore.app.pos.databinding.PanelOrderRefundBinding;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.DialogUtil;
+import com.magestore.app.view.EditTextFloat;
 
 import java.util.List;
 
@@ -39,8 +40,8 @@ public class OrderRefundPanel extends AbstractDetailPanel<Order> {
     OrderHistoryListController mOrderHistoryListController;
     CheckBox cb_send_email;
     EditText refund_comment;
-    EditText adjust_refund;
-    EditText adjust_fee, refund_shipping, gift_card, store_credit;
+    EditText gift_card;
+    EditTextFloat store_credit, adjust_fee, refund_shipping, adjust_refund;
     LinearLayout ll_gift_card, ll_store_credit, ll_refund_shipping;
 
     public OrderRefundPanel(Context context) {
@@ -64,18 +65,18 @@ public class OrderRefundPanel extends AbstractDetailPanel<Order> {
 
         refund_comment = (EditText) view.findViewById(R.id.refund_comment);
 
-        adjust_refund = (EditText) view.findViewById(R.id.adjust_refund);
+        adjust_refund = (EditTextFloat) view.findViewById(R.id.adjust_refund);
 
-        adjust_fee = (EditText) view.findViewById(R.id.adjust_fee);
+        adjust_fee = (EditTextFloat) view.findViewById(R.id.adjust_fee);
 
         ll_gift_card = (LinearLayout) view.findViewById(R.id.ll_gift_card);
         gift_card = (EditText) view.findViewById(R.id.gift_card);
 
         ll_store_credit = (LinearLayout) view.findViewById(R.id.ll_store_credit);
-        store_credit = (EditText) view.findViewById(R.id.store_credit);
+        store_credit = (EditTextFloat) view.findViewById(R.id.store_credit);
 
         ll_refund_shipping = (LinearLayout) view.findViewById(R.id.ll_refund_shipping);
-        refund_shipping = (EditText) view.findViewById(R.id.refund_shipping);
+        refund_shipping = (EditTextFloat) view.findViewById(R.id.refund_shipping);
 
         mBinding = DataBindingUtil.bind(view);
 
@@ -123,13 +124,7 @@ public class OrderRefundPanel extends AbstractDetailPanel<Order> {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                float adjustRefund = 0;
-                String adjustValue = adjust_refund.getText().toString();
-                try {
-                    adjustRefund = Float.parseFloat(adjustValue);
-                } catch (Exception e) {
-                }
-
+                float adjustRefund = adjust_refund.getValueFloat();
                 order.setAdjustRefund(adjustRefund);
                 ((OrderHistoryListController) getController()).chaneMaxStoreCreditRefund();
             }
@@ -150,13 +145,7 @@ public class OrderRefundPanel extends AbstractDetailPanel<Order> {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                float refundShipping = 0;
-                String shippingValue = refund_shipping.getText().toString();
-                try {
-                    refundShipping = Float.parseFloat(shippingValue);
-                } catch (Exception e) {
-                }
-
+                float refundShipping = refund_shipping.getValueFloat();
                 order.setRefundShipping(refundShipping);
                 ((OrderHistoryListController) getController()).chaneMaxStoreCreditRefund();
             }
@@ -177,13 +166,7 @@ public class OrderRefundPanel extends AbstractDetailPanel<Order> {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                float adjustFee = 0;
-                String adjustValue = adjust_fee.getText().toString();
-                try {
-                    adjustFee = Float.parseFloat(adjustValue);
-                } catch (Exception e) {
-                }
-
+                float adjustFee = adjust_fee.getValueFloat();
                 order.setAdjustFree(adjustFee);
                 ((OrderHistoryListController) getController()).chaneMaxStoreCreditRefund();
             }
@@ -204,14 +187,9 @@ public class OrderRefundPanel extends AbstractDetailPanel<Order> {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                float storeCredit = 0;
-                String storeCreditValue = store_credit.getText().toString();
-                try {
-                    storeCredit = Float.parseFloat(storeCreditValue);
-                } catch (Exception e) {
-                }
+                float storeCredit = store_credit.getValueFloat();
                 if (storeCredit > mOrderHistoryListController.getOrder().getMaxStoreCreditRefund()) {
-                    store_credit.setText(ConfigUtil.formatNumber(order.getMaxStoreCreditRefund()));
+                    store_credit.setText(ConfigUtil.formatNumber(ConfigUtil.convertToPrice(order.getMaxStoreCreditRefund())));
                     order.setStoreCreditRefund(order.getMaxStoreCreditRefund());
                 } else {
                     order.setStoreCreditRefund(storeCredit);
@@ -240,24 +218,13 @@ public class OrderRefundPanel extends AbstractDetailPanel<Order> {
             refundParams.setEmailSent("0");
         }
 
-        float adjustRefund = 0;
-        try {
-            adjustRefund = Float.parseFloat(adjust_refund.getText().toString());
-        } catch (Exception e) {
-
-        }
-
-        float adjustFee = 0;
-        try {
-            adjustFee = Float.parseFloat(adjust_fee.getText().toString());
-        } catch (Exception e) {
-
-        }
-        refundParams.setAdjustmentPositive(adjustRefund);
-        refundParams.setAdjustmentNegative(adjustFee);
+        float adjustRefund = adjust_refund.getValueFloat();
+        float adjustFee = adjust_fee.getValueFloat();
+        refundParams.setAdjustmentPositive(ConfigUtil.convertToBasePrice(adjustRefund));
+        refundParams.setAdjustmentNegative(ConfigUtil.convertToBasePrice(adjustFee));
         refundParams.setBaseCurrencyCode(mOrder.getBaseCurrencyCode());
         refundParams.setShippingAmount(mOrder.getShippingAmount());
-        refundParams.setStoreCurrencyCode(mOrder.getStoreCurrencyCode());
+        refundParams.setStoreCurrencyCode(ConfigUtil.getCurrentCurrency().getCode());
 
         String comment = refund_comment.getText().toString();
         if (!TextUtils.isEmpty(comment)) {
@@ -274,14 +241,14 @@ public class OrderRefundPanel extends AbstractDetailPanel<Order> {
 
     private void enableRefundShipping(Order order) {
         ll_refund_shipping.setVisibility(mOrderHistoryListController.checkShippingRefund(order) > 0 ? VISIBLE : GONE);
-        if (order.getShippingAmount() > 0) {
-            refund_shipping.setText(ConfigUtil.formatNumber(mOrderHistoryListController.checkShippingRefund(order)));
+        if (order.getBaseShippingInclTax() > 0) {
+            refund_shipping.setText(ConfigUtil.formatNumber(ConfigUtil.convertToPrice(mOrderHistoryListController.checkShippingRefund(order))));
         }
     }
 
     private void enableGiftCard(Order order) {
         ll_gift_card.setVisibility(mOrderHistoryListController.checkCanRefundGiftcard(order) ? VISIBLE : GONE);
-        if (order.getGiftVoucherDiscount() > 0) {
+        if (order.getBaseGiftVoucherDiscount() > 0) {
             gift_card.setText(ConfigUtil.formatNumber((float) Math.sqrt(ConfigUtil.convertToPrice(order.getBaseGiftVoucherDiscount()))));
         }
     }
