@@ -258,7 +258,7 @@ public class OrderRefundPanel extends AbstractDetailPanel<Order> {
     }
 
     public void updateTotalStoreCredit(float total) {
-        store_credit.setText(ConfigUtil.formatNumber(total));
+        store_credit.setText(ConfigUtil.formatNumber(ConfigUtil.convertToPrice(total)));
     }
 
     public void showAlertRespone() {
