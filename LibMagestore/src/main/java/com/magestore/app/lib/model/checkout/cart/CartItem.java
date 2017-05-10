@@ -118,6 +118,7 @@ public interface CartItem extends Model {
     float getOriginalPrice();
     String getItemId();
     void setItemId(String strItemId);
+    float getBaseOriginalPrice();
 
     String getType();
 

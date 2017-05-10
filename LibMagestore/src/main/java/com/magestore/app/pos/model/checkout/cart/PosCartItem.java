@@ -439,6 +439,11 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     }
 
     @Override
+    public float getBaseOriginalPrice() {
+        return base_original_price;
+    }
+
+    @Override
     public String getType() {
         return type;
     }

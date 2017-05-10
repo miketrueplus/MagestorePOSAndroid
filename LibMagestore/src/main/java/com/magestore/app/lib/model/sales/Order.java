@@ -35,6 +35,7 @@ public interface Order extends Model {
     float getRewardPointsSpent();
 
     float getRewardPointsDiscount();
+    float getRewardPointsBaseDiscount();
 
     float getBaseGiftVoucherDiscount();
 

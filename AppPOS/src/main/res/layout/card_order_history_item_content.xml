@@ -64,7 +64,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@{ConfigUtil.formatPrice(orderItem.getOriginalPrice())}"
+                    android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderItem.getBaseOriginalPrice()))}"
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/order_content_table_text_size" />
 

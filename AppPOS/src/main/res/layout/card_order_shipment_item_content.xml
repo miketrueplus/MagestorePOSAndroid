@@ -60,7 +60,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
-                    android:text="@{ConfigUtil.formatPrice(orderItem.getPrice())}"
+                    android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderItem.getBasePriceInclTax()))}"
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/order_content_table_text_size" />
 

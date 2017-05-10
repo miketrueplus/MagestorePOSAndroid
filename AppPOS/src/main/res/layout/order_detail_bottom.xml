@@ -191,7 +191,7 @@
                         android:id="@+id/table_row_giftcard_discount"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="@{orderDetail.getGiftVoucherDiscount() != 0 ? View.VISIBLE : View.GONE}">
+                        android:visibility="@{orderDetail.getBaseGiftVoucherDiscount() != 0 ? View.VISIBLE : View.GONE}">
 
                         <TextView
                             android:layout_width="0dp"
@@ -206,7 +206,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="right"
-                            android:text="@{ConfigUtil.formatPrice(orderDetail.getGiftVoucherDiscount())}"
+                            android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderDetail.getBaseGiftVoucherDiscount()))}"
                             android:textColor="@color/text_color"
                             android:textSize="@dimen/order_bottom_text_size" />
                     </TableRow>
@@ -215,7 +215,7 @@
                         android:id="@+id/table_row_reward_point_discount"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="@{orderDetail.getRewardPointsDiscount() != 0 ? View.VISIBLE : View.GONE}">
+                        android:visibility="@{orderDetail.getRewardPointsBaseDiscount() != 0 ? View.VISIBLE : View.GONE}">
 
                         <TextView
                             android:layout_width="0dp"
@@ -230,7 +230,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="right"
-                            android:text="@{ConfigUtil.formatPrice(orderDetail.getRewardPointsDiscount())}"
+                            android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderDetail.getRewardPointsBaseDiscount()))}"
                             android:textColor="@color/text_color"
                             android:textSize="@dimen/order_bottom_text_size" />
                     </TableRow>
