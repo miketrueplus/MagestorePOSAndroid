@@ -135,8 +135,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/rl_information"
-            android:padding="@dimen/layout_margin_10"
-            android:visibility="@{(orderDetail.getBaseTotalDue() > 0) ? View.VISIBLE : View.GONE}">
+            android:padding="@dimen/layout_margin_10">
 
             <LinearLayout
                 android:layout_width="wrap_content"

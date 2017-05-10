@@ -48,7 +48,7 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
     ImageView im_status;
     TextView status;
 
-    RelativeLayout detail_order_loading;
+    RelativeLayout detail_order_loading, rl_take_payment;
 
     public OrderDetailPanel(Context context) {
         super(context);
@@ -68,6 +68,7 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         v = inflate(getContext(), R.layout.panel_order_detail, null);
         addView(v);
 
+        rl_take_payment = (RelativeLayout) v.findViewById(R.id.rl_take_payment);
         btn_take_payment = (Button) v.findViewById(R.id.btn_take_payment);
 
         btn_invoice = (Button) v.findViewById(R.id.btn_invoice);
@@ -124,7 +125,7 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         changeStatusTopOrder(item_status);
         changeColorStatusOrder(item_status);
 
-        btn_take_payment.setVisibility(checkCanTakePayment(mOrder) ? VISIBLE : GONE);
+        rl_take_payment.setVisibility(checkCanTakePayment(mOrder) ? VISIBLE : GONE);
 
         btn_invoice.setOnClickListener(new OnClickListener() {
             @Override
