@@ -36,6 +36,8 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     String custom_price_type;
     @Gson2PosExclude
     String is_shipable = StringUtil.STRING_ZERO;
+    @Gson2PosExclude
+    String tax_class_id;
 
     @Override
     public boolean isShipable() {
@@ -471,6 +473,16 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     @Override
     public boolean isTypeCustom() {
         return TYPE_CUSTOM.equals(getType());
+    }
+
+    @Override
+    public String getTaxClassId() {
+        return tax_class_id;
+    }
+
+    @Override
+    public void setTaxClassId(String strTaxClassId) {
+        tax_class_id = strTaxClassId;
     }
 
     // Order history

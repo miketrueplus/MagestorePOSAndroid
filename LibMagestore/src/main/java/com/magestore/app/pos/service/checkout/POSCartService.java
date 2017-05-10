@@ -265,7 +265,7 @@ public class POSCartService extends AbstractService implements CartService {
         cartItem.insertOption("name", cartItem.getProduct().getName());
         cartItem.insertOption("is_virtual", cartItem.isShipable() ? StringUtil.STRING_ZERO : StringUtil.STRING_ONE);
         cartItem.insertOption("price", Float.toString(cartItem.getUnitPrice()));
-        cartItem.insertOption("tax_class_id", StringUtil.STRING_ZERO);
+        cartItem.insertOption("tax_class_id", cartItem.getTaxClassId());
         cartItem.getProduct().setID(cartItem.getProduct().getName() + "_" + Float.toString(cartItem.getUnitPrice()));
         return insertWithOption(checkout, cartItem);
     }

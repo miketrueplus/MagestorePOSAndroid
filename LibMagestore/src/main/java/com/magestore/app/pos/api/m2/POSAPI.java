@@ -94,6 +94,7 @@ public class POSAPI {
 
     // API config
     public static final String REST_CONFIG_GET_LISTING = "/rest/default/V1/webpos/configurations?";
+    public static final String REST_CONFIG_TAX_CLASS = "/rest/default/V1/webpos/taxclass/list?";
     public static final String REST_CONFIG_GET_ = "/rest/default/V1/webpos/configurations/${configID}?path=${configPath}&session=${sessionID}";
 
     // API Account

@@ -8,12 +8,18 @@ import android.widget.EditText;
 
 import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
+import com.magestore.app.lib.model.config.ConfigTaxClass;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
+import com.magestore.app.lib.view.SimpleSpinner;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.CartItemListController;
 import com.magestore.app.pos.databinding.PanelCheckoutCustomSaleBinding;
+import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.StringUtil;
 import com.magestore.app.view.EditTextFloat;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Johan on 3/16/17.
@@ -25,6 +31,7 @@ public class CheckoutCustomSalePanel extends AbstractDetailPanel<CartItem> {
     PanelCheckoutCustomSaleBinding mBinding;
     EditTextFloat mtxtPrice;
     EditText mtxtName;
+    SimpleSpinner s_tax_class;
 
     /**
      * Khởi tạo
@@ -64,7 +71,7 @@ public class CheckoutCustomSalePanel extends AbstractDetailPanel<CartItem> {
         setLayoutPanel(R.layout.panel_checkout_custom_sale);
 //        View view = inflate(getContext(), R.layout.panel_checkout_custom_sale, null);
 //        addView(view);
-
+        s_tax_class = (SimpleSpinner) getView().findViewById(R.id.s_tax_class);
         mtxtPrice = (EditTextFloat) getView().findViewById(R.id.id_txt_custom_sale_price);
         mtxtName = (EditText) getView().findViewById(R.id.id_txt_custom_sale_name);
 
@@ -80,9 +87,21 @@ public class CheckoutCustomSalePanel extends AbstractDetailPanel<CartItem> {
     @Override
     public void bindItem(CartItem item) {
         super.bindItem(item);
+        setDataTaxClass();
         mBinding.setCartItem(item);
         mBinding.setProduct(item.getProduct());
-        if (StringUtil.isNullOrEmpty( mBinding.idTxtCustomSaleName.getText().toString().trim())) mBinding.idTxtCustomSaleName.setText(R.string.custom_sale);
+        if (StringUtil.isNullOrEmpty(mBinding.idTxtCustomSaleName.getText().toString().trim()))
+            mBinding.idTxtCustomSaleName.setText(R.string.custom_sale);
+    }
+
+    public void setDataTaxClass() {
+        List<ConfigTaxClass> listTaxClass = new ArrayList<>();
+        for (ConfigTaxClass taxClass : ConfigUtil.getConfigTaxClass()) {
+            if (taxClass.getClassType().equals("PRODUCT")) {
+                listTaxClass.add(taxClass);
+            }
+        }
+        s_tax_class.bind(listTaxClass.toArray(new ConfigTaxClass[0]));
     }
 
     /**
@@ -99,6 +118,7 @@ public class CheckoutCustomSalePanel extends AbstractDetailPanel<CartItem> {
         item.setCustomPrice(mtxtPrice.getValueFloat());
         item.setOriginalPrice(mtxtPrice.getValueFloat());
         item.setShipable(mBinding.idSwitchCustomShipable.isChecked());
+        item.setTaxClassId(s_tax_class.getSelection());
         String strName = mtxtName.getText().toString().trim();
         strName = (StringUtil.isNullOrEmpty(strName)) ? getResources().getString(R.string.sales_custom_sales_product) : strName;
         item.getProduct().setName(strName);

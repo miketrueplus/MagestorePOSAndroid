@@ -7,6 +7,7 @@ import com.magestore.app.lib.model.config.Config;
 import com.magestore.app.lib.model.config.ConfigCountry;
 import com.magestore.app.lib.model.config.ConfigPriceFormat;
 import com.magestore.app.lib.model.config.ConfigPrint;
+import com.magestore.app.lib.model.config.ConfigTaxClass;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.directory.Currency;
 import com.magestore.app.lib.model.setting.ChangeCurrency;
@@ -62,6 +63,7 @@ public class POSConfigService extends AbstractService implements ConfigService {
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
         Config config = configDataAccess.retrieveConfig();
+        List<ConfigTaxClass> configTaxClass = configDataAccess.retrieveConfigTaxClass();
 
         // đặt config format tiền
         ConfigUtil.setCurrencyFormat(getPriceFormat());
@@ -77,6 +79,7 @@ public class POSConfigService extends AbstractService implements ConfigService {
         ConfigUtil.setEnableStoreCredit(getConfigStoreCredit());
         ConfigUtil.setEnableRewardPoint(getConfigRewardPoint());
         ConfigUtil.setCurrentCurrency(getDefaultCurrency());
+        ConfigUtil.setConfigTaxClass(configTaxClass);
         // return config
         return config;
     }

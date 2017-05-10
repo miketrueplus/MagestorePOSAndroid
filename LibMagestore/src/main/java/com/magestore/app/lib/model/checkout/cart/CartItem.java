@@ -132,6 +132,9 @@ public interface CartItem extends Model {
 
     boolean isTypeCustom();
 
+    String getTaxClassId();
+    void setTaxClassId(String strTaxClassId);
+
     // Order history
     String getName();
     String getSku();

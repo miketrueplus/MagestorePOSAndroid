@@ -14,6 +14,7 @@ import com.magestore.app.lib.model.config.ConfigCountry;
 import com.magestore.app.lib.model.config.ConfigPriceFormat;
 import com.magestore.app.lib.model.config.ConfigPrint;
 import com.magestore.app.lib.model.config.ConfigRegion;
+import com.magestore.app.lib.model.config.ConfigTaxClass;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.model.directory.Currency;
@@ -33,6 +34,7 @@ import com.magestore.app.pos.model.config.PosConfigDefault;
 import com.magestore.app.pos.model.config.PosConfigPriceFormat;
 import com.magestore.app.pos.model.config.PosConfigPrint;
 import com.magestore.app.pos.model.config.PosConfigRegion;
+import com.magestore.app.pos.model.config.PosConfigTaxClass;
 import com.magestore.app.pos.model.customer.PosCustomer;
 import com.magestore.app.pos.model.customer.PosCustomerAddress;
 import com.magestore.app.pos.model.directory.PosCurrency;
@@ -42,6 +44,7 @@ import com.magestore.app.pos.model.staff.PosLocation;
 import com.magestore.app.pos.model.staff.PosStaff;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosConfigParseImplement;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosPriceFormatParseImplement;
+import com.magestore.app.pos.parse.gson2pos.GsonPosListTaxClass;
 import com.magestore.app.util.StringUtil;
 
 import org.json.JSONException;
@@ -69,6 +72,7 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
     private static Customer guest;
     private static CustomerAddress customerAddress;
     private static Currency currentCurrency;
+    private static List<ConfigTaxClass> listConfigTax;
 
     private class ConfigEntity {
         Staff staff;
@@ -141,6 +145,61 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
             // đóng connection
 //            if (connection != null) connection.close();
 //            connection = null;
+        }
+    }
+
+    @Override
+    public List<ConfigTaxClass> retrieveConfigTaxClass() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        if (listConfigTax != null && listConfigTax.size() > 0) {
+            return listConfigTax;
+        }
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+        try {
+            // Khởi tạo connection và khởi tạo truy vấn
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPI.REST_CONFIG_TAX_CLASS);
+
+            // Xây dựng tham số
+            paramBuilder = statement.getParamBuilder()
+                    .setPage(1)
+                    .setPageSize(200)
+                    .setSessionID(POSDataAccessSession.REST_SESSION_ID);
+
+            rp = statement.execute();
+            rp.setParseImplement(getClassParseImplement());
+            rp.setParseModel(GsonPosListTaxClass.class);
+            GsonPosListTaxClass listTaxClass = (GsonPosListTaxClass) rp.doParse();
+            // add none deafult
+            ConfigTaxClass configTaxClass = new PosConfigTaxClass();
+            configTaxClass.setID("0");
+            configTaxClass.setClassName("None");
+            configTaxClass.setClassType("PRODUCT");
+            listConfigTax.add(configTaxClass);
+            listConfigTax = (List<ConfigTaxClass>) (List<?>) (listTaxClass.items);
+            return listConfigTax;
+        } catch (ConnectionException ex) {
+            throw ex;
+        } catch (IOException ex) {
+            throw ex;
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
         }
     }
 

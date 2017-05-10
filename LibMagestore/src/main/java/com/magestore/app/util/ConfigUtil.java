@@ -3,6 +3,7 @@ package com.magestore.app.util;
 import android.text.format.Time;
 
 import com.magestore.app.lib.model.config.ConfigPrint;
+import com.magestore.app.lib.model.config.ConfigTaxClass;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.staff.Staff;
 import com.magestore.app.lib.model.directory.Currency;
@@ -15,6 +16,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -40,6 +42,7 @@ public class ConfigUtil {
     private static boolean mEnableStoreCredit;
     private static boolean mEnableRewardPoint;
     private static boolean mEnableGiftCard;
+    private static List<ConfigTaxClass> mConfigTaxClass;
 
     /**
      * @param format
@@ -606,5 +609,13 @@ public class ConfigUtil {
 
     public static String getBaseCurrencyCode() {
         return mBaseCurrencyCode;
+    }
+
+    public static void setConfigTaxClass(List<ConfigTaxClass> mConfigTaxClass) {
+        ConfigUtil.mConfigTaxClass = mConfigTaxClass;
+    }
+
+    public static List<ConfigTaxClass> getConfigTaxClass() {
+        return mConfigTaxClass;
     }
 }
