@@ -691,16 +691,16 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
     }
 
     private boolean checkChangeCustomer(Customer customer) {
-        if (mCustomer.getFirstName().equals(customer.getFirstName())) {
+        if (!mCustomer.getFirstName().equals(customer.getFirstName())) {
             return true;
         }
-        if (mCustomer.getLastName().equals(customer.getLastName())) {
+        if (!mCustomer.getLastName().equals(customer.getLastName())) {
             return true;
         }
-        if (mCustomer.getEmail().equals(customer.getEmail())) {
+        if (!mCustomer.getEmail().equals(customer.getEmail())) {
             return true;
         }
-        if (mCustomer.getGroupID().equals(customer.getGroupID())) {
+        if (!mCustomer.getGroupID().equals(customer.getGroupID())) {
             return true;
         }
         return false;
