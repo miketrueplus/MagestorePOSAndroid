@@ -156,57 +156,27 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
     }
 
     private void actionChangeCustomDiscount(final CartItem cartItem) {
-        mtxtCustomDiscount.addTextChangedListener(new TextWatcher() {
+        mtxtCustomDiscount.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (!changePrice) {
-                    if (mtxtCustomDiscount.getValueFloat() != 0) {
-                        mblnCustomPriceFixed = true;
-                        actionChangeValue(mbtnCustomPriceFixed, mbtnCustomPricePercent, mblnCustomPriceFixed);
-                        mtxtCustomPrice.setText(ConfigUtil.formatNumber(ConfigUtil.formatNumber(mCartItem.getCustomPrice())));
-                    }
-                    changePrice = false;
+            public void onFocusChange(View view, boolean b) {
+                if(b){
+                    mblnCustomPriceFixed = true;
+                    actionChangeValue(mbtnCustomPriceFixed, mbtnCustomPricePercent, mblnCustomPriceFixed);
+                    mtxtCustomPrice.setText(ConfigUtil.formatNumber(ConfigUtil.formatNumber(mCartItem.getCustomPrice())));
                 }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
             }
         });
     }
 
     private void actionChangeCustomPrice(final CartItem cartItem) {
-        mtxtCustomPrice.addTextChangedListener(new TextWatcher() {
+        mtxtCustomPrice.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                mblnCustomDiscountFixed = true;
-                actionChangeValue(mbtnDiscountFixed, mbtnDiscountPercent, mblnCustomDiscountFixed);
-                if (mblnCustomDiscountFixed) {
-                    if (mtxtCustomPrice.getValueFloat() != cartItem.getCustomPrice()) {
-                        mtxtCustomDiscount.setText(ConfigUtil.formatNumber(mCartItem.getDiscountAmount()));
-                    }
-                } else {
-                    if (mtxtCustomPrice.getValueFloat() != 0) {
-                        mtxtCustomDiscount.setText(ConfigUtil.formatNumber(mCartItem.getDiscountAmount()));
-                    }
+            public void onFocusChange(View view, boolean b) {
+                if(b){
+                    mblnCustomDiscountFixed = true;
+                    actionChangeValue(mbtnDiscountFixed, mbtnDiscountPercent, mblnCustomDiscountFixed);
+                    mtxtCustomDiscount.setText(ConfigUtil.formatNumber(mCartItem.getDiscountAmount()));
                 }
-                changePrice = true;
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
             }
         });
     }
