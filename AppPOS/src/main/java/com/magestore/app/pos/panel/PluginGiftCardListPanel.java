@@ -115,7 +115,7 @@ public class PluginGiftCardListPanel extends AbstractSimpleRecycleView<GiftCard>
                     f_gift_value = 0;
                 }
 
-                if (f_gift_value > 0 && f_gift_value <= item.getBalance()) {
+                if (f_gift_value >= 0 && f_gift_value <= item.getBalance()) {
                     bt_apply.setEnabled(true);
                     bt_apply.setBackground(getResources().getDrawable(R.drawable.backgound_buton_apply_enable));
                     bt_apply.setTextColor(ContextCompat.getColor(getContext(), R.color.white));

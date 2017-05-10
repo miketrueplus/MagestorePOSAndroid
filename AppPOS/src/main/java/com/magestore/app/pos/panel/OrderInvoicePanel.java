@@ -24,6 +24,7 @@ import com.magestore.app.pos.controller.OrderHistoryListController;
 import com.magestore.app.pos.controller.OrderInvoiceItemsListController;
 import com.magestore.app.pos.databinding.PanelOrderInvoiceBinding;
 import com.magestore.app.util.ConfigUtil;
+import com.magestore.app.util.DataUtil;
 import com.magestore.app.util.DialogUtil;
 
 import java.util.ArrayList;
@@ -171,8 +172,9 @@ public class OrderInvoicePanel extends AbstractDetailPanel<Order> {
         orderInvoiceParams.setShippingTaxAmount(mOrder.getShippingTaxAmount());
         // TODO: check state
         orderInvoiceParams.setState("2");
-        orderInvoiceParams.setStoreCurrencyCode(mOrder.getStoreCurrencyCode());
-        orderInvoiceParams.setStoreId(mOrder.getStoreId());
+        String store_id = DataUtil.getDataStringToPreferences(getContext(), DataUtil.STORE_ID);
+        orderInvoiceParams.setStoreCurrencyCode(ConfigUtil.getCurrentCurrency().getCode());
+        orderInvoiceParams.setStoreId(store_id);
         orderInvoiceParams.setStoreToBaseRate(mOrder.getStoreToBaseRate());
         orderInvoiceParams.setStoreToOrderRate(mOrder.getStoreToOrderRate());
         orderInvoiceParams.setSubtotal(mOrder.getOrderHistorySubtotal());
