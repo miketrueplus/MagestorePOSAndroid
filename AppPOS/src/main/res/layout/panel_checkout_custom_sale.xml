@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:magestore_view="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -62,6 +63,24 @@
                 android:text="@{ConfigUtil.formatNumber(cartItem.getUnitPrice())}" />
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/layout_margin_5"
+            android:background="@drawable/checkout_border_linear_layout"
+            android:orientation="vertical">
+
+            <com.magestore.app.lib.view.SimpleSpinner
+                android:id="@+id/s_tax_class"
+                magestore_view:layout_no_scroll="true"
+                magestore_view:layout_row="@layout/simple_textview_row"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/layout_margin_5"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/text_size" />
+        </LinearLayout>
+
         <Switch
             android:id="@+id/id_switch_custom_shipable"
             android:layout_width="match_parent"
@@ -71,9 +90,9 @@
             android:layout_marginLeft="@dimen/layout_margin_5"
             android:layout_marginRight="@dimen/layout_margin_5"
             android:layout_marginTop="@dimen/layout_margin_10"
+            android:checked="@{cartItem.isShipable()}"
             android:text="@string/checkout_custom_sale_ship"
             android:textColor="@color/text_color"
-            android:checked="@{cartItem.isShipable()}"
             android:textSize="@dimen/card_custom_sale_ship_text_size" />
 
         <Button
