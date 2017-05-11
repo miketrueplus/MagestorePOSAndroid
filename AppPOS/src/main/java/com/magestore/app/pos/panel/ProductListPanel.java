@@ -146,8 +146,9 @@ public class ProductListPanel extends AbstractListPanel<Product> {
                 .withResultListener(new MaterialBarcodeScanner.OnResultListener() {
                     @Override
                     public void onResult(Barcode barcode) {
+//                        mSearchAutoCompletePanel.actionSearch();
+                        mSearchAutoCompletePanel.getAutoTextView().setText(barcode.rawValue);
                         mSearchAutoCompletePanel.actionSearch();
-//                        mSearchAutoCompletePanel.getAutoTextView().setText(barcode.rawValue);
                     }
                 })
                 .build();

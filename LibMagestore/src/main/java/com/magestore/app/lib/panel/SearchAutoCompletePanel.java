@@ -153,7 +153,19 @@ public class SearchAutoCompletePanel extends FrameLayout {
                         applySearch();
                         mintMode = MODE_FILTER;
                     }
-
+                    if(actionId == EditorInfo.IME_ACTION_DONE)
+                    {
+                        //value form keyboard
+                        actionSearch();
+                        return handled;
+                    }
+                    if(actionId == EditorInfo.IME_ACTION_UNSPECIFIED)
+                    {
+                        //value form barcode scanner
+                        String valueFromKeyboard = mAutoTextView.getText().toString();
+                        actionSearch();
+                        return handled;
+                    }
                     return handled;
                 }
             });
@@ -228,24 +240,6 @@ public class SearchAutoCompletePanel extends FrameLayout {
                 }
             });
 
-//        mAutoTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-//            @Override
-//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-//                if(actionId == EditorInfo.IME_ACTION_DONE)
-//                {
-//                    //value form keyboard
-//                    actionSearch();
-//                }
-//                if(actionId == EditorInfo.IME_ACTION_UNSPECIFIED)
-//                {
-//                    //value form barcode scanner
-//                    String valueFromKeyboard = mAutoTextView.getText().toString();
-//                    actionSearch();
-//                }
-//                return true;
-//
-//            }
-//        });
     }
 
     /**

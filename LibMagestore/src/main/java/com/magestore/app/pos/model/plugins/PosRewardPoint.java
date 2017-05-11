@@ -39,4 +39,9 @@ public class PosRewardPoint extends PosAbstractModel implements RewardPoint {
     public int getMaxPoints() {
         return max_points;
     }
+
+    @Override
+    public int getAmount() {
+        return used_point;
+    }
 }
