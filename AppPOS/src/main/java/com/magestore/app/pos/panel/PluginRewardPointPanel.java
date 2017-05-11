@@ -177,6 +177,10 @@ public class PluginRewardPointPanel extends AbstractDetailPanel<RewardPoint> {
         });
     }
 
+    public void changeBalance(RewardPoint rewardPoint){
+        tv_reward_point.setText(getContext().getString(R.string.plugin_reward_point_title, ConfigUtil.formatNumber(rewardPoint.getBalance() - rewardPoint.getAmount())));
+    }
+
     public void resetPointValue() {
         reward_point_value.setText("0");
     }

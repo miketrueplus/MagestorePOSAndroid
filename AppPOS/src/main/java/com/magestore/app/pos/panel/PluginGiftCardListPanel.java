@@ -12,6 +12,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.magestore.app.lib.model.plugins.GiftCard;
 import com.magestore.app.lib.view.AbstractSimpleRecycleView;
@@ -20,6 +21,8 @@ import com.magestore.app.pos.controller.PluginGiftCardController;
 import com.magestore.app.pos.databinding.PluginGiftCardContentLayoutBinding;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.DialogUtil;
+import com.magestore.app.util.StringUtil;
+import com.magestore.app.view.EditTextFloat;
 
 import java.util.HashMap;
 
@@ -34,6 +37,7 @@ public class PluginGiftCardListPanel extends AbstractSimpleRecycleView<GiftCard>
     HashMap<GiftCard, EditText> mTextGiftCode;
     HashMap<GiftCard, EditText> mTextGiftCodeValue;
     HashMap<GiftCard, CheckBox> mUserMaxPoint;
+    HashMap<GiftCard, TextView> mTextBalance;
 
     public void setPluginGiftCardController(PluginGiftCardController mPluginGiftCardController) {
         this.mPluginGiftCardController = mPluginGiftCardController;
@@ -56,6 +60,7 @@ public class PluginGiftCardListPanel extends AbstractSimpleRecycleView<GiftCard>
         mTextGiftCode = new HashMap<>();
         mTextGiftCodeValue = new HashMap<>();
         mUserMaxPoint = new HashMap<>();
+        mTextBalance = new HashMap<>();
     }
 
     @Override
@@ -63,20 +68,23 @@ public class PluginGiftCardListPanel extends AbstractSimpleRecycleView<GiftCard>
         PluginGiftCardContentLayoutBinding mBinding = DataBindingUtil.bind(view);
         mBinding.setGiftCard(item);
         final GiftCard giftCard = mList.get(position);
+        TextView tv_gift_card = (TextView) view.findViewById(R.id.tv_gift_card);
+        mTextBalance.put(giftCard, tv_gift_card);
         EditText gift_code = (EditText) view.findViewById(R.id.gift_code);
         mTextGiftCode.put(giftCard, gift_code);
-        EditText gift_code_value = (EditText) view.findViewById(R.id.gift_code_value);
+        EditTextFloat gift_code_value = (EditTextFloat) view.findViewById(R.id.gift_code_value);
         mTextGiftCodeValue.put(giftCard, gift_code_value);
         CheckBox cb_use_max_credit = (CheckBox) view.findViewById(R.id.cb_use_max_credit);
         mUserMaxPoint.put(giftCard, cb_use_max_credit);
         actionCheckUseMaxPoint(item, cb_use_max_credit, gift_code_value);
         Button bt_apply = (Button) view.findViewById(R.id.bt_apply);
-        bt_apply.setBackground(getResources().getDrawable(R.drawable.backgound_buton_apply_disable));
-        bt_apply.setTextColor(ContextCompat.getColor(getContext(), R.color.text_color));
 
         actionChangeGiftCode(giftCard, gift_code, bt_apply);
         actionChangeGiftValue(giftCard, gift_code_value, bt_apply, cb_use_max_credit);
-
+        if (!StringUtil.isNullOrEmpty(giftCard.getCouponCode())) {
+            bt_apply.setBackground(getResources().getDrawable(R.drawable.backgound_buton_apply_disable));
+            bt_apply.setTextColor(ContextCompat.getColor(getContext(), R.color.text_color));
+        }
         bt_apply.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -98,7 +106,7 @@ public class PluginGiftCardListPanel extends AbstractSimpleRecycleView<GiftCard>
 
     }
 
-    private void actionChangeGiftValue(final GiftCard item, final EditText gift_code_value, final Button bt_apply, final CheckBox use_max_point) {
+    private void actionChangeGiftValue(final GiftCard item, final EditTextFloat gift_code_value, final Button bt_apply, final CheckBox use_max_point) {
         gift_code_value.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -107,26 +115,25 @@ public class PluginGiftCardListPanel extends AbstractSimpleRecycleView<GiftCard>
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                String gift_value = gift_code_value.getText().toString();
-                float f_gift_value = 0;
-                try {
-                    f_gift_value = Float.parseFloat(gift_value);
-                } catch (Exception e) {
-                    f_gift_value = 0;
-                }
-
+                float f_gift_value = gift_code_value.getValueFloat();
                 if (f_gift_value >= 0 && f_gift_value <= item.getBalance()) {
-                    bt_apply.setEnabled(true);
-                    bt_apply.setBackground(getResources().getDrawable(R.drawable.backgound_buton_apply_enable));
-                    bt_apply.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+                    if (f_gift_value == 0) {
+                        bt_apply.setEnabled(false);
+                        bt_apply.setBackground(getResources().getDrawable(R.drawable.backgound_buton_apply_disable));
+                        bt_apply.setTextColor(ContextCompat.getColor(getContext(), R.color.text_color));
+                    } else {
+                        bt_apply.setEnabled(true);
+                        bt_apply.setBackground(getResources().getDrawable(R.drawable.backgound_buton_apply_enable));
+                        bt_apply.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+                    }
                     item.setAmount(f_gift_value);
                     use_max_point.setChecked(f_gift_value == item.getBalance() ? true : false);
                 } else {
                     gift_code_value.setText(ConfigUtil.formatNumber(item.getBalance()));
                     use_max_point.setChecked(true);
-                    bt_apply.setEnabled(false);
-                    bt_apply.setBackground(getResources().getDrawable(R.drawable.backgound_buton_apply_disable));
-                    bt_apply.setTextColor(ContextCompat.getColor(getContext(), R.color.text_color));
+                    bt_apply.setEnabled(true);
+                    bt_apply.setBackground(getResources().getDrawable(R.drawable.backgound_buton_apply_enable));
+                    bt_apply.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
                 }
             }
 
@@ -170,9 +177,9 @@ public class PluginGiftCardListPanel extends AbstractSimpleRecycleView<GiftCard>
         use_max_point.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!use_max_point.isChecked()){
+                if (!use_max_point.isChecked()) {
                     use_max_point.setChecked(false);
-                }else{
+                } else {
                     use_max_point.setChecked(true);
                     gift_code_value.setText(ConfigUtil.formatNumber(item.getBalance()));
                 }
@@ -194,18 +201,28 @@ public class PluginGiftCardListPanel extends AbstractSimpleRecycleView<GiftCard>
         gift_code_value.setText(ConfigUtil.formatNumber(giftCard.getAmount()));
     }
 
+    public void updateBalance(GiftCard giftCard) {
+        TextView tv_gift_card = mTextBalance.get(giftCard);
+        if (giftCard.getBalance() > 0) {
+            tv_gift_card.setText(getContext().getString(R.string.plugin_gift_card_title, ConfigUtil.formatPrice(giftCard.getBalance() - giftCard.getAmount())));
+        } else {
+            tv_gift_card.setText(getContext().getString(R.string.plugin_gift_card_title_no_balance, ConfigUtil.formatPrice(giftCard.getBalance() - giftCard.getAmount())));
+        }
+    }
+
     public void enableUseMaxPoint(GiftCard giftCard) {
         CheckBox cb_useMaxPoint = mUserMaxPoint.get(giftCard);
         cb_useMaxPoint.setVisibility(VISIBLE);
     }
 
-    public void resetListGiftCard(){
+    public void resetListGiftCard() {
         mTextGiftCode = new HashMap<>();
         mTextGiftCodeValue = new HashMap<>();
         mUserMaxPoint = new HashMap<>();
+        mTextBalance = new HashMap<>();
     }
 
-    public void showError(String message){
+    public void showError(String message) {
         // Tạo dialog và hiển thị
         DialogUtil.confirm(getContext(), getContext().getString(R.string.plugin_giftcard_error), R.string.ok);
     }

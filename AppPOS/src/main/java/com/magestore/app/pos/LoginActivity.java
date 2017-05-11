@@ -111,16 +111,20 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
             }
         });
 
-        // TODO: remove while release
-        mUserNameView.setText("demo");
-        mPasswordView.setText("demo123");
-
         // Sự kiện nút login được nhấn
         Button mSignInButton = (Button) findViewById(R.id.sign_in_button);
         mSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 attemptLogin();
+            }
+        });
+
+        Button mDemoButton = (Button) findViewById(R.id.demo_button);
+        mDemoButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                attemptLoginDemo();
             }
         });
 
@@ -134,9 +138,9 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
      */
     protected void initControlValue() {
         // Lấy domain là domain của lần đăng nhập cuối mà thành công
-        mDomainView.setText(getSharedValue("login_activity_domain", BuildConfig.REST_BASE_URL).trim());
-        mUserNameView.setText(getSharedValue("login_activity_username", "ravi").trim());
-        mPasswordView.setText(getSharedValue("login_activity_password", "ravi123").trim());
+        mDomainView.setText(getSharedValue("login_activity_domain", "").trim());
+        mUserNameView.setText(getSharedValue("login_activity_username", "").trim());
+        mPasswordView.setText(getSharedValue("login_activity_password", "").trim());
     }
 
     /**
@@ -252,6 +256,24 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
             {
                 mAuthTask.execute();
             }
+        }
+    }
+
+    private void attemptLoginDemo() {
+        String domain = BuildConfig.REST_BASE_URL + "/pos-app/03";
+        String username = "ravi";
+        String password = "ravi123";
+
+        String strFinalDomain = buildPOSBaseURL(domain);
+        // Bắt đầu login task
+        mAuthTask = new LoginTask(new LoginListener(), strFinalDomain, username, password);
+//            mAuthTask.execute();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) // Above Api Level 13
+        {
+            mAuthTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        } else // Below Api Level 13
+        {
+            mAuthTask.execute();
         }
     }
 

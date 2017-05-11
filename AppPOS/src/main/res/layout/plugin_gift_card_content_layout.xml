@@ -15,115 +15,140 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layout_marginRight="@dimen/layout_margin_20"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/tv_gift_card"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/rl_remove_gift_code"
-                android:orientation="horizontal">
+                android:layout_gravity="top"
+                android:text="@string/plugin_gift_card_title_no_balance"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/text_size" />
+        </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <com.magestore.app.view.FormatEditText
-                        android:id="@+id/gift_code"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/checkout_border_linear_layout"
-                        android:hint="@string/plugin_gift_code_hint_text"
-                        android:padding="@dimen/layout_margin_10"
-                        android:text="@{giftCard.getCouponCode()}"
-                        android:textColor="@color/text_color"
-                        android:textSize="@dimen/text_size" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/checkout_margin"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <com.magestore.app.view.FormatEditText
-                        android:id="@+id/gift_code_value"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/checkout_border_linear_layout"
-                        android:enabled="false"
-                        android:gravity="right"
-                        android:inputType="numberDecimal"
-                        android:padding="@dimen/layout_margin_10"
-                        android:text="@{ConfigUtil.formatNumber(giftCard.getAmount())}"
-                        android:textColor="@color/text_color"
-                        android:textSize="@dimen/text_size" />
-                </LinearLayout>
-            </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="2">
 
             <RelativeLayout
-                android:id="@+id/rl_remove_gift_code"
-                android:layout_width="@dimen/checkout_im_remove_payment_width"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/checkout_margin">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                <ImageView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:src="@drawable/ic_checkout_remove_payment" />
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/rl_remove_gift_code"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <com.magestore.app.view.FormatEditText
+                            android:id="@+id/gift_code"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/checkout_border_linear_layout"
+                            android:hint="@string/plugin_gift_code_hint_text"
+                            android:padding="@dimen/layout_margin_10"
+                            android:text="@{giftCard.getCouponCode()}"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/text_size" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/checkout_margin"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <com.magestore.app.view.EditTextFloat
+                            android:id="@+id/gift_code_value"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/checkout_border_linear_layout"
+                            android:enabled="false"
+                            android:gravity="right"
+                            android:inputType="numberDecimal"
+                            android:padding="@dimen/layout_margin_10"
+                            android:text="@{ConfigUtil.formatNumber(giftCard.getAmount())}"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/text_size" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_remove_gift_code"
+                    android:layout_width="@dimen/checkout_im_remove_payment_width"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/checkout_margin">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/ic_checkout_remove_payment" />
+                </RelativeLayout>
             </RelativeLayout>
-        </RelativeLayout>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/layout_margin_5"
-            android:layout_marginTop="@dimen/layout_margin_5">
-
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toLeftOf="@+id/fr_remove"
-                android:gravity="right"
-                android:orientation="horizontal">
+                android:layout_marginBottom="@dimen/layout_margin_5"
+                android:layout_marginTop="@dimen/layout_margin_5">
 
-                <CheckBox
-                    android:id="@+id/cb_use_max_credit"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/layout_margin_5"
-                    android:text="@string/plugin_use_max_credit"
-                    android:visibility="gone" />
+                    android:layout_toLeftOf="@+id/fr_remove"
+                    android:gravity="right"
+                    android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/bt_apply"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/bt_apply_size"
-                    android:enabled="false"
-                    android:text="@string/apply"
-                    android:textAllCaps="false"
-                    android:textSize="@dimen/text_size_15" />
-            </LinearLayout>
+                    <CheckBox
+                        android:id="@+id/cb_use_max_credit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/layout_margin_5"
+                        android:text="@string/plugin_use_max_credit"
+                        android:visibility="gone" />
 
-            <FrameLayout
-                android:id="@+id/fr_remove"
-                android:layout_width="@dimen/checkout_im_remove_payment_width"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/checkout_margin" />
-        </RelativeLayout>
+                    <Button
+                        android:id="@+id/bt_apply"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/bt_apply_size"
+                        android:enabled="false"
+                        android:text="@string/apply"
+                        android:textAllCaps="false"
+                        android:textSize="@dimen/text_size_15" />
+                </LinearLayout>
+
+                <FrameLayout
+                    android:id="@+id/fr_remove"
+                    android:layout_width="@dimen/checkout_im_remove_payment_width"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/checkout_margin" />
+            </RelativeLayout>
+        </LinearLayout>
     </LinearLayout>
 </layout>

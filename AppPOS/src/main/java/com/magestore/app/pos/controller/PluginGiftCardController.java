@@ -137,6 +137,7 @@ public class PluginGiftCardController extends AbstractListController<GiftCard> {
                     if (item.getCouponCode().equals(giftCard.getCouponCode().toUpperCase())) {
                         giftCard.setAmount(item.getAmount());
                         giftCard.setBalance(item.getBalance());
+                        mPluginGiftCardListPanel.updateBalance(giftCard);
                     }
                 }
             }

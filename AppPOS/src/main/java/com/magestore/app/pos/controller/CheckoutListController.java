@@ -804,6 +804,9 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             mCheckoutSuccessPanel.showAlertRespone(true, (String) wraper.get("send_email_response"));
         } else if (success && actionType == ACTION_TYPE_APPLY_REWARD_POINT) {
             Checkout checkout = (Checkout) wraper.get("save_reward_point");
+            if (checkout.getRewardPoint() != null) {
+                mPluginRewardPointPanel.changeBalance(checkout.getRewardPoint());
+            }
             updateToTal(checkout);
             isShowLoadingDetail(false);
         } else if (success && actionType == ACTION_TYPE_CHECK_APPROVED_PAYMENT_PAYPAL) {

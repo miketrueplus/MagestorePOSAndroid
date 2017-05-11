@@ -199,7 +199,8 @@
     <string name="plugin_reward_title_point">points</string>
     <string name="plugin_reward_point_earn">You earn %1$s points for this order</string>
     <string name="plugin_reward_point_use_point">Use Point</string>
-    <string name="plugin_gift_card_title">Gift Card</string>
+    <string name="plugin_gift_card_title">Gift Card (%1$s)</string>
+    <string name="plugin_gift_card_title_no_balance">Gift Card</string>
     <string name="plugin_gift_code_hint_text">Gift Code</string>
     <string name="plugin_use_max_credit">Max Credit</string>
     <string name="plugin_add_giftcard">Add Gift Card</string>
