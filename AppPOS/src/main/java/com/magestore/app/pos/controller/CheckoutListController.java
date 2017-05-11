@@ -517,8 +517,10 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
             if (((CheckoutService) getListService()).checkIsVirtual(checkout.getCartItem())) {
                 ((CheckoutDetailPanel) mDetailView).showPickAtStore(false);
+                ((CheckoutDetailPanel) mDetailView).isEnableCreatShip(false);
             } else {
                 ((CheckoutDetailPanel) mDetailView).showPickAtStore(true);
+                ((CheckoutDetailPanel) mDetailView).isEnableCreatShip(true);
             }
 
             mPaymentMethodListPanel.bindList(listPayment);
@@ -623,8 +625,10 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 mCartItemListController.bindList(getSelectedItem().getCartItem());
                 if (((CheckoutService) getListService()).checkIsVirtual(checkout.getCartItem())) {
                     ((CheckoutDetailPanel) mDetailView).showPickAtStore(false);
+                    ((CheckoutDetailPanel) mDetailView).isEnableCreatShip(false);
                 } else {
                     ((CheckoutDetailPanel) mDetailView).showPickAtStore(true);
+                    ((CheckoutDetailPanel) mDetailView).isEnableCreatShip(true);
                 }
 
                 if (listShipping != null && listShipping.size() > 0) {
@@ -1464,6 +1468,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         isShowButtonCheckout(true);
         isShowSalesMenuDiscount(true);
         ((CheckoutDetailPanel) mDetailView).showPickAtStore(true);
+        ((CheckoutDetailPanel) mDetailView).isEnableCreatShip(true);
         ((CheckoutDetailPanel) mDetailView).setPickAtStoreDefault();
         ((CheckoutDetailPanel) mDetailView).isEnableButtonAddPayment(false);
         ((CheckoutDetailPanel) mDetailView).isCheckCreateInvoice(false);

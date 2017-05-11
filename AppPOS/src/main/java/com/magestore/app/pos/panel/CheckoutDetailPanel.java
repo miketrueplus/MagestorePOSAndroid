@@ -227,6 +227,10 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         ll_checkout_add_payment.setVisibility(enable ? VISIBLE : GONE);
     }
 
+    public void isEnableCreatShip(boolean enable){
+        create_ship.setVisibility(enable ? VISIBLE : GONE);
+    }
+
     public void isEnableCreateInvoice(boolean enable) {
         create_invoice.setVisibility(enable ? VISIBLE : GONE);
     }

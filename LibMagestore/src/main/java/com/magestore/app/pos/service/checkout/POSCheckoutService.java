@@ -544,12 +544,17 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
 
     @Override
     public boolean checkIsVirtual(List<CartItem> cartItems) {
+        boolean checkVitural = true;
         for (CartItem item : cartItems) {
-            if (item.getIsVirtual() != null || StringUtil.STRING_EMPTY.equals(item.getIsVirtual()) || item.getIsVirtual().equals("0")) {
-                return false;
+            if (!StringUtil.isNullOrEmpty(item.getIsVirtual())) {
+                if (item.getIsVirtual().equals("0")) {
+                    checkVitural = false;
+                }
+            } else {
+                checkVitural = false;
             }
         }
-        return true;
+        return checkVitural;
     }
 
     @Override
