@@ -339,7 +339,7 @@ public class POSCustomerDataAccess
             rp.setParseModel(PosCustomer.class);
             Customer customer_respone = (Customer) rp.doParse();
             customers[0].setID(customer_respone.getID());
-
+            customers[0].setAddressList(customer_respone.getAddress());
             return true;
         } catch (ConnectionException ex) {
             throw ex;

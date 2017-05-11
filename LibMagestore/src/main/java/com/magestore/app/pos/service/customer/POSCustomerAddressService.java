@@ -11,6 +11,7 @@ import com.magestore.app.lib.service.customer.CustomerAddressService;
 import com.magestore.app.pos.model.customer.PosCustomerAddress;
 import com.magestore.app.pos.model.directory.PosRegion;
 import com.magestore.app.pos.service.AbstractService;
+import com.magestore.app.util.StringUtil;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -147,10 +148,37 @@ public class POSCustomerAddressService extends AbstractService implements Custom
         newGuestCustomer.getAddress().get(0).setShortAddress(userAddressDefault);
         newGuestCustomer.getAddress().get(0).setIsStoreAddress(true);
         List<CustomerAddress> listCustomerAddress = customer.getAddress();
-        if (listCustomerAddress == null) {
+        if (listCustomerAddress != null && listCustomerAddress.size() > 0) {
+            boolean default_shipping = false;
+            boolean default_billing = false;
+            for (CustomerAddress address : listCustomerAddress) {
+                if (!StringUtil.isNullOrEmpty(address.isShipping()) && address.isShipping().equals("true") && !StringUtil.isNullOrEmpty(address.isBilling()) && address.isBilling().equals("true")) {
+                    listCustomerAddress.add(0, address);
+                    listCustomerAddress.add(newGuestCustomer.getAddress().get(0));
+                    customer.setUseOneAddress(true);
+                    default_shipping = true;
+                    default_billing = true;
+                } else if (!StringUtil.isNullOrEmpty(address.isShipping()) && address.isShipping().equals("true")) {
+                    listCustomerAddress.add(0, address);
+                    default_shipping = true;
+                } else if (!StringUtil.isNullOrEmpty(address.isBilling()) && address.isBilling().equals("true")) {
+                    if(listCustomerAddress.size() >= 2){
+                        listCustomerAddress.add(1, address);
+                    }
+                    default_billing = true;
+                }
+            }
+
+            if (!default_shipping && !default_billing) {
+                listCustomerAddress.add(0, newGuestCustomer.getAddress().get(0));
+            } else {
+                listCustomerAddress.add(newGuestCustomer.getAddress().get(0));
+            }
+        } else {
             listCustomerAddress = new ArrayList<>();
+            listCustomerAddress.add(0, newGuestCustomer.getAddress().get(0));
         }
-        listCustomerAddress.add(0, newGuestCustomer.getAddress().get(0));
+
         return customer;
     }
 
