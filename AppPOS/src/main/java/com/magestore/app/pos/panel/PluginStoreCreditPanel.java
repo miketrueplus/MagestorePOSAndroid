@@ -20,6 +20,7 @@ import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.CheckoutListController;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.StringUtil;
+import com.magestore.app.view.EditTextFloat;
 
 /**
  * Created by Johan on 4/13/17.
@@ -31,7 +32,7 @@ public class PluginStoreCreditPanel extends AbstractDetailPanel<StoreCredit> {
     public static String STORE_CREDIT_PAYMENT_CODE = "storecredit";
     CheckoutListController mCheckoutListController;
     StoreCredit mStoreCredit;
-    EditText store_credit_value;
+    EditTextFloat store_credit_value;
     CheckBox cb_use_max_credit;
     Button bt_apply;
     RelativeLayout rl_remove_store_credit;
@@ -59,7 +60,7 @@ public class PluginStoreCreditPanel extends AbstractDetailPanel<StoreCredit> {
 
         tv_store_credit = (TextView) findViewById(R.id.tv_store_credit);
         tv_store_credit.setText(getContext().getString(R.string.plugin_store_credit_title, ConfigUtil.formatPrice(0)));
-        store_credit_value = (EditText) findViewById(R.id.store_credit_value);
+        store_credit_value = (EditTextFloat) findViewById(R.id.store_credit_value);
         cb_use_max_credit = (CheckBox) findViewById(R.id.cb_use_max_credit);
         bt_apply = (Button) findViewById(R.id.bt_apply);
         bt_apply.setBackground(getResources().getDrawable(R.drawable.backgound_buton_apply_disable));
@@ -74,30 +75,19 @@ public class PluginStoreCreditPanel extends AbstractDetailPanel<StoreCredit> {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                String credit = store_credit_value.getText().toString();
-                if (!StringUtil.isNullOrEmpty(credit)) {
-                    float credit_value;
-                    try {
-                        credit_value = Float.parseFloat(credit);
-                    } catch (Exception e) {
-                        credit_value = 0;
-                    }
-                    if (credit_value == 0) {
-                        disableApply(false);
-
-                    } else {
-                        disableApply(true);
-                        if (credit_value < mStoreCredit.getMaxAmount()) {
-                            cb_use_max_credit.setChecked(false);
-                            mStoreCredit.setAmount(credit_value);
-                        } else {
-                            cb_use_max_credit.setChecked(true);
-                            mStoreCredit.setAmount(mStoreCredit.getMaxAmount());
-                        }
-                    }
-                } else {
-                    mStoreCredit.setAmount(0);
+                float credit_value = store_credit_value.getValueFloat();
+                if (credit_value == 0) {
                     disableApply(false);
+                    mStoreCredit.setAmount(0);
+                } else {
+                    disableApply(true);
+                    if (credit_value < mStoreCredit.getMaxAmount()) {
+                        cb_use_max_credit.setChecked(false);
+                        mStoreCredit.setAmount(credit_value);
+                    } else {
+                        cb_use_max_credit.setChecked(true);
+                        mStoreCredit.setAmount(mStoreCredit.getMaxAmount());
+                    }
                 }
             }
 
@@ -114,7 +104,7 @@ public class PluginStoreCreditPanel extends AbstractDetailPanel<StoreCredit> {
                     cb_use_max_credit.setChecked(false);
                 } else {
                     cb_use_max_credit.setChecked(true);
-                    store_credit_value.setText(String.valueOf(mStoreCredit.getMaxAmount()));
+                    store_credit_value.setText(ConfigUtil.formatNumber(mStoreCredit.getMaxAmount()));
                 }
             }
         });
@@ -158,13 +148,13 @@ public class PluginStoreCreditPanel extends AbstractDetailPanel<StoreCredit> {
         mStoreCredit = item;
         mStoreCredit.setMaxAmount(mStoreCredit.getBalance());
         tv_store_credit.setText(getContext().getString(R.string.plugin_store_credit_title, ConfigUtil.formatPrice(item.getBalance())));
-        store_credit_value.setText(String.valueOf(item.getBalance()));
+        store_credit_value.setText(ConfigUtil.formatNumber(item.getBalance()));
     }
 
     public void updateMaxAmountStoreCredit(float total) {
         if (mStoreCredit != null) {
             mStoreCredit.setMaxAmount(total);
-            store_credit_value.setText(String.valueOf(mStoreCredit.getMaxAmount()));
+            store_credit_value.setText(ConfigUtil.formatNumber(mStoreCredit.getMaxAmount()));
         }
     }
 }

@@ -399,6 +399,12 @@ public class OrderHistoryListController extends AbstractListController<Order> {
         }
     }
 
+    @Override
+    public void onCancelledBackground(Exception exp, int actionType, String actionCode, Map<String, Object> wraper, Model... models) {
+        super.onCancelledBackground(exp, actionType, actionCode, wraper, models);
+        showDetailOrderLoading(false);
+    }
+
     /**
      * cập nhật lại order trong list
      *

@@ -5,7 +5,6 @@ import android.databinding.DataBindingUtil;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -17,6 +16,7 @@ import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.CheckoutListController;
 import com.magestore.app.pos.databinding.CardCheckoutPaymentContentBinding;
 import com.magestore.app.util.ConfigUtil;
+import com.magestore.app.view.EditTextFloat;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,8 +31,8 @@ import java.util.List;
 public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<CheckoutPayment> {
     CheckoutListController mCheckoutListController;
     Checkout mCheckout;
-    List<EditText> listTextChangeValue;
-    HashMap<CheckoutPayment, EditText> mapTextId;
+    List<EditTextFloat> listTextChangeValue;
+    HashMap<CheckoutPayment, EditTextFloat> mapTextId;
 
     public void setCheckoutListController(CheckoutListController mCheckoutListController) {
         this.mCheckoutListController = mCheckoutListController;
@@ -66,9 +66,9 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
         EditText reference_number = (EditText) view.findViewById(R.id.reference_number);
         actionAddReferenceNumber(reference_number, checkoutPayment);
 
-        EditText checkout_value = (EditText) view.findViewById(R.id.checkout_value);
+        EditTextFloat checkout_value = (EditTextFloat) view.findViewById(R.id.checkout_value);
         mapTextId.put(item, checkout_value);
-        checkout_value.setText(String.valueOf(checkoutPayment.getAmount()));
+        checkout_value.setText(ConfigUtil.formatNumber(checkoutPayment.getAmount()));
         actionChangeValueTotal(checkout_value, mCheckout, checkoutPayment);
 
         RelativeLayout rl_remove_payment = (RelativeLayout) view.findViewById(R.id.rl_remove_payment);
@@ -123,13 +123,8 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
         float totalValue = 0;
         float allRowTotal;
 
-        for (EditText edt_value : mapTextId.values()) {
-            String value = edt_value.getText().toString();
-            try {
-                allRowTotal = Float.parseFloat(value);
-            } catch (Exception e) {
-                allRowTotal = 0;
-            }
+        for (EditTextFloat edt_value : mapTextId.values()) {
+            allRowTotal = edt_value.getValueFloat();
             totalValue += allRowTotal;
         }
 
@@ -178,7 +173,7 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
         });
     }
 
-    private void actionChangeValueTotal(final EditText checkout_value, final Checkout mCheckout, final CheckoutPayment checkoutPayment) {
+    private void actionChangeValueTotal(final EditTextFloat checkout_value, final Checkout mCheckout, final CheckoutPayment checkoutPayment) {
         checkout_value.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -188,42 +183,26 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 float grand_total = mCheckout.getGrandTotal();
-                Log.e("Grand total", grand_total + "");
                 float totalValue = 0;
                 float currentValue;
                 float allRowTotal;
                 float totalNotExchange = 0;
 
-                String txtValue = checkout_value.getText().toString();
-                try {
-                    currentValue = Float.parseFloat(txtValue);
-                } catch (Exception e) {
-                    currentValue = 0;
-                }
+                currentValue = checkout_value.getValueFloat();
 
-                for (EditText edt_value : mapTextId.values()) {
+                for (EditTextFloat edt_value : mapTextId.values()) {
                     edt_value.setEnabled(true);
-                    String value = edt_value.getText().toString();
-                    try {
-                        allRowTotal = Float.parseFloat(value);
-                    } catch (Exception e) {
-                        allRowTotal = 0;
-                    }
+                    allRowTotal = edt_value.getValueFloat();
                     totalValue += allRowTotal;
                 }
 
                 if (totalValue > grand_total) {
-                    for (EditText edt_value : mapTextId.values()) {
+                    for (EditTextFloat edt_value : mapTextId.values()) {
                         if (edt_value == checkout_value) {
                             checkout_value.setEnabled(true);
                         } else {
                             edt_value.setEnabled(false);
-                            String value = edt_value.getText().toString();
-                            try {
-                                allRowTotal = Float.parseFloat(value);
-                            } catch (Exception e) {
-                                allRowTotal = 0;
-                            }
+                            allRowTotal = edt_value.getValueFloat();
                             totalNotExchange += allRowTotal;
                         }
                     }

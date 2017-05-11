@@ -48,7 +48,7 @@
                     android:layout_weight="1"
                     android:orientation="vertical">
 
-                    <com.magestore.app.view.FormatEditText
+                    <com.magestore.app.view.EditTextFloat
                         android:id="@+id/reward_point_value"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

@@ -327,34 +327,12 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         btn_submit_shipment.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mOrder.getTotalPaid() == 0) {
-                    String message = getContext().getString(R.string.order_invoice_take_payment);
-                    // Tạo dialog và hiển thị
-                    com.magestore.app.util.DialogUtil.confirm(getContext(), message, R.string.ok);
-                } else {
-                    Order order = mOrderShipmentPanel.bind2Item();
-                    if (checkItemInvoice(order)) {
-                        ((OrderHistoryListController) mController).setOrderShipmentPanel(mOrderShipmentPanel);
-                        ((OrderHistoryListController) mController).doInputCreateShipment(order);
-                        dialog.dismiss();
-                    } else {
-                        String message = getContext().getString(R.string.order_invoice_choose_item);
-                        // Tạo dialog và hiển thị
-                        com.magestore.app.util.DialogUtil.confirm(getContext(), message, R.string.ok);
-                    }
-                }
+                Order order = mOrderShipmentPanel.bind2Item();
+                ((OrderHistoryListController) mController).setOrderShipmentPanel(mOrderShipmentPanel);
+                ((OrderHistoryListController) mController).doInputCreateShipment(order);
+                dialog.dismiss();
             }
         });
-    }
-
-    private boolean checkItemInvoice(Order order) {
-        boolean checkItem = false;
-        for (CartItem item : order.getOrderItems()) {
-            if (item.getQuantity() > 0) {
-                checkItem = true;
-            }
-        }
-        return checkItem;
     }
 
     private void onClickRefund() {
@@ -392,6 +370,13 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
     }
 
     private void onClickInvoice() {
+        float invoiceable = mOrder.getBaseTotalPaid() - mOrder.getBaseTotalInvoiced() - mOrder.getWebposBaseChange() - mOrder.getBaseTotalRefunded();
+        if (invoiceable == 0) {
+            String message = getContext().getString(R.string.order_invoice_take_payment);
+            // Tạo dialog và hiển thị
+            com.magestore.app.util.DialogUtil.confirm(getContext(), message, R.string.ok);
+            return;
+        }
         final OrderInvoicePanel mOrderInvoicePanel = new OrderInvoicePanel(getContext());
         mOrderInvoicePanel.setController(mController);
         mOrderInvoicePanel.initModel();
@@ -417,11 +402,27 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         btn_submit_invoice.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Order order = mOrderInvoicePanel.bind2Item();
-                ((OrderHistoryListController) mController).doInputInvoice(order);
-                dialog.dismiss();
+                if (checkItemInvoice(mOrder)) {
+                    Order order = mOrderInvoicePanel.bind2Item();
+                    ((OrderHistoryListController) mController).doInputInvoice(order);
+                    dialog.dismiss();
+                } else {
+                    String message = getContext().getString(R.string.order_invoice_choose_item);
+                    // Tạo dialog và hiển thị
+                    com.magestore.app.util.DialogUtil.confirm(getContext(), message, R.string.ok);
+                }
             }
         });
+    }
+
+    private boolean checkItemInvoice(Order order) {
+        boolean checkItem = false;
+        for (CartItem item : order.getOrderItems()) {
+            if (item.getQuantity() > 0) {
+                checkItem = true;
+            }
+        }
+        return checkItem;
     }
 
     private void onClickCancel() {

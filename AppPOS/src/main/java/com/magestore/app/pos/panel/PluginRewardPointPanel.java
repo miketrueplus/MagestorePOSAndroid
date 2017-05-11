@@ -19,6 +19,7 @@ import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.CheckoutListController;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.StringUtil;
+import com.magestore.app.view.EditTextFloat;
 
 /**
  * Created by Johan on 4/13/17.
@@ -29,7 +30,7 @@ import com.magestore.app.util.StringUtil;
 public class PluginRewardPointPanel extends AbstractDetailPanel<RewardPoint> {
     CheckoutListController mCheckoutListController;
     RewardPoint mRewardPoint;
-    EditText reward_point_value;
+    EditTextFloat reward_point_value;
     CheckBox cb_use_max_credit;
     Button bt_apply;
     RelativeLayout rl_remove_reward_point;
@@ -56,7 +57,7 @@ public class PluginRewardPointPanel extends AbstractDetailPanel<RewardPoint> {
         super.initLayout();
         tv_reward_point = (TextView) findViewById(R.id.tv_reward_point);
         tv_reward_point.setText(getContext().getString(R.string.plugin_reward_point_title, "0"));
-        reward_point_value = (EditText) findViewById(R.id.reward_point_value);
+        reward_point_value = (EditTextFloat) findViewById(R.id.reward_point_value);
         cb_use_max_credit = (CheckBox) findViewById(R.id.cb_use_max_credit);
         bt_apply = (Button) findViewById(R.id.bt_apply);
         bt_apply.setBackground(getResources().getDrawable(R.drawable.backgound_buton_apply_enable));
@@ -149,24 +150,19 @@ public class PluginRewardPointPanel extends AbstractDetailPanel<RewardPoint> {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                String point = reward_point_value.getText().toString().trim();
-                if (!StringUtil.isNullOrEmpty(point)) {
-                    int point_value = 0;
-                    try {
-                        point_value = Integer.parseInt(point);
-                    } catch (Exception e) {
-                    }
-                    if (point_value > mRewardPoint.getMaxPoints()) {
-                        reward_point_value.setText(ConfigUtil.formatNumber(mRewardPoint.getMaxPoints()));
-                        mRewardPoint.setAmount(mRewardPoint.getMaxPoints());
-                        cb_use_max_credit.setChecked(true);
-                    } else {
+                int point_value = reward_point_value.getValueInteger();
+                if (point_value > mRewardPoint.getMaxPoints()) {
+                    reward_point_value.setText(ConfigUtil.formatNumber(mRewardPoint.getMaxPoints()));
+                    mRewardPoint.setAmount(mRewardPoint.getMaxPoints());
+                    cb_use_max_credit.setChecked(true);
+                } else {
+                    if(point_value == 0){
+                        mRewardPoint.setAmount(point_value);
+                        cb_use_max_credit.setChecked(false);
+                    }else {
                         mRewardPoint.setAmount(point_value);
                         cb_use_max_credit.setChecked(point_value == mRewardPoint.getMaxPoints() ? true : false);
                     }
-                } else {
-                    reward_point_value.setText("0");
-                    mRewardPoint.setAmount(0);
                 }
             }
 
@@ -177,7 +173,7 @@ public class PluginRewardPointPanel extends AbstractDetailPanel<RewardPoint> {
         });
     }
 
-    public void changeBalance(RewardPoint rewardPoint){
+    public void changeBalance(RewardPoint rewardPoint) {
         tv_reward_point.setText(getContext().getString(R.string.plugin_reward_point_title, ConfigUtil.formatNumber(rewardPoint.getBalance() - rewardPoint.getAmount())));
     }
 
