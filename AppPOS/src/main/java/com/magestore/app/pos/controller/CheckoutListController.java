@@ -1748,6 +1748,11 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         ((CheckoutListPanel) getView()).updateTotalPrice(getSelectedItem());
     }
 
+    public void updateTotalWithDeleteCartItem(Checkout checkout){
+        ((CheckoutService) getListService()).updateTotal(checkout);
+        ((CheckoutListPanel) getView()).updateTotalPrice(getSelectedItem());
+    }
+
     /**
      * ẩn hiện loading cart list
      *
