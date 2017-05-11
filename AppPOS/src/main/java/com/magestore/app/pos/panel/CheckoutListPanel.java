@@ -225,6 +225,15 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
                 ((CheckoutListController) mController).doInputRemoveDiscount(getContext().getString(R.string.sales_discount_currency));
             }
         });
+
+        bt_sales_menu.setOnMenuToggleListener(new FloatingActionMenu.OnMenuToggleListener() {
+            @Override
+            public void onMenuToggle(boolean opened) {
+                if(opened){
+                    ((CheckoutListController) mController).checkShowRemoveDiscount();
+                }
+            }
+        });
     }
 
     public void useDefaultGuestCheckout(Customer customer) {

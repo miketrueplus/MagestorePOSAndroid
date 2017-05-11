@@ -537,7 +537,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             //  cập nhật giá
             ((CheckoutService) getListService()).updateTotal(checkout);
             getSelectedItem().setGrandTotal(checkout.getGrandTotal());
-            showButtonRemoveDiscount(checkDiscount(checkout) ? true : false);
+//            showButtonRemoveDiscount(checkDiscount(checkout) ? true : false);
             showButtonDiscount(checkout.getGrandTotal() != 0 && checkListCartItem() ? true : false);
             ((CheckoutDetailPanel) mDetailView).bindTotalPrice(checkout.getGrandTotal());
 
@@ -724,7 +724,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             //  cập nhật giá
             ((CheckoutService) getListService()).updateTotal(checkout);
             getSelectedItem().setGrandTotal(checkout.getGrandTotal());
-            showButtonRemoveDiscount(checkDiscount(checkout) ? true : false);
+//            showButtonRemoveDiscount(checkDiscount(checkout) ? true : false);
             showButtonDiscount(checkout.getGrandTotal() != 0 && checkListCartItem() ? true : false);
             ((CheckoutDetailPanel) mDetailView).bindTotalPrice(checkout.getGrandTotal());
 
@@ -852,7 +852,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         mPluginRewardPointPanel.resetPointValue();
         ((CheckoutService) getListService()).updateTotal(checkout);
         getSelectedItem().setGrandTotal(checkout.getGrandTotal());
-        showButtonRemoveDiscount(checkDiscount(checkout) ? true : false);
+//        showButtonRemoveDiscount(checkDiscount(checkout) ? true : false);
         ((CheckoutDetailPanel) mDetailView).bindTotalPrice(checkout.getGrandTotal());
         ((CheckoutListPanel) mView).updateTotalPrice(checkout);
         showButtonDiscount(checkout.getGrandTotal() != 0 && checkListCartItem() ? true : false);
@@ -1671,6 +1671,12 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
     public boolean checkCustomerID(Customer customer, Customer guest_customer) {
         return ((CheckoutService) getListService()).checkCustomerID(customer, guest_customer);
+    }
+
+    public void checkShowRemoveDiscount(){
+        if(((CheckoutDetailPanel) mDetailView).getVisibility() == View.VISIBLE){
+            showButtonRemoveDiscount(checkDiscount(checkDataCheckout((Checkout) wraper.get("save_shipping"))));
+        }
     }
 
     /**
