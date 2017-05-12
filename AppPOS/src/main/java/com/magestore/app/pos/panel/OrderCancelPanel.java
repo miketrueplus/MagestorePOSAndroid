@@ -68,8 +68,13 @@ public class OrderCancelPanel extends AbstractDetailPanel<Order> {
         return mOrder;
     }
 
-    public void showAlertRespone() {
-        String message = getContext().getString(R.string.order_cancel_success);
+    public void showAlertRespone(boolean success) {
+        String message;
+        if (success) {
+            message = getContext().getString(R.string.order_cancel_success);
+        }else{
+            message = getContext().getString(R.string.err_cancel_order);
+        }
 
         // Tạo dialog và hiển thị
         DialogUtil.confirm(getContext(), message, R.string.done);

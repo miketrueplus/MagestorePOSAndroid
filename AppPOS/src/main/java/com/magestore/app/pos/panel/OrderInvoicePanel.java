@@ -269,8 +269,13 @@ public class OrderInvoicePanel extends AbstractDetailPanel<Order> {
         return item;
     }
 
-    public void showAlertRespone() {
-        String message = getContext().getString(R.string.order_invoice_success);
+    public void showAlertRespone(boolean success) {
+        String message;
+        if(success){
+            message = getContext().getString(R.string.order_invoice_success);
+        }else{
+            message = getContext().getString(R.string.err_invoice_order);
+        }
 
         // Tạo dialog và hiển thị
         DialogUtil.confirm(getContext(), message, R.string.ok);

@@ -80,8 +80,13 @@ public class OrderAddCommentPanel extends AbstractDetailPanel<Order> {
         edt_comment.setError(getContext().getString(R.string.err_field_required));
     }
 
-    public void showAlertRespone() {
-         String message = getContext().getString(R.string.order_add_comment_success);
+    public void showAlertRespone(boolean success) {
+        String message;
+        if(success){
+            message = getContext().getString(R.string.order_add_comment_success);
+        }else{
+            message = getContext().getString(R.string.err_comment_order);
+        }
 
         // Tạo dialog và hiển thị
         DialogUtil.confirm(getContext(), message, R.string.done);

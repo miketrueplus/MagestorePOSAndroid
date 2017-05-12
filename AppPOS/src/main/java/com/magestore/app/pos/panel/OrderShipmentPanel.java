@@ -123,8 +123,14 @@ public class OrderShipmentPanel extends AbstractDetailPanel<Order> {
         return mOrder;
     }
 
-    public void showAlertRespone() {
-        String message = getContext().getString(R.string.order_shipment_success);
+    public void showAlertRespone(boolean success) {
+        String message;
+
+        if (success) {
+            message = getContext().getString(R.string.order_shipment_success);
+        } else {
+            message = getContext().getString(R.string.err_shipment_order);
+        }
 
         // Tạo dialog và hiển thị
         DialogUtil.confirm(getContext(), message, R.string.done);

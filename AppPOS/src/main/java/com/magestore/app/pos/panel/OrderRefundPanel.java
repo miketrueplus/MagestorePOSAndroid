@@ -261,8 +261,13 @@ public class OrderRefundPanel extends AbstractDetailPanel<Order> {
         store_credit.setText(ConfigUtil.formatNumber(ConfigUtil.convertToPrice(total)));
     }
 
-    public void showAlertRespone() {
-        String message = getContext().getString(R.string.order_refund_success);
+    public void showAlertRespone(boolean success) {
+        String message;
+        if(success) {
+            message = getContext().getString(R.string.order_refund_success);
+        }else{
+            message = getContext().getString(R.string.err_refund_order);
+        }
 
         // Tạo dialog và hiển thị
         DialogUtil.confirm(getContext(), message, R.string.done);

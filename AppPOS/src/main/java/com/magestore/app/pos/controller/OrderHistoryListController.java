@@ -303,7 +303,7 @@ public class OrderHistoryListController extends AbstractListController<Order> {
             showDetailOrderLoading(false);
         } else if (success && actionType == CREATE_SHIPMENT_TYPE) {
             Order order = (Order) wraper.get("shipment_respone");
-            mOrderShipmentPanel.showAlertRespone();
+            mOrderShipmentPanel.showAlertRespone(true);
             mOrderHistoryItemsListController.doSelectOrder(order);
             mOrderCommentListController.doSelectOrder(order);
             mOrderHistoryItemsListController.notifyDataSetChanged();
@@ -317,7 +317,7 @@ public class OrderHistoryListController extends AbstractListController<Order> {
             showDetailOrderLoading(false);
         } else if (success && actionType == INSERT_STATUS_TYPE) {
             Order order = (Order) wraper.get("status_respone");
-            mOrderAddCommentPanel.showAlertRespone();
+            mOrderAddCommentPanel.showAlertRespone(true);
             mOrderCommentListController.doSelectOrder(order);
             mOrderCommentListController.notifyDataSetChanged();
             ((OrderDetailPanel) mDetailView).bindDataRespone(order);
@@ -329,7 +329,7 @@ public class OrderHistoryListController extends AbstractListController<Order> {
             showDetailOrderLoading(false);
         } else if (success && actionType == ORDER_REFUND_TYPE) {
             Order order = (Order) wraper.get("refund_respone");
-            mOrderRefundPanel.showAlertRespone();
+            mOrderRefundPanel.showAlertRespone(true);
             mOrderHistoryItemsListController.doSelectOrder(order);
             mOrderCommentListController.doSelectOrder(order);
             mOrderHistoryItemsListController.notifyDataSetChanged();
@@ -346,7 +346,7 @@ public class OrderHistoryListController extends AbstractListController<Order> {
             mOrderInvoicePanel.bindTotal(order);
         } else if (success && actionType == ORDER_INVOICE_TYPE) {
             Order order = (Order) wraper.get("invoice_respone");
-            mOrderInvoicePanel.showAlertRespone();
+            mOrderInvoicePanel.showAlertRespone(true);
             mOrderHistoryItemsListController.doSelectOrder(order);
             mOrderCommentListController.doSelectOrder(order);
             mOrderHistoryItemsListController.notifyDataSetChanged();
@@ -359,7 +359,7 @@ public class OrderHistoryListController extends AbstractListController<Order> {
             showDetailOrderLoading(false);
         } else if (success && actionType == ORDER_CANCEL_TYPE) {
             Order order = (Order) wraper.get("cancel_respone");
-            mOrderCancelPanel.showAlertRespone();
+            mOrderCancelPanel.showAlertRespone(true);
             mOrderHistoryItemsListController.doSelectOrder(order);
             mOrderCommentListController.doSelectOrder(order);
             mOrderHistoryItemsListController.notifyDataSetChanged();
@@ -401,7 +401,21 @@ public class OrderHistoryListController extends AbstractListController<Order> {
 
     @Override
     public void onCancelledBackground(Exception exp, int actionType, String actionCode, Map<String, Object> wraper, Model... models) {
-        super.onCancelledBackground(exp, actionType, actionCode, wraper, models);
+        if (actionType == CREATE_SHIPMENT_TYPE) {
+            mOrderShipmentPanel.showAlertRespone(false);
+        } else if (actionType == ORDER_CANCEL_TYPE) {
+            mOrderCancelPanel.showAlertRespone(false);
+        } else if (actionType == ORDER_REFUND_TYPE) {
+            mOrderRefundPanel.showAlertRespone(false);
+        } else if (actionType == ORDER_INVOICE_TYPE) {
+            mOrderInvoicePanel.showAlertRespone(false);
+        } else if (actionType == INSERT_STATUS_TYPE) {
+            mOrderAddCommentPanel.showAlertRespone(false);
+        } else if (actionType == SENT_EMAIL_TYPE) {
+            mOrderSendEmailPanel.showAlertRespone(false);
+        } else {
+            super.onCancelledBackground(exp, actionType, actionCode, wraper, models);
+        }
         showDetailOrderLoading(false);
     }
 

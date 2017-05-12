@@ -413,9 +413,9 @@ public class PosOrderHistoryService extends AbstractService implements OrderHist
         String status = order.getStatus();
         if (this.canUnhold(status) || status.equals("holded"))
             return false;
-        if (status.equals("canceled") || status.equals("closed") || order.getGrandTotal() == 0)
+        if (status.equals("canceled") || status.equals("closed") || order.getBaseGrandTotal() == 0)
             return false;
-        if (order.getTotalPaid() - order.getTotalRefunded() < 0.0001) {
+        if (order.getBaseTotalPaid() - order.getBaseTotalRefunded() < 0.0001) {
             return false;
         }
         return true;
@@ -465,11 +465,11 @@ public class PosOrderHistoryService extends AbstractService implements OrderHist
         }
         if (allInvoicedAndCanceled)
             return false;
-        if (order.getTotalDue() > 0) {
+        if (order.getBaseTotalDue() > 0) {
             return true;
         }
-        if (order.getTotalPaid() > 0) {
-            if ((order.getGrandTotal() - order.getTotalPaid()) > 0) {
+        if (order.getBaseTotalPaid() > 0) {
+            if ((order.getBaseGrandTotal() - order.getBaseTotalPaid()) > 0) {
                 return true;
             }
         }

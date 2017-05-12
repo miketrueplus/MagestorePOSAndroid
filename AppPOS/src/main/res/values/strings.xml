@@ -115,7 +115,7 @@
     <string name="order_detail_bottom_tb_grand_total">Grand Total</string>
     <string name="order_detail_bottom_tb_total_paid">Total Paid</string>
     <string name="order_detail_bottom_tb_total_due">Total Due</string>
-    <string name="order_detail_bottom_tb_total_refund">Total Refunded</string>
+    <string name="order_detail_bottom_tb_total_refund">Total Refund Amount</string>
     <string name="order_detail_bottom_tb_total_change">Change</string>
     <string name="order_detail_bottom_btn_invoice">INVOICE</string>
     <string name="order_menu_send_email">Send Email</string>
@@ -137,7 +137,7 @@
     <string name="order_shipment_btn_submit">SUBMIT SHIPMENT</string>
     <string name="order_shipment_success">The shipment has been created successfully.</string>
     <string name="order_refund_title">Refund</string>
-    <string name="order_refund_btn_save">Refund Offline</string>
+    <string name="order_refund_btn_save">Offline Refund</string>
     <string name="order_adjust_refund_title">Adjust refund</string>
     <string name="order_refund_shipping_title">Refund Shipping</string>
     <string name="order_adjust_fee_title">Adjust fee</string>
@@ -343,7 +343,12 @@
     <string name="err_field_must_less_than">This field must less than %s</string>
     <string name="err_field_max_character">This field have max %s characters</string>
     <string name="err_cannot_add_more_item">Cannot add more item</string>
-
+    <string name="err_cancel_order">Cannot cancel order</string>
+    <string name="err_refund_order">Cannot creditmemo order</string>
+    <string name="err_shipment_order">Create Shipment Failure</string>
+    <string name="err_invoice_order">Cannot invoice order</string>
+    <string name="err_comment_order">Cannot add order comments</string>
+    <string name="err_send_email">Cannot send the order email</string>
 
     <!-- Strings related to confirm message -->
     <string name="ask_are_you_sure">Are you sure?</string>

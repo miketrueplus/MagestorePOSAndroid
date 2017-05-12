@@ -69,7 +69,7 @@ public class OrderSendEmailPanel extends AbstractDetailPanel<Order> {
         if (statusRespone) {
             message = getContext().getString(R.string.order_send_email_success);
         } else {
-            message = getContext().getString(R.string.order_send_email_success);
+            message = getContext().getString(R.string.err_send_email);
         }
 
         // Tạo dialog và hiển thị
