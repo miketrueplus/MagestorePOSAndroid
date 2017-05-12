@@ -16,6 +16,8 @@ import com.magestore.app.lib.panel.AbstractListPanel;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.OrderInvoiceItemsListController;
 import com.magestore.app.pos.databinding.CardOrderInvoiceItemContentBinding;
+import com.magestore.app.view.EditTextFloat;
+import com.magestore.app.view.EditTextInteger;
 
 import java.util.List;
 
@@ -74,13 +76,13 @@ public class OrderInvoiceItemsListPanel extends AbstractListPanel<CartItem> {
         CardOrderInvoiceItemContentBinding mBinding = DataBindingUtil.bind(view);
         mBinding.setOrderItem(item);
         CartItem cartItem = listItems.get(position);
-        EditText edt_qty_to_invoice = (EditText) view.findViewById(R.id.qty_to_invoice);
+        EditTextInteger edt_qty_to_invoice = (EditTextInteger) view.findViewById(R.id.qty_to_invoice);
         cartItem.setOrderItemId(cartItem.getItemId());
         cartItem.setQtyChange(item.QtyInvoice());
         actionQtyToInvoice(cartItem, edt_qty_to_invoice);
     }
 
-    private void actionQtyToInvoice(final CartItem item, final EditText qty_to_invoice) {
+    private void actionQtyToInvoice(final CartItem item, final EditTextInteger qty_to_invoice) {
         qty_to_invoice.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -89,15 +91,9 @@ public class OrderInvoiceItemsListPanel extends AbstractListPanel<CartItem> {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                int qty_invoiced;
-                try {
-                    qty_invoiced = Integer.parseInt(qty_to_invoice.getText().toString());
-                } catch (Exception e) {
-                    qty_invoiced = 0;
-                }
-
+                int qty_invoiced = qty_to_invoice.getValueInteger();
                 int qty;
-                if (mOrder.getTotalDue() > 0) {
+                if (mOrder.getBaseTotalDue() > 0) {
                     qty = item.QtyInvoiceable();
                 } else {
                     qty = item.QtyInvoice();
@@ -135,7 +131,7 @@ public class OrderInvoiceItemsListPanel extends AbstractListPanel<CartItem> {
         for (CartItem currentItem : listCurrentItem) {
             for (CartItem item : listItems) {
                 if (item.getItemId().equals(currentItem.getItemId())) {
-                    if (mOrder.getTotalDue() > 0) {
+                    if (mOrder.getBaseTotalDue() > 0) {
                         if (item.getQtyChange() != currentItem.QtyInvoiceable()) {
                             return true;
                         }
