@@ -248,6 +248,12 @@ public interface Order extends Model {
     float getStoreCreditRefund();
     void setStoreCreditRefund(float fStoreCreditRefund);
 
+    float getMaxGiftCardRefund();
+    void setMaxGiftCardRefund(float fMaxGiftCardRefund);
+
+    float getGiftCardRefund();
+    void setGiftCardRefund(float fGiftCardRefund);
+
     boolean checkRequestUpdateInvoice();
     void setCheckRequestUpdateInvoice(boolean bRequestUpdateInvoice);
 }

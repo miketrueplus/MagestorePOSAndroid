@@ -167,6 +167,10 @@ public class PosOrder extends PosAbstractModel implements Order {
     float store_credit_refund;
     @Gson2PosExclude
     boolean check_request_update_invoice;
+    @Gson2PosExclude
+    float max_giftcard_refund;
+    @Gson2PosExclude
+    float gift_card_refund;
 
     @Override
     public String getID() {
@@ -919,6 +923,26 @@ public class PosOrder extends PosAbstractModel implements Order {
     @Override
     public void setStoreCreditRefund(float fStoreCreditRefund) {
         store_credit_refund = fStoreCreditRefund;
+    }
+
+    @Override
+    public float getMaxGiftCardRefund() {
+        return max_giftcard_refund;
+    }
+
+    @Override
+    public void setMaxGiftCardRefund(float fMaxGiftCardRefund) {
+        max_giftcard_refund = fMaxGiftCardRefund;
+    }
+
+    @Override
+    public float getGiftCardRefund() {
+        return gift_card_refund;
+    }
+
+    @Override
+    public void setGiftCardRefund(float fGiftCardRefund) {
+        gift_card_refund = fGiftCardRefund;
     }
 
     @Override

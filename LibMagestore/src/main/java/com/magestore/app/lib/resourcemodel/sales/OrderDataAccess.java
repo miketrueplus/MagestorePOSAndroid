@@ -7,6 +7,7 @@ import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.model.sales.OrderCommentParams;
 import com.magestore.app.lib.model.sales.OrderRefundCreditParams;
 import com.magestore.app.lib.model.sales.OrderInvoiceParams;
+import com.magestore.app.lib.model.sales.OrderRefundGiftCard;
 import com.magestore.app.lib.model.sales.OrderRefundParams;
 import com.magestore.app.lib.model.sales.OrderShipmentParams;
 import com.magestore.app.lib.model.sales.OrderStatus;
@@ -38,6 +39,8 @@ public interface OrderDataAccess extends DataAccess, ListDataAccess<Order> {
     Order createShipment(OrderShipmentParams shipmentParams) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
 
     boolean orderRefundByCredit(OrderRefundCreditParams orderRefundCreditParams) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
+
+    boolean orderRefundByGiftCard(OrderRefundGiftCard orderRefundGiftCard) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
 
     Order orderRefund(OrderRefundParams refundParams) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
 

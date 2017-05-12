@@ -345,6 +345,8 @@
     <string name="err_cannot_add_more_item">Cannot add more item</string>
     <string name="err_cancel_order">Cannot cancel order</string>
     <string name="err_refund_order">Cannot creditmemo order</string>
+    <string name="err_refund_store_credit">Cannot refund store credit</string>
+    <string name="err_refund_giftcard">Cannot refund gift card</string>
     <string name="err_shipment_order">Create Shipment Failure</string>
     <string name="err_invoice_order">Cannot invoice order</string>
     <string name="err_comment_order">Cannot add order comments</string>

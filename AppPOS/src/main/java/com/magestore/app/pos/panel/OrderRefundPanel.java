@@ -40,8 +40,7 @@ public class OrderRefundPanel extends AbstractDetailPanel<Order> {
     OrderHistoryListController mOrderHistoryListController;
     CheckBox cb_send_email;
     EditText refund_comment;
-    EditText gift_card;
-    EditTextFloat store_credit, adjust_fee, refund_shipping, adjust_refund;
+    EditTextFloat store_credit, adjust_fee, refund_shipping, adjust_refund, gift_card;
     LinearLayout ll_gift_card, ll_store_credit, ll_refund_shipping;
 
     public OrderRefundPanel(Context context) {
@@ -70,7 +69,7 @@ public class OrderRefundPanel extends AbstractDetailPanel<Order> {
         adjust_fee = (EditTextFloat) view.findViewById(R.id.adjust_fee);
 
         ll_gift_card = (LinearLayout) view.findViewById(R.id.ll_gift_card);
-        gift_card = (EditText) view.findViewById(R.id.gift_card);
+        gift_card = (EditTextFloat) view.findViewById(R.id.gift_card);
 
         ll_store_credit = (LinearLayout) view.findViewById(R.id.ll_store_credit);
         store_credit = (EditTextFloat) view.findViewById(R.id.store_credit);
@@ -113,6 +112,7 @@ public class OrderRefundPanel extends AbstractDetailPanel<Order> {
         actionChangeAdjustFee(item);
         actionChangeRefundShipping(item);
         actionChangeStoreCredit(item);
+        actionChangeGiftCard(item);
     }
 
     private void actionChangeAdjustRefund(final Order order) {
@@ -203,6 +203,31 @@ public class OrderRefundPanel extends AbstractDetailPanel<Order> {
         });
     }
 
+    private void actionChangeGiftCard(final Order order) {
+        gift_card.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                float giftCard = gift_card.getValueFloat();
+                if (giftCard > mOrderHistoryListController.getOrder().getMaxGiftCardRefund()) {
+                    gift_card.setText(ConfigUtil.formatNumber(ConfigUtil.convertToPrice(order.getMaxGiftCardRefund())));
+                    order.setGiftCardRefund(giftCard);
+                } else {
+                    order.setGiftCardRefund(giftCard);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+    }
+
 
     @Override
     public Order bind2Item() {
@@ -261,11 +286,15 @@ public class OrderRefundPanel extends AbstractDetailPanel<Order> {
         store_credit.setText(ConfigUtil.formatNumber(ConfigUtil.convertToPrice(total)));
     }
 
+    public void updateTotalGiftCard(float total) {
+        gift_card.setText(ConfigUtil.formatNumber(ConfigUtil.convertToPrice(total)));
+    }
+
     public void showAlertRespone(boolean success) {
         String message;
-        if(success) {
+        if (success) {
             message = getContext().getString(R.string.order_refund_success);
-        }else{
+        } else {
             message = getContext().getString(R.string.err_refund_order);
         }
 

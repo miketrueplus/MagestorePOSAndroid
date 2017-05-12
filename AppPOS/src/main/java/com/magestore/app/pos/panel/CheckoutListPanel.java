@@ -115,6 +115,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
         bt_custom_sales = (FloatingActionButton) findViewById(R.id.bt_custom_sales);
         bt_remove_discount = (FloatingActionButton) findViewById(R.id.bt_remove_discount);
         bt_sales_menu.setClosedOnTouchOutside(true);
+        bt_sales_menu.open(true);
         cart_background_loading = (RelativeLayout) findViewById(R.id.cart_background_loading);
         initValue();
     }

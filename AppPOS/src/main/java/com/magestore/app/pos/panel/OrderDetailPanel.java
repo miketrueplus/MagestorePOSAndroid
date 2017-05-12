@@ -353,7 +353,11 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
                 if (!StringUtil.isNullOrEmpty(customer_id) && !customer_id.equals(ConfigUtil.getCustomerGuest().getID())) {
                     if (mOrder.getMaxStoreCreditRefund() <= mOrder.getMaxRefunded()) {
                         Order order = mOrderRefundPanel.bind2Item();
-                        ((OrderHistoryListController) mController).doInputRefundByCredit(order);
+                        if (order.getStoreCreditRefund() > 0) {
+                            ((OrderHistoryListController) mController).doInputRefundByCredit(order);
+                        }
+                        ((OrderHistoryListController) mController).doInputRefundByGiftCard(order);
+                        ((OrderHistoryListController) mController).doInputRefund(order);
                         dialog.dismiss();
                     } else {
                         String message = getContext().getString(R.string.order_refund_limit, ConfigUtil.formatPrice(mOrder.getMaxRefunded()));
@@ -485,4 +489,14 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
     }
      /* Felix 3/4/2017 End */
 
+    public void showErrorRefund(int type) {
+        String message;
+        if (type == 0) {
+            message = getContext().getString(R.string.err_refund_giftcard);
+        } else {
+            message = getContext().getString(R.string.err_refund_store_credit);
+        }
+        // Tạo dialog và hiển thị
+        com.magestore.app.util.DialogUtil.confirm(getContext(), message, R.string.ok);
+    }
 }

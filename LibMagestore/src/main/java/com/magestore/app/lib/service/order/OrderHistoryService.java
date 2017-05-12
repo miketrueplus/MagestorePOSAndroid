@@ -10,6 +10,7 @@ import com.magestore.app.lib.model.sales.OrderRefundCreditParams;
 import com.magestore.app.lib.model.sales.OrderInvoiceParams;
 import com.magestore.app.lib.model.sales.OrderItemParams;
 import com.magestore.app.lib.model.sales.OrderItemUpdateQtyParam;
+import com.magestore.app.lib.model.sales.OrderRefundGiftCard;
 import com.magestore.app.lib.model.sales.OrderRefundParams;
 import com.magestore.app.lib.model.sales.OrderShipmentParams;
 import com.magestore.app.lib.model.sales.OrderShipmentTrackParams;
@@ -44,6 +45,8 @@ public interface OrderHistoryService extends Service, ListService<Order> {
 
     boolean orderRefundByCredit(Order order) throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
+    boolean orderRefundByGiftCard(Order order) throws InstantiationException, IllegalAccessException, IOException, ParseException;
+
     Order orderRefund(Order order) throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
     Order orderInvoiceUpdateQty(OrderUpdateQtyParam orderUpdateQtyParam) throws InstantiationException, IllegalAccessException, IOException, ParseException;
@@ -73,6 +76,8 @@ public interface OrderHistoryService extends Service, ListService<Order> {
     OrderItemParams createOrderItemParams();
 
     OrderRefundCreditParams createOrderRefundCreditParams();
+
+    OrderRefundGiftCard createOrderRefundGiftCard();
 
     OrderRefundParams createOrderRefundParams();
 

@@ -71,19 +71,21 @@ public class OrderHistoryListController extends AbstractListController<Order> {
     public static String CREATE_SHIPMENT_CODE = "create_shipment";
     public static int ORDER_REFUND_BY_CREDIT_TYPE = 4;
     public static String ORDER_REFUND_BY_CREDIT_CODE = "order_refund_by_credit";
-    public static int ORDER_REFUND_TYPE = 5;
+    public static int ORDER_REFUND_BY_GIFTCARD_TYPE = 5;
+    public static String ORDER_REFUND_BY_GIFTCARD_CODE = "order_refund_by_giftcard";
+    public static int ORDER_REFUND_TYPE = 6;
     public static String ORDER_REFUND_CODE = "order_refund";
-    public static int ORDER_INVOICE_UPDATE_QTY_TYPE = 6;
+    public static int ORDER_INVOICE_UPDATE_QTY_TYPE = 7;
     public static String ORDER_INVOICE_UPDATE_QTY_CODE = "order_invoice_update_qty";
-    public static int ORDER_INVOICE_TYPE = 7;
+    public static int ORDER_INVOICE_TYPE = 8;
     public static String ORDER_INVOICE_CODE = "order_invoice";
-    public static int ORDER_CANCEL_TYPE = 8;
+    public static int ORDER_CANCEL_TYPE = 9;
     public static String ORDER_CANCEL_CODE = "order_cancel";
-    public static int ORDER_REORDER_TYPE = 9;
+    public static int ORDER_REORDER_TYPE = 10;
     public static String ORDER_REORDER_CODE = "order_reorder";
-    public static int RETRIEVE_PAYMENT_METHOD_TYPE = 10;
+    public static int RETRIEVE_PAYMENT_METHOD_TYPE = 11;
     public static String RETRIEVE_PAYMENT_METHOD_CODE = "retrieve_payment_method";
-    public static int ORDER_TAKE_PAYMENT_TYPE = 11;
+    public static int ORDER_TAKE_PAYMENT_TYPE = 12;
     public static String ORDER_TAKE_PAYMENT_CODE = "order_take_payment";
 
     public static String SEND_ORDER_TO_SALE_ACTIVITY = "com.magestore.app.pos.controller.orderhistory.reorder";
@@ -198,6 +200,11 @@ public class OrderHistoryListController extends AbstractListController<Order> {
         doAction(INSERT_STATUS_TYPE, INSERT_STATUS_CODE, wraper, order);
     }
 
+    public void doInputRefundByGiftCard(Order order) {
+        showDetailOrderLoading(true);
+        doAction(ORDER_REFUND_BY_GIFTCARD_TYPE, ORDER_REFUND_BY_GIFTCARD_CODE, wraper, order);
+    }
+
     public void doInputRefundByCredit(Order order) {
         showDetailOrderLoading(true);
         doAction(ORDER_REFUND_BY_CREDIT_TYPE, ORDER_REFUND_BY_CREDIT_CODE, wraper, order);
@@ -264,6 +271,9 @@ public class OrderHistoryListController extends AbstractListController<Order> {
         } else if (actionType == INSERT_STATUS_TYPE) {
             wraper.put("status_respone", mOrderService.insertOrderStatus((Order) models[0]));
             return true;
+        } else if (actionType == ORDER_REFUND_BY_GIFTCARD_TYPE) {
+            wraper.put("refund_by_giftcard_respone", mOrderService.orderRefundByGiftCard((Order) models[0]));
+            return true;
         } else if (actionType == ORDER_REFUND_BY_CREDIT_TYPE) {
             wraper.put("refund_by_credit_respone", mOrderService.orderRefundByCredit((Order) models[0]));
             return true;
@@ -323,10 +333,16 @@ public class OrderHistoryListController extends AbstractListController<Order> {
             ((OrderDetailPanel) mDetailView).bindDataRespone(order);
             ((OrderDetailPanel) mDetailView).setOrder(order);
             showDetailOrderLoading(false);
+        } else if (success && actionType == ORDER_REFUND_BY_GIFTCARD_TYPE) {
+            boolean refund_by_giftcard_respone = (boolean) wraper.get("refund_by_giftcard_respone");
+            if (!refund_by_giftcard_respone) {
+                ((OrderDetailPanel) mDetailView).showErrorRefund(0);
+            }
         } else if (success && actionType == ORDER_REFUND_BY_CREDIT_TYPE) {
-            Order order = (Order) models[0];
-            doInputRefund(order);
-            showDetailOrderLoading(false);
+            boolean refund_by_credit_respone = (boolean) wraper.get("refund_by_credit_respone");
+            if (!refund_by_credit_respone) {
+                ((OrderDetailPanel) mDetailView).showErrorRefund(1);
+            }
         } else if (success && actionType == ORDER_REFUND_TYPE) {
             Order order = (Order) wraper.get("refund_respone");
             mOrderRefundPanel.showAlertRespone(true);
@@ -403,20 +419,30 @@ public class OrderHistoryListController extends AbstractListController<Order> {
     public void onCancelledBackground(Exception exp, int actionType, String actionCode, Map<String, Object> wraper, Model... models) {
         if (actionType == CREATE_SHIPMENT_TYPE) {
             mOrderShipmentPanel.showAlertRespone(false);
+            showDetailOrderLoading(false);
         } else if (actionType == ORDER_CANCEL_TYPE) {
             mOrderCancelPanel.showAlertRespone(false);
+            showDetailOrderLoading(false);
         } else if (actionType == ORDER_REFUND_TYPE) {
             mOrderRefundPanel.showAlertRespone(false);
+            showDetailOrderLoading(false);
         } else if (actionType == ORDER_INVOICE_TYPE) {
             mOrderInvoicePanel.showAlertRespone(false);
+            showDetailOrderLoading(false);
         } else if (actionType == INSERT_STATUS_TYPE) {
             mOrderAddCommentPanel.showAlertRespone(false);
+            showDetailOrderLoading(false);
         } else if (actionType == SENT_EMAIL_TYPE) {
             mOrderSendEmailPanel.showAlertRespone(false);
+            showDetailOrderLoading(false);
+        } else if (actionType == ORDER_REFUND_BY_GIFTCARD_TYPE) {
+            ((OrderDetailPanel) mDetailView).showErrorRefund(0);
+        } else if (actionType == ORDER_REFUND_BY_CREDIT_TYPE) {
+            ((OrderDetailPanel) mDetailView).showErrorRefund(1);
         } else {
             super.onCancelledBackground(exp, actionType, actionCode, wraper, models);
+            showDetailOrderLoading(false);
         }
-        showDetailOrderLoading(false);
     }
 
     /**
@@ -664,15 +690,23 @@ public class OrderHistoryListController extends AbstractListController<Order> {
     public void getTotalItem() {
         Order order = ((OrderDetailPanel) mDetailView).getOrder();
         float total_item_price = 0;
+        float total_giftcard = 0;
         for (CartItem cart : order.getOrderItems()) {
             total_item_price += ((cart.getBasePriceInclTax() - ((cart.getBaseDiscountAmount() + cart.getBaseGiftVoucherDiscount() + cart.getRewardpointsBaseDiscount()) / cart.getQtyOrdered())) * cart.QtyRefund());
+            total_giftcard += cart.getBaseGiftVoucherDiscount();
         }
+        ((OrderDetailPanel) mDetailView).getOrder().setMaxGiftCardRefund(total_giftcard);
         updateToTalPriceChangeQtyRefund(total_item_price);
     }
 
     public void updateToTalPriceChangeQtyRefund(float total) {
         ((OrderDetailPanel) mDetailView).getOrder().setTotalPriceChangeQtyRefund(total);
         chaneMaxStoreCreditRefund();
+    }
+
+    public void updateMaxRefundGiftCard(float total) {
+        ((OrderDetailPanel) mDetailView).getOrder().setMaxGiftCardRefund(total);
+        mOrderRefundPanel.updateTotalGiftCard(total);
     }
 
     public void chaneMaxStoreCreditRefund() {

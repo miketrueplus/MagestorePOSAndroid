@@ -13,6 +13,7 @@ import com.magestore.app.lib.model.sales.OrderRefundCreditParams;
 import com.magestore.app.lib.model.sales.OrderInvoiceParams;
 import com.magestore.app.lib.model.sales.OrderItemParams;
 import com.magestore.app.lib.model.sales.OrderItemUpdateQtyParam;
+import com.magestore.app.lib.model.sales.OrderRefundGiftCard;
 import com.magestore.app.lib.model.sales.OrderRefundParams;
 import com.magestore.app.lib.model.sales.OrderShipmentParams;
 import com.magestore.app.lib.model.sales.OrderShipmentTrackParams;
@@ -28,6 +29,7 @@ import com.magestore.app.pos.model.sales.PosOrderInvoiceParams;
 import com.magestore.app.pos.model.sales.PosOrderItemParams;
 import com.magestore.app.pos.model.sales.PosOrderItemUpdateQtyParam;
 import com.magestore.app.pos.model.sales.PosOrderRefundCreditParams;
+import com.magestore.app.pos.model.sales.PosOrderRefundGiftCard;
 import com.magestore.app.pos.model.sales.PosOrderRefundParams;
 import com.magestore.app.pos.model.sales.PosOrderShipmentParams;
 import com.magestore.app.pos.model.sales.PosOrderShipmentTrackParams;
@@ -176,6 +178,18 @@ public class PosOrderHistoryService extends AbstractService implements OrderHist
     }
 
     @Override
+    public boolean orderRefundByGiftCard(Order order) throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        OrderRefundGiftCard orderRefundGiftCard = createOrderRefundGiftCard();
+        orderRefundGiftCard.setOrderId(order.getIncrementId());
+        orderRefundGiftCard.setAmount(order.getGiftCardRefund());
+        orderRefundGiftCard.setBaseAmount(ConfigUtil.convertToBasePrice(order.getGiftCardRefund()));
+
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        OrderDataAccess orderDataAccess = factory.generateOrderDataAccess();
+        return orderDataAccess.orderRefundByGiftCard(orderRefundGiftCard);
+    }
+
+    @Override
     public Order orderRefund(Order order) throws InstantiationException, IllegalAccessException, IOException, ParseException {
         OrderRefundParams refundParams = order.getParamRefund();
 
@@ -311,6 +325,11 @@ public class PosOrderHistoryService extends AbstractService implements OrderHist
     @Override
     public OrderRefundCreditParams createOrderRefundCreditParams() {
         return new PosOrderRefundCreditParams();
+    }
+
+    @Override
+    public OrderRefundGiftCard createOrderRefundGiftCard() {
+        return new PosOrderRefundGiftCard();
     }
 
     @Override
