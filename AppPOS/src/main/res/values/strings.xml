@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">POS</string>
+    <string name="app_name">Retailer POS - POS for Magento 2</string>
 
     <!-- Strings related to login -->
     <string name="login_title">Magestore POS</string>

@@ -110,7 +110,7 @@ public class CheckoutSuccessPanel extends AbstractDetailPanel<Order> {
                     messageRes :
                     getContext().getString(R.string.checkout_send_email_success);
         } else {
-            message = getContext().getString(R.string.checkout_send_email_success);
+            message = getContext().getString(R.string.err_send_email);
         }
 
         // Tạo dialog và hiển thị

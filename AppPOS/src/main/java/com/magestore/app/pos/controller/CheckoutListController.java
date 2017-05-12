@@ -843,10 +843,14 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
     @Override
     public void onCancelledBackground(Exception exp, int actionType, String actionCode, Map<String, Object> wraper, Model... models) {
-        if(actionType == ACTION_TYPE_ADD_COUPON_TO_QUOTE){
+        if (actionType == ACTION_TYPE_ADD_COUPON_TO_QUOTE) {
             ((CheckoutDetailPanel) mDetailView).showErrorAddCouponCode();
+        } else if (actionType == ACTION_TYPE_SEND_EMAIL) {
+            showDetailOrderLoading(false);
+            mCheckoutSuccessPanel.showAlertRespone(true, "");
+        } else {
+            super.onCancelledBackground(exp, actionType, actionCode, wraper, models);
         }
-        super.onCancelledBackground(exp, actionType, actionCode, wraper, models);
         ((CheckoutListPanel) mView).showLoading(false);
         isShowLoadingDetail(false);
     }
@@ -1662,7 +1666,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     }
 
     public void changeCustomerShippingAdrress(boolean isChange) {
-        if(checkCustomerID(getSelectedItem().getCustomer(), guest_checkout)){
+        if (checkCustomerID(getSelectedItem().getCustomer(), guest_checkout)) {
             return;
         }
         if (isChange) {
@@ -1676,8 +1680,8 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         return ((CheckoutService) getListService()).checkCustomerID(customer, guest_customer);
     }
 
-    public void checkShowRemoveDiscount(){
-        if(((CheckoutDetailPanel) mDetailView).getVisibility() == View.VISIBLE){
+    public void checkShowRemoveDiscount() {
+        if (((CheckoutDetailPanel) mDetailView).getVisibility() == View.VISIBLE) {
             showButtonRemoveDiscount(checkDiscount(checkDataCheckout((Checkout) wraper.get("save_shipping"))));
         }
     }
@@ -1760,7 +1764,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         ((CheckoutListPanel) getView()).updateTotalPrice(getSelectedItem());
     }
 
-    public void updateTotalWithDeleteCartItem(Checkout checkout){
+    public void updateTotalWithDeleteCartItem(Checkout checkout) {
         ((CheckoutService) getListService()).updateTotal(checkout);
         ((CheckoutListPanel) getView()).updateTotalPrice(getSelectedItem());
     }
