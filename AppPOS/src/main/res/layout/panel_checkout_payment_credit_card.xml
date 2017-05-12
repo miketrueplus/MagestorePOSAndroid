@@ -92,6 +92,7 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:background="@drawable/login_form_border_edittext"
+            android:inputType="number"
             android:lines="1"
             android:maxLength="@integer/max_length_credit_card_number"
             android:padding="@dimen/layout_margin_10"

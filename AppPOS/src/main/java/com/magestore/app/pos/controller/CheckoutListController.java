@@ -306,7 +306,13 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         if (listCheckoutPayment != null && listCheckoutPayment.size() > 0) {
             if (listCheckoutPayment.size() == 1 && listCheckoutPayment.get(0).getType().equals("1")) {
                 CheckoutPayment paymentCreditCard = listCheckoutPayment.get(0);
-                if (!mCheckoutPaymentCreditCardPanel.checkRequiedCard(listCheckoutPayment.get(0).getUserCVV().equals("0") ? false : true)) {
+                boolean requied_cvv = true;
+                if (!StringUtil.isNullOrEmpty(paymentCreditCard.getUserCVV())) {
+                    if(paymentCreditCard.getUserCVV().equals("1")){
+                        requied_cvv = false;
+                    }
+                }
+                if (!mCheckoutPaymentCreditCardPanel.checkRequiedCard(requied_cvv)) {
                     return;
                 }
                 CheckoutPayment payment = mCheckoutPaymentCreditCardPanel.bind2Item();

@@ -123,12 +123,11 @@
                     android:gravity="right"
                     android:orientation="horizontal">
 
-                    <CheckBox
+                    <Switch
                         android:id="@+id/cb_use_max_credit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="@dimen/layout_margin_5"
-                        android:text="@string/plugin_use_max_credit"
                         android:visibility="gone" />
 
                     <Button

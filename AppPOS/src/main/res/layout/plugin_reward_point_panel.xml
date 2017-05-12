@@ -74,14 +74,13 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                        <CheckBox
+                        <Switch
                             android:id="@+id/cb_use_max_credit"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="@dimen/layout_margin_5"
-                            android:layout_toLeftOf="@+id/bt_apply"
                             android:layout_centerVertical="true"
-                            android:text="@string/plugin_use_max_credit" />
+                            android:layout_marginRight="@dimen/layout_margin_5"
+                            android:layout_toLeftOf="@+id/bt_apply" />
 
                         <Button
                             android:id="@+id/bt_apply"
@@ -89,9 +88,9 @@
                             android:layout_height="@dimen/bt_apply_size"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
-                            android:textSize="@dimen/text_size_15"
+                            android:text="@string/apply"
                             android:textAllCaps="false"
-                            android:text="@string/apply" />
+                            android:textSize="@dimen/text_size_15" />
                     </RelativeLayout>
                 </LinearLayout>
             </LinearLayout>

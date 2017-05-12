@@ -223,7 +223,12 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
             paymentMethodDataParam.setCCOwner(checkoutPayment.getCCOwner());
             paymentMethodDataParam.setCCType(checkoutPayment.getCCType());
             paymentMethodDataParam.setCCNumber(checkoutPayment.getCCNumber());
-            paymentMethodDataParam.setCCExpMonth(checkoutPayment.getCCExpMonth());
+            if(!StringUtil.isNullOrEmpty(checkoutPayment.getCCExpMonth())){
+                String month = checkoutPayment.getCCExpMonth().substring(0, 2);
+                paymentMethodDataParam.setCCExpMonth(month);
+            }else {
+                paymentMethodDataParam.setCCExpMonth(checkoutPayment.getCCExpMonth());
+            }
             paymentMethodDataParam.setCCExpYear(checkoutPayment.getCCExpYear());
             paymentMethodDataParam.setCID(checkoutPayment.getCID());
             listPaymentMethodParam.add(paymentMethodDataParam);
