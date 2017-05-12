@@ -385,4 +385,9 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         String message = getContext().getString(R.string.authorize_cancel_payment);
         com.magestore.app.util.DialogUtil.confirm(getContext(), message, R.string.ok);
     }
+
+    public void showErrorAddCouponCode(){
+        String message = getContext().getString(R.string.err_add_coupon);
+        com.magestore.app.util.DialogUtil.confirm(getContext(), message, R.string.ok);
+    }
 }

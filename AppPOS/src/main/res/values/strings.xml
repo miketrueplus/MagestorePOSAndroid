@@ -33,13 +33,13 @@
     <string name="sales_custom_sales_product">Custom Product</string>
     <string name="sales_remove_discount">Remove Discount</string>
     <string name="sales_no_payment_method">No payment method is avaible</string>
-    <string name="checkout_delete_order">Delete current order</string>
-    <string name="checkout_pick_as_store">Does the customer want to ship?</string>
+    <string name="checkout_delete_order">Please confirm to delete order</string>
+    <string name="checkout_pick_as_store">Need to ship?</string>
     <string name="checkout_discount_all">Discount - Maximum %1$s%%</string>
     <string name="checkout_custom_sale_name">Enter Product Name</string>
     <string name="checkout_custom_sale_ship">Shippable</string>
     <string name="checkout_address_item_default">default</string>
-    <string name="checkout_success_message">Order has been created successfully</string>
+    <string name="checkout_success_message">Order has been successfully created</string>
     <string name="checkout_order_id">#%1s</string>
     <string name="checkout_delivery_date">Select Delivery Date</string>
     <string name="checkout_payment_cc_name">Name On Card</string>
@@ -349,6 +349,7 @@
     <string name="err_invoice_order">Cannot invoice order</string>
     <string name="err_comment_order">Cannot add order comments</string>
     <string name="err_send_email">Cannot send the order email</string>
+    <string name="err_add_coupon">Add Coupon Unsuccessfully</string>
 
     <!-- Strings related to confirm message -->
     <string name="ask_are_you_sure">Are you sure?</string>

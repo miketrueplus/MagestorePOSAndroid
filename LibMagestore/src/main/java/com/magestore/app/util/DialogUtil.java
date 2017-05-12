@@ -38,6 +38,28 @@ public class DialogUtil {
     /**
      * Dialog confirm trước khi xóa, thêm, sửa
      * @param context
+     * @param intMsg
+     * @param intYes
+     * @param intNo
+     * @param listener
+     */
+    public static void confirm(Context context, int intMsg, int intYes, int intNo, DialogInterface.OnClickListener listener) {
+        AlertDialog confirmDialogBox = new AlertDialog.Builder(context)
+                .setTitle(null)
+                .setMessage(intMsg)
+                .setPositiveButton(intYes, listener)
+                .setNegativeButton(intNo, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create();
+        confirmDialogBox.show();
+    }
+
+    /**
+     * Dialog confirm trước khi xóa, thêm, sửa
+     * @param context
      * @param intTitle
      * @param strMsgDetail
      * @param intYes

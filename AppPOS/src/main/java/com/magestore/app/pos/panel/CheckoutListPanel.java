@@ -147,7 +147,6 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
                 if (((CheckoutListController) mController).checkItemInOrder()) {
                     com.magestore.app.util.DialogUtil.confirm(getContext(),
                             R.string.checkout_delete_order,
-                            R.string.title_confirm_delete,
                             R.string.confirm,
                             R.string.no,
                             new DialogInterface.OnClickListener() {

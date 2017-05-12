@@ -843,6 +843,9 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
     @Override
     public void onCancelledBackground(Exception exp, int actionType, String actionCode, Map<String, Object> wraper, Model... models) {
+        if(actionType == ACTION_TYPE_ADD_COUPON_TO_QUOTE){
+            ((CheckoutDetailPanel) mDetailView).showErrorAddCouponCode();
+        }
         super.onCancelledBackground(exp, actionType, actionCode, wraper, models);
         ((CheckoutListPanel) mView).showLoading(false);
         isShowLoadingDetail(false);
