@@ -3,12 +3,15 @@ package com.magestore.app.pos.service.checkout;
 import android.text.TextUtils;
 
 import com.magestore.app.lib.model.Model;
+import com.magestore.app.lib.model.PlaceOrderIntegrationExtension;
 import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.lib.model.checkout.CheckoutShipping;
 import com.magestore.app.lib.model.checkout.CheckoutTotals;
 import com.magestore.app.lib.model.checkout.PaymentMethodDataParam;
 import com.magestore.app.lib.model.checkout.PlaceOrderExtensionParam;
+import com.magestore.app.lib.model.checkout.PlaceOrderIntegrationOrderData;
+import com.magestore.app.lib.model.checkout.PlaceOrderIntegrationParam;
 import com.magestore.app.lib.model.checkout.PlaceOrderParams;
 import com.magestore.app.lib.model.checkout.Quote;
 import com.magestore.app.lib.model.checkout.QuoteAddCouponParam;
@@ -21,6 +24,7 @@ import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.checkout.payment.Authorizenet;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.customer.CustomerAddress;
+import com.magestore.app.lib.model.plugins.GiftCard;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.resourcemodel.DataAccessFactory;
 import com.magestore.app.lib.resourcemodel.sales.CheckoutDataAccess;
@@ -30,6 +34,9 @@ import com.magestore.app.pos.model.checkout.PosCheckoutPayment;
 import com.magestore.app.pos.model.checkout.PosCheckoutShipping;
 import com.magestore.app.pos.model.checkout.PosPaymentMethodDataParam;
 import com.magestore.app.pos.model.checkout.PosPlaceOrderExtensionParam;
+import com.magestore.app.pos.model.checkout.PosPlaceOrderIntegrationExtension;
+import com.magestore.app.pos.model.checkout.PosPlaceOrderIntegrationOrderData;
+import com.magestore.app.pos.model.checkout.PosPlaceOrderIntegrationParam;
 import com.magestore.app.pos.model.checkout.PosPlaceOrderParams;
 import com.magestore.app.pos.model.checkout.PosQuote;
 import com.magestore.app.pos.model.checkout.PosQuoteAddCouponParam;
@@ -157,13 +164,20 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
     private static String KEY_EXTENSION_CUSTOMER_FULLNAME = "customer_fullname";
     private static String KEY_EXTENSION_WEBPOS_CHANGE = "webpos_change";
     private static String KEY_EXTENSION_WEBPOS_BASE_CHANGE = "webpos_base_change";
+    private static String STORE_CREDIT_PAYMENT_CODE = "storecredit";
+    private static String STORE_CREDIT_MODULE = "customer_credit";
+    private static String STORE_CREDIT_EVENT = "webpos_use_customer_credit_after";
+    private static String STORE_CREDIT_BASE_DISCOUNT = "base_customercredit_discount";
+    private static String STORE_CREDIT_DISCOUNT = "customercredit_discount";
+    private static String GIFT_CARD_MODULE = "os_gift_card";
+    private static String GIFT_CARD_EVENT = "webpos_create_order_with_giftcard_after";
+    private static String GIFT_CARD_BASE_DISCOUNT = "base_gift_voucher_discount";
+    private static String GIFT_CARD_DISCOUNT = "gift_voucher_discount";
 
     @Override
     public Model placeOrder(String quoteId, Checkout checkout, List<CheckoutPayment> listCheckoutPayment) throws IOException, InstantiationException, ParseException, IllegalAccessException {
         PlaceOrderParams placeOrderParams = createPlaceOrderParams();
         placeOrderParams.setQuoteId(quoteId);
-        PosPlaceOrderParams.PlaceOrderIntegration placeOrderIntegration = placeOrderParams.createPlaceOrderIntegration();
-        placeOrderParams.setIntegration(placeOrderIntegration);
         PosPlaceOrderParams.PlaceOrderActionParam placeOrderActionParam = placeOrderParams.createPlaceOrderActionParam();
         placeOrderParams.setCreateInvoice(checkout.getCreateInvoice());
         placeOrderParams.setCreateShipment(checkout.getCreateShip());
@@ -187,6 +201,7 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
             }
         }
 
+        List<PlaceOrderIntegrationParam> listIntegration = new ArrayList<>();
         List<PaymentMethodDataParam> listPaymentMethodParam = placeOrderParams.createPaymentMethodData();
 
         for (CheckoutPayment checkoutPayment : listCheckoutPayment) {
@@ -212,6 +227,33 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
             paymentMethodDataParam.setCCExpYear(checkoutPayment.getCCExpYear());
             paymentMethodDataParam.setCID(checkoutPayment.getCID());
             listPaymentMethodParam.add(paymentMethodDataParam);
+
+            if (checkoutPayment.getCode().equals(STORE_CREDIT_PAYMENT_CODE)) {
+                PlaceOrderIntegrationParam storeCreditIntegration = createPlaceOrderIntegrationParam();
+                List<PlaceOrderIntegrationOrderData> listStoreCreditOrderData = new ArrayList<>();
+                List<PlaceOrderIntegrationExtension> listStoreCreditExtension = new ArrayList<>();
+                storeCreditIntegration.setModule(STORE_CREDIT_MODULE);
+                storeCreditIntegration.setEventName(STORE_CREDIT_EVENT);
+
+                PlaceOrderIntegrationOrderData storeCreditBaseDiscount = createPlaceOrderIntegrationOrderData();
+                storeCreditBaseDiscount.setKey(STORE_CREDIT_BASE_DISCOUNT);
+                storeCreditBaseDiscount.setValue(-ConfigUtil.convertToBasePrice(checkoutPayment.getAmount()));
+                PlaceOrderIntegrationOrderData storeCreditDiscount = createPlaceOrderIntegrationOrderData();
+                storeCreditDiscount.setKey(STORE_CREDIT_DISCOUNT);
+                storeCreditDiscount.setValue(-checkoutPayment.getAmount());
+                listStoreCreditOrderData.add(storeCreditBaseDiscount);
+                listStoreCreditOrderData.add(storeCreditDiscount);
+
+                PlaceOrderIntegrationExtension storeCreditExtension = createPlaceOrderIntegrationExtension();
+                storeCreditExtension.setKey(STORE_CREDIT_BASE_DISCOUNT);
+                storeCreditExtension.setValue(ConfigUtil.convertToBasePrice(checkoutPayment.getAmount()));
+                listStoreCreditExtension.add(storeCreditExtension);
+
+                storeCreditIntegration.setOrderData(listStoreCreditOrderData);
+                storeCreditIntegration.setExtensionData(listStoreCreditExtension);
+
+                listIntegration.add(storeCreditIntegration);
+            }
         }
 
         placeOrderParams.setMethodData(listPaymentMethodParam);
@@ -284,6 +326,42 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         listExtension.add(extensionParamBaseChange);
 
         placeOrderParams.setPlaceOrderExtensionData(listExtension);
+
+        // add plugins
+        List<GiftCard> listGiftCard = checkout.getListGiftCardUse();
+        if (listGiftCard != null && listGiftCard.size() > 0) {
+            PlaceOrderIntegrationParam giftCardIntegration = createPlaceOrderIntegrationParam();
+            List<PlaceOrderIntegrationOrderData> listgiftCardOrderData = new ArrayList<>();
+            List<PlaceOrderIntegrationExtension> listgiftCardExtension = new ArrayList<>();
+            giftCardIntegration.setModule(GIFT_CARD_MODULE);
+            giftCardIntegration.setEventName(GIFT_CARD_EVENT);
+
+            float total_giftcard_discount = 0;
+            for (GiftCard giftCard : listGiftCard) {
+                total_giftcard_discount += giftCard.getAmount();
+                PlaceOrderIntegrationExtension giftCardExtension = createPlaceOrderIntegrationExtension();
+                giftCardExtension.setKey(giftCard.getCouponCode());
+                giftCardExtension.setValue(ConfigUtil.convertToBasePrice(giftCard.getAmount()));
+                listgiftCardExtension.add(giftCardExtension);
+            }
+
+            PlaceOrderIntegrationOrderData giftCardBaseDiscount = createPlaceOrderIntegrationOrderData();
+            giftCardBaseDiscount.setKey(GIFT_CARD_BASE_DISCOUNT);
+            giftCardBaseDiscount.setValue(ConfigUtil.convertToBasePrice(total_giftcard_discount));
+
+            PlaceOrderIntegrationOrderData giftCardDiscount = createPlaceOrderIntegrationOrderData();
+            giftCardDiscount.setKey(GIFT_CARD_DISCOUNT);
+            giftCardDiscount.setValue(total_giftcard_discount);
+            listgiftCardOrderData.add(giftCardBaseDiscount);
+            listgiftCardOrderData.add(giftCardDiscount);
+
+            giftCardIntegration.setOrderData(listgiftCardOrderData);
+            giftCardIntegration.setExtensionData(listgiftCardExtension);
+
+            listIntegration.add(giftCardIntegration);
+        }
+
+        placeOrderParams.setIntegration(listIntegration);
 
         // Khởi tạo customer gateway factory
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
@@ -523,6 +601,21 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
     @Override
     public QuoteAddCouponParam createQuoteAddCouponParam() {
         return new PosQuoteAddCouponParam();
+    }
+
+    @Override
+    public PlaceOrderIntegrationParam createPlaceOrderIntegrationParam() {
+        return new PosPlaceOrderIntegrationParam();
+    }
+
+    @Override
+    public PlaceOrderIntegrationOrderData createPlaceOrderIntegrationOrderData() {
+        return new PosPlaceOrderIntegrationOrderData();
+    }
+
+    @Override
+    public PlaceOrderIntegrationExtension createPlaceOrderIntegrationExtension() {
+        return new PosPlaceOrderIntegrationExtension();
     }
 
     @Override

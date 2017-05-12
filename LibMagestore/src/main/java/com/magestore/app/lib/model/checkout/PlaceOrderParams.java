@@ -13,7 +13,7 @@ import java.util.List;
 
 public interface PlaceOrderParams extends Model {
     void setQuoteId(String strQuoteId);
-    void setIntegration(PosPlaceOrderParams.PlaceOrderIntegration placeOrderIntegration);
+    void setIntegration(List<PlaceOrderIntegrationParam> placeOrderIntegration);
     void setActions(PosPlaceOrderParams.PlaceOrderActionParam placeOrderActionParam);
     void setQuoteData(PosPlaceOrderParams.PlaceOrderQuoteDataParam placeOrderQuoteDataParam);
     void setPayment(PosPlaceOrderParams.PlaceOrderPaymentParam placeOrderPaymentParam);
@@ -29,5 +29,4 @@ public interface PlaceOrderParams extends Model {
     PosPlaceOrderParams.PlaceOrderQuoteDataParam createPlaceOrderQuoteDataParam();
     PosPlaceOrderParams.PlaceOrderPaymentParam createPlaceOrderPaymentParam();
     List<PaymentMethodDataParam> createPaymentMethodData();
-    PosPlaceOrderParams.PlaceOrderIntegration createPlaceOrderIntegration();
 }

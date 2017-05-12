@@ -12,6 +12,8 @@ import com.magestore.app.lib.panel.AbstractListPanel;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.PluginGiftCardController;
 
+import java.util.List;
+
 /**
  * Created by Johan on 4/10/17.
  * Magestore
@@ -51,5 +53,9 @@ public class PluginGiftCardPanel extends AbstractListPanel<GiftCard> {
 
     public void resetListGiftCard() {
         mPluginGiftCardController.resetListGiftCard();
+    }
+
+    public List<GiftCard> getListGiftCard(){
+        return mPluginGiftCardController.getListGiftCard();
     }
 }

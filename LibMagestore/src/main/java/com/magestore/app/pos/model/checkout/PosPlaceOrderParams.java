@@ -2,6 +2,7 @@ package com.magestore.app.pos.model.checkout;
 
 import com.magestore.app.lib.model.checkout.PaymentMethodDataParam;
 import com.magestore.app.lib.model.checkout.PlaceOrderExtensionParam;
+import com.magestore.app.lib.model.checkout.PlaceOrderIntegrationParam;
 import com.magestore.app.lib.model.checkout.PlaceOrderParams;
 import com.magestore.app.pos.model.PosAbstractModel;
 
@@ -16,11 +17,11 @@ import java.util.List;
 
 public class PosPlaceOrderParams extends PosAbstractModel implements PlaceOrderParams {
     String quote_id;
-    PlaceOrderIntegration integration;
     PlaceOrderActionParam actions;
     PlaceOrderQuoteDataParam quote_data;
     PlaceOrderPaymentParam payment;
     List<PlaceOrderExtensionParam> extension_data;
+    List<PlaceOrderIntegrationParam> integration;
 
     @Override
     public void setQuoteId(String strQuoteId) {
@@ -28,7 +29,7 @@ public class PosPlaceOrderParams extends PosAbstractModel implements PlaceOrderP
     }
 
     @Override
-    public void setIntegration(PlaceOrderIntegration placeOrderIntegration) {
+    public void setIntegration(List<PlaceOrderIntegrationParam> placeOrderIntegration) {
         integration = placeOrderIntegration;
     }
 
@@ -109,16 +110,6 @@ public class PosPlaceOrderParams extends PosAbstractModel implements PlaceOrderP
     public List<PaymentMethodDataParam> createPaymentMethodData() {
         payment.method_data = new ArrayList<PaymentMethodDataParam>();
         return payment.method_data;
-    }
-
-    @Override
-    public PlaceOrderIntegration createPlaceOrderIntegration() {
-        integration = new PlaceOrderIntegration();
-        return integration;
-    }
-
-    public class PlaceOrderIntegration {
-
     }
 
     public class PlaceOrderActionParam {

@@ -1,11 +1,14 @@
 package com.magestore.app.lib.service.checkout;
 
 import com.magestore.app.lib.model.Model;
+import com.magestore.app.lib.model.PlaceOrderIntegrationExtension;
 import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.checkout.CheckoutShipping;
 import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.lib.model.checkout.PaymentMethodDataParam;
 import com.magestore.app.lib.model.checkout.PlaceOrderExtensionParam;
+import com.magestore.app.lib.model.checkout.PlaceOrderIntegrationOrderData;
+import com.magestore.app.lib.model.checkout.PlaceOrderIntegrationParam;
 import com.magestore.app.lib.model.checkout.PlaceOrderParams;
 import com.magestore.app.lib.model.checkout.Quote;
 import com.magestore.app.lib.model.checkout.QuoteAddCouponParam;
@@ -90,6 +93,12 @@ public interface CheckoutService extends ListService<Checkout> {
     SaveQuoteParam createSaveQuoteParam();
 
     QuoteAddCouponParam createQuoteAddCouponParam();
+
+    PlaceOrderIntegrationParam createPlaceOrderIntegrationParam();
+
+    PlaceOrderIntegrationOrderData createPlaceOrderIntegrationOrderData();
+
+    PlaceOrderIntegrationExtension createPlaceOrderIntegrationExtension();
 
     List<CustomerAddress> checkListAddress(Customer customer, Customer guest_customer);
 

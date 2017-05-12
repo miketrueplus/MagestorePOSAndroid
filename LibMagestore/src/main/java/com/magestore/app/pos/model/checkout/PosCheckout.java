@@ -9,6 +9,7 @@ import com.magestore.app.lib.model.checkout.CheckoutTotals;
 import com.magestore.app.lib.model.checkout.Quote;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.customer.Customer;
+import com.magestore.app.lib.model.plugins.GiftCard;
 import com.magestore.app.lib.model.plugins.GiftCardRespone;
 import com.magestore.app.lib.model.plugins.RewardPoint;
 import com.magestore.app.lib.model.plugins.StoreCredit;
@@ -117,6 +118,9 @@ public class PosCheckout extends PosAbstractModel implements Checkout {
     float reward_point_use_point_value;
     @Gson2PosExclude
     int reward_point_earn_point_value;
+
+    @Gson2PosExclude
+    List<GiftCard> list_gift_card_use;
 
     @Gson2PosExclude
     PosGiftCardRespone giftcard;
@@ -496,5 +500,15 @@ public class PosCheckout extends PosAbstractModel implements Checkout {
     @Override
     public void setIsPickAtStore(boolean bIsPickAtStore) {
         is_pick_at_store = bIsPickAtStore;
+    }
+
+    @Override
+    public List<GiftCard> getListGiftCardUse() {
+        return list_gift_card_use;
+    }
+
+    @Override
+    public void setListGiftCardUse(List<GiftCard> listListGiftCardUse) {
+        list_gift_card_use = listListGiftCardUse;
     }
 }

@@ -3,6 +3,7 @@ package com.magestore.app.lib.model.checkout;
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.customer.Customer;
+import com.magestore.app.lib.model.plugins.GiftCard;
 import com.magestore.app.lib.model.plugins.GiftCardRespone;
 import com.magestore.app.lib.model.plugins.RewardPoint;
 import com.magestore.app.lib.model.plugins.StoreCredit;
@@ -130,4 +131,7 @@ public interface Checkout extends Model {
 
     boolean isPickAtStore();
     void setIsPickAtStore(boolean bIsPickAtStore);
+
+    List<GiftCard> getListGiftCardUse();
+    void setListGiftCardUse(List<GiftCard> listListGiftCardUse);
 }

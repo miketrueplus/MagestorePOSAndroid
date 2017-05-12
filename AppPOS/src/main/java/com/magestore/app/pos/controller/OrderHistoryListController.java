@@ -696,6 +696,7 @@ public class OrderHistoryListController extends AbstractListController<Order> {
             total_giftcard += cart.getBaseGiftVoucherDiscount();
         }
         ((OrderDetailPanel) mDetailView).getOrder().setMaxGiftCardRefund(total_giftcard);
+        updateMaxRefundGiftCard(total_giftcard);
         updateToTalPriceChangeQtyRefund(total_item_price);
     }
 

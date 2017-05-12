@@ -144,6 +144,10 @@ public class PluginGiftCardController extends AbstractListController<GiftCard> {
         }
     }
 
+    public List<GiftCard> getListGiftCard() {
+        return listGiftCard;
+    }
+
     public void resetListGiftCard(){
         mPluginGiftCardListPanel.resetListGiftCard();
         addFirstGiftCard();

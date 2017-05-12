@@ -439,6 +439,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             checkout.setCreateInvoice(((CheckoutDetailPanel) mDetailView).isCreateInvoice());
             checkout.setNote(((CheckoutDetailPanel) mDetailView).getNote());
             checkout.setDeliveryDate(getSelectedItem().getDeliveryDate());
+            checkout.setListGiftCardUse(mPluginGiftCardPanel.getListGiftCard());
             wraper.put("save_shipping", checkout);
             wraper.put("save_cart", checkout);
             String quoteId = getSelectedItem().getQuoteId();
