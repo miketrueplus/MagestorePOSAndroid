@@ -346,16 +346,15 @@ public class POSCheckoutDataAccess extends POSAbstractDataAccess implements Chec
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
 
             rp = statement.execute(placeOrderParams);
-            if (placeOrderParams.getMethod().equals(CODE_PAYMENT_AUTHORIZENET)) {
-                String json = rp.readResult2String();
-                json = StringUtil.truncateJson(json);
+            rp.setParseImplement(getClassParseImplement());
+            String json = rp.readResult2String();
+            json = StringUtil.truncateJson(json);
+            if (placeOrderParams.getMethod().equals(CODE_PAYMENT_AUTHORIZENET) && json.contains("payment_infomation")) {
                 Gson2PosAuthorizenetParseModel implement = new Gson2PosAuthorizenetParseModel();
                 Gson gson = implement.createGson();
                 PosAuthorizenet authorizenet = gson.fromJson(json, PosAuthorizenet.class);
                 return (Authorizenet) authorizenet;
             }
-            rp.setParseImplement(getClassParseImplement());
-            String json = StringUtil.truncateJson(rp.readResult2String());
             Gson2PosOrderParseModel implement =  new Gson2PosOrderParseModel();
             Gson gson = implement.createGson();
             Order order = gson.fromJson(json, PosOrder.class);

@@ -12,4 +12,5 @@ import com.magestore.app.lib.model.sales.Order;
 public interface Authorizenet extends Model {
     Order getOrder();
     AuthorizenetParams getPaymentInformation();
+    String getPaymentModel();
 }

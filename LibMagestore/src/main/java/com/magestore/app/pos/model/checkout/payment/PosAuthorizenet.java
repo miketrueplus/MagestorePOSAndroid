@@ -27,4 +27,9 @@ public class PosAuthorizenet extends PosAbstractModel implements Authorizenet {
     public AuthorizenetParams getPaymentInformation() {
         return (AuthorizenetParams) payment_infomation;
     }
+
+    @Override
+    public String getPaymentModel() {
+        return payment_model;
+    }
 }

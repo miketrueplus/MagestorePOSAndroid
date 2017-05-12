@@ -691,13 +691,25 @@ public class OrderHistoryListController extends AbstractListController<Order> {
         Order order = ((OrderDetailPanel) mDetailView).getOrder();
         float total_item_price = 0;
         float total_giftcard = 0;
-        for (CartItem cart : order.getOrderItems()) {
+        float ratioGiftVoucher = (0 - order.getBaseGiftVoucherDiscount()) / order.getBaseSubtotal();
+        for (CartItem cart : checkParentItem(order)) {
+            cart.setQuantity(cart.QtyRefund());
             total_item_price += ((cart.getBasePriceInclTax() - ((cart.getBaseDiscountAmount() + cart.getBaseGiftVoucherDiscount() + cart.getRewardpointsBaseDiscount()) / cart.getQtyOrdered())) * cart.QtyRefund());
-            total_giftcard += cart.getBaseGiftVoucherDiscount();
+            total_giftcard += cart.getBasePrice() * ratioGiftVoucher * cart.getQuantity();
         }
         ((OrderDetailPanel) mDetailView).getOrder().setMaxGiftCardRefund(total_giftcard);
         updateMaxRefundGiftCard(total_giftcard);
         updateToTalPriceChangeQtyRefund(total_item_price);
+    }
+
+    private List<CartItem> checkParentItem(Order order) {
+        List<CartItem> listCartItems = new ArrayList<>();
+        for (CartItem cart : order.getOrderItems()) {
+            if (cart.getOrderParentItem() == null) {
+                listCartItems.add(cart);
+            }
+        }
+        return listCartItems;
     }
 
     public void updateToTalPriceChangeQtyRefund(float total) {

@@ -782,8 +782,19 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 payment_code = listCheckoutPayment.get(0).getCode();
             }
             if (!StringUtil.isNullOrEmpty(payment_code) && payment_code.equals("authorizenet_directpost")) {
-                Authorizenet authorizenet = (Authorizenet) wraper.get("place_order");
-                doInputApprovedAuthorizenet(authorizenet);
+                if (wraper.get("place_order") instanceof Authorizenet) {
+                    Authorizenet authorizenet = (Authorizenet) wraper.get("place_order");
+                    doInputApprovedAuthorizenet(authorizenet);
+                } else {
+                    Order order = (Order) wraper.get("place_order");
+                    getSelectedItem().setOrderSuccess(order);
+                    isShowButtonCheckout(false);
+                    isShowSalesMenuDiscount(false);
+                    mCheckoutSuccessPanel.bindItem(order);
+                    doShowDetailSuccess(true, order);
+                    // hoàn thành place order hiden progressbar
+                    isShowLoadingDetail(false);
+                }
 //                isShowButtonCheckout(false);
 //                isShowSalesMenuDiscount(false);
 //                mCheckoutPaymentWebviewPanel.setAuthorizenet(authorizenet);
