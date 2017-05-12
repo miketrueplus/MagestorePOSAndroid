@@ -232,7 +232,6 @@ public abstract class AbstractActivity
     public void backToLoginActivity() {
         new AlertDialog.Builder(this)
                 .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle(R.string.dialog_close)
                 .setMessage(R.string.ask_are_you_sure_to_close)
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
