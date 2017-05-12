@@ -14,6 +14,7 @@ import com.magestore.app.lib.view.SimpleSpinner;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.CartItemListController;
 import com.magestore.app.pos.databinding.PanelCheckoutCustomSaleBinding;
+import com.magestore.app.pos.model.config.PosConfigTaxClass;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.StringUtil;
 import com.magestore.app.view.EditTextFloat;
@@ -32,7 +33,7 @@ public class CheckoutCustomSalePanel extends AbstractDetailPanel<CartItem> {
     EditTextFloat mtxtPrice;
     EditText mtxtName;
     SimpleSpinner s_tax_class;
-
+    private static String TAX_CLASS_TYPE = "PRODUCT";
     /**
      * Khởi tạo
      *
@@ -96,8 +97,14 @@ public class CheckoutCustomSalePanel extends AbstractDetailPanel<CartItem> {
 
     public void setDataTaxClass() {
         List<ConfigTaxClass> listTaxClass = new ArrayList<>();
+        // add none deafult
+        ConfigTaxClass configTaxClass = new PosConfigTaxClass();
+        configTaxClass.setID("0");
+        configTaxClass.setClassName(getContext().getString(R.string.none));
+        configTaxClass.setClassType(TAX_CLASS_TYPE);
+        listTaxClass.add(configTaxClass);
         for (ConfigTaxClass taxClass : ConfigUtil.getConfigTaxClass()) {
-            if (taxClass.getClassType().equals("PRODUCT")) {
+            if (taxClass.getClassType().equals(TAX_CLASS_TYPE)) {
                 listTaxClass.add(taxClass);
             }
         }

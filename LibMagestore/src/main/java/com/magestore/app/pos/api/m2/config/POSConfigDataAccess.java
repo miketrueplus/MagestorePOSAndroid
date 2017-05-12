@@ -175,12 +175,6 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
             rp.setParseImplement(getClassParseImplement());
             rp.setParseModel(GsonPosListTaxClass.class);
             GsonPosListTaxClass listTaxClass = (GsonPosListTaxClass) rp.doParse();
-            // add none deafult
-            ConfigTaxClass configTaxClass = new PosConfigTaxClass();
-            configTaxClass.setID("0");
-            configTaxClass.setClassName("None");
-            configTaxClass.setClassType("PRODUCT");
-            listConfigTax.add(configTaxClass);
             listConfigTax = (List<ConfigTaxClass>) (List<?>) (listTaxClass.items);
             return listConfigTax;
         } catch (ConnectionException ex) {
