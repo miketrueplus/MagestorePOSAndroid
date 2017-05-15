@@ -145,17 +145,19 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
         rl_remove_checkout.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (((CheckoutListController) mController).checkItemInOrder()) {
-                    com.magestore.app.util.DialogUtil.confirm(getContext(),
-                            R.string.checkout_delete_order,
-                            R.string.confirm,
-                            R.string.no,
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    ((CheckoutListController) mController).removeOrder();
-                                }
-                            });
-                }
+                ((CheckoutListController) mController).removeOrder();
+
+//                if (((CheckoutListController) mController).checkItemInOrder()) {
+//                    com.magestore.app.util.DialogUtil.confirm(getContext(),
+//                            R.string.checkout_delete_order,
+//                            R.string.confirm,
+//                            R.string.no,
+//                            new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    ((CheckoutListController) mController).removeOrder();
+//                                }
+//                            });
+//                }
             }
         });
 
