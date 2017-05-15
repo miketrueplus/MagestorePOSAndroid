@@ -22,6 +22,7 @@ import com.magestore.app.pos.controller.OrderRefundItemsListController;
 import com.magestore.app.pos.databinding.PanelOrderRefundBinding;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.DialogUtil;
+import com.magestore.app.util.StringUtil;
 import com.magestore.app.view.EditTextFloat;
 
 import java.util.List;
@@ -272,14 +273,24 @@ public class OrderRefundPanel extends AbstractDetailPanel<Order> {
     }
 
     private void enableGiftCard(Order order) {
-        ll_gift_card.setVisibility(mOrderHistoryListController.checkCanRefundGiftcard(order) ? VISIBLE : GONE);
+        String customer_id = mOrder.getCustomerId();
+        boolean checkCustomerGuest = false;
+        if (!StringUtil.isNullOrEmpty(customer_id) && !customer_id.equals(ConfigUtil.getCustomerGuest().getID())) {
+            checkCustomerGuest = true;
+        }
+        ll_gift_card.setVisibility((mOrderHistoryListController.checkCanRefundGiftcard(order) && checkCustomerGuest) ? VISIBLE : GONE);
         if (order.getBaseGiftVoucherDiscount() > 0) {
             gift_card.setText(ConfigUtil.formatNumber((float) Math.sqrt(ConfigUtil.convertToPrice(order.getBaseGiftVoucherDiscount()))));
         }
     }
 
     private void enableStoreCredit(Order order) {
-        ll_store_credit.setVisibility(mOrderHistoryListController.checkCanStoreCredit(order) ? VISIBLE : GONE);
+        String customer_id = mOrder.getCustomerId();
+        boolean checkCustomerGuest = false;
+        if (!StringUtil.isNullOrEmpty(customer_id) && !customer_id.equals(ConfigUtil.getCustomerGuest().getID())) {
+            checkCustomerGuest = true;
+        }
+        ll_store_credit.setVisibility((mOrderHistoryListController.checkCanStoreCredit(order) && checkCustomerGuest)? VISIBLE : GONE);
     }
 
     public void updateTotalStoreCredit(float total) {

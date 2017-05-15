@@ -350,22 +350,41 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
             @Override
             public void onClick(View view) {
                 String customer_id = mOrder.getCustomerId();
+                Order order = mOrderRefundPanel.bind2Item();
                 if (!StringUtil.isNullOrEmpty(customer_id) && !customer_id.equals(ConfigUtil.getCustomerGuest().getID())) {
-                    if (mOrder.getMaxStoreCreditRefund() <= mOrder.getMaxRefunded()) {
-                        Order order = mOrderRefundPanel.bind2Item();
-                        if (order.getStoreCreditRefund() > 0) {
-                            ((OrderHistoryListController) mController).doInputRefundByCredit(order);
+                    if (ConfigUtil.isEnableGiftCard() && ConfigUtil.isEnableStoreCredit()) {
+                        if (mOrder.getStoreCreditRefund() <= mOrder.getMaxStoreCreditRefund()) {
+                            if (order.getStoreCreditRefund() > 0) {
+                                ((OrderHistoryListController) mController).doInputRefundByCredit(order);
+                            }
+                            ((OrderHistoryListController) mController).doInputRefundByGiftCard(order);
+                            ((OrderHistoryListController) mController).doInputRefund(order);
+                            dialog.dismiss();
+                        } else {
+                            String message = getContext().getString(R.string.order_refund_limit, ConfigUtil.formatPrice(mOrder.getMaxRefunded()));
+                            // Tạo dialog và hiển thị
+                            com.magestore.app.util.DialogUtil.confirm(getContext(), message, R.string.done);
                         }
+                    } else if (ConfigUtil.isEnableGiftCard()) {
                         ((OrderHistoryListController) mController).doInputRefundByGiftCard(order);
                         ((OrderHistoryListController) mController).doInputRefund(order);
                         dialog.dismiss();
-                    } else {
-                        String message = getContext().getString(R.string.order_refund_limit, ConfigUtil.formatPrice(mOrder.getMaxRefunded()));
-                        // Tạo dialog và hiển thị
-                        com.magestore.app.util.DialogUtil.confirm(getContext(), message, R.string.done);
+                    }else if(ConfigUtil.isEnableStoreCredit()){
+                        if (mOrder.getStoreCreditRefund() <= mOrder.getMaxStoreCreditRefund()) {
+                            if (order.getStoreCreditRefund() > 0) {
+                                ((OrderHistoryListController) mController).doInputRefundByCredit(order);
+                            }
+                            ((OrderHistoryListController) mController).doInputRefund(order);
+                            dialog.dismiss();
+                        } else {
+                            String message = getContext().getString(R.string.order_refund_limit, ConfigUtil.formatPrice(mOrder.getMaxRefunded()));
+                            // Tạo dialog và hiển thị
+                            com.magestore.app.util.DialogUtil.confirm(getContext(), message, R.string.done);
+                        }
+                    }else{
+                        ((OrderHistoryListController) mController).doInputRefund(order);
                     }
                 } else {
-                    Order order = mOrderRefundPanel.bind2Item();
                     ((OrderHistoryListController) mController).doInputRefund(order);
                     dialog.dismiss();
                 }
