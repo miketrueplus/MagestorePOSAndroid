@@ -171,6 +171,8 @@ public class PosOrder extends PosAbstractModel implements Order {
     float max_giftcard_refund;
     @Gson2PosExclude
     float gift_card_refund;
+    @Gson2PosExclude
+    float max_refunded;
 
     @Override
     public String getID() {
@@ -862,7 +864,12 @@ public class PosOrder extends PosAbstractModel implements Order {
 
     @Override
     public float getMaxRefunded() {
-        return (getBaseTotalPaid() - getBaseTotalRefunded() - getWebposBaseChange());
+        return max_refunded;
+    }
+
+    @Override
+    public void setMaxRefunded(float maxRefunded) {
+        max_refunded = maxRefunded;
     }
 
     @Override

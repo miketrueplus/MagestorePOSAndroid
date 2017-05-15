@@ -228,6 +228,7 @@ public interface Order extends Model {
     void setListProductReorder(List<Product> listProduct);
 
     float getMaxRefunded();
+    void setMaxRefunded(float maxRefunded);
 
     float getMaxStoreCreditRefund();
 

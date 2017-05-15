@@ -54,7 +54,7 @@ public class OrderRefundItemsListController extends AbstractListController<CartI
     private List<CartItem> checkParentItem(Order order) {
         List<CartItem> listCartItems = new ArrayList<>();
         for (CartItem cart : order.getOrderItems()) {
-            if (cart.getOrderParentItem() == null) {
+            if (cart.getOrderParentItem() == null && cart.QtyRefund() > 0) {
                 listCartItems.add(cart);
             }
         }

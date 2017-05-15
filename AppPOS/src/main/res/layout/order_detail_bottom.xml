@@ -46,7 +46,7 @@
                     <TableRow
                         android:id="@+id/table_row_subtotal"
                         android:layout_width="match_parent"
-                        android:visibility="@{orderDetail.getBaseSubtotalInclTax() != 0 ? View.VISIBLE : View.GONE}"
+                        android:visibility="@{orderDetail.getBaseSubtotal() != 0 ? View.VISIBLE : View.GONE}"
                         android:layout_height="wrap_content">
 
                         <TextView
@@ -62,7 +62,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="right"
-                            android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderDetail.getBaseSubtotalInclTax()))}"
+                            android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderDetail.getBaseSubtotal()))}"
                             android:textColor="@color/text_color"
                             android:textSize="@dimen/order_bottom_text_size" />
                     </TableRow>

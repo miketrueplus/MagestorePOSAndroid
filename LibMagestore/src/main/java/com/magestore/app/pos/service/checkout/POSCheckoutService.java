@@ -378,7 +378,7 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
             List<PlaceOrderIntegrationOrderData> listrewardOrderData = new ArrayList<>();
             List<PlaceOrderIntegrationExtension> listrewardExtension = new ArrayList<>();
             rewardIntegration.setModule(REWARD_POINT_MODULE);
-            rewardIntegration.setEventName(REWARD_POINT_SPENT);
+            rewardIntegration.setEventName(REWARD_POINT_EVENT);
 
             PlaceOrderIntegrationExtension rewardExtension = createPlaceOrderIntegrationExtension();
             listrewardExtension.add(rewardExtension);
