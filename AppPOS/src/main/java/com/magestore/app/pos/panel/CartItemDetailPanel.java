@@ -162,7 +162,7 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
                 if(b){
                     mblnCustomPriceFixed = true;
                     actionChangeValue(mbtnCustomPriceFixed, mbtnCustomPricePercent, mblnCustomPriceFixed);
-                    mtxtCustomPrice.setText(ConfigUtil.formatNumber(ConfigUtil.formatNumber(mCartItem.getCustomPrice())));
+                    mtxtCustomPrice.setText(ConfigUtil.formatNumber(ConfigUtil.formatNumber(mCartItem.getDefaultCustomPrice())));
                 }
             }
         });

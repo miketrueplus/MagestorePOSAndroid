@@ -33,6 +33,8 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     @Gson2PosExclude
     float custom_price;
     @Gson2PosExclude
+    float default_custom_price;
+    @Gson2PosExclude
     String custom_price_type;
     @Gson2PosExclude
     String is_shipable = StringUtil.STRING_ZERO;
@@ -67,6 +69,16 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     @Override
     public void setCustomPrice(float custom_price) {
         this.custom_price = custom_price;
+    }
+
+    @Override
+    public float getDefaultCustomPrice() {
+        return default_custom_price;
+    }
+
+    @Override
+    public void setDefaultCustomPrice(float defaultCustomPrice) {
+        default_custom_price = defaultCustomPrice;;
     }
 
     @Override

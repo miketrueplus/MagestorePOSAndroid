@@ -160,6 +160,7 @@ public class POSCartService extends AbstractService implements CartService {
         cartItem.setOriginalPrice(price);
         cartItem.setUnitPrice(price);
         cartItem.setCustomPrice(price);
+        cartItem.setDefaultCustomPrice(price);
         cartItem.setCustomPriceTypeFixed();
         cartItem.setDiscount(StringUtil.STRING_ZERO);
         cartItem.setDiscountTypeFixed();

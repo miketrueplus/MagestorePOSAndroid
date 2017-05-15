@@ -803,6 +803,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         price += addPrice;
         getItem().setUnitPrice(price);
         getItem().setCustomPrice(price);
+        getItem().setDefaultCustomPrice(price);
     }
 
     private String getConfigOptionProductID() {

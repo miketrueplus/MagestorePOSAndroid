@@ -34,6 +34,10 @@ public interface CartItem extends Model {
 
     void setCustomPrice(float custom_price);
 
+    float getDefaultCustomPrice();
+
+    void setDefaultCustomPrice(float defaultCustomPrice);
+
     boolean haveCustomPriceOrDiscount();
 
     String getCustomPriceType();
