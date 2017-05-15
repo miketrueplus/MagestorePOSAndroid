@@ -148,7 +148,7 @@ public class SearchAutoCompletePanel extends FrameLayout {
             mAutoTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 @Override
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                    boolean handled = false;
+                    boolean handled = true;
                     if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                         applySearch();
                         mintMode = MODE_FILTER;

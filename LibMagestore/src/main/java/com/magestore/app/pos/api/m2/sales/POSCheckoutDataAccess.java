@@ -348,7 +348,6 @@ public class POSCheckoutDataAccess extends POSAbstractDataAccess implements Chec
             rp = statement.execute(placeOrderParams);
             rp.setParseImplement(getClassParseImplement());
             String json = rp.readResult2String();
-            json = StringUtil.truncateJson(json);
             if (placeOrderParams.getMethod().equals(CODE_PAYMENT_AUTHORIZENET) && json.contains("payment_infomation")) {
                 Gson2PosAuthorizenetParseModel implement = new Gson2PosAuthorizenetParseModel();
                 Gson gson = implement.createGson();

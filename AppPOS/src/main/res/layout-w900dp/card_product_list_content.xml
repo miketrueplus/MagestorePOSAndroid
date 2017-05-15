@@ -5,6 +5,8 @@
 
         <import type="com.magestore.app.util.ConfigUtil" />
 
+        <import type="android.view.View" />
+
         <variable
             name="product"
             type="com.magestore.app.lib.model.catalog.Product" />
@@ -44,8 +46,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/product_price_margin"
                     android:ellipsize="end"
-                    android:lines="2"
                     android:gravity="bottom"
+                    android:lines="2"
                     android:text="@{product.getName()}"
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/product_text_name_size" />
@@ -65,6 +67,18 @@
                 android:text="@{ConfigUtil.formatPrice(product.getFinalPrice())}"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/text_size" />
+
+            <ImageView
+                android:id="@+id/im_stock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="@dimen/product_price_margin"
+                android:layout_marginTop="@dimen/product_price_margin"
+                android:padding="@dimen/layout_margin_5"
+                android:src="@drawable/ic_out_stock"
+                android:visibility="@{product.isInStock() ? View.GONE : View.GONE}"/>
         </RelativeLayout>
     </RelativeLayout>
 </layout>

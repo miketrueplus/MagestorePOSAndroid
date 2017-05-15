@@ -99,7 +99,7 @@ public class ProductListController extends AbstractListController<Product> {
                     categoryID.append(StringUtil.STRING_COMMA).append(category.getID());
                 }
             }
-            return ((ProductService) getListService()).retrieve(categoryID.toString(), null, page, pageSize);
+            return ((ProductService) getListService()).retrieve(categoryID.toString(), getSearchString(), page, pageSize);
         }
     }
 

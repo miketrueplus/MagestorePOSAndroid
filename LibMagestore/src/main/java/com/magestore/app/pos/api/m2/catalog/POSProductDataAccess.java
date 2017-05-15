@@ -309,6 +309,7 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
                     .setPageSize(pageSize)
                     .setFilterLike("name", finalSearchString)
                     .setFilterLike("sku", finalSearchString)
+                    .setSortOrderASC("name")
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
 
             // thực thi truy vấn và parse kết quả thành object
@@ -358,13 +359,17 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
             statement = connection.createStatement();
             statement.prepareQuery(POSAPI.REST_PRODUCT_GET_LISTING);
 
-
+            if(!StringUtil.isNullOrEmpty(searchString)) {
+                String finalSearchString = "%" + searchString + "%";
+                statement.getParamBuilder().setFilterLike("name", finalSearchString);
+                statement.getParamBuilder().setFilterLike("sku", finalSearchString);
+            }
             paramBuilder = statement.getParamBuilder()
                     .setPage(currentPage)
                     .setPageSize(pageSize)
-                    .setFilterIn("category_id", categoryId)
+                    .setFilterEqual("category_id", categoryId)
+                    .setSortOrderASC("name")
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
-
 
             // thực thi truy vấn và parse kết quả thành object
             rp = statement.execute();
