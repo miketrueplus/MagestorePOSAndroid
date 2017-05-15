@@ -126,6 +126,7 @@ public interface Checkout extends Model {
     GiftCardRespone getGiftCard();
 
     RewardPoint getRewardPoint();
+    void setRewardPoint(RewardPoint rewardPoint);
 
     StoreCredit getStoreCredit();
 

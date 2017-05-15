@@ -580,6 +580,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 // plugins
                 if (checkout.getRewardPoint() != null) {
                     if (checkout.getRewardPoint().getBalance() != 0 && ConfigUtil.isEnableRewardPoint()) {
+                        getSelectedItem().setRewardPoint(checkout.getRewardPoint());
                         mPluginRewardPointPanel.resetPointValue();
                         mPluginRewardPointPanel.bindItem(checkout.getRewardPoint());
                         mPluginRewardPointPanel.setVisibility(View.VISIBLE);
@@ -663,6 +664,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                     // plugins
                     if (checkout.getRewardPoint() != null) {
                         if (checkout.getRewardPoint().getBalance() != 0 && ConfigUtil.isEnableRewardPoint()) {
+                            getSelectedItem().setRewardPoint(checkout.getRewardPoint());
                             mPluginRewardPointPanel.resetPointValue();
                             mPluginRewardPointPanel.bindItem(checkout.getRewardPoint());
                             mPluginRewardPointPanel.setVisibility(View.VISIBLE);
@@ -758,6 +760,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             // plugins
             if (checkout.getRewardPoint() != null) {
                 if (checkout.getRewardPoint().getBalance() != 0 && ConfigUtil.isEnableRewardPoint()) {
+                    getSelectedItem().setRewardPoint(checkout.getRewardPoint());
                     mPluginRewardPointPanel.resetPointValue();
                     mPluginRewardPointPanel.bindItem(checkout.getRewardPoint());
                     mPluginRewardPointPanel.setVisibility(View.VISIBLE);
@@ -823,6 +826,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         } else if (success && actionType == ACTION_TYPE_APPLY_REWARD_POINT) {
             Checkout checkout = (Checkout) wraper.get("save_reward_point");
             if (checkout.getRewardPoint() != null) {
+                getSelectedItem().setRewardPoint(checkout.getRewardPoint());
                 mPluginRewardPointPanel.changeBalance(checkout.getRewardPoint());
             }
             updateToTal(checkout);
@@ -877,6 +881,10 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         mPluginRewardPointPanel.resetPointValue();
         ((CheckoutService) getListService()).updateTotal(checkout);
         getSelectedItem().setGrandTotal(checkout.getGrandTotal());
+        if(checkout.getRewardPoint() != null) {
+            getSelectedItem().setRewardPoint(checkout.getRewardPoint());
+            getSelectedItem().setRewardPointUsePointValue(checkout.getRewardPointUsePointValue());
+        }
 //        showButtonRemoveDiscount(checkDiscount(checkout) ? true : false);
         ((CheckoutDetailPanel) mDetailView).bindTotalPrice(checkout.getGrandTotal());
         ((CheckoutListPanel) mView).updateTotalPrice(checkout);

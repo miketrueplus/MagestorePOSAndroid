@@ -173,6 +173,13 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
     private static String GIFT_CARD_EVENT = "webpos_create_order_with_giftcard_after";
     private static String GIFT_CARD_BASE_DISCOUNT = "base_gift_voucher_discount";
     private static String GIFT_CARD_DISCOUNT = "gift_voucher_discount";
+    private static String REWARD_POINT_MODULE = "os_reward_points";
+    private static String REWARD_POINT_EVENT = "webpos_create_order_with_points_after";
+    private static String REWARD_POINT_SPENT = "rewardpoints_spent";
+    private static String REWARD_POINT_BASE_DISCOUNT = "rewardpoints_base_discount";
+    private static String REWARD_POINT_DISCOUNT = "rewardpoints_discount";
+    private static String REWARD_POINT_BASE_AMOUNT = "rewardpoints_amount";
+    private static String REWARD_POINT_AMOUNT = "rewardpoints_base_amount";
 
     @Override
     public Model placeOrder(String quoteId, Checkout checkout, List<CheckoutPayment> listCheckoutPayment) throws IOException, InstantiationException, ParseException, IllegalAccessException {
@@ -364,6 +371,47 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
             giftCardIntegration.setExtensionData(listgiftCardExtension);
 
             listIntegration.add(giftCardIntegration);
+        }
+
+        if(checkout.getRewardPointUsePointValue() != 0){
+            PlaceOrderIntegrationParam rewardIntegration = createPlaceOrderIntegrationParam();
+            List<PlaceOrderIntegrationOrderData> listrewardOrderData = new ArrayList<>();
+            List<PlaceOrderIntegrationExtension> listrewardExtension = new ArrayList<>();
+            rewardIntegration.setModule(REWARD_POINT_MODULE);
+            rewardIntegration.setEventName(REWARD_POINT_SPENT);
+
+            PlaceOrderIntegrationExtension rewardExtension = createPlaceOrderIntegrationExtension();
+            listrewardExtension.add(rewardExtension);
+
+            PlaceOrderIntegrationOrderData rewardSpent = createPlaceOrderIntegrationOrderData();
+            rewardSpent.setKey(REWARD_POINT_SPENT);
+            rewardSpent.setValue(checkout.getRewardPoint().getAmount());
+
+
+            PlaceOrderIntegrationOrderData rewardBaseDiscount = createPlaceOrderIntegrationOrderData();
+            rewardBaseDiscount.setKey(REWARD_POINT_BASE_DISCOUNT);
+            rewardBaseDiscount.setValue(ConfigUtil.convertToBasePrice(checkout.getRewardPointUsePointValue()));
+
+            PlaceOrderIntegrationOrderData rewardDiscount = createPlaceOrderIntegrationOrderData();
+            rewardDiscount.setKey(REWARD_POINT_DISCOUNT);
+            rewardDiscount.setValue(checkout.getRewardPointUsePointValue());
+
+            PlaceOrderIntegrationOrderData rewardBaseAmount = createPlaceOrderIntegrationOrderData();
+            rewardBaseAmount.setKey(REWARD_POINT_BASE_AMOUNT);
+            rewardBaseAmount.setValue(ConfigUtil.convertToBasePrice(checkout.getRewardPointUsePointValue()));
+
+            PlaceOrderIntegrationOrderData rewardAmount = createPlaceOrderIntegrationOrderData();
+            rewardAmount.setKey(REWARD_POINT_AMOUNT);
+            rewardAmount.setValue(checkout.getRewardPointUsePointValue());
+
+            listrewardOrderData.add(rewardSpent);
+            listrewardOrderData.add(rewardBaseDiscount);
+            listrewardOrderData.add(rewardDiscount);
+            listrewardOrderData.add(rewardBaseAmount);
+            listrewardOrderData.add(rewardAmount);
+
+            rewardIntegration.setOrderData(listrewardOrderData);
+            listIntegration.add(rewardIntegration);
         }
 
         placeOrderParams.setIntegration(listIntegration);

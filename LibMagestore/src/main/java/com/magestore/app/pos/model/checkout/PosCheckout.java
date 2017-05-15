@@ -488,6 +488,11 @@ public class PosCheckout extends PosAbstractModel implements Checkout {
     }
 
     @Override
+    public void setRewardPoint(RewardPoint rewardPoint) {
+        giftcard = (PosGiftCardRespone) rewardPoint;
+    }
+
+    @Override
     public StoreCredit getStoreCredit() {
         return (StoreCredit) storecredit;
     }
