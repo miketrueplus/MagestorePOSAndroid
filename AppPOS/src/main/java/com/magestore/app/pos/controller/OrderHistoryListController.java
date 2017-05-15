@@ -735,10 +735,10 @@ public class OrderHistoryListController extends AbstractListController<Order> {
         order.setMaxStoreCreditRefund(max_store_credit);
         if (max_store_credit <= max_refunded) {
             mOrderRefundPanel.updateTotalStoreCredit(max_store_credit);
-            order.setStoreCreditRefund(max_store_credit);
+            updateMaxRefundGiftCard(max_store_credit);
         } else {
             mOrderRefundPanel.updateTotalStoreCredit(order.getMaxRefunded());
-            order.setStoreCreditRefund(order.getMaxRefunded());
+            updateMaxRefundGiftCard(order.getMaxRefunded());
         }
     }
 
