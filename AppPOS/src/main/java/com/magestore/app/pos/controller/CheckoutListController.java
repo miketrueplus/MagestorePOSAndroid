@@ -818,6 +818,8 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             ((CheckoutListPanel) mView).showLoading(false);
         } else if (success && actionType == ACTION_TYPE_SAVE_SHIPPING) {
             Checkout checkout = (Checkout) wraper.get("save_shipping");
+            ((CheckoutService) getListService()).updateCartItemWithServerRespone(getSelectedItem(), checkout);
+            mCartItemListController.bindList(getSelectedItem().getCartItem());
             // cập nhật list payment
             mPaymentMethodListPanel.bindList(checkout.getCheckoutPayment());
             mCheckoutAddPaymentPanel.bindList(checkout.getCheckoutPayment());

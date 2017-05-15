@@ -83,7 +83,7 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
 
     @Override
     public boolean haveCustomPriceOrDiscount() {
-        return  Float.compare(getUnitPrice(), getOriginalPrice()) != 0;
+        return  Float.compare(getCustomPrice(), getOriginalPrice()) != 0;
     }
 
     @Override
@@ -688,6 +688,11 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     @Override
     public String getOfflineItemId() {
         return offline_item_id;
+    }
+
+    @Override
+    public void setOfflineItemId(String strOffilineItemId) {
+        offline_item_id = strOffilineItemId;
     }
 
     @Override

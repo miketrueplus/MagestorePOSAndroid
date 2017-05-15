@@ -184,6 +184,7 @@ public interface CartItem extends Model {
     String getItemDescription();
 
     String getOfflineItemId();
+    void setOfflineItemId(String strOffilineItemId);
 
     boolean getIsSaveCart();
     void setIsSaveCart(boolean isSaveCart);
