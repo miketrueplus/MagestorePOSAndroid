@@ -241,6 +241,11 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         checkout.setStoreId(store_id);
         wraper.put("quote_id", checkout.getQuoteId());
         wraper.put("quote_add_coupon_param", quoteAddCouponParam);
+        if (((CheckoutDetailPanel) mDetailView).getVisibility() == View.VISIBLE) {
+            wraper.put("type_add_coupon", 1);
+        } else {
+            wraper.put("type_add_coupon", 0);
+        }
         doAction(ACTION_TYPE_ADD_COUPON_TO_QUOTE, null, wraper, checkout);
     }
 
@@ -718,12 +723,98 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             ((CheckoutListPanel) mView).showLoading(false);
         } else if (success && actionType == ACTION_TYPE_ADD_COUPON_TO_QUOTE) {
             Checkout checkout = (Checkout) wraper.get("save_add_coupon_to_quote");
+            wraper.put("save_cart", checkout);
+            int type_add_coupon = (int) wraper.get("type_add_coupon");
+
+            if (type_add_coupon == 1) {
+                // cập nhật list shipping và payment
+                List<CheckoutShipping> listShipping = checkout.getCheckoutShipping();
+                List<CheckoutPayment> listPayment = checkout.getCheckoutPayment();
+
+                // cập nhật lại id trong cart item
+                ((CheckoutService) getListService()).updateCartItemWithServerRespone(getSelectedItem(), checkout);
+                mCartItemListController.bindList(getSelectedItem().getCartItem());
+                if (((CheckoutService) getListService()).checkIsVirtual(checkout.getCartItem())) {
+                    ((CheckoutDetailPanel) mDetailView).showPickAtStore(false);
+                    ((CheckoutDetailPanel) mDetailView).isEnableCreatShip(false);
+                } else {
+                    ((CheckoutDetailPanel) mDetailView).showPickAtStore(true);
+                    ((CheckoutDetailPanel) mDetailView).isEnableCreatShip(true);
+                }
+
+                if (listShipping != null && listShipping.size() > 0) {
+                    // bind data to shipping method list
+                    bindDataToShippingMethodList(listShipping);
+                    // auto select shipping method
+                    autoSelectShipping(listShipping);
+                } else {
+                    List<CheckoutPayment> listChoosePayment = (List<CheckoutPayment>) wraper.get("list_payment");
+                    if (listChoosePayment != null) {
+                        listChoosePayment = new ArrayList<>();
+                        wraper.put("list_payment", listChoosePayment);
+                    }
+                    checkout.setRemainMoney(0);
+                    checkout.setRealAmount(0);
+                    checkout.setExchangeMoney(0);
+                    checkout.setCustomer(getSelectedItem().getCustomer());
+                    checkout.setCustomerID(getSelectedItem().getCustomerID());
+                    mCheckoutPaymentListPanel.bindList(listChoosePayment);
+                    ((CheckoutDetailPanel) mDetailView).showPanelCheckoutPaymentCreditCard(false);
+                    ((CheckoutDetailPanel) mDetailView).showPanelPaymentMethod();
+                    wraper.put("save_quote", checkout);
+                    mCheckoutPaymentListPanel.resetListPayment();
+                    mPluginGiftCardPanel.resetListGiftCard();
+                    // plugins
+                    if (checkout.getRewardPoint() != null) {
+                        if (checkout.getRewardPoint().getBalance() != 0 && ConfigUtil.isEnableRewardPoint()) {
+                            getSelectedItem().setRewardPoint(checkout.getRewardPoint());
+                            mPluginRewardPointPanel.resetPointValue();
+                            mPluginRewardPointPanel.bindItem(checkout.getRewardPoint());
+                            mPluginRewardPointPanel.setVisibility(View.VISIBLE);
+                        } else {
+                            mPluginRewardPointPanel.setVisibility(View.GONE);
+                        }
+                    }
+                    if (checkout.getStoreCredit() != null) {
+                        if (checkout.getStoreCredit().getBalance() != 0 && ConfigUtil.isEnableStoreCredit()) {
+                            mPluginStoreCreditPanel.setVisibility(View.VISIBLE);
+                            mPluginStoreCreditPanel.bindItem(checkout.getStoreCredit());
+                        } else {
+                            mPluginStoreCreditPanel.setVisibility(View.GONE);
+                        }
+                    }
+                    autoSelectPaymentMethod(listPayment);
+                    isShowPluginStoreCredit(true);
+                    isShowPaymentMethod((checkout.getGrandTotal() == 0) ? false : true);
+                }
+
+                mPaymentMethodListPanel.bindList(listPayment);
+                mCheckoutAddPaymentPanel.bindList(listPayment);
+
+                // hiển thị list shipping address
+                Customer customer = (Customer) wraper.get("customer");
+                mCheckoutAddressListPanel.bindListModel(((List<Model>) (List<?>) ((CheckoutService) getListService()).checkListAddress(customer, guest_checkout)));
+                mCheckoutAddressListPanel.setSelectPos(customer.getAddressPosition());
+                mCheckoutAddressListPanel.scrollToPosition();
+
+                mCheckoutPaymentListPanel.setCheckout(checkout);
+
+                // show shipping total
+                ((CheckoutListPanel) mView).showSalesShipping(true);
+
+                ((CheckoutListPanel) mView).showButtonCustomSales(false);
+            }
             //  cập nhật giá
             ((CheckoutService) getListService()).updateTotal(checkout);
             getSelectedItem().setGrandTotal(checkout.getGrandTotal());
             getSelectedItem().setDiscountTitle(checkout.getDiscountTitle());
             getSelectedItem().setDiscountTotal(checkout.getDiscountTotal());
+            if (!checkDiscount(checkout)) {
+                showButtonRemoveDiscount(false);
+            }
+            showButtonDiscount(checkout.getGrandTotal() != 0 && checkListCartItem() ? true : false);
             ((CheckoutListPanel) mView).updateTotalPrice(checkout);
+            mCartItemListController.updateTotalPrice();
             ((CheckoutListPanel) mView).showLoading(false);
         } else if (success && actionType == ACTION_TYPE_SAVE_SHIPPING) {
             Checkout checkout = (Checkout) wraper.get("save_shipping");

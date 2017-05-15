@@ -77,8 +77,7 @@
                 android:layout_marginLeft="@dimen/product_price_margin"
                 android:layout_marginTop="@dimen/product_price_margin"
                 android:padding="@dimen/layout_margin_5"
-                android:src="@drawable/ic_out_stock"
-                android:visibility="@{product.isInStock() ? View.GONE : View.GONE}"/>
+                android:src="@drawable/ic_out_stock" />
         </RelativeLayout>
     </RelativeLayout>
 </layout>

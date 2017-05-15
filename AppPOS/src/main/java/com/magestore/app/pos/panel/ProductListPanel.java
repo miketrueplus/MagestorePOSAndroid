@@ -177,6 +177,7 @@ public class ProductListPanel extends AbstractListPanel<Product> {
         TextView txtSKU;
         TextView txtPrice;
         ImageView imgBitmap;
+        ImageView im_stock;
 
         public RecycleViewProductHolder(View view) {
             super(view);
@@ -196,6 +197,7 @@ public class ProductListPanel extends AbstractListPanel<Product> {
             txtPrice = ((TextView) view.findViewById(R.id.price));
             txtSKU = ((TextView) view.findViewById(R.id.sku));
             imgBitmap = (ImageView) view.findViewById(R.id.product_image);
+            im_stock = (ImageView) view.findViewById(R.id.im_stock);
         }
 
         /**
@@ -215,6 +217,7 @@ public class ProductListPanel extends AbstractListPanel<Product> {
             txtProductName.setText(product.getName());
             txtPrice.setText(ConfigUtil.formatPriceProduct(product.getFinalPrice()));
 //            txtSKU.setText(product.getSKU());
+            im_stock.setVisibility(product.isInStock() ? GONE : VISIBLE);
 
             // gán ảnh vào
             Picasso.with(getContext()).load(product.getImage()).centerInside().resizeDimen(R.dimen.product_image_width, R.dimen.product_image_height).into(imgBitmap);
