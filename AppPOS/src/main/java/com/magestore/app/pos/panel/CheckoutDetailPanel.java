@@ -227,7 +227,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         ll_checkout_add_payment.setVisibility(enable ? VISIBLE : GONE);
     }
 
-    public void isEnableCreatShip(boolean enable){
+    public void isEnableCreatShip(boolean enable) {
         create_ship.setVisibility(enable ? VISIBLE : GONE);
     }
 
@@ -235,7 +235,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         create_invoice.setVisibility(enable ? VISIBLE : GONE);
     }
 
-    public void isShowPaymentMethod(boolean isShow){
+    public void isShowPaymentMethod(boolean isShow) {
         mCheckoutPaymentListPanel.setVisibility(isShow ? VISIBLE : GONE);
         ll_payment_method.setVisibility(isShow ? VISIBLE : GONE);
         rl_payment_title.setVisibility(isShow ? VISIBLE : GONE);
@@ -307,6 +307,10 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         return et_checkout_note.getText().toString();
     }
 
+    public void clearNote() {
+        et_checkout_note.setText("");
+    }
+
     public boolean getPickAtStore() {
         return cb_pick_at_store.isChecked();
     }
@@ -374,19 +378,19 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         dialog.dismiss();
     }
 
-    public void hideCheckPaymenrRequired(){
-        if(tv_check_payment_required.getText().length() > 0) {
-            tv_check_payment_required.setText("") ;
+    public void hideCheckPaymenrRequired() {
+        if (tv_check_payment_required.getText().length() > 0) {
+            tv_check_payment_required.setText("");
             tv_check_payment_required.setError(null);
         }
     }
 
-    public void showDialogErrorAuthozire(){
+    public void showDialogErrorAuthozire() {
         String message = getContext().getString(R.string.authorize_cancel_payment);
         com.magestore.app.util.DialogUtil.confirm(getContext(), message, R.string.ok);
     }
 
-    public void showErrorAddCouponCode(){
+    public void showErrorAddCouponCode() {
         String message = getContext().getString(R.string.err_add_coupon);
         com.magestore.app.util.DialogUtil.confirm(getContext(), message, R.string.ok);
     }

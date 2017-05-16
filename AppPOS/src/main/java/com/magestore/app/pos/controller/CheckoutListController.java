@@ -1170,6 +1170,8 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 isShowButtonCheckout(true);
                 isShowSalesMenuDiscount(true);
                 doShowDetailSuccess(false);
+                mCheckoutPaymentCreditCardPanel.clearDataForm();
+                ((CheckoutDetailPanel) mDetailView).clearNote();
                 doInputSaveCart();
             }
             showSaleMenu(false);
@@ -1608,6 +1610,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         ((CheckoutDetailPanel) mDetailView).isEnableCreateInvoice(false);
         ((CheckoutDetailPanel) mDetailView).showPanelPaymentMethod();
         ((CheckoutDetailPanel) mDetailView).showPanelCheckoutPaymentCreditCard(false);
+        ((CheckoutDetailPanel) mDetailView).clearNote();
         mPluginGiftCardPanel.resetListGiftCard();
         showSaleMenu(true);
         showSalesShipping();
