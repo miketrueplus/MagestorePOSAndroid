@@ -150,11 +150,6 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
 
     @Override
     public List<ConfigTaxClass> retrieveConfigTaxClass() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
-        if (listConfigTax != null && listConfigTax.size() > 0) {
-            return listConfigTax;
-        }else{
-            listConfigTax = new ArrayList<>();
-        }
         Connection connection = null;
         Statement statement = null;
         ResultReading rp = null;
