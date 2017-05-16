@@ -175,7 +175,7 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
                 if(b){
                     mblnCustomDiscountFixed = true;
                     actionChangeValue(mbtnDiscountFixed, mbtnDiscountPercent, mblnCustomDiscountFixed);
-                    mtxtCustomDiscount.setText(ConfigUtil.formatNumber(mCartItem.getDiscountAmount()));
+                    mtxtCustomDiscount.setText(ConfigUtil.formatNumber(0));
                 }
             }
         });

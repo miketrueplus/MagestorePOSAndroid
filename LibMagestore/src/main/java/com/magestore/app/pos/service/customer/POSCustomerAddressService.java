@@ -179,8 +179,8 @@ public class POSCustomerAddressService extends AbstractService implements Custom
                 listCustomerAddress.add(newGuestCustomer.getAddress().get(0));
             }
         } else {
-            listCustomerAddress = new ArrayList<>();
-            listCustomerAddress.add(0, newGuestCustomer.getAddress().get(0));
+            listCustomerAddress.add(newGuestCustomer.getAddress().get(0));
+            customer.setUseOneAddress(true);
         }
 
         return customer;
