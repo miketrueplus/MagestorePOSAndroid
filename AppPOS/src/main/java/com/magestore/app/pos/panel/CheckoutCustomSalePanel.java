@@ -120,10 +120,11 @@ public class CheckoutCustomSalePanel extends AbstractDetailPanel<CartItem> {
     public void bind2Item(CartItem item) {
         item.setQuantity(1);
         item.setTypeCustom();
-        item.setPrice(mtxtPrice.getValueFloat());
-        item.setUnitPrice(mtxtPrice.getValueFloat());
-        item.setCustomPrice(mtxtPrice.getValueFloat());
-        item.setOriginalPrice(mtxtPrice.getValueFloat());
+        item.setPrice(ConfigUtil.convertToBasePrice(mtxtPrice.getValueFloat()));
+        item.setUnitPrice(ConfigUtil.convertToBasePrice(mtxtPrice.getValueFloat()));
+        item.setCustomPrice(ConfigUtil.convertToBasePrice(mtxtPrice.getValueFloat()));
+        item.setOriginalPrice(ConfigUtil.convertToBasePrice(mtxtPrice.getValueFloat()));
+        item.setDefaultCustomPrice(ConfigUtil.convertToBasePrice(mtxtPrice.getValueFloat()));
         item.setShipable(mBinding.idSwitchCustomShipable.isChecked());
         item.setTaxClassId(s_tax_class.getSelection());
         String strName = mtxtName.getText().toString().trim();

@@ -143,6 +143,8 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
         actionChangeValue(mbtnCustomPriceFixed, mbtnCustomPricePercent, mblnCustomPriceFixed);
         actionChangeValue(mbtnDiscountFixed, mbtnDiscountPercent, mblnCustomDiscountFixed);
 
+        mtxtCustomPrice.setText(item.isCustomPrice() ? ConfigUtil.formatNumber(item.getCustomPrice()) : ConfigUtil.formatNumber(ConfigUtil.convertToPrice(item.getDefaultCustomPrice())));
+
         // nhỏ nhất cho ô số lượng
         mtxtQuantity.setMinValue(item.getProduct().getQuantityIncrement());
         mtxtQuantity.setError(null);
@@ -159,10 +161,10 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
         mtxtCustomDiscount.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
-                if(b){
+                if (b) {
                     mblnCustomPriceFixed = true;
                     actionChangeValue(mbtnCustomPriceFixed, mbtnCustomPricePercent, mblnCustomPriceFixed);
-                    mtxtCustomPrice.setText(ConfigUtil.formatNumber(ConfigUtil.formatNumber(mCartItem.getDefaultCustomPrice())));
+                    mtxtCustomPrice.setText(ConfigUtil.formatNumber(ConfigUtil.convertToPrice(mCartItem.getDefaultCustomPrice())));
                 }
             }
         });
@@ -172,10 +174,10 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
         mtxtCustomPrice.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
-                if(b){
+                if (b) {
                     mblnCustomDiscountFixed = true;
                     actionChangeValue(mbtnDiscountFixed, mbtnDiscountPercent, mblnCustomDiscountFixed);
-                    mtxtCustomDiscount.setText(ConfigUtil.formatNumber(0));
+                    mtxtCustomDiscount.setText(ConfigUtil.formatNumber(ConfigUtil.convertToPrice(0)));
                 }
             }
         });
@@ -188,10 +190,13 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
      */
     @Override
     public void bind2Item(CartItem item) {
+        if (mtxtCustomPrice.getValueFloat() != item.getCustomPrice() || mtxtCustomDiscount.getValueFloat() != item.getDiscountAmount()) {
+            item.setIsCustomPrice(true);
+        }
         item.setCustomPrice(mtxtCustomPrice.getValueFloat());
         item.setDiscountAmount(mtxtCustomDiscount.getValueFloat());
-        item.setUnitPrice(mblnCustomPriceFixed ? mtxtCustomPrice.getValueFloat() : item.getOriginalPrice() * mtxtCustomPrice.getValueFloat() / 100);
-        item.setUnitPrice(mblnCustomDiscountFixed ? item.getUnitPrice() - mtxtCustomDiscount.getValueFloat() : item.getUnitPrice() - item.getUnitPrice() * mtxtCustomDiscount.getValueFloat() / 100);
+        item.setUnitPrice(mblnCustomPriceFixed ? ConfigUtil.convertToBasePrice(mtxtCustomPrice.getValueFloat()) : item.getOriginalPrice() * mtxtCustomPrice.getValueFloat() / 100);
+        item.setUnitPrice(mblnCustomDiscountFixed ? item.getUnitPrice() - ConfigUtil.convertToBasePrice(mtxtCustomDiscount.getValueFloat()) : item.getUnitPrice() - (item.getUnitPrice() * mtxtCustomDiscount.getValueFloat() / 100));
         item.setQuantity(mtxtQuantity.getValueInteger());
 
         // đặt loại với custom price
@@ -229,7 +234,12 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
     public void onDiscountChangeToFixed(View view) {
         mblnCustomDiscountFixed = true;
         changePrice = false;
-        mtxtCustomDiscount.setText(ConfigUtil.formatNumber(mCartItem.getDiscountAmount()));
+        if (mCartItem.isCustomPrice()) {
+            mtxtCustomDiscount.setText(ConfigUtil.formatNumber(mCartItem.getDiscountAmount()));
+        } else {
+            mtxtCustomDiscount.setText(ConfigUtil.formatNumber(ConfigUtil.convertToPrice(mCartItem.getDiscountAmount())));
+        }
+
         actionChangeValue(mbtnDiscountFixed, mbtnDiscountPercent, true);
 //        getItem().setDiscountTypeFixed();
     }
@@ -255,7 +265,11 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
     public void onCustomPriceChangeToFixed(View view) {
         mblnCustomPriceFixed = true;
         changePrice = false;
-        mtxtCustomPrice.setText(ConfigUtil.formatNumber(mCartItem.getCustomPrice()));
+        if (mCartItem.isCustomPrice()) {
+            mtxtCustomPrice.setText(ConfigUtil.formatNumber(mCartItem.getCustomPrice()));
+        } else {
+            mtxtCustomPrice.setText(ConfigUtil.formatNumber(ConfigUtil.convertToPrice(mCartItem.getDefaultCustomPrice())));
+        }
         actionChangeValue(mbtnCustomPriceFixed, mbtnCustomPricePercent, true);
 //        getItem().setCustomPriceTypeFixed();
     }
@@ -301,15 +315,17 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
         boolean blnRight = true;
         // valid số lượng phải lớn hơn mức tối thiểu
         int quantity = mtxtQuantity.getValueInteger();
-        if (quantity < getItem().getProduct().getAllowMinQty()) {
-            mtxtQuantity.setError(String.format(getResources().getString(R.string.err_field_must_greater_than), ConfigUtil.formatQuantity(getItem().getProduct().getAllowMinQty())));
-            blnRight = false;
-        }
+        if(!getItem().isTypeCustom()) {
+            if (quantity < getItem().getProduct().getAllowMinQty()) {
+                mtxtQuantity.setError(String.format(getResources().getString(R.string.err_field_must_greater_than), ConfigUtil.formatQuantity(getItem().getProduct().getAllowMinQty())));
+                blnRight = false;
+            }
 
-        // valid số lượng phải lớn hơn mức được phép trong kho
-        if (quantity > getItem().getProduct().getAllowMaxQty() && getItem().getProduct().getAllowMaxQty() > getItem().getProduct().getAllowMinQty()) {
-            mtxtQuantity.setError(String.format(getResources().getString(R.string.err_field_must_less_than), ConfigUtil.formatQuantity(getItem().getProduct().getAllowMaxQty())));
-            blnRight = false;
+            // valid số lượng phải lớn hơn mức được phép trong kho
+            if (quantity > getItem().getProduct().getAllowMaxQty() && getItem().getProduct().getAllowMaxQty() > getItem().getProduct().getAllowMinQty()) {
+                mtxtQuantity.setError(String.format(getResources().getString(R.string.err_field_must_less_than), ConfigUtil.formatQuantity(getItem().getProduct().getAllowMaxQty())));
+                blnRight = false;
+            }
         }
 
         // valid custom price

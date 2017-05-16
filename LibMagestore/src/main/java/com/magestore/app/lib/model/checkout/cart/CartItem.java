@@ -136,6 +136,10 @@ public interface CartItem extends Model {
 
     boolean isTypeCustom();
 
+    boolean isCustomPrice();
+
+    void setIsCustomPrice(boolean bIsCustomPrice);
+
     String getTaxClassId();
     void setTaxClassId(String strTaxClassId);
 

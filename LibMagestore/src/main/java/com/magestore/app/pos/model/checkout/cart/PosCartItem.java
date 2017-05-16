@@ -294,6 +294,9 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     public static final String TYPE_CUSTOM = "type_custom";
     String type;
 
+    @Gson2PosExclude
+    boolean is_custom_price;
+
     // Order history
     String name;
     String sku;
@@ -485,6 +488,16 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     @Override
     public boolean isTypeCustom() {
         return TYPE_CUSTOM.equals(getType());
+    }
+
+    @Override
+    public boolean isCustomPrice() {
+        return is_custom_price;
+    }
+
+    @Override
+    public void setIsCustomPrice(boolean bIsCustomPrice) {
+        is_custom_price = bIsCustomPrice;
     }
 
     @Override

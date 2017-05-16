@@ -24,7 +24,7 @@ public class PosQuoteItems extends PosAbstractModel implements QuoteItems {
     int qty;
     int qty_to_ship;
     int use_discount = 1;
-    float amount;
+    String amount;
     String custom_price;
 
     List<PosQuoteItemExtension> extension_data;
@@ -35,12 +35,12 @@ public class PosQuoteItems extends PosAbstractModel implements QuoteItems {
     List<PosCartItem.OptionsValue> bundle_option_qty;
 
     @Override
-    public float getAmount() {
+    public String getAmount() {
         return amount;
     }
 
     @Override
-    public void setAmount(float amount) {
+    public void setAmount(String amount) {
         this.amount = amount;
     }
 

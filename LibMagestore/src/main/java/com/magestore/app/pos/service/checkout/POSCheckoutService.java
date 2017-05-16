@@ -230,10 +230,10 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
             paymentMethodDataParam.setCCOwner(checkoutPayment.getCCOwner());
             paymentMethodDataParam.setCCType(checkoutPayment.getCCType());
             paymentMethodDataParam.setCCNumber(checkoutPayment.getCCNumber());
-            if(!StringUtil.isNullOrEmpty(checkoutPayment.getCCExpMonth())){
+            if (!StringUtil.isNullOrEmpty(checkoutPayment.getCCExpMonth())) {
                 String month = checkoutPayment.getCCExpMonth().substring(0, 2);
                 paymentMethodDataParam.setCCExpMonth(month);
-            }else {
+            } else {
                 paymentMethodDataParam.setCCExpMonth(checkoutPayment.getCCExpMonth());
             }
             paymentMethodDataParam.setCCExpYear(checkoutPayment.getCCExpYear());
@@ -373,7 +373,7 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
             listIntegration.add(giftCardIntegration);
         }
 
-        if(checkout.getRewardPointUsePointValue() != 0){
+        if (checkout.getRewardPointUsePointValue() != 0) {
             PlaceOrderIntegrationParam rewardIntegration = createPlaceOrderIntegrationParam();
             List<PlaceOrderIntegrationOrderData> listrewardOrderData = new ArrayList<>();
             List<PlaceOrderIntegrationExtension> listrewardExtension = new ArrayList<>();
@@ -730,11 +730,13 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         for (CartItem item : checkout.getCartItem()) {
             QuoteItems quoteItems = createQuoteItems();
             quoteItems.setQty(item.getQuantity());
-            if (item.haveCustomPriceOrDiscount())
-                quoteItems.setCustomPrice(Float.toString(ConfigUtil.convertToBasePrice(item.getUnitPrice())));
-            else
+            if (item.haveCustomPriceOrDiscount()) {
+                quoteItems.setCustomPrice(Float.toString(ConfigUtil.convertToPrice(item.getUnitPrice())));
+                quoteItems.setAmount(Float.toString(item.getUnitPrice()));
+            } else {
                 quoteItems.setCustomPrice(null);
-            quoteItems.setAmount(item.getQuantity());
+                quoteItems.setAmount(null);
+            }
             quoteItems.setId(item.getID());
             quoteItems.setItemId(item.getItemId());
             quoteItems.convertProductOption(item);

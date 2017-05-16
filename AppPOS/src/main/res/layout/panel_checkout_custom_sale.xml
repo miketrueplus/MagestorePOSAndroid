@@ -60,6 +60,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:hint="@string/price"
+                android:inputType="numberDecimal"
                 android:text="@{ConfigUtil.formatNumber(cartItem.getUnitPrice())}" />
         </LinearLayout>
 

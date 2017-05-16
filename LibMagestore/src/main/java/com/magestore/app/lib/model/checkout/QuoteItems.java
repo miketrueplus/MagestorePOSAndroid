@@ -12,9 +12,9 @@ import java.util.List;
  */
 
 public interface QuoteItems extends Model {
-    float getAmount();
+    String getAmount();
 
-    void setAmount(float amount);
+    void setAmount(String amount);
 
     String getCustomPrice();
 
