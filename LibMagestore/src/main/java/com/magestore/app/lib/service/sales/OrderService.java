@@ -30,21 +30,21 @@ public interface OrderService extends Service {
      * @param quantity
      * @param price
      */
-    void addOrderItem(Product product, int quantity, float price);
+    void addOrderItem(Product product, float quantity, float price);
 
     /**
      * Thêm 1 item vào đơn hàng
      * @param product
      * @param quantity
      */
-    void addOrderItem(Product product, int quantity);
+    void addOrderItem(Product product, float quantity);
 
     /**
      * Trừ số lượng của 1 item trong đơn hàng
      * @param product
      * @param subQuantity
      */
-    void subtructOrderItem(Product product, int subQuantity);
+    void subtructOrderItem(Product product, float subQuantity);
 
     /**
      * Loại 1 order item khỏi đơn hàng

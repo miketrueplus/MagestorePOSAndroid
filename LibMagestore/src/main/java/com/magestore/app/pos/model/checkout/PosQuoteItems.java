@@ -21,8 +21,8 @@ import java.util.List;
 
 public class PosQuoteItems extends PosAbstractModel implements QuoteItems {
     String item_id;
-    int qty;
-    int qty_to_ship;
+    String qty;
+    String qty_to_ship;
     int use_discount = 1;
     String amount;
     String custom_price;
@@ -70,22 +70,32 @@ public class PosQuoteItems extends PosAbstractModel implements QuoteItems {
     }
 
     @Override
-    public int getQty() {
-        return qty;
+    public float getQty() {
+        return Float.parseFloat(qty);
     }
 
     @Override
-    public void setQty(int intQty) {
+    public void setQty(float intQty) {
+        qty = Float.toString(intQty);
+    }
+
+    @Override
+    public void setQty(String intQty) {
         qty = intQty;
     }
 
     @Override
-    public int getQtyToShip() {
-        return qty_to_ship;
+    public float getQtyToShip() {
+        return Float.parseFloat(qty_to_ship);
     }
 
     @Override
-    public void setQtyToShip(int intQtyToShip) {
+    public void setQtyToShip(float intQtyToShip) {
+        qty_to_ship = Float.toString(intQtyToShip);
+    }
+
+    @Override
+    public void setQtyToShip(String intQtyToShip) {
         qty_to_ship = intQtyToShip;
     }
 

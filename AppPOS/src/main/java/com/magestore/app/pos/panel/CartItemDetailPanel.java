@@ -27,8 +27,8 @@ import com.magestore.app.pos.controller.CheckoutListController;
 import com.magestore.app.pos.databinding.PanelCartDetailBinding;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.StringUtil;
+import com.magestore.app.view.EditTextDecimal;
 import com.magestore.app.view.EditTextFloat;
-import com.magestore.app.view.EditTextInteger;
 
 /**
  * Created by folio on 3/6/2017.
@@ -40,7 +40,7 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
 
     EditTextFloat mtxtCustomPrice;
     EditTextFloat mtxtCustomDiscount;
-    EditTextInteger mtxtQuantity;
+    EditTextDecimal mtxtQuantity;
 
     boolean mblnCustomPriceFixed;
     boolean mblnCustomDiscountFixed;
@@ -87,7 +87,7 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
         mbtnDiscountFixed = (Button) findViewById(R.id.id_btn_cart_item_detail_discount_fixed);
         mbtnDiscountPercent = (Button) findViewById(R.id.id_btn_cart_item_detail_discount_percent);
 
-        mtxtQuantity = (EditTextInteger) findViewById(R.id.id_txt_cart_item_detail_quantity);
+        mtxtQuantity = (EditTextDecimal) findViewById(R.id.id_txt_cart_item_detail_quantity);
         mtxtCustomPrice = (EditTextFloat) findViewById(R.id.id_txt_cart_item_detail_custom_price);
         mtxtCustomDiscount = (EditTextFloat) findViewById(R.id.id_txt_cart_item_detail_custom_discount);
 
@@ -197,7 +197,7 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
         item.setDiscountAmount(mtxtCustomDiscount.getValueFloat());
         item.setUnitPrice(mblnCustomPriceFixed ? ConfigUtil.convertToBasePrice(mtxtCustomPrice.getValueFloat()) : item.getOriginalPrice() * mtxtCustomPrice.getValueFloat() / 100);
         item.setUnitPrice(mblnCustomDiscountFixed ? item.getUnitPrice() - ConfigUtil.convertToBasePrice(mtxtCustomDiscount.getValueFloat()) : item.getUnitPrice() - (item.getUnitPrice() * mtxtCustomDiscount.getValueFloat() / 100));
-        item.setQuantity(mtxtQuantity.getValueInteger());
+        item.setQuantity(mtxtQuantity.getValueFloat());
 
         // đặt loại với custom price
         if (mblnCustomPriceFixed) item.setCustomPriceTypeFixed();
@@ -314,7 +314,7 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
     private boolean validateInput() {
         boolean blnRight = true;
         // valid số lượng phải lớn hơn mức tối thiểu
-        int quantity = mtxtQuantity.getValueInteger();
+        float quantity = mtxtQuantity.getValueFloat();
         if(!getItem().isTypeCustom()) {
             if (quantity < getItem().getProduct().getAllowMinQty()) {
                 mtxtQuantity.setError(String.format(getResources().getString(R.string.err_field_must_greater_than), ConfigUtil.formatQuantity(getItem().getProduct().getAllowMinQty())));

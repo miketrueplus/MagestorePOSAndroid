@@ -146,7 +146,7 @@ public class POSOrderService extends AbstractService implements OrderService {
      * @param price
      */
     @Override
-    public void addOrderItem(Product product, int quantity, float price) {
+    public void addOrderItem(Product product, float quantity, float price) {
         // nếu chưa có đơn hàng, bo qua
         if (mOrder == null) return;
 
@@ -195,7 +195,7 @@ public class POSOrderService extends AbstractService implements OrderService {
      * @param quantity
      */
     @Override
-    public void addOrderItem(Product product, int quantity) {
+    public void addOrderItem(Product product, float quantity) {
         addOrderItem(product, quantity, product.getPrice());
     }
 
@@ -205,7 +205,7 @@ public class POSOrderService extends AbstractService implements OrderService {
      * @param subQuantity
      */
     @Override
-    public void subtructOrderItem(Product product, int subQuantity) {
+    public void subtructOrderItem(Product product, float subQuantity) {
         // nếu chưa có đơn hàng, bỏ qua
         if (mOrder == null) return;
 
@@ -230,7 +230,7 @@ public class POSOrderService extends AbstractService implements OrderService {
         // đã có item, giảm trừ số lượng xuống nhưng không thể ít hơn 1
         if (cartItem != null) {
             // Tính số lượng item mới
-            int newQuantity = cartItem.getQuantity() - subQuantity;
+            float newQuantity = cartItem.getQuantity() - subQuantity;
             if (newQuantity < 0) newQuantity = 1;
 
             // Cập nhật số lượng mới

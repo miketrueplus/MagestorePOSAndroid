@@ -274,7 +274,7 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     }
 
     Product product;
-    int qty;
+    String qty;
     @Gson2PosExclude
     String child_id;
     //    @Gson2PosExclude
@@ -364,9 +364,15 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     String return_to_stock;
 
     @Override
-    public void setQuantity(int param_quantity) {
-        qty = param_quantity;
+    public void setQuantity(float param_quantity) {
+        qty = Float.toString(param_quantity);
         price = unit_price * param_quantity;
+    }
+
+    @Override
+    public void setQuantity(String param_quantity) {
+        qty = param_quantity;
+        price = unit_price * Float.parseFloat(param_quantity);
     }
 
     @Override
@@ -387,7 +393,7 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     @Override
     public void setUnitPrice(float param_price) {
         this.unit_price = param_price;
-        price = unit_price * qty;
+        price = unit_price * Float.parseFloat(qty);
     }
 
     @Override
@@ -396,8 +402,8 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     }
 
     @Override
-    public int getQuantity() {
-        return qty;
+    public float getQuantity() {
+        return Float.parseFloat(qty);
     }
 
     @Override

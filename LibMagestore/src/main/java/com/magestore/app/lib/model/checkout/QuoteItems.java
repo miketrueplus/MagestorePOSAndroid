@@ -23,10 +23,15 @@ public interface QuoteItems extends Model {
     String getItemId();
     void setItemId(String strItemId);
     void setId(String strId);
-    int getQty();
-    void setQty(int intQty);
-    int getQtyToShip();
-    void setQtyToShip(int intQtyToShip);
+
+    float getQty();
+    void setQty(float intQty);
+    void setQty(String intQty);
+
+    float getQtyToShip();
+    void setQtyToShip(float intQtyToShip);
+    void setQtyToShip(String intQtyToShip);
+
     int getUserDiscount();
     void setUserDiscount(int intUserDiscount);
     List<QuoteItemExtension> getExtensionData();

@@ -10,5 +10,6 @@ import com.magestore.app.lib.model.Model;
 
 public interface OrderItemUpdateQtyParam extends Model {
     void setEntityId(String strEntityId);
-    void setQty(int intQty);
+    void setQty(float intQty);
+    void setQty(String intQty);
 }

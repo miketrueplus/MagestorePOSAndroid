@@ -11,7 +11,7 @@ import com.magestore.app.pos.model.PosAbstractModel;
 
 public class PosOrderItemUpdateQtyParam extends PosAbstractModel implements OrderItemUpdateQtyParam {
     String entity_id;
-    int qty;
+    String qty;
 
     @Override
     public void setEntityId(String strEntityId) {
@@ -19,7 +19,12 @@ public class PosOrderItemUpdateQtyParam extends PosAbstractModel implements Orde
     }
 
     @Override
-    public void setQty(int intQty) {
+    public void setQty(String intQty) {
         qty = intQty;
+    }
+
+    @Override
+    public void setQty(float intQty) {
+        qty = Float.toString(intQty);
     }
 }

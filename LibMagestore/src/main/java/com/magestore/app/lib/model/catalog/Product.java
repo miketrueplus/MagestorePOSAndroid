@@ -27,9 +27,8 @@ public interface Product extends Model, ParseModel {
     float getMaximumQty();
     void setMaximumQty(float maximum_qty);
 
-    int getAllowMinQty();
-
-    int getAllowMaxQty();
+    float getAllowMinQty();
+    float getAllowMaxQty();
 
     float getQty();
     void setQty(float qty);

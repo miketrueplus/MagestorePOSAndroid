@@ -46,6 +46,7 @@ import com.magestore.app.pos.model.checkout.cart.PosCartItem;
 import com.magestore.app.pos.task.LoadProductImageTask;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.StringUtil;
+import com.magestore.app.view.EditTextDecimal;
 import com.magestore.app.view.EditTextInteger;
 import com.squareup.picasso.Picasso;
 
@@ -81,7 +82,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
     ImageView mImageProductDetail;
 
     // text box số lượng
-    EditTextInteger mtxtCartItemQuantity;
+    EditTextDecimal mtxtCartItemQuantity;
 
     /**
      * Khởi tạo
@@ -341,7 +342,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                 optionModelView.is_required = true;
                 optionModelView.option_type = ProductOptionCustom.OPTION_TYPE_CONFIG;
                 optionModelView.input_type = ProductOptionCustom.TYPE_RADIO;
-                optionModelView.quantity = Integer.parseInt(getOptionValue(configOption.getID(), getItem().getBundleOptionQuantity(), StringUtil.STRING_ONE));
+                optionModelView.quantity = Float.parseFloat(getOptionValue(configOption.getID(), getItem().getBundleOptionQuantity(), StringUtil.STRING_ONE));
                 optionModelView.setModel(configOption);
 
                 // tạo model view tương ứng mỗi option value
@@ -475,8 +476,8 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         public String option_type;
         public boolean is_required;
         public List<OptionValueModelView> optionValueModelViewList;
-        public int quantity;
-        public int quantity_increment = 1;
+        public float quantity;
+        public float quantity_increment = 1;
         public float price;
 
         public boolean isCustomOption() {
@@ -598,7 +599,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         expandableListView.setAdapter(expandableListAdapter);
 
         // text box số lượng
-        mtxtCartItemQuantity = (EditTextInteger) findViewById(R.id.id_txt_product_option_cart_item_quantity);
+        mtxtCartItemQuantity = (EditTextDecimal) findViewById(R.id.id_txt_product_option_cart_item_quantity);
 
         // binding
         mBinding = DataBindingUtil.bind(getView());
@@ -962,7 +963,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
          * Chuẩn bị holder cho option value với kiểu quantity
          */
         private void initTypeQuantity(View convertView, final OptionValueModelView optionValueModelView) {
-            optionValueModelView.holder.mtxtQuantity = (EditTextInteger) convertView
+            optionValueModelView.holder.mtxtQuantity = (EditTextDecimal) convertView
                     .findViewById(R.id.id_txt_product_option_quantity);
 
             final OptionModelView optionModelView = optionValueModelView.optionModelView;
@@ -1279,7 +1280,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         public TextView mtxtDisplay;
         //        public TextView mtxtDisplaySub;
         public TextView mtxtPrice;
-        public EditTextInteger mtxtQuantity;
+        public EditTextDecimal mtxtQuantity;
         public RadioButton mradChoose;
         public CheckBox mchkChoose;
         public EditText mtxtField;

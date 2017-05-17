@@ -13,9 +13,9 @@ public interface OrderItemParams extends Model {
 
     String getOrderItemId();
 
-    int getQty();
-
-    void setQty(int strQty);
+    float getQty();
+    void setQty(float strQty);
+    void setQty(String strQty);
 
     String getAdditionalData();
 

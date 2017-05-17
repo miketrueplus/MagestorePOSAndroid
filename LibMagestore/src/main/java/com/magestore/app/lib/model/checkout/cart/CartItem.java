@@ -100,7 +100,10 @@ public interface CartItem extends Model {
 
     void insertBundleOptionQuantity(String code, String value);
 
-    void setQuantity(int param_quantity);
+    void setQuantity(float param_quantity);
+
+    void setQuantity(String param_quantity);
+
     void setProduct(Product param_product);
     void setPrice(float param_price);
     void setOriginalPrice(float param_price);
@@ -108,7 +111,7 @@ public interface CartItem extends Model {
     void setUnitPrice(float param_price);
 
     Product getProduct();
-    int getQuantity();
+    float getQuantity();
 
     float getUnitPrice();
 

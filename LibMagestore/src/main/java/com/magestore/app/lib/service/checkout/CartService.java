@@ -29,11 +29,11 @@ public interface CartService extends ChildListService<Checkout, CartItem> {
 
     CartItem create(Product product);
 
-    CartItem create(Product product, int quantity, float price);
+    CartItem create(Product product, float quantity, float price);
 
     CartItem createCustomSale();
 
-    CartItem create(Product product, int quantity);
+    CartItem create(Product product, float quantity);
 
     CartItem create(Checkout checkout, Product product) throws InstantiationException, IllegalAccessException, ParseException, IOException;
 
@@ -50,33 +50,33 @@ public interface CartService extends ChildListService<Checkout, CartItem> {
 
     void increase(CartItem cartItem);
 
-    void increase(CartItem cartItem, int quantity);
+    void increase(CartItem cartItem, float quantity);
 
     void substract(CartItem cartItem);
 
-    void substract(CartItem cartItem, int quantity);
+    void substract(CartItem cartItem, float quantity);
 
-    CartItem insert(Checkout checkout, String productID, String productName, int quantity, float price) throws IOException, InstantiationException, ParseException, IllegalAccessException;
+    CartItem insert(Checkout checkout, String productID, String productName, float quantity, float price) throws IOException, InstantiationException, ParseException, IllegalAccessException;
 
-    CartItem insert(Checkout checkout, Product product, int quantity, float price) throws InstantiationException, IllegalAccessException, ParseException, IOException;
+    CartItem insert(Checkout checkout, Product product, float quantity, float price) throws InstantiationException, IllegalAccessException, ParseException, IOException;
 
-    CartItem insert(Checkout checkout, Product product, int quantity) throws IOException, InstantiationException, ParseException, IllegalAccessException;
+    CartItem insert(Checkout checkout, Product product, float quantity) throws IOException, InstantiationException, ParseException, IllegalAccessException;
 
     boolean delete(Checkout checkout, int position) throws IOException, InstantiationException, ParseException, IllegalAccessException;
 
     CartItem delete(Checkout checkout, Product product) throws IOException, InstantiationException, ParseException, IllegalAccessException;
 
-    CartItem delete(Checkout checkout, Product product, int subQuantity) throws IOException, InstantiationException, ParseException, IllegalAccessException;
+    CartItem delete(Checkout checkout, Product product, float subQuantity) throws IOException, InstantiationException, ParseException, IllegalAccessException;
 
     void updatePrice(CartItem cartItem);
 
-    boolean validateStock(Checkout checkout, Product product, int quantity);
+    boolean validateStock(Checkout checkout, Product product, float quantity);
 
-    boolean validateStock(Checkout checkout, CartItem item, int quantity);
+    boolean validateStock(Checkout checkout, CartItem item, float quantity);
 
-    int calculateValidStock(Checkout checkout, CartItem item, int quantity) throws ServiceException;
+    float calculateValidStock(Checkout checkout, CartItem item, float quantity) throws ServiceException;
 
-    int calculateValidStock(Checkout checkout, Product product, int quantity) throws ServiceException;
+    float calculateValidStock(Checkout checkout, Product product, float quantity) throws ServiceException;
 
     List<CartItem> reOrder(Checkout checkout, Order order) throws IOException, InstantiationException, ParseException, IllegalAccessException;
 }

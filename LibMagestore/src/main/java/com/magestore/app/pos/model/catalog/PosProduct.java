@@ -41,7 +41,6 @@ public class PosProduct extends PosAbstractModel implements Product {
     private String category_ids;
 //    private List<PosStock> stock;
 //    private PosTierPrice[] tier_prices;
-    private String qty_increment = StringUtil.STRING_ONE;
     private float price_increment = 0.1f;
     private ProductOption productOption;
     private int options;
@@ -49,6 +48,8 @@ public class PosProduct extends PosAbstractModel implements Product {
     private String is_in_stock = StringUtil.STRING_ONE;
 
     private String backorders = StringUtil.STRING_ONE;
+
+    private String qty_increment = StringUtil.STRING_ONE;
     private String minimum_qty = StringUtil.STRING_ONE;
     private String maximum_qty;
     private String qty = maximum_qty;
@@ -85,13 +86,13 @@ public class PosProduct extends PosAbstractModel implements Product {
     }
 
     @Override
-    public int getAllowMinQty() {
-        return (int) getMinimumQty();
+    public float getAllowMinQty() {
+        return (float) getMinimumQty();
     }
 
     @Override
-    public int getAllowMaxQty() {
-        return  (int) ((getQty() > getMaximumQty()) ? getMaximumQty() : getQty());
+    public float getAllowMaxQty() {
+        return  (float) ((getQty() > getMaximumQty()) ? getMaximumQty() : getQty());
 //        return (int) getMaximumQty();
 //        int allowMax = (int) (getQty() - getMinimumQty());
 //        int maxQty = (int) getMaximumQty();

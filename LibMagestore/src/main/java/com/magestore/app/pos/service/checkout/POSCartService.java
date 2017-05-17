@@ -151,7 +151,7 @@ public class POSCartService extends AbstractService implements CartService {
      * @return
      */
     @Override
-    public CartItem create(Product product, int quantity, float price) {
+    public CartItem create(Product product, float quantity, float price) {
         CartItem cartItem = new PosCartItem();
         cartItem.setTypeNormal();
         cartItem.setProduct(product);
@@ -170,7 +170,7 @@ public class POSCartService extends AbstractService implements CartService {
     }
 
     @Override
-    public CartItem create(Product product, int quantity) {
+    public CartItem create(Product product, float quantity) {
         return create(product, quantity, product.getFinalPrice());
     }
 
@@ -436,8 +436,8 @@ public class POSCartService extends AbstractService implements CartService {
     }
 
     @Override
-    public void increase(CartItem cartItem, int quantity) {
-        int newQuantity = cartItem.getQuantity() + quantity;
+    public void increase(CartItem cartItem, float quantity) {
+        float newQuantity = cartItem.getQuantity() + quantity;
         newQuantity = newQuantity > 0 ? newQuantity : cartItem.getProduct().getQuantityIncrement();
         float newPrice = cartItem.getUnitPrice() * newQuantity;
         cartItem.setQuantity(newQuantity);
@@ -450,8 +450,8 @@ public class POSCartService extends AbstractService implements CartService {
     }
 
     @Override
-    public void substract(CartItem cartItem, int quantity) {
-        int newQuantity = cartItem.getQuantity() - quantity;
+    public void substract(CartItem cartItem, float quantity) {
+        float newQuantity = cartItem.getQuantity() - quantity;
         newQuantity = newQuantity > 0 ? newQuantity : cartItem.getProduct().getQuantityIncrement();
         float newPrice = cartItem.getUnitPrice() * newQuantity;
         cartItem.setQuantity(newQuantity);
@@ -459,7 +459,7 @@ public class POSCartService extends AbstractService implements CartService {
     }
 
     @Override
-    public CartItem insert(Checkout checkout, String productID, String productName, int quantity, float price) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+    public CartItem insert(Checkout checkout, String productID, String productName, float quantity, float price) throws IOException, InstantiationException, ParseException, IllegalAccessException {
         // nếu chưa có đơn hàng, bo qua
         if (checkout == null) return null;
 
@@ -486,7 +486,7 @@ public class POSCartService extends AbstractService implements CartService {
      * @param price
      */
     @Override
-    public CartItem insert(Checkout checkout, Product product, int quantity, float price) throws InstantiationException, IllegalAccessException, ParseException, IOException, ServiceException {
+    public CartItem insert(Checkout checkout, Product product, float quantity, float price) throws InstantiationException, IllegalAccessException, ParseException, IOException, ServiceException {
         // nếu chưa có đơn hàng, bo qua
         if (checkout == null) return null;
 
@@ -559,7 +559,7 @@ public class POSCartService extends AbstractService implements CartService {
      * @param quantity
      */
     @Override
-    public CartItem insert(Checkout checkout, Product product, int quantity) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+    public CartItem insert(Checkout checkout, Product product, float quantity) throws IOException, InstantiationException, ParseException, IllegalAccessException {
         return insert(checkout, product, quantity, product.getFinalPrice());
     }
 
@@ -618,7 +618,7 @@ public class POSCartService extends AbstractService implements CartService {
      * @param subQuantity
      */
     @Override
-    public CartItem delete(Checkout checkout, Product product, int subQuantity) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+    public CartItem delete(Checkout checkout, Product product, float subQuantity) throws IOException, InstantiationException, ParseException, IllegalAccessException {
         // nếu chưa có đơn hàng, bỏ qua
         if (checkout == null) return null;
 
@@ -640,7 +640,7 @@ public class POSCartService extends AbstractService implements CartService {
         // đã có item, giảm trừ số lượng xuống nhưng không thể ít hơn 1
         if (cartItem != null) {
             // Tính số lượng item mới
-            int newQuantity = cartItem.getQuantity() - subQuantity;
+            float newQuantity = cartItem.getQuantity() - subQuantity;
             if (newQuantity < 0) newQuantity = 1;
 
             // Cập nhật số lượng mới
@@ -742,10 +742,10 @@ public class POSCartService extends AbstractService implements CartService {
      * @return
      */
     @Override
-    public boolean validateStock(Checkout checkout, Product product, int quantity) {
+    public boolean validateStock(Checkout checkout, Product product, float quantity) {
         if (!product.isInStock()) return false;
 //        if (quantity < product.getAllowMinQty()) return false;
-        if (quantity > product.getAllowMaxQty() && ((int) product.getAllowMaxQty() > 0))
+        if (quantity > product.getAllowMaxQty() && ( product.getAllowMaxQty() > 0))
             return false;
         return true;
     }
@@ -759,8 +759,8 @@ public class POSCartService extends AbstractService implements CartService {
      * @return
      */
     @Override
-    public boolean validateStock(Checkout checkout, CartItem item, int quantity) throws ServiceException {
-        int newQuantity = item.getQuantity() + quantity;
+    public boolean validateStock(Checkout checkout, CartItem item, float quantity) throws ServiceException {
+        float newQuantity = item.getQuantity() + quantity;
         Product product = item.getProduct();
 
         if (!item.getProduct().isInStock())
@@ -787,8 +787,8 @@ public class POSCartService extends AbstractService implements CartService {
      * @throws ServiceException
      */
     @Override
-    public int calculateValidStock(Checkout checkout, CartItem item, int quantity) throws ServiceException {
-        int newQuantity = item.getQuantity() + quantity;
+    public float calculateValidStock(Checkout checkout, CartItem item, float quantity) throws ServiceException {
+        float newQuantity = item.getQuantity() + quantity;
         Product product = item.getProduct();
 
         if (!item.getProduct().isInStock())
@@ -815,10 +815,10 @@ public class POSCartService extends AbstractService implements CartService {
      * @throws ServiceException
      */
     @Override
-    public int calculateValidStock(Checkout checkout, Product product, int quantity) throws ServiceException {
+    public float calculateValidStock(Checkout checkout, Product product, float quantity) throws ServiceException {
         if (!product.isInStock())
             throw new ServiceException(ServiceException.EXCEPTION_QUANTITY_OUT_OF_STOCK);
-        if (!product.isBackOrders() && quantity > product.getAllowMaxQty() && ((int) product.getAllowMaxQty() > 0))
+        if (!product.isBackOrders() && quantity > product.getAllowMaxQty() && (product.getAllowMaxQty() > 0))
             throw new ServiceException(ServiceException.EXCEPTION_QUANTITY_REACH_MAXIMUM, Float.toString(product.getAllowMaxQty()));
         if (product.isBackOrders() && quantity > product.getMaximumQty() && (product.getMaximumQty() > 0))
             throw new ServiceException(ServiceException.EXCEPTION_QUANTITY_REACH_MAXIMUM, Float.toString(product.getMaximumQty()));
