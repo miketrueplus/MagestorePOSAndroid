@@ -693,7 +693,7 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         boolean checkVitural = true;
         for (CartItem item : cartItems) {
             if (!StringUtil.isNullOrEmpty(item.getIsVirtual())) {
-                if (item.getIsVirtual().equals("0") || !item.getProductType().equals("virtual")) {
+                if (item.getIsVirtual().equals("0") || (!item.getProductType().equals("virtual") && !item.getProductType().equals("customsale"))) {
                     checkVitural = false;
                 }
             } else {
