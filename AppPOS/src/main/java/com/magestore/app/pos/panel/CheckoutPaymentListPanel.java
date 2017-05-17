@@ -111,7 +111,9 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
                 mCheckoutListController.updateMaxAmountStoreCredit(money);
                 mCheckoutListController.isEnableButtonAddPayment(totalValue > 0 ? true : false);
                 mCheckoutListController.isEnableCreateInvoice(false);
-                mCheckoutListController.changeTitlePlaceOrder(money == grand_total ? false : true);
+                if(mCheckout.getStatus() == CheckoutListController.STATUS_CHECKOUT_PROCESSING){
+                    mCheckoutListController.changeTitlePlaceOrder(money == grand_total ? false : true);
+                }
             }
         }
     }
