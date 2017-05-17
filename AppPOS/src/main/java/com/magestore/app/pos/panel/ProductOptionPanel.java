@@ -47,7 +47,6 @@ import com.magestore.app.pos.task.LoadProductImageTask;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.StringUtil;
 import com.magestore.app.view.EditTextDecimal;
-import com.magestore.app.view.EditTextInteger;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -381,7 +380,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                 optionModelView.is_required = bundle.isRequired();
                 optionModelView.option_type = ProductOptionCustom.OPTION_TYPE_BUNDLE;
                 optionModelView.input_type = bundle.getType();
-                optionModelView.quantity = Integer.parseInt(getOptionValue(bundle.getID(), getItem().getBundleOptionQuantity(), StringUtil.STRING_ONE));
+                optionModelView.quantity = Float.parseFloat(getOptionValue(bundle.getID(), getItem().getBundleOptionQuantity(), StringUtil.STRING_ONE));
                 optionModelView.setModel(bundle);
 
                 if (bundle.getItems() == null) continue;
@@ -631,7 +630,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         boolean blnValid = true;
 
         // kiểm tra số lượng zero
-        if (mtxtCartItemQuantity.getValueInteger() < getItem().getProduct().getQuantityIncrement()) {
+        if (mtxtCartItemQuantity.getValueFloat() < getItem().getProduct().getQuantityIncrement()) {
             blnValid = false;
             mtxtCartItemQuantity.setError(String.format(getResources().getString(R.string.err_field_must_greater_than), ConfigUtil.formatQuantity(getItem().getProduct().getQuantityIncrement())));
         }
@@ -698,7 +697,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         if (expandableListAdapter == null) return;
 
         // đặt số lượng
-        item.setQuantity(mtxtCartItemQuantity.getValueInteger());
+        item.setQuantity(mtxtCartItemQuantity.getValueFloat());
 
         // nếu k0 có option, tương đương product detail, k0 phải chuyển input từ option sang nữa
         if (!item.getProduct().haveProductOption()) return;
@@ -975,7 +974,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                 public void onFocusChange(View v, boolean hasFocus) {
                     if (!hasFocus) {
                         // lấy giá trị trong ô text, căn lại giữa max và min
-                        optionModelView.quantity = ConfigUtil.parseInteger(ConfigUtil.truncateIntegerDigit(optionValueModelView.holder.mtxtQuantity.getText().toString()));
+                        optionModelView.quantity = ConfigUtil.parseFloat(ConfigUtil.truncateFloatDigit(optionValueModelView.holder.mtxtQuantity.getText().toString()));
                         if (optionModelView.quantity < 1) optionModelView.quantity = 1;
                         updateCartItemPrice();
                         mBinding.idTxtProductOptionCartItemPrice.setText(ConfigUtil.formatPrice(getItem().getPrice()));
@@ -1036,7 +1035,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
          * Khi click tăng trên 1 option
          */
         private void onAddOptionQuantity(OptionModelView optionModelView, OptionValueModelViewHolder holder) {
-            optionModelView.quantity = holder.mtxtQuantity.getValueInteger();
+            optionModelView.quantity = holder.mtxtQuantity.getValueFloat();
 
             // tính toán cập nhật lại giá
             updateCartItemPrice();
@@ -1051,7 +1050,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
          * Khi click giảm trên 1 option
          */
         private void onSubtractOptionQuantity(OptionModelView optionModelView, OptionValueModelViewHolder holder) {
-            optionModelView.quantity = holder.mtxtQuantity.getValueInteger();
+            optionModelView.quantity = holder.mtxtQuantity.getValueFloat();
 
             // tính toán cập nhật lại giá
             updateCartItemPrice();
