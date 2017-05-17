@@ -186,6 +186,16 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
 
     public void bindDataRespone(Order order) {
         mBinding.setOrderDetail(order);
+        if (checkCanInvoice(order)) {
+            btn_invoice.setVisibility(VISIBLE);
+            fr_detail_bottom_right.setVisibility(GONE);
+            fr_detail_bottom_left.setVisibility(GONE);
+        } else {
+            btn_invoice.setVisibility(GONE);
+            fr_detail_bottom_right.setVisibility(VISIBLE);
+            fr_detail_bottom_left.setVisibility(VISIBLE);
+        }
+        rl_take_payment.setVisibility(checkCanTakePayment(order) ? VISIBLE : GONE);
     }
 
     public void showPopupMenu(View view) {

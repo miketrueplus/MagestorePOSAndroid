@@ -120,16 +120,18 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
             }
         });
 
-        cb_pick_at_store.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        cb_pick_at_store.setOnClickListener(new OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean check) {
-                if (!check) {
+            public void onClick(View view) {
+                if (!cb_pick_at_store.isChecked()) {
+                    cb_pick_at_store.setChecked(false);
                     ll_shipping_address.setVisibility(GONE);
                 } else {
+                    cb_pick_at_store.setChecked(true);
                     ll_shipping_address.setVisibility(VISIBLE);
                 }
-                ((CheckoutListController) getController()).changeCustomerShippingAdrress(check);
-                ((CheckoutListController) getController()).getSelectedItem().setIsPickAtStore(check);
+                ((CheckoutListController) getController()).changeCustomerShippingAdrress(cb_pick_at_store.isChecked());
+                ((CheckoutListController) getController()).getSelectedItem().setIsPickAtStore(cb_pick_at_store.isChecked());
                 ((CheckoutListController) getController()).changePickAtStoreAndReloadShipping();
             }
         });
@@ -372,6 +374,10 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
 
     public void updateTitlePaymentCreditCard(String method) {
         txt_payment_creditcard.setText(method);
+    }
+
+    public void showShippingAdrress(boolean isShow){
+        ll_shipping_address.setVisibility(isShow ? VISIBLE : GONE);
     }
 
     public void dismissDialogAddPayment() {

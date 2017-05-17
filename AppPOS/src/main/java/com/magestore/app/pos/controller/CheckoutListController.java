@@ -84,7 +84,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     static final int ACTION_TYPE_CANCEL_PAYMENT_AUTHORIZENET = 16;
 
     static final int STATUS_CHECKOUT_ADD_ITEM = 0;
-    static final int STATUS_CHECKOUT_PROCESSING = 1;
+    public static final int STATUS_CHECKOUT_PROCESSING = 1;
 
     static final String PICK_AT_STORE_CODE = "webpos_shipping_storepickup";
 
@@ -1018,6 +1018,9 @@ public class CheckoutListController extends AbstractListController<Checkout> {
      * add checkout to list order
      */
     public void addNewOrder() {
+        if (mDetailView.getVisibility() == View.VISIBLE) {
+            onBackTohome();
+        }
         Checkout checkout = ((CheckoutService) getListService()).create();
         checkout.setCustomerID(guest_checkout.getID());
         checkout.setCustomer(guest_checkout);
@@ -1039,9 +1042,6 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         mCartOrderListPanel.scrollToPosition(position);
         ((CheckoutListPanel) mView).changeCustomerInToolBar(guest_checkout);
         updateTotalPrice();
-        if (mDetailView.getVisibility() == View.VISIBLE) {
-            onBackTohome();
-        }
     }
 
     /**
@@ -1055,10 +1055,11 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             Checkout checkout = ((CheckoutService) getListService()).create();
             checkout.setCustomerID(guest_checkout.getID());
             checkout.setCustomer(guest_checkout);
+            checkout.setStatus(STATUS_CHECKOUT_ADD_ITEM);
             bindCustomer(guest_checkout);
             getSelectedItems().clear();
-            setSelectedItem(checkout);
             getSelectedItems().add(checkout);
+            setSelectedItem(checkout);
             mItem = checkout;
             mCartItemListController.bindList(checkout.getCartItem());
             mCartItemListController.bindParent(checkout);
@@ -1172,6 +1173,13 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 doShowDetailSuccess(false);
                 mCheckoutPaymentCreditCardPanel.clearDataForm();
                 ((CheckoutDetailPanel) mDetailView).clearNote();
+                ((CheckoutDetailPanel) mDetailView).isEnableCreatShip(true);
+                ((CheckoutDetailPanel) mDetailView).showShippingAdrress(false);
+                ((CheckoutDetailPanel) mDetailView).setPickAtStoreDefault();
+                ((CheckoutDetailPanel) mDetailView).isEnableButtonAddPayment(false);
+                ((CheckoutDetailPanel) mDetailView).isCheckCreateInvoice(false);
+                ((CheckoutDetailPanel) mDetailView).isCheckCreateShip(false);
+                ((CheckoutDetailPanel) mDetailView).isEnableCreateInvoice(false);
                 doInputSaveCart();
             }
             showSaleMenu(false);
@@ -1610,6 +1618,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         ((CheckoutDetailPanel) mDetailView).isEnableCreateInvoice(false);
         ((CheckoutDetailPanel) mDetailView).showPanelPaymentMethod();
         ((CheckoutDetailPanel) mDetailView).showPanelCheckoutPaymentCreditCard(false);
+        ((CheckoutDetailPanel) mDetailView).showShippingAdrress(false);
         ((CheckoutDetailPanel) mDetailView).clearNote();
         mPluginGiftCardPanel.resetListGiftCard();
         showSaleMenu(true);

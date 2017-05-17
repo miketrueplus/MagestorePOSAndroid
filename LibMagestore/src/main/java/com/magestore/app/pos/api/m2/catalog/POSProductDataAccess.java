@@ -363,11 +363,13 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
                 String finalSearchString = "%" + searchString + "%";
                 statement.getParamBuilder().setFilterLike("name", finalSearchString);
                 statement.getParamBuilder().setFilterLike("sku", finalSearchString);
+            }else{
+                // TODO: tạm thời để search all
+                statement.getParamBuilder().setFilterEqual("category_id", categoryId);
             }
             paramBuilder = statement.getParamBuilder()
                     .setPage(currentPage)
                     .setPageSize(pageSize)
-                    .setFilterEqual("category_id", categoryId)
                     .setSortOrderASC("name")
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
 
