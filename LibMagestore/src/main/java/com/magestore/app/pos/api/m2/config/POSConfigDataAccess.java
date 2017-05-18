@@ -548,6 +548,11 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
                 break;
             }
         }
+
+        for (String month : listCCMonths) {
+            String sub = month.substring(0, 2);
+            listCCMonths.set(listCCMonths.indexOf(month), sub);
+        }
         return listCCMonths;
     }
 

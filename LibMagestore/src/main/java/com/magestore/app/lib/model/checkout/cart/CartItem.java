@@ -159,18 +159,18 @@ public interface CartItem extends Model {
 
     void setDiscountAmount(float discount_amount);
 
-    int getQtyOrdered();
-    int getQtyCanceled();
-    int getQtyInvoiced();
-    int getQtyRefunded();
-    int getQtyShipped();
-    int QtyShip();
-    int QtyRefund();
-    int QtyInvoice();
-    int QtyInvoiceable();
-    void setQtyInvoiceable(int intQtyInvoice);
-    int getQtyChange();
-    void setQtyChange(int intQtyChange);
+    float getQtyOrdered();
+    float getQtyCanceled();
+    float getQtyInvoiced();
+    float getQtyRefunded();
+    float getQtyShipped();
+    float QtyShip();
+    float QtyRefund();
+    float QtyInvoice();
+    float QtyInvoiceable();
+    void setQtyInvoiceable(float intQtyInvoice);
+    float getQtyChange();
+    void setQtyChange(float intQtyChange);
     String getProductType();
     String getIsVirtual();
     void setIsVirtual(String strIsVirtual);

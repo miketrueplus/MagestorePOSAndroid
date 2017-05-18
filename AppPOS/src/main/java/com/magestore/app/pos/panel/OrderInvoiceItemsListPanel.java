@@ -76,13 +76,13 @@ public class OrderInvoiceItemsListPanel extends AbstractListPanel<CartItem> {
         CardOrderInvoiceItemContentBinding mBinding = DataBindingUtil.bind(view);
         mBinding.setOrderItem(item);
         CartItem cartItem = listItems.get(position);
-        EditTextInteger edt_qty_to_invoice = (EditTextInteger) view.findViewById(R.id.qty_to_invoice);
+        EditTextFloat edt_qty_to_invoice = (EditTextFloat) view.findViewById(R.id.qty_to_invoice);
         cartItem.setOrderItemId(cartItem.getItemId());
         cartItem.setQtyChange(item.QtyInvoice());
         actionQtyToInvoice(cartItem, edt_qty_to_invoice);
     }
 
-    private void actionQtyToInvoice(final CartItem item, final EditTextInteger qty_to_invoice) {
+    private void actionQtyToInvoice(final CartItem item, final EditTextFloat qty_to_invoice) {
         qty_to_invoice.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -91,8 +91,8 @@ public class OrderInvoiceItemsListPanel extends AbstractListPanel<CartItem> {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                int qty_invoiced = qty_to_invoice.getValueInteger();
-                int qty;
+                float qty_invoiced = qty_to_invoice.getValueFloat();
+                float qty;
                 if (mOrder.getBaseTotalDue() > 0) {
                     qty = item.QtyInvoiceable();
                 } else {

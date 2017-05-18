@@ -18,6 +18,8 @@ import com.magestore.app.lib.panel.AbstractListPanel;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.OrderRefundItemsListController;
 import com.magestore.app.pos.databinding.CardOrderRefundItemContentBinding;
+import com.magestore.app.util.ConfigUtil;
+import com.magestore.app.view.EditTextFloat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +70,7 @@ public class OrderRefundItemsListPanel extends AbstractListPanel<CartItem> {
         CardOrderRefundItemContentBinding binding = DataBindingUtil.bind(view);
         binding.setOrderItem(item);
 
-        EditText edt_qty_to_refund = (EditText) view.findViewById(R.id.qty_to_refund);
+        EditTextFloat edt_qty_to_refund = (EditTextFloat) view.findViewById(R.id.qty_to_refund);
         CheckBox cb_return_to_stock = (CheckBox) view.findViewById(R.id.return_to_stock);
 
         actionQtyToRefund(item, edt_qty_to_refund);
@@ -76,7 +78,7 @@ public class OrderRefundItemsListPanel extends AbstractListPanel<CartItem> {
         actionReturnToStock(item, cb_return_to_stock);
     }
 
-    private void actionQtyToRefund(final CartItem item, final EditText qty_to_refund) {
+    private void actionQtyToRefund(final CartItem item, final EditTextFloat qty_to_refund) {
         qty_to_refund.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -85,14 +87,8 @@ public class OrderRefundItemsListPanel extends AbstractListPanel<CartItem> {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                int qty_refunded;
-                try {
-                    qty_refunded = Integer.parseInt(qty_to_refund.getText().toString());
-                } catch (Exception e) {
-                    qty_refunded = 0;
-                }
-
-                int qty = item.QtyRefund();
+                float qty_refunded = qty_to_refund.getValueFloat();
+                float qty = item.QtyRefund();
                 if (qty_refunded < 0 || qty_refunded > qty) {
                     qty_to_refund.setText(String.valueOf(qty));
                     item.setQuantity(qty);

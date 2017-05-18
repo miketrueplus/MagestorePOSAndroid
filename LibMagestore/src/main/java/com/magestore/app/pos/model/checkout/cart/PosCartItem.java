@@ -315,23 +315,23 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     @Gson2PosExclude
     float base_row_total;
     @Gson2PosExclude
-    int qty_ordered;
+    float qty_ordered;
     @Gson2PosExclude
-    int qty_canceled;
+    float qty_canceled;
     @Gson2PosExclude
-    int qty_invoiced;
+    float qty_invoiced;
     @Gson2PosExclude
-    int qty_refunded;
+    float qty_refunded;
     @Gson2PosExclude
-    int qty_shipped;
+    float qty_shipped;
     @Gson2PosExclude
     String product_type;
     @Gson2PosExclude
     String parent_item_id;
     @Gson2PosExclude
-    int qty_change;
+    float qty_change;
     @Gson2PosExclude
-    int qty_invoiceable;
+    float qty_invoiceable;
 
     @Gson2PosExclude
     float base_original_price;
@@ -568,62 +568,62 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     }
 
     @Override
-    public int getQtyOrdered() {
+    public float getQtyOrdered() {
         return qty_ordered;
     }
 
     @Override
-    public int getQtyCanceled() {
+    public float getQtyCanceled() {
         return qty_canceled;
     }
 
     @Override
-    public int getQtyInvoiced() {
+    public float getQtyInvoiced() {
         return qty_invoiced;
     }
 
     @Override
-    public int getQtyRefunded() {
+    public float getQtyRefunded() {
         return qty_refunded;
     }
 
     @Override
-    public int getQtyShipped() {
+    public float getQtyShipped() {
         return qty_shipped;
     }
 
     @Override
-    public int QtyShip() {
+    public float QtyShip() {
         return qty_ordered - qty_shipped - qty_refunded - qty_canceled;
     }
 
     @Override
-    public int QtyRefund() {
+    public float QtyRefund() {
         return qty_invoiced - qty_refunded;
     }
 
     @Override
-    public int QtyInvoice() {
+    public float QtyInvoice() {
         return qty_ordered - qty_invoiced - qty_refunded - qty_canceled;
     }
 
     @Override
-    public int QtyInvoiceable() {
+    public float QtyInvoiceable() {
         return qty_invoiceable;
     }
 
     @Override
-    public void setQtyInvoiceable(int intQtyInvoice) {
+    public void setQtyInvoiceable(float intQtyInvoice) {
         qty_invoiceable = intQtyInvoice;
     }
 
     @Override
-    public int getQtyChange() {
+    public float getQtyChange() {
         return qty_change;
     }
 
     @Override
-    public void setQtyChange(int intQtyChange) {
+    public void setQtyChange(float intQtyChange) {
         qty_change = intQtyChange;
     }
 
