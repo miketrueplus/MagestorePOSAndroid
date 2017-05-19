@@ -34,12 +34,13 @@ import java.util.List;
  */
 
 public class SettingDetailPanel extends AbstractDetailPanel<Setting> {
-    LinearLayout ll_setting_account, ll_setting_currency, ll_setting_store;
+    LinearLayout ll_setting_account, ll_setting_currency, ll_setting_store, ll_setting_print;
     static int TYPE_ACCOUNT = 0;
-    static int TYPE_CURRENCY = 1;
-    static int TYPE_STORE = 2;
+    static int TYPE_PRINT = 1;
+    static int TYPE_CURRENCY = 2;
+    static int TYPE_STORE = 3;
     List<LinearLayout> listLayout;
-    SimpleSpinner sp_currency;
+    SimpleSpinner sp_currency, sp_print;
     EditText edt_name, edt_current_password, edt_new_password, edt_confirm_password;
     Button btn_save;
     RelativeLayout setting_background_loading;
@@ -68,6 +69,8 @@ public class SettingDetailPanel extends AbstractDetailPanel<Setting> {
         edt_confirm_password = (EditText) findViewById(R.id.edt_confirm_password);
         ll_setting_currency = (LinearLayout) findViewById(R.id.ll_setting_currency);
         sp_currency = (SimpleSpinner) findViewById(R.id.sp_currency);
+        ll_setting_print = (LinearLayout) findViewById(R.id.ll_setting_print);
+        sp_print = (SimpleSpinner) findViewById(R.id.sp_print);
         ll_setting_store = (LinearLayout) findViewById(R.id.ll_setting_store);
         btn_save = (Button) findViewById(R.id.btn_save);
         listLayout.add(ll_setting_account);
@@ -112,6 +115,18 @@ public class SettingDetailPanel extends AbstractDetailPanel<Setting> {
 
             }
         });
+
+        sp_print.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                ConfigUtil.setTypePrint(sp_print.getSelection());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
     @Override
@@ -123,12 +138,20 @@ public class SettingDetailPanel extends AbstractDetailPanel<Setting> {
             selectLinearLayout(ll_setting_currency, listLayout);
         } else if (item.getType() == TYPE_STORE) {
             ((SettingListController) getController()).backToLoginActivity();
+        } else if (item.getType() == TYPE_PRINT) {
+            selectLinearLayout(ll_setting_print, listLayout);
         }
     }
 
     public void setCurrencyDataSet(List<Currency> currencyList) {
         sp_currency.bind(currencyList.toArray(new Currency[0]));
         sp_currency.setSelection(ConfigUtil.getCurrentCurrency().getCode());
+    }
+
+    public void setPrintDataSet() {
+        String[] list = {getContext().getString(R.string.print_type_receipt), getContext().getString(R.string.print_type_a4)};
+        sp_print.bind(list);
+        ConfigUtil.setTypePrint(sp_print.getSelection());
     }
 
     public void setStaffDataSet(Staff staff) {

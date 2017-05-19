@@ -215,6 +215,8 @@
     <string name="print_header_customer">CUSTOMER:</string>
     <string name="print_header_shipping">SHIPPING:</string>
     <string name="print_footer_default">Thank you for shopping at our store. We hope you enjoy your purchase and look forward to serving you again.</string>
+    <string name="print_type_receipt">Receipt Printer Scroll</string>
+    <string name="print_type_a4">A4</string>
 
     <!--PayPal-->
     <string name="paypal">Paypal</string>

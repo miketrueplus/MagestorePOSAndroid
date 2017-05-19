@@ -59,6 +59,7 @@ public class SettingListController extends AbstractListController<Setting> {
         super.onRetrievePostExecute(list);
         ((SettingDetailPanel) mDetailView).setStaffDataSet(mStaff);
         ((SettingDetailPanel) mDetailView).setCurrencyDataSet(currencyList);
+        ((SettingDetailPanel) mDetailView).setPrintDataSet();
     }
 
     public void doInputChangeInformation(Staff staff) {

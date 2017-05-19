@@ -1,8 +1,14 @@
 package com.magestore.app.pos.panel;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Environment;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.Window;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -11,11 +17,13 @@ import android.widget.TextView;
 import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
+import com.magestore.app.pos.PrintDialogActivity;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.CheckoutListController;
 import com.magestore.app.pos.util.PrintUtil;
 import com.magestore.app.util.DialogUtil;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -93,11 +101,51 @@ public class CheckoutSuccessPanel extends AbstractDetailPanel<Order> {
         btn_print.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                PrintUtil.doPrint(getContext(), item);
+                actionPrint(item);
             }
         });
     }
 
+    private void actionPrint(Order mOrder){
+        final Dialog dialogPrint = new Dialog(getContext());
+        dialogPrint.setCancelable(true);
+        dialogPrint.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialogPrint.setFeatureDrawableAlpha(1, 1);
+        dialogPrint.setContentView(R.layout.print_preview);
+        WebView dialogWebView = (WebView) dialogPrint.findViewById(R.id.webview);
+        TextView bt_print = (TextView) dialogPrint.findViewById(R.id.dialog_save);
+        bt_print.setText(getContext().getString(R.string.print));
+        TextView dialog_cancel = (TextView) dialogPrint.findViewById(R.id.dialog_cancel);
+        dialog_cancel.setText(getContext().getString(R.string.cancel));
+        TextView dialog_title = (TextView) dialogPrint.findViewById(R.id.dialog_title);
+        dialog_title.setText(getContext().getString(R.string.checkout_order_id, mOrder.getIncrementId()));
+        dialogWebView.getSettings().setJavaScriptEnabled(true);
+        dialogWebView.getSettings().setLoadsImagesAutomatically(true);
+        dialogWebView.setDrawingCacheEnabled(true);
+        dialogWebView.buildDrawingCache();
+        dialogWebView.capturePicture();
+        PrintUtil.doPrint(getContext(), mOrder, dialogWebView);
+        dialogPrint.show();
+
+        dialog_cancel.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialogPrint.dismiss();
+            }
+        });
+
+        bt_print.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS + "/RetailerPOS/PrintOrder.pdf");
+                Intent printIntent = new Intent(getContext(),
+                        PrintDialogActivity.class);
+                printIntent.setDataAndType(Uri.fromFile(file), "application/pdf");
+                printIntent.putExtra("title", "");
+                getContext().startActivity(printIntent);
+            }
+        });
+    }
     /*Felix 4-4-2017 start*/
     public void fillEmailCustomer(Order order){
         edt_email_customer.setText(order.getCustomerEmail());

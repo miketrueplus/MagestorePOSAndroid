@@ -223,6 +223,8 @@ public class SalesActivity extends AbstractActivity
         mPluginRewardPointPanel = (PluginRewardPointPanel) mCheckoutDetailPanel.findViewById(R.id.rl_reward_point);
         // plugin store credit
         mPluginStoreCreditPanel = (PluginStoreCreditPanel) mCheckoutDetailPanel.findViewById(R.id.rl_store_credit);
+        // config print
+        ConfigUtil.setTypePrint(getString(R.string.print_type_receipt));
     }
 
     protected void initModel() {

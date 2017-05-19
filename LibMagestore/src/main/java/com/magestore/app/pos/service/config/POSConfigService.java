@@ -357,6 +357,7 @@ public class POSConfigService extends AbstractService implements ConfigService {
     }
 
     public static String SETTING_ACCOUNT = "My Account";
+    public static String SETTING_PRINT = "Print";
     public static String SETTING_CURRENCY = "Currency";
     public static String SETTING_STORE = "Store";
 
@@ -369,14 +370,19 @@ public class POSConfigService extends AbstractService implements ConfigService {
         accountSetting.setType(0);
         settingList.add(accountSetting);
 
+        Setting printSetting = new PosSetting();
+        printSetting.setName(SETTING_PRINT);
+        printSetting.setType(1);
+        settingList.add(printSetting);
+
         Setting currencySetting = new PosSetting();
         currencySetting.setName(SETTING_CURRENCY);
-        currencySetting.setType(1);
+        currencySetting.setType(2);
         settingList.add(currencySetting);
 
         Setting storeSetting = new PosSetting();
         storeSetting.setName(SETTING_STORE);
-        storeSetting.setType(2);
+        storeSetting.setType(3);
         settingList.add(storeSetting);
 
         return settingList;
