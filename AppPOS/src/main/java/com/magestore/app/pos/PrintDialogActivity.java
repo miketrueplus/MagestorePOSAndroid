@@ -108,7 +108,7 @@ public class PrintDialogActivity extends Activity {
     @JavascriptInterface
     public void onPostMessage(String message) {
       if (message.startsWith(CLOSE_POST_MESSAGE_NAME)) {
-    	  File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+ "/SimiPOS/hd.png"); 
+    	  File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS + "/RetailerPOS/PrintOrder.pdf");;
           boolean deleted = file.delete();
         finish();
       }
