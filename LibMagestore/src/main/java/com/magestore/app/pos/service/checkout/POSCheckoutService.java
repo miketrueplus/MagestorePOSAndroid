@@ -436,6 +436,7 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
                     cartOld.getProduct().setItemId(cartNew.getItemId());
                     cartOld.getProduct().setIsSaveCart(true);
                     cartOld.setIsVirtual(cartNew.getIsVirtual());
+                    cartOld.setQuantity(cartNew.getQuantity());
                 }
             }
         }
@@ -513,17 +514,26 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
     public Checkout updateTotal(Checkout checkout) {
         if (checkout != null) {
             if (checkout.getTotals() != null && checkout.getTotals().size() > 0) {
+                boolean shipping = false;
+                boolean discount = false;
+                boolean tax = false;
+                boolean gifcard = false;
+                boolean reward = false;
+                boolean storecredit = false;
                 for (CheckoutTotals checkoutTotals : checkout.getTotals()) {
                     if (checkoutTotals.getCode().equals("subtotal")) {
                         checkout.setSubTotal(checkoutTotals.getValue());
                         checkout.setSubTitle(checkoutTotals.getTitle());
                     } else if (checkoutTotals.getCode().equals("shipping")) {
+                        shipping = true;
                         checkout.setShippingTotal(checkoutTotals.getValue());
                         checkout.setShippingTitle(checkoutTotals.getTitle());
                     } else if (checkoutTotals.getCode().equals("discount")) {
+                        discount = true;
                         checkout.setDiscountTotal(checkoutTotals.getValue());
                         checkout.setDiscountTitle(checkoutTotals.getTitle());
                     } else if (checkoutTotals.getCode().equals("tax")) {
+                        tax = true;
                         checkout.setTaxTotal(checkoutTotals.getValue());
                         checkout.setTaxTitle(checkoutTotals.getTitle());
                     } else if (checkoutTotals.getCode().equals("grand_total")) {
@@ -533,13 +543,35 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
 
                     // plugins
                     else if (checkoutTotals.getCode().equals("giftvoucher") || checkoutTotals.getCode().equals("giftvoucheraftertax") || checkoutTotals.getCode().equals("giftvoucherbeforetax")) {
+                        gifcard = true;
                         checkout.setGiftCardDiscount(checkoutTotals.getValue());
                         checkout.setGiftCardTitle(checkoutTotals.getTitle());
                     } else if (checkoutTotals.getCode().equals("rewardpoints_label")) {
+                        reward = true;
                         checkout.setRewardPointEarnPointValue((int) checkoutTotals.getValue());
                     } else if (checkoutTotals.getCode().equals("use-point")) {
+                        storecredit = true;
                         checkout.setRewardPointUsePointValue(checkoutTotals.getValue());
                         checkout.setRewardPointUsePointTitle(checkoutTotals.getTitle());
+                    }
+
+                    if (!shipping) {
+                        checkout.setShippingTotal(0);
+                    }
+                    if (!discount) {
+                        checkout.setDiscountTotal(0);
+                    }
+                    if (!tax) {
+                        checkout.setTaxTotal(0);
+                    }
+                    if (!gifcard) {
+                        checkout.setGiftCardDiscount(0);
+                    }
+                    if(!reward){
+                        checkout.setRewardPointEarnPointValue(0);
+                    }
+                    if(!storecredit){
+                        checkout.setRewardPointUsePointValue(0);
                     }
                 }
             }
