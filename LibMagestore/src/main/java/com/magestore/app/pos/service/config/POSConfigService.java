@@ -100,7 +100,7 @@ public class POSConfigService extends AbstractService implements ConfigService {
         // khởi tạo currency format
         String pattern = (priceFormat.getPattern().indexOf(StringUtil.STRING_CURRENCY) == 0) ? "¤¤ ###,##0.0" : "###,##0.0 ¤¤";
 
-        Locale locale = new Locale("en", "UK");
+        Locale locale = new Locale("vi", "VN");
         DecimalFormatSymbols symbols = new DecimalFormatSymbols(locale);
         symbols.setDecimalSeparator(priceFormat.getDecimalSymbol().charAt(0));
         symbols.setGroupingSeparator(priceFormat.getGroupSymbol().charAt(0));
@@ -134,7 +134,7 @@ public class POSConfigService extends AbstractService implements ConfigService {
     private DecimalFormat currencyNosymbolFormat(ConfigPriceFormat priceFormat) {
         // khởi tạo currency format
         String pattern = "###,###.#";
-        Locale locale = new Locale("en", "UK");
+        Locale locale = new Locale("vi", "VN");
         DecimalFormatSymbols symbols = new DecimalFormatSymbols(locale);
         symbols.setDecimalSeparator(priceFormat.getDecimalSymbol().charAt(0));
         symbols.setGroupingSeparator(priceFormat.getGroupSymbol().charAt(0));
@@ -160,7 +160,7 @@ public class POSConfigService extends AbstractService implements ConfigService {
     private DecimalFormat floatFormat(ConfigPriceFormat priceFormat) {
         // khởi tạo float format
         String pattern = "###,###.#";
-        Locale locale = new Locale("en", "UK");
+        Locale locale = new Locale("vi", "VN");
         DecimalFormatSymbols symbols = new DecimalFormatSymbols(locale);
         symbols.setDecimalSeparator(priceFormat.getDecimalSymbol().charAt(0));
         symbols.setGroupingSeparator(priceFormat.getGroupSymbol().charAt(0));
@@ -186,7 +186,7 @@ public class POSConfigService extends AbstractService implements ConfigService {
     private DecimalFormat integetFormat(ConfigPriceFormat priceFormat) {
         // khởi tạo interger format
         String pattern = "###,###";
-        Locale locale = new Locale("en", "UK");
+        Locale locale = new Locale("vi", "VN");
         DecimalFormatSymbols symbols = new DecimalFormatSymbols(locale);
         symbols.setGroupingSeparator(priceFormat.getGroupSymbol().charAt(0));
         DecimalFormat format = new DecimalFormat(pattern, symbols);
