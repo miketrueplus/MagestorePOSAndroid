@@ -99,9 +99,7 @@ public class POSConfigService extends AbstractService implements ConfigService {
     private DecimalFormat currencyFormat(ConfigPriceFormat priceFormat) {
         // khởi tạo currency format
         String pattern = (priceFormat.getPattern().indexOf(StringUtil.STRING_CURRENCY) == 0) ? "¤¤ ###,##0.0" : "###,##0.0 ¤¤";
-
-        Locale locale = new Locale("vi", "VN");
-        DecimalFormatSymbols symbols = new DecimalFormatSymbols(locale);
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.getDefault());
         symbols.setDecimalSeparator(priceFormat.getDecimalSymbol().charAt(0));
         symbols.setGroupingSeparator(priceFormat.getGroupSymbol().charAt(0));
 
@@ -134,8 +132,7 @@ public class POSConfigService extends AbstractService implements ConfigService {
     private DecimalFormat currencyNosymbolFormat(ConfigPriceFormat priceFormat) {
         // khởi tạo currency format
         String pattern = "###,###.#";
-        Locale locale = new Locale("vi", "VN");
-        DecimalFormatSymbols symbols = new DecimalFormatSymbols(locale);
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.getDefault());
         symbols.setDecimalSeparator(priceFormat.getDecimalSymbol().charAt(0));
         symbols.setGroupingSeparator(priceFormat.getGroupSymbol().charAt(0));
         DecimalFormat currencyFormat = new DecimalFormat(pattern, symbols);
@@ -160,8 +157,7 @@ public class POSConfigService extends AbstractService implements ConfigService {
     private DecimalFormat floatFormat(ConfigPriceFormat priceFormat) {
         // khởi tạo float format
         String pattern = "###,###.#";
-        Locale locale = new Locale("vi", "VN");
-        DecimalFormatSymbols symbols = new DecimalFormatSymbols(locale);
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.getDefault());
         symbols.setDecimalSeparator(priceFormat.getDecimalSymbol().charAt(0));
         symbols.setGroupingSeparator(priceFormat.getGroupSymbol().charAt(0));
         DecimalFormat format = new DecimalFormat(pattern, symbols);
@@ -187,7 +183,7 @@ public class POSConfigService extends AbstractService implements ConfigService {
         // khởi tạo interger format
         String pattern = "###,###";
         Locale locale = new Locale("vi", "VN");
-        DecimalFormatSymbols symbols = new DecimalFormatSymbols(locale);
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.getDefault());
         symbols.setGroupingSeparator(priceFormat.getGroupSymbol().charAt(0));
         DecimalFormat format = new DecimalFormat(pattern, symbols);
         format.setGroupingSize(priceFormat.getGroupLength());
