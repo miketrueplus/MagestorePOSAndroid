@@ -34,7 +34,7 @@ public class PluginStoreCreditPanel extends AbstractDetailPanel<StoreCredit> {
     CheckoutListController mCheckoutListController;
     StoreCredit mStoreCredit;
     EditTextFloat store_credit_value;
-    Switch cb_use_max_credit;
+    CheckBox cb_use_max_credit;
     Button bt_apply;
     RelativeLayout rl_remove_store_credit;
     TextView tv_store_credit;
@@ -62,7 +62,7 @@ public class PluginStoreCreditPanel extends AbstractDetailPanel<StoreCredit> {
         tv_store_credit = (TextView) findViewById(R.id.tv_store_credit);
         tv_store_credit.setText(getContext().getString(R.string.plugin_store_credit_title, ConfigUtil.formatPrice(0)));
         store_credit_value = (EditTextFloat) findViewById(R.id.store_credit_value);
-        cb_use_max_credit = (Switch) findViewById(R.id.cb_use_max_credit);
+        cb_use_max_credit = (CheckBox) findViewById(R.id.cb_use_max_credit);
         bt_apply = (Button) findViewById(R.id.bt_apply);
         bt_apply.setBackground(getResources().getDrawable(R.drawable.backgound_buton_apply_disable));
 

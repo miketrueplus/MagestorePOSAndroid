@@ -37,7 +37,7 @@ public class PluginGiftCardListPanel extends AbstractSimpleRecycleView<GiftCard>
     PluginGiftCardController mPluginGiftCardController;
     HashMap<GiftCard, EditText> mTextGiftCode;
     HashMap<GiftCard, EditText> mTextGiftCodeValue;
-    HashMap<GiftCard, Switch> mUserMaxPoint;
+    HashMap<GiftCard, CheckBox> mUserMaxPoint;
     HashMap<GiftCard, TextView> mTextBalance;
 
     public void setPluginGiftCardController(PluginGiftCardController mPluginGiftCardController) {
@@ -75,7 +75,7 @@ public class PluginGiftCardListPanel extends AbstractSimpleRecycleView<GiftCard>
         mTextGiftCode.put(giftCard, gift_code);
         EditTextFloat gift_code_value = (EditTextFloat) view.findViewById(R.id.gift_code_value);
         mTextGiftCodeValue.put(giftCard, gift_code_value);
-        Switch cb_use_max_credit = (Switch) view.findViewById(R.id.cb_use_max_credit);
+        CheckBox cb_use_max_credit = (CheckBox) view.findViewById(R.id.cb_use_max_credit);
         mUserMaxPoint.put(giftCard, cb_use_max_credit);
         actionCheckUseMaxPoint(item, cb_use_max_credit, gift_code_value);
         Button bt_apply = (Button) view.findViewById(R.id.bt_apply);
@@ -107,7 +107,7 @@ public class PluginGiftCardListPanel extends AbstractSimpleRecycleView<GiftCard>
 
     }
 
-    private void actionChangeGiftValue(final GiftCard item, final EditTextFloat gift_code_value, final Button bt_apply, final Switch use_max_point) {
+    private void actionChangeGiftValue(final GiftCard item, final EditTextFloat gift_code_value, final Button bt_apply, final CheckBox use_max_point) {
         gift_code_value.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -174,7 +174,7 @@ public class PluginGiftCardListPanel extends AbstractSimpleRecycleView<GiftCard>
         });
     }
 
-    private void actionCheckUseMaxPoint(final GiftCard item, final Switch use_max_point, final EditText gift_code_value) {
+    private void actionCheckUseMaxPoint(final GiftCard item, final CheckBox use_max_point, final EditText gift_code_value) {
         use_max_point.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -212,7 +212,7 @@ public class PluginGiftCardListPanel extends AbstractSimpleRecycleView<GiftCard>
     }
 
     public void enableUseMaxPoint(GiftCard giftCard) {
-        Switch cb_useMaxPoint = mUserMaxPoint.get(giftCard);
+        CheckBox cb_useMaxPoint = mUserMaxPoint.get(giftCard);
         cb_useMaxPoint.setVisibility(VISIBLE);
     }
 
