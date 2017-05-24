@@ -76,7 +76,7 @@ public class CheckoutDiscountPanel extends AbstractDetailPanel<Checkout> {
 
     @Override
     public void initValue() {
-        grand_total = mCheckoutListController.getSelectedItem().getGrandTotal();
+        grand_total = ConfigUtil.convertToPrice(mCheckoutListController.getSelectedItem().getGrandTotalView());
 
         String sym = ConfigUtil.getCurrencySymbol();
         if (sym != null)
@@ -130,12 +130,7 @@ public class CheckoutDiscountPanel extends AbstractDetailPanel<Checkout> {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                float amount = 0;
-                String value = discount_amount.getText().toString();
-                try {
-                    amount = Float.parseFloat(value);
-                } catch (Exception e) {
-                }
+                float amount = discount_amount.getValueFloat();
                 if (amountType) {
                     if (amount > maximum_discount_percent) {
                         discount_amount.setText(ConfigUtil.formatNumber(maximum_discount_percent));
@@ -181,12 +176,7 @@ public class CheckoutDiscountPanel extends AbstractDetailPanel<Checkout> {
         } else {
             saveQuoteParam.setDiscountType(getContext().getString(R.string.percent));
         }
-        float discount_value = 0;
-        try {
-            discount_value = Float.parseFloat(discount_amount.getText().toString().trim());
-        } catch (Exception e) {
-
-        }
+        float discount_value = discount_amount.getValueFloat();
         saveQuoteParam.setDiscountValue(discount_value);
         return saveQuoteParam;
     }

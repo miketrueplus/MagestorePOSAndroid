@@ -55,7 +55,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
     FrameLayout fr_sales_new_customer;
     LinearLayout ll_add_new_customer, ll_new_shipping_address, ll_new_billing_address, ll_shipping_address, ll_sales_shipping, ll_add_new_address;
     View ll_plugins;
-    LinearLayout ll_billing_address, ll_short_shipping_address, ll_short_billing_address, ll_sales_add_customer, ll_action_checkout;
+    LinearLayout ll_billing_address, ll_short_shipping_address, ll_short_billing_address, ll_sales_add_customer, ll_action_checkout, ll_sales_tax;
     ImageView btn_shipping_address, btn_billing_address;
     ImageButton btn_shipping_adrress_edit, btn_billing_adrress_edit;
     ImageButton btn_shipping_address_delete, btn_billing_address_delete;
@@ -105,6 +105,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
         btn_sales_order_checkout = (Button) findViewById(R.id.btn_sales_order_checkout);
         ll_action_checkout = (LinearLayout) findViewById(R.id.ll_action_checkout);
         ll_sales_shipping = (LinearLayout) findViewById(R.id.ll_sales_shipping);
+        ll_sales_tax = (LinearLayout) findViewById(R.id.ll_sales_tax);
         ll_plugins = (View) findViewById(R.id.ll_checkout_plugins);
         text_reward_point_earn = (TextView) findViewById(R.id.text_reward_point_earn);
         rl_sales_total = (RelativeLayout) findViewById(R.id.rl_sales_total);
@@ -247,6 +248,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
     public void showSalesShipping(boolean isShow) {
         ll_sales_shipping.setVisibility(isShow ? VISIBLE : GONE);
         ll_plugins.setVisibility(isShow ? VISIBLE : GONE);
+//        ll_sales_tax.setVisibility(isShow ? VISIBLE : GONE);
         text_reward_point_earn.setVisibility(isShow ? VISIBLE : GONE);
     }
 

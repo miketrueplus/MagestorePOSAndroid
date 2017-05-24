@@ -565,6 +565,9 @@ public class SalesActivity extends AbstractActivity
     BroadcastReceiver receiver_data_setting = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            if (mCheckoutSuccessPanel.getVisibility() == View.VISIBLE || mCheckoutDetailPanel.getVisibility() == View.VISIBLE) {
+                mCheckoutListController.onBackTohome();
+            }
             mCheckoutListController.getView().notifyDataSetChanged();
             mCheckoutListController.updateTotal();
             mProductListPanel.notifyDataSetChanged();

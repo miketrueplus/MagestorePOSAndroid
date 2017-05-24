@@ -524,13 +524,14 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
                     if (checkoutTotals.getCode().equals("subtotal")) {
                         checkout.setSubTotal(checkoutTotals.getValue());
                         checkout.setSubTitle(checkoutTotals.getTitle());
+                        checkout.setSubTotalView(ConfigUtil.convertToBasePrice(checkoutTotals.getValue()));
                     } else if (checkoutTotals.getCode().equals("shipping")) {
                         shipping = true;
-                        checkout.setShippingTotal(checkoutTotals.getValue());
+                        checkout.setShippingTotal(ConfigUtil.convertToBasePrice(checkoutTotals.getValue()));
                         checkout.setShippingTitle(checkoutTotals.getTitle());
                     } else if (checkoutTotals.getCode().equals("discount")) {
                         discount = true;
-                        checkout.setDiscountTotal(checkoutTotals.getValue());
+                        checkout.setDiscountTotal(ConfigUtil.convertToBasePrice(checkoutTotals.getValue()));
                         checkout.setDiscountTitle(checkoutTotals.getTitle());
                     } else if (checkoutTotals.getCode().equals("tax")) {
                         tax = true;
@@ -539,6 +540,7 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
                     } else if (checkoutTotals.getCode().equals("grand_total")) {
                         checkout.setGrandTotal(checkoutTotals.getValue());
                         checkout.setGrandTitle(checkoutTotals.getTitle());
+                        checkout.setGrandTotalView(ConfigUtil.convertToBasePrice(checkoutTotals.getValue()));
                     }
 
                     // plugins

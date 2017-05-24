@@ -74,6 +74,7 @@ public class SettingDetailPanel extends AbstractDetailPanel<Setting> {
         ll_setting_store = (LinearLayout) findViewById(R.id.ll_setting_store);
         btn_save = (Button) findViewById(R.id.btn_save);
         listLayout.add(ll_setting_account);
+        listLayout.add(ll_setting_print);
         listLayout.add(ll_setting_currency);
         listLayout.add(ll_setting_store);
 

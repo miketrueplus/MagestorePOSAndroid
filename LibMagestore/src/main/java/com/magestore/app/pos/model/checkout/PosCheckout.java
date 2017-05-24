@@ -82,6 +82,8 @@ public class PosCheckout extends PosAbstractModel implements Checkout {
     @Expose(serialize = false, deserialize = false)
     float sub_total = 0;
     @Gson2PosExclude
+    float sub_total_view;
+    @Gson2PosExclude
     String shipping_title;
     @Expose(serialize = false, deserialize = false)
     float shipping_total = 0;
@@ -97,6 +99,8 @@ public class PosCheckout extends PosAbstractModel implements Checkout {
     String grand_title;
     @Expose(serialize = false, deserialize = false)
     float grand_total = 0;
+    @Gson2PosExclude
+    float grand_total_view;
     @Gson2PosExclude
     float real_amount;
     @Gson2PosExclude
@@ -198,6 +202,16 @@ public class PosCheckout extends PosAbstractModel implements Checkout {
     }
 
     @Override
+    public float getSubTotalView() {
+        return sub_total_view;
+    }
+
+    @Override
+    public void setSubTotalView(float total) {
+        sub_total_view = total;
+    }
+
+    @Override
     public String getShippingTitle() {
         return shipping_title;
     }
@@ -265,6 +279,16 @@ public class PosCheckout extends PosAbstractModel implements Checkout {
     @Override
     public void setGrandTitle(String strGrandTitle) {
         grand_title = strGrandTitle;
+    }
+
+    @Override
+    public float getGrandTotalView() {
+        return grand_total_view;
+    }
+
+    @Override
+    public void setGrandTotalView(float total) {
+        grand_total_view = total;
     }
 
     @Override
