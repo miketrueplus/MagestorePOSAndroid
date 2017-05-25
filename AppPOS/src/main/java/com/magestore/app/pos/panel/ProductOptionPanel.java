@@ -804,7 +804,6 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         getItem().setUnitPrice(price);
         getItem().setCustomPrice(price);
         getItem().setDefaultCustomPrice(price);
-        mProductListPanel.notifyDataSetChanged();
     }
 
     private String getConfigOptionProductID() {
