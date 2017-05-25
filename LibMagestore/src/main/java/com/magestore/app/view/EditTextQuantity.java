@@ -15,33 +15,33 @@ import com.magestore.app.util.ConfigUtil;
  * mike@trueplus.vn
  */
 
-public class EditTextDecimal extends EditText {
+public class EditTextQuantity extends EditText {
     String mValue;
     float mintMinValue;
     float mintMaxValue;
     boolean mblnHaveMinValue;
     boolean mblnHaveMaxValue;
 
-    public EditTextDecimal(Context context) {
+    public EditTextQuantity(Context context) {
         super(context);
         initModel();
         initEvent();
     }
 
-    public EditTextDecimal(Context context, AttributeSet attrs) {
+    public EditTextQuantity(Context context, AttributeSet attrs) {
         super(context, attrs);
         initModel();
         initEvent();
     }
 
-    public EditTextDecimal(Context context, AttributeSet attrs, int defStyle) {
+    public EditTextQuantity(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         initModel();
         initEvent();
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public EditTextDecimal(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public EditTextQuantity(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         initModel();
         initEvent();

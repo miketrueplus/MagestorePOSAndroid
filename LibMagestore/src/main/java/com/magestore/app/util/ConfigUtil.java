@@ -33,6 +33,8 @@ public class ConfigUtil {
     private static DecimalFormat mCurrencyNoSymbolFormat;
     private static DecimalFormat mFloatFormat;
     private static DecimalFormat mIntegerFormat;
+    private static DecimalFormat mQuantityFormat;
+
     private static ConfigPrint mConfigPrint;
     private static Currency currentCurrency;
     private static String mBaseCurrencyCode;
@@ -57,6 +59,13 @@ public class ConfigUtil {
      */
     public static void setIntegerFormat(DecimalFormat format) {
         mIntegerFormat = format;
+    }
+
+    /**
+     * @param format
+     */
+    public static void setQuantityFormat(DecimalFormat format) {
+        mQuantityFormat = format;
     }
 
     /**
@@ -130,7 +139,7 @@ public class ConfigUtil {
      * @return
      */
     public static String formatQuantity(float quantity) {
-        return formatNumber(quantity);
+        return getQuantityFormat().format(quantity);
     }
 
     /**
@@ -140,7 +149,7 @@ public class ConfigUtil {
      * @return
      */
     public static String formatQuantity(int quantity) {
-        return formatNumber(quantity);
+        return getQuantityFormat().format(quantity);
     }
 
     /**
@@ -150,7 +159,7 @@ public class ConfigUtil {
      * @return
      */
     public static String formatQuantity(String quantity) {
-        return formatNumber(Float.parseFloat(quantity));
+        return getQuantityFormat().format(quantity);
     }
 
     /**
@@ -181,7 +190,13 @@ public class ConfigUtil {
         return mCurrencyFormat;
     }
 
-
+    private static DecimalFormat getQuantityFormat() {
+        if (mQuantityFormat == null) {
+            mQuantityFormat = new DecimalFormat();
+        }
+//        String sym = mCurrencyFormat.getCurrency().getSymbol();
+        return mQuantityFormat;
+    }
 
     private static DecimalFormat getPriceNoSymbolFormat() {
         if (mCurrencyNoSymbolFormat == null) {

@@ -48,6 +48,8 @@ public interface ConfigService extends Service {
 
     DecimalFormat getIntegerFormat() throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
+    DecimalFormat getQuantityFormat() throws InstantiationException, IllegalAccessException, IOException, ParseException;
+
     /**
      * Trả về CustomerGroup
      * @return

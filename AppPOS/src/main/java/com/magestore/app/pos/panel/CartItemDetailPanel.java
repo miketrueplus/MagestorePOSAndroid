@@ -29,6 +29,7 @@ import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.StringUtil;
 import com.magestore.app.view.EditTextDecimal;
 import com.magestore.app.view.EditTextFloat;
+import com.magestore.app.view.EditTextQuantity;
 
 /**
  * Created by folio on 3/6/2017.
@@ -40,7 +41,7 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
 
     EditTextFloat mtxtCustomPrice;
     EditTextFloat mtxtCustomDiscount;
-    EditTextDecimal mtxtQuantity;
+    EditTextQuantity mtxtQuantity;
 
     boolean mblnCustomPriceFixed;
     boolean mblnCustomDiscountFixed;
@@ -87,7 +88,7 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
         mbtnDiscountFixed = (Button) findViewById(R.id.id_btn_cart_item_detail_discount_fixed);
         mbtnDiscountPercent = (Button) findViewById(R.id.id_btn_cart_item_detail_discount_percent);
 
-        mtxtQuantity = (EditTextDecimal) findViewById(R.id.id_txt_cart_item_detail_quantity);
+        mtxtQuantity = (EditTextQuantity) findViewById(R.id.id_txt_cart_item_detail_quantity);
         mtxtCustomPrice = (EditTextFloat) findViewById(R.id.id_txt_cart_item_detail_custom_price);
         mtxtCustomDiscount = (EditTextFloat) findViewById(R.id.id_txt_cart_item_detail_custom_discount);
 
