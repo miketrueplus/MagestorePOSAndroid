@@ -30,8 +30,18 @@ public class PosOrderWebposPayment extends PosAbstractModel implements OrderWebp
     }
 
     @Override
+    public void setBasePaymentAmount(float fBasePaymentAmount) {
+        base_payment_amount = fBasePaymentAmount;
+    }
+
+    @Override
     public float getPaymentAmount() {
         return payment_amount;
+    }
+
+    @Override
+    public void setPaymentAmount(float fPaymentAmount) {
+        payment_amount = fPaymentAmount;
     }
 
     @Override
@@ -40,8 +50,18 @@ public class PosOrderWebposPayment extends PosAbstractModel implements OrderWebp
     }
 
     @Override
+    public void setBaseDisplayAmount(float fBaseDisplayAmount) {
+        base_display_amount = fBaseDisplayAmount;
+    }
+
+    @Override
     public float getDisplayAmount() {
         return display_amount;
+    }
+
+    @Override
+    public void setDisplayAmount(float fDisplayAmount) {
+        display_amount = fDisplayAmount;
     }
 
     @Override
@@ -50,12 +70,27 @@ public class PosOrderWebposPayment extends PosAbstractModel implements OrderWebp
     }
 
     @Override
+    public void setMethod(String strMethod) {
+        method = strMethod;
+    }
+
+    @Override
     public String getMethodTitle() {
         return method_title;
     }
 
     @Override
+    public void setMethodTitle(String strMethodTitle) {
+        method_title = strMethodTitle;
+    }
+
+    @Override
     public String getOrderId() {
         return order_id;
+    }
+
+    @Override
+    public void setOrderId(String strOrderId) {
+        order_id = strOrderId;
     }
 }

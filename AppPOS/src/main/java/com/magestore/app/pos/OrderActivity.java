@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.magestore.app.lib.context.MagestoreContext;
 import com.magestore.app.lib.service.ServiceFactory;
@@ -20,6 +21,7 @@ import com.magestore.app.pos.panel.OrderCommentHistoryListPanel;
 import com.magestore.app.pos.panel.OrderDetailPanel;
 import com.magestore.app.pos.panel.OrderHistoryItemsListPanel;
 import com.magestore.app.pos.panel.OrderListPanel;
+import com.magestore.app.pos.panel.OrderPaymentLaterListPanel;
 import com.magestore.app.pos.panel.OrderPaymentListPanel;
 import com.magestore.app.pos.ui.AbstractActivity;
 
@@ -42,10 +44,12 @@ public class OrderActivity extends AbstractActivity {
     OrderCommentHistoryListPanel mOrderCommentHistoryListPanel;
     // panel hiển thị danh sách item/product trong order
     OrderHistoryItemsListPanel mOrderHistoryItemsListPanel;
-
+    OrderPaymentLaterListPanel mOrderPaymentLaterListPanel;
     OrderPaymentListController mOrderPaymentListController;
     OrderCommentListController mOrderCommentHistoryController;
     OrderHistoryItemsListController mOrderHistoryItemsListController;
+
+    LinearLayout ll_payment_later;
 
     // Toolbar ứng dụng
     private Toolbar mToolbar;
@@ -80,6 +84,8 @@ public class OrderActivity extends AbstractActivity {
 
         // chuẩn bị panel view danh sách payment
         mOrderPaymentListPanel = (OrderPaymentListPanel) mOrderDetailPanel.findViewById(R.id.order_payment);
+        ll_payment_later = (LinearLayout) mOrderDetailPanel.findViewById(R.id.ll_payment_later);
+        mOrderPaymentLaterListPanel = (OrderPaymentLaterListPanel)  mOrderDetailPanel.findViewById(R.id.order_payment_later);
 
         // chuẩn bị panel view danh sách comment
         mOrderCommentHistoryListPanel = (OrderCommentHistoryListPanel) mOrderDetailPanel.findViewById(R.id.order_comment);
@@ -112,6 +118,8 @@ public class OrderActivity extends AbstractActivity {
         // Controller Payment
         mOrderPaymentListController = new OrderPaymentListController();
         mOrderPaymentListController.setView(mOrderPaymentListPanel);
+        mOrderPaymentListController.setOrderPaymentLaterListPanel(mOrderPaymentLaterListPanel);
+        mOrderPaymentListController.setLayoutPaymentLater(ll_payment_later);
         mOrderPaymentListController.setOrderService(service);
         mOrderPaymentListController.setMagestoreContext(magestoreContext);
 
