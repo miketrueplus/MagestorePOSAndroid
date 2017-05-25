@@ -39,6 +39,11 @@
             android:label="@string/sales_title_sales_list"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".SessionActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/sales_title_sales_list"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".SalesActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/sales_title_sales_list"

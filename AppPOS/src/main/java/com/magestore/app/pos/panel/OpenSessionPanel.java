@@ -25,5 +25,8 @@ public class OpenSessionPanel extends AbstractDetailPanel<RegisterShift> {
         super(context, attrs, defStyleAttr);
     }
 
-
+    @Override
+    protected void initLayout() {
+        super.initLayout();
+    }
 }
