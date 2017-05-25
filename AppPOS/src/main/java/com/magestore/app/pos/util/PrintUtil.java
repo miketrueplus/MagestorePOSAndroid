@@ -2,12 +2,14 @@ package com.magestore.app.pos.util;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Build;
+import android.os.Environment;
+import android.print.PdfPrint;
 import android.print.PrintAttributes;
-import android.print.PrintDocumentAdapter;
-import android.print.PrintManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.model.sales.OrderStatus;
@@ -15,6 +17,8 @@ import com.magestore.app.lib.model.sales.OrderWebposPayment;
 import com.magestore.app.pos.R;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.StringUtil;
+
+import java.io.File;
 import java.util.List;
 
 /**
@@ -26,27 +30,25 @@ import java.util.List;
 public class PrintUtil {
     private static WebView mWebView;
 
-    public static void doPrint(final Context context, Order order) {
+    public static void doPrint(final Context context, Order order, WebView webView) {
         // Create a WebView object specifically for printing
-        final WebView webView = new WebView(context);
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.getSettings().setLoadsImagesAutomatically(true);
+        // Generate an HTML document on the fly:
+        String htmlDocument = createLayoutOrder(context, order);
+        webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
+
         webView.setWebViewClient(new WebViewClient() {
 
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 return false;
             }
 
+            @TargetApi(Build.VERSION_CODES.KITKAT)
             @Override
             public void onPageFinished(WebView view, String url) {
                 createWebPrintJob(context, view);
                 mWebView = null;
             }
         });
-
-        // Generate an HTML document on the fly:
-        String htmlDocument = createLayoutOrder(context, order);
-        webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
 
         // Keep a reference to WebView object until you pass the PrintDocumentAdapter
         // to the PrintManager
@@ -57,15 +59,33 @@ public class PrintUtil {
     private static void createWebPrintJob(Context context, WebView webView) {
 
         // Get a PrintManager instance
-        PrintManager printManager = (PrintManager) context.getSystemService(Context.PRINT_SERVICE);
+//        PrintManager printManager = (PrintManager) context.getSystemService(Context.PRINT_SERVICE);
+//
+//        // Get a print_preview adapter instance
+//        PrintDocumentAdapter printAdapter = webView.createPrintDocumentAdapter();
+//
+//        // Create a print_preview job with name and adapter instance
+//        String jobName = context.getString(R.string.app_name) + " Print Order";
+//        printManager.print_preview(jobName, printAdapter,
+//                new PrintAttributes.Builder().build());
 
-        // Get a print adapter instance
-        PrintDocumentAdapter printAdapter = webView.createPrintDocumentAdapter();
-
-        // Create a print job with name and adapter instance
-        String jobName = context.getString(R.string.app_name) + " Print Order";
-        printManager.print(jobName, printAdapter,
-                new PrintAttributes.Builder().build());
+        String jobName = context.getString(R.string.app_name) + " Document";
+        PrintAttributes attributes;
+        if (ConfigUtil.getTypePrint().equals(context.getString(R.string.print_type_receipt))) {
+            attributes = new PrintAttributes.Builder()
+                    .setMediaSize(PrintAttributes.MediaSize.NA_INDEX_5X8)
+                    .setResolution(new PrintAttributes.Resolution("pdf", "pdf", 600, 600))
+                    .setMinMargins(PrintAttributes.Margins.NO_MARGINS)
+                    .build();
+        } else {
+            attributes = new PrintAttributes.Builder()
+                    .setMediaSize(PrintAttributes.MediaSize.ISO_A4)
+                    .setResolution(new PrintAttributes.Resolution("pdf", "pdf", 600, 600))
+                    .setMinMargins(PrintAttributes.Margins.NO_MARGINS).build();
+        }
+        File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS + "/RetailerPOS/");
+        PdfPrint pdfPrint = new PdfPrint(attributes);
+        pdfPrint.print(webView.createPrintDocumentAdapter(), path, "PrintOrder" + ".pdf");
     }
 
     private static String createLayoutOrder(Context context, Order order) {
@@ -112,8 +132,8 @@ public class PrintUtil {
             for (CartItem item : items) {
                 String body_content_item_name = "<td style=\"font-family: monospace; text-align: left; padding: 5px 0;\"><span style=\"font-family: monospace;\">" + item.getName() + "</span><span style=\"font-family: monospace; display: block;\">" + item.getSku() + "</span></td>";
                 String body_content_item_qty = "<td style=\"font-family: monospace; text-align: right; padding: 5px 0;\">" + item.getQtyOrdered() + "</td>";
-                String body_content_item_price = "<td style=\"font-family: monospace; text-align: right; padding: 5px 0;\">" + ConfigUtil.formatPrice(item.getPrice()) + "</td>";
-                String body_content_item_subtotal = "<td style=\"font-family: monospace; text-align: right; padding: 5px 0;\">" + ConfigUtil.formatPrice(item.getSubtotal()) + "</td>";
+                String body_content_item_price = "<td style=\"font-family: monospace; text-align: right; padding: 5px 0;\">" + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(item.getBasePrice())) + "</td>";
+                String body_content_item_subtotal = "<td style=\"font-family: monospace; text-align: right; padding: 5px 0;\">" + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(item.getBaseSubTotal())) + "</td>";
                 body_content_item += "<tr style=\"display: table-row;\">" + body_content_item_name + body_content_item_qty + body_content_item_price + body_content_item_subtotal + "</tr>";
             }
             body_content_items = "<div style=\"padding: 3px 0; margin-bottom: 7px\"><table style=\"width: 100%;\"><thead><tr style=\"display: table-row;\"><th style=\"font-weight: bold; font-family: monospace; text-align: left;\">ITEM</th><th style=\"font-weight: bold; font-family: monospace; text-align: right;\">Qty</th><th style=\"font-weight: bold; font-family: monospace; text-align: right;\">PRICE</th><th style=\"font-weight: bold; font-family: monospace; text-align: right;\">SUBTOTAL</th></tr></thead><tbody>" + body_content_item + "</tbody></table></div>";
@@ -131,44 +151,44 @@ public class PrintUtil {
         String title_grandtotal = context.getString(R.string.order_detail_bottom_tb_grand_total).toUpperCase();
         String title_total_paid = context.getString(R.string.order_detail_bottom_tb_total_paid).toUpperCase();
         String title_total_due = context.getString(R.string.order_detail_bottom_tb_total_due).toUpperCase();
-        String body_content_total_subtotal = "<tr><td style=\"font-family: monospace;\">" + title_sutotal + "</td><td align=\"right\" style=\"font-family: monospace;\"><strong style=\"font-family: monospace;\">" + ConfigUtil.formatPrice(order.getOrderHistorySubtotal()) + "</strong></td></tr>";
+        String body_content_total_subtotal = "<tr><td style=\"font-family: monospace;\">" + title_sutotal + "</td><td align=\"right\" style=\"font-family: monospace;\"><strong style=\"font-family: monospace;\">" + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(order.getBaseSubtotalInclTax())) + "</strong></td></tr>";
         String body_content_earn_point = "";
-        if(order.getRewardPointsEarn() != 0){
+        if (order.getRewardPointsEarn() != 0) {
             body_content_earn_point = "<tr><td style=\"font-family: monospace;\">" + title_earn_point + "</td><td align=\"right\" style=\"font-family: monospace;\"><strong style=\"font-family: monospace;\">" + order.getRewardPointsEarn() + " " + title_points + "</strong></td></tr>";
         }
         String body_content_spend_point = "";
-        if(order.getRewardPointsSpent() != 0){
+        if (order.getRewardPointsSpent() != 0) {
             body_content_spend_point = "<tr><td style=\"font-family: monospace;\">" + title_spent_point + "</td><td align=\"right\" style=\"font-family: monospace;\"><strong style=\"font-family: monospace;\">" + order.getRewardPointsSpent() + " " + title_points + "</strong></td></tr>";
         }
-        String body_content_total_shipping = "<tr><td style=\"font-family: monospace;\">" + title_shipping + "</td><td align=\"right\" style=\"font-family: monospace;\"><strong style=\"font-family: monospace;\">" + ConfigUtil.formatPrice(order.getShippingAmount()) + "</strong></td></tr>";
-        String body_content_total_tax = "<tr><td style=\"font-family: monospace;\">" + title_tax + "</td><td align=\"right\" style=\"font-family: monospace;\"><strong style=\"font-family: monospace;\">" + ConfigUtil.formatPrice(order.getTaxAmount()) + "</strong></td></tr>";
-        String body_content_total_discount = "<tr><td style=\"font-family: monospace;\">" + title_discount + "</td><td align=\"right\" style=\"font-family: monospace;\"><strong style=\"font-family: monospace;\">" + ConfigUtil.formatPrice(order.getDiscountAmount()) + "</strong></td></tr>";
+        String body_content_total_shipping = "<tr><td style=\"font-family: monospace;\">" + title_shipping + "</td><td align=\"right\" style=\"font-family: monospace;\"><strong style=\"font-family: monospace;\">" + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(order.getBaseShippingInclTax())) + "</strong></td></tr>";
+        String body_content_total_tax = "<tr><td style=\"font-family: monospace;\">" + title_tax + "</td><td align=\"right\" style=\"font-family: monospace;\"><strong style=\"font-family: monospace;\">" + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(order.getBaseTaxAmount())) + "</strong></td></tr>";
+        String body_content_total_discount = "<tr><td style=\"font-family: monospace;\">" + title_discount + "</td><td align=\"right\" style=\"font-family: monospace;\"><strong style=\"font-family: monospace;\">" + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(order.getBaseDiscountAmount())) + "</strong></td></tr>";
         String body_content_giftcard_discount = "";
-        if(order.getGiftVoucherDiscount() != 0){
-            body_content_giftcard_discount = "<tr><td style=\"font-family: monospace;\">" + title_giftcard_discount + "</td><td align=\"right\" style=\"font-family: monospace;\"><strong style=\"font-family: monospace;\">" + ConfigUtil.formatPrice(order.getGiftVoucherDiscount()) + "</strong></td></tr>";
+        if (order.getGiftVoucherDiscount() != 0) {
+            body_content_giftcard_discount = "<tr><td style=\"font-family: monospace;\">" + title_giftcard_discount + "</td><td align=\"right\" style=\"font-family: monospace;\"><strong style=\"font-family: monospace;\">" + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(order.getBaseGiftVoucherDiscount())) + "</strong></td></tr>";
         }
         String body_content_reward_discount = "";
-        if(order.getRewardPointsDiscount() != 0){
-            body_content_reward_discount = "<tr><td style=\"font-family: monospace;\">" + title_reward_discount + "</td><td align=\"right\" style=\"font-family: monospace;\"><strong style=\"font-family: monospace;\">" + ConfigUtil.formatPrice(order.getRewardPointsDiscount()) + "</strong></td></tr>";
+        if (order.getRewardPointsDiscount() != 0) {
+            body_content_reward_discount = "<tr><td style=\"font-family: monospace;\">" + title_reward_discount + "</td><td align=\"right\" style=\"font-family: monospace;\"><strong style=\"font-family: monospace;\">" + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(order.getRewardPointsBaseDiscount())) + "</strong></td></tr>";
         }
-        String body_content_grandtotal = "<tr><td style=\"font-family: monospace;\">" + title_grandtotal + "</td><td align=\"right\" style=\"font-family: monospace;\"><strong style=\"font-family: monospace;\">" + ConfigUtil.formatPrice(order.getGrandTotal()) + "</strong></td></tr>";
-        String body_content_total_paid = "<tr><td style=\"font-family: monospace;\">" + title_total_paid + "</td><td align=\"right\" style=\"font-family: monospace;\"><strong style=\"font-family: monospace;\">" + ConfigUtil.formatPrice(order.getTotalPaid()) + "</strong></td></tr>";
-        String body_content_total_due = "<tr><td style=\"font-family: monospace;\">" + title_total_due + "</td><td align=\"right\" style=\"font-family: monospace;\"><strong style=\"font-family: monospace;\">" + ConfigUtil.formatPrice(order.getTotalDue()) + "</strong></td></tr>";
+        String body_content_grandtotal = "<tr><td style=\"font-family: monospace;\">" + title_grandtotal + "</td><td align=\"right\" style=\"font-family: monospace;\"><strong style=\"font-family: monospace;\">" + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(order.getBaseGrandTotal())) + "</strong></td></tr>";
+        String body_content_total_paid = "<tr><td style=\"font-family: monospace;\">" + title_total_paid + "</td><td align=\"right\" style=\"font-family: monospace;\"><strong style=\"font-family: monospace;\">" + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(order.getBaseTotalPaid())) + "</strong></td></tr>";
+        String body_content_total_due = "<tr><td style=\"font-family: monospace;\">" + title_total_due + "</td><td align=\"right\" style=\"font-family: monospace;\"><strong style=\"font-family: monospace;\">" + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(order.getTotalDue())) + "</strong></td></tr>";
         String body_content_line = "<tr><td style=\"border-top: dashed 1px #000;padding:2px 0px; font-family: monospace;\"></td><td style=\"border-top: dashed 1px #000;padding:2px 0px; font-family: monospace;\"></td></tr>";
         // payment
         String body_content_payment = "";
         List<OrderWebposPayment> listPayment = order.getWebposOrderPayments();
         if (listPayment != null && listPayment.size() > 0) {
             for (OrderWebposPayment payment : listPayment) {
-                body_content_payment += "<tr><td style=\"font-family: monospace;\">" + payment.getMethodTitle() + "</td><td align=\"right\" style=\"font-family: monospace;\"><strong style=\"font-family: monospace;\">" + ConfigUtil.formatPrice(payment.getDisplayAmount()) + "</strong></td></tr>";
+                body_content_payment += "<tr><td style=\"font-family: monospace;\">" + payment.getMethodTitle() + "</td><td align=\"right\" style=\"font-family: monospace;\"><strong style=\"font-family: monospace;\">" + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(payment.getBaseDisplayAmount())) + "</strong></td></tr>";
             }
         }
         // change
         String body_content_change = "";
         String title_total_change = context.getString(R.string.order_detail_bottom_tb_total_change).toUpperCase();
-        float total_change = order.getWebposChange();
+        float total_change = order.getWebposBaseChange();
         if (total_change > 0) {
-            body_content_change = "<tr><td style=\"font-family: monospace;\">" + title_total_change + "</td><td align=\"right\" style=\"font-family: monospace;\"><strong style=\"font-family: monospace;\">" + ConfigUtil.formatPrice(total_change) + "</strong></td></tr>";
+            body_content_change = "<tr><td style=\"font-family: monospace;\">" + title_total_change + "</td><td align=\"right\" style=\"font-family: monospace;\"><strong style=\"font-family: monospace;\">" + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(total_change)) + "</strong></td></tr>";
         }
         String body_content_total = "<tbody style=\"display: table-row-group;\">" + body_content_total_subtotal + body_content_earn_point + body_content_spend_point + body_content_total_shipping + body_content_total_tax + body_content_total_discount + body_content_giftcard_discount + body_content_reward_discount + body_content_grandtotal + body_content_total_paid + body_content_total_due + body_content_line + body_content_payment + body_content_change + "</tbody>";
         String body_content_totals = "<div style=\"font-size: 13px; display: block; font-family: monospace; margin-bottom: 7px;\"><table style=\"width: 100%;\">" + body_content_total + "</table></div>";

@@ -32,7 +32,7 @@ public class PluginRewardPointPanel extends AbstractDetailPanel<RewardPoint> {
     CheckoutListController mCheckoutListController;
     RewardPoint mRewardPoint;
     EditTextFloat reward_point_value;
-    Switch cb_use_max_credit;
+    CheckBox cb_use_max_credit;
     Button bt_apply;
     RelativeLayout rl_remove_reward_point;
     TextView tv_reward_point;
@@ -59,7 +59,7 @@ public class PluginRewardPointPanel extends AbstractDetailPanel<RewardPoint> {
         tv_reward_point = (TextView) findViewById(R.id.tv_reward_point);
         tv_reward_point.setText(getContext().getString(R.string.plugin_reward_point_title, "0"));
         reward_point_value = (EditTextFloat) findViewById(R.id.reward_point_value);
-        cb_use_max_credit = (Switch) findViewById(R.id.cb_use_max_credit);
+        cb_use_max_credit = (CheckBox) findViewById(R.id.cb_use_max_credit);
         bt_apply = (Button) findViewById(R.id.bt_apply);
         bt_apply.setBackground(getResources().getDrawable(R.drawable.backgound_buton_apply_enable));
         bt_apply.setTextColor(ContextCompat.getColor(getContext(), R.color.white));

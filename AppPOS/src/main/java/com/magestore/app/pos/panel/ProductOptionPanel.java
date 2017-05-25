@@ -949,7 +949,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                         optionValueModelView.id = optionValueModelView.title;
                         optionValueModelView.choose = !StringUtil.STRING_EMPTY.equals(optionValueModelView.id);
                         updateCartItemPrice();
-                        mBinding.idTxtProductOptionCartItemPrice.setText(ConfigUtil.formatPrice(getItem().getPrice()));
+                        mBinding.idTxtProductOptionCartItemPrice.setText(ConfigUtil.formatPriceProduct(getItem().getPrice()));
                     } else {
                         // fill giá trị vào, nguyên số để edit, bỏ ký tự tiền
 //                        optionValueModelView.holder.mtxtField.selectAll();
@@ -977,7 +977,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                         optionModelView.quantity = ConfigUtil.parseFloat(ConfigUtil.truncateFloatDigit(optionValueModelView.holder.mtxtQuantity.getText().toString()));
                         if (optionModelView.quantity < 1) optionModelView.quantity = 1;
                         updateCartItemPrice();
-                        mBinding.idTxtProductOptionCartItemPrice.setText(ConfigUtil.formatPrice(getItem().getPrice()));
+                        mBinding.idTxtProductOptionCartItemPrice.setText(ConfigUtil.formatPriceProduct(getItem().getPrice()));
 //                                expandableListAdapter.notifyDataSetChanged();
 //                                mBinding.setCartItem(getItem());
 //                                optionValueModelView.holder.mtxtQuantity.setText(ConfigUtil.formatNumber(optionModelView.quantity));
@@ -1039,7 +1039,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
 
             // tính toán cập nhật lại giá
             updateCartItemPrice();
-            mBinding.idTxtProductOptionCartItemPrice.setText(ConfigUtil.formatPrice(getItem().getPrice()));
+            mBinding.idTxtProductOptionCartItemPrice.setText(ConfigUtil.formatPriceProduct(getItem().getPrice()));
 
             // cập nhật hiển thị option
             expandableListAdapter.notifyDataSetChanged();
@@ -1054,7 +1054,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
 
             // tính toán cập nhật lại giá
             updateCartItemPrice();
-            mBinding.idTxtProductOptionCartItemPrice.setText(ConfigUtil.formatPrice(getItem().getPrice()));
+            mBinding.idTxtProductOptionCartItemPrice.setText(ConfigUtil.formatPriceProduct(getItem().getPrice()));
 
             // cập nhật hiển thị option
             expandableListAdapter.notifyDataSetChanged();
@@ -1085,7 +1085,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
 
             // cập nhật lại giá
             updateCartItemPrice();
-            mBinding.idTxtProductOptionCartItemPrice.setText(ConfigUtil.formatPrice(getItem().getPrice()));
+            mBinding.idTxtProductOptionCartItemPrice.setText(ConfigUtil.formatPriceProduct(getItem().getPrice()));
         }
 
         /**

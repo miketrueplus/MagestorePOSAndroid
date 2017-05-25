@@ -114,6 +114,31 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_setting_print"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/layout_margin_20">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/welcome_border_linear_layout"
+                android:padding="@dimen/layout_margin_5">
+
+                <com.magestore.app.lib.view.SimpleSpinner
+                    android:id="@+id/sp_print"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:enabled="false"
+                    android:textSize="@dimen/welcome_text_size"
+                    magestore_view:layout_no_scroll="true"
+                    magestore_view:layout_row="@layout/simple_textview_row" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/ll_setting_currency"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

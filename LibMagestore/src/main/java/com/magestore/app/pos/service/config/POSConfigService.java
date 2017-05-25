@@ -99,9 +99,7 @@ public class POSConfigService extends AbstractService implements ConfigService {
     private DecimalFormat currencyFormat(ConfigPriceFormat priceFormat) {
         // khởi tạo currency format
         String pattern = (priceFormat.getPattern().indexOf(StringUtil.STRING_CURRENCY) == 0) ? "¤¤ ###,##0.0" : "###,##0.0 ¤¤";
-
-        Locale locale = new Locale("en", "UK");
-        DecimalFormatSymbols symbols = new DecimalFormatSymbols(locale);
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.getDefault());
         symbols.setDecimalSeparator(priceFormat.getDecimalSymbol().charAt(0));
         symbols.setGroupingSeparator(priceFormat.getGroupSymbol().charAt(0));
 
@@ -134,8 +132,7 @@ public class POSConfigService extends AbstractService implements ConfigService {
     private DecimalFormat currencyNosymbolFormat(ConfigPriceFormat priceFormat) {
         // khởi tạo currency format
         String pattern = "###,###.#";
-        Locale locale = new Locale("en", "UK");
-        DecimalFormatSymbols symbols = new DecimalFormatSymbols(locale);
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.getDefault());
         symbols.setDecimalSeparator(priceFormat.getDecimalSymbol().charAt(0));
         symbols.setGroupingSeparator(priceFormat.getGroupSymbol().charAt(0));
         DecimalFormat currencyFormat = new DecimalFormat(pattern, symbols);
@@ -160,8 +157,7 @@ public class POSConfigService extends AbstractService implements ConfigService {
     private DecimalFormat floatFormat(ConfigPriceFormat priceFormat) {
         // khởi tạo float format
         String pattern = "###,###.#";
-        Locale locale = new Locale("en", "UK");
-        DecimalFormatSymbols symbols = new DecimalFormatSymbols(locale);
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.getDefault());
         symbols.setDecimalSeparator(priceFormat.getDecimalSymbol().charAt(0));
         symbols.setGroupingSeparator(priceFormat.getGroupSymbol().charAt(0));
         DecimalFormat format = new DecimalFormat(pattern, symbols);
@@ -186,8 +182,8 @@ public class POSConfigService extends AbstractService implements ConfigService {
     private DecimalFormat integetFormat(ConfigPriceFormat priceFormat) {
         // khởi tạo interger format
         String pattern = "###,###";
-        Locale locale = new Locale("en", "UK");
-        DecimalFormatSymbols symbols = new DecimalFormatSymbols(locale);
+        Locale locale = new Locale("vi", "VN");
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.getDefault());
         symbols.setGroupingSeparator(priceFormat.getGroupSymbol().charAt(0));
         DecimalFormat format = new DecimalFormat(pattern, symbols);
         format.setGroupingSize(priceFormat.getGroupLength());
@@ -357,6 +353,7 @@ public class POSConfigService extends AbstractService implements ConfigService {
     }
 
     public static String SETTING_ACCOUNT = "My Account";
+    public static String SETTING_PRINT = "Print";
     public static String SETTING_CURRENCY = "Currency";
     public static String SETTING_STORE = "Store";
 
@@ -369,14 +366,19 @@ public class POSConfigService extends AbstractService implements ConfigService {
         accountSetting.setType(0);
         settingList.add(accountSetting);
 
+        Setting printSetting = new PosSetting();
+        printSetting.setName(SETTING_PRINT);
+        printSetting.setType(1);
+        settingList.add(printSetting);
+
         Setting currencySetting = new PosSetting();
         currencySetting.setName(SETTING_CURRENCY);
-        currencySetting.setType(1);
+        currencySetting.setType(2);
         settingList.add(currencySetting);
 
         Setting storeSetting = new PosSetting();
         storeSetting.setName(SETTING_STORE);
-        storeSetting.setType(2);
+        storeSetting.setType(3);
         settingList.add(storeSetting);
 
         return settingList;

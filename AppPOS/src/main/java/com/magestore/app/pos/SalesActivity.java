@@ -25,6 +25,7 @@ import android.widget.RelativeLayout;
 
 import com.edwardvanraak.materialbarcodescanner.MaterialBarcodeScanner;
 import com.magestore.app.lib.context.MagestoreContext;
+import com.magestore.app.lib.model.catalog.Category;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.observ.GenericState;
 import com.magestore.app.lib.observ.SubjectObserv;
@@ -223,6 +224,8 @@ public class SalesActivity extends AbstractActivity
         mPluginRewardPointPanel = (PluginRewardPointPanel) mCheckoutDetailPanel.findViewById(R.id.rl_reward_point);
         // plugin store credit
         mPluginStoreCreditPanel = (PluginStoreCreditPanel) mCheckoutDetailPanel.findViewById(R.id.rl_store_credit);
+        // config print
+        ConfigUtil.setTypePrint(getString(R.string.print_type_receipt));
     }
 
     protected void initModel() {
@@ -563,6 +566,10 @@ public class SalesActivity extends AbstractActivity
     BroadcastReceiver receiver_data_setting = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            if (mCheckoutSuccessPanel.getVisibility() == View.VISIBLE || mCheckoutDetailPanel.getVisibility() == View.VISIBLE) {
+                mCheckoutListController.onBackTohome();
+            }
+            mProductListController.bindCategory((Category) null);
             mCheckoutListController.getView().notifyDataSetChanged();
             mCheckoutListController.updateTotal();
             mProductListPanel.notifyDataSetChanged();

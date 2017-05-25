@@ -111,8 +111,16 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
                 mCheckoutListController.updateMaxAmountStoreCredit(money);
                 mCheckoutListController.isEnableButtonAddPayment(totalValue > 0 ? true : false);
                 mCheckoutListController.isEnableCreateInvoice(false);
-                if(mCheckout.getStatus() == CheckoutListController.STATUS_CHECKOUT_PROCESSING){
-                    mCheckoutListController.changeTitlePlaceOrder(money == grand_total ? false : true);
+                if (mCheckoutListController.getSelectedItem().getStatus() == CheckoutListController.STATUS_CHECKOUT_PROCESSING) {
+                    if (money == grand_total) {
+                        if(mCheckoutListController.getListChoosePayment() != null && mCheckoutListController.getListChoosePayment().size() > 0){
+                            mCheckoutListController.changeTitlePlaceOrder(true);
+                        }else{
+                            mCheckoutListController.changeTitlePlaceOrder(false);
+                        }
+                    } else {
+                        mCheckoutListController.changeTitlePlaceOrder(true);
+                    }
                 }
             }
         }
@@ -146,7 +154,15 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
             mCheckoutListController.updateMaxAmountStoreCredit(money);
             mCheckoutListController.isEnableButtonAddPayment(totalValue > 0 ? true : false);
             mCheckoutListController.isEnableCreateInvoice(false);
-            mCheckoutListController.changeTitlePlaceOrder(money == grand_total ? false : true);
+            if (money == grand_total) {
+                if(mList.size() > 0){
+                    mCheckoutListController.changeTitlePlaceOrder(true);
+                }else{
+                    mCheckoutListController.changeTitlePlaceOrder(false);
+                }
+            } else {
+                mCheckoutListController.changeTitlePlaceOrder(true);
+            }
         }
         if (checkPaymentStoreCredit()) {
             mCheckoutListController.isShowPluginStoreCredit(false);

@@ -38,6 +38,8 @@ public interface Checkout extends Model {
 
     float getSubTotal();
     void setSubTotal(float total);
+    float getSubTotalView();
+    void setSubTotalView(float total);
 
     String getShippingTitle();
     void setShippingTitle(String strShippingTitle);
@@ -59,6 +61,9 @@ public interface Checkout extends Model {
 
     String getGrandTitle();
     void setGrandTitle(String strGrandTitle);
+
+    float getGrandTotalView();
+    void setGrandTotalView(float total);
 
     float getGrandTotal();
     void setGrandTotal(float total);

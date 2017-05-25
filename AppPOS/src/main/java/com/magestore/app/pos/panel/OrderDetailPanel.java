@@ -1,14 +1,22 @@
 package com.magestore.app.pos.panel;
 
+import android.annotation.TargetApi;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.PopupMenu;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -19,6 +27,7 @@ import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.model.sales.OrderUpdateQtyParam;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
+import com.magestore.app.pos.PrintDialogActivity;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.OrderHistoryListController;
 import com.magestore.app.pos.databinding.PanelOrderDetailBinding;
@@ -28,6 +37,7 @@ import com.magestore.app.pos.view.MagestoreDialog;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.StringUtil;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -142,9 +152,10 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         });
 
         btn_print.setOnClickListener(new OnClickListener() {
+            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View view) {
-                PrintUtil.doPrint(getContext(), mOrder);
+                actionPrint();
             }
         });
     }
@@ -379,7 +390,7 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
                         ((OrderHistoryListController) mController).doInputRefundByGiftCard(order);
                         ((OrderHistoryListController) mController).doInputRefund(order);
                         dialog.dismiss();
-                    }else if(ConfigUtil.isEnableStoreCredit()){
+                    } else if (ConfigUtil.isEnableStoreCredit()) {
                         if (mOrder.getStoreCreditRefund() <= mOrder.getMaxStoreCreditRefund()) {
                             if (order.getStoreCreditRefund() > 0) {
                                 ((OrderHistoryListController) mController).doInputRefundByCredit(order);
@@ -391,7 +402,7 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
                             // Tạo dialog và hiển thị
                             com.magestore.app.util.DialogUtil.confirm(getContext(), message, R.string.done);
                         }
-                    }else{
+                    } else {
                         ((OrderHistoryListController) mController).doInputRefund(order);
                     }
                 } else {
@@ -508,6 +519,47 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
                     dialog.dismiss();
                 }
 
+            }
+        });
+    }
+
+    private void actionPrint() {
+        final Dialog dialogPrint = new Dialog(getContext());
+        dialogPrint.setCancelable(true);
+        dialogPrint.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialogPrint.setFeatureDrawableAlpha(1, 1);
+        dialogPrint.setContentView(R.layout.print_preview);
+        WebView dialogWebView = (WebView) dialogPrint.findViewById(R.id.webview);
+        TextView bt_print = (TextView) dialogPrint.findViewById(R.id.dialog_save);
+        bt_print.setText(getContext().getString(R.string.print));
+        TextView dialog_cancel = (TextView) dialogPrint.findViewById(R.id.dialog_cancel);
+        dialog_cancel.setText(getContext().getString(R.string.cancel));
+        TextView dialog_title = (TextView) dialogPrint.findViewById(R.id.dialog_title);
+        dialog_title.setText(getContext().getString(R.string.checkout_order_id, mOrder.getIncrementId()));
+        dialogWebView.getSettings().setJavaScriptEnabled(true);
+        dialogWebView.getSettings().setLoadsImagesAutomatically(true);
+        dialogWebView.setDrawingCacheEnabled(true);
+        dialogWebView.buildDrawingCache();
+        dialogWebView.capturePicture();
+        PrintUtil.doPrint(getContext(), mOrder, dialogWebView);
+        dialogPrint.show();
+
+        dialog_cancel.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialogPrint.dismiss();
+            }
+        });
+
+        bt_print.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS + "/RetailerPOS/PrintOrder.pdf");
+                Intent printIntent = new Intent(getContext(),
+                        PrintDialogActivity.class);
+                printIntent.setDataAndType(Uri.fromFile(file), "application/pdf");
+                printIntent.putExtra("title", "");
+                getContext().startActivity(printIntent);
             }
         });
     }

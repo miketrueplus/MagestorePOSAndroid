@@ -56,11 +56,11 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
                         android:layout_alignParentLeft="true"
-                        android:paddingBottom="@dimen/layout_margin_10"
                         android:layout_marginLeft="@dimen/layout_margin_10"
                         android:layout_marginRight="@dimen/card_margin_bottom"
-                        android:textSize="@dimen/plugin_reward_point_earn_text_size"
+                        android:paddingBottom="@dimen/layout_margin_10"
                         android:textColor="@color/plugin_reward_point_earn_point_text_color"
+                        android:textSize="@dimen/plugin_reward_point_earn_text_size"
                         android:textStyle="italic"
                         android:visibility="@{checkout.getRewardPointEarnPointValue() != 0 ? View.VISIBLE : View.GONE}" />
 
@@ -150,7 +150,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="right"
-                            android:text="@{ConfigUtil.formatPriceProduct(checkout.getGrandTotal())}"
+                            android:text="@{ConfigUtil.formatPriceProduct(checkout.getGrandTotalView())}"
                             android:textColor="@color/text_color"
                             android:textSize="@dimen/sales_total_text_size"
                             android:textStyle="bold" />
@@ -183,7 +183,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="right"
-                            android:text="@{ConfigUtil.formatPriceProduct(checkout.getShippingTotal())}"
+                            android:text="@{ConfigUtil.formatPrice(checkout.getShippingTotal())}"
                             android:textColor="@color/text_color"
                             android:textSize="@dimen/sales_price_text_size" />
                     </LinearLayout>
@@ -196,6 +196,7 @@
                         bind:checkout="@{checkout}" />
 
                     <LinearLayout
+                        android:id="@+id/ll_sales_tax"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
@@ -216,7 +217,7 @@
                             android:layout_alignParentRight="true"
                             android:layout_weight="1"
                             android:gravity="right"
-                            android:text="@{ConfigUtil.formatPriceProduct(checkout.getTaxTotal())}"
+                            android:text="@{ConfigUtil.formatPrice(checkout.getTaxTotal())}"
                             android:textColor="@color/text_color"
                             android:textSize="@dimen/sales_price_text_size" />
                     </LinearLayout>
@@ -266,7 +267,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="right"
-                            android:text="@{ConfigUtil.formatPriceProduct(checkout.getSubTotal())}"
+                            android:text="@{ConfigUtil.formatPriceProduct(checkout.getSubTotalView())}"
                             android:textColor="@color/text_color"
                             android:textSize="@dimen/sales_price_text_size" />
                     </LinearLayout>

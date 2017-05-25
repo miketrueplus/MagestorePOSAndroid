@@ -43,6 +43,7 @@ public class ConfigUtil {
     private static boolean mEnableRewardPoint;
     private static boolean mEnableGiftCard;
     private static List<ConfigTaxClass> mConfigTaxClass;
+    private static String mTypePrint;
 
     /**
      * @param format
@@ -617,5 +618,13 @@ public class ConfigUtil {
 
     public static List<ConfigTaxClass> getConfigTaxClass() {
         return mConfigTaxClass;
+    }
+
+    public static void setTypePrint(String mTypePrint) {
+        ConfigUtil.mTypePrint = mTypePrint;
+    }
+
+    public static String getTypePrint() {
+        return mTypePrint;
     }
 }

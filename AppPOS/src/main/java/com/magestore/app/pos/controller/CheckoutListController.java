@@ -1820,6 +1820,10 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         }
     }
 
+    public List<CheckoutPayment> getListChoosePayment(){
+        return (List<CheckoutPayment>) wraper.get("list_payment");
+    }
+
     /**
      * ẩn hiện button remove discount
      *

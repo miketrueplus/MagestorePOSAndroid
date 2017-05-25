@@ -26,6 +26,7 @@ import com.magestore.app.pos.panel.CustomerDetailPanel;
 import com.magestore.app.pos.panel.ProductOptionPanel;
 import com.magestore.app.pos.util.DialogUtil;
 import com.magestore.app.pos.view.MagestoreDialog;
+import com.magestore.app.util.ConfigUtil;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -179,9 +180,12 @@ public class CartItemListController extends AbstractChildListController<Checkout
      * Cập nhật lại phần tính giá tiền, discount và tax
      */
     public void updateTotalPrice() {
-        mCartService.calculateLastTotal(getParent());
+        Checkout checkout = getParent();
+        mCartService.calculateLastTotal(checkout);
+        checkout.setGrandTotalView(checkout.getGrandTotal());
+        checkout.setSubTotalView(checkout.getSubTotal());
         // check button discount
-        mCheckoutListController.showButtonDiscount(getParent().getGrandTotal() != 0 ? true : false);
+        mCheckoutListController.showButtonDiscount(checkout.getGrandTotal() != 0 ? true : false);
 
         // thông báo sự kiện update tổng giá
         GenericState<ListController> state = new GenericState<ListController>(this, STATE_ON_UPDATE_CART_ITEM);
