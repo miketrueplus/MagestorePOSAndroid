@@ -1,6 +1,7 @@
 package com.magestore.app.pos.model.catalog;
 
 import com.magestore.app.pos.model.PosAbstractModel;
+import com.magestore.app.util.ConfigUtil;
 
 /**
  * Created by Mike on 2/16/2017.
@@ -33,6 +34,6 @@ public class PosProductOptionJsonConfigOptionPrice extends PosAbstractModel {
     }
 
     public void setFinalPrice(float finalPrice) {
-        this.finalPrice = finalPrice;
+        this.finalPrice = ConfigUtil.convertToBasePrice(finalPrice);
     }
 }
