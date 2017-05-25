@@ -17,6 +17,7 @@ import com.magestore.app.lib.model.sales.OrderShipmentTrackParams;
 import com.magestore.app.lib.model.sales.OrderStatus;
 import com.magestore.app.lib.model.sales.OrderTakePaymentParam;
 import com.magestore.app.lib.model.sales.OrderUpdateQtyParam;
+import com.magestore.app.lib.model.sales.OrderWebposPayment;
 import com.magestore.app.lib.service.ListService;
 import com.magestore.app.lib.service.Service;
 
@@ -90,6 +91,8 @@ public interface OrderHistoryService extends Service, ListService<Order> {
     OrderUpdateQtyParam createOrderUpdateQtyParam();
 
     OrderItemUpdateQtyParam createOrderItemUpdateQtyParam();
+
+    OrderWebposPayment createOrderWebposPayment();
 
     void setTotalOrder(Order newOrder, Order oldOrder);
 

@@ -10,10 +10,17 @@ import com.magestore.app.lib.model.Model;
 
 public interface OrderWebposPayment extends Model {
     float getBasePaymentAmount();
+    void setBasePaymentAmount(float fBasePaymentAmount);
     float getPaymentAmount();
+    void setPaymentAmount(float fPaymentAmount);
     float getBaseDisplayAmount();
+    void setBaseDisplayAmount(float fBaseDisplayAmount);
     float getDisplayAmount();
+    void setDisplayAmount(float fDisplayAmount);
     String getMethod();
+    void setMethod(String strMethod);
     String getMethodTitle();
+    void setMethodTitle(String strMethodTitle);
     String getOrderId();
+    void setOrderId(String strOrderId);
 }
