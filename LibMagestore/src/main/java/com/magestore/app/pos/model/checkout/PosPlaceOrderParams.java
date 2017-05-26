@@ -22,6 +22,7 @@ public class PosPlaceOrderParams extends PosAbstractModel implements PlaceOrderP
     PlaceOrderPaymentParam payment;
     List<PlaceOrderExtensionParam> extension_data;
     List<PlaceOrderIntegrationParam> integration;
+    String shipping_method = "";
 
     @Override
     public void setQuoteId(String strQuoteId) {
