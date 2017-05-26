@@ -15,33 +15,29 @@ import com.magestore.app.util.ConfigUtil;
  * mike@trueplus.vn
  */
 
-public class EditTextDecimal extends EditText {
+public class EditTextPrice extends EditText {
     String mValue;
-    float mintMinValue;
-    float mintMaxValue;
-    boolean mblnHaveMinValue;
-    boolean mblnHaveMaxValue;
 
-    public EditTextDecimal(Context context) {
+    public EditTextPrice(Context context) {
         super(context);
         initModel();
         initEvent();
     }
 
-    public EditTextDecimal(Context context, AttributeSet attrs) {
+    public EditTextPrice(Context context, AttributeSet attrs) {
         super(context, attrs);
         initModel();
         initEvent();
     }
 
-    public EditTextDecimal(Context context, AttributeSet attrs, int defStyle) {
+    public EditTextPrice(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         initModel();
         initEvent();
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public EditTextDecimal(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public EditTextPrice(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         initModel();
         initEvent();
@@ -71,6 +67,14 @@ public class EditTextDecimal extends EditText {
 //    }
 //
 
+    public void setMinValue(float flMin) {
+
+    }
+
+    public void setMaxValue(float flMax) {
+
+    }
+
     public String getValue() {
         return ConfigUtil.truncateFloatDigit(getText().toString());
     }
@@ -88,46 +92,6 @@ public class EditTextDecimal extends EditText {
     }
 
     /**
-     * Tăng giá trị
-     * @param addValue
-     */
-    public void add(float addValue) {
-        float value = ConfigUtil.parseFloat(super.getText().toString());
-        value += addValue;
-        if (mblnHaveMaxValue && value > mintMaxValue) return;
-        setText(ConfigUtil.formatQuantity(value));
-    }
-
-    /**
-     * Trừ giá trị
-     * @param addValue
-     */
-    public void substract(float addValue) {
-        float value = ConfigUtil.parseFloat(super.getText().toString());
-        value -= addValue;
-        if (mblnHaveMinValue && value < mintMinValue) return;
-        setText(ConfigUtil.formatQuantity(value));
-    }
-
-    /**
-     * Đặt giá trị min
-     * @param minValue
-     */
-    public void setMinValue(float minValue) {
-        mintMinValue = minValue;
-        mblnHaveMinValue = true;
-    }
-
-    /**
-     * Đặt giá trị max
-     * @param maxValue
-     */
-    public void setMaxValue(int maxValue) {
-        mintMaxValue = maxValue;
-        mblnHaveMaxValue = true;
-    }
-
-    /**
      * Chuẩn bị các sự kiện
      */
     protected void initEvent() {
@@ -135,11 +99,9 @@ public class EditTextDecimal extends EditText {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-                    // lấy giá trị trong ô text, căn lại giữa max và min
-                    float value = ConfigUtil.parseFloat(ConfigUtil.truncateFloatDigit(getText().toString()));
-                    if (mblnHaveMinValue && value < mintMinValue) value = mintMinValue;
-                    if (mblnHaveMaxValue && value > mintMaxValue) value = mintMaxValue;
-                    setText(ConfigUtil.formatQuantity(value));
+                    // lấy giá trị trong ô text,
+//                    getItem().setUnitPrice(ConfigUtil.parseFloatCurrencyFromEdit(DecimalEditText.super.getText().toString().replaceAll("[^" + ConfigUtil.getPriceDigit() + "]", "")));
+                    setText(ConfigUtil.formatFloat(ConfigUtil.truncateFloatDigit(getText().toString())));
                     clearFocus();
                 } else {
                     // fill giá trị vào, nguyên số để edit, bỏ ký tự tiền

@@ -288,6 +288,8 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     String offline_item_id;
     @Gson2PosExclude
     float unit_price;
+    @Gson2PosExclude
+    float price_show_view;
 
 
     public static final String TYPE_NORMAL = "type_normal";
@@ -464,6 +466,16 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     @Override
     public float getBaseOriginalPrice() {
         return base_original_price;
+    }
+
+    @Override
+    public float getPriceShowView() {
+        return price_show_view;
+    }
+
+    @Override
+    public void setPriceShowView(float fPriceShowView) {
+        price_show_view = fPriceShowView;
     }
 
     @Override

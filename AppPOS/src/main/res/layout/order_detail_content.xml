@@ -191,21 +191,58 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:layout_marginBottom="@dimen/layout_margin_5"
-                            android:layout_marginLeft="@dimen/layout_margin_10"
+                            android:layout_marginLeft="@dimen/layout_margin_5"
                             android:layout_marginRight="@dimen/layout_margin_5"
                             android:layout_marginTop="@dimen/layout_margin_5"
                             android:orientation="vertical">
 
-                            <com.magestore.app.pos.panel.OrderPaymentListPanel
-                                android:id="@+id/order_payment"
+                            <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1.0"
-                                magestore_view:layout_item="@layout/card_order_payment_content"
-                                magestore_view:layout_list="@+id/order_payment_list"
-                                magestore_view:layout_no_scroll="true"
-                                magestore_view:layout_panel="@layout/panel_order_payment_list" />
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
 
+                                <com.magestore.app.pos.panel.OrderPaymentListPanel
+                                    android:id="@+id/order_payment"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="@dimen/layout_margin_10"
+                                    magestore_view:layout_item="@layout/card_order_payment_content"
+                                    magestore_view:layout_list="@+id/order_payment_list"
+                                    magestore_view:layout_no_scroll="true"
+                                    magestore_view:layout_panel="@layout/panel_order_payment_list" />
+
+                                <LinearLayout
+                                    android:id="@+id/ll_payment_later"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/layout_margin_5"
+                                    android:orientation="vertical"
+                                    android:visibility="gone">
+
+                                    <View
+                                        android:layout_width="match_parent"
+                                        android:layout_height="@dimen/line"
+                                        android:background="@color/line" />
+
+                                    <TextView
+                                        android:id="@+id/payment_later"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_margin="@dimen/layout_margin_5"
+                                        android:text="@string/order_detail_content_payment_pay_later"
+                                        android:textColor="@color/text_color"
+                                        android:textSize="@dimen/text_size" />
+
+                                    <com.magestore.app.pos.panel.OrderPaymentLaterListPanel
+                                        android:id="@+id/order_payment_later"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/layout_margin_10"
+                                        android:layout_marginTop="@dimen/layout_margin_5"
+                                        magestore_view:layout_no_scroll="true"
+                                        magestore_view:layout_row="@layout/card_order_payment_later_content" />
+                                </LinearLayout>
+                            </LinearLayout>
                         </FrameLayout>
                     </LinearLayout>
 

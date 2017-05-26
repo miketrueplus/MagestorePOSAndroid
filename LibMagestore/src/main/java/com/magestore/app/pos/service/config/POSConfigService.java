@@ -7,6 +7,7 @@ import com.magestore.app.lib.model.config.Config;
 import com.magestore.app.lib.model.config.ConfigCountry;
 import com.magestore.app.lib.model.config.ConfigPriceFormat;
 import com.magestore.app.lib.model.config.ConfigPrint;
+import com.magestore.app.lib.model.config.ConfigQuantityFormat;
 import com.magestore.app.lib.model.config.ConfigTaxClass;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.directory.Currency;
@@ -70,6 +71,7 @@ public class POSConfigService extends AbstractService implements ConfigService {
         ConfigUtil.setCurrencyNoSymbolFormat(getPriceNosymbolFormat());
         ConfigUtil.setFloatFormat(getFloatFormat());
         ConfigUtil.setIntegerFormat(getIntegerFormat());
+        ConfigUtil.setQuantityFormat(getQuantityFormat());
         ConfigUtil.setConfigPrint(getConfigPrint());
         ConfigUtil.setStaff(getStaff());
         ConfigUtil.setCustomerGuest(getGuestCheckout());
@@ -179,6 +181,17 @@ public class POSConfigService extends AbstractService implements ConfigService {
         return integetFormat(priceFormat);
     }
 
+    @Override
+    public DecimalFormat getQuantityFormat() throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        // khởi tạo config data access
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
+
+        // lấy config
+        ConfigQuantityFormat quantityFormat = configDataAccess.getQuantityFormat();
+        return quantityFormat(quantityFormat);
+    }
+
     private DecimalFormat integetFormat(ConfigPriceFormat priceFormat) {
         // khởi tạo interger format
         String pattern = "###,###";
@@ -187,6 +200,20 @@ public class POSConfigService extends AbstractService implements ConfigService {
         symbols.setGroupingSeparator(priceFormat.getGroupSymbol().charAt(0));
         DecimalFormat format = new DecimalFormat(pattern, symbols);
         format.setGroupingSize(priceFormat.getGroupLength());
+        return format;
+    }
+
+    private DecimalFormat quantityFormat(ConfigQuantityFormat quantityFormat) {
+        // khởi tạo interger format
+        // khởi tạo float format
+        String pattern = "###,###.#";
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.getDefault());
+        symbols.setDecimalSeparator(quantityFormat.getDecimalSymbol().charAt(0));
+        symbols.setGroupingSeparator(quantityFormat.getGroupSymbol().charAt(0));
+        DecimalFormat format = new DecimalFormat(pattern, symbols);
+        format.setGroupingSize(quantityFormat.getGroupLength());
+        format.setMaximumFractionDigits(quantityFormat.getPrecision());
+        format.setMinimumFractionDigits(0);
         return format;
     }
 

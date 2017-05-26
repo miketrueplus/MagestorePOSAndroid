@@ -16,8 +16,10 @@ import com.magestore.app.lib.panel.AbstractListPanel;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.OrderInvoiceItemsListController;
 import com.magestore.app.pos.databinding.CardOrderInvoiceItemContentBinding;
+import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.view.EditTextFloat;
 import com.magestore.app.view.EditTextInteger;
+import com.magestore.app.view.EditTextQuantity;
 
 import java.util.List;
 
@@ -76,13 +78,13 @@ public class OrderInvoiceItemsListPanel extends AbstractListPanel<CartItem> {
         CardOrderInvoiceItemContentBinding mBinding = DataBindingUtil.bind(view);
         mBinding.setOrderItem(item);
         CartItem cartItem = listItems.get(position);
-        EditTextFloat edt_qty_to_invoice = (EditTextFloat) view.findViewById(R.id.qty_to_invoice);
+        EditTextQuantity edt_qty_to_invoice = (EditTextQuantity) view.findViewById(R.id.qty_to_invoice);
         cartItem.setOrderItemId(cartItem.getItemId());
         cartItem.setQtyChange(item.QtyInvoice());
         actionQtyToInvoice(cartItem, edt_qty_to_invoice);
     }
 
-    private void actionQtyToInvoice(final CartItem item, final EditTextFloat qty_to_invoice) {
+    private void actionQtyToInvoice(final CartItem item, final EditTextQuantity qty_to_invoice) {
         qty_to_invoice.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -99,7 +101,7 @@ public class OrderInvoiceItemsListPanel extends AbstractListPanel<CartItem> {
                     qty = item.QtyInvoice();
                 }
                 if (qty_invoiced < 0 || qty_invoiced > qty) {
-                    qty_to_invoice.setText(String.valueOf(qty));
+                    qty_to_invoice.setText(ConfigUtil.formatQuantity(qty));
                     item.setQuantity(qty);
                     item.setQtyChange(qty);
                 } else {

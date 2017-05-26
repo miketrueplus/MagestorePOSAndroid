@@ -47,6 +47,7 @@ import com.magestore.app.pos.task.LoadProductImageTask;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.StringUtil;
 import com.magestore.app.view.EditTextDecimal;
+import com.magestore.app.view.EditTextQuantity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -81,7 +82,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
     ImageView mImageProductDetail;
 
     // text box số lượng
-    EditTextDecimal mtxtCartItemQuantity;
+    EditTextQuantity mtxtCartItemQuantity;
 
     /**
      * Khởi tạo
@@ -598,7 +599,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         expandableListView.setAdapter(expandableListAdapter);
 
         // text box số lượng
-        mtxtCartItemQuantity = (EditTextDecimal) findViewById(R.id.id_txt_product_option_cart_item_quantity);
+        mtxtCartItemQuantity = (EditTextQuantity) findViewById(R.id.id_txt_product_option_cart_item_quantity);
 
         // binding
         mBinding = DataBindingUtil.bind(getView());
@@ -804,6 +805,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         getItem().setUnitPrice(price);
         getItem().setCustomPrice(price);
         getItem().setDefaultCustomPrice(price);
+        getItem().setPriceShowView(price);
     }
 
     private String getConfigOptionProductID() {
@@ -962,7 +964,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
          * Chuẩn bị holder cho option value với kiểu quantity
          */
         private void initTypeQuantity(View convertView, final OptionValueModelView optionValueModelView) {
-            optionValueModelView.holder.mtxtQuantity = (EditTextDecimal) convertView
+            optionValueModelView.holder.mtxtQuantity = (EditTextQuantity) convertView
                     .findViewById(R.id.id_txt_product_option_quantity);
 
             final OptionModelView optionModelView = optionValueModelView.optionModelView;
@@ -1168,7 +1170,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                 optionValueModelView.holder.mtxtPrice.setText(ConfigUtil.formatPrice(optionValueModelView.price));
             }
             if (optionValueModelView.holder.mtxtQuantity != null) {
-                optionValueModelView.holder.mtxtQuantity.setText("" + optionModelView.quantity);
+                optionValueModelView.holder.mtxtQuantity.setText(ConfigUtil.formatQuantity(optionModelView.quantity));
             }
             if (optionValueModelView.holder.mradChoose != null) {
                 optionValueModelView.holder.mradChoose.setChecked(optionValueModelView.choose);
@@ -1279,7 +1281,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         public TextView mtxtDisplay;
         //        public TextView mtxtDisplaySub;
         public TextView mtxtPrice;
-        public EditTextDecimal mtxtQuantity;
+        public EditTextQuantity mtxtQuantity;
         public RadioButton mradChoose;
         public CheckBox mchkChoose;
         public EditText mtxtField;

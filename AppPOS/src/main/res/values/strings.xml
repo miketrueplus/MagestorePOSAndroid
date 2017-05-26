@@ -90,6 +90,7 @@
     <string name="order_detail_content_shipping_address">SHIPPING ADDRESS</string>
     <string name="order_detail_content_shipping_delivery">Delivery Time:</string>
     <string name="order_detail_content_payment_paid">PAID</string>
+    <string name="order_detail_content_payment_pay_later">PAY LATER</string>
     <string name="order_detail_content_comment_history">COMMENT HISTORY</string>
     <string name="order_detail_content_item_title_product">Product</string>
     <string name="order_detail_content_item_title_sku">Sku</string>
@@ -211,6 +212,7 @@
     <string name="plugin_order_detail_bottom_reward_earn">Earned Points</string>
     <string name="plugin_order_detail_bottom_reward_spend">Spent Points</string>
     <string name="plugin_order_detail_bottom_reward_discount">Points Discount</string>
+    <string name="plugin_order_detail_payment_content">Customer\'s Reward Points</string>
 
     <!--Print-->
     <string name="print_header_cashier">CASHIER:</string>

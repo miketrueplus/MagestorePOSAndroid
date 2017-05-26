@@ -69,7 +69,7 @@
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/product_detail_text_size" />
 
-                    <com.magestore.app.view.EditTextDecimal
+                    <com.magestore.app.view.EditTextQuantity
                         android:inputType="numberDecimal"
                         android:digits="0123456789.,"
                         android:id="@+id/id_txt_cart_item_detail_quantity"
@@ -188,7 +188,7 @@
                         android:digits="0123456789.,"
                         android:padding="@dimen/layout_margin_5"
                         android:selectAllOnFocus="true"
-                        android:text="@{ConfigUtil.formatNumber(ConfigUtil.convertToPrice(cartItem.getDiscountAmount()))}"
+                        android:text="@{ConfigUtil.formatNumber(cartItem.getDiscountAmount())}"
                         android:textAlignment="textEnd" />
 
                     <Button

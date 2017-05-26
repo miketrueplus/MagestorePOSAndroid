@@ -13,6 +13,7 @@ import com.magestore.app.lib.model.config.Config;
 import com.magestore.app.lib.model.config.ConfigCountry;
 import com.magestore.app.lib.model.config.ConfigPriceFormat;
 import com.magestore.app.lib.model.config.ConfigPrint;
+import com.magestore.app.lib.model.config.ConfigQuantityFormat;
 import com.magestore.app.lib.model.config.ConfigRegion;
 import com.magestore.app.lib.model.config.ConfigTaxClass;
 import com.magestore.app.lib.model.customer.Customer;
@@ -33,6 +34,7 @@ import com.magestore.app.pos.model.config.PosConfigCountry;
 import com.magestore.app.pos.model.config.PosConfigDefault;
 import com.magestore.app.pos.model.config.PosConfigPriceFormat;
 import com.magestore.app.pos.model.config.PosConfigPrint;
+import com.magestore.app.pos.model.config.PosConfigQuantityFormat;
 import com.magestore.app.pos.model.config.PosConfigRegion;
 import com.magestore.app.pos.model.config.PosConfigTaxClass;
 import com.magestore.app.pos.model.customer.PosCustomer;
@@ -510,6 +512,15 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
     }
 
     @Override
+    public ConfigQuantityFormat getQuantityFormat() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        if (mConfig == null) mConfig = new PosConfigDefault();
+
+        LinkedTreeMap priceFormat = (LinkedTreeMap) mConfig.getValue("priceFormat");
+
+        return getQuantityFormat(priceFormat);
+    }
+
+    @Override
     public ConfigPriceFormat getBasePriceFomat() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
         if (mConfig == null) mConfig = new PosConfigDefault();
 
@@ -786,5 +797,28 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         configPriceFormat.setCurrencySymbol(currencySymbol);
 
         return configPriceFormat;
+    }
+
+    private ConfigQuantityFormat getQuantityFormat(LinkedTreeMap quantityFormat) {
+        String currencySymbol = (String) mConfig.getValue("currentCurrencySymbol");
+        String pattern = quantityFormat.get("pattern").toString();
+        int precision = ((Double) quantityFormat.get("precision")).intValue();
+        int requiredPrecision = ((Double) quantityFormat.get("requiredPrecision")).intValue();
+        String decimalSymbol = quantityFormat.get("decimalSymbol").toString();
+        String groupSymbol = quantityFormat.get("groupSymbol").toString();
+        int groupLength = ((Double) quantityFormat.get("groupLength")).intValue();
+        int integerRequired = 0;
+
+        ConfigQuantityFormat configQuantityFormat = new PosConfigQuantityFormat();
+        configQuantityFormat.setPattern(pattern);
+        configQuantityFormat.setPrecision(precision);
+        configQuantityFormat.setRequirePrecision(requiredPrecision);
+        configQuantityFormat.setDecimalSymbol(decimalSymbol);
+        configQuantityFormat.setGroupSymbol(groupSymbol);
+        configQuantityFormat.setGroupLength(groupLength);
+        configQuantityFormat.setIntegerRequied(integerRequired);
+//        configQuantityFormat.setCurrencySymbol(currencySymbol);
+
+        return configQuantityFormat;
     }
 }

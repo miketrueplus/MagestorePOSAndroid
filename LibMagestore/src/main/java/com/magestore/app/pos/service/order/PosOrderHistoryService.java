@@ -20,6 +20,7 @@ import com.magestore.app.lib.model.sales.OrderShipmentTrackParams;
 import com.magestore.app.lib.model.sales.OrderStatus;
 import com.magestore.app.lib.model.sales.OrderTakePaymentParam;
 import com.magestore.app.lib.model.sales.OrderUpdateQtyParam;
+import com.magestore.app.lib.model.sales.OrderWebposPayment;
 import com.magestore.app.lib.resourcemodel.DataAccessFactory;
 import com.magestore.app.lib.resourcemodel.sales.OrderDataAccess;
 import com.magestore.app.lib.service.order.OrderHistoryService;
@@ -36,6 +37,7 @@ import com.magestore.app.pos.model.sales.PosOrderShipmentTrackParams;
 import com.magestore.app.pos.model.sales.PosOrderStatus;
 import com.magestore.app.pos.model.sales.PosOrderTakePaymentParam;
 import com.magestore.app.pos.model.sales.PosOrderUpdateQtyParam;
+import com.magestore.app.pos.model.sales.PosOrderWebposPayment;
 import com.magestore.app.pos.service.AbstractService;
 import com.magestore.app.util.ConfigUtil;
 
@@ -363,6 +365,11 @@ public class PosOrderHistoryService extends AbstractService implements OrderHist
     @Override
     public OrderItemUpdateQtyParam createOrderItemUpdateQtyParam() {
         return new PosOrderItemUpdateQtyParam();
+    }
+
+    @Override
+    public OrderWebposPayment createOrderWebposPayment() {
+        return new PosOrderWebposPayment();
     }
 
     @Override

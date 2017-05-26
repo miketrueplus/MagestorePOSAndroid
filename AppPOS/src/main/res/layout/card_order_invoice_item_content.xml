@@ -69,7 +69,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1.2"
-                    android:text='@{@string/order_detail_content_item_row_qty_ordered + " " + String.valueOf(orderItem.getQtyOrdered())}'
+                    android:text='@{@string/order_detail_content_item_row_qty_ordered + " " + ConfigUtil.formatQuantity(orderItem.getQtyOrdered())}'
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/order_content_table_text_size" />
 
@@ -83,14 +83,14 @@
                     android:orientation="vertical"
                     android:padding="@dimen/layout_margin_5">
 
-                    <com.magestore.app.view.EditTextFloat
+                    <com.magestore.app.view.EditTextQuantity
                         android:id="@+id/qty_to_invoice"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/white"
                         android:gravity="center_horizontal"
                         android:inputType="number"
-                        android:text="@{String.valueOf(orderItem.QtyInvoice())}"
+                        android:text="@{ConfigUtil.formatQuantity(orderItem.QtyInvoice())}"
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/order_content_table_text_size" />
                 </LinearLayout>

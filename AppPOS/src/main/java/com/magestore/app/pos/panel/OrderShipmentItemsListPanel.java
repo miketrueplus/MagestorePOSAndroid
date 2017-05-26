@@ -18,6 +18,7 @@ import com.magestore.app.pos.controller.OrderShipmentItemsListController;
 import com.magestore.app.pos.databinding.CardOrderShipmentItemContentBinding;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.view.EditTextFloat;
+import com.magestore.app.view.EditTextQuantity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,12 +69,12 @@ public class OrderShipmentItemsListPanel extends AbstractListPanel<CartItem> {
         CardOrderShipmentItemContentBinding mBinding = DataBindingUtil.bind(view);
         mBinding.setOrderItem(item);
 
-        EditTextFloat qty_to_ship = (EditTextFloat) view.findViewById(R.id.qty_to_ship);
+        EditTextQuantity qty_to_ship = (EditTextQuantity) view.findViewById(R.id.qty_to_ship);
         actionQtyToShip(item, qty_to_ship);
         item.setOrderItemId(item.getItemId());
     }
 
-    private void actionQtyToShip(final CartItem item, final EditTextFloat qty_to_ship) {
+    private void actionQtyToShip(final CartItem item, final EditTextQuantity qty_to_ship) {
         qty_to_ship.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -90,7 +91,7 @@ public class OrderShipmentItemsListPanel extends AbstractListPanel<CartItem> {
                 float qty_shipped = qty_to_ship.getValueFloat();
                 float qty = item.QtyShip();
                 if (qty_shipped < 0 || qty_shipped > qty) {
-                    qty_to_ship.setText(ConfigUtil.formatNumber(qty));
+                    qty_to_ship.setText(ConfigUtil.formatQuantity(qty));
                     item.setQuantity(qty);
                 } else {
                     item.setQuantity(qty_shipped);
