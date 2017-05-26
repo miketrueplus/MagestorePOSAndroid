@@ -199,7 +199,7 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
         item.setUnitPrice(mblnCustomPriceFixed ? ConfigUtil.convertToBasePrice(mtxtCustomPrice.getValueFloat()) : item.getOriginalPrice() * mtxtCustomPrice.getValueFloat() / 100);
         item.setUnitPrice(mblnCustomDiscountFixed ? item.getUnitPrice() - ConfigUtil.convertToBasePrice(mtxtCustomDiscount.getValueFloat()) : item.getUnitPrice() - (item.getUnitPrice() * mtxtCustomDiscount.getValueFloat() / 100));
         item.setQuantity(mtxtQuantity.getValueFloat());
-
+        item.setPriceShowView(item.getPrice());
         // đặt loại với custom price
         if (mblnCustomPriceFixed) item.setCustomPriceTypeFixed();
         else item.setCustomPriceTypePercent();

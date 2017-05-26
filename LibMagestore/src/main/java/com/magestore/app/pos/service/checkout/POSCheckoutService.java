@@ -437,6 +437,7 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
                     cartOld.getProduct().setIsSaveCart(true);
                     cartOld.setIsVirtual(cartNew.getIsVirtual());
                     cartOld.setQuantity(cartNew.getQuantity());
+                    cartOld.setPriceShowView(ConfigUtil.convertToBasePrice(cartNew.getPriceInclTax()));
                 }
             }
         }

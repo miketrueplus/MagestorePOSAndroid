@@ -20,6 +20,7 @@ import com.magestore.app.pos.controller.OrderRefundItemsListController;
 import com.magestore.app.pos.databinding.CardOrderRefundItemContentBinding;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.view.EditTextFloat;
+import com.magestore.app.view.EditTextQuantity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,7 +71,7 @@ public class OrderRefundItemsListPanel extends AbstractListPanel<CartItem> {
         CardOrderRefundItemContentBinding binding = DataBindingUtil.bind(view);
         binding.setOrderItem(item);
 
-        EditTextFloat edt_qty_to_refund = (EditTextFloat) view.findViewById(R.id.qty_to_refund);
+        EditTextQuantity edt_qty_to_refund = (EditTextQuantity) view.findViewById(R.id.qty_to_refund);
         CheckBox cb_return_to_stock = (CheckBox) view.findViewById(R.id.return_to_stock);
 
         actionQtyToRefund(item, edt_qty_to_refund);
@@ -78,7 +79,7 @@ public class OrderRefundItemsListPanel extends AbstractListPanel<CartItem> {
         actionReturnToStock(item, cb_return_to_stock);
     }
 
-    private void actionQtyToRefund(final CartItem item, final EditTextFloat qty_to_refund) {
+    private void actionQtyToRefund(final CartItem item, final EditTextQuantity qty_to_refund) {
         qty_to_refund.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {

@@ -188,7 +188,7 @@
                         android:digits="0123456789.,"
                         android:padding="@dimen/layout_margin_5"
                         android:selectAllOnFocus="true"
-                        android:text="@{ConfigUtil.formatNumber(ConfigUtil.convertToPrice(cartItem.getDiscountAmount()))}"
+                        android:text="@{ConfigUtil.formatNumber(cartItem.getDiscountAmount())}"
                         android:textAlignment="textEnd" />
 
                     <Button
