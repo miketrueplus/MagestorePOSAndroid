@@ -16,6 +16,7 @@ import com.magestore.app.lib.panel.AbstractListPanel;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.OrderInvoiceItemsListController;
 import com.magestore.app.pos.databinding.CardOrderInvoiceItemContentBinding;
+import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.view.EditTextFloat;
 import com.magestore.app.view.EditTextInteger;
 
@@ -99,7 +100,7 @@ public class OrderInvoiceItemsListPanel extends AbstractListPanel<CartItem> {
                     qty = item.QtyInvoice();
                 }
                 if (qty_invoiced < 0 || qty_invoiced > qty) {
-                    qty_to_invoice.setText(String.valueOf(qty));
+                    qty_to_invoice.setText(ConfigUtil.formatQuantity(qty));
                     item.setQuantity(qty);
                     item.setQtyChange(qty);
                 } else {

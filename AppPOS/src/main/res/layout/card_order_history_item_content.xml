@@ -87,7 +87,7 @@
                         android:id="@+id/qty_ordered"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text='@{@string/order_detail_content_item_row_qty_ordered + " " + String.valueOf(orderItem.getQtyOrdered())}'
+                        android:text='@{@string/order_detail_content_item_row_qty_ordered + " " + ConfigUtil.formatQuantity(orderItem.getQtyOrdered())}'
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/order_content_table_text_size" />
 
@@ -95,7 +95,7 @@
                         android:id="@+id/qty_invoiced"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text='@{@string/order_detail_content_item_row_qty_invoiced + " " + String.valueOf(orderItem.getQtyInvoiced())}'
+                        android:text='@{@string/order_detail_content_item_row_qty_invoiced + " " + ConfigUtil.formatQuantity(orderItem.getQtyInvoiced())}'
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/order_content_table_text_size"
                         android:visibility="@{orderItem.getQtyInvoiced() > 0 ? View.VISIBLE : View.GONE}" />
@@ -104,7 +104,7 @@
                         android:id="@+id/qty_shipped"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text='@{@string/order_detail_content_item_row_qty_shipped + " " + String.valueOf(orderItem.getQtyShipped())}'
+                        android:text='@{@string/order_detail_content_item_row_qty_shipped + " " + ConfigUtil.formatQuantity(orderItem.getQtyShipped())}'
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/order_content_table_text_size"
                         android:visibility="@{orderItem.getQtyShipped() > 0 ? View.VISIBLE : View.GONE}" />

@@ -90,7 +90,7 @@ public class OrderShipmentItemsListPanel extends AbstractListPanel<CartItem> {
                 float qty_shipped = qty_to_ship.getValueFloat();
                 float qty = item.QtyShip();
                 if (qty_shipped < 0 || qty_shipped > qty) {
-                    qty_to_ship.setText(ConfigUtil.formatNumber(qty));
+                    qty_to_ship.setText(ConfigUtil.formatQuantity(qty));
                     item.setQuantity(qty);
                 } else {
                     item.setQuantity(qty_shipped);

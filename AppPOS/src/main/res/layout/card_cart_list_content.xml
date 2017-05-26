@@ -82,7 +82,7 @@
                                 android:layout_marginTop="@dimen/layout_margin_2"
                                 android:background="@drawable/cart_quantity_border"
                                 android:gravity="center"
-                                android:text="@{String.valueOf(cartItem.getQuantity())}"
+                                android:text="@{ConfigUtil.formatQuantity(cartItem.getQuantity())}"
                                 android:textColor="@color/white" />
                         </RelativeLayout>
 

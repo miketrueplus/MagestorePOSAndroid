@@ -90,7 +90,7 @@ public class OrderRefundItemsListPanel extends AbstractListPanel<CartItem> {
                 float qty_refunded = qty_to_refund.getValueFloat();
                 float qty = item.QtyRefund();
                 if (qty_refunded < 0 || qty_refunded > qty) {
-                    qty_to_refund.setText(String.valueOf(qty));
+                    qty_to_refund.setText(ConfigUtil.formatQuantity(qty));
                     item.setQuantity(qty);
                 } else {
                     item.setQuantity(qty_refunded);

@@ -64,7 +64,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
-                    android:text="@{String.valueOf(orderItem.QtyRefund())}" />
+                    android:text="@{ConfigUtil.formatQuantity(orderItem.QtyRefund())}" />
 
 
                 <LinearLayout
@@ -83,7 +83,7 @@
                         android:background="@color/white"
                         android:gravity="center_horizontal"
                         android:inputType="number"
-                        android:text="@{String.valueOf(orderItem.QtyRefund())}" />
+                        android:text="@{ConfigUtil.formatQuantity(orderItem.QtyRefund())}" />
                 </LinearLayout>
 
                 <LinearLayout
