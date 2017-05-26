@@ -1,43 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/ll_session_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/layout_margin_20">
+
+            <TextView
+                android:id="@+id/tv_session_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/layout_margin_5"
+                android:text="@string/back"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/open_session_action_title_text_size" />
+
+            <TextView
+                android:id="@+id/tv_session_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/dialog_save"
+                android:layout_toRightOf="@+id/dialog_cancel"
+                android:gravity="center_horizontal"
+                android:text="@string/open_session_title"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/open_session_title_text_size"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/line"
+            android:background="@color/line" />
+    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/layout_margin_10">
+        android:padding="@dimen/layout_margin_20">
 
         <TextView
-            android:id="@+id/tv_session_back"
+            android:id="@+id/txt_float_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/layout_margin_5"
-            android:text="@string/back"
-            android:textColor="@color/text_color"
-            android:textSize="@dimen/open_session_action_title_text_size" />
+            android:text="@string/open_session_float_amount_title"
+            android:textColor="@color/text_color" />
 
-        <TextView
-            android:id="@+id/tv_session_title"
+        <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/dialog_save"
-            android:layout_toRightOf="@+id/dialog_cancel"
-            android:gravity="center_horizontal"
+            android:layout_toRightOf="@+id/txt_float_amount"
+            android:background="@color/white"
+            android:gravity="right"
             android:textColor="@color/text_color"
-            android:textSize="@dimen/open_session_title_text_size"
-            android:textStyle="bold" />
+            android:textSize="@dimen/open_session_title_text_size" />
     </RelativeLayout>
 
-    <View
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/line"
-        android:background="@color/line" />
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/layout_margin_20"
+        android:background="@color/open_session_bg_header_value"
+        android:orientation="horizontal"
+        android:padding="@dimen/layout_margin_20">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="left|center_vertical"
+            android:text="@string/value"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/text_size" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/amount"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/text_size" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right|center_vertical"
+            android:text="@string/sub_total"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/text_size" />
+    </LinearLayout>
 
 
-
-</LinearLayout>
+</RelativeLayout>

@@ -184,6 +184,8 @@
     <string name="register_shift_dialog_make_adjustment_add">Add</string>
     <string name="register_shift_dialog_make_adjustment_remove">Remove</string>
     <string name="register_shift_dialog_make_adjustment_note">Note</string>
+    <string name="open_session_title">Open Session</string>
+    <string name="open_session_float_amount_title">Float Amount</string>
 
     <!--Strings related to setting-->
     <string name="setting_account_title_information">Account Information</string>
@@ -333,6 +335,7 @@
     <string name="total">Total</string>
     <string name="update">Update</string>
     <string name="use">Use</string>
+    <string name="value">Value</string>
     <string name="vat">VAT</string>
     <string name="yes">Yes</string>
     <string name="zip_code">Zip Code</string>

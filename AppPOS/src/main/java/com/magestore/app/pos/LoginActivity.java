@@ -393,7 +393,7 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
 
     private void navigationToSalesActivity() {
         // Đăng nhập thành công, mở sẵn form sales
-        Intent intent = new Intent(getContext(), SalesActivity.class);
+        Intent intent = new Intent(getContext(), SessionActivity.class);
         startActivity(intent);
 //        finish();
     }
