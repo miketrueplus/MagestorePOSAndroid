@@ -8,7 +8,8 @@ import com.magestore.app.lib.service.ServiceFactory;
 import com.magestore.app.lib.service.registershift.RegisterShiftService;
 import com.magestore.app.pos.controller.SessionController;
 import com.magestore.app.pos.panel.OpenSessionListPanel;
-import com.magestore.app.pos.panel.OpenSessionPanel;
+import com.magestore.app.pos.panel.OpenSessionListValuePanel;
+import com.magestore.app.pos.panel.OpenSessionDetailPanel;
 import com.magestore.app.pos.ui.AbstractActivity;
 
 /**
@@ -18,7 +19,8 @@ import com.magestore.app.pos.ui.AbstractActivity;
  */
 
 public class SessionActivity extends AbstractActivity {
-    OpenSessionPanel mOpenSessionPanel;
+    OpenSessionDetailPanel mOpenSessionPanel;
+    OpenSessionListValuePanel mOpenSessionListValuePanel;
     OpenSessionListPanel mOpenSessionListPanel;
     SessionController mSessionController;
 
@@ -35,8 +37,9 @@ public class SessionActivity extends AbstractActivity {
 
     @Override
     protected void initLayout() {
-        mOpenSessionPanel = (OpenSessionPanel) findViewById(R.id.open_session_panel);
-        mOpenSessionListPanel = (OpenSessionListPanel) mOpenSessionPanel.findViewById(R.id.open_session_list_panel);
+        mOpenSessionPanel = (OpenSessionDetailPanel) findViewById(R.id.open_session_panel);
+        mOpenSessionListPanel = (OpenSessionListPanel) findViewById(R.id.open_session_list_panel);
+        mOpenSessionListValuePanel = (OpenSessionListValuePanel) mOpenSessionPanel.findViewById(R.id.open_session_list_panel);
     }
 
     @Override
@@ -61,9 +64,10 @@ public class SessionActivity extends AbstractActivity {
         mSessionController.setMagestoreContext(magestoreContext);
         mSessionController.setRegisterShiftService(service);
         mSessionController.setDetailPanel(mOpenSessionPanel);
-        mSessionController.setOpenSessionListPanel(mOpenSessionListPanel);
+        mSessionController.setListPanel(mOpenSessionListPanel);
+        mSessionController.setOpenSessionListPanel(mOpenSessionListValuePanel);
 
-        mOpenSessionListPanel.setSessionController(mSessionController);
+        mOpenSessionListValuePanel.setSessionController(mSessionController);
         mOpenSessionPanel.initModel();
     }
 }

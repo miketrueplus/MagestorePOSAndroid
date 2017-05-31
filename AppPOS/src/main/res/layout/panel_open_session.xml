@@ -151,7 +151,7 @@
         android:layout_below="@+id/rl_add_value"
         android:scrollbars="none">
 
-        <com.magestore.app.pos.panel.OpenSessionListPanel
+        <com.magestore.app.pos.panel.OpenSessionListValuePanel
             android:id="@+id/open_session_list_panel"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

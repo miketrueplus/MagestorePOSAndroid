@@ -15,12 +15,19 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="20dp"
-        android:layout_marginTop="20dp"
         android:layout_marginLeft="200dp"
         android:layout_marginRight="200dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/open_session_border_float_amount">
 
-        <com.magestore.app.pos.panel.OpenSessionPanel
+        <com.magestore.app.pos.panel.OpenSessionListPanel
+            android:id="@+id/open_session_list_panel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            magestore_view:layout_panel="@layout/panel_open_session" />
+
+        <com.magestore.app.pos.panel.OpenSessionDetailPanel
             android:id="@+id/open_session_panel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

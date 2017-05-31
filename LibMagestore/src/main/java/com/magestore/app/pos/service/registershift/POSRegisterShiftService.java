@@ -3,11 +3,13 @@ package com.magestore.app.pos.service.registershift;
 import com.magestore.app.lib.model.registershift.CashTransaction;
 import com.magestore.app.lib.model.registershift.OpenSessionValue;
 import com.magestore.app.lib.model.registershift.RegisterShift;
+import com.magestore.app.lib.model.registershift.SessionParam;
 import com.magestore.app.lib.resourcemodel.DataAccessFactory;
 import com.magestore.app.lib.resourcemodel.registershift.RegisterShiftDataAccess;
 import com.magestore.app.lib.service.registershift.RegisterShiftService;
 import com.magestore.app.pos.model.registershift.PosCashTransaction;
 import com.magestore.app.pos.model.registershift.PosOpenSessionValue;
+import com.magestore.app.pos.model.registershift.PosSessionParam;
 import com.magestore.app.pos.service.AbstractService;
 
 import java.io.IOException;
@@ -72,6 +74,13 @@ public class POSRegisterShiftService extends AbstractService implements Register
     }
 
     @Override
+    public List<RegisterShift> openSession(SessionParam sessionParam) throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        RegisterShiftDataAccess registerShiftDataAccess = factory.generateRegisterShiftDataAccess();
+        return registerShiftDataAccess.openSession(sessionParam);
+    }
+
+    @Override
     public List<RegisterShift> insertMakeAdjustment(RegisterShift registerShift) throws InstantiationException, IllegalAccessException, IOException, ParseException {
         // Khởi tạo register shift gateway factory
         CashTransaction cashTransaction = createCashTransaction();
@@ -99,6 +108,11 @@ public class POSRegisterShiftService extends AbstractService implements Register
     @Override
     public OpenSessionValue createOpenSessionValue() {
         return new PosOpenSessionValue();
+    }
+
+    @Override
+    public SessionParam createSessionParam() {
+        return new PosSessionParam();
     }
 
     @Override

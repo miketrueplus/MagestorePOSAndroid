@@ -1,11 +1,13 @@
 package com.magestore.app.pos.controller;
 
 import com.magestore.app.lib.controller.AbstractListController;
+import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.registershift.OpenSessionValue;
 import com.magestore.app.lib.model.registershift.RegisterShift;
+import com.magestore.app.lib.model.registershift.SessionParam;
 import com.magestore.app.lib.service.registershift.RegisterShiftService;
-import com.magestore.app.pos.panel.OpenSessionListPanel;
-import com.magestore.app.pos.panel.OpenSessionPanel;
+import com.magestore.app.pos.panel.OpenSessionListValuePanel;
+import com.magestore.app.pos.panel.OpenSessionDetailPanel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,7 +21,9 @@ import java.util.Map;
  */
 
 public class SessionController extends AbstractListController<RegisterShift> {
-    OpenSessionListPanel mOpenSessionListPanel;
+    static final int ACTION_TYPE_OPEN_SESSION = 0;
+
+    OpenSessionListValuePanel mOpenSessionListPanel;
     /**
      * Service xử lý các vấn đề liên quan đến register shift
      */
@@ -39,22 +43,52 @@ public class SessionController extends AbstractListController<RegisterShift> {
         listValue = new ArrayList<>();
     }
 
+    public void doInputOpenSession(SessionParam param) {
+        doAction(ACTION_TYPE_OPEN_SESSION, null, wraper, param);
+    }
+
+    @Override
+    public Boolean doActionBackround(int actionType, String actionCode, Map<String, Object> wraper, Model... models) throws Exception {
+        if (actionType == ACTION_TYPE_OPEN_SESSION) {
+            SessionParam param = (SessionParam) models[0];
+            wraper.put("open_session_respone", mRegisterShiftService.openSession(param));
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void onActionPostExecute(boolean success, int actionType, String actionCode, Map<String, Object> wraper, Model... models) {
+        if (success && actionType == ACTION_TYPE_OPEN_SESSION) {
+
+        }
+    }
+
+    @Override
+    public void onCancelledBackground(Exception exp, int actionType, String actionCode, Map<String, Object> wraper, Model... models) {
+        super.onCancelledBackground(exp, actionType, actionCode, wraper, models);
+    }
+
     public void addValue() {
         OpenSessionValue value = mRegisterShiftService.createOpenSessionValue();
         listValue.add(value);
         mOpenSessionListPanel.bindList(listValue);
     }
 
-    public void setOpenSessionListPanel(OpenSessionListPanel mOpenSessionListPanel) {
+    public void setOpenSessionListPanel(OpenSessionListValuePanel mOpenSessionListPanel) {
         this.mOpenSessionListPanel = mOpenSessionListPanel;
     }
 
-    public void updateFloatAmount(float total){
-        ((OpenSessionPanel) mDetailView).updateFloatAmount(total);
+    public void updateFloatAmount(float total) {
+        ((OpenSessionDetailPanel) mDetailView).updateFloatAmount(total);
     }
 
-    public void removeValue(OpenSessionValue value){
+    public void removeValue(OpenSessionValue value) {
         listValue.remove(value);
         mOpenSessionListPanel.bindList(listValue);
+    }
+
+    public SessionParam createSessionParam() {
+        return mRegisterShiftService.createSessionParam();
     }
 }
