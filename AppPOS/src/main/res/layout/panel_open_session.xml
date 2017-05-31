@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:magestore_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -46,8 +47,10 @@
     </LinearLayout>
 
     <RelativeLayout
+        android:id="@+id/rl_float_amount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_session_header"
         android:padding="@dimen/layout_margin_20">
 
         <TextView
@@ -71,12 +74,14 @@
     </RelativeLayout>
 
     <LinearLayout
+        android:id="@+id/ll_list_value_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/rl_float_amount"
         android:layout_margin="@dimen/layout_margin_20"
         android:background="@color/open_session_bg_header_value"
         android:orientation="horizontal"
-        android:padding="@dimen/layout_margin_20">
+        android:padding="@dimen/layout_margin_10">
 
         <TextView
             android:layout_width="0dp"
@@ -106,5 +111,100 @@
             android:textSize="@dimen/text_size" />
     </LinearLayout>
 
+    <RelativeLayout
+        android:id="@+id/rl_add_value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_list_value_title"
+        android:layout_marginBottom="@dimen/layout_margin_10"
+        android:layout_marginRight="@dimen/layout_margin_20">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/layout_margin_10"
+            android:layout_toLeftOf="@+id/im_add_value"
+            android:text="@string/open_session_add_value"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/text_size" />
+
+        <ImageView
+            android:id="@+id/im_add_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_add_new" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/ll_bottom"
+        android:layout_below="@+id/rl_add_value"
+        android:scrollbars="none">
+
+        <com.magestore.app.pos.panel.OpenSessionListPanel
+            android:id="@+id/open_session_list_panel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/layout_margin_10"
+            magestore_view:layout_no_scroll="true"
+            magestore_view:layout_row="@layout/card_open_session_list_content" />
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/ll_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="20dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/ll_note"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/checkout_border_linear_layout"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <com.magestore.app.view.FormatEditText
+                android:id="@+id/et_note"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:gravity="top"
+                android:hint="@string/note"
+                android:inputType="textMultiLine"
+                android:minLines="3"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/text_size" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/layout_margin_20">
+
+            <TextView
+                android:id="@+id/txt_staff_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:text="AA"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/text_size" />
+
+            <Button
+                android:id="@+id/bt_open"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="@string/open" />
+        </RelativeLayout>
+    </LinearLayout>
 </RelativeLayout>

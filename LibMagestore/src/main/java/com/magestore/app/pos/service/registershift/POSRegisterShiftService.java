@@ -1,11 +1,13 @@
 package com.magestore.app.pos.service.registershift;
 
 import com.magestore.app.lib.model.registershift.CashTransaction;
+import com.magestore.app.lib.model.registershift.OpenSessionValue;
 import com.magestore.app.lib.model.registershift.RegisterShift;
 import com.magestore.app.lib.resourcemodel.DataAccessFactory;
 import com.magestore.app.lib.resourcemodel.registershift.RegisterShiftDataAccess;
 import com.magestore.app.lib.service.registershift.RegisterShiftService;
 import com.magestore.app.pos.model.registershift.PosCashTransaction;
+import com.magestore.app.pos.model.registershift.PosOpenSessionValue;
 import com.magestore.app.pos.service.AbstractService;
 
 import java.io.IOException;
@@ -92,6 +94,11 @@ public class POSRegisterShiftService extends AbstractService implements Register
     public CashTransaction createCashTransaction() {
         CashTransaction cashTransaction = new PosCashTransaction();
         return cashTransaction;
+    }
+
+    @Override
+    public OpenSessionValue createOpenSessionValue() {
+        return new PosOpenSessionValue();
     }
 
     @Override

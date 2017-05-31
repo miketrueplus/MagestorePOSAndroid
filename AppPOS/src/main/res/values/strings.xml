@@ -186,6 +186,7 @@
     <string name="register_shift_dialog_make_adjustment_note">Note</string>
     <string name="open_session_title">Open Session</string>
     <string name="open_session_float_amount_title">Float Amount</string>
+    <string name="open_session_add_value">Add Value</string>
 
     <!--Strings related to setting-->
     <string name="setting_account_title_information">Account Information</string>
@@ -294,6 +295,7 @@
     <string name="order_history">Orders History</string>
     <string name="ok">OK</string>
     <string name="on_hold">OnHold</string>
+    <string name="open">Open</string>
     <string name="option">Option</string>
     <string name="optional">Optional</string>
     <string name="options">Options</string>
