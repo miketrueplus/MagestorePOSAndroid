@@ -5,11 +5,14 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.magestore.app.lib.model.registershift.RegisterShift;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.SessionController;
+import com.magestore.app.util.ConfigUtil;
+import com.magestore.app.view.EditTextFloat;
 
 /**
  * Created by Johan on 5/25/17.
@@ -20,11 +23,8 @@ import com.magestore.app.pos.controller.SessionController;
 public class OpenSessionPanel extends AbstractDetailPanel<RegisterShift> {
     Button bt_open;
     RelativeLayout rl_add_value;
-    SessionController mSessionController;
-
-    public void setSessionController(SessionController mSessionController) {
-        this.mSessionController = mSessionController;
-    }
+    TextView txt_staff_login;
+    EditTextFloat et_float_amount;
 
     public OpenSessionPanel(Context context) {
         super(context);
@@ -41,8 +41,10 @@ public class OpenSessionPanel extends AbstractDetailPanel<RegisterShift> {
     @Override
     protected void initLayout() {
         super.initLayout();
-        bt_open = (Button) getView().findViewById(R.id.bt_open);
-        rl_add_value = (RelativeLayout) getView().findViewById(R.id.rl_add_value);
+        et_float_amount = (EditTextFloat) findViewById(R.id.et_float_amount);
+        bt_open = (Button) findViewById(R.id.bt_open);
+        rl_add_value = (RelativeLayout) findViewById(R.id.rl_add_value);
+        txt_staff_login = (TextView) findViewById(R.id.txt_staff_login);
         initValue();
     }
 
@@ -51,8 +53,14 @@ public class OpenSessionPanel extends AbstractDetailPanel<RegisterShift> {
         rl_add_value.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                mSessionController.addValue();
+                ((SessionController) mController).addValue();
             }
         });
+
+        txt_staff_login.setText(getContext().getString(R.string.open_session_login, ConfigUtil.getStaff().getStaffName()));
+    }
+
+    public void updateFloatAmount(float total){
+        et_float_amount.setText(ConfigUtil.formatNumber(total));
     }
 }

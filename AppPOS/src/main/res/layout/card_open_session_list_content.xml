@@ -12,7 +12,10 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/layout_margin_10"
+        android:layout_marginLeft="@dimen/layout_margin_20"
+        android:layout_marginRight="@dimen/layout_margin_20"
         android:orientation="horizontal">
 
         <com.magestore.app.view.EditTextFloat
@@ -20,14 +23,19 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:inputType="numberDecimal"
+            android:text="@{ConfigUtil.formatNumber(openSessionValue.getValue())}"
             android:textColor="@color/text_color"
             android:textSize="@dimen/text_size" />
 
-        <com.magestore.app.view.EditTextFloat
+        <com.magestore.app.view.EditTextInteger
             android:id="@+id/et_amount"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:inputType="number"
+            android:text="@{ConfigUtil.formatQuantity(openSessionValue.getAmount())}"
             android:textColor="@color/text_color"
             android:textSize="@dimen/text_size" />
 
@@ -42,6 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/layout_margin_10"
                 android:layout_toLeftOf="@+id/im_remove_value"
+                android:text="@{ConfigUtil.formatPrice(openSessionValue.getSubtotal())}"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/text_size" />
 

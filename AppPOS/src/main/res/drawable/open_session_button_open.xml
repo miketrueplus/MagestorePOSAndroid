@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:color="@color/app_color_effect"
+    tools:targetApi="lollipop">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/open_session_bg_bt_open"/>
+            <corners android:radius="@dimen/open_session_bt_open_border_radius" />
+        </shape>
+    </item>
+</ripple>

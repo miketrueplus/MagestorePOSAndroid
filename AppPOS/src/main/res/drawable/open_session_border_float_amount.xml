@@ -3,9 +3,9 @@
     android:shape="rectangle">
     <stroke
         android:width="@dimen/line"
-        android:color="@color/checkout_line" />
+        android:color="@color/line" />
 
-    <corners android:radius="@dimen/check_out_radius" />
+    <corners android:radius="@dimen/open_session_bt_open_border_radius" />
 
-    <solid android:color="@color/open_session_bg_note" />
+    <solid android:color="@color/white" />
 </shape>

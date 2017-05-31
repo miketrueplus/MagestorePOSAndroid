@@ -134,6 +134,8 @@
     <!--Session-->
     <dimen name="open_session_action_title_text_size">18sp</dimen>
     <dimen name="open_session_title_text_size">20sp</dimen>
+    <dimen name="open_session_float_amount_text_size">16sp</dimen>
+    <dimen name="open_session_bt_open_border_radius">5dp</dimen>
 
     <!--Dialog-->
     <dimen name="dialog_title_text_size">24sp</dimen>

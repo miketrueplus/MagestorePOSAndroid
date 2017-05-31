@@ -23,7 +23,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/layout_margin_5"
                 android:text="@string/back"
-                android:textColor="@color/text_color"
+                android:textColor="@color/open_session_text_color"
                 android:textSize="@dimen/open_session_action_title_text_size" />
 
             <TextView
@@ -51,7 +51,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ll_session_header"
-        android:padding="@dimen/layout_margin_20">
+        android:layout_margin="@dimen/layout_margin_20"
+        android:background="@drawable/open_session_border_float_amount"
+        android:padding="@dimen/layout_margin_10">
 
         <TextView
             android:id="@+id/txt_float_amount"
@@ -60,15 +62,18 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:text="@string/open_session_float_amount_title"
-            android:textColor="@color/text_color" />
+            android:textColor="@color/open_session_text_color"
+            android:textSize="@dimen/open_session_float_amount_text_size" />
 
-        <EditText
+        <com.magestore.app.view.EditTextFloat
+            android:id="@+id/et_float_amount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/txt_float_amount"
             android:background="@color/white"
             android:gravity="right"
+            android:inputType="numberDecimal"
             android:textColor="@color/text_color"
             android:textSize="@dimen/open_session_title_text_size" />
     </RelativeLayout>
@@ -175,18 +180,20 @@
                 android:id="@+id/et_note"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
+                android:background="@color/open_session_bg_note"
                 android:gravity="top"
                 android:hint="@string/note"
                 android:inputType="textMultiLine"
                 android:minLines="3"
                 android:textColor="@color/text_color"
+                android:textColorHint="@color/open_session_text_color"
                 android:textSize="@dimen/text_size" />
         </LinearLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/layout_margin_20"
             android:layout_marginTop="@dimen/layout_margin_20">
 
             <TextView
@@ -195,7 +202,6 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
-                android:text="AA"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/text_size" />
 
@@ -204,7 +210,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:text="@string/open" />
+                android:background="@drawable/open_session_button_open"
+                android:text="@string/open"
+                android:textColor="@color/white" />
         </RelativeLayout>
     </LinearLayout>
 </RelativeLayout>

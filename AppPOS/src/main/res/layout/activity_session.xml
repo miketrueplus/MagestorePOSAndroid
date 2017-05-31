@@ -14,8 +14,11 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="50dp"
-        android:background="@color/white">
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="200dp"
+        android:layout_marginRight="200dp"
+        android:background="@drawable/open_session_border_float_amount">
 
         <com.magestore.app.pos.panel.OpenSessionPanel
             android:id="@+id/open_session_panel"

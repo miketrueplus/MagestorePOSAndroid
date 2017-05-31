@@ -29,6 +29,8 @@ public class SessionActivity extends AbstractActivity {
 
         // chuẩn bị control layout
         initLayout();
+
+        initModel();
     }
 
     @Override
@@ -60,7 +62,8 @@ public class SessionActivity extends AbstractActivity {
         mSessionController.setRegisterShiftService(service);
         mSessionController.setDetailPanel(mOpenSessionPanel);
         mSessionController.setOpenSessionListPanel(mOpenSessionListPanel);
-        mOpenSessionPanel.setSessionController(mSessionController);
+
+        mOpenSessionListPanel.setSessionController(mSessionController);
         mOpenSessionPanel.initModel();
     }
 }
