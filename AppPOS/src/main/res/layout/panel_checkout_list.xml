@@ -183,7 +183,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="right"
-                            android:text="@{ConfigUtil.formatPrice(checkout.getShippingTotal())}"
+                            android:text="@{ConfigUtil.formatPriceProduct(checkout.getShippingTotal())}"
                             android:textColor="@color/text_color"
                             android:textSize="@dimen/sales_price_text_size" />
                     </LinearLayout>
@@ -217,7 +217,7 @@
                             android:layout_alignParentRight="true"
                             android:layout_weight="1"
                             android:gravity="right"
-                            android:text="@{ConfigUtil.formatPrice(checkout.getTaxTotal())}"
+                            android:text="@{ConfigUtil.formatPriceProduct(checkout.getTaxTotal())}"
                             android:textColor="@color/text_color"
                             android:textSize="@dimen/sales_price_text_size" />
                     </LinearLayout>
