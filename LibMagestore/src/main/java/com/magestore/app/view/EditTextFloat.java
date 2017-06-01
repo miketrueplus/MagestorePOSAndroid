@@ -53,7 +53,7 @@ public class EditTextFloat extends EditText {
 //    }
 
     protected void initModel() {
-//        setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        setInputType(InputType.TYPE_CLASS_PHONE);
 //        DigitsKeyListener.getInstance("123");
 //        setKeyListener(DigitsKeyListener.getInstance(ConfigUtil.getFloatDigit()));
     }

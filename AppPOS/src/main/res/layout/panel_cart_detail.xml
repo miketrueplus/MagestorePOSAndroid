@@ -128,7 +128,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1.0"
                         android:background="@drawable/cart_option_border_edittext"
-                        android:inputType="numberDecimal"
+                        android:inputType="phone"
                         android:digits="0123456789.,"
                         android:padding="@dimen/layout_margin_5"
                         android:selectAllOnFocus="true"
