@@ -5,6 +5,8 @@ import android.databinding.DataBindingUtil;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
+
 import com.magestore.app.lib.controller.Controller;
 import com.magestore.app.lib.model.registershift.RegisterShift;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
@@ -15,6 +17,7 @@ import com.magestore.app.pos.controller.RegisterShiftSaleListController;
 import com.magestore.app.pos.databinding.PanelRegisterShiftDetailBinding;
 import com.magestore.app.pos.util.DialogUtil;
 import com.magestore.app.pos.view.MagestoreDialog;
+import com.magestore.app.util.ConfigUtil;
 
 /**
  * Created by Johan on 1/18/17.
@@ -29,6 +32,8 @@ public class RegisterShiftDetailPanel extends AbstractDetailPanel<RegisterShift>
     RegisterShiftSaleListController mRegisterShiftSaleListController;
     RegisterShiftCashListPanel mRegisterShiftCashListPanel;
     RegisterShiftCashListController mRegisterShiftCashListController;
+    TextView tv_staff_name;
+    TextView tv_location;
 
     public RegisterShiftDetailPanel(Context context) {
         super(context);
@@ -48,6 +53,9 @@ public class RegisterShiftDetailPanel extends AbstractDetailPanel<RegisterShift>
         v = inflate(getContext(), R.layout.panel_register_shift_detail, null);
         addView(v);
         mBinding = DataBindingUtil.bind(v);
+
+        tv_staff_name = (TextView) v.findViewById(R.id.tv_location);
+        tv_location = (TextView) v.findViewById(R.id.tv_location);
 
         // chuẩn bị panel view danh sách payment
         mRegisterShiftSaleListPanel = (RegisterShiftSaleListPanel) findViewById(R.id.register_shift_sales);
@@ -81,6 +89,9 @@ public class RegisterShiftDetailPanel extends AbstractDetailPanel<RegisterShift>
     public void bindItem(final RegisterShift item) {
         super.bindItem(item);
         mBinding.setRegisterShift(item);
+        tv_staff_name.setText(item.getStaffName());
+        // TODO: để tạm location staff
+        tv_location.setText(ConfigUtil.getStaff().getStaffLocation().getLocationAddress());
         mRegisterShiftSaleListController.doSelectRegisterShift(item);
         mRegisterShiftCashListController.doSelectRegisterShift(item);
         mRegisterShiftCashListPanel.setRegisterShift(item);

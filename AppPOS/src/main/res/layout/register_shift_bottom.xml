@@ -35,12 +35,14 @@
                 android:id="@+id/print"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
+                android:layout_marginLeft="@dimen/layout_margin_5"
+                android:layout_marginRight="@dimen/layout_margin_5"
                 android:layout_weight="1"
+                android:background="@drawable/checkout_success_border_button_print"
                 android:text="@string/print"
                 android:textAllCaps="false"
-                android:textSize="18sp" />
+                android:textColor="@color/checkout_success_btn_text_print_color"
+                android:textSize="@dimen/text_size_18" />
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -51,7 +53,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
+            android:layout_marginBottom="@dimen/layout_margin_5"
+            android:layout_marginTop="@dimen/layout_margin_5"
             android:orientation="horizontal"
             android:visibility="@{registerShift.checkStatus() ? View.VISIBLE : View.GONE}">
 
@@ -62,9 +65,11 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_weight="1"
+                android:background="@drawable/checkout_success_border_button_print"
                 android:text="@string/register_shift_bottom_make_adjustment"
                 android:textAllCaps="false"
-                android:textSize="18sp" />
+                android:textColor="@color/checkout_success_btn_text_print_color"
+                android:textSize="@dimen/text_size_18" />
 
             <Button
                 android:id="@+id/close_shift"
@@ -73,9 +78,11 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_weight="1"
+                android:background="@drawable/checkout_success_border_button_new_order"
                 android:text="@string/register_shift_bottom_close_shift"
                 android:textAllCaps="false"
-                android:textSize="18sp" />
+                android:textColor="@color/checkout_success_btn_text_new_color"
+                android:textSize="@dimen/text_size_18" />
         </LinearLayout>
     </LinearLayout>
 </layout>

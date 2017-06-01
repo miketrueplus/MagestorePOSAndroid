@@ -172,8 +172,9 @@
     <!--Strings related to register shift-->
     <string name="register_shift_list_open"> - OPEN</string>
     <string name="register_shift_top_payment_sale">Sale</string>
-    <string name="register_shift_content_activities">Activitites</string>
-    <string name="register_shift_content_balance">Balance:</string>
+    <string name="register_shift_content_title_action">Action</string>
+    <string name="register_shift_content_title_description">Description</string>
+    <string name="register_shift_content_title_balance">Balance</string>
     <string name="register_shift_content_open_shift">Open Shift</string>
     <string name="register_shift_content_item_float">Float</string>
     <string name="register_shift_content_item_balance">Balance</string>

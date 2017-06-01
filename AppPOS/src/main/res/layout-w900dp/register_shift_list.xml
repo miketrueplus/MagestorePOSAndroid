@@ -30,6 +30,24 @@
             android:layout_weight="0.35"
             android:orientation="vertical">
 
+            <android.support.design.widget.AppBarLayout
+                android:id="@+id/app_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/AppTheme.AppBarOverlay">
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar_order"
+                    android:layout_width="wrap_content"
+                    android:layout_height="?attr/actionBarSize"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="right"
+                    android:gravity="right">
+
+                    <include layout="@layout/toolbar_order" />
+                </android.support.v7.widget.Toolbar>
+            </android.support.design.widget.AppBarLayout>
+
             <com.magestore.app.pos.panel.RegisterShiftListPanel
                 android:id="@+id/register_shift_list_panel"
                 android:layout_width="match_parent"

@@ -26,7 +26,7 @@ public class RegisterShiftActivity extends AbstractActivity {
     RegisterShiftListController mRegisterShiftListController;
 
     // Toolbar ứng dụng
-    private Toolbar mToolbar;
+    private Toolbar toolbar_order;
 
     // xác định loại màn hình 1 pane hay 2 pane
     private boolean mblnTwoPane;
@@ -46,11 +46,8 @@ public class RegisterShiftActivity extends AbstractActivity {
 
     @Override
     protected void initLayout() {
-        // chuẩn bị tool bar
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
-        mToolbar.setTitle(getTitle());
-        initToolbarMenu(mToolbar);
+        toolbar_order = (Toolbar) findViewById(R.id.toolbar_order);
+        initToolbarMenu(toolbar_order);
 
         // chuẩn bị panel danh sách register shift
         mRegisterShiftListPanel = (RegisterShiftListPanel) findViewById(R.id.register_shift_list_panel);
@@ -103,7 +100,7 @@ public class RegisterShiftActivity extends AbstractActivity {
             mRegisterShiftListPanel.setVisibility(View.VISIBLE);
             ActionBar actionBar = getSupportActionBar();
             actionBar.setDisplayHomeAsUpEnabled(false);
-            initToolbarMenu(mToolbar);
+            initToolbarMenu(toolbar_order);
             return true;
         }
         return super.onOptionsItemSelected(item);
