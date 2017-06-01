@@ -3,6 +3,7 @@ package com.magestore.app.view;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
+import android.text.InputType;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.EditText;
@@ -53,7 +54,7 @@ public class EditTextQuantity extends EditText {
 //    }
 
     protected void initModel() {
-//        setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        setInputType(InputType.TYPE_CLASS_PHONE);
 //        DigitsKeyListener.getInstance("123");
 //        setKeyListener(DigitsKeyListener.getInstance(ConfigUtil.getFloatDigit()));
     }

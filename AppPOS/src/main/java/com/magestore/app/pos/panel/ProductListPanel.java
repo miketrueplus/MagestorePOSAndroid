@@ -215,7 +215,11 @@ public class ProductListPanel extends AbstractListPanel<Product> {
 
             // gán giá trị của product vào
             txtProductName.setText(product.getName());
-            txtPrice.setText(ConfigUtil.formatPriceProduct(product.getFinalPrice()));
+            if(product.getTypeID().equals("configurable")){
+                txtPrice.setText(ConfigUtil.formatPrice(product.getFinalPrice()));
+            } else {
+                txtPrice.setText(ConfigUtil.formatPriceProduct(product.getFinalPrice()));
+            }
 //            txtSKU.setText(product.getSKU());
             im_stock.setVisibility(product.isInStock() ? GONE : VISIBLE);
 

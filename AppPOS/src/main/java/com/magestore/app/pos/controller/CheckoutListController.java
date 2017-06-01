@@ -208,6 +208,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             } else {
                 wraper.put("quote_add_coupon_param", quoteAddCouponParam);
             }
+            wraper.put("quote_id", checkout.getQuoteId());
             wraper.put("type_save_cart_discount", type);
             doAction(ACTION_TYPE_SAVE_CART_DISCOUNT, null, wraper, checkout);
         } else {
@@ -628,15 +629,14 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             Checkout checkout = (Checkout) wraper.get("save_quote");
             wraper.put("save_cart", checkout);
             int type_save_quote = (int) wraper.get("type_save_quote");
-
+            // cập nhật lại id trong cart item
+            ((CheckoutService) getListService()).updateCartItemWithServerRespone(getSelectedItem(), checkout);
+            mCartItemListController.bindList(getSelectedItem().getCartItem());
             if (type_save_quote == 1) {
                 // cập nhật list shipping và payment
                 List<CheckoutShipping> listShipping = checkout.getCheckoutShipping();
                 List<CheckoutPayment> listPayment = checkout.getCheckoutPayment();
 
-                // cập nhật lại id trong cart item
-                ((CheckoutService) getListService()).updateCartItemWithServerRespone(getSelectedItem(), checkout);
-                mCartItemListController.bindList(getSelectedItem().getCartItem());
                 if (((CheckoutService) getListService()).checkIsVirtual(checkout.getCartItem())) {
                     ((CheckoutDetailPanel) mDetailView).showPickAtStore(false);
                     ((CheckoutDetailPanel) mDetailView).isEnableCreatShip(false);
@@ -1053,14 +1053,16 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             if (mDetailView.getVisibility() == View.VISIBLE) {
                 onBackTohome();
             }
+            int index = getSelectedItems().indexOf(getSelectedItem());
+            getSelectedItems().remove(index);
             Checkout checkout = ((CheckoutService) getListService()).create();
             checkout.setCustomerID(guest_checkout.getID());
             checkout.setCustomer(guest_checkout);
             checkout.setStatus(STATUS_CHECKOUT_ADD_ITEM);
+            setSelectedItem(checkout);
             bindCustomer(guest_checkout);
             getSelectedItems().clear();
             getSelectedItems().add(checkout);
-            setSelectedItem(checkout);
             mItem = checkout;
             mCartItemListController.bindList(checkout.getCartItem());
             mCartItemListController.bindParent(checkout);

@@ -437,7 +437,11 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
                     cartOld.getProduct().setIsSaveCart(true);
                     cartOld.setIsVirtual(cartNew.getIsVirtual());
                     cartOld.setQuantity(cartNew.getQuantity());
-                    cartOld.setPriceShowView(ConfigUtil.convertToBasePrice(cartNew.getPriceInclTax()));
+                    if (cartNew.getPriceInclTax() > 0) {
+                        cartOld.setPriceShowView(ConfigUtil.convertToBasePrice(cartNew.getPriceInclTax()));
+                    } else {
+                        cartOld.setPriceShowView(cartNew.getBasePriceInclTax());
+                    }
                 }
             }
         }
@@ -570,10 +574,10 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
                     if (!gifcard) {
                         checkout.setGiftCardDiscount(0);
                     }
-                    if(!reward){
+                    if (!reward) {
                         checkout.setRewardPointEarnPointValue(0);
                     }
-                    if(!storecredit){
+                    if (!storecredit) {
                         checkout.setRewardPointUsePointValue(0);
                     }
                 }
