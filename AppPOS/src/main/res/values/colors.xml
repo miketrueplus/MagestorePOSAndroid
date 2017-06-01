@@ -108,6 +108,8 @@
     <color name="order_invoice_button_text_color">#ffffff</color>
 
     <!--Register Shift-->
+    <color name="register_shift_item_time_text_color">#9b9b9b</color>
+    <color name="register_shift_text_color">#788087</color>
     <color name="register_shift_dialog_make_adjustment_bg_select">#00a679</color>
     <color name="register_shift_dialog_make_adjustment_text_select">#ffffff</color>
     <color name="register_shift_dialog_make_adjustment_bg_not_select">#e1e1e1</color>

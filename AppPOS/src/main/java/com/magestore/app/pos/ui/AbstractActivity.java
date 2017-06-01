@@ -213,9 +213,11 @@ public abstract class AbstractActivity
 //        }/ else if (id == R.id.nav_onhold_orders) {
 //            Intent intent = new Intent(getContext(), OrderActivity.class);
 //            startActivity(intent);
-//        } else if (id == R.id.nav_register_shift) {
-//            Intent intent = new Intent(getContext(), RegisterShiftActivity.class);
-//            startActivity(intent);
+        } else if (id == R.id.nav_register_shift) {
+            if (this instanceof RegisterShiftActivity) return true;
+            Intent intent = new Intent(getContext(), RegisterShiftActivity.class);
+            startActivity(intent);
+            if (!(this instanceof SalesActivity)) finish();
         } else if (id == R.id.nav_settings) {
             Intent intent = new Intent(getContext(), SettingActivity.class);
             startActivity(intent);
@@ -287,11 +289,13 @@ public abstract class AbstractActivity
         LinearLayout nav_logout = (LinearLayout) navigationView.findViewById(R.id.nav_logout);
         LinearLayout nav_checkout = (LinearLayout) navigationView.findViewById(R.id.nav_checkout);
         LinearLayout nav_order_history = (LinearLayout) navigationView.findViewById(R.id.nav_order_history);
+        LinearLayout nav_register_shift = (LinearLayout) navigationView.findViewById(R.id.nav_register_shift);
         LinearLayout nav_customer = (LinearLayout) navigationView.findViewById(R.id.nav_customer);
         LinearLayout nav_general = (LinearLayout) navigationView.findViewById(R.id.nav_general);
         nav_logout.setOnClickListener(onClickNav);
         nav_checkout.setOnClickListener(onClickNav);
         nav_order_history.setOnClickListener(onClickNav);
+        nav_register_shift.setOnClickListener(onClickNav);
         nav_customer.setOnClickListener(onClickNav);
         nav_general.setOnClickListener(onClickNav);
         listActivity.put(0, nav_logout);
@@ -299,6 +303,7 @@ public abstract class AbstractActivity
         listActivity.put(1, nav_order_history);
         listActivity.put(2, nav_customer);
         listActivity.put(3, nav_general);
+        listActivity.put(4, nav_register_shift);
     }
 
     View.OnClickListener onClickNav = new View.OnClickListener() {
@@ -322,9 +327,12 @@ public abstract class AbstractActivity
 //        }/ else if (id == R.id.nav_onhold_orders) {
 //            Intent intent = new Intent(getContext(), OrderActivity.class);
 //            startActivity(intent);
-//        } else if (id == R.id.nav_register_shift) {
-//            Intent intent = new Intent(getContext(), RegisterShiftActivity.class);
-//            startActivity(intent);
+            } else if (id == R.id.nav_register_shift) {
+                positionSelectActivity = 4;
+                if (!(AbstractActivity.this instanceof RegisterShiftActivity)) {
+                    Intent intent = new Intent(getContext(), RegisterShiftActivity.class);
+                    startActivity(intent);
+                }
             } else if (id == R.id.nav_general) {
                 positionSelectActivity = 3;
                 if (!(AbstractActivity.this instanceof SettingActivity)) {

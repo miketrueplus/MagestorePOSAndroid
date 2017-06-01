@@ -19,8 +19,14 @@ import com.magestore.app.pos.api.m2.POSAPI;
 import com.magestore.app.pos.api.m2.POSAbstractDataAccess;
 import com.magestore.app.pos.api.m2.POSDataAccessSession;
 import com.magestore.app.pos.model.registershift.PosCashTransaction;
+import com.magestore.app.pos.model.registershift.PosRegisterShift;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListRegisterShift;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,7 +44,48 @@ public class POSRegisterShiftDataAccess extends POSAbstractDataAccess implements
 
     @Override
     public int count() throws ParseException, InstantiationException, IllegalAccessException, IOException {
-        return 0;
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+        try {
+            // Khởi tạo connection và khởi tạo truy vấn
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPI.REST_REGISTER_SHIFTS_GET_LISTING);
+
+            // Xây dựng tham số
+            paramBuilder = statement.getParamBuilder()
+                    .setPage(1)
+                    .setPageSize(1)
+                    .setSessionID(POSDataAccessSession.REST_SESSION_ID);
+
+            // thực thi truy vấn và parse kết quả thành object
+            rp = statement.execute();
+            rp.setParseImplement(getClassParseImplement());
+            rp.setParseModel(Gson2PosListRegisterShift.class);
+            Gson2PosListRegisterShift listRegisterShift = (Gson2PosListRegisterShift) rp.doParse();
+            return listRegisterShift.total_count;
+        } catch (ConnectionException ex) {
+            throw ex;
+        } catch (IOException ex) {
+            throw ex;
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
     }
 
     @Override
@@ -60,6 +107,8 @@ public class POSRegisterShiftDataAccess extends POSAbstractDataAccess implements
 
             // Xây dựng tham số
             paramBuilder = statement.getParamBuilder()
+                    .setPage(page)
+                    .setPageSize(pageSize)
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
 
             // thực thi truy vấn và parse kết quả thành object
@@ -137,21 +186,22 @@ public class POSRegisterShiftDataAccess extends POSAbstractDataAccess implements
             RegisterShiftEntity registerShiftEntity = new RegisterShiftEntity();
             registerShiftEntity.shift = sessionParam;
 
-            // TODO: log params request
-            Gson gson = new Gson();
-            String json = gson.toJson(registerShiftEntity);
-            Log.e("JSON", json.toString());
-
             rp = statement.execute(registerShiftEntity);
-            rp.setParseImplement(getClassParseImplement());
-            rp.setParseModel(Gson2PosListRegisterShift.class);
-            Gson2PosListRegisterShift listRegisterShift = (Gson2PosListRegisterShift) rp.doParse();
-            List<RegisterShift> list = (List<RegisterShift>) (List<?>) listRegisterShift;
+            String json = rp.readResult2String();
+            Gson gson = new Gson();
+            List<RegisterShift> list = new ArrayList<>();
+            JSONArray arrShift = new JSONArray(json);
+            for (int i = 0; i < arrShift.length() ; i++) {
+                PosRegisterShift registerShift = gson.fromJson(arrShift.get(i).toString(), PosRegisterShift.class);
+                list.add((RegisterShift) registerShift);
+            }
             return list;
         } catch (ConnectionException ex) {
             throw new DataAccessException(ex);
         } catch (IOException ex) {
             throw new DataAccessException(ex);
+        } catch (JSONException e) {
+            e.printStackTrace();
         } finally {
             // đóng result reading
             if (rp != null) rp.close();
@@ -168,6 +218,7 @@ public class POSRegisterShiftDataAccess extends POSAbstractDataAccess implements
             if (connection != null) connection.close();
             connection = null;
         }
+        return null;
     }
 
     @Override

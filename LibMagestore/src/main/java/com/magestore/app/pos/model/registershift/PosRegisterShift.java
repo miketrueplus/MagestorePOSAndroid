@@ -53,6 +53,10 @@ public class PosRegisterShift extends PosAbstractModel implements RegisterShift 
     // param request add cash transaction
     PosCashTransaction param_cash;
 
+    public PosRegisterShift(){
+
+    }
+
     @Override
     public String getID() {
         return entity_id;
