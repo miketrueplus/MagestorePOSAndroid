@@ -54,7 +54,7 @@ public class RegisterShiftDetailPanel extends AbstractDetailPanel<RegisterShift>
         addView(v);
         mBinding = DataBindingUtil.bind(v);
 
-        tv_staff_name = (TextView) v.findViewById(R.id.tv_location);
+        tv_staff_name = (TextView) v.findViewById(R.id.tv_staff_name);
         tv_location = (TextView) v.findViewById(R.id.tv_location);
 
         // chuẩn bị panel view danh sách payment

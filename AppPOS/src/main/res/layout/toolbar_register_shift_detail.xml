@@ -5,6 +5,16 @@
     android:layout_centerVertical="true">
 
     <TextView
+        android:id="@+id/tv_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/tv_staff_name"
+        android:gravity="right"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size" />
+
+    <TextView
         android:id="@+id/tv_staff_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -13,12 +23,4 @@
         android:textColor="@color/white"
         android:textSize="@dimen/text_size_18" />
 
-    <TextView
-        android:id="@+id/tv_location"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/tv_staff_name"
-        android:textColor="@color/white"
-        android:textSize="@dimen/text_size" />
 </RelativeLayout>

@@ -189,6 +189,7 @@
     <string name="open_session_float_amount_title">Float Amount</string>
     <string name="open_session_add_value">Add Value</string>
     <string name="open_session_login">Login as %1$s</string>
+    <string name="register_shift_session_title">Session Management</string>
 
     <!--Strings related to setting-->
     <string name="setting_account_title_information">Account Information</string>
