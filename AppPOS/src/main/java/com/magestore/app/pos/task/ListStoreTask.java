@@ -1,8 +1,11 @@
 package com.magestore.app.pos.task;
 
+import com.magestore.app.lib.model.registershift.PointOfSales;
 import com.magestore.app.lib.service.ServiceFactory;
 import com.magestore.app.lib.service.user.UserService;
 import com.magestore.app.lib.task.TaskListener;
+
+import java.util.List;
 
 /**
  * Created by Johan on 3/20/17.
@@ -10,7 +13,7 @@ import com.magestore.app.lib.task.TaskListener;
  * dong.le@trueplus.vn
  */
 
-public class ListStoreTask extends AsyncTaskAbstractTask<Void, Void, Boolean> {
+public class ListStoreTask extends AsyncTaskAbstractTask<Void, Void, List<PointOfSales>> {
     /**
      * Khởi tạo với listener
      *
@@ -21,16 +24,16 @@ public class ListStoreTask extends AsyncTaskAbstractTask<Void, Void, Boolean> {
     }
 
     @Override
-    protected Boolean doInBackground(Void... voids) {
+    protected List<PointOfSales> doInBackground(Void... voids) {
         try {
             // điều chỉnh domain
             // Gọi use case đăng nhập
             ServiceFactory serviceFactory = ServiceFactory.getFactory(null);
             UserService userService = serviceFactory.generateUserService();
-            return userService.retrieveStore();
+            return userService.getListPos();
         } catch (Exception e) {
             cancel(e, true);
-            return false;
+            return null;
         }
     }
 }

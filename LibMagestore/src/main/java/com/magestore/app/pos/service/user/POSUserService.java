@@ -1,6 +1,7 @@
 package com.magestore.app.pos.service.user;
 
 import com.magestore.app.lib.BuildConfig;
+import com.magestore.app.lib.model.registershift.PointOfSales;
 import com.magestore.app.lib.model.store.Store;
 import com.magestore.app.lib.model.user.User;
 import com.magestore.app.lib.resourcemodel.DataAccessFactory;
@@ -112,6 +113,25 @@ public class POSUserService extends AbstractService implements UserService {
      */
     public boolean isLogin() {
         return session != null;
+    }
+
+    @Override
+    public boolean retrievePos() throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        UserDataAccess userGateway = factory.generateUserDataAccess();
+        List<PointOfSales> listPos = userGateway.retrievePos();
+        if(listPos != null && listPos.size() > 0){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public List<PointOfSales> getListPos() throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        UserDataAccess userGateway = factory.generateUserDataAccess();
+        List<PointOfSales> listPos = userGateway.retrievePos();
+        return listPos;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.magestore.app.lib.resourcemodel.user;
 
 import com.magestore.app.lib.connection.ConnectionException;
+import com.magestore.app.lib.model.registershift.PointOfSales;
 import com.magestore.app.lib.model.store.Store;
 import com.magestore.app.lib.model.user.User;
 import com.magestore.app.lib.resourcemodel.DataAccess;
@@ -27,4 +28,6 @@ public interface UserDataAccess extends DataAccess {
     List<Store> retrieveStore() throws ParseException, ConnectionException, DataAccessException, IOException;
 
     List<Store> getListStore() throws ParseException, ConnectionException, DataAccessException, IOException;
+
+    List<PointOfSales> retrievePos() throws ParseException, ConnectionException, DataAccessException, IOException;
 }

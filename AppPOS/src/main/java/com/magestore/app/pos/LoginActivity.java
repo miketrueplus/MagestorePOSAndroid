@@ -14,14 +14,18 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.magestore.app.lib.*;
+import com.magestore.app.lib.model.registershift.PointOfSales;
 import com.magestore.app.lib.task.Task;
 import com.magestore.app.lib.task.TaskListener;
+import com.magestore.app.lib.view.SimpleSpinner;
 import com.magestore.app.pos.task.ListStoreTask;
 import com.magestore.app.pos.task.LoginTask;
 import com.magestore.app.pos.ui.AbstractActivity;
@@ -30,6 +34,8 @@ import com.magestore.app.util.AndroidNetworkUtil;
 import com.magestore.app.util.DataUtil;
 import com.magestore.app.util.DialogUtil;
 import com.magestore.app.util.StringUtil;
+
+import java.util.List;
 
 /**
  * Màn hình login
@@ -48,6 +54,9 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
     private View mProgressView;
     private View mLoginFormView;
     public static String STORE_ID = "";
+    private RelativeLayout email_login_form, point_of_sales_form;
+    private SimpleSpinner sp_pos;
+    private List<PointOfSales> mListPos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,8 +138,33 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
         });
 
         // Tham chiếu đến form và progress
+        email_login_form = (RelativeLayout) findViewById(R.id.email_login_form);
+        point_of_sales_form = (RelativeLayout) findViewById(R.id.point_of_sales_form);
+        sp_pos = (SimpleSpinner) findViewById(R.id.sp_pos);
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+        sp_pos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                PointOfSales pos = getPointOfSales(sp_pos.getSelection());
+                LoginActivity.STORE_ID = pos.getStoreId();
+                DataUtil.saveDataStringToPreferences(getContext(), DataUtil.STORE_ID, pos.getStoreId());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        Button mStartButton = (Button) findViewById(R.id.start_button);
+        mStartButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navigationToSalesActivity();
+            }
+        });
     }
 
     /**
@@ -206,7 +240,8 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
             else
                 stringBuilder.append(StringUtil.STRING_HTTP);
             stringBuilder.append(strFinalDomain);
-            if (lastIndexOfApp < 0) stringBuilder.append(StringUtil.STRING_SLASH).append(BuildConfig.REST_BASE_PAGE);
+            if (lastIndexOfApp < 0)
+                stringBuilder.append(StringUtil.STRING_SLASH).append(BuildConfig.REST_BASE_PAGE);
             if (lastIndexOfApp == strFinalDomain.length() - 1)
                 stringBuilder.append(BuildConfig.REST_BASE_PAGE);
         } else {
@@ -260,7 +295,7 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
     }
 
     private void attemptLoginDemo() {
-        String domain = BuildConfig.REST_BASE_URL + "/pos-app/03";
+        String domain = BuildConfig.REST_BASE_URL + "/pos-app/02";
         String username = "ravi";
         String password = "ravi123";
 
@@ -329,18 +364,26 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
                 saveSharedValue("login_activity_username", mUserNameView.getText().toString().trim());
                 saveSharedValue("login_activity_password", mPasswordView.getText().toString().trim());
 
-                boolean isChooseStore = DataUtil.getDataBooleanToPreferences(getContext(), DataUtil.CHOOSE_STORE);
-                if (isChooseStore) {
-                    navigationToSalesActivity();
-                } else {
-                    mStoreTask = new ListStoreTask(new StoreListener());
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) // Above Api Level 13
-                    {
-                        mStoreTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                    } else // Below Api Level 13
-                    {
-                        mStoreTask.execute();
-                    }
+//                boolean isChooseStore = DataUtil.getDataBooleanToPreferences(getContext(), DataUtil.CHOOSE_STORE);
+//                if (isChooseStore) {
+//                    navigationToSalesActivity();
+//                } else {
+//                    mStoreTask = new ListStoreTask(new StoreListener());
+//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) // Above Api Level 13
+//                    {
+//                        mStoreTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+//                    } else // Below Api Level 13
+//                    {
+//                        mStoreTask.execute();
+//                    }
+//                }
+                mStoreTask = new ListStoreTask(new StoreListener());
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) // Above Api Level 13
+                {
+                    mStoreTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                } else // Below Api Level 13
+                {
+                    mStoreTask.execute();
                 }
             } else {
                 // Đăng nhập không thành công, báo lỗi và yêu cầu nhập lại
@@ -364,7 +407,7 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
         }
     }
 
-    public class StoreListener implements TaskListener<Void, Void, Boolean> {
+    public class StoreListener implements TaskListener<Void, Void, List<PointOfSales>> {
 
         @Override
         public void onPreController(Task task) {
@@ -372,10 +415,15 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
         }
 
         @Override
-        public void onPostController(Task task, Boolean success) {
-            if (success) {
-                navigationToWelcomeActivity();
+        public void onPostController(Task task, List<PointOfSales> listPos) {
+            if (listPos != null && listPos.size() > 0) {
+                email_login_form.setVisibility(View.GONE);
+                point_of_sales_form.setVisibility(View.VISIBLE);
+                mListPos = listPos;
+                sp_pos.bind(listPos.toArray(new PointOfSales[0]));
+                showProgress(false);
             } else {
+                showProgress(false);
                 showAlertRespone();
             }
         }
@@ -389,6 +437,15 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
         public void onProgressController(Task task, Void... progress) {
 
         }
+    }
+
+    private PointOfSales getPointOfSales(String posID) {
+        for (PointOfSales pos : mListPos) {
+            if(pos.getID().equals(posID)){
+                return pos;
+            }
+        }
+        return null;
     }
 
     private void navigationToSalesActivity() {

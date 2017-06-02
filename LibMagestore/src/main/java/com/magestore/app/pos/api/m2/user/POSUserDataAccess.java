@@ -8,6 +8,7 @@ import com.magestore.app.lib.connection.ParamBuilder;
 import com.magestore.app.lib.connection.ResultReading;
 import com.magestore.app.lib.connection.Statement;
 import com.magestore.app.lib.connection.http.MagestoreConnection;
+import com.magestore.app.lib.model.registershift.PointOfSales;
 import com.magestore.app.lib.model.store.Store;
 import com.magestore.app.lib.model.user.User;
 import com.magestore.app.lib.resourcemodel.DataAccessException;
@@ -17,6 +18,7 @@ import com.magestore.app.pos.api.m2.POSAbstractDataAccess;
 import com.magestore.app.pos.api.m2.POSDataAccessSession;
 import com.magestore.app.pos.model.store.PosStore;
 import com.magestore.app.pos.model.user.PosUser;
+import com.magestore.app.pos.parse.gson2pos.Gson2PosListPointOfSales;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosStoreParseImplement;
 import com.magestore.app.util.StringUtil;
 
@@ -37,6 +39,7 @@ public class POSUserDataAccess extends POSAbstractDataAccess implements UserData
     // wrap object lại và chuyênr thành json
     // Cache config đầu tiên
     private static List<Store> mListStore;
+    private static List<PointOfSales> mListPos;
 
     private class Wrap {
         User staff;
@@ -150,5 +153,48 @@ public class POSUserDataAccess extends POSAbstractDataAccess implements UserData
             mListStore = new ArrayList<>();
         }
         return mListStore;
+    }
+
+    @Override
+    public List<PointOfSales> retrievePos() throws ParseException, ConnectionException, DataAccessException, IOException {
+        if (mListPos != null && mListPos.size() > 0) {
+            return mListPos;
+        }
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+
+        try {
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPI.REST_REGISTER_SHIFTS_GET_LISTING_POS);
+            paramBuilder = statement.getParamBuilder()
+                    .setSessionID(POSDataAccessSession.REST_SESSION_ID);
+
+            rp = statement.execute();
+            rp.setParseImplement(getClassParseImplement());
+            rp.setParseModel(Gson2PosListPointOfSales.class);
+            Gson2PosListPointOfSales listPos = (Gson2PosListPointOfSales) rp.doParse();
+            mListPos = (List<PointOfSales>) (List<?>) (listPos.items);
+            return mListPos;
+        } catch (Exception ex) {
+            throw new DataAccessException(ex);
+        } finally {
+//            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
     }
 }
