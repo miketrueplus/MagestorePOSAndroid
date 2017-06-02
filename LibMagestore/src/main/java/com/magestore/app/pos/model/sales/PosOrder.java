@@ -119,7 +119,7 @@ public class PosOrder extends PosAbstractModel implements Order {
     float total_invoiced;
     float total_item_count;
     float total_paid;
-    int total_qty_ordered;
+    float total_qty_ordered;
     String updated_at;
     String weight;
     String total_count;
@@ -400,7 +400,7 @@ public class PosOrder extends PosAbstractModel implements Order {
     }
 
     @Override
-    public int getTotalQtyOrdered() {
+    public float getTotalQtyOrdered() {
         return total_qty_ordered;
     }
 

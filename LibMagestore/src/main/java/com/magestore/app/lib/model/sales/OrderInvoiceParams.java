@@ -140,9 +140,9 @@ public interface OrderInvoiceParams extends Model {
 
     void setTaxAmount(float taxAmount);
 
-    int getTotalQty();
+    float getTotalQty();
 
-    void setTotalQty(int totalQty);
+    void setTotalQty(float totalQty);
 
     String getUpdatedAt();
 

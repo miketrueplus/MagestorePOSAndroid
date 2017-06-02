@@ -92,7 +92,7 @@ public interface Order extends Model {
     float getSubtotalInclTax();
     void setSubtotalInclTax(float fSubtotalInclTax);
 
-    int getTotalQtyOrdered();
+    float getTotalQtyOrdered();
 
     float getSubTotal();
 

@@ -47,7 +47,7 @@ public class PosOrderInvoiceParams extends PosAbstractModel implements OrderInvo
     float subtotal;
     float subtotalInclTax;
     float taxAmount;
-    int totalQty;
+    float totalQty;
     String updatedAt;
     OrderAttributes extension_attributes;
     List<CartItem> items;
@@ -373,12 +373,12 @@ public class PosOrderInvoiceParams extends PosAbstractModel implements OrderInvo
     }
 
     @Override
-    public int getTotalQty() {
+    public float getTotalQty() {
         return totalQty;
     }
 
     @Override
-    public void setTotalQty(int totalQty) {
+    public void setTotalQty(float totalQty) {
         this.totalQty = totalQty;
     }
 
