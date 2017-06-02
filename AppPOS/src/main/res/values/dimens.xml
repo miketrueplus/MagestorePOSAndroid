@@ -22,6 +22,7 @@
     <dimen name="layout_margin_50">50dp</dimen>
     <dimen name="layout_margin_75">75dp</dimen>
     <dimen name="line">1dp</dimen>
+    <dimen name="text_size_10">10sp</dimen>
     <dimen name="text_size">15sp</dimen>
     <dimen name="text_size_18">18sp</dimen>
 

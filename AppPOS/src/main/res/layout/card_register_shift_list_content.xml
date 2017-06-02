@@ -5,6 +5,8 @@
 
         <import type="com.magestore.app.util.ConfigUtil" />
 
+        <import type="android.view.View" />
+
         <variable
             name="registerShift"
             type="com.magestore.app.lib.model.registershift.RegisterShift" />
@@ -66,15 +68,34 @@
                     android:textSize="@dimen/register_shift_item_title_text_size" />
             </RelativeLayout>
 
-            <TextView
-                android:id="@+id/open_close_time"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:text='@{registerShift.checkStatus() ? ConfigUtil.formatTime(registerShift.getOpenedAt()) + " " + @string/register_shift_list_open : registerShift.getOpenAndClose()}'
-                android:textColor="@color/register_shift_item_time_text_color"
-                android:textSize="@dimen/register_shift_item_time_text_size"
-                android:textStyle="italic" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/open_close_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text='@{registerShift.checkStatus() ? ConfigUtil.formatTime(registerShift.getOpenedAt()) + " - " : registerShift.getOpenAndClose()}'
+                    android:textColor="@color/register_shift_item_time_text_color"
+                    android:textSize="@dimen/register_shift_item_time_text_size"
+                    android:textStyle="italic" />
+
+                <TextView
+                    android:id="@+id/open_session"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:background="@drawable/open_session_border"
+                    android:gravity="center"
+                    android:padding="@dimen/layout_margin_3"
+                    android:text="@string/open"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_10"
+                    android:visibility="@{registerShift.checkStatus() ? View.VISIBLE : View.GONE}" />
+            </LinearLayout>
         </LinearLayout>
 
         <View
