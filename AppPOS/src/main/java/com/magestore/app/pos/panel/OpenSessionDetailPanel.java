@@ -78,11 +78,11 @@ public class OpenSessionDetailPanel extends AbstractDetailPanel<RegisterShift> {
                 param.setCashAdded(float_amount);
                 param.setOpenedNote(et_note.getText().toString());
                 param.setShiftCurrencyCode(ConfigUtil.getCurrentCurrency().getCode());
-                param.setStaffId(ConfigUtil.getStaff().getID());
-                param.setLocationId("1");
+                param.setStaffId(ConfigUtil.getPointOfSales().getStaffId());
+                param.setLocationId(ConfigUtil.getPointOfSales().getLocationId());
                 param.setOpenedAt(ConfigUtil.getCurrentDateTime());
                 param.setCloseAt(ConfigUtil.getCurrentDateTime());
-                param.setShiftId("off_id_auto_shift_1495178721053");
+                param.setShiftId(ConfigUtil.getPointOfSales().getID());
                 ((SessionController) mController).doInputOpenSession(param);
             }
         });

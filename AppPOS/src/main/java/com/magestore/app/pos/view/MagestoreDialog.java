@@ -2,12 +2,14 @@ package com.magestore.app.pos.view;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -35,6 +37,8 @@ public class MagestoreDialog extends Dialog {
     boolean goneButtonCancel = false;
     boolean goneDialogTextTitle = false;
     boolean goneDialogTitle = false;
+    boolean full_screen = false;
+    boolean transparent = false;
 
     String dialogTitle;
     String dialogCancel;
@@ -100,6 +104,14 @@ public class MagestoreDialog extends Dialog {
         this.dialogCancelColor = dialogCancelColor;
     }
 
+    public void setFullScreen(boolean fullScreen){
+        full_screen = fullScreen;
+    }
+
+    public void setTransparent(boolean transparent){
+        this.transparent = transparent;
+    }
+
     public void setDialogWidth(int dialog_width) {
         this.dialog_width = dialog_width;
     }
@@ -137,17 +149,28 @@ public class MagestoreDialog extends Dialog {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.magestore_dialog);
-
-        if (dialog_width > 0 || dialog_height > 0) {
-            ViewGroup.LayoutParams params = getWindow().getAttributes();
-            if (dialog_width > 0)
-                params.width = dialog_width;
-            if (dialog_height > 0)
-                params.height = dialog_height;
-            getWindow().setAttributes((android.view.WindowManager.LayoutParams) params);
+        ll_dialog = (LinearLayout) findViewById(R.id.ll_dialog);
+        if(transparent){
+            getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        }else{
+            ll_dialog.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.dialog_background_color));
         }
 
-        ll_dialog = (LinearLayout) findViewById(R.id.ll_dialog);
+        if (full_screen) {
+            ViewGroup.LayoutParams params = getWindow().getAttributes();
+            params.width = WindowManager.LayoutParams.MATCH_PARENT;
+            params.height = WindowManager.LayoutParams.MATCH_PARENT;
+        } else {
+            if (dialog_width > 0 || dialog_height > 0) {
+                ViewGroup.LayoutParams params = getWindow().getAttributes();
+                if (dialog_width > 0)
+                    params.width = dialog_width;
+                if (dialog_height > 0)
+                    params.height = dialog_height;
+                getWindow().setAttributes((WindowManager.LayoutParams) params);
+            }
+        }
+
         rl_dialog_title = (RelativeLayout) findViewById(R.id.rl_dialog_title);
         dialog_cancel = (TextView) findViewById(R.id.dialog_cancel);
         dialog_save = (TextView) findViewById(R.id.dialog_save);

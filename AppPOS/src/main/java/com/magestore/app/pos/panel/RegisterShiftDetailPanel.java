@@ -34,6 +34,7 @@ public class RegisterShiftDetailPanel extends AbstractDetailPanel<RegisterShift>
     RegisterShiftCashListController mRegisterShiftCashListController;
     TextView tv_staff_name;
     TextView tv_location;
+    CloseSessionPanel panelCloseSessionPanel;
 
     public RegisterShiftDetailPanel(Context context) {
         super(context);
@@ -90,8 +91,7 @@ public class RegisterShiftDetailPanel extends AbstractDetailPanel<RegisterShift>
         super.bindItem(item);
         mBinding.setRegisterShift(item);
         tv_staff_name.setText(item.getStaffName());
-        // TODO: để tạm location staff
-        tv_location.setText(ConfigUtil.getStaff().getStaffLocation().getLocationAddress());
+        tv_location.setText(ConfigUtil.getPointOfSales().getPosName());
         mRegisterShiftSaleListController.doSelectRegisterShift(item);
         mRegisterShiftCashListController.doSelectRegisterShift(item);
         mRegisterShiftCashListPanel.setRegisterShift(item);
@@ -100,6 +100,13 @@ public class RegisterShiftDetailPanel extends AbstractDetailPanel<RegisterShift>
             @Override
             public void onClick(View view) {
                 showMakeAdjustment(item);
+            }
+        });
+
+        ((Button) v.findViewById(R.id.close_shift)).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showCloseShift(item);
             }
         });
     }
@@ -117,5 +124,22 @@ public class RegisterShiftDetailPanel extends AbstractDetailPanel<RegisterShift>
                 ((RegisterShiftListController) mController).doInputMakeAdjustment(panelMakeAdjustment.bind2Item());
             }
         });
+    }
+
+    private void showCloseShift(RegisterShift item) {
+        panelCloseSessionPanel = new CloseSessionPanel(getContext());
+        panelCloseSessionPanel.bindItem(item);
+        panelCloseSessionPanel.setController(mController);
+        panelCloseSessionPanel.initValue();
+        panelCloseSessionPanel.bindItem(item);
+        MagestoreDialog dialog = DialogUtil.dialog(getContext(), getContext().getString(R.string.register_shift_dialog_close_session_title), panelCloseSessionPanel);
+        dialog.setFullScreen(true);
+        dialog.setTransparent(true);
+        dialog.setGoneDialogTitle(true);
+        dialog.show();
+    }
+
+    public void updateFloatAmount(float total) {
+        panelCloseSessionPanel.updateFloatAmount(total);
     }
 }

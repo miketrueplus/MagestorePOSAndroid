@@ -31,6 +31,7 @@ import com.magestore.app.pos.task.LoginTask;
 import com.magestore.app.pos.ui.AbstractActivity;
 import com.magestore.app.pos.ui.LoginUI;
 import com.magestore.app.util.AndroidNetworkUtil;
+import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.DataUtil;
 import com.magestore.app.util.DialogUtil;
 import com.magestore.app.util.StringUtil;
@@ -150,6 +151,7 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
                 PointOfSales pos = getPointOfSales(sp_pos.getSelection());
                 LoginActivity.STORE_ID = pos.getStoreId();
                 DataUtil.saveDataStringToPreferences(getContext(), DataUtil.STORE_ID, pos.getStoreId());
+                ConfigUtil.setPointOfSales(pos);
             }
 
             @Override

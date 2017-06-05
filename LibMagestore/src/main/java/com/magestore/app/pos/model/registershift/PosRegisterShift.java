@@ -133,6 +133,11 @@ public class PosRegisterShift extends PosAbstractModel implements RegisterShift 
     }
 
     @Override
+    public float getBaseFloatAmount() {
+        return base_float_amount;
+    }
+
+    @Override
     public String getBaseCurrencyCode() {
         return base_currency_code;
     }

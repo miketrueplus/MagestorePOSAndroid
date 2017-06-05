@@ -181,6 +181,7 @@
     <string name="register_shift_bottom_make_adjustment">Make Adjustment</string>
     <string name="register_shift_bottom_close_shift">Close Shift</string>
     <string name="register_shift_dialog_make_adjustment_title">Make Adjustment</string>
+    <string name="register_shift_dialog_close_session_title">Close Session</string>
     <string name="register_shift_dialog_make_adjustment_balance">The current balance of your shift:</string>
     <string name="register_shift_dialog_make_adjustment_add">Add</string>
     <string name="register_shift_dialog_make_adjustment_remove">Remove</string>
@@ -189,6 +190,12 @@
     <string name="open_session_float_amount_title">Float Amount</string>
     <string name="open_session_add_value">Add Value</string>
     <string name="open_session_login">Login as %1$s</string>
+    <string name="close_session_title">Close Session</string>
+    <string name="close_session_open_balance_title">Opening Balance</string>
+    <string name="close_session_transaction_title">Transaction</string>
+    <string name="close_session_t_close_balance_title">Theoretical Closing Balance</string>
+    <string name="close_session_r_close_balance_title">Real Closing Balance</string>
+    <string name="close_session_difference_title">Difference</string>
     <string name="register_shift_session_title">Session Management</string>
 
     <!--Strings related to setting-->
@@ -235,6 +242,7 @@
     <!-- Strings related to single words -->
     <string name="add">Add</string>
     <string name="add_to_cart">Add To Cart</string>
+    <string name="adjustment">Adjustment</string>
     <string name="amount">Amount</string>
     <string name="apply">Apply</string>
     <string name="avaibles">Avaibles</string>

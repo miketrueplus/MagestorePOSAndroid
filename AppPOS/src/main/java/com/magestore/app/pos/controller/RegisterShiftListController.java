@@ -4,11 +4,15 @@ import com.magestore.app.lib.controller.AbstractListController;
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.registershift.CashTransaction;
+import com.magestore.app.lib.model.registershift.OpenSessionValue;
 import com.magestore.app.lib.model.registershift.RegisterShift;
 import com.magestore.app.lib.service.registershift.RegisterShiftService;
+import com.magestore.app.pos.panel.OpenSessionListValuePanel;
+import com.magestore.app.pos.panel.RegisterShiftDetailPanel;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +24,8 @@ import java.util.Map;
 
 public class RegisterShiftListController extends AbstractListController<RegisterShift> {
     static final int ACTION_CODE_MAKE_ADJUSTMENT = 0;
+    OpenSessionListValuePanel mOpenSessionListPanel;
+    List<OpenSessionValue> listValue;
 
     /**
      * Service xử lý các vấn đề liên quan đến register shift
@@ -34,6 +40,7 @@ public class RegisterShiftListController extends AbstractListController<Register
     public void setRegisterShiftService(RegisterShiftService mRegisterShiftService) {
         this.mRegisterShiftService = mRegisterShiftService;
         setListService(mRegisterShiftService);
+        listValue = new ArrayList<>();
     }
 
     /**
@@ -72,5 +79,24 @@ public class RegisterShiftListController extends AbstractListController<Register
 
     public CashTransaction createCashTransaction(){
         return mRegisterShiftService.createCashTransaction();
+    }
+
+    public void setOpenSessionListPanel(OpenSessionListValuePanel mOpenSessionListPanel) {
+        this.mOpenSessionListPanel = mOpenSessionListPanel;
+    }
+
+    public void addValue() {
+        OpenSessionValue value = mRegisterShiftService.createOpenSessionValue();
+        listValue.add(value);
+        mOpenSessionListPanel.bindList(listValue);
+    }
+
+    public void removeValue(OpenSessionValue value) {
+        listValue.remove(value);
+        mOpenSessionListPanel.bindList(listValue);
+    }
+
+    public void updateFloatAmount(float total) {
+        ((RegisterShiftDetailPanel) mDetailView).updateFloatAmount(total);
     }
 }

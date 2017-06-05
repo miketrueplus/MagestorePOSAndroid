@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.magestore.app.lib.model.registershift.OpenSessionValue;
 import com.magestore.app.lib.view.AbstractSimpleRecycleView;
 import com.magestore.app.pos.R;
+import com.magestore.app.pos.controller.RegisterShiftListController;
 import com.magestore.app.pos.controller.SessionController;
 import com.magestore.app.pos.databinding.CardOpenSessionListContentBinding;
 import com.magestore.app.util.ConfigUtil;
@@ -27,11 +28,22 @@ import java.util.HashMap;
  */
 
 public class OpenSessionListValuePanel extends AbstractSimpleRecycleView<OpenSessionValue> {
+    static int TYPE_CLOSE_SESSION = 1;
     HashMap<OpenSessionValue, EditTextFloat> mapValue;
     HashMap<OpenSessionValue, EditTextInteger> mapAmount;
     HashMap<OpenSessionValue, TextView> mapSubtotal;
     HashMap<OpenSessionValue, Float> mapTotal;
     SessionController mSessionController;
+    RegisterShiftListController mRegisterShiftListController;
+    int type;
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public void setRegisterShiftListController(RegisterShiftListController mRegisterShiftListController) {
+        this.mRegisterShiftListController = mRegisterShiftListController;
+    }
 
     public void setSessionController(SessionController mSessionController) {
         this.mSessionController = mSessionController;
@@ -83,7 +95,11 @@ public class OpenSessionListValuePanel extends AbstractSimpleRecycleView<OpenSes
                 mapSubtotal.remove(item);
                 mapTotal.remove(item);
                 updateFloatAmount();
-                mSessionController.removeValue(item);
+                if (type == TYPE_CLOSE_SESSION) {
+                    mRegisterShiftListController.removeValue(item);
+                } else {
+                    mSessionController.removeValue(item);
+                }
             }
         });
     }
@@ -105,7 +121,7 @@ public class OpenSessionListValuePanel extends AbstractSimpleRecycleView<OpenSes
                 float value = et_value.getValueFloat();
                 EditTextInteger et_amount = mapAmount.get(item);
                 int amount = 0;
-                if(et_amount != null){
+                if (et_amount != null) {
                     amount = et_amount.getValueInteger();
                 }
                 float subtotal = value * amount;
@@ -166,6 +182,10 @@ public class OpenSessionListValuePanel extends AbstractSimpleRecycleView<OpenSes
         for (float subtotal : mapTotal.values()) {
             total += subtotal;
         }
-        mSessionController.updateFloatAmount(total);
+        if (type == TYPE_CLOSE_SESSION) {
+            mRegisterShiftListController.updateFloatAmount(total);
+        } else {
+            mSessionController.updateFloatAmount(total);
+        }
     }
 }

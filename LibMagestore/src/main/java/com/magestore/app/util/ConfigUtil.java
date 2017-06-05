@@ -5,6 +5,7 @@ import android.text.format.Time;
 import com.magestore.app.lib.model.config.ConfigPrint;
 import com.magestore.app.lib.model.config.ConfigTaxClass;
 import com.magestore.app.lib.model.customer.Customer;
+import com.magestore.app.lib.model.registershift.PointOfSales;
 import com.magestore.app.lib.model.staff.Staff;
 import com.magestore.app.lib.model.directory.Currency;
 
@@ -46,6 +47,7 @@ public class ConfigUtil {
     private static boolean mEnableGiftCard;
     private static List<ConfigTaxClass> mConfigTaxClass;
     private static String mTypePrint;
+    private static PointOfSales mPointOfSales;
 
     /**
      * @param format
@@ -641,5 +643,13 @@ public class ConfigUtil {
 
     public static String getTypePrint() {
         return mTypePrint;
+    }
+
+    public static PointOfSales getPointOfSales() {
+        return mPointOfSales;
+    }
+
+    public static void setPointOfSales(PointOfSales mPointOfSales) {
+        ConfigUtil.mPointOfSales = mPointOfSales;
     }
 }

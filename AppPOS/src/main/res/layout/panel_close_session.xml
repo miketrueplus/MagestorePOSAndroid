@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:magestore_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="20dp"
+    android:paddingLeft="200dp"
+    android:paddingRight="200dp"
+    android:paddingTop="20dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/dialog_background_color">
+
+        <LinearLayout
+            android:id="@+id/ll_session_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/layout_margin_20">
+
+                <TextView
+                    android:id="@+id/tv_session_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/layout_margin_5"
+                    android:text="@string/back"
+                    android:textColor="@color/open_session_text_color"
+                    android:textSize="@dimen/open_session_action_title_text_size"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tv_session_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:gravity="center_horizontal"
+                    android:text="@string/close_session_title"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/open_session_title_text_size"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line"
+                android:background="@color/line" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/rl_total_balance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ll_session_header"
+            android:layout_margin="@dimen/layout_margin_20"
+            android:background="@drawable/open_session_border_float_amount"
+            android:orientation="horizontal"
+            android:padding="@dimen/layout_margin_10">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/layout_margin_10"
+                    android:ellipsize="end"
+                    android:gravity="right|bottom"
+                    android:lines="2"
+                    android:text="@string/close_session_open_balance_title"
+                    android:textColor="@color/register_shift_text_color"
+                    android:textSize="@dimen/text_size" />
+
+                <TextView
+                    android:id="@+id/tv_open_session_balance"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/text_size" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/layout_margin_10"
+                    android:ellipsize="end"
+                    android:gravity="right|bottom"
+                    android:lines="2"
+                    android:text="@string/close_session_transaction_title"
+                    android:textColor="@color/register_shift_text_color"
+                    android:textSize="@dimen/text_size" />
+
+                <TextView
+                    android:id="@+id/tv_transaction"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/text_size" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/layout_margin_10"
+                    android:ellipsize="end"
+                    android:gravity="right|bottom"
+                    android:lines="2"
+                    android:text="@string/close_session_t_close_balance_title"
+                    android:textColor="@color/register_shift_text_color"
+                    android:textSize="@dimen/text_size" />
+
+                <TextView
+                    android:id="@+id/tv_t_close_balance"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/text_size" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/layout_margin_10"
+                    android:ellipsize="end"
+                    android:gravity="right|bottom"
+                    android:lines="2"
+                    android:text="@string/close_session_r_close_balance_title"
+                    android:textColor="@color/register_shift_text_color"
+                    android:textSize="@dimen/text_size" />
+
+                <com.magestore.app.view.EditTextFloat
+                    android:id="@+id/et_r_close_balance"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/text_size" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/layout_margin_10"
+                    android:ellipsize="end"
+                    android:gravity="right|bottom"
+                    android:lines="2"
+                    android:text="@string/close_session_difference_title"
+                    android:textColor="@color/register_shift_text_color"
+                    android:textSize="@dimen/text_size" />
+
+                <TextView
+                    android:id="@+id/tv_difference"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/text_size" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_list_value_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_total_balance"
+            android:layout_margin="@dimen/layout_margin_20"
+            android:background="@color/open_session_bg_header_value"
+            android:orientation="horizontal"
+            android:padding="@dimen/layout_margin_10">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="left|center_vertical"
+                android:text="@string/value"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/text_size" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/amount"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/text_size" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right|center_vertical"
+                android:text="@string/sub_total"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/text_size" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_add_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ll_list_value_title"
+            android:layout_marginBottom="@dimen/layout_margin_10"
+            android:layout_marginRight="@dimen/layout_margin_20">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/layout_margin_10"
+                android:layout_toLeftOf="@+id/im_add_value"
+                android:text="@string/open_session_add_value"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/text_size" />
+
+            <ImageView
+                android:id="@+id/im_add_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_add_new" />
+        </RelativeLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/ll_bottom"
+            android:layout_below="@+id/rl_add_value"
+            android:scrollbars="none">
+
+            <com.magestore.app.pos.panel.OpenSessionListValuePanel
+                android:id="@+id/close_session_list_panel"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/layout_margin_10"
+                magestore_view:layout_no_scroll="true"
+                magestore_view:layout_row="@layout/card_open_session_list_content" />
+        </ScrollView>
+
+        <LinearLayout
+            android:id="@+id/ll_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="20dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/ll_note"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/checkout_border_linear_layout"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <com.magestore.app.view.FormatEditText
+                    android:id="@+id/et_note"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/open_session_bg_note"
+                    android:gravity="top"
+                    android:hint="@string/note"
+                    android:inputType="textMultiLine"
+                    android:minLines="3"
+                    android:textColor="@color/text_color"
+                    android:textColorHint="@color/open_session_text_color"
+                    android:textSize="@dimen/text_size" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/layout_margin_20"
+                android:layout_marginTop="@dimen/layout_margin_20">
+
+                <Button
+                    android:id="@+id/bt_adjustment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:background="@drawable/open_session_button_open"
+                    android:text="@string/adjustment"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/bt_open"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/open_session_button_open"
+                    android:text="@string/close"
+                    android:textColor="@color/white" />
+            </RelativeLayout>
+        </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>
