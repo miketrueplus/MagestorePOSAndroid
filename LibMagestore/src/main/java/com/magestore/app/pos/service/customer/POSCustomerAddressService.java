@@ -153,21 +153,18 @@ public class POSCustomerAddressService extends AbstractService implements Custom
             boolean default_billing = false;
             for (CustomerAddress address : listCustomerAddress) {
                 if (!StringUtil.isNullOrEmpty(address.isShipping()) && address.isShipping().equals("true") && !StringUtil.isNullOrEmpty(address.isBilling()) && address.isBilling().equals("true")) {
-                    listCustomerAddress.remove(address);
-                    listCustomerAddress.add(0, address);
+                    listCustomerAddress.set(0, address);
                     listCustomerAddress.add(newGuestCustomer.getAddress().get(0));
                     customer.setUseOneAddress(true);
                     default_shipping = true;
                     default_billing = true;
                     break;
                 } else if (!StringUtil.isNullOrEmpty(address.isShipping()) && address.isShipping().equals("true")) {
-                    listCustomerAddress.remove(address);
-                    listCustomerAddress.add(0, address);
+                    listCustomerAddress.set(0, address);
                     default_shipping = true;
                 } else if (!StringUtil.isNullOrEmpty(address.isBilling()) && address.isBilling().equals("true")) {
                     if(listCustomerAddress.size() >= 2){
-                        listCustomerAddress.remove(address);
-                        listCustomerAddress.add(1, address);
+                        listCustomerAddress.set(1, address);
                     }
                     default_billing = true;
                 }
