@@ -36,6 +36,7 @@ public class PosSessionParam extends PosAbstractModel implements SessionParam {
     String staff_id;
     String status;
     float total_sales;
+    String pos_id;
 
     @Override
     public void setBalance(float fBalance) {
@@ -165,5 +166,10 @@ public class PosSessionParam extends PosAbstractModel implements SessionParam {
     @Override
     public void setTotalSales(float fTotalSales) {
         total_sales = fTotalSales;
+    }
+
+    @Override
+    public void setPosId(String strPosId) {
+        pos_id = strPosId;
     }
 }

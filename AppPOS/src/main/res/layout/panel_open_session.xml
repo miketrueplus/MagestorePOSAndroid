@@ -46,11 +46,33 @@
             android:background="@color/line" />
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/ll_pos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_session_header"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/layout_margin_20"
+        android:layout_marginRight="@dimen/layout_margin_20"
+        android:layout_marginTop="@dimen/layout_margin_20"
+        android:background="@drawable/checkout_border_linear_layout">
+
+        <com.magestore.app.lib.view.SimpleSpinner
+            android:id="@+id/sp_pos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/layout_margin_5"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/text_size"
+            magestore_view:layout_no_scroll="true"
+            magestore_view:layout_row="@layout/simple_textview_row" />
+    </LinearLayout>
+
     <RelativeLayout
         android:id="@+id/rl_float_amount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ll_session_header"
+        android:layout_below="@+id/ll_pos"
         android:layout_margin="@dimen/layout_margin_20"
         android:background="@drawable/open_session_border_float_amount"
         android:padding="@dimen/layout_margin_10">
@@ -83,7 +105,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/rl_float_amount"
-        android:layout_margin="@dimen/layout_margin_20"
+        android:layout_marginBottom="@dimen/layout_margin_20"
+        android:layout_marginLeft="@dimen/layout_margin_20"
+        android:layout_marginRight="@dimen/layout_margin_20"
         android:background="@color/open_session_bg_header_value"
         android:orientation="horizontal"
         android:padding="@dimen/layout_margin_10">

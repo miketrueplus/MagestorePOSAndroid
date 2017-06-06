@@ -35,4 +35,5 @@ public interface SessionParam extends Model {
     void setStaffId(String strStaffId);
     void setStatus(String strStatus);
     void setTotalSales(float fTotalSales);
+    void setPosId(String strPosId);
 }

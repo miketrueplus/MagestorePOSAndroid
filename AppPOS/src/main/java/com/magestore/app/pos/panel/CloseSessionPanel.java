@@ -116,7 +116,7 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
                 param.setOpenedAt(item.getOpenedAt());
                 param.setCloseAt(ConfigUtil.getCurrentDateTime());
                 param.setShiftId(item.getShiftId());
-                param.setStatus("1");
+                param.setStatus("2");
                 ((RegisterShiftListController) getController()).doInputCloseSession(item ,param);
             }
         });

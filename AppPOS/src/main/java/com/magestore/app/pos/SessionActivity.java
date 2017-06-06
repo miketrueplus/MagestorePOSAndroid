@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import com.magestore.app.lib.context.MagestoreContext;
 import com.magestore.app.lib.service.ServiceFactory;
 import com.magestore.app.lib.service.registershift.RegisterShiftService;
+import com.magestore.app.lib.service.user.UserService;
 import com.magestore.app.pos.controller.SessionController;
 import com.magestore.app.pos.panel.OpenSessionListPanel;
 import com.magestore.app.pos.panel.OpenSessionListValuePanel;
@@ -51,9 +52,11 @@ public class SessionActivity extends AbstractActivity {
         // chuẩn bị service
         ServiceFactory factory;
         RegisterShiftService service = null;
+        UserService userService = null;
         try {
             factory = ServiceFactory.getFactory(magestoreContext);
             service = factory.generateRegisterShiftService();
+            userService = factory.generateUserService();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InstantiationException e) {
@@ -62,6 +65,7 @@ public class SessionActivity extends AbstractActivity {
 
         mSessionController = new SessionController();
         mSessionController.setMagestoreContext(magestoreContext);
+        mSessionController.setUserService(userService);
         mSessionController.setRegisterShiftService(service);
         mSessionController.setDetailPanel(mOpenSessionPanel);
         mSessionController.setListPanel(mOpenSessionListPanel);

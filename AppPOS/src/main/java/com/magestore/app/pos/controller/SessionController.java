@@ -1,14 +1,21 @@
 package com.magestore.app.pos.controller;
 
+import android.content.Intent;
+
 import com.magestore.app.lib.controller.AbstractListController;
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.registershift.OpenSessionValue;
+import com.magestore.app.lib.model.registershift.PointOfSales;
 import com.magestore.app.lib.model.registershift.RegisterShift;
 import com.magestore.app.lib.model.registershift.SessionParam;
 import com.magestore.app.lib.service.registershift.RegisterShiftService;
+import com.magestore.app.lib.service.user.UserService;
+import com.magestore.app.pos.SalesActivity;
 import com.magestore.app.pos.panel.OpenSessionListValuePanel;
 import com.magestore.app.pos.panel.OpenSessionDetailPanel;
 
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +37,11 @@ public class SessionController extends AbstractListController<RegisterShift> {
     RegisterShiftService mRegisterShiftService;
     Map<String, Object> wraper;
     List<OpenSessionValue> listValue;
+    UserService userService;
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 
     /**
      * Thiết lập service
@@ -60,13 +72,20 @@ public class SessionController extends AbstractListController<RegisterShift> {
     @Override
     public void onActionPostExecute(boolean success, int actionType, String actionCode, Map<String, Object> wraper, Model... models) {
         if (success && actionType == ACTION_TYPE_OPEN_SESSION) {
-
+            navigationToSalesActivity();
         }
     }
 
     @Override
     public void onCancelledBackground(Exception exp, int actionType, String actionCode, Map<String, Object> wraper, Model... models) {
         super.onCancelledBackground(exp, actionType, actionCode, wraper, models);
+    }
+
+    private void navigationToSalesActivity() {
+        // Đăng nhập thành công, mở sẵn form sales
+        Intent intent = new Intent(getMagestoreContext().getActivity(), SalesActivity.class);
+        getMagestoreContext().getActivity().startActivity(intent);
+        getMagestoreContext().getActivity().finish();
     }
 
     public void addValue() {
@@ -90,5 +109,21 @@ public class SessionController extends AbstractListController<RegisterShift> {
 
     public SessionParam createSessionParam() {
         return mRegisterShiftService.createSessionParam();
+    }
+
+    public List<PointOfSales> getListPos(){
+        try {
+            return userService.getListPos();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }

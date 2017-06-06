@@ -3,18 +3,25 @@ package com.magestore.app.pos.panel;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.magestore.app.lib.model.registershift.PointOfSales;
 import com.magestore.app.lib.model.registershift.RegisterShift;
 import com.magestore.app.lib.model.registershift.SessionParam;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
+import com.magestore.app.lib.view.SimpleSpinner;
+import com.magestore.app.pos.LoginActivity;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.SessionController;
 import com.magestore.app.util.ConfigUtil;
+import com.magestore.app.util.DataUtil;
 import com.magestore.app.view.EditTextFloat;
+
+import java.util.List;
 
 /**
  * Created by Johan on 5/25/17.
@@ -28,6 +35,7 @@ public class OpenSessionDetailPanel extends AbstractDetailPanel<RegisterShift> {
     TextView txt_staff_login;
     EditTextFloat et_float_amount;
     EditText et_note;
+    SimpleSpinner sp_pos;
 
     public OpenSessionDetailPanel(Context context) {
         super(context);
@@ -44,6 +52,7 @@ public class OpenSessionDetailPanel extends AbstractDetailPanel<RegisterShift> {
     @Override
     protected void initLayout() {
         super.initLayout();
+        sp_pos = (SimpleSpinner) findViewById(R.id.sp_pos);
         et_float_amount = (EditTextFloat) findViewById(R.id.et_float_amount);
         bt_open = (Button) findViewById(R.id.bt_open);
         rl_add_value = (RelativeLayout) findViewById(R.id.rl_add_value);
@@ -83,10 +92,46 @@ public class OpenSessionDetailPanel extends AbstractDetailPanel<RegisterShift> {
                 param.setOpenedAt(ConfigUtil.getCurrentDateTime());
                 param.setCloseAt(ConfigUtil.getCurrentDateTime());
                 param.setShiftId(ConfigUtil.getPointOfSales().getID());
+                param.setPosId(sp_pos.getSelection());
                 param.setStatus("0");
                 ((SessionController) mController).doInputOpenSession(param);
             }
         });
+    }
+
+    @Override
+    public void initModel() {
+        List<PointOfSales> listPos = ((SessionController) mController).getListPos();
+        if (listPos != null && listPos.size() > 0) {
+            sp_pos.bind(listPos.toArray(new PointOfSales[0]));
+
+            sp_pos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    PointOfSales pos = getPointOfSales(sp_pos.getSelection());
+                    LoginActivity.STORE_ID = pos.getStoreId();
+                    DataUtil.saveDataStringToPreferences(getContext(), DataUtil.STORE_ID, pos.getStoreId());
+                    ConfigUtil.setPointOfSales(pos);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            });
+        }
+    }
+
+    private PointOfSales getPointOfSales(String posID) {
+        List<PointOfSales> listPos = ((SessionController) mController).getListPos();
+        if (listPos != null && listPos.size() > 0) {
+            for (PointOfSales pos : listPos) {
+                if (pos.getID().equals(posID)) {
+                    return pos;
+                }
+            }
+        }
+        return null;
     }
 
     public void updateFloatAmount(float total) {
