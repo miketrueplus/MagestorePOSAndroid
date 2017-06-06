@@ -65,7 +65,7 @@ public class RegisterShiftListController extends AbstractListController<Register
     @Override
     public Boolean doActionBackround(int actionType, String actionCode, Map<String, Object> wraper, Model... models) throws Exception {
         if (actionType == ACTION_CODE_MAKE_ADJUSTMENT) {
-            mRegisterShiftService.insertMakeAdjustment(((RegisterShift) models[0]));
+            wraper.put("make_adjusment_respone", mRegisterShiftService.insertMakeAdjustment(((RegisterShift) models[0])));
             return true;
         } else if (actionType == ACTION_TYPE_CLOSE_SESSION) {
             SessionParam param = (SessionParam) wraper.get("param_close_session");
@@ -78,7 +78,11 @@ public class RegisterShiftListController extends AbstractListController<Register
     @Override
     public void onActionPostExecute(boolean success, int actionType, String actionCode, Map<String, Object> wraper, Model... models) {
         if (success && actionType == ACTION_CODE_MAKE_ADJUSTMENT) {
-            RegisterShift registerShift = ((RegisterShift) models[0]);
+            RegisterShift oldRegisterShift = ((RegisterShift) models[0]);
+            List<RegisterShift> listRegister = (List<RegisterShift>) wraper.get("make_adjusment_respone");
+            ((RegisterShiftDetailPanel) mDetailView).bindItem(listRegister.get(0));
+            setNewRegisterToList(oldRegisterShift, listRegister.get(0));
+            isShowLoadingDetail(false);
         } else if(success && actionType == ACTION_TYPE_CLOSE_SESSION){
             RegisterShift oldRegisterShift = (RegisterShift) models[0];
             List<RegisterShift> listRegister = (List<RegisterShift>) wraper.get("close_session_respone");
@@ -115,7 +119,7 @@ public class RegisterShiftListController extends AbstractListController<Register
     }
 
     public void doInputMakeAdjustment(RegisterShift registerShift) {
-        doAction(ACTION_CODE_MAKE_ADJUSTMENT, null, null, registerShift);
+        doAction(ACTION_CODE_MAKE_ADJUSTMENT, null, wraper, registerShift);
     }
 
     public CashTransaction createCashTransaction() {

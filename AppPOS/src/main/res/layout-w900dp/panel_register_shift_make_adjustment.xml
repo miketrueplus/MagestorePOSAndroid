@@ -20,7 +20,10 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp">
+            android:layout_marginBottom="@dimen/layout_margin_10"
+            android:layout_marginLeft="@dimen/layout_margin_20"
+            android:layout_marginRight="@dimen/layout_margin_20"
+            android:layout_marginTop="@dimen/layout_margin_20">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -33,21 +36,25 @@
                     android:id="@+id/txt_balance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="5dp"
-                    android:text="@string/register_shift_dialog_make_adjustment_balance" />
+                    android:layout_marginRight="@dimen/layout_margin_5"
+                    android:text="@string/register_shift_dialog_make_adjustment_balance"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/text_size" />
 
                 <TextView
                     android:id="@+id/balance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{ConfigUtil.formatPrice(registerShift.getBalance())}" />
+                    android:text="@{ConfigUtil.formatPrice(registerShift.getBalance())}"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/text_size" />
             </LinearLayout>
         </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="@dimen/layout_margin_10"
             android:orientation="horizontal">
 
             <TextView
@@ -57,9 +64,10 @@
                 android:layout_weight="1"
                 android:background="@color/register_shift_dialog_make_adjustment_bg_select"
                 android:gravity="center_horizontal"
-                android:padding="10dp"
+                android:padding="@dimen/layout_margin_10"
                 android:text="@string/register_shift_dialog_make_adjustment_add"
                 android:textColor="@color/register_shift_dialog_make_adjustment_text_select"
+                android:textSize="@dimen/text_size"
                 android:textStyle="bold" />
 
             <TextView
@@ -69,19 +77,22 @@
                 android:layout_weight="1"
                 android:background="@color/register_shift_dialog_make_adjustment_bg_not_select"
                 android:gravity="center_horizontal"
-                android:padding="10dp"
+                android:padding="@dimen/layout_margin_10"
                 android:text="@string/register_shift_dialog_make_adjustment_remove"
                 android:textColor="@color/register_shift_dialog_make_adjustment_text_not_select"
+                android:textSize="@dimen/text_size"
                 android:textStyle="bold" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="@dimen/layout_margin_10"
+            android:layout_marginLeft="@dimen/layout_margin_20"
+            android:layout_marginRight="@dimen/layout_margin_20"
             android:background="@drawable/boder_linear_layout"
             android:orientation="horizontal"
-            android:padding="10dp">
+            android:padding="@dimen/layout_margin_10">
 
             <TextView
                 android:id="@+id/txt_amount"
@@ -90,7 +101,7 @@
                 android:layout_weight="1"
                 android:text="@string/amount" />
 
-            <com.magestore.app.view.FormatEditText
+            <com.magestore.app.view.EditTextFloat
                 android:id="@+id/amount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -98,13 +109,17 @@
                 android:background="@color/white"
                 android:gravity="right"
                 android:hint='@{ConfigUtil.formatPrice(0)}'
-                android:inputType="numberDecimal" />
+                android:inputType="numberDecimal"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/text_size" />
         </LinearLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp">
+            android:layout_marginBottom="@dimen/layout_margin_10"
+            android:layout_marginLeft="@dimen/layout_margin_20"
+            android:layout_marginRight="@dimen/layout_margin_20">
 
             <com.magestore.app.view.FormatEditText
                 android:id="@+id/note"
@@ -112,7 +127,9 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/register_shift_dialog_make_adjustment_note"
                 android:inputType="textMultiLine"
-                android:minLines="3" />
+                android:minLines="3"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/text_size" />
         </android.support.design.widget.TextInputLayout>
 
         <TextView
@@ -120,7 +137,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/layout_margin_20"
+            android:layout_marginLeft="@dimen/layout_margin_20"
+            android:layout_marginRight="@dimen/layout_margin_20"
             android:text="@{registerShift.getStaffName()}"
-            android:textSize="18sp" />
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/text_size_18" />
     </LinearLayout>
 </layout>

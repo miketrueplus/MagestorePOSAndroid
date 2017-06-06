@@ -11,6 +11,7 @@ import com.magestore.app.pos.model.registershift.PosCashTransaction;
 import com.magestore.app.pos.model.registershift.PosOpenSessionValue;
 import com.magestore.app.pos.model.registershift.PosSessionParam;
 import com.magestore.app.pos.service.AbstractService;
+import com.magestore.app.util.ConfigUtil;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -88,12 +89,13 @@ public class POSRegisterShiftService extends AbstractService implements Register
         cashTransaction.setBaseBalance(registerShift.getBaseBalance());
         cashTransaction.setBaseCurrencyCode(registerShift.getBaseCurrencyCode());
         cashTransaction.setCreateAt(registerShift.getParamCash().getCreatedAt());
-        cashTransaction.setBaseValue(registerShift.getParamCash().getValue());
+        cashTransaction.setBaseValue(ConfigUtil.convertToBasePrice(registerShift.getParamCash().getValue()));
         cashTransaction.setLocationId(registerShift.getLocationId());
         cashTransaction.setNote(registerShift.getParamCash().getNote());
         cashTransaction.setShiftId(registerShift.getShiftId());
         cashTransaction.setType(registerShift.getParamCash().getType());
         cashTransaction.setValue(registerShift.getParamCash().getValue());
+        cashTransaction.setTransactionCurrencyCode(ConfigUtil.getBaseCurrencyCode());
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         RegisterShiftDataAccess registerShiftDataAccess = factory.generateRegisterShiftDataAccess();
         return registerShiftDataAccess.insertMakeAdjustment(cashTransaction);

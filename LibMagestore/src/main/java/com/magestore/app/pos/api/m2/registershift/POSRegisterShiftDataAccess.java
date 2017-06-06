@@ -1,7 +1,5 @@
 package com.magestore.app.pos.api.m2.registershift;
 
-import android.util.Log;
-
 import com.google.gson.Gson;
 import com.magestore.app.lib.connection.Connection;
 import com.magestore.app.lib.connection.ConnectionException;
@@ -18,13 +16,10 @@ import com.magestore.app.lib.resourcemodel.registershift.RegisterShiftDataAccess
 import com.magestore.app.pos.api.m2.POSAPI;
 import com.magestore.app.pos.api.m2.POSAbstractDataAccess;
 import com.magestore.app.pos.api.m2.POSDataAccessSession;
-import com.magestore.app.pos.model.registershift.PosCashTransaction;
 import com.magestore.app.pos.model.registershift.PosRegisterShift;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListRegisterShift;
-
 import org.json.JSONArray;
 import org.json.JSONException;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -201,7 +196,7 @@ public class POSRegisterShiftDataAccess extends POSAbstractDataAccess implements
         } catch (IOException ex) {
             throw new DataAccessException(ex);
         } catch (JSONException e) {
-            e.printStackTrace();
+            throw new DataAccessException(e);
         } finally {
             // đóng result reading
             if (rp != null) rp.close();
@@ -218,7 +213,6 @@ public class POSRegisterShiftDataAccess extends POSAbstractDataAccess implements
             if (connection != null) connection.close();
             connection = null;
         }
-        return null;
     }
 
     @Override
@@ -242,21 +236,22 @@ public class POSRegisterShiftDataAccess extends POSAbstractDataAccess implements
             RegisterShiftEntity registerShiftEntity = new RegisterShiftEntity();
             registerShiftEntity.cashTransaction = pCashTransaction;
 
-            // TODO: log params request
-            Gson gson = new Gson();
-            String json = gson.toJson(registerShiftEntity);
-            Log.e("JSON", json.toString());
-
             rp = statement.execute(registerShiftEntity);
-            rp.setParseImplement(getClassParseImplement());
-            rp.setParseModel(Gson2PosListRegisterShift.class);
-            Gson2PosListRegisterShift listRegisterShift = (Gson2PosListRegisterShift) rp.doParse();
-            List<RegisterShift> list = (List<RegisterShift>) (List<?>) listRegisterShift;
+            String json = rp.readResult2String();
+            Gson gson = new Gson();
+            List<RegisterShift> list = new ArrayList<>();
+            JSONArray arrShift = new JSONArray(json);
+            for (int i = 0; i < arrShift.length() ; i++) {
+                PosRegisterShift registerShift = gson.fromJson(arrShift.get(i).toString(), PosRegisterShift.class);
+                list.add((RegisterShift) registerShift);
+            }
             return list;
         } catch (ConnectionException ex) {
             throw new DataAccessException(ex);
         } catch (IOException ex) {
             throw new DataAccessException(ex);
+        } catch (JSONException e) {
+            throw new DataAccessException(e);
         } finally {
             // đóng result reading
             if (rp != null) rp.close();

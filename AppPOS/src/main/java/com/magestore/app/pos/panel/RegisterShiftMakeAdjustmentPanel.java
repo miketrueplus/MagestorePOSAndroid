@@ -15,6 +15,8 @@ import com.magestore.app.lib.panel.AbstractDetailPanel;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.RegisterShiftListController;
 import com.magestore.app.pos.databinding.PanelRegisterShiftMakeAdjustmentBinding;
+import com.magestore.app.util.ConfigUtil;
+import com.magestore.app.view.EditTextFloat;
 
 /**
  * Created by Johan on 1/19/17.
@@ -28,7 +30,7 @@ public class RegisterShiftMakeAdjustmentPanel extends AbstractDetailPanel<Regist
     TextView tv_add;
     TextView tv_remove;
     EditText edt_note;
-    EditText edt_amount;
+    EditTextFloat edt_amount;
     private static String ADD_MAKE_ADJUSTMENT = "add";
     private static String REMOVE_MAKE_ADJUSTMENT = "remove";
     private String selectMakeAdjustment = ADD_MAKE_ADJUSTMENT;
@@ -53,7 +55,7 @@ public class RegisterShiftMakeAdjustmentPanel extends AbstractDetailPanel<Regist
         tv_add = (TextView) view.findViewById(R.id.add);
         tv_remove = (TextView) view.findViewById(R.id.remove);
         edt_note = (EditText) view.findViewById(R.id.note);
-        edt_amount = (EditText) view.findViewById(R.id.amount);
+        edt_amount = (EditTextFloat) view.findViewById(R.id.amount);
         mBinding = DataBindingUtil.bind(view);
     }
 
@@ -83,23 +85,17 @@ public class RegisterShiftMakeAdjustmentPanel extends AbstractDetailPanel<Regist
 
     @Override
     public RegisterShift bind2Item() {
-        float value = 0;
-        try {
-            value = Float.parseFloat(edt_amount.getText().toString().trim());
-        } catch (Exception e) {
-            value = 0;
-        }
-
+        float value = edt_amount.getValueFloat();
         String note = "";
         if (!TextUtils.isEmpty(edt_note.getText().toString().trim())) {
             note = edt_note.getText().toString().trim();
         }
 
-        // TODO: thiếu setCreateAt() lấy theo h máy hiệnt tại
         CashTransaction cashTransaction = ((RegisterShiftListController) mController).createCashTransaction();
         cashTransaction.setType(selectMakeAdjustment);
         cashTransaction.setValue(value);
         cashTransaction.setNote(note);
+        cashTransaction.setCreateAt(ConfigUtil.getCurrentDateTime());
         registerShift.setParamCash(cashTransaction);
         return registerShift;
     }
