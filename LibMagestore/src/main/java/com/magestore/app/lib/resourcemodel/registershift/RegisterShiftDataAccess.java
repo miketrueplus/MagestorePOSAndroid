@@ -20,6 +20,6 @@ import java.util.List;
 
 public interface RegisterShiftDataAccess extends DataAccess, ListDataAccess<RegisterShift> {
     List<RegisterShift> openSession(SessionParam sessionParam) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
-
     List<RegisterShift> insertMakeAdjustment(CashTransaction cashTransaction) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
+    List<RegisterShift> closeSession(SessionParam sessionParam) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
 }

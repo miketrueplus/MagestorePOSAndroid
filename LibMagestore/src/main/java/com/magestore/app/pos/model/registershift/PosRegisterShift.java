@@ -68,6 +68,11 @@ public class PosRegisterShift extends PosAbstractModel implements RegisterShift 
     }
 
     @Override
+    public float getBaseTotalSales() {
+        return base_total_sales;
+    }
+
+    @Override
     public String getOpenedAt() {
         return opened_at;
     }
@@ -192,5 +197,40 @@ public class PosRegisterShift extends PosAbstractModel implements RegisterShift 
     @Override
     public String getShiftId() {
         return shift_id;
+    }
+
+    @Override
+    public float getCashAdded() {
+        return cash_added;
+    }
+
+    @Override
+    public float getBaseCashAdded() {
+        return base_cash_added;
+    }
+
+    @Override
+    public float getCashLeft() {
+        return cash_left;
+    }
+
+    @Override
+    public float getBaseCashLeft() {
+        return base_cash_left;
+    }
+
+    @Override
+    public float getCashRemoved() {
+        return cash_removed;
+    }
+
+    @Override
+    public float getBaseCashRemoved() {
+        return base_cash_removed;
+    }
+
+    @Override
+    public String getShiftCurrencyCode() {
+        return shift_currency_code;
     }
 }

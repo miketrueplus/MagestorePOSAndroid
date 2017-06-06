@@ -70,6 +70,19 @@
                     android:layout_alignParentBottom="true"
                     bind:registerShift="@{registerShift}" />
             </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/register_shift_background_loading"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/sales_background_loading"
+                android:visibility="gone">
+
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true" />
+            </RelativeLayout>
         </RelativeLayout>
     </FrameLayout>
 </layout>

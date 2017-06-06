@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.magestore.app.lib.controller.Controller;
@@ -35,6 +36,8 @@ public class RegisterShiftDetailPanel extends AbstractDetailPanel<RegisterShift>
     TextView tv_staff_name;
     TextView tv_location;
     CloseSessionPanel panelCloseSessionPanel;
+    RelativeLayout register_shift_background_loading;
+    MagestoreDialog dialogCloseSession;
 
     public RegisterShiftDetailPanel(Context context) {
         super(context);
@@ -64,6 +67,7 @@ public class RegisterShiftDetailPanel extends AbstractDetailPanel<RegisterShift>
         // chuẩn bị panel view danh sách cash transaction
         mRegisterShiftCashListPanel = (RegisterShiftCashListPanel) findViewById(R.id.register_shift_cash);
 
+        register_shift_background_loading = (RelativeLayout) findViewById(R.id.register_shift_background_loading);
     }
 
     @Override
@@ -132,14 +136,22 @@ public class RegisterShiftDetailPanel extends AbstractDetailPanel<RegisterShift>
         panelCloseSessionPanel.setController(mController);
         panelCloseSessionPanel.initValue();
         panelCloseSessionPanel.bindItem(item);
-        MagestoreDialog dialog = DialogUtil.dialog(getContext(), getContext().getString(R.string.register_shift_dialog_close_session_title), panelCloseSessionPanel);
-        dialog.setFullScreen(true);
-        dialog.setTransparent(true);
-        dialog.setGoneDialogTitle(true);
-        dialog.show();
+        dialogCloseSession = DialogUtil.dialog(getContext(), getContext().getString(R.string.register_shift_dialog_close_session_title), panelCloseSessionPanel);
+        dialogCloseSession.setFullScreen(true);
+        dialogCloseSession.setTransparent(true);
+        dialogCloseSession.setGoneDialogTitle(true);
+        dialogCloseSession.show();
+    }
+
+    public void dismissDialogCloseSession(){
+        dialogCloseSession.dismiss();
     }
 
     public void updateFloatAmount(float total) {
         panelCloseSessionPanel.updateFloatAmount(total);
+    }
+
+    public void isShowLoadingDetail(boolean isShow){
+        register_shift_background_loading.setVisibility(isShow ? VISIBLE : GONE);
     }
 }

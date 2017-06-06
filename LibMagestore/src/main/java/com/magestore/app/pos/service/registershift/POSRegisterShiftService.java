@@ -100,6 +100,13 @@ public class POSRegisterShiftService extends AbstractService implements Register
     }
 
     @Override
+    public List<RegisterShift> closeSession(SessionParam sessionParam) throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        RegisterShiftDataAccess registerShiftDataAccess = factory.generateRegisterShiftDataAccess();
+        return registerShiftDataAccess.closeSession(sessionParam);
+    }
+
+    @Override
     public CashTransaction createCashTransaction() {
         CashTransaction cashTransaction = new PosCashTransaction();
         return cashTransaction;

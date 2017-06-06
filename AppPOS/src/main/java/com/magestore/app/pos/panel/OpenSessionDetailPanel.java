@@ -83,6 +83,7 @@ public class OpenSessionDetailPanel extends AbstractDetailPanel<RegisterShift> {
                 param.setOpenedAt(ConfigUtil.getCurrentDateTime());
                 param.setCloseAt(ConfigUtil.getCurrentDateTime());
                 param.setShiftId(ConfigUtil.getPointOfSales().getID());
+                param.setStatus("0");
                 ((SessionController) mController).doInputOpenSession(param);
             }
         });

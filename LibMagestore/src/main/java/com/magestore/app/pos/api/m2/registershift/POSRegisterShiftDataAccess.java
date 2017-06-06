@@ -274,4 +274,60 @@ public class POSRegisterShiftDataAccess extends POSAbstractDataAccess implements
             connection = null;
         }
     }
+
+    @Override
+    public List<RegisterShift> closeSession(SessionParam sessionParam) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+
+        try {
+            // Khởi tạo connection và khởi tạo truy vấn
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPI.REST_REGISTER_SHIFTS_SAVE);
+
+            // Xây dựng tham số
+            paramBuilder = statement.getParamBuilder()
+                    .setSessionID(POSDataAccessSession.REST_SESSION_ID);
+
+            // thực thi truy vấn và parse kết quả thành object
+            RegisterShiftEntity registerShiftEntity = new RegisterShiftEntity();
+            registerShiftEntity.shift = sessionParam;
+
+            rp = statement.execute(registerShiftEntity);
+            String json = rp.readResult2String();
+            Gson gson = new Gson();
+            List<RegisterShift> list = new ArrayList<>();
+            JSONArray arrShift = new JSONArray(json);
+            for (int i = 0; i < arrShift.length() ; i++) {
+                PosRegisterShift registerShift = gson.fromJson(arrShift.get(i).toString(), PosRegisterShift.class);
+                list.add((RegisterShift) registerShift);
+            }
+            return list;
+        } catch (ConnectionException ex) {
+            throw new DataAccessException(ex);
+        } catch (IOException ex) {
+            throw new DataAccessException(ex);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
+        return null;
+    }
 }

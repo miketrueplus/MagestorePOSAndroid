@@ -19,14 +19,10 @@ import java.util.List;
 
 public interface RegisterShiftService extends Service , ListService<RegisterShift> {
     List<RegisterShift> openSession(SessionParam sessionParam) throws InstantiationException, IllegalAccessException, IOException, ParseException;
-
     List<RegisterShift> insertMakeAdjustment(RegisterShift registerShift) throws InstantiationException, IllegalAccessException, IOException, ParseException;
-
+    List<RegisterShift> closeSession(SessionParam sessionParam) throws InstantiationException, IllegalAccessException, IOException, ParseException;
     List<CashTransaction> createListCashTransaction(RegisterShift registerShift, String openShift, String balance);
-
     CashTransaction createCashTransaction();
-
     OpenSessionValue createOpenSessionValue();
-
     SessionParam createSessionParam();
 }

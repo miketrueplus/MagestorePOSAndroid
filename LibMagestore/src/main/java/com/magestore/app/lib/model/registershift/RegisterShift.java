@@ -12,6 +12,7 @@ import java.util.List;
 
 public interface RegisterShift extends Model {
     float getTotalSales();
+    float getBaseTotalSales();
     String getOpenedAt();
     String getClosedAt();
     String getUpdateAt();
@@ -33,6 +34,13 @@ public interface RegisterShift extends Model {
     boolean checkStatus();
     String getLocationId();
     String getShiftId();
+    float getCashAdded();
+    float getBaseCashAdded();
+    float getCashLeft();
+    float getBaseCashLeft();
+    float getCashRemoved();
+    float getBaseCashRemoved();
+    String getShiftCurrencyCode();
 
     // param add cash transaction
     void setParamCash(CashTransaction cashTransaction);

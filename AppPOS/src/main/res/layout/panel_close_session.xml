@@ -31,10 +31,9 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/layout_margin_5"
-                    android:text="@string/back"
+                    android:text="@string/cancel"
                     android:textColor="@color/open_session_text_color"
-                    android:textSize="@dimen/open_session_action_title_text_size"
-                    android:visibility="gone" />
+                    android:textSize="@dimen/open_session_action_title_text_size" />
 
                 <TextView
                     android:id="@+id/tv_session_title"
@@ -85,6 +84,7 @@
                     android:id="@+id/tv_open_session_balance"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="right"
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/text_size" />
             </LinearLayout>
@@ -110,6 +110,7 @@
                     android:id="@+id/tv_transaction"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="right"
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/text_size" />
             </LinearLayout>
@@ -135,6 +136,7 @@
                     android:id="@+id/tv_t_close_balance"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="right"
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/text_size" />
             </LinearLayout>
@@ -160,6 +162,7 @@
                     android:id="@+id/et_r_close_balance"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="right"
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/text_size" />
             </LinearLayout>
@@ -185,6 +188,7 @@
                     android:id="@+id/tv_difference"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="right"
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/text_size" />
             </LinearLayout>
@@ -313,12 +317,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:background="@drawable/open_session_button_open"
+                    android:background="@drawable/close_session_button_make_adjustment"
+                    android:paddingLeft="@dimen/layout_margin_20"
+                    android:paddingRight="@dimen/layout_margin_20"
                     android:text="@string/adjustment"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/text_color" />
 
                 <Button
-                    android:id="@+id/bt_open"
+                    android:id="@+id/bt_close"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"

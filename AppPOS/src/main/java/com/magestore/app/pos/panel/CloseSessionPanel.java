@@ -1,12 +1,17 @@
 package com.magestore.app.pos.panel;
 
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.magestore.app.lib.model.registershift.RegisterShift;
+import com.magestore.app.lib.model.registershift.SessionParam;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.RegisterShiftListController;
@@ -23,7 +28,9 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
     OpenSessionListValuePanel close_session_list_panel;
     RelativeLayout rl_add_value;
     EditTextFloat et_r_close_balance;
-    TextView tv_open_session_balance;
+    TextView tv_session_back, tv_open_session_balance, tv_t_close_balance, tv_transaction, tv_difference;
+    Button bt_close;
+    EditText et_note;
 
     public CloseSessionPanel(Context context) {
         super(context);
@@ -41,15 +48,27 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
     protected void initLayout() {
         View view = inflate(getContext(), R.layout.panel_close_session, null);
         addView(view);
+        tv_session_back = (TextView) findViewById(R.id.tv_session_back);
         rl_add_value = (RelativeLayout) findViewById(R.id.rl_add_value);
         et_r_close_balance = (EditTextFloat) view.findViewById(R.id.et_r_close_balance);
+        tv_t_close_balance = (TextView) view.findViewById(R.id.tv_t_close_balance);
         tv_open_session_balance = (TextView) view.findViewById(R.id.tv_open_session_balance);
+        tv_transaction = (TextView) view.findViewById(R.id.tv_transaction);
+        tv_difference = (TextView) view.findViewById(R.id.tv_difference);
+        et_note = (EditText) view.findViewById(R.id.et_note);
+        bt_close = (Button) view.findViewById(R.id.bt_close);
         close_session_list_panel = (OpenSessionListValuePanel) view.findViewById(R.id.close_session_list_panel);
         close_session_list_panel.setType(OpenSessionListValuePanel.TYPE_CLOSE_SESSION);
     }
 
     @Override
     public void initValue() {
+        tv_session_back.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((RegisterShiftListController) getController()).dismissDialogCloseSession();
+            }
+        });
         close_session_list_panel.setRegisterShiftListController((RegisterShiftListController) mController);
         ((RegisterShiftListController) mController).setOpenSessionListPanel(close_session_list_panel);
 
@@ -62,9 +81,66 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
     }
 
     @Override
-    public void bindItem(RegisterShift item) {
+    public void bindItem(final RegisterShift item) {
         super.bindItem(item);
-        tv_open_session_balance.setText(ConfigUtil.formatPrice(item.getBaseFloatAmount()));
+        tv_open_session_balance.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(item.getBaseFloatAmount())));
+        tv_t_close_balance.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(item.getBaseBalance())));
+        float transaction = item.getBaseBalance() - item.getBaseFloatAmount();
+        tv_transaction.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(transaction)));
+        actionChangeBalance(item);
+        bt_close.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SessionParam param = ((RegisterShiftListController) getController()).createSessionParam();
+                float r_balance = et_r_close_balance.getValueFloat();
+                float base_r_balance = ConfigUtil.convertToBasePrice(r_balance);
+                param.setBalance(item.getBalance());
+                param.setBaseBalance(item.getBaseBalance());
+                param.setBaseCashAdded(item.getBaseCashAdded());
+                param.setBaseFloatAmount(item.getBaseFloatAmount());
+                param.setFloatAmount(item.getFloatAmount());
+                param.setBaseCurrencyCode(ConfigUtil.getBaseCurrencyCode());
+                param.setCashAdded(item.getCashAdded());
+                param.setOpenedNote(et_note.getText().toString());
+                param.setTotalSales(item.getTotalSales());
+                param.setBaseTotalSales(item.getBaseTotalSales());
+                param.setCloseAmount(r_balance);
+                param.setBaseClosedAmount(base_r_balance);
+                param.setCashRemoved(item.getCashRemoved());
+                param.setBaseCashRemoved(item.getBaseCashRemoved());
+                param.setCashLeft(item.getCashLeft());
+                param.setBaseCashLeft(item.getBaseCashLeft());
+                param.setShiftCurrencyCode(item.getShiftCurrencyCode());
+                param.setStaffId(ConfigUtil.getPointOfSales().getStaffId());
+                param.setLocationId(ConfigUtil.getPointOfSales().getLocationId());
+                param.setOpenedAt(item.getOpenedAt());
+                param.setCloseAt(ConfigUtil.getCurrentDateTime());
+                param.setShiftId(item.getShiftId());
+                param.setStatus("1");
+                ((RegisterShiftListController) getController()).doInputCloseSession(item ,param);
+            }
+        });
+    }
+
+    public void actionChangeBalance(final RegisterShift item){
+        et_r_close_balance.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                float balance = et_r_close_balance.getValueFloat();
+                float different = ConfigUtil.convertToPrice(item.getBaseBalance()) - balance;
+                tv_difference.setText(ConfigUtil.formatPrice(different));
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
     }
 
     public void updateFloatAmount(float total) {
