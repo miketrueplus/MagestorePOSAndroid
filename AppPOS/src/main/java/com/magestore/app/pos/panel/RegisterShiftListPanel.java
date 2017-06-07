@@ -23,6 +23,7 @@ import com.magestore.app.pos.view.MagestoreDialog;
 public class RegisterShiftListPanel extends AbstractListPanel<RegisterShift> {
     RegisterOpenSessionPanel openSessionPanel;
     MagestoreDialog dialogOpenSession;
+    FloatingActionButton fab;
 
     public RegisterShiftListPanel(Context context) {
         super(context);
@@ -41,7 +42,7 @@ public class RegisterShiftListPanel extends AbstractListPanel<RegisterShift> {
         super.initLayout();
 
         // Xử lý sự kiện floating action bar
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -64,8 +65,11 @@ public class RegisterShiftListPanel extends AbstractListPanel<RegisterShift> {
         dialogOpenSession.setFullScreen(true);
         dialogOpenSession.setTransparent(true);
         dialogOpenSession.setGoneDialogTitle(true);
-        dialogOpenSession.setCancelBack(true);
         dialogOpenSession.show();
+    }
+
+    public void isShowButtonOpenSession(boolean isShow){
+        fab.setVisibility(isShow ? VISIBLE : GONE);
     }
 
     public void dismissDialogOpenSession(){

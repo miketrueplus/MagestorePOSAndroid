@@ -85,13 +85,36 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
                 ((RegisterShiftListController) getController()).addValueClose();
             }
         });
+        tv_session_back.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((RegisterShiftListController) getController()).dismissDialogCloseSession();
+            }
+        });
     }
 
     @Override
     public void bindItem(final RegisterShift item) {
         super.bindItem(item);
-        et_r_close_balance.setEnabled(item.getStatus().equals("2") ? false : true);
-        et_note.setEnabled(item.getStatus().equals("2") ? false : true);
+        if (item.getStatus().equals(CLOSE_SESSION)) {
+            et_r_close_balance.setText(ConfigUtil.formatNumber(ConfigUtil.convertToPrice(item.getBaseClosedAmount())));
+            et_note.setText(item.getClosedNote());
+            rl_add_value.setVisibility(GONE);
+            bt_cancel.setVisibility(VISIBLE);
+            bt_adjustment.setVisibility(GONE);
+            bt_close.setVisibility(GONE);
+            bt_validate.setVisibility(VISIBLE);
+            tv_session_back.setVisibility(GONE);
+        } else {
+            tv_session_back.setVisibility(VISIBLE);
+            rl_add_value.setVisibility(VISIBLE);
+            bt_cancel.setVisibility(GONE);
+            bt_adjustment.setVisibility(VISIBLE);
+            bt_close.setVisibility(VISIBLE);
+            bt_validate.setVisibility(GONE);
+        }
+        et_r_close_balance.setEnabled(item.getStatus().equals(CLOSE_SESSION) ? false : true);
+        et_note.setEnabled(item.getStatus().equals(CLOSE_SESSION) ? false : true);
         tv_open_session_balance.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(item.getBaseFloatAmount())));
         tv_t_close_balance.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(item.getBaseBalance())));
         float transaction = item.getBaseBalance() - item.getBaseFloatAmount();
@@ -160,6 +183,37 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
                 param.setShiftId(item.getShiftId());
                 param.setStatus(VALIDATE);
                 ((RegisterShiftListController) getController()).doInputValidateSession(item, param);
+            }
+        });
+
+        bt_cancel.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SessionParam param = ((RegisterShiftListController) getController()).createSessionParam();
+                param.setBalance(item.getBalance());
+                param.setBaseBalance(item.getBaseBalance());
+                param.setBaseCashAdded(item.getBaseCashAdded());
+                param.setBaseFloatAmount(item.getBaseFloatAmount());
+                param.setFloatAmount(item.getFloatAmount());
+                param.setBaseCurrencyCode(ConfigUtil.getBaseCurrencyCode());
+                param.setCashAdded(item.getCashAdded());
+                param.setOpenedNote(item.getOpenedNote());
+                param.setTotalSales(item.getTotalSales());
+                param.setBaseTotalSales(item.getBaseTotalSales());
+                param.setCloseAmount(item.getClosedAmount());
+                param.setBaseClosedAmount(item.getBaseClosedAmount());
+                param.setCashRemoved(item.getCashRemoved());
+                param.setBaseCashRemoved(item.getBaseCashRemoved());
+                param.setCashLeft(item.getCashLeft());
+                param.setBaseCashLeft(item.getBaseCashLeft());
+                param.setShiftCurrencyCode(item.getShiftCurrencyCode());
+                param.setStaffId(item.getStaffId());
+                param.setLocationId(item.getLocationId());
+                param.setOpenedAt(item.getOpenedAt());
+                param.setCloseAt(item.getClosedAt());
+                param.setShiftId(item.getShiftId());
+                param.setStatus(OPEN_SESSION);
+                ((RegisterShiftListController) getController()).doInputCancelSession(item, param);
             }
         });
     }

@@ -141,6 +141,7 @@ public class RegisterShiftDetailPanel extends AbstractDetailPanel<RegisterShift>
         dialogCloseSession.setFullScreen(true);
         dialogCloseSession.setTransparent(true);
         dialogCloseSession.setGoneDialogTitle(true);
+        dialogCloseSession.setCancelBack(true);
         dialogCloseSession.show();
     }
 
