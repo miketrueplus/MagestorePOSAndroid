@@ -106,6 +106,8 @@ public class POSRegisterShiftDataAccess extends POSAbstractDataAccess implements
             paramBuilder = statement.getParamBuilder()
                     .setPage(page)
                     .setPageSize(pageSize)
+                    .setSortOrderDESC("opened_at")
+                    .setFilterEqual("staff_id", ConfigUtil.getStaff().getID())
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
 
             // thực thi truy vấn và parse kết quả thành object
@@ -177,7 +179,6 @@ public class POSRegisterShiftDataAccess extends POSAbstractDataAccess implements
 
             // Xây dựng tham số
             paramBuilder = statement.getParamBuilder()
-                    .setFilterEqual("staff_id", ConfigUtil.getStaff().getID())
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
 
             // thực thi truy vấn và parse kết quả thành object

@@ -19,6 +19,7 @@ public class PosPaymentMethodDataParam extends PosAbstractModel implements Payme
     String is_pay_later;
     float real_amount;
     String title;
+    String shift_id;
 
     @Override
     public void setReferenceNumber(String strReferenceNumber) {
@@ -129,6 +130,16 @@ public class PosPaymentMethodDataParam extends PosAbstractModel implements Payme
     @Override
     public String getCID() {
         return additional_data.cc_cid;
+    }
+
+    @Override
+    public String getShiftId() {
+        return shift_id;
+    }
+
+    @Override
+    public void setShiftId(String strShiftId) {
+        shift_id = strShiftId;
     }
 
     public class PaymentMethodAdditionalParam {

@@ -94,8 +94,8 @@ public class RegisterShiftDetailPanel extends AbstractDetailPanel<RegisterShift>
     public void bindItem(final RegisterShift item) {
         super.bindItem(item);
         mBinding.setRegisterShift(item);
-        tv_staff_name.setText(item.getStaffName());
-        tv_location.setText(ConfigUtil.getPointOfSales().getPosName());
+        tv_staff_name.setText(ConfigUtil.getStaff().getStaffName());
+        tv_location.setText(item.getPosName());
         mRegisterShiftSaleListController.doSelectRegisterShift(item);
         mRegisterShiftCashListController.doSelectRegisterShift(item);
         mRegisterShiftCashListPanel.setRegisterShift(item);
@@ -131,7 +131,7 @@ public class RegisterShiftDetailPanel extends AbstractDetailPanel<RegisterShift>
         });
     }
 
-    private void showCloseShift(RegisterShift item) {
+    public void showCloseShift(RegisterShift item) {
         panelCloseSessionPanel = new CloseSessionPanel(getContext());
         panelCloseSessionPanel.bindItem(item);
         panelCloseSessionPanel.setController(mController);

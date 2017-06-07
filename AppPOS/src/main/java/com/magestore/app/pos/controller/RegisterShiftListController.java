@@ -13,6 +13,7 @@ import com.magestore.app.lib.service.user.UserService;
 import com.magestore.app.pos.panel.OpenSessionListValuePanel;
 import com.magestore.app.pos.panel.RegisterShiftDetailPanel;
 import com.magestore.app.pos.panel.RegisterShiftListPanel;
+import com.magestore.app.util.ConfigUtil;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -73,6 +74,21 @@ public class RegisterShiftListController extends AbstractListController<Register
     @Override
     public void onRetrievePostExecute(List<RegisterShift> list) {
         super.onRetrievePostExecute(list);
+        if (list.size() > 0) {
+            RegisterShift registerShift = list.get(0);
+            if (registerShift.getStatus().equals("0")) {
+                ConfigUtil.setShiftId(registerShift.getShiftId());
+//                getMagestoreContext().getActivity().finish();
+            }
+            if (registerShift.getStatus().equals("1")) {
+                openSessionList();
+            }
+            if (registerShift.getStatus().equals("2")) {
+                ((RegisterShiftDetailPanel) mDetailView).showCloseShift(list.get(0));
+            }
+        } else {
+            openSessionList();
+        }
     }
 
     @Override
@@ -119,9 +135,12 @@ public class RegisterShiftListController extends AbstractListController<Register
             isShowLoadingDetail(false);
         } else if (success && actionType == ACTION_TYPE_OPEN_SESSION) {
             List<RegisterShift> listRegister = (List<RegisterShift>) wraper.get("open_session_respone");
+            ConfigUtil.setShiftId(listRegister.get(0).getShiftId());
             mList.add(0, listRegister.get(0));
             bindList(mList);
+            ((RegisterShiftDetailPanel) mDetailView).bindItem(listRegister.get(0));
             ((RegisterShiftListPanel) mView).notifyDataSetChanged();
+            dismissDialogOpenSession();
             isShowLoadingDetail(false);
         }
     }
@@ -208,6 +227,10 @@ public class RegisterShiftListController extends AbstractListController<Register
         ((RegisterShiftDetailPanel) mDetailView).isShowLoadingDetail(isShow);
     }
 
+    public void openSessionList() {
+        ((RegisterShiftListPanel) mView).openSession();
+    }
+
     public SessionParam createSessionParam() {
         return mRegisterShiftService.createSessionParam();
     }
@@ -216,11 +239,15 @@ public class RegisterShiftListController extends AbstractListController<Register
         ((RegisterShiftDetailPanel) mDetailView).dismissDialogCloseSession();
     }
 
+    public void dismissDialogOpenSession() {
+        ((RegisterShiftListPanel) mView).dismissDialogOpenSession();
+    }
+
     public void bindItemCloseSessionPanel(RegisterShift item) {
         ((RegisterShiftDetailPanel) mDetailView).bindItem(item);
     }
 
-    public List<PointOfSales> getListPos(){
+    public List<PointOfSales> getListPos() {
         try {
             return userService.getListPos();
         } catch (InstantiationException e) {

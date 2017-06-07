@@ -140,6 +140,12 @@ public class SalesActivity extends AbstractActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        boolean redirect_register_shift = getIntent().getBooleanExtra("redirect_register_shift", false);
+        if (redirect_register_shift) {
+            super.navigationView(4);
+        }
+
         setContentView(R.layout.sales_menu);
         // chuẩn bị control layout
         initLayout();
@@ -593,7 +599,7 @@ public class SalesActivity extends AbstractActivity
     BroadcastReceiver receiver_data_payment_paypal = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if(intent != null){
+            if (intent != null) {
                 String payment_id = intent.getStringExtra("payment_id");
                 mCheckoutListController.doInputApprovedPaymentPaypal(payment_id);
             }
@@ -604,7 +610,7 @@ public class SalesActivity extends AbstractActivity
     BroadcastReceiver receiver_data_error_paypal = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if(intent != null){
+            if (intent != null) {
                 String message = intent.getStringExtra("message");
                 DialogUtil.confirm(getContext(), message, R.string.done);
             }

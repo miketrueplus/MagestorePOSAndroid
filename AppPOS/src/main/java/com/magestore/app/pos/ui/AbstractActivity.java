@@ -358,4 +358,14 @@ public abstract class AbstractActivity
             }
         }
     }
+
+    public void navigationView(int type) {
+        if (type == 4) {
+            positionSelectActivity = 4;
+            if (!(AbstractActivity.this instanceof RegisterShiftActivity)) {
+                Intent intent = new Intent(getContext(), RegisterShiftActivity.class);
+                startActivity(intent);
+            }
+        }
+    }
 }

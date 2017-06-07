@@ -48,6 +48,7 @@ public class ConfigUtil {
     private static List<ConfigTaxClass> mConfigTaxClass;
     private static String mTypePrint;
     private static PointOfSales mPointOfSales;
+    private static String mShiftId;
 
     /**
      * @param format
@@ -512,16 +513,19 @@ public class ConfigUtil {
     }
 
     public static String getCurrentTime() {
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+        TimeZone timeZone = TimeZone.getTimeZone("UTC");
         DateFormat df = new SimpleDateFormat("hh:mm");
-        String date = df.format(Calendar.getInstance().getTime());
+        String date = df.format(Calendar.getInstance(timeZone).getTime());
         return date;
     }
 
     public static String getCurrentDateTime() {
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+        TimeZone timeZone = TimeZone.getTimeZone("UTC");
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        String date = df.format(calendar.getTime());
+        Calendar calendar = Calendar.getInstance(timeZone);
+        String date = df.format(calendar.getTimeInMillis());
         return date;
     }
 
@@ -656,5 +660,13 @@ public class ConfigUtil {
 
     public static void setPointOfSales(PointOfSales mPointOfSales) {
         ConfigUtil.mPointOfSales = mPointOfSales;
+    }
+
+    public static String getShiftId() {
+        return mShiftId;
+    }
+
+    public static void setShiftId(String mShiftId) {
+        ConfigUtil.mShiftId = mShiftId;
     }
 }

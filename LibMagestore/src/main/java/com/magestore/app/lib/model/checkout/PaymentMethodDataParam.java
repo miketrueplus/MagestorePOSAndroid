@@ -53,4 +53,8 @@ public interface PaymentMethodDataParam extends Model {
     void setCID(String cid);
 
     String getCID();
+
+    String getShiftId();
+
+    void setShiftId(String strShiftId);
 }

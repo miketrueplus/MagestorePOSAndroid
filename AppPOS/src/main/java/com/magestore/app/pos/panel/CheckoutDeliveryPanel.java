@@ -10,6 +10,7 @@ import com.magestore.app.lib.panel.AbstractDetailPanel;
 import com.magestore.app.pos.R;
 import com.magestore.app.util.ConfigUtil;
 import java.util.Calendar;
+import java.util.TimeZone;
 
 /**
  * Created by Johan on 3/30/17.
@@ -51,8 +52,9 @@ public class CheckoutDeliveryPanel extends AbstractDetailPanel<Checkout> {
     @Override
     public void initValue() {
         delivery_time.setIs24HourView(true);
-
-        Calendar calendar = Calendar.getInstance();
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+        TimeZone timeZone = TimeZone.getTimeZone("UTC");
+        Calendar calendar = Calendar.getInstance(timeZone);
         calendar.setTimeInMillis(System.currentTimeMillis());
         mYear = calendar.get(Calendar.YEAR); // current year
         mMonth = calendar.get(Calendar.MONTH); // current month

@@ -45,6 +45,8 @@ public interface RegisterShift extends Model {
     String getShiftCurrencyCode();
     String getStaffId();
     String getStatus();
+    String getPosId();
+    String getPosName();
 
     // param add cash transaction
     void setParamCash(CashTransaction cashTransaction);

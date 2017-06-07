@@ -39,6 +39,7 @@ public class MagestoreDialog extends Dialog {
     boolean goneDialogTitle = false;
     boolean full_screen = false;
     boolean transparent = false;
+    boolean cancel_back = false;
 
     String dialogTitle;
     String dialogCancel;
@@ -104,11 +105,11 @@ public class MagestoreDialog extends Dialog {
         this.dialogCancelColor = dialogCancelColor;
     }
 
-    public void setFullScreen(boolean fullScreen){
+    public void setFullScreen(boolean fullScreen) {
         full_screen = fullScreen;
     }
 
-    public void setTransparent(boolean transparent){
+    public void setTransparent(boolean transparent) {
         this.transparent = transparent;
     }
 
@@ -132,6 +133,10 @@ public class MagestoreDialog extends Dialog {
         this.goneDialogTitle = goneDialogTitle;
     }
 
+    public void setCancelBack(boolean cancel_back) {
+        this.cancel_back = cancel_back;
+    }
+
     public MagestoreDialog(Context context) {
         super(context);
     }
@@ -150,9 +155,9 @@ public class MagestoreDialog extends Dialog {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.magestore_dialog);
         ll_dialog = (LinearLayout) findViewById(R.id.ll_dialog);
-        if(transparent){
+        if (transparent) {
             getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        }else{
+        } else {
             ll_dialog.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.dialog_background_color));
         }
 
@@ -244,5 +249,13 @@ public class MagestoreDialog extends Dialog {
                 dismiss();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (cancel_back) {
+            return;
+        }
+        super.onBackPressed();
     }
 }

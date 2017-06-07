@@ -86,7 +86,7 @@ public class RegisterOpenSessionPanel extends AbstractDetailPanel<RegisterShift>
         bt_open.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                SessionParam param = ((SessionController) mController).createSessionParam();
+                SessionParam param = mRegisterShiftListController.createSessionParam();
                 float float_amount = et_float_amount.getValueFloat();
                 float base_float_amount = ConfigUtil.convertToBasePrice(float_amount);
                 param.setBalance(float_amount);

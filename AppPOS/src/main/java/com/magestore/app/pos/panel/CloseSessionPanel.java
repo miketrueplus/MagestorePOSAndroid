@@ -90,8 +90,8 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
     @Override
     public void bindItem(final RegisterShift item) {
         super.bindItem(item);
-//        et_r_close_balance.setEnabled(item.getStatus().equals("2") ? true : false);
-//        et_note.setEnabled(item.getStatus().equals("2") ? true : false);
+        et_r_close_balance.setEnabled(item.getStatus().equals("2") ? false : true);
+        et_note.setEnabled(item.getStatus().equals("2") ? false : true);
         tv_open_session_balance.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(item.getBaseFloatAmount())));
         tv_t_close_balance.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(item.getBaseBalance())));
         float transaction = item.getBaseBalance() - item.getBaseFloatAmount();

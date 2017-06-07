@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil;
 import android.support.design.widget.FloatingActionButton;
 import android.util.AttributeSet;
 import android.view.View;
+
 import com.magestore.app.lib.model.registershift.RegisterShift;
 import com.magestore.app.lib.panel.AbstractListPanel;
 import com.magestore.app.pos.R;
@@ -21,6 +22,7 @@ import com.magestore.app.pos.view.MagestoreDialog;
 
 public class RegisterShiftListPanel extends AbstractListPanel<RegisterShift> {
     RegisterOpenSessionPanel openSessionPanel;
+    MagestoreDialog dialogOpenSession;
 
     public RegisterShiftListPanel(Context context) {
         super(context);
@@ -43,14 +45,7 @@ public class RegisterShiftListPanel extends AbstractListPanel<RegisterShift> {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openSessionPanel = new RegisterOpenSessionPanel(getContext());
-                openSessionPanel.setRegisterShiftListController((RegisterShiftListController) getController());
-                openSessionPanel.initModel();
-                MagestoreDialog dialogOpenSession = DialogUtil.dialog(getContext(), getContext().getString(R.string.open_session_title), openSessionPanel);
-                dialogOpenSession.setFullScreen(true);
-                dialogOpenSession.setTransparent(true);
-                dialogOpenSession.setGoneDialogTitle(true);
-                dialogOpenSession.show();
+                openSession();
             }
         });
     }
@@ -59,6 +54,22 @@ public class RegisterShiftListPanel extends AbstractListPanel<RegisterShift> {
     protected void bindItem(View view, RegisterShift item, int position) {
         CardRegisterShiftListContentBinding binding = DataBindingUtil.bind(view);
         binding.setRegisterShift(item);
+    }
+
+    public void openSession() {
+        openSessionPanel = new RegisterOpenSessionPanel(getContext());
+        openSessionPanel.setRegisterShiftListController((RegisterShiftListController) getController());
+        openSessionPanel.initModel();
+        dialogOpenSession = DialogUtil.dialog(getContext(), getContext().getString(R.string.open_session_title), openSessionPanel);
+        dialogOpenSession.setFullScreen(true);
+        dialogOpenSession.setTransparent(true);
+        dialogOpenSession.setGoneDialogTitle(true);
+        dialogOpenSession.setCancelBack(true);
+        dialogOpenSession.show();
+    }
+
+    public void dismissDialogOpenSession(){
+        dialogOpenSession.dismiss();
     }
 
     public void updateFloatAmount(float total) {

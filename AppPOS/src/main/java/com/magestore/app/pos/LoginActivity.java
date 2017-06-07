@@ -298,8 +298,8 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
 
     private void attemptLoginDemo() {
         String domain = BuildConfig.REST_BASE_URL + "/pos-app/02";
-        String username = "ravi";
-        String password = "ravi123";
+        String username = "johan";
+        String password = "johan123";
 
         String strFinalDomain = buildPOSBaseURL(domain);
         // Bắt đầu login task
@@ -423,6 +423,7 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
                 point_of_sales_form.setVisibility(View.VISIBLE);
                 mListPos = listPos;
                 sp_pos.bind(listPos.toArray(new PointOfSales[0]));
+
                 // TODO: Check config session
 //                navigationToSessionActivity();
                 showProgress(false);
@@ -455,6 +456,7 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
     private void navigationToSalesActivity() {
         // Đăng nhập thành công, mở sẵn form sales
         Intent intent = new Intent(getContext(), SalesActivity.class);
+        intent.putExtra("redirect_register_shift", true);
         startActivity(intent);
 //        finish();
     }
@@ -483,6 +485,8 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
     @Override
     protected void onResume() {
         super.onResume();
+        email_login_form.setVisibility(View.VISIBLE);
+        point_of_sales_form.setVisibility(View.GONE);
         showProgress(false);
     }
 }

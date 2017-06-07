@@ -49,6 +49,8 @@ public class PosRegisterShift extends PosAbstractModel implements RegisterShift 
     List<PosSaleSummary> sale_summary;
     List<PosCashTransaction> cash_transaction;
     PosZreportSalesSummary zreport_sales_summary;
+    String pos_id;
+    String pos_name;
 
     // param request add cash transaction
     PosCashTransaction param_cash;
@@ -252,5 +254,15 @@ public class PosRegisterShift extends PosAbstractModel implements RegisterShift 
     @Override
     public String getStatus() {
         return status;
+    }
+
+    @Override
+    public String getPosId() {
+        return pos_id;
+    }
+
+    @Override
+    public String getPosName() {
+        return pos_name;
     }
 }
