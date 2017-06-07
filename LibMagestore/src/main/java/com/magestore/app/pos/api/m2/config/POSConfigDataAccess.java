@@ -776,6 +776,21 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         return false;
     }
 
+    @Override
+    public boolean getConfigSession() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        if (mConfig == null) mConfig = new PosConfigDefault();
+        String enable_session = (String) mConfig.getValue("webpos/general/enable_session");
+        boolean isSession;
+        if (!StringUtil.isNullOrEmpty(enable_session)) {
+            if (enable_session.equals("1")) {
+                isSession = true;
+                return isSession;
+            }
+        }
+
+        return false;
+    }
+
     private ConfigPriceFormat getPriceFormat(LinkedTreeMap priceFormat) {
         String currencySymbol = (String) mConfig.getValue("currentCurrencySymbol");
         String pattern = priceFormat.get("pattern").toString();

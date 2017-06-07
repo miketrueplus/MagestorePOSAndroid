@@ -45,6 +45,7 @@ public class ConfigUtil {
     private static boolean mEnableStoreCredit;
     private static boolean mEnableRewardPoint;
     private static boolean mEnableGiftCard;
+    private static boolean mEnableSession;
     private static List<ConfigTaxClass> mConfigTaxClass;
     private static String mTypePrint;
     private static PointOfSales mPointOfSales;
@@ -610,6 +611,10 @@ public class ConfigUtil {
         mEnableRewardPoint = enableRewardPoint;
     }
 
+    public static void setEnableSession(boolean mEnableSession) {
+        ConfigUtil.mEnableSession = mEnableSession;
+    }
+
     public static boolean isEnableGiftCard() {
         return mEnableGiftCard;
     }
@@ -620,6 +625,10 @@ public class ConfigUtil {
 
     public static boolean isEnableRewardPoint() {
         return mEnableRewardPoint;
+    }
+
+    public static boolean isEnableSession() {
+        return mEnableSession;
     }
 
     public static void setConfigPrint(ConfigPrint mConfigPrint) {

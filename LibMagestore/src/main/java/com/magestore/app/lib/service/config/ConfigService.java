@@ -112,5 +112,7 @@ public interface ConfigService extends Service {
 
     boolean getConfigGiftCard() throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
+    boolean getConfigSession() throws InstantiationException, IllegalAccessException, IOException, ParseException;
+
     List<Setting> getListSetting();
 }

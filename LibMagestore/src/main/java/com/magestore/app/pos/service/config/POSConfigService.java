@@ -80,6 +80,7 @@ public class POSConfigService extends AbstractService implements ConfigService {
         ConfigUtil.setEnableGiftCard(getConfigGiftCard());
         ConfigUtil.setEnableStoreCredit(getConfigStoreCredit());
         ConfigUtil.setEnableRewardPoint(getConfigRewardPoint());
+        ConfigUtil.setEnableSession(getConfigSession());
         ConfigUtil.setCurrentCurrency(getDefaultCurrency());
         ConfigUtil.setConfigTaxClass(configTaxClass);
         // return config
@@ -377,6 +378,13 @@ public class POSConfigService extends AbstractService implements ConfigService {
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
         return configDataAccess.getConfigGiftCard();
+    }
+
+    @Override
+    public boolean getConfigSession() throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
+        return configDataAccess.getConfigSession();
     }
 
     public static String SETTING_ACCOUNT = "My Account";

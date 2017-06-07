@@ -419,10 +419,16 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
         @Override
         public void onPostController(Task task, List<PointOfSales> listPos) {
             if (listPos != null && listPos.size() > 0) {
-                email_login_form.setVisibility(View.GONE);
-                point_of_sales_form.setVisibility(View.VISIBLE);
-                mListPos = listPos;
-                sp_pos.bind(listPos.toArray(new PointOfSales[0]));
+                if(ConfigUtil.isEnableSession()){
+                    mListPos = listPos;
+                    sp_pos.bind(listPos.toArray(new PointOfSales[0]));
+                    navigationToSalesActivity();
+                }else {
+                    email_login_form.setVisibility(View.GONE);
+                    point_of_sales_form.setVisibility(View.VISIBLE);
+                    mListPos = listPos;
+                    sp_pos.bind(listPos.toArray(new PointOfSales[0]));
+                }
 
                 // TODO: Check config session
 //                navigationToSessionActivity();
@@ -456,7 +462,9 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
     private void navigationToSalesActivity() {
         // Đăng nhập thành công, mở sẵn form sales
         Intent intent = new Intent(getContext(), SalesActivity.class);
-        intent.putExtra("redirect_register_shift", true);
+        if(ConfigUtil.isEnableSession()){
+            intent.putExtra("redirect_register_shift", true);
+        }
         startActivity(intent);
 //        finish();
     }
