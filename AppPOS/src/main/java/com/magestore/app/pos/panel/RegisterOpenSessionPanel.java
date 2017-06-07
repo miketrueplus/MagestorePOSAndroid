@@ -30,7 +30,7 @@ import java.util.List;
  * dong.le@trueplus.vn
  */
 
-public class OpenSessionDetailPanel extends AbstractDetailPanel<RegisterShift> {
+public class RegisterOpenSessionPanel extends AbstractDetailPanel<RegisterShift> {
     static String OPEN_SESSION = "0";
     Button bt_open;
     RelativeLayout rl_add_value;
@@ -38,30 +38,37 @@ public class OpenSessionDetailPanel extends AbstractDetailPanel<RegisterShift> {
     EditTextFloat et_float_amount;
     EditText et_note;
     SimpleSpinner sp_pos;
+    RegisterShiftListController mRegisterShiftListController;
     OpenSessionListValuePanel openSessionListValuePanel;
 
-    public OpenSessionDetailPanel(Context context) {
+    public void setRegisterShiftListController(RegisterShiftListController mRegisterShiftListController) {
+        this.mRegisterShiftListController = mRegisterShiftListController;
+    }
+
+    public RegisterOpenSessionPanel(Context context) {
         super(context);
     }
 
-    public OpenSessionDetailPanel(Context context, AttributeSet attrs) {
+    public RegisterOpenSessionPanel(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public OpenSessionDetailPanel(Context context, AttributeSet attrs, int defStyleAttr) {
+    public RegisterOpenSessionPanel(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
     @Override
     protected void initLayout() {
-        super.initLayout();
-        sp_pos = (SimpleSpinner) findViewById(R.id.sp_pos);
-        et_float_amount = (EditTextFloat) findViewById(R.id.et_float_amount);
-        bt_open = (Button) findViewById(R.id.bt_open);
-        rl_add_value = (RelativeLayout) findViewById(R.id.rl_add_value);
-        et_note = (EditText) findViewById(R.id.et_note);
-        txt_staff_login = (TextView) findViewById(R.id.txt_staff_login);
-        openSessionListValuePanel = (OpenSessionListValuePanel) findViewById(R.id.open_session_list_panel);
+        View view = inflate(getContext(), R.layout.panel_open_session_in_register, null);
+        addView(view);
+        sp_pos = (SimpleSpinner) view.findViewById(R.id.sp_pos);
+        et_float_amount = (EditTextFloat) view.findViewById(R.id.et_float_amount);
+        bt_open = (Button) view.findViewById(R.id.bt_open);
+        rl_add_value = (RelativeLayout) view.findViewById(R.id.rl_add_value);
+        et_note = (EditText) view.findViewById(R.id.et_note);
+        txt_staff_login = (TextView) view.findViewById(R.id.txt_staff_login);
+        openSessionListValuePanel = (OpenSessionListValuePanel) view.findViewById(R.id.open_session_list_panel);
+
         initValue();
     }
 
@@ -70,7 +77,7 @@ public class OpenSessionDetailPanel extends AbstractDetailPanel<RegisterShift> {
         rl_add_value.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((SessionController) mController).addValue();
+                mRegisterShiftListController.addValueOpen();
             }
         });
 
@@ -99,14 +106,19 @@ public class OpenSessionDetailPanel extends AbstractDetailPanel<RegisterShift> {
                 param.setShiftId("off_id_auto_shift_" + ConfigUtil.getItemIdInCurrentTime());
                 param.setPosId(sp_pos.getSelection());
                 param.setStatus(OPEN_SESSION);
-                ((SessionController) mController).doInputOpenSession(param);
+                mRegisterShiftListController.doInputOpenSession(param);
             }
         });
     }
 
     @Override
     public void initModel() {
-        List<PointOfSales> listPos = ((SessionController) mController).getListPos();
+
+        openSessionListValuePanel.setType(OpenSessionListValuePanel.TYPE_OPEN_SESSION_IN_REGISTER);
+        openSessionListValuePanel.setRegisterShiftListController(mRegisterShiftListController);
+        mRegisterShiftListController.setOpenSessionListPanel(openSessionListValuePanel);
+        List<PointOfSales> listPos = mRegisterShiftListController.getListPos();
+
         if (listPos != null && listPos.size() > 0) {
             sp_pos.bind(listPos.toArray(new PointOfSales[0]));
 
@@ -128,7 +140,8 @@ public class OpenSessionDetailPanel extends AbstractDetailPanel<RegisterShift> {
     }
 
     private PointOfSales getPointOfSales(String posID) {
-        List<PointOfSales> listPos = ((SessionController) mController).getListPos();
+        List<PointOfSales> listPos = mRegisterShiftListController.getListPos();
+
         if (listPos != null && listPos.size() > 0) {
             for (PointOfSales pos : listPos) {
                 if (pos.getID().equals(posID)) {

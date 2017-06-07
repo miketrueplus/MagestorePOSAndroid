@@ -419,11 +419,12 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
         @Override
         public void onPostController(Task task, List<PointOfSales> listPos) {
             if (listPos != null && listPos.size() > 0) {
-//                email_login_form.setVisibility(View.GONE);
-//                point_of_sales_form.setVisibility(View.VISIBLE);
-//                mListPos = listPos;
-//                sp_pos.bind(listPos.toArray(new PointOfSales[0]));
-                navigationToSessionActivity();
+                email_login_form.setVisibility(View.GONE);
+                point_of_sales_form.setVisibility(View.VISIBLE);
+                mListPos = listPos;
+                sp_pos.bind(listPos.toArray(new PointOfSales[0]));
+                // TODO: Check config session
+//                navigationToSessionActivity();
                 showProgress(false);
             } else {
                 showProgress(false);

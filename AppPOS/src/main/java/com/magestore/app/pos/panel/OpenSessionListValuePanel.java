@@ -28,7 +28,8 @@ import java.util.HashMap;
  */
 
 public class OpenSessionListValuePanel extends AbstractSimpleRecycleView<OpenSessionValue> {
-    static int TYPE_CLOSE_SESSION = 1;
+    public static int TYPE_CLOSE_SESSION = 1;
+    public static int TYPE_OPEN_SESSION_IN_REGISTER = 2;
     HashMap<OpenSessionValue, EditTextFloat> mapValue;
     HashMap<OpenSessionValue, EditTextInteger> mapAmount;
     HashMap<OpenSessionValue, TextView> mapSubtotal;
@@ -96,7 +97,9 @@ public class OpenSessionListValuePanel extends AbstractSimpleRecycleView<OpenSes
                 mapTotal.remove(item);
                 updateFloatAmount();
                 if (type == TYPE_CLOSE_SESSION) {
-                    mRegisterShiftListController.removeValue(item);
+                    mRegisterShiftListController.removeValueClose(item);
+                } else if (type == TYPE_OPEN_SESSION_IN_REGISTER) {
+                    mRegisterShiftListController.removeValueOpen(item);
                 } else {
                     mSessionController.removeValue(item);
                 }
@@ -183,7 +186,9 @@ public class OpenSessionListValuePanel extends AbstractSimpleRecycleView<OpenSes
             total += subtotal;
         }
         if (type == TYPE_CLOSE_SESSION) {
-            mRegisterShiftListController.updateFloatAmount(total);
+            mRegisterShiftListController.updateFloatAmountClose(total);
+        } else if (type == TYPE_OPEN_SESSION_IN_REGISTER) {
+            mRegisterShiftListController.updateFloatAmountOpen(total);
         } else {
             mSessionController.updateFloatAmount(total);
         }

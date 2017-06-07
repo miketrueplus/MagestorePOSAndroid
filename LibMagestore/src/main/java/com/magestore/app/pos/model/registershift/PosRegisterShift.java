@@ -230,7 +230,27 @@ public class PosRegisterShift extends PosAbstractModel implements RegisterShift 
     }
 
     @Override
+    public float getClosedAmount() {
+        return closed_amount;
+    }
+
+    @Override
+    public float getBaseClosedAmount() {
+        return base_closed_amount;
+    }
+
+    @Override
     public String getShiftCurrencyCode() {
         return shift_currency_code;
+    }
+
+    @Override
+    public String getStaffId() {
+        return staff_id;
+    }
+
+    @Override
+    public String getStatus() {
+        return status;
     }
 }

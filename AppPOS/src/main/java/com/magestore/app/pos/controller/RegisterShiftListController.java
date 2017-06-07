@@ -5,11 +5,14 @@ import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.registershift.CashTransaction;
 import com.magestore.app.lib.model.registershift.OpenSessionValue;
+import com.magestore.app.lib.model.registershift.PointOfSales;
 import com.magestore.app.lib.model.registershift.RegisterShift;
 import com.magestore.app.lib.model.registershift.SessionParam;
 import com.magestore.app.lib.service.registershift.RegisterShiftService;
+import com.magestore.app.lib.service.user.UserService;
 import com.magestore.app.pos.panel.OpenSessionListValuePanel;
 import com.magestore.app.pos.panel.RegisterShiftDetailPanel;
+import com.magestore.app.pos.panel.RegisterShiftListPanel;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -27,14 +30,23 @@ import java.util.Map;
 public class RegisterShiftListController extends AbstractListController<RegisterShift> {
     static final int ACTION_CODE_MAKE_ADJUSTMENT = 0;
     static final int ACTION_TYPE_CLOSE_SESSION = 1;
+    static final int ACTION_TYPE_VALIDATE_SESSION = 2;
+    static final int ACTION_TYPE_OPEN_SESSION = 3;
     OpenSessionListValuePanel mOpenSessionListPanel;
-    List<OpenSessionValue> listValue;
+    List<OpenSessionValue> listValueClose;
+    List<OpenSessionValue> listValueOpen;
     Map<String, Object> wraper;
+
+    UserService userService;
 
     /**
      * Service xử lý các vấn đề liên quan đến register shift
      */
     RegisterShiftService mRegisterShiftService;
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 
     /**
      * Thiết lập service
@@ -45,7 +57,8 @@ public class RegisterShiftListController extends AbstractListController<Register
         this.mRegisterShiftService = mRegisterShiftService;
         setListService(mRegisterShiftService);
         wraper = new HashMap<>();
-        listValue = new ArrayList<>();
+        listValueClose = new ArrayList<>();
+        listValueOpen = new ArrayList<>();
     }
 
     /**
@@ -71,6 +84,14 @@ public class RegisterShiftListController extends AbstractListController<Register
             SessionParam param = (SessionParam) wraper.get("param_close_session");
             wraper.put("close_session_respone", mRegisterShiftService.closeSession(param));
             return true;
+        } else if (actionType == ACTION_TYPE_VALIDATE_SESSION) {
+            SessionParam param = (SessionParam) wraper.get("param_validate_session");
+            wraper.put("close_validate_respone", mRegisterShiftService.closeSession(param));
+            return true;
+        } else if (actionType == ACTION_TYPE_OPEN_SESSION) {
+            SessionParam param = (SessionParam) models[0];
+            wraper.put("open_session_respone", mRegisterShiftService.openSession(param));
+            return true;
         }
         return false;
     }
@@ -83,11 +104,24 @@ public class RegisterShiftListController extends AbstractListController<Register
             ((RegisterShiftDetailPanel) mDetailView).bindItem(listRegister.get(0));
             setNewRegisterToList(oldRegisterShift, listRegister.get(0));
             isShowLoadingDetail(false);
-        } else if(success && actionType == ACTION_TYPE_CLOSE_SESSION){
+        } else if (success && actionType == ACTION_TYPE_CLOSE_SESSION) {
             RegisterShift oldRegisterShift = (RegisterShift) models[0];
             List<RegisterShift> listRegister = (List<RegisterShift>) wraper.get("close_session_respone");
             ((RegisterShiftDetailPanel) mDetailView).bindItem(listRegister.get(0));
             setNewRegisterToList(oldRegisterShift, listRegister.get(0));
+            bindItemCloseSessionPanel(listRegister.get(0));
+            isShowLoadingDetail(false);
+        } else if (success && actionType == ACTION_TYPE_VALIDATE_SESSION) {
+            RegisterShift oldRegisterShift = (RegisterShift) models[0];
+            List<RegisterShift> listRegister = (List<RegisterShift>) wraper.get("close_validate_respone");
+            ((RegisterShiftDetailPanel) mDetailView).bindItem(listRegister.get(0));
+            setNewRegisterToList(oldRegisterShift, listRegister.get(0));
+            isShowLoadingDetail(false);
+        } else if (success && actionType == ACTION_TYPE_OPEN_SESSION) {
+            List<RegisterShift> listRegister = (List<RegisterShift>) wraper.get("open_session_respone");
+            mList.add(0, listRegister.get(0));
+            bindList(mList);
+            ((RegisterShiftListPanel) mView).notifyDataSetChanged();
             isShowLoadingDetail(false);
         }
     }
@@ -112,10 +146,20 @@ public class RegisterShiftListController extends AbstractListController<Register
     }
 
     public void doInputCloseSession(RegisterShift registerShift, SessionParam param) {
-        dismissDialogCloseSession();
         isShowLoadingDetail(true);
         wraper.put("param_close_session", param);
         doAction(ACTION_TYPE_CLOSE_SESSION, null, wraper, registerShift);
+    }
+
+    public void doInputValidateSession(RegisterShift registerShift, SessionParam param) {
+        isShowLoadingDetail(true);
+        wraper.put("param_validate_session", param);
+        doAction(ACTION_TYPE_VALIDATE_SESSION, null, wraper, registerShift);
+    }
+
+    public void doInputOpenSession(SessionParam param) {
+        isShowLoadingDetail(true);
+        doAction(ACTION_TYPE_OPEN_SESSION, null, wraper, param);
     }
 
     public void doInputMakeAdjustment(RegisterShift registerShift) {
@@ -130,22 +174,37 @@ public class RegisterShiftListController extends AbstractListController<Register
         this.mOpenSessionListPanel = mOpenSessionListPanel;
     }
 
-    public void addValue() {
+    public void addValueOpen() {
         OpenSessionValue value = mRegisterShiftService.createOpenSessionValue();
-        listValue.add(value);
-        mOpenSessionListPanel.bindList(listValue);
+        listValueOpen.add(value);
+        mOpenSessionListPanel.bindList(listValueOpen);
     }
 
-    public void removeValue(OpenSessionValue value) {
-        listValue.remove(value);
-        mOpenSessionListPanel.bindList(listValue);
+    public void removeValueOpen(OpenSessionValue value) {
+        listValueOpen.remove(value);
+        mOpenSessionListPanel.bindList(listValueOpen);
     }
 
-    public void updateFloatAmount(float total) {
+    public void addValueClose() {
+        OpenSessionValue value = mRegisterShiftService.createOpenSessionValue();
+        listValueClose.add(value);
+        mOpenSessionListPanel.bindList(listValueClose);
+    }
+
+    public void removeValueClose(OpenSessionValue value) {
+        listValueClose.remove(value);
+        mOpenSessionListPanel.bindList(listValueClose);
+    }
+
+    public void updateFloatAmountClose(float total) {
         ((RegisterShiftDetailPanel) mDetailView).updateFloatAmount(total);
     }
 
-    public void isShowLoadingDetail(boolean isShow){
+    public void updateFloatAmountOpen(float total) {
+        ((RegisterShiftListPanel) mView).updateFloatAmount(total);
+    }
+
+    public void isShowLoadingDetail(boolean isShow) {
         ((RegisterShiftDetailPanel) mDetailView).isShowLoadingDetail(isShow);
     }
 
@@ -153,7 +212,27 @@ public class RegisterShiftListController extends AbstractListController<Register
         return mRegisterShiftService.createSessionParam();
     }
 
-    public void dismissDialogCloseSession(){
+    public void dismissDialogCloseSession() {
         ((RegisterShiftDetailPanel) mDetailView).dismissDialogCloseSession();
+    }
+
+    public void bindItemCloseSessionPanel(RegisterShift item) {
+        ((RegisterShiftDetailPanel) mDetailView).bindItem(item);
+    }
+
+    public List<PointOfSales> getListPos(){
+        try {
+            return userService.getListPos();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }

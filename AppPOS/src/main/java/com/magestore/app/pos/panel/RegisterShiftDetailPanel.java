@@ -144,15 +144,19 @@ public class RegisterShiftDetailPanel extends AbstractDetailPanel<RegisterShift>
         dialogCloseSession.show();
     }
 
-    public void dismissDialogCloseSession(){
+    public void dismissDialogCloseSession() {
         dialogCloseSession.dismiss();
+    }
+
+    public void bindItemCloseSessionPanel(RegisterShift item) {
+        panelCloseSessionPanel.bindItem(item);
     }
 
     public void updateFloatAmount(float total) {
         panelCloseSessionPanel.updateFloatAmount(total);
     }
 
-    public void isShowLoadingDetail(boolean isShow){
+    public void isShowLoadingDetail(boolean isShow) {
         register_shift_background_loading.setVisibility(isShow ? VISIBLE : GONE);
     }
 }

@@ -3,15 +3,15 @@ package com.magestore.app.pos.panel;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.widget.GridLayoutManager;
 import android.util.AttributeSet;
 import android.view.View;
-
 import com.magestore.app.lib.model.registershift.RegisterShift;
 import com.magestore.app.lib.panel.AbstractListPanel;
 import com.magestore.app.pos.R;
+import com.magestore.app.pos.controller.RegisterShiftListController;
 import com.magestore.app.pos.databinding.CardRegisterShiftListContentBinding;
+import com.magestore.app.pos.util.DialogUtil;
+import com.magestore.app.pos.view.MagestoreDialog;
 
 /**
  * Created by Johan on 1/18/17.
@@ -20,6 +20,7 @@ import com.magestore.app.pos.databinding.CardRegisterShiftListContentBinding;
  */
 
 public class RegisterShiftListPanel extends AbstractListPanel<RegisterShift> {
+    RegisterOpenSessionPanel openSessionPanel;
 
     public RegisterShiftListPanel(Context context) {
         super(context);
@@ -42,8 +43,14 @@ public class RegisterShiftListPanel extends AbstractListPanel<RegisterShift> {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("MagestoreStatementAction", null).show();
+                openSessionPanel = new RegisterOpenSessionPanel(getContext());
+                openSessionPanel.setRegisterShiftListController((RegisterShiftListController) getController());
+                openSessionPanel.initModel();
+                MagestoreDialog dialogOpenSession = DialogUtil.dialog(getContext(), getContext().getString(R.string.open_session_title), openSessionPanel);
+                dialogOpenSession.setFullScreen(true);
+                dialogOpenSession.setTransparent(true);
+                dialogOpenSession.setGoneDialogTitle(true);
+                dialogOpenSession.show();
             }
         });
     }
@@ -52,5 +59,9 @@ public class RegisterShiftListPanel extends AbstractListPanel<RegisterShift> {
     protected void bindItem(View view, RegisterShift item, int position) {
         CardRegisterShiftListContentBinding binding = DataBindingUtil.bind(view);
         binding.setRegisterShift(item);
+    }
+
+    public void updateFloatAmount(float total) {
+        openSessionPanel.updateFloatAmount(total);
     }
 }

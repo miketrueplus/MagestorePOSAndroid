@@ -547,6 +547,11 @@ public class ConfigUtil {
         return dateTimeString;
     }
 
+    public static long getItemIdInCurrentTime() {
+        long time = System.currentTimeMillis();
+        return time;
+    }
+
     public static void setCurrentCurrency(Currency currentCurrency) {
         ConfigUtil.currentCurrency = currentCurrency;
     }

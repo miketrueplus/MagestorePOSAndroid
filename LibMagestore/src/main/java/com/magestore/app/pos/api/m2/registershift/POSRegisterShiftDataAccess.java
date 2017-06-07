@@ -18,6 +18,8 @@ import com.magestore.app.pos.api.m2.POSAbstractDataAccess;
 import com.magestore.app.pos.api.m2.POSDataAccessSession;
 import com.magestore.app.pos.model.registershift.PosRegisterShift;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListRegisterShift;
+import com.magestore.app.util.ConfigUtil;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import java.io.IOException;
@@ -175,6 +177,7 @@ public class POSRegisterShiftDataAccess extends POSAbstractDataAccess implements
 
             // Xây dựng tham số
             paramBuilder = statement.getParamBuilder()
+                    .setFilterEqual("staff_id", ConfigUtil.getStaff().getID())
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
 
             // thực thi truy vấn và parse kết quả thành object

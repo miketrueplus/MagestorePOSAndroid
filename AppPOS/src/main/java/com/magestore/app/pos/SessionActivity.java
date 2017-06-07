@@ -20,7 +20,7 @@ import com.magestore.app.pos.ui.AbstractActivity;
  */
 
 public class SessionActivity extends AbstractActivity {
-    OpenSessionDetailPanel mOpenSessionPanel;
+    OpenSessionDetailPanel mOpenSessionDetailPanel;
     OpenSessionListValuePanel mOpenSessionListValuePanel;
     OpenSessionListPanel mOpenSessionListPanel;
     SessionController mSessionController;
@@ -38,9 +38,9 @@ public class SessionActivity extends AbstractActivity {
 
     @Override
     protected void initLayout() {
-        mOpenSessionPanel = (OpenSessionDetailPanel) findViewById(R.id.open_session_panel);
+        mOpenSessionDetailPanel = (OpenSessionDetailPanel) findViewById(R.id.open_session_panel);
         mOpenSessionListPanel = (OpenSessionListPanel) findViewById(R.id.open_session_list_panel);
-        mOpenSessionListValuePanel = (OpenSessionListValuePanel) mOpenSessionPanel.findViewById(R.id.open_session_list_panel);
+        mOpenSessionListValuePanel = (OpenSessionListValuePanel) mOpenSessionDetailPanel.findViewById(R.id.open_session_list_panel);
     }
 
     @Override
@@ -67,11 +67,11 @@ public class SessionActivity extends AbstractActivity {
         mSessionController.setMagestoreContext(magestoreContext);
         mSessionController.setUserService(userService);
         mSessionController.setRegisterShiftService(service);
-        mSessionController.setDetailPanel(mOpenSessionPanel);
+        mSessionController.setDetailPanel(mOpenSessionDetailPanel);
         mSessionController.setListPanel(mOpenSessionListPanel);
         mSessionController.setOpenSessionListPanel(mOpenSessionListValuePanel);
 
         mOpenSessionListValuePanel.setSessionController(mSessionController);
-        mOpenSessionPanel.initModel();
+        mOpenSessionDetailPanel.initModel();
     }
 }

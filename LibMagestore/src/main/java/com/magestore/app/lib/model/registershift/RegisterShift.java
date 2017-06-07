@@ -40,7 +40,11 @@ public interface RegisterShift extends Model {
     float getBaseCashLeft();
     float getCashRemoved();
     float getBaseCashRemoved();
+    float getClosedAmount();
+    float getBaseClosedAmount();
     String getShiftCurrencyCode();
+    String getStaffId();
+    String getStatus();
 
     // param add cash transaction
     void setParamCash(CashTransaction cashTransaction);
