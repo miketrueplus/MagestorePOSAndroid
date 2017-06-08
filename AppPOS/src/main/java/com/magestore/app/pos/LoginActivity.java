@@ -379,6 +379,7 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
 //                        mStoreTask.execute();
 //                    }
 //                }
+
                 mStoreTask = new ListStoreTask(new StoreListener());
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) // Above Api Level 13
                 {
@@ -418,7 +419,7 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
 
         @Override
         public void onPostController(Task task, List<PointOfSales> listPos) {
-            if (listPos != null && listPos.size() > 0) {
+            if (listPos != null) {
                 if(ConfigUtil.isEnableSession()){
                     mListPos = listPos;
                     sp_pos.bind(listPos.toArray(new PointOfSales[0]));

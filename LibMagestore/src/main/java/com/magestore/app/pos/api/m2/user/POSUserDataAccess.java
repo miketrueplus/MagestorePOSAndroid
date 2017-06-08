@@ -157,7 +157,7 @@ public class POSUserDataAccess extends POSAbstractDataAccess implements UserData
 
     @Override
     public List<PointOfSales> retrievePos() throws ParseException, ConnectionException, DataAccessException, IOException {
-        if (mListPos != null && mListPos.size() > 0) {
+        if (mListPos != null) {
             return mListPos;
         }
         Connection connection = null;
@@ -196,5 +196,10 @@ public class POSUserDataAccess extends POSAbstractDataAccess implements UserData
             if (connection != null) connection.close();
             connection = null;
         }
+    }
+
+    @Override
+    public void resetListPos() throws ParseException, ConnectionException, DataAccessException, IOException {
+        mListPos = null;
     }
 }

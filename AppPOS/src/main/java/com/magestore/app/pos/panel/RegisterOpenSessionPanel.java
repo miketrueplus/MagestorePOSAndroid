@@ -21,6 +21,7 @@ import com.magestore.app.pos.controller.RegisterShiftListController;
 import com.magestore.app.pos.controller.SessionController;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.DataUtil;
+import com.magestore.app.util.DialogUtil;
 import com.magestore.app.view.EditTextFloat;
 
 import java.util.List;
@@ -35,7 +36,7 @@ public class RegisterOpenSessionPanel extends AbstractDetailPanel<RegisterShift>
     static String OPEN_SESSION = "0";
     Button bt_open;
     RelativeLayout rl_add_value;
-    TextView txt_staff_login, tv_session_back;
+    TextView txt_staff_login, tv_session_back, error_pos;
     EditTextFloat et_float_amount;
     EditText et_note;
     SimpleSpinner sp_pos;
@@ -64,6 +65,7 @@ public class RegisterOpenSessionPanel extends AbstractDetailPanel<RegisterShift>
         addView(view);
         tv_session_back = (TextView) view.findViewById(R.id.tv_session_back);
         sp_pos = (SimpleSpinner) view.findViewById(R.id.sp_pos);
+        error_pos = (TextView) view.findViewById(R.id.error_pos);
         et_float_amount = (EditTextFloat) view.findViewById(R.id.et_float_amount);
         bt_open = (Button) view.findViewById(R.id.bt_open);
         rl_add_value = (RelativeLayout) view.findViewById(R.id.rl_add_value);
@@ -88,27 +90,33 @@ public class RegisterOpenSessionPanel extends AbstractDetailPanel<RegisterShift>
         bt_open.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                SessionParam param = mRegisterShiftListController.createSessionParam();
-                float float_amount = et_float_amount.getValueFloat();
-                float base_float_amount = ConfigUtil.convertToBasePrice(float_amount);
-                param.setBalance(float_amount);
-                param.setBaseBalance(base_float_amount);
-                param.setBaseCashAdded(base_float_amount);
-                param.setBaseFloatAmount(base_float_amount);
-                param.setFloatAmount(float_amount);
-                param.setBaseCurrencyCode(ConfigUtil.getBaseCurrencyCode());
-                param.setCashAdded(float_amount);
-                param.setOpenedNote(et_note.getText().toString());
-                param.setShiftCurrencyCode(ConfigUtil.getCurrentCurrency().getCode());
-                param.setStaffId(ConfigUtil.getStaff().getID());
-                param.setLocationId(ConfigUtil.getPointOfSales().getLocationId());
-                param.setOpenedAt(ConfigUtil.getCurrentDateTime());
-                param.setCloseAt(ConfigUtil.getCurrentDateTime());
-                // tự sinh id shift khi open
-                param.setShiftId("off_id_auto_shift_" + ConfigUtil.getItemIdInCurrentTime());
-                param.setPosId(sp_pos.getSelection());
-                param.setStatus(OPEN_SESSION);
-                mRegisterShiftListController.doInputOpenSession(param);
+                List<PointOfSales> listPos = mRegisterShiftListController.getListPos();
+
+                if (listPos != null && listPos.size() > 0) {
+                    SessionParam param = mRegisterShiftListController.createSessionParam();
+                    float float_amount = et_float_amount.getValueFloat();
+                    float base_float_amount = ConfigUtil.convertToBasePrice(float_amount);
+                    param.setBalance(float_amount);
+                    param.setBaseBalance(base_float_amount);
+                    param.setBaseCashAdded(base_float_amount);
+                    param.setBaseFloatAmount(base_float_amount);
+                    param.setFloatAmount(float_amount);
+                    param.setBaseCurrencyCode(ConfigUtil.getBaseCurrencyCode());
+                    param.setCashAdded(float_amount);
+                    param.setOpenedNote(et_note.getText().toString());
+                    param.setShiftCurrencyCode(ConfigUtil.getCurrentCurrency().getCode());
+                    param.setStaffId(ConfigUtil.getStaff().getID());
+                    param.setLocationId(ConfigUtil.getPointOfSales().getLocationId());
+                    param.setOpenedAt(ConfigUtil.getCurrentDateTime());
+                    param.setCloseAt(ConfigUtil.getCurrentDateTime());
+                    // tự sinh id shift khi open
+                    param.setShiftId("off_id_auto_shift_" + ConfigUtil.getItemIdInCurrentTime());
+                    param.setPosId(sp_pos.getSelection());
+                    param.setStatus(OPEN_SESSION);
+                    mRegisterShiftListController.doInputOpenSession(param);
+                } else {
+                    DialogUtil.confirm(getContext(), getContext().getString(R.string.notify_select_pos), R.string.ok);
+                }
             }
         });
 
@@ -138,6 +146,8 @@ public class RegisterOpenSessionPanel extends AbstractDetailPanel<RegisterShift>
         List<PointOfSales> listPos = mRegisterShiftListController.getListPos();
 
         if (listPos != null && listPos.size() > 0) {
+            error_pos.setVisibility(GONE);
+            sp_pos.setVisibility(VISIBLE);
             sp_pos.bind(listPos.toArray(new PointOfSales[0]));
 
             sp_pos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -154,6 +164,9 @@ public class RegisterOpenSessionPanel extends AbstractDetailPanel<RegisterShift>
 
                 }
             });
+        } else {
+            error_pos.setVisibility(VISIBLE);
+            sp_pos.setVisibility(GONE);
         }
     }
 

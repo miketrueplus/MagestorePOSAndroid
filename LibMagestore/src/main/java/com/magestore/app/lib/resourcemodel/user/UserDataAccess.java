@@ -30,4 +30,6 @@ public interface UserDataAccess extends DataAccess {
     List<Store> getListStore() throws ParseException, ConnectionException, DataAccessException, IOException;
 
     List<PointOfSales> retrievePos() throws ParseException, ConnectionException, DataAccessException, IOException;
+
+    void resetListPos() throws ParseException, ConnectionException, DataAccessException, IOException;
 }

@@ -120,6 +120,7 @@
     <color name="open_session_text_color">#aeb4ba</color>
     <color name="open_session_bg_bt_open">#00a659</color>
     <color name="open_session_border">#d83911</color>
+    <color name="error_no_pos">#ff0000</color>
 
     <!--Plugins-->
     <color name="plugin_reward_point_earn_point_text_color">#1e88e5</color>

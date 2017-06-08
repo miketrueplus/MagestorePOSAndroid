@@ -30,6 +30,7 @@ public class ListStoreTask extends AsyncTaskAbstractTask<Void, Void, List<PointO
             // Gọi use case đăng nhập
             ServiceFactory serviceFactory = ServiceFactory.getFactory(null);
             UserService userService = serviceFactory.generateUserService();
+            userService.resetListPos();
             return userService.getListPos();
         } catch (Exception e) {
             cancel(e, true);
