@@ -25,13 +25,25 @@
                 android:layout_marginBottom="8dp"
                 android:visibility="gone" />
 
-            <com.magestore.app.lib.view.ListRecycleView xmlns:tools="http://schemas.android.com/tools"
+            <com.magestore.app.lib.view.ListRecycleView
                 android:id="@+id/register_shift_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1.0"
                 app:layoutManager="LinearLayoutManager"
                 tools:listitem="@layout/card_register_shift_list_content" />
+
+            <ProgressBar
+                android:id="@+id/progress_register_shift_list_bottom"
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="@dimen/layout_margin_50"
+                android:layout_height="@dimen/layout_margin_50"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/layout_margin_5"
+                android:layout_marginTop="@dimen/layout_margin_5"
+                android:visibility="gone" />
         </RelativeLayout>
     </LinearLayout>
 
