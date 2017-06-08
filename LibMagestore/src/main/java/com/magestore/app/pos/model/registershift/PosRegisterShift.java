@@ -242,6 +242,16 @@ public class PosRegisterShift extends PosAbstractModel implements RegisterShift 
     }
 
     @Override
+    public float getCashSales() {
+        return cash_sale;
+    }
+
+    @Override
+    public float getBaseCashSales() {
+        return base_cash_sale;
+    }
+
+    @Override
     public String getShiftCurrencyCode() {
         return shift_currency_code;
     }

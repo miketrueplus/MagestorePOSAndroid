@@ -12,4 +12,6 @@ public interface ZreportSalesSummary extends Model {
     float getGrandTotal();
     float getDiscountAmount();
     float getTotalRefunded();
+    float getGiftvoucherDiscount();
+    float getRewardpointsDiscount();
 }

@@ -13,6 +13,8 @@ public class PosZreportSalesSummary extends PosAbstractModel implements ZreportS
     float grand_total;
     float discount_amount;
     float total_refunded;
+    float giftvoucher_discount;
+    float rewardpoints_discount;
 
     @Override
     public float getGrandTotal() {
@@ -27,5 +29,15 @@ public class PosZreportSalesSummary extends PosAbstractModel implements ZreportS
     @Override
     public float getTotalRefunded() {
         return total_refunded;
+    }
+
+    @Override
+    public float getGiftvoucherDiscount() {
+        return giftvoucher_discount;
+    }
+
+    @Override
+    public float getRewardpointsDiscount() {
+        return rewardpoints_discount;
     }
 }

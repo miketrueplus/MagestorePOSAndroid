@@ -20,6 +20,7 @@ import com.magestore.app.pos.model.store.PosStore;
 import com.magestore.app.pos.model.user.PosUser;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListPointOfSales;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosStoreParseImplement;
+import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.StringUtil;
 
 import java.io.IOException;
@@ -169,7 +170,10 @@ public class POSUserDataAccess extends POSAbstractDataAccess implements UserData
             connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
             statement = connection.createStatement();
             statement.prepareQuery(POSAPI.REST_REGISTER_SHIFTS_GET_LISTING_POS);
+
             paramBuilder = statement.getParamBuilder()
+                    .setSortOrderASC("pos_name")
+                    .setFilter("staff_id", ConfigUtil.getStaff().getID())
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
 
             rp = statement.execute();

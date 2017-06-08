@@ -1,9 +1,15 @@
 package com.magestore.app.pos.panel;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
+import android.os.Environment;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.Window;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -11,14 +17,18 @@ import android.widget.TextView;
 import com.magestore.app.lib.controller.Controller;
 import com.magestore.app.lib.model.registershift.RegisterShift;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
+import com.magestore.app.pos.PrintDialogActivity;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.RegisterShiftCashListController;
 import com.magestore.app.pos.controller.RegisterShiftListController;
 import com.magestore.app.pos.controller.RegisterShiftSaleListController;
 import com.magestore.app.pos.databinding.PanelRegisterShiftDetailBinding;
 import com.magestore.app.pos.util.DialogUtil;
+import com.magestore.app.pos.util.PrintUtil;
 import com.magestore.app.pos.view.MagestoreDialog;
 import com.magestore.app.util.ConfigUtil;
+
+import java.io.File;
 
 /**
  * Created by Johan on 1/18/17.
@@ -115,6 +125,13 @@ public class RegisterShiftDetailPanel extends AbstractDetailPanel<RegisterShift>
                 showCloseShift(item);
             }
         });
+
+        ((Button) v.findViewById(R.id.print)).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                actionPrint(item);
+            }
+        });
     }
 
     private void showMakeAdjustment(RegisterShift item) {
@@ -166,5 +183,45 @@ public class RegisterShiftDetailPanel extends AbstractDetailPanel<RegisterShift>
     public void showDialogMakeAdjusment(){
         dialogCloseSession.dismiss();
         showMakeAdjustment(registerShift);
+    }
+
+    private void actionPrint(RegisterShift registerShift){
+        final Dialog dialogPrint = new Dialog(getContext());
+        dialogPrint.setCancelable(true);
+        dialogPrint.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialogPrint.setFeatureDrawableAlpha(1, 1);
+        dialogPrint.setContentView(R.layout.print_register_shift_preview);
+        WebView dialogWebView = (WebView) dialogPrint.findViewById(R.id.webview);
+        TextView bt_print = (TextView) dialogPrint.findViewById(R.id.dialog_save);
+        bt_print.setText(getContext().getString(R.string.print));
+        TextView dialog_cancel = (TextView) dialogPrint.findViewById(R.id.dialog_cancel);
+        dialog_cancel.setText(getContext().getString(R.string.cancel));
+        TextView dialog_title = (TextView) dialogPrint.findViewById(R.id.dialog_title);
+        dialogWebView.getSettings().setJavaScriptEnabled(true);
+        dialogWebView.getSettings().setLoadsImagesAutomatically(true);
+        dialogWebView.setDrawingCacheEnabled(true);
+        dialogWebView.buildDrawingCache();
+        dialogWebView.capturePicture();
+        PrintUtil.doPrintRegisterShift(getContext(), registerShift, dialogWebView);
+        dialogPrint.show();
+
+        dialog_cancel.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialogPrint.dismiss();
+            }
+        });
+
+        bt_print.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS + "/RetailerPOS/PrintZReport.pdf");
+                Intent printIntent = new Intent(getContext(),
+                        PrintDialogActivity.class);
+                printIntent.setDataAndType(Uri.fromFile(file), "application/pdf");
+                printIntent.putExtra("title", "");
+                getContext().startActivity(printIntent);
+            }
+        });
     }
 }

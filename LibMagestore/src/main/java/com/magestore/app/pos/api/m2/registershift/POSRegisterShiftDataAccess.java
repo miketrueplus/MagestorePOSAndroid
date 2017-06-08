@@ -106,8 +106,7 @@ public class POSRegisterShiftDataAccess extends POSAbstractDataAccess implements
             paramBuilder = statement.getParamBuilder()
                     .setPage(page)
                     .setPageSize(pageSize)
-                    .setSortOrderDESC("opened_at")
-                    .setFilterIn("status", "0,2")
+                    .setSortOrderDESC("entity_id")
                     .setFilterEqual("staff_id", ConfigUtil.getStaff().getID())
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
 

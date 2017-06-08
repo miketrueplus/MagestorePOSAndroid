@@ -199,6 +199,17 @@
     <string name="register_shift_session_title">Session Management</string>
     <string name="error_no_pos">No POS Avaible</string>
     <string name="notify_select_pos">Please choose POS!</string>
+    <string name="register_shift_z_report">Z - report</string>
+    <string name="register_shift_report_opened">Opened: </string>
+    <string name="register_shift_report_closed">Closed: </string>
+    <string name="register_shift_report_open_amount">Opening Amount</string>
+    <string name="register_shift_report_close_amount">Closed Amount</string>
+    <string name="register_shift_report_cash_left">Cash Left</string>
+    <string name="register_shift_report_cash_sales">Cash Sales</string>
+    <string name="register_shift_report_cash_added">Cash Added</string>
+    <string name="register_shift_report_cash_remove">Cash Removed</string>
+    <string name="register_shift_report_total_sales">Total Sales</string>
+    <string name="register_shift_report_payment_title">Sales by payment method</string>
 
     <!--Strings related to setting-->
     <string name="setting_account_title_information">Account Information</string>
@@ -334,6 +345,7 @@
     <string name="search">Search</string>
     <string name="send">Send</string>
     <string name="setting">Settings</string>
+    <string name="shift">Shift</string>
     <string name="shipping">Shipping</string>
     <string name="shipping_and_handling">Shipping</string>
     <string name="shipping_method">SHIPPING METHOD</string>
