@@ -1,5 +1,7 @@
 package com.magestore.app.pos.controller;
 
+import android.content.Intent;
+
 import com.magestore.app.lib.controller.AbstractListController;
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.customer.Customer;
@@ -38,7 +40,7 @@ public class RegisterShiftListController extends AbstractListController<Register
     List<OpenSessionValue> listValueClose;
     List<OpenSessionValue> listValueOpen;
     Map<String, Object> wraper;
-
+    public static String SEND_NOTI_TO_REGISTER_ACTIVITY = "com.magestore.app.pos.controller.register.controller";
     UserService userService;
 
     /**
@@ -85,7 +87,17 @@ public class RegisterShiftListController extends AbstractListController<Register
             if (registerShift.getStatus().equals("1")) {
                 openSessionList();
                 ((RegisterShiftListPanel) mView).isShowButtonOpenSession(true);
+                Intent intent = new Intent();
+                intent.putExtra("is_show", false);
+                intent.setAction(SEND_NOTI_TO_REGISTER_ACTIVITY);
+                getMagestoreContext().getActivity().sendBroadcast(intent);
+            }else{
+                Intent intent = new Intent();
+                intent.putExtra("is_show", true);
+                intent.setAction(SEND_NOTI_TO_REGISTER_ACTIVITY);
+                getMagestoreContext().getActivity().sendBroadcast(intent);
             }
+
             if (registerShift.getStatus().equals("2")) {
                 ((RegisterShiftDetailPanel) mDetailView).showCloseShift(list.get(0));
             }
@@ -267,6 +279,10 @@ public class RegisterShiftListController extends AbstractListController<Register
 
     public void bindItemCloseSessionPanel(RegisterShift item) {
         ((RegisterShiftDetailPanel) mDetailView).bindItemCloseSessionPanel(item);
+    }
+
+    public void showDialogMakeAdjusment(){
+        ((RegisterShiftDetailPanel) mDetailView).showDialogMakeAdjusment();
     }
 
     public List<PointOfSales> getListPos() {

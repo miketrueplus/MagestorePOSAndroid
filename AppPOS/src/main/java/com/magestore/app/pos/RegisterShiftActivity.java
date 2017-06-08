@@ -1,5 +1,9 @@
 package com.magestore.app.pos;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -88,6 +92,9 @@ public class RegisterShiftActivity extends AbstractActivity {
 
         mRegisterShiftListPanel.initModel();
         mRegisterShiftDetailPanel.initModel();
+
+        IntentFilter filter = new IntentFilter(RegisterShiftListController.SEND_NOTI_TO_REGISTER_ACTIVITY);
+        registerReceiver(receiver_data, filter);
     }
 
     @Override
@@ -104,9 +111,19 @@ public class RegisterShiftActivity extends AbstractActivity {
             mRegisterShiftListPanel.setVisibility(View.VISIBLE);
             ActionBar actionBar = getSupportActionBar();
             actionBar.setDisplayHomeAsUpEnabled(false);
-            initToolbarMenu(toolbar_order);
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
+
+    BroadcastReceiver receiver_data = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+//            if(intent.getBooleanExtra("is_show", false)){
+//                initToolbarMenu(toolbar_order);
+//            }else {
+//                initToolbarMenu(null);
+//            }
+        }
+    };
 }

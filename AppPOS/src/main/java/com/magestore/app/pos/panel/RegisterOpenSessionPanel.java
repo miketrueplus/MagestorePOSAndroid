@@ -3,6 +3,7 @@ package com.magestore.app.pos.panel;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,7 +35,7 @@ public class RegisterOpenSessionPanel extends AbstractDetailPanel<RegisterShift>
     static String OPEN_SESSION = "0";
     Button bt_open;
     RelativeLayout rl_add_value;
-    TextView txt_staff_login;
+    TextView txt_staff_login, tv_session_back;
     EditTextFloat et_float_amount;
     EditText et_note;
     SimpleSpinner sp_pos;
@@ -61,6 +62,7 @@ public class RegisterOpenSessionPanel extends AbstractDetailPanel<RegisterShift>
     protected void initLayout() {
         View view = inflate(getContext(), R.layout.panel_open_session_in_register, null);
         addView(view);
+        tv_session_back = (TextView) view.findViewById(R.id.tv_session_back);
         sp_pos = (SimpleSpinner) view.findViewById(R.id.sp_pos);
         et_float_amount = (EditTextFloat) view.findViewById(R.id.et_float_amount);
         bt_open = (Button) view.findViewById(R.id.bt_open);
@@ -107,6 +109,22 @@ public class RegisterOpenSessionPanel extends AbstractDetailPanel<RegisterShift>
                 param.setPosId(sp_pos.getSelection());
                 param.setStatus(OPEN_SESSION);
                 mRegisterShiftListController.doInputOpenSession(param);
+            }
+        });
+
+        tv_session_back.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mRegisterShiftListController.dismissDialogOpenSession();
+            }
+        });
+
+        et_float_amount.setOnFocusChangeListener(new OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if (b) {
+                    mRegisterShiftListController.getMagestoreContext().getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+                }
             }
         });
     }

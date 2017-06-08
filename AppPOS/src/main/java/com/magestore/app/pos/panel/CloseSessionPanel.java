@@ -150,6 +150,7 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
                 param.setOpenedAt(item.getOpenedAt());
                 param.setCloseAt(ConfigUtil.getCurrentDateTime());
                 param.setShiftId(item.getShiftId());
+                param.setPosId(item.getPosId());
                 param.setStatus(CLOSE_SESSION);
                 ((RegisterShiftListController) getController()).doInputCloseSession(item, param);
             }
@@ -181,6 +182,7 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
                 param.setOpenedAt(item.getOpenedAt());
                 param.setCloseAt(item.getClosedAt());
                 param.setShiftId(item.getShiftId());
+                param.setPosId(item.getPosId());
                 param.setStatus(VALIDATE);
                 ((RegisterShiftListController) getController()).doInputValidateSession(item, param);
             }
@@ -212,8 +214,16 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
                 param.setOpenedAt(item.getOpenedAt());
                 param.setCloseAt(item.getClosedAt());
                 param.setShiftId(item.getShiftId());
+                param.setPosId(item.getPosId());
                 param.setStatus(OPEN_SESSION);
                 ((RegisterShiftListController) getController()).doInputCancelSession(item, param);
+            }
+        });
+
+        bt_adjustment.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
             }
         });
     }

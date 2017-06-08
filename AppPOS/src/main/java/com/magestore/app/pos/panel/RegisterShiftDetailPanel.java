@@ -38,6 +38,7 @@ public class RegisterShiftDetailPanel extends AbstractDetailPanel<RegisterShift>
     CloseSessionPanel panelCloseSessionPanel;
     RelativeLayout register_shift_background_loading;
     MagestoreDialog dialogCloseSession;
+    RegisterShift registerShift;
 
     public RegisterShiftDetailPanel(Context context) {
         super(context);
@@ -93,6 +94,7 @@ public class RegisterShiftDetailPanel extends AbstractDetailPanel<RegisterShift>
     @Override
     public void bindItem(final RegisterShift item) {
         super.bindItem(item);
+        registerShift = item;
         mBinding.setRegisterShift(item);
         tv_staff_name.setText(ConfigUtil.getStaff().getStaffName());
         tv_location.setText(item.getPosName());
@@ -159,5 +161,10 @@ public class RegisterShiftDetailPanel extends AbstractDetailPanel<RegisterShift>
 
     public void isShowLoadingDetail(boolean isShow) {
         register_shift_background_loading.setVisibility(isShow ? VISIBLE : GONE);
+    }
+
+    public void showDialogMakeAdjusment(){
+        dialogCloseSession.dismiss();
+        showMakeAdjustment(registerShift);
     }
 }
