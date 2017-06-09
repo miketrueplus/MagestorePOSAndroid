@@ -80,6 +80,10 @@ public class RegisterShiftListController extends AbstractListController<Register
         if (list.size() > 0) {
             RegisterShift registerShift = list.get(0);
             if (registerShift.getStatus().equals("0")) {
+                if(!ConfigUtil.isCheckFirstOpenSession()){
+                    ((RegisterShiftListPanel) mView).showDialogContinueCheckout();
+                    ConfigUtil.setCheckFirstOpenSession(true);
+                }
                 ConfigUtil.setShiftId(registerShift.getShiftId());
 //                getMagestoreContext().getActivity().finish();
                 ((RegisterShiftListPanel) mView).isShowButtonOpenSession(false);
@@ -170,6 +174,8 @@ public class RegisterShiftListController extends AbstractListController<Register
             intent.setAction(SEND_NOTI_TO_REGISTER_ACTIVITY);
             getMagestoreContext().getActivity().sendBroadcast(intent);
             dismissDialogOpenSession();
+            ((RegisterShiftListPanel) mView).showDialogContinueCheckout();
+            ConfigUtil.setCheckFirstOpenSession(true);
             isShowLoadingDetail(false);
         } else if (success && actionType == ACTION_TYPE_CANCEL_SESSION) {
             RegisterShift oldRegisterShift = (RegisterShift) models[0];

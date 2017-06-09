@@ -211,6 +211,7 @@
     <string name="register_shift_report_total_sales">Total Sales</string>
     <string name="register_shift_report_payment_title">Sales by payment method</string>
     <string name="register_shift_set_adjustment">Set Adjustment</string>
+    <string name="register_shift_continue">continue</string>
 
     <!--Strings related to setting-->
     <string name="setting_account_title_information">Account Information</string>
@@ -402,6 +403,7 @@
     <string name="ask_are_you_sure_to_cancel">Are you sure to cancel?</string>
     <string name="ask_are_you_sure_to_close">Are you sure to close application?</string>
     <string name="ask_are_you_sure_to_cancel_order">Are you sure to cancel order?</string>
+    <string name="ask_are_you_sure_go_to_checkout">Session is opening! Are you want go to checkout?</string>
 
 
     <!-- Strings related to dialog title -->

@@ -1,8 +1,10 @@
 package com.magestore.app.pos.panel;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -78,5 +80,18 @@ public class RegisterShiftListPanel extends AbstractListPanel<RegisterShift> {
 
     public void updateFloatAmount(float total) {
         openSessionPanel.updateFloatAmount(total);
+    }
+
+    public void showDialogContinueCheckout(){
+        new AlertDialog.Builder(getContext())
+                .setMessage(R.string.ask_are_you_sure_go_to_checkout)
+                .setPositiveButton(R.string.register_shift_continue, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ((RegisterShiftListController) getController()).getMagestoreContext().getActivity().finish();
+                    }
+                })
+                .setNegativeButton(R.string.no, null)
+                .show();
     }
 }

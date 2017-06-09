@@ -46,6 +46,7 @@ public class ConfigUtil {
     private static boolean mEnableRewardPoint;
     private static boolean mEnableGiftCard;
     private static boolean mEnableSession;
+    private static boolean mCheckFirstOpenSession;
     private static List<ConfigTaxClass> mConfigTaxClass;
     private static String mTypePrint;
     private static PointOfSales mPointOfSales;
@@ -677,5 +678,13 @@ public class ConfigUtil {
 
     public static void setShiftId(String mShiftId) {
         ConfigUtil.mShiftId = mShiftId;
+    }
+
+    public static void setCheckFirstOpenSession(boolean mCheckFirstOpenSession) {
+        ConfigUtil.mCheckFirstOpenSession = mCheckFirstOpenSession;
+    }
+
+    public static boolean isCheckFirstOpenSession() {
+        return mCheckFirstOpenSession;
     }
 }
