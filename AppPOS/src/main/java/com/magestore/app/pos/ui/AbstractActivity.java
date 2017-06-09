@@ -272,6 +272,13 @@ public abstract class AbstractActivity
         return super.onOptionsItemSelected(item);
     }
 
+    LinearLayout nav_logout;
+    LinearLayout nav_checkout;
+    LinearLayout nav_order_history;
+    LinearLayout nav_register_shift;
+    LinearLayout nav_customer;
+    LinearLayout nav_general;
+
     protected void initToolbarMenu(Toolbar toolbar) {
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
@@ -286,12 +293,12 @@ public abstract class AbstractActivity
         // lấy menu và đặt các event xử lý menu
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
-        LinearLayout nav_logout = (LinearLayout) navigationView.findViewById(R.id.nav_logout);
-        LinearLayout nav_checkout = (LinearLayout) navigationView.findViewById(R.id.nav_checkout);
-        LinearLayout nav_order_history = (LinearLayout) navigationView.findViewById(R.id.nav_order_history);
-        LinearLayout nav_register_shift = (LinearLayout) navigationView.findViewById(R.id.nav_register_shift);
-        LinearLayout nav_customer = (LinearLayout) navigationView.findViewById(R.id.nav_customer);
-        LinearLayout nav_general = (LinearLayout) navigationView.findViewById(R.id.nav_general);
+        nav_logout = (LinearLayout) navigationView.findViewById(R.id.nav_logout);
+        nav_checkout = (LinearLayout) navigationView.findViewById(R.id.nav_checkout);
+        nav_order_history = (LinearLayout) navigationView.findViewById(R.id.nav_order_history);
+        nav_register_shift = (LinearLayout) navigationView.findViewById(R.id.nav_register_shift);
+        nav_customer = (LinearLayout) navigationView.findViewById(R.id.nav_customer);
+        nav_general = (LinearLayout) navigationView.findViewById(R.id.nav_general);
         nav_logout.setOnClickListener(onClickNav);
         nav_checkout.setOnClickListener(onClickNav);
         nav_order_history.setOnClickListener(onClickNav);
@@ -367,5 +374,13 @@ public abstract class AbstractActivity
                 startActivity(intent);
             }
         }
+    }
+
+    public void isEnableAction(boolean isEnable) {
+        nav_checkout.setEnabled(isEnable ? true : false);
+        nav_order_history.setEnabled(isEnable ? true : false);
+        nav_register_shift.setEnabled(isEnable ? true : false);
+        nav_customer.setEnabled(isEnable ? true : false);
+        nav_general.setEnabled(isEnable ? true : false);
     }
 }

@@ -153,6 +153,10 @@ public class RegisterShiftListController extends AbstractListController<Register
             setNewRegisterToList(oldRegisterShift, listRegister.get(0));
             dismissDialogCloseSession();
             ((RegisterShiftListPanel) mView).isShowButtonOpenSession(true);
+            Intent intent = new Intent();
+            intent.putExtra("is_show", false);
+            intent.setAction(SEND_NOTI_TO_REGISTER_ACTIVITY);
+            getMagestoreContext().getActivity().sendBroadcast(intent);
             isShowLoadingDetail(false);
         } else if (success && actionType == ACTION_TYPE_OPEN_SESSION) {
             List<RegisterShift> listRegister = (List<RegisterShift>) wraper.get("open_session_respone");
@@ -161,6 +165,10 @@ public class RegisterShiftListController extends AbstractListController<Register
             bindList(mList);
             ((RegisterShiftDetailPanel) mDetailView).bindItem(listRegister.get(0));
             ((RegisterShiftListPanel) mView).notifyDataSetChanged();
+            Intent intent = new Intent();
+            intent.putExtra("is_show", true);
+            intent.setAction(SEND_NOTI_TO_REGISTER_ACTIVITY);
+            getMagestoreContext().getActivity().sendBroadcast(intent);
             dismissDialogOpenSession();
             isShowLoadingDetail(false);
         } else if (success && actionType == ACTION_TYPE_CANCEL_SESSION) {

@@ -29,6 +29,7 @@ public class RegisterShiftActivity extends AbstractActivity {
     RegisterShiftListPanel mRegisterShiftListPanel;
     RegisterShiftDetailPanel mRegisterShiftDetailPanel;
     RegisterShiftListController mRegisterShiftListController;
+    boolean isEnableAction = true;
 
     // Toolbar ứng dụng
     private Toolbar toolbar_order;
@@ -119,11 +120,19 @@ public class RegisterShiftActivity extends AbstractActivity {
     BroadcastReceiver receiver_data = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-//            if(intent.getBooleanExtra("is_show", false)){
-//                initToolbarMenu(toolbar_order);
-//            }else {
-//                initToolbarMenu(null);
-//            }
+            isEnableAction = intent.getBooleanExtra("is_show", false);
+            if (isEnableAction) {
+                isEnableAction(true);
+            } else {
+                isEnableAction(false);
+            }
         }
     };
+
+    @Override
+    public void onBackPressed() {
+        if(isEnableAction){
+            super.onBackPressed();
+        }
+    }
 }
