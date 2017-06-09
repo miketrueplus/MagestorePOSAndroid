@@ -37,6 +37,11 @@ public class OpenSessionListValuePanel extends AbstractSimpleRecycleView<OpenSes
     SessionController mSessionController;
     RegisterShiftListController mRegisterShiftListController;
     int type;
+    boolean enableAction = true;
+
+    public void setEnableAction(boolean enableAction) {
+        this.enableAction = enableAction;
+    }
 
     public void setType(int type) {
         this.type = type;
@@ -85,6 +90,16 @@ public class OpenSessionListValuePanel extends AbstractSimpleRecycleView<OpenSes
         actionChangeValue(item, et_value);
         actionChangeAmount(item, et_amount);
         actionClickRemove(item, im_remove_value);
+
+        if (enableAction) {
+            et_value.setEnabled(true);
+            et_amount.setEnabled(true);
+            im_remove_value.setVisibility(VISIBLE);
+        } else {
+            et_value.setEnabled(false);
+            et_amount.setEnabled(false);
+            im_remove_value.setVisibility(GONE);
+        }
     }
 
     private void actionClickRemove(final OpenSessionValue item, ImageView im_remove_value) {

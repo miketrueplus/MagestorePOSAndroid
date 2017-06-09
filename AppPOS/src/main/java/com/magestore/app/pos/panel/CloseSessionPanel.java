@@ -28,9 +28,8 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
     static String OPEN_SESSION = "0";
     static String VALIDATE = "1";
     static String CLOSE_SESSION = "2";
-
     OpenSessionListValuePanel close_session_list_panel;
-    RelativeLayout rl_add_value;
+    RelativeLayout rl_add_value, rl_close_session_list;
     EditTextFloat et_r_close_balance;
     TextView tv_session_back, tv_open_session_balance, tv_t_close_balance, tv_transaction, tv_difference;
     Button bt_close, bt_cancel, bt_adjustment, bt_validate;
@@ -64,6 +63,7 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
         bt_cancel = (Button) view.findViewById(R.id.bt_cancel);
         bt_adjustment = (Button) view.findViewById(R.id.bt_adjustment);
         bt_validate = (Button) view.findViewById(R.id.bt_validate);
+        rl_close_session_list = (RelativeLayout) view.findViewById(R.id.rl_close_session_list);
         close_session_list_panel = (OpenSessionListValuePanel) view.findViewById(R.id.close_session_list_panel);
         close_session_list_panel.setType(OpenSessionListValuePanel.TYPE_CLOSE_SESSION);
     }
@@ -105,6 +105,7 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
             bt_close.setVisibility(GONE);
             bt_validate.setVisibility(VISIBLE);
             tv_session_back.setVisibility(GONE);
+            close_session_list_panel.setEnableAction(false);
         } else {
             tv_session_back.setVisibility(VISIBLE);
             rl_add_value.setVisibility(VISIBLE);
@@ -112,7 +113,9 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
             bt_adjustment.setVisibility(VISIBLE);
             bt_close.setVisibility(VISIBLE);
             bt_validate.setVisibility(GONE);
+            close_session_list_panel.setEnableAction(true);
         }
+        ((RegisterShiftListController) getController()).bindListValueClose();
         et_r_close_balance.setEnabled(item.getStatus().equals(CLOSE_SESSION) ? false : true);
         et_note.setEnabled(item.getStatus().equals(CLOSE_SESSION) ? false : true);
         tv_open_session_balance.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(item.getBaseFloatAmount())));

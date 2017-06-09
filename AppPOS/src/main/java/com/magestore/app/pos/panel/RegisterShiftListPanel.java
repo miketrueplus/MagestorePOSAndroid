@@ -67,6 +67,7 @@ public class RegisterShiftListPanel extends AbstractListPanel<RegisterShift> {
         dialogOpenSession.setDialogWidth(getContext().getResources().getDimensionPixelSize(R.dimen.order_dialog_refund_width));
         dialogOpenSession.setGoneDialogTitle(true);
         dialogOpenSession.setDialogCancel(getContext().getString(R.string.cancel));
+        ((RegisterShiftListController) getController()).clearListValueOpen();
         dialogOpenSession.show();
     }
 

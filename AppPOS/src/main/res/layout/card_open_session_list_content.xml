@@ -46,10 +46,12 @@
 
             <TextView
                 android:id="@+id/tv_subtotal"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/layout_margin_10"
+                android:layout_marginTop="@dimen/layout_margin_10"
                 android:layout_toLeftOf="@+id/im_remove_value"
+                android:gravity="right"
                 android:text="@{ConfigUtil.formatPrice(openSessionValue.getSubtotal())}"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/text_size" />
@@ -60,6 +62,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
+                android:layout_marginTop="@dimen/layout_margin_15"
                 android:src="@drawable/ic_checkout_remove_payment" />
         </RelativeLayout>
     </LinearLayout>

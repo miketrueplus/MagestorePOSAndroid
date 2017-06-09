@@ -263,6 +263,18 @@ public class RegisterShiftListController extends AbstractListController<Register
         mOpenSessionListPanel.bindList(listValueClose);
     }
 
+    public void clearListValueClose(){
+        listValueClose.clear();
+    }
+
+    public void clearListValueOpen(){
+        listValueOpen.clear();
+    }
+
+    public void bindListValueClose(){
+        mOpenSessionListPanel.bindList(listValueClose);
+    }
+
     public void updateFloatAmountClose(float total) {
         ((RegisterShiftDetailPanel) mDetailView).updateFloatAmount(total);
     }

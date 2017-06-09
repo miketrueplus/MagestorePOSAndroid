@@ -270,13 +270,19 @@
             android:layout_below="@+id/rl_add_value"
             android:scrollbars="none">
 
-            <com.magestore.app.pos.panel.OpenSessionListValuePanel
-                android:id="@+id/close_session_list_panel"
+            <RelativeLayout
+                android:id="@+id/rl_close_session_list"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/layout_margin_10"
-                magestore_view:layout_no_scroll="true"
-                magestore_view:layout_row="@layout/card_open_session_list_content" />
+                android:layout_height="match_parent">
+
+                <com.magestore.app.pos.panel.OpenSessionListValuePanel
+                    android:id="@+id/close_session_list_panel"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/layout_margin_10"
+                    magestore_view:layout_no_scroll="true"
+                    magestore_view:layout_row="@layout/card_open_session_list_content" />
+            </RelativeLayout>
         </ScrollView>
 
         <LinearLayout

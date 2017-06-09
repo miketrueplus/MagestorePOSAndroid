@@ -16,6 +16,7 @@
     <dimen name="layout_margin_3">3dp</dimen>
     <dimen name="layout_margin_5">5dp</dimen>
     <dimen name="layout_margin_10">10dp</dimen>
+    <dimen name="layout_margin_15">15dp</dimen>
     <dimen name="layout_margin_20">20dp</dimen>
     <dimen name="layout_margin_30">30dp</dimen>
     <dimen name="layout_margin_40">40dp</dimen>
