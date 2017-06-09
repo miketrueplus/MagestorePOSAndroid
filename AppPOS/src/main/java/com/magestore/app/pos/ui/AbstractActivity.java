@@ -239,6 +239,7 @@ public abstract class AbstractActivity
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         DataUtil.saveDataBooleanToPreferences(getContext(), DataUtil.CHOOSE_STORE, false);
+                        ConfigUtil.setCheckFirstOpenSession(false);
                         Intent intent = new Intent(getContext(), LoginActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);

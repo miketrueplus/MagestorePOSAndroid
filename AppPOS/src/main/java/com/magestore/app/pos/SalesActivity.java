@@ -560,6 +560,7 @@ public class SalesActivity extends AbstractActivity
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        ConfigUtil.setCheckFirstOpenSession(false);
                         finish();
                     }
 
