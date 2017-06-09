@@ -27,7 +27,7 @@ import com.magestore.app.view.EditTextFloat;
 public class RegisterShiftMakeAdjustmentPanel extends AbstractDetailPanel<RegisterShift> {
     PanelRegisterShiftMakeAdjustmentBinding mBinding;
     RegisterShift registerShift;
-    TextView tv_add;
+    TextView tv_add, staff_name;
     TextView tv_remove;
     EditText edt_note;
     EditTextFloat edt_amount;
@@ -56,6 +56,7 @@ public class RegisterShiftMakeAdjustmentPanel extends AbstractDetailPanel<Regist
         tv_remove = (TextView) view.findViewById(R.id.remove);
         edt_note = (EditText) view.findViewById(R.id.note);
         edt_amount = (EditTextFloat) view.findViewById(R.id.amount);
+        staff_name = (TextView) view.findViewById(R.id.staff_name);
         mBinding = DataBindingUtil.bind(view);
     }
 
@@ -64,6 +65,7 @@ public class RegisterShiftMakeAdjustmentPanel extends AbstractDetailPanel<Regist
         // Bind từ object sang view
         if (item == null) return;
         super.bindItem(item);
+        staff_name.setText((getContext().getString(R.string.open_session_login, ConfigUtil.getStaff().getStaffName())));
         if (mBinding == null) mBinding = DataBindingUtil.bind(getView());
         mBinding.setRegisterShift(item);
         registerShift = item;
@@ -102,17 +104,13 @@ public class RegisterShiftMakeAdjustmentPanel extends AbstractDetailPanel<Regist
 
     private void selectAddMakeAdjusment() {
         selectMakeAdjustment = ADD_MAKE_ADJUSTMENT;
-        tv_add.setTextColor(ContextCompat.getColor(getContext(), R.color.register_shift_dialog_make_adjustment_text_select));
-        tv_add.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.register_shift_dialog_make_adjustment_bg_select));
-        tv_remove.setTextColor(ContextCompat.getColor(getContext(), R.color.register_shift_dialog_make_adjustment_text_not_select));
-        tv_remove.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.register_shift_dialog_make_adjustment_bg_not_select));
+        tv_add.setBackgroundResource(R.drawable.make_adjusment_push_select_bg);
+        tv_remove.setBackgroundResource(R.drawable.make_adjusment_take_not_select_bg);
     }
 
     private void selectRemoveMakeAdjustment() {
         selectMakeAdjustment = REMOVE_MAKE_ADJUSTMENT;
-        tv_add.setTextColor(ContextCompat.getColor(getContext(), R.color.register_shift_dialog_make_adjustment_text_not_select));
-        tv_add.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.register_shift_dialog_make_adjustment_bg_not_select));
-        tv_remove.setTextColor(ContextCompat.getColor(getContext(), R.color.register_shift_dialog_make_adjustment_text_select));
-        tv_remove.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.register_shift_dialog_make_adjustment_bg_select));
+        tv_add.setBackgroundResource(R.drawable.make_adjusment_push_not_select_bg);
+        tv_remove.setBackgroundResource(R.drawable.make_adjusment_take_select_bg);
     }
 }

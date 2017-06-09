@@ -111,10 +111,10 @@
     <color name="register_shift_item_time_text_color">#9b9b9b</color>
     <color name="register_shift_text_color">#788087</color>
     <color name="register_shift_content_bg_title">#d8d8d8</color>
-    <color name="register_shift_dialog_make_adjustment_bg_select">#00a679</color>
-    <color name="register_shift_dialog_make_adjustment_text_select">#ffffff</color>
-    <color name="register_shift_dialog_make_adjustment_bg_not_select">#e1e1e1</color>
-    <color name="register_shift_dialog_make_adjustment_text_not_select">#48586c</color>
+    <color name="register_shift_dialog_make_adjustment_bg_select">#d8d8d8</color>
+    <color name="register_shift_dialog_make_adjustment_text_select">@color/text_color</color>
+    <color name="register_shift_dialog_make_adjustment_bg_not_select">@color/white</color>
+    <color name="register_shift_dialog_make_adjustment_text_not_select">@color/text_color</color>
     <color name="open_session_bg_header_value">#d8d8d8</color>
     <color name="open_session_bg_note">#f1f1f1</color>
     <color name="open_session_text_color">#aeb4ba</color>
