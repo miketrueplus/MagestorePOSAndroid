@@ -32,4 +32,6 @@ public interface UserDataAccess extends DataAccess {
     List<PointOfSales> retrievePos() throws ParseException, ConnectionException, DataAccessException, IOException;
 
     void resetListPos() throws ParseException, ConnectionException, DataAccessException, IOException;
+
+    boolean requestAssignPos(String pos_id) throws ParseException, ConnectionException, DataAccessException, IOException;
 }

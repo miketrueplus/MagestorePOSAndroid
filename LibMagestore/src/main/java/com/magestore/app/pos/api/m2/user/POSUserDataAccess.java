@@ -54,6 +54,11 @@ public class POSUserDataAccess extends POSAbstractDataAccess implements UserData
         List<PosStore> stores;
     }
 
+    private class Pos {
+        String pos_id;
+        String staff_id;
+    }
+
     /**
      * Login, xem đúng user name và password
      * Nếu đúng trả lại session id, nếu k0 trả lại "false"
@@ -205,5 +210,49 @@ public class POSUserDataAccess extends POSAbstractDataAccess implements UserData
     @Override
     public void resetListPos() throws ParseException, ConnectionException, DataAccessException, IOException {
         mListPos = null;
+    }
+
+    @Override
+    public boolean requestAssignPos(String pos_id) throws ParseException, ConnectionException, DataAccessException, IOException {
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+        try {
+            // Khởi tạo connection và khởi tạo truy vấn
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPI.REST_POS_ASSIGN);
+
+            // Xây dựng tham số
+            paramBuilder = statement.getParamBuilder()
+                    .setSessionID(POSDataAccessSession.REST_SESSION_ID);
+
+            Pos posEntity = new Pos();
+            posEntity.pos_id = pos_id;
+            posEntity.staff_id = ConfigUtil.getStaff().getID();
+
+            rp = statement.execute(posEntity);
+            return true;
+        } catch (ConnectionException ex) {
+            throw ex;
+        } catch (IOException ex) {
+            throw ex;
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
     }
 }

@@ -160,4 +160,11 @@ public class POSUserService extends AbstractService implements UserService {
         UserDataAccess userGateway = factory.generateUserDataAccess();
         userGateway.resetListPos();
     }
+
+    @Override
+    public boolean requestAssignPos(String pos_id) throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        UserDataAccess userGateway = factory.generateUserDataAccess();
+        return userGateway.requestAssignPos(pos_id);
+    }
 }

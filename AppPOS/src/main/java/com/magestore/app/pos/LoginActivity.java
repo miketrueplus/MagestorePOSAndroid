@@ -26,6 +26,7 @@ import com.magestore.app.lib.model.registershift.PointOfSales;
 import com.magestore.app.lib.task.Task;
 import com.magestore.app.lib.task.TaskListener;
 import com.magestore.app.lib.view.SimpleSpinner;
+import com.magestore.app.pos.task.AssignPosTask;
 import com.magestore.app.pos.task.ListStoreTask;
 import com.magestore.app.pos.task.LoginTask;
 import com.magestore.app.pos.ui.AbstractActivity;
@@ -47,6 +48,7 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
      */
     private LoginTask mAuthTask = null;
     private ListStoreTask mStoreTask = null;
+    private AssignPosTask mAssignPosTask = null;
 
     // UI references.
     private AutoCompleteTextView mDomainView;
@@ -165,6 +167,7 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
             @Override
             public void onClick(View view) {
                 navigationToSalesActivity();
+                assigPos(sp_pos.getSelection());
             }
         });
     }
@@ -311,6 +314,17 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
         } else // Below Api Level 13
         {
             mAuthTask.execute();
+        }
+    }
+
+    private void assigPos(String pos_id){
+        mAssignPosTask = new AssignPosTask(null, pos_id);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) // Above Api Level 13
+        {
+            mAssignPosTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        } else // Below Api Level 13
+        {
+            mAssignPosTask.execute();
         }
     }
 
