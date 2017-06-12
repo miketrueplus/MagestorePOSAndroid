@@ -60,6 +60,7 @@ public class RegisterShiftActivity extends AbstractActivity {
         // chuẩn bị panel thông tin đơn hàng chi tiết
         mRegisterShiftDetailPanel = (RegisterShiftDetailPanel) findViewById(R.id.register_shift_detail_panel);
 
+        mRegisterShiftListPanel.setToolbar(toolbar_order);
         // xem giao diện 2 pane hay 1 pane
         mblnTwoPane = findViewById(R.id.two_pane) != null;
     }

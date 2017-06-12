@@ -5,8 +5,11 @@ import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.magestore.app.lib.model.registershift.RegisterShift;
 import com.magestore.app.lib.panel.AbstractListPanel;
@@ -26,6 +29,12 @@ public class RegisterShiftListPanel extends AbstractListPanel<RegisterShift> {
     RegisterOpenSessionPanel openSessionPanel;
     MagestoreDialog dialogOpenSession;
     FloatingActionButton fab;
+    RelativeLayout rl_open_session;
+    Toolbar mToolbar;
+
+    public void setToolbar(Toolbar mToolbar) {
+        this.mToolbar = mToolbar;
+    }
 
     public RegisterShiftListPanel(Context context) {
         super(context);
@@ -45,7 +54,12 @@ public class RegisterShiftListPanel extends AbstractListPanel<RegisterShift> {
 
         // Xử lý sự kiện floating action bar
         fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+    }
+
+    @Override
+    public void initModel() {
+        rl_open_session = (RelativeLayout) mToolbar.findViewById(R.id.rl_open_session);
+        rl_open_session.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 openSession();
@@ -72,7 +86,7 @@ public class RegisterShiftListPanel extends AbstractListPanel<RegisterShift> {
     }
 
     public void isShowButtonOpenSession(boolean isShow){
-        fab.setVisibility(isShow ? VISIBLE : GONE);
+        rl_open_session.setVisibility(isShow ? VISIBLE : GONE);
     }
 
     public void dismissDialogOpenSession(){

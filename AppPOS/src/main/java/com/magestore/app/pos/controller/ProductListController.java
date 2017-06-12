@@ -53,11 +53,17 @@ public class ProductListController extends AbstractListController<Product> {
 
     /**
      * Load xong product thì load ảnh
+     *
      * @param list
      */
     @Override
     public void onRetrievePostExecute(List<Product> list) {
         super.onRetrievePostExecute(list);
+        if (!StringUtil.isNullOrEmpty(getSearchString())) {
+            if (list != null && list.size() == 1) {
+                bindItem(list.get(0));
+            }
+        }
         // load ảnh
 //        doLoadProductsImage();
     }
@@ -117,6 +123,7 @@ public class ProductListController extends AbstractListController<Product> {
 
     /**
      * Hiển thị kết quả tìm kiếm từ search panel truyền xuống
+     *
      * @param model
      */
     @Override

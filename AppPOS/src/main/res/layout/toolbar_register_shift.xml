@@ -14,10 +14,28 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/layout_margin_5"
+            android:layout_toLeftOf="@+id/rl_open_session"
             android:ellipsize="end"
             android:lines="1"
             android:text="@string/register_shift_session_title"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_18" />
+
+        <RelativeLayout
+            android:id="@+id/rl_open_session"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:paddingLeft="@dimen/layout_margin_10"
+            android:paddingRight="@dimen/layout_margin_10">
+
+            <ImageView
+                android:id="@+id/im_open_session"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/ic_open_session" />
+        </RelativeLayout>
     </RelativeLayout>
 </RelativeLayout>
