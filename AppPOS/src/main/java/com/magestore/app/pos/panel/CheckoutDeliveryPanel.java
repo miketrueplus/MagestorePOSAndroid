@@ -52,10 +52,9 @@ public class CheckoutDeliveryPanel extends AbstractDetailPanel<Checkout> {
     @Override
     public void initValue() {
         delivery_time.setIs24HourView(true);
-        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
-        TimeZone timeZone = TimeZone.getTimeZone("UTC");
-        Calendar calendar = Calendar.getInstance(timeZone);
-        calendar.setTimeInMillis(System.currentTimeMillis());
+        Calendar calendar = Calendar.getInstance();
+        TimeZone mTimeZone = calendar.getTimeZone();
+        int mGMTOffset = mTimeZone.getRawOffset();
         mYear = calendar.get(Calendar.YEAR); // current year
         mMonth = calendar.get(Calendar.MONTH); // current month
         mDay = calendar.get(Calendar.DAY_OF_MONTH); // current day

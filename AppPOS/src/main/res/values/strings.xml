@@ -175,11 +175,11 @@
     <string name="register_shift_content_title_action">Action</string>
     <string name="register_shift_content_title_description">Description</string>
     <string name="register_shift_content_title_balance">Balance</string>
-    <string name="register_shift_content_open_shift">Open Shift</string>
+    <string name="register_shift_content_open_shift">Open Session</string>
     <string name="register_shift_content_item_float">Float</string>
     <string name="register_shift_content_item_balance">Balance</string>
     <string name="register_shift_bottom_make_adjustment">Make Adjustment</string>
-    <string name="register_shift_bottom_close_shift">Close Shift</string>
+    <string name="register_shift_bottom_close_shift">Close Session</string>
     <string name="register_shift_dialog_make_adjustment_title">Make Adjustment</string>
     <string name="register_shift_dialog_close_session_title">Close Session</string>
     <string name="register_shift_dialog_make_adjustment_balance">The current balance of your shift:</string>

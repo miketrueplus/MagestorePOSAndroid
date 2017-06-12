@@ -110,7 +110,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="@string/register_shifts"
+                android:text="@string/register_shift_session_title"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_18" />
         </LinearLayout>
@@ -133,7 +133,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="@string/register_shifts"
+                android:text="@string/register_shift_session_title"
                 android:textColor="@color/menu_left_text_color"
                 android:textSize="@dimen/text_size_18" />
         </LinearLayout>

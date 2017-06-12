@@ -18,6 +18,7 @@ import com.magestore.app.pos.controller.RegisterShiftListController;
 import com.magestore.app.pos.panel.RegisterShiftDetailPanel;
 import com.magestore.app.pos.panel.RegisterShiftListPanel;
 import com.magestore.app.pos.ui.AbstractActivity;
+import com.magestore.app.util.ConfigUtil;
 
 /**
  * Created by Johan on 1/18/17.

@@ -515,19 +515,20 @@ public class ConfigUtil {
     }
 
     public static String getCurrentTime() {
-        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
-        TimeZone timeZone = TimeZone.getTimeZone("UTC");
         DateFormat df = new SimpleDateFormat("hh:mm");
-        String date = df.format(Calendar.getInstance(timeZone).getTime());
+        Calendar calendar = Calendar.getInstance();
+        TimeZone mTimeZone = calendar.getTimeZone();
+        int mGMTOffset = mTimeZone.getRawOffset();
+        String date = df.format(calendar.getTimeInMillis() - mGMTOffset);
         return date;
     }
 
     public static String getCurrentDateTime() {
-        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
-        TimeZone timeZone = TimeZone.getTimeZone("UTC");
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        Calendar calendar = Calendar.getInstance(timeZone);
-        String date = df.format(calendar.getTimeInMillis());
+        Calendar calendar = Calendar.getInstance();
+        TimeZone mTimeZone = calendar.getTimeZone();
+        int mGMTOffset = mTimeZone.getRawOffset();
+        String date = df.format(calendar.getTimeInMillis() - mGMTOffset);
         return date;
     }
 
@@ -548,8 +549,10 @@ public class ConfigUtil {
             e.printStackTrace();
         }
         SimpleDateFormat sdf1 = new SimpleDateFormat(DATE_FORMAT);
-        sdf1.setTimeZone(TimeZone.getTimeZone("GMT"));
-        String dateTimeString = sdf1.format(dateFormat);
+        Calendar calendar = Calendar.getInstance();
+        TimeZone mTimeZone = calendar.getTimeZone();
+        int mGMTOffset = mTimeZone.getRawOffset();
+        String dateTimeString = sdf1.format(dateFormat.getTime() - mGMTOffset);
         return dateTimeString;
     }
 
