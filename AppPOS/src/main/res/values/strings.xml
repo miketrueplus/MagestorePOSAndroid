@@ -212,6 +212,7 @@
     <string name="register_shift_report_payment_title">Sales by payment method</string>
     <string name="register_shift_set_adjustment">Set Adjustment</string>
     <string name="register_shift_continue">continue</string>
+    <string name="register_shift_open">Opening</string>
 
     <!--Strings related to setting-->
     <string name="setting_account_title_information">Account Information</string>

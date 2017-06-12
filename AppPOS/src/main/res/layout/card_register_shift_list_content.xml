@@ -90,7 +90,7 @@
                     android:background="@drawable/open_session_border"
                     android:gravity="center"
                     android:padding="@dimen/layout_margin_3"
-                    android:text="@string/open"
+                    android:text="@string/register_shift_open"
                     android:textAllCaps="true"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_size_10"
