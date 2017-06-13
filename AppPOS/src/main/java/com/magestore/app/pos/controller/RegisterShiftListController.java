@@ -12,6 +12,7 @@ import com.magestore.app.lib.model.registershift.RegisterShift;
 import com.magestore.app.lib.model.registershift.SessionParam;
 import com.magestore.app.lib.service.registershift.RegisterShiftService;
 import com.magestore.app.lib.service.user.UserService;
+import com.magestore.app.pos.R;
 import com.magestore.app.pos.panel.OpenSessionListValuePanel;
 import com.magestore.app.pos.panel.RegisterShiftDetailPanel;
 import com.magestore.app.pos.panel.RegisterShiftListPanel;
@@ -80,7 +81,7 @@ public class RegisterShiftListController extends AbstractListController<Register
         if (list.size() > 0) {
             RegisterShift registerShift = list.get(0);
             if (registerShift.getStatus().equals("0")) {
-                if(!ConfigUtil.isCheckFirstOpenSession()){
+                if (!ConfigUtil.isCheckFirstOpenSession()) {
                     ((RegisterShiftListPanel) mView).showDialogContinueCheckout();
                     ConfigUtil.setCheckFirstOpenSession(true);
                 }
@@ -95,7 +96,7 @@ public class RegisterShiftListController extends AbstractListController<Register
                 intent.putExtra("is_show", false);
                 intent.setAction(SEND_NOTI_TO_REGISTER_ACTIVITY);
                 getMagestoreContext().getActivity().sendBroadcast(intent);
-            }else{
+            } else {
                 Intent intent = new Intent();
                 intent.putExtra("is_show", true);
                 intent.setAction(SEND_NOTI_TO_REGISTER_ACTIVITY);
@@ -263,15 +264,15 @@ public class RegisterShiftListController extends AbstractListController<Register
         mOpenSessionListPanel.bindList(listValueClose);
     }
 
-    public void clearListValueClose(){
+    public void clearListValueClose() {
         listValueClose.clear();
     }
 
-    public void clearListValueOpen(){
+    public void clearListValueOpen() {
         listValueOpen.clear();
     }
 
-    public void bindListValueClose(){
+    public void bindListValueClose() {
         mOpenSessionListPanel.bindList(listValueClose);
     }
 
@@ -307,13 +308,28 @@ public class RegisterShiftListController extends AbstractListController<Register
         ((RegisterShiftDetailPanel) mDetailView).bindItemCloseSessionPanel(item);
     }
 
-    public void showDialogMakeAdjusment(){
+    public void showDialogMakeAdjusment() {
         ((RegisterShiftDetailPanel) mDetailView).showDialogMakeAdjusment();
     }
 
     public List<PointOfSales> getListPos() {
         try {
-            return userService.getListPos();
+            List<PointOfSales> listPos = userService.getListPos();
+            if (listPos != null) {
+                if (listPos.size() > 0) {
+                    PointOfSales pointOfSales = userService.createPointOfSales();
+                    pointOfSales.setPosId("");
+                    pointOfSales.setPosName(getMagestoreContext().getActivity().getString(R.string.select_pos));
+                    if (!checkPos(listPos)) {
+                        listPos.add(0, pointOfSales);
+                    }
+                    return listPos;
+                } else {
+                    return userService.getListPos();
+                }
+            } else {
+                return userService.getListPos();
+            }
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
@@ -323,7 +339,16 @@ public class RegisterShiftListController extends AbstractListController<Register
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
         return null;
+    }
+
+    private boolean checkPos(List<PointOfSales> listPos) {
+        boolean isContains = false;
+        for (PointOfSales pointOfSales : listPos) {
+            if (pointOfSales.getID().equals("")) {
+                isContains = true;
+            }
+        }
+        return isContains;
     }
 }

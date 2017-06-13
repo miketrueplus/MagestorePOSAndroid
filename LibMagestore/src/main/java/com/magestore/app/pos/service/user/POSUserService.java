@@ -10,6 +10,7 @@ import com.magestore.app.pos.api.m2.POSDataAccessSession;
 import com.magestore.app.lib.service.config.ConfigService;
 import com.magestore.app.lib.service.ServiceFactory;
 import com.magestore.app.lib.service.user.UserService;
+import com.magestore.app.pos.model.registershift.PosPointOfSales;
 import com.magestore.app.pos.model.user.PosUser;
 import com.magestore.app.pos.service.AbstractService;
 
@@ -166,5 +167,10 @@ public class POSUserService extends AbstractService implements UserService {
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         UserDataAccess userGateway = factory.generateUserDataAccess();
         return userGateway.requestAssignPos(pos_id);
+    }
+
+    @Override
+    public PointOfSales createPointOfSales() {
+        return new PosPointOfSales();
     }
 }

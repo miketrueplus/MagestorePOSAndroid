@@ -24,4 +24,5 @@ public interface UserService extends Service {
     List<Store> getListStore() throws InstantiationException, IllegalAccessException, IOException, ParseException;
     void resetListPos() throws InstantiationException, IllegalAccessException, IOException, ParseException;
     boolean requestAssignPos(String pos_id) throws InstantiationException, IllegalAccessException, IOException, ParseException;
+    PointOfSales createPointOfSales();
 }

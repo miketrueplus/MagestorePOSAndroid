@@ -158,17 +158,37 @@
                             android:orientation="vertical"
                             android:padding="@dimen/layout_margin_40">
 
-                            <com.magestore.app.lib.view.SimpleSpinner
-                                android:id="@+id/sp_pos"
+                            <LinearLayout
+                                android:id="@+id/ll_pos"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_below="@+id/ll_session_header"
                                 android:layout_centerVertical="true"
                                 android:layout_marginLeft="@dimen/layout_margin_20"
                                 android:layout_marginRight="@dimen/layout_margin_20"
-                                android:enabled="false"
-                                android:textSize="@dimen/welcome_text_size"
-                                magestore_view:layout_no_scroll="true"
-                                magestore_view:layout_row="@layout/simple_textview_row" />
+                                android:orientation="vertical">
+
+                                <com.magestore.app.lib.view.SimpleSpinner
+                                    android:id="@+id/sp_pos"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="@dimen/layout_margin_5"
+                                    android:textColor="@color/text_color"
+                                    android:textSize="@dimen/welcome_text_size"
+                                    android:enabled="false"
+                                    magestore_view:layout_no_scroll="true"
+                                    magestore_view:layout_row="@layout/simple_textview_row" />
+
+                                <TextView
+                                    android:id="@+id/error_pos"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="@dimen/layout_margin_5"
+                                    android:text="@string/error_no_pos"
+                                    android:textColor="@color/error_no_pos"
+                                    android:textSize="@dimen/text_size"
+                                    android:visibility="gone" />
+                            </LinearLayout>
 
                             <View
                                 android:layout_width="match_parent"

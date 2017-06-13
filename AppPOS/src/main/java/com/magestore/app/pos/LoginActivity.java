@@ -60,6 +60,8 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
     private RelativeLayout email_login_form, point_of_sales_form;
     private SimpleSpinner sp_pos;
     private List<PointOfSales> mListPos;
+    private TextView error_pos;
+    private Button mStartButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,6 +146,7 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
         email_login_form = (RelativeLayout) findViewById(R.id.email_login_form);
         point_of_sales_form = (RelativeLayout) findViewById(R.id.point_of_sales_form);
         sp_pos = (SimpleSpinner) findViewById(R.id.sp_pos);
+        error_pos = (TextView) findViewById(R.id.error_pos);
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
 
@@ -162,12 +165,21 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
             }
         });
 
-        Button mStartButton = (Button) findViewById(R.id.start_button);
+        mStartButton = (Button) findViewById(R.id.start_button);
         mStartButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                navigationToSalesActivity();
-                assigPos(sp_pos.getSelection());
+                if (mStartButton.getText().toString().equals(getContext().getString(R.string.start))) {
+                    if (!sp_pos.getSelection().equals("")) {
+                        navigationToSalesActivity();
+                        assigPos(sp_pos.getSelection());
+                    } else {
+                        DialogUtil.confirm(getContext(), getContext().getString(R.string.notify_select_pos), R.string.ok);
+                    }
+                } else {
+                    email_login_form.setVisibility(View.VISIBLE);
+                    point_of_sales_form.setVisibility(View.GONE);
+                }
             }
         });
     }
@@ -317,7 +329,7 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
         }
     }
 
-    private void assigPos(String pos_id){
+    private void assigPos(String pos_id) {
         mAssignPosTask = new AssignPosTask(null, pos_id);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) // Above Api Level 13
         {
@@ -394,7 +406,7 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
 //                    }
 //                }
 
-                mStoreTask = new ListStoreTask(new StoreListener());
+                mStoreTask = new ListStoreTask(getContext(), new StoreListener());
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) // Above Api Level 13
                 {
                     mStoreTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -434,17 +446,25 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
         @Override
         public void onPostController(Task task, List<PointOfSales> listPos) {
             if (listPos != null) {
-                if(ConfigUtil.isEnableSession()){
+                if (ConfigUtil.isEnableSession()) {
                     mListPos = listPos;
                     sp_pos.bind(listPos.toArray(new PointOfSales[0]));
                     navigationToSalesActivity();
-                }else {
+                } else {
                     email_login_form.setVisibility(View.GONE);
                     point_of_sales_form.setVisibility(View.VISIBLE);
-                    mListPos = listPos;
-                    sp_pos.bind(listPos.toArray(new PointOfSales[0]));
+                    if (listPos.size() > 0) {
+                        sp_pos.setVisibility(View.VISIBLE);
+                        error_pos.setVisibility(View.GONE);
+                        mStartButton.setText(getContext().getString(R.string.start));
+                        mListPos = listPos;
+                        sp_pos.bind(listPos.toArray(new PointOfSales[0]));
+                    } else {
+                        error_pos.setVisibility(View.VISIBLE);
+                        sp_pos.setVisibility(View.GONE);
+                        mStartButton.setText(getContext().getString(R.string.logout));
+                    }
                 }
-
                 // TODO: Check config session
 //                navigationToSessionActivity();
                 showProgress(false);
@@ -467,7 +487,7 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
 
     private PointOfSales getPointOfSales(String posID) {
         for (PointOfSales pos : mListPos) {
-            if(pos.getID().equals(posID)){
+            if (pos.getID().equals(posID)) {
                 return pos;
             }
         }
@@ -477,7 +497,7 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
     private void navigationToSalesActivity() {
         // Đăng nhập thành công, mở sẵn form sales
         Intent intent = new Intent(getContext(), SalesActivity.class);
-        if(ConfigUtil.isEnableSession()){
+        if (ConfigUtil.isEnableSession()) {
             intent.putExtra("redirect_register_shift", true);
         }
         startActivity(intent);

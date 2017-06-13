@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
+
 /**
  * Spinner đơn giản, cho phép set luôn nội dung dưới dạng chuỗi String hoặc Map
  * Created by Mike on 2/2/2017.
@@ -91,7 +93,7 @@ public class SimpleSpinner extends Spinner {
      * @param models
      */
     public void bind(Model... models) {
-        Map<String, String> mapModel = new HashMap<String, String>();
+        TreeMap<String, String> mapModel = new TreeMap<String, String>();
         for (Model model: models)
             mapModel.put(model.getID(), model.getDisplayContent());
         bind(mapModel);

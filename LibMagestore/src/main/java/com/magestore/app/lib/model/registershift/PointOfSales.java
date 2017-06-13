@@ -9,7 +9,9 @@ import com.magestore.app.lib.model.Model;
  */
 
 public interface PointOfSales extends Model {
+    void setPosId(String strPosId);
     String getPosName();
+    void setPosName(String strPosName);
     String getLocationId();
     String getStoreId();
     String getStaffId();

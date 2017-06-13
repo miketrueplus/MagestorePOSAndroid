@@ -183,8 +183,8 @@
     <string name="register_shift_dialog_make_adjustment_title">Make Adjustment</string>
     <string name="register_shift_dialog_close_session_title">Close Session</string>
     <string name="register_shift_dialog_make_adjustment_balance">The current balance of your shift:</string>
-    <string name="register_shift_dialog_make_adjustment_add">Add</string>
-    <string name="register_shift_dialog_make_adjustment_remove">Remove</string>
+    <string name="register_shift_dialog_make_adjustment_add">Push money in</string>
+    <string name="register_shift_dialog_make_adjustment_remove">Take money out</string>
     <string name="register_shift_dialog_make_adjustment_note">Note</string>
     <string name="open_session_title">Open Session</string>
     <string name="open_session_float_amount_title">Float Amount</string>
@@ -213,6 +213,7 @@
     <string name="register_shift_set_adjustment">Set Adjustment</string>
     <string name="register_shift_continue">continue</string>
     <string name="register_shift_open">Opening</string>
+    <string name="select_pos">Select your Point Of Sale</string>
 
     <!--Strings related to setting-->
     <string name="setting_account_title_information">Account Information</string>

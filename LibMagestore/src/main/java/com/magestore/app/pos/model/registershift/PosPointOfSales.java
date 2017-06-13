@@ -22,10 +22,19 @@ public class PosPointOfSales extends PosAbstractModel implements PointOfSales {
         return pos_id;
     }
 
+    @Override
+    public void setPosId(String strPosId) {
+        pos_id = strPosId;
+    }
 
     @Override
     public String getPosName() {
         return pos_name;
+    }
+
+    @Override
+    public void setPosName(String strPosName) {
+        pos_name = strPosName;
     }
 
     @Override
