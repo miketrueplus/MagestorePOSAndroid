@@ -249,7 +249,7 @@ public class OrderRefundPanel extends AbstractDetailPanel<Order> {
         refundParams.setAdjustmentPositive(ConfigUtil.convertToBasePrice(adjustRefund));
         refundParams.setAdjustmentNegative(ConfigUtil.convertToBasePrice(adjustFee));
         refundParams.setBaseCurrencyCode(mOrder.getBaseCurrencyCode());
-        refundParams.setShippingAmount(mOrder.getShippingAmount());
+        refundParams.setShippingAmount(mOrder.getRefundShipping());
         refundParams.setStoreCurrencyCode(ConfigUtil.getCurrentCurrency().getCode());
 
         String comment = refund_comment.getText().toString();
