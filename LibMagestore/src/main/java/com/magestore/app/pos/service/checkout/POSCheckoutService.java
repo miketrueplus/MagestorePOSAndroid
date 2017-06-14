@@ -517,6 +517,13 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
     }
 
     @Override
+    public String approvedPaymentStripe(String token, float amount) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        CheckoutDataAccess checkoutDataAccess = factory.generateCheckoutDataAccess();
+        return checkoutDataAccess.approvedStripe(token, amount);
+    }
+
+    @Override
     public Checkout updateTotal(Checkout checkout) {
         if (checkout != null) {
             if (checkout.getTotals() != null && checkout.getTotals().size() > 0) {

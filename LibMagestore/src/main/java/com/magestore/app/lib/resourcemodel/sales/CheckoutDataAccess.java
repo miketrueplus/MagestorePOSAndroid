@@ -45,4 +45,6 @@ public interface CheckoutDataAccess extends DataAccess {
     boolean cancelPaymentAuthozire(String orderID) throws ParseException, InstantiationException, IllegalAccessException, IOException;
 
     String approvedPaymentPayPal(String payment_id) throws ParseException, InstantiationException, IllegalAccessException, IOException;
+
+    String approvedStripe(String token, float amount) throws ParseException, InstantiationException, IllegalAccessException, IOException;
 }

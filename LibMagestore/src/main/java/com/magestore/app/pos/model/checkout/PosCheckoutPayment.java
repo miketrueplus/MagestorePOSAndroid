@@ -51,6 +51,12 @@ public class PosCheckoutPayment extends PosAbstractModel implements CheckoutPaym
     @Gson2PosExclude
     String usecvv;
 
+    // stripe payment
+    @Gson2PosExclude
+    String publishable_key;
+    @Gson2PosExclude
+    String stripe_token;
+
     AdditionalData additional_data;
 
     @Override
@@ -313,5 +319,20 @@ public class PosCheckoutPayment extends PosAbstractModel implements CheckoutPaym
     @Override
     public String getIsSandbox() {
         return is_sandbox;
+    }
+
+    @Override
+    public String getPublishKeyStripe() {
+        return publishable_key;
+    }
+
+    @Override
+    public String getStripeToken() {
+        return stripe_token;
+    }
+
+    @Override
+    public void setStripeToken(String strStripeToken) {
+        stripe_token = strStripeToken;
     }
 }

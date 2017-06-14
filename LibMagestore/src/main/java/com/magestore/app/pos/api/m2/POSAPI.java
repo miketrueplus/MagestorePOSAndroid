@@ -109,4 +109,7 @@ public class POSAPI {
     public static final String REST_APPROVED_PAYMENT_PAYPAL = "rest/default/V1/webpos/paypal/finishPayment?";
     public static final String REST_INVOICE_PAYMENT_AUTHORIZE = "rest/default/V1/webpos/invoices/${orderID}/create?";
 
+    // API approved payment stripe
+    public static final String REST_APPROVED_PAYMENT_STRIPE = "rest/default/V1/webpos/stripe/finishPayment?";
+
 }

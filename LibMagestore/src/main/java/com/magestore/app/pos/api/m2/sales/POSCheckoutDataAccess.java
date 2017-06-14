@@ -51,6 +51,8 @@ public class POSCheckoutDataAccess extends POSAbstractDataAccess implements Chec
         boolean error = false;
         String message = null;
         String paymentId = null;
+        String token = null;
+        float amount;
     }
 
     @Override
@@ -489,6 +491,50 @@ public class POSCheckoutDataAccess extends POSAbstractDataAccess implements Chec
 
             CheckoutEntity checkoutEntity = new CheckoutEntity();
             checkoutEntity.paymentId = payment_id;
+            rp = statement.execute(checkoutEntity);
+
+            String transaction_id = rp.readResult2String().trim().replace("\"", "");
+
+            return transaction_id != null ? transaction_id : "";
+        } catch (Exception e) {
+            throw new DataAccessException(e);
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
+    }
+
+    @Override
+    public String approvedStripe(String token, float amount) throws ParseException, InstantiationException, IllegalAccessException, IOException {
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+
+        try {
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPI.REST_APPROVED_PAYMENT_STRIPE);
+
+            // Xây dựng tham số
+            paramBuilder = statement.getParamBuilder()
+                    .setSessionID(POSDataAccessSession.REST_SESSION_ID);
+
+            CheckoutEntity checkoutEntity = new CheckoutEntity();
+            checkoutEntity.token = token;
+            checkoutEntity.amount = amount;
             rp = statement.execute(checkoutEntity);
 
             String transaction_id = rp.readResult2String().trim().replace("\"", "");

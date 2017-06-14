@@ -43,9 +43,6 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile('com.paypal.sdk:paypal-android-sdk:2.15.3') {
-        exclude group: 'io.card'
-    }
     compile project(path: ':LibMagestore')
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:design:24.2.1'

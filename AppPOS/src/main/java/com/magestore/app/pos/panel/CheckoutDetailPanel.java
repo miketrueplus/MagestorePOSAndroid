@@ -376,7 +376,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         txt_payment_creditcard.setText(method);
     }
 
-    public void showShippingAdrress(boolean isShow){
+    public void showShippingAdrress(boolean isShow) {
         ll_shipping_address.setVisibility(isShow ? VISIBLE : GONE);
     }
 
@@ -398,6 +398,10 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
 
     public void showErrorAddCouponCode() {
         String message = getContext().getString(R.string.err_add_coupon);
+        com.magestore.app.util.DialogUtil.confirm(getContext(), message, R.string.ok);
+    }
+
+    public void showDialogError(String message) {
         com.magestore.app.util.DialogUtil.confirm(getContext(), message, R.string.ok);
     }
 }

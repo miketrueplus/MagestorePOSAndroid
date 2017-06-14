@@ -106,4 +106,9 @@ public interface CheckoutPayment extends Model {
 
     String getClientId();
     String getIsSandbox();
+
+    // Stripe payment
+    String getPublishKeyStripe();
+    String getStripeToken();
+    void setStripeToken(String strStripeToken);
 }

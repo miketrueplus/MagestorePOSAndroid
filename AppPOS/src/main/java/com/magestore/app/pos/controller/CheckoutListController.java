@@ -24,6 +24,7 @@ import com.magestore.app.lib.service.checkout.CheckoutService;
 import com.magestore.app.lib.service.customer.CustomerAddressService;
 import com.magestore.app.lib.service.plugins.PluginsService;
 import com.magestore.app.pos.PaymentPayPalActivity;
+import com.magestore.app.pos.R;
 import com.magestore.app.pos.model.checkout.PosCheckoutPayment;
 import com.magestore.app.pos.panel.CartItemDetailPanel;
 import com.magestore.app.pos.panel.CartOrderListPanel;
@@ -82,11 +83,13 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     static final int ACTION_TYPE_CHECK_APPROVED_PAYMENT_AUTHORIZENET = 14;
     static final int ACTION_TYPE_INVOICE_PAYMENT_AUTHORIZENET = 15;
     static final int ACTION_TYPE_CANCEL_PAYMENT_AUTHORIZENET = 16;
+    static final int ACTION_TYPE_CHECK_APPOVED_PAYMENT_STRIPE = 17;
 
     static final int STATUS_CHECKOUT_ADD_ITEM = 0;
     public static final int STATUS_CHECKOUT_PROCESSING = 1;
 
     static final String PICK_AT_STORE_CODE = "webpos_shipping_storepickup";
+    static final String PAYMENT_STRIPE_CODE = "stripe_integration";
 
     Map<String, Object> wraper;
     CartItemListController mCartItemListController;
@@ -288,6 +291,10 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         doAction(ACTION_TYPE_CANCEL_PAYMENT_AUTHORIZENET, null, wraper, null);
     }
 
+    public void doInputApprovedStripe(CheckoutPayment checkoutPayment) {
+        doAction(ACTION_TYPE_CHECK_APPOVED_PAYMENT_STRIPE, null, wraper, checkoutPayment);
+    }
+
     /**
      * khi chọn shipping request saveshipping và quote lưu lại shipping được chọn
      *
@@ -314,7 +321,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 CheckoutPayment paymentCreditCard = listCheckoutPayment.get(0);
                 boolean requied_cvv = true;
                 if (!StringUtil.isNullOrEmpty(paymentCreditCard.getUserCVV())) {
-                    if(paymentCreditCard.getUserCVV().equals("1")){
+                    if (paymentCreditCard.getUserCVV().equals("1")) {
                         requied_cvv = false;
                     }
                 }
@@ -331,8 +338,17 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 paymentCreditCard.setCCExpYear(payment.getCCExpYear());
                 paymentCreditCard.setCID(payment.getCID());
 
-                doAction(ACTION_TYPE_PLACE_ORDER, null, wraper, null);
-                isShowLoadingDetail(true);
+                if (paymentCreditCard.getCode().equals(PAYMENT_STRIPE_CODE)) {
+                    if (StringUtil.isNullOrEmpty(paymentCreditCard.getPublishKeyStripe())) {
+                        ((CheckoutDetailPanel) mDetailView).showDialogError(getMagestoreContext().getActivity().getString(R.string.authorize_cancel_payment));
+                        return;
+                    }
+                    isShowLoadingDetail(true);
+                    new StripeTokenController(getMagestoreContext().getActivity(), paymentCreditCard.getPublishKeyStripe(), this, paymentCreditCard);
+                } else {
+                    doAction(ACTION_TYPE_PLACE_ORDER, null, wraper, null);
+                    isShowLoadingDetail(true);
+                }
             } else {
                 CheckoutPayment paymentPayPal = checkTypePaymenPaypal(listCheckoutPayment);
                 if (paymentPayPal != null) {
@@ -485,6 +501,10 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             Authorizenet authorizenet = (Authorizenet) wraper.get("place_order");
             String order_id = authorizenet.getOrder().getID();
             ((CheckoutService) getListService()).cancelPaymentAuthozire(order_id);
+            return true;
+        } else if (actionType == ACTION_TYPE_CHECK_APPOVED_PAYMENT_STRIPE) {
+            CheckoutPayment checkoutPayment = (CheckoutPayment) models[0];
+            wraper.put("stripe_transaction_id", ((CheckoutService) getListService()).approvedPaymentStripe(checkoutPayment.getStripeToken(), checkoutPayment.getBaseAmount()));
             return true;
         }
         return false;
@@ -954,6 +974,14 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 getSelectedItem().setQuoteId("");
                 doInputSaveCart();
             }
+        } else if (success && actionType == ACTION_TYPE_CHECK_APPOVED_PAYMENT_STRIPE) {
+            String transaction_id = (String) wraper.get("stripe_transaction_id");
+            List<CheckoutPayment> listCheckoutPayment = (List<CheckoutPayment>) wraper.get("list_payment");
+            CheckoutPayment paymentStripe = listCheckoutPayment.get(0);
+            paymentStripe.setAdditionalData(null);
+            paymentStripe.setIsReferenceNumber(transaction_id.trim());
+            wraper.put("list_payment", listCheckoutPayment);
+            doAction(ACTION_TYPE_PLACE_ORDER, null, wraper, null);
         }
     }
 
@@ -975,7 +1003,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         mPluginRewardPointPanel.resetPointValue();
         ((CheckoutService) getListService()).updateTotal(checkout);
         getSelectedItem().setGrandTotal(checkout.getGrandTotal());
-        if(checkout.getRewardPoint() != null) {
+        if (checkout.getRewardPoint() != null) {
             getSelectedItem().setRewardPoint(checkout.getRewardPoint());
             getSelectedItem().setRewardPointUsePointValue(checkout.getRewardPointUsePointValue());
         }
@@ -1823,7 +1851,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         }
     }
 
-    public List<CheckoutPayment> getListChoosePayment(){
+    public List<CheckoutPayment> getListChoosePayment() {
         return (List<CheckoutPayment>) wraper.get("list_payment");
     }
 
@@ -1849,6 +1877,14 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         } else {
             ((CheckoutListPanel) mView).showButtonDiscount(isShow);
         }
+    }
+
+    /**
+     * show dialog error
+     * @param message
+     */
+    public void showDialogError(String message){
+        ((CheckoutDetailPanel) mDetailView).showDialogError(message);
     }
 
     /**
