@@ -279,6 +279,7 @@ public abstract class AbstractActivity
     LinearLayout nav_register_shift;
     LinearLayout nav_customer;
     LinearLayout nav_general;
+    LinearLayout menu_register_shift;
 
     protected void initToolbarMenu(Toolbar toolbar) {
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -297,6 +298,7 @@ public abstract class AbstractActivity
         nav_logout = (LinearLayout) navigationView.findViewById(R.id.nav_logout);
         nav_checkout = (LinearLayout) navigationView.findViewById(R.id.nav_checkout);
         nav_order_history = (LinearLayout) navigationView.findViewById(R.id.nav_order_history);
+        menu_register_shift = (LinearLayout) navigationView.findViewById(R.id.menu_register_shift);
         nav_register_shift = (LinearLayout) navigationView.findViewById(R.id.nav_register_shift);
         nav_customer = (LinearLayout) navigationView.findViewById(R.id.nav_customer);
         nav_general = (LinearLayout) navigationView.findViewById(R.id.nav_general);
@@ -312,6 +314,8 @@ public abstract class AbstractActivity
         listActivity.put(2, nav_customer);
         listActivity.put(3, nav_general);
         listActivity.put(4, nav_register_shift);
+
+        menu_register_shift.setVisibility(ConfigUtil.isEnableSession() ? View.VISIBLE : View.GONE);
     }
 
     View.OnClickListener onClickNav = new View.OnClickListener() {

@@ -105,12 +105,16 @@ public class RegisterShiftMakeAdjustmentPanel extends AbstractDetailPanel<Regist
     private void selectAddMakeAdjusment() {
         selectMakeAdjustment = ADD_MAKE_ADJUSTMENT;
         tv_add.setBackgroundResource(R.drawable.make_adjusment_push_select_bg);
+        tv_add.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
         tv_remove.setBackgroundResource(R.drawable.make_adjusment_take_not_select_bg);
+        tv_remove.setTextColor(ContextCompat.getColor(getContext(), R.color.text_color));
     }
 
     private void selectRemoveMakeAdjustment() {
         selectMakeAdjustment = REMOVE_MAKE_ADJUSTMENT;
         tv_add.setBackgroundResource(R.drawable.make_adjusment_push_not_select_bg);
+        tv_add.setTextColor(ContextCompat.getColor(getContext(), R.color.text_color));
         tv_remove.setBackgroundResource(R.drawable.make_adjusment_take_select_bg);
+        tv_remove.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
     }
 }

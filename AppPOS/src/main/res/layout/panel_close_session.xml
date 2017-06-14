@@ -333,7 +333,7 @@
                         android:background="@drawable/close_session_button_make_adjustment"
                         android:paddingLeft="@dimen/layout_margin_20"
                         android:paddingRight="@dimen/layout_margin_20"
-                        android:text="@string/adjustment"
+                        android:text="@string/register_shift_bottom_make_adjustment"
                         android:textColor="@color/text_color" />
 
                     <Button
