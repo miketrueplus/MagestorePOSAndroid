@@ -242,7 +242,11 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 float balance = et_r_close_balance.getValueFloat();
                 float different = ConfigUtil.convertToPrice(item.getBaseBalance()) - balance;
-                tv_difference.setText(ConfigUtil.formatPrice(different));
+                if (different < 0) {
+                    tv_difference.setText(ConfigUtil.formatPrice(0 - different));
+                } else {
+                    tv_difference.setText(ConfigUtil.formatPrice(different));
+                }
             }
 
             @Override

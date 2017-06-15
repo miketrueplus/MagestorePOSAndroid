@@ -463,7 +463,23 @@ public class OrderHistoryListController extends AbstractListController<Order> {
      */
     public void bindDataListChoosePayment() {
         List<CheckoutPayment> list_payment = (List<CheckoutPayment>) wraper.get("list_payment");
-        mOrderAddPaymentPanel.bindList(list_payment);
+        mOrderAddPaymentPanel.bindList(checkListPayment(list_payment));
+    }
+
+    private List<CheckoutPayment> checkListPayment(List<CheckoutPayment> listPayment) {
+        List<CheckoutPayment> listChoosePayment = (List<CheckoutPayment>) wraper.get("list_choose_payment");
+        List<CheckoutPayment> listPaymentActive = new ArrayList<>();
+        listPaymentActive.addAll(listPayment);
+        for (CheckoutPayment payment : listPayment) {
+            if (listChoosePayment != null && listChoosePayment.size() > 0) {
+                for (CheckoutPayment paymentChoose : listChoosePayment) {
+                    if (paymentChoose.getCode().equals(payment.getCode())) {
+                        listPaymentActive.remove(payment);
+                    }
+                }
+            }
+        }
+        return listPaymentActive;
     }
 
     // khi thay đổi value từng payment update giá trị money
@@ -523,6 +539,7 @@ public class OrderHistoryListController extends AbstractListController<Order> {
             mOrderTakePaymentPanel.showPanelAddPaymentMethod();
             mOrderTakePaymentPanel.bindTotalPrice(mOrder.getTotalDue());
             isEnableButtonAddPayment(false);
+            bindDataListChoosePayment();
         }
     }
 
