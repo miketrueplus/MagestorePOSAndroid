@@ -409,4 +409,7 @@ public abstract class AbstractSimpleRecycleView<TModel extends Model>
 //    }
 
 
+    public LinearLayoutManager getRecycleViewLayoutManager() {
+        return mRecycleViewLayoutManager;
+    }
 }

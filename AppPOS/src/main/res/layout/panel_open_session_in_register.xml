@@ -29,7 +29,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/layout_margin_5"
-                    android:text="@string/back"
+                    android:text="@string/cancel"
                     android:textColor="@color/open_session_text_color"
                     android:textSize="@dimen/open_session_action_title_text_size" />
 

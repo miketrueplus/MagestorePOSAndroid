@@ -43,7 +43,8 @@
                 android:layout_marginLeft="@dimen/layout_margin_10"
                 android:layout_marginRight="@dimen/layout_margin_10"
                 android:layout_toLeftOf="@+id/total_sales"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/open_note"

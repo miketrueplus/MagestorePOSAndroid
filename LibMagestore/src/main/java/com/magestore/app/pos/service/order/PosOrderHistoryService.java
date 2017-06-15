@@ -272,6 +272,7 @@ public class PosOrderHistoryService extends AbstractService implements OrderHist
             paymentMethodDataParam.setCode(checkoutPayment.getCode());
             paymentMethodDataParam.setIsPayLater(checkoutPayment.isPaylater());
             paymentMethodDataParam.setTitle(checkoutPayment.getTitle());
+            paymentMethodDataParam.setShiftId(ConfigUtil.getShiftId());
             listPaymentMethodParam.add(paymentMethodDataParam);
         }
         orderTakePaymentParam.setMethodData(listPaymentMethodParam);
