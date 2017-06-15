@@ -73,13 +73,13 @@ public class OpenSessionListValuePanel extends AbstractSimpleRecycleView<OpenSes
         mapAmount = new HashMap<>();
         mapSubtotal = new HashMap<>();
         mapTotal = new HashMap<>();
+        getRecycleViewLayoutManager().setReverseLayout(true);
     }
 
     @Override
     protected void bindItem(View view, OpenSessionValue item, int position) {
         CardOpenSessionListContentBinding mBinding = DataBindingUtil.bind(view);
         mBinding.setOpenSessionValue(item);
-
         EditTextFloat et_value = (EditTextFloat) view.findViewById(R.id.et_value);
         mapValue.put(item, et_value);
         EditTextInteger et_amount = (EditTextInteger) view.findViewById(R.id.et_amount);
@@ -99,6 +99,10 @@ public class OpenSessionListValuePanel extends AbstractSimpleRecycleView<OpenSes
             et_value.setEnabled(false);
             et_amount.setEnabled(false);
             im_remove_value.setVisibility(GONE);
+        }
+
+        if(mList.indexOf(item) == (mList.size() - 1)){
+            et_value.requestFocus();
         }
     }
 
@@ -207,5 +211,10 @@ public class OpenSessionListValuePanel extends AbstractSimpleRecycleView<OpenSes
         } else {
             mSessionController.updateFloatAmount(total);
         }
+    }
+
+    public void focusEditText(){
+        EditTextFloat et_value = mapValue.get(mList.get(0));
+
     }
 }

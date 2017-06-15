@@ -244,7 +244,7 @@ public class RegisterShiftListController extends AbstractListController<Register
 
     public void addValueOpen() {
         OpenSessionValue value = mRegisterShiftService.createOpenSessionValue();
-        listValueOpen.add(0, value);
+        listValueOpen.add(value);
         mOpenSessionListPanel.bindList(listValueOpen);
     }
 
@@ -255,7 +255,7 @@ public class RegisterShiftListController extends AbstractListController<Register
 
     public void addValueClose() {
         OpenSessionValue value = mRegisterShiftService.createOpenSessionValue();
-        listValueClose.add(0, value);
+        listValueClose.add(value);
         mOpenSessionListPanel.bindList(listValueClose);
     }
 
