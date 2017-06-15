@@ -64,6 +64,14 @@ public class OrderTakePaymentPanel extends AbstractDetailPanel<Order> {
         mOrderListChoosePaymentPanel.setOrder(item);
         ((OrderHistoryListController) mController).bindDataListChoosePayment();
         bindTotalPrice(item.getTotalDue());
+        ll_order_add_payment.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((OrderHistoryListController) mController).bindDataListChoosePayment();
+                showPanelAddPaymentMethod();
+                isEnableButtonAddPayment(false);
+            }
+        });
     }
 
     public void updateMoneyTotal(boolean type, float totalPrice) {
