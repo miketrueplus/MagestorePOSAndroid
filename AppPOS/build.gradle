@@ -32,9 +32,19 @@ android {
     dataBinding {
         enabled = true
     }
+    packagingOptions {
+        exclude  'META-INF/INDEX.LIST'
+    }
     lintOptions {
         checkReleaseBuilds false
         abortOnError false
+    }
+    repositories {
+        mavenCentral()
+        mavenLocal()
+        flatDir {
+            dirs 'libs'
+        }
     }
 }
 
@@ -57,4 +67,5 @@ dependencies {
     compile 'com.edwardvanraak:MaterialBarcodeScanner:0.0.6-ALPHA'
     compile 'com.google.android:flexbox:0.2.6'
     compile 'com.android.support:multidex:1.0.0'
+    compile(name:'paypal-here-sdk', ext:'aar')
 }
