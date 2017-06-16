@@ -41,9 +41,13 @@ import com.magestore.app.pos.panel.PaymentMethodListPanel;
 import com.magestore.app.pos.panel.PluginGiftCardPanel;
 import com.magestore.app.pos.panel.PluginRewardPointPanel;
 import com.magestore.app.pos.panel.PluginStoreCreditPanel;
+import com.magestore.app.pos.sdk.MultiReaderConnectionActivity;
+import com.magestore.app.pos.sdk.PayPalHereSDKWrapper;
+import com.magestore.app.pos.sdk.PayPalHereSDKWrapperCallbacks;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.DataUtil;
 import com.magestore.app.util.StringUtil;
+import com.paypal.merchant.sdk.PayPalHereSDK;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -351,12 +355,29 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 }
             } else {
                 CheckoutPayment paymentPayPal = checkTypePaymenPaypal(listCheckoutPayment);
+                final CheckoutPayment paymentPayPalHere = checkTypePaymentPaypalhere(listCheckoutPayment);
                 if (paymentPayPal != null) {
                     Intent i = new Intent(getMagestoreContext().getActivity(), PaymentPayPalActivity.class);
                     i.putExtra("total", paymentPayPal.getAmount());
                     i.putExtra("client_id", paymentPayPal.getClientId());
                     i.putExtra("sandbox", paymentPayPal.getIsSandbox());
                     getMagestoreContext().getActivity().startActivity(i);
+                } else if (paymentPayPalHere != null) {
+                    PayPalHereSDKWrapper.getInstance().initializeSDK(getMagestoreContext().getActivity(), PayPalHereSDK.Sandbox, paymentPayPalHere.getAccessToken(), new PayPalHereSDKWrapperCallbacks() {
+                        @Override
+                        public void onErrorWhileSettingAccessTokenToSDK() {
+                            Log.d(CheckoutListController.class.getName(), "PayPalHere SDK initialize onErrorWhileSettingAccessTokenToSDK");
+                        }
+
+                        @Override
+                        public void onSuccessfulCompletionOfSettingAccessTokenToSDK() {
+                            Log.d(CheckoutListController.class.getName(), "PayPalHere SDK initialize onSuccessfulCompletionOfSettingAccessTokenToSDK");
+                            Intent readerConnectionIntent = new Intent(getMagestoreContext().getActivity(), MultiReaderConnectionActivity.class);
+                            readerConnectionIntent.putExtra("amount", paymentPayPalHere.getBaseAmount());
+                            readerConnectionIntent.putExtra("quote_id", getSelectedItem().getQuoteId());
+                            getMagestoreContext().getActivity().startActivity(readerConnectionIntent);
+                        }
+                    });
                 } else {
                     isShowLoadingDetail(true);
                     doAction(ACTION_TYPE_PLACE_ORDER, null, wraper, null);
@@ -1804,7 +1825,14 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         return null;
     }
 
-
+    public CheckoutPayment checkTypePaymentPaypalhere(List<CheckoutPayment> listCheckoutPayment) {
+        for (CheckoutPayment payment : listCheckoutPayment) {
+            if (payment.getType().equals("2") && payment.getCode().equals("paypal_here")) {
+                return payment;
+            }
+        }
+        return null;
+    }
 
     /**
      * 0
@@ -1883,9 +1911,10 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
     /**
      * show dialog error
+     *
      * @param message
      */
-    public void showDialogError(String message){
+    public void showDialogError(String message) {
         ((CheckoutDetailPanel) mDetailView).showDialogError(message);
     }
 

@@ -104,8 +104,12 @@ public interface CheckoutPayment extends Model {
     boolean IsNotEnableEditValue();
     void setIsNotEnableEditValue(boolean bIsNotEnableValue);
 
+    // paypal
     String getClientId();
     String getIsSandbox();
+
+    // paypal here
+    String getAccessToken();
 
     // Stripe payment
     String getPublishKeyStripe();

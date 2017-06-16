@@ -45,11 +45,17 @@ public class PosCheckoutPayment extends PosAbstractModel implements CheckoutPaym
     @Gson2PosExclude
     boolean is_not_enable_edit_value;
     @Gson2PosExclude
-    String client_id;
-    @Gson2PosExclude
     String is_sandbox;
     @Gson2PosExclude
     String usecvv;
+
+    // paypal
+    @Gson2PosExclude
+    String client_id;
+
+    // paypal here
+    @Gson2PosExclude
+    String access_token;
 
     // stripe payment
     @Gson2PosExclude
@@ -319,6 +325,11 @@ public class PosCheckoutPayment extends PosAbstractModel implements CheckoutPaym
     @Override
     public String getIsSandbox() {
         return is_sandbox;
+    }
+
+    @Override
+    public String getAccessToken() {
+        return access_token;
     }
 
     @Override
