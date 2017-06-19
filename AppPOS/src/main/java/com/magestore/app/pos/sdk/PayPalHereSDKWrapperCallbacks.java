@@ -10,9 +10,11 @@ import java.util.List;
 public class PayPalHereSDKWrapperCallbacks {
     private static final String LOG_TAG = PayPalHereSDKWrapperCallbacks.class.getSimpleName();
 
+    public void onErrorAccessToken(){}
+
     public void onSuccessfulCompletionOfSettingAccessTokenToSDK(){}
 
-    public void onErrorWhileSettingAccessTokenToSDK(){}
+    public void onErrorWhileSettingAccessTokenToSDK(boolean errorToken){}
 
     public void onMagstripeReaderConnected(){}
 

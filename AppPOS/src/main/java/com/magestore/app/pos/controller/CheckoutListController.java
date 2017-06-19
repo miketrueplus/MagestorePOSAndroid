@@ -88,9 +88,12 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     static final int ACTION_TYPE_INVOICE_PAYMENT_AUTHORIZENET = 15;
     static final int ACTION_TYPE_CANCEL_PAYMENT_AUTHORIZENET = 16;
     static final int ACTION_TYPE_CHECK_APPOVED_PAYMENT_STRIPE = 17;
+    static final int ACTION_TYPE_REFRESH_TOKEN_PAYPAL_HERE = 18;
 
     static final int STATUS_CHECKOUT_ADD_ITEM = 0;
     public static final int STATUS_CHECKOUT_PROCESSING = 1;
+
+    public static int START_ACTIVITY_MUTIREADER = 98;
 
     static final String PICK_AT_STORE_CODE = "webpos_shipping_storepickup";
     static final String PAYMENT_STRIPE_CODE = "stripe_integration";
@@ -287,6 +290,18 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         doAction(ACTION_TYPE_CHECK_APPROVED_PAYMENT_AUTHORIZENET, null, wraper, authorizenet);
     }
 
+    public void doInputRefreshTokenPaypalHere(CheckoutPayment paymentPayPalHere) {
+        doAction(ACTION_TYPE_REFRESH_TOKEN_PAYPAL_HERE, null, wraper, paymentPayPalHere);
+    }
+
+    public void doInputPlaceOrderWithPaypalHere(String transaction_id) {
+        List<CheckoutPayment> listCheckoutPayment = (List<CheckoutPayment>) wraper.get("list_payment");
+        CheckoutPayment paymentPayPal = checkTypePaymentPaypalhere(listCheckoutPayment);
+        paymentPayPal.setIsReferenceNumber(transaction_id.trim());
+        wraper.put("list_payment", listCheckoutPayment);
+        doAction(ACTION_TYPE_PLACE_ORDER, null, wraper, null);
+    }
+
     public void doInputInvoiceAuthorize() {
         doAction(ACTION_TYPE_INVOICE_PAYMENT_AUTHORIZENET, null, wraper, null);
     }
@@ -363,21 +378,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                     i.putExtra("sandbox", paymentPayPal.getIsSandbox());
                     getMagestoreContext().getActivity().startActivity(i);
                 } else if (paymentPayPalHere != null) {
-                    PayPalHereSDKWrapper.getInstance().initializeSDK(getMagestoreContext().getActivity(), PayPalHereSDK.Sandbox, paymentPayPalHere.getAccessToken(), new PayPalHereSDKWrapperCallbacks() {
-                        @Override
-                        public void onErrorWhileSettingAccessTokenToSDK() {
-                            Log.d(CheckoutListController.class.getName(), "PayPalHere SDK initialize onErrorWhileSettingAccessTokenToSDK");
-                        }
-
-                        @Override
-                        public void onSuccessfulCompletionOfSettingAccessTokenToSDK() {
-                            Log.d(CheckoutListController.class.getName(), "PayPalHere SDK initialize onSuccessfulCompletionOfSettingAccessTokenToSDK");
-                            Intent readerConnectionIntent = new Intent(getMagestoreContext().getActivity(), MultiReaderConnectionActivity.class);
-                            readerConnectionIntent.putExtra("amount", paymentPayPalHere.getBaseAmount());
-                            readerConnectionIntent.putExtra("quote_id", getSelectedItem().getQuoteId());
-                            getMagestoreContext().getActivity().startActivity(readerConnectionIntent);
-                        }
-                    });
+                    actionPaypalHere(paymentPayPalHere);
                 } else {
                     isShowLoadingDetail(true);
                     doAction(ACTION_TYPE_PLACE_ORDER, null, wraper, null);
@@ -526,6 +527,9 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         } else if (actionType == ACTION_TYPE_CHECK_APPOVED_PAYMENT_STRIPE) {
             CheckoutPayment checkoutPayment = (CheckoutPayment) models[0];
             wraper.put("stripe_transaction_id", ((CheckoutService) getListService()).approvedPaymentStripe(checkoutPayment.getStripeToken(), checkoutPayment.getBaseAmount()));
+            return true;
+        } else if (actionType == ACTION_TYPE_REFRESH_TOKEN_PAYPAL_HERE) {
+            wraper.put("access_token", ((CheckoutService) getListService()).getAccessTokenPaypalHere());
             return true;
         }
         return false;
@@ -1003,6 +1007,11 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             paymentStripe.setIsReferenceNumber(transaction_id.trim());
             wraper.put("list_payment", listCheckoutPayment);
             doAction(ACTION_TYPE_PLACE_ORDER, null, wraper, null);
+        } else if (success && actionType == ACTION_TYPE_REFRESH_TOKEN_PAYPAL_HERE) {
+            CheckoutPayment paymentPaypalHere = (CheckoutPayment) models[0];
+            String access_token = (String) wraper.get("access_token");
+            paymentPaypalHere.setAccessToken(access_token);
+            actionPaypalHere(paymentPaypalHere);
         }
     }
 
@@ -1823,6 +1832,31 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             }
         }
         return null;
+    }
+
+    public void actionPaypalHere(final CheckoutPayment paymentPayPalHere) {
+        PayPalHereSDKWrapper.getInstance().initializeSDK(getMagestoreContext().getActivity(), PayPalHereSDK.Sandbox, paymentPayPalHere.getAccessToken(), new PayPalHereSDKWrapperCallbacks() {
+            @Override
+            public void onErrorWhileSettingAccessTokenToSDK(boolean errorToken) {
+                if (!errorToken) {
+                    Log.d(CheckoutListController.class.getName(), "PayPalHere SDK initialize onErrorWhileSettingAccessTokenToSDK");
+                }
+            }
+
+            @Override
+            public void onSuccessfulCompletionOfSettingAccessTokenToSDK() {
+                Log.d(CheckoutListController.class.getName(), "PayPalHere SDK initialize onSuccessfulCompletionOfSettingAccessTokenToSDK");
+                Intent readerConnectionIntent = new Intent(getMagestoreContext().getActivity(), MultiReaderConnectionActivity.class);
+                readerConnectionIntent.putExtra("amount", paymentPayPalHere.getBaseAmount());
+                readerConnectionIntent.putExtra("quote_id", getSelectedItem().getQuoteId());
+                getMagestoreContext().getActivity().startActivityForResult(readerConnectionIntent, START_ACTIVITY_MUTIREADER);
+            }
+
+            @Override
+            public void onErrorAccessToken() {
+                doInputRefreshTokenPaypalHere(paymentPayPalHere);
+            }
+        });
     }
 
     public CheckoutPayment checkTypePaymentPaypalhere(List<CheckoutPayment> listCheckoutPayment) {

@@ -2,6 +2,7 @@ package com.magestore.app.pos;
 
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -69,6 +70,7 @@ import com.magestore.app.pos.panel.PluginStoreCreditPanel;
 import com.magestore.app.pos.panel.ProductListPanel;
 import com.magestore.app.pos.panel.ProductOptionPanel;
 import com.magestore.app.pos.panel.SpinnerListPanel;
+import com.magestore.app.pos.sdk.MultiReaderConnectionActivity;
 import com.magestore.app.pos.ui.AbstractActivity;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.DialogUtil;
@@ -494,17 +496,6 @@ public class SalesActivity extends AbstractActivity
         registerReceiver(receiver_data_error_paypal, filter_error_paypal);
     }
 
-//    @Override
-//    public void onBackPressed() {
-//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-//        if (drawer.isDrawerOpen(GravityCompat.START)) {
-//            drawer.closeDrawer(GravityCompat.START);
-//        } else {
-//            super.onBackPressed();
-//        }
-
-//    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -617,6 +608,20 @@ public class SalesActivity extends AbstractActivity
             }
         }
     };
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CheckoutListController.START_ACTIVITY_MUTIREADER) {
+            if (resultCode == Activity.RESULT_OK) {
+                String transaction_id = data.getStringExtra("transaction_id");
+                mCheckoutListController.doInputPlaceOrderWithPaypalHere(transaction_id);
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+            }
+            if (resultCode == MultiReaderConnectionActivity.TRANSACTION_ERRORS) {
+            }
+        }
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

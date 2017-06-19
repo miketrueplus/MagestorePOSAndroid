@@ -34,8 +34,10 @@ public class MultiReaderConnectionActivity extends Activity {
     private Button mActiveReaderChangeButton;
     private Button mEMVReaderConnectButton;
     private Button mProceedFurtherButton;
-    float amount;
-    String quote_id = "";
+    private float amount;
+    private String quote_id = "";
+    private static int START_ACTIVITY_CHARGE = 97;
+    public static int TRANSACTION_ERRORS = 101;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,12 +71,12 @@ public class MultiReaderConnectionActivity extends Activity {
         Log.d(LOG_TAG, "onConfigurationChanged");
     }
 
-    public void onContinueToChargeScreen(View view){
+    public void onContinueToChargeScreen(View view) {
         Log.d(LOG_TAG, "onContinueToChargeScreen");
         Intent chargeActivityIntent = new Intent(this, ChargeActivity.class);
         chargeActivityIntent.putExtra("amount", amount);
         chargeActivityIntent.putExtra("quote_id", quote_id);
-        startActivity(chargeActivityIntent);
+        startActivityForResult(chargeActivityIntent, START_ACTIVITY_CHARGE);
     }
 
     public void onConnectToEMVReader(View view) {
@@ -82,10 +84,10 @@ public class MultiReaderConnectionActivity extends Activity {
         showAvailableDevices();
     }
 
-    public void onChangeActiveReader(View view){
+    public void onChangeActiveReader(View view) {
         List<CardReaderManager.CardReader> cardReaders = PayPalHereSDKWrapper.getInstance().getConnectedReaders();
         ArrayList<CardReaderListener.ReaderTypes> readerTypes = new ArrayList<CardReaderListener.ReaderTypes>();
-        for(CardReaderManager.CardReader reader: cardReaders){
+        for (CardReaderManager.CardReader reader : cardReaders) {
             readerTypes.add(reader.getReaderType());
         }
 
@@ -308,5 +310,34 @@ public class MultiReaderConnectionActivity extends Activity {
                 enableCorrectLayout();
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == START_ACTIVITY_CHARGE) {
+            if (resultCode == Activity.RESULT_OK) {
+                String transaction_id = data.getStringExtra("transaction_id");
+                goToSalesActivity(Activity.RESULT_OK, transaction_id);
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                goToSalesActivity(Activity.RESULT_CANCELED, "");
+            }
+            if (resultCode == TRANSACTION_ERRORS) {
+                goToSalesActivity(TRANSACTION_ERRORS, "");
+            }
+        }
+    }
+
+    public void goToSalesActivity(int type, String transaction_id) {
+        Intent returnIntent = new Intent();
+        if (type == Activity.RESULT_OK) {
+            returnIntent.putExtra("transaction_id", transaction_id);
+            setResult(Activity.RESULT_OK, returnIntent);
+        } else if (type == TRANSACTION_ERRORS) {
+            setResult(MultiReaderConnectionActivity.TRANSACTION_ERRORS, returnIntent);
+        } else {
+            setResult(Activity.RESULT_CANCELED, returnIntent);
+        }
+        finish();
     }
 }

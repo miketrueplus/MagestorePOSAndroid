@@ -68,6 +68,8 @@ public interface CheckoutService extends ListService<Checkout> {
 
     String approvedPaymentStripe(String token, float amount) throws IOException, InstantiationException, ParseException, IllegalAccessException;
 
+    String getAccessTokenPaypalHere() throws IOException, InstantiationException, ParseException, IllegalAccessException;
+
     Checkout updateTotal(Checkout checkout);
 
     Checkout create();

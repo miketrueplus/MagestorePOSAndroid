@@ -110,6 +110,7 @@ public interface CheckoutPayment extends Model {
 
     // paypal here
     String getAccessToken();
+    void setAccessToken(String strAccessToken);
 
     // Stripe payment
     String getPublishKeyStripe();

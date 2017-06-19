@@ -33,7 +33,9 @@ public class PayPalHereSDKWrapper implements CardReaderConnectionListener,
     private static String LOG_TAG = PayPalHereSDKWrapper.class.getSimpleName();
     private static PayPalHereSDKWrapper mInstance = null;
     private PayPalHereSDKWrapperCallbacks mListener = null;
+    private PayPalHereSDKWrapperCallbacks mListenerToken = null;
     private Activity mCurrentActivity = null;
+    private boolean mErrorToken = false;
 
     public static PayPalHereSDKWrapper getInstance() {
         if (null == mInstance) {
@@ -70,6 +72,10 @@ public class PayPalHereSDKWrapper implements CardReaderConnectionListener,
         PayPalHereSDK.getCardReaderManager().registerCardReaderConnectionListener(this);
 
         if (null != compositeAccessToken) {
+            if(listener != null){
+                mListenerToken = listener;
+            }
+            mErrorToken = false;
             setAccessTokenToSDK(compositeAccessToken, listener);
         }
     }
@@ -95,7 +101,7 @@ public class PayPalHereSDKWrapper implements CardReaderConnectionListener,
             public void onError(PPError<MerchantManager.MerchantErrors> merchantErrorsPPError) {
                 Log.d(LOG_TAG, "initializeSDK setCredentialsFromCompositeStr onError error: " + merchantErrorsPPError);
                 if (null != listener) {
-                    listener.onErrorWhileSettingAccessTokenToSDK();
+                    listener.onErrorWhileSettingAccessTokenToSDK(mErrorToken);
                 }
             }
         });
@@ -320,6 +326,10 @@ public class PayPalHereSDKWrapper implements CardReaderConnectionListener,
     @Override
     public void onInvalidToken() {
         Log.d(LOG_TAG, "onInvalidToken");
+        if (null != mListenerToken) {
+            mErrorToken = true;
+            mListenerToken.onErrorAccessToken();
+        }
     }
 
     @Override
@@ -359,6 +369,7 @@ public class PayPalHereSDKWrapper implements CardReaderConnectionListener,
     public void onUserPaymentOptionSelected(PaymentOption paymentOption) {
         Log.d(LOG_TAG, "onUserPaymentOptionSelected");
         if (null != mListener) {
+            mErrorToken = true;
             mListener.onSuccessfulCardRead();
         }
     }
@@ -371,6 +382,9 @@ public class PayPalHereSDKWrapper implements CardReaderConnectionListener,
     @Override
     public void onTokenExpired(Activity activity, TokenExpirationHandler listener) {
         Log.d(LOG_TAG, "onTokenExpired");
+        if (null != mListenerToken) {
+            mListenerToken.onErrorAccessToken();
+        }
     }
 
     @Override

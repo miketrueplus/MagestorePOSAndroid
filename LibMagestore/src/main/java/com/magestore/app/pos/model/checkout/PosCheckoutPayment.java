@@ -333,6 +333,11 @@ public class PosCheckoutPayment extends PosAbstractModel implements CheckoutPaym
     }
 
     @Override
+    public void setAccessToken(String strAccessToken) {
+        access_token = strAccessToken;
+    }
+
+    @Override
     public String getPublishKeyStripe() {
         return publishable_key;
     }

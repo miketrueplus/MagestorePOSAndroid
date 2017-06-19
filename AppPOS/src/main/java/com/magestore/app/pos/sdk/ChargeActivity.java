@@ -1,5 +1,6 @@
 package com.magestore.app.pos.sdk;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -32,8 +33,11 @@ public class ChargeActivity extends ActionBarActivity {
     private RelativeLayout mPaymentFailureLayout;
     private RelativeLayout mRefundSuccessfulLayout;
     private RelativeLayout mRefundFailureLayout;
-    float amount;
-    String quote_id = "";
+    private float amount;
+    private String quote_id = "";
+    private static int TYPE_SUCCESS = 0;
+    private static int TYPE_ERROR = 1;
+    private static int TYPE_CANCEL = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +55,7 @@ public class ChargeActivity extends ActionBarActivity {
         mRefundFailureLayout = (RelativeLayout) findViewById(R.id.id_refund_failure_layout);
 
         showChargeLayout();
+        inVoiceTakePayment();
     }
 
     @Override
@@ -72,7 +77,7 @@ public class ChargeActivity extends ActionBarActivity {
         Log.d(LOG_TAG, "onBackPressed");
 
         //Lets go back to PaymentOptionsActivity instead of going back to ReaderConnectionActivity
-        goBackToPaymentOptionsActivity(null);
+        goToSalesActivity(TYPE_CANCEL, "");
         PayPalHereSDKWrapper.getInstance().unregisterCardReaderEventListener();
     }
 
@@ -80,23 +85,14 @@ public class ChargeActivity extends ActionBarActivity {
      * This function will be called when Take Payment button is clicked on Charge Screen
      */
     public void onTakePaymentOptionSelected(View view) {
+
+    }
+
+    public void inVoiceTakePayment(){
         Log.d(LOG_TAG, "takePayment");
-//        EditText amountEditText = (EditText) findViewById(R.id.amount);
-//        String amountText = amountEditText.getText().toString();
-//        hideKeyboard();
-//        BigDecimal amount = BigDecimal.ZERO;
-//        if (null != amountText && amountText.length() > 0) {
-//            amountText = String.format("%.2f", Double.parseDouble(amountText));
-//            amount = new BigDecimal("1");
-//        }else{
-//            showInvalidAmountAlertDialog();
-//            return;
-//        }
 
         Invoice invoice = DomainFactory.newEmptyInvoice();
-
         InvoiceItem invoiceItem = DomainFactory.newInvoiceItem("Pay to Retailer POS", quote_id, new BigDecimal(amount));
-
         invoice.addItem(invoiceItem, new BigDecimal(1));
 
         /**
@@ -106,15 +102,7 @@ public class ChargeActivity extends ActionBarActivity {
         takePayment();
     }
 
-    public void goBackToPaymentOptionsActivity(View view){
-        Log.d(LOG_TAG, "goBackToPaymentOptionsActivity");
-
-//        Intent paymentOptionsIntent = new Intent(ChargeActivity.this, PaymentOptionsActivity.class);
-//        paymentOptionsIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//        startActivity(paymentOptionsIntent);
-    }
-
-    public void onRefundOptionSelected(View view){
+    public void onRefundOptionSelected(View view) {
         Log.d(LOG_TAG, "onRefundOptionSelected");
         PayPalHereSDKWrapper.getInstance().doRefund(mTransactionRecord, mTransactionRecord.getInvoice().getGrandTotal(), new PayPalHereSDKWrapperCallbacks() {
             @Override
@@ -131,17 +119,10 @@ public class ChargeActivity extends ActionBarActivity {
         });
     }
 
-    private void hideKeyboard(){
-        EditText amountEditText = (EditText) findViewById(R.id.amount);
-        amountEditText.setText("");
-        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(amountEditText.getWindowToken(), 0);
-    }
-
     /*
      * Show the charge layout and hide all other layouts
      */
-    private void showChargeLayout(){
+    private void showChargeLayout() {
         mChargeLayout.setVisibility(View.VISIBLE);
         mPaymentSuccessfulLayout.setVisibility(View.GONE);
         mPaymentFailureLayout.setVisibility(View.GONE);
@@ -152,7 +133,7 @@ public class ChargeActivity extends ActionBarActivity {
     /*
      * Show the payment successful layout and hide all other layouts
      */
-    private void showPaymentSuccessfulLayout(){
+    private void showPaymentSuccessfulLayout() {
         mChargeLayout.setVisibility(View.GONE);
         mPaymentSuccessfulLayout.setVisibility(View.VISIBLE);
         mPaymentFailureLayout.setVisibility(View.GONE);
@@ -163,7 +144,7 @@ public class ChargeActivity extends ActionBarActivity {
     /*
      * Show the payment failure layout and hide all other layouts
      */
-    private void showPaymentFailureLayout(){
+    private void showPaymentFailureLayout() {
         mChargeLayout.setVisibility(View.GONE);
         mPaymentSuccessfulLayout.setVisibility(View.GONE);
         mPaymentFailureLayout.setVisibility(View.VISIBLE);
@@ -174,7 +155,7 @@ public class ChargeActivity extends ActionBarActivity {
     /*
      * Show the refund success layout and hide all other layouts
      */
-    private void showRefundSuccessfulLayout(){
+    private void showRefundSuccessfulLayout() {
         mChargeLayout.setVisibility(View.GONE);
         mPaymentSuccessfulLayout.setVisibility(View.GONE);
         mPaymentFailureLayout.setVisibility(View.GONE);
@@ -185,7 +166,7 @@ public class ChargeActivity extends ActionBarActivity {
     /*
      * Show the refund failure layout and hide all other layouts
      */
-    private void showRefundFailureLayout(){
+    private void showRefundFailureLayout() {
         mChargeLayout.setVisibility(View.GONE);
         mPaymentSuccessfulLayout.setVisibility(View.GONE);
         mPaymentFailureLayout.setVisibility(View.GONE);
@@ -196,7 +177,7 @@ public class ChargeActivity extends ActionBarActivity {
     /**
      * Listener to PayPalHere SDK Wrapper for all the events.
      */
-    private void setListener(){
+    private void setListener() {
         PayPalHereSDKWrapper.getInstance().setListener(this, new PayPalHereSDKWrapperCallbacks() {
             @Override
             public void onSuccessfulCardRead() {
@@ -226,7 +207,7 @@ public class ChargeActivity extends ActionBarActivity {
         });
     }
 
-    private void takePayment(){
+    private void takePayment() {
         Log.d(LOG_TAG, "takePayment");
         mIsInMiddleOfTakingPayment = true;
         /**
@@ -237,7 +218,8 @@ public class ChargeActivity extends ActionBarActivity {
             public void onPaymentFailure(TransactionManager.PaymentErrors errors) {
                 Log.d(LOG_TAG, "takePayment onPaymentFailure");
                 mIsInMiddleOfTakingPayment = false;
-                showPaymentFailureLayout();
+                Log.d(LOG_TAG, "Transaction errors: " + errors.toString());
+                goToSalesActivity(TYPE_ERROR, "");
             }
 
             @Override
@@ -246,23 +228,21 @@ public class ChargeActivity extends ActionBarActivity {
                 mIsInMiddleOfTakingPayment = false;
                 mTransactionRecord = responseObject.getTransactionRecord();
                 Log.d(LOG_TAG, "TransactionID: " + mTransactionRecord.getTransactionId());
-                showPaymentSuccessfulLayout();
+                goToSalesActivity(TYPE_SUCCESS, mTransactionRecord.getTransactionId());
             }
         });
     }
 
-//    private void showInvalidAmountAlertDialog(){
-//        AlertDialog.Builder builder = new AlertDialog.Builder(ChargeActivity.this);
-//        builder.setTitle(R.string.error_title);
-//        builder.setMessage(R.string.error_invalid_amount);
-//        builder.setCancelable(false);
-//        builder.setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                Log.d(LOG_TAG, "takePayment invalid amount alert dialog onClick");
-//                dialog.dismiss();
-//            }
-//        });
-//        builder.create().show();
-//    }
+    public void goToSalesActivity(int type, String transaction_id) {
+        Intent returnIntent = new Intent();
+        if (type == TYPE_SUCCESS) {
+            returnIntent.putExtra("transaction_id", transaction_id);
+            setResult(Activity.RESULT_OK, returnIntent);
+        } else if (type == TYPE_ERROR) {
+            setResult(MultiReaderConnectionActivity.TRANSACTION_ERRORS, returnIntent);
+        } else {
+            setResult(Activity.RESULT_CANCELED, returnIntent);
+        }
+        finish();
+    }
 }
