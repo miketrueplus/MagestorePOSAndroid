@@ -1,7 +1,9 @@
 package com.magestore.app.pos.controller;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 
@@ -1714,9 +1716,15 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         List<CheckoutPayment> listAllPayment = checkout.getCheckoutPayment();
         List<CheckoutPayment> listPaymentDialog = new ArrayList<>();
         listPaymentDialog.addAll(listAllPayment);
+        boolean isPaymentSDK = checkPaymentSDK(listPayment);
         for (CheckoutPayment checkoutPayment : listAllPayment) {
             if (checkoutPayment.getType().equals("1")) {
                 listPaymentDialog.remove(checkoutPayment);
+            }
+            if (isPaymentSDK) {
+                if (checkoutPayment.getType().equals("2")) {
+                    listPaymentDialog.remove(checkoutPayment);
+                }
             }
             for (CheckoutPayment paymentMethod : listPayment) {
                 if (checkoutPayment.getCode().equals(paymentMethod.getCode())) {
@@ -1729,6 +1737,16 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             return true;
         }
         return false;
+    }
+
+    private boolean checkPaymentSDK(List<CheckoutPayment> listPayment) {
+        boolean isPaymentSDK = false;
+        for (CheckoutPayment payment : listPayment) {
+            if (payment.getType().equals("2")) {
+                isPaymentSDK = true;
+            }
+        }
+        return isPaymentSDK;
     }
 
     /**
@@ -1835,12 +1853,33 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         return null;
     }
 
+    /**
+     * action processing paypal here
+     *
+     * @param paymentPayPalHere
+     */
     public void actionPaypalHere(final CheckoutPayment paymentPayPalHere) {
-        PayPalHereSDKWrapper.getInstance().initializeSDK(getMagestoreContext().getActivity(), PayPalHereSDK.Sandbox, paymentPayPalHere.getAccessToken(), new PayPalHereSDKWrapperCallbacks() {
+        String enviroment = PayPalHereSDK.Live;
+        if (paymentPayPalHere.getIsSandbox().equals("1")) {
+            enviroment = PayPalHereSDK.Sandbox;
+        }
+
+        PayPalHereSDKWrapper.getInstance().initializeSDK(getMagestoreContext().getActivity(), enviroment, paymentPayPalHere.getAccessToken(), new PayPalHereSDKWrapperCallbacks() {
             @Override
             public void onErrorWhileSettingAccessTokenToSDK(boolean errorToken) {
                 if (!errorToken) {
+                    isShowLoadingDetail(false);
                     Log.d(CheckoutListController.class.getName(), "PayPalHere SDK initialize onErrorWhileSettingAccessTokenToSDK");
+                    new AlertDialog.Builder(getMagestoreContext().getActivity())
+                            .setMessage(R.string.paypal_here_init_error)
+                            .setPositiveButton(R.string.paypal_here_try_again, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    actionPaypalHere(paymentPayPalHere);
+                                }
+                            })
+                            .setNegativeButton(R.string.no, null)
+                            .show();
                 }
             }
 
@@ -1860,6 +1899,12 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         });
     }
 
+    /**
+     * check payment paypal here
+     *
+     * @param listCheckoutPayment
+     * @return
+     */
     public CheckoutPayment checkTypePaymentPaypalhere(List<CheckoutPayment> listCheckoutPayment) {
         for (CheckoutPayment payment : listCheckoutPayment) {
             if (payment.getType().equals("2") && payment.getCode().equals("paypal_here")) {

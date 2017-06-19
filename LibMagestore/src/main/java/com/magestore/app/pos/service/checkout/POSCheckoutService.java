@@ -201,10 +201,12 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
             // TODO: trường hợp 2 payment trở lên thì truyền tham số "multipaymentforpos"
             placeOrderParams.setMethod("multipaymentforpos");
         } else {
-            if (listCheckoutPayment.get(0).getCode().equals("paypal_integration")) {
+            String paymentCode = listCheckoutPayment.get(0).getCode();
+            String paymentType = listCheckoutPayment.get(0).getType();
+            if (paymentType.equals("2")) {
                 placeOrderParams.setMethod("multipaymentforpos");
             } else {
-                placeOrderParams.setMethod(listCheckoutPayment.get(0).getCode());
+                placeOrderParams.setMethod(paymentCode);
             }
         }
 

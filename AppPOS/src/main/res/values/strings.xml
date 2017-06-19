@@ -268,6 +268,8 @@
     <string name="active_reader_emv">EMV Reader</string>
     <string name="change_active_reader_msg">Change Active Reader</string>
     <string name="select_reader_title">Select Reader</string>
+    <string name="paypal_here_try_again">Try again</string>
+    <string name="paypal_here_init_error">PayPalHere SDK initialize error. Please try again!</string>
 
     <string name="audio_jack_reader_connect_msg">Please plug-in audio jack reader</string>
     <string name="audio_jack_reader_connected_msg">Audio Jack reader already connected. Please proceed further</string>

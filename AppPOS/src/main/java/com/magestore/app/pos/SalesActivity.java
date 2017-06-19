@@ -71,6 +71,7 @@ import com.magestore.app.pos.panel.ProductListPanel;
 import com.magestore.app.pos.panel.ProductOptionPanel;
 import com.magestore.app.pos.panel.SpinnerListPanel;
 import com.magestore.app.pos.sdk.MultiReaderConnectionActivity;
+import com.magestore.app.pos.sdk.PayPalHereSDKWrapper;
 import com.magestore.app.pos.ui.AbstractActivity;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.DialogUtil;
@@ -552,6 +553,7 @@ public class SalesActivity extends AbstractActivity
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         ConfigUtil.setCheckFirstOpenSession(false);
+                        PayPalHereSDKWrapper.getInstance().disConnectEMVReader(null);
                         finish();
                     }
 
