@@ -12,8 +12,10 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.magestore.app.pos.R;
+import com.magestore.app.util.ConfigUtil;
 import com.paypal.merchant.sdk.TransactionManager;
 import com.paypal.merchant.sdk.domain.DomainFactory;
 import com.paypal.merchant.sdk.domain.Invoice;
@@ -27,7 +29,7 @@ public class ChargeActivity extends ActionBarActivity {
 
     private boolean mIsInMiddleOfTakingPayment = false;
     private TransactionRecord mTransactionRecord = null;
-
+    private TextView txt_amount;
     private RelativeLayout mChargeLayout;
     private RelativeLayout mPaymentSuccessfulLayout;
     private RelativeLayout mPaymentFailureLayout;
@@ -47,13 +49,13 @@ public class ChargeActivity extends ActionBarActivity {
         quote_id = getIntent().getStringExtra("quote_id");
 
         setContentView(R.layout.activity_charge);
-
+        txt_amount = (TextView) findViewById(R.id.txt_amount);
         mChargeLayout = (RelativeLayout) findViewById(R.id.id_charge_layout);
         mPaymentSuccessfulLayout = (RelativeLayout) findViewById(R.id.id_payment_successful_layout);
         mPaymentFailureLayout = (RelativeLayout) findViewById(R.id.id_payment_failure_layout);
         mRefundSuccessfulLayout = (RelativeLayout) findViewById(R.id.id_refund_successful_layout);
         mRefundFailureLayout = (RelativeLayout) findViewById(R.id.id_refund_failure_layout);
-
+        txt_amount.setText(getString(R.string.amount) + ": " + ConfigUtil.formatPrice(amount));
         showChargeLayout();
         inVoiceTakePayment();
     }

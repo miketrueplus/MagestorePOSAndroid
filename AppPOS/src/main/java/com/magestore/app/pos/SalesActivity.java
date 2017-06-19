@@ -617,8 +617,14 @@ public class SalesActivity extends AbstractActivity
                 mCheckoutListController.doInputPlaceOrderWithPaypalHere(transaction_id);
             }
             if (resultCode == Activity.RESULT_CANCELED) {
+                mCheckoutListController.isShowLoadingDetail(false);
+                String message = getString(R.string.paypal_cancel_order);
+                DialogUtil.confirm(getContext(), message, R.string.done);
             }
             if (resultCode == MultiReaderConnectionActivity.TRANSACTION_ERRORS) {
+                mCheckoutListController.isShowLoadingDetail(false);
+                String message = getString(R.string.payment_error);
+                DialogUtil.confirm(getContext(), message, R.string.done);
             }
         }
     }

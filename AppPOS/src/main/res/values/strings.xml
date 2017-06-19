@@ -255,6 +255,8 @@
     <!--PayPal-->
     <string name="paypal">Paypal</string>
     <string name="authorize_cancel_payment">Can not place order.</string>
+    <string name="paypal_cancel_order">The order is canceled</string>
+    <string name="paypal_error">An invalid Payment or PayPalConfiguration was submitted. Please see the docs.</string>
 
     <!--PayPalHere-->
     <string name="multi_readers_both_connected_msg">Both Audio Jack and EMV Reader is connected.</string>
@@ -290,6 +292,7 @@
     <string name="payment_finish_msg">Done</string>
     <string name="payment_processing_msg">Processing Payment...</string>
     <string name="initializing_processing_msg">Initializing SDK...</string>
+    <string name="payment_error">Transaction error. Plase try again</string>
 
     <!-- Strings related to single words -->
     <string name="add">Add</string>

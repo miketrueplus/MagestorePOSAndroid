@@ -68,8 +68,9 @@ public class PaymentPayPalActivity extends AbstractActivity {
                 .clientId(CONFIG_CLIENT_ID)
                 // TODO: set merchant name
                 .merchantName("Magestore")
-                .merchantPrivacyPolicyUri(Uri.parse("https://www.example.com/privacy"))
-                .merchantUserAgreementUri(Uri.parse("https://www.example.com/legal"));
+                .rememberUser(false)
+                .merchantPrivacyPolicyUri(null)
+                .merchantUserAgreementUri(null);
 
         Intent intent_service = new Intent(this, PayPalService.class);
         intent_service.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
@@ -103,7 +104,7 @@ public class PaymentPayPalActivity extends AbstractActivity {
                         data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
                 if (confirm != null) {
                     try {
-                        Log.e("PaymentPayPalActivity", confirm.toJSONObject().toString(4));
+                        Log.d("PaymentPayPalActivity", confirm.toJSONObject().toString(4));
                         JSONObject response = confirm.toJSONObject().getJSONObject("response");
                         String payment_id = response.getString("id");
                         Intent intent = new Intent();
@@ -112,23 +113,23 @@ public class PaymentPayPalActivity extends AbstractActivity {
                         sendBroadcast(intent);
                         finish();
                     } catch (JSONException e) {
-                        Log.e("PaymentPayPalActivity", "an extremely unlikely failure occurred: ", e);
+                        Log.d("PaymentPayPalActivity", "an extremely unlikely failure occurred: ", e);
                         finish();
                     }
                 } else {
                     finish();
                 }
             } else if (resultCode == Activity.RESULT_CANCELED) {
-                String message = "The order is canceled.";
-                Log.e("PaymentPayPalActivity", message);
+                String message = getString(R.string.paypal_cancel_order);
+                Log.d("PaymentPayPalActivity", message);
                 Intent intent = new Intent();
                 intent.setAction(SEND_ERROR_TO_SALE_ACTIVITY);
                 intent.putExtra("message", message);
                 sendBroadcast(intent);
                 finish();
             } else if (resultCode == PaymentActivity.RESULT_EXTRAS_INVALID) {
-                String message = "An invalid Payment or PayPalConfiguration was submitted. Please see the docs.";
-                Log.e("PaymentPayPalActivity", message);
+                String message = getString(R.string.paypal_error);
+                Log.d("PaymentPayPalActivity", message);
                 Intent intent = new Intent();
                 intent.setAction(SEND_ERROR_TO_SALE_ACTIVITY);
                 intent.putExtra("message", message);

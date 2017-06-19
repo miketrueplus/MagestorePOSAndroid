@@ -27,6 +27,7 @@
     <dimen name="text_size">15sp</dimen>
     <dimen name="text_size_18">18sp</dimen>
     <dimen name="text_size_20">20sp</dimen>
+    <dimen name="text_size_25">25sp</dimen>
 
     <!--Login-->
     <dimen name="login_form_background_border_size">2dp</dimen>

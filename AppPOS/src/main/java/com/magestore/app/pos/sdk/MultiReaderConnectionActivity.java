@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.magestore.app.pos.R;
+import com.magestore.app.util.ConfigUtil;
 import com.paypal.merchant.sdk.CardReaderListener;
 import com.paypal.merchant.sdk.CardReaderManager;
 import com.paypal.merchant.sdk.domain.PPError;
@@ -28,7 +29,7 @@ public class MultiReaderConnectionActivity extends Activity {
 
     private static final String LOG_TAG = MultiReaderConnectionActivity.class.getSimpleName();
 
-    private TextView mReadersConnectedMsg;
+    private TextView mReadersConnectedMsg, txt_amount;
     private LinearLayout mActiveReaderLayout;
     private TextView mActiveReaderTextView;
     private Button mActiveReaderChangeButton;
@@ -47,13 +48,14 @@ public class MultiReaderConnectionActivity extends Activity {
         quote_id = getIntent().getStringExtra("quote_id");
         setContentView(R.layout.activity_multi_reader_connection);
 
+        txt_amount = (TextView) findViewById(R.id.txt_amount);
         mReadersConnectedMsg = (TextView) findViewById(R.id.id_readers_connected_msg);
         mActiveReaderLayout = (LinearLayout) findViewById(R.id.id_active_reader_layout);
         mActiveReaderTextView = (TextView) findViewById(R.id.id_active_reader);
         mActiveReaderChangeButton = (Button) findViewById(R.id.id_active_reader_change_button);
         mEMVReaderConnectButton = (Button) findViewById(R.id.id_emv_reader_connect_button);
         mProceedFurtherButton = (Button) findViewById(R.id.id_proceed_button);
-
+        txt_amount.setText(getString(R.string.amount) + ": " + ConfigUtil.formatPrice(amount));
     }
 
     @Override
@@ -155,7 +157,7 @@ public class MultiReaderConnectionActivity extends Activity {
 
     private void chooseActiveReader(final List<CardReaderListener.ReaderTypes> readerTypes) {
         Log.d(LOG_TAG, "chooseActiveReader IN");
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, com.paypal.merchant.sdk.R.layout.sdk_device_name);
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.paypal_here_device_name);
         final ArrayList<BluetoothDevice> deviceArray = new ArrayList<BluetoothDevice>();
         for (CardReaderListener.ReaderTypes reader : readerTypes) {
             adapter.add(getReaderName(reader));
@@ -233,7 +235,7 @@ public class MultiReaderConnectionActivity extends Activity {
 
     private void showAlertDialogWithPairedDevices(final Set<BluetoothDevice> deviceSet) {
         Log.d(LOG_TAG, "showAlertDialogWithPairedDevices IN");
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, com.paypal.merchant.sdk.R.layout.sdk_device_name);
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.paypal_here_device_name);
         final ArrayList<BluetoothDevice> deviceArray = new ArrayList<BluetoothDevice>();
         for (BluetoothDevice device : deviceSet) {
             String deviceName = device.getName();

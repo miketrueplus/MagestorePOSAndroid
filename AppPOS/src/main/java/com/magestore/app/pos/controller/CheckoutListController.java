@@ -378,6 +378,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                     i.putExtra("sandbox", paymentPayPal.getIsSandbox());
                     getMagestoreContext().getActivity().startActivity(i);
                 } else if (paymentPayPalHere != null) {
+                    isShowLoadingDetail(true);
                     actionPaypalHere(paymentPayPalHere);
                 } else {
                     isShowLoadingDetail(true);
