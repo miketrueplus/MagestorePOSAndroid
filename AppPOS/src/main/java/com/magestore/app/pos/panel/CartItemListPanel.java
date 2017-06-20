@@ -45,7 +45,7 @@ public class CartItemListPanel extends AbstractListPanel<CartItem> {
     PanelCartListBinding mBinding;
 
     // button checkout
-    private Button mCheckoutButton;
+    private TextView mCheckoutButton;
 
     public CartItemListPanel(Context context) throws InstantiationException, IllegalAccessException {
         super(context);
@@ -70,7 +70,7 @@ public class CartItemListPanel extends AbstractListPanel<CartItem> {
         mBinding = DataBindingUtil.bind(getView());
 
         // Button
-        mCheckoutButton = (Button) findViewById(R.id.btn_sales_order_checkout);
+        mCheckoutButton = (TextView) findViewById(R.id.btn_sales_order_checkout);
     }
 
     /**

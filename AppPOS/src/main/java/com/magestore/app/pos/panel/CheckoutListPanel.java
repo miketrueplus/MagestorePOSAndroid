@@ -51,7 +51,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
     CustomerAddNewPanel mCustomerAddNewPanel;
     FloatingActionButton bt_sales_discount, bt_custom_sales, bt_remove_discount;
     FloatingActionMenu bt_sales_menu;
-    Button btn_create_customer, btn_use_guest, btn_sales_order_checkout, btn_apply_discount;
+    Button btn_create_customer, btn_use_guest, btn_apply_discount;
     FrameLayout fr_sales_new_customer;
     LinearLayout ll_add_new_customer, ll_new_shipping_address, ll_new_billing_address, ll_shipping_address, ll_sales_shipping, ll_add_new_address;
     View ll_plugins;
@@ -59,8 +59,8 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
     ImageView btn_shipping_address, btn_billing_address;
     ImageButton btn_shipping_adrress_edit, btn_billing_adrress_edit;
     ImageButton btn_shipping_address_delete, btn_billing_address_delete;
-    RelativeLayout rl_add_checkout, rl_remove_checkout, rl_sales_total, cart_background_loading;
-    TextView txt_sales_discount, txt_sales_promotion, text_reward_point_earn;
+    RelativeLayout rl_add_checkout, rl_remove_checkout, cart_background_loading;
+    TextView txt_sales_discount, txt_sales_promotion, text_reward_point_earn, btn_sales_order_checkout;
     public static int NO_TYPE = -1;
     public static int CHANGE_CUSTOMER = 0;
     public static int CREATE_NEW_CUSTOMER = 1;
@@ -102,13 +102,12 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
         super.initLayout();
         mBinding = DataBindingUtil.bind(getView());
 
-        btn_sales_order_checkout = (Button) findViewById(R.id.btn_sales_order_checkout);
+        btn_sales_order_checkout = (TextView) findViewById(R.id.btn_sales_order_checkout);
         ll_action_checkout = (LinearLayout) findViewById(R.id.ll_action_checkout);
         ll_sales_shipping = (LinearLayout) findViewById(R.id.ll_sales_shipping);
         ll_sales_tax = (LinearLayout) findViewById(R.id.ll_sales_tax);
         ll_plugins = (View) findViewById(R.id.ll_checkout_plugins);
         text_reward_point_earn = (TextView) findViewById(R.id.text_reward_point_earn);
-        rl_sales_total = (RelativeLayout) findViewById(R.id.rl_sales_total);
         rl_add_checkout = (RelativeLayout) findViewById(R.id.rl_add_checkout);
         rl_remove_checkout = (RelativeLayout) findViewById(R.id.rl_remove_checkout);
         bt_sales_menu = (FloatingActionMenu) findViewById(R.id.bt_sales_menu);
