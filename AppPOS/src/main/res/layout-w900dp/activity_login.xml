@@ -81,6 +81,7 @@
                                 android:layout_marginBottom="10dp"
                                 android:background="@drawable/login_form_border_edittext"
                                 android:ellipsize="end"
+                                android:focusable="false"
                                 android:hint="@string/login_domain"
                                 android:inputType="text"
                                 android:maxLines="1"
@@ -173,9 +174,9 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_margin="@dimen/layout_margin_5"
+                                    android:enabled="false"
                                     android:textColor="@color/text_color"
                                     android:textSize="@dimen/welcome_text_size"
-                                    android:enabled="false"
                                     magestore_view:layout_no_scroll="true"
                                     magestore_view:layout_row="@layout/simple_textview_row" />
 

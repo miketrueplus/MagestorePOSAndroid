@@ -5,8 +5,10 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.inputmethodservice.KeyboardView;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -33,6 +35,13 @@ import java.util.List;
  */
 
 public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<CheckoutPayment> {
+    private final static int CODE_DELETE = -5;
+    private final static int CODE_CANCEL = -3;
+    private final static int CODE_ADD_00 = 55003;
+    private final static int CODE_ADD_10 = 55005;
+    private final static int CODE_ADD_20 = 55002;
+    private final static int CODE_ADD_50 = 55001;
+    private final static int CODE_PLACE_ORDER = 55004;
     CheckoutListController mCheckoutListController;
     Checkout mCheckout;
     List<EditTextFloat> listTextChangeValue;
@@ -75,30 +84,41 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
         EditText reference_number = (EditText) view.findViewById(R.id.reference_number);
         actionAddReferenceNumber(reference_number, checkoutPayment);
 
-        EditTextFloat checkout_value = (EditTextFloat) view.findViewById(R.id.checkout_value);
+        mKeyboardView.setOnKeyboardActionListener(mOnKeyboardActionListener);
+        final EditTextFloat checkout_value = (EditTextFloat) view.findViewById(R.id.checkout_value);
 
-//        checkout_value.setOnFocusChangeListener(new OnFocusChangeListener() {
-//            @Override public void onFocusChange(View v, boolean hasFocus) {
-//                if( hasFocus ) showCustomKeyboard(v); else hideCustomKeyboard();
-//            }
-//        });
-//
-//        checkout_value.setOnClickListener(new OnClickListener() {
-//            @Override public void onClick(View v) {
-//                showCustomKeyboard(v);
-//            }
-//        });
-//
-//        checkout_value.setOnTouchListener(new OnTouchListener() {
-//            @Override public boolean onTouch(View v, MotionEvent event) {
-//                EditText edittext = (EditText) v;
-//                int inType = edittext.getInputType();       // Backup the input type
-//                edittext.setInputType(InputType.TYPE_NULL); // Disable standard keyboard
-//                edittext.onTouchEvent(event);               // Call native handler
-//                edittext.setInputType(inType);              // Restore input type
-//                return true; // Consume touch event
-//            }
-//        });
+        checkout_value.setOnFocusChangeListener(new OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    checkout_value.setText(ConfigUtil.formatNumber(0.00));
+                    checkout_value.setSelection(checkout_value.length());
+                    showCustomKeyboard(v);
+                } else {
+                    hideCustomKeyboard();
+                }
+            }
+        });
+
+        checkout_value.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showCustomKeyboard(v);
+            }
+        });
+
+        checkout_value.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                EditText edittext = (EditText) v;
+                int inType = edittext.getInputType();       // Backup the input type
+                checkout_value.setCursorVisible(false);
+                edittext.setInputType(InputType.TYPE_NULL); // Disable standard keyboard
+                edittext.onTouchEvent(event);               // Call native handler
+                edittext.setInputType(inType); // Restore input type
+                return true; // Consume touch event
+            }
+        });
 
         mapTextId.put(item, checkout_value);
         checkout_value.setText(ConfigUtil.formatNumber(checkoutPayment.getAmount()));
@@ -315,13 +335,13 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
         int value_2 = ((((int) (amount / 10)) + 1) * 10);
         txt_suggest_2.setText(ConfigUtil.formatNumber(value_2));
 
-        int value_3 = (int) ((((int)(amount / 50)) + 1) * 50);
+        int value_3 = (int) ((((int) (amount / 50)) + 1) * 50);
         if (value_3 == value_2) {
             value_3 = value_3 + 50;
         }
         txt_suggest_3.setText(ConfigUtil.formatNumber(value_3));
 
-        int value_4 = (int) ((((int)(amount / 100)) + 1) * 100);
+        int value_4 = (int) ((((int) (amount / 100)) + 1) * 100);
         if (value_4 == value_3) {
             value_4 = value_4 + 100;
         }
@@ -400,4 +420,103 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
         if (v != null)
             ((InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
+
+    private KeyboardView.OnKeyboardActionListener mOnKeyboardActionListener = new KeyboardView.OnKeyboardActionListener() {
+        @Override
+        public void onKey(int primaryCode, int[] keyCodes) {
+            // Get the EditText and its Editable
+            View focusCurrent = mCheckoutListController.getMagestoreContext().getActivity().getWindow().getCurrentFocus();
+            if (focusCurrent == null || focusCurrent.getClass() != EditTextFloat.class) return;
+            EditTextFloat edittext = (EditTextFloat) focusCurrent;
+            Editable editable = edittext.getText();
+            int start = edittext.getSelectionStart();
+            // Handle key
+            if (primaryCode == CODE_CANCEL) {
+                hideCustomKeyboard();
+            } else if (primaryCode == CODE_PLACE_ORDER) {
+                hideCustomKeyboard();
+                mCheckoutListController.doInputPlaceOrder();
+            } else if (primaryCode == CODE_DELETE) {
+                if (edittext.getValueFloat() > 0) {
+                    String decima_symbol = ConfigUtil.getConfigPriceFormat().getDecimalSymbol();
+                    String text_value = edittext.getText().toString();
+                    String value = text_value.replaceAll("[-\\[\\]^/,'*:.!><~@#$%+=?|\"\\\\()]+", "");
+                    String text = value.substring(0, value.length() - 1);
+                    String text_f = text.substring(0, text.length() - 2);
+                    String text_s = text.substring(text.length() - 2, text.length());
+                    float amount = ConfigUtil.parseFloat(text_f + decima_symbol + text_s);
+                    edittext.setText(ConfigUtil.formatNumber(amount));
+                }
+            } else if (primaryCode == CODE_ADD_00) {
+                String decima_symbol = ConfigUtil.getConfigPriceFormat().getDecimalSymbol();
+                String text_value = edittext.getText().toString();
+                String value = text_value.replaceAll("[-\\[\\]^/,'*:.!><~@#$%+=?|\"\\\\()]+", "");
+                String text = value + "00";
+                String text_f = text.substring(0, text.length() - 2);
+                String text_s = text.substring(text.length() - 2, text.length());
+                float amount = ConfigUtil.parseFloat(text_f + decima_symbol + text_s);
+                edittext.setText(ConfigUtil.formatNumber(amount));
+            } else if (primaryCode == CODE_ADD_10) {
+                float current_amount = edittext.getValueFloat();
+                current_amount = current_amount + 10;
+                edittext.setText(ConfigUtil.formatNumber(current_amount));
+                edittext.setSelection(edittext.length());
+            } else if (primaryCode == CODE_ADD_20) {
+                float current_amount = edittext.getValueFloat();
+                current_amount = current_amount + 20;
+                edittext.setText(ConfigUtil.formatNumber(current_amount));
+                edittext.setSelection(edittext.length());
+            } else if (primaryCode == CODE_ADD_50) {
+                float current_amount = edittext.getValueFloat();
+                current_amount = current_amount + 50;
+                edittext.setText(ConfigUtil.formatNumber(current_amount));
+                edittext.setSelection(edittext.length());
+            } else {
+                String charater = Character.toString((char) primaryCode);
+                String decima_symbol = ConfigUtil.getConfigPriceFormat().getDecimalSymbol();
+                String text_value = edittext.getText().toString();
+                String value = text_value.replaceAll("[-\\[\\]^/,'*:.!><~@#$%+=?|\"\\\\()]+", "");
+                String text = value + charater;
+                String text_f = text.substring(0, text.length() - 2);
+                String text_s = text.substring(text.length() - 2, text.length());
+                float amount = ConfigUtil.parseFloat(text_f + decima_symbol + text_s);
+                edittext.setText(ConfigUtil.formatNumber(amount));
+            }
+        }
+
+        @Override
+        public void onPress(int i) {
+
+        }
+
+        @Override
+        public void onRelease(int i) {
+
+        }
+
+        @Override
+        public void onText(CharSequence charSequence) {
+
+        }
+
+        @Override
+        public void swipeLeft() {
+
+        }
+
+        @Override
+        public void swipeRight() {
+
+        }
+
+        @Override
+        public void swipeDown() {
+
+        }
+
+        @Override
+        public void swipeUp() {
+
+        }
+    };
 }

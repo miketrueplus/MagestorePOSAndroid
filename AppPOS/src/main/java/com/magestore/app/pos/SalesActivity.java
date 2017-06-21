@@ -9,6 +9,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.inputmethodservice.Keyboard;
+import android.inputmethodservice.KeyboardView;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.view.GravityCompat;
@@ -21,6 +23,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
@@ -140,6 +143,9 @@ public class SalesActivity extends AbstractActivity
     CustomerService customerService = null;
     ConfigService configService = null;
 
+    // keyboard
+    KeyboardView mKeyboardView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -235,6 +241,16 @@ public class SalesActivity extends AbstractActivity
         mPluginStoreCreditPanel = (PluginStoreCreditPanel) mCheckoutDetailPanel.findViewById(R.id.rl_store_credit);
         // config print
         ConfigUtil.setTypePrint(getString(R.string.print_type_receipt));
+
+        // keyboard
+        Keyboard mKeyboard = new Keyboard(this, R.xml.keyboard_checkout);
+        mKeyboardView = (KeyboardView) findViewById(R.id.keyboardview);
+        // Attach the keyboard to the view
+        mKeyboardView.setKeyboard(mKeyboard);
+        // Install the key handler
+//        mKeyboardView.setOnKeyboardActionListener(mOnKeyboardActionListener);
+        // Hide the standard keyboard initially
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
     protected void initModel() {
@@ -374,6 +390,8 @@ public class SalesActivity extends AbstractActivity
         mPluginGiftCardListPanel.setPluginGiftCardController(mPluginGiftCardController);
         mPluginRewardPointPanel.setCheckoutListController(mCheckoutListController);
         mPluginStoreCreditPanel.setCheckoutListController(mCheckoutListController);
+
+        mCheckoutPaymentListPanel.setKeyboardView(mKeyboardView);
 
         // TODO: clear quote
 //        DataUtil.removeDataStringToPreferences(getContext(), DataUtil.QUOTE);
@@ -532,34 +550,37 @@ public class SalesActivity extends AbstractActivity
 
     @Override
     public void onBackPressed() {
-        // nếu đang checkout thì back to home
-        if (mCheckoutSuccessPanel.getVisibility() == View.VISIBLE || mCheckoutDetailPanel.getVisibility() == View.VISIBLE) {
-            // nếu đã order success thì tạo new order
-            if (mCheckoutListController.getSelectedItem().getOrderSuccess() != null) {
-                mCheckoutListController.actionNewOrder();
+        if (isCustomKeyboardVisible()) {
+            hideCustomKeyboard();
+        } else {
+            // nếu đang checkout thì back to home
+            if (mCheckoutSuccessPanel.getVisibility() == View.VISIBLE || mCheckoutDetailPanel.getVisibility() == View.VISIBLE) {
+                // nếu đã order success thì tạo new order
+                if (mCheckoutListController.getSelectedItem().getOrderSuccess() != null) {
+                    mCheckoutListController.actionNewOrder();
+                    return;
+                }
+
+                // nếu đã check out xong thì new order
+                mCheckoutListController.onBackTohome();
                 return;
             }
 
-            // nếu đã check out xong thì new order
-            mCheckoutListController.onBackTohome();
-            return;
+            // thoát màn hình
+            new AlertDialog.Builder(this)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setMessage(R.string.ask_are_you_sure_to_close)
+                    .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ConfigUtil.setCheckFirstOpenSession(false);
+                            finish();
+                        }
+
+                    })
+                    .setNegativeButton(R.string.no, null)
+                    .show();
         }
-
-        // thoát màn hình
-        new AlertDialog.Builder(this)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setMessage(R.string.ask_are_you_sure_to_close)
-                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        ConfigUtil.setCheckFirstOpenSession(false);
-                        PayPalHereSDKWrapper.getInstance().disConnectEMVReader(null);
-                        finish();
-                    }
-
-                })
-                .setNegativeButton(R.string.no, null)
-                .show();
     }
 
     // nhận data trả về từ setting
@@ -645,5 +666,14 @@ public class SalesActivity extends AbstractActivity
                 }
             }
         }
+    }
+
+    public void hideCustomKeyboard() {
+        mKeyboardView.setVisibility(View.GONE);
+        mKeyboardView.setEnabled(false);
+    }
+
+    public boolean isCustomKeyboardVisible() {
+        return mKeyboardView.getVisibility() == View.VISIBLE;
     }
 }

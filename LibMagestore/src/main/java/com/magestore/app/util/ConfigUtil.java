@@ -2,6 +2,7 @@ package com.magestore.app.util;
 
 import android.text.format.Time;
 
+import com.magestore.app.lib.model.config.ConfigPriceFormat;
 import com.magestore.app.lib.model.config.ConfigPrint;
 import com.magestore.app.lib.model.config.ConfigTaxClass;
 import com.magestore.app.lib.model.customer.Customer;
@@ -51,6 +52,7 @@ public class ConfigUtil {
     private static String mTypePrint;
     private static PointOfSales mPointOfSales;
     private static String mShiftId;
+    private static ConfigPriceFormat mConfigPriceFormat;
 
     /**
      * @param format
@@ -689,5 +691,13 @@ public class ConfigUtil {
 
     public static boolean isCheckFirstOpenSession() {
         return mCheckFirstOpenSession;
+    }
+
+    public static void setConfigPriceFormat(ConfigPriceFormat mConfigPriceFormat) {
+        ConfigUtil.mConfigPriceFormat = mConfigPriceFormat;
+    }
+
+    public static ConfigPriceFormat getConfigPriceFormat() {
+        return mConfigPriceFormat;
     }
 }

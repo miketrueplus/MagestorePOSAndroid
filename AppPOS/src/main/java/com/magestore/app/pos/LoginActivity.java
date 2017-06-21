@@ -476,7 +476,8 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
 
         @Override
         public void onCancelController(Task task, Exception exp) {
-
+            showProgress(false);
+            showAlertRespone();
         }
 
         @Override

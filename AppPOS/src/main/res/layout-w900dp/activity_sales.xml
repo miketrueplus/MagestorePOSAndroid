@@ -108,6 +108,25 @@
             android:layout_height="match_parent"
             android:visibility="gone"
             magestore_view:layout_panel="@layout/panel_checkout_webview" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/keyboard_bg"
+            android:layout_alignParentBottom="true">
+
+            <android.inputmethodservice.KeyboardView
+                android:id="@+id/keyboardview"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="@color/white"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:keyBackground="@color/keyboard_bg"
+                android:keyTextColor="@color/white"
+                android:visibility="gone" />
+        </RelativeLayout>
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>
 
