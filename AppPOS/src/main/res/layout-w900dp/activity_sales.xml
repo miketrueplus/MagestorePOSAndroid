@@ -18,6 +18,7 @@
             android:id="@+id/frameLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_above="@+id/rl_keyboard"
             android:divider="?android:attr/dividerHorizontal"
             android:orientation="horizontal"
             android:showDividers="middle"
@@ -110,10 +111,11 @@
             magestore_view:layout_panel="@layout/panel_checkout_webview" />
 
         <RelativeLayout
+            android:id="@+id/rl_keyboard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/keyboard_bg"
-            android:layout_alignParentBottom="true">
+            android:layout_alignParentBottom="true"
+            android:background="@color/keyboard_bg">
 
             <android.inputmethodservice.KeyboardView
                 android:id="@+id/keyboardview"
@@ -124,6 +126,7 @@
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:keyBackground="@color/keyboard_bg"
+                android:keyPreviewLayout="@null"
                 android:keyTextColor="@color/white"
                 android:visibility="gone" />
         </RelativeLayout>

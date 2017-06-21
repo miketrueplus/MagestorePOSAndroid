@@ -3,6 +3,7 @@ package com.magestore.app.pos.panel;
 import android.app.Activity;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
 import android.text.Editable;
 import android.text.InputType;
@@ -417,6 +418,11 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
     public void showCustomKeyboard(View v) {
         mKeyboardView.setVisibility(View.VISIBLE);
         mKeyboardView.setEnabled(true);
+        for (Keyboard.Key key : mKeyboardView.getKeyboard().getKeys()) {
+            if (key.codes[0] == CODE_PLACE_ORDER) {
+
+            }
+        }
         if (v != null)
             ((InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(v.getWindowToken(), 0);
     }

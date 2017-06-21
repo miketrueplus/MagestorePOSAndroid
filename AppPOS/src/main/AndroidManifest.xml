@@ -37,7 +37,8 @@
             android:name=".WelcomeActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/sales_title_sales_list"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".SessionActivity"
             android:configChanges="orientation|screenSize"

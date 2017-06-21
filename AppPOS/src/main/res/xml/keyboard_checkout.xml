@@ -5,7 +5,7 @@
     android:verticalGap="0.05%p"
     android:horizontalGap="0.05%p">
     <Row>
-        <Key android:codes="55005" android:keyLabel="+10" android:keyEdgeFlags="left" android:popupCharacters="+10"/>
+        <Key android:codes="55005" android:keyLabel="+10" android:keyEdgeFlags="left" android:popupCharacters="+10" />
         <Key android:codes="55"    android:keyLabel="7"  android:popupCharacters="7"/>
         <Key android:codes="56"    android:keyLabel="8" android:popupCharacters="8"/>
         <Key android:codes="57"    android:keyLabel="9" android:popupCharacters="9"/>
