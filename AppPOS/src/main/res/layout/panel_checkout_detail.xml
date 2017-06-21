@@ -378,9 +378,15 @@
                                     android:layout_toLeftOf="@+id/fr_add_payment"
                                     android:orientation="horizontal">
 
+                                    <FrameLayout
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1" />
+
                                     <RelativeLayout
                                         android:layout_width="0dp"
                                         android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/checkout_margin"
                                         android:layout_weight="1"
                                         android:background="@drawable/checkout_border_linear_layout"
                                         android:padding="@dimen/layout_margin_5">
@@ -400,12 +406,6 @@
                                             android:layout_centerVertical="true"
                                             android:src="@drawable/ic_checkout_add_payment" />
                                     </RelativeLayout>
-
-                                    <FrameLayout
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginLeft="@dimen/checkout_margin"
-                                        android:layout_weight="1" />
                                 </LinearLayout>
 
                                 <FrameLayout

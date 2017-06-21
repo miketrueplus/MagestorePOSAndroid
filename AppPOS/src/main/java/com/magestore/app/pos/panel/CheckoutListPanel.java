@@ -122,7 +122,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
 
     @Override
     public void initValue() {
-        btn_sales_order_checkout.setOnClickListener(new OnClickListener() {
+        ll_action_checkout.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 String place_order = getContext().getString(R.string.sales_place_holder);
@@ -272,7 +272,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
     }
 
     public void showButtonCheckout(boolean isShow) {
-        ll_action_checkout.setVisibility(isShow ? VISIBLE : GONE);
+        ll_action_checkout.setEnabled(isShow ? true : false);
     }
 
     public void showSalesMenuDiscount(boolean isShow) {

@@ -1,13 +1,17 @@
 package com.magestore.app.pos.panel;
 
+import android.app.Activity;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.inputmethodservice.KeyboardView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.checkout.CheckoutPayment;
@@ -33,6 +37,11 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
     Checkout mCheckout;
     List<EditTextFloat> listTextChangeValue;
     HashMap<CheckoutPayment, EditTextFloat> mapTextId;
+    KeyboardView mKeyboardView;
+
+    public void setKeyboardView(KeyboardView mKeyboardView) {
+        this.mKeyboardView = mKeyboardView;
+    }
 
     public void setCheckoutListController(CheckoutListController mCheckoutListController) {
         this.mCheckoutListController = mCheckoutListController;
@@ -67,9 +76,40 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
         actionAddReferenceNumber(reference_number, checkoutPayment);
 
         EditTextFloat checkout_value = (EditTextFloat) view.findViewById(R.id.checkout_value);
+
+//        checkout_value.setOnFocusChangeListener(new OnFocusChangeListener() {
+//            @Override public void onFocusChange(View v, boolean hasFocus) {
+//                if( hasFocus ) showCustomKeyboard(v); else hideCustomKeyboard();
+//            }
+//        });
+//
+//        checkout_value.setOnClickListener(new OnClickListener() {
+//            @Override public void onClick(View v) {
+//                showCustomKeyboard(v);
+//            }
+//        });
+//
+//        checkout_value.setOnTouchListener(new OnTouchListener() {
+//            @Override public boolean onTouch(View v, MotionEvent event) {
+//                EditText edittext = (EditText) v;
+//                int inType = edittext.getInputType();       // Backup the input type
+//                edittext.setInputType(InputType.TYPE_NULL); // Disable standard keyboard
+//                edittext.onTouchEvent(event);               // Call native handler
+//                edittext.setInputType(inType);              // Restore input type
+//                return true; // Consume touch event
+//            }
+//        });
+
         mapTextId.put(item, checkout_value);
         checkout_value.setText(ConfigUtil.formatNumber(checkoutPayment.getAmount()));
         actionChangeValueTotal(checkout_value, mCheckout, checkoutPayment);
+
+        TextView txt_suggest_1 = (TextView) view.findViewById(R.id.txt_suggest_payment_1);
+        TextView txt_suggest_2 = (TextView) view.findViewById(R.id.txt_suggest_payment_2);
+        TextView txt_suggest_3 = (TextView) view.findViewById(R.id.txt_suggest_payment_3);
+        TextView txt_suggest_4 = (TextView) view.findViewById(R.id.txt_suggest_payment_4);
+
+        actionSuggestPayment(item, checkout_value, txt_suggest_1, txt_suggest_2, txt_suggest_3, txt_suggest_4);
 
         RelativeLayout rl_remove_payment = (RelativeLayout) view.findViewById(R.id.rl_remove_payment);
         rl_remove_payment.setOnClickListener(new OnClickListener() {
@@ -113,9 +153,9 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
                 mCheckoutListController.isEnableCreateInvoice(false);
                 if (mCheckoutListController.getSelectedItem().getStatus() == CheckoutListController.STATUS_CHECKOUT_PROCESSING) {
                     if (money == grand_total) {
-                        if(mCheckoutListController.getListChoosePayment() != null && mCheckoutListController.getListChoosePayment().size() > 0){
+                        if (mCheckoutListController.getListChoosePayment() != null && mCheckoutListController.getListChoosePayment().size() > 0) {
                             mCheckoutListController.changeTitlePlaceOrder(true);
-                        }else{
+                        } else {
                             mCheckoutListController.changeTitlePlaceOrder(false);
                         }
                     } else {
@@ -155,9 +195,9 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
             mCheckoutListController.isEnableButtonAddPayment(totalValue > 0 ? true : false);
             mCheckoutListController.isEnableCreateInvoice(false);
             if (money == grand_total) {
-                if(mList.size() > 0){
+                if (mList.size() > 0) {
                     mCheckoutListController.changeTitlePlaceOrder(true);
-                }else{
+                } else {
                     mCheckoutListController.changeTitlePlaceOrder(false);
                 }
             } else {
@@ -267,6 +307,53 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
         });
     }
 
+    private void actionSuggestPayment(CheckoutPayment checkoutPayment, final EditTextFloat checkout_value, TextView txt_suggest_1, TextView txt_suggest_2, TextView txt_suggest_3, TextView txt_suggest_4) {
+        final float amount = checkoutPayment.getRealAmount();
+
+        txt_suggest_1.setText(ConfigUtil.formatNumber(amount));
+
+        int value_2 = ((((int) (amount / 10)) + 1) * 10);
+        txt_suggest_2.setText(ConfigUtil.formatNumber(value_2));
+
+        int value_3 = (int) ((((int)(amount / 50)) + 1) * 50);
+        if (value_3 == value_2) {
+            value_3 = value_3 + 50;
+        }
+        txt_suggest_3.setText(ConfigUtil.formatNumber(value_3));
+
+        int value_4 = (int) ((((int)(amount / 100)) + 1) * 100);
+        if (value_4 == value_3) {
+            value_4 = value_4 + 100;
+        }
+        txt_suggest_4.setText(ConfigUtil.formatNumber(value_4));
+
+        actionClickSuggest(1, txt_suggest_1, amount, 0, checkout_value);
+
+        actionClickSuggest(2, txt_suggest_2, 0, value_2, checkout_value);
+
+        actionClickSuggest(3, txt_suggest_3, 0, value_3, checkout_value);
+
+        actionClickSuggest(4, txt_suggest_4, 0, value_4, checkout_value);
+    }
+
+    private void actionClickSuggest(int type, TextView txt_suggest, final float amount, final int value, final EditTextFloat checkout_value) {
+        if (type == 1) {
+            txt_suggest.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    checkout_value.setText(ConfigUtil.formatNumber(amount));
+                }
+            });
+        } else if (type == 2 || type == 3 || type == 4) {
+            txt_suggest.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    checkout_value.setText(ConfigUtil.formatNumber(value));
+                }
+            });
+        }
+    }
+
     // plugin store credit
     private boolean checkPaymentStoreCredit() {
         for (CheckoutPayment payment : mList) {
@@ -300,5 +387,17 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
 
     public void setCheckout(Checkout mCheckout) {
         this.mCheckout = mCheckout;
+    }
+
+    public void hideCustomKeyboard() {
+        mKeyboardView.setVisibility(View.GONE);
+        mKeyboardView.setEnabled(false);
+    }
+
+    public void showCustomKeyboard(View v) {
+        mKeyboardView.setVisibility(View.VISIBLE);
+        mKeyboardView.setEnabled(true);
+        if (v != null)
+            ((InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 }
