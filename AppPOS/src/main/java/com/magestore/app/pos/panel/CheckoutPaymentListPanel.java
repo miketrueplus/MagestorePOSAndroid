@@ -13,6 +13,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -44,11 +45,20 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
     private final static int CODE_ADD_20 = 55002;
     private final static int CODE_ADD_50 = 55001;
     private final static int CODE_PLACE_ORDER = 55004;
+    RelativeLayout rl_keyboard_add_10, rl_keyboard_add_20, rl_keyboard_add_50, rl_keyboard_add_00,
+            rl_keyboard_0, rl_keyboard_1, rl_keyboard_2, rl_keyboard_3, rl_keyboard_4,
+            rl_keyboard_5, rl_keyboard_6, rl_keyboard_7, rl_keyboard_8, rl_keyboard_9,
+            rl_keyboard_delete, rl_keyboard_hidden, rl_keyboard_place_order;
     CheckoutListController mCheckoutListController;
     Checkout mCheckout;
     List<EditTextFloat> listTextChangeValue;
     HashMap<CheckoutPayment, EditTextFloat> mapTextId;
     KeyboardView mKeyboardView;
+    LinearLayout ll_custom_keyboard;
+
+    public void setLayoutCustomKeyboard(LinearLayout ll_custom_keyboard) {
+        this.ll_custom_keyboard = ll_custom_keyboard;
+    }
 
     public void setKeyboardView(KeyboardView mKeyboardView) {
         this.mKeyboardView = mKeyboardView;
@@ -85,6 +95,42 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
 
         EditText reference_number = (EditText) view.findViewById(R.id.reference_number);
         actionAddReferenceNumber(reference_number, checkoutPayment);
+
+        rl_keyboard_add_10 = (RelativeLayout) ll_custom_keyboard.findViewById(R.id.rl_keyboard_add_10);
+        rl_keyboard_add_20 = (RelativeLayout) ll_custom_keyboard.findViewById(R.id.rl_keyboard_add_20);
+        rl_keyboard_add_50 = (RelativeLayout) ll_custom_keyboard.findViewById(R.id.rl_keyboard_add_50);
+        rl_keyboard_add_00 = (RelativeLayout) ll_custom_keyboard.findViewById(R.id.rl_keyboard_add_00);
+        rl_keyboard_0 = (RelativeLayout) ll_custom_keyboard.findViewById(R.id.rl_keyboard_0);
+        rl_keyboard_1 = (RelativeLayout) ll_custom_keyboard.findViewById(R.id.rl_keyboard_1);
+        rl_keyboard_2 = (RelativeLayout) ll_custom_keyboard.findViewById(R.id.rl_keyboard_2);
+        rl_keyboard_3 = (RelativeLayout) ll_custom_keyboard.findViewById(R.id.rl_keyboard_3);
+        rl_keyboard_4 = (RelativeLayout) ll_custom_keyboard.findViewById(R.id.rl_keyboard_4);
+        rl_keyboard_5 = (RelativeLayout) ll_custom_keyboard.findViewById(R.id.rl_keyboard_5);
+        rl_keyboard_6 = (RelativeLayout) ll_custom_keyboard.findViewById(R.id.rl_keyboard_6);
+        rl_keyboard_7 = (RelativeLayout) ll_custom_keyboard.findViewById(R.id.rl_keyboard_7);
+        rl_keyboard_8 = (RelativeLayout) ll_custom_keyboard.findViewById(R.id.rl_keyboard_8);
+        rl_keyboard_9 = (RelativeLayout) ll_custom_keyboard.findViewById(R.id.rl_keyboard_9);
+        rl_keyboard_delete = (RelativeLayout) ll_custom_keyboard.findViewById(R.id.rl_keyboard_delete);
+        rl_keyboard_hidden = (RelativeLayout) ll_custom_keyboard.findViewById(R.id.rl_keyboard_hidden);
+        rl_keyboard_place_order = (RelativeLayout) ll_custom_keyboard.findViewById(R.id.rl_keyboard_place_order);
+
+        rl_keyboard_add_10.setOnClickListener(mOnKeyBoardClick);
+        rl_keyboard_add_20.setOnClickListener(mOnKeyBoardClick);
+        rl_keyboard_add_50.setOnClickListener(mOnKeyBoardClick);
+        rl_keyboard_add_00.setOnClickListener(mOnKeyBoardClick);
+        rl_keyboard_0.setOnClickListener(mOnKeyBoardClick);
+        rl_keyboard_1.setOnClickListener(mOnKeyBoardClick);
+        rl_keyboard_2.setOnClickListener(mOnKeyBoardClick);
+        rl_keyboard_3.setOnClickListener(mOnKeyBoardClick);
+        rl_keyboard_4.setOnClickListener(mOnKeyBoardClick);
+        rl_keyboard_5.setOnClickListener(mOnKeyBoardClick);
+        rl_keyboard_6.setOnClickListener(mOnKeyBoardClick);
+        rl_keyboard_7.setOnClickListener(mOnKeyBoardClick);
+        rl_keyboard_8.setOnClickListener(mOnKeyBoardClick);
+        rl_keyboard_9.setOnClickListener(mOnKeyBoardClick);
+        rl_keyboard_delete.setOnClickListener(mOnKeyBoardClick);
+        rl_keyboard_hidden.setOnClickListener(mOnKeyBoardClick);
+        rl_keyboard_place_order.setOnClickListener(mOnKeyBoardClick);
 
         mKeyboardView.setOnKeyboardActionListener(mOnKeyboardActionListener);
         final EditTextFloat checkout_value = (EditTextFloat) view.findViewById(R.id.checkout_value);
@@ -412,20 +458,85 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
     }
 
     public void hideCustomKeyboard() {
-        mKeyboardView.setVisibility(View.GONE);
-        mKeyboardView.setEnabled(false);
+        ll_custom_keyboard.setVisibility(View.GONE);
+        ll_custom_keyboard.setEnabled(false);
     }
 
     public void showCustomKeyboard(View v) {
-        mKeyboardView.setVisibility(View.VISIBLE);
-        mKeyboardView.setEnabled(true);
-        for (Keyboard.Key key : mKeyboardView.getKeyboard().getKeys()) {
-            if (key.codes[0] == CODE_PLACE_ORDER) {
-
-            }
-        }
+        ll_custom_keyboard.setVisibility(View.VISIBLE);
+        ll_custom_keyboard.setEnabled(true);
         if (v != null)
             ((InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(v.getWindowToken(), 0);
+    }
+
+    private OnClickListener mOnKeyBoardClick = new OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            int id = view.getId();
+            View focusCurrent = mCheckoutListController.getMagestoreContext().getActivity().getWindow().getCurrentFocus();
+            if (focusCurrent == null || focusCurrent.getClass() != EditTextFloat.class) return;
+            EditTextFloat edittext = (EditTextFloat) focusCurrent;
+            if (id == R.id.rl_keyboard_hidden) {
+                hideCustomKeyboard();
+            } else if (id == R.id.rl_keyboard_delete) {
+                if (edittext.getValueFloat() > 0) {
+                    String text_value = edittext.getText().toString();
+                    String value = StringUtil.removeAllSymbol(text_value);
+                    String text = value.substring(0, value.length() - 1);
+                    edittext.setText(ConfigUtil.formatNumber(convertToPrice(text)));
+                }
+            } else if (id == R.id.rl_keyboard_place_order) {
+                hideCustomKeyboard();
+                mCheckoutListController.doInputPlaceOrder();
+            } else if (id == R.id.rl_keyboard_add_00) {
+                String text_value = edittext.getText().toString();
+                String value = StringUtil.removeAllSymbol(text_value);
+                String text = value + "00";
+                edittext.setText(ConfigUtil.formatNumber(convertToPrice(text)));
+            } else if (id == R.id.rl_keyboard_add_10) {
+                float current_amount = edittext.getValueFloat();
+                current_amount = current_amount + 10;
+                edittext.setText(ConfigUtil.formatNumber(current_amount));
+                edittext.setSelection(edittext.length());
+            } else if (id == R.id.rl_keyboard_add_20) {
+                float current_amount = edittext.getValueFloat();
+                current_amount = current_amount + 20;
+                edittext.setText(ConfigUtil.formatNumber(current_amount));
+                edittext.setSelection(edittext.length());
+            } else if (id == R.id.rl_keyboard_add_50) {
+                float current_amount = edittext.getValueFloat();
+                current_amount = current_amount + 50;
+                edittext.setText(ConfigUtil.formatNumber(current_amount));
+                edittext.setSelection(edittext.length());
+            } else if (id == R.id.rl_keyboard_0) {
+                actionCharacterKeyboard("0", edittext);
+            } else if (id == R.id.rl_keyboard_1) {
+                actionCharacterKeyboard("1", edittext);
+            } else if (id == R.id.rl_keyboard_2) {
+                actionCharacterKeyboard("2", edittext);
+            } else if (id == R.id.rl_keyboard_3) {
+                actionCharacterKeyboard("3", edittext);
+            } else if (id == R.id.rl_keyboard_4) {
+                actionCharacterKeyboard("4", edittext);
+            } else if (id == R.id.rl_keyboard_5) {
+                actionCharacterKeyboard("5", edittext);
+            } else if (id == R.id.rl_keyboard_6) {
+                actionCharacterKeyboard("6", edittext);
+            } else if (id == R.id.rl_keyboard_7) {
+                actionCharacterKeyboard("7", edittext);
+            } else if (id == R.id.rl_keyboard_8) {
+                actionCharacterKeyboard("8", edittext);
+            } else if (id == R.id.rl_keyboard_9) {
+                actionCharacterKeyboard("9", edittext);
+            }
+        }
+    };
+
+    private void actionCharacterKeyboard(String charater, EditTextFloat edittext) {
+        String text_value = edittext.getText().toString();
+        String value = StringUtil.removeAllSymbol(text_value);
+        String text = value + charater;
+        edittext.setText(ConfigUtil.formatNumber(convertToPrice(text)));
     }
 
     private KeyboardView.OnKeyboardActionListener mOnKeyboardActionListener = new KeyboardView.OnKeyboardActionListener() {
@@ -515,7 +626,7 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
         }
     };
 
-    private float convertToPrice(String amount){
+    private float convertToPrice(String amount) {
         String decima_symbol = ConfigUtil.getConfigPriceFormat().getDecimalSymbol();
         String text_f = amount.substring(0, amount.length() - 2);
         String text_s = amount.substring(amount.length() - 2, amount.length());

@@ -130,4 +130,5 @@
 
     <!--Keyboard-->
     <color name="keyboard_bg">#aeb4ba</color>
+    <color name="keyboard_select_color">#ddd</color>
 </resources>

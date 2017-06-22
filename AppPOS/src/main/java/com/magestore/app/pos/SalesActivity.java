@@ -25,6 +25,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.edwardvanraak.materialbarcodescanner.MaterialBarcodeScanner;
@@ -145,6 +146,7 @@ public class SalesActivity extends AbstractActivity
 
     // keyboard
     KeyboardView mKeyboardView;
+    LinearLayout ll_custom_keyboard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -243,6 +245,8 @@ public class SalesActivity extends AbstractActivity
         ConfigUtil.setTypePrint(getString(R.string.print_type_receipt));
 
         // keyboard
+        ll_custom_keyboard = (LinearLayout) findViewById(R.id.ll_custom_keyboard);
+
         Keyboard mKeyboard = new Keyboard(this, R.xml.keyboard_checkout);
         mKeyboardView = (KeyboardView) findViewById(R.id.keyboardview);
         // Attach the keyboard to the view
@@ -392,6 +396,7 @@ public class SalesActivity extends AbstractActivity
         mPluginStoreCreditPanel.setCheckoutListController(mCheckoutListController);
 
         mCheckoutPaymentListPanel.setKeyboardView(mKeyboardView);
+        mCheckoutPaymentListPanel.setLayoutCustomKeyboard(ll_custom_keyboard);
 
         // TODO: clear quote
 //        DataUtil.removeDataStringToPreferences(getContext(), DataUtil.QUOTE);
@@ -669,11 +674,11 @@ public class SalesActivity extends AbstractActivity
     }
 
     public void hideCustomKeyboard() {
-        mKeyboardView.setVisibility(View.GONE);
-        mKeyboardView.setEnabled(false);
+        ll_custom_keyboard.setVisibility(View.GONE);
+        ll_custom_keyboard.setEnabled(false);
     }
 
     public boolean isCustomKeyboardVisible() {
-        return mKeyboardView.getVisibility() == View.VISIBLE;
+        return ll_custom_keyboard.getVisibility() == View.VISIBLE;
     }
 }

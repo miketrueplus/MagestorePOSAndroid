@@ -130,6 +130,330 @@
                 android:keyTextColor="@color/white"
                 android:keyTextSize="@dimen/text_size_25"
                 android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/ll_custom_keyboard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/line"
+                    android:layout_marginRight="@dimen/line"
+                    android:orientation="horizontal">
+
+                    <RelativeLayout
+                        android:id="@+id/rl_keyboard_add_10"
+                        android:layout_width="@dimen/keyboard_size_1_colum"
+                        android:layout_height="@dimen/keyboard_size_1_colum"
+                        android:background="@drawable/custom_keyboard_press"
+                        android:clickable="true">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:text="+10"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_18" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rl_keyboard_7"
+                        android:layout_width="@dimen/keyboard_size_1_colum"
+                        android:layout_height="@dimen/keyboard_size_1_colum"
+                        android:layout_marginLeft="@dimen/line"
+                        android:background="@drawable/custom_keyboard_press">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:text="7"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_18" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rl_keyboard_8"
+                        android:layout_width="@dimen/keyboard_size_1_colum"
+                        android:layout_height="@dimen/keyboard_size_1_colum"
+                        android:layout_marginLeft="@dimen/line"
+                        android:background="@drawable/custom_keyboard_press"
+                        android:clickable="true">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:text="8"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_18" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rl_keyboard_9"
+                        android:layout_width="@dimen/keyboard_size_1_colum"
+                        android:layout_height="@dimen/keyboard_size_1_colum"
+                        android:layout_marginLeft="@dimen/line"
+                        android:background="@drawable/custom_keyboard_press"
+                        android:clickable="true">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:text="9"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_18" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rl_keyboard_delete"
+                        android:layout_width="@dimen/keyboard_size_1_colum"
+                        android:layout_height="@dimen/keyboard_size_1_colum"
+                        android:layout_marginLeft="@dimen/line"
+                        android:background="@drawable/custom_keyboard_press"
+                        android:clickable="true">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/sym_keyboard_delete" />
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/line"
+                    android:layout_marginRight="@dimen/line"
+                    android:layout_marginTop="@dimen/line"
+                    android:orientation="horizontal">
+
+                    <RelativeLayout
+                        android:id="@+id/rl_keyboard_add_20"
+                        android:layout_width="@dimen/keyboard_size_1_colum"
+                        android:layout_height="@dimen/keyboard_size_1_colum"
+                        android:background="@drawable/custom_keyboard_press"
+                        android:clickable="true">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:text="+20"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_18" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rl_keyboard_4"
+                        android:layout_width="@dimen/keyboard_size_1_colum"
+                        android:layout_height="@dimen/keyboard_size_1_colum"
+                        android:layout_marginLeft="@dimen/line"
+                        android:background="@drawable/custom_keyboard_press"
+                        android:clickable="true">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:text="4"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_18" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rl_keyboard_5"
+                        android:layout_width="@dimen/keyboard_size_1_colum"
+                        android:layout_height="@dimen/keyboard_size_1_colum"
+                        android:layout_marginLeft="@dimen/line"
+                        android:background="@drawable/custom_keyboard_press"
+                        android:clickable="true">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:text="5"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_18" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rl_keyboard_6"
+                        android:layout_width="@dimen/keyboard_size_1_colum"
+                        android:layout_height="@dimen/keyboard_size_1_colum"
+                        android:layout_marginLeft="@dimen/line"
+                        android:background="@drawable/custom_keyboard_press"
+                        android:clickable="true">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:text="6"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_18" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rl_keyboard_add_00"
+                        android:layout_width="@dimen/keyboard_size_1_colum"
+                        android:layout_height="@dimen/keyboard_size_1_colum"
+                        android:layout_marginLeft="@dimen/line"
+                        android:background="@drawable/custom_keyboard_press"
+                        android:clickable="true">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:text="00"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_18" />
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/line"
+                    android:layout_marginRight="@dimen/line"
+                    android:layout_marginTop="@dimen/line"
+                    android:orientation="horizontal">
+
+                    <RelativeLayout
+                        android:id="@+id/rl_keyboard_add_50"
+                        android:layout_width="@dimen/keyboard_size_1_colum"
+                        android:layout_height="@dimen/keyboard_size_1_colum"
+                        android:background="@drawable/custom_keyboard_press"
+                        android:clickable="true">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:text="+50"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_18" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rl_keyboard_1"
+                        android:layout_width="@dimen/keyboard_size_1_colum"
+                        android:layout_height="@dimen/keyboard_size_1_colum"
+                        android:layout_marginLeft="@dimen/line"
+                        android:background="@drawable/custom_keyboard_press">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:text="1"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_18" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rl_keyboard_2"
+                        android:layout_width="@dimen/keyboard_size_1_colum"
+                        android:layout_height="@dimen/keyboard_size_1_colum"
+                        android:layout_marginLeft="@dimen/line"
+                        android:background="@drawable/custom_keyboard_press"
+                        android:clickable="true">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:text="2"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_18" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rl_keyboard_3"
+                        android:layout_width="@dimen/keyboard_size_1_colum"
+                        android:layout_height="@dimen/keyboard_size_1_colum"
+                        android:layout_marginLeft="@dimen/line"
+                        android:background="@drawable/custom_keyboard_press"
+                        android:clickable="true">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:text="3"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_18" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rl_keyboard_0"
+                        android:layout_width="@dimen/keyboard_size_1_colum"
+                        android:layout_height="@dimen/keyboard_size_1_colum"
+                        android:layout_marginLeft="@dimen/line"
+                        android:background="@drawable/custom_keyboard_press"
+                        android:clickable="true">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:text="0"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_18" />
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/line"
+                    android:layout_marginRight="@dimen/line"
+                    android:layout_marginTop="@dimen/line"
+                    android:orientation="horizontal">
+
+                    <RelativeLayout
+                        android:id="@+id/rl_keyboard_hidden"
+                        android:layout_width="@dimen/keyboard_size_2_colum"
+                        android:layout_height="@dimen/keyboard_size_1_colum"
+                        android:background="@drawable/custom_keyboard_press"
+                        android:clickable="true">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/numpaddown" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rl_keyboard_place_order"
+                        android:layout_width="@dimen/keyboard_size_3_colum"
+                        android:layout_height="@dimen/keyboard_size_1_colum"
+                        android:layout_marginLeft="@dimen/line"
+                        android:background="@drawable/custom_keyboard_checkout_press"
+                        android:clickable="true">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:text="@string/sales_place_holder"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_18" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </LinearLayout>
         </RelativeLayout>
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>
