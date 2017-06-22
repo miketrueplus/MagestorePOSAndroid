@@ -448,13 +448,13 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
                     String text_value = edittext.getText().toString();
                     String value = StringUtil.removeAllSymbol(text_value);
                     String text = value.substring(0, value.length() - 1);
-                    edittext.setText(ConfigUtil.formatNumber(ConfigUtil.formatNumber(convertToPrice(text))));
+                    edittext.setText(ConfigUtil.formatNumber(convertToPrice(text)));
                 }
             } else if (primaryCode == CODE_ADD_00) {
                 String text_value = edittext.getText().toString();
                 String value = StringUtil.removeAllSymbol(text_value);
                 String text = value + "00";
-                edittext.setText(ConfigUtil.formatNumber(ConfigUtil.formatNumber(convertToPrice(text))));
+                edittext.setText(ConfigUtil.formatNumber(convertToPrice(text)));
             } else if (primaryCode == CODE_ADD_10) {
                 float current_amount = edittext.getValueFloat();
                 current_amount = current_amount + 10;
