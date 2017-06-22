@@ -27,7 +27,7 @@
         <Key android:codes="48"    android:keyLabel="0" android:keyEdgeFlags="right" android:popupCharacters="0"/>
     </Row>
     <Row>
-        <Key android:codes="-3"    android:keyIcon="@drawable/sym_keyboard_done" android:keyEdgeFlags="left" android:keyWidth="19%p" android:iconPreview="@drawable/ic_barcode"/>
-        <Key android:codes="55004" android:keyLabel="@string/sales_place_holder"  android:keyEdgeFlags="right" android:keyWidth="28.55%p"/>
+        <Key android:codes="-3"    android:keyIcon="@drawable/numpaddown" android:keyEdgeFlags="left" android:keyWidth="19.05%p" android:iconPreview="@drawable/ic_barcode"/>
+        <Key android:codes="55004" android:keyLabel="@string/sales_place_holder"  android:keyEdgeFlags="right" android:keyWidth="28.5%p"/>
     </Row>
 </Keyboard>

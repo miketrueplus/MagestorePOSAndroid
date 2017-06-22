@@ -125,9 +125,10 @@
                 android:background="@color/white"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
-                android:keyBackground="@color/keyboard_bg"
+                android:keyBackground="@drawable/keyboard_background"
                 android:keyPreviewLayout="@null"
                 android:keyTextColor="@color/white"
+                android:keyTextSize="@dimen/text_size_25"
                 android:visibility="gone" />
         </RelativeLayout>
     </RelativeLayout>
