@@ -20,14 +20,14 @@
         <Key android:codes="55003" android:keyLabel="00" android:isRepeatable="true"  android:keyEdgeFlags="right" android:popupCharacters="00"/>
     </Row>
     <Row>
-        <Key android:codes="55001" android:keyLabel="+50"  android:keyEdgeFlags="left" android:popupCharacters="+50"/>
+        <Key android:codes="55001" android:keyLabel="+50"  android:keyEdgeFlags="left" android:popupCharacters="+50" />
         <Key android:codes="49"    android:keyLabel="1" android:popupCharacters="1"/>
         <Key android:codes="50"    android:keyLabel="2" android:popupCharacters="2"/>
         <Key android:codes="51"    android:keyLabel="3" android:popupCharacters="3"/>
         <Key android:codes="48"    android:keyLabel="0" android:keyEdgeFlags="right" android:popupCharacters="0"/>
     </Row>
     <Row>
-        <Key android:codes="-3"    android:keyIcon="@drawable/sym_keyboard_done" android:keyEdgeFlags="left" android:keyWidth="19%p"/>
+        <Key android:codes="-3"    android:keyIcon="@drawable/sym_keyboard_done" android:keyEdgeFlags="left" android:keyWidth="19%p" android:iconPreview="@drawable/ic_barcode"/>
         <Key android:codes="55004" android:keyLabel="@string/sales_place_holder"  android:keyEdgeFlags="right" android:keyWidth="28.55%p"/>
     </Row>
 </Keyboard>

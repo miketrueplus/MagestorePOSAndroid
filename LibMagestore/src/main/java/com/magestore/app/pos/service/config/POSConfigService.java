@@ -102,18 +102,10 @@ public class POSConfigService extends AbstractService implements ConfigService {
 
     private DecimalFormat currencyFormat(ConfigPriceFormat priceFormat) {
         // khởi tạo currency format
-        String pattern = (priceFormat.getPattern().indexOf(StringUtil.STRING_CURRENCY) == 0) ? "¤¤ ###,##0.0" : "###,##0.0 ¤¤";
+        String pattern = "###,###.#";
         DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.getDefault());
-        symbols.setDecimalSeparator(priceFormat.getDecimalSymbol().charAt(0));
-        symbols.setGroupingSeparator(priceFormat.getGroupSymbol().charAt(0));
-
-//        String symbol = priceFormat.getCurrencySymbol();
-//        if (symbol.startsWith("u")) symbol = "\\" + symbol;
-        symbols.setCurrencySymbol(priceFormat.getCurrencySymbol());
-        symbols.setInternationalCurrencySymbol(priceFormat.getCurrencySymbol());
-//        symbols.setCurrencySymbol(StringEscapeUtils.unescapeJava(symbol));
-//        symbols.setInternationalCurrencySymbol(StringEscapeUtils.unescapeJava(symbol));
-
+        symbols.setDecimalSeparator('.');
+        symbols.setGroupingSeparator('.');
         DecimalFormat currencyFormat = new DecimalFormat(pattern, symbols);
         currencyFormat.setGroupingSize(priceFormat.getGroupLength());
         currencyFormat.setMaximumFractionDigits(priceFormat.getPrecision());

@@ -176,4 +176,8 @@ public class StringUtil {
     public static boolean isNullOrEmpty(String str) {
         return str == null || STRING_EMPTY.equals(str.trim());
     }
+
+    public static String removeAllSymbol(String str){
+        return str.replaceAll("[-\\[\\]^/,'*:.!><~@#$%+=?|\"\\\\()\\s]+", "");
+    }
 }

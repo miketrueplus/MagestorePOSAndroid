@@ -23,6 +23,7 @@ import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.CheckoutListController;
 import com.magestore.app.pos.databinding.CardCheckoutPaymentContentBinding;
 import com.magestore.app.util.ConfigUtil;
+import com.magestore.app.util.StringUtil;
 import com.magestore.app.view.EditTextFloat;
 
 import java.util.ArrayList;
@@ -444,24 +445,16 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
                 mCheckoutListController.doInputPlaceOrder();
             } else if (primaryCode == CODE_DELETE) {
                 if (edittext.getValueFloat() > 0) {
-                    String decima_symbol = ConfigUtil.getConfigPriceFormat().getDecimalSymbol();
                     String text_value = edittext.getText().toString();
-                    String value = text_value.replaceAll("[-\\[\\]^/,'*:.!><~@#$%+=?|\"\\\\()]+", "");
+                    String value = StringUtil.removeAllSymbol(text_value);
                     String text = value.substring(0, value.length() - 1);
-                    String text_f = text.substring(0, text.length() - 2);
-                    String text_s = text.substring(text.length() - 2, text.length());
-                    float amount = ConfigUtil.parseFloat(text_f + decima_symbol + text_s);
-                    edittext.setText(ConfigUtil.formatNumber(amount));
+                    edittext.setText(ConfigUtil.formatNumber(ConfigUtil.formatNumber(convertToPrice(text))));
                 }
             } else if (primaryCode == CODE_ADD_00) {
-                String decima_symbol = ConfigUtil.getConfigPriceFormat().getDecimalSymbol();
                 String text_value = edittext.getText().toString();
-                String value = text_value.replaceAll("[-\\[\\]^/,'*:.!><~@#$%+=?|\"\\\\()]+", "");
+                String value = StringUtil.removeAllSymbol(text_value);
                 String text = value + "00";
-                String text_f = text.substring(0, text.length() - 2);
-                String text_s = text.substring(text.length() - 2, text.length());
-                float amount = ConfigUtil.parseFloat(text_f + decima_symbol + text_s);
-                edittext.setText(ConfigUtil.formatNumber(amount));
+                edittext.setText(ConfigUtil.formatNumber(ConfigUtil.formatNumber(convertToPrice(text))));
             } else if (primaryCode == CODE_ADD_10) {
                 float current_amount = edittext.getValueFloat();
                 current_amount = current_amount + 10;
@@ -479,14 +472,10 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
                 edittext.setSelection(edittext.length());
             } else {
                 String charater = Character.toString((char) primaryCode);
-                String decima_symbol = ConfigUtil.getConfigPriceFormat().getDecimalSymbol();
                 String text_value = edittext.getText().toString();
-                String value = text_value.replaceAll("[-\\[\\]^/,'*:.!><~@#$%+=?|\"\\\\()]+", "");
+                String value = StringUtil.removeAllSymbol(text_value);
                 String text = value + charater;
-                String text_f = text.substring(0, text.length() - 2);
-                String text_s = text.substring(text.length() - 2, text.length());
-                float amount = ConfigUtil.parseFloat(text_f + decima_symbol + text_s);
-                edittext.setText(ConfigUtil.formatNumber(amount));
+                edittext.setText(ConfigUtil.formatNumber(convertToPrice(text)));
             }
         }
 
@@ -525,4 +514,11 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
 
         }
     };
+
+    private float convertToPrice(String amount){
+        String decima_symbol = ConfigUtil.getConfigPriceFormat().getDecimalSymbol();
+        String text_f = amount.substring(0, amount.length() - 2);
+        String text_s = amount.substring(amount.length() - 2, amount.length());
+        return ConfigUtil.parseFloat(text_f + decima_symbol + text_s);
+    }
 }

@@ -186,7 +186,19 @@ public class ConfigUtil {
      * @return
      */
     private static String formatCurrency(float number) {
-        return getPriceFormat().format(number);
+        String price_format = getPriceFormat().format(number);
+        String decima_symbol = ConfigUtil.getConfigPriceFormat().getDecimalSymbol();
+        String price_r = price_format.replaceAll("\\.", "");
+        String text_f = price_r.substring(0, price_r.length() - 2);
+        String text_s = price_r.substring(price_r.length() - 2, price_r.length());
+        float amount = ConfigUtil.parseFloat(text_f + decima_symbol + text_s);
+        String s_amount = ConfigUtil.formatNumber(amount);
+        if((getConfigPriceFormat().getPattern().indexOf(StringUtil.STRING_CURRENCY) == 0)){
+            s_amount = getConfigPriceFormat().getCurrencySymbol() + " " + s_amount;
+        }else{
+            s_amount = s_amount + " " + getConfigPriceFormat().getCurrencySymbol();
+        }
+        return s_amount;
     }
 
     private static DecimalFormat getPriceFormat() {
