@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.lib.view.AbstractSimpleRecycleView;
@@ -25,6 +26,7 @@ import com.magestore.app.util.AnimationView;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.StringUtil;
 import com.magestore.app.view.EditTextFloat;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -215,7 +217,15 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
                 mCheckout.setRemainMoney(money);
                 mCheckoutListController.updateMoneyTotal(false, money);
                 mCheckoutListController.updateMaxAmountStoreCredit(money);
-                mCheckoutListController.isEnableButtonAddPayment(totalValue > 0 ? true : false);
+                if (listPayment.size() == 1) {
+                    if (listPayment.get(0).isPaylater().equals("1")) {
+                        mCheckoutListController.isEnableButtonAddPayment(true);
+                    } else {
+                        mCheckoutListController.isEnableButtonAddPayment(totalValue > 0 ? true : false);
+                    }
+                } else {
+                    mCheckoutListController.isEnableButtonAddPayment(totalValue > 0 ? true : false);
+                }
                 mCheckoutListController.isEnableCreateInvoice(false);
                 if (mCheckoutListController.getSelectedItem().getStatus() == CheckoutListController.STATUS_CHECKOUT_PROCESSING) {
                     if (money == grand_total) {

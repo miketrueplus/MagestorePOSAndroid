@@ -199,6 +199,7 @@
     <string name="register_shift_session_title">Session Management</string>
     <string name="error_no_pos">No POS Avaible</string>
     <string name="notify_select_pos">Please choose POS!</string>
+    <string name="register_shift_content_total_cash">Total Cash</string>
     <string name="register_shift_z_report">Z - report</string>
     <string name="register_shift_report_opened">Opened: </string>
     <string name="register_shift_report_closed">Closed: </string>

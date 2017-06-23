@@ -78,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/layout_margin_10"
                 android:layout_toLeftOf="@+id/balance"
-                android:text="@string/total"
+                android:text="@string/register_shift_content_total_cash"
                 android:textColor="@color/register_shift_text_color"
                 android:textSize="@dimen/text_size" />
 
