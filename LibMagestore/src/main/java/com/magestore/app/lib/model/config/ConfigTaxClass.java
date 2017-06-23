@@ -9,6 +9,7 @@ import com.magestore.app.lib.model.Model;
  */
 
 public interface ConfigTaxClass extends Model {
+    void setClassID(String strClassID);
     String getClassName();
     String getClassType();
     void setClassName(String strClassName);

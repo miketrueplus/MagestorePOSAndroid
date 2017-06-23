@@ -99,7 +99,7 @@ public class CheckoutCustomSalePanel extends AbstractDetailPanel<CartItem> {
         List<ConfigTaxClass> listTaxClass = new ArrayList<>();
         // add none deafult
         ConfigTaxClass configTaxClass = new PosConfigTaxClass();
-        configTaxClass.setID("0");
+        configTaxClass.setClassID("0");
         configTaxClass.setClassName(getContext().getString(R.string.none));
         configTaxClass.setClassType(TAX_CLASS_TYPE);
         listTaxClass.add(configTaxClass);

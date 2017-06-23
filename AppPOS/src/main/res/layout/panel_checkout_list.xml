@@ -160,6 +160,8 @@
                         layout="@layout/checkout_plugins"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/layout_margin_10"
+                        android:layout_marginRight="@dimen/layout_margin_10"
                         bind:checkout="@{checkout}" />
 
                     <LinearLayout

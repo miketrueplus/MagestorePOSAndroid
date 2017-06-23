@@ -19,6 +19,12 @@ public class PosConfigTaxClass extends PosAbstractModel implements ConfigTaxClas
         return class_id;
     }
 
+
+    @Override
+    public void setClassID(String strClassID) {
+        class_id = strClassID;
+    }
+
     @Override
     public String getClassName() {
         return class_name;
