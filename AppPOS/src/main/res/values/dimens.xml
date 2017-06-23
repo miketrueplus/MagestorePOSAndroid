@@ -159,5 +159,5 @@
 
     <dimen name="keyboard_size_1_colum">70dp</dimen>
     <dimen name="keyboard_size_2_colum">141dp</dimen>
-    <dimen name="keyboard_size_3_colum">212dp</dimen>
+    <dimen name="keyboard_size_3_colum">212.5dp</dimen>
 </resources>

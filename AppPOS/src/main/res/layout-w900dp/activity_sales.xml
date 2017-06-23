@@ -419,7 +419,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/line"
-                    android:layout_marginRight="@dimen/line"
                     android:layout_marginTop="@dimen/line"
                     android:orientation="horizontal">
 
@@ -442,6 +441,7 @@
                         android:layout_width="@dimen/keyboard_size_3_colum"
                         android:layout_height="@dimen/keyboard_size_1_colum"
                         android:layout_marginLeft="@dimen/line"
+                        android:layout_marginRight="@dimen/line"
                         android:background="@drawable/custom_keyboard_checkout_press"
                         android:clickable="true">
 

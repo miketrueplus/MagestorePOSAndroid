@@ -146,8 +146,15 @@ public class RegisterShiftDetailPanel extends AbstractDetailPanel<RegisterShift>
         bt_set_adjustment.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialog.dismiss();
-                ((RegisterShiftListController) mController).doInputMakeAdjustment(panelMakeAdjustment.bind2Item());
+                RegisterShift registerShift = panelMakeAdjustment.bind2Item();
+                if (registerShift.getParamCash().getValue() > 0 && registerShift.getParamCash().getValue() <= ConfigUtil.convertToPrice(registerShift.getBaseBalance())) {
+                    dialog.dismiss();
+                    ((RegisterShiftListController) mController).doInputMakeAdjustment(registerShift);
+                } else if (registerShift.getParamCash().getValue() == 0) {
+                    panelMakeAdjustment.showErrorAmountGreat();
+                } else {
+                    panelMakeAdjustment.showErrorAmountLess();
+                }
             }
         });
     }
@@ -182,12 +189,12 @@ public class RegisterShiftDetailPanel extends AbstractDetailPanel<RegisterShift>
         register_shift_background_loading.setVisibility(isShow ? VISIBLE : GONE);
     }
 
-    public void showDialogMakeAdjusment(){
+    public void showDialogMakeAdjusment() {
         dialogCloseSession.dismiss();
         showMakeAdjustment(registerShift);
     }
 
-    private void actionPrint(RegisterShift registerShift){
+    private void actionPrint(RegisterShift registerShift) {
         final Dialog dialogPrint = new Dialog(getContext());
         dialogPrint.setCancelable(true);
         dialogPrint.requestWindowFeature(Window.FEATURE_NO_TITLE);

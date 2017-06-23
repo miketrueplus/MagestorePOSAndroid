@@ -55,7 +55,7 @@ public class EditTextFloat extends EditText {
     protected void initModel() {
         setInputType(InputType.TYPE_CLASS_PHONE);
 //        DigitsKeyListener.getInstance("123");
-//        setKeyListener(DigitsKeyListener.getInstance(ConfigUtil.getFloatDigit()));
+        setKeyListener(DigitsKeyListener.getInstance(ConfigUtil.getFloatDigit()));
     }
 
 //    public void setValue(double value) {

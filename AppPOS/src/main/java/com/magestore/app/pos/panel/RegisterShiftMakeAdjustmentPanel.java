@@ -3,7 +3,9 @@ package com.magestore.app.pos.panel;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.v4.content.ContextCompat;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.EditText;
@@ -69,7 +71,7 @@ public class RegisterShiftMakeAdjustmentPanel extends AbstractDetailPanel<Regist
         if (mBinding == null) mBinding = DataBindingUtil.bind(getView());
         mBinding.setRegisterShift(item);
         registerShift = item;
-
+        actionChangeAmount(item, edt_amount);
         tv_add.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,6 +87,29 @@ public class RegisterShiftMakeAdjustmentPanel extends AbstractDetailPanel<Regist
         });
     }
 
+    private void actionChangeAmount(final RegisterShift item, final EditTextFloat edt_amount) {
+        edt_amount.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (selectMakeAdjustment == REMOVE_MAKE_ADJUSTMENT) {
+                    if (edt_amount.getValueFloat() > ConfigUtil.convertToPrice(item.getBaseBalance())) {
+                        edt_amount.setError(String.format(getResources().getString(R.string.err_field_must_less_than), ConfigUtil.formatPrice(ConfigUtil.convertToPrice(item.getBaseBalance()))));
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+    }
+
     @Override
     public RegisterShift bind2Item() {
         float value = edt_amount.getValueFloat();
@@ -92,7 +117,6 @@ public class RegisterShiftMakeAdjustmentPanel extends AbstractDetailPanel<Regist
         if (!TextUtils.isEmpty(edt_note.getText().toString().trim())) {
             note = edt_note.getText().toString().trim();
         }
-
         CashTransaction cashTransaction = ((RegisterShiftListController) mController).createCashTransaction();
         cashTransaction.setType(selectMakeAdjustment);
         cashTransaction.setValue(value);
@@ -112,9 +136,22 @@ public class RegisterShiftMakeAdjustmentPanel extends AbstractDetailPanel<Regist
 
     private void selectRemoveMakeAdjustment() {
         selectMakeAdjustment = REMOVE_MAKE_ADJUSTMENT;
+        if (edt_amount.getValueFloat() > ConfigUtil.convertToPrice(registerShift.getBaseBalance())) {
+            edt_amount.setError(String.format(getResources().getString(R.string.err_field_must_less_than), ConfigUtil.formatPrice(ConfigUtil.convertToPrice(registerShift.getBaseBalance()))));
+        }
         tv_add.setBackgroundResource(R.drawable.make_adjusment_push_not_select_bg);
         tv_add.setTextColor(ContextCompat.getColor(getContext(), R.color.text_color));
         tv_remove.setBackgroundResource(R.drawable.make_adjusment_take_select_bg);
         tv_remove.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+    }
+
+    public void showErrorAmountLess() {
+        edt_amount.requestFocus();
+        edt_amount.setError(String.format(getResources().getString(R.string.err_field_must_less_than), ConfigUtil.formatPrice(ConfigUtil.convertToPrice(registerShift.getBaseBalance()))));
+    }
+
+    public void showErrorAmountGreat() {
+        edt_amount.requestFocus();
+        edt_amount.setError(String.format(getResources().getString(R.string.err_field_must_greater_than_zero)));
     }
 }
