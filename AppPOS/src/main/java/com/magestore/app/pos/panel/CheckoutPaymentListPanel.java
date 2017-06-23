@@ -3,7 +3,6 @@ package com.magestore.app.pos.panel;
 import android.app.Activity;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
-import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
 import android.text.Editable;
 import android.text.InputType;
@@ -16,17 +15,16 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.lib.view.AbstractSimpleRecycleView;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.CheckoutListController;
 import com.magestore.app.pos.databinding.CardCheckoutPaymentContentBinding;
+import com.magestore.app.util.AnimationView;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.StringUtil;
 import com.magestore.app.view.EditTextFloat;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -458,11 +456,13 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
     }
 
     public void hideCustomKeyboard() {
+        AnimationView.collapse(ll_custom_keyboard);
         ll_custom_keyboard.setVisibility(View.GONE);
         ll_custom_keyboard.setEnabled(false);
     }
 
     public void showCustomKeyboard(View v) {
+        AnimationView.expand(ll_custom_keyboard);
         ll_custom_keyboard.setVisibility(View.VISIBLE);
         ll_custom_keyboard.setEnabled(true);
         if (v != null)

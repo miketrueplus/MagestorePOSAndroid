@@ -24,6 +24,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -77,6 +79,7 @@ import com.magestore.app.pos.panel.SpinnerListPanel;
 import com.magestore.app.pos.sdk.MultiReaderConnectionActivity;
 import com.magestore.app.pos.sdk.PayPalHereSDKWrapper;
 import com.magestore.app.pos.ui.AbstractActivity;
+import com.magestore.app.util.AnimationView;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.DialogUtil;
 import com.magestore.app.view.ui.PosUI;
@@ -674,6 +677,7 @@ public class SalesActivity extends AbstractActivity
     }
 
     public void hideCustomKeyboard() {
+        AnimationView.expand(ll_custom_keyboard);
         ll_custom_keyboard.setVisibility(View.GONE);
         ll_custom_keyboard.setEnabled(false);
     }
