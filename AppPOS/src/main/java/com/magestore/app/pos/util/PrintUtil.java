@@ -310,7 +310,7 @@ public class PrintUtil {
         String tr_cash_added = "<tr>" + "<td style=\"border-bottom: 1px dashed #d0d0d0;\">" + "<h4 style=\"font-size: 13px; font-weight: 400; margin: 0;\">" + "<span>" + cash_added + "</span>" + "</h4>" + "</td>" + "<td style=\"border-bottom: 1px dashed #d0d0d0; text-align: right;\">" + "<span>" + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(registerShift.getBaseCashAdded())) + "</span>" + "</td>" + "</tr>";
         String cash_remove = context.getString(R.string.register_shift_report_cash_remove);
         String tr_cash_remove = "<tr>" + "<td style=\"border-bottom: 1px dashed #d0d0d0;\">" + "<h4 style=\"font-size: 13px; font-weight: 400; margin: 0;\">" + "<span>" + cash_remove + "</span>" + "</h4>" + "</td>" + "<td style=\"border-bottom: 1px dashed #d0d0d0; text-align: right;\">" + "<span>" + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(registerShift.getBaseCashRemoved())) + "</span>" + "</td>" + "</tr>";
-        String list_transaction = "<table style=\"width: 100%;\">" + "<tbody>" + tr_open_amount + tr_close_amount + tr_cash_left + tr_cash_sales + tr_cash_added + tr_cash_remove + "</tbody>" + "</table>";
+        String list_transaction = "<table style=\"width: 100%;\">" + "<tbody>" + tr_open_amount + tr_close_amount + tr_cash_sales + tr_cash_added + tr_cash_remove + "</tbody>" + "</table>";
         // title sales
         String sales = context.getString(R.string.sales);
         String title_sales = "<h3 style=\"color: #363636; font-size: 13px; font-weight: 700; text-align: left; margin: 35px 0 5px;\">" + "#<span>" + sales + "</span>" + "</h3>";

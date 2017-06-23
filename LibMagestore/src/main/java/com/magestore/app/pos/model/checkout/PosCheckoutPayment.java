@@ -268,6 +268,14 @@ public class PosCheckoutPayment extends PosAbstractModel implements CheckoutPaym
         if (isPaylater().equals("1")) {
             return true;
         }
+        return false;
+    }
+
+    @Override
+    public boolean checkIsPayLaterSuggest() {
+        if (isPaylater().equals("1")) {
+            return true;
+        }
         if (is_not_enable_edit_value) {
             return true;
         }

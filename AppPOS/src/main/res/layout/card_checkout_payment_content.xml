@@ -117,7 +117,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/layout_margin_10"
             android:orientation="horizontal"
-            android:visibility="@{checkoutPayment.checkIsPayLater() ? View.GONE : View.VISIBLE}">
+            android:visibility="@{checkoutPayment.checkIsPayLaterSuggest() ? View.GONE : View.VISIBLE}">
 
             <FrameLayout
                 android:layout_width="0dp"
