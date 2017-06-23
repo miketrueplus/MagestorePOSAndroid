@@ -15,6 +15,7 @@ import com.magestore.app.lib.model.checkout.CheckoutShipping;
 import com.magestore.app.lib.model.checkout.QuoteAddCouponParam;
 import com.magestore.app.lib.model.checkout.SaveQuoteParam;
 import com.magestore.app.lib.model.checkout.payment.Authorizenet;
+import com.magestore.app.lib.model.checkout.payment.CreditCard;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.model.directory.Currency;
@@ -347,6 +348,10 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                     }
                 }
                 if (!mCheckoutPaymentCreditCardPanel.checkRequiedCard(requied_cvv)) {
+                    return;
+                }
+                if (!mCheckoutPaymentCreditCardPanel.checkRequiedCreditCardType()) {
+                    mCheckoutPaymentCreditCardPanel.showErrorCreditCardType();
                     return;
                 }
                 CheckoutPayment payment = mCheckoutPaymentCreditCardPanel.bind2Item();
@@ -2009,6 +2014,15 @@ public class CheckoutListController extends AbstractListController<Checkout> {
      */
     public CheckoutPayment createPaymentMethod() {
         return ((CheckoutService) getListService()).createPaymentMethod();
+    }
+
+    /**
+     * khởi tạo credit card
+     *
+     * @return
+     */
+    public CreditCard createCreditCard() {
+        return ((CheckoutService) getListService()).createCreditCard();
     }
 
     /**

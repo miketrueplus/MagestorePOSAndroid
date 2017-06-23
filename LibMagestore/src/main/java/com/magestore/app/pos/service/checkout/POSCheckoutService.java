@@ -22,6 +22,7 @@ import com.magestore.app.lib.model.checkout.QuoteItems;
 import com.magestore.app.lib.model.checkout.SaveQuoteParam;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.checkout.payment.Authorizenet;
+import com.magestore.app.lib.model.checkout.payment.CreditCard;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.model.plugins.GiftCard;
@@ -45,6 +46,7 @@ import com.magestore.app.pos.model.checkout.PosQuoteCustomerAddress;
 import com.magestore.app.pos.model.checkout.PosQuoteItemExtension;
 import com.magestore.app.pos.model.checkout.PosQuoteItems;
 import com.magestore.app.pos.model.checkout.PosSaveQuoteParam;
+import com.magestore.app.pos.model.checkout.payment.PosCreditCard;
 import com.magestore.app.pos.service.AbstractService;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.StringUtil;
@@ -725,6 +727,11 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
     @Override
     public PlaceOrderIntegrationExtension createPlaceOrderIntegrationExtension() {
         return new PosPlaceOrderIntegrationExtension();
+    }
+
+    @Override
+    public CreditCard createCreditCard() {
+        return new PosCreditCard();
     }
 
     @Override

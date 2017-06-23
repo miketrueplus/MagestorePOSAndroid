@@ -19,6 +19,7 @@ import com.magestore.app.lib.model.checkout.QuoteItems;
 import com.magestore.app.lib.model.checkout.SaveQuoteParam;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.checkout.payment.Authorizenet;
+import com.magestore.app.lib.model.checkout.payment.CreditCard;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.model.sales.Order;
@@ -103,6 +104,8 @@ public interface CheckoutService extends ListService<Checkout> {
     PlaceOrderIntegrationOrderData createPlaceOrderIntegrationOrderData();
 
     PlaceOrderIntegrationExtension createPlaceOrderIntegrationExtension();
+
+    CreditCard createCreditCard();
 
     List<CustomerAddress> checkListAddress(Customer customer, Customer guest_customer);
 
