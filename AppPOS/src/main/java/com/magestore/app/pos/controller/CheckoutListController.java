@@ -1438,6 +1438,10 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         List<CheckoutPayment> listPayment = (List<CheckoutPayment>) wraper.get("list_payment");
         Checkout checkout = checkDataCheckout((Checkout) wraper.get("save_shipping"));
         if (method.getType().equals("1")) {
+            if (listPayment != null) {
+                listPayment = new ArrayList<>();
+                wraper.put("list_payment", listPayment);
+            }
             updateMoneyTotal(true, 0);
             float total = checkout.getGrandTotal();
             method.setAmount(total);

@@ -196,8 +196,9 @@
     <string name="close_session_t_close_balance_title">Theoretical Closing Balance</string>
     <string name="close_session_r_close_balance_title">Real Closing Balance</string>
     <string name="close_session_difference_title">Difference</string>
+    <string name="close_session_re_try_data">Re-Entry Data</string>
     <string name="register_shift_session_title">Session Management</string>
-    <string name="error_no_pos">No POS Avaible</string>
+    <string name="error_no_pos">No POS Available</string>
     <string name="notify_select_pos">Please choose POS!</string>
     <string name="register_shift_content_total_cash">Total Cash</string>
     <string name="register_shift_z_report">Z - report</string>

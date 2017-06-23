@@ -164,6 +164,7 @@
                 android:paddingLeft="@dimen/layout_margin_20"
                 android:paddingRight="@dimen/layout_margin_20"
                 android:text="@string/register_shift_set_adjustment"
+                android:textAllCaps="false"
                 android:textColor="@color/white" />
         </RelativeLayout>
     </LinearLayout>

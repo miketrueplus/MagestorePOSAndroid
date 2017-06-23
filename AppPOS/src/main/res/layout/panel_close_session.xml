@@ -334,6 +334,7 @@
                         android:paddingLeft="@dimen/layout_margin_20"
                         android:paddingRight="@dimen/layout_margin_20"
                         android:text="@string/register_shift_bottom_make_adjustment"
+                        android:textAllCaps="false"
                         android:textColor="@color/text_color" />
 
                     <Button
@@ -344,7 +345,8 @@
                         android:background="@drawable/close_session_button_make_adjustment"
                         android:paddingLeft="@dimen/layout_margin_20"
                         android:paddingRight="@dimen/layout_margin_20"
-                        android:text="@string/cancel"
+                        android:text="@string/close_session_re_try_data"
+                        android:textAllCaps="false"
                         android:textColor="@color/text_color"
                         android:visibility="gone" />
                 </RelativeLayout>
@@ -360,6 +362,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/open_session_button_open"
                         android:text="@string/close"
+                        android:textAllCaps="false"
                         android:textColor="@color/white" />
 
                     <Button
@@ -368,6 +371,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/open_session_button_open"
                         android:text="@string/validate"
+                        android:textAllCaps="false"
                         android:textColor="@color/white"
                         android:visibility="gone" />
                 </RelativeLayout>
