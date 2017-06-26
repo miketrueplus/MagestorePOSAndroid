@@ -55,6 +55,7 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
     HashMap<CheckoutPayment, EditTextFloat> mapTextId;
     KeyboardView mKeyboardView;
     LinearLayout ll_custom_keyboard;
+    boolean checkAmount = false;
 
     public void setLayoutCustomKeyboard(LinearLayout ll_custom_keyboard) {
         this.ll_custom_keyboard = ll_custom_keyboard;
@@ -139,7 +140,7 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-                    checkout_value.setText(ConfigUtil.formatNumber(0.00));
+                    checkAmount = false;
                     checkout_value.setSelection(checkout_value.length());
                     showCustomKeyboard(v);
                 } else {
@@ -151,6 +152,7 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
         checkout_value.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                checkAmount = false;
                 showCustomKeyboard(v);
             }
         });
@@ -486,16 +488,22 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
             View focusCurrent = mCheckoutListController.getMagestoreContext().getActivity().getWindow().getCurrentFocus();
             if (focusCurrent == null || focusCurrent.getClass() != EditTextFloat.class) return;
             EditTextFloat edittext = (EditTextFloat) focusCurrent;
-            if (id == R.id.rl_keyboard_hidden) {
-                hideCustomKeyboard();
-            } else if (id == R.id.rl_keyboard_delete) {
+            if (id == R.id.rl_keyboard_delete) {
                 if (edittext.getValueFloat() > 0) {
                     String text_value = edittext.getText().toString();
                     String value = StringUtil.removeAllSymbol(text_value);
                     String text = value.substring(0, value.length() - 1);
                     edittext.setText(ConfigUtil.formatNumber(convertToPrice(text)));
+                    checkAmount = true;
                 }
-            } else if (id == R.id.rl_keyboard_place_order) {
+            } else if (id == R.id.rl_keyboard_hidden) {
+                hideCustomKeyboard();
+                checkAmount = true;
+            }
+            if (!checkAmount) {
+                edittext.setText(ConfigUtil.formatNumber(0.00));
+            }
+            if (id == R.id.rl_keyboard_place_order) {
                 hideCustomKeyboard();
                 mCheckoutListController.doInputPlaceOrder();
             } else if (id == R.id.rl_keyboard_add_00) {
@@ -503,21 +511,25 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
                 String value = StringUtil.removeAllSymbol(text_value);
                 String text = value + "00";
                 edittext.setText(ConfigUtil.formatNumber(convertToPrice(text)));
+                checkAmount = true;
             } else if (id == R.id.rl_keyboard_add_10) {
                 float current_amount = edittext.getValueFloat();
                 current_amount = current_amount + 10;
                 edittext.setText(ConfigUtil.formatNumber(current_amount));
                 edittext.setSelection(edittext.length());
+                checkAmount = true;
             } else if (id == R.id.rl_keyboard_add_20) {
                 float current_amount = edittext.getValueFloat();
                 current_amount = current_amount + 20;
                 edittext.setText(ConfigUtil.formatNumber(current_amount));
                 edittext.setSelection(edittext.length());
+                checkAmount = true;
             } else if (id == R.id.rl_keyboard_add_50) {
                 float current_amount = edittext.getValueFloat();
                 current_amount = current_amount + 50;
                 edittext.setText(ConfigUtil.formatNumber(current_amount));
                 edittext.setSelection(edittext.length());
+                checkAmount = true;
             } else if (id == R.id.rl_keyboard_0) {
                 actionCharacterKeyboard("0", edittext);
             } else if (id == R.id.rl_keyboard_1) {
@@ -547,6 +559,7 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
         String value = StringUtil.removeAllSymbol(text_value);
         String text = value + charater;
         edittext.setText(ConfigUtil.formatNumber(convertToPrice(text)));
+        checkAmount = true;
     }
 
     private KeyboardView.OnKeyboardActionListener mOnKeyboardActionListener = new KeyboardView.OnKeyboardActionListener() {

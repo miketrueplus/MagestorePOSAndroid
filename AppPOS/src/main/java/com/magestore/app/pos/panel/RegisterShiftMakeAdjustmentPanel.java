@@ -98,7 +98,7 @@ public class RegisterShiftMakeAdjustmentPanel extends AbstractDetailPanel<Regist
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (selectMakeAdjustment == REMOVE_MAKE_ADJUSTMENT) {
                     if (edt_amount.getValueFloat() > ConfigUtil.convertToPrice(item.getBaseBalance())) {
-                        edt_amount.setError(String.format(getResources().getString(R.string.err_field_must_less_than), ConfigUtil.formatPrice(ConfigUtil.convertToPrice(item.getBaseBalance()))));
+                        edt_amount.setError(String.format(getResources().getString(R.string.register_shift_make_adjusment_error_remove)));
                     }
                 }
             }
@@ -137,7 +137,7 @@ public class RegisterShiftMakeAdjustmentPanel extends AbstractDetailPanel<Regist
     private void selectRemoveMakeAdjustment() {
         selectMakeAdjustment = REMOVE_MAKE_ADJUSTMENT;
         if (edt_amount.getValueFloat() > ConfigUtil.convertToPrice(registerShift.getBaseBalance())) {
-            edt_amount.setError(String.format(getResources().getString(R.string.err_field_must_less_than), ConfigUtil.formatPrice(ConfigUtil.convertToPrice(registerShift.getBaseBalance()))));
+            edt_amount.setError(String.format(getResources().getString(R.string.register_shift_make_adjusment_error_remove)));
         }
         tv_add.setBackgroundResource(R.drawable.make_adjusment_push_not_select_bg);
         tv_add.setTextColor(ContextCompat.getColor(getContext(), R.color.text_color));
@@ -147,7 +147,7 @@ public class RegisterShiftMakeAdjustmentPanel extends AbstractDetailPanel<Regist
 
     public void showErrorAmountLess() {
         edt_amount.requestFocus();
-        edt_amount.setError(String.format(getResources().getString(R.string.err_field_must_less_than), ConfigUtil.formatPrice(ConfigUtil.convertToPrice(registerShift.getBaseBalance()))));
+        edt_amount.setError(String.format(getResources().getString(R.string.register_shift_make_adjusment_error_remove)));
     }
 
     public void showErrorAmountGreat() {

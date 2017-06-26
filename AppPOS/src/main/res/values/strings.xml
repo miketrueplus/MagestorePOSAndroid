@@ -186,6 +186,7 @@
     <string name="register_shift_dialog_make_adjustment_add">Put money in</string>
     <string name="register_shift_dialog_make_adjustment_remove">Take money out</string>
     <string name="register_shift_dialog_make_adjustment_note">Note</string>
+    <string name="register_shift_make_adjusment_error_remove">Remove amount must be less than the balance!</string>
     <string name="open_session_title">Open Session</string>
     <string name="open_session_float_amount_title">Float Amount</string>
     <string name="open_session_add_value">Add Value</string>
