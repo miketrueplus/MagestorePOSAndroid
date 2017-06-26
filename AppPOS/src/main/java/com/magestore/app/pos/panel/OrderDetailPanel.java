@@ -499,6 +499,7 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
 
     private void onClickTakePayment() {
         OrderTakePaymentPanel mOrderTakePaymentPanel = new OrderTakePaymentPanel(getContext());
+        ((OrderHistoryListController) mController).resetListChoosePayment();
         ((OrderHistoryListController) mController).setOrderTakePaymentPanel(mOrderTakePaymentPanel);
         mOrderTakePaymentPanel.setController(mController);
         mOrderTakePaymentPanel.initModel();

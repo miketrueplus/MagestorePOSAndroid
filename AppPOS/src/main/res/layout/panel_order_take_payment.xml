@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/layout_margin_5"
         android:visibility="gone"
-        magestore_view:layout_row="@layout/card_checkout_payment_content" />
+        magestore_view:layout_row="@layout/card_order_take_payment_content" />
 
     <LinearLayout
         android:id="@+id/ll_order_add_payment"

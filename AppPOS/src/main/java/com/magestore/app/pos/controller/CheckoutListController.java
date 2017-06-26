@@ -363,7 +363,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 paymentCreditCard.setCCExpMonth(payment.getCCExpMonth());
                 paymentCreditCard.setCCExpYear(payment.getCCExpYear());
                 paymentCreditCard.setCID(payment.getCID());
-
+                // check có phải stripe payment không
                 if (paymentCreditCard.getCode().equals(PAYMENT_STRIPE_CODE)) {
                     if (StringUtil.isNullOrEmpty(paymentCreditCard.getPublishKeyStripe())) {
                         ((CheckoutDetailPanel) mDetailView).showDialogError(getMagestoreContext().getActivity().getString(R.string.authorize_cancel_payment));
@@ -377,7 +377,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 }
             } else {
                 CheckoutPayment paymentPayPal = checkTypePaymenPaypal(listCheckoutPayment);
-                final CheckoutPayment paymentPayPalHere = checkTypePaymentPaypalhere(listCheckoutPayment);
+                CheckoutPayment paymentPayPalHere = checkTypePaymentPaypalhere(listCheckoutPayment);
                 if (paymentPayPal != null) {
                     Intent i = new Intent(getMagestoreContext().getActivity(), PaymentPayPalActivity.class);
                     i.putExtra("total", paymentPayPal.getAmount());

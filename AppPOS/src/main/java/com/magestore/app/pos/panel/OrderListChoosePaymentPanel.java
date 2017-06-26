@@ -8,16 +8,14 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
-
 import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.view.AbstractSimpleRecycleView;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.OrderHistoryListController;
-import com.magestore.app.pos.databinding.CardCheckoutPaymentContentBinding;
+import com.magestore.app.pos.databinding.CardOrderTakePaymentContentBinding;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.view.EditTextFloat;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -62,7 +60,7 @@ public class OrderListChoosePaymentPanel extends AbstractSimpleRecycleView<Check
 
     @Override
     protected void bindItem(View view, CheckoutPayment item, final int position) {
-        CardCheckoutPaymentContentBinding mBinding = DataBindingUtil.bind(view);
+        CardOrderTakePaymentContentBinding mBinding = DataBindingUtil.bind(view);
         mBinding.setCheckoutPayment(item);
 
         CheckoutPayment checkoutPayment = mList.get(position);

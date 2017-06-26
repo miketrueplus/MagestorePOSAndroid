@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="com.magestore.app.util.ConfigUtil" />
+
+        <variable
+            name="checkoutPayment"
+            type="com.magestore.app.lib.model.checkout.CheckoutPayment" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/checkout_add_payment_margin"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/ll_payment_method"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txt_name_checkout_payment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="@dimen/checkout_margin"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:gravity="right"
+                android:maxLines="2"
+                android:text="@{checkoutPayment.getTitle()}"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/text_size" />
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_weight="2"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/rl_remove_payment"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="@dimen/layout_margin_20"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:visibility="@{checkoutPayment.checkReference() ? View.VISIBLE : View.GONE}">
+
+                        <com.magestore.app.view.FormatEditText
+                            android:id="@+id/reference_number"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/checkout_border_linear_layout"
+                            android:hint="@string/reference_number"
+                            android:padding="@dimen/layout_margin_10"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/text_size" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <com.magestore.app.view.EditTextFloat
+                            android:id="@+id/checkout_value"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/checkout_border_linear_layout"
+                            android:enabled="@{checkoutPayment.IsNotEnableEditValue() ? false : true}"
+                            android:gravity="right"
+                            android:inputType="numberDecimal"
+                            android:padding="@dimen/layout_margin_10"
+                            android:text="0"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/text_size" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_remove_payment"
+                    android:layout_width="@dimen/checkout_im_remove_payment_width"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/checkout_margin">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/ic_checkout_remove_payment" />
+                </RelativeLayout>
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+</layout>

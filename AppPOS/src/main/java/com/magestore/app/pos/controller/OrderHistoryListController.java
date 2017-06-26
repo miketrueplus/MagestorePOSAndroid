@@ -495,23 +495,23 @@ public class OrderHistoryListController extends AbstractListController<Order> {
     public void onAddPaymentMethod(CheckoutPayment method) {
         Order mOrder = ((OrderDetailPanel) mDetailView).getOrder();
         List<CheckoutPayment> listPayment = (List<CheckoutPayment>) wraper.get("list_choose_payment");
-        checkIsPayLater(method, listPayment);
+//        checkIsPayLater(method, listPayment);
         float total = 0;
-        if (method.isPaylater().equals("1")) {
-            if (mOrder.getRemainMoney() > 0) {
-                isEnableButtonAddPayment(true);
-            } else {
-                isEnableButtonAddPayment(false);
-            }
+//        if (method.isPaylater().equals("1")) {
+//            if (mOrder.getRemainMoney() > 0) {
+//                isEnableButtonAddPayment(true);
+//            } else {
+//                isEnableButtonAddPayment(false);
+//            }
+//        } else {
+        if (mOrder.getRemainMoney() > 0) {
+            total = mOrder.getRemainMoney();
+            isEnableButtonAddPayment(true);
         } else {
-            if (mOrder.getRemainMoney() > 0) {
-                total = mOrder.getRemainMoney();
-                isEnableButtonAddPayment(true);
-            } else {
-                total = mOrder.getTotalDue();
-                isEnableButtonAddPayment(false);
-            }
+            total = mOrder.getTotalDue();
+            isEnableButtonAddPayment(false);
         }
+//        }
 
         method.setAmount(total);
         method.setBaseAmount(total);
@@ -766,5 +766,13 @@ public class OrderHistoryListController extends AbstractListController<Order> {
 
     public Order getOrder() {
         return ((OrderDetailPanel) mDetailView).getOrder();
+    }
+
+    public void resetListChoosePayment() {
+        List<CheckoutPayment> listPayment = (List<CheckoutPayment>) wraper.get("list_choose_payment");
+        if (listPayment != null) {
+            listPayment = new ArrayList<>();
+            wraper.put("list_choose_payment", listPayment);
+        }
     }
 }
