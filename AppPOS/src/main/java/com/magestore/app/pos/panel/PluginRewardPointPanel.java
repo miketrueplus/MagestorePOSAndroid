@@ -70,9 +70,14 @@ public class PluginRewardPointPanel extends AbstractDetailPanel<RewardPoint> {
     public void bindItem(RewardPoint item) {
         super.bindItem(item);
         mRewardPoint = item;
-        tv_reward_point.setText(getContext().getString(R.string.plugin_reward_point_title, ConfigUtil.formatNumber(mRewardPoint.getBalance())));
+        if (mRewardPoint.getAmount() > 0) {
+            int balance = mRewardPoint.getBalance() - mRewardPoint.getAmount();
+            tv_reward_point.setText(getContext().getString(R.string.plugin_reward_point_title, ConfigUtil.formatNumber(balance)));
+        } else {
+            tv_reward_point.setText(getContext().getString(R.string.plugin_reward_point_title, ConfigUtil.formatNumber(mRewardPoint.getBalance())));
+        }
         actionChangeRewardPoint(mRewardPoint);
-        reward_point_value.setText(ConfigUtil.formatNumber(mRewardPoint.getMaxPoints()));
+        reward_point_value.setText(mRewardPoint.getAmount() > 0 ? ConfigUtil.formatNumber(mRewardPoint.getAmount()) : ConfigUtil.formatNumber(mRewardPoint.getMaxPoints()));
 
         cb_use_max_credit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -157,10 +162,10 @@ public class PluginRewardPointPanel extends AbstractDetailPanel<RewardPoint> {
                     mRewardPoint.setAmount(mRewardPoint.getMaxPoints());
                     cb_use_max_credit.setChecked(true);
                 } else {
-                    if(point_value == 0){
+                    if (point_value == 0) {
                         mRewardPoint.setAmount(point_value);
                         cb_use_max_credit.setChecked(false);
-                    }else {
+                    } else {
                         mRewardPoint.setAmount(point_value);
                         cb_use_max_credit.setChecked(point_value == mRewardPoint.getMaxPoints() ? true : false);
                     }
@@ -176,6 +181,7 @@ public class PluginRewardPointPanel extends AbstractDetailPanel<RewardPoint> {
 
     public void changeBalance(RewardPoint rewardPoint) {
         tv_reward_point.setText(getContext().getString(R.string.plugin_reward_point_title, ConfigUtil.formatNumber(rewardPoint.getBalance() - rewardPoint.getAmount())));
+        reward_point_value.setText(ConfigUtil.formatNumber(rewardPoint.getAmount()));
     }
 
     public void resetPointValue() {
