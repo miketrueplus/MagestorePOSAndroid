@@ -71,7 +71,7 @@ public class OrderRefundItemsListController extends AbstractListController<CartI
         Order mOrder = mOrderHistoryListController.getOrder();
         float ratioGiftVoucher = (0 - mOrder.getBaseGiftVoucherDiscount()) / mOrder.getBaseSubtotal();
         for (CartItem cart : mList) {
-            total_item_price += ((cart.getBasePriceInclTax() - ((cart.getBaseDiscountAmount() + cart.getBaseGiftVoucherDiscount() + cart.getRewardpointsBaseDiscount()) / cart.getQtyOrdered())) * cart.QtyRefund());;
+            total_item_price += ((cart.getBasePriceInclTax() - ((cart.getBaseDiscountAmount() + cart.getBaseGiftVoucherDiscount() + cart.getRewardpointsBaseDiscount()) / cart.getQtyOrdered())) * cart.getQuantity());;
             total_giftcard += cart.getBasePrice() * ratioGiftVoucher * cart.getQuantity();
         }
         mOrderHistoryListController.updateToTalPriceChangeQtyRefund(total_item_price);
