@@ -82,6 +82,7 @@ import com.magestore.app.pos.ui.AbstractActivity;
 import com.magestore.app.util.AnimationView;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.DialogUtil;
+import com.magestore.app.view.EditTextFloat;
 import com.magestore.app.view.ui.PosUI;
 
 /**
@@ -683,6 +684,11 @@ public class SalesActivity extends AbstractActivity
     }
 
     public boolean isCustomKeyboardVisible() {
+        View focusCurrent = mCheckoutListController.getMagestoreContext().getActivity().getWindow().getCurrentFocus();
+        if (focusCurrent != null && focusCurrent.getClass() == EditTextFloat.class) {
+            EditTextFloat edittext = (EditTextFloat) focusCurrent;
+            edittext.setSelection(edittext.getText().length());
+        }
         return ll_custom_keyboard.getVisibility() == View.VISIBLE;
     }
 }

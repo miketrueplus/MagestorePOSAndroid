@@ -144,6 +144,7 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
                     checkout_value.setSelection(checkout_value.length());
                     showCustomKeyboard(v);
                 } else {
+                    checkout_value.setSelection(checkout_value.getText().length());
                     hideCustomKeyboard();
                 }
             }
@@ -166,6 +167,7 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
                 edittext.setInputType(InputType.TYPE_NULL); // Disable standard keyboard
                 edittext.onTouchEvent(event);               // Call native handler
                 edittext.setInputType(inType); // Restore input type
+                edittext.setSelection(0, edittext.getText().length());
                 return true; // Consume touch event
             }
         });
@@ -497,6 +499,7 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
                     checkAmount = true;
                 }
             } else if (id == R.id.rl_keyboard_hidden) {
+                edittext.setSelection(edittext.getText().length());
                 hideCustomKeyboard();
                 checkAmount = true;
             }
