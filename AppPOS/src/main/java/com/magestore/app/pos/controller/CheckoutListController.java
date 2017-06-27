@@ -92,6 +92,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     static final int ACTION_TYPE_CANCEL_PAYMENT_AUTHORIZENET = 16;
     static final int ACTION_TYPE_CHECK_APPOVED_PAYMENT_STRIPE = 17;
     static final int ACTION_TYPE_REFRESH_TOKEN_PAYPAL_HERE = 18;
+    static final int ACTION_TYPE_CHECK_APPROVED_PAYMENT_AUTHORIZENET_INTERATION = 19;
 
     static final int STATUS_CHECKOUT_ADD_ITEM = 0;
     public static final int STATUS_CHECKOUT_PROCESSING = 1;
@@ -100,6 +101,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
     static final String PICK_AT_STORE_CODE = "webpos_shipping_storepickup";
     static final String PAYMENT_STRIPE_CODE = "stripe_integration";
+    static final String PAYMENT_AUTHORIZE = "authorizenet_integration";
 
     Map<String, Object> wraper;
     CartItemListController mCartItemListController;
@@ -293,6 +295,10 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         doAction(ACTION_TYPE_CHECK_APPROVED_PAYMENT_AUTHORIZENET, null, wraper, authorizenet);
     }
 
+    public void doInputApprovedAuthorizenetIntergration(CheckoutPayment checkoutPayment) {
+        doAction(ACTION_TYPE_CHECK_APPROVED_PAYMENT_AUTHORIZENET_INTERATION, null, wraper, checkoutPayment);
+    }
+
     public void doInputRefreshTokenPaypalHere(CheckoutPayment paymentPayPalHere) {
         doAction(ACTION_TYPE_REFRESH_TOKEN_PAYPAL_HERE, null, wraper, paymentPayPalHere);
     }
@@ -358,6 +364,11 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 PosCheckoutPayment.AdditionalData additionalData = paymentCreditCard.createAdditionalData();
                 paymentCreditCard.setAdditionalData(additionalData);
                 paymentCreditCard.setCCOwner(payment.getCCOwner());
+                paymentCreditCard.setCCType(payment.getCCType());
+                paymentCreditCard.setCCNumber(payment.getCCNumber());
+                paymentCreditCard.setCCExpMonth(payment.getCCExpMonth());
+                paymentCreditCard.setCCExpYear(payment.getCCExpYear());
+                paymentCreditCard.setCID(payment.getCID());
                 // check có phải stripe payment không
                 if (paymentCreditCard.getCode().equals(PAYMENT_STRIPE_CODE)) {
                     if (StringUtil.isNullOrEmpty(paymentCreditCard.getPublishKeyStripe())) {
@@ -366,12 +377,16 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                     }
                     isShowLoadingDetail(true);
                     new StripeTokenController(getMagestoreContext().getActivity(), paymentCreditCard.getPublishKeyStripe(), this, paymentCreditCard);
+                } else if (paymentCreditCard.getCode().equals(PAYMENT_AUTHORIZE)) {
+                    // TODO: giả client_id
+                    paymentCreditCard.setClientId("68nKg5k9Z7cPCmvcM6u8aHDJgsSMWf2r8cYmX6FL89t2LfcsrUC5rK6DppVrLKpy");
+                    if (StringUtil.isNullOrEmpty(paymentCreditCard.getApiLogin()) || StringUtil.isNullOrEmpty(paymentCreditCard.getClientId())) {
+                        ((CheckoutDetailPanel) mDetailView).showDialogError(getMagestoreContext().getActivity().getString(R.string.authorize_cancel_payment));
+                        return;
+                    }
+                    isShowLoadingDetail(true);
+                    new AuthorizeTokenController(getMagestoreContext().getActivity(), this, paymentCreditCard);
                 } else {
-                    paymentCreditCard.setCCType(payment.getCCType());
-                    paymentCreditCard.setCCNumber(payment.getCCNumber());
-                    paymentCreditCard.setCCExpMonth(payment.getCCExpMonth());
-                    paymentCreditCard.setCCExpYear(payment.getCCExpYear());
-                    paymentCreditCard.setCID(payment.getCID());
                     doAction(ACTION_TYPE_PLACE_ORDER, null, wraper, null);
                     isShowLoadingDetail(true);
                 }
@@ -531,6 +546,11 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             Authorizenet authorizenet = (Authorizenet) wraper.get("place_order");
             String order_id = authorizenet.getOrder().getID();
             ((CheckoutService) getListService()).cancelPaymentAuthozire(order_id);
+            return true;
+        } else if (actionType == ACTION_TYPE_CHECK_APPROVED_PAYMENT_AUTHORIZENET_INTERATION) {
+            CheckoutPayment checkoutPayment = (CheckoutPayment) models[0];
+            String quoteId = getSelectedItem().getQuoteId();
+            wraper.put("authorize_transaction_id", ((CheckoutService) getListService()).approvedAuthorizeIntergration(quoteId, checkoutPayment.getAuthorizeToken(), checkoutPayment.getBaseAmount()));
             return true;
         } else if (actionType == ACTION_TYPE_CHECK_APPOVED_PAYMENT_STRIPE) {
             CheckoutPayment checkoutPayment = (CheckoutPayment) models[0];
@@ -937,35 +957,35 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             if (listCheckoutPayment != null && listCheckoutPayment.size() > 0) {
                 payment_code = listCheckoutPayment.get(0).getCode();
             }
-            if (!StringUtil.isNullOrEmpty(payment_code) && payment_code.equals("authorizenet_directpost")) {
-                if (wraper.get("place_order") instanceof Authorizenet) {
-                    Authorizenet authorizenet = (Authorizenet) wraper.get("place_order");
-                    doInputApprovedAuthorizenet(authorizenet);
-                } else {
-                    Order order = (Order) wraper.get("place_order");
-                    getSelectedItem().setOrderSuccess(order);
-                    isShowButtonCheckout(false);
-                    isShowSalesMenuDiscount(false);
-                    mCheckoutSuccessPanel.bindItem(order);
-                    doShowDetailSuccess(true, order);
-                    // hoàn thành place order hiden progressbar
-                    isShowLoadingDetail(false);
-                }
-//                isShowButtonCheckout(false);
-//                isShowSalesMenuDiscount(false);
-//                mCheckoutPaymentWebviewPanel.setAuthorizenet(authorizenet);
-//                mCheckoutPaymentWebviewPanel.initValue();
-//                doShowCheckoutWebview(true);
-            } else {
-                Order order = (Order) wraper.get("place_order");
-                getSelectedItem().setOrderSuccess(order);
-                isShowButtonCheckout(false);
-                isShowSalesMenuDiscount(false);
-                mCheckoutSuccessPanel.bindItem(order);
-                doShowDetailSuccess(true, order);
-                // hoàn thành place order hiden progressbar
-                isShowLoadingDetail(false);
-            }
+//            if (!StringUtil.isNullOrEmpty(payment_code) && payment_code.equals("authorizenet_directpost")) {
+//                if (wraper.get("place_order") instanceof Authorizenet) {
+//                    Authorizenet authorizenet = (Authorizenet) wraper.get("place_order");
+//                    doInputApprovedAuthorizenet(authorizenet);
+//                } else {
+//                    Order order = (Order) wraper.get("place_order");
+//                    getSelectedItem().setOrderSuccess(order);
+//                    isShowButtonCheckout(false);
+//                    isShowSalesMenuDiscount(false);
+//                    mCheckoutSuccessPanel.bindItem(order);
+//                    doShowDetailSuccess(true, order);
+//                    // hoàn thành place order hiden progressbar
+//                    isShowLoadingDetail(false);
+//                }
+////                isShowButtonCheckout(false);
+////                isShowSalesMenuDiscount(false);
+////                mCheckoutPaymentWebviewPanel.setAuthorizenet(authorizenet);
+////                mCheckoutPaymentWebviewPanel.initValue();
+////                doShowCheckoutWebview(true);
+//            } else {
+            Order order = (Order) wraper.get("place_order");
+            getSelectedItem().setOrderSuccess(order);
+            isShowButtonCheckout(false);
+            isShowSalesMenuDiscount(false);
+            mCheckoutSuccessPanel.bindItem(order);
+            doShowDetailSuccess(true, order);
+            // hoàn thành place order hiden progressbar
+            isShowLoadingDetail(false);
+//            }
         } else if (success && actionType == ACTION_TYPE_SEND_EMAIL) {
             //Show dialog khi gửi email thành công
             showDetailOrderLoading(false);
@@ -1007,10 +1027,19 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 getSelectedItem().setQuoteId("");
                 doInputSaveCart();
             }
+        } else if (success && actionType == ACTION_TYPE_CHECK_APPROVED_PAYMENT_AUTHORIZENET_INTERATION) {
+            String transaction_id = (String) wraper.get("authorize_transaction_id");
+            List<CheckoutPayment> listCheckoutPayment = (List<CheckoutPayment>) wraper.get("list_payment");
+            CheckoutPayment paymentAuthorize = listCheckoutPayment.get(0);
+            removeDataCreditCard(paymentAuthorize);
+            paymentAuthorize.setIsReferenceNumber(transaction_id.trim());
+            wraper.put("list_payment", listCheckoutPayment);
+            doAction(ACTION_TYPE_PLACE_ORDER, null, wraper, null);
         } else if (success && actionType == ACTION_TYPE_CHECK_APPOVED_PAYMENT_STRIPE) {
             String transaction_id = (String) wraper.get("stripe_transaction_id");
             List<CheckoutPayment> listCheckoutPayment = (List<CheckoutPayment>) wraper.get("list_payment");
             CheckoutPayment paymentStripe = listCheckoutPayment.get(0);
+            removeDataCreditCard(paymentStripe);
             paymentStripe.setIsReferenceNumber(transaction_id.trim());
             wraper.put("list_payment", listCheckoutPayment);
             doAction(ACTION_TYPE_PLACE_ORDER, null, wraper, null);
@@ -1859,6 +1888,19 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             }
         }
         return null;
+    }
+
+    /**
+     * Xóa thông tin thẻ khách hàng trước khi place order
+     *
+     * @param paymentCreditCard
+     */
+    private void removeDataCreditCard(CheckoutPayment paymentCreditCard) {
+        paymentCreditCard.setCCType("");
+        paymentCreditCard.setCCNumber("");
+        paymentCreditCard.setCCExpMonth("");
+        paymentCreditCard.setCCExpYear("");
+        paymentCreditCard.setCID("");
     }
 
     /**

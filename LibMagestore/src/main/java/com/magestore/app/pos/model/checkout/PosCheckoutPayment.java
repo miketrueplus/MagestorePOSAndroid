@@ -63,6 +63,12 @@ public class PosCheckoutPayment extends PosAbstractModel implements CheckoutPaym
     @Gson2PosExclude
     String stripe_token;
 
+    // authorize
+    @Gson2PosExclude
+    String api_login;
+    @Gson2PosExclude
+    String authorize_token;
+
     AdditionalData additional_data;
 
     @Override
@@ -334,6 +340,11 @@ public class PosCheckoutPayment extends PosAbstractModel implements CheckoutPaym
     }
 
     @Override
+    public void setClientId(String strClientId) {
+        client_id = strClientId;
+    }
+
+    @Override
     public String getIsSandbox() {
         return is_sandbox;
     }
@@ -361,5 +372,25 @@ public class PosCheckoutPayment extends PosAbstractModel implements CheckoutPaym
     @Override
     public void setStripeToken(String strStripeToken) {
         stripe_token = strStripeToken;
+    }
+
+    @Override
+    public String getApiLogin() {
+        return api_login;
+    }
+
+    @Override
+    public void setApiLogin(String strApiLogin) {
+        api_login = strApiLogin;
+    }
+
+    @Override
+    public String getAuthorizeToken() {
+        return authorize_token;
+    }
+
+    @Override
+    public void setAuthorizeToken(String strAuthorizeToken) {
+        authorize_token = strAuthorizeToken;
     }
 }

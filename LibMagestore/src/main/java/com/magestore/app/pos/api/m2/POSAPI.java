@@ -115,4 +115,6 @@ public class POSAPI {
     // API approved payment stripe
     public static final String REST_APPROVED_PAYMENT_STRIPE = "rest/default/V1/webpos/stripe/finishPayment?";
 
+    // API approved authorizenet
+    public static final String REST_APPROVED_PAYMENT_AUTHORIZE = "rest/default/V1/webpos/authorizenet/finishPayment?";
 }

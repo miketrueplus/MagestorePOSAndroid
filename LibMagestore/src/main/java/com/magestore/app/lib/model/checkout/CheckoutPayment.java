@@ -108,6 +108,7 @@ public interface CheckoutPayment extends Model {
 
     // paypal
     String getClientId();
+    void setClientId(String strClientId);
     String getIsSandbox();
 
     // paypal here
@@ -118,4 +119,10 @@ public interface CheckoutPayment extends Model {
     String getPublishKeyStripe();
     String getStripeToken();
     void setStripeToken(String strStripeToken);
+
+    // Authorize
+    String getApiLogin();
+    void setApiLogin(String strApiLogin);
+    String getAuthorizeToken();
+    void setAuthorizeToken(String strAuthorizeToken);
 }

@@ -182,7 +182,8 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
     private static String REWARD_POINT_DISCOUNT = "rewardpoints_discount";
     private static String REWARD_POINT_BASE_AMOUNT = "rewardpoints_amount";
     private static String REWARD_POINT_AMOUNT = "rewardpoints_base_amount";
-
+    private static final String PAYMENT_STRIPE_CODE = "stripe_integration";
+    private static final String PAYMENT_AUTHORIZE = "authorizenet_integration";
     @Override
     public Model placeOrder(String quoteId, Checkout checkout, List<CheckoutPayment> listCheckoutPayment) throws IOException, InstantiationException, ParseException, IllegalAccessException {
         PlaceOrderParams placeOrderParams = createPlaceOrderParams();
@@ -205,7 +206,7 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         } else {
             String paymentCode = listCheckoutPayment.get(0).getCode();
             String paymentType = listCheckoutPayment.get(0).getType();
-            if (paymentType.equals("2")) {
+            if (paymentType.equals("2") || paymentCode.equals(PAYMENT_STRIPE_CODE) || paymentCode.equals(PAYMENT_AUTHORIZE)) {
                 placeOrderParams.setMethod("multipaymentforpos");
             } else {
                 placeOrderParams.setMethod(paymentCode);
@@ -518,6 +519,13 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         CheckoutDataAccess checkoutDataAccess = factory.generateCheckoutDataAccess();
         return checkoutDataAccess.approvedPaymentPayPal(payment_id);
+    }
+
+    @Override
+    public String approvedAuthorizeIntergration(String quote_id, String token, float amount) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        CheckoutDataAccess checkoutDataAccess = factory.generateCheckoutDataAccess();
+        return checkoutDataAccess.approvedAuthorizeIntergration(quote_id, token, amount);
     }
 
     @Override

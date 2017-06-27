@@ -55,4 +55,5 @@ dependencies {
         exclude group: 'io.card'
     }
     compile 'com.stripe:stripe-android:4.0.3'
+    compile 'net.authorize:accept-android-sdk:+'
 }

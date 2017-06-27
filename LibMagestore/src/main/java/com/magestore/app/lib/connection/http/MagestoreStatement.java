@@ -329,14 +329,14 @@ public class MagestoreStatement implements Statement {
             // Đặt lại các tham số cho HTTP Connection
             mHttpConnection.setDoOutput(true);
             mHttpConnection.setDoInput(true);
-            if (mstrPreparedQuery.toString().contains("authorize")) {
-                mHttpConnection.setRequestProperty(CONTENT_TYPE, APPLICATION_FORM_URLENCODEED);
-                mHttpConnection.setRequestProperty(ACCEPT, APPLICATION_FORM_URLENCODEED);
-                mHttpConnection.setRequestProperty("charset", "utf-8");
-            } else {
+//            if (mstrPreparedQuery.toString().contains("authorize")) {
+//                mHttpConnection.setRequestProperty(CONTENT_TYPE, APPLICATION_FORM_URLENCODEED);
+//                mHttpConnection.setRequestProperty(ACCEPT, APPLICATION_FORM_URLENCODEED);
+//                mHttpConnection.setRequestProperty("charset", "utf-8");
+//            } else {
                 mHttpConnection.setRequestProperty(CONTENT_TYPE, APPLICATION_JSON);
                 mHttpConnection.setRequestProperty(ACCEPT, APPLICATION_JSON);
-            }
+//            }
 
             // đặt action method cho http connection
             if (mAction == MagestoreStatementAction.ACTION_DELETE)
@@ -346,11 +346,11 @@ public class MagestoreStatement implements Statement {
             // Viết nội dung của object thành dạng json cho input
             Gson gson = new GsonBuilder().setExclusionStrategies(new MagestoreExclusionStrategy()).create();
             OutputStreamWriter wr = new OutputStreamWriter(mHttpConnection.getOutputStream());
-            if (mstrPreparedQuery.toString().contains("authorize")) {
-                wr.write(mobjPrepareParam.toString());
-            } else {
+//            if (mstrPreparedQuery.toString().contains("authorize")) {
+//                wr.write(mobjPrepareParam.toString());
+//            } else {
                 gson.toJson(mobjPrepareParam, wr);
-            }
+//            }
             wr.flush();
             wr.close();
         }

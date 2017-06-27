@@ -46,6 +46,8 @@ public interface CheckoutDataAccess extends DataAccess {
 
     String approvedPaymentPayPal(String payment_id) throws ParseException, InstantiationException, IllegalAccessException, IOException;
 
+    String approvedAuthorizeIntergration(String quote_id, String token, float amount) throws ParseException, InstantiationException, IllegalAccessException, IOException;
+
     String approvedStripe(String token, float amount) throws ParseException, InstantiationException, IllegalAccessException, IOException;
 
     String getAccessTokenPaypalHere() throws ParseException, InstantiationException, IllegalAccessException, IOException;
