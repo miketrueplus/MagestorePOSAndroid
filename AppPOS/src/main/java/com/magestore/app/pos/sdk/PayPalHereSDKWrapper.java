@@ -70,6 +70,7 @@ public class PayPalHereSDKWrapper implements CardReaderConnectionListener,
         PayPalHereSDK.init(context, serverName);
         PayPalHereSDK.registerAuthenticationListener(this);
         PayPalHereSDK.getCardReaderManager().registerCardReaderConnectionListener(this);
+        PayPalHereSDK.setReferrerCode("Magestore_POS");
 
         if (null != compositeAccessToken) {
             if(listener != null){

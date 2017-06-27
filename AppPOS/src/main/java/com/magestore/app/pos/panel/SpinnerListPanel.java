@@ -19,6 +19,7 @@ import com.magestore.app.lib.view.SimpleSpinner;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.adapter.CategoryAdapter;
 import com.magestore.app.pos.controller.ProductListController;
+import com.magestore.app.util.StringUtil;
 
 import java.util.List;
 
@@ -90,6 +91,9 @@ public class SpinnerListPanel extends AbstractListPanel<Category> {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(!StringUtil.isNullOrEmpty(productListController.getSearchString())){
+                    productListController.setSearchString("");
+                }
                 if (position == 0) {
                     productListController.bindCategory((Category) null);
                 } else

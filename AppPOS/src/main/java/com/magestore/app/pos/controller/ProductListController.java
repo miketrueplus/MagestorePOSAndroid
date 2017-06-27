@@ -109,6 +109,10 @@ public class ProductListController extends AbstractListController<Product> {
         }
     }
 
+    @Override
+    public void setSearchString(String search) {
+        super.setSearchString(search);
+    }
 
     /**
      * Bind 1 sản phẩm vào controller để xử lý

@@ -178,6 +178,6 @@ public class StringUtil {
     }
 
     public static String removeAllSymbol(String str){
-        return str.replaceAll("[-\\[\\]^/,'*:.!><~@#$%+=?|\"\\\\()\\s]+", "");
+        return str.replaceAll("[^0-9]", "");
     }
 }

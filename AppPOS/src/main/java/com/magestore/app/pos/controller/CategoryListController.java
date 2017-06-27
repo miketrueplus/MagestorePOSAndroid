@@ -37,34 +37,5 @@ public class CategoryListController extends AbstractListController<Category> {
         SpinnerListPanel categoryListPanel = (SpinnerListPanel) getView();
         categoryListPanel.bindCategory(list);
     }
-
 //Felix edit 27/04
-
-
-
-
-
-//    public List<Category> getListChildCategory(Category category) {
-//        try {
-//            return mCategoryService.getListCategory(category);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } catch (InstantiationException e) {
-//            e.printStackTrace();
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        } catch (IllegalAccessException e) {
-//            e.printStackTrace();
-//        }
-//        List<Category> listCategory = new ArrayList<>();
-//        return listCategory;
-//    }
-//
-//    public void selectCategoryChild(Category category) {
-//        mList = new ArrayList<>();
-//        mList.addAll(getListChildCategory(category));
-//        bindList(mList);
-//        getView().notifyDataSetChanged();
-//    }
-
 }

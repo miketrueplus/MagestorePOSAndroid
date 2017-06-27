@@ -221,6 +221,8 @@ public class ChargeActivity extends ActionBarActivity {
                 Log.d(LOG_TAG, "takePayment onPaymentFailure");
                 mIsInMiddleOfTakingPayment = false;
                 Log.d(LOG_TAG, "Transaction errors: " + errors.toString());
+                Invoice newInv = PayPalHereSDKWrapper.getInstance().beginPayment(BigDecimal.ZERO);
+                newInv.recalculate();
                 goToSalesActivity(TYPE_ERROR, "");
             }
 
@@ -230,6 +232,8 @@ public class ChargeActivity extends ActionBarActivity {
                 mIsInMiddleOfTakingPayment = false;
                 mTransactionRecord = responseObject.getTransactionRecord();
                 Log.d(LOG_TAG, "TransactionID: " + mTransactionRecord.getTransactionId());
+                Invoice newInv = PayPalHereSDKWrapper.getInstance().beginPayment(BigDecimal.ZERO);
+                newInv.recalculate();
                 goToSalesActivity(TYPE_SUCCESS, mTransactionRecord.getTransactionId());
             }
         });
