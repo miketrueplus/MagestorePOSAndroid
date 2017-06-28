@@ -72,6 +72,10 @@ public class OrderInvoiceItemsListController extends AbstractListController<Cart
         mOrderInvoicePanel.isShowButtonUpdateQty(isShow);
     }
 
+    public void isEnableButtonUpdateInvoice(boolean isEnable) {
+        mOrderInvoicePanel.isEnableButtonUpdateInvoice(isEnable);
+    }
+
     public void isEnableButtonSubmitInvoice(boolean isEnable) {
         mOrderInvoicePanel.isEnableButtonSubmitInvoice(isEnable);
     }

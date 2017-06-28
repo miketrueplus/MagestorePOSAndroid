@@ -14,6 +14,7 @@ import com.magestore.app.lib.service.user.UserService;
 import com.magestore.app.pos.LoginActivity;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.panel.SettingDetailPanel;
+import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.DataUtil;
 
 import java.io.IOException;
@@ -133,6 +134,7 @@ public class SettingListController extends AbstractListController<Setting> {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         DataUtil.saveDataBooleanToPreferences(getMagestoreContext().getActivity(), DataUtil.CHOOSE_STORE, false);
+                        ConfigUtil.setCheckFirstOpenSession(false);
                         Intent intent = new Intent(getMagestoreContext().getActivity(), LoginActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         getMagestoreContext().getActivity().startActivity(intent);

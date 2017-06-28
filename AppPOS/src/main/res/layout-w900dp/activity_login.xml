@@ -30,6 +30,7 @@
         android:id="@+id/login_form"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:focusableInTouchMode="true"
         android:orientation="horizontal">
 
         <FrameLayout
@@ -70,8 +71,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:descendantFocusability="beforeDescendants"
-                            android:focusableInTouchMode="true"
+                            android:focusable="true"
                             android:orientation="vertical">
 
                             <AutoCompleteTextView
@@ -82,7 +82,6 @@
                                 android:background="@drawable/login_form_border_edittext"
                                 android:ellipsize="end"
                                 android:hint="@string/login_domain"
-                                android:focusableInTouchMode="true"
                                 android:inputType="text"
                                 android:maxLines="1"
                                 android:padding="@dimen/login_edditext_padding_size" />

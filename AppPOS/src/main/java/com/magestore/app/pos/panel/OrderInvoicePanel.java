@@ -209,6 +209,8 @@ public class OrderInvoicePanel extends AbstractDetailPanel<Order> {
         List<OrderItemUpdateQtyParam> listOrderItem = new ArrayList<>();
         setDataToOrderUpdateQty(listOrderItem, orderHistoryListController);
         mOrderUpdateQtyParam.setItems(listOrderItem);
+        float total_paid = (mOrder.getBaseTotalPaid() - mOrder.getBaseTotalInvoiced() - mOrder.getWebposBaseChange() - mOrder.getBaseTotalRefunded());
+        mOrderUpdateQtyParam.setTotalPaid(total_paid);
         return mOrderUpdateQtyParam;
     }
 
@@ -224,12 +226,15 @@ public class OrderInvoicePanel extends AbstractDetailPanel<Order> {
             OrderItemUpdateQtyParam item = orderHistoryListController.creaOrderItemUpdateQtyParam();
             item.setEntityId(cartItem.getItemId());
             item.setQty(cartItem.getQuantity());
+            float total_item_invoice = cartItem.getQuantity() * (cartItem.getPriceInvoice() - ((cartItem.getBaseDiscountAmount() + cartItem.getBaseGiftVoucherDiscount() + cartItem.getRewardpointsBaseDiscount()) / cartItem.getQtyOrdered()));
+            item.setTotalInvoice(total_item_invoice);
             listOrderItem.add(item);
         }
     }
 
     private List<CartItem> listItemInvoice() {
         List<CartItem> listCartItem = new ArrayList<>();
+        total_price = 0;
         for (CartItem item : mOrderInvoiceItemsListController.getListItems()) {
             CartItem nitem = checkQtyInvoice(item);
             if (nitem.getQuantity() > 0) {
@@ -250,16 +255,17 @@ public class OrderInvoicePanel extends AbstractDetailPanel<Order> {
                 int qty = 0;
                 float total_invoice = 0;
 
-                while (total_invoice < total_paid) {
-                    total_invoice += qty * (item.getPriceInvoice() - ((item.getBaseDiscountAmount() + item.getBaseGiftVoucherDiscount() + item.getRewardpointsBaseDiscount()) / item.getQtyOrdered()));
-                    total_price = total_invoice + total_price;
-                    if (total_invoice > total_paid) {
+                for (int i = 0; i <= item.QtyInvoice(); i++) {
+                    total_invoice = qty * (item.getPriceInvoice() - ((item.getBaseDiscountAmount() + item.getBaseGiftVoucherDiscount() + item.getRewardpointsBaseDiscount()) / item.getQtyOrdered()));
+                    float total_price_all = total_invoice + total_price;
+                    if (total_price_all > total_paid) {
                         break;
                     }
                     qty++;
                 }
                 item.setQtyInvoiceable(qty - 1);
                 item.setQuantity(qty - 1);
+                total_price = item.getQuantity() * (item.getPriceInvoice() - ((item.getBaseDiscountAmount() + item.getBaseGiftVoucherDiscount() + item.getRewardpointsBaseDiscount()) / item.getQtyOrdered()));
             }
         } else {
             item.setQtyInvoiceable(0);
@@ -271,9 +277,9 @@ public class OrderInvoicePanel extends AbstractDetailPanel<Order> {
 
     public void showAlertRespone(boolean success) {
         String message;
-        if(success){
+        if (success) {
             message = getContext().getString(R.string.order_invoice_success);
-        }else{
+        } else {
             message = getContext().getString(R.string.err_invoice_order);
         }
 
@@ -283,6 +289,12 @@ public class OrderInvoicePanel extends AbstractDetailPanel<Order> {
 
     public void isShowButtonUpdateQty(boolean isShow) {
         btn_update_qty.setVisibility(isShow ? VISIBLE : GONE);
+    }
+
+    public void isEnableButtonUpdateInvoice(boolean isEnable) {
+        btn_update_qty.setEnabled(isEnable ? true : false);
+        btn_update_qty.setBackground(isEnable ? ContextCompat.getDrawable(getContext(), R.drawable.order_history_invoice_button_submit) : ContextCompat.getDrawable(getContext(), R.drawable.order_history_invoice_button_submit_disable));
+        btn_update_qty.setTextColor(isEnable ? ContextCompat.getColor(getContext(), R.color.white) : ContextCompat.getColor(getContext(), R.color.text_color));
     }
 
     //Felix edit 03/05/2017

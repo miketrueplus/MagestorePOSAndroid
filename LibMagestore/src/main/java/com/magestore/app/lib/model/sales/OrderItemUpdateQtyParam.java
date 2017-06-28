@@ -12,4 +12,6 @@ public interface OrderItemUpdateQtyParam extends Model {
     void setEntityId(String strEntityId);
     void setQty(float intQty);
     void setQty(String intQty);
+    void setTotalInvoice(float fTotalInvoice);
+    float getTotalInvoice();
 }

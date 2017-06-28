@@ -405,7 +405,13 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
 
     @Override
     public float getQuantity() {
-        return Float.parseFloat(qty);
+        float quantity = 0;
+        try {
+            quantity = Float.parseFloat(qty);
+        }catch (Exception e){
+
+        }
+        return quantity;
     }
 
     @Override

@@ -14,4 +14,7 @@ import java.util.List;
 public interface OrderUpdateQtyParam extends Model {
     void setOrderId(String strOrderId);
     void setItems(List<OrderItemUpdateQtyParam> listItems);
+    List<OrderItemUpdateQtyParam> getItems();
+    void setTotalPaid(float fTotalPaid);
+    float getTotalPaid();
 }

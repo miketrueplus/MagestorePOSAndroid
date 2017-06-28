@@ -25,6 +25,7 @@ import android.widget.TextView;
 
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.sales.Order;
+import com.magestore.app.lib.model.sales.OrderItemUpdateQtyParam;
 import com.magestore.app.lib.model.sales.OrderUpdateQtyParam;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
 import com.magestore.app.pos.PrintDialogActivity;
@@ -39,6 +40,7 @@ import com.magestore.app.util.StringUtil;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -439,7 +441,13 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
             @Override
             public void onClick(View view) {
                 OrderUpdateQtyParam orderUpdateQtyParam = mOrderInvoicePanel.bindOrderUpdateQty();
-                ((OrderHistoryListController) mController).doInputInvoiceUpdateQty(orderUpdateQtyParam);
+                if(checkTotalUpdateInvoice(orderUpdateQtyParam)){
+                    ((OrderHistoryListController) mController).doInputInvoiceUpdateQty(orderUpdateQtyParam);
+                }else{
+                    String message = getContext().getString(R.string.order_invoice_cannot_update);
+                    // Tạo dialog và hiển thị
+                    com.magestore.app.util.DialogUtil.confirm(getContext(), message, R.string.ok);
+                }
             }
         });
 
@@ -467,6 +475,18 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
             }
         }
         return checkItem;
+    }
+
+    private boolean checkTotalUpdateInvoice(OrderUpdateQtyParam orderUpdateQtyParam) {
+        List<OrderItemUpdateQtyParam> listItem = orderUpdateQtyParam.getItems();
+        float total_invoice = 0;
+        for (OrderItemUpdateQtyParam item : listItem) {
+            total_invoice += item.getTotalInvoice();
+        }
+        if (total_invoice > orderUpdateQtyParam.getTotalPaid()) {
+            return false;
+        }
+        return true;
     }
 
     private void onClickCancel() {

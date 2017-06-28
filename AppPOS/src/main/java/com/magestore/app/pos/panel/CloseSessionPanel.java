@@ -1,6 +1,7 @@
 package com.magestore.app.pos.panel;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
@@ -13,9 +14,11 @@ import android.widget.TextView;
 import com.magestore.app.lib.model.registershift.RegisterShift;
 import com.magestore.app.lib.model.registershift.SessionParam;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
+import com.magestore.app.pos.LoginActivity;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.RegisterShiftListController;
 import com.magestore.app.util.ConfigUtil;
+import com.magestore.app.util.DataUtil;
 import com.magestore.app.view.EditTextFloat;
 
 /**
@@ -70,12 +73,6 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
 
     @Override
     public void initValue() {
-        tv_session_back.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ((RegisterShiftListController) getController()).dismissDialogCloseSession();
-            }
-        });
         close_session_list_panel.setRegisterShiftListController((RegisterShiftListController) mController);
         ((RegisterShiftListController) mController).setOpenSessionListPanel(close_session_list_panel);
 
@@ -104,10 +101,8 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
             bt_adjustment.setVisibility(GONE);
             bt_close.setVisibility(GONE);
             bt_validate.setVisibility(VISIBLE);
-            tv_session_back.setVisibility(GONE);
             close_session_list_panel.setEnableAction(false);
         } else {
-            tv_session_back.setVisibility(VISIBLE);
             rl_add_value.setVisibility(VISIBLE);
             bt_cancel.setVisibility(GONE);
             bt_adjustment.setVisibility(VISIBLE);
@@ -115,6 +110,16 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
             bt_validate.setVisibility(GONE);
             close_session_list_panel.setEnableAction(true);
         }
+        tv_session_back.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (item.getStatus().equals(CLOSE_SESSION)) {
+                    backToLoginActivity();
+                } else {
+                    ((RegisterShiftListController) getController()).dismissDialogCloseSession();
+                }
+            }
+        });
         ((RegisterShiftListController) getController()).bindListValueClose();
         et_r_close_balance.setEnabled(item.getStatus().equals(CLOSE_SESSION) ? false : true);
         et_note.setEnabled(item.getStatus().equals(CLOSE_SESSION) ? false : true);
@@ -267,5 +272,13 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
 
     public void updateFloatAmount(float total) {
         et_r_close_balance.setText(ConfigUtil.formatNumber(total));
+    }
+
+    public void backToLoginActivity() {
+        DataUtil.saveDataBooleanToPreferences(((RegisterShiftListController) getController()).getMagestoreContext().getActivity(), DataUtil.CHOOSE_STORE, false);
+        ConfigUtil.setCheckFirstOpenSession(false);
+        Intent intent = new Intent(((RegisterShiftListController) getController()).getMagestoreContext().getActivity(), LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        ((RegisterShiftListController) getController()).getMagestoreContext().getActivity().startActivity(intent);
     }
 }

@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -329,7 +330,11 @@ public abstract class AbstractActivity
                     startActivity(intent);
                 }
             } else if (id == R.id.nav_checkout) {
-                if (!(AbstractActivity.this instanceof SalesActivity)) finish();
+                if (!(AbstractActivity.this instanceof SalesActivity)) {
+                    Intent intent = new Intent(getContext(), SalesActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
             } else if (id == R.id.nav_order_history) {
                 if (!(AbstractActivity.this instanceof OrderActivity)) {
                     positionSelectActivity = 1;

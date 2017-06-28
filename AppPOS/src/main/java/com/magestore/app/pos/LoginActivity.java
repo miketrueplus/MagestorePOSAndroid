@@ -62,6 +62,7 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
     private List<PointOfSales> mListPos;
     private TextView error_pos;
     private Button mStartButton;
+    private boolean mCheckLoginDemo = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -291,7 +292,8 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
         if (valid) {
             // Hiện progress bar
             showProgress(true);
-
+            // check login không phải là demo
+            mCheckLoginDemo = false;
             // lấy giá trị khi nhấn login
             String domain = mDomainView.getText().toString().trim();
             String username = mUserNameView.getText().toString().trim();
@@ -312,6 +314,8 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
     }
 
     private void attemptLoginDemo() {
+        // check login là demo thì không lại thông tin khách hàng nhập
+        mCheckLoginDemo = true;
         String domain = BuildConfig.REST_BASE_URL + "/pos-app/02";
         String username = "johan";
         String password = "johan123";
@@ -388,10 +392,11 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
             mAuthTask = null;
             if (success) {
                 // Đăng nhập thành công, lưu domain lại để lần sau không phải nhập
-                saveSharedValue("login_activity_domain", mDomainView.getText().toString().trim());
-                saveSharedValue("login_activity_username", mUserNameView.getText().toString().trim());
-                saveSharedValue("login_activity_password", mPasswordView.getText().toString().trim());
-
+                if(!mCheckLoginDemo){
+                    saveSharedValue("login_activity_domain", mDomainView.getText().toString().trim());
+                    saveSharedValue("login_activity_username", mUserNameView.getText().toString().trim());
+                    saveSharedValue("login_activity_password", mPasswordView.getText().toString().trim());
+                }
 //                boolean isChooseStore = DataUtil.getDataBooleanToPreferences(getContext(), DataUtil.CHOOSE_STORE);
 //                if (isChooseStore) {
 //                    navigationToSalesActivity();

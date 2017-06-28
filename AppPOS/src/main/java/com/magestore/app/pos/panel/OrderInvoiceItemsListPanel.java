@@ -111,6 +111,7 @@ public class OrderInvoiceItemsListPanel extends AbstractListPanel<CartItem> {
 
                 ((OrderInvoiceItemsListController) mController).isShowButtonUpdateQty(checkChangeQtyItem() ? true : false);
                 ((OrderInvoiceItemsListController) mController).isEnableButtonSubmitInvoice(checkChangeQtyItem() ? false : true);
+                ((OrderInvoiceItemsListController) mController).isEnableButtonUpdateInvoice(checkTotalQuantity() ? true : false);
             }
 
             @Override
@@ -146,5 +147,17 @@ public class OrderInvoiceItemsListPanel extends AbstractListPanel<CartItem> {
             }
         }
         return false;
+    }
+
+    private boolean checkTotalQuantity() {
+        int total_qty = 0;
+        for (CartItem item : listItems) {
+            total_qty += item.getQuantity();
+        }
+        if (total_qty > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
