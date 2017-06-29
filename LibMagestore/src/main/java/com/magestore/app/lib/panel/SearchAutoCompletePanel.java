@@ -132,7 +132,10 @@ public class SearchAutoCompletePanel extends FrameLayout {
     /**
      * Chuẩn bị các layout
      */
+    boolean checkScan = true;
+
     private void initLayout() {
+        checkScan = true;
         // load layout
         if (mintPanelLayout > 0) {
             mViewLayout = inflate(getContext(), mintPanelLayout, null);
@@ -152,21 +155,20 @@ public class SearchAutoCompletePanel extends FrameLayout {
                     if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                         applySearch();
                         mintMode = MODE_FILTER;
+                        return handled;
                     }
-                    if(actionId == EditorInfo.IME_ACTION_DONE)
-                    {
+                    if (actionId == EditorInfo.IME_ACTION_DONE) {
                         //value form keyboard
                         actionSearch();
                         return handled;
                     }
-                    if(actionId == EditorInfo.IME_ACTION_UNSPECIFIED)
-                    {
+                    if (actionId == EditorInfo.IME_ACTION_UNSPECIFIED) {
                         //value form barcode scanner
                         String valueFromKeyboard = mAutoTextView.getText().toString();
                         actionSearch();
-                        return handled;
+                        return false;
                     }
-                    return handled;
+                    return false;
                 }
             });
         }
@@ -276,6 +278,7 @@ public class SearchAutoCompletePanel extends FrameLayout {
         if (mCloseButton != null) mCloseButton.setVisibility(VISIBLE);
 
         mintMode = MODE_FILTER;
+        checkScan = true;
     }
 
     /**

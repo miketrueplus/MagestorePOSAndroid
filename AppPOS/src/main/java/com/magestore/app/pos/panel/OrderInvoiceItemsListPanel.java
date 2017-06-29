@@ -108,7 +108,9 @@ public class OrderInvoiceItemsListPanel extends AbstractListPanel<CartItem> {
                     item.setQuantity(qty_invoiced);
                     item.setQtyChange(qty_invoiced);
                 }
-
+                if (mOrder.getBaseTotalDue() > 0) {
+                    checkQuantityInvoice();
+                }
                 ((OrderInvoiceItemsListController) mController).isShowButtonUpdateQty(checkChangeQtyItem() ? true : false);
                 ((OrderInvoiceItemsListController) mController).isEnableButtonSubmitInvoice(checkChangeQtyItem() ? false : true);
                 ((OrderInvoiceItemsListController) mController).isEnableButtonUpdateInvoice(checkTotalQuantity() ? true : false);
@@ -119,6 +121,47 @@ public class OrderInvoiceItemsListPanel extends AbstractListPanel<CartItem> {
 
             }
         });
+    }
+
+    private void checkQuantityInvoice() {
+        total_price = 0;
+        for (CartItem item : listItems) {
+            checkQtyInvoice(item);
+        }
+    }
+
+    public void checkQtyInvoice(CartItem item) {
+        if (item.getPriceInvoice() == 0) {
+            item.setPriceInvoice(item.getPriceInclTax());
+        }
+        float total_paid = (mOrder.getBaseTotalPaid() - mOrder.getBaseTotalInvoiced() - mOrder.getWebposBaseChange() - mOrder.getBaseTotalRefunded());
+        if (total_price < total_paid) {
+            float quantity = 0;
+            if (item.getQtyChange() != item.QtyInvoiceable()) {
+                quantity = item.getQtyChange();
+            } else {
+                quantity = item.QtyInvoice();
+            }
+            if (quantity > 0) {
+                int qty = 0;
+                float total_invoice = 0;
+
+                for (int i = 0; i <= quantity; i++) {
+                    total_invoice = qty * (item.getPriceInvoice() - ((item.getBaseDiscountAmount() + item.getBaseGiftVoucherDiscount() + item.getRewardpointsBaseDiscount()) / item.getQtyOrdered()));
+                    float total_price_all = total_invoice + total_price;
+                    if (total_price_all > total_paid) {
+                        break;
+                    }
+                    qty++;
+                }
+                item.setQtyInvoiceable(qty - 1);
+                item.setQuantity(qty - 1);
+                total_price += item.getQuantity() * (item.getPriceInvoice() - ((item.getBaseDiscountAmount() + item.getBaseGiftVoucherDiscount() + item.getRewardpointsBaseDiscount()) / item.getQtyOrdered()));
+            }
+        } else {
+            item.setQtyInvoiceable(0);
+            item.setQuantity(0);
+        }
     }
 
     public void setDataListItem(List<CartItem> orderItems) {

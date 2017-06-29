@@ -128,10 +128,10 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
             mConfig = (Config) rp.doParse();
             return mConfig;
         } catch (ConnectionException ex) {
-            statement.getCacheConnection().deleteCache();
+//            statement.getCacheConnection().deleteCache();
             throw ex;
         } catch (IOException ex) {
-            statement.getCacheConnection().deleteCache();
+//            statement.getCacheConnection().deleteCache();
             throw ex;
         } finally {
 //            if (thread != null)

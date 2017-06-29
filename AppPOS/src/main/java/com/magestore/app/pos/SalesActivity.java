@@ -525,6 +525,18 @@ public class SalesActivity extends AbstractActivity
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        try {
+            unregisterReceiver(receiver_data_setting);
+            unregisterReceiver(receiver_data_order);
+            unregisterReceiver(receiver_data_payment_paypal);
+            unregisterReceiver(receiver_data_error_paypal);
+        } catch (Exception e) {
+        }
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu, menu);

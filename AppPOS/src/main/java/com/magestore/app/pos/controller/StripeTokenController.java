@@ -38,6 +38,7 @@ public class StripeTokenController {
         int cc_year = Integer.parseInt(mPayment.getCCExpYear());
         String cc_cvv = mPayment.getCID();
         Card card = new Card(cc_number, cc_month, cc_year, cc_cvv);
+        card.setName(mPayment.getCCOwner());
         new Stripe(mContext).createToken(
                 card,
                 mPublishableKey,

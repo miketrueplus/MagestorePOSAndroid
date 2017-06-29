@@ -79,6 +79,7 @@ public class PluginStoreCreditPanel extends AbstractDetailPanel<StoreCredit> {
                 float credit_value = store_credit_value.getValueFloat();
                 if (credit_value == 0) {
                     disableApply(false);
+                    if(mStoreCredit == null){mStoreCredit = mCheckoutListController.createStoreCredit();}
                     mStoreCredit.setAmount(0);
                 } else {
                     disableApply(true);

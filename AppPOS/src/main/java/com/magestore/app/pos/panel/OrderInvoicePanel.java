@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import com.magestore.app.lib.controller.Controller;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.sales.Order;
@@ -26,7 +25,6 @@ import com.magestore.app.pos.databinding.PanelOrderInvoiceBinding;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.DataUtil;
 import com.magestore.app.util.DialogUtil;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -217,8 +215,12 @@ public class OrderInvoicePanel extends AbstractDetailPanel<Order> {
     public void setDataToOrderUpdateQty(List<OrderItemUpdateQtyParam> listOrderItem, OrderHistoryListController orderHistoryListController) {
         List<CartItem> listItem;
         if (!mOrder.checkRequestUpdateInvoice()) {
-            listItem = listItemInvoice();
-            mOrder.setCheckRequestUpdateInvoice(true);
+            if(mOrder.getBaseTotalDue() > 0){
+                listItem = listItemInvoice();
+                mOrder.setCheckRequestUpdateInvoice(true);
+            }else {
+                listItem = mOrderInvoiceItemsListPanel.bind2List();
+            }
         } else {
             listItem = mOrderInvoiceItemsListPanel.bind2List();
         }
@@ -265,7 +267,7 @@ public class OrderInvoicePanel extends AbstractDetailPanel<Order> {
                 }
                 item.setQtyInvoiceable(qty - 1);
                 item.setQuantity(qty - 1);
-                total_price = item.getQuantity() * (item.getPriceInvoice() - ((item.getBaseDiscountAmount() + item.getBaseGiftVoucherDiscount() + item.getRewardpointsBaseDiscount()) / item.getQtyOrdered()));
+                total_price += item.getQuantity() * (item.getPriceInvoice() - ((item.getBaseDiscountAmount() + item.getBaseGiftVoucherDiscount() + item.getRewardpointsBaseDiscount()) / item.getQtyOrdered()));
             }
         } else {
             item.setQtyInvoiceable(0);

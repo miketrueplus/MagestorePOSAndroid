@@ -20,6 +20,7 @@ import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.model.directory.Currency;
 import com.magestore.app.lib.model.plugins.RewardPoint;
+import com.magestore.app.lib.model.plugins.StoreCredit;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.observ.GenericState;
 import com.magestore.app.lib.observ.State;
@@ -2063,6 +2064,14 @@ public class CheckoutListController extends AbstractListController<Checkout> {
      */
     public CheckoutPayment createPaymentMethod() {
         return ((CheckoutService) getListService()).createPaymentMethod();
+    }
+
+    /**
+     * khởi tạo store credit
+     * @return
+     */
+    public StoreCredit createStoreCredit(){
+        return ((CheckoutService) getListService()).createStoreCredit();
     }
 
     /**

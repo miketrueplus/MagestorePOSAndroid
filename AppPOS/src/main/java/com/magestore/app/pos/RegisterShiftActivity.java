@@ -131,11 +131,13 @@ public class RegisterShiftActivity extends AbstractActivity {
         }
     };
 
-//    @Override
-//    protected void onStop() {
-//        super.onStop();
-//        unregisterReceiver(receiver_data);
-//    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        try {
+            unregisterReceiver(receiver_data);
+        }catch (Exception e){}
+    }
 
     @Override
     public void onBackPressed() {

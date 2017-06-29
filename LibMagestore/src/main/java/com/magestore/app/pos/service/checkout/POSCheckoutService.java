@@ -26,6 +26,7 @@ import com.magestore.app.lib.model.checkout.payment.CreditCard;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.model.plugins.GiftCard;
+import com.magestore.app.lib.model.plugins.StoreCredit;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.resourcemodel.DataAccessFactory;
 import com.magestore.app.lib.resourcemodel.sales.CheckoutDataAccess;
@@ -47,6 +48,7 @@ import com.magestore.app.pos.model.checkout.PosQuoteItemExtension;
 import com.magestore.app.pos.model.checkout.PosQuoteItems;
 import com.magestore.app.pos.model.checkout.PosSaveQuoteParam;
 import com.magestore.app.pos.model.checkout.payment.PosCreditCard;
+import com.magestore.app.pos.model.plugins.PosStoreCredit;
 import com.magestore.app.pos.service.AbstractService;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.StringUtil;
@@ -740,6 +742,11 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
     @Override
     public CreditCard createCreditCard() {
         return new PosCreditCard();
+    }
+
+    @Override
+    public StoreCredit createStoreCredit() {
+        return new PosStoreCredit();
     }
 
     @Override
