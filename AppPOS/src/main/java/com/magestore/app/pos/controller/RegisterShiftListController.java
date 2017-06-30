@@ -1,6 +1,7 @@
 package com.magestore.app.pos.controller;
 
 import android.content.Intent;
+
 import com.magestore.app.lib.controller.AbstractListController;
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.customer.Customer;
@@ -42,6 +43,8 @@ public class RegisterShiftListController extends AbstractListController<Register
     Map<String, Object> wraper;
     public static String SEND_NOTI_TO_REGISTER_ACTIVITY = "com.magestore.app.pos.controller.register.controller";
     UserService userService;
+    boolean first_add;
+    boolean first_check;
 
     /**
      * Service xử lý các vấn đề liên quan đến register shift
@@ -76,59 +79,82 @@ public class RegisterShiftListController extends AbstractListController<Register
 
     @Override
     public void onRetrievePostExecute(List<RegisterShift> list) {
-        if (list != null && list.size() > 0) {
-            for (RegisterShift shift : list) {
-                if (!shift.getLessSevenDay()) {
-                    if (!ConfigUtil.lessThanSevenDay(shift.getOpenedAt())) {
-                        RegisterShift shift_title = mRegisterShiftService.create();
-                        shift_title.setLessSevenDay(true);
-                        if (list.size() == 1) {
-                            list.add(0, shift_title);
-                        } else {
-                            list.add(list.indexOf(shift), shift_title);
+        if (!first_add) {
+            if (list != null) {
+                if (list.size() == 0) {
+                    RegisterShift shift_last_title = mRegisterShiftService.create();
+                    shift_last_title.setLastSevenDay(true);
+                    list.add(shift_last_title);
+                } else {
+                    for (RegisterShift shift : list) {
+                        if (!shift.getLastSevenDay()) {
+                            RegisterShift shift_last_title = mRegisterShiftService.create();
+                            shift_last_title.setLastSevenDay(true);
+                            list.add(0, shift_last_title);
+                            break;
                         }
-                        break;
+                    }
+                }
+                for (RegisterShift shift : list) {
+                    if (!shift.getLessSevenDay()) {
+                        if (!shift.getLastSevenDay()) {
+                            if (!ConfigUtil.lessThanSevenDay(shift.getOpenedAt())) {
+                                RegisterShift shift_title = mRegisterShiftService.create();
+                                shift_title.setLessSevenDay(true);
+                                if (list.size() == 1) {
+                                    list.add(shift_title);
+                                } else {
+                                    list.add(list.indexOf(shift), shift_title);
+                                }
+                                break;
+                            }
+                        }
                     }
                 }
             }
+            first_add = true;
         }
         super.onRetrievePostExecute(list);
-        if (list != null && list.size() > 0) {
-            RegisterShift registerShift = list.get(0);
-            if (registerShift.getStatus().equals("0")) {
-                if (!ConfigUtil.isCheckFirstOpenSession()) {
-                    ((RegisterShiftListPanel) mView).showDialogContinueCheckout();
-                    ConfigUtil.setCheckFirstOpenSession(true);
-                }
-                ConfigUtil.setShiftId(registerShift.getShiftId());
+        if (!first_check) {
+            if (list != null && list.size() > 1) {
+                RegisterShift registerShift = list.get(1);
+                bindItem(registerShift);
+                if (registerShift.getStatus().equals("0")) {
+                    if (!ConfigUtil.isCheckFirstOpenSession()) {
+                        ((RegisterShiftListPanel) mView).showDialogContinueCheckout();
+                        ConfigUtil.setCheckFirstOpenSession(true);
+                    }
+                    ConfigUtil.setShiftId(registerShift.getShiftId());
 //                getMagestoreContext().getActivity().finish();
-                ((RegisterShiftListPanel) mView).isShowButtonOpenSession(false);
-            }
-            if (registerShift.getStatus().equals("1")) {
-                openSessionList();
-                ((RegisterShiftListPanel) mView).isShowButtonOpenSession(true);
-                Intent intent = new Intent();
-                intent.putExtra("is_show", false);
-                intent.setAction(SEND_NOTI_TO_REGISTER_ACTIVITY);
-                getMagestoreContext().getActivity().sendBroadcast(intent);
-            } else {
-                Intent intent = new Intent();
-                intent.putExtra("is_show", true);
-                intent.setAction(SEND_NOTI_TO_REGISTER_ACTIVITY);
-                getMagestoreContext().getActivity().sendBroadcast(intent);
-            }
+                    ((RegisterShiftListPanel) mView).isShowButtonOpenSession(false);
+                }
+                if (registerShift.getStatus().equals("1")) {
+                    openSessionList();
+                    ((RegisterShiftListPanel) mView).isShowButtonOpenSession(true);
+                    Intent intent = new Intent();
+                    intent.putExtra("is_show", false);
+                    intent.setAction(SEND_NOTI_TO_REGISTER_ACTIVITY);
+                    getMagestoreContext().getActivity().sendBroadcast(intent);
+                } else {
+                    Intent intent = new Intent();
+                    intent.putExtra("is_show", true);
+                    intent.setAction(SEND_NOTI_TO_REGISTER_ACTIVITY);
+                    getMagestoreContext().getActivity().sendBroadcast(intent);
+                }
 
-            if (registerShift.getStatus().equals("2")) {
-                ((RegisterShiftDetailPanel) mDetailView).showCloseShift(list.get(0));
+                if (registerShift.getStatus().equals("2")) {
+                    ((RegisterShiftDetailPanel) mDetailView).showCloseShift(list.get(0));
+                }
+            } else {
+                openSessionList();
             }
-        } else {
-            openSessionList();
+            first_check = true;
         }
     }
 
     @Override
     public void bindItem(RegisterShift item) {
-        if(!item.getLessSevenDay()) {
+        if (!item.getLessSevenDay() && !item.getLastSevenDay()) {
             super.bindItem(item);
         }
     }
@@ -188,7 +214,29 @@ public class RegisterShiftListController extends AbstractListController<Register
         } else if (success && actionType == ACTION_TYPE_OPEN_SESSION) {
             List<RegisterShift> listRegister = (List<RegisterShift>) wraper.get("open_session_respone");
             ConfigUtil.setShiftId(listRegister.get(0).getShiftId());
-            mList.add(0, listRegister.get(0));
+            mList.add(1, listRegister.get(0));
+            for (RegisterShift shift : mList) {
+                if (shift.getLessSevenDay()) {
+                    mList.remove(shift);
+                    break;
+                }
+            }
+            for (RegisterShift shift : mList) {
+                if (!shift.getLessSevenDay()) {
+                    if (!shift.getLastSevenDay()) {
+                        if (!ConfigUtil.lessThanSevenDay(shift.getOpenedAt())) {
+                            RegisterShift shift_title = mRegisterShiftService.create();
+                            shift_title.setLessSevenDay(true);
+                            if (mList.size() == 1) {
+                                mList.add(shift_title);
+                            } else {
+                                mList.add(mList.indexOf(shift), shift_title);
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
             bindList(mList);
             ((RegisterShiftDetailPanel) mDetailView).bindItem(listRegister.get(0));
             ((RegisterShiftListPanel) mView).notifyDataSetChanged();
@@ -207,6 +255,10 @@ public class RegisterShiftListController extends AbstractListController<Register
             setNewRegisterToList(oldRegisterShift, listRegister.get(0));
             bindItemCloseSessionPanel(listRegister.get(0));
             isShowLoadingDetail(false);
+            int type = (int) wraper.get("cancel_session_type");
+            if(type == 1){
+                dismissDialogCloseSession();
+            }
         }
     }
 
@@ -241,9 +293,10 @@ public class RegisterShiftListController extends AbstractListController<Register
         doAction(ACTION_TYPE_VALIDATE_SESSION, null, wraper, registerShift);
     }
 
-    public void doInputCancelSession(RegisterShift registerShift, SessionParam param) {
+    public void doInputCancelSession(RegisterShift registerShift, SessionParam param, int type) {
         isShowLoadingDetail(true);
         wraper.put("param_cancel_session", param);
+        wraper.put("cancel_session_type", type);
         doAction(ACTION_TYPE_CANCEL_SESSION, null, wraper, registerShift);
     }
 

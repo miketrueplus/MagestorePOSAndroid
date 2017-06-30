@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.magestore.app.lib.model.registershift.RegisterShift;
 import com.magestore.app.lib.panel.AbstractListPanel;
@@ -33,6 +34,7 @@ public class RegisterShiftListPanel extends AbstractListPanel<RegisterShift> {
     RelativeLayout rl_open_session;
     Toolbar mToolbar;
     LinearLayout content_other, content_register_shift_list_card_view;
+    TextView tv_other;
 
     public void setToolbar(Toolbar mToolbar) {
         this.mToolbar = mToolbar;
@@ -72,15 +74,21 @@ public class RegisterShiftListPanel extends AbstractListPanel<RegisterShift> {
     @Override
     protected void bindItem(View view, RegisterShift item, int position) {
         content_other = (LinearLayout) view.findViewById(R.id.content_other);
+        tv_other = (TextView) view.findViewById(R.id.tv_other);
         content_register_shift_list_card_view = (LinearLayout) view.findViewById(R.id.content_register_shift_list_card_view);
-        if (!item.getLessSevenDay()) {
+        if (item.getLastSevenDay()) {
+            content_register_shift_list_card_view.setVisibility(GONE);
+            content_other.setVisibility(VISIBLE);
+            tv_other.setText(getContext().getString(R.string.register_shift_last_seven_days));
+        } else if (item.getLessSevenDay()) {
+            content_register_shift_list_card_view.setVisibility(GONE);
+            content_other.setVisibility(VISIBLE);
+            tv_other.setText(getContext().getString(R.string.other));
+        } else {
             content_register_shift_list_card_view.setVisibility(VISIBLE);
             content_other.setVisibility(GONE);
             CardRegisterShiftListContentBinding binding = DataBindingUtil.bind(view);
             binding.setRegisterShift(item);
-        } else {
-            content_register_shift_list_card_view.setVisibility(GONE);
-            content_other.setVisibility(VISIBLE);
         }
     }
 

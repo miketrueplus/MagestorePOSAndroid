@@ -54,6 +54,8 @@ public class PosRegisterShift extends PosAbstractModel implements RegisterShift 
     String pos_name;
 
     @Gson2PosExclude
+    boolean last_seven_day;
+    @Gson2PosExclude
     boolean less_seven_day;
 
     // param request add cash transaction
@@ -278,6 +280,16 @@ public class PosRegisterShift extends PosAbstractModel implements RegisterShift 
     @Override
     public String getPosName() {
         return pos_name;
+    }
+
+    @Override
+    public boolean getLastSevenDay() {
+        return last_seven_day;
+    }
+
+    @Override
+    public void setLastSevenDay(boolean bLessSevenDay) {
+        last_seven_day = bLessSevenDay;
     }
 
     @Override
