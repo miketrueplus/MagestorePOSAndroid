@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.magestore.app.lib.model.registershift.RegisterShift;
@@ -31,6 +32,7 @@ public class RegisterShiftListPanel extends AbstractListPanel<RegisterShift> {
     FloatingActionButton fab;
     RelativeLayout rl_open_session;
     Toolbar mToolbar;
+    LinearLayout content_other, content_register_shift_list_card_view;
 
     public void setToolbar(Toolbar mToolbar) {
         this.mToolbar = mToolbar;
@@ -69,8 +71,17 @@ public class RegisterShiftListPanel extends AbstractListPanel<RegisterShift> {
 
     @Override
     protected void bindItem(View view, RegisterShift item, int position) {
-        CardRegisterShiftListContentBinding binding = DataBindingUtil.bind(view);
-        binding.setRegisterShift(item);
+        content_other = (LinearLayout) view.findViewById(R.id.content_other);
+        content_register_shift_list_card_view = (LinearLayout) view.findViewById(R.id.content_register_shift_list_card_view);
+        if (!item.getLessSevenDay()) {
+            content_register_shift_list_card_view.setVisibility(VISIBLE);
+            content_other.setVisibility(GONE);
+            CardRegisterShiftListContentBinding binding = DataBindingUtil.bind(view);
+            binding.setRegisterShift(item);
+        } else {
+            content_register_shift_list_card_view.setVisibility(GONE);
+            content_other.setVisibility(VISIBLE);
+        }
     }
 
     public void openSession() {
@@ -85,11 +96,11 @@ public class RegisterShiftListPanel extends AbstractListPanel<RegisterShift> {
         dialogOpenSession.show();
     }
 
-    public void isShowButtonOpenSession(boolean isShow){
+    public void isShowButtonOpenSession(boolean isShow) {
         rl_open_session.setVisibility(isShow ? VISIBLE : GONE);
     }
 
-    public void dismissDialogOpenSession(){
+    public void dismissDialogOpenSession() {
         dialogOpenSession.dismiss();
     }
 
@@ -97,7 +108,7 @@ public class RegisterShiftListPanel extends AbstractListPanel<RegisterShift> {
         openSessionPanel.updateFloatAmount(total);
     }
 
-    public void showDialogContinueCheckout(){
+    public void showDialogContinueCheckout() {
         new AlertDialog.Builder(getContext())
                 .setMessage(R.string.ask_are_you_sure_go_to_checkout)
                 .setPositiveButton(R.string.register_shift_continue, new DialogInterface.OnClickListener() {

@@ -9,6 +9,7 @@ import com.magestore.app.lib.resourcemodel.registershift.RegisterShiftDataAccess
 import com.magestore.app.lib.service.registershift.RegisterShiftService;
 import com.magestore.app.pos.model.registershift.PosCashTransaction;
 import com.magestore.app.pos.model.registershift.PosOpenSessionValue;
+import com.magestore.app.pos.model.registershift.PosRegisterShift;
 import com.magestore.app.pos.model.registershift.PosSessionParam;
 import com.magestore.app.pos.service.AbstractService;
 import com.magestore.app.util.ConfigUtil;
@@ -33,7 +34,7 @@ public class POSRegisterShiftService extends AbstractService implements Register
 
     @Override
     public RegisterShift create() {
-        return null;
+        return new PosRegisterShift();
     }
 
     @Override

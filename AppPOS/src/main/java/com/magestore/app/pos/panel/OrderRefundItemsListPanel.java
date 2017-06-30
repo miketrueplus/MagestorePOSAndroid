@@ -97,9 +97,9 @@ public class OrderRefundItemsListPanel extends AbstractListPanel<CartItem> {
                     item.setQuantity(qty_refunded);
                 }
 
-                if (qty_refunded != qty) {
+//                if (qty_refunded != qty) {
                     ((OrderRefundItemsListController) mController).changeMaxStoreCreditRefund();
-                }
+//                }
             }
 
             @Override
@@ -121,7 +121,7 @@ public class OrderRefundItemsListPanel extends AbstractListPanel<CartItem> {
     }
 
     public List<OrderItemParams> bind2List() {
-        List<CartItem> listCartItems = ((OrderRefundItemsListController) mController).getSelectedItems();
+        List<CartItem> listCartItems = mList;
         if (listCartItems != null && listCartItems.size() > 0) {
             for (CartItem item : listCartItems) {
                 OrderItemParams param = ((OrderRefundItemsListController) mController).createOrderRefundItemParams();

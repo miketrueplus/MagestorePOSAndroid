@@ -1,7 +1,6 @@
 package com.magestore.app.util;
 
 import android.text.format.Time;
-
 import com.magestore.app.lib.model.config.ConfigPriceFormat;
 import com.magestore.app.lib.model.config.ConfigPrint;
 import com.magestore.app.lib.model.config.ConfigTaxClass;
@@ -544,6 +543,35 @@ public class ConfigUtil {
         int mGMTOffset = mTimeZone.getRawOffset();
         String date = df.format(calendar.getTimeInMillis() - mGMTOffset);
         return date;
+    }
+
+    public static boolean lessThanSevenDay(String date){
+        if (date == null) {
+            return false;
+        }
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        format.setTimeZone(TimeZone.getTimeZone("GMT"));
+        Date dateFormat = null;
+        try {
+            dateFormat = format.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if (dateFormat == null) {
+            return true;
+        }
+        long time = dateFormat.getTime();
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        Calendar calendar = Calendar.getInstance();
+        TimeZone mTimeZone = calendar.getTimeZone();
+        int mGMTOffset = mTimeZone.getRawOffset();
+        long current_time = calendar.getTimeInMillis() - mGMTOffset;
+        long seven_day = 7 * 24 * 60 * 60 * 1000;
+        long time_rate = current_time - time;
+        if(time_rate < seven_day){
+            return true;
+        }
+        return false;
     }
 
     /**

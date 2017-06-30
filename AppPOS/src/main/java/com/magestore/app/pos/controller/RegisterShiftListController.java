@@ -1,7 +1,6 @@
 package com.magestore.app.pos.controller;
 
 import android.content.Intent;
-
 import com.magestore.app.lib.controller.AbstractListController;
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.customer.Customer;
@@ -77,8 +76,24 @@ public class RegisterShiftListController extends AbstractListController<Register
 
     @Override
     public void onRetrievePostExecute(List<RegisterShift> list) {
+        if (list != null && list.size() > 0) {
+            for (RegisterShift shift : list) {
+                if (!shift.getLessSevenDay()) {
+                    if (!ConfigUtil.lessThanSevenDay(shift.getOpenedAt())) {
+                        RegisterShift shift_title = mRegisterShiftService.create();
+                        shift_title.setLessSevenDay(true);
+                        if (list.size() == 1) {
+                            list.add(0, shift_title);
+                        } else {
+                            list.add(list.indexOf(shift), shift_title);
+                        }
+                        break;
+                    }
+                }
+            }
+        }
         super.onRetrievePostExecute(list);
-        if (list.size() > 0) {
+        if (list != null && list.size() > 0) {
             RegisterShift registerShift = list.get(0);
             if (registerShift.getStatus().equals("0")) {
                 if (!ConfigUtil.isCheckFirstOpenSession()) {
@@ -108,6 +123,13 @@ public class RegisterShiftListController extends AbstractListController<Register
             }
         } else {
             openSessionList();
+        }
+    }
+
+    @Override
+    public void bindItem(RegisterShift item) {
+        if(!item.getLessSevenDay()) {
+            super.bindItem(item);
         }
     }
 

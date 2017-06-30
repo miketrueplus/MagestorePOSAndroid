@@ -5,6 +5,7 @@ import com.magestore.app.lib.model.registershift.RegisterShift;
 import com.magestore.app.lib.model.registershift.SaleSummary;
 import com.magestore.app.lib.model.registershift.ZreportSalesSummary;
 import com.magestore.app.pos.model.PosAbstractModel;
+import com.magestore.app.pos.parse.gson2pos.Gson2PosExclude;
 import com.magestore.app.util.ConfigUtil;
 
 import java.util.List;
@@ -51,6 +52,9 @@ public class PosRegisterShift extends PosAbstractModel implements RegisterShift 
     PosZreportSalesSummary zreport_sales_summary;
     String pos_id;
     String pos_name;
+
+    @Gson2PosExclude
+    boolean less_seven_day;
 
     // param request add cash transaction
     PosCashTransaction param_cash;
@@ -274,5 +278,15 @@ public class PosRegisterShift extends PosAbstractModel implements RegisterShift 
     @Override
     public String getPosName() {
         return pos_name;
+    }
+
+    @Override
+    public boolean getLessSevenDay() {
+        return less_seven_day;
+    }
+
+    @Override
+    public void setLessSevenDay(boolean bLessSevenDay) {
+        less_seven_day = bLessSevenDay;
     }
 }

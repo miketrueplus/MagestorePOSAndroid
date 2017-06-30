@@ -18,7 +18,7 @@
             android:layout_toLeftOf="@+id/rl_open_session"
             android:ellipsize="end"
             android:lines="1"
-            android:text="@string/register_shift_session_title"
+            android:text="@string/session"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_18" />
 

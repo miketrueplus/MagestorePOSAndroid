@@ -217,6 +217,7 @@
     <string name="register_shift_set_adjustment">Set Adjustment</string>
     <string name="register_shift_continue">continue</string>
     <string name="register_shift_open">Opening</string>
+    <string name="register_shift_last_seven_days"> Last 7 days</string>
     <string name="select_pos">Select your Point Of Sale</string>
 
     <!--Strings related to setting-->
@@ -373,6 +374,7 @@
     <string name="options">Options</string>
     <string name="order">Order</string>
     <string name="orders">Orders</string>
+    <string name="other">Other</string>
     <string name="payment">Payment</string>
     <string name="payment_method">PAYMENT METHOD</string>
     <string name="percent">%</string>
@@ -392,6 +394,7 @@
     <string name="sales">Sales</string>
     <string name="search">Search</string>
     <string name="send">Send</string>
+    <string name="session">Session</string>
     <string name="setting">Settings</string>
     <string name="shift">Shift</string>
     <string name="shipping">Shipping</string>
