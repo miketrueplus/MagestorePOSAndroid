@@ -37,6 +37,7 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
     TextView tv_session_back, tv_open_session_balance, tv_t_close_balance, tv_transaction, tv_difference;
     Button bt_close, bt_cancel, bt_adjustment, bt_validate;
     EditText et_note;
+    float balance_different;
 
     public CloseSessionPanel(Context context) {
         super(context);
@@ -138,7 +139,7 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
                 param.setBaseTotalSales(item.getBaseTotalSales());
                 param.setCloseAmount(r_balance);
                 param.setBaseClosedAmount(base_r_balance);
-                param.setCashRemoved(item.getCashRemoved());
+                param.setCashRemoved(item.getCashRemoved()); // real amount
                 param.setBaseCashRemoved(item.getBaseCashRemoved());
                 param.setCashLeft(item.getCashLeft());
                 param.setBaseCashLeft(item.getBaseCashLeft());
@@ -157,7 +158,36 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
         bt_validate.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                SessionParam param = crateSessionParam(VALIDATE, item);
+                SessionParam param = ((RegisterShiftListController) getController()).createSessionParam();
+                float different = item.getBaseBalance() - item.getBaseClosedAmount();
+                if(different < 0){
+                    different = 0;
+                }
+                param.setBalance(ConfigUtil.convertToPrice(different));
+                param.setBaseBalance(different);
+                param.setBaseCashAdded(item.getBaseCashAdded());
+                param.setBaseFloatAmount(item.getBaseFloatAmount());
+                param.setFloatAmount(item.getFloatAmount());
+                param.setBaseCurrencyCode(ConfigUtil.getBaseCurrencyCode());
+                param.setCashAdded(item.getCashAdded());
+                param.setOpenedNote(item.getOpenedNote());
+                param.setClosedNote(et_note.getText().toString());
+                param.setTotalSales(item.getTotalSales());
+                param.setBaseTotalSales(item.getBaseTotalSales());
+                param.setCloseAmount(item.getClosedAmount());
+                param.setBaseClosedAmount(item.getBaseClosedAmount());
+                param.setCashRemoved(item.getClosedAmount()); // real amount
+                param.setBaseCashRemoved(item.getBaseClosedAmount());
+                param.setCashLeft(item.getCashLeft());
+                param.setBaseCashLeft(item.getBaseCashLeft());
+                param.setShiftCurrencyCode(item.getShiftCurrencyCode());
+                param.setStaffId(item.getStaffId());
+                param.setLocationId(item.getLocationId());
+                param.setOpenedAt(item.getOpenedAt());
+                param.setCloseAt(ConfigUtil.getCurrentDateTime());
+                param.setShiftId(item.getShiftId());
+                param.setPosId(item.getPosId());
+                param.setStatus(VALIDATE);
                 ((RegisterShiftListController) getController()).doInputValidateSession(item, param);
             }
         });
@@ -233,8 +263,10 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
                 float different = ConfigUtil.convertToPrice(item.getBaseBalance()) - balance;
                 if (different < 0) {
                     tv_difference.setText(ConfigUtil.formatPrice(0 - different));
+                    balance_different = 0 - different;
                 } else {
                     tv_difference.setText(ConfigUtil.formatPrice(different));
+                    balance_different = different;
                 }
             }
 

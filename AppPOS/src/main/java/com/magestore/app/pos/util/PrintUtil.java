@@ -190,11 +190,13 @@ public class PrintUtil {
         List<CartItem> items = order.getOrderItems();
         if (items != null && items.size() > 0) {
             for (CartItem item : items) {
-                String body_content_item_name = "<td style=\"font-family: monospace; text-align: left; padding: 5px 0;\"><span style=\"font-family: monospace;\">" + item.getName() + "</span><span style=\"font-family: monospace; display: block;\">" + item.getSku() + "</span></td>";
-                String body_content_item_qty = "<td style=\"font-family: monospace; text-align: right; padding: 5px 0;\">" + item.getQtyOrdered() + "</td>";
-                String body_content_item_price = "<td style=\"font-family: monospace; text-align: right; padding: 5px 0;\">" + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(item.getBasePrice())) + "</td>";
-                String body_content_item_subtotal = "<td style=\"font-family: monospace; text-align: right; padding: 5px 0;\">" + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(item.getBaseSubTotal())) + "</td>";
-                body_content_item += "<tr style=\"display: table-row;\">" + body_content_item_name + body_content_item_qty + body_content_item_price + body_content_item_subtotal + "</tr>";
+                if (item.getOrderParentItem() == null) {
+                    String body_content_item_name = "<td style=\"font-family: monospace; text-align: left; padding: 5px 0;\"><span style=\"font-family: monospace;\">" + item.getName() + "</span><span style=\"font-family: monospace; display: block;\">" + item.getSku() + "</span></td>";
+                    String body_content_item_qty = "<td style=\"font-family: monospace; text-align: right; padding: 5px 0;\">" + item.getQtyOrdered() + "</td>";
+                    String body_content_item_price = "<td style=\"font-family: monospace; text-align: right; padding: 5px 0;\">" + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(item.getBasePrice())) + "</td>";
+                    String body_content_item_subtotal = "<td style=\"font-family: monospace; text-align: right; padding: 5px 0;\">" + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(item.getBaseSubTotal())) + "</td>";
+                    body_content_item += "<tr style=\"display: table-row;\">" + body_content_item_name + body_content_item_qty + body_content_item_price + body_content_item_subtotal + "</tr>";
+                }
             }
             body_content_items = "<div style=\"padding: 3px 0; margin-bottom: 7px\"><table style=\"width: 100%;\"><thead><tr style=\"display: table-row;\"><th style=\"font-weight: bold; font-family: monospace; text-align: left;\">ITEM</th><th style=\"font-weight: bold; font-family: monospace; text-align: right;\">Qty</th><th style=\"font-weight: bold; font-family: monospace; text-align: right;\">PRICE</th><th style=\"font-weight: bold; font-family: monospace; text-align: right;\">SUBTOTAL</th></tr></thead><tbody>" + body_content_item + "</tbody></table></div>";
         }

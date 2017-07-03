@@ -184,7 +184,11 @@ public class OrderListChoosePaymentPanel extends AbstractSimpleRecycleView<Check
                     checkoutPayment.setBaseAmount(currentValue);
                     checkoutPayment.setRealAmount(currentValue);
                     checkoutPayment.setBaseRealAmount(currentValue);
-                    mOrderHistoryListController.isEnableButtonAddPayment(true);
+                    if (totalValue == grand_total) {
+                        mOrderHistoryListController.isEnableButtonAddPayment(false);
+                    }else {
+                        mOrderHistoryListController.isEnableButtonAddPayment(true);
+                    }
                 }
             }
 

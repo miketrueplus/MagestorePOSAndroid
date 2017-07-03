@@ -143,7 +143,7 @@ public class RegisterShiftListController extends AbstractListController<Register
                 }
 
                 if (registerShift.getStatus().equals("2")) {
-                    ((RegisterShiftDetailPanel) mDetailView).showCloseShift(list.get(0));
+                    ((RegisterShiftDetailPanel) mDetailView).showCloseShift(list.get(1));
                 }
             } else {
                 openSessionList();

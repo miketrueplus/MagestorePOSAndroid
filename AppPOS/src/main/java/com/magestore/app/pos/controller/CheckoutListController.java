@@ -379,8 +379,6 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                     isShowLoadingDetail(true);
                     new StripeTokenController(getMagestoreContext().getActivity(), paymentCreditCard.getPublishKeyStripe(), this, paymentCreditCard);
                 } else if (paymentCreditCard.getCode().equals(PAYMENT_AUTHORIZE)) {
-                    // TODO: giả client_id
-                    paymentCreditCard.setClientId("68nKg5k9Z7cPCmvcM6u8aHDJgsSMWf2r8cYmX6FL89t2LfcsrUC5rK6DppVrLKpy");
                     if (StringUtil.isNullOrEmpty(paymentCreditCard.getApiLogin()) || StringUtil.isNullOrEmpty(paymentCreditCard.getClientId())) {
                         ((CheckoutDetailPanel) mDetailView).showDialogError(getMagestoreContext().getActivity().getString(R.string.authorize_cancel_payment));
                         return;
