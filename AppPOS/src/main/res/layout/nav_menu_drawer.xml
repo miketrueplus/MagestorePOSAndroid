@@ -28,74 +28,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/nav_section_height"
-        android:background="@color/menu_left_header_background"
-        android:orientation="horizontal"
-        android:padding="@dimen/activity_horizontal_margin">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:text="@string/orders"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_size_18" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/nav_checkout"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/nav_section_height"
-        android:orientation="horizontal"
-        android:padding="@dimen/activity_horizontal_margin">
-
-        <ImageView
-            android:layout_width="@dimen/layout_margin_30"
-            android:layout_height="@dimen/layout_margin_30"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:src="@drawable/ic_shopping_cart_white" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:text="@string/checkout"
-            android:textColor="@color/menu_left_text_color"
-            android:textSize="@dimen/text_size_18" />
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/line"
-        android:background="@color/menu_left_line" />
-
-    <LinearLayout
-        android:id="@+id/nav_order_history"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/nav_section_height"
-        android:orientation="horizontal"
-        android:padding="@dimen/activity_horizontal_margin">
-
-        <ImageView
-            android:layout_width="@dimen/layout_margin_30"
-            android:layout_height="@dimen/layout_margin_30"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:src="@drawable/ic_history" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:text="@string/order_history"
-            android:textColor="@color/menu_left_text_color"
-            android:textSize="@dimen/text_size_18" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/menu_register_shift"
+        android:id="@+id/ll_checkout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -111,13 +44,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="@string/register_shift_session_title"
+                android:text="@string/checkout"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_18" />
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/nav_register_shift"
+            android:id="@+id/nav_checkout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/nav_section_height"
             android:orientation="horizontal"
@@ -128,15 +61,96 @@
                 android:layout_height="@dimen/layout_margin_30"
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:src="@drawable/ic_register_shift" />
+                android:src="@drawable/ic_shopping_cart_white" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="@string/session"
+                android:text="@string/checkout"
                 android:textColor="@color/menu_left_text_color"
                 android:textSize="@dimen/text_size_18" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/line"
+            android:background="@color/menu_left_line" />
+
+        <LinearLayout
+            android:id="@+id/nav_order_history"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/nav_section_height"
+            android:orientation="horizontal"
+            android:padding="@dimen/activity_horizontal_margin">
+
+            <ImageView
+                android:layout_width="@dimen/layout_margin_30"
+                android:layout_height="@dimen/layout_margin_30"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:src="@drawable/ic_history" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/order_history"
+                android:textColor="@color/menu_left_text_color"
+                android:textSize="@dimen/text_size_18" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_session"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/menu_register_shift"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/nav_section_height"
+                android:background="@color/menu_left_header_background"
+                android:orientation="horizontal"
+                android:padding="@dimen/activity_horizontal_margin">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/register_shift_session_title"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_18" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/nav_register_shift"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/nav_section_height"
+                android:orientation="horizontal"
+                android:padding="@dimen/activity_horizontal_margin">
+
+                <ImageView
+                    android:layout_width="@dimen/layout_margin_30"
+                    android:layout_height="@dimen/layout_margin_30"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:src="@drawable/ic_register_shift" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/session"
+                    android:textColor="@color/menu_left_text_color"
+                    android:textSize="@dimen/text_size_18" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
@@ -187,41 +201,48 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/ll_setting"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/nav_section_height"
-        android:background="@color/menu_left_header_background"
-        android:orientation="horizontal"
-        android:padding="@dimen/activity_horizontal_margin">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:text="@string/setting"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_size_18" />
-    </LinearLayout>
+            android:layout_height="@dimen/nav_section_height"
+            android:background="@color/menu_left_header_background"
+            android:orientation="horizontal"
+            android:padding="@dimen/activity_horizontal_margin">
 
-    <LinearLayout
-        android:id="@+id/nav_general"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/nav_section_height"
-        android:orientation="horizontal"
-        android:padding="@dimen/activity_horizontal_margin">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/setting"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_18" />
+        </LinearLayout>
 
-        <ImageView
-            android:layout_width="@dimen/layout_margin_30"
-            android:layout_height="@dimen/layout_margin_30"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:src="@drawable/ic_settings" />
-
-        <TextView
+        <LinearLayout
+            android:id="@+id/nav_general"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:text="@string/general"
-            android:textColor="@color/menu_left_text_color"
-            android:textSize="@dimen/text_size_18" />
+            android:layout_height="@dimen/nav_section_height"
+            android:orientation="horizontal"
+            android:padding="@dimen/activity_horizontal_margin">
+
+            <ImageView
+                android:layout_width="@dimen/layout_margin_30"
+                android:layout_height="@dimen/layout_margin_30"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:src="@drawable/ic_settings" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/general"
+                android:textColor="@color/menu_left_text_color"
+                android:textSize="@dimen/text_size_18" />
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

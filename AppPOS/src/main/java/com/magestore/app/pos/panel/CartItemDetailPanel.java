@@ -15,6 +15,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,6 +48,8 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
     boolean mblnCustomDiscountFixed;
 
     boolean changePrice = false;
+
+    LinearLayout ll_custom_price, ll_discount;
 
     CartItem mCartItem;
 
@@ -91,6 +94,17 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
         mtxtQuantity = (EditTextQuantity) findViewById(R.id.id_txt_cart_item_detail_quantity);
         mtxtCustomPrice = (EditTextFloat) findViewById(R.id.id_txt_cart_item_detail_custom_price);
         mtxtCustomDiscount = (EditTextFloat) findViewById(R.id.id_txt_cart_item_detail_custom_discount);
+
+        ll_custom_price = (LinearLayout) findViewById(R.id.ll_custom_price);
+        ll_discount = (LinearLayout) findViewById(R.id.ll_discount);
+
+        if (ConfigUtil.isManageAllDiscount()) {
+            ll_custom_price.setVisibility(VISIBLE);
+            ll_discount.setVisibility(VISIBLE);
+        } else {
+            ll_discount.setVisibility(ConfigUtil.isDiscountPerItem() ? VISIBLE : GONE);
+            ll_custom_price.setVisibility(ConfigUtil.isApplyCustomPrice() ? VISIBLE : GONE);
+        }
 
         initValue();
     }
@@ -316,7 +330,7 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
         boolean blnRight = true;
         // valid số lượng phải lớn hơn mức tối thiểu
         float quantity = mtxtQuantity.getValueFloat();
-        if(!getItem().isTypeCustom()) {
+        if (!getItem().isTypeCustom()) {
             if (quantity < getItem().getProduct().getAllowMinQty()) {
                 mtxtQuantity.setError(String.format(getResources().getString(R.string.err_field_must_greater_than), ConfigUtil.formatQuantity(getItem().getProduct().getAllowMinQty())));
                 blnRight = false;

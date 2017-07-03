@@ -118,6 +118,9 @@ public class RegisterShiftListController extends AbstractListController<Register
         if (!first_check) {
             if (list != null && list.size() > 1) {
                 RegisterShift registerShift = list.get(1);
+                if(registerShift.getLessSevenDay()){
+                    registerShift = list.get(2);
+                }
                 bindItem(registerShift);
                 if (registerShift.getStatus().equals("0")) {
                     if (!ConfigUtil.isCheckFirstOpenSession()) {

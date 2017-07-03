@@ -530,6 +530,17 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
     }
 
     @Override
+    public List<String> getStaffPermisson() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        if (mConfig == null) mConfig = new PosConfigDefault();
+        List<String> listPermisson = new ArrayList<>();
+        if (mConfig.getValue("staffResourceAccess") != null) {
+            listPermisson = (List) mConfig.getValue("staffResourceAccess");
+        }
+
+        return listPermisson;
+    }
+
+    @Override
     public Map<String, String> getConfigCCTypes() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
         if (mConfig == null) mConfig = new PosConfigDefault();
 

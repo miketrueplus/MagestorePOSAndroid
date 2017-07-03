@@ -179,19 +179,35 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
                 txt_sales_discount = (TextView) dialog.findViewById(R.id.txt_sales_discount);
                 txt_sales_promotion = (TextView) dialog.findViewById(R.id.txt_sales_promotion);
 
+                if (ConfigUtil.isDiscountPerCart()) {
+                    dialog.getDialogTitle().setText(getContext().getString(R.string.checkout_discount_all, String.valueOf(maxumum_discount)));
+                    mCheckoutDiscountPanel.onClickDiscount();
+                } else {
+                    dialog.getDialogTitle().setText("");
+                    mCheckoutDiscountPanel.onClickPromotion();
+                }
+
                 txt_sales_discount.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        dialog.getDialogTitle().setText(getContext().getString(R.string.checkout_discount_all, String.valueOf(maxumum_discount)));
-                        mCheckoutDiscountPanel.onClickDiscount();
+                        if (ConfigUtil.isDiscountPerCart()) {
+                            dialog.getDialogTitle().setText(getContext().getString(R.string.checkout_discount_all, String.valueOf(maxumum_discount)));
+                            mCheckoutDiscountPanel.onClickDiscount();
+                        } else {
+                            showError(getContext().getString(R.string.error_permisson_discount_cart));
+                        }
                     }
                 });
 
                 txt_sales_promotion.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        dialog.getDialogTitle().setText("");
-                        mCheckoutDiscountPanel.onClickPromotion();
+                        if (ConfigUtil.isApplyCoupon()) {
+                            dialog.getDialogTitle().setText("");
+                            mCheckoutDiscountPanel.onClickPromotion();
+                        } else {
+                            showError(getContext().getString(R.string.error_permisson_apply_coupon));
+                        }
                     }
                 });
 
@@ -231,11 +247,16 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
         bt_sales_menu.setOnMenuToggleListener(new FloatingActionMenu.OnMenuToggleListener() {
             @Override
             public void onMenuToggle(boolean opened) {
-                if(opened){
+                if (opened) {
                     ((CheckoutListController) mController).checkShowRemoveDiscount();
                 }
             }
         });
+    }
+
+    private void showError(String message){
+        // Tạo dialog và hiển thị
+        com.magestore.app.util.DialogUtil.confirm(getContext(), message, R.string.ok);
     }
 
     public void useDefaultGuestCheckout(Customer customer) {
@@ -285,7 +306,11 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
 
     public void showSalesMenuToCheckout(boolean isShow) {
         bt_custom_sales.setVisibility(isShow ? VISIBLE : GONE);
-        bt_sales_discount.setVisibility(((CheckoutListController) mController).checkListCartItem() ? VISIBLE : GONE);
+        if (checkShowButtonDiscount()) {
+            bt_sales_discount.setVisibility(((CheckoutListController) mController).checkListCartItem() ? VISIBLE : GONE);
+        } else {
+            bt_sales_discount.setVisibility(GONE);
+        }
     }
 
     public void showButtonCustomSales(boolean isShow) {
@@ -293,7 +318,23 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
     }
 
     public void showButtonDiscount(boolean isShow) {
-        bt_sales_discount.setVisibility(isShow ? VISIBLE : GONE);
+        if (checkShowButtonDiscount()) {
+            bt_sales_discount.setVisibility(isShow ? VISIBLE : GONE);
+        } else {
+            bt_sales_discount.setVisibility(GONE);
+        }
+    }
+
+    private boolean checkShowButtonDiscount() {
+        if (ConfigUtil.isManageAllDiscount()) {
+            return true;
+        } else {
+            if (ConfigUtil.isDiscountPerCart() || ConfigUtil.isApplyCoupon()) {
+                return true;
+            } else {
+                return false;
+            }
+        }
     }
 
     /**

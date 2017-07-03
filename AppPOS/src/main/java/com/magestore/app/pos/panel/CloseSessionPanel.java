@@ -111,6 +111,8 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
             bt_validate.setVisibility(GONE);
             close_session_list_panel.setEnableAction(true);
         }
+        bt_adjustment.setVisibility(ConfigUtil.isManagerShiftAdjustment() ? VISIBLE : GONE);
+
         ((RegisterShiftListController) getController()).bindListValueClose();
         et_r_close_balance.setEnabled(item.getStatus().equals(CLOSE_SESSION) ? false : true);
         et_note.setEnabled(item.getStatus().equals(CLOSE_SESSION) ? false : true);

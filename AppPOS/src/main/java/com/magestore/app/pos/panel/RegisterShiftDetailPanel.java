@@ -112,7 +112,11 @@ public class RegisterShiftDetailPanel extends AbstractDetailPanel<RegisterShift>
         mRegisterShiftCashListController.doSelectRegisterShift(item);
         mRegisterShiftCashListPanel.setRegisterShift(item);
 
-        ((Button) v.findViewById(R.id.make_adjustment)).setOnClickListener(new OnClickListener() {
+        Button make_adjustment = (Button) v.findViewById(R.id.make_adjustment);
+        make_adjustment.setVisibility(ConfigUtil.isManagerShiftAdjustment() ? VISIBLE : GONE);
+        ((View) v.findViewById(R.id.fr_button_1)).setVisibility(ConfigUtil.isManagerShiftAdjustment() ? GONE : VISIBLE);
+        ((View) v.findViewById(R.id.fr_button_2)).setVisibility(ConfigUtil.isManagerShiftAdjustment() ? GONE : VISIBLE);
+        make_adjustment.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 showMakeAdjustment(item);

@@ -84,6 +84,10 @@ public class POSConfigService extends AbstractService implements ConfigService {
         ConfigUtil.setCurrentCurrency(getDefaultCurrency());
         ConfigUtil.setConfigTaxClass(configTaxClass);
         ConfigUtil.setConfigPriceFormat(configDataAccess.getPriceFormat());
+
+        // permisson
+        getConfigStaffPermisson(getStaffPermisson());
+
         // return config
         return config;
     }
@@ -278,6 +282,75 @@ public class POSConfigService extends AbstractService implements ConfigService {
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
         return configDataAccess.getDefaultCurrency();
+    }
+
+    @Override
+    public List<String> getStaffPermisson() throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
+        return configDataAccess.getStaffPermisson();
+    }
+
+    // all permission
+    private static String ALL_PERMISSON = "all";
+    // manage order
+    private static String MANAGE_ALL_ORDER = "manage_all_order";
+    private static String MANAGE_ORDER_ME = "manage_order_me";
+    private static String MANAGE_ORDER_LOCATION = "manage_order_location";
+    // manage discount
+    private static String MANAGE_ALL_DISCOUNT = "all_discount";
+    private static String APPLY_DISCOUNT_PER_CART = "apply_discount_per_cart";
+    private static String APPLY_COUPON = "apply_coupon";
+    private static String APPLY_DISCOUNT_PER_ITEM = "apply_discount_per_item";
+    private static String APPLY_CUSTOM_PRICE = "apply_custom_price";
+    // Session
+    private static String MANAGE_SHIFT_ADJUSTMENT = "manage_shift_adjustment";
+
+    private void getConfigStaffPermisson(List<String> listPermisson) {
+        if (listPermisson.size() > 0) {
+            if (checkStaffPermiss(listPermisson, ALL_PERMISSON)) {
+                ConfigUtil.setManagerShiftAdjustment(true);
+                ConfigUtil.setManageOrderByMe(true);
+                ConfigUtil.setManageOrderByLocation(true);
+                ConfigUtil.setDiscountPerCart(true);
+                ConfigUtil.setApplyCoupon(true);
+                ConfigUtil.setDiscountPerItem(true);
+                ConfigUtil.setApplyCustomPrice(true);
+            } else {
+                ConfigUtil.setManagerAllOrder(checkStaffPermiss(listPermisson, MANAGE_ALL_ORDER));
+                if (ConfigUtil.isManagerAllOrder()) {
+                    ConfigUtil.setManageOrderByMe(true);
+                    ConfigUtil.setManageOrderByLocation(true);
+                } else {
+                    ConfigUtil.setManageOrderByMe(checkStaffPermiss(listPermisson, MANAGE_ORDER_ME));
+                    ConfigUtil.setManageOrderByLocation(checkStaffPermiss(listPermisson, MANAGE_ORDER_LOCATION));
+                }
+                ConfigUtil.setManageAllDiscount(checkStaffPermiss(listPermisson, MANAGE_ALL_DISCOUNT));
+                if (ConfigUtil.isManageAllDiscount()) {
+                    ConfigUtil.setDiscountPerCart(true);
+                    ConfigUtil.setApplyCoupon(true);
+                    ConfigUtil.setDiscountPerItem(true);
+                    ConfigUtil.setApplyCustomPrice(true);
+                } else {
+                    ConfigUtil.setDiscountPerCart(checkStaffPermiss(listPermisson, APPLY_DISCOUNT_PER_CART));
+                    ConfigUtil.setApplyCoupon(checkStaffPermiss(listPermisson, APPLY_COUPON));
+                    ConfigUtil.setDiscountPerItem(checkStaffPermiss(listPermisson, APPLY_DISCOUNT_PER_ITEM));
+                    ConfigUtil.setApplyCustomPrice(checkStaffPermiss(listPermisson, APPLY_CUSTOM_PRICE));
+                }
+                ConfigUtil.setManagerShiftAdjustment(checkStaffPermiss(listPermisson, MANAGE_SHIFT_ADJUSTMENT));
+            }
+        }
+    }
+
+    private boolean checkStaffPermiss(List<String> listPermisson, String permisson) {
+        boolean checkPermisson = false;
+        for (String _permisson : listPermisson) {
+            if (_permisson.contains(permisson)) {
+                checkPermisson = true;
+                return checkPermisson;
+            }
+        }
+        return checkPermisson;
     }
 
     @Override

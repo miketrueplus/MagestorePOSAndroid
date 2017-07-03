@@ -58,6 +58,13 @@
             android:orientation="horizontal"
             android:visibility="@{registerShift.checkStatus() ? View.VISIBLE : View.GONE}">
 
+            <FrameLayout
+                android:id="@+id/fr_button_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:visibility="gone" />
+
             <Button
                 android:id="@+id/make_adjustment"
                 android:layout_width="match_parent"
@@ -83,6 +90,13 @@
                 android:textAllCaps="false"
                 android:textColor="@color/checkout_success_btn_text_new_color"
                 android:textSize="@dimen/text_size_18" />
+
+            <FrameLayout
+                android:id="@+id/fr_button_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:visibility="gone" />
         </LinearLayout>
     </LinearLayout>
 </layout>

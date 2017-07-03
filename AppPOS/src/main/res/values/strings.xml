@@ -301,6 +301,10 @@
     <string name="initializing_processing_msg">Initializing SDK...</string>
     <string name="payment_error">Transaction error. Plase try again</string>
 
+    <!--Permisson-->
+    <string name="error_permisson_discount_cart">You don\'t have discount permission</string>
+    <string name="error_permisson_apply_coupon">You don\'t have permission to use coupon code</string>
+
     <!-- Strings related to single words -->
     <string name="add">Add</string>
     <string name="add_to_cart">Add To Cart</string>

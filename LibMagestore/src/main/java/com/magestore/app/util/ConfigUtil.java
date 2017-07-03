@@ -53,6 +53,17 @@ public class ConfigUtil {
     private static String mShiftId;
     private static ConfigPriceFormat mConfigPriceFormat;
 
+    // permisson
+    private static boolean mManageAllOrder;
+    private static boolean mManageOrderByMe;
+    private static boolean mManageOrderByLocation;
+    private static boolean mManageAllDiscount;
+    private static boolean mDiscountPerCart;
+    private static boolean mApplyCoupon;
+    private static boolean mDiscountPerItem;
+    private static boolean mApplyCustomPrice;
+    private static boolean mManageShiftAdjustment;
+
     /**
      * @param format
      */
@@ -740,4 +751,78 @@ public class ConfigUtil {
     public static ConfigPriceFormat getConfigPriceFormat() {
         return mConfigPriceFormat;
     }
+
+    // permisson
+    public static boolean isManagerAllOrder() {
+        return mManageAllOrder;
+    }
+
+    public static void setManagerAllOrder(boolean mManageAllOrder) {
+        ConfigUtil.mManageAllOrder = mManageAllOrder;
+    }
+
+    public static boolean isManageOrderByMe() {
+        return mManageOrderByMe;
+    }
+
+    public static void setManageOrderByMe(boolean mManageOrderByMe) {
+        ConfigUtil.mManageOrderByMe = mManageOrderByMe;
+    }
+
+    public static boolean isManageOrderByLocation() {
+        return mManageOrderByLocation;
+    }
+
+    public static void setManageOrderByLocation(boolean mManageOrderByLocation) {
+        ConfigUtil.mManageOrderByLocation = mManageOrderByLocation;
+    }
+
+    public static boolean isManageAllDiscount() {
+        return mManageAllDiscount;
+    }
+
+    public static void setManageAllDiscount(boolean mManageAllDiscount) {
+        ConfigUtil.mManageAllDiscount = mManageAllDiscount;
+    }
+
+    public static boolean isDiscountPerCart() {
+        return mDiscountPerCart;
+    }
+
+    public static void setDiscountPerCart(boolean mDiscountPerCart) {
+        ConfigUtil.mDiscountPerCart = mDiscountPerCart;
+    }
+
+    public static boolean isApplyCoupon() {
+        return mApplyCoupon;
+    }
+
+    public static void setApplyCoupon(boolean mApplyCoupon) {
+        ConfigUtil.mApplyCoupon = mApplyCoupon;
+    }
+
+    public static boolean isDiscountPerItem() {
+        return mDiscountPerItem;
+    }
+
+    public static void setDiscountPerItem(boolean mDiscountPerItem) {
+        ConfigUtil.mDiscountPerItem = mDiscountPerItem;
+    }
+
+    public static boolean isApplyCustomPrice() {
+        return mApplyCustomPrice;
+    }
+
+    public static void setApplyCustomPrice(boolean mApplyCustomPrice) {
+        ConfigUtil.mApplyCustomPrice = mApplyCustomPrice;
+    }
+
+    public static boolean isManagerShiftAdjustment() {
+        return mManageShiftAdjustment;
+    }
+
+    public static void setManagerShiftAdjustment(boolean mManageShiftAdjustment) {
+        ConfigUtil.mManageShiftAdjustment = mManageShiftAdjustment;
+    }
 }
+

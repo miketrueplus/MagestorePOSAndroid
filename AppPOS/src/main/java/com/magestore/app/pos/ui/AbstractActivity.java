@@ -281,6 +281,7 @@ public abstract class AbstractActivity
     LinearLayout nav_customer;
     LinearLayout nav_general;
     LinearLayout menu_register_shift;
+    LinearLayout ll_checkout, ll_session, ll_setting;
 
     protected void initToolbarMenu(Toolbar toolbar) {
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -295,6 +296,10 @@ public abstract class AbstractActivity
 
         // lấy menu và đặt các event xử lý menu
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+
+        ll_checkout = (LinearLayout) navigationView.findViewById(R.id.ll_checkout);
+        ll_session = (LinearLayout) navigationView.findViewById(R.id.ll_session);
+        ll_setting = (LinearLayout) navigationView.findViewById(R.id.ll_setting);
 
         nav_logout = (LinearLayout) navigationView.findViewById(R.id.nav_logout);
         nav_checkout = (LinearLayout) navigationView.findViewById(R.id.nav_checkout);
@@ -316,6 +321,15 @@ public abstract class AbstractActivity
         listActivity.put(3, nav_general);
         listActivity.put(4, nav_register_shift);
 
+        if (ConfigUtil.isManagerAllOrder()) {
+            nav_order_history.setVisibility(View.VISIBLE);
+        } else {
+            if (ConfigUtil.isManageOrderByMe() || ConfigUtil.isManageOrderByLocation()) {
+                nav_order_history.setVisibility(View.VISIBLE);
+            } else {
+                nav_order_history.setVisibility(View.GONE);
+            }
+        }
         menu_register_shift.setVisibility(ConfigUtil.isEnableSession() ? View.VISIBLE : View.GONE);
     }
 
@@ -387,10 +401,8 @@ public abstract class AbstractActivity
     }
 
     public void isEnableAction(boolean isEnable) {
-        nav_checkout.setEnabled(isEnable ? true : false);
-        nav_order_history.setEnabled(isEnable ? true : false);
-        nav_register_shift.setEnabled(isEnable ? true : false);
-        nav_customer.setEnabled(isEnable ? true : false);
-        nav_general.setEnabled(isEnable ? true : false);
+        ll_checkout.setVisibility(isEnable ? View.VISIBLE : View.GONE);
+        ll_session.setVisibility(isEnable ? View.VISIBLE : View.GONE);
+        ll_setting.setVisibility(isEnable ? View.VISIBLE : View.GONE);
     }
 }

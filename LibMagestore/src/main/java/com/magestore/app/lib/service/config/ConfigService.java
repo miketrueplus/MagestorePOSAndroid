@@ -90,6 +90,8 @@ public interface ConfigService extends Service {
 
     Currency getDefaultCurrency() throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
+    List<String> getStaffPermisson() throws InstantiationException, IllegalAccessException, IOException, ParseException;
+
     Map<String, String> getConfigCCTypes() throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
     List<String> getConfigMonths() throws InstantiationException, IllegalAccessException, IOException, ParseException;
