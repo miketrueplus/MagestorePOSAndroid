@@ -1,9 +1,15 @@
 package com.magestore.app.pos.ui;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -13,17 +19,25 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.magestore.app.lib.connection.ConnectionException;
 import com.magestore.app.lib.exception.MagestoreException;
+import com.magestore.app.lib.model.staff.StaffPermisson;
 import com.magestore.app.pos.LoginActivity;
 import com.magestore.app.pos.RegisterShiftActivity;
 import com.magestore.app.pos.SettingActivity;
+import com.magestore.app.pos.adapter.StaffPermissonAdapter;
 import com.magestore.app.pos.view.MagestoreDialog;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.DataUtil;
@@ -50,9 +64,24 @@ public abstract class AbstractActivity
         implements
         PosUI,
         NavigationView.OnNavigationItemSelectedListener {
+    public static String RETRIEVE_STAFF_PERMISSON_TO_SALE_ACTIVITY = "com.magestore.app.pos.ui.abstractactivity.retrievestaff";
+    public static final String STATE_SHOW_POPUP_LIST_STAFF_PERMISSON = "com.magestore.app.pos.controller.checkoutlist.showpopup";
+    public static List<StaffPermisson> listStaff;
     TextView staff_name, staff_location;
+    static ImageView im_change;
+    PopupWindow popupWindow;
     private static int positionSelectActivity = -1;
     Map<Integer, LinearLayout> listActivity = new HashMap<>();
+    boolean checkShowPopup;
+    StaffPermissonAdapter mAdapter;
+    RelativeLayout rl_loading;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        IntentFilter filter_staff_permisson = new IntentFilter(STATE_SHOW_POPUP_LIST_STAFF_PERMISSON);
+        registerReceiver(receiver_staff, filter_staff_permisson);
+    }
 
     /**
      * Cấu hình lại các control layout
@@ -89,11 +118,40 @@ public abstract class AbstractActivity
         View header_layout = navigationView.findViewById(R.id.nav_header_menu);
         staff_name = (TextView) header_layout.findViewById(R.id.staff_name);
         staff_location = (TextView) header_layout.findViewById(R.id.staff_location);
+        im_change = (ImageView) header_layout.findViewById(R.id.im_change);
         if (ConfigUtil.getStaff() != null) {
             staff_name.setText(ConfigUtil.getStaff().getStaffName());
             staff_location.setText(ConfigUtil.getStaff().getStaffLocation().getLocationName());
         }
+        im_change.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (listStaff != null && listStaff.size() > 0) {
+                    showPopUpStaffPermisson();
+                    rl_loading.setVisibility(View.GONE);
+                } else {
+                    listStaff = new ArrayList<StaffPermisson>();
+                    showPopUpStaffPermisson();
+                    Intent intent = new Intent();
+                    intent.setAction(RETRIEVE_STAFF_PERMISSON_TO_SALE_ACTIVITY);
+                    sendBroadcast(intent);
+                    checkShowPopup = true;
+                }
+            }
+        });
     }
+
+    BroadcastReceiver receiver_staff = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (checkShowPopup) {
+                mAdapter.setListPermisson(listStaff);
+                mAdapter.notifyDataSetChanged();
+                rl_loading.setVisibility(View.GONE);
+                checkShowPopup = false;
+            }
+        }
+    };
 
     /**
      * Lưu value trong shared preference
@@ -404,5 +462,26 @@ public abstract class AbstractActivity
         ll_checkout.setVisibility(isEnable ? View.VISIBLE : View.GONE);
         ll_session.setVisibility(isEnable ? View.VISIBLE : View.GONE);
         ll_setting.setVisibility(isEnable ? View.VISIBLE : View.GONE);
+    }
+
+    public void showPopUpStaffPermisson() {
+        LayoutInflater layoutInflater
+                = (LayoutInflater) getContext()
+                .getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = layoutInflater.inflate(R.layout.popup_list_staff, null);
+        rl_loading = (RelativeLayout) popupView.findViewById(R.id.rl_loading);
+        rl_loading.setVisibility(View.VISIBLE);
+        ListView listView = (ListView) popupView.findViewById(R.id.recycler_staff_permisson);
+        mAdapter = new StaffPermissonAdapter(getContext(), listStaff);
+        listView.setAdapter(mAdapter);
+        popupWindow = new PopupWindow(
+                popupView,
+                getContext().getResources().getDimensionPixelSize(R.dimen.popup_staff_permisson_width),
+                getContext().getResources().getDimensionPixelSize(R.dimen.popup_staff_permisson_height));
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setFocusable(true);
+        // Removes default background.
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        popupWindow.showAsDropDown(im_change);
     }
 }

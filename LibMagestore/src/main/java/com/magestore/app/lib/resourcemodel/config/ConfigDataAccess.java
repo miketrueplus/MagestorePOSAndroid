@@ -11,6 +11,7 @@ import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.directory.Currency;
 import com.magestore.app.lib.model.setting.ChangeCurrency;
 import com.magestore.app.lib.model.staff.Staff;
+import com.magestore.app.lib.model.staff.StaffPermisson;
 import com.magestore.app.lib.parse.ParseException;
 import com.magestore.app.lib.resourcemodel.DataAccess;
 import com.magestore.app.lib.resourcemodel.DataAccessException;
@@ -41,6 +42,7 @@ public interface ConfigDataAccess extends DataAccess {
     ConfigQuantityFormat getQuantityFormat() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     ConfigPriceFormat getBasePriceFomat() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     List<String> getStaffPermisson() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
+    List<StaffPermisson> retrieveStaff() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     Map<String, String> getConfigCCTypes() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     List<String> getConfigMonths() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     Map<String, String> getConfigCCYears() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;

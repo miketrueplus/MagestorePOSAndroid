@@ -15,6 +15,7 @@ import com.magestore.app.lib.model.directory.Currency;
 import com.magestore.app.lib.model.setting.ChangeCurrency;
 import com.magestore.app.lib.model.setting.Setting;
 import com.magestore.app.lib.model.staff.Staff;
+import com.magestore.app.lib.model.staff.StaffPermisson;
 import com.magestore.app.lib.resourcemodel.DataAccessException;
 import com.magestore.app.lib.service.Service;
 import java.io.IOException;
@@ -91,6 +92,8 @@ public interface ConfigService extends Service {
     Currency getDefaultCurrency() throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
     List<String> getStaffPermisson() throws InstantiationException, IllegalAccessException, IOException, ParseException;
+
+    List<StaffPermisson> retrieveStaff() throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
     Map<String, String> getConfigCCTypes() throws InstantiationException, IllegalAccessException, IOException, ParseException;
 

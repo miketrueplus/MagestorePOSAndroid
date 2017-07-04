@@ -14,6 +14,7 @@ import com.magestore.app.lib.model.directory.Currency;
 import com.magestore.app.lib.model.setting.ChangeCurrency;
 import com.magestore.app.lib.model.setting.Setting;
 import com.magestore.app.lib.model.staff.Staff;
+import com.magestore.app.lib.model.staff.StaffPermisson;
 import com.magestore.app.lib.resourcemodel.config.ConfigDataAccess;
 import com.magestore.app.lib.resourcemodel.DataAccessFactory;
 import com.magestore.app.lib.service.config.ConfigService;
@@ -289,6 +290,13 @@ public class POSConfigService extends AbstractService implements ConfigService {
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
         return configDataAccess.getStaffPermisson();
+    }
+
+    @Override
+    public List<StaffPermisson> retrieveStaff() throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
+        return configDataAccess.retrieveStaff();
     }
 
     // all permission

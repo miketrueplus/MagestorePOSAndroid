@@ -8,5 +8,5 @@ import com.magestore.app.pos.model.config.PosConfigTaxClass;
  * dong.le@trueplus.vn
  */
 
-public class GsonPosListTaxClass extends Gson2PosListParseModel<PosConfigTaxClass> {
+public class Gson2PosListTaxClass extends Gson2PosListParseModel<PosConfigTaxClass> {
 }

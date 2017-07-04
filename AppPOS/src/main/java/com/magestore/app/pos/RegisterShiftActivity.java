@@ -132,8 +132,8 @@ public class RegisterShiftActivity extends AbstractActivity {
     };
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onDestroy() {
+        super.onDestroy();
         try {
             unregisterReceiver(receiver_data);
         }catch (Exception e){}

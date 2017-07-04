@@ -1,6 +1,5 @@
 package com.magestore.app.pos.api.m2.config;
 
-import com.google.common.collect.Interner;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 import com.magestore.app.lib.connection.Connection;
@@ -23,6 +22,7 @@ import com.magestore.app.lib.model.directory.Region;
 import com.magestore.app.lib.model.setting.ChangeCurrency;
 import com.magestore.app.lib.model.staff.Location;
 import com.magestore.app.lib.model.staff.Staff;
+import com.magestore.app.lib.model.staff.StaffPermisson;
 import com.magestore.app.lib.resourcemodel.config.ConfigDataAccess;
 import com.magestore.app.lib.resourcemodel.DataAccessException;
 import com.magestore.app.pos.api.m2.POSAPI;
@@ -36,7 +36,6 @@ import com.magestore.app.pos.model.config.PosConfigPriceFormat;
 import com.magestore.app.pos.model.config.PosConfigPrint;
 import com.magestore.app.pos.model.config.PosConfigQuantityFormat;
 import com.magestore.app.pos.model.config.PosConfigRegion;
-import com.magestore.app.pos.model.config.PosConfigTaxClass;
 import com.magestore.app.pos.model.customer.PosCustomer;
 import com.magestore.app.pos.model.customer.PosCustomerAddress;
 import com.magestore.app.pos.model.directory.PosCurrency;
@@ -45,19 +44,18 @@ import com.magestore.app.pos.model.setting.PosChangeCurrency;
 import com.magestore.app.pos.model.staff.PosLocation;
 import com.magestore.app.pos.model.staff.PosStaff;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosConfigParseImplement;
+import com.magestore.app.pos.parse.gson2pos.Gson2PosListStaffPermisson;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosPriceFormatParseImplement;
-import com.magestore.app.pos.parse.gson2pos.GsonPosListTaxClass;
+import com.magestore.app.pos.parse.gson2pos.Gson2PosListTaxClass;
 import com.magestore.app.util.StringUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -170,8 +168,8 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
 
             rp = statement.execute();
             rp.setParseImplement(getClassParseImplement());
-            rp.setParseModel(GsonPosListTaxClass.class);
-            GsonPosListTaxClass listTaxClass = (GsonPosListTaxClass) rp.doParse();
+            rp.setParseModel(Gson2PosListTaxClass.class);
+            Gson2PosListTaxClass listTaxClass = (Gson2PosListTaxClass) rp.doParse();
             listConfigTax = (List<ConfigTaxClass>) (List<?>) (listTaxClass.items);
             return listConfigTax;
         } catch (ConnectionException ex) {
@@ -538,6 +536,51 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         }
 
         return listPermisson;
+    }
+
+    @Override
+    public List<StaffPermisson> retrieveStaff() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+        try {
+            // Khởi tạo connection và khởi tạo truy vấn
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPI.REST_STAFF_GET_LISTING);
+
+            paramBuilder = statement.getParamBuilder()
+                    .setPage(1)
+                    .setPageSize(200)
+                    .setSortOrderASC("display_name")
+                    .setSessionID(POSDataAccessSession.REST_SESSION_ID);
+            rp = statement.execute();
+            rp.setParseImplement(getClassParseImplement());
+            rp.setParseModel(Gson2PosListStaffPermisson.class);
+            Gson2PosListStaffPermisson listStaff = (Gson2PosListStaffPermisson) rp.doParse();
+            List<StaffPermisson> list = (List<StaffPermisson>) (List<?>) (listStaff.items);
+            return list;
+        } catch (ConnectionException ex) {
+            throw ex;
+        } catch (IOException ex) {
+            throw ex;
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
     }
 
     @Override
