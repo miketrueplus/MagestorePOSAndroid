@@ -46,7 +46,6 @@ public class RegisterShiftActivity extends AbstractActivity {
         initLayout();
         initModel();
         initValue();
-
         super.setheader();
         super.changeBackgroundSelect();
     }
@@ -98,6 +97,8 @@ public class RegisterShiftActivity extends AbstractActivity {
 
         IntentFilter filter = new IntentFilter(RegisterShiftListController.SEND_NOTI_TO_REGISTER_ACTIVITY);
         registerReceiver(receiver_data, filter);
+        IntentFilter filter_change_menu_order = new IntentFilter(CHANGE_PERMISSON_MENU_ORDER);
+        registerReceiver(receiver_menu_order, filter_change_menu_order);
     }
 
     @Override
@@ -131,11 +132,19 @@ public class RegisterShiftActivity extends AbstractActivity {
         }
     };
 
+    BroadcastReceiver receiver_menu_order = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            changePermissonOrderMenu();
+        }
+    };
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         try {
             unregisterReceiver(receiver_data);
+            unregisterReceiver(receiver_menu_order);
         }catch (Exception e){}
     }
 

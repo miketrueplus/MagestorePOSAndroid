@@ -8,10 +8,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -23,7 +20,9 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -31,16 +30,15 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.magestore.app.lib.connection.ConnectionException;
 import com.magestore.app.lib.exception.MagestoreException;
 import com.magestore.app.lib.model.staff.StaffPermisson;
 import com.magestore.app.pos.LoginActivity;
 import com.magestore.app.pos.RegisterShiftActivity;
 import com.magestore.app.pos.SettingActivity;
 import com.magestore.app.pos.adapter.StaffPermissonAdapter;
-import com.magestore.app.pos.view.MagestoreDialog;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.DataUtil;
+import com.magestore.app.util.EncryptUntil;
 import com.magestore.app.util.StringUtil;
 import com.magestore.app.view.ui.PosUI;
 import com.magestore.app.pos.CustomerActivity;
@@ -66,15 +64,24 @@ public abstract class AbstractActivity
         NavigationView.OnNavigationItemSelectedListener {
     public static String RETRIEVE_STAFF_PERMISSON_TO_SALE_ACTIVITY = "com.magestore.app.pos.ui.abstractactivity.retrievestaff";
     public static final String STATE_SHOW_POPUP_LIST_STAFF_PERMISSON = "com.magestore.app.pos.controller.checkoutlist.showpopup";
+    public static String CHANGE_STAFF_PERMISSON_TO_SALE_ACTIVITY = "com.magestore.app.pos.ui.abstractactivity.changestaff";
+    public static String CHANGE_PERMISSON_MENU_ORDER = "com.magestore.app.pos.saleactivity.menuorder";
     public static List<StaffPermisson> listStaff;
     TextView staff_name, staff_location;
-    static ImageView im_change;
+    ImageView im_change;
     PopupWindow popupWindow;
     private static int positionSelectActivity = -1;
     Map<Integer, LinearLayout> listActivity = new HashMap<>();
     boolean checkShowPopup;
     StaffPermissonAdapter mAdapter;
     RelativeLayout rl_loading;
+    private static StaffPermisson mCurrentStaff;
+    private static StaffPermisson mSelectStaff;
+    private LinearLayout ll_list_staff;
+    private RelativeLayout rl_enter_pin, rl_pin_1, rl_pin_2, rl_pin_3, rl_pin_4;
+    private RelativeLayout rl_number_0, rl_number_1, rl_number_2, rl_number_3, rl_number_4, rl_number_5, rl_number_6, rl_number_7, rl_number_8, rl_number_9, rl_number_delete;
+    private String mPincode;
+    Map<AbstractActivity, ImageView> mapImage;
 
     @Override
     protected void onStart() {
@@ -114,11 +121,15 @@ public abstract class AbstractActivity
     }
 
     public void setheader() {
+        if (mapImage == null) {
+            mapImage = new HashMap<>();
+        }
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View header_layout = navigationView.findViewById(R.id.nav_header_menu);
         staff_name = (TextView) header_layout.findViewById(R.id.staff_name);
         staff_location = (TextView) header_layout.findViewById(R.id.staff_location);
         im_change = (ImageView) header_layout.findViewById(R.id.im_change);
+        mapImage.put(this, im_change);
         if (ConfigUtil.getStaff() != null) {
             staff_name.setText(ConfigUtil.getStaff().getStaffName());
             staff_location.setText(ConfigUtil.getStaff().getStaffLocation().getLocationName());
@@ -145,8 +156,10 @@ public abstract class AbstractActivity
         @Override
         public void onReceive(Context context, Intent intent) {
             if (checkShowPopup) {
-                mAdapter.setListPermisson(listStaff);
+                mAdapter.setListPermisson(getCurrentStaff(listStaff));
                 mAdapter.notifyDataSetChanged();
+                tv_staff_name.setText(mCurrentStaff.getDisplayName());
+                tv_permisson.setText(mCurrentStaff.getRole());
                 rl_loading.setVisibility(View.GONE);
                 checkShowPopup = false;
             }
@@ -345,7 +358,6 @@ public abstract class AbstractActivity
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 //        toolbar.setTitle(getTitle());
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.sales_navigation_drawer_open, R.string.sales_navigation_drawer_close);
@@ -464,16 +476,86 @@ public abstract class AbstractActivity
         ll_setting.setVisibility(isEnable ? View.VISIBLE : View.GONE);
     }
 
+    TextView tv_staff_name, tv_permisson, err_pincode;
+    List<RelativeLayout> listPin;
+    LinearLayout ll_pin;
     public void showPopUpStaffPermisson() {
+        listPin = new ArrayList<>();
         LayoutInflater layoutInflater
                 = (LayoutInflater) getContext()
                 .getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = layoutInflater.inflate(R.layout.popup_list_staff, null);
+        LinearLayout ll_current_staff = (LinearLayout) popupView.findViewById(R.id.ll_current_staff);
+        ll_list_staff = (LinearLayout) popupView.findViewById(R.id.ll_list_staff);
+        rl_enter_pin = (RelativeLayout) popupView.findViewById(R.id.rl_enter_pin);
+        ll_pin = (LinearLayout) popupView.findViewById(R.id.ll_pin);
+        err_pincode = (TextView) popupView.findViewById(R.id.err_pincode);
         rl_loading = (RelativeLayout) popupView.findViewById(R.id.rl_loading);
         rl_loading.setVisibility(View.VISIBLE);
         ListView listView = (ListView) popupView.findViewById(R.id.recycler_staff_permisson);
-        mAdapter = new StaffPermissonAdapter(getContext(), listStaff);
+        tv_staff_name = (TextView) popupView.findViewById(R.id.tv_staff_name);
+        tv_permisson = (TextView) popupView.findViewById(R.id.tv_permisson);
+        rl_number_0 = (RelativeLayout) popupView.findViewById(R.id.rl_number_0);
+        rl_number_1 = (RelativeLayout) popupView.findViewById(R.id.rl_number_1);
+        rl_number_2 = (RelativeLayout) popupView.findViewById(R.id.rl_number_2);
+        rl_number_3 = (RelativeLayout) popupView.findViewById(R.id.rl_number_3);
+        rl_number_4 = (RelativeLayout) popupView.findViewById(R.id.rl_number_4);
+        rl_number_5 = (RelativeLayout) popupView.findViewById(R.id.rl_number_5);
+        rl_number_6 = (RelativeLayout) popupView.findViewById(R.id.rl_number_6);
+        rl_number_7 = (RelativeLayout) popupView.findViewById(R.id.rl_number_7);
+        rl_number_8 = (RelativeLayout) popupView.findViewById(R.id.rl_number_8);
+        rl_number_9 = (RelativeLayout) popupView.findViewById(R.id.rl_number_9);
+        rl_number_delete = (RelativeLayout) popupView.findViewById(R.id.rl_number_delete);
+        rl_pin_1 = (RelativeLayout) popupView.findViewById(R.id.rl_pin_1);
+        rl_pin_2 = (RelativeLayout) popupView.findViewById(R.id.rl_pin_2);
+        rl_pin_3 = (RelativeLayout) popupView.findViewById(R.id.rl_pin_3);
+        rl_pin_4 = (RelativeLayout) popupView.findViewById(R.id.rl_pin_4);
+        listPin.add(rl_pin_1);
+        listPin.add(rl_pin_2);
+        listPin.add(rl_pin_3);
+        listPin.add(rl_pin_4);
+        mAdapter = new StaffPermissonAdapter(getContext(), getCurrentStaff(listStaff));
+        if (mCurrentStaff != null) {
+            tv_staff_name.setText(mCurrentStaff.getDisplayName());
+            tv_permisson.setText(mCurrentStaff.getRole());
+        }
         listView.setAdapter(mAdapter);
+        rl_number_0.setOnClickListener(onClickNumberKeyboard);
+        rl_number_1.setOnClickListener(onClickNumberKeyboard);
+        rl_number_2.setOnClickListener(onClickNumberKeyboard);
+        rl_number_3.setOnClickListener(onClickNumberKeyboard);
+        rl_number_4.setOnClickListener(onClickNumberKeyboard);
+        rl_number_5.setOnClickListener(onClickNumberKeyboard);
+        rl_number_6.setOnClickListener(onClickNumberKeyboard);
+        rl_number_7.setOnClickListener(onClickNumberKeyboard);
+        rl_number_8.setOnClickListener(onClickNumberKeyboard);
+        rl_number_9.setOnClickListener(onClickNumberKeyboard);
+        rl_number_delete.setOnClickListener(onClickNumberKeyboard);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                mPincode = "";
+                ll_list_staff.setVisibility(View.GONE);
+                rl_enter_pin.setVisibility(View.VISIBLE);
+                mSelectStaff = listStaff.get(i);
+            }
+        });
+        ll_current_staff.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setAction(CHANGE_STAFF_PERMISSON_TO_SALE_ACTIVITY);
+                intent.putStringArrayListExtra("staff_permisson", (ArrayList<String>) mCurrentStaff.getPermisson());
+                sendBroadcast(intent);
+                popupWindow.dismiss();
+                if(AbstractActivity.this instanceof OrderActivity) {
+                    Intent i = new Intent(getContext(), SalesActivity.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(i);
+                }
+                staff_name.setText(ConfigUtil.getStaff().getStaffName() + " - " + mCurrentStaff.getRole());
+            }
+        });
         popupWindow = new PopupWindow(
                 popupView,
                 getContext().getResources().getDimensionPixelSize(R.dimen.popup_staff_permisson_width),
@@ -482,6 +564,109 @@ public abstract class AbstractActivity
         popupWindow.setFocusable(true);
         // Removes default background.
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        popupWindow.showAsDropDown(im_change);
+        popupWindow.showAsDropDown(mapImage.get(this));
+    }
+
+    private List<StaffPermisson> getCurrentStaff(List<StaffPermisson> listStaff) {
+        List<StaffPermisson> listNoCurrentStaff = new ArrayList<>();
+        for (StaffPermisson staff : listStaff) {
+            if (staff.getID().equals(ConfigUtil.getStaff().getID())) {
+                mCurrentStaff = staff;
+            } else {
+                listNoCurrentStaff.add(staff);
+            }
+        }
+        return listNoCurrentStaff;
+    }
+
+    View.OnClickListener onClickNumberKeyboard = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            int id = view.getId();
+            if (id == R.id.rl_number_0) {
+                changePin(0, getContext().getString(R.string.number_keyboard_0));
+            } else if (id == R.id.rl_number_1) {
+                changePin(0, getContext().getString(R.string.number_keyboard_1));
+            } else if (id == R.id.rl_number_2) {
+                changePin(0, getContext().getString(R.string.number_keyboard_2));
+            } else if (id == R.id.rl_number_3) {
+                changePin(0, getContext().getString(R.string.number_keyboard_3));
+            } else if (id == R.id.rl_number_4) {
+                changePin(0, getContext().getString(R.string.number_keyboard_4));
+            } else if (id == R.id.rl_number_5) {
+                changePin(0, getContext().getString(R.string.number_keyboard_5));
+            } else if (id == R.id.rl_number_6) {
+                changePin(0, getContext().getString(R.string.number_keyboard_6));
+            } else if (id == R.id.rl_number_7) {
+                changePin(0, getContext().getString(R.string.number_keyboard_7));
+            } else if (id == R.id.rl_number_8) {
+                changePin(0, getContext().getString(R.string.number_keyboard_8));
+            } else if (id == R.id.rl_number_9) {
+                changePin(0, getContext().getString(R.string.number_keyboard_9));
+            } else if (id == R.id.rl_number_delete) {
+                changePin(1, "");
+            }
+        }
+    };
+
+    private void changePin(int type, String pin) {
+        if (type == 0) {
+            if (mPincode.length() < 4) {
+                err_pincode.setVisibility(View.GONE);
+                mPincode = mPincode + pin;
+                changeBackgroundPincode(mPincode);
+                if (mPincode.length() == 4) {
+                    String encrypt = EncryptUntil.HashMD5((EncryptUntil.HashMD5(mPincode) + "zxcpoi"));
+                    if (encrypt.equals(mSelectStaff.getPin())) {
+                        Intent intent = new Intent();
+                        intent.setAction(CHANGE_STAFF_PERMISSON_TO_SALE_ACTIVITY);
+                        intent.putStringArrayListExtra("staff_permisson", (ArrayList<String>) mSelectStaff.getPermisson());
+                        sendBroadcast(intent);
+                        popupWindow.dismiss();
+                        if(this instanceof OrderActivity) {
+                            Intent i = new Intent(getContext(), SalesActivity.class);
+                            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(i);
+                        }
+                        staff_name.setText(ConfigUtil.getStaff().getStaffName() + " - " + mSelectStaff.getRole());
+                    } else {
+                        err_pincode.setVisibility(View.VISIBLE);
+                        Animation shake = AnimationUtils.loadAnimation(this, R.anim.animation_shake);
+                        ll_pin.startAnimation(shake);
+                        mPincode = "";
+                        changeBackgroundPincode(mPincode);
+                    }
+                }
+            }
+        } else {
+            if (mPincode.length() > 0) {
+                mPincode = mPincode.substring(0, mPincode.length() - 1);
+                changeBackgroundPincode(mPincode);
+            }
+        }
+    }
+
+    private void changeBackgroundPincode(String mPincode) {
+        for (int i = 0; i < listPin.size(); i++) {
+            RelativeLayout rl_pin = listPin.get(i);
+            if (i < mPincode.length()) {
+                rl_pin.setBackgroundResource(R.drawable.solid_pin_code);
+            } else {
+                rl_pin.setBackgroundResource(R.drawable.border_number_keyboard);
+            }
+        }
+    }
+
+    public void changePermissonOrderMenu() {
+        if (ConfigUtil.isManagerAllOrder()) {
+            nav_order_history.setVisibility(View.VISIBLE);
+        } else {
+            if (ConfigUtil.isManageOrderByMe() || ConfigUtil.isManageOrderByLocation()) {
+                nav_order_history.setVisibility(View.VISIBLE);
+            } else {
+                nav_order_history.setVisibility(View.GONE);
+            }
+        }
+        staff_name.setText(ConfigUtil.getStaff().getStaffName() + " - " + mSelectStaff.getRole());
     }
 }

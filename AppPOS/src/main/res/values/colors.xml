@@ -123,6 +123,9 @@
     <color name="error_no_pos">#ff0000</color>
     <color name="register_shift_bg">#f3f3f3</color>
 
+    <!--Permisson-->
+    <color name="staff_permisson_header_bg">#eaeaea</color>
+
     <!--Plugins-->
     <color name="plugin_reward_point_earn_point_text_color">#1e88e5</color>
     <color name="color_button_apply_disable">#cbced1</color>

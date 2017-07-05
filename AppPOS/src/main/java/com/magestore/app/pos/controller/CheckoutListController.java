@@ -463,6 +463,20 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         doAction(ACTION_TYPE_RETRIEVE_STAFF_PERMISSON, null, wraper, null);
     }
 
+    public void doInputChangeStaffPermisson(List<String> listPermisson){
+        try {
+            getConfigService().getConfigStaffPermisson(listPermisson);
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void showDetailOrderLoading(boolean b) {
         mCheckoutSuccessPanel.showDetailOrderLoading(b);
     }

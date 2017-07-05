@@ -148,6 +148,7 @@
     <dimen name="popup_staff_permisson_width">400dp</dimen>
     <dimen name="popup_staff_permisson_height">450dp</dimen>
     <dimen name="popup_staff_permisson_item_text_size">14sp</dimen>
+    <dimen name="popup_staff_permiss_keyboard_size">50dp</dimen>
 
     <!--Dialog-->
     <dimen name="dialog_title_text_size">24sp</dimen>

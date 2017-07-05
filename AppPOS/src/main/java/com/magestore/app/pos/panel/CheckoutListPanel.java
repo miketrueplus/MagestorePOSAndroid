@@ -254,7 +254,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
         });
     }
 
-    private void showError(String message){
+    private void showError(String message) {
         // Tạo dialog và hiển thị
         com.magestore.app.util.DialogUtil.confirm(getContext(), message, R.string.ok);
     }
@@ -334,6 +334,14 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
             } else {
                 return false;
             }
+        }
+    }
+
+    public void showDiscountWithPermisson() {
+        if (checkShowButtonDiscount()) {
+            bt_sales_discount.setVisibility(((CheckoutListController) mController).checkListCartItem() ? VISIBLE : GONE);
+        } else {
+            bt_sales_discount.setVisibility(GONE);
         }
     }
 

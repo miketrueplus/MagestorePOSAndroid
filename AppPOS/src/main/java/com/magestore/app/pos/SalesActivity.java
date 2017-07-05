@@ -26,6 +26,7 @@ import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+
 import com.edwardvanraak.materialbarcodescanner.MaterialBarcodeScanner;
 import com.magestore.app.lib.context.MagestoreContext;
 import com.magestore.app.lib.model.catalog.Category;
@@ -80,6 +81,8 @@ import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.DialogUtil;
 import com.magestore.app.view.EditTextFloat;
 import com.magestore.app.view.ui.PosUI;
+
+import java.util.List;
 
 /**
  * Quản lý các hoạt động salé
@@ -158,6 +161,7 @@ public class SalesActivity extends AbstractActivity
         }
 
         setContentView(R.layout.sales_menu);
+
         // chuẩn bị control layout
         initLayout();
 
@@ -166,7 +170,6 @@ public class SalesActivity extends AbstractActivity
 
         // chuản bị các value trong layout
         initValue();
-
         super.setheader();
     }
 
@@ -515,11 +518,13 @@ public class SalesActivity extends AbstractActivity
         IntentFilter filter_payment_id = new IntentFilter(PaymentPayPalActivity.SEND_PAYMENT_ID_TO_SALE_ACTIVITY);
         IntentFilter filter_error_paypal = new IntentFilter(PaymentPayPalActivity.SEND_ERROR_TO_SALE_ACTIVITY);
         IntentFilter filter_staff_permisson = new IntentFilter(RETRIEVE_STAFF_PERMISSON_TO_SALE_ACTIVITY);
+        IntentFilter filter_change_staff_permisson = new IntentFilter(CHANGE_STAFF_PERMISSON_TO_SALE_ACTIVITY);
         registerReceiver(receiver_data_setting, filter_setting);
         registerReceiver(receiver_data_order, filter_order);
         registerReceiver(receiver_data_payment_paypal, filter_payment_id);
         registerReceiver(receiver_data_error_paypal, filter_error_paypal);
         registerReceiver(receiver_staff_permisson, filter_staff_permisson);
+        registerReceiver(change_staff_permisson, filter_change_staff_permisson);
     }
 
     @Override
@@ -531,6 +536,7 @@ public class SalesActivity extends AbstractActivity
             unregisterReceiver(receiver_data_payment_paypal);
             unregisterReceiver(receiver_data_error_paypal);
             unregisterReceiver(receiver_staff_permisson);
+            unregisterReceiver(change_staff_permisson);
         } catch (Exception e) {
         }
     }
@@ -656,6 +662,21 @@ public class SalesActivity extends AbstractActivity
         @Override
         public void onReceive(Context context, Intent intent) {
             mCheckoutListController.doInputRetrieveStaffPermisson();
+        }
+    };
+
+    BroadcastReceiver change_staff_permisson = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent != null) {
+                List<String> listPermisson = intent.getStringArrayListExtra("staff_permisson");
+                mCheckoutListController.doInputChangeStaffPermisson(listPermisson);
+                changePermissonOrderMenu();
+                Intent i = new Intent();
+                i.setAction(AbstractActivity.CHANGE_PERMISSON_MENU_ORDER);
+                sendBroadcast(i);
+                mCheckoutListPanel.showDiscountWithPermisson();
+            }
         }
     };
 

@@ -314,7 +314,8 @@ public class POSConfigService extends AbstractService implements ConfigService {
     // Session
     private static String MANAGE_SHIFT_ADJUSTMENT = "manage_shift_adjustment";
 
-    private void getConfigStaffPermisson(List<String> listPermisson) {
+    @Override
+    public void getConfigStaffPermisson(List<String> listPermisson) {
         if (listPermisson.size() > 0) {
             if (checkStaffPermiss(listPermisson, ALL_PERMISSON)) {
                 ConfigUtil.setManagerShiftAdjustment(true);
