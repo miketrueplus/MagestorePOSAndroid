@@ -353,7 +353,8 @@ public abstract class AbstractActivity
     LinearLayout nav_general;
     LinearLayout menu_register_shift;
     LinearLayout ll_checkout, ll_session, ll_setting;
-
+    private int mSelectPosition;
+    private static int mCurrentSelectPosition = -1;
     protected void initToolbarMenu(Toolbar toolbar) {
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
@@ -476,11 +477,12 @@ public abstract class AbstractActivity
         ll_setting.setVisibility(isEnable ? View.VISIBLE : View.GONE);
     }
 
-    TextView tv_staff_name, tv_permisson, err_pincode;
+    TextView tv_staff_name, tv_permisson, err_pincode, tv_cancel;
     List<RelativeLayout> listPin;
     LinearLayout ll_pin;
     public void showPopUpStaffPermisson() {
         listPin = new ArrayList<>();
+        mAdapter.mSelectPosition = mCurrentSelectPosition;
         LayoutInflater layoutInflater
                 = (LayoutInflater) getContext()
                 .getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -490,6 +492,7 @@ public abstract class AbstractActivity
         rl_enter_pin = (RelativeLayout) popupView.findViewById(R.id.rl_enter_pin);
         ll_pin = (LinearLayout) popupView.findViewById(R.id.ll_pin);
         err_pincode = (TextView) popupView.findViewById(R.id.err_pincode);
+        tv_cancel = (TextView) popupView.findViewById(R.id.tv_cancel);
         rl_loading = (RelativeLayout) popupView.findViewById(R.id.rl_loading);
         rl_loading.setVisibility(View.VISIBLE);
         ListView listView = (ListView) popupView.findViewById(R.id.recycler_staff_permisson);
@@ -538,6 +541,16 @@ public abstract class AbstractActivity
                 ll_list_staff.setVisibility(View.GONE);
                 rl_enter_pin.setVisibility(View.VISIBLE);
                 mSelectStaff = listStaff.get(i);
+                mSelectPosition = i;
+            }
+        });
+        tv_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mPincode = "";
+                changeBackgroundPincode(mPincode);
+                ll_list_staff.setVisibility(View.VISIBLE);
+                rl_enter_pin.setVisibility(View.GONE);
             }
         });
         ll_current_staff.setOnClickListener(new View.OnClickListener() {
@@ -554,6 +567,7 @@ public abstract class AbstractActivity
                     startActivity(i);
                 }
                 staff_name.setText(ConfigUtil.getStaff().getStaffName() + " - " + mCurrentStaff.getRole());
+                mCurrentSelectPosition = -1;
             }
         });
         popupWindow = new PopupWindow(
@@ -564,7 +578,7 @@ public abstract class AbstractActivity
         popupWindow.setFocusable(true);
         // Removes default background.
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        popupWindow.showAsDropDown(mapImage.get(this));
+        popupWindow.showAsDropDown(mapImage.get(this), (mapImage.get(this).getWidth() + getResources().getDimensionPixelSize(R.dimen.activity_horizontal_margin)), (0 - (mapImage.get(this).getHeight() + getResources().getDimensionPixelSize(R.dimen.activity_horizontal_margin))));
     }
 
     private List<StaffPermisson> getCurrentStaff(List<StaffPermisson> listStaff) {
@@ -629,6 +643,7 @@ public abstract class AbstractActivity
                             startActivity(i);
                         }
                         staff_name.setText(ConfigUtil.getStaff().getStaffName() + " - " + mSelectStaff.getRole());
+                        mCurrentSelectPosition = mSelectPosition;
                     } else {
                         err_pincode.setVisibility(View.VISIBLE);
                         Animation shake = AnimationUtils.loadAnimation(this, R.anim.animation_shake);

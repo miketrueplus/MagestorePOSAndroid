@@ -1,379 +1,412 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white">
+    android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/ll_list_staff"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:id="@+id/ll_current_staff"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/staff_permisson_header_bg"
-            android:orientation="horizontal"
-            android:paddingBottom="@dimen/layout_margin_10"
-            android:paddingLeft="@dimen/layout_margin_20"
-            android:paddingRight="@dimen/layout_margin_10"
-            android:paddingTop="@dimen/layout_margin_20">
-
-            <TextView
-                android:id="@+id/tv_staff_name"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/layout_margin_5"
-                android:layout_weight="1"
-                android:textColor="@color/text_color"
-                android:textSize="@dimen/text_size" />
-
-            <TextView
-                android:id="@+id/tv_permisson"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="right"
-                android:textColor="@color/register_shift_item_time_text_color"
-                android:textSize="@dimen/popup_staff_permisson_item_text_size" />
-        </LinearLayout>
-
-        <ListView
-            android:id="@+id/recycler_staff_permisson"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/layout_margin_10" />
-    </LinearLayout>
+    <ImageView
+        android:id="@+id/im_arrow_left"
+        android:layout_width="@dimen/activity_horizontal_margin"
+        android:layout_height="@dimen/activity_horizontal_margin"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="-5dp"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:rotation="-90"
+        android:src="@drawable/ic_arrow_left" />
 
     <RelativeLayout
-        android:id="@+id/rl_enter_pin"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone">
-
-        <TextView
-            android:id="@+id/tv_enter_pin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/layout_margin_20"
-            android:text="@string/popup_permisson_enter_pin"
-            android:textColor="@color/text_color"
-            android:textSize="@dimen/text_20" />
+        android:layout_height="match_parent"
+        android:layout_toRightOf="@+id/im_arrow_left"
+        android:background="@color/white">
 
         <LinearLayout
-            android:id="@+id/ll_pin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_enter_pin"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/layout_margin_20"
-            android:orientation="horizontal">
-
-            <RelativeLayout
-                android:id="@+id/rl_pin_1"
-                android:layout_width="@dimen/layout_margin_10"
-                android:layout_height="@dimen/layout_margin_10"
-                android:layout_marginRight="@dimen/layout_margin_10"
-                android:background="@drawable/border_number_keyboard" />
-
-            <RelativeLayout
-                android:id="@+id/rl_pin_2"
-                android:layout_width="@dimen/layout_margin_10"
-                android:layout_height="@dimen/layout_margin_10"
-                android:layout_marginRight="@dimen/layout_margin_10"
-                android:background="@drawable/border_number_keyboard" />
-
-            <RelativeLayout
-                android:id="@+id/rl_pin_3"
-                android:layout_width="@dimen/layout_margin_10"
-                android:layout_height="@dimen/layout_margin_10"
-                android:layout_marginRight="@dimen/layout_margin_10"
-                android:background="@drawable/border_number_keyboard" />
-
-            <RelativeLayout
-                android:id="@+id/rl_pin_4"
-                android:layout_width="@dimen/layout_margin_10"
-                android:layout_height="@dimen/layout_margin_10"
-                android:layout_marginRight="@dimen/layout_margin_10"
-                android:background="@drawable/border_number_keyboard" />
-        </LinearLayout>
-
-        <RelativeLayout
-            android:id="@+id/rl_error"
+            android:id="@+id/ll_list_staff"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/layout_margin_30"
-            android:layout_below="@+id/ll_pin">
-
-            <TextView
-                android:id="@+id/err_pincode"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/layout_margin_10"
-                android:text="@string/error_pincode"
-                android:textColor="@color/error_no_pos"
-                android:textSize="@dimen/text_size"
-                android:visibility="gone" />
-        </RelativeLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_number_keyboard"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/rl_error"
-            android:layout_centerHorizontal="true"
             android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/ll_current_staff"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/layout_margin_20"
+                android:background="@color/staff_permisson_header_bg"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/layout_margin_10"
+                android:paddingLeft="@dimen/layout_margin_20"
+                android:paddingRight="@dimen/layout_margin_10"
+                android:paddingTop="@dimen/layout_margin_20">
+
+                <TextView
+                    android:id="@+id/tv_staff_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/layout_margin_5"
+                    android:layout_weight="1"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/text_size" />
+
+                <TextView
+                    android:id="@+id/tv_permisson"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:textColor="@color/register_shift_item_time_text_color"
+                    android:textSize="@dimen/popup_staff_permisson_item_text_size" />
+            </LinearLayout>
+
+            <ListView
+                android:id="@+id/recycler_staff_permisson"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:divider="@color/white" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_enter_pin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+            <RelativeLayout
+                android:id="@+id/rl_pin_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/layout_margin_20">
+
+                <TextView
+                    android:id="@+id/tv_cancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="@dimen/layout_margin_10"
+                    android:text="@string/cancel"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/text_size" />
+
+                <TextView
+                    android:id="@+id/tv_enter_pin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/popup_permisson_enter_pin"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/text_20" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_pin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rl_pin_title"
+                android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/layout_margin_20"
                 android:orientation="horizontal">
 
-                <LinearLayout
+                <RelativeLayout
+                    android:id="@+id/rl_pin_1"
+                    android:layout_width="@dimen/layout_margin_10"
+                    android:layout_height="@dimen/layout_margin_10"
+                    android:layout_marginRight="@dimen/layout_margin_10"
+                    android:background="@drawable/border_number_keyboard" />
+
+                <RelativeLayout
+                    android:id="@+id/rl_pin_2"
+                    android:layout_width="@dimen/layout_margin_10"
+                    android:layout_height="@dimen/layout_margin_10"
+                    android:layout_marginRight="@dimen/layout_margin_10"
+                    android:background="@drawable/border_number_keyboard" />
+
+                <RelativeLayout
+                    android:id="@+id/rl_pin_3"
+                    android:layout_width="@dimen/layout_margin_10"
+                    android:layout_height="@dimen/layout_margin_10"
+                    android:layout_marginRight="@dimen/layout_margin_10"
+                    android:background="@drawable/border_number_keyboard" />
+
+                <RelativeLayout
+                    android:id="@+id/rl_pin_4"
+                    android:layout_width="@dimen/layout_margin_10"
+                    android:layout_height="@dimen/layout_margin_10"
+                    android:layout_marginRight="@dimen/layout_margin_10"
+                    android:background="@drawable/border_number_keyboard" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_error"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/layout_margin_30"
+                android:layout_below="@+id/ll_pin">
+
+                <TextView
+                    android:id="@+id/err_pincode"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
                     android:layout_gravity="center_horizontal"
-                    android:orientation="horizontal">
-
-                    <RelativeLayout
-                        android:id="@+id/rl_number_1"
-                        android:layout_width="@dimen/popup_staff_permiss_keyboard_size"
-                        android:layout_height="@dimen/popup_staff_permiss_keyboard_size"
-                        android:layout_marginRight="@dimen/layout_margin_20"
-                        android:background="@drawable/border_number_keyboard">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:text="@string/number_keyboard_1"
-                            android:textColor="@color/text_color"
-                            android:textSize="@dimen/text_20" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:id="@+id/rl_number_2"
-                        android:layout_width="@dimen/popup_staff_permiss_keyboard_size"
-                        android:layout_height="@dimen/popup_staff_permiss_keyboard_size"
-                        android:layout_marginRight="@dimen/layout_margin_20"
-                        android:background="@drawable/border_number_keyboard">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:text="@string/number_keyboard_2"
-                            android:textColor="@color/text_color"
-                            android:textSize="@dimen/text_20" />
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:id="@+id/rl_number_3"
-                        android:layout_width="@dimen/popup_staff_permiss_keyboard_size"
-                        android:layout_height="@dimen/popup_staff_permiss_keyboard_size"
-                        android:background="@drawable/border_number_keyboard">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:text="@string/number_keyboard_3"
-                            android:textColor="@color/text_color"
-                            android:textSize="@dimen/text_20" />
-                    </RelativeLayout>
-                </LinearLayout>
-            </LinearLayout>
+                    android:layout_marginTop="@dimen/layout_margin_10"
+                    android:text="@string/error_pincode"
+                    android:textColor="@color/error_no_pos"
+                    android:textSize="@dimen/text_size"
+                    android:visibility="gone" />
+            </RelativeLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:id="@+id/ll_number_keyboard"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/layout_margin_20"
-                android:orientation="horizontal">
+                android:layout_below="@+id/rl_error"
+                android:layout_centerHorizontal="true"
+                android:orientation="vertical">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="@dimen/layout_margin_20"
+                    android:layout_marginTop="@dimen/layout_margin_20"
                     android:orientation="horizontal">
 
-                    <RelativeLayout
-                        android:id="@+id/rl_number_4"
-                        android:layout_width="@dimen/popup_staff_permiss_keyboard_size"
-                        android:layout_height="@dimen/popup_staff_permiss_keyboard_size"
-                        android:layout_marginRight="@dimen/layout_margin_20"
-                        android:background="@drawable/border_number_keyboard">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:orientation="horizontal">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:text="@string/number_keyboard_4"
-                            android:textColor="@color/text_color"
-                            android:textSize="@dimen/text_20" />
+                        <RelativeLayout
+                            android:id="@+id/rl_number_1"
+                            android:layout_width="@dimen/popup_staff_permiss_keyboard_size"
+                            android:layout_height="@dimen/popup_staff_permiss_keyboard_size"
+                            android:layout_marginRight="@dimen/layout_margin_20"
+                            android:background="@drawable/border_number_keyboard">
 
-                    </RelativeLayout>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:text="@string/number_keyboard_1"
+                                android:textColor="@color/text_color"
+                                android:textSize="@dimen/text_20" />
 
-                    <RelativeLayout
-                        android:id="@+id/rl_number_5"
-                        android:layout_width="@dimen/popup_staff_permiss_keyboard_size"
-                        android:layout_height="@dimen/popup_staff_permiss_keyboard_size"
-                        android:layout_marginRight="@dimen/layout_margin_20"
-                        android:background="@drawable/border_number_keyboard">
+                        </RelativeLayout>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:text="@string/number_keyboard_5"
-                            android:textColor="@color/text_color"
-                            android:textSize="@dimen/text_20" />
-                    </RelativeLayout>
+                        <RelativeLayout
+                            android:id="@+id/rl_number_2"
+                            android:layout_width="@dimen/popup_staff_permiss_keyboard_size"
+                            android:layout_height="@dimen/popup_staff_permiss_keyboard_size"
+                            android:layout_marginRight="@dimen/layout_margin_20"
+                            android:background="@drawable/border_number_keyboard">
 
-                    <RelativeLayout
-                        android:id="@+id/rl_number_6"
-                        android:layout_width="@dimen/popup_staff_permiss_keyboard_size"
-                        android:layout_height="@dimen/popup_staff_permiss_keyboard_size"
-                        android:background="@drawable/border_number_keyboard">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:text="@string/number_keyboard_2"
+                                android:textColor="@color/text_color"
+                                android:textSize="@dimen/text_20" />
+                        </RelativeLayout>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:text="@string/number_keyboard_6"
-                            android:textColor="@color/text_color"
-                            android:textSize="@dimen/text_20" />
-                    </RelativeLayout>
+                        <RelativeLayout
+                            android:id="@+id/rl_number_3"
+                            android:layout_width="@dimen/popup_staff_permiss_keyboard_size"
+                            android:layout_height="@dimen/popup_staff_permiss_keyboard_size"
+                            android:background="@drawable/border_number_keyboard">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:text="@string/number_keyboard_3"
+                                android:textColor="@color/text_color"
+                                android:textSize="@dimen/text_20" />
+                        </RelativeLayout>
+                    </LinearLayout>
                 </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/layout_margin_20"
-                android:orientation="horizontal">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="@dimen/layout_margin_20"
                     android:orientation="horizontal">
 
-                    <RelativeLayout
-                        android:id="@+id/rl_number_7"
-                        android:layout_width="@dimen/popup_staff_permiss_keyboard_size"
-                        android:layout_height="@dimen/popup_staff_permiss_keyboard_size"
-                        android:layout_marginRight="@dimen/layout_margin_20"
-                        android:background="@drawable/border_number_keyboard">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:orientation="horizontal">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:text="@string/number_keyboard_7"
-                            android:textColor="@color/text_color"
-                            android:textSize="@dimen/text_20" />
+                        <RelativeLayout
+                            android:id="@+id/rl_number_4"
+                            android:layout_width="@dimen/popup_staff_permiss_keyboard_size"
+                            android:layout_height="@dimen/popup_staff_permiss_keyboard_size"
+                            android:layout_marginRight="@dimen/layout_margin_20"
+                            android:background="@drawable/border_number_keyboard">
 
-                    </RelativeLayout>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:text="@string/number_keyboard_4"
+                                android:textColor="@color/text_color"
+                                android:textSize="@dimen/text_20" />
 
-                    <RelativeLayout
-                        android:id="@+id/rl_number_8"
-                        android:layout_width="@dimen/popup_staff_permiss_keyboard_size"
-                        android:layout_height="@dimen/popup_staff_permiss_keyboard_size"
-                        android:layout_marginRight="@dimen/layout_margin_20"
-                        android:background="@drawable/border_number_keyboard">
+                        </RelativeLayout>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:text="@string/number_keyboard_8"
-                            android:textColor="@color/text_color"
-                            android:textSize="@dimen/text_20" />
-                    </RelativeLayout>
+                        <RelativeLayout
+                            android:id="@+id/rl_number_5"
+                            android:layout_width="@dimen/popup_staff_permiss_keyboard_size"
+                            android:layout_height="@dimen/popup_staff_permiss_keyboard_size"
+                            android:layout_marginRight="@dimen/layout_margin_20"
+                            android:background="@drawable/border_number_keyboard">
 
-                    <RelativeLayout
-                        android:id="@+id/rl_number_9"
-                        android:layout_width="@dimen/popup_staff_permiss_keyboard_size"
-                        android:layout_height="@dimen/popup_staff_permiss_keyboard_size"
-                        android:background="@drawable/border_number_keyboard">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:text="@string/number_keyboard_5"
+                                android:textColor="@color/text_color"
+                                android:textSize="@dimen/text_20" />
+                        </RelativeLayout>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:text="@string/number_keyboard_9"
-                            android:textColor="@color/text_color"
-                            android:textSize="@dimen/text_20" />
-                    </RelativeLayout>
+                        <RelativeLayout
+                            android:id="@+id/rl_number_6"
+                            android:layout_width="@dimen/popup_staff_permiss_keyboard_size"
+                            android:layout_height="@dimen/popup_staff_permiss_keyboard_size"
+                            android:background="@drawable/border_number_keyboard">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:text="@string/number_keyboard_6"
+                                android:textColor="@color/text_color"
+                                android:textSize="@dimen/text_20" />
+                        </RelativeLayout>
+                    </LinearLayout>
                 </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/layout_margin_20"
-                android:orientation="horizontal">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="@dimen/layout_margin_20"
                     android:orientation="horizontal">
 
-                    <RelativeLayout
-                        android:layout_width="@dimen/popup_staff_permiss_keyboard_size"
-                        android:layout_height="@dimen/popup_staff_permiss_keyboard_size"
-                        android:layout_marginRight="@dimen/layout_margin_20" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:orientation="horizontal">
 
-                    <RelativeLayout
-                        android:id="@+id/rl_number_0"
-                        android:layout_width="@dimen/popup_staff_permiss_keyboard_size"
-                        android:layout_height="@dimen/popup_staff_permiss_keyboard_size"
-                        android:layout_marginRight="@dimen/layout_margin_20"
-                        android:background="@drawable/border_number_keyboard">
+                        <RelativeLayout
+                            android:id="@+id/rl_number_7"
+                            android:layout_width="@dimen/popup_staff_permiss_keyboard_size"
+                            android:layout_height="@dimen/popup_staff_permiss_keyboard_size"
+                            android:layout_marginRight="@dimen/layout_margin_20"
+                            android:background="@drawable/border_number_keyboard">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:text="@string/number_keyboard_0"
-                            android:textColor="@color/text_color"
-                            android:textSize="@dimen/text_20" />
-                    </RelativeLayout>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:text="@string/number_keyboard_7"
+                                android:textColor="@color/text_color"
+                                android:textSize="@dimen/text_20" />
 
-                    <RelativeLayout
-                        android:id="@+id/rl_number_delete"
-                        android:layout_width="@dimen/popup_staff_permiss_keyboard_size"
-                        android:layout_height="@dimen/popup_staff_permiss_keyboard_size"
-                        android:background="@drawable/border_number_keyboard">
+                        </RelativeLayout>
 
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:src="@drawable/ic_keyboard_delete" />
-                    </RelativeLayout>
+                        <RelativeLayout
+                            android:id="@+id/rl_number_8"
+                            android:layout_width="@dimen/popup_staff_permiss_keyboard_size"
+                            android:layout_height="@dimen/popup_staff_permiss_keyboard_size"
+                            android:layout_marginRight="@dimen/layout_margin_20"
+                            android:background="@drawable/border_number_keyboard">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:text="@string/number_keyboard_8"
+                                android:textColor="@color/text_color"
+                                android:textSize="@dimen/text_20" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/rl_number_9"
+                            android:layout_width="@dimen/popup_staff_permiss_keyboard_size"
+                            android:layout_height="@dimen/popup_staff_permiss_keyboard_size"
+                            android:background="@drawable/border_number_keyboard">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:text="@string/number_keyboard_9"
+                                android:textColor="@color/text_color"
+                                android:textSize="@dimen/text_20" />
+                        </RelativeLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/layout_margin_20"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:orientation="horizontal">
+
+                        <RelativeLayout
+                            android:layout_width="@dimen/popup_staff_permiss_keyboard_size"
+                            android:layout_height="@dimen/popup_staff_permiss_keyboard_size"
+                            android:layout_marginRight="@dimen/layout_margin_20" />
+
+                        <RelativeLayout
+                            android:id="@+id/rl_number_0"
+                            android:layout_width="@dimen/popup_staff_permiss_keyboard_size"
+                            android:layout_height="@dimen/popup_staff_permiss_keyboard_size"
+                            android:layout_marginRight="@dimen/layout_margin_20"
+                            android:background="@drawable/border_number_keyboard">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:text="@string/number_keyboard_0"
+                                android:textColor="@color/text_color"
+                                android:textSize="@dimen/text_20" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/rl_number_delete"
+                            android:layout_width="@dimen/popup_staff_permiss_keyboard_size"
+                            android:layout_height="@dimen/popup_staff_permiss_keyboard_size"
+                            android:background="@drawable/border_number_keyboard">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:src="@drawable/ic_keyboard_delete" />
+                        </RelativeLayout>
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
-    </RelativeLayout>
+        </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/rl_loading"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white">
+        <RelativeLayout
+            android:id="@+id/rl_loading"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white">
 
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true" />
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true" />
+        </RelativeLayout>
     </RelativeLayout>
 </RelativeLayout>

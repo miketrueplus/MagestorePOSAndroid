@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="16dp"
+    android:height="16dp"
+    android:viewportWidth="16"
+    android:viewportHeight="16">
+
+    <group
+            android:translateX="-336.000000"
+            android:translateY="-336.000000">
+        <path
+            android:fillColor="@color/staff_permisson_header_bg"
+            android:fillType="evenOdd"
+            android:strokeWidth="1"
+            android:pathData="M344,339 L352,349 L336,349 L344,339 Z M344,339" />
+    </group>
+</vector>

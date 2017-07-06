@@ -2,11 +2,13 @@ package com.magestore.app.pos.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.magestore.app.lib.model.staff.StaffPermisson;
@@ -21,8 +23,9 @@ import java.util.List;
  */
 
 public class StaffPermissonAdapter extends BaseAdapter {
-    Context context;
-    List<StaffPermisson> listPermisson;
+    private static Context context;
+    private List<StaffPermisson> listPermisson;
+    public static int mSelectPosition = -1;
 
     public StaffPermissonAdapter(Context context, List<StaffPermisson> listPermisson) {
         this.context = context;
@@ -63,21 +66,30 @@ public class StaffPermissonAdapter extends BaseAdapter {
         } else {
             viewHolder = (StaffPermissonAdapter.ViewHolder) convertView.getTag();
         }
-        viewHolder.setItem(getItem(position));
+        viewHolder.setItem(getItem(position), position);
         return convertView;
     }
 
     static class ViewHolder {
         TextView tv_staff_name;
         TextView tv_permisson;
+        RelativeLayout rl_content;
 
         public void holdView(View view) {
             //find view
+            rl_content = (RelativeLayout) view.findViewById(R.id.rl_content);
             tv_staff_name = (TextView) view.findViewById(R.id.tv_staff_name);
             tv_permisson = (TextView) view.findViewById(R.id.tv_permisson);
         }
 
-        public void setItem(StaffPermisson item) {
+        public void setItem(StaffPermisson item, int position) {
+            if (mSelectPosition == position) {
+                rl_content.setBackgroundColor(ContextCompat.getColor(context, android.R.color.darker_gray));
+                tv_permisson.setTextColor(ContextCompat.getColor(context, R.color.white));
+            } else {
+                rl_content.setBackgroundColor(ContextCompat.getColor(context, android.R.color.white));
+                tv_permisson.setTextColor(ContextCompat.getColor(context, R.color.register_shift_item_time_text_color));
+            }
             tv_staff_name.setText(item.getDisplayName());
             tv_permisson.setText(item.getRole());
         }
