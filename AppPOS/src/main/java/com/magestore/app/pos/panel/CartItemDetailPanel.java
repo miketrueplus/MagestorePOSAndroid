@@ -98,14 +98,6 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
         ll_custom_price = (LinearLayout) findViewById(R.id.ll_custom_price);
         ll_discount = (LinearLayout) findViewById(R.id.ll_discount);
 
-        if (ConfigUtil.isManageAllDiscount()) {
-            ll_custom_price.setVisibility(VISIBLE);
-            ll_discount.setVisibility(VISIBLE);
-        } else {
-            ll_discount.setVisibility(ConfigUtil.isDiscountPerItem() ? VISIBLE : GONE);
-            ll_custom_price.setVisibility(ConfigUtil.isApplyCustomPrice() ? VISIBLE : GONE);
-        }
-
         initValue();
     }
 
@@ -148,6 +140,13 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
     @Override
     public void bindItem(CartItem item) {
         super.bindItem(item);
+        if (ConfigUtil.isManageAllDiscount()) {
+            ll_custom_price.setVisibility(VISIBLE);
+            ll_discount.setVisibility(VISIBLE);
+        } else {
+            ll_discount.setVisibility(ConfigUtil.isDiscountPerItem() ? VISIBLE : GONE);
+            ll_custom_price.setVisibility(ConfigUtil.isApplyCustomPrice() ? VISIBLE : GONE);
+        }
         mBinding.setCartItem(item);
         mCartItem = item;
         setCurrency();

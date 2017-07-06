@@ -136,6 +136,7 @@ public class RegisterShiftActivity extends AbstractActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             changePermissonOrderMenu();
+            mRegisterShiftDetailPanel.bindItem(mRegisterShiftListController.getSelectedItem());
         }
     };
 

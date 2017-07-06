@@ -310,6 +310,9 @@ public abstract class AbstractActivity
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        mCurrentSelectPosition = -1;
+                        mCurrentStaff = null;
+                        mSelectStaff = null;
                         DataUtil.saveDataBooleanToPreferences(getContext(), DataUtil.CHOOSE_STORE, false);
                         ConfigUtil.setCheckFirstOpenSession(false);
                         Intent intent = new Intent(getContext(), LoginActivity.class);
@@ -355,6 +358,7 @@ public abstract class AbstractActivity
     LinearLayout ll_checkout, ll_session, ll_setting;
     private int mSelectPosition;
     private static int mCurrentSelectPosition = -1;
+
     protected void initToolbarMenu(Toolbar toolbar) {
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
@@ -480,6 +484,7 @@ public abstract class AbstractActivity
     TextView tv_staff_name, tv_permisson, err_pincode, tv_cancel;
     List<RelativeLayout> listPin;
     LinearLayout ll_pin;
+
     public void showPopUpStaffPermisson() {
         listPin = new ArrayList<>();
         mAdapter.mSelectPosition = mCurrentSelectPosition;
@@ -540,7 +545,7 @@ public abstract class AbstractActivity
                 mPincode = "";
                 ll_list_staff.setVisibility(View.GONE);
                 rl_enter_pin.setVisibility(View.VISIBLE);
-                mSelectStaff = listStaff.get(i);
+                mSelectStaff = getCurrentStaff(listStaff).get(i);
                 mSelectPosition = i;
             }
         });
@@ -561,7 +566,7 @@ public abstract class AbstractActivity
                 intent.putStringArrayListExtra("staff_permisson", (ArrayList<String>) mCurrentStaff.getPermisson());
                 sendBroadcast(intent);
                 popupWindow.dismiss();
-                if(AbstractActivity.this instanceof OrderActivity) {
+                if (AbstractActivity.this instanceof OrderActivity) {
                     Intent i = new Intent(getContext(), SalesActivity.class);
                     i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(i);
@@ -637,7 +642,7 @@ public abstract class AbstractActivity
                         intent.putStringArrayListExtra("staff_permisson", (ArrayList<String>) mSelectStaff.getPermisson());
                         sendBroadcast(intent);
                         popupWindow.dismiss();
-                        if(this instanceof OrderActivity) {
+                        if (this instanceof OrderActivity) {
                             Intent i = new Intent(getContext(), SalesActivity.class);
                             i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(i);

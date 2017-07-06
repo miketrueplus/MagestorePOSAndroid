@@ -12,6 +12,7 @@ import com.magestore.app.lib.model.config.Config;
 import com.magestore.app.lib.model.config.ConfigCountry;
 import com.magestore.app.lib.model.config.ConfigPriceFormat;
 import com.magestore.app.lib.model.config.ConfigPrint;
+import com.magestore.app.lib.model.config.ConfigProductOption;
 import com.magestore.app.lib.model.config.ConfigQuantityFormat;
 import com.magestore.app.lib.model.config.ConfigRegion;
 import com.magestore.app.lib.model.config.ConfigTaxClass;
@@ -172,6 +173,52 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
             Gson2PosListTaxClass listTaxClass = (Gson2PosListTaxClass) rp.doParse();
             listConfigTax = (List<ConfigTaxClass>) (List<?>) (listTaxClass.items);
             return listConfigTax;
+        } catch (ConnectionException ex) {
+            throw ex;
+        } catch (IOException ex) {
+            throw ex;
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
+    }
+
+    @Override
+    public List<ConfigProductOption> retrieveColorSwatch() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+        try {
+            // Khởi tạo connection và khởi tạo truy vấn
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPI.REST_CONFIG_COLOR_SWATCH);
+
+            // Xây dựng tham số
+            paramBuilder = statement.getParamBuilder()
+                    .setPage(1)
+                    .setPageSize(200)
+                    .setSessionID(POSDataAccessSession.REST_SESSION_ID);
+
+            rp = statement.execute();
+            rp.setParseImplement(getClassParseImplement());
+            rp.setParseModel(Gson2PosListTaxClass.class);
+            Gson2PosListTaxClass listTaxClass = (Gson2PosListTaxClass) rp.doParse();
+            listConfigTax = (List<ConfigTaxClass>) (List<?>) (listTaxClass.items);
+            return null;
         } catch (ConnectionException ex) {
             throw ex;
         } catch (IOException ex) {
