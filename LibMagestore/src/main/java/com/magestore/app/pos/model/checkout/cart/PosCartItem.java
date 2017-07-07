@@ -1,5 +1,6 @@
 package com.magestore.app.pos.model.checkout.cart;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.magestore.app.lib.model.catalog.ProductOption;
 import com.magestore.app.lib.model.catalog.ProductOptionCustom;
@@ -166,7 +167,9 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
         @Gson2PosExclude(toJson = false, fromJson = true)
         public String id;
         public String code;
+        @Expose(serialize = true, deserialize = false)
         public String value;
+        public List<String> values;
     }
 
     List<OptionsValue> options;

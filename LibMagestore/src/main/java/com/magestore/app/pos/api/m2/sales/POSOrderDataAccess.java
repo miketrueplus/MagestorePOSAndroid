@@ -3,6 +3,13 @@ package com.magestore.app.pos.api.m2.sales;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.reflect.TypeToken;
 import com.magestore.app.lib.connection.Connection;
 import com.magestore.app.lib.connection.ConnectionException;
 import com.magestore.app.lib.connection.ConnectionFactory;
@@ -28,7 +35,9 @@ import com.magestore.app.lib.resourcemodel.sales.OrderDataAccess;
 import com.magestore.app.pos.api.m2.POSAPI;
 import com.magestore.app.pos.api.m2.POSAbstractDataAccess;
 import com.magestore.app.pos.api.m2.POSDataAccessSession;
+import com.magestore.app.pos.model.checkout.cart.PosCartItem;
 import com.magestore.app.pos.model.sales.PosOrder;
+import com.magestore.app.pos.parse.gson2pos.Gson2PosAbstractParseImplement;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListOrder;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListPaymentMethod;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListProduct;
@@ -38,6 +47,7 @@ import com.magestore.app.util.StringUtil;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +58,44 @@ import java.util.List;
  */
 
 public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDataAccess {
+    public class Gson2PosOrderParseModel extends Gson2PosAbstractParseImplement {
+        @Override
+        public Gson createGson() {
+            GsonBuilder builder = new GsonBuilder();
+            builder.enableComplexMapKeySerialization();
+            builder.registerTypeAdapter(new TypeToken<PosCartItem.OptionsValue>(){}
+                    .getType(), new ReOrderParamsConverter());
+            return builder.create();
+        }
+
+        public class ReOrderParamsConverter implements JsonDeserializer<PosCartItem.OptionsValue> {
+            public PosCartItem.OptionsValue deserialize(JsonElement arg0, Type arg1, JsonDeserializationContext arg2) throws JsonParseException {
+                // đọc Gson với object, bỏ qua value
+                GsonBuilder builder = new GsonBuilder();
+                builder.excludeFieldsWithoutExposeAnnotation();
+                Gson gson = builder.create();
+                PosCartItem.OptionsValue decode = gson.fromJson(arg0, PosCartItem.OptionsValue.class);
+
+                // xét xem value là mảng hay String
+                List<String> values = null;
+                JsonObject decodeObj = arg0.getAsJsonObject();
+                if (decodeObj.get("value").isJsonArray()) {
+                    values = gson.fromJson(decodeObj.get("value"), new TypeToken<List<String>>() {
+                    }.getType());
+                } else {
+                    String single = gson.fromJson(decodeObj.get("value"), String.class);
+                    values = new ArrayList<String>();
+                    values.add(single);
+                    decode.value = single;
+                }
+                decode.id = gson.fromJson(decodeObj.get("id"), String.class);
+                decode.values = values;
+                if (values != null && values.size() > 0) decode.value = values.get(0);
+                return decode;
+            }
+        }
+    }
+
     private static List<CheckoutPayment> mListPayment;
 
     private class OrderEntity {
@@ -134,10 +182,16 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
 
             // thực thi truy vấn và parse kết quả thành object
             rp = statement.execute();
-            rp.setParseImplement(getClassParseImplement());
+//            rp.setParseImplement(new Gson2PosOrderParseModel());
+            rp.setParseImplement(new Gson2PosOrderParseModel());
             rp.setParseModel(Gson2PosListOrder.class);
             Gson2PosListOrder listOrder = (Gson2PosListOrder) rp.doParse();
             List<Order> list = (List<Order>) (List<?>) (listOrder.items);
+
+//            Gson2PosOrderParseModel implement =  new Gson2PosOrderParseModel();
+//            Gson gson = implement.createGson();
+//            Order order = gson.fromJson(rp.readResult2String(), Gson2PosListOrder.class);
+
             return list;
         } catch (ConnectionException ex) {
             throw ex;
@@ -182,7 +236,8 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
 
             // thực thi truy vấn và parse kết quả thành object
             rp = statement.execute();
-            rp.setParseImplement(getClassParseImplement());
+//            rp.setParseImplement(getClassParseImplement());
+            rp.setParseImplement(new Gson2PosOrderParseModel());
             rp.setParseModel(Gson2PosListOrder.class);
             Gson2PosListOrder listOrder = (Gson2PosListOrder) rp.doParse();
             List<Order> list = (List<Order>) (List<?>) (listOrder.items);
@@ -238,7 +293,8 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
 
             // thực thi truy vấn và parse kết quả thành object
             rp = statement.execute();
-            rp.setParseImplement(getClassParseImplement());
+//            rp.setParseImplement(getClassParseImplement());
+            rp.setParseImplement(new Gson2PosOrderParseModel());
             rp.setParseModel(Gson2PosListOrder.class);
             Gson2PosListOrder listOrder = (Gson2PosListOrder) rp.doParse();
             List<Order> list = (List<Order>) (List<?>) (listOrder.items);
