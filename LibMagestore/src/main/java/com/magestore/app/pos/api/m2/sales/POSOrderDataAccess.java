@@ -20,6 +20,7 @@ import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.lib.model.sales.Order;
+import com.magestore.app.lib.model.sales.OrderCartItem;
 import com.magestore.app.lib.model.sales.OrderCommentParams;
 import com.magestore.app.lib.model.sales.OrderRefundCreditParams;
 import com.magestore.app.lib.model.sales.OrderInvoiceParams;
@@ -64,7 +65,8 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
         public Gson createGson() {
             GsonBuilder builder = new GsonBuilder();
             builder.enableComplexMapKeySerialization();
-            builder.registerTypeAdapter(new TypeToken<PosCartItem.OptionsValue>(){}
+            builder.registerTypeAdapter(new TypeToken<PosCartItem.OptionsValue>() {
+            }
                     .getType(), new ReOrderParamsConverter());
             return builder.create();
         }
@@ -91,7 +93,7 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
                 }
                 decode.id = gson.fromJson(decodeObj.get("id"), String.class);
                 decode.values = values;
-                if (values != null && values.size() > 0) decode.value = values.get(0);
+                if (values != null && values.size() > 0) decode.value = null;
                 return decode;
             }
         }
@@ -129,7 +131,8 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
 
             // thực thi truy vấn và parse kết quả thành object
             rp = statement.execute();
-            rp.setParseImplement(getClassParseImplement());
+//            rp.setParseImplement(getClassParseImplement());
+            rp.setParseImplement(new Gson2PosOrderParseModel());
             rp.setParseModel(Gson2PosListOrder.class);
             Gson2PosListOrder listOrder = (Gson2PosListOrder) rp.doParse();
             return listOrder.total_count;
@@ -195,11 +198,7 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
             Gson2PosListOrder listOrder = (Gson2PosListOrder) rp.doParse();
             List<Order> list = (List<Order>) (List<?>) (listOrder.items);
 
-//            Gson2PosOrderParseModel implement =  new Gson2PosOrderParseModel();
-//            Gson gson = implement.createGson();
-//            Order order = gson.fromJson(rp.readResult2String(), Gson2PosListOrder.class);
-
-            return list;
+            return convertData(list);
         } catch (ConnectionException ex) {
             throw ex;
         } catch (IOException ex) {
@@ -253,7 +252,8 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
             rp.setParseModel(Gson2PosListOrder.class);
             Gson2PosListOrder listOrder = (Gson2PosListOrder) rp.doParse();
             List<Order> list = (List<Order>) (List<?>) (listOrder.items);
-            return list;
+
+            return convertData(list);
         } catch (ConnectionException ex) {
             throw ex;
         } catch (IOException ex) {
@@ -316,7 +316,7 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
             rp.setParseModel(Gson2PosListOrder.class);
             Gson2PosListOrder listOrder = (Gson2PosListOrder) rp.doParse();
             List<Order> list = (List<Order>) (List<?>) (listOrder.items);
-            return list;
+            return convertData(list);
         } catch (ConnectionException ex) {
             throw ex;
         } catch (IOException ex) {
@@ -371,11 +371,12 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
 
             // thực thi truy vấn và parse kết quả thành object
             rp = statement.execute();
-            rp.setParseImplement(getClassParseImplement());
+//            rp.setParseImplement(getClassParseImplement());
+            rp.setParseImplement(new Gson2PosOrderParseModel());
             rp.setParseModel(Gson2PosListOrder.class);
             Gson2PosListOrder listOrder = (Gson2PosListOrder) rp.doParse();
             List<Order> list = (List<Order>) (List<?>) (listOrder.items);
-            return list;
+            return convertData(list);
         } catch (ConnectionException ex) {
             throw ex;
         } catch (IOException ex) {
@@ -981,5 +982,127 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
             if (connection != null) connection.close();
             connection = null;
         }
+    }
+
+    private List<Order> convertData(List<Order> list){
+        for (Order order : list) {
+            if (order.getItemsInfoBuy() != null) {
+                List<OrderCartItem> listItem = order.getItemsInfoBuy().getListOrderCartItems();
+                if (listItem != null && listItem.size() > 0) {
+                    for (OrderCartItem orderCartItem : listItem) {
+                        List<PosCartItem.OptionsValue> options = orderCartItem.getOptions();
+                        if (options != null && options.size() > 0) {
+                            int noItems = options.size();
+                            for (int i = 0; i < noItems ; i++) {
+                                PosCartItem.OptionsValue optionsValue = options.get(i);
+                                if (optionsValue.values != null && optionsValue.values.size() > 0) {
+                                    for (String value : optionsValue.values) {
+                                        PosCartItem.OptionsValue newValue = orderCartItem.createOptionValue();
+                                        newValue.id = optionsValue.id;
+                                        newValue.code = optionsValue.id;
+                                        newValue.value = value;
+                                        options.add(newValue);
+                                        noItems++;
+                                    }
+                                }
+                            }
+
+                            for (int i = 0; i < options.size() ; i++) {
+                                PosCartItem.OptionsValue optionsValueR = options.get(i);
+                                if (optionsValueR.values != null && optionsValueR.values.size() > 0) {
+                                    options.remove(optionsValueR);
+                                    i--;
+                                }
+                            }
+                        }
+                    }
+
+                    for (OrderCartItem orderCartItem : listItem) {
+                        List<PosCartItem.OptionsValue> superAttribute = orderCartItem.getSuperAttribute();
+                        if (superAttribute != null && superAttribute.size() > 0) {
+                            int noItems = superAttribute.size();
+                            for (int i = 0; i < noItems ; i++) {
+                                PosCartItem.OptionsValue optionsValue = superAttribute.get(i);
+                                if (optionsValue.values != null && optionsValue.values.size() > 0) {
+                                    for (String value : optionsValue.values) {
+                                        PosCartItem.OptionsValue newValue = orderCartItem.createOptionValue();
+                                        newValue.id = optionsValue.id;
+                                        newValue.code = optionsValue.id;
+                                        newValue.value = value;
+                                        superAttribute.add(newValue);
+                                        noItems++;
+                                    }
+                                }
+                            }
+
+                            for (int i = 0; i < superAttribute.size() ; i++) {
+                                PosCartItem.OptionsValue optionsValueR = superAttribute.get(i);
+                                if (optionsValueR.values != null && optionsValueR.values.size() > 0) {
+                                    superAttribute.remove(optionsValueR);
+                                    i--;
+                                }
+                            }
+                        }
+                    }
+
+                    for (OrderCartItem orderCartItem : listItem) {
+                        List<PosCartItem.OptionsValue> bundleOption = orderCartItem.getBundleOption();
+                        if (bundleOption != null && bundleOption.size() > 0) {
+                            int noItems = bundleOption.size();
+                            for (int i = 0; i < noItems ; i++) {
+                                PosCartItem.OptionsValue optionsValue = bundleOption.get(i);
+                                if (optionsValue.values != null && optionsValue.values.size() > 0) {
+                                    for (String value : optionsValue.values) {
+                                        PosCartItem.OptionsValue newValue = orderCartItem.createOptionValue();
+                                        newValue.id = optionsValue.id;
+                                        newValue.code = optionsValue.id;
+                                        newValue.value = value;
+                                        bundleOption.add(newValue);
+                                        noItems++;
+                                    }
+                                }
+                            }
+
+                            for (int i = 0; i < bundleOption.size() ; i++) {
+                                PosCartItem.OptionsValue optionsValueR = bundleOption.get(i);
+                                if (optionsValueR.values != null && optionsValueR.values.size() > 0) {
+                                    bundleOption.remove(optionsValueR);
+                                    i--;
+                                }
+                            }
+                        }
+                    }
+
+                    for (OrderCartItem orderCartItem : listItem) {
+                        List<PosCartItem.OptionsValue> bundleOptionQty = orderCartItem.getBundleOptionQty();
+                        if (bundleOptionQty != null && bundleOptionQty.size() > 0) {
+                            int noItems = bundleOptionQty.size();
+                            for (int i = 0; i < noItems ; i++) {
+                                PosCartItem.OptionsValue optionsValue = bundleOptionQty.get(i);
+                                if (optionsValue.values != null && optionsValue.values.size() > 0) {
+                                    for (String value : optionsValue.values) {
+                                        PosCartItem.OptionsValue newValue = orderCartItem.createOptionValue();
+                                        newValue.id = optionsValue.id;
+                                        newValue.code = optionsValue.id;
+                                        newValue.value = value;
+                                        bundleOptionQty.add(newValue);
+                                        noItems++;
+                                    }
+                                }
+                            }
+
+                            for (int i = 0; i < bundleOptionQty.size() ; i++) {
+                                PosCartItem.OptionsValue optionsValueR = bundleOptionQty.get(i);
+                                if (optionsValueR.values != null && optionsValueR.values.size() > 0) {
+                                    bundleOptionQty.remove(optionsValueR);
+                                    i--;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return list;
     }
 }

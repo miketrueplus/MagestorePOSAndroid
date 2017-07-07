@@ -20,6 +20,8 @@ public interface OrderCartItem extends Model {
 
     List<PosCartItem.OptionsValue> getBundleOptionQty();
 
+    PosCartItem.OptionsValue createOptionValue();
+
     String getChildId();
 
     int getQty();

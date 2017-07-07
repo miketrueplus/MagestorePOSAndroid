@@ -68,6 +68,8 @@ public interface CartItem extends Model {
 
     boolean isDiscountTypeFixed();
 
+    PosCartItem.OptionsValue createOptionValue();
+
     List<PosCartItem.OptionsValue> getOptions();
 
     List<PosCartItem.OptionsValue> getSuperAttribute();

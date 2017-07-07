@@ -53,6 +53,13 @@ public class PosOrderCartItem extends PosAbstractModel implements OrderCartItem 
     }
 
     @Override
+    public PosCartItem.OptionsValue createOptionValue() {
+        PosCartItem cartItem = new PosCartItem();
+        PosCartItem.OptionsValue value = cartItem.createOptionValue();
+        return value;
+    }
+
+    @Override
     public String getChildId() {
         return child_id;
     }

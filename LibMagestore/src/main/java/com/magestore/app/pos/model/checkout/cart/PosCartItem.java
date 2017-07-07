@@ -157,6 +157,11 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
         return !isDiscountTypePercent();
     }
 
+    @Override
+    public OptionsValue createOptionValue() {
+        return new OptionsValue();
+    }
+
     //    public class ChooseProductOption {
 //        public List<ProductOptionCustomValue> productOptionCustomValueList;
 //        public int qty;
@@ -169,6 +174,7 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
         public String code;
         @Expose(serialize = true, deserialize = false)
         public String value;
+        @Gson2PosExclude
         public List<String> values;
     }
 
