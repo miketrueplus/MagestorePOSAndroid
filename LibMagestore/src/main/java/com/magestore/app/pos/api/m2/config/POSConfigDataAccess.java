@@ -10,6 +10,7 @@ import com.magestore.app.lib.connection.ResultReading;
 import com.magestore.app.lib.connection.Statement;
 import com.magestore.app.lib.model.config.Config;
 import com.magestore.app.lib.model.config.ConfigCountry;
+import com.magestore.app.lib.model.config.ConfigOption;
 import com.magestore.app.lib.model.config.ConfigPriceFormat;
 import com.magestore.app.lib.model.config.ConfigPrint;
 import com.magestore.app.lib.model.config.ConfigProductOption;
@@ -33,6 +34,7 @@ import com.magestore.app.pos.model.config.PosConfig;
 import com.magestore.app.lib.parse.ParseException;
 import com.magestore.app.pos.model.config.PosConfigCountry;
 import com.magestore.app.pos.model.config.PosConfigDefault;
+import com.magestore.app.pos.model.config.PosConfigOption;
 import com.magestore.app.pos.model.config.PosConfigPriceFormat;
 import com.magestore.app.pos.model.config.PosConfigPrint;
 import com.magestore.app.pos.model.config.PosConfigQuantityFormat;
@@ -44,6 +46,7 @@ import com.magestore.app.pos.model.directory.PosRegion;
 import com.magestore.app.pos.model.setting.PosChangeCurrency;
 import com.magestore.app.pos.model.staff.PosLocation;
 import com.magestore.app.pos.model.staff.PosStaff;
+import com.magestore.app.pos.parse.gson2pos.Gson2PosColorSwatchParse;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosConfigParseImplement;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListStaffPermisson;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosPriceFormatParseImplement;
@@ -196,7 +199,8 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
     }
 
     @Override
-    public List<ConfigProductOption> retrieveColorSwatch() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+    public ConfigOption retrieveColorSwatch() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        setParseImplement(Gson2PosColorSwatchParse.class);
         Connection connection = null;
         Statement statement = null;
         ResultReading rp = null;
@@ -214,11 +218,9 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
 
             rp = statement.execute();
-            rp.setParseImplement(getClassParseImplement());
-            rp.setParseModel(Gson2PosListTaxClass.class);
-            Gson2PosListTaxClass listTaxClass = (Gson2PosListTaxClass) rp.doParse();
-            listConfigTax = (List<ConfigTaxClass>) (List<?>) (listTaxClass.items);
-            return null;
+            rp.setParseImplement(Gson2PosColorSwatchParse.class);
+            rp.setParseModel(PosConfigOption.class);
+            return (ConfigOption) rp.doParse();
         } catch (ConnectionException ex) {
             throw ex;
         } catch (IOException ex) {

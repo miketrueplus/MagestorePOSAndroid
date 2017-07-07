@@ -33,7 +33,7 @@ public class RegisterShiftMakeAdjustmentPanel extends AbstractDetailPanel<Regist
     TextView tv_remove;
     EditText edt_note;
     EditTextFloat edt_amount;
-    private static String ADD_MAKE_ADJUSTMENT = "add";
+    public static String ADD_MAKE_ADJUSTMENT = "add";
     private static String REMOVE_MAKE_ADJUSTMENT = "remove";
     private String selectMakeAdjustment = ADD_MAKE_ADJUSTMENT;
 
@@ -143,6 +143,10 @@ public class RegisterShiftMakeAdjustmentPanel extends AbstractDetailPanel<Regist
         tv_add.setTextColor(ContextCompat.getColor(getContext(), R.color.text_color));
         tv_remove.setBackgroundResource(R.drawable.make_adjusment_take_select_bg);
         tv_remove.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+    }
+
+    public String getSelectMakeAdjustment() {
+        return selectMakeAdjustment;
     }
 
     public void showErrorAmountLess() {

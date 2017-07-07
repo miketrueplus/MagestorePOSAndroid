@@ -5,6 +5,7 @@ import com.magestore.app.lib.model.checkout.PaymentMethod;
 import com.magestore.app.lib.model.checkout.ShippingMethod;
 import com.magestore.app.lib.model.config.Config;
 import com.magestore.app.lib.model.config.ConfigCountry;
+import com.magestore.app.lib.model.config.ConfigOption;
 import com.magestore.app.lib.model.config.ConfigPriceFormat;
 import com.magestore.app.lib.model.config.ConfigPrint;
 import com.magestore.app.lib.model.config.ConfigQuantityFormat;
@@ -66,6 +67,7 @@ public class POSConfigService extends AbstractService implements ConfigService {
         ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
         Config config = configDataAccess.retrieveConfig();
         List<ConfigTaxClass> configTaxClass = configDataAccess.retrieveConfigTaxClass();
+        ConfigOption configOption = configDataAccess.retrieveColorSwatch();
 
         // đặt config format tiền
         ConfigUtil.setCurrencyFormat(getPriceFormat());
@@ -85,6 +87,7 @@ public class POSConfigService extends AbstractService implements ConfigService {
         ConfigUtil.setCurrentCurrency(getDefaultCurrency());
         ConfigUtil.setConfigTaxClass(configTaxClass);
         ConfigUtil.setConfigPriceFormat(configDataAccess.getPriceFormat());
+        ConfigUtil.setColorSwatch(configOption.getItems());
 
         // permisson
         getConfigStaffPermisson(getStaffPermisson());

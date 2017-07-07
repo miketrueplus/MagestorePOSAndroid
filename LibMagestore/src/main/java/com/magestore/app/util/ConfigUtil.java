@@ -3,6 +3,7 @@ package com.magestore.app.util;
 import android.text.format.Time;
 import com.magestore.app.lib.model.config.ConfigPriceFormat;
 import com.magestore.app.lib.model.config.ConfigPrint;
+import com.magestore.app.lib.model.config.ConfigProductOption;
 import com.magestore.app.lib.model.config.ConfigTaxClass;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.registershift.PointOfSales;
@@ -63,6 +64,9 @@ public class ConfigUtil {
     private static boolean mDiscountPerItem;
     private static boolean mApplyCustomPrice;
     private static boolean mManageShiftAdjustment;
+
+    // color Swatch
+    private static List<ConfigProductOption> mColorSwatch;
 
     /**
      * @param format
@@ -823,6 +827,14 @@ public class ConfigUtil {
 
     public static void setManagerShiftAdjustment(boolean mManageShiftAdjustment) {
         ConfigUtil.mManageShiftAdjustment = mManageShiftAdjustment;
+    }
+
+    public static void setColorSwatch(List<ConfigProductOption> mColorSwatch) {
+        ConfigUtil.mColorSwatch = mColorSwatch;
+    }
+
+    public static List<ConfigProductOption> getColorSwatch() {
+        return mColorSwatch;
     }
 }
 

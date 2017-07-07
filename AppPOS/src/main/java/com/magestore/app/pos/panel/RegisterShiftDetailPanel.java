@@ -151,13 +151,18 @@ public class RegisterShiftDetailPanel extends AbstractDetailPanel<RegisterShift>
             @Override
             public void onClick(View view) {
                 RegisterShift registerShift = panelMakeAdjustment.bind2Item();
-                if (registerShift.getParamCash().getValue() > 0 && registerShift.getParamCash().getValue() <= ConfigUtil.convertToPrice(registerShift.getBaseBalance())) {
+                if (panelMakeAdjustment.getSelectMakeAdjustment().equals(RegisterShiftMakeAdjustmentPanel.ADD_MAKE_ADJUSTMENT)) {
                     dialog.dismiss();
                     ((RegisterShiftListController) mController).doInputMakeAdjustment(registerShift);
-                } else if (registerShift.getParamCash().getValue() == 0) {
-                    panelMakeAdjustment.showErrorAmountGreat();
                 } else {
-                    panelMakeAdjustment.showErrorAmountLess();
+                    if (registerShift.getParamCash().getValue() > 0 && registerShift.getParamCash().getValue() <= ConfigUtil.convertToPrice(registerShift.getBaseBalance())) {
+                        dialog.dismiss();
+                        ((RegisterShiftListController) mController).doInputMakeAdjustment(registerShift);
+                    } else if (registerShift.getParamCash().getValue() == 0) {
+                        panelMakeAdjustment.showErrorAmountGreat();
+                    } else {
+                        panelMakeAdjustment.showErrorAmountLess();
+                    }
                 }
             }
         });

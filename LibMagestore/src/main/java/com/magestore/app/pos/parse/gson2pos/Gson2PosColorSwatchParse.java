@@ -30,7 +30,7 @@ public class Gson2PosColorSwatchParse extends Gson2PosAbstractParseImplement {
     public Gson createGson() {
         GsonBuilder builder = new GsonBuilder();
         builder.enableComplexMapKeySerialization();
-        builder.registerTypeAdapter(new TypeToken<List<ConfigProductOption>>(){}
+        builder.registerTypeAdapter(new TypeToken<List<PosConfigProductOption>>(){}
                 .getType(), new ColorSwatchConverter());
         return builder.create();
     }
@@ -44,12 +44,12 @@ public class Gson2PosColorSwatchParse extends Gson2PosAbstractParseImplement {
     private static final String JSON_STORE_ID = "store_id";
     private static final String JSON_TYPE = "type";
     private static final String JSON_VALUE = "value";
-    public class ColorSwatchConverter implements JsonDeserializer<List<ConfigProductOption>> {
+    public class ColorSwatchConverter implements JsonDeserializer<List<PosConfigProductOption>> {
         @Override
-        public List<ConfigProductOption> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-            List<ConfigProductOption> listColorSwatch = new ArrayList<>();
+        public List<PosConfigProductOption> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            List<PosConfigProductOption> listColorSwatch = new ArrayList<>();
             for (JsonElement item : json.getAsJsonArray()) {
-                ConfigProductOption configProductOption = new PosConfigProductOption();
+                PosConfigProductOption configProductOption = new PosConfigProductOption();
                 configProductOption.setAttributeId(item.getAsJsonObject().remove(JSON_ATTRIBUTE_ID).getAsString());
                 configProductOption.setAttributeCode(item.getAsJsonObject().remove(JSON_ATTRIBUTE_CODE).getAsString());
                 configProductOption.setAttributeLabel(item.getAsJsonObject().remove(JSON_ATTRIBUTE_LABEL).getAsString());

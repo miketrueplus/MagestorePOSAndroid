@@ -16,7 +16,7 @@ public class PosConfigProductOption extends PosAbstractModel implements ConfigPr
     String attribute_id;
     String attribute_code;
     String attribute_label;
-    Map<String, ConfigOptionSwatch> colorSwatch;
+    Map<String, ConfigOptionSwatch> swatches;
 
     @Override
     public String getAttributeId() {
@@ -50,11 +50,11 @@ public class PosConfigProductOption extends PosAbstractModel implements ConfigPr
 
     @Override
     public Map<String, ConfigOptionSwatch> getColorSwatch() {
-        return colorSwatch;
+        return swatches;
     }
 
     @Override
     public void setColorSwatch(Map<String, ConfigOptionSwatch> mColorSwatch) {
-        colorSwatch = mColorSwatch;
+        swatches = mColorSwatch;
     }
 }
