@@ -194,6 +194,7 @@ public class RegisterShiftListController extends AbstractListController<Register
             List<RegisterShift> listRegister = (List<RegisterShift>) wraper.get("make_adjusment_respone");
             ((RegisterShiftDetailPanel) mDetailView).bindItem(listRegister.get(0));
             setNewRegisterToList(oldRegisterShift, listRegister.get(0));
+            setSelectedItem(listRegister.get(0));
             isShowLoadingDetail(false);
         } else if (success && actionType == ACTION_TYPE_CLOSE_SESSION) {
             RegisterShift oldRegisterShift = (RegisterShift) models[0];
@@ -201,12 +202,14 @@ public class RegisterShiftListController extends AbstractListController<Register
             ((RegisterShiftDetailPanel) mDetailView).bindItem(listRegister.get(0));
             setNewRegisterToList(oldRegisterShift, listRegister.get(0));
             bindItemCloseSessionPanel(listRegister.get(0));
+            setSelectedItem(listRegister.get(0));
             isShowLoadingDetail(false);
         } else if (success && actionType == ACTION_TYPE_VALIDATE_SESSION) {
             RegisterShift oldRegisterShift = (RegisterShift) models[0];
             List<RegisterShift> listRegister = (List<RegisterShift>) wraper.get("close_validate_respone");
             ((RegisterShiftDetailPanel) mDetailView).bindItem(listRegister.get(0));
             setNewRegisterToList(oldRegisterShift, listRegister.get(0));
+            setSelectedItem(listRegister.get(0));
             dismissDialogCloseSession();
             ((RegisterShiftListPanel) mView).isShowButtonOpenSession(true);
             Intent intent = new Intent();
@@ -242,6 +245,7 @@ public class RegisterShiftListController extends AbstractListController<Register
             }
             bindList(mList);
             ((RegisterShiftDetailPanel) mDetailView).bindItem(listRegister.get(0));
+            setSelectedItem(listRegister.get(0));
             ((RegisterShiftListPanel) mView).notifyDataSetChanged();
             Intent intent = new Intent();
             intent.putExtra("is_show", true);
@@ -256,6 +260,7 @@ public class RegisterShiftListController extends AbstractListController<Register
             List<RegisterShift> listRegister = (List<RegisterShift>) wraper.get("cancel_session_respone");
             ((RegisterShiftDetailPanel) mDetailView).bindItem(listRegister.get(0));
             setNewRegisterToList(oldRegisterShift, listRegister.get(0));
+            setSelectedItem(listRegister.get(0));
             bindItemCloseSessionPanel(listRegister.get(0));
             isShowLoadingDetail(false);
             int type = (int) wraper.get("cancel_session_type");

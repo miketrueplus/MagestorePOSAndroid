@@ -131,8 +131,13 @@ public abstract class AbstractActivity
         im_change = (ImageView) header_layout.findViewById(R.id.im_change);
         mapImage.put(this, im_change);
         if (ConfigUtil.getStaff() != null) {
-            staff_name.setText(ConfigUtil.getStaff().getStaffName());
-            staff_location.setText(ConfigUtil.getStaff().getStaffLocation().getLocationName());
+            if (mCurrentStaff != null) {
+                staff_name.setText(ConfigUtil.getStaff().getStaffName() + " - " + mSelectStaff.getRole());
+                staff_location.setText(ConfigUtil.getStaff().getStaffLocation().getLocationName());
+            } else {
+                staff_name.setText(ConfigUtil.getStaff().getStaffName());
+                staff_location.setText(ConfigUtil.getStaff().getStaffLocation().getLocationName());
+            }
         }
         im_change.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -572,6 +577,7 @@ public abstract class AbstractActivity
                     startActivity(i);
                 }
                 staff_name.setText(ConfigUtil.getStaff().getStaffName() + " - " + mCurrentStaff.getRole());
+                mSelectStaff = mCurrentStaff;
                 mCurrentSelectPosition = -1;
             }
         });
@@ -688,5 +694,14 @@ public abstract class AbstractActivity
             }
         }
         staff_name.setText(ConfigUtil.getStaff().getStaffName() + " - " + mSelectStaff.getRole());
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        try {
+            unregisterReceiver(receiver_staff);
+        } catch (Exception e) {
+        }
     }
 }

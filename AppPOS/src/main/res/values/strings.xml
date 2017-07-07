@@ -457,7 +457,7 @@
     <string name="ask_are_you_sure_to_update">Are you sure to update?</string>
     <string name="ask_are_you_sure_to_remove">Are you sure to remove?</string>
     <string name="ask_are_you_sure_to_cancel">Are you sure to cancel?</string>
-    <string name="ask_are_you_sure_to_close">Are you sure to close application?</string>
+    <string name="ask_are_you_sure_to_close">Are you sure to logout application?</string>
     <string name="ask_are_you_sure_to_cancel_order">Are you sure to cancel order?</string>
     <string name="ask_are_you_sure_go_to_checkout">Session is opening! Are you want go to checkout?</string>
 
