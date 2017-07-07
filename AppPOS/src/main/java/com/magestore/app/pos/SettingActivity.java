@@ -1,5 +1,9 @@
 package com.magestore.app.pos;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
@@ -87,10 +91,29 @@ public class SettingActivity extends AbstractActivity {
 
         mSettingListPanel.initModel();
         mSettingDetailPanel.initModel();
+
+        IntentFilter filter_change_menu_order = new IntentFilter(CHANGE_PERMISSON_MENU_ORDER);
+        registerReceiver(receiver_menu_order, filter_change_menu_order);
     }
 
     @Override
     protected void initValue() {
         mSettingListController.doRetrieve();
     }
+
+    BroadcastReceiver receiver_menu_order = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            changePermissonOrderMenu();
+        }
+    };
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        try {
+            unregisterReceiver(receiver_menu_order);
+        }catch (Exception e){}
+    }
+
 }

@@ -301,6 +301,12 @@
     <string name="initializing_processing_msg">Initializing SDK...</string>
     <string name="payment_error">Transaction error. Plase try again</string>
 
+    <!--Permisson-->
+    <string name="error_permisson_discount_cart">You don\'t have discount permission</string>
+    <string name="error_permisson_apply_coupon">You don\'t have permission to use coupon code</string>
+    <string name="popup_permisson_enter_pin">Enter Pincode</string>
+    <string name="error_pincode">Incorrect Pin Code</string>
+
     <!-- Strings related to single words -->
     <string name="add">Add</string>
     <string name="add_to_cart">Add To Cart</string>
@@ -451,7 +457,7 @@
     <string name="ask_are_you_sure_to_update">Are you sure to update?</string>
     <string name="ask_are_you_sure_to_remove">Are you sure to remove?</string>
     <string name="ask_are_you_sure_to_cancel">Are you sure to cancel?</string>
-    <string name="ask_are_you_sure_to_close">Are you sure to close application?</string>
+    <string name="ask_are_you_sure_to_close">Are you sure to logout application?</string>
     <string name="ask_are_you_sure_to_cancel_order">Are you sure to cancel order?</string>
     <string name="ask_are_you_sure_go_to_checkout">Session is opening! Are you want go to checkout?</string>
 
@@ -490,5 +496,19 @@
     <string name="com.magestore.app.lib.connection.ServiceException.QuantityReachMaximum">The maximum you may purchase is: </string>
     <string name="com.magestore.app.lib.connection.ServiceException.QuantityReachMinimum">The minimum you may purchase is: </string>
 
-
+    <!--Keyboard-->
+    <string name="number_keyboard_0">0</string>
+    <string name="number_keyboard_1">1</string>
+    <string name="number_keyboard_2">2</string>
+    <string name="number_keyboard_3">3</string>
+    <string name="number_keyboard_4">4</string>
+    <string name="number_keyboard_5">5</string>
+    <string name="number_keyboard_6">6</string>
+    <string name="number_keyboard_7">7</string>
+    <string name="number_keyboard_8">8</string>
+    <string name="number_keyboard_9">9</string>
+    <string name="number_keyboard_00">00</string>
+    <string name="number_keyboard_add_10">+10</string>
+    <string name="number_keyboard_add_20">+20</string>
+    <string name="number_keyboard_add_50">+50</string>
 </resources>

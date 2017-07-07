@@ -32,6 +32,7 @@ public class POSAPI {
 
     // API staff
     public static final String REST_LOGIN = "rest/default/V1/webpos/staff/login";
+    public static final String REST_STAFF_GET_LISTING = "/rest/default/V1/webpos/staffs?";
 
     // API store
     public static final String REST_STORE_GET_LISTING = "rest/default/V1/webpos/storeInformation?";
@@ -98,6 +99,7 @@ public class POSAPI {
     // API config
     public static final String REST_CONFIG_GET_LISTING = "/rest/default/V1/webpos/configurations?";
     public static final String REST_CONFIG_TAX_CLASS = "/rest/default/V1/webpos/taxclass/list?";
+    public static final String REST_CONFIG_COLOR_SWATCH = "/rest/default/V1/webpos/products/swatch/search?";
     public static final String REST_CONFIG_GET_ = "/rest/default/V1/webpos/configurations/${configID}?path=${configPath}&session=${sessionID}";
     public static final String REST_POS_ASSIGN = "/rest/default/V1/webpos/posassign?";
 

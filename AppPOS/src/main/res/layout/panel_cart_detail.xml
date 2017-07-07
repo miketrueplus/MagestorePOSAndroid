@@ -100,6 +100,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_custom_price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -157,6 +158,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_discount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/layout_margin_10"

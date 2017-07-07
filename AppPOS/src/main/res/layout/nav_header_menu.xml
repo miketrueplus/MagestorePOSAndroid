@@ -16,17 +16,35 @@
         android:id="@+id/staff_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:lines="1"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:text="Magestore"
-        android:textSize="@dimen/text_size_18"
-        android:textColor="@color/menu_left_title_text_color" />
+        android:textColor="@color/menu_left_title_text_color"
+        android:textSize="@dimen/text_size_18" />
 
-    <TextView
-        android:id="@+id/staff_location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="sales@trueplus.vn"
-        android:textSize="@dimen/text_size"
-        android:textColor="@color/menu_left_text_color" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/staff_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/activity_vertical_margin"
+            android:layout_toLeftOf="@+id/im_change"
+            android:text="sales@trueplus.vn"
+            android:textColor="@color/menu_left_text_color"
+            android:textSize="@dimen/text_size" />
+
+        <ImageView
+            android:id="@+id/im_change"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_exit_to_app" />
+    </RelativeLayout>
 
 </LinearLayout>

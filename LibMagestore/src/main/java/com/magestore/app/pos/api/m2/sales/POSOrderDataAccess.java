@@ -42,6 +42,7 @@ import com.magestore.app.pos.parse.gson2pos.Gson2PosListOrder;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListPaymentMethod;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListProduct;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosOrderUpdateParseImplement;
+import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.StringUtil;
 
 import org.json.JSONObject;
@@ -177,6 +178,12 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
                     .setPageSize(pageSize)
                     .setSortOrderDESC("created_at")
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
+
+            if (ConfigUtil.isManageOrderByMe())
+                paramBuilder.setFilterEqual("webpos_staff_id", ConfigUtil.getStaff().getID());
+            if (ConfigUtil.isManageOrderByLocation())
+                paramBuilder.setFilterEqual("location_id", ConfigUtil.getStaff().getStaffLocation().getID());
+
             if (!StringUtil.isNullOrEmpty(status))
                 paramBuilder.setFilterIn("status", status);
 
@@ -234,6 +241,11 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
                     .setSortOrderDESC("created_at")
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
 
+            if (ConfigUtil.isManageOrderByMe())
+                paramBuilder.setFilterEqual("webpos_staff_id", ConfigUtil.getStaff().getID());
+            if (ConfigUtil.isManageOrderByLocation())
+                paramBuilder.setFilterEqual("location_id", ConfigUtil.getStaff().getStaffLocation().getID());
+
             // thực thi truy vấn và parse kết quả thành object
             rp = statement.execute();
 //            rp.setParseImplement(getClassParseImplement());
@@ -288,6 +300,12 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
                     .setFilterLike("customer_lastname", finalSearchString)
                     .setSortOrderDESC("created_at")
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
+
+            if (ConfigUtil.isManageOrderByMe())
+                paramBuilder.setFilterEqual("webpos_staff_id", ConfigUtil.getStaff().getID());
+            if (ConfigUtil.isManageOrderByLocation())
+                paramBuilder.setFilterEqual("location_id", ConfigUtil.getStaff().getStaffLocation().getID());
+
             if (!StringUtil.isNullOrEmpty(status))
                 paramBuilder.setFilterIn("status", status);
 
@@ -345,6 +363,11 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
                     .setFilterLike("customer_lastname", finalSearchString)
                     .setSortOrderDESC("created_at")
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
+
+            if (ConfigUtil.isManageOrderByMe())
+                paramBuilder.setFilterEqual("webpos_staff_id", ConfigUtil.getStaff().getID());
+            if (ConfigUtil.isManageOrderByLocation())
+                paramBuilder.setFilterEqual("location_id", ConfigUtil.getStaff().getStaffLocation().getID());
 
             // thực thi truy vấn và parse kết quả thành object
             rp = statement.execute();

@@ -22,6 +22,7 @@ import com.magestore.app.lib.model.directory.Currency;
 import com.magestore.app.lib.model.plugins.RewardPoint;
 import com.magestore.app.lib.model.plugins.StoreCredit;
 import com.magestore.app.lib.model.sales.Order;
+import com.magestore.app.lib.model.staff.StaffPermisson;
 import com.magestore.app.lib.observ.GenericState;
 import com.magestore.app.lib.observ.State;
 import com.magestore.app.lib.service.checkout.CheckoutService;
@@ -29,6 +30,8 @@ import com.magestore.app.lib.service.customer.CustomerAddressService;
 import com.magestore.app.lib.service.plugins.PluginsService;
 import com.magestore.app.pos.PaymentPayPalActivity;
 import com.magestore.app.pos.R;
+import com.magestore.app.pos.SalesActivity;
+import com.magestore.app.pos.SessionActivity;
 import com.magestore.app.pos.model.checkout.PosCheckoutPayment;
 import com.magestore.app.pos.panel.CartItemDetailPanel;
 import com.magestore.app.pos.panel.CartOrderListPanel;
@@ -48,6 +51,7 @@ import com.magestore.app.pos.panel.PluginStoreCreditPanel;
 import com.magestore.app.pos.sdk.MultiReaderConnectionActivity;
 import com.magestore.app.pos.sdk.PayPalHereSDKWrapper;
 import com.magestore.app.pos.sdk.PayPalHereSDKWrapperCallbacks;
+import com.magestore.app.pos.ui.AbstractActivity;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.DataUtil;
 import com.magestore.app.util.StringUtil;
@@ -94,6 +98,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     static final int ACTION_TYPE_CHECK_APPOVED_PAYMENT_STRIPE = 17;
     static final int ACTION_TYPE_REFRESH_TOKEN_PAYPAL_HERE = 18;
     static final int ACTION_TYPE_CHECK_APPROVED_PAYMENT_AUTHORIZENET_INTERATION = 19;
+    static final int ACTION_TYPE_RETRIEVE_STAFF_PERMISSON = 20;
 
     static final int STATUS_CHECKOUT_ADD_ITEM = 0;
     public static final int STATUS_CHECKOUT_PROCESSING = 1;
@@ -454,6 +459,24 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         doAction(ACTION_TYPE_APPLY_REWARD_POINT, null, wraper, rewardPoint);
     }
 
+    public void doInputRetrieveStaffPermisson() {
+        doAction(ACTION_TYPE_RETRIEVE_STAFF_PERMISSON, null, wraper, null);
+    }
+
+    public void doInputChangeStaffPermisson(List<String> listPermisson){
+        try {
+            getConfigService().getConfigStaffPermisson(listPermisson);
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void showDetailOrderLoading(boolean b) {
         mCheckoutSuccessPanel.showDetailOrderLoading(b);
     }
@@ -557,6 +580,9 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             return true;
         } else if (actionType == ACTION_TYPE_REFRESH_TOKEN_PAYPAL_HERE) {
             wraper.put("access_token", ((CheckoutService) getListService()).getAccessTokenPaypalHere());
+            return true;
+        } else if (actionType == ACTION_TYPE_RETRIEVE_STAFF_PERMISSON) {
+            wraper.put("list_staff_permisson", getConfigService().retrieveStaff());
             return true;
         }
         return false;
@@ -1047,6 +1073,12 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             String access_token = (String) wraper.get("access_token");
             paymentPaypalHere.setAccessToken(access_token);
             actionPaypalHere(paymentPaypalHere);
+        } else if (success && actionType == ACTION_TYPE_RETRIEVE_STAFF_PERMISSON) {
+            List<StaffPermisson> listStaff = (List<StaffPermisson>) wraper.get("list_staff_permisson");
+            AbstractActivity.listStaff = listStaff;
+            Intent intent = new Intent();
+            intent.setAction(AbstractActivity.STATE_SHOW_POPUP_LIST_STAFF_PERMISSON);
+            getMagestoreContext().getActivity().sendBroadcast(intent);
         }
     }
 
@@ -2066,9 +2098,10 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
     /**
      * khởi tạo store credit
+     *
      * @return
      */
-    public StoreCredit createStoreCredit(){
+    public StoreCredit createStoreCredit() {
         return ((CheckoutService) getListService()).createStoreCredit();
     }
 

@@ -5,12 +5,14 @@ import com.magestore.app.lib.model.config.Config;
 import com.magestore.app.lib.model.config.ConfigCountry;
 import com.magestore.app.lib.model.config.ConfigPriceFormat;
 import com.magestore.app.lib.model.config.ConfigPrint;
+import com.magestore.app.lib.model.config.ConfigProductOption;
 import com.magestore.app.lib.model.config.ConfigQuantityFormat;
 import com.magestore.app.lib.model.config.ConfigTaxClass;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.directory.Currency;
 import com.magestore.app.lib.model.setting.ChangeCurrency;
 import com.magestore.app.lib.model.staff.Staff;
+import com.magestore.app.lib.model.staff.StaffPermisson;
 import com.magestore.app.lib.parse.ParseException;
 import com.magestore.app.lib.resourcemodel.DataAccess;
 import com.magestore.app.lib.resourcemodel.DataAccessException;
@@ -28,6 +30,7 @@ import java.util.Map;
 public interface ConfigDataAccess extends DataAccess {
     Config retrieveConfig() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     List<ConfigTaxClass> retrieveConfigTaxClass() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
+    List<ConfigProductOption> retrieveColorSwatch() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     String getConfig(String configPath) throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     Map<String, String> getCustomerGroup() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     Staff getStaff() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
@@ -38,10 +41,10 @@ public interface ConfigDataAccess extends DataAccess {
     List<Currency> getCurrencies() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     Currency getDefaultCurrency() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     ConfigPriceFormat getPriceFormat() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
-
     ConfigQuantityFormat getQuantityFormat() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
-
     ConfigPriceFormat getBasePriceFomat() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
+    List<String> getStaffPermisson() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
+    List<StaffPermisson> retrieveStaff() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     Map<String, String> getConfigCCTypes() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     List<String> getConfigMonths() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     Map<String, String> getConfigCCYears() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;

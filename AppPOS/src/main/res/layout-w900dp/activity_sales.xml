@@ -159,7 +159,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
-                            android:text="+10"
+                            android:text="@string/number_keyboard_add_10"
                             android:textColor="@color/white"
                             android:textSize="@dimen/text_size_18" />
                     </RelativeLayout>
@@ -175,7 +175,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
-                            android:text="7"
+                            android:text="@string/number_keyboard_7"
                             android:textColor="@color/white"
                             android:textSize="@dimen/text_size_18" />
                     </RelativeLayout>
@@ -192,7 +192,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
-                            android:text="8"
+                            android:text="@string/number_keyboard_8"
                             android:textColor="@color/white"
                             android:textSize="@dimen/text_size_18" />
                     </RelativeLayout>
@@ -209,7 +209,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
-                            android:text="9"
+                            android:text="@string/number_keyboard_9"
                             android:textColor="@color/white"
                             android:textSize="@dimen/text_size_18" />
                     </RelativeLayout>
@@ -249,7 +249,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
-                            android:text="+20"
+                            android:text="@string/number_keyboard_add_20"
                             android:textColor="@color/white"
                             android:textSize="@dimen/text_size_18" />
                     </RelativeLayout>
@@ -266,7 +266,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
-                            android:text="4"
+                            android:text="@string/number_keyboard_4"
                             android:textColor="@color/white"
                             android:textSize="@dimen/text_size_18" />
                     </RelativeLayout>
@@ -283,7 +283,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
-                            android:text="5"
+                            android:text="@string/number_keyboard_5"
                             android:textColor="@color/white"
                             android:textSize="@dimen/text_size_18" />
                     </RelativeLayout>
@@ -300,7 +300,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
-                            android:text="6"
+                            android:text="@string/number_keyboard_6"
                             android:textColor="@color/white"
                             android:textSize="@dimen/text_size_18" />
                     </RelativeLayout>
@@ -317,7 +317,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
-                            android:text="00"
+                            android:text="@string/number_keyboard_00"
                             android:textColor="@color/white"
                             android:textSize="@dimen/text_size_18" />
                     </RelativeLayout>
@@ -342,7 +342,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
-                            android:text="+50"
+                            android:text="@string/number_keyboard_add_50"
                             android:textColor="@color/white"
                             android:textSize="@dimen/text_size_18" />
                     </RelativeLayout>
@@ -358,7 +358,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
-                            android:text="1"
+                            android:text="@string/number_keyboard_1"
                             android:textColor="@color/white"
                             android:textSize="@dimen/text_size_18" />
                     </RelativeLayout>
@@ -375,7 +375,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
-                            android:text="2"
+                            android:text="@string/number_keyboard_2"
                             android:textColor="@color/white"
                             android:textSize="@dimen/text_size_18" />
                     </RelativeLayout>
@@ -392,7 +392,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
-                            android:text="3"
+                            android:text="@string/number_keyboard_3"
                             android:textColor="@color/white"
                             android:textSize="@dimen/text_size_18" />
                     </RelativeLayout>
@@ -409,7 +409,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
-                            android:text="0"
+                            android:text="@string/number_keyboard_0"
                             android:textColor="@color/white"
                             android:textSize="@dimen/text_size_18" />
                     </RelativeLayout>
