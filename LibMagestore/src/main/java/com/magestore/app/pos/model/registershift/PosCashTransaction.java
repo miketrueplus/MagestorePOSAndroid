@@ -36,6 +36,8 @@ public class PosCashTransaction extends PosAbstractModel implements CashTransact
     boolean check_open_shift;
     @Gson2PosExclude
     float float_amount;
+    @Gson2PosExclude
+    float base_float_amount;
 
     @Override
     public String getID() {
@@ -78,6 +80,16 @@ public class PosCashTransaction extends PosAbstractModel implements CashTransact
     }
 
     @Override
+    public float getBaseFloatAmount() {
+        return base_float_amount;
+    }
+
+    @Override
+    public void setBaseFloatAmount(float fBaseFloatAmount) {
+        base_float_amount = fBaseFloatAmount;
+    }
+
+    @Override
     public float getBalance() {
         return balance;
     }
@@ -85,6 +97,11 @@ public class PosCashTransaction extends PosAbstractModel implements CashTransact
     @Override
     public void setBalance(float balance) {
         this.balance = balance;
+    }
+
+    @Override
+    public float getBaseBalance() {
+        return base_balance;
     }
 
     @Override

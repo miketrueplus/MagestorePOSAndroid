@@ -16,8 +16,11 @@ public interface CashTransaction extends Model {
     void setOpenShiftTitle(String strOpenShiftTitle);
     float getFloatAmount();
     void setFloatAmount(float floatAmount);
+    float getBaseFloatAmount();
+    void setBaseFloatAmount(float fBaseFloatAmount);
     float getBalance();
     void setBalance(float balance);
+    float getBaseBalance();
     void setBaseBalance(float baseBalance);
     void setBaseValue(float baseValue);
     String getBalanceTitle();

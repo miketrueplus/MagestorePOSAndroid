@@ -97,7 +97,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
-                    android:text="@{registerShiftCash.getCheckOpenShift() ? ConfigUtil.formatPrice(registerShiftCash.getFloatAmount()) : ConfigUtil.formatPrice(registerShiftCash.getBalance())}"
+                    android:text="@{registerShiftCash.getCheckOpenShift() ? ConfigUtil.formatPrice(ConfigUtil.convertToPrice(registerShiftCash.getBaseFloatAmount())) : ConfigUtil.formatPrice(ConfigUtil.convertToPrice(registerShiftCash.getBaseBalance()))}"
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/text_size" />
             </LinearLayout>

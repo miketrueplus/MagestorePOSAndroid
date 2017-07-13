@@ -87,7 +87,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:text="@{ConfigUtil.formatPrice(registerShift.getBalance())}"
+                android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(registerShift.getBaseBalance()))}"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/register_shift_top_total_sales_text_size" />
         </RelativeLayout>

@@ -32,7 +32,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginRight="@dimen/layout_margin_10"
-                android:text="@{ConfigUtil.formatPrice(registerShift.getTotalSales())}"
+                android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(registerShift.getBaseTotalSales()))}"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/register_shift_top_total_sales_text_size" />
 

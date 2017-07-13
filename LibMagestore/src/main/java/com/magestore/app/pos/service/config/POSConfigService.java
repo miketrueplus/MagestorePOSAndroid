@@ -69,6 +69,8 @@ public class POSConfigService extends AbstractService implements ConfigService {
         List<ConfigTaxClass> configTaxClass = configDataAccess.retrieveConfigTaxClass();
         ConfigOption configOption = configDataAccess.retrieveColorSwatch();
 
+        boolean checkLicenseKey = configDataAccess.checkLicenseKey();
+
         // đặt config format tiền
         ConfigUtil.setCurrencyFormat(getPriceFormat());
         ConfigUtil.setCurrencyNoSymbolFormat(getPriceNosymbolFormat());

@@ -1,5 +1,7 @@
 package com.magestore.app.pos.api.m2.config;
 
+import android.util.Base64;
+
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 import com.magestore.app.lib.connection.Connection;
@@ -57,11 +59,19 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
+import java.security.KeyFactory;
+import java.security.PublicKey;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.CRC32;
+
+import javax.crypto.Cipher;
 
 /**
  * Created by Mike on 12/28/2016.
@@ -77,6 +87,8 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
     private static CustomerAddress customerAddress;
     private static Currency currentCurrency;
     private static List<ConfigTaxClass> listConfigTax;
+    private String publicKey = "-----BEGIN PUBLIC KEY-----MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJ8EDi+a0lilUChsDba33FrcHLZZZIMxT7XhyEP3J3llQXNJkflG+5GzBvFTd+B1pvpc45WOktNReyPDZ/OMNukCAwEAAQ==-----END PUBLIC KEY-----";
+    private String extensionName = "retailer-pos";
 
     private class ConfigEntity {
         Staff staff;
@@ -150,6 +162,72 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
 //            if (connection != null) connection.close();
 //            connection = null;
         }
+    }
+
+    @Override
+    public boolean checkLicenseKey() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        // nếu chưa load config, cần khởi tạo chế độ default
+        if (mConfig == null) mConfig = new PosConfigDefault();
+
+        String licensekey = (String) mConfig.getValue("webpos/general/active_key");
+        if (licensekey.length() < 68) return false;
+
+        CRC32 crc = new CRC32();
+        String strExtensionName = licensekey.substring(0, 10) + extensionName;
+        crc.update(strExtensionName.getBytes());
+        int strDataCrc32 = (int) crc.getValue();
+        int crc32Pos = (strDataCrc32 & 0x7FFFFFFF % 49) + 10;
+        String crc32String = licensekey.substring(crc32Pos, (crc32Pos + 10));
+        String key = licensekey.substring(0, crc32Pos) + licensekey.substring((crc32Pos + 13), licensekey.length());
+        while ((key.length() % 4) != 0) {
+            key += "=";
+        }
+        String licenseString = decryptRSAToString(key, publicKey);
+        if (StringUtil.isNullOrEmpty(licenseString)) return false;
+
+        String strlicenseString = licenseString.substring(0, 3);
+        String strlicensekey = licensekey.substring((crc32Pos + 10), (crc32Pos + 10 + 3));
+        if (!strlicenseString.equals(strlicensekey)) return false;
+
+        String type = licenseString.substring(0, 1);
+        String strexpiredTime = licenseString.substring(1, 3);
+        int expiredTime = Integer.parseInt(String.valueOf(strexpiredTime), 16);
+        long extensionHash = -1;
+        try {
+            extensionHash = Long.parseLong(licenseString.substring(3, 13));
+        } catch (Exception e) {
+        }
+        CRC32 crcExtensionName = new CRC32();
+        crcExtensionName.update(extensionName.getBytes());
+        long crc32ExtensionName = crcExtensionName.getValue();
+        if (extensionHash != crc32ExtensionName)
+            return false;
+
+        return false;
+    }
+
+    private String decryptRSAToString(String encryptedBase64, String privateKey) {
+        String rStart = privateKey.replace("-----BEGIN PUBLIC KEY-----", "");
+        String rEnd = rStart.replace("-----END PUBLIC KEY-----", "");
+        String decryptedString = "";
+        try {
+            KeyFactory keyFac = KeyFactory.getInstance("RSA");
+
+            PublicKey publicKey = keyFac.generatePublic(new X509EncodedKeySpec(Base64.decode(rEnd.toString(), Base64.DEFAULT)));
+
+            // get an RSA cipher object and print the provider
+            final Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding", "BC");
+            // encrypt the plain text using the public key
+            cipher.init(Cipher.DECRYPT_MODE, publicKey);
+
+            byte[] encryptedBytes = Base64.decode(encryptedBase64, Base64.DEFAULT);
+            byte[] decryptedBytes = cipher.doFinal(encryptedBytes);
+            decryptedString = new String(decryptedBytes);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return decryptedString;
     }
 
     @Override

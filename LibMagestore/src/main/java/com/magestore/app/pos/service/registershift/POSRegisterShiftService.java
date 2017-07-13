@@ -133,6 +133,7 @@ public class POSRegisterShiftService extends AbstractService implements Register
         posCashTransaction.setBalanceTitle(balance);
         posCashTransaction.setNote(registerShift.getOpenedNote());
         posCashTransaction.setFloatAmount(registerShift.getFloatAmount());
+        posCashTransaction.setBaseFloatAmount(registerShift.getBaseFloatAmount());
         posCashTransaction.setCheckOpenShift(true);
 
         List<CashTransaction> nListCash = new ArrayList<CashTransaction>();

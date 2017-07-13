@@ -29,6 +29,7 @@ import java.util.Map;
 
 public interface ConfigDataAccess extends DataAccess {
     Config retrieveConfig() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
+    boolean checkLicenseKey() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     List<ConfigTaxClass> retrieveConfigTaxClass() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     ConfigOption retrieveColorSwatch() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     String getConfig(String configPath) throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;

@@ -13,6 +13,7 @@ import com.magestore.app.lib.service.config.ConfigService;
 import com.magestore.app.lib.service.user.UserService;
 import com.magestore.app.pos.LoginActivity;
 import com.magestore.app.pos.R;
+import com.magestore.app.pos.SalesActivity;
 import com.magestore.app.pos.panel.SettingDetailPanel;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.DataUtil;
@@ -107,10 +108,14 @@ public class SettingListController extends AbstractListController<Setting> {
             }
             ((SettingDetailPanel) mDetailView).showAlertRespone(staff.getErrorMessage());
         }else{
-            Intent intent = new Intent();
-            intent.setAction(RESET_DATA_TO_SALE_ACTIVITY);
-            getMagestoreContext().getActivity().sendBroadcast(intent);
+            Intent i = new Intent();
+            i.setAction(RESET_DATA_TO_SALE_ACTIVITY);
+            getMagestoreContext().getActivity().sendBroadcast(i);
             getMagestoreContext().getActivity().finish();
+
+            Intent intent = new Intent(getMagestoreContext().getActivity(), SalesActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            getMagestoreContext().getActivity().startActivity(intent);
         }
         ((SettingDetailPanel) mDetailView).isShowLoading(false);
     }
