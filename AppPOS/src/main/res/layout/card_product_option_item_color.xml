@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/product_detail_margin_size"
+    android:paddingRight="@dimen/product_detail_margin_size"
+    android:descendantFocusability="blocksDescendants"
+    android:paddingBottom="@dimen/card_item_margin_size"
+    android:paddingTop="@dimen/card_item_margin_size">
+
+    <!--<RelativeLayout-->
+        <!--android:layout_width="30dp"-->
+        <!--android:layout_height="30dp"-->
+        <!--android:background="@drawable/border_number_keyboard"-->
+        <!--android:padding="@dimen/line">-->
+
+        <!--<ImageView-->
+            <!--android:id="@+id/rl_color_content"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:src="@drawable/border_product_option_color" />-->
+    <!--</RelativeLayout>-->
+
+    <com.magestore.app.lib.view.ExpandableHeightGridView
+        android:id="@+id/grid_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:verticalSpacing="10dp"
+        android:horizontalSpacing="10dp"
+        android:stretchMode="columnWidth"
+        android:numColumns="5"/>
+
+
+    <ImageView
+        android:id="@+id/id_img_product_option_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/id_txt_product_option_display"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.0"
+        android:paddingBottom="@dimen/card_item_margin_size"
+        android:paddingTop="@dimen/card_item_margin_size"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/text_size"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/id_txt_product_option_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:gravity="right"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/text_size"
+        android:visibility="gone" />
+</LinearLayout>

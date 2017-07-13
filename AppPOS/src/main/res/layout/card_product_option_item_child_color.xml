@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_color"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/layout_margin_5">
+
+    <RelativeLayout
+        android:layout_width="40dp"
+        android:layout_height="40dp">
+
+        <RelativeLayout
+            android:id="@+id/rl_select_color"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/border_select_color"
+            android:visibility="gone"/>
+
+        <RelativeLayout
+            android:id="@+id/rl_color_content"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/border_number_keyboard"
+            android:padding="@dimen/line">
+
+            <ImageView
+                android:id="@+id/im_color"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/border_product_option_color" />
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/im_disable_color"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_disable_option" />
+    </RelativeLayout>
+</RelativeLayout>

@@ -1,6 +1,8 @@
 package com.magestore.app.util;
 
 import android.text.format.Time;
+
+import com.magestore.app.lib.model.config.ConfigOptionSwatch;
 import com.magestore.app.lib.model.config.ConfigPriceFormat;
 import com.magestore.app.lib.model.config.ConfigPrint;
 import com.magestore.app.lib.model.config.ConfigProductOption;
@@ -115,6 +117,7 @@ public class ConfigUtil {
 
     /**
      * Trả lại currency symbol
+     *
      * @return
      */
     public static String getCurrencySymbol() {
@@ -207,9 +210,9 @@ public class ConfigUtil {
         String text_s = price_r.substring(price_r.length() - 2, price_r.length());
         float amount = ConfigUtil.parseFloat(text_f + decima_symbol + text_s);
         String s_amount = ConfigUtil.formatNumber(amount);
-        if((getConfigPriceFormat().getPattern().indexOf(StringUtil.STRING_CURRENCY) == 0)){
+        if ((getConfigPriceFormat().getPattern().indexOf(StringUtil.STRING_CURRENCY) == 0)) {
             s_amount = getConfigPriceFormat().getCurrencySymbol() + " " + s_amount;
-        }else{
+        } else {
             s_amount = s_amount + " " + getConfigPriceFormat().getCurrencySymbol();
         }
         return s_amount;
@@ -560,7 +563,7 @@ public class ConfigUtil {
         return date;
     }
 
-    public static boolean lessThanSevenDay(String date){
+    public static boolean lessThanSevenDay(String date) {
         if (date == null) {
             return false;
         }
@@ -583,7 +586,7 @@ public class ConfigUtil {
         long current_time = calendar.getTimeInMillis() - mGMTOffset;
         long seven_day = 7 * 24 * 60 * 60 * 1000;
         long time_rate = current_time - time;
-        if(time_rate < seven_day){
+        if (time_rate < seven_day) {
             return true;
         }
         return false;
@@ -835,6 +838,16 @@ public class ConfigUtil {
 
     public static List<ConfigProductOption> getColorSwatch() {
         return mColorSwatch;
+    }
+
+    public static String getValueColorSwatch(String parent_code, String value_id) {
+        for (ConfigProductOption productOption :mColorSwatch) {
+            if(parent_code.equals(productOption.getAttributeCode())){
+                ConfigOptionSwatch optionSwatch = productOption.getColorSwatch().get(value_id);
+                return optionSwatch.getValue();
+            }
+        }
+        return null;
     }
 }
 

@@ -2,11 +2,17 @@ package com.magestore.app.pos.panel;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -14,8 +20,11 @@ import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -27,6 +36,7 @@ import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.config.Config;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
 import com.magestore.app.lib.service.checkout.CartService;
+import com.magestore.app.lib.view.ExpandableHeightGridView;
 import com.magestore.app.lib.view.item.GenericModelView;
 import com.magestore.app.lib.view.item.ModelView;
 import com.magestore.app.pos.R;
@@ -97,6 +107,12 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
 
     public void setCheckoutListController(CheckoutListController mCheckoutListController) {
         this.mCheckoutListController = mCheckoutListController;
+    }
+
+    public void resetAdapter() {
+        if (expandableListAdapter != null) {
+            expandableListAdapter.notifyDataSetChanged();
+        }
     }
 
     /**
@@ -337,11 +353,16 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                 PosProductOptionConfigOption configOption = configOptionMap.get(optionCode);
                 OptionModelView optionModelView = new OptionModelView();
                 optionModelView.optionValueModelViewList = new ArrayList<>();
+                optionModelView.code = optionCode;
                 optionModelView.title = configOption.optionLabel;
                 optionModelView.quantity = 1;
                 optionModelView.is_required = true;
                 optionModelView.option_type = ProductOptionCustom.OPTION_TYPE_CONFIG;
-                optionModelView.input_type = ProductOptionCustom.TYPE_RADIO;
+                if (optionCode.equals("color")) {
+                    optionModelView.input_type = ProductOptionCustom.TYPE_COLOR;
+                } else if (optionCode.equals("size")) {
+                    optionModelView.input_type = ProductOptionCustom.TYPE_SIZE;
+                }
                 optionModelView.quantity = Float.parseFloat(getOptionValue(configOption.getID(), getItem().getBundleOptionQuantity(), StringUtil.STRING_ONE));
                 optionModelView.setModel(configOption);
 
@@ -385,7 +406,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                 optionModelView.setModel(bundle);
 
                 if (bundle.getItems() == null) continue;
-                boolean hasChooseValue =  haveChooseValue(optionModelView.getModel().getID(), getItem().getBundleOption());
+                boolean hasChooseValue = haveChooseValue(optionModelView.getModel().getID(), getItem().getBundleOption());
                 for (PosProductOptionBundleItem bundleItem : bundle.getItems()) {
                     OptionValueModelView optionValueModelView = new OptionValueModelView();
                     optionValueModelView.optionModelView = optionModelView;
@@ -453,11 +474,11 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         findViewById(R.id.id_layout_product_option_cart_item_quantity).setVisibility(View.VISIBLE);
         findViewById(R.id.id_layout_product_option_cart_item_quantity_label).setVisibility(View.VISIBLE);
 
-        // tạo model view list với custom option
-        createModelViewListFromOptionCustom();
-
         // tạo model view từ config option
         createModelViewListFromOptionConfig();
+
+        // tạo model view list với custom option
+        createModelViewListFromOptionCustom();
 
         // tạo model view từ config bundle
         createModelViewListFromOptionBundle();
@@ -479,6 +500,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         public float quantity;
         public float quantity_increment = 1;
         public float price;
+        public String code;
 
         public boolean isCustomOption() {
             return (option_type == null) || ProductOptionCustom.OPTION_TYPE_CUSTOM.compareToIgnoreCase(option_type) == 0;
@@ -502,6 +524,14 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
 
         public boolean isTypeSelectOne() {
             return ProductOptionCustom.TYPE_RADIO.compareToIgnoreCase(input_type) == 0 || ProductOptionCustom.TYPE_DROP_DOWN.compareToIgnoreCase(input_type) == 0;
+        }
+
+        public boolean isTypeColor() {
+            return ProductOptionCustom.TYPE_COLOR.compareToIgnoreCase(input_type) == 0;
+        }
+
+        public boolean isTypeSize() {
+            return ProductOptionCustom.TYPE_SIZE.compareToIgnoreCase(input_type) == 0;
         }
 
         public boolean isTypeSelectMultipe() {
@@ -545,6 +575,8 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         public String id;
         public OptionModelView optionModelView;
         public boolean choose;
+        public boolean disable;
+        ExpandableHeightGridView gridView;
 
         public boolean isPriceTypeFixed() {
             return !ProductOptionCustom.PRICE_TYPE_PERCENT.equals(price_type);
@@ -662,8 +694,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                     optionModelView.holder.mtxtError.setError(null);
                 }
             }
-        }
-        else {
+        } else {
             // với tình huống group không chấp nhận tất cả zero
             blnValid = false;
             for (OptionModelView optionModelView : mModelViewList) {
@@ -730,8 +761,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                     // chèn các option do user chọn vào cart item
                     if (PosProductOptionCustom.OPTION_TYPE_CUSTOM.equals(optionModelView.option_type)) {
                         item.insertOption(optionModelView.getModel().getID(), optionValueModelView.id);
-                    }
-                    else if (PosProductOptionCustom.OPTION_TYPE_CONFIG.equals(optionModelView.option_type))
+                    } else if (PosProductOptionCustom.OPTION_TYPE_CONFIG.equals(optionModelView.option_type))
                         item.insertSuperAttribute(optionModelView.getModel().getID(), optionValueModelView.id);
                     else if (PosProductOptionCustom.OPTION_TYPE_BUNDLE.equals(optionModelView.option_type)) {
                         item.insertBundleOption(optionModelView.getModel().getID(), optionValueModelView.id);
@@ -770,8 +800,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                         if (productsList == null) {
                             productsList = new ArrayList<>();
                             productsList.addAll(optionValueModelView.productList);
-                        }
-                        else productsList.retainAll(optionValueModelView.productList);
+                        } else productsList.retainAll(optionValueModelView.productList);
                     }
                 }
                 continue;
@@ -794,8 +823,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
             try {
                 float configPrice = getItem().getProduct().getProductOption().getJsonConfig().optionPrices.get(productID).getFinalPrice();
                 price = configPrice;
-            }
-            catch (Exception exp){
+            } catch (Exception exp) {
                 price = basePrice;
             }
         }
@@ -824,8 +852,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                         if (productsList == null) {
                             productsList = new ArrayList<>();
                             productsList.addAll(optionValueModelView.productList);
-                        }
-                        else productsList.retainAll(optionValueModelView.productList);
+                        } else productsList.retainAll(optionValueModelView.productList);
                     }
                 }
                 continue;
@@ -1012,7 +1039,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                     onAddOptionQuantity((OptionModelView) v.getTag(), optionValueModelView.holder);
                 }
             });
-            }
+        }
 
         /**
          * Chuẩn bị holder cho option value, với kiểu chọn nhiều
@@ -1101,90 +1128,114 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
          * @return
          */
         @Override
-        public View getChildView(int listPosition, int expandedListPosition,
+        public View getChildView(final int listPosition, int expandedListPosition,
                                  boolean isLastChild, View convertView, ViewGroup parent) {
 
             // Tham chiếu option value
             final OptionModelView optionModelView = getGroup(listPosition);
             final OptionValueModelView optionValueModelView = getChild(listPosition, expandedListPosition);
-
-            // nếu chưa thì phải khởi tạo holder và view
-            if (optionValueModelView.holder == null) {
-                // Khởi tạo view và holder
+            // nếu kiểu color, size
+            GridViewHolder holder;
+            if (optionModelView.isTypeColor() || optionModelView.isTypeSize()) {
                 LayoutInflater layoutInflater = (LayoutInflater) this.context
                         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                optionValueModelView.holder = new OptionValueModelViewHolder();
+                convertView = layoutInflater.inflate(R.layout.card_product_option_item_color, null);
+                holder = new GridViewHolder();
+                holder.mGridView = (ExpandableHeightGridView) convertView.findViewById(R.id.grid_item);
+                final CustomColorGridAdapter mCustomColorGridAdapter = new CustomColorGridAdapter(optionModelView.code, context, mModelViewList.get(listPosition).optionValueModelViewList, 0);
+                holder.mGridView.setAdapter(mCustomColorGridAdapter);
+                holder.mGridView.setExpanded(true);
+                holder.mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        OptionValueModelView modelView = mModelViewList.get(listPosition).optionValueModelViewList.get(i);
+                        if (!modelView.disable) {
+                            onClickViewChild(modelView, mCustomColorGridAdapter);
+                        }
+                    }
+                });
+                return convertView;
+            } else {
 
-                // nếu là ô value giả để thêm số lượng
-                if (optionValueModelView instanceof FakeValueModelView) {
+                // nếu chưa thì phải khởi tạo holder và view
+                if (optionValueModelView.holder == null) {
+                    // Khởi tạo view và holder
+                    LayoutInflater layoutInflater = (LayoutInflater) this.context
+                            .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    optionValueModelView.holder = new OptionValueModelViewHolder();
+
+                    // nếu là ô value giả để thêm số lượng
+                    if (optionValueModelView instanceof FakeValueModelView) {
                         convertView = layoutInflater.inflate(R.layout.card_product_option_item_quantity, null);
                         initTypeQuantity(convertView, optionValueModelView);
-                } else {
-                    // nếu là kiểu text field
-                    // nếu là kiểu text field
-                    if (optionModelView.isTypeField()) {
-                        convertView = layoutInflater.inflate(R.layout.card_product_option_item_field, null);
-                        initTypeField(convertView, optionValueModelView);
-                    }
-                    // nếu là kiểu radio
-                    else if (optionModelView.isTypeSelectMultipe()) {
-                        convertView = layoutInflater.inflate(R.layout.card_product_option_item_checkbox, null);
-                        initTypeChooseMultipeHolder(convertView, optionValueModelView);
-                    }
-
-                    // nếu kiểu checkbox chọn nhiều
-                    else {
-                        // còn lại quy về kiểu chọn 1
-                        convertView = layoutInflater.inflate(R.layout.card_product_option_item_radio, null);
-                        initTypeChooseOneHolder(convertView, optionValueModelView);
-                    }
-
-                }
-
-                // gán convert view vào holder và modelview
-                optionValueModelView.holder.view = convertView;
-                convertView.setTag(optionValueModelView);
-
-                // tham chiếu holder sang các control
-                optionValueModelView.holder.mtxtDisplay = (TextView) optionValueModelView.holder.view
-                        .findViewById(R.id.id_txt_product_option_display);
-                optionValueModelView.holder.mtxtPrice = (TextView) optionValueModelView.holder.view
-                        .findViewById(R.id.id_txt_product_option_price);
-
-                // sự kiện click
-                if (!(optionValueModelView instanceof FakeValueModelView)) {
-                    convertView.setOnClickListener(new OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            onClickView(v);
+                    } else {
+                        // nếu là kiểu text field
+                        // nếu là kiểu text field
+                        if (optionModelView.isTypeField()) {
+                            convertView = layoutInflater.inflate(R.layout.card_product_option_item_field, null);
+                            initTypeField(convertView, optionValueModelView);
                         }
-                    });
+                        // nếu là kiểu radio
+                        else if (optionModelView.isTypeSelectMultipe()) {
+                            convertView = layoutInflater.inflate(R.layout.card_product_option_item_checkbox, null);
+                            initTypeChooseMultipeHolder(convertView, optionValueModelView);
+                            // nếu kiểu checkbox chọn nhiều
+                        } else {
+                            // còn lại quy về kiểu chọn 1
+                            convertView = layoutInflater.inflate(R.layout.card_product_option_item_radio, null);
+                            initTypeChooseOneHolder(convertView, optionValueModelView);
+                        }
+
+                    }
+
+                    // gán convert view vào holder và modelview
+                    optionValueModelView.holder.view = convertView;
+                    convertView.setTag(optionValueModelView);
+
+                    // tham chiếu holder sang các control
+                    optionValueModelView.holder.mtxtDisplay = (TextView) optionValueModelView.holder.view
+                            .findViewById(R.id.id_txt_product_option_display);
+                    optionValueModelView.holder.mtxtPrice = (TextView) optionValueModelView.holder.view
+                            .findViewById(R.id.id_txt_product_option_price);
+
+                    // sự kiện click
+                    if (!optionModelView.isTypeColor() && !optionModelView.isTypeSize()) {
+                        if (!(optionValueModelView instanceof FakeValueModelView)) {
+                            convertView.setOnClickListener(new OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    onClickView(v);
+                                }
+                            });
+                        }
+                    }
+
+
                 }
-            }
+                // bind giá trị vào
+                optionValueModelView.holder.mtxtDisplay.setText(optionValueModelView.title);
+                if (optionModelView.isConfigOption()) {
+                    optionValueModelView.holder.mtxtPrice.setText(StringUtil.STRING_EMPTY);
+                } else {
+                    optionValueModelView.holder.mtxtPrice.setText(ConfigUtil.formatPrice(optionValueModelView.price));
+                }
+                if (optionValueModelView.holder.mtxtQuantity != null) {
+                    optionValueModelView.holder.mtxtQuantity.setText(ConfigUtil.formatQuantity(optionModelView.quantity));
+                }
+                if (optionValueModelView.holder.mradChoose != null) {
+                    optionValueModelView.holder.mradChoose.setChecked(optionValueModelView.choose);
+                    optionValueModelView.holder.mradChoose.setSelected(optionValueModelView.choose);
+                }
+                if (optionValueModelView.holder.mchkChoose != null) {
+                    optionValueModelView.holder.mchkChoose.setChecked(optionValueModelView.choose);
+                    optionValueModelView.holder.mchkChoose.setSelected(optionValueModelView.choose);
+                }
+                if (optionValueModelView.holder.mtxtField != null) {
+                    optionValueModelView.holder.mtxtField.setText(optionValueModelView.id);
+                }
 
-            // bind giá trị vào
-            optionValueModelView.holder.mtxtDisplay.setText(optionValueModelView.title);
-            if (optionModelView.isConfigOption()) {
-                optionValueModelView.holder.mtxtPrice.setText(StringUtil.STRING_EMPTY);
-            } else {
-                optionValueModelView.holder.mtxtPrice.setText(ConfigUtil.formatPrice(optionValueModelView.price));
+                return optionValueModelView.holder.view;
             }
-            if (optionValueModelView.holder.mtxtQuantity != null) {
-                optionValueModelView.holder.mtxtQuantity.setText(ConfigUtil.formatQuantity(optionModelView.quantity));
-            }
-            if (optionValueModelView.holder.mradChoose != null) {
-                optionValueModelView.holder.mradChoose.setChecked(optionValueModelView.choose);
-                optionValueModelView.holder.mradChoose.setSelected(optionValueModelView.choose);
-            }
-            if (optionValueModelView.holder.mchkChoose != null) {
-                optionValueModelView.holder.mchkChoose.setChecked(optionValueModelView.choose);
-                optionValueModelView.holder.mchkChoose.setSelected(optionValueModelView.choose);
-            }
-            if (optionValueModelView.holder.mtxtField != null) {
-                optionValueModelView.holder.mtxtField.setText(optionValueModelView.id);
-            }
-
-            return optionValueModelView.holder.view;
         }
 
         /**
@@ -1196,6 +1247,9 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         @Override
         public int getChildrenCount(int listPosition) {
             if (mModelViewList == null) return 0;
+            if (mModelViewList.get(listPosition).isTypeColor() || mModelViewList.get(listPosition).isTypeSize()) {
+                return 1;
+            }
             return mModelViewList.get(listPosition).optionValueModelViewList.size();
         }
 
@@ -1261,6 +1315,10 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         }
     }
 
+    public class GridViewHolder {
+        ExpandableHeightGridView mGridView;
+    }
+
     /**
      * Nắm ngữ view và product option custom  tương ứng
      */
@@ -1287,6 +1345,191 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         public EditText mtxtField;
         public DatePicker mdatePicker;
         public TimePicker mtimePicker;
-//        public PosProductOptionCustomValue customValue;
+    }
+
+    public class OptionColorViewHolder {
+        public View view;
+        public RelativeLayout mrlColor, rl_select_color, rl_select_size;
+        public ImageView mImageColor, im_disable_color, im_disable_size;
+        public TextView mTextSize;
+        public RelativeLayout ll_color;
+    }
+
+    private class CustomColorGridAdapter extends BaseAdapter {
+        Context context;
+        List<OptionValueModelView> optionValueModelViewList;
+        int type = 0;
+        String code;
+        int position;
+
+        public int getPosition() {
+            return position;
+        }
+
+        public List<OptionValueModelView> getOptionValueModelViewList() {
+            return optionValueModelViewList;
+        }
+
+        public CustomColorGridAdapter(String code, Context context, List<OptionValueModelView> optionValueModelViewList, int type) {
+            this.context = context;
+            this.optionValueModelViewList = optionValueModelViewList;
+            this.type = type;
+            this.code = code;
+        }
+
+        @Override
+        public int getCount() {
+            return optionValueModelViewList.size();
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return optionValueModelViewList.get(i);
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return i;
+        }
+
+        @Override
+        public View getView(int i, View convertView, ViewGroup viewGroup) {
+            final OptionValueModelView optionValueModelView = optionValueModelViewList.get(i);
+            position = i;
+            // nếu chưa thì phải khởi tạo holder và view
+            OptionColorViewHolder mOptionColorViewHolder;
+            if (convertView == null) {
+                LayoutInflater layoutInflater = (LayoutInflater) this.context.
+                        getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                mOptionColorViewHolder = new OptionColorViewHolder();
+                if (optionValueModelView.optionModelView.isTypeColor()) {
+                    convertView = layoutInflater.inflate(R.layout.card_product_option_item_child_color, null);
+                    mOptionColorViewHolder.mImageColor = (ImageView) convertView.findViewById(R.id.im_color);
+                    mOptionColorViewHolder.rl_select_color = (RelativeLayout) convertView.findViewById(R.id.rl_select_color);
+                    mOptionColorViewHolder.ll_color = (RelativeLayout) convertView.findViewById(R.id.ll_color);
+                    // gán convert view vào holder và modelview
+                    mOptionColorViewHolder.mrlColor = (RelativeLayout) convertView.findViewById(R.id.rl_color_content);
+                    mOptionColorViewHolder.im_disable_color = (ImageView) convertView.findViewById(R.id.im_disable_color);
+                } else {
+                    convertView = layoutInflater.inflate(R.layout.card_product_option_item_child_size, null);
+                    mOptionColorViewHolder.mTextSize = (TextView) convertView.findViewById(R.id.tv_size);
+                    mOptionColorViewHolder.rl_select_size = (RelativeLayout) convertView.findViewById(R.id.rl_select_size);
+                    mOptionColorViewHolder.im_disable_size = (ImageView) convertView.findViewById(R.id.im_disable_size);
+                }
+
+                convertView.setTag(mOptionColorViewHolder);
+
+            } else {
+                mOptionColorViewHolder = (OptionColorViewHolder) convertView.getTag();
+            }
+
+            if (optionValueModelView.optionModelView.isTypeColor()) {
+                mOptionColorViewHolder.mImageColor.getDrawable().setColorFilter(Color.parseColor(ConfigUtil.getValueColorSwatch(code, optionValueModelView.id)), PorterDuff.Mode.MULTIPLY);
+                mOptionColorViewHolder.rl_select_color.setVisibility(optionValueModelView.choose ? VISIBLE : GONE);
+            }
+
+            if (optionValueModelView.optionModelView.isTypeSize()) {
+                mOptionColorViewHolder.mTextSize.setText(ConfigUtil.getValueColorSwatch(code, optionValueModelView.id));
+                mOptionColorViewHolder.rl_select_size.setBackground(optionValueModelView.choose ? getResources().getDrawable(R.drawable.border_select_size) : null);
+            }
+
+            if (optionValueModelView.optionModelView.isTypeColor()) {
+                mOptionColorViewHolder.im_disable_color.setVisibility(optionValueModelView.disable ? VISIBLE : GONE);
+            }
+
+            if (optionValueModelView.optionModelView.isTypeSize()) {
+                mOptionColorViewHolder.im_disable_size.setVisibility(optionValueModelView.disable ? VISIBLE : GONE);
+            }
+
+            return convertView;
+        }
+    }
+
+    private void onClickViewChild(OptionValueModelView optionValueModelView, CustomColorGridAdapter adapter) {
+        // tìm tất cả các radio trong cùng product option
+        // clear hết chọn nếu là loại chọn 1
+        if (optionValueModelView.optionModelView.isTypeSize() || optionValueModelView.optionModelView.isTypeColor()) {
+            if (optionValueModelView.optionModelView.optionValueModelViewList == null) return;
+            for (OptionValueModelView modelView : optionValueModelView.optionModelView.optionValueModelViewList) {
+                modelView.choose = false;
+            }
+        }
+
+        // đảo lại giá trị được chọn
+        optionValueModelView.choose = (!optionValueModelView.choose);
+        checkDisableColor(optionValueModelView);
+        if (adapter != null)
+            adapter.notifyDataSetChanged();
+        expandableListAdapter.notifyDataSetChanged();
+
+        // cập nhật lại giá
+        updateCartItemPrice();
+        mBinding.idTxtProductOptionCartItemPrice.setText(ConfigUtil.formatPriceProduct(getItem().getPrice()));
+    }
+
+    private void checkDisableColor(OptionValueModelView optionValueModelViewChoose) {
+        if (getItem().getProduct().getProductOption().getJsonConfig() == null) return;
+        List<String> listChoose = new ArrayList<>();
+        List<String> listChooseCompare = new ArrayList<>();
+        if (optionValueModelViewChoose.productList != null && optionValueModelViewChoose.productList.size() > 0) {
+            listChoose.addAll(optionValueModelViewChoose.productList);
+            for (OptionModelView optionModelView : mModelViewList) {
+                if (optionModelView.isConfigOption()) {
+                    if (optionValueModelViewChoose.optionModelView.isTypeColor()) {
+                        if (optionModelView.isTypeSize()) {
+                            for (OptionValueModelView childSize : optionModelView.optionValueModelViewList) {
+                                if (childSize.productList != null && childSize.productList.size() > 0) {
+                                    listChooseCompare.clear();
+                                    listChooseCompare.addAll(listChoose);
+                                    listChooseCompare.retainAll(childSize.productList);
+                                    if (listChooseCompare.size() > 0) {
+                                        childSize.disable = false;
+                                    } else {
+                                        childSize.disable = true;
+                                    }
+                                } else {
+                                    childSize.disable = true;
+                                }
+                            }
+                        }
+                    } else if (optionValueModelViewChoose.optionModelView.isTypeSize()) {
+                        if (optionModelView.isTypeColor()) {
+                            for (OptionValueModelView childColor : optionModelView.optionValueModelViewList) {
+                                if (childColor.productList != null && childColor.productList.size() > 0) {
+                                    listChooseCompare.clear();
+                                    listChooseCompare.addAll(listChoose);
+                                    listChooseCompare.retainAll(childColor.productList);
+                                    if (listChooseCompare.size() > 0) {
+                                        childColor.disable = false;
+                                    } else {
+                                        childColor.disable = true;
+                                    }
+                                } else {
+                                    childColor.disable = true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+            for (OptionModelView optionModelView : mModelViewList) {
+                if (optionModelView.isConfigOption()) {
+                    if (optionValueModelViewChoose.optionModelView.isTypeColor()) {
+                        if (optionModelView.isTypeSize()) {
+                            for (OptionValueModelView childSize : optionModelView.optionValueModelViewList) {
+                                childSize.disable = true;
+                            }
+                        }
+                    } else if (optionValueModelViewChoose.optionModelView.isTypeSize()) {
+                        if (optionModelView.isTypeColor()) {
+                            for (OptionValueModelView childColor : optionModelView.optionValueModelViewList) {
+                                childColor.disable = true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
