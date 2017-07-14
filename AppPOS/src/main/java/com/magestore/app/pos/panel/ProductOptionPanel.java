@@ -95,6 +95,9 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
     // text box số lượng
     EditTextQuantity mtxtCartItemQuantity;
 
+    LinearLayout ll_description, ll_sku;
+    boolean isShowDetail;
+
     /**
      * Khởi tạo
      *
@@ -113,6 +116,16 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
     public void resetAdapter() {
         if (expandableListAdapter != null) {
             expandableListAdapter.notifyDataSetChanged();
+        }
+    }
+
+    public void setShowDetail(boolean showDetail) {
+        isShowDetail = showDetail;
+        if (ll_description != null) {
+            ll_description.setVisibility(showDetail ? VISIBLE : GONE);
+        }
+        if (ll_sku != null) {
+            ll_sku.setVisibility(showDetail ? VISIBLE : GONE);
         }
     }
 
@@ -620,6 +633,13 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         // progress bar
         setProgressBar(R.id.id_product_option_progress);
         setTextViewMsg(R.id.id_product_option_msg);
+
+
+        ll_description = (LinearLayout) findViewById(R.id.ll_description);
+        ll_description.setVisibility(isShowDetail ? VISIBLE : GONE);
+
+        ll_sku = (LinearLayout) findViewById(R.id.ll_sku);
+        ll_sku.setVisibility(isShowDetail ? VISIBLE : GONE);
 
         // imageview
         mImageProductDetail = (ImageView) findViewById(R.id.id_img_product_detail_image);

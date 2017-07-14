@@ -66,6 +66,7 @@
     <dimen name="product_detail_edittext_radius">5dp</dimen>
     <dimen name="product_detail_text_size">28sp</dimen>
     <dimen name="product_detail_text_quantity_width">120dp</dimen>
+    <dimen name="product_detail_button_add_to_cart">220dp</dimen>
 
     <!--Cart List-->
     <dimen name="card_item_image_size">70dp</dimen>

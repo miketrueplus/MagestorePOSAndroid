@@ -98,7 +98,7 @@ public class CartItemListController extends AbstractChildListController<Checkout
                 return;
             }
         } else {
-            doShowProductOptionInput(product);
+            doShowProductOptionInput(product, false);
         }
 //        mView.notifyDataSetChanged();
 
@@ -288,7 +288,7 @@ public class CartItemListController extends AbstractChildListController<Checkout
      * @param state
      */
     public void showProductDetail(State state) {
-        doShowProductOptionInput(((ProductListController) state.getController()).getSelectedItem());
+        doShowProductOptionInput(((ProductListController) state.getController()).getSelectedItem(), true);
     }
 
     /**
@@ -492,7 +492,7 @@ public class CartItemListController extends AbstractChildListController<Checkout
      * Hiển thị dialog product option
      */
     public void doShowProductOptionInput() {
-        doShowProductOptionInput(getSelectedItem());
+        doShowProductOptionInput(getSelectedItem(), false);
     }
 
     /**
@@ -500,7 +500,8 @@ public class CartItemListController extends AbstractChildListController<Checkout
      *
      * @param cartItem
      */
-    public void doShowProductOptionInput(CartItem cartItem) {
+    public void doShowProductOptionInput(CartItem cartItem, boolean isShowDetail) {
+        mProductOptionPanel.setShowDetail(isShowDetail);
         // khởi tạo và hiển thị dialog
         if (mProductOptionDialog == null) {
             mProductOptionDialog = DialogUtil.dialog(mProductOptionPanel.getContext(),
@@ -554,9 +555,9 @@ public class CartItemListController extends AbstractChildListController<Checkout
      *
      * @param product
      */
-    public void doShowProductOptionInput(Product product) {
+    public void doShowProductOptionInput(Product product, boolean isShowDetail) {
         CartItem cartItem = mCartService.create(product);
-        doShowProductOptionInput(cartItem);
+        doShowProductOptionInput(cartItem, isShowDetail);
     }
 
     /**
