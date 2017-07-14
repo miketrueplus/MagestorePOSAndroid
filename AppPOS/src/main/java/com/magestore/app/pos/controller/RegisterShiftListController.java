@@ -128,6 +128,7 @@ public class RegisterShiftListController extends AbstractListController<Register
                         ConfigUtil.setCheckFirstOpenSession(true);
                     }
                     ConfigUtil.setShiftId(registerShift.getShiftId());
+                    ConfigUtil.setLocationId(registerShift.getLocationId());
 //                getMagestoreContext().getActivity().finish();
                     ((RegisterShiftListPanel) mView).isShowButtonOpenSession(false);
                 }
@@ -220,6 +221,7 @@ public class RegisterShiftListController extends AbstractListController<Register
         } else if (success && actionType == ACTION_TYPE_OPEN_SESSION) {
             List<RegisterShift> listRegister = (List<RegisterShift>) wraper.get("open_session_respone");
             ConfigUtil.setShiftId(listRegister.get(0).getShiftId());
+            ConfigUtil.setLocationId(listRegister.get(0).getLocationId());
             mList.add(1, listRegister.get(0));
             for (RegisterShift shift : mList) {
                 if (shift.getLessSevenDay()) {

@@ -449,6 +449,7 @@
     <string name="err_send_email">Cannot send the order email</string>
     <string name="err_add_coupon">Add Coupon Unsuccessfully</string>
     <string name="err_credit_type">Credit Card type invalid</string>
+    <string name="err_active_key">License key is invalid</string>
 
     <!-- Strings related to confirm message -->
     <string name="ask_are_you_sure">Are you sure?</string>

@@ -2,6 +2,7 @@ package com.magestore.app.util;
 
 import android.text.format.Time;
 
+import com.magestore.app.lib.model.config.ActiveKey;
 import com.magestore.app.lib.model.config.ConfigOptionSwatch;
 import com.magestore.app.lib.model.config.ConfigPriceFormat;
 import com.magestore.app.lib.model.config.ConfigPrint;
@@ -54,6 +55,7 @@ public class ConfigUtil {
     private static String mTypePrint;
     private static PointOfSales mPointOfSales;
     private static String mShiftId;
+    private static String mLocationId;
     private static ConfigPriceFormat mConfigPriceFormat;
 
     // permisson
@@ -69,6 +71,11 @@ public class ConfigUtil {
 
     // color Swatch
     private static List<ConfigProductOption> mColorSwatch;
+
+    // Active key
+    private static boolean mCheckActiveKey;
+    private static ActiveKey mActiveKey;
+    private static boolean isDevLicense;
 
     /**
      * @param format
@@ -743,6 +750,14 @@ public class ConfigUtil {
         ConfigUtil.mShiftId = mShiftId;
     }
 
+    public static String getLocationId() {
+        return mLocationId;
+    }
+
+    public static void setLocationId(String mLocationId) {
+        ConfigUtil.mLocationId = mLocationId;
+    }
+
     public static void setCheckFirstOpenSession(boolean mCheckFirstOpenSession) {
         ConfigUtil.mCheckFirstOpenSession = mCheckFirstOpenSession;
     }
@@ -838,6 +853,30 @@ public class ConfigUtil {
 
     public static List<ConfigProductOption> getColorSwatch() {
         return mColorSwatch;
+    }
+
+    public static void setCheckActiveKey(boolean mCheckActiveKey) {
+        ConfigUtil.mCheckActiveKey = mCheckActiveKey;
+    }
+
+    public static boolean isCheckActiveKey() {
+        return mCheckActiveKey;
+    }
+
+    public static void setActiveKey(ActiveKey mActiveKey) {
+        ConfigUtil.mActiveKey = mActiveKey;
+    }
+
+    public static ActiveKey getActiveKey() {
+        return mActiveKey;
+    }
+
+    public static boolean isDevLicense() {
+        return isDevLicense;
+    }
+
+    public static void setIsDevLicense(boolean isDevLicense) {
+        ConfigUtil.isDevLicense = isDevLicense;
     }
 
     public static String getValueColorSwatch(String parent_code, String value_id) {

@@ -31,12 +31,14 @@ public class Gson2PosOrderParseModel extends Gson2PosAbstractParseImplement {
     }
 
     private static final String JSON_EXTENSION_ATTRIBUTE = "extension_attributes";
+    private static final String JSON_EXTENSION_ITEMS_INFOBUY = "items_info_buy";
 
     public class OrderParamsConverter implements JsonDeserializer<PosOrder> {
         @Override
         public PosOrder deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             JsonObject obj = json.getAsJsonObject();
             obj.remove(JSON_EXTENSION_ATTRIBUTE);
+            obj.remove(JSON_EXTENSION_ITEMS_INFOBUY);
             PosOrder order = new Gson().fromJson(obj, PosOrder.class);
             return order;
         }

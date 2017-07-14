@@ -68,7 +68,6 @@ public class POSConfigService extends AbstractService implements ConfigService {
         Config config = configDataAccess.retrieveConfig();
         List<ConfigTaxClass> configTaxClass = configDataAccess.retrieveConfigTaxClass();
         ConfigOption configOption = configDataAccess.retrieveColorSwatch();
-
         boolean checkLicenseKey = configDataAccess.checkLicenseKey();
 
         // đặt config format tiền
@@ -90,6 +89,7 @@ public class POSConfigService extends AbstractService implements ConfigService {
         ConfigUtil.setConfigTaxClass(configTaxClass);
         ConfigUtil.setConfigPriceFormat(configDataAccess.getPriceFormat());
         ConfigUtil.setColorSwatch(configOption.getItems());
+        ConfigUtil.setCheckActiveKey(checkLicenseKey);
 
         // permisson
         getConfigStaffPermisson(getStaffPermisson());

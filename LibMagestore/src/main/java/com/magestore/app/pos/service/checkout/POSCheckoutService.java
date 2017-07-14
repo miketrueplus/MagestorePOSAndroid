@@ -168,6 +168,8 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
     private static String KEY_EXTENSION_CUSTOMER_FULLNAME = "customer_fullname";
     private static String KEY_EXTENSION_WEBPOS_CHANGE = "webpos_change";
     private static String KEY_EXTENSION_WEBPOS_BASE_CHANGE = "webpos_base_change";
+    private static String KEY_EXTENSION_WEBPOS_SHIFT_ID = "webpos_shift_id";
+    private static String KEY_EXTENSION_LOCATION_ID = "location_id";
     private static String STORE_CREDIT_PAYMENT_CODE = "storecredit";
     private static String STORE_CREDIT_MODULE = "customer_credit";
     private static String STORE_CREDIT_EVENT = "webpos_use_customer_credit_after";
@@ -186,6 +188,7 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
     private static String REWARD_POINT_AMOUNT = "rewardpoints_base_amount";
     private static final String PAYMENT_STRIPE_CODE = "stripe_integration";
     private static final String PAYMENT_AUTHORIZE = "authorizenet_integration";
+
     @Override
     public Model placeOrder(String quoteId, Checkout checkout, List<CheckoutPayment> listCheckoutPayment) throws IOException, InstantiationException, ParseException, IllegalAccessException {
         PlaceOrderParams placeOrderParams = createPlaceOrderParams();
@@ -332,6 +335,18 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         extensionParamBaseChange.setKey(KEY_EXTENSION_WEBPOS_BASE_CHANGE);
         extensionParamBaseChange.setValue(String.valueOf(ConfigUtil.convertToBasePrice(checkout.getExchangeMoney())));
 
+        PlaceOrderExtensionParam extensionParamShiftId = createExtensionParam();
+        extensionParamShiftId.setKey(KEY_EXTENSION_WEBPOS_SHIFT_ID);
+        extensionParamShiftId.setValue(ConfigUtil.getShiftId());
+
+        PlaceOrderExtensionParam extensionParamLocationId = createExtensionParam();
+        extensionParamLocationId.setKey(KEY_EXTENSION_LOCATION_ID);
+        if (ConfigUtil.getPointOfSales() != null) {
+            extensionParamLocationId.setValue(ConfigUtil.getPointOfSales().getLocationId());
+        } else {
+            extensionParamLocationId.setValue(ConfigUtil.getLocationId());
+        }
+
         listExtension.add(extensionParamGrandTotal);
         listExtension.add(extensionParamBaseGrandTotal);
         listExtension.add(extensionParamTaxAmount);
@@ -344,6 +359,8 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         listExtension.add(extensionParamStaffName);
         listExtension.add(extensionParamChange);
         listExtension.add(extensionParamBaseChange);
+        listExtension.add(extensionParamShiftId);
+        listExtension.add(extensionParamLocationId);
 
         placeOrderParams.setPlaceOrderExtensionData(listExtension);
 
