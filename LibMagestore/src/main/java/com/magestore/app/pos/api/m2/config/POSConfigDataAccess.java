@@ -174,6 +174,8 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         // nếu chưa load config, cần khởi tạo chế độ default
         if (mConfig == null) mConfig = new PosConfigDefault();
         ActiveKey activeKey = new PosActiveKey();
+        if (mConfig.getValue("webpos/general/active_key") == null) return false;
+
         String licensekey = (String) mConfig.getValue("webpos/general/active_key");
         if (licensekey.length() < 68) return false;
 
@@ -306,7 +308,10 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         try {
             String rStart = privateKey.replace("-----BEGIN PUBLIC KEY-----", "");
             String rEnd = rStart.replace("-----END PUBLIC KEY-----", "");
-
+            rEnd = rEnd.replaceAll("\r", "");
+            rEnd = rEnd.replaceAll("\n", "");
+            rEnd = rEnd.replaceAll("\t", "");
+            rEnd = rEnd.replaceAll(" ", "");
             KeyFactory keyFac = KeyFactory.getInstance("RSA");
 
             PublicKey publicKey = keyFac.generatePublic(new X509EncodedKeySpec(Base64.decode(rEnd.toString(), Base64.DEFAULT)));

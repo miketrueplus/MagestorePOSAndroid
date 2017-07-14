@@ -391,6 +391,7 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
         public void onPostController(Task task, Boolean success) {
             mAuthTask = null;
             if (success) {
+                // check active key
                 if (ConfigUtil.isCheckActiveKey()) {
                     // Đăng nhập thành công, lưu domain lại để lần sau không phải nhập
                     if (!mCheckLoginDemo) {
