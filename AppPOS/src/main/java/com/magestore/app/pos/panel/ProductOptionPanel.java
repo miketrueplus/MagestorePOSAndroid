@@ -27,6 +27,7 @@ import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.magestore.app.lib.model.catalog.Product;
@@ -298,7 +299,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
             optionModelView.optionValueModelViewList = new ArrayList<>();
             optionModelView.title = optionCustom.getTitle();
             optionModelView.quantity = 1;
-            optionModelView.is_required = true;
+            optionModelView.is_required = optionCustom.isRequired();
             optionModelView.option_type = ProductOptionCustom.OPTION_TYPE_CUSTOM;
             optionModelView.input_type = optionCustom.getType();
             optionModelView.setModel(optionCustom);
@@ -450,6 +451,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                 optionModelView.quantity_increment = groupedOption.getQuantityIncrement();
                 optionModelView.is_required = false;
                 optionModelView.option_type = ProductOptionCustom.OPTION_TYPE_GROUPED;
+                optionModelView.input_type = ProductOptionCustom.TYPE_GROUP;
                 optionModelView.price = groupedOption.getPrice();
                 optionModelView.setModel(groupedOption);
 
@@ -672,6 +674,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         if (mModelViewList == null) return false;
         if (mModelViewList.size() == 0) return false;
         if (!mModelViewList.get(0).isGroupOption()) {
+            boolean checkRequied = true;
             for (OptionModelView optionModelView : mModelViewList) {
                 // check xem có option value nào được chọn không
                 boolean haveChoose = false;
@@ -686,6 +689,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                 // nếu k0 có thì báo lỗi thông báo lỗi chưa chọn option
                 if (optionModelView.holder == null) continue;
                 if (optionModelView.is_required && !haveChoose) {
+                    checkRequied = false;
                     blnValid = false;
                     optionModelView.holder.mtxtError.setText(getContext().getString(R.string.err_field_required));
                     optionModelView.holder.mtxtError.setError(getContext().getString(R.string.err_field_required));
@@ -693,6 +697,9 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                     optionModelView.holder.mtxtError.setText(null);
                     optionModelView.holder.mtxtError.setError(null);
                 }
+            }
+            if (!checkRequied) {
+                Toast.makeText(getContext(), getContext().getString(R.string.err_requied_options), Toast.LENGTH_SHORT).show();
             }
         } else {
             // với tình huống group không chấp nhận tất cả zero
@@ -995,6 +1002,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                     .findViewById(R.id.id_txt_product_option_quantity);
 
             final OptionModelView optionModelView = optionValueModelView.optionModelView;
+            optionValueModelView.holder.mtxtQuantity.setText(String.valueOf(optionModelView.quantity_increment));
             optionValueModelView.holder.mtxtQuantity.setMinValue(optionModelView.quantity_increment);
 
             // khi thôi focus

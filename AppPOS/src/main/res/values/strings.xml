@@ -307,6 +307,9 @@
     <string name="popup_permisson_enter_pin">Enter Pincode</string>
     <string name="error_pincode">Incorrect Pin Code</string>
 
+    <!--Dev License-->
+    <string name="dev_license">You are using the development license. Any orders placed through this POS will not be honored or fulfilled.</string>
+
     <!-- Strings related to single words -->
     <string name="add">Add</string>
     <string name="add_to_cart">Add To Cart</string>
@@ -450,6 +453,7 @@
     <string name="err_add_coupon">Add Coupon Unsuccessfully</string>
     <string name="err_credit_type">Credit Card type invalid</string>
     <string name="err_active_key">License key is invalid</string>
+    <string name="err_requied_options">Please select all required options</string>
 
     <!-- Strings related to confirm message -->
     <string name="ask_are_you_sure">Are you sure?</string>

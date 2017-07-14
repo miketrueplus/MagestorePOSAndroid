@@ -9,6 +9,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.magestore.app.lib.context.MagestoreContext;
 import com.magestore.app.lib.service.ServiceFactory;
@@ -24,6 +25,7 @@ import com.magestore.app.pos.panel.OrderListPanel;
 import com.magestore.app.pos.panel.OrderPaymentLaterListPanel;
 import com.magestore.app.pos.panel.OrderPaymentListPanel;
 import com.magestore.app.pos.ui.AbstractActivity;
+import com.magestore.app.util.ConfigUtil;
 
 /**
  * An activity representing a list of CartItem. This activity
@@ -56,6 +58,9 @@ public class OrderActivity extends AbstractActivity {
 
     // xác định loại màn hình 1 pane hay 2 pane
     private boolean mblnTwoPane;
+
+    // Dev license
+    TextView dev_license;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +100,10 @@ public class OrderActivity extends AbstractActivity {
 
         // xem giao diện 2 pane hay 1 pane
         mblnTwoPane = findViewById(R.id.two_pane) != null;
+
+        // Dev license
+        dev_license = (TextView) findViewById(R.id.dev_license);
+        checkDevLicense();
     }
 
     @Override
@@ -182,5 +191,9 @@ public class OrderActivity extends AbstractActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void checkDevLicense(){
+        dev_license.setVisibility(ConfigUtil.isDevLicense() ? View.VISIBLE : View.GONE);
     }
 }

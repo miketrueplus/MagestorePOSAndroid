@@ -68,7 +68,7 @@ public abstract class AbstractActivity
     public static String CHANGE_PERMISSON_MENU_ORDER = "com.magestore.app.pos.saleactivity.menuorder";
     public static List<StaffPermisson> listStaff;
     TextView staff_name, staff_location;
-    ImageView im_change;
+    RelativeLayout im_change;
     PopupWindow popupWindow;
     private static int positionSelectActivity = -1;
     Map<Integer, LinearLayout> listActivity = new HashMap<>();
@@ -81,7 +81,7 @@ public abstract class AbstractActivity
     private RelativeLayout rl_enter_pin, rl_pin_1, rl_pin_2, rl_pin_3, rl_pin_4;
     private RelativeLayout rl_number_0, rl_number_1, rl_number_2, rl_number_3, rl_number_4, rl_number_5, rl_number_6, rl_number_7, rl_number_8, rl_number_9, rl_number_delete;
     private String mPincode;
-    Map<AbstractActivity, ImageView> mapImage;
+    Map<AbstractActivity, RelativeLayout> mapImage;
 
     @Override
     protected void onStart() {
@@ -128,7 +128,7 @@ public abstract class AbstractActivity
         View header_layout = navigationView.findViewById(R.id.nav_header_menu);
         staff_name = (TextView) header_layout.findViewById(R.id.staff_name);
         staff_location = (TextView) header_layout.findViewById(R.id.staff_location);
-        im_change = (ImageView) header_layout.findViewById(R.id.im_change);
+        im_change = (RelativeLayout) header_layout.findViewById(R.id.im_change);
         mapImage.put(this, im_change);
         if (ConfigUtil.getStaff() != null) {
             if (mCurrentStaff != null) {

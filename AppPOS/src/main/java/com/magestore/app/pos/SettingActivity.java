@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.TextView;
 
 import com.magestore.app.lib.context.MagestoreContext;
 import com.magestore.app.lib.service.ServiceFactory;
@@ -15,6 +17,7 @@ import com.magestore.app.pos.controller.SettingListController;
 import com.magestore.app.pos.panel.SettingDetailPanel;
 import com.magestore.app.pos.panel.SettingListPanel;
 import com.magestore.app.pos.ui.AbstractActivity;
+import com.magestore.app.util.ConfigUtil;
 
 /**
  * Created by Johan on 2/10/17.
@@ -33,6 +36,9 @@ public class SettingActivity extends AbstractActivity {
 
     // xác định loại màn hình 1 pane hay 2 pane
     private boolean mblnTwoPane;
+
+    // Dev license
+    TextView dev_license;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +67,10 @@ public class SettingActivity extends AbstractActivity {
 
         // xem giao diện 2 pane hay 1 pane
         mblnTwoPane = findViewById(R.id.two_pane) != null;
+
+        // Dev license
+        dev_license = (TextView) findViewById(R.id.dev_license);
+        checkDevLicense();
     }
 
     @Override
@@ -116,4 +126,7 @@ public class SettingActivity extends AbstractActivity {
         }catch (Exception e){}
     }
 
+    private void checkDevLicense(){
+        dev_license.setVisibility(ConfigUtil.isDevLicense() ? View.VISIBLE : View.GONE);
+    }
 }

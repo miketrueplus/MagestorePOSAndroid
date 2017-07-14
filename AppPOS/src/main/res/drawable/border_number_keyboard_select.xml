@@ -1,0 +1,8 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <stroke
+        android:width="@dimen/line"
+        android:color="@color/keyboard_bg" />
+
+    <solid android:color="#ddd" />
+</shape>

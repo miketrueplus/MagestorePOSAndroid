@@ -28,6 +28,7 @@ public interface ProductOptionCustom extends Model {
     public static final String TYPE_DATETIME = "date_time";
     public static final String TYPE_COLOR = "color";
     public static final String TYPE_SIZE = "size";
+    public static final String TYPE_GROUP = "group";
 
     // giá type
     public static final String PRICE_TYPE_PERCENT = "percent";

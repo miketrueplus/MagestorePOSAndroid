@@ -9,6 +9,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.magestore.app.lib.context.MagestoreContext;
 import com.magestore.app.lib.service.ServiceFactory;
@@ -38,6 +39,9 @@ public class RegisterShiftActivity extends AbstractActivity {
     // xác định loại màn hình 1 pane hay 2 pane
     private boolean mblnTwoPane;
 
+    // Dev license
+    TextView dev_license;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +67,10 @@ public class RegisterShiftActivity extends AbstractActivity {
         mRegisterShiftListPanel.setToolbar(toolbar_order);
         // xem giao diện 2 pane hay 1 pane
         mblnTwoPane = findViewById(R.id.two_pane) != null;
+
+        // Dev license
+        dev_license = (TextView) findViewById(R.id.dev_license);
+        checkDevLicense();
     }
 
     @Override
@@ -154,5 +162,9 @@ public class RegisterShiftActivity extends AbstractActivity {
         if(isEnableAction){
             super.onBackPressed();
         }
+    }
+
+    private void checkDevLicense(){
+        dev_license.setVisibility(ConfigUtil.isDevLicense() ? View.VISIBLE : View.GONE);
     }
 }

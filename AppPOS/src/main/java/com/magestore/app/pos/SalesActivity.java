@@ -26,6 +26,7 @@ import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.edwardvanraak.materialbarcodescanner.MaterialBarcodeScanner;
 import com.magestore.app.lib.context.MagestoreContext;
@@ -151,6 +152,9 @@ public class SalesActivity extends AbstractActivity
     KeyboardView mKeyboardView;
     LinearLayout ll_custom_keyboard;
 
+    // Dev license
+    TextView dev_license;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -258,6 +262,10 @@ public class SalesActivity extends AbstractActivity
 //        mKeyboardView.setOnKeyboardActionListener(mOnKeyboardActionListener);
         // Hide the standard keyboard initially
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+        // Dev license
+        dev_license = (TextView) findViewById(R.id.dev_license);
+        checkDevLicense();
     }
 
     protected void initModel() {
@@ -729,5 +737,9 @@ public class SalesActivity extends AbstractActivity
             edittext.setSelection(edittext.getText().length());
         }
         return ll_custom_keyboard.getVisibility() == View.VISIBLE;
+    }
+
+    private void checkDevLicense(){
+        dev_license.setVisibility(ConfigUtil.isDevLicense() ? View.VISIBLE : View.GONE);
     }
 }

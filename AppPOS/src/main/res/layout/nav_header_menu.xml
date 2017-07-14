@@ -38,13 +38,19 @@
             android:textColor="@color/menu_left_text_color"
             android:textSize="@dimen/text_size" />
 
-        <ImageView
+        <RelativeLayout
             android:id="@+id/im_change"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/layout_margin_40"
+            android:layout_height="@dimen/layout_margin_40"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:src="@drawable/ic_exit_to_app" />
+            android:layout_centerVertical="true">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_change" />
+        </RelativeLayout>
     </RelativeLayout>
 
 </LinearLayout>

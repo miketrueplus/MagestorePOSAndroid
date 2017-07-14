@@ -271,6 +271,7 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         }
     }
 
+    // so sánh domain
     private boolean checkSameDomain(String domain, String licenseDomain) {
         if (domain.contains("https://")) {
             domain = domain.replace("https://", "");
@@ -303,6 +304,7 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         return false;
     }
 
+    // giải mã với public key
     private String decryptRSAToString(String encryptedBase64, String privateKey) {
         String decryptedString = "";
         try {
