@@ -251,6 +251,23 @@ public class MagestoreDialog extends Dialog {
         });
     }
 
+    public void setLayoutDialog(){
+        if (full_screen) {
+            ViewGroup.LayoutParams params = getWindow().getAttributes();
+            params.width = WindowManager.LayoutParams.MATCH_PARENT;
+            params.height = WindowManager.LayoutParams.MATCH_PARENT;
+        } else {
+            if (dialog_width > 0 || dialog_height > 0) {
+                ViewGroup.LayoutParams params = getWindow().getAttributes();
+                if (dialog_width > 0)
+                    params.width = dialog_width;
+                if (dialog_height > 0)
+                    params.height = dialog_height;
+                getWindow().setAttributes((WindowManager.LayoutParams) params);
+            }
+        }
+    }
+
     @Override
     public void onBackPressed() {
         if (cancel_back) {

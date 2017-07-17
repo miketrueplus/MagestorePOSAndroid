@@ -174,6 +174,9 @@ public class PosOrder extends PosAbstractModel implements Order {
     @Gson2PosExclude
     float max_refunded;
 
+    @Gson2PosExclude
+    boolean isCreatAtView;
+
     @Override
     public String getID() {
         return entity_id;
@@ -472,6 +475,11 @@ public class PosOrder extends PosAbstractModel implements Order {
     @Override
     public String getCreatedAt() {
         return created_at;
+    }
+
+    @Override
+    public void setCreateAt(String strCreateAt) {
+        created_at = strCreateAt;
     }
 
     @Override
@@ -960,5 +968,15 @@ public class PosOrder extends PosAbstractModel implements Order {
     @Override
     public void setCheckRequestUpdateInvoice(boolean bRequestUpdateInvoice) {
         check_request_update_invoice = bRequestUpdateInvoice;
+    }
+
+    @Override
+    public boolean IsCreateAtView() {
+        return isCreatAtView;
+    }
+
+    @Override
+    public void setIsCreateAtView(boolean bIsCreateAtView) {
+        isCreatAtView = bIsCreateAtView;
     }
 }

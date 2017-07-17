@@ -64,7 +64,8 @@
                             android:gravity="right"
                             android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderDetail.getBaseSubtotal()))}"
                             android:textColor="@color/text_color"
-                            android:textSize="@dimen/order_bottom_text_size" />
+                            android:textSize="@dimen/order_bottom_text_size"
+                            android:textStyle="bold" />
                     </TableRow>
 
                     <TableRow
@@ -88,7 +89,8 @@
                             android:gravity="right"
                             android:text='@{orderDetail.getRewardPointsEarn() + " " + @string/plugin_reward_title_point}'
                             android:textColor="@color/text_color"
-                            android:textSize="@dimen/order_bottom_text_size" />
+                            android:textSize="@dimen/order_bottom_text_size"
+                            android:textStyle="bold" />
                     </TableRow>
 
                     <TableRow
@@ -112,7 +114,8 @@
                             android:gravity="right"
                             android:text='@{orderDetail.getRewardPointsSpent() + " " + @string/plugin_reward_title_point}'
                             android:textColor="@color/text_color"
-                            android:textSize="@dimen/order_bottom_text_size" />
+                            android:textSize="@dimen/order_bottom_text_size"
+                            android:textStyle="bold" />
                     </TableRow>
 
                     <TableRow
@@ -136,7 +139,8 @@
                             android:gravity="right"
                             android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderDetail.getBaseShippingInclTax()))}"
                             android:textColor="@color/text_color"
-                            android:textSize="@dimen/order_bottom_text_size" />
+                            android:textSize="@dimen/order_bottom_text_size"
+                            android:textStyle="bold" />
                     </TableRow>
 
                     <TableRow
@@ -160,7 +164,8 @@
                             android:gravity="right"
                             android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderDetail.getBaseTaxAmount()))}"
                             android:textColor="@color/text_color"
-                            android:textSize="@dimen/order_bottom_text_size" />
+                            android:textSize="@dimen/order_bottom_text_size"
+                            android:textStyle="bold" />
                     </TableRow>
 
                     <TableRow
@@ -184,7 +189,8 @@
                             android:gravity="right"
                             android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderDetail.getBaseDiscountAmount()))}"
                             android:textColor="@color/text_color"
-                            android:textSize="@dimen/order_bottom_text_size" />
+                            android:textSize="@dimen/order_bottom_text_size"
+                            android:textStyle="bold" />
                     </TableRow>
 
                     <TableRow
@@ -208,7 +214,8 @@
                             android:gravity="right"
                             android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderDetail.getBaseGiftVoucherDiscount()))}"
                             android:textColor="@color/text_color"
-                            android:textSize="@dimen/order_bottom_text_size" />
+                            android:textSize="@dimen/order_bottom_text_size"
+                            android:textStyle="bold" />
                     </TableRow>
 
                     <TableRow
@@ -232,7 +239,8 @@
                             android:gravity="right"
                             android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderDetail.getRewardPointsBaseDiscount()))}"
                             android:textColor="@color/text_color"
-                            android:textSize="@dimen/order_bottom_text_size" />
+                            android:textSize="@dimen/order_bottom_text_size"
+                            android:textStyle="bold" />
                     </TableRow>
 
                     <TableRow
@@ -255,7 +263,8 @@
                             android:gravity="right"
                             android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderDetail.getBaseGrandTotal()))}"
                             android:textColor="@color/text_color"
-                            android:textSize="@dimen/order_bottom_text_size" />
+                            android:textSize="@dimen/order_bottom_text_size"
+                            android:textStyle="bold" />
                     </TableRow>
 
                     <TableRow
@@ -279,7 +288,8 @@
                             android:gravity="right"
                             android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderDetail.getBaseTotalPaid()))}"
                             android:textColor="@color/text_color"
-                            android:textSize="@dimen/order_bottom_text_size" />
+                            android:textSize="@dimen/order_bottom_text_size"
+                            android:textStyle="bold" />
                     </TableRow>
 
                     <TableRow
@@ -303,7 +313,8 @@
                             android:gravity="right"
                             android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderDetail.getBaseTotalRefunded()))}"
                             android:textColor="@color/text_color"
-                            android:textSize="@dimen/order_bottom_text_size" />
+                            android:textSize="@dimen/order_bottom_text_size"
+                            android:textStyle="bold" />
                     </TableRow>
 
                     <TableRow
@@ -327,7 +338,8 @@
                             android:gravity="right"
                             android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderDetail.getWebposBaseChange()))}"
                             android:textColor="@color/text_color"
-                            android:textSize="@dimen/order_bottom_text_size" />
+                            android:textSize="@dimen/order_bottom_text_size"
+                            android:textStyle="bold" />
                     </TableRow>
                 </TableLayout>
             </LinearLayout>

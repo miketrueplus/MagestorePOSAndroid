@@ -512,6 +512,12 @@ public class CartItemListController extends AbstractChildListController<Checkout
         }else{
             mProductOptionPanel.resetAdapter();
         }
+        if(isShowDetail){
+            mProductOptionDialog.setDialogWidth(mProductOptionPanel.getContext().getResources().getDimensionPixelSize(R.dimen.product_show_detail));
+        }else {
+            mProductOptionDialog.setDialogWidth(mProductOptionPanel.getContext().getResources().getDimensionPixelSize(R.dimen.product_show_option_color));
+        }
+        mProductOptionDialog.setLayoutDialog();
 
         // clear list option và hiện thị thông tin product và cart item
         mProductOptionPanel.setCheckoutListController(mCheckoutListController);

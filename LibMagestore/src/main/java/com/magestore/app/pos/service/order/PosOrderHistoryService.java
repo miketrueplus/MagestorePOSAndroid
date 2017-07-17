@@ -25,6 +25,7 @@ import com.magestore.app.lib.resourcemodel.DataAccessFactory;
 import com.magestore.app.lib.resourcemodel.sales.OrderDataAccess;
 import com.magestore.app.lib.service.order.OrderHistoryService;
 import com.magestore.app.pos.model.checkout.PosPaymentMethodDataParam;
+import com.magestore.app.pos.model.sales.PosOrder;
 import com.magestore.app.pos.model.sales.PosOrderCommentParams;
 import com.magestore.app.pos.model.sales.PosOrderInvoiceParams;
 import com.magestore.app.pos.model.sales.PosOrderItemParams;
@@ -63,7 +64,7 @@ public class PosOrderHistoryService extends AbstractService implements OrderHist
 
     @Override
     public Order create() {
-        return null;
+        return new PosOrder();
     }
 
     @Override

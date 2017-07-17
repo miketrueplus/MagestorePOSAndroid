@@ -120,6 +120,7 @@ public interface Order extends Model {
     void setGrandTotal(float fGrandTotal);
 
     String getCreatedAt();
+    void setCreateAt(String strCreateAt);
 
     String getCustomerEmail();
 
@@ -257,4 +258,7 @@ public interface Order extends Model {
 
     boolean checkRequestUpdateInvoice();
     void setCheckRequestUpdateInvoice(boolean bRequestUpdateInvoice);
+
+    boolean IsCreateAtView();
+    void setIsCreateAtView(boolean bIsCreateAtView);
 }

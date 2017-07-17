@@ -14,6 +14,7 @@ import com.magestore.app.lib.panel.AbstractListPanel;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.OrderHistoryListController;
 import com.magestore.app.pos.databinding.CardOrderHistoryListContentBinding;
+import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.StringUtil;
 
 import java.util.List;
@@ -32,6 +33,8 @@ public class OrderListPanel extends AbstractListPanel<Order> implements View.OnC
     ImageView im_status_pending, im_status_processing, im_status_complete, im_status_cancelled, im_status_closed, im_status_not_sync;
     TextView tv_status_pending, tv_status_processing, tv_status_complete, tv_status_cancelled, tv_status_closed, tv_status_not_sync;
     boolean isPending, isProcessing, isComplete, isCancelled, isClosed, isNotSync;
+    TextView tv_other;
+    LinearLayout content_other, content_order_list_card_view;
 
     /**
      * Khởi tạo
@@ -108,14 +111,25 @@ public class OrderListPanel extends AbstractListPanel<Order> implements View.OnC
 
     @Override
     protected void bindItem(View view, Order item, int position) {
-        CardOrderHistoryListContentBinding biding = DataBindingUtil.bind(view);
-        biding.setOrder(item);
+        content_other = (LinearLayout) view.findViewById(R.id.content_other);
+        tv_other = (TextView) view.findViewById(R.id.tv_other);
+        content_order_list_card_view = (LinearLayout) view.findViewById(R.id.content_order_list_card_view);
+        if (item.IsCreateAtView()) {
+            content_other.setVisibility(VISIBLE);
+            content_order_list_card_view.setVisibility(GONE);
+            tv_other.setText(ConfigUtil.formatDate(item.getCreatedAt()));
+        } else {
+            content_other.setVisibility(GONE);
+            content_order_list_card_view.setVisibility(VISIBLE);
+            CardOrderHistoryListContentBinding biding = DataBindingUtil.bind(view);
+            biding.setOrder(item);
 
-        ImageView im_status = (ImageView) view.findViewById(R.id.im_status);
-        im_status.setImageResource(R.drawable.ic_order_status);
+            ImageView im_status = (ImageView) view.findViewById(R.id.im_status);
+            im_status.setImageResource(R.drawable.ic_order_status);
 
-        String status = item.getStatus().toLowerCase();
-        changeColorStatusOrder(status, im_status);
+            String status = item.getStatus().toLowerCase();
+            changeColorStatusOrder(status, im_status);
+        }
     }
 
     private void changeColorStatusOrder(String status, ImageView im_status) {

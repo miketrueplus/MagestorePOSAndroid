@@ -50,6 +50,9 @@
     <dimen name="product_image_width">120dp</dimen>
     <dimen name="product_image_detail_width">320dp</dimen>
     <dimen name="product_image_detail_height">320dp</dimen>
+    <dimen name="product_content_detail_width">380dp</dimen>
+    <dimen name="product_show_option_color">600dp</dimen>
+    <dimen name="product_show_detail">900dp</dimen>
     <dimen name="product_price_margin">2dp</dimen>
     <dimen name="product_text_name_size">14sp</dimen>
     <dimen name="product_text_sku_size">14sp</dimen>

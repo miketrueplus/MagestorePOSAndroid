@@ -177,12 +177,34 @@ public class OrderHistoryListController extends AbstractListController<Order> {
         this.mOrderListChoosePaymentPanel = mOrderListChoosePaymentPanel;
     }
 
+    String time_create = "";
+
     @Override
     public void onRetrievePostExecute(List<Order> list) {
-        super.onRetrievePostExecute(list);
+        List<Order> listOrder = new ArrayList<>();
+        for (Order order : list) {
+            if (!ConfigUtil.formatDate(order.getCreatedAt()).equals(time_create)) {
+                Order nOrder = mOrderService.create();
+                nOrder.setIsCreateAtView(true);
+                nOrder.setCreateAt(order.getCreatedAt());
+                listOrder.add(nOrder);
+                listOrder.add(order);
+                time_create = ConfigUtil.formatDate(order.getCreatedAt());
+            } else {
+                listOrder.add(order);
+            }
+        }
+
+        super.onRetrievePostExecute(listOrder);
         if (wraper == null) {
             wraper = new HashMap<>();
         }
+    }
+
+    @Override
+    public void bindItem(Order item) {
+        if(!item.IsCreateAtView())
+            super.bindItem(item);
     }
 
     public void doInputSendEmail(Map<String, Object> paramSendEmail) {

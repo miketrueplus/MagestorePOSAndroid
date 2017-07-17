@@ -371,7 +371,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="@string/order_detail_content_item_title_product"
-                                    android:textColor="@color/text_color"
+                                    android:textColor="@color/order_detail_top_title_text_color"
                                     android:textSize="@dimen/order_content_table_text_size" />
                             </LinearLayout>
 
@@ -390,7 +390,7 @@
                                 android:layout_weight="1"
                                 android:gravity="right"
                                 android:text="@string/order_detail_content_item_price"
-                                android:textColor="@color/text_color"
+                                android:textColor="@color/order_detail_top_title_text_color"
                                 android:textSize="@dimen/order_content_table_text_size" />
 
                             <TextView
@@ -399,7 +399,7 @@
                                 android:layout_weight="1"
                                 android:gravity="right"
                                 android:text="@string/order_detail_content_item_qty"
-                                android:textColor="@color/text_color"
+                                android:textColor="@color/order_detail_top_title_text_color"
                                 android:textSize="@dimen/order_content_table_text_size" />
 
                             <TextView
@@ -408,7 +408,7 @@
                                 android:layout_weight="1"
                                 android:gravity="right"
                                 android:text="@string/order_detail_content_item_subtotal"
-                                android:textColor="@color/text_color"
+                                android:textColor="@color/order_detail_top_title_text_color"
                                 android:textSize="@dimen/order_content_table_text_size" />
 
                             <TextView
