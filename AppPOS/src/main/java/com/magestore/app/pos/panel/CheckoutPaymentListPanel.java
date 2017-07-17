@@ -397,13 +397,13 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
 
         int value_3 = (int) ((((int) (amount / 50)) + 1) * 50);
         if (value_3 == value_2) {
-            value_3 = value_3 + 50;
+            value_3 = value_3 + (int) ((((int) (amount / 50)) + 2) * 50);
         }
         txt_suggest_3.setText(ConfigUtil.formatNumber(value_3));
 
         int value_4 = (int) ((((int) (amount / 100)) + 1) * 100);
-        if (value_4 == value_3) {
-            value_4 = value_4 + 100;
+        if (value_4 == value_3 || value_4 == value_2) {
+            value_4 = (int) ((((int) (amount / 100)) + 2) * 100);
         }
         txt_suggest_4.setText(ConfigUtil.formatNumber(value_4));
 

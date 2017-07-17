@@ -183,7 +183,7 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         String strExtensionName = licensekey.substring(0, 10) + extensionName;
         crc.update(strExtensionName.getBytes());
         int strDataCrc32 = (int) crc.getValue();
-        int crc32Pos = (strDataCrc32 & 0x7FFFFFFF % 49) + 10;
+        int crc32Pos = (strDataCrc32 & 0x7FFFFFFF % 51) + 10;
         String crc32String = licensekey.substring(crc32Pos, (crc32Pos + 10));
         String key = licensekey.substring(0, crc32Pos) + licensekey.substring((crc32Pos + 13), licensekey.length());
         try {

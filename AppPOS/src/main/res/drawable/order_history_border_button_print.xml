@@ -10,7 +10,7 @@
                 android:width="@dimen/line"
                 android:color="@color/checkout_line" />
             <corners android:radius="@dimen/order_bottom_button_radius" />
-            <solid android:color="@color/checkout_line" />
+            <solid android:color="@color/white" />
         </shape>
     </item>
 </ripple>

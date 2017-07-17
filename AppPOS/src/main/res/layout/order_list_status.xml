@@ -4,7 +4,7 @@
     android:id="@+id/ll_order_status"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@color/line"
+    android:background="@color/white"
     android:orientation="horizontal"
     android:paddingBottom="@dimen/layout_margin_5"
     android:paddingLeft="@dimen/layout_margin_5"
@@ -19,9 +19,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/layout_margin_5"
-        android:background="@color/white"
+        android:background="@drawable/border_order_status"
         android:orientation="horizontal"
-        android:padding="@dimen/layout_margin_5">
+        android:paddingBottom="@dimen/layout_margin_5"
+        android:paddingLeft="@dimen/layout_margin_10"
+        android:paddingRight="@dimen/layout_margin_10"
+        android:paddingTop="@dimen/layout_margin_5">
 
         <ImageView
             android:id="@+id/im_status_pending"
@@ -44,9 +47,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/layout_margin_5"
-        android:background="@color/white"
+        android:background="@drawable/border_order_status"
         android:orientation="horizontal"
-        android:padding="@dimen/layout_margin_5">
+        android:paddingBottom="@dimen/layout_margin_5"
+        android:paddingLeft="@dimen/layout_margin_10"
+        android:paddingRight="@dimen/layout_margin_10"
+        android:paddingTop="@dimen/layout_margin_5">
 
         <ImageView
             android:id="@+id/im_status_processing"
@@ -69,9 +75,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/layout_margin_5"
-        android:background="@color/white"
+        android:background="@drawable/border_order_status"
         android:orientation="horizontal"
-        android:padding="@dimen/layout_margin_5">
+        android:paddingBottom="@dimen/layout_margin_5"
+        android:paddingLeft="@dimen/layout_margin_10"
+        android:paddingRight="@dimen/layout_margin_10"
+        android:paddingTop="@dimen/layout_margin_5">
 
         <ImageView
             android:id="@+id/im_status_complete"
@@ -94,9 +103,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/layout_margin_5"
-        android:background="@color/white"
+        android:background="@drawable/border_order_status"
         android:orientation="horizontal"
-        android:padding="@dimen/layout_margin_5">
+        android:paddingBottom="@dimen/layout_margin_5"
+        android:paddingLeft="@dimen/layout_margin_10"
+        android:paddingRight="@dimen/layout_margin_10"
+        android:paddingTop="@dimen/layout_margin_5">
 
         <ImageView
             android:id="@+id/im_status_cancelled"
@@ -119,9 +131,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/layout_margin_5"
-        android:background="@color/white"
+        android:background="@drawable/border_order_status"
         android:orientation="horizontal"
-        android:padding="@dimen/layout_margin_5">
+        android:paddingBottom="@dimen/layout_margin_5"
+        android:paddingLeft="@dimen/layout_margin_10"
+        android:paddingRight="@dimen/layout_margin_10"
+        android:paddingTop="@dimen/layout_margin_5">
 
         <ImageView
             android:id="@+id/im_status_closed"
@@ -144,9 +159,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/layout_margin_5"
-        android:background="@color/white"
+        android:background="@drawable/border_order_status"
         android:orientation="horizontal"
-        android:padding="@dimen/layout_margin_5"
+        android:paddingBottom="@dimen/layout_margin_5"
+        android:paddingLeft="@dimen/layout_margin_10"
+        android:paddingRight="@dimen/layout_margin_10"
+        android:paddingTop="@dimen/layout_margin_5"
         android:visibility="gone">
 
         <ImageView

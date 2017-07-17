@@ -173,7 +173,7 @@ public class OrderListPanel extends AbstractListPanel<Order> implements View.OnC
                 } else {
                     isPending = true;
                 }
-                ll_status.setBackgroundColor(isPending ? ContextCompat.getColor(getContext(), R.color.order_status_pending) : ContextCompat.getColor(getContext(), R.color.white));
+                ll_status.setBackground(isPending ? ContextCompat.getDrawable(getContext(), R.drawable.border_order_status_pending) : ContextCompat.getDrawable(getContext(), R.drawable.border_order_status));
                 im_status.setColorFilter(isPending ? ContextCompat.getColor(getContext(), R.color.white) : ContextCompat.getColor(getContext(), R.color.order_status_pending));
                 tv_status.setTextColor(isPending ? ContextCompat.getColor(getContext(), R.color.white) : ContextCompat.getColor(getContext(), R.color.text_color));
                 break;
@@ -183,7 +183,7 @@ public class OrderListPanel extends AbstractListPanel<Order> implements View.OnC
                 } else {
                     isProcessing = true;
                 }
-                ll_status.setBackgroundColor(isProcessing ? ContextCompat.getColor(getContext(), R.color.order_status_processing) : ContextCompat.getColor(getContext(), R.color.white));
+                ll_status.setBackground(isProcessing ? ContextCompat.getDrawable(getContext(), R.drawable.border_order_status_processing) : ContextCompat.getDrawable(getContext(), R.drawable.border_order_status));
                 im_status.setColorFilter(isProcessing ? ContextCompat.getColor(getContext(), R.color.white) : ContextCompat.getColor(getContext(), R.color.order_status_processing));
                 tv_status.setTextColor(isProcessing ? ContextCompat.getColor(getContext(), R.color.white) : ContextCompat.getColor(getContext(), R.color.text_color));
                 break;
@@ -193,7 +193,7 @@ public class OrderListPanel extends AbstractListPanel<Order> implements View.OnC
                 } else {
                     isComplete = true;
                 }
-                ll_status.setBackgroundColor(isComplete ? ContextCompat.getColor(getContext(), R.color.order_status_complete) : ContextCompat.getColor(getContext(), R.color.white));
+                ll_status.setBackground(isComplete ? ContextCompat.getDrawable(getContext(), R.drawable.border_order_status_complete) : ContextCompat.getDrawable(getContext(), R.drawable.border_order_status));
                 im_status.setColorFilter(isComplete ? ContextCompat.getColor(getContext(), R.color.white) : ContextCompat.getColor(getContext(), R.color.order_status_complete));
                 tv_status.setTextColor(isComplete ? ContextCompat.getColor(getContext(), R.color.white) : ContextCompat.getColor(getContext(), R.color.text_color));
                 break;
@@ -203,7 +203,7 @@ public class OrderListPanel extends AbstractListPanel<Order> implements View.OnC
                 } else {
                     isCancelled = true;
                 }
-                ll_status.setBackgroundColor(isCancelled ? ContextCompat.getColor(getContext(), R.color.order_status_cancelled) : ContextCompat.getColor(getContext(), R.color.white));
+                ll_status.setBackground(isCancelled ? ContextCompat.getDrawable(getContext(), R.drawable.border_order_status_cancelled) : ContextCompat.getDrawable(getContext(), R.drawable.border_order_status));
                 im_status.setColorFilter(isCancelled ? ContextCompat.getColor(getContext(), R.color.white) : ContextCompat.getColor(getContext(), R.color.order_status_cancelled));
                 tv_status.setTextColor(isCancelled ? ContextCompat.getColor(getContext(), R.color.white) : ContextCompat.getColor(getContext(), R.color.text_color));
                 break;
@@ -213,7 +213,7 @@ public class OrderListPanel extends AbstractListPanel<Order> implements View.OnC
                 } else {
                     isClosed = true;
                 }
-                ll_status.setBackgroundColor(isClosed ? ContextCompat.getColor(getContext(), R.color.order_status_closed) : ContextCompat.getColor(getContext(), R.color.white));
+                ll_status.setBackground(isClosed ? ContextCompat.getDrawable(getContext(), R.drawable.border_order_status_closed) : ContextCompat.getDrawable(getContext(), R.drawable.border_order_status));
                 im_status.setColorFilter(isClosed ? ContextCompat.getColor(getContext(), R.color.white) : ContextCompat.getColor(getContext(), R.color.order_status_closed));
                 tv_status.setTextColor(isClosed ? ContextCompat.getColor(getContext(), R.color.white) : ContextCompat.getColor(getContext(), R.color.text_color));
                 break;
@@ -223,7 +223,7 @@ public class OrderListPanel extends AbstractListPanel<Order> implements View.OnC
                 } else {
                     isNotSync = true;
                 }
-                ll_status.setBackgroundColor(isNotSync ? ContextCompat.getColor(getContext(), R.color.order_status_notsync) : ContextCompat.getColor(getContext(), R.color.white));
+                ll_status.setBackground(isNotSync ? ContextCompat.getDrawable(getContext(), R.drawable.border_order_status_not_sync) : ContextCompat.getDrawable(getContext(), R.drawable.border_order_status));
                 im_status.setColorFilter(isNotSync ? ContextCompat.getColor(getContext(), R.color.white) : ContextCompat.getColor(getContext(), R.color.order_status_notsync));
                 tv_status.setTextColor(isNotSync ? ContextCompat.getColor(getContext(), R.color.white) : ContextCompat.getColor(getContext(), R.color.text_color));
                 break;

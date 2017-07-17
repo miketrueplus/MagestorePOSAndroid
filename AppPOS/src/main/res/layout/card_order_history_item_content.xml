@@ -33,12 +33,14 @@
             <TableRow
                 android:id="@+id/table_row_content"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/layout_margin_10"
+                android:paddingRight="@dimen/layout_margin_10">
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3"
+                    android:layout_weight="2"
                     android:orientation="vertical">
 
                     <TextView
@@ -66,13 +68,15 @@
                     android:layout_weight="1"
                     android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderItem.getBaseOriginalPrice()))}"
                     android:textColor="@color/text_color"
-                    android:textSize="@dimen/order_content_table_text_size" />
+                    android:textSize="@dimen/order_content_table_text_size"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/price"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:gravity="right"
                     android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderItem.getBasePriceInclTax()))}"
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/order_content_table_text_size" />
@@ -80,13 +84,14 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.2"
+                    android:layout_weight="1"
                     android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/qty_ordered"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="right"
                         android:text='@{@string/order_detail_content_item_row_qty_ordered + " " + ConfigUtil.formatQuantity(orderItem.getQtyOrdered())}'
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/order_content_table_text_size" />
@@ -95,6 +100,7 @@
                         android:id="@+id/qty_invoiced"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="right"
                         android:text='@{@string/order_detail_content_item_row_qty_invoiced + " " + ConfigUtil.formatQuantity(orderItem.getQtyInvoiced())}'
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/order_content_table_text_size"
@@ -104,6 +110,7 @@
                         android:id="@+id/qty_shipped"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="right"
                         android:text='@{@string/order_detail_content_item_row_qty_shipped + " " + ConfigUtil.formatQuantity(orderItem.getQtyShipped())}'
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/order_content_table_text_size"
@@ -113,6 +120,7 @@
                         android:id="@+id/qty_refunded"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="right"
                         android:text='@{@string/order_detail_content_item_row_qty_refunded + " " + String.valueOf(orderItem.getQtyRefunded())}'
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/order_content_table_text_size"
@@ -124,6 +132,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:gravity="right"
                     android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderItem.getBaseSubTotal()))}"
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/order_content_table_text_size" />
@@ -135,7 +144,8 @@
                     android:layout_weight="1"
                     android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderItem.getBaseTaxAmount()))}"
                     android:textColor="@color/text_color"
-                    android:textSize="@dimen/order_content_table_text_size" />
+                    android:textSize="@dimen/order_content_table_text_size"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/discount_amount"
@@ -144,7 +154,8 @@
                     android:layout_weight="1"
                     android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderItem.getBaseDiscountAmount()))}"
                     android:textColor="@color/text_color"
-                    android:textSize="@dimen/order_content_table_text_size" />
+                    android:textSize="@dimen/order_content_table_text_size"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/row_total"
@@ -153,7 +164,8 @@
                     android:layout_weight="1"
                     android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderItem.getBaseRowTotalInclTax()))}"
                     android:textColor="@color/text_color"
-                    android:textSize="@dimen/order_content_table_text_size" />
+                    android:textSize="@dimen/order_content_table_text_size"
+                    android:visibility="gone" />
             </TableRow>
         </TableLayout>
     </LinearLayout>

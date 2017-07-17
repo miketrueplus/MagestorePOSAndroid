@@ -76,7 +76,7 @@
     <string name="customer_street_optional">Street2 (Optional)</string>
     <string name="customer_state_or_province_optional">State or Province (Optional)</string>
     <string name="customer_vat_optional">VAT (Optional)</string>
-    <string name="customer_default_address">User Store Address</string>
+    <string name="customer_default_address">Use Store Address</string>
     <string name="customer_create_success">The customer is saved successfully</string>
 
     <!-- Strings related to order -->
@@ -118,7 +118,7 @@
     <string name="order_detail_bottom_tb_total_due">Total Due</string>
     <string name="order_detail_bottom_tb_total_refund">Total Refund Amount</string>
     <string name="order_detail_bottom_tb_total_change">Change</string>
-    <string name="order_detail_bottom_btn_invoice">INVOICE</string>
+    <string name="order_detail_bottom_btn_invoice">Invoice</string>
     <string name="order_menu_send_email">Send Email</string>
     <string name="order_menu_ship">Ship</string>
     <string name="order_menu_cancel">Cancel</string>

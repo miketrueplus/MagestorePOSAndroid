@@ -52,13 +52,13 @@ import java.util.Map;
 public class OrderDetailPanel extends AbstractDetailPanel<Order> {
     View v;
     Order mOrder;
-    Button btn_invoice, btn_take_payment, btn_print;
+    Button btn_invoice, btn_print;
     MagestoreDialog dialog;
     PanelOrderDetailBinding mBinding;
 
     FrameLayout fr_detail_bottom_left, fr_detail_bottom_right;
     ImageView im_status;
-    TextView status;
+    TextView status, btn_take_payment, tv_information;
 
     RelativeLayout detail_order_loading, rl_take_payment;
 
@@ -81,7 +81,7 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         addView(v);
 
         rl_take_payment = (RelativeLayout) v.findViewById(R.id.rl_take_payment);
-        btn_take_payment = (Button) v.findViewById(R.id.btn_take_payment);
+        btn_take_payment = (TextView) v.findViewById(R.id.btn_take_payment);
 
         btn_invoice = (Button) v.findViewById(R.id.btn_invoice);
         btn_print = (Button) v.findViewById(R.id.btn_print);
@@ -91,6 +91,8 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         fr_detail_bottom_right = (FrameLayout) v.findViewById(R.id.fr_detail_bottom_right);
 
         detail_order_loading = (RelativeLayout) v.findViewById(R.id.detail_order_loading);
+
+        tv_information = (TextView) v.findViewById(R.id.tv_information);
 
         mBinding = DataBindingUtil.bind(v);
     }
@@ -128,6 +130,18 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         ((OrderHistoryListController) mController).getOrderPaymentListController().doSelectOrder(item);
         ((OrderHistoryListController) mController).getOrderCommentListController().doSelectOrder(item);
         ((OrderHistoryListController) mController).getOrderHistoryItemsListController().doSelectOrder(item);
+
+        String information = "";
+        if(!StringUtil.isNullOrEmpty(item.getStatus())){
+            information = StringUtil.capitalizedString(item.getStatus());
+        }
+        if (!StringUtil.isNullOrEmpty(item.getCreatedAt())) {
+            information = information + " - " +  ConfigUtil.formatDate(item.getCreatedAt()) + " - " + ConfigUtil.formatTime(item.getCreatedAt());
+        }
+        if(!StringUtil.isNullOrEmpty(item.getWebposStaffName())){
+            information = information + " - " + item.getWebposStaffName();
+        }
+        tv_information.setText(information);
 
         status = (TextView) v.findViewById(R.id.status);
         im_status = (ImageView) v.findViewById(R.id.im_status);
@@ -441,9 +455,9 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
             @Override
             public void onClick(View view) {
                 OrderUpdateQtyParam orderUpdateQtyParam = mOrderInvoicePanel.bindOrderUpdateQty();
-                if(checkTotalUpdateInvoice(orderUpdateQtyParam)){
+                if (checkTotalUpdateInvoice(orderUpdateQtyParam)) {
                     ((OrderHistoryListController) mController).doInputInvoiceUpdateQty(orderUpdateQtyParam);
-                }else{
+                } else {
                     String message = getContext().getString(R.string.order_invoice_cannot_update);
                     // Tạo dialog và hiển thị
                     com.magestore.app.util.DialogUtil.confirm(getContext(), message, R.string.ok);

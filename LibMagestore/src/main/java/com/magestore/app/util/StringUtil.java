@@ -104,6 +104,7 @@ public class StringUtil {
 
     /**
      * Thêm một element trong 1 chuỗi mảng
+     *
      * @param builder
      * @param element
      * @return
@@ -116,6 +117,7 @@ public class StringUtil {
 
     /**
      * Thêm 1 element trong 1 chuỗi mảng chỉ nếu status true
+     *
      * @param builder
      * @param status
      * @param element
@@ -170,6 +172,7 @@ public class StringUtil {
 
     /**
      * Chuỗi null hoặc toàn ký tự trắng
+     *
      * @param str
      * @return
      */
@@ -177,7 +180,17 @@ public class StringUtil {
         return str == null || STRING_EMPTY.equals(str.trim());
     }
 
-    public static String removeAllSymbol(String str){
+    public static String removeAllSymbol(String str) {
         return str.replaceAll("[^0-9]", "");
+    }
+
+    public static String capitalizedString(String inputVal) {
+        // Empty strings should be returned as-is.
+        if (inputVal.length() == 0) return "";
+        // Strings with only one character uppercased.
+        if (inputVal.length() == 1) return inputVal.toUpperCase();
+        // Otherwise uppercase first letter, lowercase the rest.
+        return inputVal.substring(0, 1).toUpperCase()
+                + inputVal.substring(1).toLowerCase();
     }
 }

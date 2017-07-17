@@ -38,7 +38,7 @@
                 <TableLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
+                    android:layout_margin="@dimen/layout_margin_10"
                     android:layout_weight="1"
                     android:shrinkColumns="0"
                     android:stretchColumns="1">
@@ -46,8 +46,8 @@
                     <TableRow
                         android:id="@+id/table_row_subtotal"
                         android:layout_width="match_parent"
-                        android:visibility="@{orderDetail.getBaseSubtotal() != 0 ? View.VISIBLE : View.GONE}"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:visibility="@{orderDetail.getBaseSubtotal() != 0 ? View.VISIBLE : View.GONE}">
 
                         <TextView
                             android:layout_width="0dp"
@@ -356,7 +356,8 @@
                     android:layout_weight="1"
                     android:background="@drawable/order_history_border_button_print"
                     android:text="@string/print"
-                    android:textColor="@color/text_color"
+                    android:textAllCaps="false"
+                    android:textColor="@color/app_color"
                     android:textSize="@dimen/order_bottom_button_text_size" />
 
                 <Button
@@ -370,6 +371,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/order_history_border_button_invoice"
                     android:text="@string/order_detail_bottom_btn_invoice"
+                    android:textAllCaps="false"
                     android:textColor="@color/order_bottom_button_invoice_text_color"
                     android:textSize="@dimen/order_bottom_button_text_size" />
 
