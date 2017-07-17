@@ -284,4 +284,9 @@ public class OrderListPanel extends AbstractListPanel<Order> implements View.OnC
 //        stringBuilder = StringUtil.addStringElement(stringBuilder, isNotSync, StringUtil.STATUS_PENDING);
 
     }
+
+    public void setSelectPosition() {
+        setMintSelectedPos(1);
+        notifyDataSetChanged();
+    }
 }

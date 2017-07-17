@@ -1055,4 +1055,12 @@ public abstract class AbstractListPanel<TModel extends Model>
     public LinearLayoutManager getRecycleViewLayoutManager() {
         return mRecycleViewLayoutManager;
     }
+
+    public RecyclerView getRecycleView() {
+        return mRecycleView;
+    }
+
+    public void setMintSelectedPos(int mintSelectedPos) {
+        this.mintSelectedPos = mintSelectedPos;
+    }
 }

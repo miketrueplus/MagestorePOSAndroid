@@ -91,6 +91,8 @@ public class OrderHistoryListController extends AbstractListController<Order> {
     public static String SEND_ORDER_TO_SALE_ACTIVITY = "com.magestore.app.pos.controller.orderhistory.reorder";
 
     Map<String, Object> wraper;
+    String time_create = "";
+    boolean isFirst = true;
 
     /**
      * Service xử lý các vấn đề liên quan đến order
@@ -177,8 +179,6 @@ public class OrderHistoryListController extends AbstractListController<Order> {
         this.mOrderListChoosePaymentPanel = mOrderListChoosePaymentPanel;
     }
 
-    String time_create = "";
-
     @Override
     public void onRetrievePostExecute(List<Order> list) {
         List<Order> listOrder = new ArrayList<>();
@@ -194,8 +194,16 @@ public class OrderHistoryListController extends AbstractListController<Order> {
                 listOrder.add(order);
             }
         }
-
+        if (isFirst) {
+            if (list != null && list.size() > 0) {
+                setSelectedItem(list.get(0));
+                bindItem(list.get(0));
+                ((OrderListPanel) mView).setSelectPosition();
+            }
+            isFirst = false;
+        }
         super.onRetrievePostExecute(listOrder);
+
         if (wraper == null) {
             wraper = new HashMap<>();
         }
@@ -203,7 +211,7 @@ public class OrderHistoryListController extends AbstractListController<Order> {
 
     @Override
     public void bindItem(Order item) {
-        if(!item.IsCreateAtView())
+        if (!item.IsCreateAtView())
             super.bindItem(item);
     }
 
