@@ -74,7 +74,7 @@ public class OpenSessionDetailPanel extends AbstractDetailPanel<RegisterShift> {
             }
         });
 
-        txt_staff_login.setText(getContext().getString(R.string.open_session_login, ConfigUtil.getStaff().getStaffName()));
+        txt_staff_login.setText(ConfigUtil.getStaff().getStaffName());
 
         bt_open.setOnClickListener(new OnClickListener() {
             @Override

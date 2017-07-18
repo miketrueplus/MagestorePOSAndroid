@@ -80,7 +80,7 @@
                     <TextView
                         android:layout_width="@dimen/open_session_title_width"
                         android:layout_height="wrap_content"
-                        android:text="@string/open_session_responsible"
+                        android:text="@string/responsible"
                         android:textColor="@color/open_session_text_color"
                         android:textSize="@dimen/text_size" />
 

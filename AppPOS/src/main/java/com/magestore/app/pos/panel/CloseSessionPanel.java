@@ -35,6 +35,7 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
     RelativeLayout rl_add_value, rl_close_session_list;
     EditTextFloat et_r_close_balance;
     TextView tv_session_back, tv_open_session_balance, tv_t_close_balance, tv_transaction, tv_difference;
+    TextView txt_staff_login, txt_pos, txt_open_date, make_adjustment_put_money, make_adjustment_take_money;
     Button bt_close, bt_cancel, bt_adjustment, bt_validate;
     EditText et_note;
     float balance_different;
@@ -56,6 +57,11 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
         View view = inflate(getContext(), R.layout.panel_close_session, null);
         addView(view);
         tv_session_back = (TextView) findViewById(R.id.tv_session_back);
+        txt_staff_login = (TextView) findViewById(R.id.txt_staff_login);
+        txt_pos = (TextView) findViewById(R.id.txt_pos);
+        txt_open_date = (TextView) findViewById(R.id.txt_open_date);
+        make_adjustment_put_money = (TextView) findViewById(R.id.make_adjustment_put_money);
+        make_adjustment_take_money = (TextView) findViewById(R.id.make_adjustment_take_money);
         rl_add_value = (RelativeLayout) findViewById(R.id.rl_add_value);
         et_r_close_balance = (EditTextFloat) view.findViewById(R.id.et_r_close_balance);
         tv_t_close_balance = (TextView) view.findViewById(R.id.tv_t_close_balance);
@@ -94,17 +100,18 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
     @Override
     public void bindItem(final RegisterShift item) {
         super.bindItem(item);
+        txt_staff_login.setText(ConfigUtil.getStaff().getStaffName());
+        txt_pos.setText(item.getPosName());
+        txt_open_date.setText(ConfigUtil.formatDateTime(item.getOpenedAt()));
         if (item.getStatus().equals(CLOSE_SESSION)) {
             et_r_close_balance.setText(ConfigUtil.formatNumber(ConfigUtil.convertToPrice(item.getBaseClosedAmount())));
             et_note.setText(item.getClosedNote());
-            rl_add_value.setVisibility(GONE);
             bt_cancel.setVisibility(VISIBLE);
             bt_adjustment.setVisibility(GONE);
             bt_close.setVisibility(GONE);
             bt_validate.setVisibility(VISIBLE);
             close_session_list_panel.setEnableAction(false);
         } else {
-            rl_add_value.setVisibility(VISIBLE);
             bt_cancel.setVisibility(GONE);
             bt_adjustment.setVisibility(VISIBLE);
             bt_close.setVisibility(VISIBLE);
@@ -218,6 +225,20 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
             @Override
             public void onClick(View view) {
                 ((RegisterShiftListController) getController()).showDialogMakeAdjusment(true);
+            }
+        });
+
+        make_adjustment_put_money.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((RegisterShiftListController) getController()).showDialogMakeAdjusment(true);
+            }
+        });
+
+        make_adjustment_take_money.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((RegisterShiftListController) getController()).showDialogMakeAdjusment(false);
             }
         });
     }
