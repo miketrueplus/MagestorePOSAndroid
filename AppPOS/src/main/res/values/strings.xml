@@ -188,10 +188,15 @@
     <string name="register_shift_dialog_make_adjustment_remove">Take money out</string>
     <string name="register_shift_dialog_make_adjustment_note">Note</string>
     <string name="register_shift_make_adjusment_error_remove">Remove amount must be less than the balance!</string>
-    <string name="open_session_title">Open Session</string>
-    <string name="open_session_float_amount_title">Float Amount</string>
+    <string name="open_session_title">Open New Session</string>
+    <string name="open_session_set_balance_value">Set Balance Value</string>
+    <string name="open_session_float_amount_title">Opening Balance</string>
     <string name="open_session_add_value">Add Value</string>
     <string name="open_session_login">Login as %1$s</string>
+    <string name="open_session_responsible">Responsible</string>
+    <string name="open_session_pos">Point Of Sale</string>
+    <string name="open_session">Open Session</string>
+    <string name="open_session_open_balance">Set Opening Balance</string>
     <string name="close_session_title">Close Session</string>
     <string name="close_session_open_balance_title">Opening Balance</string>
     <string name="close_session_transaction_title">Transaction</string>

@@ -149,6 +149,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
                 final CheckoutDeliveryPanel mCheckoutDeliveryPanel = new CheckoutDeliveryPanel(getContext());
                 mCheckoutDeliveryPanel.initValue();
                 final MagestoreDialog dialog = DialogUtil.dialog(getContext(), "", mCheckoutDeliveryPanel);
+                dialog.setDialogWidth(getContext().getResources().getDimensionPixelSize(R.dimen.checkout_popup_delivery_width));
                 dialog.setGoneDialogTitle(true);
                 dialog.show();
 

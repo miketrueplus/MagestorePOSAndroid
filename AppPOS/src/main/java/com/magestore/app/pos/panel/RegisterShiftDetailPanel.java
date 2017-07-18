@@ -143,6 +143,7 @@ public class RegisterShiftDetailPanel extends AbstractDetailPanel<RegisterShift>
         panelMakeAdjustment.bindItem(item);
         panelMakeAdjustment.setController(mController);
         final MagestoreDialog dialog = DialogUtil.dialog(getContext(), getContext().getString(R.string.register_shift_dialog_make_adjustment_title), panelMakeAdjustment);
+        dialog.setDialogWidth(getContext().getResources().getDimensionPixelSize(R.dimen.dialog_width));
         dialog.setGoneButtonSave(true);
         dialog.show();
 

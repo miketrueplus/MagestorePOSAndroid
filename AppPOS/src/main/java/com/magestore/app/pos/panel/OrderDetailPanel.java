@@ -292,6 +292,7 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         mOrderSendEmailPanel.setController(mController);
         mOrderSendEmailPanel.bindItem(mOrder);
         dialog = DialogUtil.dialog(getContext(), getContext().getString(R.string.order_send_email_title), mOrderSendEmailPanel);
+        dialog.setDialogWidth(getContext().getResources().getDimensionPixelSize(R.dimen.dialog_width));
         dialog.show();
 
         dialog.getButtonSave().setOnClickListener(new OnClickListener() {
@@ -326,6 +327,7 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         mOrderAddCommentPanel.setController(mController);
         mOrderAddCommentPanel.bindItem(mOrder);
         dialog = DialogUtil.dialog(getContext(), getContext().getString(R.string.order_add_comment_title), mOrderAddCommentPanel);
+        dialog.setDialogWidth(getContext().getResources().getDimensionPixelSize(R.dimen.dialog_width));
         dialog.show();
 
         dialog.getButtonSave().setOnClickListener(new OnClickListener() {
@@ -509,6 +511,7 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         mOrderCancelPanel.bindItem(mOrder);
 
         dialog = DialogUtil.dialog(getContext(), getContext().getString(R.string.order_cancel_title), mOrderCancelPanel);
+        dialog.setDialogWidth(getContext().getResources().getDimensionPixelSize(R.dimen.dialog_width));
         dialog.show();
 
         dialog.getButtonSave().setOnClickListener(new OnClickListener() {

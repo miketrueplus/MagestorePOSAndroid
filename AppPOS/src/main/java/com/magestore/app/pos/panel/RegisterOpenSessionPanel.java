@@ -1,12 +1,14 @@
 package com.magestore.app.pos.panel;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -34,14 +36,17 @@ import java.util.List;
 
 public class RegisterOpenSessionPanel extends AbstractDetailPanel<RegisterShift> {
     static String OPEN_SESSION = "0";
-    Button bt_open;
-    RelativeLayout rl_add_value;
-    TextView txt_staff_login, tv_session_back, error_pos;
+    Button bt_open, bt_open_balance;
+    RelativeLayout rl_add_value, rl_set_balance;
+    LinearLayout ll_open_balance, ll_note;
+    TextView txt_staff_login, tv_session_back, error_pos, tv_session_title, total_balance_value;
+    View line;
     EditTextFloat et_float_amount;
     EditText et_note;
     SimpleSpinner sp_pos;
     RegisterShiftListController mRegisterShiftListController;
     OpenSessionListValuePanel openSessionListValuePanel;
+    float total_value = 0;
 
     public void setRegisterShiftListController(RegisterShiftListController mRegisterShiftListController) {
         this.mRegisterShiftListController = mRegisterShiftListController;
@@ -64,13 +69,20 @@ public class RegisterOpenSessionPanel extends AbstractDetailPanel<RegisterShift>
         View view = inflate(getContext(), R.layout.panel_open_session_in_register, null);
         addView(view);
         tv_session_back = (TextView) view.findViewById(R.id.tv_session_back);
+        tv_session_title = (TextView) view.findViewById(R.id.tv_session_title);
+        line = (View) view.findViewById(R.id.line);
+        rl_set_balance = (RelativeLayout) view.findViewById(R.id.rl_set_balance);
+        ll_open_balance = (LinearLayout) view.findViewById(R.id.ll_open_balance);
         sp_pos = (SimpleSpinner) view.findViewById(R.id.sp_pos);
         error_pos = (TextView) view.findViewById(R.id.error_pos);
         et_float_amount = (EditTextFloat) view.findViewById(R.id.et_float_amount);
         bt_open = (Button) view.findViewById(R.id.bt_open);
+        bt_open_balance = (Button) view.findViewById(R.id.bt_open_balance);
         rl_add_value = (RelativeLayout) view.findViewById(R.id.rl_add_value);
         et_note = (EditText) view.findViewById(R.id.et_note);
+        ll_note = (LinearLayout) view.findViewById(R.id.ll_note);
         txt_staff_login = (TextView) view.findViewById(R.id.txt_staff_login);
+        total_balance_value = (TextView) view.findViewById(R.id.total_balance_value);
         openSessionListValuePanel = (OpenSessionListValuePanel) view.findViewById(R.id.open_session_list_panel);
 
         initValue();
@@ -90,35 +102,78 @@ public class RegisterOpenSessionPanel extends AbstractDetailPanel<RegisterShift>
         bt_open.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                List<PointOfSales> listPos = mRegisterShiftListController.getListPos();
-                if (listPos != null && listPos.size() > 0) {
-                    if (!sp_pos.getSelection().equals("")) {
-                        SessionParam param = mRegisterShiftListController.createSessionParam();
-                        float float_amount = et_float_amount.getValueFloat();
-                        float base_float_amount = ConfigUtil.convertToBasePrice(float_amount);
-                        param.setBalance(float_amount);
-                        param.setBaseBalance(base_float_amount);
-                        param.setBaseCashAdded(base_float_amount);
-                        param.setBaseFloatAmount(base_float_amount);
-                        param.setFloatAmount(float_amount);
-                        param.setBaseCurrencyCode(ConfigUtil.getBaseCurrencyCode());
-                        param.setCashAdded(float_amount);
-                        param.setOpenedNote(et_note.getText().toString());
-                        param.setShiftCurrencyCode(ConfigUtil.getCurrentCurrency().getCode());
-                        param.setStaffId(ConfigUtil.getStaff().getID());
-                        param.setLocationId(ConfigUtil.getPointOfSales().getLocationId());
-                        param.setOpenedAt(ConfigUtil.getCurrentDateTime());
-                        param.setCloseAt(ConfigUtil.getCurrentDateTime());
-                        // tự sinh id shift khi open
-                        param.setShiftId("off_id_auto_shift_" + ConfigUtil.getItemIdInCurrentTime());
-                        param.setPosId(sp_pos.getSelection());
-                        param.setStatus(OPEN_SESSION);
-                        mRegisterShiftListController.doInputOpenSession(param);
+                if (bt_open.getText().toString().equals(getContext().getString(R.string.confirm))) {
+                    et_float_amount.setText(ConfigUtil.formatNumber(total_value));
+                    rl_set_balance.setVisibility(GONE);
+                    ll_open_balance.setVisibility(VISIBLE);
+                    tv_session_title.setText(getContext().getString(R.string.open_session_title));
+                    tv_session_back.setVisibility(VISIBLE);
+                    line.setVisibility(VISIBLE);
+                    ll_note.setVisibility(VISIBLE);
+                    total_balance_value.setVisibility(GONE);
+                    bt_open_balance.setText(getContext().getString(R.string.open_session_open_balance));
+                    bt_open_balance.setTextColor(ContextCompat.getColor(getContext(), R.color.app_color));
+                    bt_open.setText(getContext().getString(R.string.open_session));
+                } else {
+                    List<PointOfSales> listPos = mRegisterShiftListController.getListPos();
+                    if (listPos != null && listPos.size() > 0) {
+                        if (!sp_pos.getSelection().equals("")) {
+                            SessionParam param = mRegisterShiftListController.createSessionParam();
+                            float float_amount = et_float_amount.getValueFloat();
+                            float base_float_amount = ConfigUtil.convertToBasePrice(float_amount);
+                            param.setBalance(float_amount);
+                            param.setBaseBalance(base_float_amount);
+                            param.setBaseCashAdded(base_float_amount);
+                            param.setBaseFloatAmount(base_float_amount);
+                            param.setFloatAmount(float_amount);
+                            param.setBaseCurrencyCode(ConfigUtil.getBaseCurrencyCode());
+                            param.setCashAdded(float_amount);
+                            param.setOpenedNote(et_note.getText().toString());
+                            param.setShiftCurrencyCode(ConfigUtil.getCurrentCurrency().getCode());
+                            param.setStaffId(ConfigUtil.getStaff().getID());
+                            param.setLocationId(ConfigUtil.getPointOfSales().getLocationId());
+                            param.setOpenedAt(ConfigUtil.getCurrentDateTime());
+                            param.setCloseAt(ConfigUtil.getCurrentDateTime());
+                            // tự sinh id shift khi open
+                            param.setShiftId("off_id_auto_shift_" + ConfigUtil.getItemIdInCurrentTime());
+                            param.setPosId(sp_pos.getSelection());
+                            param.setStatus(OPEN_SESSION);
+                            mRegisterShiftListController.doInputOpenSession(param);
+                        } else {
+                            DialogUtil.confirm(getContext(), getContext().getString(R.string.notify_select_pos), R.string.ok);
+                        }
                     } else {
                         DialogUtil.confirm(getContext(), getContext().getString(R.string.notify_select_pos), R.string.ok);
                     }
+                }
+            }
+        });
+
+        bt_open_balance.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (bt_open_balance.getText().toString().equals(getContext().getString(R.string.cancel))) {
+                    rl_set_balance.setVisibility(GONE);
+                    ll_open_balance.setVisibility(VISIBLE);
+                    tv_session_title.setText(getContext().getString(R.string.open_session_title));
+                    tv_session_back.setVisibility(VISIBLE);
+                    line.setVisibility(VISIBLE);
+                    ll_note.setVisibility(VISIBLE);
+                    total_balance_value.setVisibility(GONE);
+                    bt_open_balance.setText(getContext().getString(R.string.open_session_open_balance));
+                    bt_open_balance.setTextColor(ContextCompat.getColor(getContext(), R.color.app_color));
+                    bt_open.setText(getContext().getString(R.string.open_session));
                 } else {
-                    DialogUtil.confirm(getContext(), getContext().getString(R.string.notify_select_pos), R.string.ok);
+                    rl_set_balance.setVisibility(VISIBLE);
+                    ll_open_balance.setVisibility(GONE);
+                    tv_session_title.setText(getContext().getString(R.string.open_session_set_balance_value));
+                    tv_session_back.setVisibility(GONE);
+                    line.setVisibility(GONE);
+                    ll_note.setVisibility(GONE);
+                    total_balance_value.setVisibility(VISIBLE);
+                    bt_open_balance.setText(getContext().getString(R.string.cancel));
+                    bt_open_balance.setTextColor(ContextCompat.getColor(getContext(), R.color.open_session_text_color));
+                    bt_open.setText(getContext().getString(R.string.confirm));
                 }
             }
         });
@@ -187,6 +242,7 @@ public class RegisterOpenSessionPanel extends AbstractDetailPanel<RegisterShift>
     }
 
     public void updateFloatAmount(float total) {
-        et_float_amount.setText(ConfigUtil.formatNumber(total));
+        total_value = total;
+        total_balance_value.setText(ConfigUtil.formatPrice(total));
     }
 }

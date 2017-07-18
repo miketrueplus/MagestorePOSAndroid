@@ -171,6 +171,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
                 final int maxumum_discount = (int) ((CheckoutListController) mController).getMaximumDiscount();
 
                 final MagestoreDialog dialog = DialogUtil.dialog(getContext(), "", mCheckoutDiscountPanel);
+                dialog.setDialogWidth(getContext().getResources().getDimensionPixelSize(R.dimen.card_item_show_discount));
                 dialog.setDialogTitle(getContext().getString(R.string.checkout_discount_all, String.valueOf(maxumum_discount)));
                 dialog.setGoneButtonSave(true);
                 dialog.show();
@@ -398,6 +399,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
 
         if (dialog == null) {
             dialog = DialogUtil.dialog(getContext(), "", mCheckoutAddCustomerPanel);
+            dialog.setDialogWidth(getContext().getResources().getDimensionPixelSize(R.dimen.dialog_width));
             dialog.setGoneButtonSave(true);
         }
 

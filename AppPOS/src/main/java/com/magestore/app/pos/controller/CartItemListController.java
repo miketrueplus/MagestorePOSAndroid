@@ -303,6 +303,7 @@ public class CartItemListController extends AbstractChildListController<Checkout
             mCartItemDetailDialog = com.magestore.app.pos.util.DialogUtil.dialog(getDetailView().getContext(),
                     getDetailView().getContext().getString(R.string.product_option),
                     getDetailView());
+            mCartItemDetailDialog.setDialogWidth(getDetailView().getContext().getResources().getDimensionPixelSize(R.dimen.card_item_show_custom_price));
             mCartItemDetailDialog.setGoneButtonSave(true);
         }
 
@@ -662,6 +663,7 @@ public class CartItemListController extends AbstractChildListController<Checkout
             mCustomeSaleDialog = com.magestore.app.pos.util.DialogUtil.dialog(mCheckoutCustomSalePanel.getContext(),
                     mCheckoutCustomSalePanel.getContext().getString(R.string.custom_sale),
                     mCheckoutCustomSalePanel);
+            mCustomeSaleDialog.setDialogWidth(mCheckoutCustomSalePanel.getContext().getResources().getDimensionPixelSize(R.dimen.card_item_show_custom_sales));
             mCustomeSaleDialog.setGoneButtonSave(true);
         }
 

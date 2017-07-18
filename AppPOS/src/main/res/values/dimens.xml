@@ -5,6 +5,7 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="app_bar_height">200dp</dimen>
     <dimen name="item_width">750dp</dimen>
+    <dimen name="dialog_width">600dp</dimen>
     <dimen name="text_margin">16dp</dimen>
 
 
@@ -91,6 +92,9 @@
     <dimen name="cart_quantity_size">25dp</dimen>
     <dimen name="card_discount_border_radius">3dp</dimen>
     <dimen name="card_custom_sale_ship_text_size">18sp</dimen>
+    <dimen name="card_item_show_custom_price">600dp</dimen>
+    <dimen name="card_item_show_custom_sales">600dp</dimen>
+    <dimen name="card_item_show_discount">600dp</dimen>
 
     <!--Checkout-->
     <dimen name="checkout_remain_text_price_size">18sp</dimen>
@@ -114,6 +118,7 @@
     <dimen name="checkout_success_edditext_width_size">40dp</dimen>
     <dimen name="checkout_success_edditext_margin_top">40dp</dimen>
     <dimen name="checkout_success_button_text_size">20sp</dimen>
+    <dimen name="checkout_popup_delivery_width">600dp</dimen>
 
     <!--Customer-->
     <dimen name="customer_title_height">45dp</dimen>
@@ -146,6 +151,8 @@
     <dimen name="open_session_title_text_size">20sp</dimen>
     <dimen name="open_session_float_amount_text_size">16sp</dimen>
     <dimen name="open_session_bt_open_border_radius">5dp</dimen>
+    <dimen name="open_session_title_width">120dp</dimen>
+    <dimen name="open_session_title_open_balance_width">130dp</dimen>
     <dimen name="register_shift_item_title_text_size">16sp</dimen>
     <dimen name="register_shift_item_time_text_size">14sp</dimen>
     <dimen name="register_shift_top_total_sales_text_size">22sp</dimen>

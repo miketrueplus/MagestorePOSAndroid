@@ -48,13 +48,14 @@
             </RelativeLayout>
 
             <View
+                android:id="@+id/line"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/line"
                 android:background="@color/line" />
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/ll_pos"
+            android:id="@+id/ll_open_balance"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/ll_session_header"
@@ -62,145 +63,213 @@
             android:layout_marginLeft="@dimen/layout_margin_20"
             android:layout_marginRight="@dimen/layout_margin_20"
             android:layout_marginTop="@dimen/layout_margin_20"
-            android:background="@drawable/checkout_border_linear_layout"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
-            <com.magestore.app.lib.view.SimpleSpinner
-                android:id="@+id/sp_pos"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/layout_margin_5"
-                android:textColor="@color/text_color"
-                android:textSize="@dimen/text_size"
-                magestore_view:layout_no_scroll="true"
-                magestore_view:layout_row="@layout/simple_textview_row" />
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/error_pos"
-                android:layout_width="match_parent"
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/layout_margin_10"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/open_session_title_width"
+                        android:layout_height="wrap_content"
+                        android:text="@string/open_session_responsible"
+                        android:textColor="@color/open_session_text_color"
+                        android:textSize="@dimen/text_size" />
+
+                    <TextView
+                        android:id="@+id/txt_staff_login"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/text_size" />
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/lb_pos"
+                        android:layout_width="@dimen/open_session_title_width"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:text="@string/open_session_pos"
+                        android:textColor="@color/open_session_text_color"
+                        android:textSize="@dimen/text_size" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_pos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/lb_pos"
+                        android:background="@drawable/checkout_border_linear_layout"
+                        android:orientation="vertical">
+
+                        <com.magestore.app.lib.view.SimpleSpinner
+                            android:id="@+id/sp_pos"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/layout_margin_5"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/text_size"
+                            magestore_view:layout_no_scroll="true"
+                            magestore_view:layout_row="@layout/simple_textview_row" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/error_pos"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/lb_pos"
+                        android:text="@string/error_no_pos"
+                        android:textColor="@color/error_no_pos"
+                        android:textSize="@dimen/text_size"
+                        android:visibility="gone" />
+                </RelativeLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/layout_margin_5"
-                android:text="@string/error_no_pos"
-                android:textColor="@color/error_no_pos"
-                android:textSize="@dimen/text_size"
-                android:visibility="gone" />
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/layout_margin_20">
+
+                <TextView
+                    android:id="@+id/txt_float_amount"
+                    android:layout_width="@dimen/open_session_title_open_balance_width"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/open_session_float_amount_title"
+                    android:textColor="@color/open_session_text_color"
+                    android:textSize="@dimen/open_session_float_amount_text_size" />
+
+                <RelativeLayout
+                    android:id="@+id/rl_float_amount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/open_session_border_float_amount"
+                    android:paddingBottom="@dimen/layout_margin_5"
+                    android:paddingLeft="@dimen/layout_margin_10"
+                    android:paddingRight="@dimen/layout_margin_10"
+                    android:paddingTop="@dimen/layout_margin_5">
+
+                    <com.magestore.app.view.EditTextFloat
+                        android:id="@+id/et_float_amount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:background="@color/white"
+                        android:gravity="right"
+                        android:inputType="numberDecimal"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/open_session_title_text_size" />
+                </RelativeLayout>
+            </LinearLayout>
         </LinearLayout>
 
         <RelativeLayout
-            android:id="@+id/rl_float_amount"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/ll_pos"
-            android:layout_margin="@dimen/layout_margin_20"
-            android:background="@drawable/open_session_border_float_amount"
-            android:padding="@dimen/layout_margin_10">
-
-            <TextView
-                android:id="@+id/txt_float_amount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:text="@string/open_session_float_amount_title"
-                android:textColor="@color/open_session_text_color"
-                android:textSize="@dimen/open_session_float_amount_text_size" />
-
-            <com.magestore.app.view.EditTextFloat
-                android:id="@+id/et_float_amount"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toRightOf="@+id/txt_float_amount"
-                android:background="@color/white"
-                android:gravity="right"
-                android:inputType="numberDecimal"
-                android:textColor="@color/text_color"
-                android:textSize="@dimen/open_session_title_text_size" />
-        </RelativeLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_list_value_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/rl_float_amount"
-            android:layout_marginBottom="@dimen/layout_margin_20"
-            android:layout_marginLeft="@dimen/layout_margin_20"
-            android:layout_marginRight="@dimen/layout_margin_20"
-            android:background="@color/open_session_bg_header_value"
-            android:orientation="horizontal"
-            android:padding="@dimen/layout_margin_10">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="left|center_vertical"
-                android:text="@string/value"
-                android:textColor="@color/text_color"
-                android:textSize="@dimen/text_size" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/order_detail_content_item_qty"
-                android:textColor="@color/text_color"
-                android:textSize="@dimen/text_size" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="right|center_vertical"
-                android:text="@string/sub_total"
-                android:textColor="@color/text_color"
-                android:textSize="@dimen/text_size" />
-        </LinearLayout>
-
-        <RelativeLayout
-            android:id="@+id/rl_add_value"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/ll_list_value_title"
-            android:layout_marginBottom="@dimen/layout_margin_10"
-            android:layout_marginRight="@dimen/layout_margin_20">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/layout_margin_10"
-                android:layout_toLeftOf="@+id/im_add_value"
-                android:text="@string/open_session_add_value"
-                android:textColor="@color/text_color"
-                android:textSize="@dimen/text_size" />
-
-            <ImageView
-                android:id="@+id/im_add_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerInParent="true"
-                android:layout_centerVertical="true"
-                android:src="@drawable/ic_add_new" />
-        </RelativeLayout>
-
-        <ScrollView
+            android:id="@+id/rl_set_balance"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/ll_bottom"
-            android:layout_below="@+id/rl_add_value"
-            android:scrollbars="none">
+            android:layout_below="@+id/ll_session_header"
+            android:visibility="gone">
 
-            <com.magestore.app.pos.panel.OpenSessionListValuePanel
-                android:id="@+id/open_session_list_panel"
+            <LinearLayout
+                android:id="@+id/ll_list_value_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/layout_margin_20"
+                android:layout_marginLeft="@dimen/layout_margin_20"
+                android:layout_marginRight="@dimen/layout_margin_20"
+                android:background="@color/open_session_bg_header_value"
+                android:orientation="horizontal"
+                android:padding="@dimen/layout_margin_10">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="left|center_vertical"
+                    android:text="@string/value"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/text_size" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/order_detail_content_item_qty"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/text_size" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="right|center_vertical"
+                    android:text="@string/sub_total"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/text_size" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_add_value"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ll_list_value_title"
+                android:layout_marginBottom="@dimen/layout_margin_10"
+                android:layout_marginRight="@dimen/layout_margin_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/layout_margin_10"
+                    android:layout_toLeftOf="@+id/im_add_value"
+                    android:text="@string/open_session_add_value"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/text_size" />
+
+                <ImageView
+                    android:id="@+id/im_add_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_add_new" />
+            </RelativeLayout>
+
+            <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/layout_margin_10"
-                magestore_view:layout_no_scroll="true"
-                magestore_view:layout_row="@layout/card_open_session_list_content" />
-        </ScrollView>
+                android:layout_below="@+id/rl_add_value"
+                android:scrollbars="none">
+
+                <com.magestore.app.pos.panel.OpenSessionListValuePanel
+                    android:id="@+id/open_session_list_panel"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/layout_margin_10"
+                    magestore_view:layout_no_scroll="true"
+                    magestore_view:layout_row="@layout/card_open_session_list_content" />
+            </ScrollView>
+        </RelativeLayout>
 
         <LinearLayout
             android:id="@+id/ll_bottom"
@@ -226,11 +295,21 @@
                     android:gravity="top"
                     android:hint="@string/note"
                     android:inputType="textMultiLine"
-                    android:minLines="3"
+                    android:minLines="4"
                     android:textColor="@color/text_color"
                     android:textColorHint="@color/open_session_text_color"
                     android:textSize="@dimen/text_size" />
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/total_balance_value"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/open_session_bg_header_value"
+                android:padding="@dimen/layout_margin_10"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/text_size"
+                android:visibility="gone" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -238,14 +317,17 @@
                 android:layout_marginBottom="@dimen/layout_margin_20"
                 android:layout_marginTop="@dimen/layout_margin_20">
 
-                <TextView
-                    android:id="@+id/txt_staff_login"
+                <Button
+                    android:id="@+id/bt_open_balance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:layout_alignParentTop="true"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/text_size" />
+                    android:background="@drawable/open_session_button_open_balance"
+                    android:paddingLeft="@dimen/layout_margin_10"
+                    android:paddingRight="@dimen/layout_margin_10"
+                    android:text="@string/open_session_open_balance"
+                    android:textAllCaps="false"
+                    android:textColor="@color/app_color" />
 
                 <Button
                     android:id="@+id/bt_open"
@@ -253,7 +335,9 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:background="@drawable/open_session_button_open"
-                    android:text="@string/open"
+                    android:paddingLeft="@dimen/layout_margin_10"
+                    android:paddingRight="@dimen/layout_margin_10"
+                    android:text="@string/open_session"
                     android:textAllCaps="false"
                     android:textColor="@color/white" />
             </RelativeLayout>

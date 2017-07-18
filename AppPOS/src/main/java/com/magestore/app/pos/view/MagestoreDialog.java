@@ -251,7 +251,7 @@ public class MagestoreDialog extends Dialog {
         });
     }
 
-    public void setLayoutDialog(){
+    public void setLayoutDialog() {
         if (full_screen) {
             ViewGroup.LayoutParams params = getWindow().getAttributes();
             params.width = WindowManager.LayoutParams.MATCH_PARENT;
