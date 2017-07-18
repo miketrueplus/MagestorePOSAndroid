@@ -26,6 +26,7 @@
             android:paddingLeft="@dimen/layout_margin_20"
             android:paddingRight="@dimen/layout_margin_20"
             android:paddingTop="@dimen/layout_margin_10"
+            android:visibility="gone"
             android:weightSum="4">
 
             <TextView
@@ -65,55 +66,61 @@
             </RelativeLayout>
         </LinearLayout>
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/border_register_shift"
+            android:orientation="vertical"
+            android:layout_marginLeft="@dimen/layout_margin_10"
+            android:layout_marginRight="@dimen/layout_margin_10"
             android:layout_marginBottom="@dimen/layout_margin_10"
-            android:layout_marginLeft="@dimen/layout_margin_20"
-            android:layout_marginRight="@dimen/layout_margin_20"
-            android:layout_marginTop="@dimen/layout_margin_10">
+            android:paddingRight="@dimen/layout_margin_10"
+            android:paddingLeft="@dimen/layout_margin_10">
 
-            <TextView
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/layout_margin_10"
-                android:layout_toLeftOf="@+id/balance"
-                android:text="@string/register_shift_content_total_cash"
-                android:textColor="@color/register_shift_text_color"
-                android:textSize="@dimen/text_size" />
+                android:layout_marginBottom="@dimen/layout_margin_10"
+                android:layout_marginTop="@dimen/layout_margin_10">
 
-            <TextView
-                android:id="@+id/balance"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(registerShift.getBaseBalance()))}"
-                android:textColor="@color/text_color"
-                android:textSize="@dimen/register_shift_top_total_sales_text_size" />
-        </RelativeLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/layout_margin_10"
+                    android:layout_toLeftOf="@+id/balance"
+                    android:text="@string/register_shift_content_total_cash"
+                    android:textColor="@color/register_shift_text_color"
+                    android:textSize="@dimen/text_size" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/line"
-            android:layout_marginLeft="@dimen/layout_margin_20"
-            android:layout_marginRight="@dimen/layout_margin_20"
-            android:background="@color/line" />
+                <TextView
+                    android:id="@+id/balance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(registerShift.getBaseBalance()))}"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/register_shift_top_total_sales_text_size" />
+            </RelativeLayout>
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginLeft="@dimen/layout_margin_20"
-            android:layout_marginRight="@dimen/layout_margin_20"
-            android:orientation="vertical">
-
-            <com.magestore.app.pos.panel.RegisterShiftCashListPanel
-                android:id="@+id/register_shift_cash"
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1.0"
-                magestore_view:layout_list="@+id/register_shift_cash_list"
-                magestore_view:layout_panel="@layout/panel_register_shift_cash_list" />
-        </FrameLayout>
+                android:layout_height="@dimen/line"
+                android:background="@color/line" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <com.magestore.app.pos.panel.RegisterShiftCashListPanel
+                    android:id="@+id/register_shift_cash"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.0"
+                    magestore_view:layout_list="@+id/register_shift_cash_list"
+                    magestore_view:layout_panel="@layout/panel_register_shift_cash_list" />
+            </FrameLayout>
+        </LinearLayout>
     </LinearLayout>
 </layout>

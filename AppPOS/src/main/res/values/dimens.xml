@@ -156,6 +156,7 @@
     <dimen name="register_shift_item_title_text_size">16sp</dimen>
     <dimen name="register_shift_item_time_text_size">14sp</dimen>
     <dimen name="register_shift_top_total_sales_text_size">22sp</dimen>
+    <dimen name="register_shift_border_radius">3dp</dimen>
 
     <!--Permisson-->
     <dimen name="popup_staff_permisson_width">400dp</dimen>
