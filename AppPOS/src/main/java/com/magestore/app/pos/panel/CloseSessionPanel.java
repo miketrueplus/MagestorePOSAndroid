@@ -217,7 +217,7 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
         bt_adjustment.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((RegisterShiftListController) getController()).showDialogMakeAdjusment();
+                ((RegisterShiftListController) getController()).showDialogMakeAdjusment(true);
             }
         });
     }

@@ -60,31 +60,44 @@
 
             <FrameLayout
                 android:id="@+id/fr_button_1"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:visibility="gone" />
 
             <Button
-                android:id="@+id/make_adjustment"
-                android:layout_width="match_parent"
+                android:id="@+id/make_adjustment_put_money"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/layout_margin_20"
-                android:layout_marginRight="@dimen/layout_margin_20"
-                android:layout_weight="1"
+                android:layout_marginRight="@dimen/layout_margin_5"
+                android:layout_weight="0.8"
                 android:background="@drawable/checkout_success_border_button_print"
-                android:text="@string/register_shift_bottom_make_adjustment"
+                android:text="@string/register_shift_bottom_put_money_in"
                 android:textAllCaps="false"
-                android:textColor="@color/checkout_success_btn_text_print_color"
+                android:textColor="@color/app_color"
+                android:textSize="@dimen/text_size_18" />
+
+            <Button
+                android:id="@+id/make_adjustment_take_money"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/layout_margin_5"
+                android:layout_marginRight="@dimen/layout_margin_20"
+                android:layout_weight="0.8"
+                android:background="@drawable/checkout_success_border_button_print"
+                android:text="@string/register_shift_bottom_take_money_out"
+                android:textAllCaps="false"
+                android:textColor="@color/app_color"
                 android:textSize="@dimen/text_size_18" />
 
             <Button
                 android:id="@+id/close_shift"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/layout_margin_20"
                 android:layout_marginRight="@dimen/layout_margin_20"
-                android:layout_weight="1"
+                android:layout_weight="1.6"
                 android:background="@drawable/checkout_success_border_button_new_order"
                 android:text="@string/register_shift_bottom_close_shift"
                 android:textAllCaps="false"
@@ -93,7 +106,7 @@
 
             <FrameLayout
                 android:id="@+id/fr_button_2"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:visibility="gone" />

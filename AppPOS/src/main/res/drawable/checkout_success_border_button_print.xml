@@ -11,7 +11,7 @@
 
             <corners android:radius="@dimen/checkout_success_button_radius" />
 
-            <solid android:color="@color/checkout_line" />
+            <solid android:color="@color/white" />
         </shape>
     </item>
 </ripple>

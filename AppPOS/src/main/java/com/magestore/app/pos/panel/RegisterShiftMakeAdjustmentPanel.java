@@ -49,6 +49,14 @@ public class RegisterShiftMakeAdjustmentPanel extends AbstractDetailPanel<Regist
         super(context, attrs, defStyleAttr);
     }
 
+    public void setType(boolean isType) {
+        if (isType) {
+            selectMakeAdjustment = ADD_MAKE_ADJUSTMENT;
+        } else {
+            selectMakeAdjustment = REMOVE_MAKE_ADJUSTMENT;
+        }
+    }
+
     @Override
     protected void initLayout() {
         View view = inflate(getContext(), R.layout.panel_register_shift_make_adjustment, null);

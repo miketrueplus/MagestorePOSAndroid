@@ -180,6 +180,8 @@
     <string name="register_shift_content_item_float">Float</string>
     <string name="register_shift_content_item_balance">Balance</string>
     <string name="register_shift_bottom_make_adjustment">Make Adjustment</string>
+    <string name="register_shift_bottom_put_money_in">Put Money In</string>
+    <string name="register_shift_bottom_take_money_out">Take Money Out</string>
     <string name="register_shift_bottom_close_shift">Close Session</string>
     <string name="register_shift_dialog_make_adjustment_title">Make Adjustment</string>
     <string name="register_shift_dialog_close_session_title">Close Session</string>

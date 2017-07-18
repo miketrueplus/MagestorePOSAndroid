@@ -112,14 +112,22 @@ public class RegisterShiftDetailPanel extends AbstractDetailPanel<RegisterShift>
         mRegisterShiftCashListController.doSelectRegisterShift(item);
         mRegisterShiftCashListPanel.setRegisterShift(item);
 
-        Button make_adjustment = (Button) v.findViewById(R.id.make_adjustment);
-        make_adjustment.setVisibility(ConfigUtil.isManagerShiftAdjustment() ? VISIBLE : GONE);
+        Button make_adjustment_put_money = (Button) v.findViewById(R.id.make_adjustment_put_money);
+        make_adjustment_put_money.setVisibility(ConfigUtil.isManagerShiftAdjustment() ? VISIBLE : GONE);
+        Button make_adjustment_take_money = (Button) v.findViewById(R.id.make_adjustment_take_money);
+        make_adjustment_take_money.setVisibility(ConfigUtil.isManagerShiftAdjustment() ? VISIBLE : GONE);
         ((View) v.findViewById(R.id.fr_button_1)).setVisibility(ConfigUtil.isManagerShiftAdjustment() ? GONE : VISIBLE);
         ((View) v.findViewById(R.id.fr_button_2)).setVisibility(ConfigUtil.isManagerShiftAdjustment() ? GONE : VISIBLE);
-        make_adjustment.setOnClickListener(new OnClickListener() {
+        make_adjustment_put_money.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                showMakeAdjustment(item);
+                showMakeAdjustment(item, true);
+            }
+        });
+        make_adjustment_take_money.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showMakeAdjustment(item, false);
             }
         });
 
@@ -138,16 +146,19 @@ public class RegisterShiftDetailPanel extends AbstractDetailPanel<RegisterShift>
         });
     }
 
-    private void showMakeAdjustment(RegisterShift item) {
+    private void showMakeAdjustment(RegisterShift item, boolean isType) {
         final RegisterShiftMakeAdjustmentPanel panelMakeAdjustment = new RegisterShiftMakeAdjustmentPanel(getContext());
+        panelMakeAdjustment.setType(isType);
         panelMakeAdjustment.bindItem(item);
         panelMakeAdjustment.setController(mController);
         final MagestoreDialog dialog = DialogUtil.dialog(getContext(), getContext().getString(R.string.register_shift_dialog_make_adjustment_title), panelMakeAdjustment);
+        dialog.setDialogTitle(isType ? getContext().getString(R.string.register_shift_bottom_put_money_in) : getContext().getString(R.string.register_shift_bottom_take_money_out));
         dialog.setDialogWidth(getContext().getResources().getDimensionPixelSize(R.dimen.dialog_width));
         dialog.setGoneButtonSave(true);
         dialog.show();
 
         Button bt_set_adjustment = (Button) dialog.findViewById(R.id.bt_set_adjustment);
+        bt_set_adjustment.setText(isType ? getContext().getString(R.string.register_shift_bottom_put_money_in) : getContext().getString(R.string.register_shift_bottom_take_money_out));
         bt_set_adjustment.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -199,9 +210,9 @@ public class RegisterShiftDetailPanel extends AbstractDetailPanel<RegisterShift>
         register_shift_background_loading.setVisibility(isShow ? VISIBLE : GONE);
     }
 
-    public void showDialogMakeAdjusment() {
+    public void showDialogMakeAdjusment(boolean isType) {
         dialogCloseSession.dismiss();
-        showMakeAdjustment(registerShift);
+        showMakeAdjustment(registerShift, isType);
     }
 
     private void actionPrint(RegisterShift registerShift) {

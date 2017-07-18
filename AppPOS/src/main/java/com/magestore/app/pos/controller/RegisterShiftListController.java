@@ -393,8 +393,8 @@ public class RegisterShiftListController extends AbstractListController<Register
         ((RegisterShiftDetailPanel) mDetailView).bindItemCloseSessionPanel(item);
     }
 
-    public void showDialogMakeAdjusment() {
-        ((RegisterShiftDetailPanel) mDetailView).showDialogMakeAdjusment();
+    public void showDialogMakeAdjusment(boolean isType) {
+        ((RegisterShiftDetailPanel) mDetailView).showDialogMakeAdjusment(isType);
     }
 
     public List<PointOfSales> getListPos() {
