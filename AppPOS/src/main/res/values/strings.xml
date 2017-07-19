@@ -185,6 +185,7 @@
     <string name="register_shift_bottom_close_shift">Close Session</string>
     <string name="register_shift_dialog_make_adjustment_title">Make Adjustment</string>
     <string name="register_shift_dialog_close_session_title">Close Session</string>
+    <string name="register_shift_dialog_close_set_balance">Set Closing Balance</string>
     <string name="register_shift_dialog_make_adjustment_balance">The current balance of your shift:</string>
     <string name="register_shift_dialog_make_adjustment_add">Put money in</string>
     <string name="register_shift_dialog_make_adjustment_remove">Take money out</string>
@@ -199,6 +200,7 @@
     <string name="open_session">Open Session</string>
     <string name="open_session_open_balance">Set Opening Balance</string>
     <string name="close_session_title">Close Session</string>
+    <string name="close_session_id_title">Session : %1$s</string>
     <string name="close_session_open_balance_title">Opening Balance</string>
     <string name="close_session_transaction_title">Transaction</string>
     <string name="close_session_t_close_balance_title">Theoretical Closing Balance</string>
@@ -206,6 +208,7 @@
     <string name="close_session_difference_title">Difference</string>
     <string name="close_session_re_try_data">Re-Entry Data</string>
     <string name="close_session_open_date">Open Date</string>
+    <string name="close_session_payment_method">Payment Method</string>
     <string name="register_shift_session_title">Session Management</string>
     <string name="error_no_pos">No POS Available</string>
     <string name="notify_select_pos">Please choose POS!</string>

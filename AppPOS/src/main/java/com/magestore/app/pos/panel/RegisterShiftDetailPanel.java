@@ -184,6 +184,7 @@ public class RegisterShiftDetailPanel extends AbstractDetailPanel<RegisterShift>
         panelCloseSessionPanel = new CloseSessionPanel(getContext());
         panelCloseSessionPanel.setController(mController);
         panelCloseSessionPanel.initValue();
+        panelCloseSessionPanel.initModel();
         panelCloseSessionPanel.bindItem(item);
         dialogCloseSession = DialogUtil.dialog(getContext(), getContext().getString(R.string.register_shift_dialog_close_session_title), panelCloseSessionPanel);
         dialogCloseSession.setDialogWidth(getContext().getResources().getDimensionPixelSize(R.dimen.order_dialog_refund_width));

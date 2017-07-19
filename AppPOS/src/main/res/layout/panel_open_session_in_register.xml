@@ -63,18 +63,19 @@
             android:layout_marginLeft="@dimen/layout_margin_20"
             android:layout_marginRight="@dimen/layout_margin_20"
             android:layout_marginTop="@dimen/layout_margin_20"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                android:layout_marginBottom="@dimen/layout_margin_10"
+                android:orientation="horizontal">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/layout_margin_10"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
                     android:orientation="horizontal">
 
                     <TextView
@@ -92,9 +93,58 @@
                         android:textSize="@dimen/text_size" />
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/layout_margin_20">
+
+                    <TextView
+                        android:id="@+id/txt_float_amount"
+                        android:layout_width="@dimen/open_session_title_open_balance_width"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/open_session_float_amount_title"
+                        android:textColor="@color/open_session_text_color"
+                        android:textSize="@dimen/open_session_float_amount_text_size" />
+
+                    <RelativeLayout
+                        android:id="@+id/rl_float_amount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/open_session_border_float_amount"
+                        android:paddingBottom="@dimen/layout_margin_5"
+                        android:paddingLeft="@dimen/layout_margin_10"
+                        android:paddingRight="@dimen/layout_margin_10"
+                        android:paddingTop="@dimen/layout_margin_5">
+
+                        <com.magestore.app.view.EditTextFloat
+                            android:id="@+id/et_float_amount"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:background="@color/white"
+                            android:gravity="right"
+                            android:inputType="numberDecimal"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/open_session_title_text_size" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/layout_margin_10"
+                android:orientation="horizontal">
+
                 <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
 
                     <TextView
                         android:id="@+id/lb_pos"
@@ -136,47 +186,11 @@
                         android:textSize="@dimen/text_size"
                         android:visibility="gone" />
                 </RelativeLayout>
-            </LinearLayout>
 
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="horizontal"
-                android:paddingLeft="@dimen/layout_margin_20">
-
-                <TextView
-                    android:id="@+id/txt_float_amount"
-                    android:layout_width="@dimen/open_session_title_open_balance_width"
+                <FrameLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="@string/open_session_float_amount_title"
-                    android:textColor="@color/open_session_text_color"
-                    android:textSize="@dimen/open_session_float_amount_text_size" />
-
-                <RelativeLayout
-                    android:id="@+id/rl_float_amount"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:background="@drawable/open_session_border_float_amount"
-                    android:paddingBottom="@dimen/layout_margin_5"
-                    android:paddingLeft="@dimen/layout_margin_10"
-                    android:paddingRight="@dimen/layout_margin_10"
-                    android:paddingTop="@dimen/layout_margin_5">
-
-                    <com.magestore.app.view.EditTextFloat
-                        android:id="@+id/et_float_amount"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:background="@color/white"
-                        android:gravity="right"
-                        android:inputType="numberDecimal"
-                        android:textColor="@color/text_color"
-                        android:textSize="@dimen/open_session_title_text_size" />
-                </RelativeLayout>
+                    android:layout_weight="1" />
             </LinearLayout>
         </LinearLayout>
 
@@ -306,6 +320,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/open_session_bg_header_value"
+                android:gravity="right"
                 android:padding="@dimen/layout_margin_10"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/text_size"

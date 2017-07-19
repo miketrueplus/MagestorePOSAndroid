@@ -56,6 +56,7 @@ import com.magestore.app.pos.parse.gson2pos.Gson2PosListStaffPermisson;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosPriceFormatParseImplement;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListTaxClass;
 import com.magestore.app.util.ConfigUtil;
+import com.magestore.app.util.EncryptUntil;
 import com.magestore.app.util.StringUtil;
 
 import org.json.JSONException;
@@ -178,14 +179,15 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
 
         String licensekey = (String) mConfig.getValue("webpos/general/active_key");
         if (licensekey.length() < 68) return false;
-
         CRC32 crc = new CRC32();
         String strExtensionName = licensekey.substring(0, 10) + extensionName;
         crc.update(strExtensionName.getBytes());
         int strDataCrc32 = (int) crc.getValue();
         int crc32Pos = (strDataCrc32 & 0x7FFFFFFF % 51) + 10;
-        String crc32String = licensekey.substring(crc32Pos, (crc32Pos + 10));
-        String key = licensekey.substring(0, crc32Pos) + licensekey.substring((crc32Pos + 13), licensekey.length());
+        int md5Length = 32;
+        String md5String = licensekey.substring(crc32Pos, (crc32Pos + md5Length));
+        int md5StringLength = md5String.length();
+        String key = licensekey.substring(0, crc32Pos) + licensekey.substring((crc32Pos + md5StringLength + 3), licensekey.length());
         try {
             while ((key.length() % 4) != 0) {
                 key += "=";
@@ -194,7 +196,7 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
             if (StringUtil.isNullOrEmpty(licenseString)) return false;
 
             String strlicenseString = licenseString.substring(0, 3);
-            String strlicensekey = licensekey.substring((crc32Pos + 10), (crc32Pos + 10 + 3));
+            String strlicensekey = licensekey.substring((crc32Pos + md5StringLength), (crc32Pos + md5StringLength + 3));
             if (!strlicenseString.equals(strlicensekey)) return false;
 
             String type = licenseString.substring(0, 1);
@@ -211,15 +213,17 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
             if (extensionHash != crc32ExtensionName) return false;
 
             String licenseDomain = licenseString.substring(17, licenseString.length()).replaceAll(" ", "");
-            String checkCRc32 = licensekey.substring(0, crc32Pos) + licensekey.substring((crc32Pos + 10), (crc32Pos + 10) + (licensekey.length() - crc32Pos - 10)) + extensionName + licenseDomain;
-            CRC32 crcCheck = new CRC32();
-            crcCheck.update(checkCRc32.getBytes());
-            long lcrc32String = -1;
-            try {
-                lcrc32String = Long.parseLong(crc32String);
-            } catch (Exception e) {
-            }
-            if (crcCheck.getValue() != lcrc32String) return false;
+            String checkCRc32 = licensekey.substring(0, crc32Pos) + licensekey.substring((crc32Pos + md5StringLength), (crc32Pos + md5StringLength) + (licensekey.length() - crc32Pos - md5StringLength)) + extensionName + licenseDomain;
+//            CRC32 crcCheck = new CRC32();
+//            crcCheck.update(checkCRc32.getBytes());
+//            long lcrc32String = -1;
+//            try {
+//                lcrc32String = Long.parseLong(crc32String);
+//            } catch (Exception e) {
+//            }
+            String md5Check = EncryptUntil.HashMD5(checkCRc32);
+            if (!md5Check.equals(md5String))
+                return false;
 
             String strDate = licenseString.substring(11, 15);
             int resultDate = Integer.parseInt(String.valueOf(strDate), 16);
@@ -247,18 +251,19 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
             } else {
                 licenseDomain = POSDataAccessSession.REST_BASE_URL;
             }
-            String checkCRc32 = licensekey.substring(0, crc32Pos) + licensekey.substring((crc32Pos + 10), (crc32Pos + 10) + (licensekey.length() - crc32Pos - 10)) + extensionName + licenseDomain;
-            CRC32 crcCheck = new CRC32();
-            crcCheck.update(checkCRc32.getBytes());
-            long lcrc32String = -1;
-            try {
-                lcrc32String = Long.parseLong(crc32String);
-            } catch (Exception ex) {
-            }
-            if (crcCheck.getValue() != lcrc32String)
+            String checkCRc32 = licensekey.substring(0, crc32Pos) + licensekey.substring((crc32Pos + md5StringLength), (crc32Pos + md5StringLength) + (licensekey.length() - crc32Pos - md5StringLength)) + extensionName + licenseDomain;
+//            CRC32 crcCheck = new CRC32();
+//            crcCheck.update(checkCRc32.getBytes());
+//            long lcrc32String = -1;
+//            try {
+//                lcrc32String = Long.parseLong(crc32String);
+//            } catch (Exception ex) {
+//            }
+            String md5Check = EncryptUntil.HashMD5(checkCRc32);
+            if (!md5Check.equals(md5String))
                 return false;
-            String type = licensekey.substring(crc32Pos + 10, crc32Pos + 10 + 1);
-            String strexpiredTime = licensekey.substring(crc32Pos + 9, crc32Pos + 9 + 2);
+            String type = licensekey.substring(crc32Pos + md5StringLength, crc32Pos + md5StringLength + 1);
+            String strexpiredTime = licensekey.substring(crc32Pos + md5StringLength + 1, crc32Pos + md5StringLength + 1 + 2);
             int expiredTime = Integer.parseInt(String.valueOf(strexpiredTime), 16);
             if (!checkSameDomain(POSDataAccessSession.REST_BASE_URL, licenseDomain))
                 return false;
