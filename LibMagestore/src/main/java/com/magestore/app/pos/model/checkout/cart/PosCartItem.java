@@ -374,6 +374,11 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     // Params Order Refund
     String return_to_stock;
 
+    @Gson2PosExclude
+    String is_qty_decimal;
+    @Gson2PosExclude
+    boolean isDecimal;
+
     @Override
     public void setQuantity(float param_quantity) {
         qty = Float.toString(param_quantity);
@@ -764,5 +769,13 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     @Override
     public float getRewardpointsBaseDiscount() {
         return rewardpoints_base_discount;
+    }
+
+    @Override
+    public boolean isDecimal() {
+        if (!StringUtil.isNullOrEmpty(is_qty_decimal) && is_qty_decimal.equals("1")) {
+            return true;
+        }
+        return false;
     }
 }

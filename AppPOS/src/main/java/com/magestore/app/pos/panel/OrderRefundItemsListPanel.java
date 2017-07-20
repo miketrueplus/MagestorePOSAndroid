@@ -72,6 +72,8 @@ public class OrderRefundItemsListPanel extends AbstractListPanel<CartItem> {
         binding.setOrderItem(item);
 
         EditTextQuantity edt_qty_to_refund = (EditTextQuantity) view.findViewById(R.id.qty_to_refund);
+        edt_qty_to_refund.setOrderHistory(true);
+        edt_qty_to_refund.setDecimal(item.isDecimal());
         CheckBox cb_return_to_stock = (CheckBox) view.findViewById(R.id.return_to_stock);
         CartItem cartItem = mList.get(position);
         actionQtyToRefund(cartItem, edt_qty_to_refund);

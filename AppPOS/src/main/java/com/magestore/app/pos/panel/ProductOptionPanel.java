@@ -159,6 +159,10 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
     public void bindItem(CartItem item) {
         super.bindItem(item);
 
+        if(item.getProduct() != null){
+            mtxtCartItemQuantity.setDecimal(item.getProduct().isDecimal());
+        }
+
         // đặt giá trị min
         mtxtCartItemQuantity.setMinValue(item.getProduct().getQuantityIncrement());
         mtxtCartItemQuantity.setError(null);
@@ -654,6 +658,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
 
         // text box số lượng
         mtxtCartItemQuantity = (EditTextQuantity) findViewById(R.id.id_txt_product_option_cart_item_quantity);
+        mtxtCartItemQuantity.setProductDetail(true);
 
         // binding
         mBinding = DataBindingUtil.bind(getView());

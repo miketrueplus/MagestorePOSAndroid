@@ -65,6 +65,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
+import java.net.URL;
 import java.security.KeyFactory;
 import java.security.PublicKey;
 import java.security.spec.X509EncodedKeySpec;
@@ -177,6 +178,7 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         ActiveKey activeKey = new PosActiveKey();
         if (mConfig.getValue("webpos/general/active_key") == null) return false;
 
+        String baseUrl = getHostUrl(POSDataAccessSession.REST_BASE_URL);
         String licensekey = (String) mConfig.getValue("webpos/general/active_key");
         if (licensekey.length() < 68) return false;
         CRC32 crc = new CRC32();
@@ -230,7 +232,7 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
             String DATE_FORMAT = "yyyy-MM-dd";
             SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
             String createdDate = sdf.format(new Date(resultDate * 24 * 3600 * 1000L));
-            if (!checkSameDomain(POSDataAccessSession.REST_BASE_URL, licenseDomain)) return false;
+            if (!checkSameDomain(baseUrl, licenseDomain)) return false;
 
             activeKey.setType(type);
             activeKey.setExpiredTime(expiredTime);
@@ -241,15 +243,15 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
             return true;
         } catch (Exception e) {
             String licenseDomain = "";
-            if (POSDataAccessSession.REST_BASE_URL.contains("https://")) {
-                POSDataAccessSession.REST_BASE_URL = POSDataAccessSession.REST_BASE_URL.replace("https://", "");
-            } else if (POSDataAccessSession.REST_BASE_URL.contains("http://")) {
-                POSDataAccessSession.REST_BASE_URL = POSDataAccessSession.REST_BASE_URL.replace("http://", "");
+            if (baseUrl.contains("https://")) {
+                baseUrl = baseUrl.replace("https://", "");
+            } else if (baseUrl.contains("http://")) {
+                baseUrl = baseUrl.replace("http://", "");
             }
-            if (POSDataAccessSession.REST_BASE_URL.length() > 36) {
-                licenseDomain = POSDataAccessSession.REST_BASE_URL.substring(0, 36);
+            if (baseUrl.length() > 36) {
+                licenseDomain = baseUrl.substring(0, 36);
             } else {
-                licenseDomain = POSDataAccessSession.REST_BASE_URL;
+                licenseDomain = baseUrl;
             }
             String checkCRc32 = licensekey.substring(0, crc32Pos) + licensekey.substring((crc32Pos + md5StringLength), (crc32Pos + md5StringLength) + (licensekey.length() - crc32Pos - md5StringLength)) + extensionName + licenseDomain;
 //            CRC32 crcCheck = new CRC32();
@@ -265,7 +267,7 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
             String type = licensekey.substring(crc32Pos + md5StringLength, crc32Pos + md5StringLength + 1);
             String strexpiredTime = licensekey.substring(crc32Pos + md5StringLength + 1, crc32Pos + md5StringLength + 1 + 2);
             int expiredTime = Integer.parseInt(String.valueOf(strexpiredTime), 16);
-            if (!checkSameDomain(POSDataAccessSession.REST_BASE_URL, licenseDomain))
+            if (!checkSameDomain(baseUrl, licenseDomain))
                 return false;
             activeKey.setType(type);
             activeKey.setExpiredTime(expiredTime);
@@ -273,6 +275,18 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
             ConfigUtil.setActiveKey(activeKey);
             ConfigUtil.setIsDevLicense(type.equals("D") ? true : false);
             return true;
+        }
+    }
+
+    private String getHostUrl(String url) {
+        if (StringUtil.isNullOrEmpty(url)) {
+            return "";
+        }
+        try {
+            URL host = new URL(url);
+            return host.getHost();
+        } catch (Exception e) {
+            return url;
         }
     }
 

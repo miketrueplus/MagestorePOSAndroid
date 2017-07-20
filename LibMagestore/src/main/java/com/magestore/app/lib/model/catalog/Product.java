@@ -78,5 +78,7 @@ public interface Product extends Model, ParseModel {
     String getItemId();
     void setItemId(String strItemId);
 
+    boolean isDecimal();
+
 //    List<Stock> getStock();
 }

@@ -84,9 +84,23 @@
     <string name="dialog_cancel">Cancel</string>
     <string name="dialog_save">Save</string>
     <string name="dialog_change_store">Change Store</string>
+    <string name="maximum_quantity_config">Please enter a value less than or equal to %1$s</string>
+    <string name="maximum_quantity_integer">Please enter a value less than or equal to 99999999</string>
+    <string name="maximum_quantity_decimal">Please enter a value less than or equal to 99999999.9999</string>
 
     <string name="msg_press_to_reload">\nPress here to reload</string>
     <string name="msg_no_data">No data to display</string>
 
+    <!--Keyboard-->
+    <string name="number_keyboard_0">0</string>
+    <string name="number_keyboard_1">1</string>
+    <string name="number_keyboard_2">2</string>
+    <string name="number_keyboard_3">3</string>
+    <string name="number_keyboard_4">4</string>
+    <string name="number_keyboard_5">5</string>
+    <string name="number_keyboard_6">6</string>
+    <string name="number_keyboard_7">7</string>
+    <string name="number_keyboard_8">8</string>
+    <string name="number_keyboard_9">9</string>
 </resources>
 

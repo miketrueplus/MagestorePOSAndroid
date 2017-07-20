@@ -86,12 +86,14 @@ public class RegisterShiftListController extends AbstractListController<Register
                     shift_last_title.setLastSevenDay(true);
                     list.add(shift_last_title);
                 } else {
-                    for (RegisterShift shift : list) {
-                        if (!shift.getLastSevenDay()) {
-                            RegisterShift shift_last_title = mRegisterShiftService.create();
-                            shift_last_title.setLastSevenDay(true);
-                            list.add(0, shift_last_title);
-                            break;
+                    if (ConfigUtil.lessThanSevenDay(list.get(0).getOpenedAt())) {
+                        for (RegisterShift shift : list) {
+                            if (!shift.getLastSevenDay()) {
+                                RegisterShift shift_last_title = mRegisterShiftService.create();
+                                shift_last_title.setLastSevenDay(true);
+                                list.add(0, shift_last_title);
+                                break;
+                            }
                         }
                     }
                 }
@@ -118,7 +120,7 @@ public class RegisterShiftListController extends AbstractListController<Register
         if (!first_check) {
             if (list != null && list.size() > 1) {
                 RegisterShift registerShift = list.get(1);
-                if(registerShift.getLessSevenDay()){
+                if (registerShift.getLessSevenDay()) {
                     registerShift = list.get(2);
                 }
                 bindItem(registerShift);
@@ -266,7 +268,7 @@ public class RegisterShiftListController extends AbstractListController<Register
             bindItemCloseSessionPanel(listRegister.get(0));
             isShowLoadingDetail(false);
             int type = (int) wraper.get("cancel_session_type");
-            if(type == 1){
+            if (type == 1) {
                 dismissDialogCloseSession();
             }
         }

@@ -39,7 +39,7 @@ public class PosProduct extends PosAbstractModel implements Product {
     private int max_characters;
     private PosProduct[] custom_options;
     private String category_ids;
-//    private List<PosStock> stock;
+    //    private List<PosStock> stock;
 //    private PosTierPrice[] tier_prices;
     private float price_increment = 0.1f;
     private ProductOption productOption;
@@ -53,6 +53,9 @@ public class PosProduct extends PosAbstractModel implements Product {
     private String minimum_qty = StringUtil.STRING_ONE;
     private String maximum_qty;
     private String qty = maximum_qty;
+    private String is_qty_decimal;
+    @Gson2PosExclude
+    private boolean isDecimal;
 
     @Override
     public boolean isInStock() {
@@ -76,7 +79,8 @@ public class PosProduct extends PosAbstractModel implements Product {
 
     @Override
     public float getMaximumQty() {
-        if (StringUtil.isNullOrEmpty(maximum_qty)) return Float.parseFloat(StringUtil.STRING_TEN_THOUSAND);
+        if (StringUtil.isNullOrEmpty(maximum_qty))
+            return Float.parseFloat(StringUtil.STRING_TEN_THOUSAND);
         return Float.parseFloat(maximum_qty);
     }
 
@@ -92,7 +96,7 @@ public class PosProduct extends PosAbstractModel implements Product {
 
     @Override
     public float getAllowMaxQty() {
-        return  (float) ((getQty() > getMaximumQty()) ? getMaximumQty() : getQty());
+        return (float) ((getQty() > getMaximumQty()) ? getMaximumQty() : getQty());
 //        return (int) getMaximumQty();
 //        int allowMax = (int) (getQty() - getMinimumQty());
 //        int maxQty = (int) getMaximumQty();
@@ -203,10 +207,14 @@ public class PosProduct extends PosAbstractModel implements Product {
     }
 
     @Override
-    public String getName() {return name; }
+    public String getName() {
+        return name;
+    }
 
     @Override
-    public void setName(String name) {this.name = name; }
+    public void setName(String name) {
+        this.name = name;
+    }
 
     @Override
     public Bitmap getBitmap() {
@@ -251,7 +259,7 @@ public class PosProduct extends PosAbstractModel implements Product {
 
     @Override
     public void setQuantityIncrement(float quantityIncrement) {
-        this.qty_increment =  Float.toString(quantityIncrement);
+        this.qty_increment = Float.toString(quantityIncrement);
     }
 
     @Override
@@ -277,6 +285,14 @@ public class PosProduct extends PosAbstractModel implements Product {
     @Override
     public void setItemId(String strItemId) {
         item_id = strItemId;
+    }
+
+    @Override
+    public boolean isDecimal() {
+        if (!StringUtil.isNullOrEmpty(is_qty_decimal) && is_qty_decimal.equals("1")) {
+            return true;
+        }
+        return false;
     }
 
 //    @Override

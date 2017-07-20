@@ -205,4 +205,6 @@ public interface CartItem extends Model {
 
     float getBaseGiftVoucherDiscount();
     float getRewardpointsBaseDiscount();
+
+    boolean isDecimal();
 }

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="popup_staff_permiss_keyboard_size">50dp</dimen>
+    <dimen name="layout_margin_20">20dp</dimen>
+    <dimen name="layout_margin_5">5dp</dimen>
+    <dimen name="line">1dp</dimen>
+    <dimen name="text_size_20">20sp</dimen>
+    <dimen name="cart_option_text_quantity_width">120dp</dimen>
+    <dimen name="popup_height">740dp</dimen>
+</resources>

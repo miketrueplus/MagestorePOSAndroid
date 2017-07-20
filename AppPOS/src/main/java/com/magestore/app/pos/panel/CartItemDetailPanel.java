@@ -92,6 +92,7 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
         mbtnDiscountPercent = (Button) findViewById(R.id.id_btn_cart_item_detail_discount_percent);
 
         mtxtQuantity = (EditTextQuantity) findViewById(R.id.id_txt_cart_item_detail_quantity);
+        mtxtQuantity.setOptionCart(true);
         mtxtCustomPrice = (EditTextFloat) findViewById(R.id.id_txt_cart_item_detail_custom_price);
         mtxtCustomDiscount = (EditTextFloat) findViewById(R.id.id_txt_cart_item_detail_custom_discount);
 
@@ -158,6 +159,10 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
         actionChangeValue(mbtnDiscountFixed, mbtnDiscountPercent, mblnCustomDiscountFixed);
 
         mtxtCustomPrice.setText(item.isCustomPrice() ? ConfigUtil.formatNumber(item.getCustomPrice()) : ConfigUtil.formatNumber(ConfigUtil.convertToPrice(item.getDefaultCustomPrice())));
+
+        if (item.getProduct() != null) {
+            mtxtQuantity.setDecimal(item.getProduct().isDecimal());
+        }
 
         // nhỏ nhất cho ô số lượng
         mtxtQuantity.setMinValue(item.getProduct().getQuantityIncrement());

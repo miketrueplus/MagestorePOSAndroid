@@ -70,6 +70,8 @@ public class OrderShipmentItemsListPanel extends AbstractListPanel<CartItem> {
         mBinding.setOrderItem(item);
 
         EditTextQuantity qty_to_ship = (EditTextQuantity) view.findViewById(R.id.qty_to_ship);
+        qty_to_ship.setOrderHistory(true);
+        qty_to_ship.setDecimal(item.isDecimal());
         actionQtyToShip(item, qty_to_ship);
         item.setOrderItemId(item.getItemId());
     }

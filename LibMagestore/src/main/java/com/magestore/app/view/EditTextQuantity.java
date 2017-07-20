@@ -2,13 +2,24 @@ package com.magestore.app.view;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.text.InputType;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 
+import com.magestore.app.lib.R;
 import com.magestore.app.util.ConfigUtil;
+import com.magestore.app.util.StringUtil;
 
 /**
  * Created by Mike on 1/19/2017.
@@ -22,6 +33,11 @@ public class EditTextQuantity extends EditText {
     float mintMaxValue;
     boolean mblnHaveMinValue;
     boolean mblnHaveMaxValue;
+    boolean checkQuantity;
+    boolean isDecimal;
+    boolean isOptionCart;
+    boolean isProductDetail;
+    boolean isOrderHistory;
 
     public EditTextQuantity(Context context) {
         super(context);
@@ -54,7 +70,7 @@ public class EditTextQuantity extends EditText {
 //    }
 
     protected void initModel() {
-        setInputType(InputType.TYPE_CLASS_PHONE);
+        setInputType(InputType.TYPE_NULL);
 //        DigitsKeyListener.getInstance("123");
 //        setKeyListener(DigitsKeyListener.getInstance(ConfigUtil.getFloatDigit()));
     }
@@ -90,6 +106,7 @@ public class EditTextQuantity extends EditText {
 
     /**
      * Tăng giá trị
+     *
      * @param addValue
      */
     public void add(float addValue) {
@@ -101,6 +118,7 @@ public class EditTextQuantity extends EditText {
 
     /**
      * Trừ giá trị
+     *
      * @param addValue
      */
     public void substract(float addValue) {
@@ -112,6 +130,7 @@ public class EditTextQuantity extends EditText {
 
     /**
      * Đặt giá trị min
+     *
      * @param minValue
      */
     public void setMinValue(float minValue) {
@@ -121,6 +140,7 @@ public class EditTextQuantity extends EditText {
 
     /**
      * Đặt giá trị max
+     *
      * @param maxValue
      */
     public void setMaxValue(int maxValue) {
@@ -128,25 +148,221 @@ public class EditTextQuantity extends EditText {
         mblnHaveMaxValue = true;
     }
 
+    public void setOptionCart(boolean optionCart) {
+        isOptionCart = optionCart;
+    }
+
+    public void setProductDetail(boolean productDetail) {
+        isProductDetail = productDetail;
+    }
+
+    public void setOrderHistory(boolean orderHistory) {
+        isOrderHistory = orderHistory;
+    }
+
+    public void setDecimal(boolean decimal) {
+        isDecimal = decimal;
+    }
+
     /**
      * Chuẩn bị các sự kiện
      */
     protected void initEvent() {
-        setOnFocusChangeListener(new OnFocusChangeListener() {
+        setOnTouchListener(new OnTouchListener() {
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    // lấy giá trị trong ô text, căn lại giữa max và min
-                    float value = ConfigUtil.parseFloat(ConfigUtil.truncateFloatDigit(getText().toString()));
-                    if (mblnHaveMinValue && value < mintMinValue) value = mintMinValue;
-                    if (mblnHaveMaxValue && value > mintMaxValue) value = mintMaxValue;
-                    setText(ConfigUtil.formatQuantity(value));
-                    clearFocus();
-                } else {
-                    // fill giá trị vào, nguyên số để edit, bỏ ký tự tiền
-                    selectAll();
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                int inType = getInputType();       // Backup the input type
+                setCursorVisible(false);
+                setInputType(InputType.TYPE_NULL); // Disable standard keyboard
+                onTouchEvent(motionEvent);               // Call native handler
+                setInputType(inType); // Restore input type
+                setSelection(0, getText().length());
+                if (popupWindow == null || !popupWindow.isShowing()) {
+                    showCustomKeyboard();
+                }
+                return true; // Consume touch event
+            }
+        });
+    }
+
+    @Override
+    protected void onFocusChanged(boolean focused, int direction, Rect previouslyFocusedRect) {
+        super.onFocusChanged(focused, direction, previouslyFocusedRect);
+//        if (!focused) {
+        // lấy giá trị trong ô text, căn lại giữa max và min
+//            float value = ConfigUtil.parseFloat(ConfigUtil.truncateFloatDigit(getText().toString()));
+//                    if (mblnHaveMinValue && value < mintMinValue) value = mintMinValue;
+//                    if (mblnHaveMaxValue && value > mintMaxValue) value = mintMaxValue;
+//            setText(ConfigUtil.formatQuantity(value));
+
+//        } else {
+//            clearFocus();
+        // fill giá trị vào, nguyên số để edit, bỏ ký tự tiền
+//            selectAll();
+//        }
+    }
+
+    private PopupWindow popupWindow;
+    private RelativeLayout rl_number_0, rl_number_1, rl_number_2, rl_number_3, rl_number_4, rl_number_5, rl_number_6, rl_number_7, rl_number_8, rl_number_9, rl_number_delete;
+    private ImageView im_arrow_up, im_arrow_down;
+
+    private void showCustomKeyboard() {
+        LayoutInflater layoutInflater = (LayoutInflater) getContext().getSystemService(getContext().LAYOUT_INFLATER_SERVICE);
+        View popupView = layoutInflater.inflate(R.layout.layout_popup_keyboard, null);
+        im_arrow_up = (ImageView) popupView.findViewById(R.id.im_arrow_up);
+        im_arrow_down = (ImageView) popupView.findViewById(R.id.im_arrow_down);
+        rl_number_0 = (RelativeLayout) popupView.findViewById(R.id.rl_number_0);
+        rl_number_1 = (RelativeLayout) popupView.findViewById(R.id.rl_number_1);
+        rl_number_2 = (RelativeLayout) popupView.findViewById(R.id.rl_number_2);
+        rl_number_3 = (RelativeLayout) popupView.findViewById(R.id.rl_number_3);
+        rl_number_4 = (RelativeLayout) popupView.findViewById(R.id.rl_number_4);
+        rl_number_5 = (RelativeLayout) popupView.findViewById(R.id.rl_number_5);
+        rl_number_6 = (RelativeLayout) popupView.findViewById(R.id.rl_number_6);
+        rl_number_7 = (RelativeLayout) popupView.findViewById(R.id.rl_number_7);
+        rl_number_8 = (RelativeLayout) popupView.findViewById(R.id.rl_number_8);
+        rl_number_9 = (RelativeLayout) popupView.findViewById(R.id.rl_number_9);
+        rl_number_delete = (RelativeLayout) popupView.findViewById(R.id.rl_number_delete);
+        rl_number_0.setOnClickListener(onClickNumberKeyboard);
+        rl_number_1.setOnClickListener(onClickNumberKeyboard);
+        rl_number_2.setOnClickListener(onClickNumberKeyboard);
+        rl_number_3.setOnClickListener(onClickNumberKeyboard);
+        rl_number_4.setOnClickListener(onClickNumberKeyboard);
+        rl_number_5.setOnClickListener(onClickNumberKeyboard);
+        rl_number_6.setOnClickListener(onClickNumberKeyboard);
+        rl_number_7.setOnClickListener(onClickNumberKeyboard);
+        rl_number_8.setOnClickListener(onClickNumberKeyboard);
+        rl_number_9.setOnClickListener(onClickNumberKeyboard);
+        rl_number_delete.setOnClickListener(onClickNumberKeyboard);
+        checkQuantity = false;
+        popupWindow = new PopupWindow(
+                popupView,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setFocusable(true);
+        // Removes default background.
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        if (isOptionCart) {
+            im_arrow_up.setVisibility(VISIBLE);
+            im_arrow_down.setVisibility(GONE);
+            int popup_x = (int) ((0 - (getContext().getResources().getDimension(R.dimen.cart_option_text_quantity_width) / 2)) + getContext().getResources().getDimension(R.dimen.layout_margin_5));
+            popupWindow.showAsDropDown(this, popup_x, 0);
+        } else if (isProductDetail) {
+            im_arrow_up.setVisibility(GONE);
+            im_arrow_down.setVisibility(VISIBLE);
+            int popup_x = (int) ((0 - (getContext().getResources().getDimension(R.dimen.cart_option_text_quantity_width) / 2)) + getContext().getResources().getDimension(R.dimen.layout_margin_5));
+            popupWindow.showAsDropDown(this, popup_x, (int) (0 - (this.getHeight() + getContext().getResources().getDimension(R.dimen.popup_height))));
+        } else if (isOrderHistory) {
+            popupWindow.showAsDropDown(this, this.getWidth(), this.getHeight());
+        }
+
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                if (!StringUtil.isNullOrEmpty(getText().toString())) {
+                    setSelection(getText().toString().length());
                 }
             }
         });
+    }
+
+    View.OnClickListener onClickNumberKeyboard = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            int id = view.getId();
+            if (!checkQuantity) {
+                setText(isDecimal ? "0.00" : "0");
+            }
+            if (id == R.id.rl_number_0) {
+                actionCharacterKeyboard(getContext().getString(R.string.number_keyboard_0));
+            } else if (id == R.id.rl_number_1) {
+                actionCharacterKeyboard(getContext().getString(R.string.number_keyboard_1));
+            } else if (id == R.id.rl_number_2) {
+                actionCharacterKeyboard(getContext().getString(R.string.number_keyboard_2));
+            } else if (id == R.id.rl_number_3) {
+                actionCharacterKeyboard(getContext().getString(R.string.number_keyboard_3));
+            } else if (id == R.id.rl_number_4) {
+                actionCharacterKeyboard(getContext().getString(R.string.number_keyboard_4));
+            } else if (id == R.id.rl_number_5) {
+                actionCharacterKeyboard(getContext().getString(R.string.number_keyboard_5));
+            } else if (id == R.id.rl_number_6) {
+                actionCharacterKeyboard(getContext().getString(R.string.number_keyboard_6));
+            } else if (id == R.id.rl_number_7) {
+                actionCharacterKeyboard(getContext().getString(R.string.number_keyboard_7));
+            } else if (id == R.id.rl_number_8) {
+                actionCharacterKeyboard(getContext().getString(R.string.number_keyboard_8));
+            } else if (id == R.id.rl_number_9) {
+                actionCharacterKeyboard(getContext().getString(R.string.number_keyboard_9));
+            } else if (id == R.id.rl_number_delete) {
+                if (!StringUtil.isNullOrEmpty(getText().toString())) {
+                    String text_value = getText().toString();
+                    if (isDecimal) {
+                        String value = StringUtil.removeAllSymbol(text_value);
+                        String text = value.substring(0, value.length() - 1);
+                        float decimal_quantity = convertToPrice(text);
+                        if (decimal_quantity < mintMinValue) {
+                            setText(ConfigUtil.formatNumber(mintMinValue));
+                            setSelection(0, getText().length());
+                            checkQuantity = false;
+                        } else {
+                            setText(ConfigUtil.formatNumber(decimal_quantity));
+                            checkQuantity = true;
+                        }
+                    } else {
+                        if (text_value.length() == 1) {
+                            setText(String.valueOf((int) mintMinValue));
+                            setSelection(0, getText().length());
+                            checkQuantity = false;
+                        } else {
+                            String value = StringUtil.removeAllSymbol(text_value);
+                            String text = value.substring(0, value.length() - 1);
+                            long quantity = Long.parseLong(text);
+                            setText(String.valueOf(quantity));
+                            checkQuantity = true;
+                        }
+                    }
+                }
+            }
+        }
+    };
+
+    private void actionCharacterKeyboard(String charater) {
+        String text_value = getText().toString();
+        String value = StringUtil.removeAllSymbol(text_value);
+        String text = value + charater;
+        if (isDecimal) {
+            float decimal_quantity = convertToPrice(text);
+            if (mblnHaveMaxValue && decimal_quantity > mintMaxValue) {
+                mintMaxValue = (int) mintMaxValue;
+                setError(getContext().getString(R.string.maximum_quantity_config, String.valueOf(mintMaxValue)));
+                return;
+            }
+            if (decimal_quantity <= 99999999.9999) {
+                setText(ConfigUtil.formatNumber(decimal_quantity));
+            } else {
+                setError(getContext().getString(R.string.maximum_quantity_decimal));
+            }
+        } else {
+            long quantity = Long.parseLong(text);
+            if (mblnHaveMaxValue && quantity > mintMaxValue) {
+                mintMaxValue = (int) mintMaxValue;
+                setError(getContext().getString(R.string.maximum_quantity_config, String.valueOf(mintMaxValue)));
+                return;
+            }
+            if (quantity <= 99999999) {
+                setText(String.valueOf(quantity));
+            } else {
+                setError(getContext().getString(R.string.maximum_quantity_integer));
+            }
+        }
+        checkQuantity = true;
+    }
+
+    private float convertToPrice(String amount) {
+        String decima_symbol = ConfigUtil.getConfigPriceFormat().getDecimalSymbol();
+        String text_f = amount.substring(0, amount.length() - 2);
+        String text_s = amount.substring(amount.length() - 2, amount.length());
+        return ConfigUtil.parseFloat(text_f + decima_symbol + text_s);
     }
 }

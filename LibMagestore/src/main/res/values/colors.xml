@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="text_color">#273746</color>
+    <color name="keyboard_bg">#aeb4ba</color>
+    <color name="app_color">#1e88e5</color>
+    <color name="white">#ffffff</color>
+</resources>
