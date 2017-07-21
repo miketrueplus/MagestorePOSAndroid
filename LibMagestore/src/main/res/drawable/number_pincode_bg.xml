@@ -4,8 +4,8 @@
         android:state_focused="false"
         android:state_selected="false"
         android:state_pressed="false"
-        android:drawable="@drawable/border_number_keyboard" />
+        android:drawable="@drawable/border_number_keyboard_lib" />
     <!-- Pressed state -->
     <item
         android:state_pressed="true"
-        android:drawable="@drawable/border_number_keyboard_select" /></selector>
+        android:drawable="@drawable/border_number_keyboard_lib_select" /></selector>

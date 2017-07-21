@@ -74,6 +74,7 @@ public class CheckoutCustomSalePanel extends AbstractDetailPanel<CartItem> {
 //        addView(view);
         s_tax_class = (SimpleSpinner) getView().findViewById(R.id.s_tax_class);
         mtxtPrice = (EditTextFloat) getView().findViewById(R.id.id_txt_custom_sale_price);
+        mtxtPrice.setPriceFormat(true);
         mtxtName = (EditText) getView().findViewById(R.id.id_txt_custom_sale_name);
 
         mBinding = DataBindingUtil.bind(getView());

@@ -56,4 +56,5 @@ dependencies {
     }
     compile 'com.stripe:stripe-android:4.0.3'
     compile 'net.authorize:accept-android-sdk:+'
+    compile 'com.labo.kaji:relativepopupwindow:0.3.1'
 }

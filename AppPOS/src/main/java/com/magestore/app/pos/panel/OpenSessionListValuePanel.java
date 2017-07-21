@@ -18,6 +18,7 @@ import com.magestore.app.pos.databinding.CardOpenSessionListContentBinding;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.view.EditTextFloat;
 import com.magestore.app.view.EditTextInteger;
+import com.magestore.app.view.EditTextQuantity;
 
 import java.util.HashMap;
 
@@ -31,7 +32,7 @@ public class OpenSessionListValuePanel extends AbstractSimpleRecycleView<OpenSes
     public static int TYPE_CLOSE_SESSION = 1;
     public static int TYPE_OPEN_SESSION_IN_REGISTER = 2;
     HashMap<OpenSessionValue, EditTextFloat> mapValue;
-    HashMap<OpenSessionValue, EditTextInteger> mapAmount;
+    HashMap<OpenSessionValue, EditTextQuantity> mapAmount;
     HashMap<OpenSessionValue, TextView> mapSubtotal;
     HashMap<OpenSessionValue, Float> mapTotal;
     SessionController mSessionController;
@@ -82,7 +83,7 @@ public class OpenSessionListValuePanel extends AbstractSimpleRecycleView<OpenSes
         mBinding.setOpenSessionValue(item);
         EditTextFloat et_value = (EditTextFloat) view.findViewById(R.id.et_value);
         mapValue.put(item, et_value);
-        EditTextInteger et_amount = (EditTextInteger) view.findViewById(R.id.et_amount);
+        EditTextQuantity et_amount = (EditTextQuantity) view.findViewById(R.id.et_amount);
         mapAmount.put(item, et_amount);
         TextView tv_subtotal = (TextView) view.findViewById(R.id.tv_subtotal);
         mapSubtotal.put(item, tv_subtotal);
@@ -141,7 +142,7 @@ public class OpenSessionListValuePanel extends AbstractSimpleRecycleView<OpenSes
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 float value = et_value.getValueFloat();
-                EditTextInteger et_amount = mapAmount.get(item);
+                EditTextQuantity et_amount = mapAmount.get(item);
                 int amount = 0;
                 if (et_amount != null) {
                     amount = et_amount.getValueInteger();
@@ -165,7 +166,7 @@ public class OpenSessionListValuePanel extends AbstractSimpleRecycleView<OpenSes
         });
     }
 
-    private void actionChangeAmount(final OpenSessionValue item, final EditTextInteger et_amount) {
+    private void actionChangeAmount(final OpenSessionValue item, final EditTextQuantity et_amount) {
         et_amount.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {

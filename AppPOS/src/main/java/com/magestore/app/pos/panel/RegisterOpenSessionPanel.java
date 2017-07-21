@@ -76,6 +76,7 @@ public class RegisterOpenSessionPanel extends AbstractDetailPanel<RegisterShift>
         sp_pos = (SimpleSpinner) view.findViewById(R.id.sp_pos);
         error_pos = (TextView) view.findViewById(R.id.error_pos);
         et_float_amount = (EditTextFloat) view.findViewById(R.id.et_float_amount);
+        et_float_amount.setPriceFormat(true);
         bt_open = (Button) view.findViewById(R.id.bt_open);
         bt_open_balance = (Button) view.findViewById(R.id.bt_open_balance);
         rl_add_value = (RelativeLayout) view.findViewById(R.id.rl_add_value);
@@ -90,6 +91,8 @@ public class RegisterOpenSessionPanel extends AbstractDetailPanel<RegisterShift>
 
     @Override
     public void initValue() {
+        et_float_amount.setText(ConfigUtil.formatPrice(0));
+
         rl_add_value.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -103,7 +106,7 @@ public class RegisterOpenSessionPanel extends AbstractDetailPanel<RegisterShift>
             @Override
             public void onClick(View view) {
                 if (bt_open.getText().toString().equals(getContext().getString(R.string.confirm))) {
-                    et_float_amount.setText(ConfigUtil.formatNumber(total_value));
+                    et_float_amount.setText(ConfigUtil.formatPrice(total_value));
                     rl_set_balance.setVisibility(GONE);
                     ll_open_balance.setVisibility(VISIBLE);
                     tv_session_title.setText(getContext().getString(R.string.open_session_title));

@@ -29,7 +29,7 @@
             android:textColor="@color/text_color"
             android:textSize="@dimen/text_size" />
 
-        <com.magestore.app.view.EditTextInteger
+        <com.magestore.app.view.EditTextQuantity
             android:id="@+id/et_amount"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

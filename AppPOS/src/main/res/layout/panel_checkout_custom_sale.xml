@@ -61,7 +61,7 @@
                 android:background="@color/white"
                 android:hint="@string/price"
                 android:inputType="numberDecimal"
-                android:text="@{ConfigUtil.formatNumber(cartItem.getUnitPrice())}" />
+                android:text="@{ConfigUtil.formatPrice(cartItem.getUnitPrice())}" />
         </LinearLayout>
 
         <LinearLayout

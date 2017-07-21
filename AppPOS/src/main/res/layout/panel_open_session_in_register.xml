@@ -129,7 +129,7 @@
                             android:background="@color/white"
                             android:gravity="right"
                             android:inputType="numberDecimal"
-                            android:textColor="@color/text_color"
+                            android:textColor="@color/app_color"
                             android:textSize="@dimen/open_session_title_text_size" />
                     </RelativeLayout>
                 </LinearLayout>

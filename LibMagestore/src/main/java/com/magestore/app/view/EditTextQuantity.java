@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
+import com.labo.kaji.relativepopupwindow.RelativePopupWindow;
 import com.magestore.app.lib.R;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.StringUtil;
@@ -177,7 +178,7 @@ public class EditTextQuantity extends EditText {
                 onTouchEvent(motionEvent);               // Call native handler
                 setInputType(inType); // Restore input type
                 setSelection(0, getText().length());
-                if (popupWindow == null || !popupWindow.isShowing()) {
+                if (exampleCardPopup == null || !exampleCardPopup.isShowing()) {
                     showCustomKeyboard();
                 }
                 return true; // Consume touch event
@@ -203,14 +204,17 @@ public class EditTextQuantity extends EditText {
     }
 
     private PopupWindow popupWindow;
-    private RelativeLayout rl_number_0, rl_number_1, rl_number_2, rl_number_3, rl_number_4, rl_number_5, rl_number_6, rl_number_7, rl_number_8, rl_number_9, rl_number_delete;
-    private ImageView im_arrow_up, im_arrow_down;
+    private RelativeLayout rl_number_0, rl_number_1, rl_number_2, rl_number_3, rl_number_4, rl_number_5, rl_number_6, rl_number_7, rl_number_8, rl_number_9, rl_number_delete, rl_number_00;
+    private ImageView im_arrow_up, im_arrow_down, im_arrow_left;
+    ExampleCardPopup exampleCardPopup;
 
     private void showCustomKeyboard() {
         LayoutInflater layoutInflater = (LayoutInflater) getContext().getSystemService(getContext().LAYOUT_INFLATER_SERVICE);
         View popupView = layoutInflater.inflate(R.layout.layout_popup_keyboard, null);
         im_arrow_up = (ImageView) popupView.findViewById(R.id.im_arrow_up);
         im_arrow_down = (ImageView) popupView.findViewById(R.id.im_arrow_down);
+        im_arrow_left = (ImageView) popupView.findViewById(R.id.im_arrow_left);
+        rl_number_00 = (RelativeLayout) popupView.findViewById(R.id.rl_number_00);
         rl_number_0 = (RelativeLayout) popupView.findViewById(R.id.rl_number_0);
         rl_number_1 = (RelativeLayout) popupView.findViewById(R.id.rl_number_1);
         rl_number_2 = (RelativeLayout) popupView.findViewById(R.id.rl_number_2);
@@ -222,6 +226,7 @@ public class EditTextQuantity extends EditText {
         rl_number_8 = (RelativeLayout) popupView.findViewById(R.id.rl_number_8);
         rl_number_9 = (RelativeLayout) popupView.findViewById(R.id.rl_number_9);
         rl_number_delete = (RelativeLayout) popupView.findViewById(R.id.rl_number_delete);
+        rl_number_00.setOnClickListener(onClickNumberKeyboard);
         rl_number_0.setOnClickListener(onClickNumberKeyboard);
         rl_number_1.setOnClickListener(onClickNumberKeyboard);
         rl_number_2.setOnClickListener(onClickNumberKeyboard);
@@ -234,34 +239,53 @@ public class EditTextQuantity extends EditText {
         rl_number_9.setOnClickListener(onClickNumberKeyboard);
         rl_number_delete.setOnClickListener(onClickNumberKeyboard);
         checkQuantity = false;
-        popupWindow = new PopupWindow(
-                popupView,
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-        popupWindow.setOutsideTouchable(true);
-        popupWindow.setFocusable(true);
-        // Removes default background.
-        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        exampleCardPopup = new ExampleCardPopup(getContext(), popupView);
+        exampleCardPopup.setOutsideTouchable(true);
+        exampleCardPopup.setFocusable(true);
+//        // Removes default background.
+        exampleCardPopup.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//        popupWindow = new PopupWindow(
+//                popupView,
+//                LinearLayout.LayoutParams.WRAP_CONTENT,
+//                LinearLayout.LayoutParams.WRAP_CONTENT);
+//        popupWindow.setOutsideTouchable(true);
+//        popupWindow.setFocusable(true);
+//        // Removes default background.
+//        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         if (isOptionCart) {
             im_arrow_up.setVisibility(VISIBLE);
             im_arrow_down.setVisibility(GONE);
-            int popup_x = (int) ((0 - (getContext().getResources().getDimension(R.dimen.cart_option_text_quantity_width) / 2)) + getContext().getResources().getDimension(R.dimen.layout_margin_5));
-            popupWindow.showAsDropDown(this, popup_x, 0);
+            im_arrow_left.setVisibility(GONE);
+//            int popup_x = (int) ((0 - (getContext().getResources().getDimension(R.dimen.cart_option_text_quantity_width) / 2)) + getContext().getResources().getDimension(R.dimen.layout_margin_5));
+//            popupWindow.showAsDropDown(this, popup_x, 0);
+            exampleCardPopup.showOnAnchor(this, RelativePopupWindow.VerticalPosition.BELOW, RelativePopupWindow.HorizontalPosition.CENTER);
         } else if (isProductDetail) {
             im_arrow_up.setVisibility(GONE);
             im_arrow_down.setVisibility(VISIBLE);
-            int popup_x = (int) ((0 - (getContext().getResources().getDimension(R.dimen.cart_option_text_quantity_width) / 2)) + getContext().getResources().getDimension(R.dimen.layout_margin_5));
-            popupWindow.showAsDropDown(this, popup_x, (int) (0 - (this.getHeight() + getContext().getResources().getDimension(R.dimen.popup_height))));
+            im_arrow_left.setVisibility(GONE);
+//            int popup_x = (int) ((0 - (getContext().getResources().getDimension(R.dimen.cart_option_text_quantity_width) / 2)) + getContext().getResources().getDimension(R.dimen.layout_margin_5));
+//            popupWindow.showAsDropDown(this, popup_x, (int) (0 - (this.getHeight() + getContext().getResources().getDimension(R.dimen.popup_height))));
+            exampleCardPopup.showOnAnchor(this, RelativePopupWindow.VerticalPosition.ABOVE, RelativePopupWindow.HorizontalPosition.CENTER);
         } else if (isOrderHistory) {
-            popupWindow.showAsDropDown(this, this.getWidth(), this.getHeight());
+//            popupWindow.showAsDropDown(this, this.getWidth(), this.getHeight());
+            im_arrow_up.setVisibility(GONE);
+            im_arrow_down.setVisibility(GONE);
+            im_arrow_left.setVisibility(VISIBLE);
+            exampleCardPopup.showOnAnchor(this, RelativePopupWindow.VerticalPosition.ALIGN_TOP, RelativePopupWindow.HorizontalPosition.RIGHT);
+        } else {
+            im_arrow_up.setVisibility(VISIBLE);
+            im_arrow_down.setVisibility(GONE);
+            im_arrow_left.setVisibility(GONE);
+            exampleCardPopup.showOnAnchor(this, RelativePopupWindow.VerticalPosition.BELOW, RelativePopupWindow.HorizontalPosition.CENTER);
         }
 
-        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+        exampleCardPopup.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
                 if (!StringUtil.isNullOrEmpty(getText().toString())) {
                     setSelection(getText().toString().length());
+                    setError(null);
                 }
             }
         });
@@ -274,7 +298,9 @@ public class EditTextQuantity extends EditText {
             if (!checkQuantity) {
                 setText(isDecimal ? "0.00" : "0");
             }
-            if (id == R.id.rl_number_0) {
+            if (id == R.id.rl_number_00) {
+                actionCharacterKeyboard(getContext().getString(R.string.number_keyboard_00));
+            } else if (id == R.id.rl_number_0) {
                 actionCharacterKeyboard(getContext().getString(R.string.number_keyboard_0));
             } else if (id == R.id.rl_number_1) {
                 actionCharacterKeyboard(getContext().getString(R.string.number_keyboard_1));
@@ -322,6 +348,7 @@ public class EditTextQuantity extends EditText {
                             checkQuantity = true;
                         }
                     }
+                    setError(null);
                 }
             }
         }

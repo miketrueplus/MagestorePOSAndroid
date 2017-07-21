@@ -4,5 +4,5 @@
         android:width="@dimen/line"
         android:color="@color/keyboard_bg" />
 
-    <solid android:color="#ddd" />
+    <solid android:color="#70ffffff" />
 </shape>

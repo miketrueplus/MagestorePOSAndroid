@@ -14,12 +14,24 @@
         android:rotation="180"
         android:src="@drawable/ic_arrow_down" />
 
+    <ImageView
+        android:id="@+id/im_arrow_left"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:rotation="90"
+        android:layout_marginRight="-20dp"
+        android:src="@drawable/ic_arrow_down"
+        android:visibility="gone" />
+
     <LinearLayout
+        android:id="@+id/ll_keyboard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/im_arrow_down"
         android:layout_below="@+id/im_arrow_up"
-        android:background="@color/white"
+        android:layout_toRightOf="@+id/im_arrow_left"
+        android:background="#ddd"
         android:orientation="vertical"
         android:paddingLeft="@dimen/layout_margin_20"
         android:paddingRight="@dimen/layout_margin_20">
@@ -42,7 +54,7 @@
                     android:layout_width="@dimen/popup_staff_permiss_keyboard_size"
                     android:layout_height="@dimen/popup_staff_permiss_keyboard_size"
                     android:layout_marginRight="@dimen/layout_margin_20"
-                    android:background="@drawable/number_pincode_background"
+                    android:background="@drawable/number_pincode_bg"
                     android:clickable="true">
 
                     <TextView
@@ -60,7 +72,7 @@
                     android:layout_width="@dimen/popup_staff_permiss_keyboard_size"
                     android:layout_height="@dimen/popup_staff_permiss_keyboard_size"
                     android:layout_marginRight="@dimen/layout_margin_20"
-                    android:background="@drawable/number_pincode_background"
+                    android:background="@drawable/number_pincode_bg"
                     android:clickable="true">
 
                     <TextView
@@ -76,7 +88,7 @@
                     android:id="@+id/rl_number_3"
                     android:layout_width="@dimen/popup_staff_permiss_keyboard_size"
                     android:layout_height="@dimen/popup_staff_permiss_keyboard_size"
-                    android:background="@drawable/number_pincode_background"
+                    android:background="@drawable/number_pincode_bg"
                     android:clickable="true">
 
                     <TextView
@@ -107,7 +119,7 @@
                     android:layout_width="@dimen/popup_staff_permiss_keyboard_size"
                     android:layout_height="@dimen/popup_staff_permiss_keyboard_size"
                     android:layout_marginRight="@dimen/layout_margin_20"
-                    android:background="@drawable/number_pincode_background"
+                    android:background="@drawable/number_pincode_bg"
                     android:clickable="true">
 
                     <TextView
@@ -125,7 +137,7 @@
                     android:layout_width="@dimen/popup_staff_permiss_keyboard_size"
                     android:layout_height="@dimen/popup_staff_permiss_keyboard_size"
                     android:layout_marginRight="@dimen/layout_margin_20"
-                    android:background="@drawable/number_pincode_background"
+                    android:background="@drawable/number_pincode_bg"
                     android:clickable="true">
 
                     <TextView
@@ -141,7 +153,7 @@
                     android:id="@+id/rl_number_6"
                     android:layout_width="@dimen/popup_staff_permiss_keyboard_size"
                     android:layout_height="@dimen/popup_staff_permiss_keyboard_size"
-                    android:background="@drawable/number_pincode_background"
+                    android:background="@drawable/number_pincode_bg"
                     android:clickable="true">
 
                     <TextView
@@ -172,7 +184,7 @@
                     android:layout_width="@dimen/popup_staff_permiss_keyboard_size"
                     android:layout_height="@dimen/popup_staff_permiss_keyboard_size"
                     android:layout_marginRight="@dimen/layout_margin_20"
-                    android:background="@drawable/number_pincode_background"
+                    android:background="@drawable/number_pincode_bg"
                     android:clickable="true">
 
                     <TextView
@@ -190,7 +202,7 @@
                     android:layout_width="@dimen/popup_staff_permiss_keyboard_size"
                     android:layout_height="@dimen/popup_staff_permiss_keyboard_size"
                     android:layout_marginRight="@dimen/layout_margin_20"
-                    android:background="@drawable/number_pincode_background"
+                    android:background="@drawable/number_pincode_bg"
                     android:clickable="true">
 
                     <TextView
@@ -206,7 +218,7 @@
                     android:id="@+id/rl_number_9"
                     android:layout_width="@dimen/popup_staff_permiss_keyboard_size"
                     android:layout_height="@dimen/popup_staff_permiss_keyboard_size"
-                    android:background="@drawable/number_pincode_background"
+                    android:background="@drawable/number_pincode_bg"
                     android:clickable="true">
 
                     <TextView
@@ -233,16 +245,28 @@
                 android:orientation="horizontal">
 
                 <RelativeLayout
+                    android:id="@+id/rl_number_00"
                     android:layout_width="@dimen/popup_staff_permiss_keyboard_size"
                     android:layout_height="@dimen/popup_staff_permiss_keyboard_size"
-                    android:layout_marginRight="@dimen/layout_margin_20" />
+                    android:layout_marginRight="@dimen/layout_margin_20"
+                    android:background="@drawable/number_pincode_bg"
+                    android:clickable="true">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="@string/number_keyboard_00"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/text_size_20" />
+                </RelativeLayout>
 
                 <RelativeLayout
                     android:id="@+id/rl_number_0"
                     android:layout_width="@dimen/popup_staff_permiss_keyboard_size"
                     android:layout_height="@dimen/popup_staff_permiss_keyboard_size"
                     android:layout_marginRight="@dimen/layout_margin_20"
-                    android:background="@drawable/number_pincode_background"
+                    android:background="@drawable/number_pincode_bg"
                     android:clickable="true">
 
                     <TextView
@@ -258,7 +282,7 @@
                     android:id="@+id/rl_number_delete"
                     android:layout_width="@dimen/popup_staff_permiss_keyboard_size"
                     android:layout_height="@dimen/popup_staff_permiss_keyboard_size"
-                    android:background="@drawable/number_pincode_background"
+                    android:background="@drawable/number_pincode_bg"
                     android:clickable="true">
 
                     <ImageView
@@ -275,9 +299,9 @@
         android:id="@+id/im_arrow_down"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/ll_keyboard"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="-10dp"
-        android:layout_marginTop="-10dp"
+        android:layout_marginTop="-20dp"
         android:src="@drawable/ic_arrow_down" />
 </RelativeLayout>

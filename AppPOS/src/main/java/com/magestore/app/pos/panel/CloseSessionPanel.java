@@ -73,6 +73,7 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
         make_adjustment_take_money = (TextView) findViewById(R.id.make_adjustment_take_money);
         rl_add_value = (RelativeLayout) findViewById(R.id.rl_add_value);
         et_r_close_balance = (EditTextFloat) view.findViewById(R.id.et_r_close_balance);
+        et_r_close_balance.setPriceFormat(true);
         tv_t_close_balance = (TextView) view.findViewById(R.id.tv_t_close_balance);
         tv_open_session_balance = (TextView) view.findViewById(R.id.tv_open_session_balance);
         tv_transaction = (TextView) view.findViewById(R.id.tv_transaction);
@@ -94,6 +95,7 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
 
     @Override
     public void initValue() {
+        et_r_close_balance.setText(ConfigUtil.formatPrice(0));
         tv_difference.setText(ConfigUtil.formatPrice(0));
         close_session_list_panel.setRegisterShiftListController((RegisterShiftListController) mController);
         ((RegisterShiftListController) mController).setOpenSessionListPanel(close_session_list_panel);
@@ -130,7 +132,7 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
         ll_sale_summary.setVisibility(item.checkSaleSummary() ? VISIBLE : GONE);
         mCloseSessionSaleListController.doSelectRegisterShift(item);
         if (item.getStatus().equals(CLOSE_SESSION)) {
-            et_r_close_balance.setText(ConfigUtil.formatNumber(ConfigUtil.convertToPrice(item.getBaseClosedAmount())));
+            et_r_close_balance.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(item.getBaseClosedAmount())));
             et_note.setText(item.getClosedNote());
             bt_cancel.setVisibility(VISIBLE);
             bt_adjustment.setVisibility(GONE);
@@ -162,7 +164,7 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
             @Override
             public void onClick(View view) {
                 if (bt_close.getText().toString().equals(getContext().getString(R.string.confirm))) {
-                    et_r_close_balance.setText(ConfigUtil.formatNumber(total_value));
+                    et_r_close_balance.setText(ConfigUtil.formatPrice(total_value));
                     bt_adjustment.setText(getContext().getString(R.string.register_shift_dialog_close_set_balance));
                     bt_adjustment.setTextColor(ContextCompat.getColor(getContext(), R.color.app_color));
                     rl_content.setVisibility(VISIBLE);

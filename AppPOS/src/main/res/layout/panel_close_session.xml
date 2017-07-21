@@ -310,7 +310,8 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="right"
-                            android:textColor="@color/text_color"
+                            android:paddingRight="@dimen/layout_margin_10"
+                            android:textColor="@color/close_session_diffrent"
                             android:textSize="@dimen/text_size" />
                     </LinearLayout>
                 </LinearLayout>

@@ -66,17 +66,27 @@ public class OrderRefundPanel extends AbstractDetailPanel<Order> {
         refund_comment = (EditText) view.findViewById(R.id.refund_comment);
 
         adjust_refund = (EditTextFloat) view.findViewById(R.id.adjust_refund);
+        adjust_refund.setPriceFormat(true);
+        adjust_refund.setOrder(true);
 
         adjust_fee = (EditTextFloat) view.findViewById(R.id.adjust_fee);
+        adjust_fee.setPriceFormat(true);
+        adjust_fee.setOrder(true);
 
         ll_gift_card = (LinearLayout) view.findViewById(R.id.ll_gift_card);
         gift_card = (EditTextFloat) view.findViewById(R.id.gift_card);
+        gift_card.setPriceFormat(true);
+        gift_card.setOrder(true);
 
         ll_store_credit = (LinearLayout) view.findViewById(R.id.ll_store_credit);
         store_credit = (EditTextFloat) view.findViewById(R.id.store_credit);
+        store_credit.setPriceFormat(true);
+        store_credit.setOrder(true);
 
         ll_refund_shipping = (LinearLayout) view.findViewById(R.id.ll_refund_shipping);
         refund_shipping = (EditTextFloat) view.findViewById(R.id.refund_shipping);
+        refund_shipping.setPriceFormat(true);
+        refund_shipping.setOrder(true);
 
         mBinding = DataBindingUtil.bind(view);
 
@@ -268,14 +278,14 @@ public class OrderRefundPanel extends AbstractDetailPanel<Order> {
     private void enableRefundShipping(Order order) {
         ll_refund_shipping.setVisibility(mOrderHistoryListController.checkShippingRefund(order) > 0 ? VISIBLE : GONE);
         if (order.getBaseShippingInclTax() > 0) {
-            refund_shipping.setText(ConfigUtil.formatNumber(ConfigUtil.convertToPrice(mOrderHistoryListController.checkShippingRefund(order))));
+            refund_shipping.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(mOrderHistoryListController.checkShippingRefund(order))));
         }
     }
 
     private void enableGiftCard(Order order) {
         ll_gift_card.setVisibility(mOrderHistoryListController.checkCanRefundGiftcard(order) ? VISIBLE : GONE);
         if (order.getBaseGiftVoucherDiscount() > 0) {
-            gift_card.setText(ConfigUtil.formatNumber((float) Math.sqrt(ConfigUtil.convertToPrice(order.getBaseGiftVoucherDiscount()))));
+            gift_card.setText(ConfigUtil.formatPrice((float) Math.sqrt(ConfigUtil.convertToPrice(order.getBaseGiftVoucherDiscount()))));
         }
     }
 
@@ -289,11 +299,11 @@ public class OrderRefundPanel extends AbstractDetailPanel<Order> {
     }
 
     public void updateTotalStoreCredit(float total) {
-        store_credit.setText(ConfigUtil.formatNumber(ConfigUtil.convertToPrice(total)));
+        store_credit.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(total)));
     }
 
     public void updateTotalGiftCard(float total) {
-        gift_card.setText(ConfigUtil.formatNumber(ConfigUtil.convertToPrice(total)));
+        gift_card.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(total)));
     }
 
     public void showAlertRespone(boolean success) {
