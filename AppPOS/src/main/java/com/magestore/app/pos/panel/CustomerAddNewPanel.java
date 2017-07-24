@@ -150,8 +150,20 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
                 ll_s_billing_address.setVisibility(VISIBLE);
 
                 setAddressDataSet(item.getAddress());
-                CustomerAddress billingAddress = item.getAddress().get(0);
-                CustomerAddress shippingAddress = item.getAddress().get(0);
+                CustomerAddress billingAddress;
+                CustomerAddress shippingAddress;
+                if (item.getUseOneAddress()) {
+                    billingAddress = item.getAddress().get(0);
+                    shippingAddress = item.getAddress().get(0);
+                } else {
+                    if (item.getAddress().size() > 1) {
+                        billingAddress = item.getAddress().get(1);
+                        shippingAddress = item.getAddress().get(0);
+                    } else {
+                        billingAddress = item.getAddress().get(0);
+                        shippingAddress = item.getAddress().get(0);
+                    }
+                }
 
                 bindDataShippingAddress(shippingAddress);
                 bindDataBillingAddress(billingAddress);

@@ -46,6 +46,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
     SimpleSpinner sp_shipping_method;
     Switch cb_pick_at_store;
     EditText et_checkout_note;
+    boolean checkSwitch;
 
     public CheckoutDetailPanel(Context context) {
         super(context);
@@ -120,19 +121,38 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
             }
         });
 
-        cb_pick_at_store.setOnClickListener(new OnClickListener() {
+//        cb_pick_at_store.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (!cb_pick_at_store.isChecked()) {
+//                    cb_pick_at_store.setChecked(false);
+//                    ll_shipping_address.setVisibility(GONE);
+//                } else {
+//                    cb_pick_at_store.setChecked(true);
+//                    ll_shipping_address.setVisibility(VISIBLE);
+//                }
+//                ((CheckoutListController) getController()).changeCustomerShippingAdrress(cb_pick_at_store.isChecked());
+//                ((CheckoutListController) getController()).getSelectedItem().setIsPickAtStore(cb_pick_at_store.isChecked());
+//                ((CheckoutListController) getController()).changePickAtStoreAndReloadShipping();
+//            }
+//        });
+
+        cb_pick_at_store.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View view) {
-                if (!cb_pick_at_store.isChecked()) {
-                    cb_pick_at_store.setChecked(false);
+            public void onCheckedChanged(CompoundButton compoundButton, boolean check) {
+                if (!check) {
                     ll_shipping_address.setVisibility(GONE);
                 } else {
-                    cb_pick_at_store.setChecked(true);
                     ll_shipping_address.setVisibility(VISIBLE);
                 }
-                ((CheckoutListController) getController()).changeCustomerShippingAdrress(cb_pick_at_store.isChecked());
-                ((CheckoutListController) getController()).getSelectedItem().setIsPickAtStore(cb_pick_at_store.isChecked());
-                ((CheckoutListController) getController()).changePickAtStoreAndReloadShipping();
+
+                if (!checkSwitch) {
+                    ((CheckoutListController) getController()).changeCustomerShippingAdrress(check);
+                    ((CheckoutListController) getController()).getSelectedItem().setIsPickAtStore(check);
+                    ((CheckoutListController) getController()).changePickAtStoreAndReloadShipping();
+                } else {
+                    checkSwitch = false;
+                }
             }
         });
 
@@ -320,6 +340,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
 
     public void setPickAtStoreDefault() {
         cb_pick_at_store.setChecked(false);
+        checkSwitch = true;
     }
 
     public void showNotifiSelectPayment() {
@@ -379,6 +400,10 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
 
     public void showShippingAdrress(boolean isShow) {
         ll_shipping_address.setVisibility(isShow ? VISIBLE : GONE);
+    }
+
+    public void setCheckSwitch(boolean checkSwitch) {
+        this.checkSwitch = checkSwitch;
     }
 
     public void dismissDialogAddPayment() {

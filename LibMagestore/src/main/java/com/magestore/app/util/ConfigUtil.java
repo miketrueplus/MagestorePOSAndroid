@@ -51,6 +51,7 @@ public class ConfigUtil {
     private static boolean mEnableGiftCard;
     private static boolean mEnableSession;
     private static boolean mCheckFirstOpenSession;
+    private static boolean mEnableDeleteOrder;
     private static List<ConfigTaxClass> mConfigTaxClass;
     private static String mTypePrint;
     private static PointOfSales mPointOfSales;
@@ -877,6 +878,14 @@ public class ConfigUtil {
 
     public static void setIsDevLicense(boolean isDevLicense) {
         ConfigUtil.isDevLicense = isDevLicense;
+    }
+
+    public static void setEnableDeleteOrder(boolean mEnableDeleteOrder) {
+        ConfigUtil.mEnableDeleteOrder = mEnableDeleteOrder;
+    }
+
+    public static boolean isEnableDeleteOrder() {
+        return mEnableDeleteOrder;
     }
 
     public static String getValueColorSwatch(String parent_code, String value_id) {

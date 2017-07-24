@@ -66,6 +66,7 @@ public class RegisterShiftMakeAdjustmentPanel extends AbstractDetailPanel<Regist
         tv_remove = (TextView) view.findViewById(R.id.remove);
         edt_note = (EditText) view.findViewById(R.id.note);
         edt_amount = (EditTextFloat) view.findViewById(R.id.amount);
+        edt_amount.setPriceFormat(true);
         staff_name = (TextView) view.findViewById(R.id.staff_name);
         mBinding = DataBindingUtil.bind(view);
     }

@@ -1089,12 +1089,33 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
     @Override
     public boolean getConfigSession() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
         if (mConfig == null) mConfig = new PosConfigDefault();
+        if (mConfig.getValue("webpos/general/enable_session") == null) {
+            return false;
+        }
         String enable_session = (String) mConfig.getValue("webpos/general/enable_session");
         boolean isSession;
         if (!StringUtil.isNullOrEmpty(enable_session)) {
             if (enable_session.equals("1")) {
                 isSession = true;
                 return isSession;
+            }
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean getConfigDeleteOrder() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        if (mConfig == null) mConfig = new PosConfigDefault();
+        if (mConfig.getValue("webpos/general/confirm_delete_order") == null) {
+            return false;
+        }
+        String enable_delete_order = (String) mConfig.getValue("webpos/general/confirm_delete_order");
+        boolean isDeleteOrder;
+        if (!StringUtil.isNullOrEmpty(enable_delete_order)) {
+            if (enable_delete_order.equals("1")) {
+                isDeleteOrder = true;
+                return isDeleteOrder;
             }
         }
 

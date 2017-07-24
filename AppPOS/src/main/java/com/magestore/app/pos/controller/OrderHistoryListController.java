@@ -483,9 +483,11 @@ public class OrderHistoryListController extends AbstractListController<Order> {
      */
     private void setNewOrderToList(Order oldOrder, Order newOrder) {
         int index = mList.indexOf(oldOrder);
-        mList.remove(index);
-        mList.add(index, newOrder);
-        bindList(mList);
+        if (index != -1) {
+            mList.remove(index);
+            mList.add(index, newOrder);
+            bindList(mList);
+        }
     }
 
     /**

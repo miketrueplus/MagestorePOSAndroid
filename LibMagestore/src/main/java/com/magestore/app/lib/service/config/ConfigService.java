@@ -121,5 +121,7 @@ public interface ConfigService extends Service {
 
     boolean getConfigSession() throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
+    boolean getConfigDeleteOrder() throws InstantiationException, IllegalAccessException, IOException, ParseException;
+
     List<Setting> getListSetting();
 }

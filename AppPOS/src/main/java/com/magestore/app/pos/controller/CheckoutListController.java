@@ -1761,7 +1761,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     }
 
     /**
-     * checkdata nếu không có shipping thì dùng data khi save cart
+     * check data nếu không có shipping thì dùng data khi save cart
      *
      * @param checkout
      */

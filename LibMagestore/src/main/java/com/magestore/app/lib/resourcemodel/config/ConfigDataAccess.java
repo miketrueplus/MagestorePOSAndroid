@@ -58,4 +58,5 @@ public interface ConfigDataAccess extends DataAccess {
     boolean getConfigRewardPoint() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     boolean getConfigGiftCard() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     boolean getConfigSession() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
+    boolean getConfigDeleteOrder() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
 }
