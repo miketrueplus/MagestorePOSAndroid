@@ -182,6 +182,7 @@ public class RegisterShiftDetailPanel extends AbstractDetailPanel<RegisterShift>
 
     public void showCloseShift(RegisterShift item) {
         panelCloseSessionPanel = new CloseSessionPanel(getContext());
+        ((RegisterShiftListController) mController).setPanelCloseSessionPanel(panelCloseSessionPanel);
         panelCloseSessionPanel.setController(mController);
         panelCloseSessionPanel.initValue();
         panelCloseSessionPanel.initModel();

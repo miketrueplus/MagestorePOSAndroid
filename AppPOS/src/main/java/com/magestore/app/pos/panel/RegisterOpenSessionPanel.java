@@ -248,4 +248,8 @@ public class RegisterOpenSessionPanel extends AbstractDetailPanel<RegisterShift>
         total_value = total;
         total_balance_value.setText(ConfigUtil.formatPrice(total));
     }
+
+    public void setEnableBtOpen(boolean isEnable) {
+        bt_open.setEnabled(isEnable ? true : false);
+    }
 }

@@ -13,7 +13,9 @@ import com.magestore.app.lib.model.registershift.SessionParam;
 import com.magestore.app.lib.service.registershift.RegisterShiftService;
 import com.magestore.app.lib.service.user.UserService;
 import com.magestore.app.pos.R;
+import com.magestore.app.pos.panel.CloseSessionPanel;
 import com.magestore.app.pos.panel.OpenSessionListValuePanel;
+import com.magestore.app.pos.panel.RegisterOpenSessionPanel;
 import com.magestore.app.pos.panel.RegisterShiftDetailPanel;
 import com.magestore.app.pos.panel.RegisterShiftListPanel;
 import com.magestore.app.util.ConfigUtil;
@@ -45,6 +47,8 @@ public class RegisterShiftListController extends AbstractListController<Register
     UserService userService;
     boolean first_add;
     boolean first_check;
+    RegisterOpenSessionPanel openSessionPanel;
+    CloseSessionPanel panelCloseSessionPanel;
 
     /**
      * Service xử lý các vấn đề liên quan đến register shift
@@ -171,18 +175,26 @@ public class RegisterShiftListController extends AbstractListController<Register
             wraper.put("make_adjusment_respone", mRegisterShiftService.insertMakeAdjustment(((RegisterShift) models[0])));
             return true;
         } else if (actionType == ACTION_TYPE_CLOSE_SESSION) {
+            if (panelCloseSessionPanel != null)
+                panelCloseSessionPanel.setEnableBtClose(false);
             SessionParam param = (SessionParam) wraper.get("param_close_session");
             wraper.put("close_session_respone", mRegisterShiftService.closeSession(param));
             return true;
         } else if (actionType == ACTION_TYPE_VALIDATE_SESSION) {
+            if (panelCloseSessionPanel != null)
+                panelCloseSessionPanel.setEnableBtValidate(false);
             SessionParam param = (SessionParam) wraper.get("param_validate_session");
             wraper.put("close_validate_respone", mRegisterShiftService.closeSession(param));
             return true;
         } else if (actionType == ACTION_TYPE_OPEN_SESSION) {
+            if (openSessionPanel != null)
+                openSessionPanel.setEnableBtOpen(false);
             SessionParam param = (SessionParam) models[0];
             wraper.put("open_session_respone", mRegisterShiftService.openSession(param));
             return true;
         } else if (actionType == ACTION_TYPE_CANCEL_SESSION) {
+            if (panelCloseSessionPanel != null)
+                panelCloseSessionPanel.setEnableCancel(false);
             SessionParam param = (SessionParam) wraper.get("param_cancel_session");
             wraper.put("cancel_session_respone", mRegisterShiftService.closeSession(param));
             return true;
@@ -200,6 +212,8 @@ public class RegisterShiftListController extends AbstractListController<Register
             setSelectedItem(listRegister.get(0));
             isShowLoadingDetail(false);
         } else if (success && actionType == ACTION_TYPE_CLOSE_SESSION) {
+            if (panelCloseSessionPanel != null)
+                panelCloseSessionPanel.setEnableBtClose(true);
             RegisterShift oldRegisterShift = (RegisterShift) models[0];
             List<RegisterShift> listRegister = (List<RegisterShift>) wraper.get("close_session_respone");
             ((RegisterShiftDetailPanel) mDetailView).bindItem(listRegister.get(0));
@@ -208,6 +222,8 @@ public class RegisterShiftListController extends AbstractListController<Register
             setSelectedItem(listRegister.get(0));
             isShowLoadingDetail(false);
         } else if (success && actionType == ACTION_TYPE_VALIDATE_SESSION) {
+            if (panelCloseSessionPanel != null)
+                panelCloseSessionPanel.setEnableBtValidate(true);
             RegisterShift oldRegisterShift = (RegisterShift) models[0];
             List<RegisterShift> listRegister = (List<RegisterShift>) wraper.get("close_validate_respone");
             ((RegisterShiftDetailPanel) mDetailView).bindItem(listRegister.get(0));
@@ -221,6 +237,8 @@ public class RegisterShiftListController extends AbstractListController<Register
             getMagestoreContext().getActivity().sendBroadcast(intent);
             isShowLoadingDetail(false);
         } else if (success && actionType == ACTION_TYPE_OPEN_SESSION) {
+            if (openSessionPanel != null)
+                openSessionPanel.setEnableBtOpen(true);
             List<RegisterShift> listRegister = (List<RegisterShift>) wraper.get("open_session_respone");
             ConfigUtil.setShiftId(listRegister.get(0).getShiftId());
             ConfigUtil.setLocationId(listRegister.get(0).getLocationId());
@@ -260,6 +278,8 @@ public class RegisterShiftListController extends AbstractListController<Register
             ConfigUtil.setCheckFirstOpenSession(true);
             isShowLoadingDetail(false);
         } else if (success && actionType == ACTION_TYPE_CANCEL_SESSION) {
+            if (panelCloseSessionPanel != null)
+                panelCloseSessionPanel.setEnableCancel(true);
             RegisterShift oldRegisterShift = (RegisterShift) models[0];
             List<RegisterShift> listRegister = (List<RegisterShift>) wraper.get("cancel_session_respone");
             ((RegisterShiftDetailPanel) mDetailView).bindItem(listRegister.get(0));
@@ -291,6 +311,13 @@ public class RegisterShiftListController extends AbstractListController<Register
     public void onCancelledBackground(Exception exp, int actionType, String actionCode, Map<String, Object> wraper, Model... models) {
         super.onCancelledBackground(exp, actionType, actionCode, wraper, models);
         isShowLoadingDetail(false);
+        if (openSessionPanel != null)
+            openSessionPanel.setEnableBtOpen(true);
+        if (panelCloseSessionPanel != null) {
+            panelCloseSessionPanel.setEnableBtClose(true);
+            panelCloseSessionPanel.setEnableBtValidate(true);
+            panelCloseSessionPanel.setEnableCancel(true);
+        }
     }
 
     public void doInputCloseSession(RegisterShift registerShift, SessionParam param) {
@@ -397,6 +424,14 @@ public class RegisterShiftListController extends AbstractListController<Register
 
     public void showDialogMakeAdjusment(boolean isType) {
         ((RegisterShiftDetailPanel) mDetailView).showDialogMakeAdjusment(isType);
+    }
+
+    public void setOpenSessionPanel(RegisterOpenSessionPanel openSessionPanel) {
+        this.openSessionPanel = openSessionPanel;
+    }
+
+    public void setPanelCloseSessionPanel(CloseSessionPanel panelCloseSessionPanel) {
+        this.panelCloseSessionPanel = panelCloseSessionPanel;
     }
 
     public List<PointOfSales> getListPos() {

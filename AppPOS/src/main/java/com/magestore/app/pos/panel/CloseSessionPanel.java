@@ -386,4 +386,17 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         ((RegisterShiftListController) getController()).getMagestoreContext().getActivity().startActivity(intent);
     }
+
+    public void setEnableBtClose(boolean isEnable) {
+        bt_close.setEnabled(isEnable ? true : false);
+    }
+
+    public void setEnableBtValidate(boolean isEnable) {
+        bt_validate.setEnabled(isEnable ? true : false);
+    }
+
+    public void setEnableCancel(boolean isEnable) {
+        bt_cancel.setEnabled(isEnable ? true : false);
+        tv_session_back.setEnabled(isEnable ? true : false);
+    }
 }

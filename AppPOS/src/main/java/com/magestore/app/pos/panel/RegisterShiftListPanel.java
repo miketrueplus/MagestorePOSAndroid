@@ -94,6 +94,7 @@ public class RegisterShiftListPanel extends AbstractListPanel<RegisterShift> {
 
     public void openSession() {
         openSessionPanel = new RegisterOpenSessionPanel(getContext());
+        ((RegisterShiftListController) getController()).setOpenSessionPanel(openSessionPanel);
         openSessionPanel.setRegisterShiftListController((RegisterShiftListController) getController());
         openSessionPanel.initModel();
         dialogOpenSession = DialogUtil.dialog(getContext(), getContext().getString(R.string.open_session_title), openSessionPanel);
