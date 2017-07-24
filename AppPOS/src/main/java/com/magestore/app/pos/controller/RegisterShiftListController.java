@@ -175,26 +175,18 @@ public class RegisterShiftListController extends AbstractListController<Register
             wraper.put("make_adjusment_respone", mRegisterShiftService.insertMakeAdjustment(((RegisterShift) models[0])));
             return true;
         } else if (actionType == ACTION_TYPE_CLOSE_SESSION) {
-            if (panelCloseSessionPanel != null)
-                panelCloseSessionPanel.setEnableBtClose(false);
             SessionParam param = (SessionParam) wraper.get("param_close_session");
             wraper.put("close_session_respone", mRegisterShiftService.closeSession(param));
             return true;
         } else if (actionType == ACTION_TYPE_VALIDATE_SESSION) {
-            if (panelCloseSessionPanel != null)
-                panelCloseSessionPanel.setEnableBtValidate(false);
             SessionParam param = (SessionParam) wraper.get("param_validate_session");
             wraper.put("close_validate_respone", mRegisterShiftService.closeSession(param));
             return true;
         } else if (actionType == ACTION_TYPE_OPEN_SESSION) {
-            if (openSessionPanel != null)
-                openSessionPanel.setEnableBtOpen(false);
             SessionParam param = (SessionParam) models[0];
             wraper.put("open_session_respone", mRegisterShiftService.openSession(param));
             return true;
         } else if (actionType == ACTION_TYPE_CANCEL_SESSION) {
-            if (panelCloseSessionPanel != null)
-                panelCloseSessionPanel.setEnableCancel(false);
             SessionParam param = (SessionParam) wraper.get("param_cancel_session");
             wraper.put("cancel_session_respone", mRegisterShiftService.closeSession(param));
             return true;
@@ -322,18 +314,24 @@ public class RegisterShiftListController extends AbstractListController<Register
 
     public void doInputCloseSession(RegisterShift registerShift, SessionParam param) {
         isShowLoadingDetail(true);
+        if (panelCloseSessionPanel != null)
+            panelCloseSessionPanel.setEnableBtClose(false);
         wraper.put("param_close_session", param);
         doAction(ACTION_TYPE_CLOSE_SESSION, null, wraper, registerShift);
     }
 
     public void doInputValidateSession(RegisterShift registerShift, SessionParam param) {
         isShowLoadingDetail(true);
+        if (panelCloseSessionPanel != null)
+            panelCloseSessionPanel.setEnableBtValidate(false);
         wraper.put("param_validate_session", param);
         doAction(ACTION_TYPE_VALIDATE_SESSION, null, wraper, registerShift);
     }
 
     public void doInputCancelSession(RegisterShift registerShift, SessionParam param, int type) {
         isShowLoadingDetail(true);
+        if (panelCloseSessionPanel != null)
+            panelCloseSessionPanel.setEnableCancel(false);
         wraper.put("param_cancel_session", param);
         wraper.put("cancel_session_type", type);
         doAction(ACTION_TYPE_CANCEL_SESSION, null, wraper, registerShift);
@@ -341,6 +339,8 @@ public class RegisterShiftListController extends AbstractListController<Register
 
     public void doInputOpenSession(SessionParam param) {
         isShowLoadingDetail(true);
+        if (openSessionPanel != null)
+            openSessionPanel.setEnableBtOpen(false);
         doAction(ACTION_TYPE_OPEN_SESSION, null, wraper, param);
     }
 
