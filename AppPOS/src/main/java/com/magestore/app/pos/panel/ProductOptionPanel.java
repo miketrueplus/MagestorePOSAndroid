@@ -159,8 +159,10 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
     public void bindItem(CartItem item) {
         super.bindItem(item);
 
-        if(item.getProduct() != null){
+        if (item.getProduct() != null) {
             mtxtCartItemQuantity.setDecimal(item.getProduct().isDecimal());
+        } else {
+            mtxtCartItemQuantity.setDecimal(false);
         }
 
         // đặt giá trị min
@@ -187,6 +189,12 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
      * @param item
      */
     public void showCartItemInfo(CartItem item) {
+        if (item.getProduct() != null) {
+            mtxtCartItemQuantity.setDecimal(item.getProduct().isDecimal());
+        } else {
+            mtxtCartItemQuantity.setDecimal(false);
+        }
+
         // đặt cart và product hiển thị lên giao diện
         mBinding.setCartItem(item);
         mBinding.setProduct(item.getProduct());

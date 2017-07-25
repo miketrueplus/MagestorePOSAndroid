@@ -96,7 +96,7 @@ public class OrderInvoiceItemsListPanel extends AbstractListPanel<CartItem> {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 float qty_invoiced = qty_to_invoice.getValueFloat();
-                float qty;
+                float qty = 0;
                 if (mOrder.getBaseTotalDue() > 0) {
                     qty = item.QtyInvoiceable();
                 } else {

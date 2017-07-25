@@ -124,10 +124,11 @@ public class RegisterShiftListController extends AbstractListController<Register
         if (!first_check) {
             if (list != null && list.size() > 1) {
                 RegisterShift registerShift = list.get(1);
-                if (registerShift.getLessSevenDay()) {
-                    registerShift = list.get(2);
-                }
+//                if (registerShift.getLessSevenDay()) {
+//                    registerShift = list.get(2);
+//                }
                 bindItem(registerShift);
+                ((RegisterShiftListPanel) mView).setSelectPosition();
                 if (registerShift.getStatus().equals("0")) {
                     if (!ConfigUtil.isCheckFirstOpenSession()) {
                         ((RegisterShiftListPanel) mView).showDialogContinueCheckout();
@@ -423,7 +424,7 @@ public class RegisterShiftListController extends AbstractListController<Register
     }
 
     public void showDialogMakeAdjusment(boolean isType) {
-        ((RegisterShiftDetailPanel) mDetailView).showDialogMakeAdjusment(isType);
+        ((RegisterShiftDetailPanel) mDetailView).showDialogMakeAdjusment(getSelectedItem(), isType);
     }
 
     public void setOpenSessionPanel(RegisterOpenSessionPanel openSessionPanel) {

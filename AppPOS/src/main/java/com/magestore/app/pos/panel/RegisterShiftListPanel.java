@@ -129,4 +129,9 @@ public class RegisterShiftListPanel extends AbstractListPanel<RegisterShift> {
                 .setNegativeButton(R.string.no, null)
                 .show();
     }
+
+    public void setSelectPosition() {
+        setMintSelectedPos(1);
+        notifyDataSetChanged();
+    }
 }

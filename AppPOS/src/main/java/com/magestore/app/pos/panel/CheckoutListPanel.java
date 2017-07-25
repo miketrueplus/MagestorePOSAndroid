@@ -147,15 +147,15 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
             public void onClick(View view) {
                 if (ConfigUtil.isEnableDeleteOrder()) {
 //                    if (((CheckoutListController) mController).checkItemInOrder()) {
-                        com.magestore.app.util.DialogUtil.confirm(getContext(),
-                                R.string.checkout_delete_order,
-                                R.string.confirm,
-                                R.string.no,
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        ((CheckoutListController) mController).removeOrder();
-                                    }
-                                });
+                    com.magestore.app.util.DialogUtil.confirm(getContext(),
+                            R.string.checkout_delete_order,
+                            R.string.confirm,
+                            R.string.no,
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    ((CheckoutListController) mController).removeOrder();
+                                }
+                            });
 //                    }
                 } else {
                     ((CheckoutListController) mController).removeOrder();
@@ -289,6 +289,10 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
         } else {
             btn_sales_order_checkout.setText(getContext().getString(R.string.sales_place_holder));
         }
+    }
+
+    public void setEnableBtCheckout(boolean isEnable) {
+        ll_action_checkout.setEnabled(isEnable ? true : false);
     }
 
     public void showButtonRemoveDiscount(boolean isShow) {

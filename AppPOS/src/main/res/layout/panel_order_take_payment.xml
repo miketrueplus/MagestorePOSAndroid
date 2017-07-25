@@ -63,6 +63,7 @@
                 android:orientation="horizontal">
 
                 <RelativeLayout
+                    android:id="@+id/rl_order_add_payment"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

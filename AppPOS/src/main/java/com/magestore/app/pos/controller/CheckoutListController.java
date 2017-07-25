@@ -159,7 +159,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             getSelectedItem().setCustomerID(customer.getID());
             getView().updateModel(getSelectedItem());
             mCartOrderListPanel.notifyDataSetChanged();
-            if (((CheckoutDetailPanel) mDetailView).getVisibility() == View.VISIBLE && getSelectedItem().getStatus() == STATUS_CHECKOUT_PROCESSING) {
+            if (((CheckoutDetailPanel) mDetailView).getVisibility() == View.VISIBLE && getSelectedItem().getStatus() == STATUS_CHECKOUT_PROCESSING && getSelectedItem().getOrderSuccess() == null) {
                 doInputSaveCart();
             }
         }
@@ -197,6 +197,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         if (checkout.getCartItem().size() > 0) {
             checkout.setStatus(STATUS_CHECKOUT_PROCESSING);
             isShowLoadingDetail(true);
+            ((CheckoutListPanel) mView).setEnableBtCheckout(false);
             ((CheckoutDetailPanel) mDetailView).isCheckCreateInvoice(true);
             // ẩn button checkout và hold order
             ((CheckoutListPanel) mView).changeActionButton(true);
@@ -310,6 +311,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     }
 
     public void doInputPlaceOrderWithPaypalHere(String transaction_id) {
+        ((CheckoutListPanel) mView).setEnableBtCheckout(false);
         List<CheckoutPayment> listCheckoutPayment = (List<CheckoutPayment>) wraper.get("list_payment");
         CheckoutPayment paymentPayPal = checkTypePaymentPaypalhere(listCheckoutPayment);
         paymentPayPal.setIsReferenceNumber(transaction_id.trim());
@@ -336,6 +338,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
      */
     public void doInputSaveShipping(String shippingCode) {
         wraper.put("shipping_code", shippingCode);
+        ((CheckoutListPanel) mView).setEnableBtCheckout(false);
         doAction(ACTION_TYPE_SAVE_SHIPPING, null, wraper, null);
     }
 
@@ -456,6 +459,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
     public void doInputApplyRewardPoint(RewardPoint rewardPoint) {
         isShowLoadingDetail(true);
+        ((CheckoutListPanel) mView).setEnableBtCheckout(false);
         doAction(ACTION_TYPE_APPLY_REWARD_POINT, null, wraper, rewardPoint);
     }
 
@@ -1080,6 +1084,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             intent.setAction(AbstractActivity.STATE_SHOW_POPUP_LIST_STAFF_PERMISSON);
             getMagestoreContext().getActivity().sendBroadcast(intent);
         }
+        ((CheckoutListPanel) mView).setEnableBtCheckout(true);
     }
 
     @Override
@@ -1094,6 +1099,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         }
         ((CheckoutListPanel) mView).showLoading(false);
         isShowLoadingDetail(false);
+        ((CheckoutListPanel) mView).setEnableBtCheckout(true);
     }
 
     public void updateToTal(Checkout checkout) {
@@ -1308,7 +1314,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 ((CheckoutDetailPanel) mDetailView).isCheckCreateInvoice(false);
                 ((CheckoutDetailPanel) mDetailView).isCheckCreateShip(false);
                 ((CheckoutDetailPanel) mDetailView).isEnableCreateInvoice(false);
-                doInputSaveCart();
+//                doInputSaveCart();
             }
             showSaleMenu(false);
         } else {
@@ -1715,12 +1721,24 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         ((CheckoutDetailPanel) mDetailView).showPanelPaymentMethod();
         ((CheckoutDetailPanel) mDetailView).showPanelCheckoutPaymentCreditCard(false);
         showSaleMenu(true);
-        removeOrder();
         if (getSelectedItems().size() > 1) {
-            addNewOrder();
+            addActionNewOrder();
         }
+        removeOrder();
         onBackTohome();
         doShowDetailSuccess(false);
+    }
+
+    public void addActionNewOrder() {
+        if (mDetailView.getVisibility() == View.VISIBLE) {
+            onBackTohome();
+        }
+        int index = getSelectedItems().indexOf(getSelectedItem());
+        Checkout checkout = ((CheckoutService) getListService()).create();
+        checkout.setCustomerID(guest_checkout.getID());
+        checkout.setCustomer(guest_checkout);
+        checkout.setStatus(STATUS_CHECKOUT_ADD_ITEM);
+        getSelectedItems().add(index, checkout);
     }
 
     /**
@@ -2211,6 +2229,10 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         } else {
             mPluginStoreCreditPanel.setVisibility(View.GONE);
         }
+    }
+
+    public void setEnableBtCheckout(boolean isEnable) {
+        ((CheckoutListPanel) mView).setEnableBtCheckout(isEnable ? true : false);
     }
 
     public void updateMaxAmountStoreCredit(float total) {

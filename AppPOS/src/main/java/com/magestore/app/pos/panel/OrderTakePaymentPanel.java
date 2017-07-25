@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.magestore.app.lib.model.sales.Order;
@@ -23,6 +24,7 @@ public class OrderTakePaymentPanel extends AbstractDetailPanel<Order> {
     OrderListChoosePaymentPanel mOrderListChoosePaymentPanel;
     TextView txt_remain_title, txt_remain_value, tv_check_take_payment_required;
     LinearLayout ll_order_add_payment;
+    RelativeLayout rl_order_add_payment;
 
     public OrderTakePaymentPanel(Context context) {
         super(context);
@@ -43,6 +45,7 @@ public class OrderTakePaymentPanel extends AbstractDetailPanel<Order> {
 
         mOrderAddPaymentPanel = (OrderAddPaymentPanel) view.findViewById(R.id.order_add_payment_panel);
         mOrderListChoosePaymentPanel = (OrderListChoosePaymentPanel) view.findViewById(R.id.order_payment_list_panel);
+        rl_order_add_payment = (RelativeLayout) view.findViewById(R.id.rl_order_add_payment);
         ll_order_add_payment = (LinearLayout) view.findViewById(R.id.ll_order_add_payment);
         txt_remain_title = (TextView) view.findViewById(R.id.txt_remain_title);
         txt_remain_value = (TextView) view.findViewById(R.id.txt_remain_value);
@@ -64,7 +67,7 @@ public class OrderTakePaymentPanel extends AbstractDetailPanel<Order> {
         mOrderListChoosePaymentPanel.setOrder(item);
         ((OrderHistoryListController) mController).bindDataListChoosePayment();
         bindTotalPrice(item.getTotalDue());
-        ll_order_add_payment.setOnClickListener(new OnClickListener() {
+        rl_order_add_payment.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 ((OrderHistoryListController) mController).bindDataListChoosePayment();

@@ -33,7 +33,7 @@
     <string name="sales_custom_sales_product">Custom Product</string>
     <string name="sales_remove_discount">Remove Discount</string>
     <string name="sales_no_payment_method">No payment method is avaible</string>
-    <string name="checkout_delete_order">Please confirm to delete order</string>
+    <string name="checkout_delete_order">Are you sure you want to delete this order?</string>
     <string name="checkout_pick_as_store">Need to ship?</string>
     <string name="checkout_discount_all">Discount - Maximum %1$s%%</string>
     <string name="checkout_custom_sale_name">Enter Product Name</string>

@@ -636,7 +636,7 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
 
     @Override
     public float QtyInvoice() {
-        return qty_ordered - qty_invoiced - qty_refunded - qty_canceled;
+        return qty_ordered - qty_invoiced - qty_canceled;
     }
 
     @Override

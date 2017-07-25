@@ -49,6 +49,7 @@ public class PluginGiftCardController extends AbstractListController<GiftCard> {
 
     public void doInputAddGiftCard(GiftCard giftCard) {
         mCheckoutListController.isShowLoadingDetail(true);
+        mCheckoutListController.setEnableBtCheckout(false);
         String quote_id = mCheckoutListController.getSelectedItem().getQuoteId();
         giftCard.setQuoteId(quote_id);
         doAction(ACTION_TYPE_ADD_GIFTCARD, null, wraper, giftCard);
@@ -56,6 +57,7 @@ public class PluginGiftCardController extends AbstractListController<GiftCard> {
 
     public void doInputRemoveGiftCard(GiftCard giftCard) {
         String quote_id = mCheckoutListController.getSelectedItem().getQuoteId();
+        mCheckoutListController.setEnableBtCheckout(false);
         giftCard.setQuoteId(quote_id);
         if (!StringUtil.isNullOrEmpty(giftCard.getCouponCode())) {
             mCheckoutListController.isShowLoadingDetail(true);
@@ -109,11 +111,13 @@ public class PluginGiftCardController extends AbstractListController<GiftCard> {
             mCheckoutListController.updateToTal(checkout);
             mCheckoutListController.isShowLoadingDetail(false);
         }
+        mCheckoutListController.setEnableBtCheckout(true);
     }
 
     @Override
     public void onCancelledBackground(Exception exp, int actionType, String actionCode, Map<String, Object> wraper, Model... models) {
         mCheckoutListController.isShowLoadingDetail(false);
+        mCheckoutListController.setEnableBtCheckout(true);
         mPluginGiftCardListPanel.showError(exp.getMessage());
     }
 

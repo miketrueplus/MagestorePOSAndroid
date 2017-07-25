@@ -212,9 +212,9 @@ public class RegisterShiftDetailPanel extends AbstractDetailPanel<RegisterShift>
         register_shift_background_loading.setVisibility(isShow ? VISIBLE : GONE);
     }
 
-    public void showDialogMakeAdjusment(boolean isType) {
+    public void showDialogMakeAdjusment(RegisterShift item, boolean isType) {
         dialogCloseSession.dismiss();
-        showMakeAdjustment(registerShift, isType);
+        showMakeAdjustment(item, isType);
     }
 
     private void actionPrint(RegisterShift registerShift) {
