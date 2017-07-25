@@ -267,9 +267,11 @@ public class OrderInvoicePanel extends AbstractDetailPanel<Order> {
                 }
                 item.setQtyInvoiceable(qty - 1);
                 item.setQuantity(qty - 1);
+                item.setQtyCurrent(qty - 1);
                 total_price += item.getQuantity() * (item.getPriceInvoice() - ((item.getBaseDiscountAmount() + item.getBaseGiftVoucherDiscount() + item.getRewardpointsBaseDiscount()) / item.getQtyOrdered()));
             }
         } else {
+            item.setQtyCurrent(0);
             item.setQtyInvoiceable(0);
             item.setQuantity(0);
         }

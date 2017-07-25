@@ -378,6 +378,8 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     String is_qty_decimal;
     @Gson2PosExclude
     boolean isDecimal;
+    @Gson2PosExclude
+    float qty_current;
 
     @Override
     public void setQuantity(float param_quantity) {
@@ -777,5 +779,15 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public float getQtyCurrent() {
+        return qty_current;
+    }
+
+    @Override
+    public void setQtyCurrent(float fQtyCurrent) {
+        qty_current = fQtyCurrent;
     }
 }

@@ -8,6 +8,7 @@ import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.model.sales.OrderItemParams;
 import com.magestore.app.lib.service.order.OrderHistoryService;
+import com.magestore.app.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +61,7 @@ public class OrderShipmentItemsListController extends AbstractListController<Car
         List<CartItem> nListItem = new ArrayList<>();
 
         for (CartItem item : listItem) {
-            if (item.QtyShip() > 0 && item.getOrderParentItem() == null) {
+            if (item.QtyShip() > 0 && item.getOrderParentItem() == null && !checkProductVirtual(item)) {
                 nListItem.add(item);
             }
         }
@@ -68,11 +69,18 @@ public class OrderShipmentItemsListController extends AbstractListController<Car
         return nListItem;
     }
 
+    private boolean checkProductVirtual(CartItem item) {
+        if (StringUtil.isNullOrEmpty(item.getIsVirtual()) || item.getIsVirtual().equals("0")) {
+            return false;
+        }
+        return true;
+    }
+
     public OrderItemParams createOrderShipmentItemParams() {
         return mOrderService.createOrderItemParams();
     }
 
-    public List<CartItem> getListItem(){
+    public List<CartItem> getListItem() {
         return mList;
     }
 }

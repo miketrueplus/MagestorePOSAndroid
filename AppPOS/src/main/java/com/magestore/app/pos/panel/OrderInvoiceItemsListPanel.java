@@ -21,6 +21,7 @@ import com.magestore.app.view.EditTextFloat;
 import com.magestore.app.view.EditTextInteger;
 import com.magestore.app.view.EditTextQuantity;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -34,6 +35,7 @@ public class OrderInvoiceItemsListPanel extends AbstractListPanel<CartItem> {
     List<CartItem> listCurrentItem;
     Order mOrder;
     float total_price = 0;
+    HashMap<CartItem, EditTextQuantity> listQuantity;
 
     public void setOrder(Order mOrder) {
         this.mOrder = mOrder;
@@ -68,6 +70,7 @@ public class OrderInvoiceItemsListPanel extends AbstractListPanel<CartItem> {
 //        mRecycleView = (RecyclerView) findViewById(R.id.order_invoice_items_list);
 //        mRecycleView.setLayoutManager(new GridLayoutManager(this.getContext(), 1));
 //        mRecycleView.setNestedScrollingEnabled(false);
+        listQuantity = new HashMap<>();
     }
 
     @Override
@@ -83,9 +86,11 @@ public class OrderInvoiceItemsListPanel extends AbstractListPanel<CartItem> {
         edt_qty_to_invoice.setDecimal(item.isDecimal());
         cartItem.setOrderItemId(cartItem.getItemId());
         cartItem.setQtyChange(item.QtyInvoice());
+        listQuantity.put(cartItem, edt_qty_to_invoice);
         actionQtyToInvoice(cartItem, edt_qty_to_invoice);
     }
 
+    float total_current = 0;
     private void actionQtyToInvoice(final CartItem item, final EditTextQuantity qty_to_invoice) {
         qty_to_invoice.addTextChangedListener(new TextWatcher() {
             @Override
@@ -110,8 +115,10 @@ public class OrderInvoiceItemsListPanel extends AbstractListPanel<CartItem> {
                     item.setQuantity(qty_invoiced);
                     item.setQtyChange(qty_invoiced);
                 }
+
                 if (mOrder.getBaseTotalDue() > 0) {
-                    checkQuantityInvoice();
+                    item.setQtyInvoiceable(item.QtyInvoice());
+//                    checkQuantityInvoice();
                 }
                 ((OrderInvoiceItemsListController) mController).isShowButtonUpdateQty(checkChangeQtyItem() ? true : false);
                 ((OrderInvoiceItemsListController) mController).isEnableButtonSubmitInvoice(checkChangeQtyItem() ? false : true);
@@ -176,21 +183,18 @@ public class OrderInvoiceItemsListPanel extends AbstractListPanel<CartItem> {
     }
 
     private boolean checkChangeQtyItem() {
-        for (CartItem currentItem : listCurrentItem) {
             for (CartItem item : listItems) {
-                if (item.getItemId().equals(currentItem.getItemId())) {
                     if (mOrder.getBaseTotalDue() > 0) {
-                        if (item.getQtyChange() != currentItem.QtyInvoiceable()) {
+                        if (item.getQtyChange() != item.getQtyCurrent()) {
                             return true;
                         }
                     } else {
-                        if (item.getQtyChange() != currentItem.QtyInvoice()) {
+                        if (item.getQtyChange() != item.QtyInvoice()) {
                             return true;
                         }
                     }
-                }
+
             }
-        }
         return false;
     }
 

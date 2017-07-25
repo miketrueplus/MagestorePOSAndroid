@@ -207,4 +207,7 @@ public interface CartItem extends Model {
     float getRewardpointsBaseDiscount();
 
     boolean isDecimal();
+
+    float getQtyCurrent();
+    void setQtyCurrent(float fQtyCurrent);
 }
