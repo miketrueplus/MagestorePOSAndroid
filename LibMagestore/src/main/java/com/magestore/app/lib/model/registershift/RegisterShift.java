@@ -59,4 +59,7 @@ public interface RegisterShift extends Model {
     // param add cash transaction
     void setParamCash(CashTransaction cashTransaction);
     CashTransaction getParamCash();
+
+    String getStoreId();
+    void setStoreId(String strStoreId);
 }

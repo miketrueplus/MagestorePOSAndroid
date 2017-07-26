@@ -22,7 +22,7 @@ public class PosCheckoutPayment extends PosAbstractModel implements CheckoutPaym
     String information;
     String is_default;
     String is_reference_number;
-    String type;
+    String type_id;
 
     @Gson2PosExclude
     String reference_number;
@@ -163,12 +163,12 @@ public class PosCheckoutPayment extends PosAbstractModel implements CheckoutPaym
 
     @Override
     public String getType() {
-        return type;
+        return type_id;
     }
 
     @Override
     public void setType(String strType) {
-        type = strType;
+        type_id = strType;
     }
 
     @Override

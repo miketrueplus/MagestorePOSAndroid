@@ -500,10 +500,10 @@ public class POSConfigService extends AbstractService implements ConfigService {
         currencySetting.setType(2);
         settingList.add(currencySetting);
 
-        Setting storeSetting = new PosSetting();
-        storeSetting.setName(SETTING_STORE);
-        storeSetting.setType(3);
-        settingList.add(storeSetting);
+//        Setting storeSetting = new PosSetting();
+//        storeSetting.setName(SETTING_STORE);
+//        storeSetting.setType(3);
+//        settingList.add(storeSetting);
 
         return settingList;
     }

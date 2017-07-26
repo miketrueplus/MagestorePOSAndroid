@@ -39,6 +39,7 @@ public class EditTextQuantity extends EditText {
     boolean isOptionCart;
     boolean isProductDetail;
     boolean isOrderHistory;
+    boolean isOptionQuantity;
 
     public EditTextQuantity(Context context) {
         super(context);
@@ -94,7 +95,11 @@ public class EditTextQuantity extends EditText {
     }
 
     public float getValueFloat() {
-        return ConfigUtil.parseFloat(super.getText().toString());
+        if (isDecimal) {
+            return convertToPrice(super.getText().toString());
+        } else {
+            return ConfigUtil.parseFloat(super.getText().toString());
+        }
     }
 
     public double getValueDouble() {
@@ -165,10 +170,16 @@ public class EditTextQuantity extends EditText {
         isDecimal = decimal;
     }
 
+    public void setOptionQuantity(boolean optionQuantity) {
+        isOptionQuantity = optionQuantity;
+    }
+
     /**
      * Chuẩn bị các sự kiện
      */
     protected void initEvent() {
+        createPopup();
+
         setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -208,7 +219,7 @@ public class EditTextQuantity extends EditText {
     private ImageView im_arrow_up, im_arrow_down, im_arrow_left;
     ExampleCardPopup exampleCardPopup;
 
-    private void showCustomKeyboard() {
+    private void createPopup(){
         LayoutInflater layoutInflater = (LayoutInflater) getContext().getSystemService(getContext().LAYOUT_INFLATER_SERVICE);
         View popupView = layoutInflater.inflate(R.layout.layout_popup_keyboard, null);
         im_arrow_up = (ImageView) popupView.findViewById(R.id.im_arrow_up);
@@ -238,21 +249,14 @@ public class EditTextQuantity extends EditText {
         rl_number_8.setOnClickListener(onClickNumberKeyboard);
         rl_number_9.setOnClickListener(onClickNumberKeyboard);
         rl_number_delete.setOnClickListener(onClickNumberKeyboard);
-        checkQuantity = false;
         exampleCardPopup = new ExampleCardPopup(getContext(), popupView);
         exampleCardPopup.setOutsideTouchable(true);
         exampleCardPopup.setFocusable(true);
-//        // Removes default background.
         exampleCardPopup.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-//        popupWindow = new PopupWindow(
-//                popupView,
-//                LinearLayout.LayoutParams.WRAP_CONTENT,
-//                LinearLayout.LayoutParams.WRAP_CONTENT);
-//        popupWindow.setOutsideTouchable(true);
-//        popupWindow.setFocusable(true);
-//        // Removes default background.
-//        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+    }
 
+    private void showCustomKeyboard() {
+        checkQuantity = false;
         if (isOptionCart) {
             im_arrow_up.setVisibility(VISIBLE);
             im_arrow_down.setVisibility(GONE);
@@ -280,15 +284,21 @@ public class EditTextQuantity extends EditText {
             exampleCardPopup.showOnAnchor(this, RelativePopupWindow.VerticalPosition.BELOW, RelativePopupWindow.HorizontalPosition.CENTER);
         }
 
-        exampleCardPopup.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                if (!StringUtil.isNullOrEmpty(getText().toString())) {
-                    setSelection(getText().toString().length());
-                    setError(null);
+        if(!isOptionQuantity){
+            exampleCardPopup.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    if (!StringUtil.isNullOrEmpty(getText().toString())) {
+                        setSelection(getText().toString().length());
+                        setError(null);
+                    }
                 }
-            }
-        });
+            });
+        }
+    }
+
+    public ExampleCardPopup getExampleCardPopup() {
+        return exampleCardPopup;
     }
 
     View.OnClickListener onClickNumberKeyboard = new View.OnClickListener() {

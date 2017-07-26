@@ -52,6 +52,7 @@ public class PosRegisterShift extends PosAbstractModel implements RegisterShift 
     PosZreportSalesSummary zreport_sales_summary;
     String pos_id;
     String pos_name;
+    String store_id;
 
     @Gson2PosExclude
     boolean last_seven_day;
@@ -195,6 +196,16 @@ public class PosRegisterShift extends PosAbstractModel implements RegisterShift 
     @Override
     public CashTransaction getParamCash() {
         return param_cash;
+    }
+
+    @Override
+    public String getStoreId() {
+        return store_id;
+    }
+
+    @Override
+    public void setStoreId(String strStoreId) {
+        store_id = strStoreId;
     }
 
     @Override

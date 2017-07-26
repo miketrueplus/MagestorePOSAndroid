@@ -19,6 +19,7 @@ import com.magestore.app.pos.panel.RegisterOpenSessionPanel;
 import com.magestore.app.pos.panel.RegisterShiftDetailPanel;
 import com.magestore.app.pos.panel.RegisterShiftListPanel;
 import com.magestore.app.util.ConfigUtil;
+import com.magestore.app.util.DataUtil;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -137,6 +138,7 @@ public class RegisterShiftListController extends AbstractListController<Register
                     ConfigUtil.setShiftId(registerShift.getShiftId());
                     ConfigUtil.setLocationId(registerShift.getLocationId());
 //                getMagestoreContext().getActivity().finish();
+                    DataUtil.saveDataStringToPreferences(getMagestoreContext().getActivity(), DataUtil.STORE_ID, registerShift.getStoreId());
                     ((RegisterShiftListPanel) mView).isShowButtonOpenSession(false);
                 }
                 if (registerShift.getStatus().equals("1")) {
