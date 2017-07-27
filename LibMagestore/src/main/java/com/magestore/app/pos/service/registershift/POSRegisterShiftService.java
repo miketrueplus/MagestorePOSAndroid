@@ -96,7 +96,7 @@ public class POSRegisterShiftService extends AbstractService implements Register
         cashTransaction.setShiftId(registerShift.getShiftId());
         cashTransaction.setType(registerShift.getParamCash().getType());
         cashTransaction.setValue(registerShift.getParamCash().getValue());
-        cashTransaction.setTransactionCurrencyCode(ConfigUtil.getBaseCurrencyCode());
+        cashTransaction.setTransactionCurrencyCode(registerShift.getShiftCurrencyCode());
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         RegisterShiftDataAccess registerShiftDataAccess = factory.generateRegisterShiftDataAccess();
         return registerShiftDataAccess.insertMakeAdjustment(cashTransaction);

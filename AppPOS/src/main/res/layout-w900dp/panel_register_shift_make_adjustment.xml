@@ -45,7 +45,7 @@
                     android:id="@+id/balance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{ConfigUtil.formatPrice(registerShift.getBalance())}"
+                    android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(registerShift.getBaseBalance()))}"
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/text_size_20" />
             </LinearLayout>

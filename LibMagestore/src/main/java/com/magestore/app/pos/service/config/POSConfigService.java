@@ -89,7 +89,9 @@ public class POSConfigService extends AbstractService implements ConfigService {
         ConfigUtil.setCurrentCurrency(getDefaultCurrency());
         ConfigUtil.setConfigTaxClass(configTaxClass);
         ConfigUtil.setConfigPriceFormat(configDataAccess.getPriceFormat());
-        ConfigUtil.setColorSwatch(configOption.getItems());
+        if (configOption != null) {
+            ConfigUtil.setColorSwatch(configOption.getItems());
+        }
         ConfigUtil.setCheckActiveKey(checkLicenseKey);
 
         // permisson
@@ -414,7 +416,7 @@ public class POSConfigService extends AbstractService implements ConfigService {
         ConfigUtil.setCurrencyNoSymbolFormat(currencyNosymbolFormat(configPriceFormat));
         ConfigUtil.setFloatFormat(floatFormat(configPriceFormat));
         ConfigUtil.setIntegerFormat(integetFormat(configPriceFormat));
-        ConfigUtil.setCurrentCurrency(getDefaultCurrency());
+        ConfigUtil.setCurrentCurrency(currency);
 
         return changeCurrency;
     }

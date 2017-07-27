@@ -388,10 +388,14 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                 optionModelView.quantity = 1;
                 optionModelView.is_required = true;
                 optionModelView.option_type = ProductOptionCustom.OPTION_TYPE_CONFIG;
-                if (optionCode.equals("color")) {
-                    optionModelView.input_type = ProductOptionCustom.TYPE_COLOR;
-                } else if (optionCode.equals("size")) {
-                    optionModelView.input_type = ProductOptionCustom.TYPE_SIZE;
+                if (ConfigUtil.getColorSwatch() != null && ConfigUtil.getColorSwatch().size() > 0) {
+                    if (optionCode.equals("color")) {
+                        optionModelView.input_type = ProductOptionCustom.TYPE_COLOR;
+                    } else if (optionCode.equals("size")) {
+                        optionModelView.input_type = ProductOptionCustom.TYPE_SIZE;
+                    }
+                } else {
+                    optionModelView.input_type = ProductOptionCustom.TYPE_RADIO;
                 }
                 optionModelView.quantity = Float.parseFloat(getOptionValue(configOption.getID(), getItem().getBundleOptionQuantity(), StringUtil.STRING_ONE));
                 optionModelView.setModel(configOption);
@@ -1044,7 +1048,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
             optionValueModelView.holder.mtxtQuantity.setText(String.valueOf(optionModelView.quantity_increment));
             optionValueModelView.holder.mtxtQuantity.setMinValue(optionModelView.quantity_increment);
 
-            if(optionValueModelView.holder.mtxtQuantity.getExampleCardPopup() != null) {
+            if (optionValueModelView.holder.mtxtQuantity.getExampleCardPopup() != null) {
                 optionValueModelView.holder.mtxtQuantity.getExampleCardPopup().setOnDismissListener(new PopupWindow.OnDismissListener() {
                     @Override
                     public void onDismiss() {
@@ -1200,10 +1204,10 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                     LayoutInflater layoutInflater = (LayoutInflater) this.context
                             .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 //                    if(convertView == null){
-                        optionValueModelView.holder = new OptionValueModelViewHolder();
-                        viewQuantity = layoutInflater.inflate(R.layout.card_product_option_item_quantity, null);
-                        initTypeQuantity(viewQuantity, optionValueModelView);
-                        viewQuantity.setTag(optionValueModelView.holder);
+                    optionValueModelView.holder = new OptionValueModelViewHolder();
+                    viewQuantity = layoutInflater.inflate(R.layout.card_product_option_item_quantity, null);
+                    initTypeQuantity(viewQuantity, optionValueModelView);
+                    viewQuantity.setTag(optionValueModelView.holder);
 //                    }else{
 //                        optionValueModelView.holder = (OptionValueModelViewHolder) viewQuantity.getTag();
 //                    }

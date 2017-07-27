@@ -195,7 +195,7 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
                     param.setBaseCashRemoved(item.getBaseCashRemoved());
                     param.setCashLeft(item.getCashLeft());
                     param.setBaseCashLeft(item.getBaseCashLeft());
-                    param.setShiftCurrencyCode(item.getShiftCurrencyCode());
+                    param.setShiftCurrencyCode(ConfigUtil.getCurrentCurrency().getCode());
                     param.setStaffId(item.getStaffId());
                     param.setLocationId(item.getLocationId());
                     param.setOpenedAt(item.getOpenedAt());
@@ -233,7 +233,7 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
                 param.setBaseCashRemoved(item.getBaseClosedAmount());
                 param.setCashLeft(item.getCashLeft());
                 param.setBaseCashLeft(item.getBaseCashLeft());
-                param.setShiftCurrencyCode(item.getShiftCurrencyCode());
+                param.setShiftCurrencyCode(ConfigUtil.getCurrentCurrency().getCode());
                 param.setStaffId(item.getStaffId());
                 param.setLocationId(item.getLocationId());
                 param.setOpenedAt(item.getOpenedAt());
@@ -325,7 +325,7 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
         param.setBaseCashRemoved(item.getBaseCashRemoved());
         param.setCashLeft(item.getCashLeft());
         param.setBaseCashLeft(item.getBaseCashLeft());
-        param.setShiftCurrencyCode(item.getShiftCurrencyCode());
+        param.setShiftCurrencyCode(ConfigUtil.getCurrentCurrency().getCode());
         param.setStaffId(item.getStaffId());
         param.setLocationId(item.getLocationId());
         param.setOpenedAt(item.getOpenedAt());

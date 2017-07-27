@@ -422,9 +422,9 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
             rp.setParseModel(PosConfigOption.class);
             return (ConfigOption) rp.doParse();
         } catch (ConnectionException ex) {
-            throw ex;
+            return null;
         } catch (IOException ex) {
-            throw ex;
+            return null;
         } finally {
             // đóng result reading
             if (rp != null) rp.close();
