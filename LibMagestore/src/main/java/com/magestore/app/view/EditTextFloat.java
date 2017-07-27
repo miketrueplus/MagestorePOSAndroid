@@ -108,7 +108,11 @@ public class EditTextFloat extends EditText {
 
     public float getValueFloat() {
         if (isPriceFormat) {
-            return convertToPrice(super.getText().toString());
+            if (super.getText().toString().length() < 4) {
+                return ConfigUtil.parseFloat(super.getText().toString());
+            } else {
+                return convertToPrice(super.getText().toString());
+            }
         } else {
             return ConfigUtil.parseFloat(super.getText().toString());
         }

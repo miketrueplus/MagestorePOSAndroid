@@ -3,6 +3,7 @@ package com.magestore.app.pos.model.checkout;
 import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.pos.model.PosAbstractModel;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosExclude;
+import com.magestore.app.util.StringUtil;
 
 /**
  * Created by Mike on 2/7/2017.
@@ -163,6 +164,9 @@ public class PosCheckoutPayment extends PosAbstractModel implements CheckoutPaym
 
     @Override
     public String getType() {
+        if (StringUtil.isNullOrEmpty(type_id)) {
+            type_id = "";
+        }
         return type_id;
     }
 

@@ -412,15 +412,20 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
 //                        mStoreTask.execute();
 //                    }
 //                }
-
-                    mStoreTask = new ListStoreTask(getContext(), new StoreListener());
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) // Above Api Level 13
-                    {
-                        mStoreTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                    } else // Below Api Level 13
-                    {
-                        mStoreTask.execute();
+                    if (ConfigUtil.isEnableSession()) {
+                        navigationToSalesActivity();
+                        showProgress(false);
+                    } else {
+                        mStoreTask = new ListStoreTask(getContext(), new StoreListener());
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) // Above Api Level 13
+                        {
+                            mStoreTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                        } else // Below Api Level 13
+                        {
+                            mStoreTask.execute();
+                        }
                     }
+
                 } else {
                     DialogUtil.confirm(getContext(), getString(R.string.err_active_key), R.string.ok);
                     showProgress(false);

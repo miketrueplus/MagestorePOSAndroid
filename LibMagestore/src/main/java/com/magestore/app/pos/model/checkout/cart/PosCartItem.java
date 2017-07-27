@@ -9,6 +9,7 @@ import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.model.sales.OrderParentItem;
 import com.magestore.app.pos.model.PosAbstractModel;
+import com.magestore.app.pos.model.catalog.PosProduct;
 import com.magestore.app.pos.model.catalog.PosProductOption;
 import com.magestore.app.pos.model.catalog.PosProductOptionCustom;
 import com.magestore.app.pos.model.checkout.PosQuoteItems;
@@ -79,7 +80,8 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
 
     @Override
     public void setDefaultCustomPrice(float defaultCustomPrice) {
-        default_custom_price = defaultCustomPrice;;
+        default_custom_price = defaultCustomPrice;
+        ;
     }
 
     @Override
@@ -282,7 +284,7 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
         bundle_option_qty.add(quoteCustomeOption);
     }
 
-    Product product;
+    PosProduct product;
     String qty;
     @Gson2PosExclude
     String child_id;
@@ -395,7 +397,7 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
 
     @Override
     public void setProduct(Product param_product) {
-        product = param_product;
+        product = (PosProduct) param_product;
     }
 
     @Override
@@ -424,7 +426,7 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
         float quantity = 0;
         try {
             quantity = Float.parseFloat(qty);
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
         return quantity;
@@ -789,5 +791,23 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     @Override
     public void setQtyCurrent(float fQtyCurrent) {
         qty_current = fQtyCurrent;
+    }
+
+    @Override
+    public float getSpecialPrice() {
+        if (product != null) {
+            return product.getSpecialPrice();
+        }
+        return 0;
+    }
+
+    @Override
+    public boolean checkSpecialPrice() {
+        if (product != null) {
+            if (product.getFinalPrice() < product.getSpecialPrice()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

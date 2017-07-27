@@ -3,10 +3,12 @@ package com.magestore.app.pos.panel;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -97,6 +99,8 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
 
     // text box số lượng
     EditTextQuantity mtxtCartItemQuantity;
+
+    TextView mtxtSpecialPrice;
 
     LinearLayout ll_description, ll_sku;
     boolean isShowDetail;
@@ -677,6 +681,9 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         // text box số lượng
         mtxtCartItemQuantity = (EditTextQuantity) findViewById(R.id.id_txt_product_option_cart_item_quantity);
         mtxtCartItemQuantity.setProductDetail(true);
+
+        mtxtSpecialPrice = (TextView) findViewById(R.id.id_txt_product_option_cart_item_special_price);
+        mtxtSpecialPrice.setPaintFlags(mtxtSpecialPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
         // binding
         mBinding = DataBindingUtil.bind(getView());

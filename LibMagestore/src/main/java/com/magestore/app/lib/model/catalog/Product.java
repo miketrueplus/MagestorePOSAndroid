@@ -49,6 +49,7 @@ public interface Product extends Model, ParseModel {
     String getSKU();
     float getPrice();
     float getFinalPrice();
+    float getSpecialPrice();
     String getDescription();
     String getStatus();
     Date getUpdateAt();

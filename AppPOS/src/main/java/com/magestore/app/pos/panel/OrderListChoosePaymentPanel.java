@@ -91,7 +91,7 @@ public class OrderListChoosePaymentPanel extends AbstractSimpleRecycleView<Check
         float totalValue = 0;
 
         if (mOrderHistoryListController.getOrder() != null) {
-            float total_due = mOrderHistoryListController.getOrder().getTotalDue();
+            float total_due = ConfigUtil.convertToPrice(mOrderHistoryListController.getOrder().getBaseTotalDue());
 
             for (CheckoutPayment payment : listPayment) {
                 totalValue += payment.getAmount();
@@ -141,7 +141,7 @@ public class OrderListChoosePaymentPanel extends AbstractSimpleRecycleView<Check
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                float grand_total = mOrderHistoryListController.getOrder().getTotalDue();
+                float grand_total = ConfigUtil.convertToPrice(mOrderHistoryListController.getOrder().getBaseTotalDue());
                 float totalValue = 0;
                 float allRowTotal;
                 float totalNotExchange = 0;
@@ -202,7 +202,7 @@ public class OrderListChoosePaymentPanel extends AbstractSimpleRecycleView<Check
     private void actionRemovePayment(int position) {
         mapTextId.remove(mList.get(position));
         mList.remove(position);
-        float grand_total = mOrderHistoryListController.getOrder().getTotalDue();
+        float grand_total = ConfigUtil.convertToPrice(mOrderHistoryListController.getOrder().getBaseTotalDue());
         float totalValue = 0;
         float allRowTotal;
 

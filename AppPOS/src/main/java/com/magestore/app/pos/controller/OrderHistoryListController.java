@@ -540,7 +540,7 @@ public class OrderHistoryListController extends AbstractListController<Order> {
             total = mOrder.getRemainMoney();
             isEnableButtonAddPayment(true);
         } else {
-            total = mOrder.getTotalDue();
+            total = ConfigUtil.convertToPrice(mOrder.getBaseTotalDue());
             isEnableButtonAddPayment(false);
         }
 //        }

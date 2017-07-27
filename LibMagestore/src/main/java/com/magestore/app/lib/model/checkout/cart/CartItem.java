@@ -210,4 +210,7 @@ public interface CartItem extends Model {
 
     float getQtyCurrent();
     void setQtyCurrent(float fQtyCurrent);
+
+    float getSpecialPrice();
+    boolean checkSpecialPrice();
 }

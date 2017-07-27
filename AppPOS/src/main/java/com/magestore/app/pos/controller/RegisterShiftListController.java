@@ -40,6 +40,7 @@ public class RegisterShiftListController extends AbstractListController<Register
     static final int ACTION_TYPE_VALIDATE_SESSION = 2;
     static final int ACTION_TYPE_OPEN_SESSION = 3;
     static final int ACTION_TYPE_CANCEL_SESSION = 4;
+    static final int ACTION_TYPE_GET_POS = 5;
     OpenSessionListValuePanel mOpenSessionListPanel;
     List<OpenSessionValue> listValueClose;
     List<OpenSessionValue> listValueOpen;
@@ -50,6 +51,7 @@ public class RegisterShiftListController extends AbstractListController<Register
     boolean first_check;
     RegisterOpenSessionPanel openSessionPanel;
     CloseSessionPanel panelCloseSessionPanel;
+    List<PointOfSales> listPos;
 
     /**
      * Service xử lý các vấn đề liên quan đến register shift
@@ -193,6 +195,9 @@ public class RegisterShiftListController extends AbstractListController<Register
             SessionParam param = (SessionParam) wraper.get("param_cancel_session");
             wraper.put("cancel_session_respone", mRegisterShiftService.closeSession(param));
             return true;
+        } else if (actionType == ACTION_TYPE_GET_POS) {
+            wraper.put("list_pos", userService.getListPos());
+            return true;
         }
         return false;
     }
@@ -286,6 +291,20 @@ public class RegisterShiftListController extends AbstractListController<Register
             if (type == 1) {
                 dismissDialogCloseSession();
             }
+        } else if (success && actionType == ACTION_TYPE_GET_POS) {
+            listPos = (List<PointOfSales>) wraper.get("list_pos");
+            if (listPos != null && listPos.size() > 0) {
+                PointOfSales pointOfSales = userService.createPointOfSales();
+                pointOfSales.setPosId("");
+                pointOfSales.setPosName(getMagestoreContext().getActivity().getString(R.string.select_pos));
+                if (!checkPos(listPos)) {
+                    listPos.add(0, pointOfSales);
+                }
+            }
+            if (openSessionPanel != null) {
+                openSessionPanel.showLoading(false);
+                openSessionPanel.setDataPos(listPos);
+            }
         }
     }
 
@@ -306,12 +325,19 @@ public class RegisterShiftListController extends AbstractListController<Register
     public void onCancelledBackground(Exception exp, int actionType, String actionCode, Map<String, Object> wraper, Model... models) {
         super.onCancelledBackground(exp, actionType, actionCode, wraper, models);
         isShowLoadingDetail(false);
-        if (openSessionPanel != null)
-            openSessionPanel.setEnableBtOpen(true);
-        if (panelCloseSessionPanel != null) {
-            panelCloseSessionPanel.setEnableBtClose(true);
-            panelCloseSessionPanel.setEnableBtValidate(true);
-            panelCloseSessionPanel.setEnableCancel(true);
+        if (actionType == ACTION_TYPE_GET_POS) {
+            if (openSessionPanel != null) {
+                openSessionPanel.showLoading(false);
+                openSessionPanel.setDataPos(listPos);
+            }
+        } else {
+            if (openSessionPanel != null)
+                openSessionPanel.setEnableBtOpen(true);
+            if (panelCloseSessionPanel != null) {
+                panelCloseSessionPanel.setEnableBtClose(true);
+                panelCloseSessionPanel.setEnableBtValidate(true);
+                panelCloseSessionPanel.setEnableCancel(true);
+            }
         }
     }
 
@@ -348,7 +374,14 @@ public class RegisterShiftListController extends AbstractListController<Register
     }
 
     public void doInputMakeAdjustment(RegisterShift registerShift) {
+        isShowLoadingDetail(true);
         doAction(ACTION_CODE_MAKE_ADJUSTMENT, null, wraper, registerShift);
+    }
+
+    public void doInputGetListPos() {
+        if (openSessionPanel != null)
+            openSessionPanel.showLoading(true);
+        doAction(ACTION_TYPE_GET_POS, null, wraper, null);
     }
 
     public CashTransaction createCashTransaction() {
@@ -438,33 +471,33 @@ public class RegisterShiftListController extends AbstractListController<Register
     }
 
     public List<PointOfSales> getListPos() {
-        try {
-            List<PointOfSales> listPos = userService.getListPos();
-            if (listPos != null) {
-                if (listPos.size() > 0) {
-                    PointOfSales pointOfSales = userService.createPointOfSales();
-                    pointOfSales.setPosId("");
-                    pointOfSales.setPosName(getMagestoreContext().getActivity().getString(R.string.select_pos));
-                    if (!checkPos(listPos)) {
-                        listPos.add(0, pointOfSales);
-                    }
-                    return listPos;
-                } else {
-                    return userService.getListPos();
-                }
-            } else {
-                return userService.getListPos();
-            }
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return null;
+//        try {
+//            List<PointOfSales> listPos = userService.getListPos();
+//            if (listPos != null) {
+//                if (listPos.size() > 0) {
+//                    PointOfSales pointOfSales = userService.createPointOfSales();
+//                    pointOfSales.setPosId("");
+//                    pointOfSales.setPosName(getMagestoreContext().getActivity().getString(R.string.select_pos));
+//                    if (!checkPos(listPos)) {
+//                        listPos.add(0, pointOfSales);
+//                    }
+//                    return listPos;
+//                } else {
+//                    return userService.getListPos();
+//                }
+//            } else {
+//                return userService.getListPos();
+//            }
+//        } catch (InstantiationException e) {
+//            e.printStackTrace();
+//        } catch (IllegalAccessException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+        return listPos;
     }
 
     private boolean checkPos(List<PointOfSales> listPos) {

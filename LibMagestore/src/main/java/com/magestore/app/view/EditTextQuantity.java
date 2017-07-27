@@ -95,11 +95,16 @@ public class EditTextQuantity extends EditText {
     }
 
     public float getValueFloat() {
-        if (isDecimal) {
-            return convertToPrice(super.getText().toString());
-        } else {
+//        if (isDecimal) {
+//            if (super.getText().toString().length() < 4) {
+//                return ConfigUtil.parseFloat(super.getText().toString());
+//            } else {
+//                float a = convertToPrice(super.getText().toString());
+//                return convertToPrice(super.getText().toString());
+//            }
+//        } else {
             return ConfigUtil.parseFloat(super.getText().toString());
-        }
+//        }
     }
 
     public double getValueDouble() {
@@ -219,7 +224,7 @@ public class EditTextQuantity extends EditText {
     private ImageView im_arrow_up, im_arrow_down, im_arrow_left;
     ExampleCardPopup exampleCardPopup;
 
-    private void createPopup(){
+    private void createPopup() {
         LayoutInflater layoutInflater = (LayoutInflater) getContext().getSystemService(getContext().LAYOUT_INFLATER_SERVICE);
         View popupView = layoutInflater.inflate(R.layout.layout_popup_keyboard, null);
         im_arrow_up = (ImageView) popupView.findViewById(R.id.im_arrow_up);
@@ -284,7 +289,7 @@ public class EditTextQuantity extends EditText {
             exampleCardPopup.showOnAnchor(this, RelativePopupWindow.VerticalPosition.BELOW, RelativePopupWindow.HorizontalPosition.CENTER);
         }
 
-        if(!isOptionQuantity){
+        if (!isOptionQuantity) {
             exampleCardPopup.setOnDismissListener(new PopupWindow.OnDismissListener() {
                 @Override
                 public void onDismiss() {

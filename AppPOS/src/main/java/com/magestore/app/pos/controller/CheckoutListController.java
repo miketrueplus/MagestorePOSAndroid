@@ -467,7 +467,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         doAction(ACTION_TYPE_RETRIEVE_STAFF_PERMISSON, null, wraper, null);
     }
 
-    public void doInputChangeStaffPermisson(List<String> listPermisson){
+    public void doInputChangeStaffPermisson(List<String> listPermisson) {
         try {
             getConfigService().getConfigStaffPermisson(listPermisson);
         } catch (InstantiationException e) {
@@ -1094,6 +1094,9 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         } else if (actionType == ACTION_TYPE_SEND_EMAIL) {
             showDetailOrderLoading(false);
             mCheckoutSuccessPanel.showAlertRespone(true, "");
+        } else if (actionType == ACTION_TYPE_SAVE_CART) {
+            super.onCancelledBackground(exp, actionType, actionCode, wraper, models);
+            onBackTohome();
         } else {
             super.onCancelledBackground(exp, actionType, actionCode, wraper, models);
         }

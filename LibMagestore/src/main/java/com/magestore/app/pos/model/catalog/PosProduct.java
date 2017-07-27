@@ -172,6 +172,11 @@ public class PosProduct extends PosAbstractModel implements Product {
     }
 
     @Override
+    public float getSpecialPrice() {
+        return special_price;
+    }
+
+    @Override
     public String getDescription() {
         return (description == null) ? "" : description;
     }

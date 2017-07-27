@@ -40,7 +40,7 @@ public class POSUserDataAccess extends POSAbstractDataAccess implements UserData
     // wrap object lại và chuyênr thành json
     // Cache config đầu tiên
     private static List<Store> mListStore;
-    private static List<PointOfSales> mListPos;
+//    private static List<PointOfSales> mListPos;
 
     private class Wrap {
         User staff;
@@ -163,9 +163,9 @@ public class POSUserDataAccess extends POSAbstractDataAccess implements UserData
 
     @Override
     public List<PointOfSales> retrievePos() throws ParseException, ConnectionException, DataAccessException, IOException {
-        if (mListPos != null) {
-            return mListPos;
-        }
+//        if (mListPos != null) {
+//            return mListPos;
+//        }
         Connection connection = null;
         Statement statement = null;
         ResultReading rp = null;
@@ -185,7 +185,7 @@ public class POSUserDataAccess extends POSAbstractDataAccess implements UserData
             rp.setParseImplement(getClassParseImplement());
             rp.setParseModel(Gson2PosListPointOfSales.class);
             Gson2PosListPointOfSales listPos = (Gson2PosListPointOfSales) rp.doParse();
-            mListPos = (List<PointOfSales>) (List<?>) (listPos.items);
+            List<PointOfSales> mListPos = (List<PointOfSales>) (List<?>) (listPos.items);
             return mListPos;
         } catch (Exception ex) {
             throw new DataAccessException(ex);
@@ -209,7 +209,7 @@ public class POSUserDataAccess extends POSAbstractDataAccess implements UserData
 
     @Override
     public void resetListPos() throws ParseException, ConnectionException, DataAccessException, IOException {
-        mListPos = null;
+//        mListPos = null;
     }
 
     @Override

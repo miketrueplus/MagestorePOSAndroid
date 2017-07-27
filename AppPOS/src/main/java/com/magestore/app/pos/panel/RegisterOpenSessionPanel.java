@@ -37,7 +37,7 @@ import java.util.List;
 public class RegisterOpenSessionPanel extends AbstractDetailPanel<RegisterShift> {
     static String OPEN_SESSION = "0";
     Button bt_open, bt_open_balance;
-    RelativeLayout rl_add_value, rl_set_balance;
+    RelativeLayout rl_add_value, rl_set_balance, rl_loading;
     LinearLayout ll_open_balance, ll_note;
     TextView txt_staff_login, tv_session_back, error_pos, tv_session_title, total_balance_value;
     View line;
@@ -68,6 +68,7 @@ public class RegisterOpenSessionPanel extends AbstractDetailPanel<RegisterShift>
     protected void initLayout() {
         View view = inflate(getContext(), R.layout.panel_open_session_in_register, null);
         addView(view);
+        rl_loading = (RelativeLayout) view.findViewById(R.id.rl_loading);
         tv_session_back = (TextView) view.findViewById(R.id.tv_session_back);
         tv_session_title = (TextView) view.findViewById(R.id.tv_session_title);
         line = (View) view.findViewById(R.id.line);
@@ -200,12 +201,13 @@ public class RegisterOpenSessionPanel extends AbstractDetailPanel<RegisterShift>
 
     @Override
     public void initModel() {
-
         openSessionListValuePanel.setType(OpenSessionListValuePanel.TYPE_OPEN_SESSION_IN_REGISTER);
         openSessionListValuePanel.setRegisterShiftListController(mRegisterShiftListController);
         mRegisterShiftListController.setOpenSessionListPanel(openSessionListValuePanel);
-        List<PointOfSales> listPos = mRegisterShiftListController.getListPos();
+        mRegisterShiftListController.doInputGetListPos();
+    }
 
+    public void setDataPos(List<PointOfSales> listPos) {
         if (listPos != null && listPos.size() > 0) {
             error_pos.setVisibility(GONE);
             sp_pos.setVisibility(VISIBLE);
@@ -251,5 +253,9 @@ public class RegisterOpenSessionPanel extends AbstractDetailPanel<RegisterShift>
 
     public void setEnableBtOpen(boolean isEnable) {
         bt_open.setEnabled(isEnable ? true : false);
+    }
+
+    public void showLoading(boolean isShow) {
+        rl_loading.setVisibility(isShow ? VISIBLE : GONE);
     }
 }
