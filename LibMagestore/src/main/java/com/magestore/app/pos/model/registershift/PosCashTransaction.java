@@ -190,8 +190,8 @@ public class PosCashTransaction extends PosAbstractModel implements CashTransact
     @Override
     public String getCheckTypeValue() {
         if (type.toLowerCase().equals("remove")) {
-            return "- " + ConfigUtil.formatPrice(value);
+            return "- " + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(base_value));
         }
-        return "+ " + ConfigUtil.formatPrice(value);
+        return "+ " + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(base_value));
     }
 }

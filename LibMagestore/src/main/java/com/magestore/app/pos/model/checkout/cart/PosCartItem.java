@@ -796,7 +796,7 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     @Override
     public float getSpecialPrice() {
         if (product != null) {
-            return product.getSpecialPrice();
+            return product.getPrice();
         }
         return 0;
     }
@@ -804,7 +804,7 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     @Override
     public boolean checkSpecialPrice() {
         if (product != null) {
-            if (product.getFinalPrice() < product.getSpecialPrice()) {
+            if (product.getFinalPrice() < product.getPrice()) {
                 return true;
             }
         }

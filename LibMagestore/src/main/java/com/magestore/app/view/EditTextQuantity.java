@@ -1,6 +1,7 @@
 package com.magestore.app.view;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Rect;
@@ -11,6 +12,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -195,6 +197,7 @@ public class EditTextQuantity extends EditText {
                 setInputType(inType); // Restore input type
                 setSelection(0, getText().length());
                 if (exampleCardPopup == null || !exampleCardPopup.isShowing()) {
+                    hideSoftKeyboard();
                     showCustomKeyboard();
                 }
                 return true; // Consume touch event
@@ -406,5 +409,10 @@ public class EditTextQuantity extends EditText {
         String text_f = amount.substring(0, amount.length() - 2);
         String text_s = amount.substring(amount.length() - 2, amount.length());
         return ConfigUtil.parseFloat(text_f + decima_symbol + text_s);
+    }
+
+    public void hideSoftKeyboard() {
+        InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(this.getWindowToken(), 0);
     }
 }

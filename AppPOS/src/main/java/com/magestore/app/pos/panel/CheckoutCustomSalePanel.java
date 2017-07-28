@@ -92,6 +92,7 @@ public class CheckoutCustomSalePanel extends AbstractDetailPanel<CartItem> {
         setDataTaxClass();
         mBinding.setCartItem(item);
         mBinding.setProduct(item.getProduct());
+        mtxtPrice.setActivity(((CartItemListController) getController()).getMagestoreContext().getActivity());
         if (StringUtil.isNullOrEmpty(mBinding.idTxtCustomSaleName.getText().toString().trim()))
             mBinding.idTxtCustomSaleName.setText(R.string.custom_sale);
     }
