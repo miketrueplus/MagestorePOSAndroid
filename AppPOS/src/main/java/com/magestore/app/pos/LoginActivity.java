@@ -391,27 +391,8 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
         public void onPostController(Task task, Boolean success) {
             mAuthTask = null;
             if (success) {
-                // check active key
-                if (ConfigUtil.isCheckActiveKey()) {
-                    // Đăng nhập thành công, lưu domain lại để lần sau không phải nhập
-                    if (!mCheckLoginDemo) {
-                        saveSharedValue("login_activity_domain", mDomainView.getText().toString().trim());
-                        saveSharedValue("login_activity_username", mUserNameView.getText().toString().trim());
-                        saveSharedValue("login_activity_password", mPasswordView.getText().toString().trim());
-                    }
-//                boolean isChooseStore = DataUtil.getDataBooleanToPreferences(getContext(), DataUtil.CHOOSE_STORE);
-//                if (isChooseStore) {
-//                    navigationToSalesActivity();
-//                } else {
-//                    mStoreTask = new ListStoreTask(new StoreListener());
-//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) // Above Api Level 13
-//                    {
-//                        mStoreTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-//                    } else // Below Api Level 13
-//                    {
-//                        mStoreTask.execute();
-//                    }
-//                }
+                if (mCheckLoginDemo) {
+                    ConfigUtil.setIsDevLicense(false);
                     if (ConfigUtil.isEnableSession()) {
                         navigationToSalesActivity();
                         showProgress(false);
@@ -425,10 +406,32 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
                             mStoreTask.execute();
                         }
                     }
-
                 } else {
-                    DialogUtil.confirm(getContext(), getString(R.string.err_active_key), R.string.ok);
-                    showProgress(false);
+                    // check active key
+                    if (ConfigUtil.isCheckActiveKey()) {
+                        // Đăng nhập thành công, lưu domain lại để lần sau không phải nhập
+                        if (!mCheckLoginDemo) {
+                            saveSharedValue("login_activity_domain", mDomainView.getText().toString().trim());
+                            saveSharedValue("login_activity_username", mUserNameView.getText().toString().trim());
+                            saveSharedValue("login_activity_password", mPasswordView.getText().toString().trim());
+                        }
+                        if (ConfigUtil.isEnableSession()) {
+                            navigationToSalesActivity();
+                            showProgress(false);
+                        } else {
+                            mStoreTask = new ListStoreTask(getContext(), new StoreListener());
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) // Above Api Level 13
+                            {
+                                mStoreTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                            } else // Below Api Level 13
+                            {
+                                mStoreTask.execute();
+                            }
+                        }
+                    } else {
+                        DialogUtil.confirm(getContext(), getString(R.string.err_active_key), R.string.ok);
+                        showProgress(false);
+                    }
                 }
             } else {
                 // Đăng nhập không thành công, báo lỗi và yêu cầu nhập lại
