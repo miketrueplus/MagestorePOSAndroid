@@ -150,7 +150,7 @@ public class SettingDetailPanel extends AbstractDetailPanel<Setting> {
     }
 
     public void setPrintDataSet() {
-        String[] list = {getContext().getString(R.string.print_type_receipt), getContext().getString(R.string.print_type_a4)};
+        String[] list = {getContext().getString(R.string.print_type_star_print), getContext().getString(R.string.print_type_receipt), getContext().getString(R.string.print_type_a4)};
         sp_print.bind(list);
         ConfigUtil.setTypePrint(sp_print.getSelection());
     }

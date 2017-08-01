@@ -266,6 +266,11 @@
     <string name="print_footer_default">Thank you for shopping at our store. We hope you enjoy your purchase and look forward to serving you again.</string>
     <string name="print_type_receipt">Receipt Printer Scroll</string>
     <string name="print_type_a4">A4</string>
+    <string name="print_type_star_print">Star Micrinics Printer</string>
+    <string name="print_receipt">Print Receipt</string>
+    <string name="printArea2inch" translatable="false">2inch (58mm)</string>
+    <string name="printArea3inch" translatable="false">3inch (78mm)</string>
+    <string name='printArea4inch' translatable="false">4inch (112mm)</string>
 
     <!--PayPal-->
     <string name="paypal">Paypal</string>
@@ -371,6 +376,7 @@
     <string name="increase">Increase</string>
     <string name="insert">Insert</string>
     <string name="item">Item</string>
+    <string name="items">Items</string>
     <string name="last_name">Last Name</string>
     <string name="logout">Logout</string>
     <string name="minus">-</string>

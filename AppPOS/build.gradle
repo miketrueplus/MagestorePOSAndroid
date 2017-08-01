@@ -69,4 +69,8 @@ dependencies {
     compile 'com.android.support:multidex:1.0.1'
     compile(name:'paypal-here-sdk', ext:'aar')
     compile 'com.google.android.gms:play-services-location:8.4.0'
+    compile files('libs/StarIOPort3.1.jar')
+    compile files('libs/starioextension.jar')
+    compile(name: 'smcloudservices', ext: 'aar')
+    compile 'com.google.zxing:core:3.2.1'
 }

@@ -47,8 +47,10 @@ public class PrintUtil {
             @TargetApi(Build.VERSION_CODES.KITKAT)
             @Override
             public void onPageFinished(WebView view, String url) {
-                createWebPrintJob(context, view);
-                mWebView = null;
+                if(!ConfigUtil.getTypePrint().equals(context.getString(R.string.print_type_star_print))){
+                    createWebPrintJob(context, view);
+                    mWebView = null;
+                }
             }
         });
 
