@@ -29,7 +29,8 @@
                         android:id="@+id/edt_port"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_toLeftOf="@+id/bt_search" />
+                        android:layout_toLeftOf="@+id/bt_search"
+                        android:hint="@string/print_hint_port" />
 
                     <Button
                         android:id="@+id/bt_search"

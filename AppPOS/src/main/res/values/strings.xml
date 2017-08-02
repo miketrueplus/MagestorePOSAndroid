@@ -277,6 +277,7 @@
     <string name="print_port_number">PortNumber:</string>
     <string name="print_search">Searching...</string>
     <string name="print_error_search">Can\'t find port</string>
+    <string name="print_hint_port">Port Name (TCP:192.168.31.240)</string>
 
     <!--PayPal-->
     <string name="paypal">Paypal</string>
