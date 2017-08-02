@@ -135,6 +135,39 @@
                     android:textSize="@dimen/welcome_text_size"
                     magestore_view:layout_no_scroll="true"
                     magestore_view:layout_row="@layout/simple_textview_row" />
+
+                <LinearLayout
+                    android:id="@+id/ll_print_area"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/sp_print"
+                    android:layout_marginTop="@dimen/layout_margin_10"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/layout_margin_10"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/welcome_text_size" />
+
+                    <Switch
+                        android:id="@+id/sw_print_area"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/printArea3inch"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/welcome_text_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/layout_margin_10"
+                        android:text="@string/printArea4inch"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/welcome_text_size" />
+                </LinearLayout>
             </RelativeLayout>
         </LinearLayout>
 

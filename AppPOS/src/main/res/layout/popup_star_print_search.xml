@@ -4,53 +4,191 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/layout_margin_20">
+        android:layout_height="match_parent"
+        android:scrollbars="none">
 
-        <EditText
-            android:id="@+id/edt_port"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/bt_search" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/bt_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:text="@string/search" />
-    </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusableInTouchMode="true"
+                android:padding="@dimen/layout_margin_20">
 
-    <Spinner
-        android:id="@+id/sp_device"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/layout_margin_5"
-        android:enabled="false"
-        android:textSize="@dimen/text_size"
-        android:visibility="gone" />
+                <RelativeLayout
+                    android:id="@+id/rl_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-    <Spinner
-        android:id="@+id/spinner_bluetooth_communication_type"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+                    <EditText
+                        android:id="@+id/edt_port"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toLeftOf="@+id/bt_search" />
 
-    <Spinner
-        android:id="@+id/spinner_tcp_port_number"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+                    <Button
+                        android:id="@+id/bt_search"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:background="@drawable/checkout_success_border_button_new_order"
+                        android:paddingBottom="@dimen/layout_margin_10"
+                        android:paddingLeft="@dimen/layout_margin_20"
+                        android:paddingRight="@dimen/layout_margin_20"
+                        android:paddingTop="@dimen/layout_margin_10"
+                        android:text="@string/search"
+                        android:textAllCaps="false"
+                        android:textColor="@color/checkout_success_btn_text_new_color" />
+                </RelativeLayout>
 
-    <Spinner
-        android:id="@+id/spinner_print_area"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+                <LinearLayout
+                    android:id="@+id/ll_progessbar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rl_search"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/layout_margin_10"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
-    <Button
-        android:id="@+id/bt_print"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/layout_margin_20"
-        android:text="@string/print_receipt" />
+                    <ProgressBar
+                        android:layout_width="@dimen/layout_margin_40"
+                        android:layout_height="@dimen/layout_margin_40"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="@dimen/layout_margin_5" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/print_search"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/text_size" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_error_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rl_search"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/layout_margin_10"
+                    android:text="@string/print_error_search"
+                    android:textColor="@color/error_no_pos"
+                    android:textSize="@dimen/text_size"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_device"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/layout_margin_10"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/layout_margin_20"
+                android:paddingRight="@dimen/layout_margin_20"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/print_select_ip"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/text_size" />
+
+                <Spinner
+                    android:id="@+id/sp_device"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:padding="@dimen/layout_margin_10"
+                    android:textSize="@dimen/text_size" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/layout_margin_10"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/layout_margin_20"
+                android:paddingRight="@dimen/layout_margin_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/layout_margin_10"
+                    android:text="@string/print_bluetooth"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/text_size" />
+
+                <Spinner
+                    android:id="@+id/spinner_bluetooth_communication_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/layout_margin_10"
+                    android:textSize="@dimen/text_size" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/layout_margin_10"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/layout_margin_20"
+                android:paddingRight="@dimen/layout_margin_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/layout_margin_10"
+                    android:text="@string/print_port_number"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/text_size" />
+
+                <Spinner
+                    android:id="@+id/spinner_tcp_port_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/layout_margin_10"
+                    android:textSize="@dimen/text_size" />
+            </LinearLayout>
+
+            <Spinner
+                android:id="@+id/spinner_print_area"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/bt_print"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/layout_margin_20"
+                android:layout_marginRight="@dimen/layout_margin_20"
+                android:layout_marginTop="@dimen/layout_margin_20"
+                android:background="@drawable/checkout_success_border_button_new_order"
+                android:paddingBottom="@dimen/layout_margin_10"
+                android:paddingTop="@dimen/layout_margin_10"
+                android:text="@string/print_receipt"
+                android:textAllCaps="false"
+                android:textColor="@color/checkout_success_btn_text_new_color" />
+
+            <Button
+                android:id="@+id/bt_open_cash_drawer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/layout_margin_20"
+                android:background="@drawable/checkout_success_border_button_new_order"
+                android:paddingBottom="@dimen/layout_margin_10"
+                android:paddingTop="@dimen/layout_margin_10"
+                android:text="@string/print_open_cash_drawer"
+                android:textAllCaps="false"
+                android:textColor="@color/checkout_success_btn_text_new_color" />
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

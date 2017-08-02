@@ -33,7 +33,7 @@
             android:layout_weight="0.5"
             android:fontFamily="monospace"
             android:gravity="center_horizontal"
-            android:text='@{item.getQtyOrdered() + ""}'
+            android:text="@{ConfigUtil.formatQuantity(item.getQtyOrdered())}"
             android:textSize="@dimen/text_size"
             android:textStyle="bold" />
 
@@ -43,7 +43,7 @@
             android:layout_weight="1"
             android:fontFamily="monospace"
             android:gravity="center_horizontal"
-            android:text='@{ConfigUtil.convertToPrice(item.getBasePrice()) + ""}'
+            android:text="@{ConfigUtil.formatDecimalQuantity(ConfigUtil.convertToPrice(item.getBasePrice()))}"
             android:textSize="@dimen/text_size"
             android:textStyle="bold" />
 
@@ -53,7 +53,7 @@
             android:layout_weight="1"
             android:fontFamily="monospace"
             android:gravity="right"
-            android:text='@{ConfigUtil.convertToPrice(item.getBaseSubTotal()) + ""}'
+            android:text="@{ConfigUtil.formatDecimalQuantity(ConfigUtil.convertToPrice(item.getBaseSubTotal()))}"
             android:textSize="@dimen/text_size"
             android:textStyle="bold" />
     </LinearLayout>

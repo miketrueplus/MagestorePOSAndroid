@@ -268,9 +268,15 @@
     <string name="print_type_a4">A4</string>
     <string name="print_type_star_print">Star Micrinics Printer</string>
     <string name="print_receipt">Print Receipt</string>
+    <string name="print_open_cash_drawer">Open Cash Drawer</string>
     <string name="printArea2inch" translatable="false">2inch (58mm)</string>
     <string name="printArea3inch" translatable="false">3inch (78mm)</string>
     <string name='printArea4inch' translatable="false">4inch (112mm)</string>
+    <string name="print_select_ip">Please Select IP Address or Input Port Name:</string>
+    <string name="print_bluetooth">Bluetooth:</string>
+    <string name="print_port_number">PortNumber:</string>
+    <string name="print_search">Searching...</string>
+    <string name="print_error_search">Can\'t find port</string>
 
     <!--PayPal-->
     <string name="paypal">Paypal</string>

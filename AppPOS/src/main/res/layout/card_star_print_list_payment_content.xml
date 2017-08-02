@@ -19,7 +19,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:ellipsize="end"
             android:fontFamily="monospace"
+            android:maxLines="2"
             android:text="@{orderPayment.getMethodTitle()}"
             android:textSize="@dimen/text_size_18"
             android:textStyle="bold" />

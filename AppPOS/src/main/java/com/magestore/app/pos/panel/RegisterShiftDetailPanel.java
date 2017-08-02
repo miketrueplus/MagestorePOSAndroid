@@ -4,18 +4,23 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.magestore.app.lib.controller.Controller;
 import com.magestore.app.lib.model.registershift.RegisterShift;
+import com.magestore.app.lib.model.registershift.SaleSummary;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
 import com.magestore.app.pos.PrintDialogActivity;
 import com.magestore.app.pos.R;
@@ -25,10 +30,12 @@ import com.magestore.app.pos.controller.RegisterShiftSaleListController;
 import com.magestore.app.pos.databinding.PanelRegisterShiftDetailBinding;
 import com.magestore.app.pos.util.DialogUtil;
 import com.magestore.app.pos.util.PrintUtil;
+import com.magestore.app.pos.util.StarPrintUtitl;
 import com.magestore.app.pos.view.MagestoreDialog;
 import com.magestore.app.util.ConfigUtil;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * Created by Johan on 1/18/17.
@@ -222,37 +229,128 @@ public class RegisterShiftDetailPanel extends AbstractDetailPanel<RegisterShift>
         dialogPrint.setCancelable(true);
         dialogPrint.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialogPrint.setFeatureDrawableAlpha(1, 1);
-        dialogPrint.setContentView(R.layout.print_register_shift_preview);
-        WebView dialogWebView = (WebView) dialogPrint.findViewById(R.id.webview);
+
+        if (ConfigUtil.getTypePrint().equals(getContext().getString(R.string.print_type_star_print))) {
+            dialogPrint.setContentView(R.layout.star_print_session_layout);
+            ViewGroup.LayoutParams params = dialogPrint.getWindow().getAttributes();
+            params.width = ConfigUtil.getStarPrintArea() + 50;
+            dialogPrint.getWindow().setAttributes((WindowManager.LayoutParams) params);
+        } else {
+            dialogPrint.setContentView(R.layout.print_register_shift_preview);
+        }
+
         TextView bt_print = (TextView) dialogPrint.findViewById(R.id.dialog_save);
         bt_print.setText(getContext().getString(R.string.print));
         TextView dialog_cancel = (TextView) dialogPrint.findViewById(R.id.dialog_cancel);
         dialog_cancel.setText(getContext().getString(R.string.cancel));
         TextView dialog_title = (TextView) dialogPrint.findViewById(R.id.dialog_title);
-        dialogWebView.getSettings().setJavaScriptEnabled(true);
-        dialogWebView.getSettings().setLoadsImagesAutomatically(true);
-        dialogWebView.setDrawingCacheEnabled(true);
-        dialogWebView.buildDrawingCache();
-        dialogWebView.capturePicture();
-        PrintUtil.doPrintRegisterShift(getContext(), registerShift, dialogWebView);
+
+        if (!ConfigUtil.getTypePrint().equals(getContext().getString(R.string.print_type_star_print))) {
+            WebView dialogWebView = (WebView) dialogPrint.findViewById(R.id.webview);
+            dialogWebView.getSettings().setJavaScriptEnabled(true);
+            dialogWebView.getSettings().setLoadsImagesAutomatically(true);
+            dialogWebView.setDrawingCacheEnabled(true);
+            dialogWebView.buildDrawingCache();
+            dialogWebView.capturePicture();
+            PrintUtil.doPrintRegisterShift(getContext(), registerShift, dialogWebView);
+
+            bt_print.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS + "/RetailerPOS/PrintZReport.pdf");
+                    Intent printIntent = new Intent(getContext(),
+                            PrintDialogActivity.class);
+                    printIntent.setDataAndType(Uri.fromFile(file), "application/pdf");
+                    printIntent.putExtra("title", "");
+                    getContext().startActivity(printIntent);
+                }
+            });
+        } else {
+            final LinearLayout rl = (LinearLayout) dialogPrint.findViewById(R.id.ll_content);
+            rl.setDrawingCacheEnabled(true);
+
+            TextView tv_draw_number = (TextView) dialogPrint.findViewById(R.id.tv_draw_number);
+            tv_draw_number.setText(getContext().getString(R.string.shift) + "#" + registerShift.getShiftId() + "#" + ConfigUtil.getStaff().getStaffName());
+
+            TextView tv_opened = (TextView) dialogPrint.findViewById(R.id.tv_opened);
+            tv_opened.setText(ConfigUtil.formatDateTime(registerShift.getOpenedAt()));
+
+            TextView tv_closed = (TextView) dialogPrint.findViewById(R.id.tv_closed);
+            tv_closed.setText(ConfigUtil.formatDateTime(registerShift.getClosedAt()));
+
+            TextView tv_title_transaction = (TextView) dialogPrint.findViewById(R.id.tv_title_transaction);
+            tv_title_transaction.setText("#" + getContext().getString(R.string.close_session_transaction_title));
+
+            TextView tv_open_amount = (TextView) dialogPrint.findViewById(R.id.tv_open_amount);
+            tv_open_amount.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(registerShift.getBaseFloatAmount())));
+
+            TextView tv_close_amount = (TextView) dialogPrint.findViewById(R.id.tv_close_amount);
+            tv_close_amount.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(registerShift.getBaseClosedAmount())));
+
+            TextView tv_cash_sales = (TextView) dialogPrint.findViewById(R.id.tv_cash_sales);
+            tv_cash_sales.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(registerShift.getBaseCashSales())));
+
+            TextView tv_cash_add = (TextView) dialogPrint.findViewById(R.id.tv_cash_add);
+            tv_cash_add.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(registerShift.getBaseCashAdded())));
+
+            TextView tv_cash_remove = (TextView) dialogPrint.findViewById(R.id.tv_cash_remove);
+            tv_cash_remove.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(registerShift.getBaseCashRemoved())));
+
+            TextView tv_title_sales = (TextView) dialogPrint.findViewById(R.id.tv_title_sales);
+            tv_title_sales.setText("#" + getContext().getString(R.string.sales));
+
+            TextView tv_total_sales = (TextView) dialogPrint.findViewById(R.id.tv_total_sales);
+            tv_total_sales.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(registerShift.getBaseTotalSales())));
+
+            TextView tv_discount = (TextView) dialogPrint.findViewById(R.id.tv_discount);
+            tv_discount.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(registerShift.getZrepostSalesSummary().getDiscountAmount())));
+
+            LinearLayout ll_gift_voucher_discount = (LinearLayout) dialogPrint.findViewById(R.id.ll_gift_voucher_discount);
+            View line_gift_voucher_discount = (View) dialogPrint.findViewById(R.id.line_gift_voucher_discount);
+            ll_gift_voucher_discount.setVisibility(registerShift.getZrepostSalesSummary().getGiftvoucherDiscount() > 0 ? VISIBLE : GONE);
+            line_gift_voucher_discount.setVisibility(registerShift.getZrepostSalesSummary().getGiftvoucherDiscount() > 0 ? VISIBLE : GONE);
+            TextView tv_gift_voucher_discount = (TextView) dialogPrint.findViewById(R.id.tv_gift_voucher_discount);
+            tv_gift_voucher_discount.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(registerShift.getZrepostSalesSummary().getGiftvoucherDiscount())));
+
+            LinearLayout ll_point_discount = (LinearLayout) dialogPrint.findViewById(R.id.ll_point_discount);
+            View line_point_discount = (View) dialogPrint.findViewById(R.id.line_point_discount);
+            ll_point_discount.setVisibility(registerShift.getZrepostSalesSummary().getRewardpointsDiscount() > 0 ? VISIBLE : GONE);
+            line_point_discount.setVisibility(registerShift.getZrepostSalesSummary().getRewardpointsDiscount() > 0 ? VISIBLE : GONE);
+            TextView tv_point_discount = (TextView) dialogPrint.findViewById(R.id.tv_point_discount);
+            tv_point_discount.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(registerShift.getZrepostSalesSummary().getRewardpointsDiscount())));
+
+            TextView tv_refund = (TextView) dialogPrint.findViewById(R.id.tv_refund);
+            tv_refund.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(registerShift.getZrepostSalesSummary().getTotalRefunded())));
+
+            TextView tv_title_payment_method = (TextView) dialogPrint.findViewById(R.id.tv_title_payment_method);
+            tv_title_payment_method.setText("#" + getContext().getString(R.string.register_shift_report_payment_title));
+
+            StarPrinSessiontListPaymentPanel listPaymentPanel = (StarPrinSessiontListPaymentPanel) dialogPrint.findViewById(R.id.session_item_payment_panel);
+            List<SaleSummary> listPayment = registerShift.getSalesSummary();
+            if (listPayment != null && listPayment.size() > 0) {
+                tv_title_payment_method.setVisibility(VISIBLE);
+                listPaymentPanel.setVisibility(VISIBLE);
+                listPaymentPanel.bindList(listPayment);
+            } else {
+                tv_title_payment_method.setVisibility(GONE);
+                listPaymentPanel.setVisibility(GONE);
+            }
+
+            bt_print.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Bitmap bitmap = rl.getDrawingCache();
+                    StarPrintUtitl.showSearchPrint(getContext(), ((RegisterShiftListController) mController).getMagestoreContext().getActivity(), bitmap);
+                }
+            });
+        }
+
         dialogPrint.show();
 
         dialog_cancel.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 dialogPrint.dismiss();
-            }
-        });
-
-        bt_print.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS + "/RetailerPOS/PrintZReport.pdf");
-                Intent printIntent = new Intent(getContext(),
-                        PrintDialogActivity.class);
-                printIntent.setDataAndType(Uri.fromFile(file), "application/pdf");
-                printIntent.putExtra("title", "");
-                getContext().startActivity(printIntent);
             }
         });
     }

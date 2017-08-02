@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.magestore.app.lib.model.sales.OrderStatus;
 import com.magestore.app.lib.model.sales.OrderWebposPayment;
 import com.magestore.app.lib.view.AbstractSimpleListView;
+import com.magestore.app.lib.view.AbstractSimpleRecycleView;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.databinding.CardStarPrintListPaymentContentBinding;
 import com.magestore.app.util.ConfigUtil;
@@ -20,7 +21,7 @@ import com.magestore.app.util.StringUtil;
  * dong.le@trueplus.vn
  */
 
-public class StarPrintListCommentPanel extends AbstractSimpleListView<OrderStatus> {
+public class StarPrintListCommentPanel extends AbstractSimpleRecycleView<OrderStatus> {
     public StarPrintListCommentPanel(Context context) {
         super(context);
     }
@@ -42,12 +43,7 @@ public class StarPrintListCommentPanel extends AbstractSimpleListView<OrderStatu
     }
 
     @Override
-    public void showErrorMsgWithReload(String strMsg) {
-
-    }
-
-    @Override
-    public void showErrorMsgWithReload(Exception exp) {
+    protected void onClickItem(View view, OrderStatus item, int position) {
 
     }
 }

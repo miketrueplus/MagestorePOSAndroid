@@ -54,6 +54,7 @@ public class ConfigUtil {
     private static boolean mEnableDeleteOrder;
     private static List<ConfigTaxClass> mConfigTaxClass;
     private static String mTypePrint;
+    private static int mStarPrintArea;
     private static PointOfSales mPointOfSales;
     private static String mShiftId;
     private static String mLocationId;
@@ -223,6 +224,17 @@ public class ConfigUtil {
         } else {
             s_amount = s_amount + " " + getConfigPriceFormat().getCurrencySymbol();
         }
+        return s_amount;
+    }
+
+    public static String formatDecimalQuantity(float number){
+        String price_format = getPriceFormat().format(number);
+        String decima_symbol = ConfigUtil.getConfigPriceFormat().getDecimalSymbol();
+        String price_r = price_format.replaceAll("\\.", "");
+        String text_f = price_r.substring(0, price_r.length() - 2);
+        String text_s = price_r.substring(price_r.length() - 2, price_r.length());
+        float amount = ConfigUtil.parseFloat(text_f + decima_symbol + text_s);
+        String s_amount = ConfigUtil.formatNumber(amount);
         return s_amount;
     }
 
@@ -709,6 +721,14 @@ public class ConfigUtil {
 
     public static ConfigPrint getConfigPrint() {
         return mConfigPrint;
+    }
+
+    public static void setStarPrintArea(int mStarPrintArea) {
+        ConfigUtil.mStarPrintArea = mStarPrintArea;
+    }
+
+    public static int getStarPrintArea() {
+        return mStarPrintArea;
     }
 
     public static void setBaseCurrencyCode(String mBaseCurrencyCode) {

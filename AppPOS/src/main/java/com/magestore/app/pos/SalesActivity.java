@@ -250,6 +250,7 @@ public class SalesActivity extends AbstractActivity
         mPluginStoreCreditPanel = (PluginStoreCreditPanel) mCheckoutDetailPanel.findViewById(R.id.rl_store_credit);
         // config print
         ConfigUtil.setTypePrint(getString(R.string.print_type_star_print));
+        ConfigUtil.setStarPrintArea(576);
 
         // keyboard
         ll_custom_keyboard = (LinearLayout) findViewById(R.id.ll_custom_keyboard);

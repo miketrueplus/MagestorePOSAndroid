@@ -162,7 +162,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/layout_margin_5"
+                    android:layout_marginBottom="@dimen/layout_margin_10"
+                    android:layout_marginTop="@dimen/layout_margin_10"
                     android:orientation="horizontal">
 
                     <TextView
@@ -213,7 +214,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="@dimen/layout_margin_5"
+                    android:layout_marginBottom="@dimen/layout_margin_10"
                     android:orientation="vertical">
 
                     <com.magestore.app.pos.panel.StarPrintListItemPanel
@@ -221,7 +222,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1.0"
-                        magestore_view:layout_no_scroll="true"
                         magestore_view:layout_row="@layout/card_star_print_list_content" />
                 </FrameLayout>
 
@@ -230,7 +230,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/layout_margin_5"
-                    android:layout_marginTop="@dimen/layout_margin_5"
+                    android:layout_marginTop="@dimen/layout_margin_10"
                     android:orientation="horizontal">
 
                     <TextView
@@ -457,7 +457,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/layout_margin_5"
+                    android:layout_marginBottom="@dimen/layout_margin_10"
+                    android:layout_marginTop="@dimen/layout_margin_10"
                     android:orientation="horizontal">
 
                     <TextView
@@ -477,7 +478,7 @@
                         android:layout_weight="1"
                         android:fontFamily="monospace"
                         android:gravity="right"
-                        android:textSize="@dimen/text_size_20"
+                        android:textSize="@dimen/text_24"
                         android:textStyle="bold" />
                 </LinearLayout>
 
@@ -491,6 +492,7 @@
                     android:id="@+id/item_payment_panel"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/layout_margin_5"
                     magestore_view:layout_no_scroll="true"
                     magestore_view:layout_row="@layout/card_star_print_list_payment_content" />
 
@@ -498,8 +500,8 @@
                     android:id="@+id/ll_change"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/layout_margin_5"
                     android:layout_marginBottom="@dimen/layout_margin_5"
+                    android:layout_marginTop="@dimen/layout_margin_5"
                     android:orientation="horizontal">
 
                     <TextView
@@ -527,6 +529,7 @@
                     android:id="@+id/tv_comment_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/layout_margin_10"
                     android:layout_weight="1"
                     android:text="@string/order_add_comment_title"
                     android:textAllCaps="true"
@@ -544,6 +547,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/layout_margin_10"
                     android:fontFamily="monospace"
                     android:text="-------- **** --------"
                     android:textSize="@dimen/text_size"
@@ -553,7 +557,8 @@
                     android:id="@+id/tv_footer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/layout_margin_5"
+                    android:layout_marginBottom="@dimen/layout_margin_10"
+                    android:layout_marginTop="@dimen/layout_margin_10"
                     android:fontFamily="monospace"
                     android:gravity="center_horizontal"
                     android:textSize="@dimen/text_size"

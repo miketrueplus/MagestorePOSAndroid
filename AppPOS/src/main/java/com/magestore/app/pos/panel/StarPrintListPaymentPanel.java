@@ -8,6 +8,7 @@ import android.view.View;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.sales.OrderWebposPayment;
 import com.magestore.app.lib.view.AbstractSimpleListView;
+import com.magestore.app.lib.view.AbstractSimpleRecycleView;
 import com.magestore.app.pos.databinding.CardStarPrintListContentBinding;
 import com.magestore.app.pos.databinding.CardStarPrintListPaymentContentBinding;
 
@@ -17,7 +18,7 @@ import com.magestore.app.pos.databinding.CardStarPrintListPaymentContentBinding;
  * dong.le@trueplus.vn
  */
 
-public class StarPrintListPaymentPanel extends AbstractSimpleListView<OrderWebposPayment> {
+public class StarPrintListPaymentPanel extends AbstractSimpleRecycleView<OrderWebposPayment> {
     public StarPrintListPaymentPanel(Context context) {
         super(context);
     }
@@ -37,12 +38,7 @@ public class StarPrintListPaymentPanel extends AbstractSimpleListView<OrderWebpo
     }
 
     @Override
-    public void showErrorMsgWithReload(String strMsg) {
-
-    }
-
-    @Override
-    public void showErrorMsgWithReload(Exception exp) {
+    protected void onClickItem(View view, OrderWebposPayment item, int position) {
 
     }
 }

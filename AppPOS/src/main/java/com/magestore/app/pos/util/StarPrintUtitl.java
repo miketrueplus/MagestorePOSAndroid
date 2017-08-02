@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.os.Handler;
+import android.os.Message;
 import android.os.StrictMode;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,12 +18,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
+import android.widget.TextView;
 
-import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.sales.Order;
-import com.magestore.app.lib.view.SimpleSpinner;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.adapter.StarPrintAdapter;
 import com.magestore.app.util.ConfigUtil;
@@ -42,9 +44,9 @@ import java.util.List;
  */
 
 public class StarPrintUtitl {
-    private static String printArea;
+    private static int printArea;
 
-    public static void showSearchPrint(final Context context, final Activity activity, final Order order, final Bitmap bitmap) {
+    public static void showSearchPrint(final Context context, final Activity activity, final Bitmap bitmap) {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         activity.runOnUiThread(new Runnable() {
@@ -56,13 +58,17 @@ public class StarPrintUtitl {
                 dialogPrint.setFeatureDrawableAlpha(1, 1);
                 dialogPrint.setContentView(R.layout.popup_star_print_search);
                 ViewGroup.LayoutParams params = dialogPrint.getWindow().getAttributes();
-                params.width = context.getResources().getDimensionPixelSize(R.dimen.order_dialog_ship_width);
+                params.width = ConfigUtil.getStarPrintArea();
                 dialogPrint.getWindow().setAttributes((WindowManager.LayoutParams) params);
                 final EditText edt_port = (EditText) dialogPrint.findViewById(R.id.edt_port);
                 SharedPreferences pref = context.getSharedPreferences("pref", context.MODE_PRIVATE);
                 edt_port.setText(pref.getString("portName", ""));
                 Button bt_search = (Button) dialogPrint.findViewById(R.id.bt_search);
                 Button bt_print = (Button) dialogPrint.findViewById(R.id.bt_print);
+                Button bt_open_cash_drawer = (Button) dialogPrint.findViewById(R.id.bt_open_cash_drawer);
+                final LinearLayout ll_device = (LinearLayout) dialogPrint.findViewById(R.id.ll_device);
+                final LinearLayout ll_progessbar = (LinearLayout) dialogPrint.findViewById(R.id.ll_progessbar);
+                final TextView tv_error_search = (TextView) dialogPrint.findViewById(R.id.tv_error_search);
                 final Spinner sp_device = (Spinner) dialogPrint.findViewById(R.id.sp_device);
 
                 Spinner spinner_tcp_port_number = (Spinner) dialogPrint.findViewById(R.id.spinner_tcp_port_number);
@@ -77,13 +83,18 @@ public class StarPrintUtitl {
                         context.getResources().getString(R.string.printArea4inch),
                 };
                 Spinner spinner_print_area = (Spinner) dialogPrint.findViewById(R.id.spinner_print_area);
+                spinner_print_area.setVisibility(View.GONE);
                 SpinnerAdapter ad_print_area = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, new String[]{context.getResources().getString(R.string.printArea3inch), context.getResources().getString(R.string.printArea4inch)});
-                spinner_bluetooth_communication_type.setAdapter(ad_print_area);
-                printArea = context.getResources().getString(R.string.printArea3inch);
+                spinner_print_area.setAdapter(ad_print_area);
+                printArea = ConfigUtil.getStarPrintArea();
                 spinner_print_area.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                        printArea = item_list[i];
+                        if (i == 0) {
+                            printArea = 576;
+                        } else {
+                            printArea = 832;
+                        }
                     }
 
                     @Override
@@ -92,10 +103,53 @@ public class StarPrintUtitl {
                     }
                 });
 
+                final Handler mHandler = new Handler() {
+                    @Override
+                    public void handleMessage(Message msg) {
+                        ll_progessbar.setVisibility(View.GONE);
+                        if (arrayDiscovery.size() > 0) {
+                            tv_error_search.setVisibility(View.GONE);
+                            StarPrintAdapter mAdapter = new StarPrintAdapter(context, arrayDiscovery);
+                            ll_device.setVisibility(View.VISIBLE);
+                            sp_device.setAdapter(mAdapter);
+                            edt_port.setText(arrayDiscovery.get(0).getPortName());
+                            SharedPreferences pref = context.getSharedPreferences("pref", context.MODE_WORLD_READABLE | context.MODE_WORLD_WRITEABLE);
+                            SharedPreferences.Editor editor = pref.edit();
+                            editor.putString("portName", edt_port.getText().toString());
+                            editor.commit();
+
+                            sp_device.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                @Override
+                                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                    edt_port.setText(arrayDiscovery.get(i).getPortName());
+                                    SharedPreferences pref = context.getSharedPreferences("pref", context.MODE_WORLD_READABLE | context.MODE_WORLD_WRITEABLE);
+                                    SharedPreferences.Editor editor = pref.edit();
+                                    editor.putString("portName", edt_port.getText().toString());
+                                    editor.commit();
+                                }
+
+                                @Override
+                                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                                }
+                            });
+                        } else {
+                            tv_error_search.setVisibility(View.VISIBLE);
+                        }
+                    }
+                };
+
                 bt_search.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        getPortDiscovery(context, "All", edt_port, sp_device);
+                        ll_progessbar.setVisibility(View.VISIBLE);
+                        Thread thread = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                getPortDiscovery(context, "All", edt_port, sp_device, ll_device, mHandler);
+                            }
+                        });
+                        thread.start();
                     }
                 });
 
@@ -104,7 +158,16 @@ public class StarPrintUtitl {
                     public void onClick(View view) {
                         String port_name = edt_port.getText().toString();
 //                        PrintReceipt(context, port_name, getPortSettingsOption(port_name, dialogPrint), "Line", printArea, order);
-                        PrintBitmap(context, port_name, getPortSettingsOption(port_name, dialogPrint), bitmap, 576, false);
+                        PrintBitmap(context, port_name, getPortSettingsOption(port_name, dialogPrint), bitmap, printArea, false);
+                        dialogPrint.dismiss();
+                    }
+                });
+
+                bt_open_cash_drawer.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String port_name = edt_port.getText().toString();
+                        OpenCashDrawer(context, port_name, getPortSettingsOption(port_name, dialogPrint));
                     }
                 });
                 dialogPrint.show();
@@ -134,16 +197,27 @@ public class StarPrintUtitl {
         CopyArray(command, tempList);
         commands.addAll(Arrays.asList(tempList));
 
+        commands.addAll(Arrays.asList(new Byte[]{0x07}));                // Kick cash drawer
+
         sendCommand(context, portName, portSettings, commands);
     }
 
-    private static void getPortDiscovery(final Context context, String interfaceName, final EditText edt_port, Spinner sp_device) {
+    public static void OpenCashDrawer(Context context, String portName, String portSettings) {
+        ArrayList<Byte> commands = new ArrayList<Byte>();
+        byte openCashDrawer = 0x07;
+
+        commands.add(openCashDrawer);
+
+        sendCommand(context, portName, portSettings, commands);
+    }
+
+    static ArrayList<PortInfo> arrayDiscovery;
+
+    private static void getPortDiscovery(final Context context, String interfaceName, final EditText edt_port, Spinner sp_device, LinearLayout ll_device, Handler mHandler) {
         List<PortInfo> BTPortList;
         List<PortInfo> TCPPortList;
 
-        final ArrayList<PortInfo> arrayDiscovery;
         arrayDiscovery = new ArrayList<PortInfo>();
-        StarPrintAdapter mAdapter = new StarPrintAdapter(context, arrayDiscovery);
 
         try {
             if (true == interfaceName.equals("Bluetooth") || true == interfaceName.equals("All")) {
@@ -164,31 +238,7 @@ public class StarPrintUtitl {
             e.printStackTrace();
         }
 
-        if (arrayDiscovery.size() > 0) {
-            sp_device.setVisibility(View.VISIBLE);
-            sp_device.setAdapter(mAdapter);
-            edt_port.setText(arrayDiscovery.get(0).getPortName());
-            SharedPreferences pref = context.getSharedPreferences("pref", context.MODE_WORLD_READABLE | context.MODE_WORLD_WRITEABLE);
-            SharedPreferences.Editor editor = pref.edit();
-            editor.putString("portName", edt_port.getText().toString());
-            editor.commit();
-
-            sp_device.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    edt_port.setText(arrayDiscovery.get(i).getPortName());
-                    SharedPreferences pref = context.getSharedPreferences("pref", context.MODE_WORLD_READABLE | context.MODE_WORLD_WRITEABLE);
-                    SharedPreferences.Editor editor = pref.edit();
-                    editor.putString("portName", edt_port.getText().toString());
-                    editor.commit();
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> adapterView) {
-
-                }
-            });
-        }
+        mHandler.sendEmptyMessage(0);
     }
 
     private static String getPortSettingsOption(String portName, Dialog dialogPrint) {
@@ -397,12 +447,12 @@ public class StarPrintUtitl {
         StarIOPort port = null;
         try {
             /*
-				using StarIOPort3.1.jar (support USB Port)
+                using StarIOPort3.1.jar (support USB Port)
 				Android OS Version: upper 2.2
 			*/
             port = StarIOPort.getPort(portName, portSettings, 10000);
-			/*
-				using StarIOPort.jar
+            /*
+                using StarIOPort.jar
 				Android OS Version: under 2.1
 				port = StarIOPort.getPort(portName, portSettings, 10000);
 			*/

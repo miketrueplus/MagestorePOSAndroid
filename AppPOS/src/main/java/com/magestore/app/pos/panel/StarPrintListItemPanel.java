@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.view.AbstractSimpleListView;
+import com.magestore.app.lib.view.AbstractSimpleRecycleView;
 import com.magestore.app.pos.databinding.CardStarPrintListContentBinding;
 
 /**
@@ -15,7 +16,7 @@ import com.magestore.app.pos.databinding.CardStarPrintListContentBinding;
  * dong.le@trueplus.vn
  */
 
-public class StarPrintListItemPanel extends AbstractSimpleListView<CartItem> {
+public class StarPrintListItemPanel extends AbstractSimpleRecycleView<CartItem> {
     public StarPrintListItemPanel(Context context) {
         super(context);
     }
@@ -35,12 +36,7 @@ public class StarPrintListItemPanel extends AbstractSimpleListView<CartItem> {
     }
 
     @Override
-    public void showErrorMsgWithReload(String strMsg) {
-
-    }
-
-    @Override
-    public void showErrorMsgWithReload(Exception exp) {
+    protected void onClickItem(View view, CartItem item, int position) {
 
     }
 }

@@ -12,11 +12,11 @@
         android:padding="@dimen/activity_horizontal_margin">
 
         <ImageView
-            android:layout_width="@dimen/layout_margin_30"
-            android:layout_height="@dimen/layout_margin_30"
+            android:layout_width="@dimen/layout_margin_20"
+            android:layout_height="@dimen/layout_margin_20"
             android:layout_gravity="center_vertical"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:src="@drawable/ic_exit_to_app" />
+            android:src="@drawable/ic_logout" />
 
         <TextView
             android:layout_width="match_parent"
@@ -57,11 +57,11 @@
             android:padding="@dimen/activity_horizontal_margin">
 
             <ImageView
-                android:layout_width="@dimen/layout_margin_30"
-                android:layout_height="@dimen/layout_margin_30"
+                android:layout_width="@dimen/layout_margin_20"
+                android:layout_height="@dimen/layout_margin_20"
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:src="@drawable/ic_shopping_cart_white" />
+                android:src="@drawable/ic_cart" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -85,11 +85,11 @@
             android:padding="@dimen/activity_horizontal_margin">
 
             <ImageView
-                android:layout_width="@dimen/layout_margin_30"
-                android:layout_height="@dimen/layout_margin_30"
+                android:layout_width="@dimen/layout_margin_20"
+                android:layout_height="@dimen/layout_margin_20"
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:src="@drawable/ic_history" />
+                android:src="@drawable/ic_order" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -137,11 +137,11 @@
                 android:padding="@dimen/activity_horizontal_margin">
 
                 <ImageView
-                    android:layout_width="@dimen/layout_margin_30"
-                    android:layout_height="@dimen/layout_margin_30"
+                    android:layout_width="@dimen/layout_margin_20"
+                    android:layout_height="@dimen/layout_margin_20"
                     android:layout_gravity="center_vertical"
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
-                    android:src="@drawable/ic_register_shift" />
+                    android:src="@drawable/ic_session" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -230,11 +230,11 @@
             android:padding="@dimen/activity_horizontal_margin">
 
             <ImageView
-                android:layout_width="@dimen/layout_margin_30"
-                android:layout_height="@dimen/layout_margin_30"
+                android:layout_width="@dimen/layout_margin_20"
+                android:layout_height="@dimen/layout_margin_20"
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:src="@drawable/ic_settings" />
+                android:src="@drawable/ic_setting" />
 
             <TextView
                 android:layout_width="match_parent"
