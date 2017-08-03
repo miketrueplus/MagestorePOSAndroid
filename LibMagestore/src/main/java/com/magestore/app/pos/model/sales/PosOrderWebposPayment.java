@@ -18,6 +18,7 @@ public class PosOrderWebposPayment extends PosAbstractModel implements OrderWebp
     float display_amount = 0;
     String method;
     String method_title;
+    String reference_number;
 
     @Override
     public String getID() {
@@ -92,5 +93,15 @@ public class PosOrderWebposPayment extends PosAbstractModel implements OrderWebp
     @Override
     public void setOrderId(String strOrderId) {
         order_id = strOrderId;
+    }
+
+    @Override
+    public String getReferenceNumber() {
+        return reference_number;
+    }
+
+    @Override
+    public void setReferenceNumber(String strReferenceNumber) {
+        reference_number = strReferenceNumber;
     }
 }

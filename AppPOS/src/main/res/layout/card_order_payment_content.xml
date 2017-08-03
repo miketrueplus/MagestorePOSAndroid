@@ -5,29 +5,46 @@
 
         <import type="com.magestore.app.util.ConfigUtil" />
 
+        <import type="com.magestore.app.util.StringUtil" />
+
+        <import type="android.view.View" />
+
         <variable
             name="orderWebposPayment"
             type="com.magestore.app.lib.model.sales.OrderWebposPayment" />
     </data>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/method_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/layout_margin_5"
+                android:text="@{orderWebposPayment.getMethodTitle()}"
+                android:textColor="@color/text_color" />
+
+            <TextView
+                android:id="@+id/base_display_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderWebposPayment.getBaseDisplayAmount()))}"
+                android:textColor="@color/text_color" />
+        </RelativeLayout>
 
         <TextView
-            android:id="@+id/method_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/layout_margin_5"
-            android:text="@{orderWebposPayment.getMethodTitle()}"
-            android:textColor="@color/text_color" />
-
-        <TextView
-            android:id="@+id/base_display_amount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:textColor="@color/text_color"
-            android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderWebposPayment.getBaseDisplayAmount()))}" />
-    </RelativeLayout>
+            android:layout_marginTop="@dimen/layout_margin_5"
+            android:text="@{orderWebposPayment.getReferenceNumber()}"
+            android:visibility="@{StringUtil.isNullOrEmpty(orderWebposPayment.getReferenceNumber()) ? View.GONE : View.VISIBLE}"/>
+    </LinearLayout>
 </layout>
