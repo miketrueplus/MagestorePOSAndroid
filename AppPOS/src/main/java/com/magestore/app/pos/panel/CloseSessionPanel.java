@@ -193,8 +193,8 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
                     param.setBaseClosedAmount(base_r_balance);
                     param.setCashRemoved(item.getCashRemoved()); // real amount
                     param.setBaseCashRemoved(item.getBaseCashRemoved());
-                    param.setCashLeft(item.getCashLeft());
-                    param.setBaseCashLeft(item.getBaseCashLeft());
+                    param.setCashLeft(r_balance);
+                    param.setBaseCashLeft(base_r_balance);
                     param.setShiftCurrencyCode(ConfigUtil.getCurrentCurrency().getCode());
                     param.setStaffId(item.getStaffId());
                     param.setLocationId(item.getLocationId());
