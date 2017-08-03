@@ -23,4 +23,6 @@ public interface OrderWebposPayment extends Model {
     void setMethodTitle(String strMethodTitle);
     String getOrderId();
     void setOrderId(String strOrderId);
+    String getReferenceNumber();
+    void setReferenceNumber(String strReferenceNumber);
 }
