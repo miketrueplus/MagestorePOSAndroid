@@ -308,19 +308,19 @@ public class POSConfigService extends AbstractService implements ConfigService {
     }
 
     // all permission
-    private static String ALL_PERMISSON = "all";
+    private static String ALL_PERMISSON = "Magestore_Webpos::all";
     // manage order
-    private static String MANAGE_ALL_ORDER = "manage_all_order";
-    private static String MANAGE_ORDER_ME = "manage_order_me";
-    private static String MANAGE_ORDER_LOCATION = "manage_order_location";
+    private static String MANAGE_ALL_ORDER = "Magestore_Webpos::manage_all_order";
+    private static String MANAGE_ORDER_ME = "Magestore_Webpos::manage_order_me";
+    private static String MANAGE_ORDER_LOCATION = "Magestore_Webpos::manage_order_location";
     // manage discount
-    private static String MANAGE_ALL_DISCOUNT = "all_discount";
-    private static String APPLY_DISCOUNT_PER_CART = "apply_discount_per_cart";
-    private static String APPLY_COUPON = "apply_coupon";
-    private static String APPLY_DISCOUNT_PER_ITEM = "apply_discount_per_item";
-    private static String APPLY_CUSTOM_PRICE = "apply_custom_price";
+    private static String MANAGE_ALL_DISCOUNT = "Magestore_Webpos::all_discount";
+    private static String APPLY_DISCOUNT_PER_CART = "Magestore_Webpos::apply_discount_per_cart";
+    private static String APPLY_COUPON = "Magestore_Webpos::apply_coupon";
+    private static String APPLY_DISCOUNT_PER_ITEM = "Magestore_Webpos::apply_discount_per_item";
+    private static String APPLY_CUSTOM_PRICE = "Magestore_Webpos::apply_custom_price";
     // Session
-    private static String MANAGE_SHIFT_ADJUSTMENT = "manage_shift_adjustment";
+    private static String MANAGE_SHIFT_ADJUSTMENT = "Magestore_Webpos::manage_shift_adjustment";
 
     @Override
     public void getConfigStaffPermisson(List<String> listPermisson) {
@@ -362,7 +362,7 @@ public class POSConfigService extends AbstractService implements ConfigService {
     private boolean checkStaffPermiss(List<String> listPermisson, String permisson) {
         boolean checkPermisson = false;
         for (String _permisson : listPermisson) {
-            if (_permisson.contains(permisson)) {
+            if (_permisson.equals(permisson)) {
                 checkPermisson = true;
                 return checkPermisson;
             }
