@@ -13,8 +13,8 @@ import com.magestore.app.lib.resourcemodel.sales.CartDataAccess;
 import com.magestore.app.lib.resourcemodel.sales.CheckoutDataAccess;
 import com.magestore.app.lib.resourcemodel.sales.OrderDataAccess;
 import com.magestore.app.lib.resourcemodel.user.UserDataAccess;
-import com.magestore.app.pos.api.m1.config.POSConfigDataAccessMO;
-import com.magestore.app.pos.api.m1.user.POSUserDataAccessMO;
+import com.magestore.app.pos.api.m1.config.POSConfigDataAccessM1;
+import com.magestore.app.pos.api.m1.user.POSUserDataAccessM1;
 
 /**
  * Created by Johan on 8/3/17.
@@ -22,7 +22,7 @@ import com.magestore.app.pos.api.m1.user.POSUserDataAccessMO;
  * dong.le@trueplus.vn
  */
 
-public class POSDataAccessFactoryMO extends DataAccessFactory {
+public class POSDataAccessFactoryM1 extends DataAccessFactory {
     @Override
     public ProductDataAccess generateProductDataAccess() {
         return null;
@@ -30,7 +30,7 @@ public class POSDataAccessFactoryMO extends DataAccessFactory {
 
     @Override
     public UserDataAccess generateUserDataAccess() {
-        return new POSUserDataAccessMO();
+        return new POSUserDataAccessM1();
     }
 
     @Override
@@ -70,7 +70,7 @@ public class POSDataAccessFactoryMO extends DataAccessFactory {
 
     @Override
     public ConfigDataAccess generateConfigDataAccess() {
-        return new POSConfigDataAccessMO();
+        return new POSConfigDataAccessM1();
     }
 
     @Override

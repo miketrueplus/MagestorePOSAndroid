@@ -1,7 +1,6 @@
 package com.magestore.app.lib.resourcemodel;
 
 import com.magestore.app.lib.context.MagestoreContext;
-import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.resourcemodel.catalog.CategoryDataAccess;
 import com.magestore.app.lib.resourcemodel.catalog.ProductDataAccess;
 import com.magestore.app.lib.resourcemodel.config.ConfigDataAccess;
@@ -14,7 +13,7 @@ import com.magestore.app.lib.resourcemodel.sales.CartDataAccess;
 import com.magestore.app.lib.resourcemodel.sales.CheckoutDataAccess;
 import com.magestore.app.lib.resourcemodel.sales.OrderDataAccess;
 import com.magestore.app.lib.resourcemodel.user.UserDataAccess;
-import com.magestore.app.pos.api.m1.POSDataAccessFactoryMO;
+import com.magestore.app.pos.api.m1.POSDataAccessFactoryM1;
 import com.magestore.app.pos.api.m2.POSDataAccessFactory;
 import com.magestore.app.util.ConfigUtil;
 
@@ -59,7 +58,7 @@ public abstract class DataAccessFactory {
         if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2)) {
             dataAccessFactory = (DataAccessFactory) POSDataAccessFactory.class.newInstance();
         } else if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_1)) {
-            dataAccessFactory = (DataAccessFactory) POSDataAccessFactoryMO.class.newInstance();
+            dataAccessFactory = (DataAccessFactory) POSDataAccessFactoryM1.class.newInstance();
         } else {
             dataAccessFactory = (DataAccessFactory) POSDataAccessFactory.class.newInstance();
         }

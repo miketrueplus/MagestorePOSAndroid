@@ -16,7 +16,7 @@ import com.magestore.app.lib.model.staff.StaffPermisson;
 import com.magestore.app.lib.parse.ParseException;
 import com.magestore.app.lib.resourcemodel.DataAccessException;
 import com.magestore.app.lib.resourcemodel.config.ConfigDataAccess;
-import com.magestore.app.pos.api.m2.POSAbstractDataAccess;
+import com.magestore.app.pos.api.m1.POSAbstractDataAccessM1;
 
 import java.io.IOException;
 import java.util.List;
@@ -28,7 +28,7 @@ import java.util.Map;
  * dong.le@trueplus.vn
  */
 
-public class POSConfigDataAccessMO extends POSAbstractDataAccess implements ConfigDataAccess {
+public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements ConfigDataAccess {
 
     @Override
     public Config retrieveConfig() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {

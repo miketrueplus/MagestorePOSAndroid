@@ -70,6 +70,8 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        ConfigUtil.setPlatForm(ConfigUtil.PLATFORM_MAGENTO_1);
+
         STORE_ID = DataUtil.getDataStringToPreferences(getContext(), DataUtil.STORE_ID);
 
         // cấu hình lại các layout control
