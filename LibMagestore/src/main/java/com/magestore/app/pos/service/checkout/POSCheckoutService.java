@@ -230,7 +230,7 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
             PosPaymentMethodDataParam.PaymentMethodAdditionalParam additionalParam = paymentMethodDataParam.createAddition();
             paymentMethodDataParam.setPaymentMethodAdditionalParam(additionalParam);
             paymentMethodDataParam.setShiftId(ConfigUtil.getShiftId());
-            paymentMethodDataParam.setReferenceNumber(checkoutPayment.getIsReferenceNumber());
+            paymentMethodDataParam.setReferenceNumber(checkoutPayment.getReferenceNumber());
             paymentMethodDataParam.setAmount(checkoutPayment.getAmount());
             paymentMethodDataParam.setBaseAmount(ConfigUtil.convertToBasePrice(checkoutPayment.getBaseAmount()));
             paymentMethodDataParam.setBaseRealAmount(ConfigUtil.convertToBasePrice(checkoutPayment.getRealAmount()));

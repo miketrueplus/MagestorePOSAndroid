@@ -314,7 +314,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         ((CheckoutListPanel) mView).setEnableBtCheckout(false);
         List<CheckoutPayment> listCheckoutPayment = (List<CheckoutPayment>) wraper.get("list_payment");
         CheckoutPayment paymentPayPal = checkTypePaymentPaypalhere(listCheckoutPayment);
-        paymentPayPal.setIsReferenceNumber(transaction_id.trim());
+        paymentPayPal.setReferenceNumber(transaction_id.trim());
         wraper.put("list_payment", listCheckoutPayment);
         doAction(ACTION_TYPE_PLACE_ORDER, null, wraper, null);
     }
@@ -1031,7 +1031,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             String transaction_id = (String) wraper.get("paypal_transaction_id");
             List<CheckoutPayment> listCheckoutPayment = (List<CheckoutPayment>) wraper.get("list_payment");
             CheckoutPayment paymentPayPal = checkTypePaymenPaypal(listCheckoutPayment);
-            paymentPayPal.setIsReferenceNumber(transaction_id.trim());
+            paymentPayPal.setReferenceNumber(transaction_id.trim());
             wraper.put("list_payment", listCheckoutPayment);
             doAction(ACTION_TYPE_PLACE_ORDER, null, wraper, null);
         } else if (success && actionType == ACTION_TYPE_CHECK_APPROVED_PAYMENT_AUTHORIZENET) {
@@ -1061,7 +1061,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             List<CheckoutPayment> listCheckoutPayment = (List<CheckoutPayment>) wraper.get("list_payment");
             CheckoutPayment paymentAuthorize = listCheckoutPayment.get(0);
             removeDataCreditCard(paymentAuthorize);
-            paymentAuthorize.setIsReferenceNumber(transaction_id.trim());
+            paymentAuthorize.setReferenceNumber(transaction_id.trim());
             wraper.put("list_payment", listCheckoutPayment);
             doAction(ACTION_TYPE_PLACE_ORDER, null, wraper, null);
         } else if (success && actionType == ACTION_TYPE_CHECK_APPOVED_PAYMENT_STRIPE) {
@@ -1069,7 +1069,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             List<CheckoutPayment> listCheckoutPayment = (List<CheckoutPayment>) wraper.get("list_payment");
             CheckoutPayment paymentStripe = listCheckoutPayment.get(0);
             removeDataCreditCard(paymentStripe);
-            paymentStripe.setIsReferenceNumber(transaction_id.trim());
+            paymentStripe.setReferenceNumber(transaction_id.trim());
             wraper.put("list_payment", listCheckoutPayment);
             doAction(ACTION_TYPE_PLACE_ORDER, null, wraper, null);
         } else if (success && actionType == ACTION_TYPE_REFRESH_TOKEN_PAYPAL_HERE) {

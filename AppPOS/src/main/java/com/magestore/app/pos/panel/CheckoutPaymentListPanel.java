@@ -95,6 +95,7 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
         CheckoutPayment checkoutPayment = mList.get(position);
 
         EditText reference_number = (EditText) view.findViewById(R.id.reference_number);
+        reference_number.setText(item.getReferenceNumber());
         actionAddReferenceNumber(reference_number, checkoutPayment);
 
         rl_keyboard_add_10 = (RelativeLayout) ll_custom_keyboard.findViewById(R.id.rl_keyboard_add_10);
