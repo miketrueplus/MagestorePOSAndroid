@@ -14,7 +14,9 @@ import com.magestore.app.lib.resourcemodel.sales.CartDataAccess;
 import com.magestore.app.lib.resourcemodel.sales.CheckoutDataAccess;
 import com.magestore.app.lib.resourcemodel.sales.OrderDataAccess;
 import com.magestore.app.lib.resourcemodel.user.UserDataAccess;
+import com.magestore.app.pos.api.m1.POSDataAccessFactoryMO;
 import com.magestore.app.pos.api.m2.POSDataAccessFactory;
+import com.magestore.app.util.ConfigUtil;
 
 /**
  * Factory tạo các object API đến magestore pos server
@@ -53,7 +55,14 @@ public abstract class DataAccessFactory {
      * @throws InstantiationException
      */
     public static DataAccessFactory getFactory(MagestoreContext context) throws IllegalAccessException, InstantiationException {
-        DataAccessFactory dataAccessFactory = (DataAccessFactory) POSDataAccessFactory.class.newInstance();
+        DataAccessFactory dataAccessFactory;
+        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2)) {
+            dataAccessFactory = (DataAccessFactory) POSDataAccessFactory.class.newInstance();
+        } else if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_1)) {
+            dataAccessFactory = (DataAccessFactory) POSDataAccessFactoryMO.class.newInstance();
+        } else {
+            dataAccessFactory = (DataAccessFactory) POSDataAccessFactory.class.newInstance();
+        }
         dataAccessFactory.mContext = context;
         return dataAccessFactory;
     }

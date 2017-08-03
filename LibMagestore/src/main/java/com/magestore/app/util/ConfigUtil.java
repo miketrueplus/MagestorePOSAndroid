@@ -33,7 +33,12 @@ import java.util.TimeZone;
  */
 
 public class ConfigUtil {
-    //    public static Config mConfig;
+    // platform
+    private static String mPlatForm;
+    public static String PLATFORM_MAGENTO_1 = "magento1";
+    public static String PLATFORM_MAGENTO_2 = "magento2";
+
+    // public static Config mConfig;
     private static DecimalFormat mCurrencyFormat;
     private static DecimalFormat mCurrencyNoSymbolFormat;
     private static DecimalFormat mFloatFormat;
@@ -657,6 +662,14 @@ public class ConfigUtil {
     public static float convertToPrice(float number) {
         number = number * ((float) currentCurrency.getCurrencyRate());
         return number;
+    }
+
+    public static void setPlatForm(String mPlatForm) {
+        ConfigUtil.mPlatForm = mPlatForm;
+    }
+
+    public static String getPlatForm() {
+        return mPlatForm;
     }
 
     public static void setStaff(Staff staff) {

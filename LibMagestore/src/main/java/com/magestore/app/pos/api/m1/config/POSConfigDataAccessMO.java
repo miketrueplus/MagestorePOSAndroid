@@ -28,7 +28,7 @@ import java.util.Map;
  * dong.le@trueplus.vn
  */
 
-public class POSConfigDataAccess extends POSAbstractDataAccess implements ConfigDataAccess {
+public class POSConfigDataAccessMO extends POSAbstractDataAccess implements ConfigDataAccess {
 
     @Override
     public Config retrieveConfig() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
