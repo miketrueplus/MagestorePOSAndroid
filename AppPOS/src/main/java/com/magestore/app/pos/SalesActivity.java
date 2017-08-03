@@ -79,6 +79,7 @@ import com.magestore.app.pos.sdk.PayPalHereSDKWrapper;
 import com.magestore.app.pos.ui.AbstractActivity;
 import com.magestore.app.util.AnimationView;
 import com.magestore.app.util.ConfigUtil;
+import com.magestore.app.util.DataUtil;
 import com.magestore.app.util.DialogUtil;
 import com.magestore.app.view.EditTextFloat;
 import com.magestore.app.view.ui.PosUI;
@@ -608,6 +609,11 @@ public class SalesActivity extends AbstractActivity
                     .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            listStaff = null;
+                            mCurrentSelectPosition = -1;
+                            mCurrentStaff = null;
+                            mSelectStaff = null;
+                            DataUtil.saveDataBooleanToPreferences(getContext(), DataUtil.CHOOSE_STORE, false);
                             ConfigUtil.setCheckFirstOpenSession(false);
                             finish();
                         }

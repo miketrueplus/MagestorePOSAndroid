@@ -70,13 +70,13 @@ public abstract class AbstractActivity
     TextView staff_name, staff_location;
     RelativeLayout im_change;
     PopupWindow popupWindow;
-    private static int positionSelectActivity = -1;
+    public static int positionSelectActivity = -1;
     Map<Integer, LinearLayout> listActivity = new HashMap<>();
     boolean checkShowPopup;
     StaffPermissonAdapter mAdapter;
     RelativeLayout rl_loading;
-    private static StaffPermisson mCurrentStaff;
-    private static StaffPermisson mSelectStaff;
+    public static StaffPermisson mCurrentStaff;
+    public static StaffPermisson mSelectStaff;
     private LinearLayout ll_list_staff;
     private RelativeLayout rl_enter_pin, rl_pin_1, rl_pin_2, rl_pin_3, rl_pin_4;
     private RelativeLayout rl_number_0, rl_number_1, rl_number_2, rl_number_3, rl_number_4, rl_number_5, rl_number_6, rl_number_7, rl_number_8, rl_number_9, rl_number_delete;
@@ -315,6 +315,7 @@ public abstract class AbstractActivity
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        listStaff = null;
                         mCurrentSelectPosition = -1;
                         mCurrentStaff = null;
                         mSelectStaff = null;
@@ -362,7 +363,7 @@ public abstract class AbstractActivity
     LinearLayout menu_register_shift;
     LinearLayout ll_checkout, ll_session, ll_setting;
     private int mSelectPosition;
-    private static int mCurrentSelectPosition = -1;
+    public static int mCurrentSelectPosition = -1;
 
     protected void initToolbarMenu(Toolbar toolbar) {
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
