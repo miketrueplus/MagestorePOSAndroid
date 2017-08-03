@@ -316,9 +316,9 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
     private void attemptLoginDemo() {
         // check login là demo thì không lại thông tin khách hàng nhập
         mCheckLoginDemo = true;
-        String domain = BuildConfig.REST_BASE_URL + "/pos-app/02";
-        String username = "johan";
-        String password = "johan123";
+        String domain = BuildConfig.REST_BASE_URL + "/pos-app/03";
+        String username = "ravi";
+        String password = "ravi123";
 
         String strFinalDomain = buildPOSBaseURL(domain);
         // Bắt đầu login task
