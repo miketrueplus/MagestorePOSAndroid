@@ -130,7 +130,6 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
 
     @Override
     public void initModel() {
-        super.initModel();
         setCurrency();
     }
 
