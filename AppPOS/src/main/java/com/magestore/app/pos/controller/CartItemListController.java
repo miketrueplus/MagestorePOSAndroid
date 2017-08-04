@@ -299,6 +299,7 @@ public class CartItemListController extends AbstractChildListController<Checkout
     @Override
     public void doShowDetailPanel(boolean show) {
         // khởi tạo và hiển thị dialog
+        getDetailView().initModel();
         if (mCartItemDetailDialog == null) {
             mCartItemDetailDialog = com.magestore.app.pos.util.DialogUtil.dialog(getDetailView().getContext(),
                     getDetailView().getContext().getString(R.string.product_option),
