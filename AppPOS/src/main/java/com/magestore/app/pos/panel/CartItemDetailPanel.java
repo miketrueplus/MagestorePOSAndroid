@@ -120,7 +120,7 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
      * Đơn vị tiền tệ
      */
     public void setCurrency() {
-        String sym = ConfigUtil.getCurrencySymbol();
+        String sym = ConfigUtil.getCurrentCurrency().getCurrencySymbol();
         if (sym != null) {
 //            String currency_symbol = currency.getCurrencySymbol();
             mbtnCustomPriceFixed.setText(sym);
@@ -130,7 +130,7 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
 
     @Override
     public void initModel() {
-        super.initModel();
+        setCurrency();
     }
 
     /**
@@ -150,7 +150,6 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
         }
         mBinding.setCartItem(item);
         mCartItem = item;
-        setCurrency();
 
         // đặt % hau $
         mblnCustomPriceFixed = item.isCustomPriceTypeFixed();

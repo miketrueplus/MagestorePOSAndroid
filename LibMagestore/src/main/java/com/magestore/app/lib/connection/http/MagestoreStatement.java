@@ -64,6 +64,7 @@ public class MagestoreStatement implements Statement {
     // http header
     private static final String CONTENT_TYPE = "Content-Type";
     private static final String APPLICATION_JSON = "application/json";
+    private static final String APPLICATION_RANGER = "*/*";
     private static final String APPLICATION_FORM_URLENCODEED = "application/x-www-form-urlencoded";
     private static final String ACCEPT = "Accept";
     private static final String SLASH = StringUtil.STRING_SLASH;
@@ -317,7 +318,7 @@ public class MagestoreStatement implements Statement {
         mHttpConnection = magestoreConnection.openHTTPConnection(mstrExecuteQuery, mstrMethod);
         // set cookie to header
         setCookieToHeaderField();
-
+        mHttpConnection.setRequestProperty(ACCEPT, APPLICATION_RANGER);
         // đặt action method cho http connection
         if (mAction == MagestoreStatementAction.ACTION_DELETE)
             mHttpConnection.setRequestMethod(METHOD_DELETE);
@@ -335,7 +336,7 @@ public class MagestoreStatement implements Statement {
 //                mHttpConnection.setRequestProperty("charset", "utf-8");
 //            } else {
                 mHttpConnection.setRequestProperty(CONTENT_TYPE, APPLICATION_JSON);
-                mHttpConnection.setRequestProperty(ACCEPT, APPLICATION_JSON);
+
 //            }
 
             // đặt action method cho http connection
