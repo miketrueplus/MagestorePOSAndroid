@@ -722,17 +722,27 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
 
             StarPrintListPaymentPanel listPaymentPanel = (StarPrintListPaymentPanel) dialogPrint.findViewById(R.id.item_payment_panel);
             List<OrderWebposPayment> listPayment = mOrder.getWebposOrderPayments();
-            if (listPayment != null && listPayment.size() > 0) {
-                listPaymentPanel.setVisibility(VISIBLE);
-                listPaymentPanel.bindList(listPayment);
-            } else {
+//            if (listPayment != null && listPayment.size() > 0) {
+//                listPaymentPanel.setVisibility(VISIBLE);
+//                listPaymentPanel.bindList(listPayment);
+//            } else {
                 listPaymentPanel.setVisibility(GONE);
-            }
+//            }
 
             LinearLayout ll_change = (LinearLayout) dialogPrint.findViewById(R.id.ll_change);
             TextView tv_price_change = (TextView) dialogPrint.findViewById(R.id.tv_price_change);
             ll_change.setVisibility(mOrder.getWebposBaseChange() > 0 ? VISIBLE : GONE);
             tv_price_change.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(mOrder.getWebposBaseChange())));
+
+            LinearLayout ll_paid = (LinearLayout) dialogPrint.findViewById(R.id.ll_paid);
+            TextView tv_price_paid = (TextView) dialogPrint.findViewById(R.id.tv_price_paid);
+            ll_paid.setVisibility(mOrder.getBaseTotalPaid() > 0 ? VISIBLE : GONE);
+            tv_price_paid.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(mOrder.getBaseTotalPaid())));
+
+            LinearLayout ll_due = (LinearLayout) dialogPrint.findViewById(R.id.ll_due);
+            TextView tv_price_due = (TextView) dialogPrint.findViewById(R.id.tv_price_due);
+            ll_due.setVisibility(mOrder.getBaseTotalDue() > 0 ? VISIBLE : GONE);
+            tv_price_due.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(mOrder.getBaseTotalDue())));
 
             TextView tv_comment_title = (TextView) dialogPrint.findViewById(R.id.tv_comment_title);
             StarPrintListCommentPanel listCommentPanel = (StarPrintListCommentPanel) dialogPrint.findViewById(R.id.item_comment_panel);

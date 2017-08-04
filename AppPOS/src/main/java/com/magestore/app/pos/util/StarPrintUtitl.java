@@ -45,6 +45,7 @@ import java.util.List;
 
 public class StarPrintUtitl {
     private static int printArea;
+    private static String print_copy;
 
     public static void showSearchPrint(final Context context, final Activity activity, final Bitmap bitmap) {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -74,6 +75,32 @@ public class StarPrintUtitl {
                 Spinner spinner_tcp_port_number = (Spinner) dialogPrint.findViewById(R.id.spinner_tcp_port_number);
                 SpinnerAdapter ad_tcp_port_number = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, new String[]{"Standard", "9100", "9101", "9102", "9103", "9104", "9105", "9106", "9107", "9108", "9109"});
                 spinner_tcp_port_number.setAdapter(ad_tcp_port_number);
+
+                Spinner spinner_copy = (Spinner) dialogPrint.findViewById(R.id.spinner_copy);
+                SpinnerAdapter ad_copy = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, new String[]{"1", "2", "3"});
+                spinner_copy.setAdapter(ad_copy);
+                print_copy = pref.getString("copy", "1");
+                spinner_copy.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        if (i == 0) {
+                            print_copy = "1";
+                        } else if (i == 1) {
+                            print_copy = "2";
+                        } else if (i == 2) {
+                            print_copy = "3";
+                        }
+                        SharedPreferences pref = context.getSharedPreferences("pref", context.MODE_WORLD_READABLE | context.MODE_WORLD_WRITEABLE);
+                        SharedPreferences.Editor editor = pref.edit();
+                        editor.putString("copy", print_copy);
+                        editor.commit();
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
+                });
 
                 Spinner spinner_bluetooth_communication_type = (Spinner) dialogPrint.findViewById(R.id.spinner_bluetooth_communication_type);
                 SpinnerAdapter ad_bluetooth_communication_type = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, new String[]{"SSP", "PIN Code"});
@@ -199,7 +226,10 @@ public class StarPrintUtitl {
 
         commands.addAll(Arrays.asList(new Byte[]{0x07}));                // Kick cash drawer
 
-        sendCommand(context, portName, portSettings, commands);
+        int copy = Integer.parseInt(print_copy);
+        for (int i = 0; i < copy; i++) {
+            sendCommand(context, portName, portSettings, commands);
+        }
     }
 
     public static void OpenCashDrawer(Context context, String portName, String portSettings) {
@@ -462,7 +492,7 @@ public class StarPrintUtitl {
             }
 
 			/*
-			   Using Begin / End Checked Block method
+               Using Begin / End Checked Block method
                When sending large amounts of raster data,
                adjust the value in the timeout in the "StarIOPort.getPort"
                in order to prevent "timeout" of the "endCheckedBlock method" while a printing.
