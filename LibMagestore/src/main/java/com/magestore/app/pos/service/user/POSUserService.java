@@ -6,6 +6,7 @@ import com.magestore.app.lib.model.store.Store;
 import com.magestore.app.lib.model.user.User;
 import com.magestore.app.lib.resourcemodel.DataAccessFactory;
 import com.magestore.app.lib.resourcemodel.user.UserDataAccess;
+import com.magestore.app.pos.api.m1.POSDataAccessSessionM1;
 import com.magestore.app.pos.api.m2.POSDataAccessSession;
 import com.magestore.app.lib.service.config.ConfigService;
 import com.magestore.app.lib.service.ServiceFactory;
@@ -13,6 +14,7 @@ import com.magestore.app.lib.service.user.UserService;
 import com.magestore.app.pos.model.registershift.PosPointOfSales;
 import com.magestore.app.pos.model.user.PosUser;
 import com.magestore.app.pos.service.AbstractService;
+import com.magestore.app.util.ConfigUtil;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -26,9 +28,11 @@ import java.util.List;
 public class POSUserService extends AbstractService implements UserService {
     static final String strfalse = "false\n";
     public static POSDataAccessSession session;
+    public static POSDataAccessSessionM1 sessionM1;
 
     /**
      * Dựng base url từ domain do user nhập
+     *
      * @param strDomain
      * @return
      */
@@ -46,19 +50,23 @@ public class POSUserService extends AbstractService implements UserService {
             else
                 stringBuilder.append("http://");
             stringBuilder.append(strFinalDomain);
-            if (lastIndexOfApp < 0) stringBuilder.append("/").append(BuildConfig.DEFAULT_REST_BASE_PAGE);
-            if (lastIndexOfApp == strFinalDomain.length() - 1) stringBuilder.append(BuildConfig.DEFAULT_REST_BASE_PAGE);
-        }
-        else {
+            if (lastIndexOfApp < 0)
+                stringBuilder.append("/").append(BuildConfig.DEFAULT_REST_BASE_PAGE);
+            if (lastIndexOfApp == strFinalDomain.length() - 1)
+                stringBuilder.append(BuildConfig.DEFAULT_REST_BASE_PAGE);
+        } else {
             stringBuilder.append(strFinalDomain);
-            if (lastIndexOfApp == strFinalDomain.indexOf("://") + 2) stringBuilder.append("/").append(BuildConfig.DEFAULT_REST_BASE_PAGE);
-            if (lastIndexOfApp == strFinalDomain.length() - 1) stringBuilder.append(BuildConfig.DEFAULT_REST_BASE_PAGE);
+            if (lastIndexOfApp == strFinalDomain.indexOf("://") + 2)
+                stringBuilder.append("/").append(BuildConfig.DEFAULT_REST_BASE_PAGE);
+            if (lastIndexOfApp == strFinalDomain.length() - 1)
+                stringBuilder.append(BuildConfig.DEFAULT_REST_BASE_PAGE);
         }
         return stringBuilder.toString();
     }
 
     /**
      * Thực hiện đăng nhập, check đúng sai
+     *
      * @param domain
      * @param username
      * @param password
@@ -86,10 +94,17 @@ public class POSUserService extends AbstractService implements UserService {
         }
         // Lưu lại session ID
         if (success) {
-            session.REST_SESSION_ID = str.trim().replace("\"", "");
-            session.REST_BASE_URL = strBaseURL;
-            session.REST_USER_NAME = proxyUser;
-            session.REST_PASSWORD = proxyPass;
+            if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2)) {
+                session.REST_SESSION_ID = str.trim().replace("\"", "");
+                session.REST_BASE_URL = strBaseURL;
+                session.REST_USER_NAME = proxyUser;
+                session.REST_PASSWORD = proxyPass;
+            } else {
+                sessionM1.REST_SESSION_ID = str.trim().replace("\"", "");
+                sessionM1.REST_BASE_URL = strBaseURL;
+                sessionM1.REST_USER_NAME = proxyUser;
+                sessionM1.REST_PASSWORD = proxyPass;
+            }
 
             // Lấy config hệ thống và lưu lại
             ServiceFactory serviceFactory = ServiceFactory.getFactory(getContext());
@@ -105,15 +120,24 @@ public class POSUserService extends AbstractService implements UserService {
      * Logout khỏi user
      */
     public void doLogout() {
-        session = null;
+        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2)) {
+            session = null;
+        } else {
+            sessionM1 = null;
+        }
     }
 
     /**
      * Kiểm tra xem user đã login chưa
+     *
      * @return
      */
     public boolean isLogin() {
-        return session != null;
+        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2)) {
+            return session != null;
+        } else {
+            return sessionM1 != null;
+        }
     }
 
     @Override
@@ -121,7 +145,7 @@ public class POSUserService extends AbstractService implements UserService {
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         UserDataAccess userGateway = factory.generateUserDataAccess();
         List<PointOfSales> listPos = userGateway.retrievePos();
-        if(listPos != null && listPos.size() > 0){
+        if (listPos != null && listPos.size() > 0) {
             return true;
         }
         return false;
@@ -142,7 +166,7 @@ public class POSUserService extends AbstractService implements UserService {
         UserDataAccess userGateway = factory.generateUserDataAccess();
         List<Store> store = userGateway.retrieveStore();
 
-        if(store != null && store.size() > 0){
+        if (store != null && store.size() > 0) {
             return true;
         }
         return false;

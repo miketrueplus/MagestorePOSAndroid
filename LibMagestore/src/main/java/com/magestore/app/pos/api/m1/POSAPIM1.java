@@ -18,4 +18,11 @@ public class POSAPIM1 {
 
     // API staff
     public static final String REST_LOGIN = "api/rest/webpos/staff/login";
+
+    // API config
+    public static final String REST_CONFIG_GET_LISTING = "api/rest/webpos/configurations?";
+    public static final String REST_POS_ASSIGN = "api/rest/webpos/posassign?";
+
+    // API register shifts
+    public static final String REST_REGISTER_SHIFTS_GET_LISTING_POS = "api/rest/webpos/poslist?";
 }
