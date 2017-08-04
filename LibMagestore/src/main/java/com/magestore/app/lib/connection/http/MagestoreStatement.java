@@ -16,6 +16,7 @@ import com.magestore.app.pos.model.exception.PosMessageException400;
 import com.magestore.app.pos.model.exception.PosMessageException500;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosExclude;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosMesssageExceptionImplement;
+import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.StringUtil;
 
 import java.io.IOException;
@@ -147,7 +148,11 @@ public class MagestoreStatement implements Statement {
         if (mParambuilder == null) {
             if (mValuesMap == null)
                 mValuesMap = new HashMap<String, String>();
-            mParambuilder = new MagestoreParamBuilder(this, mValuesMap);
+            if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2)) {
+                mParambuilder = new MagestoreParamBuilder(this, mValuesMap);
+            } else {
+                mParambuilder = new MagestoreParamBuilderM1(this, mValuesMap);
+            }
         }
         return mParambuilder;
     }
@@ -169,7 +174,7 @@ public class MagestoreStatement implements Statement {
         mstrLastPreparedQuery = pstrQuery;
         String strBaseURL = ((MagestoreConnection) getConnection()).getBaseURL();
         mstrPreparedQuery = new StringBuilder(strBaseURL);
-        if(!StringUtil.isNullOrEmpty(pstrQuery)){
+        if (!StringUtil.isNullOrEmpty(pstrQuery)) {
             if (!pstrQuery.startsWith(SLASH) && !strBaseURL.endsWith(SLASH)) {
                 mstrPreparedQuery.append(SLASH);
             } else if (pstrQuery.startsWith(SLASH) && strBaseURL.endsWith(SLASH)) {
@@ -335,7 +340,7 @@ public class MagestoreStatement implements Statement {
 //                mHttpConnection.setRequestProperty(ACCEPT, APPLICATION_FORM_URLENCODEED);
 //                mHttpConnection.setRequestProperty("charset", "utf-8");
 //            } else {
-                mHttpConnection.setRequestProperty(CONTENT_TYPE, APPLICATION_JSON);
+            mHttpConnection.setRequestProperty(CONTENT_TYPE, APPLICATION_JSON);
 
 //            }
 
@@ -350,7 +355,7 @@ public class MagestoreStatement implements Statement {
 //            if (mstrPreparedQuery.toString().contains("authorize")) {
 //                wr.write(mobjPrepareParam.toString());
 //            } else {
-                gson.toJson(mobjPrepareParam, wr);
+            gson.toJson(mobjPrepareParam, wr);
 //            }
             wr.flush();
             wr.close();

@@ -115,10 +115,11 @@ public class POSUserDataAccessM1 extends POSAbstractDataAccessM1 implements User
             connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSessionM1.REST_BASE_URL, POSDataAccessSessionM1.REST_USER_NAME, POSDataAccessSessionM1.REST_PASSWORD);
             statement = connection.createStatement();
             statement.prepareQuery(POSAPIM1.REST_REGISTER_SHIFTS_GET_LISTING_POS);
-
+            String session = POSDataAccessSessionM1.REST_SESSION_ID;
+            String staff_id = ConfigUtil.getStaff().getID();
             paramBuilder = statement.getParamBuilder()
-                    .setSortOrderASC("pos_name")
-                    .setFilter("staff_id", ConfigUtil.getStaff().getID())
+                    .setSortOrderASC("till_name")
+                    .setFilter("user_id", ConfigUtil.getStaff().getID())
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
             rp = statement.execute();

@@ -52,7 +52,7 @@ public class MagestoreParamBuilder implements ParamBuilder {
 
     // session
     private final static String SESSION_PARAM = "session=${magestore_sessionID}";
-    private final static String SESSION = "magestore_sessionID";;
+    private final static String SESSION = "magestore_sessionID";
 
     // so sanhs cho condition type
     private static final String SEARCH_CONDITION_EQUAL = "eq";
