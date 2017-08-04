@@ -221,6 +221,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         }
         if (dialog == null) {
             dialog = DialogUtil.dialog(getContext(), getContext().getString(R.string.sales_add_payment), mCheckoutAddPaymentPanel);
+            dialog.setDialogWidth(getContext().getResources().getDimensionPixelSize(R.dimen.order_dialog_take_payment_width));
             dialog.setGoneButtonSave(true);
         }
         dialog.show();

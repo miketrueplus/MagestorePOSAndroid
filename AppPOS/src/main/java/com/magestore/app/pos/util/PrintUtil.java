@@ -237,7 +237,7 @@ public class PrintUtil {
         }
         String body_content_grandtotal = "<tr><td style=\"font-family: monospace;\">" + title_grandtotal + "</td><td align=\"right\" style=\"font-family: monospace;\"><strong style=\"font-family: monospace;\">" + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(order.getBaseGrandTotal())) + "</strong></td></tr>";
         String body_content_total_paid = "<tr><td style=\"font-family: monospace;\">" + title_total_paid + "</td><td align=\"right\" style=\"font-family: monospace;\"><strong style=\"font-family: monospace;\">" + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(order.getBaseTotalPaid())) + "</strong></td></tr>";
-        String body_content_total_due = "<tr><td style=\"font-family: monospace;\">" + title_total_due + "</td><td align=\"right\" style=\"font-family: monospace;\"><strong style=\"font-family: monospace;\">" + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(order.getTotalDue())) + "</strong></td></tr>";
+        String body_content_total_due = "<tr><td style=\"font-family: monospace;\">" + title_total_due + "</td><td align=\"right\" style=\"font-family: monospace;\"><strong style=\"font-family: monospace;\">" + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(order.getBaseTotalDue())) + "</strong></td></tr>";
         String body_content_line = "<tr><td style=\"border-top: dashed 1px #000;padding:2px 0px; font-family: monospace;\"></td><td style=\"border-top: dashed 1px #000;padding:2px 0px; font-family: monospace;\"></td></tr>";
         // payment
         String body_content_payment = "";

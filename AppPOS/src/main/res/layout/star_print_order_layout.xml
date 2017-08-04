@@ -499,6 +499,35 @@
                     magestore_view:layout_row="@layout/card_star_print_list_payment_content" />
 
                 <LinearLayout
+                    android:id="@+id/ll_paid"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/layout_margin_5"
+                    android:layout_marginTop="@dimen/layout_margin_5"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="monospace"
+                        android:text="@string/order_detail_bottom_tb_total_paid"
+                        android:textAllCaps="true"
+                        android:textSize="@dimen/text_size_18"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_price_paid"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="monospace"
+                        android:gravity="right"
+                        android:textSize="@dimen/text_size_18"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:id="@+id/ll_change"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -518,6 +547,35 @@
 
                     <TextView
                         android:id="@+id/tv_price_change"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="monospace"
+                        android:gravity="right"
+                        android:textSize="@dimen/text_size_18"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_due"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/layout_margin_5"
+                    android:layout_marginTop="@dimen/layout_margin_5"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="monospace"
+                        android:text="@string/order_detail_bottom_tb_total_due"
+                        android:textAllCaps="true"
+                        android:textSize="@dimen/text_size_18"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_price_due"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
