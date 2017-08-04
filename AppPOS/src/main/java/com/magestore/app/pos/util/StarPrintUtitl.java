@@ -169,6 +169,7 @@ public class StarPrintUtitl {
                 bt_search.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        tv_error_search.setVisibility(View.GONE);
                         ll_progessbar.setVisibility(View.VISIBLE);
                         Thread thread = new Thread(new Runnable() {
                             @Override
