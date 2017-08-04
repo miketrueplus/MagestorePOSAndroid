@@ -39,12 +39,12 @@ public class ListStoreTask extends AsyncTaskAbstractTask<Void, Void, List<PointO
             List<PointOfSales> listPos = userService.getListPos();
             if (listPos != null) {
                 if (listPos.size() > 0) {
-                    PointOfSales pointOfSales = userService.createPointOfSales();
-                    pointOfSales.setPosId("");
-                    pointOfSales.setPosName(context.getString(R.string.select_pos));
-                    if (!checkPos(listPos)) {
-                        listPos.add(0, pointOfSales);
-                    }
+//                    PointOfSales pointOfSales = userService.createPointOfSales();
+//                    pointOfSales.setPosId("");
+//                    pointOfSales.setPosName(context.getString(R.string.select_pos));
+//                    if (!checkPos(listPos)) {
+//                        listPos.add(0, pointOfSales);
+//                    }
                     return listPos;
                 } else {
                     return userService.getListPos();
