@@ -1,10 +1,12 @@
 package com.magestore.app.pos.api.m1.user;
 
+import com.google.gson.Gson;
 import com.magestore.app.lib.connection.Connection;
 import com.magestore.app.lib.connection.ConnectionException;
 import com.magestore.app.lib.connection.ConnectionFactory;
 import com.magestore.app.lib.connection.ResultReading;
 import com.magestore.app.lib.connection.Statement;
+import com.magestore.app.lib.model.config.ConfigTaxClass;
 import com.magestore.app.lib.model.registershift.PointOfSales;
 import com.magestore.app.lib.model.store.Store;
 import com.magestore.app.lib.model.user.User;
@@ -12,11 +14,10 @@ import com.magestore.app.lib.resourcemodel.DataAccessException;
 import com.magestore.app.lib.resourcemodel.user.UserDataAccess;
 import com.magestore.app.pos.api.m1.POSAPIM1;
 import com.magestore.app.pos.api.m1.POSAbstractDataAccessM1;
+import com.magestore.app.pos.model.config.PosConfigTaxClass;
+import com.magestore.app.pos.parse.gson2pos.Gson2PosStoreParseImplement;
 import com.magestore.app.util.StringUtil;
-
-import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
@@ -30,6 +31,10 @@ import java.util.List;
 public class POSUserDataAccessM1 extends POSAbstractDataAccessM1 implements UserDataAccess {
     private class Wrap {
         User staff;
+    }
+
+    private class POSListTaxClassDataAccess {
+        List<PosConfigTaxClass> tax_class;
     }
 
     @Override
@@ -52,8 +57,12 @@ public class POSUserDataAccessM1 extends POSAbstractDataAccessM1 implements User
             JSONObject json = new JSONObject(respone);
             String session_id = json.getString("session_id");
             JSONObject webpos_data = json.getJSONObject("webpos_data");
-            JSONArray tax_class = webpos_data.getJSONArray("tax_class");
-
+            Gson2PosStoreParseImplement implement = new Gson2PosStoreParseImplement();
+            Gson gson = implement.createGson();
+            POSListTaxClassDataAccess taxClass = gson.fromJson(webpos_data.toString(), POSListTaxClassDataAccess.class);
+            if (taxClass.tax_class != null && taxClass.tax_class.size() > 0) {
+                List<ConfigTaxClass> listTax = (List<ConfigTaxClass>) (List<?>) taxClass.tax_class;
+            }
             if (!StringUtil.isNullOrEmpty(session_id)) {
                 return session_id;
             } else {
