@@ -53,6 +53,7 @@ public class MagestoreParamBuilderM1 implements ParamBuilder {
 
     // so sanhs cho condition type
     private static final String SEARCH_CONDITION_EQUAL = "eq";
+    private static final String SEARCH_CONDITION_NOT_EQUAL = "neq";
     private static final String SEARCH_CONDITION_GREATER = "gt";
     private static final String SEARCH_CONDITION_LESS = "lt";
     private static final String SEARCH_CONDITION_LIKE = "like";
@@ -155,6 +156,11 @@ public class MagestoreParamBuilderM1 implements ParamBuilder {
     }
 
     @Override
+    public ParamBuilder setFilterNotEqual(String strFieldName, String strValue) {
+        return setFilter(SEARCH_DEFAULT_GROUP_NAME, strFieldName, SEARCH_CONDITION_NOT_EQUAL, strValue);
+    }
+
+    @Override
     public ParamBuilder setFilterGreater(String strFieldName, String strValue) {
         return setFilter(SEARCH_DEFAULT_GROUP_NAME, strFieldName, SEARCH_CONDITION_GREATER, strValue);
     }
@@ -229,6 +235,11 @@ public class MagestoreParamBuilderM1 implements ParamBuilder {
     @Override
     public ParamBuilder setFilterOrEqual(String strFieldName, String strValue) {
         return setFilterOr(SEARCH_DEFAULT_GROUP_NAME, strFieldName, SEARCH_CONDITION_EQUAL, strValue);
+    }
+
+    @Override
+    public ParamBuilder setFilterOrNotEqual(String strFieldName, String strValue) {
+        return setFilterOr(SEARCH_DEFAULT_GROUP_NAME, strFieldName, SEARCH_CONDITION_NOT_EQUAL, strValue);
     }
 
     @Override

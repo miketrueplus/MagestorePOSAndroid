@@ -164,7 +164,9 @@ public class OrderActivity extends AbstractActivity {
         // load danh sách order
         mOrderListController.doRetrieve();
         // load danh sách payment method
-        mOrderListController.doRetrievePaymentMethod();
+        if(ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2)){
+            mOrderListController.doRetrievePaymentMethod();
+        }
     }
 
     @Override

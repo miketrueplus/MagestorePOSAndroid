@@ -104,7 +104,8 @@ public class PosProductOptionGrouped extends PosAbstractModel implements Product
 
     @Override
     public int getQuantityIncrement() {
-        if ((stock == null) || (stock.size() <= 0)) return 1;
+        if ((stock == null) || (stock.size() <= 0))
+            return 1;
         return stock.get(0).getQuantityIncrement();
     }
 }

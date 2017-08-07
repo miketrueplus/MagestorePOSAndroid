@@ -326,51 +326,54 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
      */
     private void createModelViewListFromOptionCustom() {
         // tạo model view tương ứng cho mỗi option custom
-        for (ProductOptionCustom optionCustom : getItem().getProduct().getProductOption().getCustomOptions()) {
-            // khởi tạo model view
-            OptionModelView optionModelView = new OptionModelView();
-            optionModelView.optionValueModelViewList = new ArrayList<>();
-            optionModelView.title = optionCustom.getTitle();
-            optionModelView.quantity = 1;
-            optionModelView.is_required = optionCustom.isRequired();
-            optionModelView.option_type = ProductOptionCustom.OPTION_TYPE_CUSTOM;
-            optionModelView.input_type = optionCustom.getType();
-            optionModelView.setModel(optionCustom);
+        List<PosProductOptionCustom> customOptionList = getItem().getProduct().getProductOption().getCustomOptions();
+        if (customOptionList != null) {
+            for (ProductOptionCustom optionCustom : customOptionList) {
+                // khởi tạo model view
+                OptionModelView optionModelView = new OptionModelView();
+                optionModelView.optionValueModelViewList = new ArrayList<>();
+                optionModelView.title = optionCustom.getTitle();
+                optionModelView.quantity = 1;
+                optionModelView.is_required = optionCustom.isRequired();
+                optionModelView.option_type = ProductOptionCustom.OPTION_TYPE_CUSTOM;
+                optionModelView.input_type = optionCustom.getType();
+                optionModelView.setModel(optionCustom);
 
-            // tạo model view tương ứng mỗi option value
-            if (optionCustom.getOptionValueList() == null) {
-                if (optionModelView.isTypeField()) {
-                    OptionValueModelView optionValueModelView = new FieldValueModelView();
-                    optionValueModelView.id = getChooseValue(optionModelView.getModel().getID(), getItem().getOptions());
-                    optionValueModelView.title = optionValueModelView.id;
-                    optionValueModelView.choose = !StringUtil.isNullOrEmpty(optionValueModelView.id);
-                    optionValueModelView.price_type = optionCustom.getPriceType();
+                // tạo model view tương ứng mỗi option value
+                if (optionCustom.getOptionValueList() == null) {
+                    if (optionModelView.isTypeField()) {
+                        OptionValueModelView optionValueModelView = new FieldValueModelView();
+                        optionValueModelView.id = getChooseValue(optionModelView.getModel().getID(), getItem().getOptions());
+                        optionValueModelView.title = optionValueModelView.id;
+                        optionValueModelView.choose = !StringUtil.isNullOrEmpty(optionValueModelView.id);
+                        optionValueModelView.price_type = optionCustom.getPriceType();
+                        optionValueModelView.price =
+                                optionValueModelView.isPriceTypePercent()
+                                        ? "" + (Float.parseFloat(optionCustom.getPrice()) * getItem().getProduct().getFinalPrice() / 100)
+                                        : optionCustom.getPrice();
+                        optionValueModelView.setModel(optionCustom);
+                        optionModelView.optionValueModelViewList.add(optionValueModelView);
+                    }
+                    mModelViewList.add(optionModelView);
+                    continue;
+                }
+                for (ProductOptionCustomValue optionValue : optionCustom.getOptionValueList()) {
+                    OptionValueModelView optionValueModelView = new OptionValueModelView();
+                    optionValueModelView.optionModelView = optionModelView;
+                    optionValueModelView.id = optionValue.getID();
+                    optionValueModelView.choose = isChooseValue(optionModelView.getModel().getID(), optionValueModelView.id, getItem().getOptions());
+                    optionValueModelView.title = optionValue.getTitle();
+                    optionValueModelView.price_type = optionValue.getPriceType();
                     optionValueModelView.price =
                             optionValueModelView.isPriceTypePercent()
-                                    ? "" + (Float.parseFloat(optionCustom.getPrice()) * getItem().getProduct().getFinalPrice() / 100)
-                                    : optionCustom.getPrice();
-                    optionValueModelView.setModel(optionCustom);
+                                    ? "" + (Float.parseFloat(optionValue.getPrice()) * getItem().getProduct().getFinalPrice() / 100)
+                                    : optionValue.getPrice();
+                    optionValueModelView.setModel(optionValue);
+
                     optionModelView.optionValueModelViewList.add(optionValueModelView);
                 }
                 mModelViewList.add(optionModelView);
-                continue;
             }
-            for (ProductOptionCustomValue optionValue : optionCustom.getOptionValueList()) {
-                OptionValueModelView optionValueModelView = new OptionValueModelView();
-                optionValueModelView.optionModelView = optionModelView;
-                optionValueModelView.id = optionValue.getID();
-                optionValueModelView.choose = isChooseValue(optionModelView.getModel().getID(), optionValueModelView.id, getItem().getOptions());
-                optionValueModelView.title = optionValue.getTitle();
-                optionValueModelView.price_type = optionValue.getPriceType();
-                optionValueModelView.price =
-                        optionValueModelView.isPriceTypePercent()
-                                ? "" + (Float.parseFloat(optionValue.getPrice()) * getItem().getProduct().getFinalPrice() / 100)
-                                : optionValue.getPrice();
-                optionValueModelView.setModel(optionValue);
-
-                optionModelView.optionValueModelViewList.add(optionValueModelView);
-            }
-            mModelViewList.add(optionModelView);
         }
     }
 

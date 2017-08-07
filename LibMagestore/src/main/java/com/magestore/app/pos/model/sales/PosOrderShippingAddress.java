@@ -23,7 +23,7 @@ public class PosOrderShippingAddress extends PosAbstractModel implements OrderSh
     String lastname;
     String parent_id;
     String postcode;
-    List<String> street;
+//    List<String> street;
     String telephone;
     String region;
     String region_code;
@@ -81,7 +81,6 @@ public class PosOrderShippingAddress extends PosAbstractModel implements OrderSh
 
     @Override
     public String getFullAddress() {
-        if (street == null) return "";
         StringBuilder builder = new StringBuilder();
         builder.append(city);
         builder.append(", ");
@@ -115,7 +114,7 @@ public class PosOrderShippingAddress extends PosAbstractModel implements OrderSh
 
     @Override
     public List<String> getStreet() {
-        return street;
+        return null;
     }
 
     @Override

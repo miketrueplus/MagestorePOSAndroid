@@ -14,6 +14,7 @@ import java.util.Map;
 
 public class PosProductOption extends PosAbstractModel implements ProductOption {
     Map<String, PosProductOptionConfigOption> configurable_options;
+    Map<String, PosProductOptionConfigOption> config_options;
     List<PosProductOptionCustom> custom_options;
     List<PosProductOptionBundle> bundle_options;
     List<PosProductOptionGrouped> grouped_options;
@@ -22,6 +23,12 @@ public class PosProductOption extends PosAbstractModel implements ProductOption 
 
     @Override
     public Map<String, PosProductOptionConfigOption> getConfigurableOptions() {
+        if (configurable_options != null) {
+            return configurable_options;
+        }
+        if (config_options != null) {
+            return config_options;
+        }
         return configurable_options;
     }
 

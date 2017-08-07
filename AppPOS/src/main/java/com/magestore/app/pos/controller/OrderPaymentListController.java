@@ -10,6 +10,7 @@ import com.magestore.app.lib.model.sales.OrderWebposPayment;
 import com.magestore.app.lib.service.order.OrderHistoryService;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.panel.OrderPaymentLaterListPanel;
+import com.magestore.app.util.ConfigUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -99,8 +100,14 @@ public class OrderPaymentListController extends AbstractListController<OrderWebp
 
     public List<OrderWebposPayment> checkIntegration(List<OrderWebposPayment> listPayment, Order order) {
         boolean showIntegration = false;
-        if (order.getPayment() != null) {
-            if ((order.getBaseGiftVoucherDiscount() < 0 || order.getRewardPointsBaseDiscount() < 0) && order.getPayment().getMethod().equals("multipaymentforpos")) {
+        if(ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2)){
+            if (order.getPayment() != null) {
+                if ((order.getBaseGiftVoucherDiscount() < 0 || order.getRewardPointsBaseDiscount() < 0) && order.getPayment().getMethod().equals("multipaymentforpos")) {
+                    showIntegration = true;
+                }
+            }
+        }else{
+            if ((order.getBaseGiftVoucherDiscount() < 0 || order.getRewardPointsBaseDiscount() < 0)) {
                 showIntegration = true;
             }
         }

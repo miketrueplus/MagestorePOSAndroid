@@ -31,6 +31,7 @@ public interface ParamBuilder {
     ParamBuilder setFilter(String strGroupName, String strFieldName, String strConditionType, String strFieldValue);
     ParamBuilder setFilter(String strFieldName, String strConditionType, String strFieldValue);
     ParamBuilder setFilterEqual(String strFieldName, String strValue);
+    ParamBuilder setFilterNotEqual(String strFieldName, String strValue);
     ParamBuilder setFilterGreater(String strFieldName, String strValue);
     ParamBuilder setFilterLess(String strFieldName, String strValue);
     ParamBuilder setFilterLike(String strFieldName, String strValue);
@@ -48,6 +49,7 @@ public interface ParamBuilder {
     ParamBuilder setFilterOr(String strGroupName, String strFieldName, String strConditionType, String strFieldValue);
     ParamBuilder setFilterOr(String strFieldName, String strConditionType, String strFieldValue);
     ParamBuilder setFilterOrEqual(String strFieldName, String strValue);
+    ParamBuilder setFilterOrNotEqual(String strFieldName, String strValue);
     ParamBuilder setFilterOrGreater(String strFieldName, String strValue);
     ParamBuilder setFilterOrLess(String strFieldName, String strValue);
     ParamBuilder setFilterOrLike(String strFieldName, String strValue);

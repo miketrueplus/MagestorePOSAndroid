@@ -19,11 +19,20 @@ public class POSAPIM1 {
     // API get product
     public static final String REST_PRODUCT_GET_LISTING = "api/rest/webpos/products/?";
 
+    // API get product options
+    public static final String REST_PRODUCT_GET_OPTION = "api/rest/webpos/product/getoptions?";
+
     // API get category
     public static final String REST_GET_CATEGORY_LISTING = "api/rest/webpos/categories/?";
 
     // API staff
     public static final String REST_LOGIN = "api/rest/webpos/staff/login";
+
+    // API customer
+    public static final String REST_CUSOMTER_GET_LISTING = "api/rest/webpos/customers/find?";
+
+    // API order
+    public static final String REST_ORDER_GET_LISTING = "api/rest/webpos/order/find?";
 
     // API config
     public static final String REST_CONFIG_GET_LISTING = "api/rest/webpos/configurations?";

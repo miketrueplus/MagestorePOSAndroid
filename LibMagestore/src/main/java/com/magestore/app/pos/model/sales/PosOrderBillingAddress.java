@@ -81,7 +81,6 @@ public class PosOrderBillingAddress extends PosAbstractModel implements OrderBil
 
     @Override
     public String getFullAddress() {
-        if (street == null) return "";
         StringBuilder builder = new StringBuilder();
         builder.append(city);
         builder.append(", ");
