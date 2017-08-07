@@ -16,7 +16,11 @@ public class POSAPIM1 {
     public static final String PARAM_CONFIG_PATH = "configPath";
     public static final String PARAM_PRODUCT_ID = "productID";
 
+    // API get product
     public static final String REST_PRODUCT_GET_LISTING = "api/rest/webpos/products/?";
+
+    // API get category
+    public static final String REST_GET_CATEGORY_LISTING = "api/rest/webpos/categories/?";
 
     // API staff
     public static final String REST_LOGIN = "api/rest/webpos/staff/login";

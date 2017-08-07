@@ -45,7 +45,7 @@ public class PosProduct extends PosAbstractModel implements Product {
     private ProductOption productOption;
     private int options;
 
-    private String is_in_stock = StringUtil.STRING_ONE;
+    private String is_in_stock;
 
     private String backorders = StringUtil.STRING_ONE;
 
@@ -59,7 +59,13 @@ public class PosProduct extends PosAbstractModel implements Product {
 
     @Override
     public boolean isInStock() {
-        return StringUtil.STRING_ONE.equals(is_in_stock);
+        if (StringUtil.isNullOrEmpty(is_in_stock)) {
+            return false;
+        }
+        if (StringUtil.STRING_ONE.equals(is_in_stock) || StringUtil.STRING_TRUE.equals(is_in_stock)) {
+            return true;
+        }
+        return false;
     }
 
     @Override

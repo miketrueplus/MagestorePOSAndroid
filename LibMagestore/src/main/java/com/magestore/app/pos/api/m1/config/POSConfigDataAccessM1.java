@@ -1,5 +1,7 @@
 package com.magestore.app.pos.api.m1.config;
 
+import android.util.Base64;
+
 import com.google.gson.internal.LinkedTreeMap;
 import com.magestore.app.lib.connection.Connection;
 import com.magestore.app.lib.connection.ConnectionException;
@@ -7,6 +9,7 @@ import com.magestore.app.lib.connection.ConnectionFactory;
 import com.magestore.app.lib.connection.ParamBuilder;
 import com.magestore.app.lib.connection.ResultReading;
 import com.magestore.app.lib.connection.Statement;
+import com.magestore.app.lib.model.config.ActiveKey;
 import com.magestore.app.lib.model.config.Config;
 import com.magestore.app.lib.model.config.ConfigCountry;
 import com.magestore.app.lib.model.config.ConfigOption;
@@ -29,6 +32,7 @@ import com.magestore.app.lib.resourcemodel.config.ConfigDataAccess;
 import com.magestore.app.pos.api.m1.POSAPIM1;
 import com.magestore.app.pos.api.m1.POSAbstractDataAccessM1;
 import com.magestore.app.pos.api.m1.POSDataAccessSessionM1;
+import com.magestore.app.pos.model.config.PosActiveKey;
 import com.magestore.app.pos.model.config.PosConfig;
 import com.magestore.app.pos.model.config.PosConfigCountry;
 import com.magestore.app.pos.model.config.PosConfigDefault;
@@ -44,14 +48,23 @@ import com.magestore.app.pos.model.staff.PosLocation;
 import com.magestore.app.pos.model.staff.PosStaff;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosConfigParseImplement;
 import com.magestore.app.util.ConfigUtil;
+import com.magestore.app.util.EncryptUntil;
 import com.magestore.app.util.StringUtil;
-
 import java.io.IOException;
+import java.net.URL;
+import java.security.KeyFactory;
+import java.security.PublicKey;
+import java.security.spec.X509EncodedKeySpec;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.CRC32;
+
+import javax.crypto.Cipher;
 
 /**
  * Created by Johan on 8/3/17.
@@ -65,6 +78,8 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
     private static Customer guest;
     private static CustomerAddress customerAddress;
     private static Currency currentCurrency;
+    private String publicKey = "-----BEGIN PUBLIC KEY-----MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJ8EDi+a0lilUChsDba33FrcHLZZZIMxT7XhyEP3J3llQXNJkflG+5GzBvFTd+B1pvpc45WOktNReyPDZ/OMNukCAwEAAQ==-----END PUBLIC KEY-----";
+    private String extensionName = "retailer-pos";
 
     @Override
     public Config retrieveConfig() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
@@ -123,7 +138,183 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
 
     @Override
     public boolean checkLicenseKey() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        // nếu chưa load config, cần khởi tạo chế độ default
+        if (mConfig == null) mConfig = new PosConfigDefault();
+        ActiveKey activeKey = new PosActiveKey();
+        if (mConfig.getValue("webpos/general/active_key") == null) return false;
+
+        String baseUrl = getHostUrl(POSDataAccessSessionM1.REST_BASE_URL);
+        String licensekey = (String) mConfig.getValue("webpos/general/active_key");
+        if (licensekey.length() < 68) return false;
+        CRC32 crc = new CRC32();
+        String strExtensionName = licensekey.substring(0, 10) + extensionName;
+        crc.update(strExtensionName.getBytes());
+        int strDataCrc32 = (int) crc.getValue();
+        int crc32Pos = (strDataCrc32 & 0x7FFFFFFF % 51) + 10;
+        int md5Length = 32;
+        String md5String = licensekey.substring(crc32Pos, (crc32Pos + md5Length));
+        int md5StringLength = md5String.length();
+        String key = licensekey.substring(0, crc32Pos) + licensekey.substring((crc32Pos + md5StringLength + 3), licensekey.length());
+        try {
+            while ((key.length() % 4) != 0) {
+                key += "=";
+            }
+            String licenseString = decryptRSAToString(key, publicKey);
+            if (StringUtil.isNullOrEmpty(licenseString)) return false;
+
+            String strlicenseString = licenseString.substring(0, 3);
+            String strlicensekey = licensekey.substring((crc32Pos + md5StringLength), (crc32Pos + md5StringLength + 3));
+            if (!strlicenseString.equals(strlicensekey)) return false;
+
+            String type = licenseString.substring(0, 1);
+            String strexpiredTime = licenseString.substring(1, 3);
+            int expiredTime = Integer.parseInt(String.valueOf(strexpiredTime), 16);
+            long extensionHash = -1;
+            try {
+                extensionHash = Long.parseLong(licenseString.substring(3, 13));
+            } catch (Exception e) {
+            }
+            CRC32 crcExtensionName = new CRC32();
+            crcExtensionName.update(extensionName.getBytes());
+            long crc32ExtensionName = crcExtensionName.getValue();
+            if (extensionHash != crc32ExtensionName) return false;
+
+            String licenseDomain = licenseString.substring(17, licenseString.length()).replaceAll(" ", "");
+            String checkCRc32 = licensekey.substring(0, crc32Pos) + licensekey.substring((crc32Pos + md5StringLength), (crc32Pos + md5StringLength) + (licensekey.length() - crc32Pos - md5StringLength)) + extensionName + licenseDomain;
+//            CRC32 crcCheck = new CRC32();
+//            crcCheck.update(checkCRc32.getBytes());
+//            long lcrc32String = -1;
+//            try {
+//                lcrc32String = Long.parseLong(crc32String);
+//            } catch (Exception e) {
+//            }
+            String md5Check = EncryptUntil.HashMD5(checkCRc32);
+            if (!md5Check.equals(md5String))
+                return false;
+
+            String strDate = licenseString.substring(11, 15);
+            int resultDate = Integer.parseInt(String.valueOf(strDate), 16);
+            String DATE_FORMAT = "yyyy-MM-dd";
+            SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+            String createdDate = sdf.format(new Date(resultDate * 24 * 3600 * 1000L));
+            if (!checkSameDomain(baseUrl, licenseDomain)) return false;
+
+            activeKey.setType(type);
+            activeKey.setExpiredTime(expiredTime);
+            activeKey.setCreatedDate(createdDate);
+            activeKey.setLicenseDomain(licenseDomain);
+            ConfigUtil.setActiveKey(activeKey);
+            ConfigUtil.setIsDevLicense(type.equals("D") ? true : false);
+            return true;
+        } catch (Exception e) {
+            String licenseDomain = "";
+            if (baseUrl.contains("https://")) {
+                baseUrl = baseUrl.replace("https://", "");
+            } else if (baseUrl.contains("http://")) {
+                baseUrl = baseUrl.replace("http://", "");
+            }
+            if (baseUrl.length() > 36) {
+                licenseDomain = baseUrl.substring(0, 36);
+            } else {
+                licenseDomain = baseUrl;
+            }
+            String checkCRc32 = licensekey.substring(0, crc32Pos) + licensekey.substring((crc32Pos + md5StringLength), (crc32Pos + md5StringLength) + (licensekey.length() - crc32Pos - md5StringLength)) + extensionName + licenseDomain;
+//            CRC32 crcCheck = new CRC32();
+//            crcCheck.update(checkCRc32.getBytes());
+//            long lcrc32String = -1;
+//            try {
+//                lcrc32String = Long.parseLong(crc32String);
+//            } catch (Exception ex) {
+//            }
+            String md5Check = EncryptUntil.HashMD5(checkCRc32);
+            if (!md5Check.equals(md5String))
+                return false;
+            String type = licensekey.substring(crc32Pos + md5StringLength, crc32Pos + md5StringLength + 1);
+            String strexpiredTime = licensekey.substring(crc32Pos + md5StringLength + 1, crc32Pos + md5StringLength + 1 + 2);
+            int expiredTime = Integer.parseInt(String.valueOf(strexpiredTime), 16);
+            if (!checkSameDomain(baseUrl, licenseDomain))
+                return false;
+            activeKey.setType(type);
+            activeKey.setExpiredTime(expiredTime);
+            activeKey.setLicenseDomain(licenseDomain);
+            ConfigUtil.setActiveKey(activeKey);
+            ConfigUtil.setIsDevLicense(type.equals("D") ? true : false);
+            return true;
+        }
+    }
+
+    private String getHostUrl(String url) {
+        if (StringUtil.isNullOrEmpty(url)) {
+            return "";
+        }
+        try {
+            URL host = new URL(url);
+            return host.getHost();
+        } catch (Exception e) {
+            return url;
+        }
+    }
+
+    // so sánh domain
+    private boolean checkSameDomain(String domain, String licenseDomain) {
+        if (domain.contains("https://")) {
+            domain = domain.replace("https://", "");
+        } else if (domain.contains("http://")) {
+            domain = domain.replace("http://", "");
+        }
+
+        if (domain.length() > 36) {
+            domain = domain.substring(0, 36);
+        }
+
+        String checkdomain = domain.substring(domain.length() - 1, domain.length());
+        if (checkdomain.equals("/")) {
+            domain = domain.substring(0, (domain.length() - 1));
+        }
+
+        if (licenseDomain.contains("https://")) {
+            licenseDomain = licenseDomain.replace("https://", "");
+        } else if (licenseDomain.contains("http://")) {
+            licenseDomain = licenseDomain.replace("http://", "");
+        }
+
+        String checklicenseDomain = licenseDomain.substring(licenseDomain.length() - 1, licenseDomain.length());
+        if (checklicenseDomain.equals("/")) {
+            licenseDomain = licenseDomain.substring(0, (licenseDomain.length() - 1));
+        }
+
+        if (domain.equals(licenseDomain)) return true;
+
         return false;
+    }
+
+    // giải mã với public key
+    private String decryptRSAToString(String encryptedBase64, String privateKey) {
+        String decryptedString = "";
+        try {
+            String rStart = privateKey.replace("-----BEGIN PUBLIC KEY-----", "");
+            String rEnd = rStart.replace("-----END PUBLIC KEY-----", "");
+            rEnd = rEnd.replaceAll("\r", "");
+            rEnd = rEnd.replaceAll("\n", "");
+            rEnd = rEnd.replaceAll("\t", "");
+            rEnd = rEnd.replaceAll(" ", "");
+            KeyFactory keyFac = KeyFactory.getInstance("RSA");
+
+            PublicKey publicKey = keyFac.generatePublic(new X509EncodedKeySpec(Base64.decode(rEnd.toString(), Base64.DEFAULT)));
+
+            // get an RSA cipher object and print the provider
+            final Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding", "BC");
+            // encrypt the plain text using the public key
+            cipher.init(Cipher.DECRYPT_MODE, publicKey);
+
+            byte[] encryptedBytes = Base64.decode(encryptedBase64, Base64.DEFAULT);
+            byte[] decryptedBytes = cipher.doFinal(encryptedBytes);
+            decryptedString = new String(decryptedBytes);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return decryptedString;
     }
 
     @Override

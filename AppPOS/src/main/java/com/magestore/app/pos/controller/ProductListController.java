@@ -100,11 +100,12 @@ public class ProductListController extends AbstractListController<Product> {
         else {
             StringBuilder categoryID = new StringBuilder();
             categoryID.append(mCategory.getID());
-            if (mCategory.getSubCategory() != null) {
-                for (Category category : mCategory.getSubCategory()) {
-                    categoryID.append(StringUtil.STRING_COMMA).append(category.getID());
-                }
-            }
+            // bỏ add ids subcategory
+//            if (mCategory.getSubCategory() != null) {
+//                for (Category category : mCategory.getSubCategory()) {
+//                    categoryID.append(StringUtil.STRING_COMMA).append(category.getID());
+//                }
+//            }
             return ((ProductService) getListService()).retrieve(categoryID.toString(), getSearchString(), page, pageSize);
         }
     }

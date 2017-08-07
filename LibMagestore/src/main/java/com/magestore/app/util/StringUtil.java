@@ -30,6 +30,8 @@ public class StringUtil {
     public static final String STRING_HUNDRED_MILLION = "100000000";
     public static final String STRING_BILLION = "1000000000";
     public static final String STRING_SPACE = " ";
+    public static final String STRING_TRUE = "true";
+    public static final String STRING_FALSE = "false";
 
     public static final String STRING_DOT = ".";
     public static final String STRING_DOT_SPACE = ". ";

@@ -69,8 +69,14 @@ public class MagestoreParamBuilderM1 implements ParamBuilder {
     // quản lý các nhóm filter
     Map<String, Table<String, String, String>> mapFilterGroup = new HashMap<String, Table<String, String, String>>();
 
+    // quản lý các nhóm filterOr
+    Map<String, Table<String, String, String>> mapFilterGroupOr = new HashMap<String, Table<String, String, String>>();
+
     // quản lý tham số để sắp xếp
     Map<String, String> mapSortOrder = new HashMap<String, String>();
+
+    // quản lý tham số params
+    Map<String, String> mapParams = new HashMap<String, String>();
 
     // Chứa key và value
     Statement mStatement;
@@ -174,6 +180,83 @@ public class MagestoreParamBuilderM1 implements ParamBuilder {
     }
 
     @Override
+    public ParamBuilder setFilterOr(String strGroupName, String strFieldName, String strConditionType, String strFieldValue) {
+        boolean hasMoreParams = false;
+
+        // đặt thên tham số trên url
+        StringBuilder strBuilder = new StringBuilder();
+        strBuilder.append(strGroupName);
+        strBuilder.append(UNDERLINE_SYMBOL);
+        strBuilder.append(strConditionType);
+        strBuilder.append(UNDERLINE_SYMBOL);
+        strBuilder.append(strFieldName);
+        strBuilder.append(UNDERLINE_SYMBOL);
+        String strKey = strBuilder.toString();
+
+        // Kiểm tra đã có tên group chưa
+        if (!mapFilterGroupOr.containsKey(strGroupName)) {
+            Table<String, String, String> filter = HashBasedTable.create();
+            filter.put(strFieldName, strConditionType, strKey);
+            try {
+                mMapKeyValue.put(strKey, URLEncoder.encode(strFieldValue, "UTF-8"));
+            } catch (UnsupportedEncodingException e) {
+                throw new ConnectionException(e.getMessage(), e);
+            }
+            mapFilterGroupOr.put(strGroupName, filter);
+            hasMoreParams = true;
+            return this;
+        }
+
+        // đã có group thì đưa nội dung vào filter
+        Table<String, String, String> filter = mapFilterGroupOr.get(strGroupName);
+        hasMoreParams = !(filter.contains(strFieldName, strConditionType));
+        filter.put(strFieldName, strConditionType, strKey);
+        try {
+            mMapKeyValue.put(strKey, URLEncoder.encode(strFieldValue, "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            throw new ConnectionException(e.getMessage(), e);
+        }
+
+        // trả về true nếu có tham số mới, false nếu ngược lại
+        return this;
+    }
+
+    @Override
+    public ParamBuilder setFilterOr(String strFieldName, String strConditionType, String strFieldValue) {
+        return setFilterOr(SEARCH_DEFAULT_GROUP_NAME, strFieldName, strConditionType, strFieldValue);
+    }
+
+    @Override
+    public ParamBuilder setFilterOrEqual(String strFieldName, String strValue) {
+        return setFilterOr(SEARCH_DEFAULT_GROUP_NAME, strFieldName, SEARCH_CONDITION_EQUAL, strValue);
+    }
+
+    @Override
+    public ParamBuilder setFilterOrGreater(String strFieldName, String strValue) {
+        return setFilterOr(SEARCH_DEFAULT_GROUP_NAME, strFieldName, SEARCH_CONDITION_GREATER, strValue);
+    }
+
+    @Override
+    public ParamBuilder setFilterOrLess(String strFieldName, String strValue) {
+        return setFilterOr(SEARCH_DEFAULT_GROUP_NAME, strFieldName, SEARCH_CONDITION_LESS, strValue);
+    }
+
+    @Override
+    public ParamBuilder setFilterOrLike(String strFieldName, String strValue) {
+        return setFilterOr(SEARCH_DEFAULT_GROUP_NAME, strFieldName, SEARCH_CONDITION_LIKE, strValue);
+    }
+
+    @Override
+    public ParamBuilder setFilterOrIn(String strFieldName, String strValue) {
+        return setFilterOr(SEARCH_DEFAULT_GROUP_NAME, strFieldName, SEARCH_CONDITION_IN, strValue);
+    }
+
+    @Override
+    public ParamBuilder setFilterOr(String strFieldName, String strValue) {
+        return setFilterOrEqual(strFieldName, strValue);
+    }
+
+    @Override
     public ParamBuilder setSortOrder(String strFieldName, String strDirection) {
         boolean blnHasMoreParam = !mapSortOrder.containsKey(strFieldName);
         mapSortOrder.put(strFieldName, strDirection);
@@ -245,8 +328,14 @@ public class MagestoreParamBuilderM1 implements ParamBuilder {
             mstrBuilderQuery.append(SEARCH_DIRECTION);
             mstrBuilderQuery.append(EQUAL);
             mstrBuilderQuery.append(mapSortOrder.get(key));
+        }
 
-            i++;
+        // quét phần params
+        for (String key : mapParams.keySet()) {
+            mstrBuilderQuery.append(AND_SYMBOL);
+            mstrBuilderQuery.append(key);
+            mstrBuilderQuery.append(EQUAL);
+            mstrBuilderQuery.append(mapParams.get(key));
         }
 
         // quét vần tham số tìm kiếm
@@ -300,16 +389,52 @@ public class MagestoreParamBuilderM1 implements ParamBuilder {
             i++;
         }
 
+        // quét vần tham số tìm kiếm filterOr
+        i = 0;
+        for (String groupName : mapFilterGroupOr.keySet()) {
+            int j = 0;
+            Table<String, String, String> filter = mapFilterGroupOr.get(groupName);
+
+            for (Table.Cell cell : filter.cellSet()) {
+                // tên field
+                mstrBuilderQuery.append(AND_SYMBOL);
+                mstrBuilderQuery.append(SEARCH_CRITERIA_FILTER_OR);
+                mstrBuilderQuery.append(OPEN_SQUARE);
+                mstrBuilderQuery.append(j);
+                mstrBuilderQuery.append(CLOSE_SQUARE);
+                mstrBuilderQuery.append(SEARCH_CRITERIA_FIELD);
+                mstrBuilderQuery.append(EQUAL);
+                mstrBuilderQuery.append(cell.getRowKey());
+
+                // điều kiện tìm kiếm nếu có
+                if (cell.getRowKey() != null) {
+                    mstrBuilderQuery.append(AND_SYMBOL);
+                    mstrBuilderQuery.append(SEARCH_CRITERIA_FILTER_OR);
+                    mstrBuilderQuery.append(OPEN_SQUARE);
+                    mstrBuilderQuery.append(j);
+                    mstrBuilderQuery.append(CLOSE_SQUARE);
+                    mstrBuilderQuery.append(OPEN_SQUARE);
+                    mstrBuilderQuery.append(cell.getColumnKey());
+                    mstrBuilderQuery.append(CLOSE_SQUARE);
+                    mstrBuilderQuery.append(EQUAL);
+                    mstrBuilderQuery.append(CURRENCY_SYMBOL);
+                    mstrBuilderQuery.append(OPEN_BLANKET);
+                    mstrBuilderQuery.append(cell.getValue());
+                    mstrBuilderQuery.append(CLOSE_BLANKET);
+                }
+
+                j++;
+            }
+            i++;
+        }
+
         // cuối cùng trả về String builder;
         return mstrBuilderQuery;
     }
 
-    protected ParamBuilder setParam(String pstrName, String pstrValue) {
-        try {
-            mMapKeyValue.put(pstrName, URLEncoder.encode(pstrValue, "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            throw new ConnectionException(e.getMessage(), e);
-        }
+    @Override
+    public ParamBuilder setParam(String pstrName, String pstrValue) {
+        mapParams.put(pstrName, pstrValue);
         return this;
     }
 

@@ -13,6 +13,8 @@ import com.magestore.app.lib.resourcemodel.sales.CartDataAccess;
 import com.magestore.app.lib.resourcemodel.sales.CheckoutDataAccess;
 import com.magestore.app.lib.resourcemodel.sales.OrderDataAccess;
 import com.magestore.app.lib.resourcemodel.user.UserDataAccess;
+import com.magestore.app.pos.api.m1.catalog.POSCategoryDataAccessM1;
+import com.magestore.app.pos.api.m1.catalog.POSProductDataAccessM1;
 import com.magestore.app.pos.api.m1.config.POSConfigDataAccessM1;
 import com.magestore.app.pos.api.m1.user.POSUserDataAccessM1;
 
@@ -25,7 +27,7 @@ import com.magestore.app.pos.api.m1.user.POSUserDataAccessM1;
 public class POSDataAccessFactoryM1 extends DataAccessFactory {
     @Override
     public ProductDataAccess generateProductDataAccess() {
-        return null;
+        return new POSProductDataAccessM1();
     }
 
     @Override
@@ -55,7 +57,7 @@ public class POSDataAccessFactoryM1 extends DataAccessFactory {
 
     @Override
     public CategoryDataAccess generateCategoryDataAccess() {
-        return null;
+        return new POSCategoryDataAccessM1();
     }
 
     @Override

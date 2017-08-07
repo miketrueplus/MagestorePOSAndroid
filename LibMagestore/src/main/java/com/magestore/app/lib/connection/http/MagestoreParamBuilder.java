@@ -140,7 +140,8 @@ public class MagestoreParamBuilder implements ParamBuilder {
         return this;
     }
 
-    protected ParamBuilder setParam(String pstrName, String pstrValue) {
+    @Override
+    public ParamBuilder setParam(String pstrName, String pstrValue) {
         try {
             mMapKeyValue.put(pstrName, URLEncoder.encode(pstrValue, "UTF-8"));
         } catch (UnsupportedEncodingException e) {
@@ -288,6 +289,46 @@ public class MagestoreParamBuilder implements ParamBuilder {
     @Override
     public ParamBuilder setFilter(String strFieldName, String strValue) {
         return setFilterEqual(strFieldName, strValue);
+    }
+
+    @Override
+    public ParamBuilder setFilterOr(String strGroupName, String strFieldName, String strConditionType, String strFieldValue) {
+        return null;
+    }
+
+    @Override
+    public ParamBuilder setFilterOr(String strFieldName, String strConditionType, String strFieldValue) {
+        return null;
+    }
+
+    @Override
+    public ParamBuilder setFilterOrEqual(String strFieldName, String strValue) {
+        return null;
+    }
+
+    @Override
+    public ParamBuilder setFilterOrGreater(String strFieldName, String strValue) {
+        return null;
+    }
+
+    @Override
+    public ParamBuilder setFilterOrLess(String strFieldName, String strValue) {
+        return null;
+    }
+
+    @Override
+    public ParamBuilder setFilterOrLike(String strFieldName, String strValue) {
+        return null;
+    }
+
+    @Override
+    public ParamBuilder setFilterOrIn(String strFieldName, String strValue) {
+        return null;
+    }
+
+    @Override
+    public ParamBuilder setFilterOr(String strFieldName, String strValue) {
+        return null;
     }
 
     /**

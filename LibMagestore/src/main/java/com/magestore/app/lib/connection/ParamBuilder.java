@@ -38,6 +38,23 @@ public interface ParamBuilder {
     ParamBuilder setFilter(String strFieldName, String strValue);
 
     /**
+     * Xây dựng truy vấn theo nhóm, trường và tên điều kiện filterOr
+     * @param strGroupName
+     * @param strFieldName
+     * @param strConditionType
+     * @param strFieldValue
+     * @return
+     */
+    ParamBuilder setFilterOr(String strGroupName, String strFieldName, String strConditionType, String strFieldValue);
+    ParamBuilder setFilterOr(String strFieldName, String strConditionType, String strFieldValue);
+    ParamBuilder setFilterOrEqual(String strFieldName, String strValue);
+    ParamBuilder setFilterOrGreater(String strFieldName, String strValue);
+    ParamBuilder setFilterOrLess(String strFieldName, String strValue);
+    ParamBuilder setFilterOrLike(String strFieldName, String strValue);
+    ParamBuilder setFilterOrIn(String strFieldName, String strValue);
+    ParamBuilder setFilterOr(String strFieldName, String strValue);
+
+    /**
      * Dành cho sắp xếp
      */
     ParamBuilder setSortOrder(String strFieldName, String strDirection);
@@ -62,7 +79,7 @@ public interface ParamBuilder {
      * @param pstrName
      * @param pstrValue
      */
-//    ParamBuilder setParam(String pstrName, String pstrValue);
+    ParamBuilder setParam(String pstrName, String pstrValue);
 //    ParamBuilder setParam(String pstrName, int pintValue);
 
     /**
