@@ -3,8 +3,15 @@ package com.magestore.app.pos.api.m1.catalog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
-
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.reflect.TypeToken;
 import com.magestore.app.lib.connection.BitmapFileCacheConnection;
 import com.magestore.app.lib.connection.Connection;
 import com.magestore.app.lib.connection.ConnectionException;
@@ -21,16 +28,20 @@ import com.magestore.app.pos.api.m1.POSAPIM1;
 import com.magestore.app.pos.api.m1.POSDataAccessSessionM1;
 import com.magestore.app.pos.api.m1.POSAbstractDataAccessM1;
 import com.magestore.app.pos.model.catalog.PosProductOption;
+import com.magestore.app.pos.model.catalog.PosProductOptionConfigOption;
+import com.magestore.app.pos.model.catalog.PosProductOptionJsonConfigOptionPrice;
+import com.magestore.app.pos.parse.gson2pos.Gson2PosAbstractParseImplement;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListProduct;
-import com.magestore.app.pos.parse.gson2pos.Gson2PosProductOptionParseImplement;
 import com.magestore.app.util.ImageUtil;
 import com.magestore.app.util.SecurityUtil;
 import com.magestore.app.util.StringUtil;
-
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Johan on 8/4/17.
@@ -39,6 +50,86 @@ import java.util.List;
  */
 
 public class POSProductDataAccessM1 extends POSAbstractDataAccessM1 implements ProductDataAccess {
+
+    public class Gson2PosOptionParseModel extends Gson2PosAbstractParseImplement {
+        @Override
+        protected Gson createGson() {
+            GsonBuilder builder = new GsonBuilder();
+            builder.enableComplexMapKeySerialization();
+            builder.registerTypeAdapter(new TypeToken<PosProductOptionJsonConfigOptionPrice>() {
+            }
+                    .getType(), new ProductConfigOptionPriceConverter());
+            builder.registerTypeAdapter(new TypeToken<Map<String, PosProductOptionConfigOption>>() {
+            }
+                    .getType(), new ConfigOptionConverter());
+            return builder.create();
+        }
+
+        private static final String JSON_OPTION_ID = "optionId";
+        private static final String JSON_OPTION_LABEL = "optionLabel";
+        public class ConfigOptionConverter implements JsonDeserializer<Map<String, PosProductOptionConfigOption>> {
+            @Override
+            public Map<String, PosProductOptionConfigOption> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+                JsonArray arr_config = json.getAsJsonArray();
+                Map<String, PosProductOptionConfigOption> mapConfigOption = new HashMap<>();
+                JsonObject json_color = arr_config.get(0).getAsJsonObject();
+                // khởi tạo product config
+                PosProductOptionConfigOption configOptionColor = new PosProductOptionConfigOption();
+                configOptionColor.optionId = json_color.remove(JSON_OPTION_ID).getAsString();
+                configOptionColor.optionLabel = json_color.remove(JSON_OPTION_LABEL).getAsString();
+                // gán cho option Values
+                configOptionColor.optionValues = new HashMap<String, String>();
+                for (Map.Entry<String, JsonElement> item : json_color.entrySet())
+                    configOptionColor.optionValues.put(item.getKey(), item.getValue().getAsString());
+                mapConfigOption.put("color", configOptionColor);
+                JsonObject json_size = arr_config.get(1).getAsJsonObject();
+                // khởi tạo product config
+                PosProductOptionConfigOption configOptionSize = new PosProductOptionConfigOption();
+                configOptionSize.optionId = json_size.remove(JSON_OPTION_ID).getAsString();
+                configOptionSize.optionLabel = json_size.remove(JSON_OPTION_LABEL).getAsString();
+                // gán cho option Values
+                configOptionSize.optionValues = new HashMap<String, String>();
+                for (Map.Entry<String, JsonElement> item : json_size.entrySet())
+                    configOptionSize.optionValues.put(item.getKey(), item.getValue().getAsString());
+
+                mapConfigOption.put("size", configOptionSize);
+
+                return mapConfigOption;
+            }
+        }
+
+        /**
+         * Convert đoạn json
+         * {"oldPrice":{"amount":"52"},"basePrice":{"amount":"48.036950501155"},"finalPrice":{"amount":"52"}}
+         * Sang PosProductConfigOptionPrice
+         */
+        private static final String PRICE_BASE = "basePrice";
+        private static final String PRICE_FINAL = "finalPrice";
+        private static final String PRICE_AMOUNT = "amount";
+        private static final String PRICE_OLD = "oldPrice";
+        public class ProductConfigOptionPriceConverter implements JsonDeserializer<PosProductOptionJsonConfigOptionPrice> {
+            public PosProductOptionJsonConfigOptionPrice deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext ctx) {
+                PosProductOptionJsonConfigOptionPrice optionPrice = new PosProductOptionJsonConfigOptionPrice();
+                if (json.getAsJsonObject().get(PRICE_BASE).getAsJsonObject().has(PRICE_AMOUNT)) {
+                    String price = json.getAsJsonObject().get(PRICE_BASE).getAsJsonObject().get(PRICE_AMOUNT).toString();
+                    price = price.replaceAll("\"", "");
+                    optionPrice.setBasePrice(price == null || price.trim().equals("") ? 0 : Float.parseFloat(price));
+                }
+                if (json.getAsJsonObject().get(PRICE_FINAL).getAsJsonObject().has(PRICE_AMOUNT)) {
+                    String price = json.getAsJsonObject().get(PRICE_FINAL).getAsJsonObject().get(PRICE_AMOUNT).toString();
+                    price = price.replaceAll("\"", "");
+                    optionPrice.setFinalPrice(price == null || price.trim().equals("") ? 0 : Float.parseFloat(price));
+                }
+                if (json.getAsJsonObject().get(PRICE_OLD).getAsJsonObject().has(PRICE_AMOUNT)) {
+                    String price = json.getAsJsonObject().get(PRICE_OLD).getAsJsonObject().get(PRICE_AMOUNT).toString();
+                    price = price.replaceAll("\"", "");
+                    optionPrice.setFinalPrice(price == null || price.trim().equals("") ? 0 : Float.parseFloat(price));
+                }
+                return optionPrice;
+            }
+        }
+    }
+
     @Override
     public Bitmap retrieveBitmap(Product product, int sizeWidth, int sizeHeight) throws IOException {
         // chuẩn bị cache
@@ -114,7 +205,7 @@ public class POSProductDataAccessM1 extends POSAbstractDataAccessM1 implements P
             json = StringUtil.truncateJson(json);
 
             // tạo json implement
-            Gson2PosProductOptionParseImplement implement = new Gson2PosProductOptionParseImplement();
+            Gson2PosOptionParseModel implement = new Gson2PosOptionParseModel();
             Gson gson = implement.createGson();
             PosProductOption productOption = gson.fromJson(json, PosProductOption.class);
 
