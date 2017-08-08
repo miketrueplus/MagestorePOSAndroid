@@ -32,12 +32,14 @@ import com.magestore.app.lib.resourcemodel.DataAccessException;
 import com.magestore.app.lib.resourcemodel.sales.OrderDataAccess;
 import com.magestore.app.pos.api.m1.POSAPIM1;
 import com.magestore.app.pos.api.m1.POSDataAccessSessionM1;
-import com.magestore.app.pos.api.m2.POSAbstractDataAccess;
+import com.magestore.app.pos.api.m1.POSAbstractDataAccessM1;
 import com.magestore.app.pos.model.checkout.cart.PosCartItem;
 import com.magestore.app.pos.model.sales.PosOrder;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosAbstractParseImplement;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListOrder;
 import com.magestore.app.util.ConfigUtil;
+import com.magestore.app.util.StringUtil;
+
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -49,7 +51,7 @@ import java.util.List;
  * dong.le@trueplus.vn
  */
 
-public class POSOrderDataAccessM1 extends POSAbstractDataAccess implements OrderDataAccess {
+public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements OrderDataAccess {
     public class Gson2PosOrderParseModel extends Gson2PosAbstractParseImplement {
         @Override
         public Gson createGson() {
@@ -108,12 +110,125 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccess implements Order
 
     @Override
     public List<Order> retrieve(int page, int pageSize, String status) throws ParseException, InstantiationException, IllegalAccessException, IOException {
-        return null;
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+        try {
+            // Khởi tạo connection và khởi tạo truy vấn
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSessionM1.REST_BASE_URL, POSDataAccessSessionM1.REST_USER_NAME, POSDataAccessSessionM1.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPIM1.REST_ORDER_GET_LISTING);
+
+            // Xây dựng tham số
+            paramBuilder = statement.getParamBuilder()
+                    .setPage(page)
+                    .setPageSize(pageSize)
+                    .setFilterNotEqual("status", "onhold")
+                    .setSortOrderDESC("created_at")
+                    .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+            if (ConfigUtil.isManageOrderByMe())
+                paramBuilder.setFilterEqual("webpos_staff_id", ConfigUtil.getStaff().getID());
+            if (ConfigUtil.isManageOrderByLocation())
+                paramBuilder.setFilterEqual("location_id", ConfigUtil.getStaff().getStaffLocation().getID());
+
+            if (!StringUtil.isNullOrEmpty(status))
+                paramBuilder.setFilterIn("status", status);
+
+            // thực thi truy vấn và parse kết quả thành object
+            rp = statement.execute();
+//            rp.setParseImplement(new Gson2PosOrderParseModel());
+            rp.setParseImplement(new Gson2PosOrderParseModel());
+            rp.setParseModel(Gson2PosListOrder.class);
+            Gson2PosListOrder listOrder = (Gson2PosListOrder) rp.doParse();
+            List<Order> list = (List<Order>) (List<?>) (listOrder.items);
+
+            return convertData(list);
+        } catch (ConnectionException ex) {
+            throw ex;
+        } catch (IOException ex) {
+            throw ex;
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
     }
 
     @Override
     public List<Order> retrieve(String searchString, int page, int pageSize, String status) throws ParseException, InstantiationException, IllegalAccessException, IOException {
-        return null;
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+        String finalSearchString = "%" + searchString + "%";
+
+        try {
+            // Khởi tạo connection và khởi tạo truy vấn
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSessionM1.REST_BASE_URL, POSDataAccessSessionM1.REST_USER_NAME, POSDataAccessSessionM1.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPIM1.REST_ORDER_GET_LISTING);
+
+            // Xây dựng tham số
+            paramBuilder = statement.getParamBuilder()
+                    .setPage(page)
+                    .setPageSize(pageSize)
+                    .setFilterNotEqual("status", "onhold")
+                    .setFilterOrLike("increment_id", finalSearchString)
+                    .setFilterOrLike("customer_email", finalSearchString)
+                    .setFilterOrLike("customer_firstname", finalSearchString)
+                    .setFilterOrLike("customer_lastname", finalSearchString)
+                    .setSortOrderDESC("created_at")
+                    .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+            if (ConfigUtil.isManageOrderByMe())
+                paramBuilder.setFilterEqual("webpos_staff_id", ConfigUtil.getStaff().getID());
+            if (ConfigUtil.isManageOrderByLocation())
+                paramBuilder.setFilterEqual("location_id", ConfigUtil.getStaff().getStaffLocation().getID());
+
+            if (!StringUtil.isNullOrEmpty(status))
+                paramBuilder.setFilterIn("status", status);
+
+            // thực thi truy vấn và parse kết quả thành object
+            rp = statement.execute();
+//            rp.setParseImplement(getClassParseImplement());
+            rp.setParseImplement(new Gson2PosOrderParseModel());
+            rp.setParseModel(Gson2PosListOrder.class);
+            Gson2PosListOrder listOrder = (Gson2PosListOrder) rp.doParse();
+            List<Order> list = (List<Order>) (List<?>) (listOrder.items);
+            return convertData(list);
+        } catch (ConnectionException ex) {
+            throw ex;
+        } catch (IOException ex) {
+            throw ex;
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
     }
 
     @Override
@@ -192,6 +307,7 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccess implements Order
             paramBuilder = statement.getParamBuilder()
                     .setPage(1)
                     .setPageSize(1)
+                    .setFilterNotEqual("status", "onhold")
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
             // thực thi truy vấn và parse kết quả thành object
@@ -246,7 +362,6 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccess implements Order
                     .setPageSize(pageSize)
                     .setSortOrderDESC("created_at")
                     .setFilterNotEqual("status", "onhold")
-                    .setFilterIn("status", "processing")
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
             if (ConfigUtil.isManageOrderByMe())
@@ -287,7 +402,63 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccess implements Order
 
     @Override
     public List<Order> retrieve(String searchString, int page, int pageSize) throws ParseException, InstantiationException, IllegalAccessException, IOException {
-        return null;
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+        String finalSearchString = "%" + searchString + "%";
+
+        try {
+            // Khởi tạo connection và khởi tạo truy vấn
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSessionM1.REST_BASE_URL, POSDataAccessSessionM1.REST_USER_NAME, POSDataAccessSessionM1.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPIM1.REST_ORDER_GET_LISTING);
+
+            // Xây dựng tham số
+            paramBuilder = statement.getParamBuilder()
+                    .setPage(page)
+                    .setPageSize(pageSize)
+                    .setFilterNotEqual("status", "onhold")
+                    .setFilterOrLike("increment_id", finalSearchString)
+                    .setFilterOrLike("customer_email", finalSearchString)
+                    .setFilterOrLike("customer_firstname", finalSearchString)
+                    .setFilterOrLike("customer_lastname", finalSearchString)
+                    .setSortOrderDESC("created_at")
+                    .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+            if (ConfigUtil.isManageOrderByMe())
+                paramBuilder.setFilterEqual("webpos_staff_id", ConfigUtil.getStaff().getID());
+            if (ConfigUtil.isManageOrderByLocation())
+                paramBuilder.setFilterEqual("location_id", ConfigUtil.getStaff().getStaffLocation().getID());
+
+            // thực thi truy vấn và parse kết quả thành object
+            rp = statement.execute();
+//            rp.setParseImplement(getClassParseImplement());
+            rp.setParseImplement(new Gson2PosOrderParseModel());
+            rp.setParseModel(Gson2PosListOrder.class);
+            Gson2PosListOrder listOrder = (Gson2PosListOrder) rp.doParse();
+            List<Order> list = (List<Order>) (List<?>) (listOrder.items);
+            return convertData(list);
+        } catch (ConnectionException ex) {
+            throw ex;
+        } catch (IOException ex) {
+            throw ex;
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
     }
 
     @Override

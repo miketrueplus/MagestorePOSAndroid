@@ -19,7 +19,7 @@ import com.magestore.app.lib.resourcemodel.DataAccessException;
 import com.magestore.app.lib.resourcemodel.catalog.ProductDataAccess;
 import com.magestore.app.pos.api.m1.POSAPIM1;
 import com.magestore.app.pos.api.m1.POSDataAccessSessionM1;
-import com.magestore.app.pos.api.m2.POSAbstractDataAccess;
+import com.magestore.app.pos.api.m1.POSAbstractDataAccessM1;
 import com.magestore.app.pos.model.catalog.PosProductOption;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListProduct;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosProductOptionParseImplement;
@@ -38,7 +38,7 @@ import java.util.List;
  * dong.le@trueplus.vn
  */
 
-public class POSProductDataAccessM1 extends POSAbstractDataAccess implements ProductDataAccess {
+public class POSProductDataAccessM1 extends POSAbstractDataAccessM1 implements ProductDataAccess {
     @Override
     public Bitmap retrieveBitmap(Product product, int sizeWidth, int sizeHeight) throws IOException {
         // chuẩn bị cache

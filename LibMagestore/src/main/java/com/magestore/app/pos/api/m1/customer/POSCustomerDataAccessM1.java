@@ -11,7 +11,7 @@ import com.magestore.app.lib.parse.ParseException;
 import com.magestore.app.lib.resourcemodel.customer.CustomerDataAccess;
 import com.magestore.app.pos.api.m1.POSAPIM1;
 import com.magestore.app.pos.api.m1.POSDataAccessSessionM1;
-import com.magestore.app.pos.api.m2.POSAbstractDataAccess;
+import com.magestore.app.pos.api.m1.POSAbstractDataAccessM1;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListCustomer;
 
 import java.io.IOException;
@@ -23,7 +23,7 @@ import java.util.List;
  * dong.le@trueplus.vn
  */
 
-public class POSCustomerDataAccessM1 extends POSAbstractDataAccess implements CustomerDataAccess {
+public class POSCustomerDataAccessM1 extends POSAbstractDataAccessM1 implements CustomerDataAccess {
     @Override
     public int count() throws ParseException, InstantiationException, IllegalAccessException, IOException {
         Connection connection = null;

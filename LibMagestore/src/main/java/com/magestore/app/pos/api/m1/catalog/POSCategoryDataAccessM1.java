@@ -12,7 +12,7 @@ import com.magestore.app.lib.resourcemodel.DataAccessException;
 import com.magestore.app.lib.resourcemodel.catalog.CategoryDataAccess;
 import com.magestore.app.pos.api.m1.POSAPIM1;
 import com.magestore.app.pos.api.m1.POSDataAccessSessionM1;
-import com.magestore.app.pos.api.m2.POSAbstractDataAccess;
+import com.magestore.app.pos.api.m1.POSAbstractDataAccessM1;
 import com.magestore.app.pos.model.catalog.PosCategory;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListCategory;
 
@@ -26,7 +26,7 @@ import java.util.List;
  * dong.le@trueplus.vn
  */
 
-public class POSCategoryDataAccessM1 extends POSAbstractDataAccess implements CategoryDataAccess {
+public class POSCategoryDataAccessM1 extends POSAbstractDataAccessM1 implements CategoryDataAccess {
     public static List<Category> mListCategory;
     public static List<Category> mListDefaultCategory;
 
