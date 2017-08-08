@@ -26,7 +26,7 @@ public interface CheckoutDataAccess extends DataAccess {
 
     Checkout addCouponToQuote(QuoteAddCouponParam quoteAddCouponParam) throws ParseException, InstantiationException, IllegalAccessException, IOException;
 
-    Checkout saveShipping(String quoteId, String shippingCode) throws ParseException, InstantiationException, IllegalAccessException, IOException;
+    Checkout saveShipping(Checkout checkout, String quoteId, String shippingCode) throws ParseException, InstantiationException, IllegalAccessException, IOException;
 
     Checkout savePayment(String quoteId, String paymentCode) throws ParseException, InstantiationException, IllegalAccessException, IOException;
 

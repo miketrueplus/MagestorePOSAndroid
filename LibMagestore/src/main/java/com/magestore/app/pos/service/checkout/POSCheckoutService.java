@@ -93,10 +93,14 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         } else {
             quote.setCustomerId("");
         }
-        // TODO: Giả data với (till_id = 1) sau fix lại theo config
+        // TODO: fix till_id = 1 với magento 2
         quote.setCurrencyId(ConfigUtil.getCurrentCurrency().getCode());
         quote.setStoreId(checkout.getStoreId());
-        quote.setTillId("1");
+        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2)) {
+            quote.setTillId("1");
+        } else {
+            quote.setTillId(ConfigUtil.getPointOfSales().getID());
+        }
         quote.setItems(addItemToQuote(checkout));
 
         addCustomerAddressToQuote(checkout, quoteCustomer);
@@ -117,7 +121,7 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         quoteParam.setQuoteId(checkout.getQuoteId());
         quoteParam.setStoreId(checkout.getStoreId());
         quoteParam.setCustomerId(checkout.getCustomerID());
-        // TODO: đang fix giá trị till_id
+        // TODO: fix till_id = 1 với magento 2
         quoteParam.setCurrencyId(ConfigUtil.getCurrentCurrency().getCode());
         quoteParam.setTillId("1");
 
@@ -136,7 +140,7 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
     }
 
     @Override
-    public Checkout saveShipping(String quoteId, String shippingCode) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+    public Checkout saveShipping(Checkout checkout, String quoteId, String shippingCode) throws IOException, InstantiationException, ParseException, IllegalAccessException {
         // Khởi tạo customer gateway factory
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         CheckoutDataAccess checkoutDataAccess = factory.generateCheckoutDataAccess();
@@ -145,7 +149,7 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         if (shippingCode.equals("")) {
             shippingCode = "webpos_shipping_storepickup";
         }
-        return checkoutDataAccess.saveShipping(quoteId, shippingCode);
+        return checkoutDataAccess.saveShipping(checkout, quoteId, shippingCode);
     }
 
     @Override
@@ -192,6 +196,20 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
     @Override
     public Model placeOrder(String quoteId, Checkout checkout, List<CheckoutPayment> listCheckoutPayment) throws IOException, InstantiationException, ParseException, IllegalAccessException {
         PlaceOrderParams placeOrderParams = createPlaceOrderParams();
+        if(ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_1)){
+            placeOrderParams.setStoreId(checkout.getStoreId());
+            placeOrderParams.setTillId(ConfigUtil.getPointOfSales().getID());
+            placeOrderParams.setCurrencyId(ConfigUtil.getCurrentCurrency().getCode());
+            if (checkout.getCustomer() != null) {
+                if (StringUtil.isNullOrEmpty(checkout.getCustomerID()) || !checkCustomerID(checkout.getCustomer(), ConfigUtil.getCustomerGuest())) {
+                    placeOrderParams.setCustomerId("");
+                } else {
+                    placeOrderParams.setCustomerId(checkout.getCustomerID());
+                }
+            } else {
+                placeOrderParams.setCustomerId("");
+            }
+        }
         placeOrderParams.setQuoteId(quoteId);
         PosPlaceOrderParams.PlaceOrderActionParam placeOrderActionParam = placeOrderParams.createPlaceOrderActionParam();
         placeOrderParams.setCreateInvoice(checkout.getCreateInvoice());

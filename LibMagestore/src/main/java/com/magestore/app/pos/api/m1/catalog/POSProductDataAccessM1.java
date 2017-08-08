@@ -72,27 +72,31 @@ public class POSProductDataAccessM1 extends POSAbstractDataAccessM1 implements P
             public Map<String, PosProductOptionConfigOption> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
                 JsonArray arr_config = json.getAsJsonArray();
                 Map<String, PosProductOptionConfigOption> mapConfigOption = new HashMap<>();
-                JsonObject json_color = arr_config.get(0).getAsJsonObject();
-                // khởi tạo product config
-                PosProductOptionConfigOption configOptionColor = new PosProductOptionConfigOption();
-                configOptionColor.optionId = json_color.remove(JSON_OPTION_ID).getAsString();
-                configOptionColor.optionLabel = json_color.remove(JSON_OPTION_LABEL).getAsString();
-                // gán cho option Values
-                configOptionColor.optionValues = new HashMap<String, String>();
-                for (Map.Entry<String, JsonElement> item : json_color.entrySet())
-                    configOptionColor.optionValues.put(item.getKey(), item.getValue().getAsString());
-                mapConfigOption.put("color", configOptionColor);
-                JsonObject json_size = arr_config.get(1).getAsJsonObject();
-                // khởi tạo product config
-                PosProductOptionConfigOption configOptionSize = new PosProductOptionConfigOption();
-                configOptionSize.optionId = json_size.remove(JSON_OPTION_ID).getAsString();
-                configOptionSize.optionLabel = json_size.remove(JSON_OPTION_LABEL).getAsString();
-                // gán cho option Values
-                configOptionSize.optionValues = new HashMap<String, String>();
-                for (Map.Entry<String, JsonElement> item : json_size.entrySet())
-                    configOptionSize.optionValues.put(item.getKey(), item.getValue().getAsString());
+                if(arr_config != null && arr_config.size() > 0) {
+                    JsonObject json_color = arr_config.get(0).getAsJsonObject();
+                    // khởi tạo product config
+                    PosProductOptionConfigOption configOptionColor = new PosProductOptionConfigOption();
+                    configOptionColor.optionId = json_color.remove(JSON_OPTION_ID).getAsString();
+                    configOptionColor.optionLabel = json_color.remove(JSON_OPTION_LABEL).getAsString();
+                    // gán cho option Values
+                    configOptionColor.optionValues = new HashMap<String, String>();
+                    for (Map.Entry<String, JsonElement> item : json_color.entrySet())
+                        configOptionColor.optionValues.put(item.getKey(), item.getValue().getAsString());
+                    mapConfigOption.put("color", configOptionColor);
+                    if(arr_config.size() > 1){
+                        JsonObject json_size = arr_config.get(1).getAsJsonObject();
+                        // khởi tạo product config
+                        PosProductOptionConfigOption configOptionSize = new PosProductOptionConfigOption();
+                        configOptionSize.optionId = json_size.remove(JSON_OPTION_ID).getAsString();
+                        configOptionSize.optionLabel = json_size.remove(JSON_OPTION_LABEL).getAsString();
+                        // gán cho option Values
+                        configOptionSize.optionValues = new HashMap<String, String>();
+                        for (Map.Entry<String, JsonElement> item : json_size.entrySet())
+                            configOptionSize.optionValues.put(item.getKey(), item.getValue().getAsString());
 
-                mapConfigOption.put("size", configOptionSize);
+                        mapConfigOption.put("size", configOptionSize);
+                    }
+                }
 
                 return mapConfigOption;
             }

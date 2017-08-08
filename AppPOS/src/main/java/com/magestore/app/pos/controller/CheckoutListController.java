@@ -339,7 +339,10 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     public void doInputSaveShipping(String shippingCode) {
         wraper.put("shipping_code", shippingCode);
         ((CheckoutListPanel) mView).setEnableBtCheckout(false);
-        doAction(ACTION_TYPE_SAVE_SHIPPING, null, wraper, null);
+        Checkout checkout = getSelectedItem();
+        String store_id = DataUtil.getDataStringToPreferences(context, DataUtil.STORE_ID);
+        checkout.setStoreId(store_id);
+        doAction(ACTION_TYPE_SAVE_SHIPPING, null, wraper, checkout);
     }
 
     public void doInputSavePayment(CheckoutPayment checkoutPayment) {
@@ -524,7 +527,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         } else if (actionType == ACTION_TYPE_SAVE_SHIPPING) {
             String shippingCode = (String) wraper.get("shipping_code");
             String quoteId = getSelectedItem().getQuoteId();
-            wraper.put("save_shipping", ((CheckoutService) getListService()).saveShipping(quoteId, shippingCode));
+            wraper.put("save_shipping", ((CheckoutService) getListService()).saveShipping((Checkout) models[0], quoteId, shippingCode));
             return true;
         } else if (actionType == ACTION_TYPE_SAVE_PAYMENT) {
             String paymentCode = ((CheckoutPayment) models[0]).getCode();
@@ -534,6 +537,9 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         } else if (actionType == ACTION_TYPE_PLACE_ORDER) {
             List<CheckoutPayment> listCheckoutPayment = (List<CheckoutPayment>) wraper.get("list_payment");
             Checkout checkout = checkDataCheckout((Checkout) wraper.get("save_shipping"));
+            String store_id = DataUtil.getDataStringToPreferences(context, DataUtil.STORE_ID);
+            checkout.setStoreId(store_id);
+            checkout.setCustomerID(getSelectedItem().getCustomerID());
             checkout.setCreateShip(((CheckoutDetailPanel) mDetailView).isCreateShip());
             checkout.setCreateInvoice(((CheckoutDetailPanel) mDetailView).isCreateInvoice());
             checkout.setNote(((CheckoutDetailPanel) mDetailView).getNote());
@@ -1346,10 +1352,10 @@ public class CheckoutListController extends AbstractListController<Checkout> {
      */
     private void bindDataToShippingMethodList(List<CheckoutShipping> listShipping) {
         if (!((CheckoutDetailPanel) mDetailView).getPickAtStore()) {
-            List<CheckoutShipping> nListShipping = listShipping;
-            for (CheckoutShipping shipping : nListShipping) {
-                if (shipping.getCode().equals(PICK_AT_STORE_CODE)) {
-                    nListShipping.remove(shipping);
+            List<CheckoutShipping> nListShipping = new ArrayList<>();
+            for (CheckoutShipping shipping : listShipping) {
+                if (!shipping.getCode().equals(PICK_AT_STORE_CODE)) {
+                    nListShipping.add(shipping);
                 }
             }
             ((CheckoutDetailPanel) mDetailView).setShippingDataSet(nListShipping);

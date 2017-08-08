@@ -23,6 +23,10 @@ public class PosPlaceOrderParams extends PosAbstractModel implements PlaceOrderP
     List<PlaceOrderExtensionParam> extension_data;
     List<PlaceOrderIntegrationParam> integration;
     String shipping_method = "";
+    String currency_id;
+    String customer_id;
+    String store_id;
+    String till_id;
 
     @Override
     public void setQuoteId(String strQuoteId) {
@@ -111,6 +115,26 @@ public class PosPlaceOrderParams extends PosAbstractModel implements PlaceOrderP
     public List<PaymentMethodDataParam> createPaymentMethodData() {
         payment.method_data = new ArrayList<PaymentMethodDataParam>();
         return payment.method_data;
+    }
+
+    @Override
+    public void setCurrencyId(String strCurrencyId) {
+        currency_id = strCurrencyId;
+    }
+
+    @Override
+    public void setCustomerId(String strCustomerId) {
+        customer_id = strCustomerId;
+    }
+
+    @Override
+    public void setStoreId(String strStoreId) {
+        store_id = strStoreId;
+    }
+
+    @Override
+    public void setTillId(String strTillId) {
+        till_id = strTillId;
     }
 
     public class PlaceOrderActionParam {

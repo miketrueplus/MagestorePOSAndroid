@@ -32,6 +32,8 @@ public class Gson2PosOrderParseModel extends Gson2PosAbstractParseImplement {
 
     private static final String JSON_EXTENSION_ATTRIBUTE = "extension_attributes";
     private static final String JSON_EXTENSION_ITEMS_INFOBUY = "items_info_buy";
+    private static final String JSON_EXTENSION_PAYMENT = "payment";
+    private static final String JSON_EXTENSION_BILLING_ADDRESS = "billing_address";
 
     public class OrderParamsConverter implements JsonDeserializer<PosOrder> {
         @Override
@@ -39,6 +41,9 @@ public class Gson2PosOrderParseModel extends Gson2PosAbstractParseImplement {
             JsonObject obj = json.getAsJsonObject();
             obj.remove(JSON_EXTENSION_ATTRIBUTE);
             obj.remove(JSON_EXTENSION_ITEMS_INFOBUY);
+            obj.remove(JSON_EXTENSION_ITEMS_INFOBUY);
+            obj.remove(JSON_EXTENSION_PAYMENT);
+            obj.remove(JSON_EXTENSION_BILLING_ADDRESS);
             PosOrder order = new Gson().fromJson(obj, PosOrder.class);
             return order;
         }

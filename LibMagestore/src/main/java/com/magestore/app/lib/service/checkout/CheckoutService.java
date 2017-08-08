@@ -46,7 +46,7 @@ public interface CheckoutService extends ListService<Checkout> {
 
     Checkout addCouponToQuote(Checkout checkout, QuoteAddCouponParam quoteAddCouponParam) throws IOException, InstantiationException, ParseException, IllegalAccessException;
 
-    Checkout saveShipping(String quoteId, String shippingCode) throws IOException, InstantiationException, ParseException, IllegalAccessException;
+    Checkout saveShipping(Checkout checkout, String quoteId, String shippingCode) throws IOException, InstantiationException, ParseException, IllegalAccessException;
 
     Checkout savePayment(String quoteId, String paymentCode) throws IOException, InstantiationException, ParseException, IllegalAccessException;
 

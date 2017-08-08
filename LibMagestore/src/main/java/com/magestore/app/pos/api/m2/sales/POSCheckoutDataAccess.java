@@ -236,7 +236,7 @@ public class POSCheckoutDataAccess extends POSAbstractDataAccess implements Chec
     }
 
     @Override
-    public Checkout saveShipping(String quoteId, String shippingCode) throws ParseException, InstantiationException, IllegalAccessException, IOException {
+    public Checkout saveShipping(Checkout checkout, String quoteId, String shippingCode) throws ParseException, InstantiationException, IllegalAccessException, IOException {
         Connection connection = null;
         Statement statement = null;
         ResultReading rp = null;
@@ -259,8 +259,8 @@ public class POSCheckoutDataAccess extends POSAbstractDataAccess implements Chec
             rp.setParseImplement(getClassParseImplement());
             rp.setParseModel(PosCheckout.class);
 
-            Checkout checkout = (Checkout) rp.doParse();
-            return checkout;
+            Checkout ck = (Checkout) rp.doParse();
+            return ck;
         } catch (ConnectionException ex) {
             throw ex;
         } catch (IOException ex) {

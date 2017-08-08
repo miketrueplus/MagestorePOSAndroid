@@ -34,6 +34,11 @@ public class POSAPIM1 {
     // API order
     public static final String REST_ORDER_GET_LISTING = "api/rest/webpos/order/find?";
 
+    // API checkout
+    public static final String REST_CHECK_OUT_SAVE_CART = "api/rest/webpos/cart/save?";
+    public static final String REST_CHECK_OUT_SAVE_SHIPPING = "api/rest/webpos/checkout/saveShippingMethod?";
+    public static final String REST_CHECK_OUT_PLACE_ORDER = "api/rest/webpos/checkout/placeOrder?";
+
     // API config
     public static final String REST_CONFIG_GET_LISTING = "api/rest/webpos/configurations?";
     public static final String REST_POS_ASSIGN = "api/rest/webpos/posassign?";

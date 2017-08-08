@@ -17,6 +17,7 @@ import com.magestore.app.pos.api.m1.catalog.POSCategoryDataAccessM1;
 import com.magestore.app.pos.api.m1.catalog.POSProductDataAccessM1;
 import com.magestore.app.pos.api.m1.config.POSConfigDataAccessM1;
 import com.magestore.app.pos.api.m1.customer.POSCustomerDataAccessM1;
+import com.magestore.app.pos.api.m1.sales.POSCheckoutDataAccessM1;
 import com.magestore.app.pos.api.m1.sales.POSOrderDataAccessM1;
 import com.magestore.app.pos.api.m1.user.POSUserDataAccessM1;
 
@@ -84,6 +85,6 @@ public class POSDataAccessFactoryM1 extends DataAccessFactory {
 
     @Override
     public CheckoutDataAccess generateCheckoutDataAccess() {
-        return null;
+        return new POSCheckoutDataAccessM1();
     }
 }
