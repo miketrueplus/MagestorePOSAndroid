@@ -30,9 +30,17 @@ public class POSAPIM1 {
 
     // API customer
     public static final String REST_CUSOMTER_GET_LISTING = "api/rest/webpos/customers/find?";
+    public static final String REST_CUSOMTER_UPDATE = "api/rest/webpos/customer/create?";
+    public static final String REST_CUSOMTER_ADD = "api/rest/webpos/customer/create?";
+    public static final String REST_ADDRESS_UPDATE = "api/rest/webpos/customer/create?";
+    public static final String REST_ADDRESS_DELETE = "api/rest/webpos/customer/create?";
+    public static final String REST_ADDRESS_ADD = "api/rest/webpos/customer/create?";
 
     // API order
     public static final String REST_ORDER_GET_LISTING = "api/rest/webpos/order/find?";
+
+    // API Cart
+    public static final String REST_CART_DELETE_ITEM = "api/rest/webpos/cart/removeItem?";
 
     // API checkout
     public static final String REST_CHECK_OUT_SAVE_CART = "api/rest/webpos/cart/save?";
@@ -40,6 +48,11 @@ public class POSAPIM1 {
     public static final String REST_CHECKOUT_ADD_COUPON_TO_QUOTE = "api/rest/webpos/checkout/applyCoupon?";
     public static final String REST_CHECK_OUT_SAVE_SHIPPING = "api/rest/webpos/checkout/saveShippingMethod?";
     public static final String REST_CHECK_OUT_PLACE_ORDER = "api/rest/webpos/checkout/placeOrder?";
+
+    // API plugins
+    public static final String REST_PLUGIN_APPLY_REWARD_POINT = "api/rest/webpos/integration/spendPoint?";
+    public static final String REST_PLUGIN_ADD_GIFTCARD = "api/rest/webpos/integration/applyGiftcard?";
+    public static final String REST_PLUGIN_REMOVE_GIFTCARD = "api/rest/webpos/integration/removeGiftcard?";
 
     // API config
     public static final String REST_CONFIG_GET_LISTING = "api/rest/webpos/configurations?";

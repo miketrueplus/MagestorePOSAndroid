@@ -262,7 +262,7 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
                             placeOrderParams.setCustomerId(checkout.getCustomerID());
                         }
                     } else {
-                        placeOrderParams.setCustomerId("");
+                        placeOrderParams.setCustomerId(checkout.getCustomerID());
                     }
                 } else {
                     placeOrderParams.setCustomerId(checkout.getCustomerID());
@@ -924,7 +924,7 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
 
     private void addCustomerAddressToQuote(Checkout checkout, QuoteCustomer quoteCustomer) {
         List<CustomerAddress> listAddress = checkout.getCustomer().getAddress();
-        if (checkout.isPickAtStore()) {
+        if (!checkout.isPickAtStore()) {
             CustomerAddress address = ConfigUtil.getCustomerGuest().getAddress().get(0);
             QuoteCustomerAddress customerAddress = createCustomerAddress();
             customerAddress.setCountryId(address.getCountry());
@@ -937,7 +937,26 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
             customerAddress.setLastname(address.getLastName());
             customerAddress.setEmail(checkout.getCustomer().getEmail());
             quoteCustomer.setShippingAddress(customerAddress);
-            quoteCustomer.setBillingAddress(customerAddress);
+            if (listAddress != null && listAddress.size() > 2) {
+                CustomerAddress billing_address = listAddress.get(1);
+                if (billing_address.isBilling().equals("true")) {
+                    QuoteCustomerAddress customerBillingAddress = createCustomerAddress();
+                    customerBillingAddress.setCountryId(billing_address.getCountry());
+                    customerBillingAddress.setRegionId(billing_address.getRegion().getRegionID());
+                    customerBillingAddress.setPostcode(billing_address.getPostCode());
+                    customerBillingAddress.setStreet(billing_address.getStreet());
+                    customerBillingAddress.setTelephone(billing_address.getTelephone());
+                    customerBillingAddress.setCity(billing_address.getCity());
+                    customerBillingAddress.setFirstname(billing_address.getFirstName());
+                    customerBillingAddress.setLastname(billing_address.getLastName());
+                    customerBillingAddress.setEmail(checkout.getCustomer().getEmail());
+                    quoteCustomer.setBillingAddress(customerBillingAddress);
+                } else {
+                    quoteCustomer.setBillingAddress(customerAddress);
+                }
+            } else {
+                quoteCustomer.setBillingAddress(customerAddress);
+            }
         } else {
             if (listAddress != null && listAddress.size() > 0) {
                 if (listAddress.size() > 2) {

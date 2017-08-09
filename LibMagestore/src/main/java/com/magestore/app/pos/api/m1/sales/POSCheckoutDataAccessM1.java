@@ -87,13 +87,15 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
             public List<PosCartItem> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
                 GsonBuilder builder = new GsonBuilder();
                 Gson gson = builder.create();
-                JsonObject object = json.getAsJsonObject();
                 List<PosCartItem> listItem = new ArrayList<>();
-                if (object != null) {
-                    for (Map.Entry<String, JsonElement> item : object.entrySet()) {
-                        PosCartItem cartItem = gson.fromJson(item.getValue().getAsJsonObject(), PosCartItem.class);
-                        if (cartItem != null) {
-                            listItem.add(cartItem);
+                if (json.isJsonObject()) {
+                    JsonObject object = json.getAsJsonObject();
+                    if (object != null) {
+                        for (Map.Entry<String, JsonElement> item : object.entrySet()) {
+                            PosCartItem cartItem = gson.fromJson(item.getValue().getAsJsonObject(), PosCartItem.class);
+                            if (cartItem != null) {
+                                listItem.add(cartItem);
+                            }
                         }
                     }
                 }
@@ -268,7 +270,7 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
                     if (!checkCustomerID(checkout.getCustomer(), ConfigUtil.getCustomerGuest())) {
                         customer_id = checkout.getCustomerID();
                     } else {
-                        customer_id = "";
+                        customer_id = checkout.getCustomerID();
                     }
                 } else {
                     customer_id = checkout.getCustomerID();

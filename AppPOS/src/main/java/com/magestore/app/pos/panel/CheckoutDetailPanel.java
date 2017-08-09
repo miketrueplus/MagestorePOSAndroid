@@ -47,6 +47,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
     Switch cb_pick_at_store;
     EditText et_checkout_note;
     boolean checkSwitch;
+    private int currentSelectShipping = -1;
 
     public CheckoutDetailPanel(Context context) {
         super(context);
@@ -112,7 +113,9 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         sp_shipping_method.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                getShippingMethod();
+                if(currentSelectShipping == i){
+                    getShippingMethod();
+                }
             }
 
             @Override
@@ -142,6 +145,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
             public void onCheckedChanged(CompoundButton compoundButton, boolean check) {
                 if (!check) {
                     ll_shipping_address.setVisibility(GONE);
+                    resetCurrentSelectShipping();
                 } else {
                     ll_shipping_address.setVisibility(VISIBLE);
                 }
@@ -340,8 +344,8 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
     }
 
     public void setPickAtStoreDefault() {
-        cb_pick_at_store.setChecked(false);
         checkSwitch = true;
+        cb_pick_at_store.setChecked(false);
     }
 
     public void showNotifiSelectPayment() {
@@ -430,5 +434,9 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
 
     public void showDialogError(String message) {
         com.magestore.app.util.DialogUtil.confirm(getContext(), message, R.string.ok);
+    }
+
+    public void resetCurrentSelectShipping(){
+        currentSelectShipping = -1;
     }
 }

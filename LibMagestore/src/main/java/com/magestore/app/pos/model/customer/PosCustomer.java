@@ -35,6 +35,7 @@ public class PosCustomer extends PosAbstractModel implements Customer {
     String disable_auto_group_change;
     List<PosCustomerAddress> addresses;
     List<Complain> complainsa;
+    String entity_id;
 
     @Gson2PosExclude
     int address_position;
@@ -174,5 +175,15 @@ public class PosCustomer extends PosAbstractModel implements Customer {
     @Override
     public void setAddressPosition(int intAddressPosition) {
         address_position = intAddressPosition;
+    }
+
+    @Override
+    public void setEntityId(String strEntityId) {
+        entity_id = strEntityId;
+    }
+
+    @Override
+    public String getEntityId() {
+        return entity_id;
     }
 }

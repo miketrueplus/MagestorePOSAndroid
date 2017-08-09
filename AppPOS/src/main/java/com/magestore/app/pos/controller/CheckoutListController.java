@@ -1336,14 +1336,15 @@ public class CheckoutListController extends AbstractListController<Checkout> {
      * khi switch pick at store load lại shipping
      */
     public void changePickAtStoreAndReloadShipping() {
-        Checkout checkout = (Checkout) wraper.get("save_cart");
-        if (checkout != null) {
-            List<CheckoutShipping> listShipping = checkout.getCheckoutShipping();
-            if (listShipping != null && listShipping.size() > 0) {
-                bindDataToShippingMethodList(listShipping);
-                autoSelectShipping(listShipping);
-            }
-        }
+//        Checkout checkout = (Checkout) wraper.get("save_cart");
+//        if (checkout != null) {
+//            List<CheckoutShipping> listShipping = checkout.getCheckoutShipping();
+//            if (listShipping != null && listShipping.size() > 0) {
+//                bindDataToShippingMethodList(listShipping);
+//                autoSelectShipping(listShipping);
+//            }
+//        }
+        doInputSaveCart();
     }
 
     /**

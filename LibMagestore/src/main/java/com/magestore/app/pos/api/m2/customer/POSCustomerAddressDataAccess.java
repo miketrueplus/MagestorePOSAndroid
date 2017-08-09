@@ -450,7 +450,7 @@ public class POSCustomerAddressDataAccess extends POSAbstractDataAccess implemen
 
             // thực thi truy vấn và parse kết quả thành object
             Wrap wrapCustomer = new Wrap();
-            wrapCustomer.customer = pcustomer;
+            wrapCustomer.customer = removeAddressDefault(pcustomer);
 
             rp = statement.execute(wrapCustomer);
             return true;

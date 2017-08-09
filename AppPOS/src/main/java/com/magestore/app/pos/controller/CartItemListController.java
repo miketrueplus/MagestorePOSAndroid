@@ -27,6 +27,8 @@ import com.magestore.app.pos.panel.ProductOptionPanel;
 import com.magestore.app.pos.util.DialogUtil;
 import com.magestore.app.pos.view.MagestoreDialog;
 import com.magestore.app.util.ConfigUtil;
+import com.magestore.app.util.DataUtil;
+import com.magestore.app.util.StringUtil;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -133,6 +135,10 @@ public class CartItemListController extends AbstractChildListController<Checkout
 
         if (actionType == ACTION_CART_DELETE_ITEM) {
             CartItem cartItem = (CartItem) models[0];
+            if (StringUtil.isNullOrEmpty(getParent().getStoreId())) {
+                String store_id = DataUtil.getDataStringToPreferences(getMagestoreContext().getActivity(), DataUtil.STORE_ID);
+                getParent().setStoreId(store_id);
+            }
             wraper.put("cart_respone", mCartService.delete(getParent(), cartItem));
             return true;
         }
@@ -511,12 +517,12 @@ public class CartItemListController extends AbstractChildListController<Checkout
                     mProductOptionPanel);
             mProductOptionDialog.setGoneButtonSave(true);
             mProductOptionDialog.setDialogTitle(cartItem.getProduct().getName());
-        }else{
+        } else {
             mProductOptionPanel.resetAdapter();
         }
-        if(isShowDetail){
+        if (isShowDetail) {
             mProductOptionDialog.setDialogWidth(mProductOptionPanel.getContext().getResources().getDimensionPixelSize(R.dimen.product_show_detail));
-        }else {
+        } else {
             mProductOptionDialog.setDialogWidth(mProductOptionPanel.getContext().getResources().getDimensionPixelSize(R.dimen.product_show_option_color));
         }
         mProductOptionDialog.setLayoutDialog();

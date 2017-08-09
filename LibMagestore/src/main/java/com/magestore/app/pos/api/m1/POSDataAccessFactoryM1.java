@@ -16,7 +16,10 @@ import com.magestore.app.lib.resourcemodel.user.UserDataAccess;
 import com.magestore.app.pos.api.m1.catalog.POSCategoryDataAccessM1;
 import com.magestore.app.pos.api.m1.catalog.POSProductDataAccessM1;
 import com.magestore.app.pos.api.m1.config.POSConfigDataAccessM1;
+import com.magestore.app.pos.api.m1.customer.POSCustomerAddressDataAccessM1;
 import com.magestore.app.pos.api.m1.customer.POSCustomerDataAccessM1;
+import com.magestore.app.pos.api.m1.plugins.POSPluginsDataAccessM1;
+import com.magestore.app.pos.api.m1.sales.POSCartDataAccessM1;
 import com.magestore.app.pos.api.m1.sales.POSCheckoutDataAccessM1;
 import com.magestore.app.pos.api.m1.sales.POSOrderDataAccessM1;
 import com.magestore.app.pos.api.m1.user.POSUserDataAccessM1;
@@ -50,7 +53,7 @@ public class POSDataAccessFactoryM1 extends DataAccessFactory {
 
     @Override
     public CustomerAddressDataAccess generateCustomerAddressDataAccess() {
-        return null;
+        return new POSCustomerAddressDataAccessM1();
     }
 
     @Override
@@ -65,7 +68,7 @@ public class POSDataAccessFactoryM1 extends DataAccessFactory {
 
     @Override
     public CartDataAccess generateCartDataAccess() {
-        return null;
+        return new POSCartDataAccessM1();
     }
 
     @Override
@@ -80,7 +83,7 @@ public class POSDataAccessFactoryM1 extends DataAccessFactory {
 
     @Override
     public PluginsDataAccess generatePluginsDataAccess() {
-        return null;
+        return new POSPluginsDataAccessM1();
     }
 
     @Override
