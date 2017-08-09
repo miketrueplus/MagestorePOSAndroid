@@ -58,6 +58,9 @@ public class POSAPIM1 {
     public static final String REST_CONFIG_GET_LISTING = "api/rest/webpos/configurations?";
     public static final String REST_POS_ASSIGN = "api/rest/webpos/posassign?";
 
+    public static final String REST_SETTING_ACCOUNT = "api/rest/webpos/staff/changepassword?";
+    public static final String REST_SETTING_CHANGE_CURRENCY = "api/rest/webpos/currencies/change?";
+
     // API register shifts
     public static final String REST_REGISTER_SHIFTS_GET_LISTING_POS = "api/rest/webpos/poslist?";
 }

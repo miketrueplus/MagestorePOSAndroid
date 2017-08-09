@@ -2,6 +2,7 @@ package com.magestore.app.pos.api.m1.config;
 
 import android.util.Base64;
 
+import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 import com.magestore.app.lib.connection.Connection;
 import com.magestore.app.lib.connection.ConnectionException;
@@ -44,12 +45,18 @@ import com.magestore.app.pos.model.customer.PosCustomer;
 import com.magestore.app.pos.model.customer.PosCustomerAddress;
 import com.magestore.app.pos.model.directory.PosCurrency;
 import com.magestore.app.pos.model.directory.PosRegion;
+import com.magestore.app.pos.model.setting.PosChangeCurrency;
 import com.magestore.app.pos.model.staff.PosLocation;
 import com.magestore.app.pos.model.staff.PosStaff;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosConfigParseImplement;
+import com.magestore.app.pos.parse.gson2pos.Gson2PosPriceFormatParseImplement;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.EncryptUntil;
 import com.magestore.app.util.StringUtil;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.net.URL;
 import java.security.KeyFactory;
@@ -80,6 +87,11 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
     private static Currency currentCurrency;
     private String publicKey = "-----BEGIN PUBLIC KEY-----MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJ8EDi+a0lilUChsDba33FrcHLZZZIMxT7XhyEP3J3llQXNJkflG+5GzBvFTd+B1pvpc45WOktNReyPDZ/OMNukCAwEAAQ==-----END PUBLIC KEY-----";
     private String extensionName = "retailer-pos";
+
+    private class ConfigEntity {
+        Staff staff;
+        String currency;
+    }
 
     @Override
     public Config retrieveConfig() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
@@ -381,6 +393,59 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
 
     @Override
     public Staff changeInformationStaff(Staff staff) throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+        try {
+            // Khởi tạo connection và khởi tạo truy vấn
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSessionM1.REST_BASE_URL, POSDataAccessSessionM1.REST_USER_NAME, POSDataAccessSessionM1.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPIM1.REST_SETTING_ACCOUNT);
+
+            paramBuilder = statement.getParamBuilder()
+                    .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+            ConfigEntity configEntity = new ConfigEntity();
+            configEntity.staff = staff;
+
+            rp = statement.execute(configEntity);
+
+            String reponse = StringUtil.truncateJson(rp.readResult2String());
+
+            JSONObject jsonObject = new JSONObject(reponse);
+            String error = jsonObject.getString("error");
+            String message = jsonObject.getString("message");
+
+            if (error.equals("0")) {
+                staff.setResponeType(true);
+            } else {
+                staff.setResponeType(false);
+            }
+            staff.setErrorMessage(message);
+            return staff;
+        } catch (ConnectionException ex) {
+            throw ex;
+        } catch (IOException ex) {
+            throw ex;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
         return null;
     }
 
@@ -666,7 +731,60 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
 
     @Override
     public ChangeCurrency changeCurrency(String code) throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
-        return null;
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+        try {
+            // Khởi tạo connection và khởi tạo truy vấn
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSessionM1.REST_BASE_URL, POSDataAccessSessionM1.REST_USER_NAME, POSDataAccessSessionM1.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPIM1.REST_SETTING_CHANGE_CURRENCY);
+
+            paramBuilder = statement.getParamBuilder()
+                    .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+            ConfigEntity configEntity = new ConfigEntity();
+            configEntity.currency = code;
+
+            rp = statement.execute(configEntity);
+
+            String reponse = StringUtil.truncateJson(rp.readResult2String());
+
+            Gson2PosPriceFormatParseImplement implement = new Gson2PosPriceFormatParseImplement();
+            Gson gson = implement.createGson();
+            PosChangeCurrency priceFormat = gson.fromJson(reponse, PosChangeCurrency.class);
+            List<Currency> listCurrency = getCurrencies();
+            currentCurrency = priceFormat.getCurrency();
+            if (listCurrency != null && listCurrency.size() > 0) {
+                for (Currency currency : listCurrency) {
+                    if (currency.getCode().equals(code)) {
+                        currentCurrency = currency;
+                        priceFormat.setCurrency(currency);
+                    }
+                }
+            }
+            return priceFormat;
+        } catch (ConnectionException ex) {
+            throw ex;
+        } catch (IOException ex) {
+            throw ex;
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
     }
 
     @Override
