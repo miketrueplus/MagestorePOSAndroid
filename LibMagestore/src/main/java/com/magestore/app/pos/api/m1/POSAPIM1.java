@@ -27,6 +27,7 @@ public class POSAPIM1 {
 
     // API staff
     public static final String REST_LOGIN = "api/rest/webpos/staff/login";
+    public static final String REST_STAFF_GET_LISTING = "api/rest/webpos/staffs?";
 
     // API customer
     public static final String REST_CUSOMTER_GET_LISTING = "api/rest/webpos/customers/find?";

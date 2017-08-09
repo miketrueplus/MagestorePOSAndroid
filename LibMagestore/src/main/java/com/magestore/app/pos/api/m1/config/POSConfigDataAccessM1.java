@@ -49,6 +49,7 @@ import com.magestore.app.pos.model.setting.PosChangeCurrency;
 import com.magestore.app.pos.model.staff.PosLocation;
 import com.magestore.app.pos.model.staff.PosStaff;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosConfigParseImplement;
+import com.magestore.app.pos.parse.gson2pos.Gson2PosListStaffPermisson;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosPriceFormatParseImplement;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.EncryptUntil;
@@ -643,7 +644,47 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
 
     @Override
     public List<StaffPermisson> retrieveStaff() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
-        return null;
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+        try {
+            // Khởi tạo connection và khởi tạo truy vấn
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSessionM1.REST_BASE_URL, POSDataAccessSessionM1.REST_USER_NAME, POSDataAccessSessionM1.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPIM1.REST_STAFF_GET_LISTING);
+
+            paramBuilder = statement.getParamBuilder()
+                    .setPage(1)
+                    .setPageSize(100)
+                    .setSortOrderASC("display_name")
+                    .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+            rp = statement.execute();
+            rp.setParseImplement(getClassParseImplement());
+            rp.setParseModel(Gson2PosListStaffPermisson.class);
+            Gson2PosListStaffPermisson listStaff = (Gson2PosListStaffPermisson) rp.doParse();
+            List<StaffPermisson> list = (List<StaffPermisson>) (List<?>) (listStaff.items);
+            return list;
+        } catch (ConnectionException ex) {
+            throw ex;
+        } catch (IOException ex) {
+            throw ex;
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
     }
 
     @Override
