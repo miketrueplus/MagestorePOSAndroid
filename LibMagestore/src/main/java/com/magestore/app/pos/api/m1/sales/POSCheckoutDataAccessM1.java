@@ -154,12 +154,90 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
 
     @Override
     public Checkout saveQuote(SaveQuoteParam quoteParam) throws ParseException, InstantiationException, IllegalAccessException, IOException {
-        return null;
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+        try {
+            // Khởi tạo connection và khởi tạo truy vấn
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSessionM1.REST_BASE_URL, POSDataAccessSessionM1.REST_USER_NAME, POSDataAccessSessionM1.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPIM1.REST_CHECKOUT_SAVE_QUOTE);
+
+            // Xây dựng tham số
+            paramBuilder = statement.getParamBuilder()
+                    .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+            rp = statement.execute(quoteParam);
+            rp.setParseImplement(new Gson2PosCartParseModel());
+            rp.setParseModel(PosDataCheckout.class);
+            DataCheckout dataCheckout = (DataCheckout) rp.doParse();
+            Checkout checkout = dataCheckout.getCheckout();
+            return checkout;
+        } catch (ConnectionException ex) {
+            throw ex;
+        } catch (IOException ex) {
+            throw ex;
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
     }
 
     @Override
     public Checkout addCouponToQuote(QuoteAddCouponParam quoteAddCouponParam) throws ParseException, InstantiationException, IllegalAccessException, IOException {
-        return null;
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+        try {
+            // Khởi tạo connection và khởi tạo truy vấn
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSessionM1.REST_BASE_URL, POSDataAccessSessionM1.REST_USER_NAME, POSDataAccessSessionM1.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPIM1.REST_CHECKOUT_ADD_COUPON_TO_QUOTE);
+
+            // Xây dựng tham số
+            paramBuilder = statement.getParamBuilder()
+                    .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+            rp = statement.execute(quoteAddCouponParam);
+            rp.setParseImplement(new Gson2PosCartParseModel());
+            rp.setParseModel(PosDataCheckout.class);
+            DataCheckout dataCheckout = (DataCheckout) rp.doParse();
+            Checkout checkout = dataCheckout.getCheckout();
+            return checkout;
+        } catch (ConnectionException ex) {
+            throw ex;
+        } catch (IOException ex) {
+            throw ex;
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
     }
 
     @Override
@@ -186,11 +264,17 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
             checkoutEntity.till_id = ConfigUtil.getPointOfSales().getID();
             String customer_id = "";
             if (checkout.getCustomer() != null) {
-                if (StringUtil.isNullOrEmpty(checkout.getCustomerID()) || !checkCustomerID(checkout.getCustomer(), ConfigUtil.getCustomerGuest())) {
-                    customer_id = "";
+                if (StringUtil.isNullOrEmpty(checkout.getCustomerID())) {
+                    if (!checkCustomerID(checkout.getCustomer(), ConfigUtil.getCustomerGuest())) {
+                        customer_id = checkout.getCustomerID();
+                    } else {
+                        customer_id = "";
+                    }
                 } else {
                     customer_id = checkout.getCustomerID();
                 }
+            } else {
+                customer_id = "";
             }
             checkoutEntity.customer_id = customer_id;
 

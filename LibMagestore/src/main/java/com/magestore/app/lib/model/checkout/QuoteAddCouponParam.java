@@ -13,4 +13,8 @@ public interface QuoteAddCouponParam extends Model {
     void setQuoteId(String strQuoteId);
     String getCouponCode();
     void setCouponCode(String strCouponCode);
+    void setCurrencyId(String strCurrencyId);
+    void setCustomerId(String strCustomerId);
+    void setStoreId(String strStoreId);
+    void setTillId(String strTillId);
 }

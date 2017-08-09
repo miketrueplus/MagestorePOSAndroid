@@ -36,6 +36,8 @@ public class POSAPIM1 {
 
     // API checkout
     public static final String REST_CHECK_OUT_SAVE_CART = "api/rest/webpos/cart/save?";
+    public static final String REST_CHECKOUT_SAVE_QUOTE = "api/rest/webpos/checkout/saveQuoteData?";
+    public static final String REST_CHECKOUT_ADD_COUPON_TO_QUOTE = "api/rest/webpos/checkout/applyCoupon?";
     public static final String REST_CHECK_OUT_SAVE_SHIPPING = "api/rest/webpos/checkout/saveShippingMethod?";
     public static final String REST_CHECK_OUT_PLACE_ORDER = "api/rest/webpos/checkout/placeOrder?";
 

@@ -12,6 +12,10 @@ import com.magestore.app.pos.model.PosAbstractModel;
 public class PosQuoteAddCouponParam extends PosAbstractModel implements QuoteAddCouponParam {
     String quote_id;
     String coupon_code;
+    String currency_id;
+    String customer_id;
+    String store_id;
+    String till_id;
 
     @Override
     public String getQuoteId() {
@@ -31,5 +35,25 @@ public class PosQuoteAddCouponParam extends PosAbstractModel implements QuoteAdd
     @Override
     public void setCouponCode(String strCouponCode) {
         coupon_code = strCouponCode;
+    }
+
+    @Override
+    public void setCurrencyId(String strCurrencyId) {
+        currency_id = strCurrencyId;
+    }
+
+    @Override
+    public void setCustomerId(String strCustomerId) {
+        customer_id = strCustomerId;
+    }
+
+    @Override
+    public void setStoreId(String strStoreId) {
+        store_id = strStoreId;
+    }
+
+    @Override
+    public void setTillId(String strTillId) {
+        till_id = strTillId;
     }
 }

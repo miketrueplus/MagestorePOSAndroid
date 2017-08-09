@@ -85,17 +85,25 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
             quote.setQuoteId("");
         }
         if (checkout.getCustomer() != null) {
-            if (StringUtil.isNullOrEmpty(checkout.getCustomerID()) || !checkCustomerID(checkout.getCustomer(), ConfigUtil.getCustomerGuest())) {
-                quote.setCustomerId("");
+            if (StringUtil.isNullOrEmpty(checkout.getCustomerID())) {
+                if (!checkCustomerID(checkout.getCustomer(), ConfigUtil.getCustomerGuest())) {
+                    if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2)) {
+                        quote.setCustomerId("");
+                    } else {
+                        quote.setCustomerId(checkout.getCustomerID());
+                    }
+                } else {
+                    quote.setCustomerId("");
+                }
             } else {
                 quote.setCustomerId(checkout.getCustomerID());
             }
         } else {
             quote.setCustomerId("");
         }
-        // TODO: fix till_id = 1 với magento 2
         quote.setCurrencyId(ConfigUtil.getCurrentCurrency().getCode());
         quote.setStoreId(checkout.getStoreId());
+        // TODO: truyền till_id theo platform, fix till_id = 1 với magento 2
         if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2)) {
             quote.setTillId("1");
         } else {
@@ -120,10 +128,30 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
 
         quoteParam.setQuoteId(checkout.getQuoteId());
         quoteParam.setStoreId(checkout.getStoreId());
-        quoteParam.setCustomerId(checkout.getCustomerID());
-        // TODO: fix till_id = 1 với magento 2
+        if (checkout.getCustomer() != null) {
+            if (StringUtil.isNullOrEmpty(checkout.getCustomerID())) {
+                if (!checkCustomerID(checkout.getCustomer(), ConfigUtil.getCustomerGuest())) {
+                    if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2)) {
+                        quoteParam.setCustomerId("");
+                    } else {
+                        quoteParam.setCustomerId(checkout.getCustomerID());
+                    }
+                } else {
+                    quoteParam.setCustomerId("");
+                }
+            } else {
+                quoteParam.setCustomerId(checkout.getCustomerID());
+            }
+        } else {
+            quoteParam.setCustomerId("");
+        }
         quoteParam.setCurrencyId(ConfigUtil.getCurrentCurrency().getCode());
-        quoteParam.setTillId("1");
+        // TODO: truyền till_id theo platform, fix till_id = 1 với magento 2
+        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2)) {
+            quoteParam.setTillId("1");
+        } else {
+            quoteParam.setTillId(ConfigUtil.getPointOfSales().getID());
+        }
 
         return checkoutDataAccess.saveQuote(quoteParam);
     }
@@ -135,6 +163,30 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         CheckoutDataAccess checkoutDataAccess = factory.generateCheckoutDataAccess();
 
         quoteAddCouponParam.setQuoteId(checkout.getQuoteId());
+
+        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_1)) {
+            quoteAddCouponParam.setQuoteId(checkout.getQuoteId());
+            quoteAddCouponParam.setStoreId(checkout.getStoreId());
+            if (checkout.getCustomer() != null) {
+                if (StringUtil.isNullOrEmpty(checkout.getCustomerID())) {
+                    if (!checkCustomerID(checkout.getCustomer(), ConfigUtil.getCustomerGuest())) {
+                        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2)) {
+                            quoteAddCouponParam.setCustomerId("");
+                        } else {
+                            quoteAddCouponParam.setCustomerId(checkout.getCustomerID());
+                        }
+                    } else {
+                        quoteAddCouponParam.setCustomerId("");
+                    }
+                } else {
+                    quoteAddCouponParam.setCustomerId(checkout.getCustomerID());
+                }
+            } else {
+                quoteAddCouponParam.setCustomerId("");
+            }
+            quoteAddCouponParam.setCurrencyId(ConfigUtil.getCurrentCurrency().getCode());
+            quoteAddCouponParam.setTillId(ConfigUtil.getPointOfSales().getID());
+        }
 
         return checkoutDataAccess.addCouponToQuote(quoteAddCouponParam);
     }
@@ -196,13 +248,22 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
     @Override
     public Model placeOrder(String quoteId, Checkout checkout, List<CheckoutPayment> listCheckoutPayment) throws IOException, InstantiationException, ParseException, IllegalAccessException {
         PlaceOrderParams placeOrderParams = createPlaceOrderParams();
-        if(ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_1)){
+        // TODO: truyền till_id, store_id, curency_id, customer_id theo platform
+        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_1)) {
             placeOrderParams.setStoreId(checkout.getStoreId());
             placeOrderParams.setTillId(ConfigUtil.getPointOfSales().getID());
             placeOrderParams.setCurrencyId(ConfigUtil.getCurrentCurrency().getCode());
             if (checkout.getCustomer() != null) {
-                if (StringUtil.isNullOrEmpty(checkout.getCustomerID()) || !checkCustomerID(checkout.getCustomer(), ConfigUtil.getCustomerGuest())) {
-                    placeOrderParams.setCustomerId("");
+                if (StringUtil.isNullOrEmpty(checkout.getCustomerID())) {
+                    if (!checkCustomerID(checkout.getCustomer(), ConfigUtil.getCustomerGuest())) {
+                        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2)) {
+                            placeOrderParams.setCustomerId("");
+                        } else {
+                            placeOrderParams.setCustomerId(checkout.getCustomerID());
+                        }
+                    } else {
+                        placeOrderParams.setCustomerId("");
+                    }
                 } else {
                     placeOrderParams.setCustomerId(checkout.getCustomerID());
                 }
