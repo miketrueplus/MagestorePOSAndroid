@@ -258,6 +258,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
     public void doInputAddCouponToQuote(QuoteAddCouponParam quoteAddCouponParam) {
         Checkout checkout = getSelectedItem();
+        showButtonRemoveDiscount(true);
         ((CheckoutListPanel) mView).showLoading(true);
         // TODO: luôn save cart trước vì có trường hợp remove online xong save lại quote chưa có sản phẩm nên total = 0
         String store_id = DataUtil.getDataStringToPreferences(context, DataUtil.STORE_ID);
