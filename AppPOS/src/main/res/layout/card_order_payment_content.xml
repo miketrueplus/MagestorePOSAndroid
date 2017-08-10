@@ -36,7 +36,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderWebposPayment.getBaseDisplayAmount()))}"
+                android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderWebposPayment.getBasePaymentAmount()))}"
                 android:textColor="@color/text_color" />
         </RelativeLayout>
 

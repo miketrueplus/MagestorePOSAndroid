@@ -91,6 +91,7 @@ public class PosOrder extends PosAbstractModel implements Order {
     float discount_tax_compensation_invoiced;
     float discount_tax_compensation_refunded;
     String increment_id;
+    String invoice_id;
     String is_virtual;
     String order_currency_code;
     String protect_code;
@@ -440,6 +441,11 @@ public class PosOrder extends PosAbstractModel implements Order {
     @Override
     public PosOrderPayment getPayment() {
         return payment;
+    }
+
+    @Override
+    public String getInvoiceId() {
+        return invoice_id;
     }
 
     @Override

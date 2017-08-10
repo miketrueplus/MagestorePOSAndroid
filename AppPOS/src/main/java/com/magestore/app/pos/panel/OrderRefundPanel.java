@@ -254,6 +254,11 @@ public class OrderRefundPanel extends AbstractDetailPanel<Order> {
             refundParams.setEmailSent("0");
         }
 
+        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_1)) {
+            refundParams.setIncrementId(mOrder.getIncrementId());
+            refundParams.setInvoiceId(mOrder.getInvoiceId());
+        }
+
         float adjustRefund = adjust_refund.getValueFloat();
         float adjustFee = adjust_fee.getValueFloat();
         refundParams.setAdjustmentPositive(ConfigUtil.convertToBasePrice(adjustRefund));
@@ -295,7 +300,7 @@ public class OrderRefundPanel extends AbstractDetailPanel<Order> {
         if (!StringUtil.isNullOrEmpty(customer_id) && !customer_id.equals(ConfigUtil.getCustomerGuest().getID())) {
             checkCustomerGuest = true;
         }
-        ll_store_credit.setVisibility((mOrderHistoryListController.checkCanStoreCredit(order) && checkCustomerGuest)? VISIBLE : GONE);
+        ll_store_credit.setVisibility((mOrderHistoryListController.checkCanStoreCredit(order) && checkCustomerGuest) ? VISIBLE : GONE);
     }
 
     public void updateTotalStoreCredit(float total) {

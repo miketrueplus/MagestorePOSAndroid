@@ -108,6 +108,8 @@ public interface Order extends Model {
 
     PosOrderPayment getPayment();
 
+    String getInvoiceId();
+
     String getIncrementId();
 
     String getCustomerFirstname();

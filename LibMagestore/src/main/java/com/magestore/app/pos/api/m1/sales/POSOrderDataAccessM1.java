@@ -41,6 +41,8 @@ import com.magestore.app.pos.parse.gson2pos.Gson2PosListOrder;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.StringUtil;
 
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -360,22 +362,177 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
 
     @Override
     public Order createShipment(OrderShipmentParams shipmentParams) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
-        return null;
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+
+        try {
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSessionM1.REST_BASE_URL, POSDataAccessSessionM1.REST_USER_NAME, POSDataAccessSessionM1.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPIM1.REST_ORDER_SHIPMENT);
+
+            // Xây dựng tham số
+            paramBuilder = statement.getParamBuilder()
+                    .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+            OrderEntity orderEntity = new OrderEntity();
+            orderEntity.entity = shipmentParams;
+
+            rp = statement.execute(orderEntity);
+            rp.setParseImplement(new Gson2PosOrderParseModel());
+            rp.setParseModel(PosOrder.class);
+
+            return (Order) rp.doParse();
+        } catch (Exception e) {
+            throw new DataAccessException(e);
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
     }
 
     @Override
     public boolean orderRefundByCredit(OrderRefundCreditParams orderRefundCreditParams) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
-        return false;
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+
+        try {
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSessionM1.REST_BASE_URL, POSDataAccessSessionM1.REST_USER_NAME, POSDataAccessSessionM1.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPIM1.REST_ORDER_BY_CREDIT);
+
+            // Xây dựng tham số
+            paramBuilder = statement.getParamBuilder()
+                    .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+            rp = statement.execute(orderRefundCreditParams);
+            if (StringUtil.isNullOrEmpty(rp.readResult2String())) {
+                return true;
+            }
+            String respone = StringUtil.truncateJson(rp.readResult2String());
+            JSONObject json = new JSONObject(respone);
+            boolean success = json.getBoolean("success");
+            return success;
+        } catch (Exception e) {
+            throw new DataAccessException(e);
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
     }
 
     @Override
     public boolean orderRefundByGiftCard(OrderRefundGiftCard orderRefundGiftCard) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
-        return false;
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+
+        try {
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSessionM1.REST_BASE_URL, POSDataAccessSessionM1.REST_USER_NAME, POSDataAccessSessionM1.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPIM1.REST_ORDER_BY_GIFTCARD);
+
+            // Xây dựng tham số
+            paramBuilder = statement.getParamBuilder()
+                    .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+            rp = statement.execute(orderRefundGiftCard);
+            if (StringUtil.isNullOrEmpty(rp.readResult2String())) {
+                return true;
+            }
+            String respone = StringUtil.truncateJson(rp.readResult2String());
+            JSONObject json = new JSONObject(respone);
+            boolean success = json.getBoolean("success");
+            return success;
+        } catch (Exception e) {
+            throw new DataAccessException(e);
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
     }
 
     @Override
     public Order orderRefund(OrderRefundParams refundParams) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
-        return null;
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+
+        try {
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSessionM1.REST_BASE_URL, POSDataAccessSessionM1.REST_USER_NAME, POSDataAccessSessionM1.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPIM1.REST_ORDER_REFUND);
+
+            // Xây dựng tham số
+            paramBuilder = statement.getParamBuilder()
+                    .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+            OrderEntity orderEntity = new OrderEntity();
+            orderEntity.entity = refundParams;
+
+            rp = statement.execute(orderEntity);
+            rp.setParseImplement(new Gson2PosOrderParseModel());
+            rp.setParseModel(PosOrder.class);
+            return (Order) rp.doParse();
+        } catch (Exception e) {
+            throw new DataAccessException(e);
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
     }
 
     @Override

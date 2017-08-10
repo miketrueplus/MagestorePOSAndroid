@@ -23,6 +23,8 @@ public class PosOrderRefundParams extends PosAbstractModel implements OrderRefun
     List<OrderItemParams> items;
     float shippingAmount;
     String storeCurrencyCode;
+    String increment_id;
+    String invoice_id;
 
 
     @Override
@@ -88,5 +90,15 @@ public class PosOrderRefundParams extends PosAbstractModel implements OrderRefun
     @Override
     public void setComments(List<OrderCommentParams> comments) {
         this.comments = comments;
+    }
+
+    @Override
+    public void setIncrementId(String srtIncrementId) {
+        increment_id = srtIncrementId;;
+    }
+
+    @Override
+    public void setInvoiceId(String strInvoiceId) {
+        invoice_id = strInvoiceId;
     }
 }

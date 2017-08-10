@@ -36,4 +36,8 @@ public interface OrderRefundParams extends Model {
     List<OrderCommentParams> getComments();
 
     void setComments(List<OrderCommentParams> comments);
+
+    void setIncrementId(String srtIncrementId);
+
+    void setInvoiceId(String strInvoiceId);
 }
