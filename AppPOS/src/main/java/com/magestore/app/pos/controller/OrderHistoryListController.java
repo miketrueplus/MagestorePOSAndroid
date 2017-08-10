@@ -334,7 +334,11 @@ public class OrderHistoryListController extends AbstractListController<Order> {
             wraper.put("list_product", mOrderService.retrieveOrderItem(Ids));
             return true;
         } else if (actionType == RETRIEVE_PAYMENT_METHOD_TYPE) {
-            wraper.put("list_payment", mOrderService.retrievePaymentMethod());
+            if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2)) {
+                wraper.put("list_payment", mOrderService.retrievePaymentMethod());
+            } else {
+                wraper.put("list_payment", ConfigUtil.getListPayment());
+            }
             return true;
         } else if (actionType == ORDER_TAKE_PAYMENT_TYPE) {
             List<CheckoutPayment> listCheckoutPayment = (List<CheckoutPayment>) wraper.get("list_choose_payment");

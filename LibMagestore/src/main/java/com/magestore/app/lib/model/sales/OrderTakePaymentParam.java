@@ -13,6 +13,8 @@ import java.util.List;
  */
 
 public interface OrderTakePaymentParam extends Model {
+    void setOrderIncrementId(String strOrderIncrementId);
+    void setOrderId(String strOrderId);
     void setPayment(PosOrderTakePaymentParam.PlaceOrderPaymentParam placeOrderPaymentParam);
     PosOrderTakePaymentParam.PlaceOrderPaymentParam createPlaceOrderPaymentParam();
     List<PaymentMethodDataParam> createPaymentMethodData();

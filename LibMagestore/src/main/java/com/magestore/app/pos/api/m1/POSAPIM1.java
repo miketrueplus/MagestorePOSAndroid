@@ -48,6 +48,7 @@ public class POSAPIM1 {
     public static final String REST_ORDER_BY_CREDIT = "api/rest/webpos/integration/refundByCredit?";
     public static final String REST_ORDER_BY_GIFTCARD = "api/rest/webpos/integration/refundGiftcardBalance?";
     public static final String REST_ORDER_REFUND = "api/rest/webpos/creditmemo/create?";
+    public static final String REST_ORDER_TAKE_PAYMENT = "api/rest/webpos/order/create?";
 
     // API Cart
     public static final String REST_CART_DELETE_ITEM = "api/rest/webpos/cart/removeItem?";

@@ -15,7 +15,18 @@ import java.util.List;
 
 public class PosOrderTakePaymentParam extends PosAbstractModel implements OrderTakePaymentParam {
     String order_increment_id;
+    String order_id;
     PlaceOrderPaymentParam payment;
+
+    @Override
+    public void setOrderIncrementId(String strOrderIncrementId) {
+        order_increment_id = strOrderIncrementId;
+    }
+
+    @Override
+    public void setOrderId(String strOrderId) {
+        order_id = strOrderId;
+    }
 
     @Override
     public void setPayment(PlaceOrderPaymentParam placeOrderPaymentParam) {

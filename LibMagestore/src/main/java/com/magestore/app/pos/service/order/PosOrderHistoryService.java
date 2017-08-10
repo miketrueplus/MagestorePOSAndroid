@@ -278,6 +278,9 @@ public class PosOrderHistoryService extends AbstractService implements OrderHist
         }
         orderTakePaymentParam.setMethodData(listPaymentMethodParam);
         orderTakePaymentParam.setPayment(placeOrderPaymentParam);
+        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_1)) {
+            orderTakePaymentParam.setOrderIncrementId(order.getIncrementId());
+        }
 
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         OrderDataAccess orderDataAccess = factory.generateOrderDataAccess();

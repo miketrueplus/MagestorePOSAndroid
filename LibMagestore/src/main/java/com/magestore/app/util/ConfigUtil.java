@@ -2,6 +2,7 @@ package com.magestore.app.util;
 
 import android.text.format.Time;
 
+import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.lib.model.config.ActiveKey;
 import com.magestore.app.lib.model.config.ConfigOptionSwatch;
 import com.magestore.app.lib.model.config.ConfigPriceFormat;
@@ -58,6 +59,7 @@ public class ConfigUtil {
     private static boolean mCheckFirstOpenSession;
     private static boolean mEnableDeleteOrder;
     private static List<ConfigTaxClass> mConfigTaxClass;
+    private static List<CheckoutPayment> mListPayment;
     private static String mTypePrint;
     private static int mStarPrintArea;
     private static PointOfSales mPointOfSales;
@@ -765,6 +767,14 @@ public class ConfigUtil {
 
     public static String getBaseCurrencyCode() {
         return mBaseCurrencyCode;
+    }
+
+    public static void setListPayment(List<CheckoutPayment> mListPayment) {
+        ConfigUtil.mListPayment = mListPayment;
+    }
+
+    public static List<CheckoutPayment> getListPayment() {
+        return mListPayment;
     }
 
     public static void setConfigTaxClass(List<ConfigTaxClass> mConfigTaxClass) {

@@ -7,6 +7,7 @@ import com.magestore.app.lib.connection.ConnectionFactory;
 import com.magestore.app.lib.connection.ParamBuilder;
 import com.magestore.app.lib.connection.ResultReading;
 import com.magestore.app.lib.connection.Statement;
+import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.lib.model.config.ConfigTaxClass;
 import com.magestore.app.lib.model.registershift.PointOfSales;
 import com.magestore.app.lib.model.store.Store;
@@ -16,6 +17,7 @@ import com.magestore.app.lib.resourcemodel.user.UserDataAccess;
 import com.magestore.app.pos.api.m1.POSAPIM1;
 import com.magestore.app.pos.api.m1.POSAbstractDataAccessM1;
 import com.magestore.app.pos.api.m1.POSDataAccessSessionM1;
+import com.magestore.app.pos.model.checkout.PosCheckoutPayment;
 import com.magestore.app.pos.model.config.PosConfigTaxClass;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListPointOfSales;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosStoreParseImplement;
@@ -39,6 +41,7 @@ public class POSUserDataAccessM1 extends POSAbstractDataAccessM1 implements User
 
     private class POSListTaxClassDataAccess {
         List<PosConfigTaxClass> tax_class;
+        List<PosCheckoutPayment> payment;
     }
 
     private class Pos {
@@ -71,6 +74,10 @@ public class POSUserDataAccessM1 extends POSAbstractDataAccessM1 implements User
             if (taxClass.tax_class != null && taxClass.tax_class.size() > 0) {
                 List<ConfigTaxClass> listTax = (List<ConfigTaxClass>) (List<?>) taxClass.tax_class;
                 ConfigUtil.setConfigTaxClass(listTax);
+            }
+            if (taxClass.payment != null && taxClass.payment.size() > 0) {
+                List<CheckoutPayment> listPayment = (List<CheckoutPayment>) (List<?>) taxClass.payment;
+                ConfigUtil.setListPayment(listPayment);
             }
             if (!StringUtil.isNullOrEmpty(session_id)) {
                 return session_id;
