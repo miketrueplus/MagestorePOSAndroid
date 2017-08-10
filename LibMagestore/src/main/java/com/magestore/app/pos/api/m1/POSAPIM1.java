@@ -39,6 +39,11 @@ public class POSAPIM1 {
 
     // API order
     public static final String REST_ORDER_GET_LISTING = "api/rest/webpos/order/find?";
+    public static final String REST_ORDER_CANCEL = "api/rest/webpos/order/cancel?";
+    public static final String REST_ORDER_EMAIL = "api/rest/webpos/order/email?";
+    public static final String REST_ORDER_COMMENTS = "api/rest/webpos/order/comments?";
+    public static final String REST_ORDER_INVOICE_UPDATE_QTY = "api/rest/webpos/invoices/updateqty?";
+    public static final String REST_ORDER_INVOICE = "api/rest/webpos/invoices/create?";
 
     // API Cart
     public static final String REST_CART_DELETE_ITEM = "api/rest/webpos/cart/removeItem?";

@@ -12,6 +12,7 @@ import com.magestore.app.lib.panel.AbstractDetailPanel;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.databinding.PanelOrderSendEmailBinding;
 import com.magestore.app.util.DialogUtil;
+import com.magestore.app.util.StringUtil;
 
 /**
  * Created by Johan on 1/20/17.
@@ -64,12 +65,16 @@ public class OrderSendEmailPanel extends AbstractDetailPanel<Order> {
         edt_email.setError(getContext().getString(R.string.err_field_required));
     }
 
-    public void showAlertRespone(boolean statusRespone) {
+    public void showAlertRespone(boolean statusRespone, String respone) {
         String message = "";
-        if (statusRespone) {
-            message = getContext().getString(R.string.order_send_email_success);
+        if (!StringUtil.isNullOrEmpty(respone)) {
+            message = respone;
         } else {
-            message = getContext().getString(R.string.err_send_email);
+            if (statusRespone) {
+                message = getContext().getString(R.string.order_send_email_success);
+            } else {
+                message = getContext().getString(R.string.err_send_email);
+            }
         }
 
         // Tạo dialog và hiển thị

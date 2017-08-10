@@ -232,7 +232,7 @@ public class ConfigUtil {
         return s_amount;
     }
 
-    public static String formatDecimalQuantity(float number){
+    public static String formatDecimalQuantity(float number) {
         String price_format = getPriceFormat().format(number);
         String decima_symbol = ConfigUtil.getConfigPriceFormat().getDecimalSymbol();
         String price_r = price_format.replaceAll("\\.", "");
@@ -508,7 +508,12 @@ public class ConfigUtil {
         if (date == null) {
             return "";
         }
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat format;
+        if (date.contains("-")) {
+            format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        } else {
+            format = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
+        }
         format.setTimeZone(TimeZone.getTimeZone("GMT"));
         Date dateFormat = null;
         try {
@@ -532,7 +537,12 @@ public class ConfigUtil {
         if (date == null) {
             return "";
         }
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat format;
+        if (date.contains("-")) {
+            format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        } else {
+            format = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
+        }
         format.setTimeZone(TimeZone.getTimeZone("GMT"));
         Date dateFormat = null;
         try {
@@ -556,7 +566,12 @@ public class ConfigUtil {
         if (date == null) {
             return "";
         }
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat format;
+        if (date.contains("-")) {
+            format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        } else {
+            format = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
+        }
         format.setTimeZone(TimeZone.getTimeZone("GMT"));
         Date dateFormat = null;
         try {
@@ -922,8 +937,8 @@ public class ConfigUtil {
     }
 
     public static String getValueColorSwatch(String parent_code, String value_id) {
-        for (ConfigProductOption productOption :mColorSwatch) {
-            if(parent_code.equals(productOption.getAttributeCode())){
+        for (ConfigProductOption productOption : mColorSwatch) {
+            if (parent_code.equals(productOption.getAttributeCode())) {
                 ConfigOptionSwatch optionSwatch = productOption.getColorSwatch().get(value_id);
                 return optionSwatch.getValue();
             }

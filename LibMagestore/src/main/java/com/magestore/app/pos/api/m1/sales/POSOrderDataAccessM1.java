@@ -14,6 +14,7 @@ import com.magestore.app.lib.connection.ConnectionFactory;
 import com.magestore.app.lib.connection.ParamBuilder;
 import com.magestore.app.lib.connection.ResultReading;
 import com.magestore.app.lib.connection.Statement;
+import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.lib.model.sales.Order;
@@ -57,10 +58,12 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
         public Gson createGson() {
             GsonBuilder builder = new GsonBuilder();
             builder.enableComplexMapKeySerialization();
-            builder.registerTypeAdapter(new TypeToken<PosOrder>(){}
+            builder.registerTypeAdapter(new TypeToken<PosOrder>() {
+            }
                     .getType(), new OrderParamsConverter());
-            builder.registerTypeAdapter(new TypeToken<PosCartItem.OptionsValue>() {}
-                .getType(), new ReOrderParamsConverter());
+            builder.registerTypeAdapter(new TypeToken<PosCartItem.OptionsValue>() {
+            }
+                    .getType(), new ReOrderParamsConverter());
             return builder.create();
         }
 
@@ -99,13 +102,40 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
             @Override
             public PosOrder deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
                 JsonObject obj = json.getAsJsonObject();
-                obj.remove(JSON_EXTENSION_PAYENT);
-                JsonObject obj_billing = obj.getAsJsonObject(JSON_EXTENSION_BILLING_ADDRESS);
-                obj_billing.remove(JSON_EXTENSION_STREET);
+                if (obj.has(JSON_EXTENSION_PAYENT)) {
+                    obj.remove(JSON_EXTENSION_PAYENT);
+                }
+                if (obj.has(JSON_EXTENSION_BILLING_ADDRESS)) {
+                    JsonObject obj_billing = obj.getAsJsonObject(JSON_EXTENSION_BILLING_ADDRESS);
+                    if (obj_billing.has(JSON_EXTENSION_STREET)) {
+                        obj_billing.remove(JSON_EXTENSION_STREET);
+                    }
+                }
                 PosOrder order = new Gson().fromJson(obj, PosOrder.class);
                 return order;
             }
         }
+    }
+
+    private class OrderEntity {
+        String email = null;
+        String id = null;
+
+        OrderStatus statusHistory;
+
+        Model entity;
+
+        OrderCommentParams comment;
+    }
+
+    private class StatusEntity {
+        OrderEntity comment;
+        String id = null;
+    }
+
+    private class SendEmailEntity {
+        String error;
+        String message;
     }
 
     @Override
@@ -233,12 +263,99 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
 
     @Override
     public String sendEmail(String email, String orderId) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
-        return null;
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+
+        try {
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSessionM1.REST_BASE_URL, POSDataAccessSessionM1.REST_USER_NAME, POSDataAccessSessionM1.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPIM1.REST_ORDER_EMAIL);
+
+            // Xây dựng tham số
+            paramBuilder = statement.getParamBuilder()
+                    .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+            OrderEntity orderEntity = new OrderEntity();
+            orderEntity.email = email;
+            orderEntity.id = orderId;
+
+            rp = statement.execute(orderEntity);
+            SendEmailEntity sendEmail = new Gson().fromJson(rp.readResult2String(), SendEmailEntity.class);
+            String message = "";
+            if (sendEmail != null) {
+                if (sendEmail.error.equals("false")) {
+                    message = sendEmail.message;
+                }
+            }
+
+            return message;
+        } catch (Exception e) {
+            throw new DataAccessException(e);
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
     }
 
     @Override
     public Order insertOrderStatus(OrderStatus orderStatus, String orderId) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
-        return null;
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+
+        try {
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSessionM1.REST_BASE_URL, POSDataAccessSessionM1.REST_USER_NAME, POSDataAccessSessionM1.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPIM1.REST_ORDER_COMMENTS);
+
+            // Xây dựng tham số
+            paramBuilder = statement.getParamBuilder()
+                    .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+            OrderEntity orderEntity = new OrderEntity();
+            orderEntity.statusHistory = orderStatus;
+
+            StatusEntity statusEntity = new StatusEntity();
+            statusEntity.id = orderId;
+            statusEntity.comment = orderEntity;
+
+            rp = statement.execute(statusEntity);
+            rp.setParseImplement(new Gson2PosOrderParseModel());
+            rp.setParseModel(PosOrder.class);
+            return (Order) rp.doParse();
+        } catch (Exception e) {
+            throw new DataAccessException(e);
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
     }
 
     @Override
@@ -263,17 +380,132 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
 
     @Override
     public Order orderInvoiceUpdateQty(OrderUpdateQtyParam orderUpdateQtyParam) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
-        return null;
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+
+        try {
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSessionM1.REST_BASE_URL, POSDataAccessSessionM1.REST_USER_NAME, POSDataAccessSessionM1.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPIM1.REST_ORDER_INVOICE_UPDATE_QTY);
+
+            // Xây dựng tham số
+            paramBuilder = statement.getParamBuilder()
+                    .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+            rp = statement.execute(orderUpdateQtyParam);
+            String json = StringUtil.truncateJson(rp.readResult2String());
+            Gson2PosOrderParseModel implement = new Gson2PosOrderParseModel();
+            Gson gson = implement.createGson();
+            Order order = gson.fromJson(json, PosOrder.class);
+            return order;
+        } catch (Exception e) {
+            throw new DataAccessException(e);
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
     }
 
     @Override
     public Order orderInvoice(OrderInvoiceParams invoiceParams) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
-        return null;
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+
+        try {
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSessionM1.REST_BASE_URL, POSDataAccessSessionM1.REST_USER_NAME, POSDataAccessSessionM1.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPIM1.REST_ORDER_INVOICE);
+
+            // Xây dựng tham số
+            paramBuilder = statement.getParamBuilder()
+                    .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+            OrderEntity orderEntity = new OrderEntity();
+            orderEntity.entity = invoiceParams;
+
+            rp = statement.execute(orderEntity);
+            rp.setParseImplement(new Gson2PosOrderParseModel());
+            rp.setParseModel(PosOrder.class);
+            return (Order) rp.doParse();
+        } catch (Exception e) {
+            throw new DataAccessException(e);
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
     }
 
     @Override
     public Order orderCancel(OrderCommentParams cancelParams, String orderID) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
-        return null;
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+
+        try {
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSessionM1.REST_BASE_URL, POSDataAccessSessionM1.REST_USER_NAME, POSDataAccessSessionM1.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPIM1.REST_ORDER_CANCEL);
+
+            // Xây dựng tham số
+            paramBuilder = statement.getParamBuilder()
+                    .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+
+            OrderEntity orderEntity = new OrderEntity();
+            orderEntity.comment = cancelParams;
+            orderEntity.id = orderID;
+
+            rp = statement.execute(orderEntity);
+            rp.setParseImplement(new Gson2PosOrderParseModel());
+            rp.setParseModel(PosOrder.class);
+            return (Order) rp.doParse();
+        } catch (Exception e) {
+            throw new DataAccessException(e);
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
     }
 
     @Override
@@ -481,7 +713,7 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
         return false;
     }
 
-    private List<Order> convertData(List<Order> list){
+    private List<Order> convertData(List<Order> list) {
         for (Order order : list) {
             if (order.getItemsInfoBuy() != null) {
                 List<OrderCartItem> listItem = order.getItemsInfoBuy().getListOrderCartItems();
@@ -490,7 +722,7 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
                         List<PosCartItem.OptionsValue> options = orderCartItem.getOptions();
                         if (options != null && options.size() > 0) {
                             int noItems = options.size();
-                            for (int i = 0; i < noItems ; i++) {
+                            for (int i = 0; i < noItems; i++) {
                                 PosCartItem.OptionsValue optionsValue = options.get(i);
                                 if (optionsValue.values != null && optionsValue.values.size() > 0) {
                                     for (String value : optionsValue.values) {
@@ -504,7 +736,7 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
                                 }
                             }
 
-                            for (int i = 0; i < options.size() ; i++) {
+                            for (int i = 0; i < options.size(); i++) {
                                 PosCartItem.OptionsValue optionsValueR = options.get(i);
                                 if (optionsValueR.values != null && optionsValueR.values.size() > 0) {
                                     options.remove(optionsValueR);
@@ -518,7 +750,7 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
                         List<PosCartItem.OptionsValue> superAttribute = orderCartItem.getSuperAttribute();
                         if (superAttribute != null && superAttribute.size() > 0) {
                             int noItems = superAttribute.size();
-                            for (int i = 0; i < noItems ; i++) {
+                            for (int i = 0; i < noItems; i++) {
                                 PosCartItem.OptionsValue optionsValue = superAttribute.get(i);
                                 if (optionsValue.values != null && optionsValue.values.size() > 0) {
                                     for (String value : optionsValue.values) {
@@ -532,7 +764,7 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
                                 }
                             }
 
-                            for (int i = 0; i < superAttribute.size() ; i++) {
+                            for (int i = 0; i < superAttribute.size(); i++) {
                                 PosCartItem.OptionsValue optionsValueR = superAttribute.get(i);
                                 if (optionsValueR.values != null && optionsValueR.values.size() > 0) {
                                     superAttribute.remove(optionsValueR);
@@ -546,7 +778,7 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
                         List<PosCartItem.OptionsValue> bundleOption = orderCartItem.getBundleOption();
                         if (bundleOption != null && bundleOption.size() > 0) {
                             int noItems = bundleOption.size();
-                            for (int i = 0; i < noItems ; i++) {
+                            for (int i = 0; i < noItems; i++) {
                                 PosCartItem.OptionsValue optionsValue = bundleOption.get(i);
                                 if (optionsValue.values != null && optionsValue.values.size() > 0) {
                                     for (String value : optionsValue.values) {
@@ -560,7 +792,7 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
                                 }
                             }
 
-                            for (int i = 0; i < bundleOption.size() ; i++) {
+                            for (int i = 0; i < bundleOption.size(); i++) {
                                 PosCartItem.OptionsValue optionsValueR = bundleOption.get(i);
                                 if (optionsValueR.values != null && optionsValueR.values.size() > 0) {
                                     bundleOption.remove(optionsValueR);
@@ -574,7 +806,7 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
                         List<PosCartItem.OptionsValue> bundleOptionQty = orderCartItem.getBundleOptionQty();
                         if (bundleOptionQty != null && bundleOptionQty.size() > 0) {
                             int noItems = bundleOptionQty.size();
-                            for (int i = 0; i < noItems ; i++) {
+                            for (int i = 0; i < noItems; i++) {
                                 PosCartItem.OptionsValue optionsValue = bundleOptionQty.get(i);
                                 if (optionsValue.values != null && optionsValue.values.size() > 0) {
                                     for (String value : optionsValue.values) {
@@ -588,7 +820,7 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
                                 }
                             }
 
-                            for (int i = 0; i < bundleOptionQty.size() ; i++) {
+                            for (int i = 0; i < bundleOptionQty.size(); i++) {
                                 PosCartItem.OptionsValue optionsValueR = bundleOptionQty.get(i);
                                 if (optionsValueR.values != null && optionsValueR.values.size() > 0) {
                                     bundleOptionQty.remove(optionsValueR);
