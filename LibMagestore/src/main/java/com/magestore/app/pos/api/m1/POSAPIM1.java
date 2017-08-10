@@ -52,6 +52,7 @@ public class POSAPIM1 {
     public static final String REST_ORDER_BY_GIFTCARD = "api/rest/webpos/integration/refundGiftcardBalance?";
     public static final String REST_ORDER_REFUND = "api/rest/webpos/creditmemo/create?";
     public static final String REST_ORDER_TAKE_PAYMENT = "api/rest/webpos/order/create?";
+    public static final String PARAM_ORDER_ID = "orderID";
 
     // API Cart
     public static final String REST_CART_DELETE_ITEM = "api/rest/webpos/cart/removeItem?";
@@ -64,6 +65,9 @@ public class POSAPIM1 {
     public static final String REST_CHECK_OUT_PLACE_ORDER = "api/rest/webpos/checkout/placeOrder?";
     public static final String REST_CHECK_OUT_SEND_EMAIL = "api/rest/webpos/checkout/sendEmail?";
 
+    // API register shifts
+    public static final String REST_REGISTER_SHIFTS_GET_LISTING_POS = "api/rest/webpos/poslist?";
+
     // API plugins
     public static final String REST_PLUGIN_APPLY_REWARD_POINT = "api/rest/webpos/integration/spendPoint?";
     public static final String REST_PLUGIN_ADD_GIFTCARD = "api/rest/webpos/integration/applyGiftcard?";
@@ -73,9 +77,20 @@ public class POSAPIM1 {
     public static final String REST_CONFIG_GET_LISTING = "api/rest/webpos/configurations?";
     public static final String REST_POS_ASSIGN = "api/rest/webpos/posassign?";
 
+    // API Account
     public static final String REST_SETTING_ACCOUNT = "api/rest/webpos/staff/changepassword?";
     public static final String REST_SETTING_CHANGE_CURRENCY = "api/rest/webpos/currencies/change?";
 
-    // API register shifts
-    public static final String REST_REGISTER_SHIFTS_GET_LISTING_POS = "api/rest/webpos/poslist?";
+    // API approved payment paypal
+    public static final String REST_APPROVED_PAYMENT_PAYPAL = "api/rest/webpos/paypal/finishPayment?";
+    public static final String REST_INVOICE_PAYMENT_AUTHORIZE = "api/rest/webpos/invoices/${orderID}/create?";
+
+    // API get access token paypal here
+    public static final String REST_GET_ACCESS_TOKEN_PAYPAL_HERE = "api/rest/webpos/paypal/getAccessToken?";
+
+    // API approved payment stripe
+    public static final String REST_APPROVED_PAYMENT_STRIPE = "rapi/rest/webpos/stripe/finishPayment?";
+
+    // API approved authorizenet
+    public static final String REST_APPROVED_PAYMENT_AUTHORIZE = "api/rest/webpos/authorizenet/finishPayment?";
 }

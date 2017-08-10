@@ -428,37 +428,294 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
 
     @Override
     public boolean approvedAuthorizenet(String url, String params) throws ParseException, InstantiationException, IllegalAccessException, IOException {
-        return false;
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        try {
+            // Khởi tạo connection
+            url = url + "?";
+            connection = ConnectionFactory.generateConnection(getContext(), url, "", "");
+//            connection = MagestoreConnection.getConnection(domain, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
+            statement = connection.createStatement();
+            Object o = new Object();
+            o = params;
+            rp = statement.execute(o);
+            String respone = rp.readResult2String();
+            if(respone.contains("Transaction ID")){
+                return true;
+            }
+            return false;
+        } catch (Exception ex) {
+            throw new DataAccessException(ex);
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
     }
 
     @Override
     public boolean invoicesPaymentAuthozire(String orderID) throws ParseException, InstantiationException, IllegalAccessException, IOException {
-        return false;
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+
+        try {
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSessionM1.REST_BASE_URL, POSDataAccessSessionM1.REST_USER_NAME, POSDataAccessSessionM1.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPIM1.REST_INVOICE_PAYMENT_AUTHORIZE);
+            statement.setParam(POSAPIM1.PARAM_ORDER_ID, orderID);
+
+            // Xây dựng tham số
+            paramBuilder = statement.getParamBuilder()
+                    .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+            rp = statement.execute();
+            rp.setParseImplement(getClassParseImplement());
+            rp.setParseModel(PosOrder.class);
+            Order order = (Order) rp.doParse();
+            return (order != null) ? true : false;
+        } catch (Exception e) {
+            return false;
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
     }
 
     @Override
     public boolean cancelPaymentAuthozire(String orderID) throws ParseException, InstantiationException, IllegalAccessException, IOException {
-        return false;
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+
+        try {
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSessionM1.REST_BASE_URL, POSDataAccessSessionM1.REST_USER_NAME, POSDataAccessSessionM1.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPIM1.REST_ORDER_CANCEL);
+            statement.setParam(POSAPIM1.PARAM_ORDER_ID, orderID);
+
+            // Xây dựng tham số
+            paramBuilder = statement.getParamBuilder()
+                    .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+            rp = statement.execute();
+            rp.setParseImplement(getClassParseImplement());
+            rp.setParseModel(PosOrder.class);
+            Order order = (Order) rp.doParse();
+            return (order != null) ? true : false;
+        } catch (Exception e) {
+            return false;
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
     }
 
     @Override
     public String approvedPaymentPayPal(String payment_id) throws ParseException, InstantiationException, IllegalAccessException, IOException {
-        return null;
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+
+        try {
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSessionM1.REST_BASE_URL, POSDataAccessSessionM1.REST_USER_NAME, POSDataAccessSessionM1.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPIM1.REST_APPROVED_PAYMENT_PAYPAL);
+
+            // Xây dựng tham số
+            paramBuilder = statement.getParamBuilder()
+                    .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+            CheckoutEntity checkoutEntity = new CheckoutEntity();
+            checkoutEntity.paymentId = payment_id;
+            rp = statement.execute(checkoutEntity);
+
+            String transaction_id = rp.readResult2String().trim().replace("\"", "");
+
+            return transaction_id != null ? transaction_id : "";
+        } catch (Exception e) {
+            throw new DataAccessException(e);
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
     }
 
     @Override
     public String approvedAuthorizeIntergration(String quote_id, String token, float amount) throws ParseException, InstantiationException, IllegalAccessException, IOException {
-        return null;
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+
+        try {
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSessionM1.REST_BASE_URL, POSDataAccessSessionM1.REST_USER_NAME, POSDataAccessSessionM1.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPIM1.REST_APPROVED_PAYMENT_AUTHORIZE);
+
+            // Xây dựng tham số
+            paramBuilder = statement.getParamBuilder()
+                    .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+            CheckoutEntity checkoutEntity = new CheckoutEntity();
+            checkoutEntity.quote_id = quote_id;
+            checkoutEntity.token = token;
+            checkoutEntity.amount = amount;
+            rp = statement.execute(checkoutEntity);
+
+            String transaction_id = rp.readResult2String().trim().replace("\"", "");
+
+            return transaction_id != null ? transaction_id : "";
+        } catch (Exception e) {
+            throw new DataAccessException(e);
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
     }
 
     @Override
     public String approvedStripe(String token, float amount) throws ParseException, InstantiationException, IllegalAccessException, IOException {
-        return null;
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+
+        try {
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSessionM1.REST_BASE_URL, POSDataAccessSessionM1.REST_USER_NAME, POSDataAccessSessionM1.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPIM1.REST_APPROVED_PAYMENT_STRIPE);
+
+            // Xây dựng tham số
+            paramBuilder = statement.getParamBuilder()
+                    .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+            CheckoutEntity checkoutEntity = new CheckoutEntity();
+            checkoutEntity.token = token;
+            checkoutEntity.amount = amount;
+            rp = statement.execute(checkoutEntity);
+
+            String transaction_id = rp.readResult2String().trim().replace("\"", "");
+
+            return transaction_id != null ? transaction_id : "";
+        } catch (Exception e) {
+            throw new DataAccessException(e);
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
     }
 
     @Override
     public String getAccessTokenPaypalHere() throws ParseException, InstantiationException, IllegalAccessException, IOException {
-        return null;
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+
+        try {
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSessionM1.REST_BASE_URL, POSDataAccessSessionM1.REST_USER_NAME, POSDataAccessSessionM1.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPIM1.REST_GET_ACCESS_TOKEN_PAYPAL_HERE);
+
+            // Xây dựng tham số
+            paramBuilder = statement.getParamBuilder()
+                    .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+            rp = statement.execute();
+            String transaction_id = rp.readResult2String().trim().replace("\"", "");
+
+            return transaction_id != null ? transaction_id : "";
+        } catch (Exception e) {
+            throw new DataAccessException(e);
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
     }
 
     private boolean checkCustomerID(Customer customer, Customer guest_customer) {
