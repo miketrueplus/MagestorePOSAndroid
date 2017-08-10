@@ -68,6 +68,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.zip.CRC32;
@@ -122,9 +123,10 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
 
             // thực hiện truy vấn
             rp = statement.execute();
-            rp.setParseImplement(Gson2PosConfigParseImplement.class);
-            rp.setParseModel(PosConfig.class);
-            mConfig = (Config) rp.doParse();
+            String json = StringUtil.truncateJson(rp.readResult2String());
+            Gson2PosConfigParseImplement implement = new Gson2PosConfigParseImplement();
+            Gson gson = implement.createGson();
+            mConfig = gson.fromJson(json, PosConfig.class);
             return mConfig;
         } catch (ConnectionException ex) {
 //            statement.getCacheConnection().deleteCache();
@@ -471,32 +473,48 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
             String country_name = country.get("country_name").toString();
             configCountry.setCountryID(country_id);
             configCountry.setCountryName(country_name);
-            List<LinkedTreeMap> regionList = (ArrayList) country.get("regions");
-            if (regionList != null) {
+            Map<String, ConfigRegion> mapRegion =  getRegion(country_id);
+            if (mapRegion != null) {
+                configCountry.setRegions(mapRegion);
+            }
+            listConfigCountry.put(country_id, configCountry);
+        }
+        return listConfigCountry;
+    }
+
+    private Map<String, Map<String, ConfigRegion>> getRegionGroup() {
+        // nếu chưa load config, cần khởi tạo chế độ default
+        if (mConfig == null) mConfig = new PosConfigDefault();
+        Map<String, LinkedTreeMap> regionGroup = (Map) mConfig.getValue("regionJson");
+        Map<String, Map<String, ConfigRegion>> mapCountry = new HashMap<>();
+
+        for (String key : regionGroup.keySet()) {
+            if (!key.equals("config")) {
                 Map<String, ConfigRegion> listConfigRegion = new LinkedTreeMap<>();
-                Collections.sort(regionList, new Comparator<LinkedTreeMap>() {
-                    @Override
-                    public int compare(LinkedTreeMap linkedTreeMap, LinkedTreeMap linkedTreeMap1) {
-                        String name = linkedTreeMap.get("name").toString();
-                        String name1 = linkedTreeMap1.get("name").toString();
-                        return name.compareToIgnoreCase(name1);
-                    }
-                });
-                for (LinkedTreeMap region : regionList) {
+                Map<String, LinkedTreeMap> region = (Map<String, LinkedTreeMap>) regionGroup.get(key);
+                for (String id : region.keySet()) {
                     ConfigRegion configRegion = new PosConfigRegion();
-                    String code = region.get("code").toString();
-                    String name = region.get("name").toString();
-                    String id = region.get("id").toString();
+                    LinkedTreeMap item = (LinkedTreeMap) region.get(id);
+                    String code = (String) item.get("code");
+                    String name = (String) item.get("name");
                     configRegion.setID(id);
                     configRegion.setCode(code);
                     configRegion.setName(name);
                     listConfigRegion.put(id, configRegion);
                 }
-                configCountry.setRegions(listConfigRegion);
+                mapCountry.put(key, listConfigRegion);
             }
-            listConfigCountry.put(country_id, configCountry);
         }
-        return listConfigCountry;
+        return mapCountry;
+    }
+
+    private static Map<String, Map<String, ConfigRegion>> mapRegionGroup;
+
+    private Map<String, ConfigRegion> getRegion(String country_id) {
+        if (mapRegionGroup == null) {
+            mapRegionGroup = getRegionGroup();
+        }
+        return mapRegionGroup.get(country_id);
     }
 
     @Override

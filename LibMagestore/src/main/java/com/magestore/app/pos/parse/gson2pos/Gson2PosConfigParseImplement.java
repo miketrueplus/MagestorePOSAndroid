@@ -25,7 +25,7 @@ public class Gson2PosConfigParseImplement extends Gson2PosAbstractParseImplement
      * @return
      */
     @Override
-    protected Gson createGson() {
+    public Gson createGson() {
         GsonBuilder builder = new GsonBuilder();
         builder.enableComplexMapKeySerialization();
         builder.registerTypeAdapter(new TypeToken<Map>(){}
