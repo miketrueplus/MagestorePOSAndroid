@@ -59,6 +59,45 @@ public class POSUserDataAccess extends POSAbstractDataAccess implements UserData
         String staff_id;
     }
 
+    private class POSCheckPlatformDataAccess {
+        String platform;
+    }
+
+    @Override
+    public String checkPlatform(String domain, String username, String password) throws ParseException, ConnectionException, DataAccessException, IOException {
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        try {
+            // Khởi tạo connection
+            connection = ConnectionFactory.generateConnection(getContext(), domain, username, password);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPI.REST_CHECK_PLATFORM);
+
+            rp = statement.execute();
+
+            String respone = rp.readResult2String();
+            Gson2PosStoreParseImplement implement = new Gson2PosStoreParseImplement();
+            Gson gson = implement.createGson();
+            POSCheckPlatformDataAccess checkPlatformClass = gson.fromJson(respone, POSCheckPlatformDataAccess.class);
+            return checkPlatformClass.platform;
+        } catch (Exception ex) {
+            throw new DataAccessException(ex);
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
+    }
+
     /**
      * Login, xem đúng user name và password
      * Nếu đúng trả lại session id, nếu k0 trả lại "false"

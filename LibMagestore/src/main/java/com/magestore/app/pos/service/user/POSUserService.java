@@ -15,6 +15,7 @@ import com.magestore.app.pos.model.registershift.PosPointOfSales;
 import com.magestore.app.pos.model.user.PosUser;
 import com.magestore.app.pos.service.AbstractService;
 import com.magestore.app.util.ConfigUtil;
+import com.magestore.app.util.StringUtil;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -62,6 +63,25 @@ public class POSUserService extends AbstractService implements UserService {
                 stringBuilder.append(BuildConfig.DEFAULT_REST_BASE_PAGE);
         }
         return stringBuilder.toString();
+    }
+
+    @Override
+    public boolean checkPlatform(String domain, String username, String password) throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        UserDataAccess userGateway = factory.generateUserDataAccess();
+        String strBaseURL = buildPOSBaseURL(domain);
+        String str = userGateway.checkPlatform(strBaseURL, username, password);
+        if (!StringUtil.isNullOrEmpty(str)) {
+            if (str.equals("Magento")) {
+                ConfigUtil.setPlatForm(ConfigUtil.PLATFORM_MAGENTO_1);
+                return true;
+            }
+            if (str.equals("Magento2")) {
+                ConfigUtil.setPlatForm(ConfigUtil.PLATFORM_MAGENTO_2);
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

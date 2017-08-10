@@ -478,6 +478,7 @@
     <string name="err_add_coupon">Add Coupon Unsuccessfully</string>
     <string name="err_credit_type">Credit Card type invalid</string>
     <string name="err_active_key">License key is invalid</string>
+    <string name="err_check_platform">Can\'t get platform, please check again!</string>
     <string name="err_requied_options">Please select all required options</string>
 
     <!-- Strings related to confirm message -->

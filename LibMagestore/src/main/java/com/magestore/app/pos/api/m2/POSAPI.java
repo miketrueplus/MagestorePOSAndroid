@@ -30,6 +30,9 @@ public class POSAPI {
     // API get category
     public static final String REST_GET_CATEGORY_LISTING = "/rest/default/V1/webpos/categories/?";
 
+    // API check platform
+    public static final String REST_CHECK_PLATFORM = "webpos/index/platform";
+
     // API staff
     public static final String REST_LOGIN = "rest/default/V1/webpos/staff/login";
     public static final String REST_STAFF_GET_LISTING = "/rest/default/V1/webpos/staffs?";

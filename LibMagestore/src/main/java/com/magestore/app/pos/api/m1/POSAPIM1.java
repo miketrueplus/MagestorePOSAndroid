@@ -25,6 +25,9 @@ public class POSAPIM1 {
     // API get category
     public static final String REST_GET_CATEGORY_LISTING = "api/rest/webpos/categories/?";
 
+    // API check platform
+    public static final String REST_CHECK_PLATFORM = "webpos/index/platform";
+
     // API staff
     public static final String REST_LOGIN = "api/rest/webpos/staff/login";
     public static final String REST_STAFF_GET_LISTING = "api/rest/webpos/staffs?";

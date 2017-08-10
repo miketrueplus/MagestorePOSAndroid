@@ -23,7 +23,9 @@ import com.magestore.app.pos.parse.gson2pos.Gson2PosListPointOfSales;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosStoreParseImplement;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.StringUtil;
+
 import org.json.JSONObject;
+
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
@@ -47,6 +49,45 @@ public class POSUserDataAccessM1 extends POSAbstractDataAccessM1 implements User
     private class Pos {
         String pos_id;
         String staff_id;
+    }
+
+    private class POSCheckPlatformDataAccess {
+        String platform;
+    }
+
+    @Override
+    public String checkPlatform(String domain, String username, String password) throws ParseException, ConnectionException, DataAccessException, IOException {
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        try {
+            // Khởi tạo connection
+            connection = ConnectionFactory.generateConnection(getContext(), domain, username, password);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPIM1.REST_CHECK_PLATFORM);
+
+            rp = statement.execute();
+
+            String respone = rp.readResult2String();
+            Gson2PosStoreParseImplement implement = new Gson2PosStoreParseImplement();
+            Gson gson = implement.createGson();
+            POSCheckPlatformDataAccess checkPlatformClass = gson.fromJson(respone, POSCheckPlatformDataAccess.class);
+            return checkPlatformClass.platform;
+        } catch (Exception ex) {
+            throw new DataAccessException(ex);
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
     }
 
     @Override
@@ -122,8 +163,6 @@ public class POSUserDataAccessM1 extends POSAbstractDataAccessM1 implements User
             connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSessionM1.REST_BASE_URL, POSDataAccessSessionM1.REST_USER_NAME, POSDataAccessSessionM1.REST_PASSWORD);
             statement = connection.createStatement();
             statement.prepareQuery(POSAPIM1.REST_REGISTER_SHIFTS_GET_LISTING_POS);
-            String session = POSDataAccessSessionM1.REST_SESSION_ID;
-            String staff_id = ConfigUtil.getStaff().getID();
             paramBuilder = statement.getParamBuilder()
                     .setSortOrderASC("till_name")
                     .setFilter("user_id", ConfigUtil.getStaff().getID())

@@ -18,6 +18,8 @@ import java.util.List;
  */
 
 public interface UserDataAccess extends DataAccess {
+    String checkPlatform(String domain, String username, String password) throws ParseException, ConnectionException, DataAccessException, IOException;
+
     /**
      * Thực hiện login với username và password
      * @return Trả lại user id đăng nhập

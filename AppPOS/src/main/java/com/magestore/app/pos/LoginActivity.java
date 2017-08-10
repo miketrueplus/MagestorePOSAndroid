@@ -27,6 +27,7 @@ import com.magestore.app.lib.task.Task;
 import com.magestore.app.lib.task.TaskListener;
 import com.magestore.app.lib.view.SimpleSpinner;
 import com.magestore.app.pos.task.AssignPosTask;
+import com.magestore.app.pos.task.CheckPlatformTask;
 import com.magestore.app.pos.task.ListStoreTask;
 import com.magestore.app.pos.task.LoginTask;
 import com.magestore.app.pos.ui.AbstractActivity;
@@ -49,6 +50,7 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
     private LoginTask mAuthTask = null;
     private ListStoreTask mStoreTask = null;
     private AssignPosTask mAssignPosTask = null;
+    private CheckPlatformTask mCheckPlatformTask = null;
 
     // UI references.
     private AutoCompleteTextView mDomainView;
@@ -133,7 +135,8 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
         mSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptLogin();
+                mCheckLoginDemo = false;
+                checkPlatForm();
             }
         });
 
@@ -141,7 +144,8 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
         mDemoButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptLoginDemo();
+                mCheckLoginDemo = true;
+                checkPlatForm();
             }
         });
 
@@ -274,6 +278,35 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
         return stringBuilder.toString();
     }
 
+    private void checkPlatForm() {
+        if (mCheckPlatformTask != null) {
+            return;
+        }
+        // Khởi tạo lại các thông báo lỗi
+        mDomainView.setError(null);
+        mUserNameView.setError(null);
+        mPasswordView.setError(null);
+
+        // Kiểm tra giá trị các control
+        boolean valid = validControlValue();
+        if (valid) {
+            // Hiện progress bar
+            showProgress(true);
+            String domain = mDomainView.getText().toString().trim();
+            String username = mUserNameView.getText().toString().trim();
+            String password = mPasswordView.getText().toString().trim();
+            String strFinalDomain = buildPOSBaseURL(domain);
+            mCheckPlatformTask = new CheckPlatformTask(new CheckPlatformListener(), strFinalDomain, username, password);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) // Above Api Level 13
+            {
+                mCheckPlatformTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            } else // Below Api Level 13
+            {
+                mCheckPlatformTask.execute();
+            }
+        }
+    }
+
     /**
      * Được gọi khi nút login được nhấn hoặc người dùng ấn enter lúc password
      */
@@ -316,6 +349,11 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
     }
 
     private void attemptLoginDemo() {
+        // Nếu đang có task thực thi thì bỏ qua việc login
+        if (mAuthTask != null) {
+            return;
+        }
+
         // check login là demo thì không lại thông tin khách hàng nhập
         mCheckLoginDemo = true;
         String domain = "dev2m1.nhubinh.com";
@@ -382,6 +420,41 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
         }
     }
 
+    public class CheckPlatformListener implements TaskListener<Void, Void, Boolean> {
+
+        @Override
+        public void onPreController(Task task) {
+            showProgress(true);
+        }
+
+        @Override
+        public void onPostController(Task task, Boolean success) {
+            mCheckPlatformTask = null;
+            if (success) {
+                if (mCheckLoginDemo) {
+                    attemptLoginDemo();
+                } else {
+                    attemptLogin();
+                }
+            } else {
+                DialogUtil.confirm(getContext(), getString(R.string.err_check_platform), R.string.ok);
+                showProgress(false);
+            }
+        }
+
+        @Override
+        public void onCancelController(Task task, Exception exp) {
+            mCheckPlatformTask = null;
+            showProgress(false);
+            DialogUtil.confirm(getContext(), getString(R.string.err_check_platform), R.string.ok);
+        }
+
+        @Override
+        public void onProgressController(Task task, Void... progress) {
+
+        }
+    }
+
     public class LoginListener implements TaskListener<Void, Void, Boolean> {
 
         @Override
@@ -399,6 +472,9 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
                         navigationToSalesActivity();
                         showProgress(false);
                     } else {
+                        if (mStoreTask != null) {
+                            return;
+                        }
                         mStoreTask = new ListStoreTask(getContext(), new StoreListener());
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) // Above Api Level 13
                         {
@@ -421,6 +497,9 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
                             navigationToSalesActivity();
                             showProgress(false);
                         } else {
+                            if (mStoreTask != null) {
+                                return;
+                            }
                             mStoreTask = new ListStoreTask(getContext(), new StoreListener());
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) // Above Api Level 13
                             {
@@ -466,6 +545,7 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
 
         @Override
         public void onPostController(Task task, List<PointOfSales> listPos) {
+            mStoreTask = null;
             if (listPos != null) {
                 if (ConfigUtil.isEnableSession()) {
                     mListPos = listPos;
@@ -497,6 +577,7 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
 
         @Override
         public void onCancelController(Task task, Exception exp) {
+            mStoreTask = null;
             showProgress(false);
             showAlertRespone();
         }
