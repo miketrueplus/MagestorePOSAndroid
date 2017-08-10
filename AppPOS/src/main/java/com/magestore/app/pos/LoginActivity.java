@@ -292,6 +292,11 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
         if (valid) {
             // Hiện progress bar
             showProgress(true);
+            if (mCheckLoginDemo) {
+                mDomainView.setText("https://dev2m1.nhubinh.com");
+                mUserNameView.setText("ravi");
+                mPasswordView.setText("ravi123");
+            }
             String domain = mDomainView.getText().toString().trim();
             String username = mUserNameView.getText().toString().trim();
             String password = mPasswordView.getText().toString().trim();
@@ -356,9 +361,9 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
 
         // check login là demo thì không lại thông tin khách hàng nhập
         mCheckLoginDemo = true;
-        String domain = "dev2m1.nhubinh.com";
-        String username = "ravi";
-        String password = "ravi123";
+        String domain = mDomainView.getText().toString().trim();
+        String username = mUserNameView.getText().toString().trim();
+        String password = mPasswordView.getText().toString().trim();
 
         String strFinalDomain = buildPOSBaseURL(domain);
         // Bắt đầu login task
