@@ -49,6 +49,7 @@ public class POSAPIM1 {
     public static final String REST_CHECKOUT_ADD_COUPON_TO_QUOTE = "api/rest/webpos/checkout/applyCoupon?";
     public static final String REST_CHECK_OUT_SAVE_SHIPPING = "api/rest/webpos/checkout/saveShippingMethod?";
     public static final String REST_CHECK_OUT_PLACE_ORDER = "api/rest/webpos/checkout/placeOrder?";
+    public static final String REST_CHECK_OUT_SEND_EMAIL = "api/rest/webpos/checkout/sendEmail?";
 
     // API plugins
     public static final String REST_PLUGIN_APPLY_REWARD_POINT = "api/rest/webpos/integration/spendPoint?";

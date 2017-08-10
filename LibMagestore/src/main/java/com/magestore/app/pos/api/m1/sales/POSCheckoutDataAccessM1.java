@@ -25,6 +25,7 @@ import com.magestore.app.lib.model.checkout.SaveQuoteParam;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.parse.ParseException;
+import com.magestore.app.lib.resourcemodel.DataAccessException;
 import com.magestore.app.lib.resourcemodel.sales.CheckoutDataAccess;
 import com.magestore.app.pos.api.m1.POSAPIM1;
 import com.magestore.app.pos.api.m1.POSAbstractDataAccessM1;
@@ -68,6 +69,11 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
         String store_id = null;
         String till_id = null;
         String customer_id = null;
+    }
+
+    private class SendEmailEntity {
+        String status = null;
+        List<String> messages;
     }
 
     public class Gson2PosCartParseModel extends Gson2PosAbstractParseImplement {
@@ -369,7 +375,55 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
 
     @Override
     public String sendEmail(String email, String increment_id) throws ParseException, InstantiationException, IllegalAccessException, IOException {
-        return null;
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+
+        try {
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSessionM1.REST_BASE_URL, POSDataAccessSessionM1.REST_USER_NAME, POSDataAccessSessionM1.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPIM1.REST_CHECK_OUT_SEND_EMAIL);
+
+            // Xây dựng tham số
+            paramBuilder = statement.getParamBuilder()
+                    .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+            CheckoutEntity checkoutEntity = new CheckoutEntity();
+            checkoutEntity.email = email;
+            checkoutEntity.increment_id = increment_id;
+            rp = statement.execute(checkoutEntity);
+
+            String json = StringUtil.truncateJson(rp.readResult2String());
+            SendEmailEntity ck = new Gson().fromJson(json, SendEmailEntity.class);
+            String message = "";
+            if (ck != null) {
+                if (ck.status.equals("1")) {
+                    if (ck.messages != null && ck.messages.size() > 0) {
+                        message = ck.messages.get(0);
+                    }
+                }
+            }
+
+            return message;
+        } catch (Exception e) {
+            throw new DataAccessException(e);
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
     }
 
     @Override
