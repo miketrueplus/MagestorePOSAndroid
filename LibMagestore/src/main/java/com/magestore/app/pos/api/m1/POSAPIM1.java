@@ -89,7 +89,7 @@ public class POSAPIM1 {
     public static final String REST_GET_ACCESS_TOKEN_PAYPAL_HERE = "api/rest/webpos/paypal/getAccessToken?";
 
     // API approved payment stripe
-    public static final String REST_APPROVED_PAYMENT_STRIPE = "rapi/rest/webpos/stripe/finishPayment?";
+    public static final String REST_APPROVED_PAYMENT_STRIPE = "api/rest/webpos/stripe/finishPayment?";
 
     // API approved authorizenet
     public static final String REST_APPROVED_PAYMENT_AUTHORIZE = "api/rest/webpos/authorizenet/finishPayment?";
