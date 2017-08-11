@@ -81,9 +81,11 @@ public class POSConfigService extends AbstractService implements ConfigService {
         ConfigUtil.setCustomerGuest(getGuestCheckout());
         ConfigUtil.setBaseCurrencyCode(getBaseCurrencyCode());
         ConfigUtil.setShowDeliveryTime(getConfigDeliveryTime());
-        ConfigUtil.setEnableGiftCard(getConfigGiftCard());
-        ConfigUtil.setEnableStoreCredit(getConfigStoreCredit());
-        ConfigUtil.setEnableRewardPoint(getConfigRewardPoint());
+        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2)) {
+            ConfigUtil.setEnableGiftCard(getConfigGiftCard());
+            ConfigUtil.setEnableStoreCredit(getConfigStoreCredit());
+            ConfigUtil.setEnableRewardPoint(getConfigRewardPoint());
+        }
         ConfigUtil.setEnableSession(getConfigSession());
         ConfigUtil.setEnableDeleteOrder(getConfigDeleteOrder());
         ConfigUtil.setCurrentCurrency(getDefaultCurrency());

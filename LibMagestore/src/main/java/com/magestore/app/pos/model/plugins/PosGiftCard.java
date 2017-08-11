@@ -16,6 +16,10 @@ public class PosGiftCard extends PosAbstractModel implements GiftCard {
     float amount;
     @Gson2PosExclude
     float balance;
+    String currency_id;
+    String customer_id;
+    String store_id;
+    String till_id;
 
     @Override
     public String getQuoteId() {
@@ -55,5 +59,45 @@ public class PosGiftCard extends PosAbstractModel implements GiftCard {
     @Override
     public void setBalance(float fBalance) {
         balance = fBalance;
+    }
+
+    @Override
+    public String getCurrencyId() {
+        return currency_id;
+    }
+
+    @Override
+    public void setCurrencyId(String strCurrencyId) {
+        currency_id = strCurrencyId;
+    }
+
+    @Override
+    public String getCustomerId() {
+        return customer_id;
+    }
+
+    @Override
+    public void setCustomerId(String strCustomerId) {
+        customer_id = strCustomerId;
+    }
+
+    @Override
+    public String getStoreId() {
+        return store_id;
+    }
+
+    @Override
+    public void setStoreId(String strStoreId) {
+        store_id = strStoreId;
+    }
+
+    @Override
+    public String getTillId() {
+        return till_id;
+    }
+
+    @Override
+    public void setTillId(String strTillId) {
+        till_id = strTillId;
     }
 }

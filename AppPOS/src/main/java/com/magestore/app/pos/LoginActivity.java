@@ -137,6 +137,8 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
             public void onClick(View view) {
                 mCheckLoginDemo = false;
                 checkPlatForm();
+                // TODO: Tạm thời bỏ check platform để dev
+//                attemptLogin();
             }
         });
 
@@ -293,7 +295,7 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
             // Hiện progress bar
             showProgress(true);
             if (mCheckLoginDemo) {
-                mDomainView.setText("https://dev2m1.nhubinh.com");
+                mDomainView.setText("demo-magento2.magestore.com/pos-app/03");
                 mUserNameView.setText("ravi");
                 mPasswordView.setText("ravi123");
             }

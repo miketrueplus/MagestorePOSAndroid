@@ -165,7 +165,6 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         quoteAddCouponParam.setQuoteId(checkout.getQuoteId());
 
         if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_1)) {
-            quoteAddCouponParam.setQuoteId(checkout.getQuoteId());
             quoteAddCouponParam.setStoreId(checkout.getStoreId());
             if (checkout.getCustomer() != null) {
                 if (StringUtil.isNullOrEmpty(checkout.getCustomerID())) {
@@ -674,14 +673,14 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
                     }
 
                     // plugins
-                    else if (checkoutTotals.getCode().equals("giftvoucher") || checkoutTotals.getCode().equals("giftvoucheraftertax") || checkoutTotals.getCode().equals("giftvoucherbeforetax")) {
+                    else if (checkoutTotals.getCode().equals("giftvoucher") || checkoutTotals.getCode().equals("giftvoucheraftertax") || checkoutTotals.getCode().equals("giftvoucher_after_tax") || checkoutTotals.getCode().equals("giftvoucherbeforetax") || checkoutTotals.getCode().equals("giftvoucher_before_tax") || checkoutTotals.getCode().equals("giftcard")) {
                         gifcard = true;
                         checkout.setGiftCardDiscount(checkoutTotals.getValue());
                         checkout.setGiftCardTitle(checkoutTotals.getTitle());
                     } else if (checkoutTotals.getCode().equals("rewardpoints_label")) {
                         reward = true;
                         checkout.setRewardPointEarnPointValue((int) checkoutTotals.getValue());
-                    } else if (checkoutTotals.getCode().equals("use-point")) {
+                    } else if (checkoutTotals.getCode().equals("use-point") || checkoutTotals.getCode().equals("rewardpoints")) {
                         storecredit = true;
                         checkout.setRewardPointUsePointValue(checkoutTotals.getValue());
                         checkout.setRewardPointUsePointTitle(checkoutTotals.getTitle());

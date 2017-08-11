@@ -9,9 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.RelativeLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.magestore.app.lib.model.plugins.RewardPoint;
@@ -20,7 +18,7 @@ import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.CheckoutListController;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.StringUtil;
-import com.magestore.app.view.EditTextFloat;
+import com.magestore.app.view.EditTextQuantity;
 
 /**
  * Created by Johan on 4/13/17.
@@ -31,7 +29,7 @@ import com.magestore.app.view.EditTextFloat;
 public class PluginRewardPointPanel extends AbstractDetailPanel<RewardPoint> {
     CheckoutListController mCheckoutListController;
     RewardPoint mRewardPoint;
-    EditTextFloat reward_point_value;
+    EditTextQuantity reward_point_value;
     CheckBox cb_use_max_credit;
     Button bt_apply;
     RelativeLayout rl_remove_reward_point;
@@ -58,7 +56,7 @@ public class PluginRewardPointPanel extends AbstractDetailPanel<RewardPoint> {
         super.initLayout();
         tv_reward_point = (TextView) findViewById(R.id.tv_reward_point);
         tv_reward_point.setText(getContext().getString(R.string.plugin_reward_point_title, "0"));
-        reward_point_value = (EditTextFloat) findViewById(R.id.reward_point_value);
+        reward_point_value = (EditTextQuantity) findViewById(R.id.reward_point_value);
         cb_use_max_credit = (CheckBox) findViewById(R.id.cb_use_max_credit);
         bt_apply = (Button) findViewById(R.id.bt_apply);
         bt_apply.setBackground(getResources().getDrawable(R.drawable.backgound_buton_apply_enable));
@@ -70,14 +68,17 @@ public class PluginRewardPointPanel extends AbstractDetailPanel<RewardPoint> {
     public void bindItem(RewardPoint item) {
         super.bindItem(item);
         mRewardPoint = item;
+        if (mRewardPoint.getMaxPoints() < 0) {
+            mRewardPoint.setMaxPoins(0);
+        }
         if (mRewardPoint.getAmount() > 0) {
             int balance = mRewardPoint.getBalance() - mRewardPoint.getAmount();
-            tv_reward_point.setText(getContext().getString(R.string.plugin_reward_point_title, ConfigUtil.formatNumber(balance)));
+            tv_reward_point.setText(getContext().getString(R.string.plugin_reward_point_title, ConfigUtil.formatQuantity(balance)));
         } else {
-            tv_reward_point.setText(getContext().getString(R.string.plugin_reward_point_title, ConfigUtil.formatNumber(mRewardPoint.getBalance())));
+            tv_reward_point.setText(getContext().getString(R.string.plugin_reward_point_title, ConfigUtil.formatQuantity(mRewardPoint.getBalance())));
         }
         actionChangeRewardPoint(mRewardPoint);
-        reward_point_value.setText(mRewardPoint.getAmount() > 0 ? ConfigUtil.formatNumber(mRewardPoint.getAmount()) : ConfigUtil.formatNumber(mRewardPoint.getMaxPoints()));
+        reward_point_value.setText(mRewardPoint.getAmount() > 0 ? ConfigUtil.formatQuantity(mRewardPoint.getAmount()) : ConfigUtil.formatQuantity(mRewardPoint.getMaxPoints()));
 
         cb_use_max_credit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -86,7 +87,7 @@ public class PluginRewardPointPanel extends AbstractDetailPanel<RewardPoint> {
                     cb_use_max_credit.setChecked(false);
                 } else {
                     cb_use_max_credit.setChecked(true);
-                    reward_point_value.setText(ConfigUtil.formatNumber(mRewardPoint.getMaxPoints()));
+                    reward_point_value.setText(ConfigUtil.formatQuantity(mRewardPoint.getMaxPoints()));
                 }
             }
         });
@@ -96,32 +97,14 @@ public class PluginRewardPointPanel extends AbstractDetailPanel<RewardPoint> {
             public void onClick(View view) {
                 String quote_id = mCheckoutListController.getSelectedItem().getQuoteId();
                 if (mRewardPoint != null) {
-                    String point = reward_point_value.getText().toString().trim();
-                    if (!StringUtil.isNullOrEmpty(point)) {
-                        int point_value;
-                        try {
-                            point_value = Integer.parseInt(point);
-                        } catch (Exception e) {
-                            point_value = 0;
-                        }
-                        mRewardPoint.setAmount(point_value);
-                    }
+                    mRewardPoint.setAmount(reward_point_value.getValueInteger());
                     mRewardPoint.setQuoteId(quote_id);
                     mCheckoutListController.doInputApplyRewardPoint(mRewardPoint);
                 } else {
                     mRewardPoint = mCheckoutListController.createRewardPoint();
                     mRewardPoint.setAmount(0);
                     mRewardPoint.setQuoteId(quote_id);
-                    String point = reward_point_value.getText().toString().trim();
-                    if (!StringUtil.isNullOrEmpty(point)) {
-                        int point_value;
-                        try {
-                            point_value = Integer.parseInt(point);
-                        } catch (Exception e) {
-                            point_value = 0;
-                        }
-                        mRewardPoint.setAmount(point_value);
-                    }
+                    mRewardPoint.setAmount(reward_point_value.getValueInteger());
                     mCheckoutListController.doInputApplyRewardPoint(mRewardPoint);
                 }
             }
@@ -132,12 +115,12 @@ public class PluginRewardPointPanel extends AbstractDetailPanel<RewardPoint> {
             public void onClick(View view) {
                 String quote_id = mCheckoutListController.getSelectedItem().getQuoteId();
                 if (mRewardPoint != null) {
-                    reward_point_value.setText(ConfigUtil.formatNumber(mRewardPoint.getMaxPoints()));
+                    reward_point_value.setText(ConfigUtil.formatQuantity(mRewardPoint.getMaxPoints()));
                     mRewardPoint.setQuoteId(quote_id);
                     mRewardPoint.setAmount(0);
                     mCheckoutListController.doInputApplyRewardPoint(mRewardPoint);
                 } else {
-                    reward_point_value.setText(ConfigUtil.formatNumber(mRewardPoint.getMaxPoints()));
+                    reward_point_value.setText(ConfigUtil.formatQuantity(mRewardPoint.getMaxPoints()));
                     mRewardPoint = mCheckoutListController.createRewardPoint();
                     mRewardPoint.setAmount(0);
                     mRewardPoint.setQuoteId(quote_id);
@@ -158,7 +141,7 @@ public class PluginRewardPointPanel extends AbstractDetailPanel<RewardPoint> {
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 int point_value = reward_point_value.getValueInteger();
                 if (point_value > mRewardPoint.getMaxPoints()) {
-                    reward_point_value.setText(ConfigUtil.formatNumber(mRewardPoint.getMaxPoints()));
+                    reward_point_value.setText(ConfigUtil.formatQuantity(mRewardPoint.getMaxPoints()));
                     mRewardPoint.setAmount(mRewardPoint.getMaxPoints());
                     cb_use_max_credit.setChecked(true);
                 } else {
@@ -180,8 +163,8 @@ public class PluginRewardPointPanel extends AbstractDetailPanel<RewardPoint> {
     }
 
     public void changeBalance(RewardPoint rewardPoint) {
-        tv_reward_point.setText(getContext().getString(R.string.plugin_reward_point_title, ConfigUtil.formatNumber(rewardPoint.getBalance() - rewardPoint.getAmount())));
-        reward_point_value.setText(ConfigUtil.formatNumber(rewardPoint.getAmount()));
+        tv_reward_point.setText(getContext().getString(R.string.plugin_reward_point_title, ConfigUtil.formatQuantity(rewardPoint.getBalance() - rewardPoint.getAmount())));
+        reward_point_value.setText(ConfigUtil.formatQuantity(rewardPoint.getAmount()));
     }
 
     public void resetPointValue() {

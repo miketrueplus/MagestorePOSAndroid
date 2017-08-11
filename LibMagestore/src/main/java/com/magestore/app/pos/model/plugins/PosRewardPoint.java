@@ -14,6 +14,14 @@ public class PosRewardPoint extends PosAbstractModel implements RewardPoint {
     String quote_id;
     int used_point;
     String rule_id = "rate";
+    @Gson2PosExclude
+    String currency_id;
+    @Gson2PosExclude
+    String customer_id;
+    @Gson2PosExclude
+    String store_id;
+    @Gson2PosExclude
+    String till_id;
 
     @Gson2PosExclude
     int balance;
@@ -23,6 +31,11 @@ public class PosRewardPoint extends PosAbstractModel implements RewardPoint {
     @Override
     public int getBalance() {
         return balance;
+    }
+
+    @Override
+    public String getQuoteId() {
+        return quote_id;
     }
 
     @Override
@@ -41,7 +54,52 @@ public class PosRewardPoint extends PosAbstractModel implements RewardPoint {
     }
 
     @Override
+    public void setMaxPoins(int iMaxpoints) {
+        max_points = iMaxpoints;
+    }
+
+    @Override
     public int getAmount() {
         return used_point;
+    }
+
+    @Override
+    public String getCurrencyId() {
+        return currency_id;
+    }
+
+    @Override
+    public void setCurrencyId(String strCurrencyId) {
+        currency_id = strCurrencyId;
+    }
+
+    @Override
+    public String getCustomerId() {
+        return customer_id;
+    }
+
+    @Override
+    public void setCustomerId(String strCustomerId) {
+        customer_id = strCustomerId;
+    }
+
+    @Override
+    public String getStoreId() {
+        return store_id;
+    }
+
+    @Override
+    public void setStoreId(String strStoreId) {
+        store_id = strStoreId;
+    }
+
+    @Override
+    public String getTillId() {
+        return till_id;
+    }
+
+    @Override
+    public void setTillId(String strTillId) {
+        till_id = strTillId;
     }
 }

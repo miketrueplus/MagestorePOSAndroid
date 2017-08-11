@@ -3,10 +3,13 @@ package com.magestore.app.pos.controller;
 import com.magestore.app.lib.controller.AbstractListController;
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.checkout.Checkout;
+import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.plugins.GiftCard;
 import com.magestore.app.lib.model.plugins.GiftCardRemoveParam;
 import com.magestore.app.lib.service.plugins.PluginsService;
 import com.magestore.app.pos.panel.PluginGiftCardListPanel;
+import com.magestore.app.util.ConfigUtil;
+import com.magestore.app.util.DataUtil;
 import com.magestore.app.util.StringUtil;
 
 import java.util.ArrayList;
@@ -52,6 +55,30 @@ public class PluginGiftCardController extends AbstractListController<GiftCard> {
         mCheckoutListController.setEnableBtCheckout(false);
         String quote_id = mCheckoutListController.getSelectedItem().getQuoteId();
         giftCard.setQuoteId(quote_id);
+        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_1)) {
+            giftCard.setCurrencyId(ConfigUtil.getCurrentCurrency().getCode());
+            String store_id = DataUtil.getDataStringToPreferences(getMagestoreContext().getActivity(), DataUtil.STORE_ID);
+            giftCard.setStoreId(store_id);
+            giftCard.setTillId(ConfigUtil.getPointOfSales().getID());
+            Customer customer = mCheckoutListController.getSelectedItem().getCustomer();
+            if (customer != null) {
+                if (StringUtil.isNullOrEmpty(mCheckoutListController.getSelectedItem().getCustomerID())) {
+                    if (!mCheckoutListController.checkCustomerID(customer, ConfigUtil.getCustomerGuest())) {
+                        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2)) {
+                            giftCard.setCustomerId("");
+                        } else {
+                            giftCard.setCustomerId(mCheckoutListController.getSelectedItem().getCustomerID());
+                        }
+                    } else {
+                        giftCard.setCustomerId("");
+                    }
+                } else {
+                    giftCard.setCustomerId(mCheckoutListController.getSelectedItem().getCustomerID());
+                }
+            } else {
+                giftCard.setCustomerId("");
+            }
+        }
         doAction(ACTION_TYPE_ADD_GIFTCARD, null, wraper, giftCard);
     }
 
@@ -60,6 +87,30 @@ public class PluginGiftCardController extends AbstractListController<GiftCard> {
         mCheckoutListController.setEnableBtCheckout(false);
         giftCard.setQuoteId(quote_id);
         if (!StringUtil.isNullOrEmpty(giftCard.getCouponCode())) {
+            if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_1)) {
+                giftCard.setCurrencyId(ConfigUtil.getCurrentCurrency().getCode());
+                String store_id = DataUtil.getDataStringToPreferences(getMagestoreContext().getActivity(), DataUtil.STORE_ID);
+                giftCard.setStoreId(store_id);
+                giftCard.setTillId(ConfigUtil.getPointOfSales().getID());
+                Customer customer = mCheckoutListController.getSelectedItem().getCustomer();
+                if (customer != null) {
+                    if (StringUtil.isNullOrEmpty(mCheckoutListController.getSelectedItem().getCustomerID())) {
+                        if (!mCheckoutListController.checkCustomerID(customer, ConfigUtil.getCustomerGuest())) {
+                            if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2)) {
+                                giftCard.setCustomerId("");
+                            } else {
+                                giftCard.setCustomerId(mCheckoutListController.getSelectedItem().getCustomerID());
+                            }
+                        } else {
+                            giftCard.setCustomerId("");
+                        }
+                    } else {
+                        giftCard.setCustomerId(mCheckoutListController.getSelectedItem().getCustomerID());
+                    }
+                } else {
+                    giftCard.setCustomerId("");
+                }
+            }
             mCheckoutListController.isShowLoadingDetail(true);
             doAction(ACTION_TYPE_REMOVE_GIFTCARD, null, wraper, giftCard);
         } else {
@@ -82,6 +133,12 @@ public class PluginGiftCardController extends AbstractListController<GiftCard> {
             GiftCardRemoveParam giftCardRemoveParam = pluginsService.createGiftCardRemoveParam();
             giftCardRemoveParam.setQuoteId(giftCard.getQuoteId());
             giftCardRemoveParam.setCode(giftCard.getCouponCode());
+            if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_1)) {
+                giftCardRemoveParam.setCurrencyId(giftCard.getCurrencyId());
+                giftCardRemoveParam.setStoreId(giftCard.getStoreId());
+                giftCardRemoveParam.setTillId(giftCard.getTillId());
+                giftCardRemoveParam.setCustomerId(giftCard.getCustomerId());
+            }
             wraper.put("remove_gift_card_respone", pluginsService.removeGiftCard(giftCardRemoveParam));
             return true;
         }
@@ -152,7 +209,7 @@ public class PluginGiftCardController extends AbstractListController<GiftCard> {
         return listGiftCard;
     }
 
-    public void resetListGiftCard(){
+    public void resetListGiftCard() {
         mPluginGiftCardListPanel.resetListGiftCard();
         addFirstGiftCard();
         mPluginGiftCardListPanel.bindList(listGiftCard);

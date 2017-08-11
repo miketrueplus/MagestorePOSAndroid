@@ -108,18 +108,57 @@ public class POSUserDataAccessM1 extends POSAbstractDataAccessM1 implements User
             String respone = rp.readResult2String();
             JSONObject json = new JSONObject(respone);
             String session_id = json.getString("session_id");
-            JSONObject webpos_data = json.getJSONObject("webpos_data");
-            Gson2PosStoreParseImplement implement = new Gson2PosStoreParseImplement();
-            Gson gson = implement.createGson();
-            POSListTaxClassDataAccess taxClass = gson.fromJson(webpos_data.toString(), POSListTaxClassDataAccess.class);
-            if (taxClass.tax_class != null && taxClass.tax_class.size() > 0) {
-                List<ConfigTaxClass> listTax = (List<ConfigTaxClass>) (List<?>) taxClass.tax_class;
-                ConfigUtil.setConfigTaxClass(listTax);
+            if (json.has("webpos_data")) {
+                JSONObject webpos_data = json.getJSONObject("webpos_data");
+                Gson2PosStoreParseImplement implement = new Gson2PosStoreParseImplement();
+                Gson gson = implement.createGson();
+                POSListTaxClassDataAccess taxClass = gson.fromJson(webpos_data.toString(), POSListTaxClassDataAccess.class);
+                if (taxClass.tax_class != null && taxClass.tax_class.size() > 0) {
+                    List<ConfigTaxClass> listTax = (List<ConfigTaxClass>) (List<?>) taxClass.tax_class;
+                    ConfigUtil.setConfigTaxClass(listTax);
+                }
+                if (taxClass.payment != null && taxClass.payment.size() > 0) {
+                    List<CheckoutPayment> listPayment = (List<CheckoutPayment>) (List<?>) taxClass.payment;
+                    ConfigUtil.setListPayment(listPayment);
+                }
             }
-            if (taxClass.payment != null && taxClass.payment.size() > 0) {
-                List<CheckoutPayment> listPayment = (List<CheckoutPayment>) (List<?>) taxClass.payment;
-                ConfigUtil.setListPayment(listPayment);
+
+            if (json.has("webpos_config")) {
+                JSONObject webpos_config = json.getJSONObject("webpos_config");
+                if (webpos_config.has("plugins_config")) {
+                    JSONObject json_plugins = webpos_config.getJSONObject("plugins_config");
+                    if (json_plugins.has("os_store_credit")) {
+                        JSONObject json_store_credit = json_plugins.getJSONObject("os_store_credit");
+                        if (json_store_credit.has("customercredit/general/enable")) {
+                            String os_store_credit = json_store_credit.getString("customercredit/general/enable");
+                            if (os_store_credit.equals("1")) {
+                                ConfigUtil.setEnableStoreCredit(true);
+                            }
+                        }
+                    }
+
+                    if (json_plugins.has("os_reward_points")) {
+                        JSONObject json_reward_point = json_plugins.getJSONObject("os_reward_points");
+                        if (json_reward_point.has("rewardpoints/general/enable")) {
+                            String os_reward_points = json_reward_point.getString("rewardpoints/general/enable");
+                            if (os_reward_points.equals("1")) {
+                                ConfigUtil.setEnableRewardPoint(true);
+                            }
+                        }
+                    }
+
+                    if (json_plugins.has("os_gift_card")) {
+                        JSONObject json_gift_card = json_plugins.getJSONObject("os_gift_card");
+                        if (json_gift_card.has("giftvoucher/general/active")) {
+                            String os_gift_card = json_gift_card.getString("giftvoucher/general/active");
+                            if (os_gift_card.equals("1")) {
+                                ConfigUtil.setEnableGiftCard(true);
+                            }
+                        }
+                    }
+                }
             }
+
             if (!StringUtil.isNullOrEmpty(session_id)) {
                 return session_id;
             } else {
