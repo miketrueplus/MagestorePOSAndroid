@@ -111,6 +111,9 @@ public class PosProduct extends PosAbstractModel implements Product {
 
     @Override
     public float getQty() {
+        if (StringUtil.isNullOrEmpty(qty)) {
+            qty = "0";
+        }
         return Float.parseFloat(qty);
     }
 
