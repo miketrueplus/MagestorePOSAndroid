@@ -135,10 +135,10 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
         mSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                mCheckLoginDemo = false;
-                checkPlatForm();
+//                mCheckLoginDemo = false;
+//                checkPlatForm();
                 // TODO: Tạm thời bỏ check platform để dev
-//                attemptLogin();
+                attemptLogin();
             }
         });
 
@@ -295,7 +295,7 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
             // Hiện progress bar
             showProgress(true);
             if (mCheckLoginDemo) {
-                mDomainView.setText("demo-magento2.magestore.com/pos-app/03");
+                mDomainView.setText("demo-magento2.magestore.com/pos-app/02");
                 mUserNameView.setText("ravi");
                 mPasswordView.setText("ravi123");
             }

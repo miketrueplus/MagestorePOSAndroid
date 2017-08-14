@@ -23,6 +23,8 @@ import java.io.IOException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.StrSubstitutor;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
@@ -368,7 +370,30 @@ public class MagestoreStatement implements Statement {
         if (statusCode == HTTP_CODE_RESPONSE_SUCCESS) {
             // save cookie
             saveCookie();
-            return new MagestoreResultReading(mHttpConnection.getInputStream());
+//            if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_1)) {
+//                InputStream inputStream = mHttpConnection.getInputStream();
+//                MagestoreResultReading magestoreResultReading = new MagestoreResultReading(inputStream);
+//                String respone = magestoreResultReading.readResult2String();
+//                try {
+//                    JSONObject json = new JSONObject(respone);
+//                    if (json.has("status")) {
+//                        String status = json.getString("status");
+//                        if (status.equals("0")) {
+//                            String messages = null;
+//                            if (json.has("messages")) {
+//                                messages = json.getString("messages");
+//                            }
+//                            if (messages == null) messages =  "Unknow exception";
+//                            throw new ConnectionException("200", messages);
+//                        }
+//                    }
+//                } catch (JSONException e) {
+//                    return magestoreResultReading;
+//                }
+//                return magestoreResultReading;
+//            } else {
+                return new MagestoreResultReading(mHttpConnection.getInputStream());
+//            }
         } else {
             // có lỗi, ném ra exception
             MagestoreResultReadingException rp = new MagestoreResultReadingException(mHttpConnection.getErrorStream(), statusCode);
