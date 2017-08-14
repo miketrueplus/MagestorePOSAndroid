@@ -21,8 +21,10 @@ import com.magestore.app.util.StringUtil;
 
 import java.io.IOException;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.StrSubstitutor;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -370,30 +372,40 @@ public class MagestoreStatement implements Statement {
         if (statusCode == HTTP_CODE_RESPONSE_SUCCESS) {
             // save cookie
             saveCookie();
-//            if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_1)) {
-//                InputStream inputStream = mHttpConnection.getInputStream();
-//                MagestoreResultReading magestoreResultReading = new MagestoreResultReading(inputStream);
-//                String respone = magestoreResultReading.readResult2String();
-//                try {
-//                    JSONObject json = new JSONObject(respone);
-//                    if (json.has("status")) {
-//                        String status = json.getString("status");
-//                        if (status.equals("0")) {
-//                            String messages = null;
-//                            if (json.has("messages")) {
-//                                messages = json.getString("messages");
-//                            }
-//                            if (messages == null) messages =  "Unknow exception";
-//                            throw new ConnectionException("200", messages);
-//                        }
-//                    }
-//                } catch (JSONException e) {
-//                    return magestoreResultReading;
-//                }
-//                return magestoreResultReading;
-//            } else {
+            if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_1)) {
+                InputStream inputStream = mHttpConnection.getInputStream();
+                MagestoreResultReading magestoreResultReading = new MagestoreResultReading(inputStream);
+                String respone = magestoreResultReading.readResult2String();
+                try {
+                    JSONObject json = new JSONObject(respone);
+                    if (json.has("status")) {
+                        String status = json.getString("status");
+                        if (status.equals("0")) {
+                            String messages = null;
+                            if (json.has("messages")) {
+                                if (json.get("messages") instanceof JSONObject) {
+                                    messages = json.getString("messages");
+                                }
+                                if (json.get("messages") instanceof JSONArray) {
+                                    JSONArray arr_message = json.getJSONArray("messages");
+                                    if (arr_message != null && arr_message.length() > 0) {
+                                        messages = arr_message.get(0).toString();
+                                    }
+                                }
+                            }
+                            if (messages == null) messages = "Unknow exception";
+                            throw new ConnectionException("200", messages);
+                        }
+                    }
+                } catch (JSONException e) {
+                    // conver String to input stream and return
+                    return new MagestoreResultReading(IOUtils.toInputStream(respone));
+                }
+                // conver String to input stream and return
+                return new MagestoreResultReading(IOUtils.toInputStream(respone));
+            } else {
                 return new MagestoreResultReading(mHttpConnection.getInputStream());
-//            }
+            }
         } else {
             // có lỗi, ném ra exception
             MagestoreResultReadingException rp = new MagestoreResultReadingException(mHttpConnection.getErrorStream(), statusCode);
