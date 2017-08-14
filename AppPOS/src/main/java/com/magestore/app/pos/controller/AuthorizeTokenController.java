@@ -102,7 +102,7 @@ public class AuthorizeTokenController implements EncryptTransactionCallback {
     }
 
     private CardData prepareCardDataFromFields() {
-        return new CardData.Builder("", mPayment.getCCExpMonth(), mPayment.getCCExpYear()).cvvCode(mPayment.getCID()) //CVV Code is optional
+        return new CardData.Builder(mPayment.getCCNumber(), mPayment.getCCExpMonth(), mPayment.getCCExpYear()).cvvCode(mPayment.getCID()) //CVV Code is optional
                 .cardHolderName(mPayment.getCCOwner()).build();
     }
 }
