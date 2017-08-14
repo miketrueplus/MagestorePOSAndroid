@@ -69,6 +69,15 @@ public class PosProduct extends PosAbstractModel implements Product {
     }
 
     @Override
+    public void setInStock(boolean bInStock) {
+        if (bInStock) {
+            is_in_stock = "1";
+        } else {
+            is_in_stock = "0";
+        }
+    }
+
+    @Override
     public boolean isBackOrders() {
         return StringUtil.STRING_ONE.equals(backorders);
     }

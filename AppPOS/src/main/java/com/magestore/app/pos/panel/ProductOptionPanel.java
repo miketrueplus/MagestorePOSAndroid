@@ -241,7 +241,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                 CartItem item = bind2Item();
                 for (OptionModelView optionModel : mModelViewList) {
                     if (optionModel.quantity > 0)
-                        ((CartItemListController) getController()).updateToCart(item, optionModel.getModel().getID(), optionModel.title, optionModel.quantity * item.getQuantity(), optionModel.price, optionModel.quantity_increment);
+                        ((CartItemListController) getController()).updateToCart(item, optionModel.getModel().getID(), optionModel.title, optionModel.quantity * item.getQuantity(), optionModel.price, optionModel.quantity_increment, optionModel.is_in_stock);
                 }
                 ((CartItemListController) getController()).closeAllOpeningDialog();
             }
@@ -494,6 +494,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                 optionModelView.option_type = ProductOptionCustom.OPTION_TYPE_GROUPED;
                 optionModelView.input_type = ProductOptionCustom.TYPE_GROUP;
                 optionModelView.price = groupedOption.getPrice();
+                optionModelView.is_in_stock = groupedOption.isInStock();
                 optionModelView.setModel(groupedOption);
 
                 // thêm một list giả cuối để đặt số lượng
@@ -545,6 +546,8 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         public float quantity_increment = 1;
         public float price;
         public String code;
+        // stock group option
+        public boolean is_in_stock;
 
         public boolean isCustomOption() {
             return (option_type == null) || ProductOptionCustom.OPTION_TYPE_CUSTOM.compareToIgnoreCase(option_type) == 0;

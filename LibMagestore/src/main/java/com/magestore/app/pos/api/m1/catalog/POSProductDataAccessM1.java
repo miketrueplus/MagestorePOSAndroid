@@ -3,6 +3,7 @@ package com.magestore.app.pos.api.m1.catalog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
@@ -30,15 +31,18 @@ import com.magestore.app.pos.api.m1.POSAbstractDataAccessM1;
 import com.magestore.app.pos.model.catalog.PosProductOption;
 import com.magestore.app.pos.model.catalog.PosProductOptionConfigOption;
 import com.magestore.app.pos.model.catalog.PosProductOptionJsonConfigOptionPrice;
+import com.magestore.app.pos.model.inventory.PosStock;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosAbstractParseImplement;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListProduct;
 import com.magestore.app.util.ImageUtil;
 import com.magestore.app.util.SecurityUtil;
 import com.magestore.app.util.StringUtil;
+
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,17 +66,21 @@ public class POSProductDataAccessM1 extends POSAbstractDataAccessM1 implements P
             builder.registerTypeAdapter(new TypeToken<Map<String, PosProductOptionConfigOption>>() {
             }
                     .getType(), new ConfigOptionConverter());
+            builder.registerTypeAdapter(new TypeToken<List<PosStock>>() {
+            }
+                    .getType(), new GroupOptionConverter());
             return builder.create();
         }
 
         private static final String JSON_OPTION_ID = "optionId";
         private static final String JSON_OPTION_LABEL = "optionLabel";
+
         public class ConfigOptionConverter implements JsonDeserializer<Map<String, PosProductOptionConfigOption>> {
             @Override
             public Map<String, PosProductOptionConfigOption> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
                 JsonArray arr_config = json.getAsJsonArray();
                 Map<String, PosProductOptionConfigOption> mapConfigOption = new HashMap<>();
-                if(arr_config != null && arr_config.size() > 0) {
+                if (arr_config != null && arr_config.size() > 0) {
                     JsonObject json_color = arr_config.get(0).getAsJsonObject();
                     // khởi tạo product config
                     PosProductOptionConfigOption configOptionColor = new PosProductOptionConfigOption();
@@ -83,7 +91,7 @@ public class POSProductDataAccessM1 extends POSAbstractDataAccessM1 implements P
                     for (Map.Entry<String, JsonElement> item : json_color.entrySet())
                         configOptionColor.optionValues.put(item.getKey(), item.getValue().getAsString());
                     mapConfigOption.put("color", configOptionColor);
-                    if(arr_config.size() > 1){
+                    if (arr_config.size() > 1) {
                         JsonObject json_size = arr_config.get(1).getAsJsonObject();
                         // khởi tạo product config
                         PosProductOptionConfigOption configOptionSize = new PosProductOptionConfigOption();
@@ -111,6 +119,7 @@ public class POSProductDataAccessM1 extends POSAbstractDataAccessM1 implements P
         private static final String PRICE_FINAL = "finalPrice";
         private static final String PRICE_AMOUNT = "amount";
         private static final String PRICE_OLD = "oldPrice";
+
         public class ProductConfigOptionPriceConverter implements JsonDeserializer<PosProductOptionJsonConfigOptionPrice> {
             public PosProductOptionJsonConfigOptionPrice deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext ctx) {
                 PosProductOptionJsonConfigOptionPrice optionPrice = new PosProductOptionJsonConfigOptionPrice();
@@ -130,6 +139,27 @@ public class POSProductDataAccessM1 extends POSAbstractDataAccessM1 implements P
                     optionPrice.setFinalPrice(price == null || price.trim().equals("") ? 0 : Float.parseFloat(price));
                 }
                 return optionPrice;
+            }
+        }
+
+        public class GroupOptionConverter implements JsonDeserializer<List<PosStock>> {
+            @Override
+            public List<PosStock> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+                GsonBuilder builder = new GsonBuilder();
+                Gson gson = builder.create();
+                List<PosStock> listStock = new ArrayList<>();
+                JsonArray arr_group = json.getAsJsonArray();
+                if (arr_group != null && arr_group.size() > 0) {
+                    for (JsonElement el_stock : arr_group) {
+                        if (el_stock.isJsonObject()) {
+                            JsonObject obj_stock = el_stock.getAsJsonObject();
+                            PosStock stock = gson.fromJson(obj_stock, PosStock.class);
+                            listStock.add(stock);
+                        }
+                    }
+                    return listStock;
+                }
+                return null;
             }
         }
     }

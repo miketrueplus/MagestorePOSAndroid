@@ -42,4 +42,6 @@ public interface ProductOptionGrouped extends Model {
     List<Stock> getStock();
 
     int getQuantityIncrement();
+
+    boolean isInStock();
 }

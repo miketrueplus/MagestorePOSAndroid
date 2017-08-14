@@ -19,6 +19,7 @@ public interface Product extends Model, ParseModel {
     String getName();
 
     boolean isInStock();
+    void setInStock(boolean bInStock);
 
     boolean isBackOrders();
 

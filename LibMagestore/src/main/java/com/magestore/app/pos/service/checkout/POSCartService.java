@@ -460,7 +460,7 @@ public class POSCartService extends AbstractService implements CartService {
     }
 
     @Override
-    public CartItem insert(Checkout checkout, String productID, String productName, float quantity, float price) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+    public CartItem insert(Checkout checkout, String productID, String productName, float quantity, float price, boolean inStock) throws IOException, InstantiationException, ParseException, IllegalAccessException {
         // nếu chưa có đơn hàng, bo qua
         if (checkout == null) return null;
 
@@ -468,6 +468,7 @@ public class POSCartService extends AbstractService implements CartService {
         Product product = new PosProduct();
         product.setID(productID);
         product.setName(productName);
+        product.setInStock(inStock);
 
         // kiểm tra trước xem trong checkout đã có sẵn product chưa
         if (checkout.getCartItem() != null)

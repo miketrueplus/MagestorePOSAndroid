@@ -5,6 +5,7 @@ import com.magestore.app.lib.model.catalog.ProductOptionGrouped;
 import com.magestore.app.lib.model.inventory.Stock;
 import com.magestore.app.pos.model.PosAbstractModel;
 import com.magestore.app.pos.model.inventory.PosStock;
+import com.magestore.app.util.StringUtil;
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class PosProductOptionGrouped extends PosAbstractModel implements Product
     String default_qty;
     String image;
     String tax_class_id;
+    String is_in_stock;
 
     private List<PosStock> stock;
 
@@ -90,6 +92,7 @@ public class PosProductOptionGrouped extends PosAbstractModel implements Product
 
     /**
      * ID tax
+     *
      * @param tax_class_id
      */
     @Override
@@ -107,5 +110,16 @@ public class PosProductOptionGrouped extends PosAbstractModel implements Product
         if ((stock == null) || (stock.size() <= 0))
             return 1;
         return stock.get(0).getQuantityIncrement();
+    }
+
+    @Override
+    public boolean isInStock() {
+        if (StringUtil.isNullOrEmpty(is_in_stock)) {
+            return true;
+        }
+        if (StringUtil.STRING_ONE.equals(is_in_stock) || StringUtil.STRING_TRUE.equals(is_in_stock)) {
+            return true;
+        }
+        return false;
     }
 }
