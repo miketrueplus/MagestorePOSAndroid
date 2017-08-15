@@ -66,6 +66,7 @@ public abstract class AbstractActivity
     public static final String STATE_SHOW_POPUP_LIST_STAFF_PERMISSON = "com.magestore.app.pos.controller.checkoutlist.showpopup";
     public static String CHANGE_STAFF_PERMISSON_TO_SALE_ACTIVITY = "com.magestore.app.pos.ui.abstractactivity.changestaff";
     public static String CHANGE_PERMISSON_MENU_ORDER = "com.magestore.app.pos.saleactivity.menuorder";
+    public static String BACK_TO_HOME = "com.magestore.app.pos.ui.abstractactivity.backtohome";
     public static List<StaffPermisson> listStaff;
     TextView staff_name, staff_location;
     RelativeLayout im_change;

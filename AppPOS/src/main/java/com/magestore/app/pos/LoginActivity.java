@@ -136,10 +136,10 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
         mSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                mCheckLoginDemo = false;
-                checkPlatForm();
+//                mCheckLoginDemo = false;
+//                checkPlatForm();
                 // TODO: Tạm thời bỏ check platform để dev
-//                attemptLogin();
+                attemptLogin();
             }
         });
 

@@ -107,6 +107,8 @@ public class RegisterShiftActivity extends AbstractActivity {
         registerReceiver(receiver_data, filter);
         IntentFilter filter_change_menu_order = new IntentFilter(CHANGE_PERMISSON_MENU_ORDER);
         registerReceiver(receiver_menu_order, filter_change_menu_order);
+        IntentFilter filter_back_to_home = new IntentFilter(BACK_TO_HOME);
+        registerReceiver(back_to_home, filter_back_to_home);
     }
 
     @Override
@@ -148,12 +150,20 @@ public class RegisterShiftActivity extends AbstractActivity {
         }
     };
 
+    BroadcastReceiver back_to_home = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            finish();
+        }
+    };
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         try {
             unregisterReceiver(receiver_data);
             unregisterReceiver(receiver_menu_order);
+            unregisterReceiver(back_to_home);
         }catch (Exception e){}
     }
 

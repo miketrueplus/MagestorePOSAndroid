@@ -1,5 +1,9 @@
 package com.magestore.app.pos;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.PopupMenu;
@@ -157,7 +161,27 @@ public class OrderActivity extends AbstractActivity {
         // chuẩn bị model cho các panel
         mOrderListPanel.initModel();
         mOrderDetailPanel.initModel();
+
+        IntentFilter filter_change_menu_order = new IntentFilter(CHANGE_PERMISSON_MENU_ORDER);
+        registerReceiver(receiver_menu_order, filter_change_menu_order);
+
+        IntentFilter filter_back_to_home = new IntentFilter(BACK_TO_HOME);
+        registerReceiver(back_to_home, filter_back_to_home);
     }
+
+    BroadcastReceiver receiver_menu_order = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            changePermissonOrderMenu();
+        }
+    };
+
+    BroadcastReceiver back_to_home = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            finish();
+        }
+    };
 
     @Override
     protected void initValue() {
@@ -195,5 +219,14 @@ public class OrderActivity extends AbstractActivity {
 
     private void checkDevLicense(){
         dev_license.setVisibility(ConfigUtil.isDevLicense() ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        try {
+            unregisterReceiver(receiver_menu_order);
+            unregisterReceiver(back_to_home);
+        }catch (Exception e){}
     }
 }

@@ -31,6 +31,7 @@ import com.magestore.app.pos.panel.OrderRefundPanel;
 import com.magestore.app.pos.panel.OrderSendEmailPanel;
 import com.magestore.app.pos.panel.OrderShipmentPanel;
 import com.magestore.app.pos.panel.OrderTakePaymentPanel;
+import com.magestore.app.pos.ui.AbstractActivity;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.StringUtil;
 
@@ -268,6 +269,10 @@ public class OrderHistoryListController extends AbstractListController<Order> {
         intent.setAction(SEND_ORDER_TO_SALE_ACTIVITY);
         getMagestoreContext().getActivity().sendBroadcast(intent);
         getMagestoreContext().getActivity().finish();
+
+        Intent i = new Intent();
+        i.setAction(AbstractActivity.BACK_TO_HOME);
+        getMagestoreContext().getActivity().sendBroadcast(i);
     }
 
     public void doRetrievePaymentMethod() {
