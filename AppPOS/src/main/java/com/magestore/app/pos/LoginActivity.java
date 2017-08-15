@@ -123,7 +123,8 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
+                    mCheckLoginDemo = false;
+                    checkPlatForm();
                     return true;
                 }
                 return false;
