@@ -1433,7 +1433,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         if (listPayment != null && listPayment.size() > 0) {
             CheckoutPayment paymentDefault = null;
             if (getSelectedItem().getGrandTotal() == 0) {
-                paymentDefault = checkListPaymentNoInformation(listPayment);
+//                paymentDefault = checkListPaymentNoInformation(listPayment);
             } else {
                 paymentDefault = checkListPaymentDefault(listPayment);
             }

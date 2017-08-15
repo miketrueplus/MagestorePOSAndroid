@@ -287,73 +287,79 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
             // TODO: trường hợp 2 payment trở lên thì truyền tham số "multipaymentforpos"
             placeOrderParams.setMethod("multipaymentforpos");
         } else {
-            String paymentCode = listCheckoutPayment.get(0).getCode();
-            String paymentType = listCheckoutPayment.get(0).getType();
-            if (paymentType.equals("2") || paymentCode.equals(PAYMENT_STRIPE_CODE) || paymentCode.equals(PAYMENT_AUTHORIZE)) {
-                placeOrderParams.setMethod("multipaymentforpos");
+            if (listCheckoutPayment != null && listCheckoutPayment.size() > 0) {
+                String paymentCode = listCheckoutPayment.get(0).getCode();
+                String paymentType = listCheckoutPayment.get(0).getType();
+                if (paymentType.equals("2") || paymentCode.equals(PAYMENT_STRIPE_CODE) || paymentCode.equals(PAYMENT_AUTHORIZE)) {
+                    placeOrderParams.setMethod("multipaymentforpos");
+                } else {
+                    placeOrderParams.setMethod(paymentCode);
+                }
             } else {
-                placeOrderParams.setMethod(paymentCode);
+                placeOrderParams.setMethod("multipaymentforpos");
             }
         }
 
         List<PlaceOrderIntegrationParam> listIntegration = new ArrayList<>();
         List<PaymentMethodDataParam> listPaymentMethodParam = placeOrderParams.createPaymentMethodData();
 
-        for (CheckoutPayment checkoutPayment : listCheckoutPayment) {
-            if (checkoutPayment.getAdditionalData() == null) {
-                PosCheckoutPayment.AdditionalData paymentAdditionParam = checkoutPayment.createAdditionalData();
-                checkoutPayment.setAdditionalData(paymentAdditionParam);
-            }
-            PaymentMethodDataParam paymentMethodDataParam = createPaymentMethodParam();
-            PosPaymentMethodDataParam.PaymentMethodAdditionalParam additionalParam = paymentMethodDataParam.createAddition();
-            paymentMethodDataParam.setPaymentMethodAdditionalParam(additionalParam);
-            paymentMethodDataParam.setShiftId(ConfigUtil.getShiftId());
-            paymentMethodDataParam.setReferenceNumber(checkoutPayment.getReferenceNumber());
-            paymentMethodDataParam.setAmount(checkoutPayment.getAmount());
-            paymentMethodDataParam.setBaseAmount(ConfigUtil.convertToBasePrice(checkoutPayment.getBaseAmount()));
-            paymentMethodDataParam.setBaseRealAmount(ConfigUtil.convertToBasePrice(checkoutPayment.getRealAmount()));
-            paymentMethodDataParam.setRealAmount(checkoutPayment.getBaseRealAmount());
-            paymentMethodDataParam.setCode(checkoutPayment.getCode());
-            paymentMethodDataParam.setIsPayLater(checkoutPayment.isPaylater());
-            paymentMethodDataParam.setTitle(checkoutPayment.getTitle());
-            paymentMethodDataParam.setCCOwner(checkoutPayment.getCCOwner());
-            paymentMethodDataParam.setCCType(checkoutPayment.getCCType());
-            paymentMethodDataParam.setCCNumber(checkoutPayment.getCCNumber());
-            if (!StringUtil.isNullOrEmpty(checkoutPayment.getCCExpMonth())) {
+        if (listCheckoutPayment != null && listCheckoutPayment.size() > 0) {
+            for (CheckoutPayment checkoutPayment : listCheckoutPayment) {
+                if (checkoutPayment.getAdditionalData() == null) {
+                    PosCheckoutPayment.AdditionalData paymentAdditionParam = checkoutPayment.createAdditionalData();
+                    checkoutPayment.setAdditionalData(paymentAdditionParam);
+                }
+                PaymentMethodDataParam paymentMethodDataParam = createPaymentMethodParam();
+                PosPaymentMethodDataParam.PaymentMethodAdditionalParam additionalParam = paymentMethodDataParam.createAddition();
+                paymentMethodDataParam.setPaymentMethodAdditionalParam(additionalParam);
+                paymentMethodDataParam.setShiftId(ConfigUtil.getShiftId());
+                paymentMethodDataParam.setReferenceNumber(checkoutPayment.getReferenceNumber());
+                paymentMethodDataParam.setAmount(checkoutPayment.getAmount());
+                paymentMethodDataParam.setBaseAmount(ConfigUtil.convertToBasePrice(checkoutPayment.getBaseAmount()));
+                paymentMethodDataParam.setBaseRealAmount(ConfigUtil.convertToBasePrice(checkoutPayment.getRealAmount()));
+                paymentMethodDataParam.setRealAmount(checkoutPayment.getBaseRealAmount());
+                paymentMethodDataParam.setCode(checkoutPayment.getCode());
+                paymentMethodDataParam.setIsPayLater(checkoutPayment.isPaylater());
+                paymentMethodDataParam.setTitle(checkoutPayment.getTitle());
+                paymentMethodDataParam.setCCOwner(checkoutPayment.getCCOwner());
+                paymentMethodDataParam.setCCType(checkoutPayment.getCCType());
+                paymentMethodDataParam.setCCNumber(checkoutPayment.getCCNumber());
+                if (!StringUtil.isNullOrEmpty(checkoutPayment.getCCExpMonth())) {
 //                String month = checkoutPayment.getCCExpMonth().substring(0, 2);
-                paymentMethodDataParam.setCCExpMonth(checkoutPayment.getCCExpMonth());
-            } else {
-                paymentMethodDataParam.setCCExpMonth(checkoutPayment.getCCExpMonth());
-            }
-            paymentMethodDataParam.setCCExpYear(checkoutPayment.getCCExpYear());
-            paymentMethodDataParam.setCID(checkoutPayment.getCID());
-            listPaymentMethodParam.add(paymentMethodDataParam);
+                    paymentMethodDataParam.setCCExpMonth(checkoutPayment.getCCExpMonth());
+                } else {
+                    paymentMethodDataParam.setCCExpMonth(checkoutPayment.getCCExpMonth());
+                }
+                paymentMethodDataParam.setCCExpYear(checkoutPayment.getCCExpYear());
+                paymentMethodDataParam.setCID(checkoutPayment.getCID());
+                listPaymentMethodParam.add(paymentMethodDataParam);
 
-            if (checkoutPayment.getCode().equals(STORE_CREDIT_PAYMENT_CODE)) {
-                PlaceOrderIntegrationParam storeCreditIntegration = createPlaceOrderIntegrationParam();
-                List<PlaceOrderIntegrationOrderData> listStoreCreditOrderData = new ArrayList<>();
-                List<PlaceOrderIntegrationExtension> listStoreCreditExtension = new ArrayList<>();
-                storeCreditIntegration.setModule(STORE_CREDIT_MODULE);
-                storeCreditIntegration.setEventName(STORE_CREDIT_EVENT);
+                if (checkoutPayment.getCode().equals(STORE_CREDIT_PAYMENT_CODE)) {
+                    PlaceOrderIntegrationParam storeCreditIntegration = createPlaceOrderIntegrationParam();
+                    List<PlaceOrderIntegrationOrderData> listStoreCreditOrderData = new ArrayList<>();
+                    List<PlaceOrderIntegrationExtension> listStoreCreditExtension = new ArrayList<>();
+                    storeCreditIntegration.setModule(STORE_CREDIT_MODULE);
+                    storeCreditIntegration.setEventName(STORE_CREDIT_EVENT);
 
-                PlaceOrderIntegrationOrderData storeCreditBaseDiscount = createPlaceOrderIntegrationOrderData();
-                storeCreditBaseDiscount.setKey(STORE_CREDIT_BASE_DISCOUNT);
-                storeCreditBaseDiscount.setValue(-ConfigUtil.convertToBasePrice(checkoutPayment.getAmount()));
-                PlaceOrderIntegrationOrderData storeCreditDiscount = createPlaceOrderIntegrationOrderData();
-                storeCreditDiscount.setKey(STORE_CREDIT_DISCOUNT);
-                storeCreditDiscount.setValue(-checkoutPayment.getAmount());
-                listStoreCreditOrderData.add(storeCreditBaseDiscount);
-                listStoreCreditOrderData.add(storeCreditDiscount);
+                    PlaceOrderIntegrationOrderData storeCreditBaseDiscount = createPlaceOrderIntegrationOrderData();
+                    storeCreditBaseDiscount.setKey(STORE_CREDIT_BASE_DISCOUNT);
+                    storeCreditBaseDiscount.setValue(-ConfigUtil.convertToBasePrice(checkoutPayment.getAmount()));
+                    PlaceOrderIntegrationOrderData storeCreditDiscount = createPlaceOrderIntegrationOrderData();
+                    storeCreditDiscount.setKey(STORE_CREDIT_DISCOUNT);
+                    storeCreditDiscount.setValue(-checkoutPayment.getAmount());
+                    listStoreCreditOrderData.add(storeCreditBaseDiscount);
+                    listStoreCreditOrderData.add(storeCreditDiscount);
 
-                PlaceOrderIntegrationExtension storeCreditExtension = createPlaceOrderIntegrationExtension();
-                storeCreditExtension.setKey(STORE_CREDIT_BASE_DISCOUNT);
-                storeCreditExtension.setValue(ConfigUtil.convertToBasePrice(checkoutPayment.getAmount()));
-                listStoreCreditExtension.add(storeCreditExtension);
+                    PlaceOrderIntegrationExtension storeCreditExtension = createPlaceOrderIntegrationExtension();
+                    storeCreditExtension.setKey(STORE_CREDIT_BASE_DISCOUNT);
+                    storeCreditExtension.setValue(ConfigUtil.convertToBasePrice(checkoutPayment.getAmount()));
+                    listStoreCreditExtension.add(storeCreditExtension);
 
-                storeCreditIntegration.setOrderData(listStoreCreditOrderData);
-                storeCreditIntegration.setExtensionData(listStoreCreditExtension);
+                    storeCreditIntegration.setOrderData(listStoreCreditOrderData);
+                    storeCreditIntegration.setExtensionData(listStoreCreditExtension);
 
-                listIntegration.add(storeCreditIntegration);
+                    listIntegration.add(storeCreditIntegration);
+                }
             }
         }
 
