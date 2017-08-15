@@ -850,25 +850,51 @@ public class POSCartService extends AbstractService implements CartService {
     public List<CartItem> reOrder(Checkout checkout, Order order) throws IOException, InstantiationException, ParseException, IllegalAccessException {
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         ProductDataAccess productDataAccess = factory.generateProductDataAccess();
+        List<String> listId = new ArrayList<>();
+        for (OrderCartItem orderitem : order.getItemsInfoBuy().getListOrderCartItems()) {
+            if (orderitem.getCustomSalesInfo() == null) {
+                listId.add(orderitem.getID());
+            }
+        }
+
+        List<Product> listProduct = new ArrayList<>();
+        if (listId.size() > 0) {
+            listProduct = productDataAccess.retrieve(listId);
+        }
 
         // xử lý từng item trong order
         for (OrderCartItem orderitem : order.getItemsInfoBuy().getListOrderCartItems()) {
             // nếu không phải custome sales
             if (orderitem.getCustomSalesInfo() == null) {
                 // fill thông tin product vào
-                Product product = productDataAccess.retrieve(orderitem.getID());
-                product.setProductOption(productDataAccess.loadProductOption(product));
+                String id = orderitem.getID();
+//                Product product = productDataAccess.retrieve(id);
+                Product product= null;
 
-                // tạo item theo product truy xuất được
-                CartItem newItem = create(product, orderitem.getQty(), orderitem.getUnitPrice());
-                newItem.setOriginalPrice(orderitem.getOriginalPrice());
-                newItem.setOptions(mapOptionValueID2Code(orderitem.getOptions()));
-                newItem.setBundleOption(mapOptionValueID2Code(orderitem.getBundleOption()));
-                newItem.setBundleOptionQty(mapOptionValueID2Code(orderitem.getBundleOptionQty()));
-                newItem.setSuperAttribute(mapOptionValueID2Code(orderitem.getSuperAttribute()));
+                if (listProduct.size() > 0) {
+                    for (Product productRespone : listProduct) {
+                        if (productRespone.getID().equals(id)) {
+//                            product.setImage(productRespone.getImage());
+//                            product.setInStock(productRespone.isInStock());
+                            product = productRespone;
+                        }
+                    }
+                }
+                if (product != null) {
+                    product.setProductOption(productDataAccess.loadProductOption(product));
+                    if (product.isInStock()) {
+                        // tạo item theo product truy xuất được
+                        CartItem newItem = create(product, orderitem.getQty(), orderitem.getUnitPrice());
+                        newItem.setOriginalPrice(orderitem.getOriginalPrice());
+                        newItem.setOptions(mapOptionValueID2Code(orderitem.getOptions()));
+                        newItem.setBundleOption(mapOptionValueID2Code(orderitem.getBundleOption()));
+                        newItem.setBundleOptionQty(mapOptionValueID2Code(orderitem.getBundleOptionQty()));
+                        newItem.setSuperAttribute(mapOptionValueID2Code(orderitem.getSuperAttribute()));
 
-                // xử lý xong thì insert lại vào checkout
-                insert(checkout, newItem);
+                        // xử lý xong thì insert lại vào checkout
+                        insert(checkout, newItem);
+                    }
+                }
             }
             // nếu là custom sales
             else {

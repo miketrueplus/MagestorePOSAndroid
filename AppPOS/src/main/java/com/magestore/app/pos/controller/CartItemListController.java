@@ -178,8 +178,15 @@ public class CartItemListController extends AbstractChildListController<Checkout
             List<CartItem> list = (List<CartItem>) wraper.get("cart_respone");
             onRetrievePostExecute(list);
             updateTotalPrice();
+            mCheckoutListController.isShowLoadingList(false);
             return;
         }
+    }
+
+    @Override
+    public void onCancelledBackground(Exception exp, int actionType, String actionCode, Map<String, Object> wraper, Model... models) {
+        super.onCancelledBackground(exp, actionType, actionCode, wraper, models);
+        mCheckoutListController.isShowLoadingList(false);
     }
 
     /**
@@ -657,6 +664,7 @@ public class CartItemListController extends AbstractChildListController<Checkout
      * @param state
      */
     public void reOrder(State state) {
+        mCheckoutListController.isShowLoadingList(true);
         // lấy order cần thực hiện re-order
         Order order = (Order) state.getTag(CheckoutListController.STATE_CODE_REORDER);
         doAction(ACTION_CART_REORDER, null, new HashMap<String, Object>(), order);
