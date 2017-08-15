@@ -57,6 +57,7 @@ public interface Product extends Model, ParseModel {
     String getExtensionAttributes();
     String getCategoryIDs();
     String getImage();
+    void setImage(String strImage);
     String getBarcodeString();
 
     void setName(String name);

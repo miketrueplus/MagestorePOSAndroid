@@ -328,10 +328,10 @@ public class CartItemListController extends AbstractChildListController<Checkout
             mCustomeSaleDialog.dismiss();
     }
 
-    public void updateToCart(CartItem cartItem, String productID, String productName, float quantity, float price, float qtyIncrement, boolean in_stock) {
+    public void updateToCart(CartItem cartItem, String productID, String productName, float quantity, float price, float qtyIncrement, boolean in_stock, String image) {
         try {
             // chèn vào data set
-            CartItem item = mCartService.insert(getParent(), productID, productName, quantity, price, in_stock);
+            CartItem item = mCartService.insert(getParent(), productID, productName, quantity, price, in_stock, image);
             item.getProduct().setQuantityIncrement(qtyIncrement);
             // chèn model lên đầu
             getView().updateModelToFirstInsertIfNotFound(item);

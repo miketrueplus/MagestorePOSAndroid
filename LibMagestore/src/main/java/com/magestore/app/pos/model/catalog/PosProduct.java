@@ -225,6 +225,11 @@ public class PosProduct extends PosAbstractModel implements Product {
     }
 
     @Override
+    public void setImage(String strImage) {
+        image = strImage;
+    }
+
+    @Override
     public String getBarcodeString() {
         return null;
     }

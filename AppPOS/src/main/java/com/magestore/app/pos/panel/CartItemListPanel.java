@@ -29,6 +29,7 @@ import com.magestore.app.pos.databinding.CardProductListContentBinding;
 import com.magestore.app.pos.databinding.PanelCartListBinding;
 import com.magestore.app.pos.task.LoadProductImageTask;
 import com.magestore.app.util.ConfigUtil;
+import com.magestore.app.util.StringUtil;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -220,11 +221,15 @@ public class CartItemListPanel extends AbstractListPanel<CartItem> {
             binding.setCartItem((CartItem) item.getModel());
             if (((CartItem) item.getModel()).getProduct() != null) {
                 Product product = ((CartItem) item.getModel()).getProduct();
-                ImageView productImgView = ((ImageView) product.getRefer(LoadProductImageTask.KEY_IMAGEVIEW));
-                if (productImgView != null) {
-                    imageView.setImageDrawable(productImgView.getDrawable());
-                } else {
-                    imageView.setImageResource(R.mipmap.ic_unknow);
+//                ImageView productImgView = ((ImageView) product.getRefer(LoadProductImageTask.KEY_IMAGEVIEW));
+//                if (productImgView != null) {
+//                    imageView.setImageDrawable(productImgView.getDrawable());
+//                } else {
+//                    imageView.setImageResource(R.mipmap.ic_unknow);
+//                }
+                String image = product.getImage();
+                if (!StringUtil.isNullOrEmpty(image)) {
+                    Picasso.with(getContext()).load(image).placeholder(R.mipmap.ic_unknow).into(imageView);
                 }
             }
         }

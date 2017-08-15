@@ -56,7 +56,7 @@ public interface CartService extends ChildListService<Checkout, CartItem> {
 
     void substract(CartItem cartItem, float quantity);
 
-    CartItem insert(Checkout checkout, String productID, String productName, float quantity, float price, boolean inStock) throws IOException, InstantiationException, ParseException, IllegalAccessException;
+    CartItem insert(Checkout checkout, String productID, String productName, float quantity, float price, boolean inStock, String image) throws IOException, InstantiationException, ParseException, IllegalAccessException;
 
     CartItem insert(Checkout checkout, Product product, float quantity, float price) throws InstantiationException, IllegalAccessException, ParseException, IOException;
 
