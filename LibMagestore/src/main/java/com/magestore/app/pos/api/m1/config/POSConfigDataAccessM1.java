@@ -55,6 +55,7 @@ import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.EncryptUntil;
 import com.magestore.app.util.StringUtil;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -473,7 +474,7 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
             String country_name = country.get("country_name").toString();
             configCountry.setCountryID(country_id);
             configCountry.setCountryName(country_name);
-            Map<String, ConfigRegion> mapRegion =  getRegion(country_id);
+            Map<String, ConfigRegion> mapRegion = getRegion(country_id);
             if (mapRegion != null) {
                 configCountry.setRegions(mapRegion);
             }
@@ -581,7 +582,19 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
             String currency_name = item.get("currency_name").toString();
             String currency_symbol = "";
             if (item.get("currency_symbol") != null) {
-                currency_symbol = item.get("currency_symbol").toString();
+                String symbol = item.get("currency_symbol").toString();
+                if (symbol.length() > 0) {
+                    String sSymbol = symbol.substring(0, 1);
+                    if (sSymbol.equals("u")) {
+                        currency_symbol = StringEscapeUtils.unescapeJava("\\" + symbol);
+                    } else if (sSymbol.equals("\\")) {
+                        currency_symbol = StringEscapeUtils.unescapeJava(symbol);
+                    } else if (symbol.contains("\\u")) {
+                        currency_symbol = StringEscapeUtils.unescapeJava(symbol);
+                    } else {
+                        currency_symbol = StringEscapeUtils.unescapeJava(symbol);
+                    }
+                }
             }
             String is_default = item.get("is_default").toString();
             String currency_rate = item.get("currency_rate").toString();
@@ -857,6 +870,16 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
     }
 
     @Override
+    public String getCurrentCurrencyCode() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        if (mConfig == null) mConfig = new PosConfigDefault();
+        String currentCurrencyCode = "";
+        if (mConfig.getValue("baseCurrencyCode") != null) {
+            currentCurrencyCode = (String) mConfig.getValue("currentCurrencyCode");
+        }
+        return currentCurrencyCode;
+    }
+
+    @Override
     public float getConfigMaximumDiscount() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
         if (mConfig == null) mConfig = new PosConfigDefault();
 
@@ -997,6 +1020,19 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
 
     private ConfigPriceFormat getPriceFormat(LinkedTreeMap priceFormat) {
         String currencySymbol = (String) mConfig.getValue("currentCurrencySymbol");
+        String currency_symbol = "";
+        if (currencySymbol.length() > 0) {
+            String sSymbol = currencySymbol.substring(0, 1);
+            if (sSymbol.equals("u")) {
+                currency_symbol = StringEscapeUtils.unescapeJava("\\" + currencySymbol);
+            } else if (sSymbol.equals("\\")) {
+                currency_symbol = StringEscapeUtils.unescapeJava(currencySymbol);
+            } else if (currencySymbol.contains("\\u")) {
+                currency_symbol = StringEscapeUtils.unescapeJava(currencySymbol);
+            } else {
+                currency_symbol = StringEscapeUtils.unescapeJava(currencySymbol);
+            }
+        }
         String pattern = priceFormat.get("pattern").toString();
         int precision = ((Double) priceFormat.get("precision")).intValue();
         int requiredPrecision = ((Double) priceFormat.get("requiredPrecision")).intValue();
@@ -1013,7 +1049,7 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
         configPriceFormat.setGroupSymbol(groupSymbol);
         configPriceFormat.setGroupLength(groupLength);
         configPriceFormat.setIntegerRequied(integerRequired);
-        configPriceFormat.setCurrencySymbol(currencySymbol);
+        configPriceFormat.setCurrencySymbol(currency_symbol);
 
         return configPriceFormat;
     }

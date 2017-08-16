@@ -88,7 +88,26 @@ public class POSConfigService extends AbstractService implements ConfigService {
         }
         ConfigUtil.setEnableSession(getConfigSession());
         ConfigUtil.setEnableDeleteOrder(getConfigDeleteOrder());
-        ConfigUtil.setCurrentCurrency(getDefaultCurrency());
+        if (!StringUtil.isNullOrEmpty(getCurrentCurrencyCode())) {
+            List<Currency> listCurrency = getCurrencies();
+            boolean checkCurrentCurrency = false;
+            if (listCurrency != null && listCurrency.size() > 0) {
+                for (Currency currency : listCurrency) {
+                    if (currency.getCode().equals(getCurrentCurrencyCode())) {
+                        checkCurrentCurrency = true;
+                        ConfigUtil.setCurrentCurrency(currency);
+                    }
+                }
+                if (!checkCurrentCurrency) {
+                    ConfigUtil.setCurrentCurrency(getDefaultCurrency());
+                }
+            } else {
+                ConfigUtil.setCurrentCurrency(getDefaultCurrency());
+            }
+        } else {
+            ConfigUtil.setCurrentCurrency(getDefaultCurrency());
+        }
+
         ConfigUtil.setConfigTaxClass(configTaxClass);
         ConfigUtil.setConfigPriceFormat(configDataAccess.getPriceFormat());
         if (configOption != null) {
@@ -428,6 +447,13 @@ public class POSConfigService extends AbstractService implements ConfigService {
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
         return configDataAccess.getBaseCurrencyCode();
+    }
+
+    @Override
+    public String getCurrentCurrencyCode() throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
+        return configDataAccess.getCurrentCurrencyCode();
     }
 
     @Override

@@ -634,7 +634,7 @@ public class SalesActivity extends AbstractActivity
             mProductListController.bindCategory((Category) null);
             mCheckoutListController.getView().notifyDataSetChanged();
             mCheckoutListController.updateTotal();
-            mProductListPanel.notifyDataSetChanged();
+//            mProductListPanel.notifyDataSetChanged();
             mCartItemListPanel.notifyDataSetChanged();
             mCheckoutListPanel.notifyDataSetChanged();
         }

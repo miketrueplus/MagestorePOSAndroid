@@ -109,6 +109,8 @@ public interface ConfigService extends Service {
 
     String getBaseCurrencyCode() throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
+    String getCurrentCurrencyCode() throws InstantiationException, IllegalAccessException, IOException, ParseException;
+
     float getConfigMaximumDiscount() throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
     boolean getConfigDeliveryTime() throws InstantiationException, IllegalAccessException, IOException, ParseException;
