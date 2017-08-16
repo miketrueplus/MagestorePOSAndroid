@@ -2131,6 +2131,14 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     }
 
     /**
+     * check switch pick at store
+     * @param isCheck
+     */
+    public void setCheckSwitch(boolean isCheck) {
+        ((CheckoutDetailPanel) mDetailView).setCheckSwitch(isCheck);
+    }
+
+    /**
      * show dialog error
      *
      * @param message

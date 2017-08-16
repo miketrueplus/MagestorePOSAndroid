@@ -427,9 +427,12 @@ public abstract class AbstractActivity
                 }
             } else if (id == R.id.nav_checkout) {
                 if (!(AbstractActivity.this instanceof SalesActivity)) {
-                    Intent intent = new Intent(getContext(), SalesActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
+//                    Intent intent = new Intent(getContext(), SalesActivity.class);
+//                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                    startActivity(intent);
+                    Intent i = new Intent();
+                    i.setAction(AbstractActivity.BACK_TO_HOME);
+                    sendBroadcast(i);
                 }
             } else if (id == R.id.nav_order_history) {
                 if (!(AbstractActivity.this instanceof OrderActivity)) {

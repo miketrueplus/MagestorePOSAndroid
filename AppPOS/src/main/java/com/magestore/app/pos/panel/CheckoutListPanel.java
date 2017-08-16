@@ -130,6 +130,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
                 if (btn_sales_order_checkout.getText().equals(place_order) || btn_sales_order_checkout.getText().equals(mark_as_partial)) {
                     ((CheckoutListController) getController()).doInputPlaceOrder();
                 } else {
+                    ((CheckoutListController) getController()).setCheckSwitch(false);
                     ((CheckoutListController) getController()).doInputSaveCart();
                 }
             }
