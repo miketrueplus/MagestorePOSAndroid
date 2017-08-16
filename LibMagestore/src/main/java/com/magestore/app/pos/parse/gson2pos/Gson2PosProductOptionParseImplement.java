@@ -104,7 +104,7 @@ public class Gson2PosProductOptionParseImplement extends Gson2PosAbstractParseIm
             }
             if (json.getAsJsonObject().get(PRICE_OLD).getAsJsonObject().has(PRICE_AMOUNT)) {
                 String price = json.getAsJsonObject().get(PRICE_OLD).getAsJsonObject().get(PRICE_AMOUNT).getAsString();
-                optionPrice.setFinalPrice(price == null || price.trim().equals("") ? 0 : Float.parseFloat(price));
+                optionPrice.setOldPrice(price == null || price.trim().equals("") ? 0 : Float.parseFloat(price));
             }
             return optionPrice;
         }
