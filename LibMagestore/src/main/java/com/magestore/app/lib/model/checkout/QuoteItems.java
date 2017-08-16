@@ -40,4 +40,5 @@ public interface QuoteItems extends Model {
     CartItem getCartItem();
 
     void convertProductOption(CartItem cartItem);
+    void setCustomSale(String strCustomSale);
 }

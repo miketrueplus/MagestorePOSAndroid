@@ -230,6 +230,8 @@ public class CartItemListPanel extends AbstractListPanel<CartItem> {
                 String image = product.getImage();
                 if (!StringUtil.isNullOrEmpty(image)) {
                     Picasso.with(getContext()).load(image).placeholder(R.mipmap.ic_unknow).into(imageView);
+                } else {
+                    imageView.setImageResource(R.mipmap.ic_unknow);
                 }
             }
         }

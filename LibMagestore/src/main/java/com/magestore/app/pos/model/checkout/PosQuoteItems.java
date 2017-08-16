@@ -26,6 +26,7 @@ public class PosQuoteItems extends PosAbstractModel implements QuoteItems {
     int use_discount = 1;
     String amount;
     String custom_price;
+    String is_custom_sale;
 
     List<PosQuoteItemExtension> extension_data;
 
@@ -130,5 +131,10 @@ public class PosQuoteItems extends PosAbstractModel implements QuoteItems {
         options = cartItem.getOptions();
         super_attribute = cartItem.getSuperAttribute();
         bundle_option_qty = cartItem.getBundleOptionQuantity();
+    }
+
+    @Override
+    public void setCustomSale(String strCustomSale) {
+        is_custom_sale = strCustomSale;
     }
 }
