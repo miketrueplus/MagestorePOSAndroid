@@ -136,7 +136,7 @@ public class POSProductDataAccessM1 extends POSAbstractDataAccessM1 implements P
                 if (json.getAsJsonObject().get(PRICE_OLD).getAsJsonObject().has(PRICE_AMOUNT)) {
                     String price = json.getAsJsonObject().get(PRICE_OLD).getAsJsonObject().get(PRICE_AMOUNT).toString();
                     price = price.replaceAll("\"", "");
-                    optionPrice.setFinalPrice(price == null || price.trim().equals("") ? 0 : Float.parseFloat(price));
+                    optionPrice.setOldPrice(price == null || price.trim().equals("") ? 0 : Float.parseFloat(price));
                 }
                 return optionPrice;
             }

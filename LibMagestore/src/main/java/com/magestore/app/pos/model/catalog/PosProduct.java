@@ -273,7 +273,8 @@ public class PosProduct extends PosAbstractModel implements Product {
     public int getQuantityIncrement() {
         if (qty_increment == null || StringUtil.STRING_EMPTY.equals(qty_increment) || StringUtil.STRING_FALSE.equals(qty_increment))
             return 1;
-        return (int) Float.parseFloat(qty_increment);
+        int qty = (int) Float.parseFloat(qty_increment);
+        return qty > 0 ? qty : 1;
     }
 
     @Override

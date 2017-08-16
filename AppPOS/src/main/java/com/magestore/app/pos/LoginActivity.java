@@ -72,7 +72,7 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        ConfigUtil.setPlatForm(ConfigUtil.PLATFORM_MAGENTO_1);
+        ConfigUtil.setPlatForm(ConfigUtil.PLATFORM_MAGENTO_2);
 
         STORE_ID = DataUtil.getDataStringToPreferences(getContext(), DataUtil.STORE_ID);
 
@@ -148,7 +148,8 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
             @Override
             public void onClick(View view) {
                 mCheckLoginDemo = true;
-                checkPlatForm();
+//                checkPlatForm();
+                attemptLoginDemo();
             }
         });
 
@@ -364,9 +365,9 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
 
         // check login là demo thì không lại thông tin khách hàng nhập
         mCheckLoginDemo = true;
-        String domain = mDomainView.getText().toString().trim();
-        String username = mUserNameView.getText().toString().trim();
-        String password = mPasswordView.getText().toString().trim();
+        String domain = "devm2.nhubinh.com";
+        String username = "admin";
+        String password = "admin123";
 
         String strFinalDomain = buildPOSBaseURL(domain);
         // Bắt đầu login task
