@@ -136,10 +136,10 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
         mSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                mCheckLoginDemo = false;
-                checkPlatForm();
+//                mCheckLoginDemo = false;
+//                checkPlatForm();
                 // TODO: Tạm thời bỏ check platform để dev
-//                attemptLogin();
+                attemptLogin();
             }
         });
 
@@ -148,8 +148,8 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
             @Override
             public void onClick(View view) {
                 mCheckLoginDemo = true;
-//                checkPlatForm();
-                attemptLoginDemo();
+                checkPlatForm();
+//                attemptLoginDemo();
             }
         });
 
@@ -339,6 +339,9 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
             // check login không phải là demo
             mCheckLoginDemo = false;
             // lấy giá trị khi nhấn login
+            mDomainView.setText("demo-magento2.magestore.com/pos-app/03");
+            mUserNameView.setText("ravi");
+            mPasswordView.setText("ravi123");
             String domain = mDomainView.getText().toString().trim();
             String username = mUserNameView.getText().toString().trim();
             String password = mPasswordView.getText().toString().trim();
@@ -365,9 +368,9 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
 
         // check login là demo thì không lại thông tin khách hàng nhập
         mCheckLoginDemo = true;
-        String domain = "devm2.nhubinh.com";
-        String username = "admin";
-        String password = "admin123";
+        String domain = mDomainView.getText().toString().trim();
+        String username = mUserNameView.getText().toString().trim();
+        String password = mPasswordView.getText().toString().trim();
 
         String strFinalDomain = buildPOSBaseURL(domain);
         // Bắt đầu login task
