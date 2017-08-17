@@ -555,10 +555,18 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
                     cartOld.getProduct().setIsSaveCart(true);
                     cartOld.setIsVirtual(cartNew.getIsVirtual());
                     cartOld.setQuantity(cartNew.getQuantity());
-                    if (cartNew.getPriceInclTax() > 0) {
-                        cartOld.setPriceShowView(ConfigUtil.convertToBasePrice(cartNew.getPriceInclTax()));
+                    if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_1)) {
+                        if (cartOld.isCustomPrice()) {
+                            cartOld.setPriceShowView(ConfigUtil.convertToBasePrice(cartNew.getOriginalCustomPrice()));
+                        } else {
+                            cartOld.setPriceShowView(ConfigUtil.convertToBasePrice(cartNew.getOriginalPrice()));
+                        }
                     } else {
-                        cartOld.setPriceShowView(cartNew.getBasePriceInclTax());
+                        if (cartNew.getPriceInclTax() > 0) {
+                            cartOld.setPriceShowView(ConfigUtil.convertToBasePrice(cartNew.getPriceInclTax()));
+                        } else {
+                            cartOld.setPriceShowView(cartNew.getBasePriceInclTax());
+                        }
                     }
                 }
             }

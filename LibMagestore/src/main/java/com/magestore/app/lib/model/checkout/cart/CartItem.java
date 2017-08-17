@@ -125,6 +125,7 @@ public interface CartItem extends Model {
     void setPriceInvoice(float fPriceInvoice);
     float getBasePriceInclTax();
     float getOriginalPrice();
+    float getOriginalCustomPrice();
     String getItemId();
     void setItemId(String strItemId);
     float getBaseOriginalPrice();

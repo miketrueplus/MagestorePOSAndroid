@@ -359,6 +359,8 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     @Gson2PosExclude
     boolean isSaveCart;
     @Gson2PosExclude
+    float original_custom_price;
+    @Gson2PosExclude
     float original_price;
     @Gson2PosExclude
     PosOrderParentItem parent_item;
@@ -475,6 +477,11 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     @Override
     public float getOriginalPrice() {
         return original_price;
+    }
+
+    @Override
+    public float getOriginalCustomPrice() {
+        return original_custom_price;
     }
 
     @Override
