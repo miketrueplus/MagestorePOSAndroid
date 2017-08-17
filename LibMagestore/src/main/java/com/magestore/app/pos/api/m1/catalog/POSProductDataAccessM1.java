@@ -398,7 +398,7 @@ public class POSProductDataAccessM1 extends POSAbstractDataAccessM1 implements P
             paramBuilder = statement.getParamBuilder()
                     .setPage(page)
                     .setPageSize(pageSize)
-                    .setSortOrderDESC("name")
+                    .setSortOrderASC("name")
                     .setParam("show_out_stock", "1")
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 

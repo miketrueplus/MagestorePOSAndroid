@@ -19,7 +19,7 @@ import java.net.URL;
 
 public class MagestoreConnection implements Connection {
     // Timeout kết nối mặc định theo ms
-    public static int DEFAULT_TIMEOUT = 30000;
+    public static int DEFAULT_TIMEOUT = 60000;
 
     // HTTP connection kết nối đến API server
 //    private HttpURLConnection mHttpConn = null;

@@ -36,6 +36,8 @@ import com.magestore.app.pos.api.m1.POSDataAccessSessionM1;
 import com.magestore.app.pos.api.m1.POSAbstractDataAccessM1;
 import com.magestore.app.pos.model.checkout.cart.PosCartItem;
 import com.magestore.app.pos.model.sales.PosOrder;
+import com.magestore.app.pos.model.sales.PosOrderBillingAddress;
+import com.magestore.app.pos.model.sales.PosOrderPayment;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosAbstractParseImplement;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListOrder;
 import com.magestore.app.util.ConfigUtil;
@@ -60,9 +62,12 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
         public Gson createGson() {
             GsonBuilder builder = new GsonBuilder();
             builder.enableComplexMapKeySerialization();
-            builder.registerTypeAdapter(new TypeToken<PosOrder>() {
+            builder.registerTypeAdapter(new TypeToken<PosOrderPayment>() {
             }
-                    .getType(), new OrderParamsConverter());
+                    .getType(), new OrderPaymentConverter());
+            builder.registerTypeAdapter(new TypeToken<PosOrderBillingAddress>() {
+            }
+                    .getType(), new OrderBillingAddressConverter());
             builder.registerTypeAdapter(new TypeToken<PosCartItem.OptionsValue>() {
             }
                     .getType(), new ReOrderParamsConverter());
@@ -96,25 +101,52 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
             }
         }
 
-        private static final String JSON_EXTENSION_PAYENT = "payment";
-        private static final String JSON_EXTENSION_BILLING_ADDRESS = "billing_address";
-        private static final String JSON_EXTENSION_STREET = "street";
+//        private static final String JSON_EXTENSION_PAYENT = "payment";
+//        private static final String JSON_EXTENSION_BILLING_ADDRESS = "billing_address";
+//
+//
+//        public class OrderParamsConverter implements JsonDeserializer<PosOrder> {
+//            @Override
+//            public PosOrder deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+//                JsonObject obj = json.getAsJsonObject();
+//                if (obj.has(JSON_EXTENSION_PAYENT)) {
+//                    obj.remove(JSON_EXTENSION_PAYENT);
+//                }
+//                if (obj.has(JSON_EXTENSION_BILLING_ADDRESS)) {
+//                    JsonObject obj_billing = obj.getAsJsonObject(JSON_EXTENSION_BILLING_ADDRESS);
+//                    if (obj_billing.has(JSON_EXTENSION_STREET)) {
+//                        obj_billing.remove(JSON_EXTENSION_STREET);
+//                    }
+//                }
+//                PosOrder order = new Gson().fromJson(obj, PosOrder.class);
+//                return order;
+//            }
+//        }
 
-        public class OrderParamsConverter implements JsonDeserializer<PosOrder> {
+        public class OrderPaymentConverter implements JsonDeserializer<PosOrderPayment> {
+
             @Override
-            public PosOrder deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            public PosOrderPayment deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+                if (json.isJsonObject()) {
+                    JsonObject obj = json.getAsJsonObject();
+                    PosOrderPayment payment = new Gson().fromJson(obj, PosOrderPayment.class);
+                    return payment;
+                }
+                return null;
+            }
+        }
+
+        private static final String JSON_EXTENSION_STREET = "street";
+        public class OrderBillingAddressConverter implements JsonDeserializer<PosOrderBillingAddress> {
+
+            @Override
+            public PosOrderBillingAddress deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
                 JsonObject obj = json.getAsJsonObject();
-                if (obj.has(JSON_EXTENSION_PAYENT)) {
-                    obj.remove(JSON_EXTENSION_PAYENT);
+                if (obj.has(JSON_EXTENSION_STREET)) {
+                    obj.remove(JSON_EXTENSION_STREET);
                 }
-                if (obj.has(JSON_EXTENSION_BILLING_ADDRESS)) {
-                    JsonObject obj_billing = obj.getAsJsonObject(JSON_EXTENSION_BILLING_ADDRESS);
-                    if (obj_billing.has(JSON_EXTENSION_STREET)) {
-                        obj_billing.remove(JSON_EXTENSION_STREET);
-                    }
-                }
-                PosOrder order = new Gson().fromJson(obj, PosOrder.class);
-                return order;
+                PosOrderBillingAddress billingAddress = new Gson().fromJson(obj, PosOrderBillingAddress.class);
+                return billingAddress;
             }
         }
     }

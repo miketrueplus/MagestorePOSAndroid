@@ -243,6 +243,7 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
     private static String REWARD_POINT_AMOUNT = "rewardpoints_base_amount";
     private static final String PAYMENT_STRIPE_CODE = "stripe_integration";
     private static final String PAYMENT_AUTHORIZE = "authorizenet_integration";
+    private static final String PAYMENT_STORE_CREDIT_CODE = "storecredit";
 
     @Override
     public Model placeOrder(String quoteId, Checkout checkout, List<CheckoutPayment> listCheckoutPayment) throws IOException, InstantiationException, ParseException, IllegalAccessException {
@@ -293,7 +294,15 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
                 if (paymentType.equals("2") || paymentCode.equals(PAYMENT_STRIPE_CODE) || paymentCode.equals(PAYMENT_AUTHORIZE)) {
                     placeOrderParams.setMethod("multipaymentforpos");
                 } else {
-                    placeOrderParams.setMethod(paymentCode);
+                    if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_1)) {
+                        if (paymentType.equals(PAYMENT_STORE_CREDIT_CODE)) {
+                            placeOrderParams.setMethod("multipaymentforpos");
+                        } else {
+                            placeOrderParams.setMethod(paymentCode);
+                        }
+                    } else {
+                        placeOrderParams.setMethod(paymentCode);
+                    }
                 }
             } else {
                 placeOrderParams.setMethod("multipaymentforpos");
