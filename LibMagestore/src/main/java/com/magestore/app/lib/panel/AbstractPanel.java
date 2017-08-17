@@ -136,6 +136,7 @@ public abstract class AbstractPanel<TController extends Controller> extends Fram
 
     /**
      * Hiển thị thông báo loiõ với reloading
+     *
      * @param strMsg
      */
     @Override
@@ -176,6 +177,7 @@ public abstract class AbstractPanel<TController extends Controller> extends Fram
 
     /**
      * Hiển thị thông báo lỗi
+     *
      * @param strMsg
      */
     public void showErrorMsg(String strMsg) {
@@ -211,6 +213,11 @@ public abstract class AbstractPanel<TController extends Controller> extends Fram
     @Override
     public void showProgress(boolean blnShow) {
         if (mProgressBar != null) mProgressBar.setVisibility(blnShow ? View.VISIBLE : View.GONE);
+        if (mTxtErrorMsg != null) {
+            if (blnShow) {
+                mTxtErrorMsg.setVisibility(GONE);
+            }
+        }
     }
 
     /**
@@ -221,6 +228,11 @@ public abstract class AbstractPanel<TController extends Controller> extends Fram
     @Override
     public void showProgressLoadRefresh(final boolean show) {
         if (mProgressBarTop != null) mProgressBarTop.setVisibility(show ? View.VISIBLE : View.GONE);
+        if (mTxtErrorMsg != null) {
+            if (show) {
+                mTxtErrorMsg.setVisibility(GONE);
+            }
+        }
     }
 
     /**
@@ -357,14 +369,14 @@ public abstract class AbstractPanel<TController extends Controller> extends Fram
 
     /**
      * Hiển thị thông báo trạng thái
+     *
      * @param strMsg
      */
     protected void callShowWarning(String strMsg) {
         if (mTxtErrorMsg != null) {
             mTxtErrorMsg.setText(strMsg);
             mTxtErrorMsg.setVisibility(VISIBLE);
-        }
-        else {
+        } else {
             new AlertDialog.Builder(getContext())
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .setTitle(R.string.dialog_warning)
@@ -383,8 +395,13 @@ public abstract class AbstractPanel<TController extends Controller> extends Fram
         if (mTxtErrorMsg != null) mTxtErrorMsg.setVisibility(GONE);
     }
 
-    protected void setViewContent(View viewContent) {mViewContent = viewContent;}
-    protected View getViewContent() {return mViewContent;}
+    protected void setViewContent(View viewContent) {
+        mViewContent = viewContent;
+    }
+
+    protected View getViewContent() {
+        return mViewContent;
+    }
 
     @Override
     public ModelView createModelView(Model model) {

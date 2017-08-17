@@ -152,6 +152,13 @@
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
                 android:visibility="gone" />
+
+            <RelativeLayout
+                android:id="@+id/v_reload_product"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                android:clickable="true"/>
         </RelativeLayout>
     </LinearLayout>
 

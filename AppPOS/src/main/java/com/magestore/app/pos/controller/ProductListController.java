@@ -4,10 +4,12 @@ import android.os.AsyncTask;
 import android.os.Build;
 
 import com.magestore.app.lib.controller.AbstractListController;
+import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.catalog.Category;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.observ.State;
 import com.magestore.app.lib.service.catalog.ProductService;
+import com.magestore.app.pos.panel.ProductListPanel;
 import com.magestore.app.pos.task.LoadProductImageTask;
 import com.magestore.app.util.StringUtil;
 
@@ -50,7 +52,6 @@ public class ProductListController extends AbstractListController<Product> {
         bindCategory(((CategoryListController) state.getController()).getSelectedItem());
     }
 
-
     /**
      * Load xong product thì load ảnh
      *
@@ -58,6 +59,7 @@ public class ProductListController extends AbstractListController<Product> {
      */
     @Override
     public void onRetrievePostExecute(List<Product> list) {
+        ((ProductListPanel) mView).showReloadProduct(false);
         super.onRetrievePostExecute(list);
         if (!StringUtil.isNullOrEmpty(getSearchString())) {
             if (list != null && list.size() == 1) {
@@ -95,6 +97,7 @@ public class ProductListController extends AbstractListController<Product> {
 
     @Override
     public List<Product> onRetrieveBackground(int page, int pageSize) throws Exception {
+        ((ProductListPanel) mView).showReloadProduct(false);
         if (mCategory == null || !(getListService() instanceof ProductService))
             return super.onRetrieveBackground(page, pageSize);
         else {
@@ -108,6 +111,12 @@ public class ProductListController extends AbstractListController<Product> {
 //            }
             return ((ProductService) getListService()).retrieve(categoryID.toString(), getSearchString(), page, pageSize);
         }
+    }
+
+    @Override
+    public void onCancelledLoadData(Exception exp) {
+        ((ProductListPanel) mView).showReloadProduct(true);
+        super.onCancelledLoadData(exp);
     }
 
     @Override

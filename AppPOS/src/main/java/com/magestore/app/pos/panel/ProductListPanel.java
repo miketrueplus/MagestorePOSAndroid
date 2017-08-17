@@ -10,6 +10,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.edwardvanraak.materialbarcodescanner.MaterialBarcodeScanner;
@@ -40,6 +41,7 @@ public class ProductListPanel extends AbstractListPanel<Product> {
     ImageView im_category_arrow;
     FrameLayout fr_category;
     SearchAutoCompletePanel mSearchAutoCompletePanel;
+    RelativeLayout v_reload_product;
 
     // list category
     CategoryListController mCategoryListController;
@@ -89,7 +91,7 @@ public class ProductListPanel extends AbstractListPanel<Product> {
     @Override
     public void initLayout() {
         super.initLayout();
-
+        v_reload_product = (RelativeLayout) findViewById(R.id.v_reload_product);
         // Chuẩn bị list danh sách khách hàng
         fr_category = (FrameLayout) findViewById(R.id.fr_category);
         toolbar_category = (Toolbar) findViewById(R.id.toolbar_category);
@@ -119,6 +121,13 @@ public class ProductListPanel extends AbstractListPanel<Product> {
                 startScan();
             }
         });
+
+        v_reload_product.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((ProductListController) mController).reload();
+            }
+        });
     }
 
     private void startScan() {
@@ -136,7 +145,7 @@ public class ProductListPanel extends AbstractListPanel<Product> {
         }
     }
 
-    public void scanBarcode(){
+    public void scanBarcode() {
         final MaterialBarcodeScanner materialBarcodeScanner = new MaterialBarcodeScannerBuilder()
                 .withActivity(((ProductListController) mController).getMagestoreContext().getActivity())
                 .withEnableAutoFocus(true)
@@ -153,6 +162,10 @@ public class ProductListPanel extends AbstractListPanel<Product> {
                 })
                 .build();
         materialBarcodeScanner.startScan();
+    }
+
+    public void showReloadProduct(boolean isShow) {
+        v_reload_product.setVisibility(isShow ? VISIBLE : GONE);
     }
 
     /**
@@ -218,7 +231,7 @@ public class ProductListPanel extends AbstractListPanel<Product> {
 //            if(product.getTypeID().equals("configurable")){
 //                txtPrice.setText(ConfigUtil.formatPrice(product.getFinalPrice()));
 //            } else {
-                txtPrice.setText(ConfigUtil.formatPriceProduct(product.getFinalPrice()));
+            txtPrice.setText(ConfigUtil.formatPriceProduct(product.getFinalPrice()));
 //            }
 //            txtSKU.setText(product.getSKU());
             im_stock.setVisibility(product.isInStock() ? GONE : VISIBLE);
