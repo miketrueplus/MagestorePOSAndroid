@@ -95,8 +95,6 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
     private static CustomerAddress customerAddress;
     private static Currency currentCurrency;
     private static List<ConfigTaxClass> listConfigTax;
-    private String publicKey = "-----BEGIN PUBLIC KEY-----MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJ8EDi+a0lilUChsDba33FrcHLZZZIMxT7XhyEP3J3llQXNJkflG+5GzBvFTd+B1pvpc45WOktNReyPDZ/OMNukCAwEAAQ==-----END PUBLIC KEY-----";
-    private String extensionName = "retailer-pos";
 
     private class ConfigEntity {
         Staff staff;
@@ -180,6 +178,7 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         if (mConfig.getValue("webpos/general/active_key") == null) return false;
 
         String baseUrl = getHostUrl(POSDataAccessSession.REST_BASE_URL);
+        String extensionName = POSDataAccessSession.REST_EXTENSION_NAME;
         String licensekey = (String) mConfig.getValue("webpos/general/active_key");
         if (licensekey.length() < 68) return false;
         CRC32 crc = new CRC32();
@@ -195,7 +194,7 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
             while ((key.length() % 4) != 0) {
                 key += "=";
             }
-            String licenseString = decryptRSAToString(key, publicKey);
+            String licenseString = decryptRSAToString(key, POSDataAccessSession.REST_PUBLIC_KEY);
             if (StringUtil.isNullOrEmpty(licenseString)) return false;
 
             String strlicenseString = licenseString.substring(0, 3);

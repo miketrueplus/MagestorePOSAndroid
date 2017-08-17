@@ -22,4 +22,8 @@ public class POSDataAccessSession implements DataAccessSession {
     public static final String REST_DATEFORMAT = "DD/MM/YYYY";
     public static final String REST_TIMEFORMAT = "HH:mm:ss";
     public static final String REST_CURRENCY_SYMBOL = "$";
+
+    // Cấu hình active key
+    public static String REST_PUBLIC_KEY = BuildConfig.DEFAULT_REST_PUBLIC_KEY;
+    public static String REST_EXTENSION_NAME = BuildConfig.DEFAULT_REST_EXTENSION_NAME;
 }

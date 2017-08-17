@@ -20,6 +20,8 @@ android {
             buildConfigField "String", "DEFAULT_REST_USER_NAME", '""'
             buildConfigField "String", "DEFAULT_REST_PASSWORD", '""'
             buildConfigField "String", "DEFAULT_REST_BASE_PAGE", '""'
+            buildConfigField "String", "DEFAULT_REST_PUBLIC_KEY", '"-----BEGIN PUBLIC KEY-----MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJ8EDi+a0lilUChsDba33FrcHLZZZIMxT7XhyEP3J3llQXNJkflG+5GzBvFTd+B1pvpc45WOktNReyPDZ/OMNukCAwEAAQ==-----END PUBLIC KEY-----"'
+            buildConfigField "String", "DEFAULT_REST_EXTENSION_NAME", '"retailer-pos"'
         }
 
         debug {
@@ -27,6 +29,8 @@ android {
             buildConfigField "String", "DEFAULT_REST_USER_NAME", '""'
             buildConfigField "String", "DEFAULT_REST_PASSWORD", '""'
             buildConfigField "String", "DEFAULT_REST_BASE_PAGE", '""'
+            buildConfigField "String", "DEFAULT_REST_PUBLIC_KEY", '"-----BEGIN PUBLIC KEY-----MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJ8EDi+a0lilUChsDba33FrcHLZZZIMxT7XhyEP3J3llQXNJkflG+5GzBvFTd+B1pvpc45WOktNReyPDZ/OMNukCAwEAAQ==-----END PUBLIC KEY-----"'
+            buildConfigField "String", "DEFAULT_REST_EXTENSION_NAME", '"retailer-pos"'
         }
     }
     compileOptions {

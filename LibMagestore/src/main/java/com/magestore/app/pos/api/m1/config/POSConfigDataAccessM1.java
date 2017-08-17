@@ -88,8 +88,6 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
     private static Customer guest;
     private static CustomerAddress customerAddress;
     private static Currency currentCurrency;
-    private String publicKey = "-----BEGIN PUBLIC KEY-----MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJ8EDi+a0lilUChsDba33FrcHLZZZIMxT7XhyEP3J3llQXNJkflG+5GzBvFTd+B1pvpc45WOktNReyPDZ/OMNukCAwEAAQ==-----END PUBLIC KEY-----";
-    private String extensionName = "retailer-pos";
 
     private class ConfigEntity {
         Staff staff;
@@ -160,6 +158,7 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
         if (mConfig.getValue("webpos/general/active_key") == null) return false;
 
         String baseUrl = getHostUrl(POSDataAccessSessionM1.REST_BASE_URL);
+        String extensionName = POSDataAccessSessionM1.REST_EXTENSION_NAME;
         String licensekey = (String) mConfig.getValue("webpos/general/active_key");
         if (licensekey.length() < 68) return false;
         CRC32 crc = new CRC32();
@@ -175,7 +174,7 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
             while ((key.length() % 4) != 0) {
                 key += "=";
             }
-            String licenseString = decryptRSAToString(key, publicKey);
+            String licenseString = decryptRSAToString(key, POSDataAccessSessionM1.REST_PUBLIC_KEY);
             if (StringUtil.isNullOrEmpty(licenseString)) return false;
 
             String strlicenseString = licenseString.substring(0, 3);
