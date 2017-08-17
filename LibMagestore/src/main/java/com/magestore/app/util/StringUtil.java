@@ -172,6 +172,15 @@ public class StringUtil {
                         .replace("}\"", "}");
     }
 
+    public static String truncateJsonOption(String json) {
+        return
+                json.replace("\\", "")
+                        .replace("\"{\"", "{\"")
+                        .replace("}\"", "}")
+                        .replace("\"\"", "\\\"\"")
+                        .replace(":\\\"\",", ":\"\",");
+    }
+
     /**
      * Chuỗi null hoặc toàn ký tự trắng
      *

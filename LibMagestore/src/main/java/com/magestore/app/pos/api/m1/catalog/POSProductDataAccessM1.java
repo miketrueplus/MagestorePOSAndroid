@@ -236,7 +236,7 @@ public class POSProductDataAccessM1 extends POSAbstractDataAccessM1 implements P
             // thực thi truy vấn và parse kết quả thành json
             rp = statement.execute();
             String json = rp.readResult2String();
-            json = StringUtil.truncateJson(json);
+            json = StringUtil.truncateJsonOption(json);
 
             // tạo json implement
             Gson2PosOptionParseModel implement = new Gson2PosOptionParseModel();
