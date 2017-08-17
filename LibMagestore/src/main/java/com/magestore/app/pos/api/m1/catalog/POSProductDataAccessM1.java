@@ -29,6 +29,7 @@ import com.magestore.app.pos.api.m1.POSAPIM1;
 import com.magestore.app.pos.api.m1.POSDataAccessSessionM1;
 import com.magestore.app.pos.api.m1.POSAbstractDataAccessM1;
 import com.magestore.app.pos.model.catalog.PosProductOption;
+import com.magestore.app.pos.model.catalog.PosProductOptionBundleItem;
 import com.magestore.app.pos.model.catalog.PosProductOptionConfigOption;
 import com.magestore.app.pos.model.catalog.PosProductOptionJsonConfigOptionPrice;
 import com.magestore.app.pos.model.inventory.PosStock;
@@ -69,6 +70,9 @@ public class POSProductDataAccessM1 extends POSAbstractDataAccessM1 implements P
             builder.registerTypeAdapter(new TypeToken<List<PosStock>>() {
             }
                     .getType(), new GroupOptionConverter());
+            builder.registerTypeAdapter(new TypeToken<List<PosProductOptionBundleItem>>() {
+            }
+                    .getType(), new BundleOptionConverter());
             return builder.create();
         }
 
@@ -160,6 +164,22 @@ public class POSProductDataAccessM1 extends POSAbstractDataAccessM1 implements P
                     return listStock;
                 }
                 return null;
+            }
+        }
+
+        public class BundleOptionConverter implements JsonDeserializer<List<PosProductOptionBundleItem>> {
+            @Override
+            public List<PosProductOptionBundleItem> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+                GsonBuilder builder = new GsonBuilder();
+                Gson gson = builder.create();
+                List<PosProductOptionBundleItem> listItem = new ArrayList<>();
+                JsonObject object = json.getAsJsonObject();
+                for (Map.Entry<String, JsonElement> item : object.entrySet()) {
+                    JsonObject obj_item = item.getValue().getAsJsonObject();
+                    PosProductOptionBundleItem bundleItem = gson.fromJson(obj_item, PosProductOptionBundleItem.class);
+                    listItem.add(bundleItem);
+                }
+                return listItem;
             }
         }
     }
@@ -567,7 +587,7 @@ public class POSProductDataAccessM1 extends POSAbstractDataAccessM1 implements P
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID)
                     .setParam("show_out_stock", "1");
 
-            for (String id :Ids) {
+            for (String id : Ids) {
                 paramBuilder.setFilterOrEqual("entity_id", id);
             }
 
