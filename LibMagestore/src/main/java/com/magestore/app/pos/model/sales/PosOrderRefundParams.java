@@ -25,7 +25,8 @@ public class PosOrderRefundParams extends PosAbstractModel implements OrderRefun
     String storeCurrencyCode;
     String increment_id;
     String invoice_id;
-
+    String qty;
+    String stock;
 
     @Override
     public void setOrderId(String strOrderId) {
@@ -100,5 +101,15 @@ public class PosOrderRefundParams extends PosAbstractModel implements OrderRefun
     @Override
     public void setInvoiceId(String strInvoiceId) {
         invoice_id = strInvoiceId;
+    }
+
+    @Override
+    public void setQty(String strString) {
+        qty = strString;
+    }
+
+    @Override
+    public void setStock(String strStock) {
+        stock = strStock;
     }
 }

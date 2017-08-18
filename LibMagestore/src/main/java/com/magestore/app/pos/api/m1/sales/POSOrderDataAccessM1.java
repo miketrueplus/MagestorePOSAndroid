@@ -21,6 +21,7 @@ import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.model.sales.OrderCartItem;
 import com.magestore.app.lib.model.sales.OrderCommentParams;
 import com.magestore.app.lib.model.sales.OrderInvoiceParams;
+import com.magestore.app.lib.model.sales.OrderItemParams;
 import com.magestore.app.lib.model.sales.OrderRefundCreditParams;
 import com.magestore.app.lib.model.sales.OrderRefundGiftCard;
 import com.magestore.app.lib.model.sales.OrderRefundParams;
@@ -137,6 +138,7 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
         }
 
         private static final String JSON_EXTENSION_STREET = "street";
+
         public class OrderBillingAddressConverter implements JsonDeserializer<PosOrderBillingAddress> {
 
             @Override
@@ -540,6 +542,7 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
+            setQtyAndStockRefund(refundParams);
             OrderEntity orderEntity = new OrderEntity();
             orderEntity.entity = refundParams;
 
@@ -938,6 +941,27 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
     @Override
     public boolean delete(Order... models) throws ParseException, InstantiationException, IllegalAccessException, IOException {
         return false;
+    }
+
+    private void setQtyAndStockRefund(OrderRefundParams orderRefundParams) {
+        List<OrderItemParams> items = orderRefundParams.getItems();
+        String qty = "";
+        String stock = "";
+        if (items != null && items.size() > 0) {
+            for (OrderItemParams item : items) {
+                String qty_item = item.getOrderItemId() + "/" + item.getQty() + "$refund$";
+                qty += qty_item;
+
+                String stock_item = item.getOrderItemId() + "/" + (!StringUtil.isNullOrEmpty(item.getAdditionalData()) ? "true" : "false") + "$refund$";
+                stock += stock_item;
+            }
+        }
+        if (!StringUtil.isNullOrEmpty(qty)) {
+            orderRefundParams.setQty(qty);
+        }
+        if (!StringUtil.isNullOrEmpty(stock)) {
+            orderRefundParams.setStock(stock);
+        }
     }
 
     private List<Order> convertData(List<Order> list) {

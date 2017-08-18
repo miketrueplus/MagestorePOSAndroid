@@ -40,4 +40,8 @@ public interface OrderRefundParams extends Model {
     void setIncrementId(String srtIncrementId);
 
     void setInvoiceId(String strInvoiceId);
+
+    void setQty(String strString);
+
+    void setStock(String strStock);
 }

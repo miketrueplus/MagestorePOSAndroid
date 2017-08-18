@@ -121,7 +121,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="right"
-                        android:text='@{@string/order_detail_content_item_row_qty_refunded + " " + String.valueOf(orderItem.getQtyRefunded())}'
+                        android:text='@{@string/order_detail_content_item_row_qty_refunded + " " + ConfigUtil.formatQuantity(orderItem.getQtyRefunded())}'
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/order_content_table_text_size"
                         android:visibility="@{orderItem.getQtyRefunded() > 0 ? View.VISIBLE : View.GONE}" />
