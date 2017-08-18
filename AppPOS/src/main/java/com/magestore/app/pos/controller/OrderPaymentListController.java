@@ -100,45 +100,75 @@ public class OrderPaymentListController extends AbstractListController<OrderWebp
 
     public List<OrderWebposPayment> checkIntegration(List<OrderWebposPayment> listPayment, Order order) {
         boolean showIntegration = false;
-        if(ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2)){
+        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2)) {
             if (order.getPayment() != null) {
                 if ((order.getBaseGiftVoucherDiscount() < 0 || order.getRewardPointsBaseDiscount() < 0) && order.getPayment().getMethod().equals("multipaymentforpos")) {
                     showIntegration = true;
                 }
             }
-        }else{
-            if ((order.getBaseGiftVoucherDiscount() < 0 || order.getRewardPointsBaseDiscount() < 0)) {
+        } else {
+            if ((order.getBaseGiftVoucherDiscount() > 0 || order.getRewardPointsBaseDiscount() > 0)) {
                 showIntegration = true;
             }
         }
 
         if (showIntegration) {
-            if (order.getBaseGiftVoucherDiscount() < 0) {
-                OrderWebposPayment giftPayment = mOrderService.createOrderWebposPayment();
-                float base_gift = 0 - order.getBaseGiftVoucherDiscount();
-                float gift = 0 - order.getGiftVoucherDiscount();
-                giftPayment.setBaseDisplayAmount(base_gift);
-                giftPayment.setBasePaymentAmount(base_gift);
-                giftPayment.setDisplayAmount(gift);
-                giftPayment.setPaymentAmount(gift);
-                giftPayment.setMethod("giftCardIntergration");
-                giftPayment.setOrderId(order.getID());
-                giftPayment.setMethodTitle(getMagestoreContext().getActivity().getString(R.string.plugin_order_detail_bottom_giftcard_discount));
-                listPayment.add(giftPayment);
-            }
+            if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_1)) {
+                if (order.getBaseGiftVoucherDiscount() > 0) {
+                    OrderWebposPayment giftPayment = mOrderService.createOrderWebposPayment();
+                    float base_gift = order.getBaseGiftVoucherDiscount();
+                    float gift = order.getGiftVoucherDiscount();
+                    giftPayment.setBaseDisplayAmount(base_gift);
+                    giftPayment.setBasePaymentAmount(base_gift);
+                    giftPayment.setDisplayAmount(gift);
+                    giftPayment.setPaymentAmount(gift);
+                    giftPayment.setMethod("giftCardIntergration");
+                    giftPayment.setOrderId(order.getID());
+                    giftPayment.setMethodTitle(getMagestoreContext().getActivity().getString(R.string.plugin_order_detail_bottom_giftcard_discount));
+                    listPayment.add(giftPayment);
+                }
 
-            if (order.getRewardPointsBaseDiscount() < 0) {
-                OrderWebposPayment rewardPayment = mOrderService.createOrderWebposPayment();
-                float base_reward = 0 - order.getRewardPointsBaseDiscount();
-                float reward = 0 - order.getRewardPointsDiscount();
-                rewardPayment.setBaseDisplayAmount(base_reward);
-                rewardPayment.setBasePaymentAmount(base_reward);
-                rewardPayment.setDisplayAmount(reward);
-                rewardPayment.setPaymentAmount(reward);
-                rewardPayment.setMethod("rewardPointsIntergration");
-                rewardPayment.setOrderId(order.getID());
-                rewardPayment.setMethodTitle(getMagestoreContext().getActivity().getString(R.string.plugin_order_detail_payment_content));
-                listPayment.add(rewardPayment);
+                if (order.getRewardPointsBaseDiscount() > 0) {
+                    OrderWebposPayment rewardPayment = mOrderService.createOrderWebposPayment();
+                    float base_reward = order.getRewardPointsBaseDiscount();
+                    float reward = order.getRewardPointsDiscount();
+                    rewardPayment.setBaseDisplayAmount(base_reward);
+                    rewardPayment.setBasePaymentAmount(base_reward);
+                    rewardPayment.setDisplayAmount(reward);
+                    rewardPayment.setPaymentAmount(reward);
+                    rewardPayment.setMethod("rewardPointsIntergration");
+                    rewardPayment.setOrderId(order.getID());
+                    rewardPayment.setMethodTitle(getMagestoreContext().getActivity().getString(R.string.plugin_order_detail_payment_content));
+                    listPayment.add(rewardPayment);
+                }
+            } else {
+                if (order.getBaseGiftVoucherDiscount() < 0) {
+                    OrderWebposPayment giftPayment = mOrderService.createOrderWebposPayment();
+                    float base_gift = 0 - order.getBaseGiftVoucherDiscount();
+                    float gift = 0 - order.getGiftVoucherDiscount();
+                    giftPayment.setBaseDisplayAmount(base_gift);
+                    giftPayment.setBasePaymentAmount(base_gift);
+                    giftPayment.setDisplayAmount(gift);
+                    giftPayment.setPaymentAmount(gift);
+                    giftPayment.setMethod("giftCardIntergration");
+                    giftPayment.setOrderId(order.getID());
+                    giftPayment.setMethodTitle(getMagestoreContext().getActivity().getString(R.string.plugin_order_detail_bottom_giftcard_discount));
+                    listPayment.add(giftPayment);
+                }
+
+                if (order.getRewardPointsBaseDiscount() < 0) {
+                    OrderWebposPayment rewardPayment = mOrderService.createOrderWebposPayment();
+                    float base_reward = 0 - order.getRewardPointsBaseDiscount();
+                    float reward = 0 - order.getRewardPointsDiscount();
+                    rewardPayment.setBaseDisplayAmount(base_reward);
+                    rewardPayment.setBasePaymentAmount(base_reward);
+                    rewardPayment.setDisplayAmount(reward);
+                    rewardPayment.setPaymentAmount(reward);
+                    rewardPayment.setMethod("rewardPointsIntergration");
+                    rewardPayment.setOrderId(order.getID());
+                    rewardPayment.setMethodTitle(getMagestoreContext().getActivity().getString(R.string.plugin_order_detail_payment_content));
+                    listPayment.add(rewardPayment);
+                }
             }
         }
 
