@@ -17,7 +17,9 @@ import com.magestore.app.lib.connection.Statement;
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.model.checkout.CheckoutPayment;
+import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.sales.Order;
+import com.magestore.app.lib.model.sales.OrderAttributes;
 import com.magestore.app.lib.model.sales.OrderCartItem;
 import com.magestore.app.lib.model.sales.OrderCommentParams;
 import com.magestore.app.lib.model.sales.OrderInvoiceParams;
@@ -172,6 +174,64 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
     private class SendEmailEntity {
         String error;
         String message;
+    }
+
+    private class OrderInvoiceEntity {
+        InvoiceParam entity;
+    }
+
+    private class InvoiceParam {
+        String emailSent;
+        String baseCurrencyCode;
+        float baseDiscountAmount;
+        float baseGrandTotal;
+        float baseShippingAmount;
+        float baseShippingInclTax;
+        float baseShippingTaxAmount;
+        float baseSubtotal;
+        float baseSubtotalInclTax;
+        float baseTaxAmount;
+        String baseToGlobalRate;
+        String baseToOrderRate;
+        String billingAddressId;
+        List<OrderCommentParams> comments;
+        String createdAt;
+        float discountAmount;
+        String globalCurrencyCode;
+        float grandTotal;
+        String orderCurrencyCode;
+        String orderId;
+        String shippingAddressId;
+        float shippingAmount;
+        float shippingInclTax;
+        float shippingTaxAmount;
+        String state;
+        String storeCurrencyCode;
+        String storeId;
+        String storeToBaseRate;
+        String storeToOrderRate;
+        float subtotal;
+        float subtotalInclTax;
+        float taxAmount;
+        float totalQty;
+        String updatedAt;
+        OrderAttributes extension_attributes;
+        List<InvoiceItemParam> items;
+    }
+
+    private class InvoiceItemParam {
+        float basePrice;
+        float discountAmount;
+        String name;
+        String orderItemId;
+        float price;
+        float priceInclTax;
+        String qty;
+        float rowTotal;
+        float rowTotalInclTax;
+        String sku;
+        float taxAmount;
+        String productId;
     }
 
     @Override
@@ -628,8 +688,8 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
-            OrderEntity orderEntity = new OrderEntity();
-            orderEntity.entity = invoiceParams;
+            OrderInvoiceEntity orderEntity = new OrderInvoiceEntity();
+            orderEntity.entity = setInvoiceParam(invoiceParams);
 
             rp = statement.execute(orderEntity);
             rp.setParseImplement(new Gson2PosOrderParseModel());
@@ -941,6 +1001,66 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
     @Override
     public boolean delete(Order... models) throws ParseException, InstantiationException, IllegalAccessException, IOException {
         return false;
+    }
+
+    private InvoiceParam setInvoiceParam(OrderInvoiceParams invoiceParam) {
+        InvoiceParam invoice = new InvoiceParam();
+        invoice.emailSent = invoiceParam.getEmailSent();
+        invoice.baseCurrencyCode = invoiceParam.getBaseCurrencyCode();
+        invoice.baseDiscountAmount = invoiceParam.getBaseDiscountAmount();
+        invoice.baseGrandTotal = invoiceParam.getBaseGrandTotal();
+        invoice.baseShippingAmount = invoiceParam.getBaseShippingAmount();
+        invoice.baseShippingInclTax = invoiceParam.getBaseShippingInclTax();
+        invoice.baseShippingTaxAmount = invoiceParam.getBaseShippingTaxAmount();
+        invoice.baseSubtotal = invoiceParam.getBaseSubtotal();
+        invoice.baseSubtotalInclTax = invoiceParam.getBaseSubtotalInclTax();
+        invoice.baseTaxAmount = invoiceParam.getBaseTaxAmount();
+        invoice.baseToGlobalRate = invoiceParam.getBaseToGlobalRate();
+        invoice.baseToOrderRate = invoiceParam.getBaseToOrderRate();
+        invoice.billingAddressId = invoiceParam.getBillingAddressId();
+        invoice.comments = invoiceParam.getComments();
+        invoice.createdAt = invoiceParam.getCreatedAt();
+        invoice.discountAmount = invoiceParam.getDiscountAmount();
+        invoice.globalCurrencyCode = invoiceParam.getGlobalCurrencyCode();
+        invoice.grandTotal = invoiceParam.getGrandTotal();
+        invoice.orderCurrencyCode = invoiceParam.getOrderCurrencyCode();
+        invoice.orderId = invoiceParam.getOrderId();
+        invoice.shippingAddressId = invoiceParam.getShippingAddressId();
+        invoice.shippingAmount = invoiceParam.getShippingAmount();
+        invoice.shippingInclTax = invoiceParam.getShippingInclTax();
+        invoice.shippingTaxAmount = invoiceParam.getShippingTaxAmount();
+        invoice.state = invoiceParam.getState();
+        invoice.storeCurrencyCode = invoiceParam.getStoreCurrencyCode();
+        invoice.storeId = invoiceParam.getStoreId();
+        invoice.storeToBaseRate = invoiceParam.getStoreToBaseRate();
+        invoice.storeToOrderRate = invoiceParam.getStoreToOrderRate();
+        invoice.subtotal = invoiceParam.getSubtotal();
+        invoice.subtotalInclTax = invoiceParam.getSubtotalInclTax();
+        invoice.taxAmount = invoiceParam.getTaxAmount();
+        invoice.totalQty = invoiceParam.getTotalQty();
+        invoice.updatedAt = invoiceParam.getUpdatedAt();
+        invoice.extension_attributes = invoiceParam.getExtensionAttributes();
+        List<InvoiceItemParam> itemInvoice = new ArrayList<>();
+        if (invoiceParam.getItems() != null && invoiceParam.getItems().size() > 0) {
+            for (CartItem item : invoiceParam.getItems()) {
+                InvoiceItemParam itemParam = new InvoiceItemParam();
+                itemParam.basePrice = item.getBasePrice();
+                itemParam.discountAmount = item.getDiscountAmount();
+                itemParam.name = item.getName();
+                itemParam.orderItemId = item.getOrderItemId();
+                itemParam.price = item.getPrice();
+                itemParam.priceInclTax = item.getPriceInclTax();
+                itemParam.qty = item.getQuantity() + "";
+                itemParam.rowTotal = item.getRowTotal();
+                itemParam.rowTotalInclTax = item.getBaseRowTotalInclTax();
+                itemParam.sku = item.getSku();
+                itemParam.taxAmount = item.getTaxAmount();
+                itemParam.productId = item.getProductId();
+                itemInvoice.add(itemParam);
+            }
+        }
+        invoice.items = itemInvoice;
+        return invoice;
     }
 
     private void setQtyAndStockRefund(OrderRefundParams orderRefundParams) {

@@ -73,7 +73,7 @@ public class PosOrderInvoiceParams extends PosAbstractModel implements OrderInvo
     }
 
     @Override
-    public float getaseDiscountAmount() {
+    public float getBaseDiscountAmount() {
         return baseDiscountAmount;
     }
 

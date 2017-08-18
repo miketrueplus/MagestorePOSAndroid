@@ -670,8 +670,8 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
                 boolean discount = false;
                 boolean tax = false;
                 boolean gifcard = false;
-                boolean reward = false;
-                boolean storecredit = false;
+                boolean reward_earn_point = false;
+                boolean reward_use_point = false;
                 for (CheckoutTotals checkoutTotals : checkout.getTotals()) {
                     if (checkoutTotals.getCode().equals("subtotal")) {
                         checkout.setSubTotal(checkoutTotals.getValue());
@@ -701,10 +701,10 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
                         checkout.setGiftCardDiscount(checkoutTotals.getValue());
                         checkout.setGiftCardTitle(checkoutTotals.getTitle());
                     } else if (checkoutTotals.getCode().equals("rewardpoints_label")) {
-                        reward = true;
+                        reward_earn_point = true;
                         checkout.setRewardPointEarnPointValue((int) checkoutTotals.getValue());
                     } else if (checkoutTotals.getCode().equals("use-point") || checkoutTotals.getCode().equals("rewardpoints")) {
-                        storecredit = true;
+                        reward_use_point = true;
                         checkout.setRewardPointUsePointValue(checkoutTotals.getValue());
                         checkout.setRewardPointUsePointTitle(checkoutTotals.getTitle());
                     }
@@ -721,10 +721,10 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
                     if (!gifcard) {
                         checkout.setGiftCardDiscount(0);
                     }
-                    if (!reward) {
+                    if (!reward_earn_point) {
                         checkout.setRewardPointEarnPointValue(0);
                     }
-                    if (!storecredit) {
+                    if (!reward_use_point) {
                         checkout.setRewardPointUsePointValue(0);
                     }
                 }

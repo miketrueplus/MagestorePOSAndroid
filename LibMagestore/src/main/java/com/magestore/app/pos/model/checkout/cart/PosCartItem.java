@@ -338,6 +338,8 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     @Gson2PosExclude
     float qty_shipped;
     @Gson2PosExclude
+    String product_id;
+    @Gson2PosExclude
     String product_type;
     @Gson2PosExclude
     String parent_item_id;
@@ -507,6 +509,11 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     @Override
     public void setPriceShowView(float fPriceShowView) {
         price_show_view = fPriceShowView;
+    }
+
+    @Override
+    public String getProductId() {
+        return product_id;
     }
 
     @Override

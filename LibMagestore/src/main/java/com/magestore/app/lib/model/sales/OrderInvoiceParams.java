@@ -20,7 +20,7 @@ public interface OrderInvoiceParams extends Model {
 
     void setBaseCurrencyCode(String strBaseCurrencyCode);
 
-    float getaseDiscountAmount();
+    float getBaseDiscountAmount();
 
     void setBaseDiscountAmount(float baseDiscountAmount);
 
