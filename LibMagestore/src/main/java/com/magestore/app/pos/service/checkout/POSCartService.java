@@ -852,7 +852,7 @@ public class POSCartService extends AbstractService implements CartService {
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         ProductDataAccess productDataAccess = factory.generateProductDataAccess();
         List<Product> listProduct = new ArrayList<>();
-        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2)) {
+//        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2)) {
             List<String> listId = new ArrayList<>();
             for (OrderCartItem orderitem : order.getItemsInfoBuy().getListOrderCartItems()) {
                 if (orderitem.getCustomSalesInfo() == null) {
@@ -862,7 +862,7 @@ public class POSCartService extends AbstractService implements CartService {
             if (listId.size() > 0) {
                 listProduct = productDataAccess.retrieve(listId);
             }
-        }
+//        }
 
         // xử lý từng item trong order
         for (OrderCartItem orderitem : order.getItemsInfoBuy().getListOrderCartItems()) {
@@ -871,7 +871,7 @@ public class POSCartService extends AbstractService implements CartService {
                 // fill thông tin product vào
                 String id = orderitem.getID();
                 Product product= null;
-                if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2)) {
+//                if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2)) {
                     if (listProduct.size() > 0) {
                         for (Product productRespone : listProduct) {
                             if (productRespone.getID().equals(id)) {
@@ -881,9 +881,9 @@ public class POSCartService extends AbstractService implements CartService {
                             }
                         }
                     }
-                }else{
-                    product = productDataAccess.retrieve(id);
-                }
+//                }else{
+//                    product = productDataAccess.retrieve(id);
+//                }
                 if (product != null) {
                     product.setProductOption(productDataAccess.loadProductOption(product));
                     if (product.isInStock()) {

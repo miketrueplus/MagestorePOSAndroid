@@ -587,9 +587,11 @@ public class POSProductDataAccessM1 extends POSAbstractDataAccessM1 implements P
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID)
                     .setParam("show_out_stock", "1");
 
+            String listProductId = "";
             for (String id : Ids) {
-                paramBuilder.setFilterOrEqual("entity_id", id);
+                listProductId += id + ",";
             }
+            paramBuilder.setFilterIn("entity_id", listProductId);
 
             // thực thi truy vấn và parse kết quả thành object
             rp = statement.execute();

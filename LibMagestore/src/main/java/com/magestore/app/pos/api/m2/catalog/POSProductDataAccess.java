@@ -422,7 +422,7 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
 
             String listProductId = "";
             for (String id : Ids) {
-                listProductId += listProductId + id + ",";
+                listProductId += id + ",";
             }
             paramBuilder.setFilterIn("entity_id", listProductId);
 
