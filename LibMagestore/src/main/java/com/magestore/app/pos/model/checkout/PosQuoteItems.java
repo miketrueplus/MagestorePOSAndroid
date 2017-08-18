@@ -8,6 +8,7 @@ import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.pos.model.PosAbstractModel;
 import com.magestore.app.pos.model.checkout.cart.PosCartItem;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosExclude;
+import com.magestore.app.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -87,7 +88,11 @@ public class PosQuoteItems extends PosAbstractModel implements QuoteItems {
 
     @Override
     public float getQtyToShip() {
-        return Float.parseFloat(qty_to_ship);
+        if (!StringUtil.isNullOrEmpty(qty_to_ship)) {
+            return Float.parseFloat(qty_to_ship);
+        } else {
+            return 0;
+        }
     }
 
     @Override
@@ -136,5 +141,34 @@ public class PosQuoteItems extends PosAbstractModel implements QuoteItems {
     @Override
     public void setCustomSale(String strCustomSale) {
         is_custom_sale = strCustomSale;
+    }
+
+    @Override
+    public String getCustomSale() {
+        if (!StringUtil.isNullOrEmpty(is_custom_sale)) {
+            return is_custom_sale;
+        } else {
+            return "";
+        }
+    }
+
+    @Override
+    public List<PosCartItem.OptionsValue> getOptions() {
+        return options;
+    }
+
+    @Override
+    public List<PosCartItem.OptionsValue> getSuperAttribute() {
+        return super_attribute;
+    }
+
+    @Override
+    public List<PosCartItem.OptionsValue> getBundleOption() {
+        return bundle_option;
+    }
+
+    @Override
+    public List<PosCartItem.OptionsValue> getBundleOptionQty() {
+        return bundle_option_qty;
     }
 }

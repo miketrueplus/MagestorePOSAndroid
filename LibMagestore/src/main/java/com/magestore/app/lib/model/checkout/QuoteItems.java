@@ -2,6 +2,7 @@ package com.magestore.app.lib.model.checkout;
 
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
+import com.magestore.app.pos.model.checkout.cart.PosCartItem;
 
 import java.util.List;
 
@@ -41,4 +42,10 @@ public interface QuoteItems extends Model {
 
     void convertProductOption(CartItem cartItem);
     void setCustomSale(String strCustomSale);
+    String getCustomSale();
+
+    List<PosCartItem.OptionsValue> getOptions();
+    List<PosCartItem.OptionsValue> getSuperAttribute();
+    List<PosCartItem.OptionsValue> getBundleOption();
+    List<PosCartItem.OptionsValue> getBundleOptionQty();
 }

@@ -22,6 +22,9 @@ import com.magestore.app.lib.model.checkout.DataPlaceOrder;
 import com.magestore.app.lib.model.checkout.PlaceOrderParams;
 import com.magestore.app.lib.model.checkout.Quote;
 import com.magestore.app.lib.model.checkout.QuoteAddCouponParam;
+import com.magestore.app.lib.model.checkout.QuoteCustomer;
+import com.magestore.app.lib.model.checkout.QuoteItemExtension;
+import com.magestore.app.lib.model.checkout.QuoteItems;
 import com.magestore.app.lib.model.checkout.SaveQuoteParam;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.plugins.GiftCard;
@@ -32,7 +35,6 @@ import com.magestore.app.lib.resourcemodel.sales.CheckoutDataAccess;
 import com.magestore.app.pos.api.m1.POSAPIM1;
 import com.magestore.app.pos.api.m1.POSAbstractDataAccessM1;
 import com.magestore.app.pos.api.m1.POSDataAccessSessionM1;
-import com.magestore.app.pos.model.checkout.PosCheckout;
 import com.magestore.app.pos.model.checkout.PosDataCheckout;
 import com.magestore.app.pos.model.checkout.PosDataPlaceOrder;
 import com.magestore.app.pos.model.checkout.cart.PosCartItem;
@@ -47,6 +49,7 @@ import com.magestore.app.util.StringUtil;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -78,6 +81,35 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
     private class SendEmailEntity {
         String status = null;
         List<String> messages;
+    }
+
+    private class QuoteParam {
+        String quote_id;
+        String store_id;
+        String customer_id;
+        String currency_id;
+        String till_id;
+        List<QuoteItemParam> items;
+        QuoteCustomer customer;
+        String shipping_method;
+    }
+
+    private class QuoteItemParam {
+        String id;
+        String item_id;
+        String qty;
+        String qty_to_ship;
+        int use_discount;
+        String amount;
+        String custom_price;
+        String is_custom_sale;
+
+        List<QuoteItemExtension> extension_data;
+
+        List<PosCartItem.OptionsValue> options;
+        List<PosCartItem.OptionsValue> super_attribute;
+        Map<String, Object> bundle_option;
+        Map<String, String> bundle_option_qty;
     }
 
     public class Gson2PosCartParseModel extends Gson2PosAbstractParseImplement {
@@ -127,7 +159,7 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
                 JsonObject obj = json.getAsJsonObject();
                 if (obj.has("used_codes_app")) {
                     JsonArray arr_gift = obj.getAsJsonArray("used_codes_app");
-                    for (JsonElement el_gift: arr_gift) {
+                    for (JsonElement el_gift : arr_gift) {
                         JsonObject obj_gift = el_gift.getAsJsonObject();
                         PosGiftCard giftCard = gson.fromJson(obj_gift, PosGiftCard.class);
                         listGiftcard.add(giftCard);
@@ -160,7 +192,7 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
-            rp = statement.execute(quote);
+            rp = statement.execute(setQuoteParam(quote));
             rp.setParseImplement(new Gson2PosCartParseModel());
             rp.setParseModel(PosDataCheckout.class);
             DataCheckout dataCheckout = (DataCheckout) rp.doParse();
@@ -187,6 +219,73 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
             if (connection != null) connection.close();
             connection = null;
         }
+    }
+
+    private QuoteParam setQuoteParam(Quote quote) {
+        QuoteParam quoteParam = new QuoteParam();
+        quoteParam.currency_id = quote.getCurrencyId();
+        quoteParam.customer = quote.getCustomer();
+        quoteParam.customer_id = quote.getCustomerId();
+        quoteParam.quote_id = quote.getID();
+        quoteParam.store_id = quote.getStoreId();
+        quoteParam.till_id = quote.getTillId();
+        quoteParam.shipping_method = quote.getShippingMethod();
+        List<QuoteItemParam> listQuoteItemParam = new ArrayList<>();
+        if (quote.getItems() != null && quote.getItems().size() > 0) {
+            for (QuoteItems item : quote.getItems()) {
+                QuoteItemParam quoteItemParam = new QuoteItemParam();
+                quoteItemParam.id = item.getID();
+                quoteItemParam.item_id = item.getItemId();
+                quoteItemParam.qty = item.getQty() + "";
+                quoteItemParam.qty_to_ship = item.getQtyToShip() + "";
+                quoteItemParam.use_discount = item.getUserDiscount();
+                quoteItemParam.amount = item.getAmount();
+                quoteItemParam.custom_price = item.getCustomPrice();
+                if (!StringUtil.isNullOrEmpty(item.getCustomSale())) {
+                    quoteItemParam.is_custom_sale = item.getCustomSale();
+                }
+
+                quoteItemParam.extension_data = item.getExtensionData();
+
+                quoteItemParam.options = item.getOptions();
+                quoteItemParam.super_attribute = item.getSuperAttribute();
+                if (item.getBundleOption() != null && item.getBundleOption().size() > 0) {
+                    Map<String, List<String>> mapBundleOption = new HashMap<>();
+                    for (PosCartItem.OptionsValue option : item.getBundleOption()) {
+                        if (mapBundleOption.containsKey(option.code)) {
+                            List<String> listValue = mapBundleOption.get(option.code);
+                            listValue.add(option.value);
+                        } else {
+                            List<String> listValue = new ArrayList<>();
+                            listValue.add(option.value);
+                            mapBundleOption.put(option.code, listValue);
+                        }
+                    }
+                    Map<String, Object> mapBundleObj = new HashMap<>();
+                    for (String key : mapBundleOption.keySet()) {
+                        List<String> listValue = mapBundleOption.get(key);
+                        if (listValue != null) {
+                            if (listValue.size() > 1) {
+                                mapBundleObj.put(key, listValue);
+                            } else if (listValue.size() == 1) {
+                                mapBundleObj.put(key, listValue.get(0));
+                            }
+                        }
+                    }
+                    quoteItemParam.bundle_option = mapBundleObj;
+                }
+                if (item.getBundleOptionQty() != null && item.getBundleOptionQty().size() > 0) {
+                    Map<String, String> mapBundleOptionQty = new HashMap<>();
+                    for (PosCartItem.OptionsValue option : item.getBundleOptionQty()) {
+                        mapBundleOptionQty.put(option.code, option.value);
+                    }
+                    quoteItemParam.bundle_option_qty = mapBundleOptionQty;
+                }
+                listQuoteItemParam.add(quoteItemParam);
+            }
+        }
+        quoteParam.items = listQuoteItemParam;
+        return quoteParam;
     }
 
     @Override
@@ -470,7 +569,7 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
             o = params;
             rp = statement.execute(o);
             String respone = rp.readResult2String();
-            if(respone.contains("Transaction ID")){
+            if (respone.contains("Transaction ID")) {
                 return true;
             }
             return false;
