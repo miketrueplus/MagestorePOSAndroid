@@ -115,8 +115,8 @@ public class OrderInvoicePanel extends AbstractDetailPanel<Order> {
         invoice_grandtotal.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(item.getBaseGrandTotal())));
         invoice_discount.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(item.getBaseDiscountAmount())));
         invoice_tax.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(item.getBaseTaxAmount())));
-        invoice_shipping.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(item.getShippingInclTax())));
-        invoice_subtotal.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(item.getBaseSubtotalInclTax())));
+        invoice_shipping.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(item.getShippingAmount())));
+        invoice_subtotal.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(item.getBaseSubtotal())));
     }
 
     @Override

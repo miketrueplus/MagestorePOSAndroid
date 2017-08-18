@@ -94,7 +94,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="right"
-                            android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderDetail.getBaseSubtotalInclTax()))}"
+                            android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderDetail.getBaseSubtotal()))}"
                             android:textColor="@color/text_color"
                             android:textSize="@dimen/order_content_table_text_size" />
                     </TableRow>
@@ -118,7 +118,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="right"
-                            android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderDetail.getBaseShippingInclTax()))}"
+                            android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderDetail.getBaseShippingAmount()))}"
                             android:textColor="@color/text_color"
                             android:textSize="@dimen/order_content_table_text_size" />
                     </TableRow>

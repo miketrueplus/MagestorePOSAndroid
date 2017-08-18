@@ -958,8 +958,8 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
             customerAddress.setStreet(address.getStreet());
             customerAddress.setTelephone(address.getTelephone());
             customerAddress.setCity(address.getCity());
-            customerAddress.setFirstname(address.getFirstName());
-            customerAddress.setLastname(address.getLastName());
+            customerAddress.setFirstname(checkout.getCustomer().getFirstName());
+            customerAddress.setLastname(checkout.getCustomer().getLastName());
             customerAddress.setEmail(checkout.getCustomer().getEmail());
             quoteCustomer.setShippingAddress(customerAddress);
             if (listAddress != null && listAddress.size() > 2) {
@@ -973,8 +973,8 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
                         customerBillingAddress.setStreet(billing_address.getStreet());
                         customerBillingAddress.setTelephone(billing_address.getTelephone());
                         customerBillingAddress.setCity(billing_address.getCity());
-                        customerBillingAddress.setFirstname(billing_address.getFirstName());
-                        customerBillingAddress.setLastname(billing_address.getLastName());
+                        customerBillingAddress.setFirstname(checkout.getCustomer().getFirstName());
+                        customerBillingAddress.setLastname(checkout.getCustomer().getLastName());
                         customerBillingAddress.setEmail(checkout.getCustomer().getEmail());
                         quoteCustomer.setBillingAddress(customerBillingAddress);
                     } else {
@@ -1010,8 +1010,8 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         customerAddress.setStreet(address.getStreet());
         customerAddress.setTelephone(address.getTelephone());
         customerAddress.setCity(address.getCity());
-        customerAddress.setFirstname(address.getFirstName());
-        customerAddress.setLastname(address.getLastName());
+        customerAddress.setFirstname(checkout.getCustomer().getFirstName());
+        customerAddress.setLastname(checkout.getCustomer().getLastName());
         customerAddress.setEmail(checkout.getCustomer().getEmail());
         quoteCustomer.setShippingAddress(customerAddress);
         quoteCustomer.setBillingAddress(customerAddress);
@@ -1026,8 +1026,8 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         customerShippingAddress.setStreet(shippingAddress.getStreet());
         customerShippingAddress.setTelephone(shippingAddress.getTelephone());
         customerShippingAddress.setCity(shippingAddress.getCity());
-        customerShippingAddress.setFirstname(shippingAddress.getFirstName());
-        customerShippingAddress.setLastname(shippingAddress.getLastName());
+        customerShippingAddress.setFirstname(checkout.getCustomer().getFirstName());
+        customerShippingAddress.setLastname(checkout.getCustomer().getLastName());
         customerShippingAddress.setEmail(checkout.getCustomer().getEmail());
         quoteCustomer.setShippingAddress(customerShippingAddress);
         CustomerAddress billingAddress = listAddress.get(1);
@@ -1046,8 +1046,8 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         customerBillingAddress.setStreet(billingAddress.getStreet());
         customerBillingAddress.setTelephone(billingAddress.getTelephone());
         customerBillingAddress.setCity(billingAddress.getCity());
-        customerBillingAddress.setFirstname(billingAddress.getFirstName());
-        customerBillingAddress.setLastname(billingAddress.getLastName());
+        customerBillingAddress.setFirstname(checkout.getCustomer().getFirstName());
+        customerBillingAddress.setLastname(checkout.getCustomer().getLastName());
         customerBillingAddress.setEmail(checkout.getCustomer().getEmail());
         quoteCustomer.setBillingAddress(customerBillingAddress);
     }
