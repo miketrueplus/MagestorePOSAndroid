@@ -1040,7 +1040,17 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         } else if (success && actionType == ACTION_TYPE_SEND_EMAIL) {
             //Show dialog khi gửi email thành công
             showDetailOrderLoading(false);
-            mCheckoutSuccessPanel.showAlertRespone(true, (String) wraper.get("send_email_response"));
+            String message = (String) wraper.get("send_email_response");
+            if (StringUtil.isNullOrEmpty(message)) {
+                mCheckoutSuccessPanel.showAlertRespone(true, message);
+            } else {
+                if (message.equals("false")) {
+                    mCheckoutSuccessPanel.showAlertRespone(false, message);
+                } else {
+                    mCheckoutSuccessPanel.showAlertRespone(true, message);
+                }
+            }
+
         } else if (success && actionType == ACTION_TYPE_APPLY_REWARD_POINT) {
             Checkout checkout = (Checkout) wraper.get("save_reward_point");
             if (checkout.getRewardPoint() != null) {
@@ -1115,7 +1125,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             ((CheckoutDetailPanel) mDetailView).showErrorAddCouponCode();
         } else if (actionType == ACTION_TYPE_SEND_EMAIL) {
             showDetailOrderLoading(false);
-            mCheckoutSuccessPanel.showAlertRespone(true, "");
+            mCheckoutSuccessPanel.showAlertRespone(false, "");
         } else if (actionType == ACTION_TYPE_SAVE_CART) {
             super.onCancelledBackground(exp, actionType, actionCode, wraper, models);
             onBackTohome();

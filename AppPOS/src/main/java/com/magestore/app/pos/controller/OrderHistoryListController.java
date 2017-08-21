@@ -299,16 +299,16 @@ public class OrderHistoryListController extends AbstractListController<Order> {
         if (actionType == SENT_EMAIL_TYPE) {
             String email = (String) wraper.get("email");
             String orderId = (String) wraper.get("order_id");
-            if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2)) {
-                return Boolean.parseBoolean(mOrderService.sendEmail(email, orderId).trim());
+            String email_respone = mOrderService.sendEmail(email, orderId);
+            if (StringUtil.isNullOrEmpty(email_respone)) {
+                wraper.put("email_respone", email_respone);
+                return true;
             } else {
-                String email_respone = mOrderService.sendEmail(email, orderId);
-                if (StringUtil.isNullOrEmpty(email_respone)) {
-                    wraper.put("email_respone", email_respone);
+                if (email_respone.equals("false")) {
                     return false;
                 }
-                return true;
             }
+            return true;
         } else if (actionType == CREATE_SHIPMENT_TYPE) {
             wraper.put("shipment_respone", mOrderService.createShipment((Order) models[0]));
             return true;
@@ -357,13 +357,29 @@ public class OrderHistoryListController extends AbstractListController<Order> {
     public void onActionPostExecute(boolean success, int actionType, String actionCode, Map<String, Object> wraper, Model... models) {
         super.onActionPostExecute(success, actionType, actionCode, wraper, models);
         if (actionType == SENT_EMAIL_TYPE) {
-            if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_1)) {
-                String email_respone = (String) wraper.get("email_respone");
-                mOrderSendEmailPanel.showAlertRespone(success, email_respone);
+            if (success) {
+                if (wraper.get("email_respone") != null) {
+                    String email_respone = (String) wraper.get("email_respone");
+                    if (!StringUtil.isNullOrEmpty(email_respone)) {
+                        mOrderSendEmailPanel.showAlertRespone(success, email_respone);
+                    } else {
+                        mOrderSendEmailPanel.showAlertRespone(success, "");
+                    }
+                } else {
+                    mOrderSendEmailPanel.showAlertRespone(success, "");
+                }
             } else {
-                mOrderSendEmailPanel.showAlertRespone(success, "");
+                if (wraper.get("email_respone") != null) {
+                    String email_respone = (String) wraper.get("email_respone");
+                    if (!StringUtil.isNullOrEmpty(email_respone)) {
+                        mOrderSendEmailPanel.showAlertRespone(success, email_respone);
+                    } else {
+                        mOrderSendEmailPanel.showAlertRespone(success, "");
+                    }
+                } else {
+                    mOrderSendEmailPanel.showAlertRespone(success, "");
+                }
             }
-
             showDetailOrderLoading(false);
         } else if (success && actionType == CREATE_SHIPMENT_TYPE) {
             Order order = (Order) wraper.get("shipment_respone");
@@ -487,9 +503,13 @@ public class OrderHistoryListController extends AbstractListController<Order> {
             mOrderAddCommentPanel.showAlertRespone(false);
             showDetailOrderLoading(false);
         } else if (actionType == SENT_EMAIL_TYPE) {
-            if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_1)) {
+            if (wraper.get("email_respone") != null) {
                 String email_respone = (String) wraper.get("email_respone");
-                mOrderSendEmailPanel.showAlertRespone(false, email_respone);
+                if (!StringUtil.isNullOrEmpty(email_respone)) {
+                    mOrderSendEmailPanel.showAlertRespone(false, email_respone);
+                } else {
+                    mOrderSendEmailPanel.showAlertRespone(false, "");
+                }
             } else {
                 mOrderSendEmailPanel.showAlertRespone(false, "");
             }

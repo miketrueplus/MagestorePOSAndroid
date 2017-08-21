@@ -378,8 +378,11 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
             orderEntity.id = orderId;
 
             rp = statement.execute(orderEntity);
+            if (rp.readResult2String().equals("false")) {
+                return "false";
+            }
             SendEmailEntity sendEmail = new Gson().fromJson(rp.readResult2String(), SendEmailEntity.class);
-            String message = "";
+            String message = "false";
             if (sendEmail != null) {
                 if (sendEmail.error.equals("false")) {
                     message = sendEmail.message;

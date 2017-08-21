@@ -427,7 +427,7 @@ public class POSCheckoutDataAccess extends POSAbstractDataAccess implements Chec
             String json = StringUtil.truncateJson(rp.readResult2String());
             CheckoutEntity ck = new Gson().fromJson(json, CheckoutEntity.class);
 
-            return ck != null ? ck.message : "";
+            return ck != null ? ck.message : "false";
         } catch (Exception e) {
             throw new DataAccessException(e);
         } finally {

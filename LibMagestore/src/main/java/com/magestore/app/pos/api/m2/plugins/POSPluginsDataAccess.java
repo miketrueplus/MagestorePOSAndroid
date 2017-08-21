@@ -28,7 +28,7 @@ import java.io.IOException;
 public class POSPluginsDataAccess extends POSAbstractDataAccess implements PluginsDataAccess {
 
     @Override
-    public Checkout applyRewarPoint(RewardPoint rewardPoint) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
+    public Checkout applyRewarPoint(Checkout checkout, RewardPoint rewardPoint) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
         Connection connection = null;
         Statement statement = null;
         ResultReading rp = null;
@@ -42,6 +42,8 @@ public class POSPluginsDataAccess extends POSAbstractDataAccess implements Plugi
             // Xây dựng tham số
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
+
+            rewardPoint.setCustomerId(null);
 
             // thực thi truy vấn và parse kết quả thành object
             rp = statement.execute(rewardPoint);

@@ -452,8 +452,16 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
             orderEntity.email = email;
 
             rp = statement.execute(orderEntity);
-
-            return rp.readResult2String();
+            if (rp.readResult2String().equals("false")) {
+                return "false";
+            }
+            String message = "false";
+            JSONObject object = new JSONObject(rp.readResult2String());
+            String obj_message = object.getString("message");
+            if (!StringUtil.isNullOrEmpty(obj_message)) {
+                message = obj_message;
+            }
+            return message;
         } catch (Exception e) {
             throw new DataAccessException(e);
         } finally {
@@ -688,6 +696,10 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
             // Xây dựng tham số
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
+
+            // set data
+            refundParams.setIncrementId(null);
+            refundParams.setInvoiceId(null);
 
             OrderEntity orderEntity = new OrderEntity();
             orderEntity.entity = refundParams;
@@ -984,7 +996,7 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
         }
     }
 
-    private List<Order> convertData(List<Order> list){
+    private List<Order> convertData(List<Order> list) {
         for (Order order : list) {
             if (order.getItemsInfoBuy() != null) {
                 List<OrderCartItem> listItem = order.getItemsInfoBuy().getListOrderCartItems();
@@ -993,7 +1005,7 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
                         List<PosCartItem.OptionsValue> options = orderCartItem.getOptions();
                         if (options != null && options.size() > 0) {
                             int noItems = options.size();
-                            for (int i = 0; i < noItems ; i++) {
+                            for (int i = 0; i < noItems; i++) {
                                 PosCartItem.OptionsValue optionsValue = options.get(i);
                                 if (optionsValue.values != null && optionsValue.values.size() > 0) {
                                     for (String value : optionsValue.values) {
@@ -1007,7 +1019,7 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
                                 }
                             }
 
-                            for (int i = 0; i < options.size() ; i++) {
+                            for (int i = 0; i < options.size(); i++) {
                                 PosCartItem.OptionsValue optionsValueR = options.get(i);
                                 if (optionsValueR.values != null && optionsValueR.values.size() > 0) {
                                     options.remove(optionsValueR);
@@ -1021,7 +1033,7 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
                         List<PosCartItem.OptionsValue> superAttribute = orderCartItem.getSuperAttribute();
                         if (superAttribute != null && superAttribute.size() > 0) {
                             int noItems = superAttribute.size();
-                            for (int i = 0; i < noItems ; i++) {
+                            for (int i = 0; i < noItems; i++) {
                                 PosCartItem.OptionsValue optionsValue = superAttribute.get(i);
                                 if (optionsValue.values != null && optionsValue.values.size() > 0) {
                                     for (String value : optionsValue.values) {
@@ -1035,7 +1047,7 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
                                 }
                             }
 
-                            for (int i = 0; i < superAttribute.size() ; i++) {
+                            for (int i = 0; i < superAttribute.size(); i++) {
                                 PosCartItem.OptionsValue optionsValueR = superAttribute.get(i);
                                 if (optionsValueR.values != null && optionsValueR.values.size() > 0) {
                                     superAttribute.remove(optionsValueR);
@@ -1049,7 +1061,7 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
                         List<PosCartItem.OptionsValue> bundleOption = orderCartItem.getBundleOption();
                         if (bundleOption != null && bundleOption.size() > 0) {
                             int noItems = bundleOption.size();
-                            for (int i = 0; i < noItems ; i++) {
+                            for (int i = 0; i < noItems; i++) {
                                 PosCartItem.OptionsValue optionsValue = bundleOption.get(i);
                                 if (optionsValue.values != null && optionsValue.values.size() > 0) {
                                     for (String value : optionsValue.values) {
@@ -1063,7 +1075,7 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
                                 }
                             }
 
-                            for (int i = 0; i < bundleOption.size() ; i++) {
+                            for (int i = 0; i < bundleOption.size(); i++) {
                                 PosCartItem.OptionsValue optionsValueR = bundleOption.get(i);
                                 if (optionsValueR.values != null && optionsValueR.values.size() > 0) {
                                     bundleOption.remove(optionsValueR);
@@ -1077,7 +1089,7 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
                         List<PosCartItem.OptionsValue> bundleOptionQty = orderCartItem.getBundleOptionQty();
                         if (bundleOptionQty != null && bundleOptionQty.size() > 0) {
                             int noItems = bundleOptionQty.size();
-                            for (int i = 0; i < noItems ; i++) {
+                            for (int i = 0; i < noItems; i++) {
                                 PosCartItem.OptionsValue optionsValue = bundleOptionQty.get(i);
                                 if (optionsValue.values != null && optionsValue.values.size() > 0) {
                                     for (String value : optionsValue.values) {
@@ -1091,7 +1103,7 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
                                 }
                             }
 
-                            for (int i = 0; i < bundleOptionQty.size() ; i++) {
+                            for (int i = 0; i < bundleOptionQty.size(); i++) {
                                 PosCartItem.OptionsValue optionsValueR = bundleOptionQty.get(i);
                                 if (optionsValueR.values != null && optionsValueR.values.size() > 0) {
                                     bundleOptionQty.remove(optionsValueR);

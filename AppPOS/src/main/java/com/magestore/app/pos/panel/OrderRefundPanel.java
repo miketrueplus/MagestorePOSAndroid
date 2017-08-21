@@ -254,10 +254,8 @@ public class OrderRefundPanel extends AbstractDetailPanel<Order> {
             refundParams.setEmailSent("0");
         }
 
-        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_1)) {
-            refundParams.setIncrementId(mOrder.getIncrementId());
-            refundParams.setInvoiceId(mOrder.getInvoiceId());
-        }
+        refundParams.setIncrementId(mOrder.getIncrementId());
+        refundParams.setInvoiceId(mOrder.getInvoiceId());
 
         float adjustRefund = adjust_refund.getValueFloat();
         float adjustFee = adjust_fee.getValueFloat();

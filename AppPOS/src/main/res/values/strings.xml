@@ -48,7 +48,7 @@
     <string name="checkout_payment_cc_date">Expiration Date</string>
     <string name="checkout_payment_cc_cvv">CVV</string>
     <string name="checkout_add_items">Please add item(s) to cart!</string>
-    <string name="checkout_send_email_success"></string>
+    <string name="checkout_send_email_success">An email has been sent for this order!</string>
 
     <!-- Strings related to customer -->
     <string name="customer_search_customer_here">Search name, email, telephone</string>

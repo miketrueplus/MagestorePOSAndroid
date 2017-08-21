@@ -557,7 +557,7 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
 
             String json = StringUtil.truncateJson(rp.readResult2String());
             SendEmailEntity ck = new Gson().fromJson(json, SendEmailEntity.class);
-            String message = "";
+            String message = "false";
             if (ck != null) {
                 if (ck.status.equals("1")) {
                     if (ck.messages != null && ck.messages.size() > 0) {
