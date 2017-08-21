@@ -1042,9 +1042,7 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
             if (checkStaffPermiss(listPermisson, ALL_PERMISSON)) {
                 ConfigUtil.setCreateOrder(true);
                 ConfigUtil.setManagerShiftAdjustment(true);
-                ConfigUtil.setManageOrderByMe(true);
-                ConfigUtil.setManageOrderOtherStaff(true);
-                ConfigUtil.setCanUseRefund(true);
+                ConfigUtil.setManagerAllOrder(true);
                 ConfigUtil.setDiscountPerCart(true);
                 ConfigUtil.setApplyCoupon(true);
                 ConfigUtil.setDiscountPerItem(true);

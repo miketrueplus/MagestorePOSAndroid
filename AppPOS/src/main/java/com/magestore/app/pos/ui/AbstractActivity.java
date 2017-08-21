@@ -577,9 +577,9 @@ public abstract class AbstractActivity
                 sendBroadcast(intent);
                 popupWindow.dismiss();
                 if (AbstractActivity.this instanceof OrderActivity) {
-                    Intent i = new Intent(getContext(), SalesActivity.class);
-                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(i);
+                    Intent i = new Intent();
+                    i.setAction(BACK_TO_HOME);
+                    sendBroadcast(i);
                 }
                 staff_name.setText(ConfigUtil.getStaff().getStaffName() + " - " + mCurrentStaff.getRole());
                 mSelectStaff = mCurrentStaff;
