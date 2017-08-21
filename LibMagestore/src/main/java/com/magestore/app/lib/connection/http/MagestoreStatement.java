@@ -372,6 +372,7 @@ public class MagestoreStatement implements Statement {
         if (statusCode == HTTP_CODE_RESPONSE_SUCCESS) {
             // save cookie
             saveCookie();
+            // check erorr magento 1
             if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_1)) {
                 InputStream inputStream = mHttpConnection.getInputStream();
                 MagestoreResultReading magestoreResultReading = new MagestoreResultReading(inputStream);
@@ -380,7 +381,7 @@ public class MagestoreStatement implements Statement {
                     JSONObject json = new JSONObject(respone);
                     if (json.has("status")) {
                         String status = json.getString("status");
-                        if (status.equals("0")) {
+                        if (status.equals("0") || status.equals("false")) {
                             String messages = null;
                             if (json.has("messages")) {
                                 if (json.get("messages") instanceof JSONObject) {
@@ -388,6 +389,28 @@ public class MagestoreStatement implements Statement {
                                 }
                                 if (json.get("messages") instanceof JSONArray) {
                                     JSONArray arr_message = json.getJSONArray("messages");
+                                    if (arr_message != null && arr_message.length() > 0) {
+                                        messages = arr_message.get(0).toString();
+                                    }
+                                }
+                            }
+                            if (json.has("errmessage")) {
+                                if (json.get("errmessage") instanceof JSONObject) {
+                                    messages = json.getString("errmessage");
+                                }
+                                if (json.get("errmessage") instanceof JSONArray) {
+                                    JSONArray arr_message = json.getJSONArray("errmessage");
+                                    if (arr_message != null && arr_message.length() > 0) {
+                                        messages = arr_message.get(0).toString();
+                                    }
+                                }
+                            }
+                            if (json.has("error_message")) {
+                                if (json.get("error_message") instanceof JSONObject) {
+                                    messages = json.getString("error_message");
+                                }
+                                if (json.get("error_message") instanceof JSONArray) {
+                                    JSONArray arr_message = json.getJSONArray("error_message");
                                     if (arr_message != null && arr_message.length() > 0) {
                                         messages = arr_message.get(0).toString();
                                     }
