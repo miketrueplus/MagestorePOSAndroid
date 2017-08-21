@@ -500,7 +500,7 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
                         if (!mCheckLoginDemo) {
                             saveSharedValue("login_activity_domain", mDomainView.getText().toString().trim());
                             saveSharedValue("login_activity_username", mUserNameView.getText().toString().trim());
-                            saveSharedValue("login_activity_password", mPasswordView.getText().toString().trim());
+//                            saveSharedValue("login_activity_password", mPasswordView.getText().toString().trim());
                         }
                         if (ConfigUtil.isEnableSession()) {
                             navigationToSalesActivity();
@@ -640,8 +640,15 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
     @Override
     protected void onResume() {
         super.onResume();
-        email_login_form.setVisibility(View.VISIBLE);
-        point_of_sales_form.setVisibility(View.GONE);
+        if (email_login_form != null) {
+            email_login_form.setVisibility(View.VISIBLE);
+        }
+        if (point_of_sales_form != null) {
+            point_of_sales_form.setVisibility(View.GONE);
+        }
+        if (mPasswordView != null) {
+            mPasswordView.setText("");
+        }
         showProgress(false);
     }
 }

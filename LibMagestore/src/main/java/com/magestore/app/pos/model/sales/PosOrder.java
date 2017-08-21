@@ -13,6 +13,7 @@ import com.magestore.app.lib.model.sales.OrderWebposPayment;
 import com.magestore.app.pos.model.PosAbstractModel;
 import com.magestore.app.pos.model.checkout.cart.PosCartItem;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosExclude;
+import com.magestore.app.util.ConfigUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -235,11 +236,21 @@ public class PosOrder extends PosAbstractModel implements Order {
 
     @Override
     public float getRewardPointsBaseDiscount() {
+        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_1)) {
+            if (rewardpoints_base_discount > 0) {
+                return (0 - rewardpoints_base_discount);
+            }
+        }
         return rewardpoints_base_discount;
     }
 
     @Override
     public float getBaseGiftVoucherDiscount() {
+        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_1)) {
+            if (base_gift_voucher_discount > 0) {
+                return (0 - base_gift_voucher_discount);
+            }
+        }
         return base_gift_voucher_discount;
     }
 
