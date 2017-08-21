@@ -770,7 +770,7 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
 
     @Override
     public List<CheckoutPayment> retrievePaymentMethod() throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
-        return null;
+        return ConfigUtil.getListPayment();
     }
 
     @Override
