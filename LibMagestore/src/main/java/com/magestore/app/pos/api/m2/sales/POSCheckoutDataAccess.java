@@ -11,6 +11,7 @@ import com.magestore.app.lib.connection.ResultReading;
 import com.magestore.app.lib.connection.Statement;
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.checkout.Checkout;
+import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.lib.model.checkout.PlaceOrderParams;
 import com.magestore.app.lib.model.checkout.Quote;
 import com.magestore.app.lib.model.checkout.QuoteAddCouponParam;
@@ -32,6 +33,7 @@ import com.magestore.app.pos.parse.gson2pos.Gson2PosOrderParseModel;
 import com.magestore.app.util.StringUtil;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by Mike on 2/7/2017.
@@ -41,7 +43,7 @@ import java.io.IOException;
 
 public class POSCheckoutDataAccess extends POSAbstractDataAccess implements CheckoutDataAccess {
     static String CODE_PAYMENT_AUTHORIZENET = "authorizenet_directpost";
-
+    private static final String PAYMENT_STORE_CREDIT_CODE = "storecredit";
     private class CheckoutEntity {
         String quote_id = null;
         String shipping_method = null;
@@ -114,10 +116,9 @@ public class POSCheckoutDataAccess extends POSAbstractDataAccess implements Chec
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
 
-            // TODO: log params request
-            Gson gson = new Gson();
-            String json = gson.toJson(quote);
-            Log.e("JSON", json.toString());
+            // set data
+            quote.setCustomerId("");
+            quote.setTillId("1");
 
             rp = statement.execute(quote);
             rp.setParseImplement(getClassParseImplement());
@@ -163,6 +164,10 @@ public class POSCheckoutDataAccess extends POSAbstractDataAccess implements Chec
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
 
+            // set data
+            quoteParam.setCustomerId("");
+            quoteParam.setTillId("1");
+
             rp = statement.execute(quoteParam);
             rp.setParseImplement(getClassParseImplement());
             rp.setParseModel(PosCheckout.class);
@@ -192,7 +197,7 @@ public class POSCheckoutDataAccess extends POSAbstractDataAccess implements Chec
     }
 
     @Override
-    public Checkout addCouponToQuote(QuoteAddCouponParam quoteAddCouponParam) throws ParseException, InstantiationException, IllegalAccessException, IOException {
+    public Checkout addCouponToQuote(Checkout checkout, QuoteAddCouponParam quoteAddCouponParam) throws ParseException, InstantiationException, IllegalAccessException, IOException {
         Connection connection = null;
         Statement statement = null;
         ResultReading rp = null;
@@ -207,12 +212,15 @@ public class POSCheckoutDataAccess extends POSAbstractDataAccess implements Chec
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
 
+            // set data
+            quoteAddCouponParam.setCustomerId("");
+
             rp = statement.execute(quoteAddCouponParam);
             rp.setParseImplement(getClassParseImplement());
             rp.setParseModel(PosCheckout.class);
 
-            Checkout checkout = (Checkout) rp.doParse();
-            return checkout;
+            Checkout ck = (Checkout) rp.doParse();
+            return ck;
         } catch (ConnectionException ex) {
             throw ex;
         } catch (IOException ex) {
@@ -332,7 +340,7 @@ public class POSCheckoutDataAccess extends POSAbstractDataAccess implements Chec
     }
 
     @Override
-    public Model placeOrder(PlaceOrderParams placeOrderParams) throws ParseException, InstantiationException, IllegalAccessException, IOException {
+    public Model placeOrder(Checkout checkout, PlaceOrderParams placeOrderParams, List<CheckoutPayment> listCheckoutPayment) throws ParseException, InstantiationException, IllegalAccessException, IOException {
         Connection connection = null;
         Statement statement = null;
         ResultReading rp = null;
@@ -346,6 +354,9 @@ public class POSCheckoutDataAccess extends POSAbstractDataAccess implements Chec
             // Xây dựng tham số
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
+
+            // set data
+            placeOrderParams.setCustomerId("");
 
             rp = statement.execute(placeOrderParams);
             rp.setParseImplement(getClassParseImplement());

@@ -255,7 +255,7 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
             if (!ConfigUtil.isManagerAllOrder()) {
-                if (ConfigUtil.isManageOrderByMe())
+                if (ConfigUtil.isManageOrderByMe() && !ConfigUtil.isManageOrderOtherStaff())
                     paramBuilder.setFilterEqual("webpos_staff_id", ConfigUtil.getStaff().getID());
             }
 
@@ -320,7 +320,7 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
             if (!ConfigUtil.isManagerAllOrder()) {
-                if (ConfigUtil.isManageOrderByMe())
+                if (ConfigUtil.isManageOrderByMe() && !ConfigUtil.isManageOrderOtherStaff())
                     paramBuilder.setFilterEqual("webpos_staff_id", ConfigUtil.getStaff().getID());
             }
 
@@ -887,7 +887,7 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
             if (!ConfigUtil.isManagerAllOrder()) {
-                if (ConfigUtil.isManageOrderByMe())
+                if (ConfigUtil.isManageOrderByMe() && !ConfigUtil.isManageOrderOtherStaff())
                     paramBuilder.setFilterEqual("webpos_staff_id", ConfigUtil.getStaff().getID());
             }
             // thực thi truy vấn và parse kết quả thành object
@@ -948,7 +948,7 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
             if (!ConfigUtil.isManagerAllOrder()) {
-                if (ConfigUtil.isManageOrderByMe())
+                if (ConfigUtil.isManageOrderByMe() && !ConfigUtil.isManageOrderOtherStaff())
                     paramBuilder.setFilterEqual("webpos_staff_id", ConfigUtil.getStaff().getID());
             }
 

@@ -17,6 +17,7 @@ import com.magestore.app.lib.connection.ResultReading;
 import com.magestore.app.lib.connection.Statement;
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.checkout.Checkout;
+import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.lib.model.checkout.DataCheckout;
 import com.magestore.app.lib.model.checkout.DataPlaceOrder;
 import com.magestore.app.lib.model.checkout.PlaceOrderParams;
@@ -60,7 +61,9 @@ import java.util.Map;
  */
 
 public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements CheckoutDataAccess {
-
+    private static final String PAYMENT_STORE_CREDIT_CODE = "storecredit";
+    private static final String PAYMENT_STRIPE_CODE = "stripe_integration";
+    private static final String PAYMENT_AUTHORIZE = "authorizenet_integration";
     private class CheckoutEntity {
         String quote_id = null;
         String shipping_method = null;
@@ -192,6 +195,9 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
+            // set data
+            quote.setTillId(ConfigUtil.getPointOfSales().getID());
+
             rp = statement.execute(setQuoteParam(quote));
             rp.setParseImplement(new Gson2PosCartParseModel());
             rp.setParseModel(PosDataCheckout.class);
@@ -304,6 +310,9 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
+            // set data
+            quoteParam.setTillId(ConfigUtil.getPointOfSales().getID());
+
             rp = statement.execute(quoteParam);
             rp.setParseImplement(new Gson2PosCartParseModel());
             rp.setParseModel(PosDataCheckout.class);
@@ -333,7 +342,7 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
     }
 
     @Override
-    public Checkout addCouponToQuote(QuoteAddCouponParam quoteAddCouponParam) throws ParseException, InstantiationException, IllegalAccessException, IOException {
+    public Checkout addCouponToQuote(Checkout checkout, QuoteAddCouponParam quoteAddCouponParam) throws ParseException, InstantiationException, IllegalAccessException, IOException {
         Connection connection = null;
         Statement statement = null;
         ResultReading rp = null;
@@ -344,6 +353,11 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
             statement = connection.createStatement();
             statement.prepareQuery(POSAPIM1.REST_CHECKOUT_ADD_COUPON_TO_QUOTE);
 
+            // set data
+            quoteAddCouponParam.setStoreId(checkout.getStoreId());
+            quoteAddCouponParam.setCurrencyId(ConfigUtil.getCurrentCurrency().getCode());
+            quoteAddCouponParam.setTillId(ConfigUtil.getPointOfSales().getID());
+
             // Xây dựng tham số
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
@@ -352,8 +366,8 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
             rp.setParseImplement(new Gson2PosCartParseModel());
             rp.setParseModel(PosDataCheckout.class);
             DataCheckout dataCheckout = (DataCheckout) rp.doParse();
-            Checkout checkout = dataCheckout.getCheckout();
-            return checkout;
+            Checkout ck = dataCheckout.getCheckout();
+            return ck;
         } catch (ConnectionException ex) {
             throw ex;
         } catch (IOException ex) {
@@ -448,7 +462,7 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
     }
 
     @Override
-    public Model placeOrder(PlaceOrderParams placeOrderParams) throws ParseException, InstantiationException, IllegalAccessException, IOException {
+    public Model placeOrder(Checkout checkout, PlaceOrderParams placeOrderParams, List<CheckoutPayment> listCheckoutPayment) throws ParseException, InstantiationException, IllegalAccessException, IOException {
         Connection connection = null;
         Statement statement = null;
         ResultReading rp = null;
@@ -458,6 +472,25 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
             connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSessionM1.REST_BASE_URL, POSDataAccessSessionM1.REST_USER_NAME, POSDataAccessSessionM1.REST_PASSWORD);
             statement = connection.createStatement();
             statement.prepareQuery(POSAPIM1.REST_CHECK_OUT_PLACE_ORDER);
+
+            // set data
+            placeOrderParams.setStoreId(checkout.getStoreId());
+            placeOrderParams.setTillId(ConfigUtil.getPointOfSales().getID());
+            placeOrderParams.setCurrencyId(ConfigUtil.getCurrentCurrency().getCode());
+
+            if (listCheckoutPayment != null && listCheckoutPayment.size() == 1) {
+                String paymentCode = listCheckoutPayment.get(0).getCode();
+                String paymentType = listCheckoutPayment.get(0).getType();
+                if (paymentType.equals("2") || paymentCode.equals(PAYMENT_STRIPE_CODE) || paymentCode.equals(PAYMENT_AUTHORIZE)) {
+                    placeOrderParams.setMethod("multipaymentforpos");
+                } else {
+                    if (paymentType.equals(PAYMENT_STORE_CREDIT_CODE)) {
+                        placeOrderParams.setMethod("multipaymentforpos");
+                    } else {
+                        placeOrderParams.setMethod(paymentCode);
+                    }
+                }
+            }
 
             // Xây dựng tham số
             paramBuilder = statement.getParamBuilder()
