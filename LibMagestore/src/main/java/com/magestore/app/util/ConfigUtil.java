@@ -68,9 +68,12 @@ public class ConfigUtil {
     private static ConfigPriceFormat mConfigPriceFormat;
 
     // permisson
+    private static boolean mCreateOrder;
     private static boolean mManageAllOrder;
     private static boolean mManageOrderByMe;
     private static boolean mManageOrderByLocation;
+    private static boolean mManageOrderOtherStaff;
+    private static boolean mCanUseRefund;
     private static boolean mManageAllDiscount;
     private static boolean mDiscountPerCart;
     private static boolean mApplyCoupon;
@@ -842,6 +845,14 @@ public class ConfigUtil {
     }
 
     // permisson
+    public static boolean isCreateOrder() {
+        return mCreateOrder;
+    }
+
+    public static void setCreateOrder(boolean mCreateOrder) {
+        ConfigUtil.mCreateOrder = mCreateOrder;
+    }
+
     public static boolean isManagerAllOrder() {
         return mManageAllOrder;
     }
@@ -864,6 +875,22 @@ public class ConfigUtil {
 
     public static void setManageOrderByLocation(boolean mManageOrderByLocation) {
         ConfigUtil.mManageOrderByLocation = mManageOrderByLocation;
+    }
+
+    public static boolean isManageOrderOtherStaff() {
+        return mManageOrderOtherStaff;
+    }
+
+    public static void setManageOrderOtherStaff(boolean mManageOrderOtherStaff) {
+        ConfigUtil.mManageOrderOtherStaff = mManageOrderOtherStaff;
+    }
+
+    public static boolean isCanUseRefund() {
+        return mCanUseRefund;
+    }
+
+    public static void setCanUseRefund(boolean mCanUseRefund) {
+        ConfigUtil.mCanUseRefund = mCanUseRefund;
     }
 
     public static boolean isManageAllDiscount() {

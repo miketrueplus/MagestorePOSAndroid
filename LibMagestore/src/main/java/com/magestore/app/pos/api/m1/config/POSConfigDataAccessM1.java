@@ -89,6 +89,24 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
     private static CustomerAddress customerAddress;
     private static Currency currentCurrency;
 
+    // all permission
+    private static String ALL_PERMISSON = "Magestore_Webpos::all";
+    // create order
+    private static String CREATE_ORDER = "Magestore_Webpos::create_orders";
+    // manage order
+    private static String MANAGE_ALL_ORDER = "Magestore_Webpos::manage_all_order";
+    private static String MANAGE_ORDER_ME = "Magestore_Webpos::manage_order_me";
+    private static String MANAGE_ORDER_OTHER_STAFF = "Magestore_Webpos::manage_order_other_staff";
+    private static String CAN_USE_REFUND = "Magestore_Webpos::can_use_refund";
+    // manage discount
+    private static String MANAGE_ALL_DISCOUNT = "Magestore_Webpos::all_discount";
+    private static String APPLY_DISCOUNT_PER_CART = "Magestore_Webpos::apply_discount_per_cart";
+    private static String APPLY_COUPON = "Magestore_Webpos::apply_coupon";
+    private static String APPLY_DISCOUNT_PER_ITEM = "Magestore_Webpos::apply_discount_per_item";
+    private static String APPLY_CUSTOM_PRICE = "Magestore_Webpos::apply_custom_price";
+    // Session
+    private static String MANAGE_SHIFT_ADJUSTMENT = "Magestore_Webpos::manage_shift_adjustment";
+
     private class ConfigEntity {
         Staff staff;
         String currency;
@@ -1015,6 +1033,60 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
         }
 
         return false;
+    }
+
+    @Override
+    public void getConfigStaffPermisson(List<String> listPermisson) throws DataAccessException, ConnectionException, ParseException, IOException, ParseException{
+        if (listPermisson.size() > 0) {
+            ConfigUtil.setManageOrderByLocation(false);
+            if (checkStaffPermiss(listPermisson, ALL_PERMISSON)) {
+                ConfigUtil.setCreateOrder(true);
+                ConfigUtil.setManagerShiftAdjustment(true);
+                ConfigUtil.setManageOrderByMe(true);
+                ConfigUtil.setManageOrderOtherStaff(true);
+                ConfigUtil.setCanUseRefund(true);
+                ConfigUtil.setDiscountPerCart(true);
+                ConfigUtil.setApplyCoupon(true);
+                ConfigUtil.setDiscountPerItem(true);
+                ConfigUtil.setApplyCustomPrice(true);
+            } else {
+                ConfigUtil.setManagerAllOrder(checkStaffPermiss(listPermisson, MANAGE_ALL_ORDER));
+                ConfigUtil.setCreateOrder(checkStaffPermiss(listPermisson, CREATE_ORDER));
+                if (ConfigUtil.isManagerAllOrder()) {
+                    ConfigUtil.setManageOrderByMe(true);
+                    ConfigUtil.setManageOrderOtherStaff(true);
+                    ConfigUtil.setCanUseRefund(true);
+                } else {
+                    ConfigUtil.setManageOrderByMe(checkStaffPermiss(listPermisson, MANAGE_ORDER_ME));
+                    ConfigUtil.setManageOrderOtherStaff(checkStaffPermiss(listPermisson, MANAGE_ORDER_OTHER_STAFF));
+                    ConfigUtil.setCanUseRefund(checkStaffPermiss(listPermisson, CAN_USE_REFUND));
+                }
+                ConfigUtil.setManageAllDiscount(checkStaffPermiss(listPermisson, MANAGE_ALL_DISCOUNT));
+                if (ConfigUtil.isManageAllDiscount()) {
+                    ConfigUtil.setDiscountPerCart(true);
+                    ConfigUtil.setApplyCoupon(true);
+                    ConfigUtil.setDiscountPerItem(true);
+                    ConfigUtil.setApplyCustomPrice(true);
+                } else {
+                    ConfigUtil.setDiscountPerCart(checkStaffPermiss(listPermisson, APPLY_DISCOUNT_PER_CART));
+                    ConfigUtil.setApplyCoupon(checkStaffPermiss(listPermisson, APPLY_COUPON));
+                    ConfigUtil.setDiscountPerItem(checkStaffPermiss(listPermisson, APPLY_DISCOUNT_PER_ITEM));
+                    ConfigUtil.setApplyCustomPrice(checkStaffPermiss(listPermisson, APPLY_CUSTOM_PRICE));
+                }
+                ConfigUtil.setManagerShiftAdjustment(checkStaffPermiss(listPermisson, MANAGE_SHIFT_ADJUSTMENT));
+            }
+        }
+    }
+
+    private boolean checkStaffPermiss(List<String> listPermisson, String permisson) {
+        boolean checkPermisson = false;
+        for (String _permisson : listPermisson) {
+            if (_permisson.equals(permisson)) {
+                checkPermisson = true;
+                return checkPermisson;
+            }
+        }
+        return checkPermisson;
     }
 
     private ConfigPriceFormat getPriceFormat(LinkedTreeMap priceFormat) {

@@ -285,7 +285,11 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         checkVisibleItemMenu(popupMenu, R.id.action_cancel, ((OrderHistoryListController) mController).checkCanCancel(order));
         checkVisibleItemMenu(popupMenu, R.id.action_add_comment, "pending".equals(status) | "processing".equals(status) | "complete".equals(status) | "canceled".equals(status) | "not_sync".equals(status));
         checkVisibleItemMenu(popupMenu, R.id.action_re_order, "pending".equals(status) | "processing".equals(status) | "complete".equals(status) | "canceled".equals(status) | "closed".equals(status) | "not_sync".equals(status));
-        checkVisibleItemMenu(popupMenu, R.id.action_refund, ((OrderHistoryListController) mController).checkCanRefund(order));
+        if (ConfigUtil.isCanUseRefund()) {
+            checkVisibleItemMenu(popupMenu, R.id.action_refund, ((OrderHistoryListController) mController).checkCanRefund(order));
+        } else {
+            checkVisibleItemMenu(popupMenu, R.id.action_refund, false);
+        }
     }
 
     private void checkVisibleItemMenu(PopupMenu popupMenu, int id, boolean check) {
@@ -726,7 +730,7 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
 //                listPaymentPanel.setVisibility(VISIBLE);
 //                listPaymentPanel.bindList(listPayment);
 //            } else {
-                listPaymentPanel.setVisibility(GONE);
+            listPaymentPanel.setVisibility(GONE);
 //            }
 
             LinearLayout ll_change = (LinearLayout) dialogPrint.findViewById(R.id.ll_change);

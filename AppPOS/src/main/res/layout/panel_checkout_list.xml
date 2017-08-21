@@ -251,13 +251,42 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/layout_margin_10"
+                        android:layout_marginRight="@dimen/layout_margin_10"
+                        android:orientation="horizontal"
+                        android:visibility="@{ConfigUtil.isCreateOrder() ? View.GONE : View.VISIBLE}">
+
+                        <com.magestore.app.view.FormatTextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="left"
+                            android:text="@string/grand_total"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/text_size_20" />
+
+                        <com.magestore.app.view.FormatTextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/layout_margin_5"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:text="@{ConfigUtil.formatPriceProduct(checkout.getGrandTotalView())}"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/text_size_20" />
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:id="@+id/ll_action_checkout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/layout_margin_5"
                         android:background="@drawable/sales_button_checkout_backgound"
                         android:orientation="horizontal"
-                        android:padding="@dimen/layout_margin_10">
+                        android:padding="@dimen/layout_margin_10"
+                        android:visibility="@{ConfigUtil.isCreateOrder() ? View.VISIBLE : View.GONE}">
 
                         <TextView
                             android:id="@+id/btn_sales_order_checkout"

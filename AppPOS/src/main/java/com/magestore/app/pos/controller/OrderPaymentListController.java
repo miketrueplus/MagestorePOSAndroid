@@ -100,13 +100,7 @@ public class OrderPaymentListController extends AbstractListController<OrderWebp
 
     public List<OrderWebposPayment> checkIntegration(List<OrderWebposPayment> listPayment, Order order) {
         boolean showIntegration = false;
-        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2)) {
-            if (order.getPayment() != null) {
-                if ((order.getBaseGiftVoucherDiscount() < 0 || order.getRewardPointsBaseDiscount() < 0) && order.getPayment().getMethod().equals("multipaymentforpos")) {
-                    showIntegration = true;
-                }
-            }
-        } else {
+        if (order.getPayment() != null) {
             if ((order.getBaseGiftVoucherDiscount() < 0 || order.getRewardPointsBaseDiscount() < 0)) {
                 showIntegration = true;
             }

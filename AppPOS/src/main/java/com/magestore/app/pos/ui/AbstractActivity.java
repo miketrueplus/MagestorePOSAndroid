@@ -406,7 +406,7 @@ public abstract class AbstractActivity
         if (ConfigUtil.isManagerAllOrder()) {
             nav_order_history.setVisibility(View.VISIBLE);
         } else {
-            if (ConfigUtil.isManageOrderByMe() || ConfigUtil.isManageOrderByLocation()) {
+            if (ConfigUtil.isManageOrderByMe() || ConfigUtil.isManageOrderByLocation() || ConfigUtil.isManageOrderOtherStaff()) {
                 nav_order_history.setVisibility(View.VISIBLE);
             } else {
                 nav_order_history.setVisibility(View.GONE);
@@ -692,7 +692,7 @@ public abstract class AbstractActivity
         if (ConfigUtil.isManagerAllOrder()) {
             nav_order_history.setVisibility(View.VISIBLE);
         } else {
-            if (ConfigUtil.isManageOrderByMe() || ConfigUtil.isManageOrderByLocation()) {
+            if (ConfigUtil.isManageOrderByMe() || ConfigUtil.isManageOrderByLocation() || ConfigUtil.isManageOrderOtherStaff()) {
                 nav_order_history.setVisibility(View.VISIBLE);
             } else {
                 nav_order_history.setVisibility(View.GONE);

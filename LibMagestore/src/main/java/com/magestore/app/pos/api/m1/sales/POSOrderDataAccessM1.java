@@ -254,10 +254,14 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
                     .setSortOrderDESC("created_at")
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
-            if (ConfigUtil.isManageOrderByMe())
-                paramBuilder.setFilterEqual("webpos_staff_id", ConfigUtil.getStaff().getID());
-            if (ConfigUtil.isManageOrderByLocation())
-                paramBuilder.setFilterEqual("location_id", ConfigUtil.getStaff().getStaffLocation().getID());
+            if (!ConfigUtil.isManageOrderByMe() || !ConfigUtil.isManageOrderOtherStaff()) {
+                if (ConfigUtil.isManageOrderOtherStaff()) {
+                    paramBuilder.setFilterNotEqual("webpos_staff_id", ConfigUtil.getStaff().getID());
+                } else {
+                    if (ConfigUtil.isManageOrderByMe())
+                        paramBuilder.setFilterEqual("webpos_staff_id", ConfigUtil.getStaff().getID());
+                }
+            }
 
             if (!StringUtil.isNullOrEmpty(status))
                 paramBuilder.setFilterIn("status", status);
@@ -319,10 +323,14 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
                     .setSortOrderDESC("created_at")
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
-            if (ConfigUtil.isManageOrderByMe())
-                paramBuilder.setFilterEqual("webpos_staff_id", ConfigUtil.getStaff().getID());
-            if (ConfigUtil.isManageOrderByLocation())
-                paramBuilder.setFilterEqual("location_id", ConfigUtil.getStaff().getStaffLocation().getID());
+            if (!ConfigUtil.isManageOrderByMe() || !ConfigUtil.isManageOrderOtherStaff()) {
+                if (ConfigUtil.isManageOrderOtherStaff()) {
+                    paramBuilder.setFilterNotEqual("webpos_staff_id", ConfigUtil.getStaff().getID());
+                } else {
+                    if (ConfigUtil.isManageOrderByMe())
+                        paramBuilder.setFilterEqual("webpos_staff_id", ConfigUtil.getStaff().getID());
+                }
+            }
 
             if (!StringUtil.isNullOrEmpty(status))
                 paramBuilder.setFilterIn("status", status);
@@ -886,11 +894,14 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
                     .setFilterNotEqual("status", "onhold")
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
-            if (ConfigUtil.isManageOrderByMe())
-                paramBuilder.setFilterEqual("webpos_staff_id", ConfigUtil.getStaff().getID());
-            if (ConfigUtil.isManageOrderByLocation())
-                paramBuilder.setFilterEqual("location_id", ConfigUtil.getStaff().getStaffLocation().getID());
-
+            if (!ConfigUtil.isManageOrderByMe() || !ConfigUtil.isManageOrderOtherStaff()) {
+                if (ConfigUtil.isManageOrderOtherStaff()) {
+                    paramBuilder.setFilterNotEqual("webpos_staff_id", ConfigUtil.getStaff().getID());
+                } else {
+                    if (ConfigUtil.isManageOrderByMe())
+                        paramBuilder.setFilterEqual("webpos_staff_id", ConfigUtil.getStaff().getID());
+                }
+            }
             // thực thi truy vấn và parse kết quả thành object
             rp = statement.execute();
 //            rp.setParseImplement(getClassParseImplement());
@@ -948,10 +959,14 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
                     .setSortOrderDESC("created_at")
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
-            if (ConfigUtil.isManageOrderByMe())
-                paramBuilder.setFilterEqual("webpos_staff_id", ConfigUtil.getStaff().getID());
-            if (ConfigUtil.isManageOrderByLocation())
-                paramBuilder.setFilterEqual("location_id", ConfigUtil.getStaff().getStaffLocation().getID());
+            if (!ConfigUtil.isManageOrderByMe() || !ConfigUtil.isManageOrderOtherStaff()) {
+                if (ConfigUtil.isManageOrderOtherStaff()) {
+                    paramBuilder.setFilterNotEqual("webpos_staff_id", ConfigUtil.getStaff().getID());
+                } else {
+                    if (ConfigUtil.isManageOrderByMe())
+                        paramBuilder.setFilterEqual("webpos_staff_id", ConfigUtil.getStaff().getID());
+                }
+            }
 
             // thực thi truy vấn và parse kết quả thành object
             rp = statement.execute();
