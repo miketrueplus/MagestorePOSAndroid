@@ -39,11 +39,11 @@ public class POSPluginsService extends AbstractService implements PluginsService
     }
 
     @Override
-    public Checkout applyRewarPoint(RewardPoint rewardPoint) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+    public Checkout applyRewarPoint(Checkout checkout, RewardPoint rewardPoint) throws IOException, InstantiationException, ParseException, IllegalAccessException {
         // Khởi tạo plugin gateway factory
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         PluginsDataAccess pluginsDataAccess = factory.generatePluginsDataAccess();
-        return pluginsDataAccess.applyRewarPoint(rewardPoint);
+        return pluginsDataAccess.applyRewarPoint(checkout, rewardPoint);
     }
 
     @Override

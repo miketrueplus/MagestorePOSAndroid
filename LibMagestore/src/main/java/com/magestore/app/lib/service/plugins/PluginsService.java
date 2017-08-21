@@ -22,7 +22,7 @@ public interface PluginsService extends Service {
 
     GiftCardRemoveParam createGiftCardRemoveParam();
 
-    Checkout applyRewarPoint(RewardPoint rewardPoint) throws IOException, InstantiationException, ParseException, IllegalAccessException;
+    Checkout applyRewarPoint(Checkout checkout, RewardPoint rewardPoint) throws IOException, InstantiationException, ParseException, IllegalAccessException;
 
     Checkout addGiftCard(GiftCard giftCard) throws IOException, InstantiationException, ParseException, IllegalAccessException;
 

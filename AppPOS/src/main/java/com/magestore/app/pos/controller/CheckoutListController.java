@@ -559,30 +559,22 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             return true;
         } else if (actionType == ACTION_TYPE_APPLY_REWARD_POINT) {
             RewardPoint rewardPoint = (RewardPoint) models[0];
-            if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_1)) {
-                rewardPoint.setCurrencyId(ConfigUtil.getCurrentCurrency().getCode());
-                String store_id = DataUtil.getDataStringToPreferences(context, DataUtil.STORE_ID);
-                rewardPoint.setStoreId(store_id);
-                rewardPoint.setTillId(ConfigUtil.getPointOfSales().getID());
-                if (getSelectedItem().getCustomer() != null) {
-                    if (StringUtil.isNullOrEmpty(getSelectedItem().getCustomerID())) {
-                        if (!checkCustomerID(getSelectedItem().getCustomer(), ConfigUtil.getCustomerGuest())) {
-                            if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2)) {
-                                rewardPoint.setCustomerId("");
-                            } else {
-                                rewardPoint.setCustomerId(getSelectedItem().getCustomerID());
-                            }
-                        } else {
-                            rewardPoint.setCustomerId("");
-                        }
-                    } else {
+            if (getSelectedItem().getCustomer() != null) {
+                if (StringUtil.isNullOrEmpty(getSelectedItem().getCustomerID())) {
+                    if (!checkCustomerID(getSelectedItem().getCustomer(), ConfigUtil.getCustomerGuest())) {
                         rewardPoint.setCustomerId(getSelectedItem().getCustomerID());
+                    } else {
+                        rewardPoint.setCustomerId("");
                     }
                 } else {
-                    rewardPoint.setCustomerId("");
+                    rewardPoint.setCustomerId(getSelectedItem().getCustomerID());
                 }
+            } else {
+                rewardPoint.setCustomerId("");
             }
-            wraper.put("save_reward_point", pluginsService.applyRewarPoint(rewardPoint));
+            String store_id = DataUtil.getDataStringToPreferences(context, DataUtil.STORE_ID);
+            getSelectedItem().setStoreId(store_id);
+            wraper.put("save_reward_point", pluginsService.applyRewarPoint(getSelectedItem(), rewardPoint));
             return true;
         } else if (actionType == ACTION_TYPE_CHECK_APPROVED_PAYMENT_PAYPAL) {
             String payment_id = (String) wraper.get("payment_id");
@@ -2132,6 +2124,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
     /**
      * check switch pick at store
+     *
      * @param isCheck
      */
     public void setCheckSwitch(boolean isCheck) {

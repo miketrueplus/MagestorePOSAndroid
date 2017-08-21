@@ -18,7 +18,7 @@ import java.io.IOException;
  */
 
 public interface PluginsDataAccess extends DataAccess {
-    Checkout applyRewarPoint(RewardPoint rewardPoint) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
+    Checkout applyRewarPoint(Checkout checkout, RewardPoint rewardPoint) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
 
     Checkout addGiftCard(GiftCard giftCard) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
 

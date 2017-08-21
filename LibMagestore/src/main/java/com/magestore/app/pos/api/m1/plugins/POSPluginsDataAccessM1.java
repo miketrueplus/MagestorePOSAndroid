@@ -32,6 +32,7 @@ import com.magestore.app.pos.model.checkout.cart.PosCartItem;
 import com.magestore.app.pos.model.plugins.PosGiftCard;
 import com.magestore.app.pos.model.plugins.PosGiftCardRespone;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosAbstractParseImplement;
+import com.magestore.app.util.ConfigUtil;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -130,7 +131,7 @@ public class POSPluginsDataAccessM1 extends POSAbstractDataAccessM1 implements P
     }
 
     @Override
-    public Checkout applyRewarPoint(RewardPoint rewardPoint) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
+    public Checkout applyRewarPoint(Checkout checkout, RewardPoint rewardPoint) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
         Connection connection = null;
         Statement statement = null;
         ResultReading rp = null;
@@ -146,10 +147,10 @@ public class POSPluginsDataAccessM1 extends POSAbstractDataAccessM1 implements P
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
             RewardPointParams rewardPointParams = new RewardPointParams();
-            rewardPointParams.currency_id = rewardPoint.getCurrencyId();
+            rewardPointParams.currency_id = ConfigUtil.getCurrentCurrency().getCode();
             rewardPointParams.customer_id = rewardPoint.getCustomerId();
-            rewardPointParams.store_id = rewardPoint.getStoreId();
-            rewardPointParams.till_id = rewardPoint.getTillId();
+            rewardPointParams.store_id = checkout.getStoreId();
+            rewardPointParams.till_id = ConfigUtil.getPointOfSales().getID();
             rewardPointParams.quote_id = rewardPoint.getQuoteId();
             RewardData rewardData = new RewardData();
             rewardData.use_point = rewardPoint.getAmount();
@@ -160,8 +161,8 @@ public class POSPluginsDataAccessM1 extends POSAbstractDataAccessM1 implements P
             rp.setParseImplement(new Gson2PosCartParseModel());
             rp.setParseModel(PosDataCheckout.class);
             DataCheckout dataCheckout = (DataCheckout) rp.doParse();
-            Checkout checkout = dataCheckout.getCheckout();
-            return checkout;
+            Checkout ck = dataCheckout.getCheckout();
+            return ck;
         } catch (ConnectionException ex) {
             throw ex;
         } catch (IOException ex) {
