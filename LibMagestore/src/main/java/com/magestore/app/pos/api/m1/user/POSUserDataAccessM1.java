@@ -37,6 +37,7 @@ import java.util.List;
  */
 
 public class POSUserDataAccessM1 extends POSAbstractDataAccessM1 implements UserDataAccess {
+    static final String strfalse = "false\n";
     private class Wrap {
         User staff;
     }
@@ -106,6 +107,12 @@ public class POSUserDataAccessM1 extends POSAbstractDataAccessM1 implements User
             rp = statement.execute(wrap);
 
             String respone = rp.readResult2String();
+            if (respone == null) {
+                return "";
+            }
+            if (strfalse.equals(respone) || respone.equals("false")) {
+                return respone;
+            }
             JSONObject json = new JSONObject(respone);
             String session_id = json.getString("session_id");
             if (json.has("webpos_data")) {

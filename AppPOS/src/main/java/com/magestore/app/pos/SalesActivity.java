@@ -691,6 +691,7 @@ public class SalesActivity extends AbstractActivity
                 i.setAction(AbstractActivity.CHANGE_PERMISSON_MENU_ORDER);
                 sendBroadcast(i);
                 mCheckoutListPanel.showDiscountWithPermisson();
+                mCheckoutListPanel.showCheckoutPermisson();
             }
         }
     };

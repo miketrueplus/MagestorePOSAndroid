@@ -55,7 +55,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
     FrameLayout fr_sales_new_customer;
     LinearLayout ll_add_new_customer, ll_new_shipping_address, ll_new_billing_address, ll_shipping_address, ll_sales_shipping, ll_add_new_address;
     View ll_plugins;
-    LinearLayout ll_billing_address, ll_short_shipping_address, ll_short_billing_address, ll_sales_add_customer, ll_action_checkout, ll_sales_tax;
+    LinearLayout ll_billing_address, ll_short_shipping_address, ll_short_billing_address, ll_sales_add_customer, ll_action_checkout, ll_sales_tax, ll_grand_total;
     ImageView btn_shipping_address, btn_billing_address;
     ImageButton btn_shipping_adrress_edit, btn_billing_adrress_edit;
     ImageButton btn_shipping_address_delete, btn_billing_address_delete;
@@ -103,6 +103,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
         mBinding = DataBindingUtil.bind(getView());
 
         btn_sales_order_checkout = (TextView) findViewById(R.id.btn_sales_order_checkout);
+        ll_grand_total = (LinearLayout) findViewById(R.id.ll_grand_total);
         ll_action_checkout = (LinearLayout) findViewById(R.id.ll_action_checkout);
         ll_sales_shipping = (LinearLayout) findViewById(R.id.ll_sales_shipping);
         ll_sales_tax = (LinearLayout) findViewById(R.id.ll_sales_tax);
@@ -351,6 +352,11 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
         } else {
             bt_sales_discount.setVisibility(GONE);
         }
+    }
+
+    public void showCheckoutPermisson() {
+        ll_grand_total.setVisibility(ConfigUtil.isCreateOrder() ? GONE : VISIBLE);
+        ll_action_checkout.setVisibility(ConfigUtil.isCreateOrder() ? VISIBLE : GONE);
     }
 
     /**
