@@ -1046,6 +1046,7 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
                 ConfigUtil.setDiscountPerCart(true);
                 ConfigUtil.setApplyCoupon(true);
                 ConfigUtil.setDiscountPerItem(true);
+                ConfigUtil.setCanUseRefund(true);
                 ConfigUtil.setApplyCustomPrice(true);
             } else {
                 ConfigUtil.setManagerAllOrder(checkStaffPermiss(listPermisson, MANAGE_ALL_ORDER));
@@ -1053,7 +1054,6 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
                 if (ConfigUtil.isManagerAllOrder()) {
                     ConfigUtil.setManageOrderByMe(true);
                     ConfigUtil.setManageOrderOtherStaff(true);
-                    ConfigUtil.setCanUseRefund(true);
                 } else {
                     ConfigUtil.setManageOrderByMe(checkStaffPermiss(listPermisson, MANAGE_ORDER_ME));
                     ConfigUtil.setManageOrderOtherStaff(checkStaffPermiss(listPermisson, MANAGE_ORDER_OTHER_STAFF));
