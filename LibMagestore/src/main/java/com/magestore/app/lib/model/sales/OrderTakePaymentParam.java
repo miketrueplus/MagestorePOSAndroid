@@ -20,4 +20,5 @@ public interface OrderTakePaymentParam extends Model {
     List<PaymentMethodDataParam> createPaymentMethodData();
     void setMethod(String strMethod);
     void setMethodData(List<PaymentMethodDataParam> methodData);
+    void setCurrencyId(String strCurrencyId);
 }

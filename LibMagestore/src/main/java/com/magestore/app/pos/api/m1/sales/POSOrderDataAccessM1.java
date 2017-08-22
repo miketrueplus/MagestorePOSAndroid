@@ -822,6 +822,7 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
             // set order to params
             orderTakePaymentParam.setOrderIncrementId(order.getIncrementId());
             orderTakePaymentParam.setOrderId(orderID);
+            orderTakePaymentParam.setCurrencyId(ConfigUtil.getCurrentCurrency().getCode());
 
             rp = statement.execute(orderTakePaymentParam);
             rp.setParseImplement(new Gson2PosOrderParseModel());
