@@ -508,14 +508,10 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
             if (listCheckoutPayment != null && listCheckoutPayment.size() == 1) {
                 String paymentCode = listCheckoutPayment.get(0).getCode();
                 String paymentType = listCheckoutPayment.get(0).getType();
-                if (paymentType.equals("2") || paymentCode.equals(PAYMENT_STRIPE_CODE) || paymentCode.equals(PAYMENT_AUTHORIZE)) {
+                if (paymentType.equals("2") || paymentCode.equals(PAYMENT_STRIPE_CODE) || paymentCode.equals(PAYMENT_AUTHORIZE) || paymentCode.equals(PAYMENT_STORE_CREDIT_CODE)) {
                     placeOrderParams.setMethod("multipaymentforpos");
                 } else {
-                    if (paymentType.equals(PAYMENT_STORE_CREDIT_CODE)) {
-                        placeOrderParams.setMethod("multipaymentforpos");
-                    } else {
-                        placeOrderParams.setMethod(paymentCode);
-                    }
+                    placeOrderParams.setMethod(paymentCode);
                 }
             }
 
