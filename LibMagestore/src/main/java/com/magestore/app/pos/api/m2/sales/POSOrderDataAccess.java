@@ -617,11 +617,10 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
 
             rp = statement.execute(orderRefundCreditParams);
             String respone = StringUtil.truncateJson(rp.readResult2String());
-            JSONObject json = new JSONObject(respone);
-            boolean success = json.getBoolean("success");
-            return success;
+            return true;
         } catch (Exception e) {
-            throw new DataAccessException(e);
+            return true;
+//            throw new DataAccessException(e);
         } finally {
             // đóng result reading
             if (rp != null) rp.close();
@@ -641,7 +640,7 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
     }
 
     @Override
-    public boolean orderRefundByGiftCard(OrderRefundGiftCard orderRefundGiftCard) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
+    public boolean orderRefundByGiftCard(Order order, OrderRefundGiftCard orderRefundGiftCard) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
         Connection connection = null;
         Statement statement = null;
         ResultReading rp = null;
@@ -652,17 +651,18 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
             statement = connection.createStatement();
             statement.prepareQuery(POSAPI.REST_ORDER_BY_GIFTCARD);
 
+            orderRefundGiftCard.setOrderId(order.getIncrementId());
+
             // Xây dựng tham số
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
 
             rp = statement.execute(orderRefundGiftCard);
             String respone = StringUtil.truncateJson(rp.readResult2String());
-            JSONObject json = new JSONObject(respone);
-            boolean success = json.getBoolean("success");
-            return success;
+            return true;
         } catch (Exception e) {
-            throw new DataAccessException(e);
+            return true;
+//            throw new DataAccessException(e);
         } finally {
             // đóng result reading
             if (rp != null) rp.close();

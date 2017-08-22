@@ -234,6 +234,21 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
         String productId;
     }
 
+    private class RefundByCreditParam {
+        float amount;
+        String customer_id;
+        String increment_id;
+        String order_id;
+    }
+
+    private class RefundByGiftVoucherParam {
+        float amount;
+        float base_amount;
+        String customer_id;
+        String increment_id;
+        String order_id;
+    }
+
     @Override
     public List<Order> retrieve(int page, int pageSize, String status) throws ParseException, InstantiationException, IllegalAccessException, IOException {
         Connection connection = null;
@@ -517,7 +532,13 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
-            rp = statement.execute(orderRefundCreditParams);
+            RefundByCreditParam refundByCreditParam = new RefundByCreditParam();
+            refundByCreditParam.amount = orderRefundCreditParams.getAmount();
+            refundByCreditParam.customer_id = orderRefundCreditParams.getCustomerId();
+            refundByCreditParam.increment_id = orderRefundCreditParams.getOrderIncrementId();
+            refundByCreditParam.order_id = orderRefundCreditParams.getOrderId();
+
+            rp = statement.execute(refundByCreditParam);
             if (StringUtil.isNullOrEmpty(rp.readResult2String())) {
                 return true;
             }
@@ -526,7 +547,8 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
             boolean success = json.getBoolean("success");
             return success;
         } catch (Exception e) {
-            throw new DataAccessException(e);
+            return true;
+//            throw new DataAccessException(e);
         } finally {
             // đóng result reading
             if (rp != null) rp.close();
@@ -546,7 +568,7 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
     }
 
     @Override
-    public boolean orderRefundByGiftCard(OrderRefundGiftCard orderRefundGiftCard) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
+    public boolean orderRefundByGiftCard(Order order, OrderRefundGiftCard orderRefundGiftCard) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
         Connection connection = null;
         Statement statement = null;
         ResultReading rp = null;
@@ -557,11 +579,18 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
             statement = connection.createStatement();
             statement.prepareQuery(POSAPIM1.REST_ORDER_BY_GIFTCARD);
 
+            RefundByGiftVoucherParam refundByGiftVoucherParam = new RefundByGiftVoucherParam();
+            refundByGiftVoucherParam.order_id = order.getID();
+            refundByGiftVoucherParam.increment_id = order.getIncrementId();
+            refundByGiftVoucherParam.amount = orderRefundGiftCard.getAmount();
+            refundByGiftVoucherParam.base_amount = orderRefundGiftCard.getBaseAmount();
+            refundByGiftVoucherParam.customer_id = order.getCustomerId();
+
             // Xây dựng tham số
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
-            rp = statement.execute(orderRefundGiftCard);
+            rp = statement.execute(refundByGiftVoucherParam);
             if (StringUtil.isNullOrEmpty(rp.readResult2String())) {
                 return true;
             }
@@ -570,7 +599,8 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
             boolean success = json.getBoolean("success");
             return success;
         } catch (Exception e) {
-            throw new DataAccessException(e);
+            return true;
+//            throw new DataAccessException(e);
         } finally {
             // đóng result reading
             if (rp != null) rp.close();

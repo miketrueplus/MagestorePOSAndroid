@@ -413,7 +413,9 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
                             if (order.getStoreCreditRefund() > 0) {
                                 ((OrderHistoryListController) mController).doInputRefundByCredit(order);
                             }
-                            ((OrderHistoryListController) mController).doInputRefundByGiftCard(order);
+                            if (mOrder.getBaseGiftVoucherDiscount() != 0) {
+                                ((OrderHistoryListController) mController).doInputRefundByGiftCard(order);
+                            }
                             ((OrderHistoryListController) mController).doInputRefund(order);
                             dialog.dismiss();
                         } else {
@@ -422,7 +424,9 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
                             com.magestore.app.util.DialogUtil.confirm(getContext(), message, R.string.done);
                         }
                     } else if (ConfigUtil.isEnableGiftCard()) {
-                        ((OrderHistoryListController) mController).doInputRefundByGiftCard(order);
+                        if (mOrder.getBaseGiftVoucherDiscount() != 0) {
+                            ((OrderHistoryListController) mController).doInputRefundByGiftCard(order);
+                        }
                         ((OrderHistoryListController) mController).doInputRefund(order);
                         dialog.dismiss();
                     } else if (ConfigUtil.isEnableStoreCredit()) {

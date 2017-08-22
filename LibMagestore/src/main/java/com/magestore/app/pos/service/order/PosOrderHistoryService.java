@@ -183,13 +183,12 @@ public class PosOrderHistoryService extends AbstractService implements OrderHist
     @Override
     public boolean orderRefundByGiftCard(Order order) throws InstantiationException, IllegalAccessException, IOException, ParseException {
         OrderRefundGiftCard orderRefundGiftCard = createOrderRefundGiftCard();
-        orderRefundGiftCard.setOrderId(order.getIncrementId());
         orderRefundGiftCard.setAmount(order.getGiftCardRefund());
         orderRefundGiftCard.setBaseAmount(ConfigUtil.convertToBasePrice(order.getGiftCardRefund()));
 
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         OrderDataAccess orderDataAccess = factory.generateOrderDataAccess();
-        return orderDataAccess.orderRefundByGiftCard(orderRefundGiftCard);
+        return orderDataAccess.orderRefundByGiftCard(order, orderRefundGiftCard);
     }
 
     @Override

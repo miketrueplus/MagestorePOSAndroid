@@ -64,6 +64,7 @@ public class POSPluginsDataAccessM1 extends POSAbstractDataAccessM1 implements P
         String store_id = null;
         String till_id = null;
         String quote_id = null;
+        float amount;
     }
 
     private class RewardData {
@@ -208,6 +209,7 @@ public class POSPluginsDataAccessM1 extends POSAbstractDataAccessM1 implements P
             giftCardParams.store_id = checkout.getStoreId();
             giftCardParams.quote_id = giftCard.getQuoteId();
             giftCardParams.till_id = ConfigUtil.getPointOfSales().getID();
+            giftCardParams.amount = giftCard.getAmount();
 
             // thực thi truy vấn và parse kết quả thành object
             rp = statement.execute(giftCardParams);

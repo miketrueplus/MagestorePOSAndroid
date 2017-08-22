@@ -20,8 +20,18 @@ public class PosOrderRefundGiftCard extends PosAbstractModel implements OrderRef
     }
 
     @Override
+    public float getAmount() {
+        return amount;
+    }
+
+    @Override
     public void setAmount(float fAmount) {
         amount = fAmount;
+    }
+
+    @Override
+    public float getBaseAmount() {
+        return base_amount;
     }
 
     @Override

@@ -100,10 +100,8 @@ public class OrderPaymentListController extends AbstractListController<OrderWebp
 
     public List<OrderWebposPayment> checkIntegration(List<OrderWebposPayment> listPayment, Order order) {
         boolean showIntegration = false;
-        if (order.getPayment() != null) {
-            if ((order.getBaseGiftVoucherDiscount() < 0 || order.getRewardPointsBaseDiscount() < 0)) {
-                showIntegration = true;
-            }
+        if ((order.getBaseGiftVoucherDiscount() < 0 || order.getRewardPointsBaseDiscount() < 0)) {
+            showIntegration = true;
         }
 
         if (showIntegration) {

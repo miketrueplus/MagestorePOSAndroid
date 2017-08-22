@@ -10,6 +10,8 @@ import com.magestore.app.lib.model.Model;
 
 public interface OrderRefundGiftCard extends Model {
     void setOrderId(String strOrderId);
+    float getAmount();
     void setAmount(float fAmount);
+    float getBaseAmount();
     void setBaseAmount(float fBaseAmount);
 }
