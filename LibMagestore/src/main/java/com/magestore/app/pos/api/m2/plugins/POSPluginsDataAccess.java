@@ -73,7 +73,7 @@ public class POSPluginsDataAccess extends POSAbstractDataAccess implements Plugi
     }
 
     @Override
-    public Checkout addGiftCard(GiftCard giftCard) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
+    public Checkout addGiftCard(Checkout checkout, GiftCard giftCard) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
         Connection connection = null;
         Statement statement = null;
         ResultReading rp = null;
@@ -87,6 +87,8 @@ public class POSPluginsDataAccess extends POSAbstractDataAccess implements Plugi
             // Xây dựng tham số
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
+
+            giftCard.setCustomerId(null);
 
             // thực thi truy vấn và parse kết quả thành object
             rp = statement.execute(giftCard);
@@ -116,7 +118,7 @@ public class POSPluginsDataAccess extends POSAbstractDataAccess implements Plugi
     }
 
     @Override
-    public Checkout removeGiftCard(GiftCardRemoveParam giftCard) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
+    public Checkout removeGiftCard(Checkout checkout, GiftCardRemoveParam giftCard) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
         Connection connection = null;
         Statement statement = null;
         ResultReading rp = null;
@@ -130,6 +132,8 @@ public class POSPluginsDataAccess extends POSAbstractDataAccess implements Plugi
             // Xây dựng tham số
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
+
+            giftCard.setCustomerId(null);
 
             // thực thi truy vấn và parse kết quả thành object
             rp = statement.execute(giftCard);

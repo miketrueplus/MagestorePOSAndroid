@@ -20,7 +20,7 @@ import java.io.IOException;
 public interface PluginsDataAccess extends DataAccess {
     Checkout applyRewarPoint(Checkout checkout, RewardPoint rewardPoint) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
 
-    Checkout addGiftCard(GiftCard giftCard) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
+    Checkout addGiftCard(Checkout checkout, GiftCard giftCard) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
 
-    Checkout removeGiftCard(GiftCardRemoveParam giftCard) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
+    Checkout removeGiftCard(Checkout checkout, GiftCardRemoveParam giftCard) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
 }

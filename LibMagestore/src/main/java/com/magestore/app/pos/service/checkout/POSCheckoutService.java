@@ -494,34 +494,16 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
 
     @Override
     public void updateCartItemWithServerRespone(Checkout oldCheckout, Checkout newCheckout) {
-        List<CartItem> listCartNew = newCheckout.getCartItem();
-        List<CartItem> listCartOld = oldCheckout.getCartItem();
-        for (CartItem cartNew : listCartNew) {
-            for (CartItem cartOld : listCartOld) {
-                if (cartOld.getItemId().equals(cartNew.getOfflineItemId()) || cartOld.getItemId().equals(cartNew.getItemId())) {
-                    cartOld.setItemId(cartNew.getItemId());
-                    cartOld.setIsSaveCart(true);
-                    cartOld.setPrice(cartNew.getPrice());
-                    cartOld.setUnitPrice(cartNew.getPrice());
-                    cartOld.getProduct().setItemId(cartNew.getItemId());
-                    cartOld.getProduct().setIsSaveCart(true);
-                    cartOld.setIsVirtual(cartNew.getIsVirtual());
-                    cartOld.setQuantity(cartNew.getQuantity());
-                    if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_1)) {
-                        if (cartOld.isCustomPrice()) {
-                            cartOld.setPriceShowView(ConfigUtil.convertToBasePrice(cartNew.getOriginalCustomPrice()));
-                        } else {
-                            cartOld.setPriceShowView(ConfigUtil.convertToBasePrice(cartNew.getOriginalPrice()));
-                        }
-                    } else {
-                        if (cartNew.getPriceInclTax() > 0) {
-                            cartOld.setPriceShowView(ConfigUtil.convertToBasePrice(cartNew.getPriceInclTax()));
-                        } else {
-                            cartOld.setPriceShowView(cartNew.getBasePriceInclTax());
-                        }
-                    }
-                }
-            }
+        try {
+            DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+            CheckoutDataAccess checkoutDataAccess = factory.generateCheckoutDataAccess();
+            checkoutDataAccess.updateCartItemWithServerRespone(oldCheckout, newCheckout);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

@@ -54,5 +54,5 @@ public interface OrderDataAccess extends DataAccess, ListDataAccess<Order> {
 
     List<CheckoutPayment> retrievePaymentMethod() throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
 
-    Order orderTakePayment(OrderTakePaymentParam orderTakePaymentParam, String orderID) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
+    Order orderTakePayment(OrderTakePaymentParam orderTakePaymentParam, String orderID, Order order) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException;
 }

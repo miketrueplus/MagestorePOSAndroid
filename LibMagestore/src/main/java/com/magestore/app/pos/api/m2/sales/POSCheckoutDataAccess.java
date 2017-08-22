@@ -16,6 +16,7 @@ import com.magestore.app.lib.model.checkout.PlaceOrderParams;
 import com.magestore.app.lib.model.checkout.Quote;
 import com.magestore.app.lib.model.checkout.QuoteAddCouponParam;
 import com.magestore.app.lib.model.checkout.SaveQuoteParam;
+import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.checkout.payment.Authorizenet;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.parse.ParseException;
@@ -30,6 +31,7 @@ import com.magestore.app.pos.model.sales.PosOrder;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosAbstractParseImplement;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosAuthorizenetParseModel;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosOrderParseModel;
+import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.StringUtil;
 
 import java.io.IOException;
@@ -44,6 +46,7 @@ import java.util.List;
 public class POSCheckoutDataAccess extends POSAbstractDataAccess implements CheckoutDataAccess {
     static String CODE_PAYMENT_AUTHORIZENET = "authorizenet_directpost";
     private static final String PAYMENT_STORE_CREDIT_CODE = "storecredit";
+
     private class CheckoutEntity {
         String quote_id = null;
         String shipping_method = null;
@@ -340,6 +343,31 @@ public class POSCheckoutDataAccess extends POSAbstractDataAccess implements Chec
     }
 
     @Override
+    public void updateCartItemWithServerRespone(Checkout oldCheckout, Checkout newCheckout) throws ParseException, InstantiationException, IllegalAccessException, IOException {
+        List<CartItem> listCartNew = newCheckout.getCartItem();
+        List<CartItem> listCartOld = oldCheckout.getCartItem();
+        for (CartItem cartNew : listCartNew) {
+            for (CartItem cartOld : listCartOld) {
+                if (cartOld.getItemId().equals(cartNew.getOfflineItemId()) || cartOld.getItemId().equals(cartNew.getItemId())) {
+                    cartOld.setItemId(cartNew.getItemId());
+                    cartOld.setIsSaveCart(true);
+                    cartOld.setPrice(cartNew.getPrice());
+                    cartOld.setUnitPrice(cartNew.getPrice());
+                    cartOld.getProduct().setItemId(cartNew.getItemId());
+                    cartOld.getProduct().setIsSaveCart(true);
+                    cartOld.setIsVirtual(cartNew.getIsVirtual());
+                    cartOld.setQuantity(cartNew.getQuantity());
+                    if (cartNew.getPriceInclTax() > 0) {
+                        cartOld.setPriceShowView(ConfigUtil.convertToBasePrice(cartNew.getPriceInclTax()));
+                    } else {
+                        cartOld.setPriceShowView(cartNew.getBasePriceInclTax());
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
     public Model placeOrder(Checkout checkout, PlaceOrderParams placeOrderParams, List<CheckoutPayment> listCheckoutPayment) throws ParseException, InstantiationException, IllegalAccessException, IOException {
         Connection connection = null;
         Statement statement = null;
@@ -367,7 +395,7 @@ public class POSCheckoutDataAccess extends POSAbstractDataAccess implements Chec
 //                PosAuthorizenet authorizenet = gson.fromJson(json, PosAuthorizenet.class);
 //                return (Authorizenet) authorizenet;
 //            }
-            Gson2PosOrderParseModel implement =  new Gson2PosOrderParseModel();
+            Gson2PosOrderParseModel implement = new Gson2PosOrderParseModel();
             Gson gson = implement.createGson();
             Order order = gson.fromJson(json, PosOrder.class);
             return order;
@@ -463,7 +491,7 @@ public class POSCheckoutDataAccess extends POSAbstractDataAccess implements Chec
             o = params;
             rp = statement.execute(o);
             String respone = rp.readResult2String();
-            if(respone.contains("Transaction ID")){
+            if (respone.contains("Transaction ID")) {
                 return true;
             }
             return false;

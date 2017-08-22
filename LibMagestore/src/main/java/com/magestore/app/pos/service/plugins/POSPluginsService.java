@@ -47,18 +47,18 @@ public class POSPluginsService extends AbstractService implements PluginsService
     }
 
     @Override
-    public Checkout addGiftCard(GiftCard giftCard) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+    public Checkout addGiftCard(Checkout checkout, GiftCard giftCard) throws IOException, InstantiationException, ParseException, IllegalAccessException {
         // Khởi tạo plugin gateway factory
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         PluginsDataAccess pluginsDataAccess = factory.generatePluginsDataAccess();
-        return pluginsDataAccess.addGiftCard(giftCard);
+        return pluginsDataAccess.addGiftCard(checkout, giftCard);
     }
 
     @Override
-    public Checkout removeGiftCard(GiftCardRemoveParam giftCard) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+    public Checkout removeGiftCard(Checkout checkout, GiftCardRemoveParam giftCard) throws IOException, InstantiationException, ParseException, IllegalAccessException {
         // Khởi tạo plugin gateway factory
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         PluginsDataAccess pluginsDataAccess = factory.generatePluginsDataAccess();
-        return pluginsDataAccess.removeGiftCard(giftCard);
+        return pluginsDataAccess.removeGiftCard(checkout, giftCard);
     }
 }

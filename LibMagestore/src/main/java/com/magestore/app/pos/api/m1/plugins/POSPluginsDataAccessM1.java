@@ -186,7 +186,7 @@ public class POSPluginsDataAccessM1 extends POSAbstractDataAccessM1 implements P
     }
 
     @Override
-    public Checkout addGiftCard(GiftCard giftCard) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
+    public Checkout addGiftCard(Checkout checkout, GiftCard giftCard) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
         Connection connection = null;
         Statement statement = null;
         ResultReading rp = null;
@@ -203,19 +203,19 @@ public class POSPluginsDataAccessM1 extends POSAbstractDataAccessM1 implements P
 
             GiftCardParams giftCardParams = new GiftCardParams();
             giftCardParams.coupon_code = giftCard.getCouponCode();
-            giftCardParams.currency_id = giftCard.getCurrencyId();
+            giftCardParams.currency_id = ConfigUtil.getCurrentCurrency().getCode();
             giftCardParams.customer_id = giftCard.getCustomerId();
-            giftCardParams.store_id = giftCard.getStoreId();
+            giftCardParams.store_id = checkout.getStoreId();
             giftCardParams.quote_id = giftCard.getQuoteId();
-            giftCardParams.till_id = giftCard.getTillId();
+            giftCardParams.till_id = ConfigUtil.getPointOfSales().getID();
 
             // thực thi truy vấn và parse kết quả thành object
             rp = statement.execute(giftCardParams);
             rp.setParseImplement(new Gson2PosCartParseModel());
             rp.setParseModel(PosDataCheckout.class);
             DataCheckout dataCheckout = (DataCheckout) rp.doParse();
-            Checkout checkout = dataCheckout.getCheckout();
-            return checkout;
+            Checkout ck = dataCheckout.getCheckout();
+            return ck;
         } catch (ConnectionException ex) {
             throw ex;
         } catch (IOException ex) {
@@ -239,7 +239,7 @@ public class POSPluginsDataAccessM1 extends POSAbstractDataAccessM1 implements P
     }
 
     @Override
-    public Checkout removeGiftCard(GiftCardRemoveParam giftCard) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
+    public Checkout removeGiftCard(Checkout checkout, GiftCardRemoveParam giftCard) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
         Connection connection = null;
         Statement statement = null;
         ResultReading rp = null;
@@ -256,19 +256,19 @@ public class POSPluginsDataAccessM1 extends POSAbstractDataAccessM1 implements P
 
             GiftCardParams giftCardParams = new GiftCardParams();
             giftCardParams.coupon_code = giftCard.getCode();
-            giftCardParams.currency_id = giftCard.getCurrencyId();
+            giftCardParams.currency_id = ConfigUtil.getCurrentCurrency().getCode();
             giftCardParams.customer_id = giftCard.getCustomerId();
-            giftCardParams.store_id = giftCard.getStoreId();
+            giftCardParams.store_id = checkout.getStoreId();
             giftCardParams.quote_id = giftCard.getQuoteId();
-            giftCardParams.till_id = giftCard.getTillId();
+            giftCardParams.till_id = ConfigUtil.getPointOfSales().getID();
 
             // thực thi truy vấn và parse kết quả thành object
             rp = statement.execute(giftCardParams);
             rp.setParseImplement(new Gson2PosCartParseModel());
             rp.setParseModel(PosDataCheckout.class);
             DataCheckout dataCheckout = (DataCheckout) rp.doParse();
-            Checkout checkout = dataCheckout.getCheckout();
-            return checkout;
+            Checkout ck = dataCheckout.getCheckout();
+            return ck;
         } catch (ConnectionException ex) {
             throw ex;
         } catch (IOException ex) {

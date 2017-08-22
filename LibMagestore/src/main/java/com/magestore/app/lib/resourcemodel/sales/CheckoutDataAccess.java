@@ -32,6 +32,8 @@ public interface CheckoutDataAccess extends DataAccess {
 
     Checkout savePayment(String quoteId, String paymentCode) throws ParseException, InstantiationException, IllegalAccessException, IOException;
 
+    void updateCartItemWithServerRespone(Checkout oldCheckout, Checkout newCheckout) throws ParseException, InstantiationException, IllegalAccessException, IOException;
+
     Model placeOrder(Checkout checkout, PlaceOrderParams placeOrderParams, List<CheckoutPayment> listCheckoutPayment) throws ParseException, InstantiationException, IllegalAccessException, IOException;
 
     boolean addOrderToListCheckout(Checkout checkout) throws ParseException, InstantiationException, IllegalAccessException, IOException;

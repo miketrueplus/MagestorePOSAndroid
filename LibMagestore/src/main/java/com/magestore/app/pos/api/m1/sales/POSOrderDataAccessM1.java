@@ -774,7 +774,7 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
     }
 
     @Override
-    public Order orderTakePayment(OrderTakePaymentParam orderTakePaymentParam, String orderID) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
+    public Order orderTakePayment(OrderTakePaymentParam orderTakePaymentParam, String orderID, Order order) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
         Connection connection = null;
         Statement statement = null;
         ResultReading rp = null;
@@ -790,6 +790,7 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
             // set order to params
+            orderTakePaymentParam.setOrderIncrementId(order.getIncrementId());
             orderTakePaymentParam.setOrderId(orderID);
 
             rp = statement.execute(orderTakePaymentParam);

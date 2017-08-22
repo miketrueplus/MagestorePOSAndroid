@@ -27,6 +27,7 @@ import com.magestore.app.lib.model.checkout.QuoteCustomer;
 import com.magestore.app.lib.model.checkout.QuoteItemExtension;
 import com.magestore.app.lib.model.checkout.QuoteItems;
 import com.magestore.app.lib.model.checkout.SaveQuoteParam;
+import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.plugins.GiftCard;
 import com.magestore.app.lib.model.sales.Order;
@@ -64,6 +65,7 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
     private static final String PAYMENT_STORE_CREDIT_CODE = "storecredit";
     private static final String PAYMENT_STRIPE_CODE = "stripe_integration";
     private static final String PAYMENT_AUTHORIZE = "authorizenet_integration";
+
     private class CheckoutEntity {
         String quote_id = null;
         String shipping_method = null;
@@ -459,6 +461,31 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
     @Override
     public Checkout savePayment(String quoteId, String paymentCode) throws ParseException, InstantiationException, IllegalAccessException, IOException {
         return null;
+    }
+
+    @Override
+    public void updateCartItemWithServerRespone(Checkout oldCheckout, Checkout newCheckout) throws ParseException, InstantiationException, IllegalAccessException, IOException {
+        List<CartItem> listCartNew = newCheckout.getCartItem();
+        List<CartItem> listCartOld = oldCheckout.getCartItem();
+        for (CartItem cartNew : listCartNew) {
+            for (CartItem cartOld : listCartOld) {
+                if (cartOld.getItemId().equals(cartNew.getOfflineItemId()) || cartOld.getItemId().equals(cartNew.getItemId())) {
+                    cartOld.setItemId(cartNew.getItemId());
+                    cartOld.setIsSaveCart(true);
+                    cartOld.setPrice(cartNew.getPrice());
+                    cartOld.setUnitPrice(cartNew.getPrice());
+                    cartOld.getProduct().setItemId(cartNew.getItemId());
+                    cartOld.getProduct().setIsSaveCart(true);
+                    cartOld.setIsVirtual(cartNew.getIsVirtual());
+                    cartOld.setQuantity(cartNew.getQuantity());
+                    if (cartOld.isCustomPrice()) {
+                        cartOld.setPriceShowView(ConfigUtil.convertToBasePrice(cartNew.getOriginalCustomPrice()));
+                    } else {
+                        cartOld.setPriceShowView(ConfigUtil.convertToBasePrice(cartNew.getOriginalPrice()));
+                    }
+                }
+            }
+        }
     }
 
     @Override

@@ -956,7 +956,7 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
     }
 
     @Override
-    public Order orderTakePayment(OrderTakePaymentParam orderTakePaymentParam, String orderID) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
+    public Order orderTakePayment(OrderTakePaymentParam orderTakePaymentParam, String orderID, Order order) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
         Connection connection = null;
         Statement statement = null;
         ResultReading rp = null;

@@ -55,29 +55,21 @@ public class PluginGiftCardController extends AbstractListController<GiftCard> {
         mCheckoutListController.setEnableBtCheckout(false);
         String quote_id = mCheckoutListController.getSelectedItem().getQuoteId();
         giftCard.setQuoteId(quote_id);
-        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_1)) {
-            giftCard.setCurrencyId(ConfigUtil.getCurrentCurrency().getCode());
-            String store_id = DataUtil.getDataStringToPreferences(getMagestoreContext().getActivity(), DataUtil.STORE_ID);
-            giftCard.setStoreId(store_id);
-            giftCard.setTillId(ConfigUtil.getPointOfSales().getID());
-            Customer customer = mCheckoutListController.getSelectedItem().getCustomer();
-            if (customer != null) {
-                if (StringUtil.isNullOrEmpty(mCheckoutListController.getSelectedItem().getCustomerID())) {
-                    if (!mCheckoutListController.checkCustomerID(customer, ConfigUtil.getCustomerGuest())) {
-                        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2)) {
-                            giftCard.setCustomerId("");
-                        } else {
-                            giftCard.setCustomerId(mCheckoutListController.getSelectedItem().getCustomerID());
-                        }
-                    } else {
-                        giftCard.setCustomerId("");
-                    }
-                } else {
+        String store_id = DataUtil.getDataStringToPreferences(getMagestoreContext().getActivity(), DataUtil.STORE_ID);
+        mCheckoutListController.getSelectedItem().setStoreId(store_id);
+        Customer customer = mCheckoutListController.getSelectedItem().getCustomer();
+        if (customer != null) {
+            if (StringUtil.isNullOrEmpty(mCheckoutListController.getSelectedItem().getCustomerID())) {
+                if (!mCheckoutListController.checkCustomerID(customer, ConfigUtil.getCustomerGuest())) {
                     giftCard.setCustomerId(mCheckoutListController.getSelectedItem().getCustomerID());
+                } else {
+                    giftCard.setCustomerId("");
                 }
             } else {
-                giftCard.setCustomerId("");
+                giftCard.setCustomerId(mCheckoutListController.getSelectedItem().getCustomerID());
             }
+        } else {
+            giftCard.setCustomerId("");
         }
         doAction(ACTION_TYPE_ADD_GIFTCARD, null, wraper, giftCard);
     }
@@ -86,30 +78,23 @@ public class PluginGiftCardController extends AbstractListController<GiftCard> {
         String quote_id = mCheckoutListController.getSelectedItem().getQuoteId();
         mCheckoutListController.setEnableBtCheckout(false);
         giftCard.setQuoteId(quote_id);
+        String store_id = DataUtil.getDataStringToPreferences(getMagestoreContext().getActivity(), DataUtil.STORE_ID);
+        mCheckoutListController.getSelectedItem().setStoreId(store_id);
+
         if (!StringUtil.isNullOrEmpty(giftCard.getCouponCode())) {
-            if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_1)) {
-                giftCard.setCurrencyId(ConfigUtil.getCurrentCurrency().getCode());
-                String store_id = DataUtil.getDataStringToPreferences(getMagestoreContext().getActivity(), DataUtil.STORE_ID);
-                giftCard.setStoreId(store_id);
-                giftCard.setTillId(ConfigUtil.getPointOfSales().getID());
-                Customer customer = mCheckoutListController.getSelectedItem().getCustomer();
-                if (customer != null) {
-                    if (StringUtil.isNullOrEmpty(mCheckoutListController.getSelectedItem().getCustomerID())) {
-                        if (!mCheckoutListController.checkCustomerID(customer, ConfigUtil.getCustomerGuest())) {
-                            if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2)) {
-                                giftCard.setCustomerId("");
-                            } else {
-                                giftCard.setCustomerId(mCheckoutListController.getSelectedItem().getCustomerID());
-                            }
-                        } else {
-                            giftCard.setCustomerId("");
-                        }
-                    } else {
+            Customer customer = mCheckoutListController.getSelectedItem().getCustomer();
+            if (customer != null) {
+                if (StringUtil.isNullOrEmpty(mCheckoutListController.getSelectedItem().getCustomerID())) {
+                    if (!mCheckoutListController.checkCustomerID(customer, ConfigUtil.getCustomerGuest())) {
                         giftCard.setCustomerId(mCheckoutListController.getSelectedItem().getCustomerID());
+                    } else {
+                        giftCard.setCustomerId("");
                     }
                 } else {
-                    giftCard.setCustomerId("");
+                    giftCard.setCustomerId(mCheckoutListController.getSelectedItem().getCustomerID());
                 }
+            } else {
+                giftCard.setCustomerId("");
             }
             mCheckoutListController.isShowLoadingDetail(true);
             doAction(ACTION_TYPE_REMOVE_GIFTCARD, null, wraper, giftCard);
@@ -126,20 +111,15 @@ public class PluginGiftCardController extends AbstractListController<GiftCard> {
     @Override
     public Boolean doActionBackround(int actionType, String actionCode, Map<String, Object> wraper, Model... models) throws Exception {
         if (actionType == ACTION_TYPE_ADD_GIFTCARD) {
-            wraper.put("add_gift_card_respone", pluginsService.addGiftCard((GiftCard) models[0]));
+            wraper.put("add_gift_card_respone", pluginsService.addGiftCard(mCheckoutListController.getSelectedItem(), (GiftCard) models[0]));
             return true;
         } else if (actionType == ACTION_TYPE_REMOVE_GIFTCARD) {
             GiftCard giftCard = (GiftCard) models[0];
             GiftCardRemoveParam giftCardRemoveParam = pluginsService.createGiftCardRemoveParam();
             giftCardRemoveParam.setQuoteId(giftCard.getQuoteId());
             giftCardRemoveParam.setCode(giftCard.getCouponCode());
-            if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_1)) {
-                giftCardRemoveParam.setCurrencyId(giftCard.getCurrencyId());
-                giftCardRemoveParam.setStoreId(giftCard.getStoreId());
-                giftCardRemoveParam.setTillId(giftCard.getTillId());
-                giftCardRemoveParam.setCustomerId(giftCard.getCustomerId());
-            }
-            wraper.put("remove_gift_card_respone", pluginsService.removeGiftCard(giftCardRemoveParam));
+            giftCardRemoveParam.setCustomerId(giftCard.getCustomerId());
+            wraper.put("remove_gift_card_respone", pluginsService.removeGiftCard(mCheckoutListController.getSelectedItem(), giftCardRemoveParam));
             return true;
         }
         return false;
