@@ -2,6 +2,7 @@ package com.magestore.app.pos.api.m1.sales;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -19,12 +20,15 @@ import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.checkout.DataCheckout;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.customer.Customer;
+import com.magestore.app.lib.model.plugins.GiftCard;
 import com.magestore.app.lib.resourcemodel.sales.CartDataAccess;
 import com.magestore.app.pos.api.m1.POSAPIM1;
 import com.magestore.app.pos.api.m1.POSAbstractDataAccessM1;
 import com.magestore.app.pos.api.m1.POSDataAccessSessionM1;
 import com.magestore.app.pos.model.checkout.PosDataCheckout;
 import com.magestore.app.pos.model.checkout.cart.PosCartItem;
+import com.magestore.app.pos.model.plugins.PosGiftCard;
+import com.magestore.app.pos.model.plugins.PosGiftCardRespone;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosAbstractParseImplement;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.StringUtil;
@@ -58,6 +62,9 @@ public class POSCartDataAccessM1 extends POSAbstractDataAccessM1 implements Cart
         protected Gson createGson() {
             GsonBuilder builder = new GsonBuilder();
             builder.enableComplexMapKeySerialization();
+            builder.registerTypeAdapter(new TypeToken<PosGiftCardRespone>() {
+            }
+                    .getType(), new GiftCardConverter());
             builder.registerTypeAdapter(new TypeToken<List<PosCartItem>>() {
             }
                     .getType(), new CartConverter());
@@ -83,6 +90,28 @@ public class POSCartDataAccessM1 extends POSAbstractDataAccessM1 implements Cart
                     }
                 }
                 return listItem;
+            }
+        }
+
+        public class GiftCardConverter implements JsonDeserializer<PosGiftCardRespone> {
+
+            @Override
+            public PosGiftCardRespone deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+                GsonBuilder builder = new GsonBuilder();
+                Gson gson = builder.create();
+                PosGiftCardRespone respone = new PosGiftCardRespone();
+                List<GiftCard> listGiftcard = new ArrayList<>();
+                JsonObject obj = json.getAsJsonObject();
+                if (obj.has("used_codes_app")) {
+                    JsonArray arr_gift = obj.getAsJsonArray("used_codes_app");
+                    for (JsonElement el_gift : arr_gift) {
+                        JsonObject obj_gift = el_gift.getAsJsonObject();
+                        PosGiftCard giftCard = gson.fromJson(obj_gift, PosGiftCard.class);
+                        listGiftcard.add(giftCard);
+                    }
+                }
+                respone.setUsedCodes(listGiftcard);
+                return respone;
             }
         }
     }
