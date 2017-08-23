@@ -48,6 +48,7 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
     boolean mblnCustomDiscountFixed;
 
     boolean changePrice = false;
+    boolean checkDiscount = false;
 
     LinearLayout ll_custom_price, ll_discount;
 
@@ -125,10 +126,10 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 float value = mtxtCustomDiscount.getValueFloat();
-                if (isFixed) {
+                if (checkDiscount) {
                     if (value > mCheckoutListController.getMaximumDiscount()) {
                         mtxtCustomDiscount.setError(getContext().getString(R.string.err_discount, ("%" + mCheckoutListController.getMaximumDiscount())));
-                        mtxtCustomDiscount.setText(ConfigUtil.formatQuantity(mCheckoutListController.getMaximumDiscount() + ""));
+                        mtxtCustomDiscount.setText(ConfigUtil.formatNumber(mCheckoutListController.getMaximumDiscount()));
                         mtxtCustomDiscount.dismisPopup();
                     }
                 } else {
@@ -289,7 +290,7 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
         } else {
             mtxtCustomDiscount.setText(ConfigUtil.formatNumber(ConfigUtil.convertToPrice(mCartItem.getDiscountAmount())));
         }
-
+        checkDiscount = false;
         actionChangeValue(mbtnDiscountFixed, mbtnDiscountPercent, true);
 //        getItem().setDiscountTypeFixed();
     }
@@ -302,6 +303,7 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
     public void onDiscountChangeToPercent(View view) {
         mblnCustomDiscountFixed = false;
         changePrice = false;
+        checkDiscount = true;
         mtxtCustomDiscount.setText(ConfigUtil.formatNumber(0));
         actionChangeValue(mbtnDiscountFixed, mbtnDiscountPercent, false);
 //        getItem().setDiscountTypePercent();
