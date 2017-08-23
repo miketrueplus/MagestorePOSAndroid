@@ -119,7 +119,7 @@ public class CheckoutSuccessPanel extends AbstractDetailPanel<Order> {
         });
     }
 
-    private void actionPrint(Order mOrder){
+    private void actionPrint(Order mOrder) {
         final Dialog dialogPrint = new Dialog(getContext());
         dialogPrint.setCancelable(true);
         dialogPrint.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -165,9 +165,13 @@ public class CheckoutSuccessPanel extends AbstractDetailPanel<Order> {
             rl.setDrawingCacheEnabled(true);
 
             ImageView im_logo = (ImageView) dialogPrint.findViewById(R.id.im_logo);
-            if (ConfigUtil.getConfigPrint().getShowReceiptLogo().equals("1") && !StringUtil.isNullOrEmpty(ConfigUtil.getConfigPrint().getPathLogo())) {
-                im_logo.setVisibility(VISIBLE);
-                Picasso.with(getContext()).load(ConfigUtil.getConfigPrint().getPathLogo()).into(im_logo);
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getConfigPrint().getShowReceiptLogo())) {
+                if (ConfigUtil.getConfigPrint().getShowReceiptLogo().equals("1") && !StringUtil.isNullOrEmpty(ConfigUtil.getConfigPrint().getPathLogo())) {
+                    im_logo.setVisibility(VISIBLE);
+                    Picasso.with(getContext()).load(ConfigUtil.getConfigPrint().getPathLogo()).into(im_logo);
+                } else {
+                    im_logo.setVisibility(GONE);
+                }
             } else {
                 im_logo.setVisibility(GONE);
             }
@@ -183,10 +187,14 @@ public class CheckoutSuccessPanel extends AbstractDetailPanel<Order> {
             TextView tv_date_time = (TextView) dialogPrint.findViewById(R.id.tv_date_time);
             tv_date_time.setText(ConfigUtil.formatDateTime(mOrder.getCreatedAt()));
             TextView tv_cashier_name = (TextView) dialogPrint.findViewById(R.id.tv_cashier_name);
-            if (ConfigUtil.getConfigPrint().getShowCashierName().equals("1") && !StringUtil.isNullOrEmpty(mOrder.getWebposStaffName())) {
-                tv_cashier_name.setVisibility(VISIBLE);
-                String cashier_title = getContext().getString(R.string.print_header_cashier) + " " + mOrder.getWebposStaffName().toUpperCase();
-                tv_cashier_name.setText(cashier_title);
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getConfigPrint().getShowCashierName())) {
+                if (ConfigUtil.getConfigPrint().getShowCashierName().equals("1") && !StringUtil.isNullOrEmpty(mOrder.getWebposStaffName())) {
+                    tv_cashier_name.setVisibility(VISIBLE);
+                    String cashier_title = getContext().getString(R.string.print_header_cashier) + " " + mOrder.getWebposStaffName().toUpperCase();
+                    tv_cashier_name.setText(cashier_title);
+                } else {
+                    tv_cashier_name.setVisibility(GONE);
+                }
             } else {
                 tv_cashier_name.setVisibility(GONE);
             }
@@ -263,7 +271,7 @@ public class CheckoutSuccessPanel extends AbstractDetailPanel<Order> {
 //                listPaymentPanel.setVisibility(VISIBLE);
 //                listPaymentPanel.bindList(listPayment);
 //            } else {
-                listPaymentPanel.setVisibility(GONE);
+            listPaymentPanel.setVisibility(GONE);
 //            }
 
             LinearLayout ll_change = (LinearLayout) dialogPrint.findViewById(R.id.ll_change);
@@ -284,10 +292,15 @@ public class CheckoutSuccessPanel extends AbstractDetailPanel<Order> {
             TextView tv_comment_title = (TextView) dialogPrint.findViewById(R.id.tv_comment_title);
             StarPrintListCommentPanel listCommentPanel = (StarPrintListCommentPanel) dialogPrint.findViewById(R.id.item_comment_panel);
             List<OrderStatus> listComment = mOrder.getOrderStatus();
-            if (ConfigUtil.getConfigPrint().getShowComment().equals("1") && listComment != null && listComment.size() > 0) {
-                tv_comment_title.setVisibility(VISIBLE);
-                listCommentPanel.setVisibility(VISIBLE);
-                listCommentPanel.bindList(listComment);
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getConfigPrint().getShowComment())) {
+                if (ConfigUtil.getConfigPrint().getShowComment().equals("1") && listComment != null && listComment.size() > 0) {
+                    tv_comment_title.setVisibility(VISIBLE);
+                    listCommentPanel.setVisibility(VISIBLE);
+                    listCommentPanel.bindList(listComment);
+                } else {
+                    tv_comment_title.setVisibility(GONE);
+                    listCommentPanel.setVisibility(GONE);
+                }
             } else {
                 tv_comment_title.setVisibility(GONE);
                 listCommentPanel.setVisibility(GONE);
@@ -318,8 +331,9 @@ public class CheckoutSuccessPanel extends AbstractDetailPanel<Order> {
             }
         });
     }
+
     /*Felix 4-4-2017 start*/
-    public void fillEmailCustomer(Order order){
+    public void fillEmailCustomer(Order order) {
         edt_email_customer.setText(order.getCustomerEmail());
     }
 
@@ -337,7 +351,7 @@ public class CheckoutSuccessPanel extends AbstractDetailPanel<Order> {
         DialogUtil.confirm(getContext(), message, R.string.done);
     }
 
-    public void showDetailOrderLoading(boolean visible){
+    public void showDetailOrderLoading(boolean visible) {
         email_checkout_loading.setVisibility(visible ? VISIBLE : INVISIBLE);
     }
 

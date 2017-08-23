@@ -442,7 +442,7 @@ public class PosOrderHistoryService extends AbstractService implements OrderHist
             return false;
         if (status.equals("canceled") || status.equals("closed") || order.getBaseGrandTotal() == 0)
             return false;
-        if (order.getBaseTotalPaid() - order.getBaseTotalRefunded() < 0.0001) {
+        if (order.getBaseTotalPaid() - order.getWebposBaseChange() - order.getBaseTotalRefunded() < 0.0001) {
             return false;
         }
         return true;

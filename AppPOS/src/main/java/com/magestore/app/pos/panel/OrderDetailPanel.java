@@ -453,8 +453,8 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
     }
 
     private void onClickInvoice() {
-        float invoiceable = mOrder.getBaseTotalPaid() - mOrder.getBaseTotalInvoiced() - mOrder.getWebposBaseChange() - mOrder.getBaseTotalRefunded();
-        if (invoiceable == 0) {
+        float invoiceable = mOrder.getBaseTotalPaid() - mOrder.getBaseTotalInvoiced() - mOrder.getWebposBaseChange();
+        if (invoiceable == 0 && mOrder.getBaseGrandTotal() > 0) {
             String message = getContext().getString(R.string.order_invoice_take_payment);
             // Tạo dialog và hiển thị
             com.magestore.app.util.DialogUtil.confirm(getContext(), message, R.string.ok);
@@ -628,12 +628,17 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
             rl.setDrawingCacheEnabled(true);
 
             ImageView im_logo = (ImageView) dialogPrint.findViewById(R.id.im_logo);
-            if (ConfigUtil.getConfigPrint().getShowReceiptLogo().equals("1") && !StringUtil.isNullOrEmpty(ConfigUtil.getConfigPrint().getPathLogo())) {
-                im_logo.setVisibility(VISIBLE);
-                Picasso.with(getContext()).load(ConfigUtil.getConfigPrint().getPathLogo()).into(im_logo);
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getConfigPrint().getShowReceiptLogo())) {
+                if (ConfigUtil.getConfigPrint().getShowReceiptLogo().equals("1") && !StringUtil.isNullOrEmpty(ConfigUtil.getConfigPrint().getPathLogo())) {
+                    im_logo.setVisibility(VISIBLE);
+                    Picasso.with(getContext()).load(ConfigUtil.getConfigPrint().getPathLogo()).into(im_logo);
+                } else {
+                    im_logo.setVisibility(GONE);
+                }
             } else {
                 im_logo.setVisibility(GONE);
             }
+
             TextView tv_header = (TextView) dialogPrint.findViewById(R.id.tv_header);
             if (!StringUtil.isNullOrEmpty(ConfigUtil.getConfigPrint().getHeaderText())) {
                 tv_header.setVisibility(VISIBLE);
@@ -646,10 +651,14 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
             TextView tv_date_time = (TextView) dialogPrint.findViewById(R.id.tv_date_time);
             tv_date_time.setText(ConfigUtil.formatDateTime(mOrder.getCreatedAt()));
             TextView tv_cashier_name = (TextView) dialogPrint.findViewById(R.id.tv_cashier_name);
-            if (ConfigUtil.getConfigPrint().getShowCashierName().equals("1") && !StringUtil.isNullOrEmpty(mOrder.getWebposStaffName())) {
-                tv_cashier_name.setVisibility(VISIBLE);
-                String cashier_title = getContext().getString(R.string.print_header_cashier) + " " + mOrder.getWebposStaffName().toUpperCase();
-                tv_cashier_name.setText(cashier_title);
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getConfigPrint().getShowCashierName())) {
+                if (ConfigUtil.getConfigPrint().getShowCashierName().equals("1") && !StringUtil.isNullOrEmpty(mOrder.getWebposStaffName())) {
+                    tv_cashier_name.setVisibility(VISIBLE);
+                    String cashier_title = getContext().getString(R.string.print_header_cashier) + " " + mOrder.getWebposStaffName().toUpperCase();
+                    tv_cashier_name.setText(cashier_title);
+                } else {
+                    tv_cashier_name.setVisibility(GONE);
+                }
             } else {
                 tv_cashier_name.setVisibility(GONE);
             }
@@ -755,10 +764,15 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
             TextView tv_comment_title = (TextView) dialogPrint.findViewById(R.id.tv_comment_title);
             StarPrintListCommentPanel listCommentPanel = (StarPrintListCommentPanel) dialogPrint.findViewById(R.id.item_comment_panel);
             List<OrderStatus> listComment = mOrder.getOrderStatus();
-            if (ConfigUtil.getConfigPrint().getShowComment().equals("1") && listComment != null && listComment.size() > 0) {
-                tv_comment_title.setVisibility(VISIBLE);
-                listCommentPanel.setVisibility(VISIBLE);
-                listCommentPanel.bindList(listComment);
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getConfigPrint().getShowComment())) {
+                if (ConfigUtil.getConfigPrint().getShowComment().equals("1") && listComment != null && listComment.size() > 0) {
+                    tv_comment_title.setVisibility(VISIBLE);
+                    listCommentPanel.setVisibility(VISIBLE);
+                    listCommentPanel.bindList(listComment);
+                } else {
+                    tv_comment_title.setVisibility(GONE);
+                    listCommentPanel.setVisibility(GONE);
+                }
             } else {
                 tv_comment_title.setVisibility(GONE);
                 listCommentPanel.setVisibility(GONE);

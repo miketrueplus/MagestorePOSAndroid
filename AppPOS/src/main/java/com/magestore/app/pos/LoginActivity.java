@@ -291,16 +291,12 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
         mUserNameView.setError(null);
         mPasswordView.setError(null);
 
-        // Kiểm tra giá trị các control
-        boolean valid = validControlValue();
-        if (valid) {
+        if (mCheckLoginDemo) {
             // Hiện progress bar
             showProgress(true);
-            if (mCheckLoginDemo) {
-                mDomainView.setText("demo-magento2.magestore.com/pos-app/03");
-                mUserNameView.setText("ravi");
-                mPasswordView.setText("ravi123");
-            }
+            mDomainView.setText("demo-magento2.magestore.com/pos-app/03");
+            mUserNameView.setText("ravi");
+            mPasswordView.setText("ravi123");
             String domain = mDomainView.getText().toString().trim();
             String username = mUserNameView.getText().toString().trim();
             String password = mPasswordView.getText().toString().trim();
@@ -312,6 +308,25 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
             } else // Below Api Level 13
             {
                 mCheckPlatformTask.execute();
+            }
+        } else {
+            // Kiểm tra giá trị các control
+            boolean valid = validControlValue();
+            if (valid) {
+                // Hiện progress bar
+                showProgress(true);
+                String domain = mDomainView.getText().toString().trim();
+                String username = mUserNameView.getText().toString().trim();
+                String password = mPasswordView.getText().toString().trim();
+                String strFinalDomain = buildPOSBaseURL(domain);
+                mCheckPlatformTask = new CheckPlatformTask(new CheckPlatformListener(), strFinalDomain, username, password);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) // Above Api Level 13
+                {
+                    mCheckPlatformTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                } else // Below Api Level 13
+                {
+                    mCheckPlatformTask.execute();
+                }
             }
         }
     }

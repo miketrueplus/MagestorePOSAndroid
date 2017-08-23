@@ -47,7 +47,7 @@ public class PrintUtil {
             @TargetApi(Build.VERSION_CODES.KITKAT)
             @Override
             public void onPageFinished(WebView view, String url) {
-                if(!ConfigUtil.getTypePrint().equals(context.getString(R.string.print_type_star_print))){
+                if (!ConfigUtil.getTypePrint().equals(context.getString(R.string.print_type_star_print))) {
                     createWebPrintJob(context, view);
                     mWebView = null;
                 }
@@ -152,8 +152,10 @@ public class PrintUtil {
 
     private static String createLayoutOrder(Context context, Order order) {
         String body_header_logo = "";
-        if (ConfigUtil.getConfigPrint().getShowReceiptLogo().equals("1") && !StringUtil.isNullOrEmpty(ConfigUtil.getConfigPrint().getPathLogo())) {
-            body_header_logo = "<div align=\"center\"><img style=\"max-width: 100%; max-height: 70px; text-align: center;\" src=\"" + ConfigUtil.getConfigPrint().getPathLogo() + "\"/></div>";
+        if (!StringUtil.isNullOrEmpty(ConfigUtil.getConfigPrint().getShowReceiptLogo())) {
+            if (ConfigUtil.getConfigPrint().getShowReceiptLogo().equals("1") && !StringUtil.isNullOrEmpty(ConfigUtil.getConfigPrint().getPathLogo())) {
+                body_header_logo = "<div align=\"center\"><img style=\"max-width: 100%; max-height: 70px; text-align: center;\" src=\"" + ConfigUtil.getConfigPrint().getPathLogo() + "\"/></div>";
+            }
         }
 
         String title_invoice = context.getString(R.string.order_detail_bottom_btn_invoice);
@@ -168,8 +170,10 @@ public class PrintUtil {
         // cashier name
         String cashier_title = context.getString(R.string.print_header_cashier);
         String body_header_info_cashier_name = "";
-        if (ConfigUtil.getConfigPrint().getShowCashierName().equals("1") && !StringUtil.isNullOrEmpty(order.getWebposStaffName())) {
-            body_header_info_cashier_name = "<div align=\"center\" style=\"font-size: 13px; display: block; font-family: monospace;\"><p style=\"text-transform: uppercase; margin-bottom: 0px;\"><span style=\"font-size: 13px; font-family: monospace;\">" + cashier_title + "</span><span style=\"font-size: 13px; font-family: monospace;\">" + order.getWebposStaffName() + "</span></p></div>";
+        if (!StringUtil.isNullOrEmpty(ConfigUtil.getConfigPrint().getShowCashierName())) {
+            if (ConfigUtil.getConfigPrint().getShowCashierName().equals("1") && !StringUtil.isNullOrEmpty(order.getWebposStaffName())) {
+                body_header_info_cashier_name = "<div align=\"center\" style=\"font-size: 13px; display: block; font-family: monospace;\"><p style=\"text-transform: uppercase; margin-bottom: 0px;\"><span style=\"font-size: 13px; font-family: monospace;\">" + cashier_title + "</span><span style=\"font-size: 13px; font-family: monospace;\">" + order.getWebposStaffName() + "</span></p></div>";
+            }
         }
         // customer name
         String customer_title = context.getString(R.string.print_header_customer);
@@ -261,13 +265,15 @@ public class PrintUtil {
         List<OrderStatus> listComment = order.getOrderStatus();
         String body_content_comments = "";
         String body_content_comment = "";
-        if (ConfigUtil.getConfigPrint().getShowComment().equals("1") && listComment != null && listComment.size() > 0) {
-            for (OrderStatus comment : listComment) {
-                if (!StringUtil.isNullOrEmpty(comment.getComment())) {
-                    body_content_comments += "<div style=\"font-size: 13px; display: block; font-family: monospace;\">" + ConfigUtil.formatDateTime(comment.getCreatedAt()) + ": " + comment.getComment() + "</div>";
+        if (!StringUtil.isNullOrEmpty(ConfigUtil.getConfigPrint().getShowComment())) {
+            if (ConfigUtil.getConfigPrint().getShowComment().equals("1") && listComment != null && listComment.size() > 0) {
+                for (OrderStatus comment : listComment) {
+                    if (!StringUtil.isNullOrEmpty(comment.getComment())) {
+                        body_content_comments += "<div style=\"font-size: 13px; display: block; font-family: monospace;\">" + ConfigUtil.formatDateTime(comment.getCreatedAt()) + ": " + comment.getComment() + "</div>";
+                    }
                 }
+                body_content_comment = "<div style=\"font-size: 13px; display: block; font-family: monospace;\"><label style=\"font-size: 13px; display: block; font-family: monospace;\">" + title_comment + body_content_comments + "</div>";
             }
-            body_content_comment = "<div style=\"font-size: 13px; display: block; font-family: monospace;\"><label style=\"font-size: 13px; display: block; font-family: monospace;\">" + title_comment + body_content_comments + "</div>";
         }
         // footer
         String body_content_footer_line = "<div align=\"center\" style=\"font-size: 16px; display: block; font-family: monospace; font-weight: 400;\">-------- **** --------</div>";
