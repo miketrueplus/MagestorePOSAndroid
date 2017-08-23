@@ -52,6 +52,7 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
     LinearLayout ll_custom_price, ll_discount;
 
     CartItem mCartItem;
+    float maximum_discount_currency;
 
     public void setCheckoutListController(CheckoutListController mCheckoutListController) {
         this.mCheckoutListController = mCheckoutListController;
@@ -109,11 +110,41 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
      * @param percent
      * @param isFixed
      */
-    private void actionChangeValue(Button fixed, Button percent, boolean isFixed) {
+    private void actionChangeValue(Button fixed, Button percent, final boolean isFixed) {
         fixed.setBackgroundColor(isFixed ? ContextCompat.getColor(getContext(), R.color.card_option_bg_select) : ContextCompat.getColor(getContext(), R.color.card_option_bg_not_select));
         fixed.setTextColor(isFixed ? ContextCompat.getColor(getContext(), R.color.card_option_text_select) : ContextCompat.getColor(getContext(), R.color.card_option_text_not_select));
         percent.setBackgroundResource(isFixed ? R.color.card_option_bg_not_select : R.color.card_option_bg_select);
         percent.setTextColor(isFixed ? ContextCompat.getColor(getContext(), R.color.card_option_text_not_select) : ContextCompat.getColor(getContext(), R.color.card_option_text_select));
+
+        mtxtCustomDiscount.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                float value = mtxtCustomDiscount.getValueFloat();
+                if (isFixed) {
+                    if (value > mCheckoutListController.getMaximumDiscount()) {
+                        mtxtCustomDiscount.setError(getContext().getString(R.string.err_discount, ("%" + mCheckoutListController.getMaximumDiscount())));
+                        mtxtCustomDiscount.setText(ConfigUtil.formatQuantity(mCheckoutListController.getMaximumDiscount() + ""));
+                        mtxtCustomDiscount.dismisPopup();
+                    }
+                } else {
+                    if (value > maximum_discount_currency) {
+                        mtxtCustomDiscount.setError(getContext().getString(R.string.err_discount, (ConfigUtil.formatPrice(maximum_discount_currency))));
+                        mtxtCustomDiscount.setText(ConfigUtil.formatNumber(maximum_discount_currency));
+                        mtxtCustomDiscount.dismisPopup();
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
     }
 
     /**
@@ -150,6 +181,7 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
         }
         mBinding.setCartItem(item);
         mCartItem = item;
+        maximum_discount_currency = ((mCartItem.getDefaultCustomPrice() * mCheckoutListController.getMaximumDiscount()) / 100);
 
         // đặt % hau $
         mblnCustomPriceFixed = item.isCustomPriceTypeFixed();

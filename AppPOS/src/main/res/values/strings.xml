@@ -481,6 +481,7 @@
     <string name="err_active_key">License key is invalid</string>
     <string name="err_check_platform">Can\'t get platform, please check again!</string>
     <string name="err_requied_options">Please select all required options</string>
+    <string name="err_discount">You are able apply to discount less than or equal %1$s only</string>
 
     <!-- Strings related to confirm message -->
     <string name="ask_are_you_sure">Are you sure?</string>

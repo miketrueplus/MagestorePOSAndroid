@@ -161,6 +161,7 @@ public class EditTextFloat extends EditText {
                 onTouchEvent(motionEvent);               // Call native handler
                 setInputType(inType); // Restore input type
                 setSelection(0, getText().length());
+                setError(null);
                 if (exampleCardPopup == null || !exampleCardPopup.isShowing()) {
                     hideSoftKeyboard();
                     showCustomKeyboard();
@@ -302,5 +303,11 @@ public class EditTextFloat extends EditText {
     public void hideSoftKeyboard() {
         InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(this.getWindowToken(), 0);
+    }
+
+    public void dismisPopup(){
+        if(exampleCardPopup != null){
+            exampleCardPopup.dismiss();
+        }
     }
 }
