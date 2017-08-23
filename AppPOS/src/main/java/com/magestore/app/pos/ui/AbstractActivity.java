@@ -229,7 +229,12 @@ public abstract class AbstractActivity
      * Dịch thông báo lỗi
      */
     public String getExceptionMessage(Exception exp) {
-        String strReturn = exp.getLocalizedMessage();
+        String strReturn;
+        if (exp.getCause() != null) {
+            strReturn = exp.getCause().getMessage();
+        } else {
+            strReturn = exp.getLocalizedMessage();
+        }
         if (StringUtil.isNullOrEmpty(strReturn)) strReturn = StringUtil.STRING_EMPTY;
 
         if (exp instanceof MagestoreException) {
@@ -250,8 +255,6 @@ public abstract class AbstractActivity
     public void showErrorMsg(Exception exp) {
         exp.printStackTrace();
         new AlertDialog.Builder(getContext())
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle(R.string.dialog_warning)
                 .setMessage(getExceptionMessage(exp))
                 .setPositiveButton(R.string.ok, null)
 //                    .setPositiveButton(R.string.reload, new DialogInterface.OnClickListener() {
