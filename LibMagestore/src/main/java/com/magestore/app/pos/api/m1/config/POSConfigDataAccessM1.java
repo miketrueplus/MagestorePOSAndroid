@@ -290,6 +290,13 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
 
     // so sánh domain
     private boolean checkSameDomain(String domain, String licenseDomain) {
+        if (domain.contains("www.")) {
+            domain = domain.replace("www.", "");
+        }
+        if (licenseDomain.contains("www.")) {
+            licenseDomain = licenseDomain.replace("www.", "");
+        }
+
         if (domain.contains("https://")) {
             domain = domain.replace("https://", "");
         } else if (domain.contains("http://")) {
@@ -1036,7 +1043,7 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
     }
 
     @Override
-    public void getConfigStaffPermisson(List<String> listPermisson) throws DataAccessException, ConnectionException, ParseException, IOException, ParseException{
+    public void getConfigStaffPermisson(List<String> listPermisson) throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
         if (listPermisson.size() > 0) {
             ConfigUtil.setManageOrderByLocation(false);
             if (checkStaffPermiss(listPermisson, ALL_PERMISSON)) {

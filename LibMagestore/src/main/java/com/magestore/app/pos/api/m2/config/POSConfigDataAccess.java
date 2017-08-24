@@ -307,6 +307,13 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
 
     // so sánh domain
     private boolean checkSameDomain(String domain, String licenseDomain) {
+        if (domain.contains("www.")) {
+            domain = domain.replace("www.", "");
+        }
+        if (licenseDomain.contains("www.")) {
+            licenseDomain = licenseDomain.replace("www.", "");
+        }
+        
         if (domain.contains("https://")) {
             domain = domain.replace("https://", "");
         } else if (domain.contains("http://")) {
