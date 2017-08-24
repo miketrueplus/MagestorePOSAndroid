@@ -49,6 +49,7 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
 
     boolean changePrice = false;
     boolean checkDiscount = false;
+    boolean checkCustomPrice = false;
 
     LinearLayout ll_custom_price, ll_discount;
 
@@ -139,6 +140,24 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
                         mtxtCustomDiscount.dismisPopup();
                     }
                 }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        mtxtCustomPrice.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                float value = mtxtCustomPrice.getValueFloat();
+
             }
 
             @Override
@@ -322,6 +341,7 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
         } else {
             mtxtCustomPrice.setText(ConfigUtil.formatNumber(ConfigUtil.convertToPrice(mCartItem.getDefaultCustomPrice())));
         }
+        checkCustomPrice = false;
         actionChangeValue(mbtnCustomPriceFixed, mbtnCustomPricePercent, true);
 //        getItem().setCustomPriceTypeFixed();
     }
@@ -335,6 +355,7 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
         mblnCustomPriceFixed = false;
         changePrice = false;
         mtxtCustomPrice.setText(ConfigUtil.formatNumber(0));
+        checkCustomPrice = true;
         actionChangeValue(mbtnCustomPriceFixed, mbtnCustomPricePercent, false);
 //        getItem().setCustomPriceTypePercent();
     }
@@ -405,6 +426,23 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
         if (!mblnCustomDiscountFixed && mtxtCustomDiscount.getValueFloat() > 100) {
             mtxtCustomDiscount.setError(String.format(getResources().getString(R.string.err_field_must_less_than), ConfigUtil.formatNumber(100)));
             blnRight = false;
+        }
+
+        float value = mtxtCustomPrice.getValueFloat();
+        if (checkCustomPrice) {
+            if (value < mCheckoutListController.getMaximumDiscount()) {
+                mtxtCustomPrice.setError(getContext().getString(R.string.err_discount_custom_price, ("%" + mCheckoutListController.getMaximumDiscount())));
+                blnRight = false;
+            }
+        }else {
+            if (value < maximum_discount_currency) {
+                mtxtCustomPrice.setError(getContext().getString(R.string.err_discount_custom_price, (ConfigUtil.formatPrice(maximum_discount_currency))));
+                blnRight = false;
+            }
+            if (value > mCartItem.getDefaultCustomPrice()) {
+                mtxtCustomPrice.setText(ConfigUtil.formatNumber(mCartItem.getDefaultCustomPrice()));
+                blnRight = false;
+            }
         }
         return blnRight;
     }
