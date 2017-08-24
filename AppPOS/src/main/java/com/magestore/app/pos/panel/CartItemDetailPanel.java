@@ -430,18 +430,23 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
 
         float value = mtxtCustomPrice.getValueFloat();
         if (checkCustomPrice) {
+
             if (value < mCheckoutListController.getMaximumDiscount()) {
                 mtxtCustomPrice.setError(getContext().getString(R.string.err_discount_custom_price, ("%" + mCheckoutListController.getMaximumDiscount())));
                 blnRight = false;
             }
-        }else {
-            if (value < maximum_discount_currency) {
-                mtxtCustomPrice.setError(getContext().getString(R.string.err_discount_custom_price, (ConfigUtil.formatPrice(maximum_discount_currency))));
-                blnRight = false;
-            }
-            if (value > mCartItem.getDefaultCustomPrice()) {
-                mtxtCustomPrice.setText(ConfigUtil.formatNumber(mCartItem.getDefaultCustomPrice()));
-                blnRight = false;
+
+        } else {
+            if (mCheckoutListController.getMaximumDiscount() != 100) {
+                if (value < maximum_discount_currency) {
+                    mtxtCustomPrice.setError(getContext().getString(R.string.err_discount_custom_price, (ConfigUtil.formatPrice(maximum_discount_currency))));
+                    blnRight = false;
+                }
+
+                if (value > mCartItem.getDefaultCustomPrice()) {
+                    mtxtCustomPrice.setText(ConfigUtil.formatNumber(mCartItem.getDefaultCustomPrice()));
+                    blnRight = false;
+                }
             }
         }
         return blnRight;
