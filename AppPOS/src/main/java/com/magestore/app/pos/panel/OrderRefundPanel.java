@@ -199,7 +199,7 @@ public class OrderRefundPanel extends AbstractDetailPanel<Order> {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 float storeCredit = store_credit.getValueFloat();
-                if (storeCredit > mOrderHistoryListController.getOrder().getMaxStoreCreditRefund()) {
+                if (storeCredit > ConfigUtil.convertToPrice(mOrderHistoryListController.getOrder().getMaxStoreCreditRefund())) {
                     store_credit.setText(ConfigUtil.formatNumber(ConfigUtil.convertToPrice(order.getMaxStoreCreditRefund())));
                     order.setStoreCreditRefund(order.getMaxStoreCreditRefund());
                 } else {
@@ -224,7 +224,7 @@ public class OrderRefundPanel extends AbstractDetailPanel<Order> {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 float giftCard = gift_card.getValueFloat();
-                if (giftCard > mOrderHistoryListController.getOrder().getMaxGiftCardRefund()) {
+                if (giftCard > ConfigUtil.convertToPrice(mOrderHistoryListController.getOrder().getMaxGiftCardRefund())) {
                     gift_card.setText(ConfigUtil.formatNumber(ConfigUtil.convertToPrice(order.getMaxGiftCardRefund())));
                     order.setGiftCardRefund(giftCard);
                 } else {

@@ -192,6 +192,8 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
     @Override
     public void bindItem(CartItem item) {
         super.bindItem(item);
+        checkDiscount = false;
+        checkCustomPrice = false;
         if (ConfigUtil.isManageAllDiscount()) {
             ll_custom_price.setVisibility(VISIBLE);
             ll_discount.setVisibility(VISIBLE);
