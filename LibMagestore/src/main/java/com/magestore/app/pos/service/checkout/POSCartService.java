@@ -70,8 +70,8 @@ public class POSCartService extends AbstractService implements CartService {
         float sub_total = calculateSubTotal(checkout);
 //        float tax_total = sub_total * (float) 0.1;
         float tax_total = 0.0f;
-        checkout.setTaxTotal(tax_total);
-        return tax_total;
+        checkout.setTaxTotal(checkout.getTaxTotal());
+        return checkout.getTaxTotal();
     }
 
     /**

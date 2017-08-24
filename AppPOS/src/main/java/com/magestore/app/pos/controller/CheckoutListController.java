@@ -837,6 +837,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             getSelectedItem().setGrandTotal(checkout.getGrandTotal());
             getSelectedItem().setDiscountTitle(checkout.getDiscountTitle());
             getSelectedItem().setDiscountTotal(checkout.getDiscountTotal());
+            getSelectedItem().setTaxTotal(checkout.getTaxTotal());
 
             if (!checkDiscount(checkout)) {
                 showButtonRemoveDiscount(false);
@@ -934,6 +935,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             getSelectedItem().setGrandTotal(checkout.getGrandTotal());
             getSelectedItem().setDiscountTitle(checkout.getDiscountTitle());
             getSelectedItem().setDiscountTotal(checkout.getDiscountTotal());
+            getSelectedItem().setTaxTotal(checkout.getTaxTotal());
             if (!checkDiscount(checkout)) {
                 showButtonRemoveDiscount(false);
             }

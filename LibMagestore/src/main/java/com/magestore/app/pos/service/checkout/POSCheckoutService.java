@@ -642,25 +642,24 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
                         checkout.setRewardPointUsePointValue(checkoutTotals.getValue());
                         checkout.setRewardPointUsePointTitle(checkoutTotals.getTitle());
                     }
-
-                    if (!shipping) {
-                        checkout.setShippingTotal(0);
-                    }
-                    if (!discount) {
-                        checkout.setDiscountTotal(0);
-                    }
-                    if (!tax) {
-                        checkout.setTaxTotal(0);
-                    }
-                    if (!gifcard) {
-                        checkout.setGiftCardDiscount(0);
-                    }
-                    if (!reward_earn_point) {
-                        checkout.setRewardPointEarnPointValue(0);
-                    }
-                    if (!reward_use_point) {
-                        checkout.setRewardPointUsePointValue(0);
-                    }
+                }
+                if (!shipping) {
+                    checkout.setShippingTotal(0);
+                }
+                if (!discount) {
+                    checkout.setDiscountTotal(0);
+                }
+                if (!tax) {
+                    checkout.setTaxTotal(0);
+                }
+                if (!gifcard) {
+                    checkout.setGiftCardDiscount(0);
+                }
+                if (!reward_earn_point) {
+                    checkout.setRewardPointEarnPointValue(0);
+                }
+                if (!reward_use_point) {
+                    checkout.setRewardPointUsePointValue(0);
                 }
             }
         }
