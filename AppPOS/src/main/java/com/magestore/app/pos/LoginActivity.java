@@ -3,6 +3,7 @@ package com.magestore.app.pos;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 
 import android.os.AsyncTask;
@@ -14,6 +15,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -122,9 +124,10 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
+                if (id == R.id.login || id == EditorInfo.IME_NULL || id == EditorInfo.IME_ACTION_DONE) {
                     mCheckLoginDemo = false;
                     checkPlatForm();
+                    hiddenKeyboard(mPasswordView);
                     return true;
                 }
                 return false;
@@ -138,6 +141,7 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
             public void onClick(View view) {
                 mCheckLoginDemo = false;
                 checkPlatForm();
+                hiddenKeyboard(mPasswordView);
                 // TODO: Tạm thời bỏ check platform để dev
 //                attemptLogin();
             }
@@ -149,6 +153,7 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
             public void onClick(View view) {
                 mCheckLoginDemo = true;
                 checkPlatForm();
+                hiddenKeyboard(mPasswordView);
 //                attemptLoginDemo();
             }
         });
@@ -650,6 +655,11 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
 
         // Tạo dialog và hiển thị
         DialogUtil.confirm(getContext(), message, R.string.done);
+    }
+
+    private void hiddenKeyboard(View view) {
+        InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     @Override
