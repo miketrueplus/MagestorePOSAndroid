@@ -23,9 +23,7 @@ import com.magestore.app.lib.model.checkout.payment.CreditCard;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.model.plugins.StoreCredit;
-import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.service.ListService;
-import com.magestore.app.pos.model.checkout.PosPlaceOrderParams;
 
 import java.io.IOException;
 import java.text.ParseException;

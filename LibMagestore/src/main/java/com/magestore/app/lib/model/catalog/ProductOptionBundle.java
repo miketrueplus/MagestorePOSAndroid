@@ -1,7 +1,7 @@
 package com.magestore.app.lib.model.catalog;
 
 import com.magestore.app.lib.model.Model;
-import com.magestore.app.pos.model.catalog.PosProductOptionBundleItem;
+import com.magestore.app.pos.model.magento.catalog.PosProductOptionBundleItem;
 
 import java.util.List;
 

@@ -7,20 +7,16 @@ import com.magestore.app.lib.connection.ParamBuilder;
 import com.magestore.app.lib.connection.ResultReading;
 import com.magestore.app.lib.connection.Statement;
 import com.magestore.app.lib.connection.http.MagestoreStatementAction;
-import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.model.checkout.Checkout;
-import com.magestore.app.lib.model.checkout.cart.CartDeleteItemParam;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.resourcemodel.sales.CartDataAccess;
 import com.magestore.app.pos.api.m2.POSAPI;
 import com.magestore.app.pos.api.m2.POSAbstractDataAccess;
 import com.magestore.app.pos.api.m2.POSDataAccessSession;
-import com.magestore.app.pos.model.checkout.PosCheckout;
-import com.magestore.app.pos.model.checkout.cart.PosCartDeleteItemParam;
+import com.magestore.app.pos.model.magento.checkout.PosCheckout;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.List;
 
 /**
  * Created by Johan on 3/20/17.

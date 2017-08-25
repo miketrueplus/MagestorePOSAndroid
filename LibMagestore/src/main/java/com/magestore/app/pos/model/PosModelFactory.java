@@ -5,10 +5,10 @@ import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.model.user.User;
-import com.magestore.app.pos.model.catalog.PosProduct;
-import com.magestore.app.pos.model.customer.PosCustomer;
-import com.magestore.app.pos.model.customer.PosCustomerAddress;
-import com.magestore.app.pos.model.user.PosUser;
+import com.magestore.app.pos.model.magento.catalog.PosProduct;
+import com.magestore.app.pos.model.magento.customer.PosCustomer;
+import com.magestore.app.pos.model.magento.customer.PosCustomerAddress;
+import com.magestore.app.pos.model.magento.user.PosUser;
 
 /**
  * Khởi tạo các model

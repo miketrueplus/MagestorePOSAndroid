@@ -1,6 +1,6 @@
 package com.magestore.app.pos.parse.gson2pos;
 
-import com.magestore.app.pos.model.registershift.PosPointOfSales;
+import com.magestore.app.pos.model.magento.registershift.PosPointOfSales;
 
 /**
  * Created by Johan on 6/2/17.

@@ -2,7 +2,6 @@ package com.magestore.app.lib.model.catalog;
 
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.inventory.Stock;
-import com.magestore.app.pos.model.catalog.PosProductOptionBundleItem;
 
 import java.util.List;
 

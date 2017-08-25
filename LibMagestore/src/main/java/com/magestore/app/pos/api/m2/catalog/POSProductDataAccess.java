@@ -13,18 +13,11 @@ import com.magestore.app.lib.connection.ParamBuilder;
 import com.magestore.app.lib.connection.ResultReading;
 import com.magestore.app.lib.connection.Statement;
 import com.magestore.app.lib.model.catalog.ProductOption;
-import com.magestore.app.lib.model.catalog.ProductOptionCustom;
 import com.magestore.app.lib.parse.ParseException;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.resourcemodel.DataAccessException;
 import com.magestore.app.lib.resourcemodel.catalog.ProductDataAccess;
-import com.magestore.app.pos.model.catalog.PosProductOption;
-import com.magestore.app.pos.model.catalog.PosProductOptionBundle;
-import com.magestore.app.pos.model.catalog.PosProductOptionBundleItem;
-import com.magestore.app.pos.model.catalog.PosProductOptionConfigOption;
-import com.magestore.app.pos.model.catalog.PosProductOptionCustom;
-import com.magestore.app.pos.model.catalog.PosProductOptionCustomValue;
-import com.magestore.app.pos.model.catalog.PosProductOptionJsonConfig;
+import com.magestore.app.pos.model.magento.catalog.PosProductOption;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListProduct;
 import com.magestore.app.pos.api.m2.POSAPI;
 import com.magestore.app.pos.api.m2.POSAbstractDataAccess;
@@ -38,10 +31,7 @@ import com.magestore.app.util.StringUtil;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
 
 /**
  * Gọi các API của Product

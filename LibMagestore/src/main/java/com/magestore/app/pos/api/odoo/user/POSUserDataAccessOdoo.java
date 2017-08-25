@@ -13,7 +13,7 @@ import com.magestore.app.lib.resourcemodel.DataAccessException;
 import com.magestore.app.lib.resourcemodel.user.UserDataAccess;
 import com.magestore.app.pos.api.odoo.POSAPIOdoo;
 import com.magestore.app.pos.api.odoo.POSAbstractDataAccessOdoo;
-import com.magestore.app.pos.model.registershift.PosPointOfSales;
+import com.magestore.app.pos.model.magento.registershift.PosPointOfSales;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosStoreParseImplement;
 
 import java.io.IOException;

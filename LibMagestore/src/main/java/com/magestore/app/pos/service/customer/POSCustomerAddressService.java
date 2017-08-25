@@ -3,13 +3,11 @@ package com.magestore.app.pos.service.customer;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.model.directory.Region;
-import com.magestore.app.lib.resourcemodel.ChildListDataAccess;
 import com.magestore.app.lib.resourcemodel.DataAccessFactory;
 import com.magestore.app.lib.resourcemodel.customer.CustomerAddressDataAccess;
-import com.magestore.app.lib.resourcemodel.customer.CustomerDataAccess;
 import com.magestore.app.lib.service.customer.CustomerAddressService;
-import com.magestore.app.pos.model.customer.PosCustomerAddress;
-import com.magestore.app.pos.model.directory.PosRegion;
+import com.magestore.app.pos.model.magento.customer.PosCustomerAddress;
+import com.magestore.app.pos.model.magento.directory.PosRegion;
 import com.magestore.app.pos.service.AbstractService;
 import com.magestore.app.util.StringUtil;
 

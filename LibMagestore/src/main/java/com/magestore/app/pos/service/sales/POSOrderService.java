@@ -4,8 +4,8 @@ import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.service.sales.OrderService;
-import com.magestore.app.pos.model.checkout.cart.PosCartItem;
-import com.magestore.app.pos.model.sales.PosOrder;
+import com.magestore.app.pos.model.magento.checkout.cart.PosCartItem;
+import com.magestore.app.pos.model.magento.sales.PosOrder;
 import com.magestore.app.pos.service.AbstractService;
 
 import java.util.ArrayList;

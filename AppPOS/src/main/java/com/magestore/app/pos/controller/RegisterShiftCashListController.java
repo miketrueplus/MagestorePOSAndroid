@@ -5,9 +5,7 @@ import com.magestore.app.lib.model.registershift.CashTransaction;
 import com.magestore.app.lib.model.registershift.RegisterShift;
 import com.magestore.app.lib.service.registershift.RegisterShiftService;
 import com.magestore.app.pos.R;
-import com.magestore.app.pos.model.registershift.PosCashTransaction;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

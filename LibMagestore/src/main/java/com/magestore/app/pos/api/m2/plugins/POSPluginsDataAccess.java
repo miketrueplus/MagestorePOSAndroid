@@ -16,7 +16,7 @@ import com.magestore.app.lib.resourcemodel.plugins.PluginsDataAccess;
 import com.magestore.app.pos.api.m2.POSAPI;
 import com.magestore.app.pos.api.m2.POSAbstractDataAccess;
 import com.magestore.app.pos.api.m2.POSDataAccessSession;
-import com.magestore.app.pos.model.checkout.PosCheckout;
+import com.magestore.app.pos.model.magento.checkout.PosCheckout;
 import java.io.IOException;
 
 /**

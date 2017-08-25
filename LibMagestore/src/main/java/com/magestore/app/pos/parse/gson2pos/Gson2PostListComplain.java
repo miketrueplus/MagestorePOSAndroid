@@ -1,6 +1,6 @@
 package com.magestore.app.pos.parse.gson2pos;
 
-import com.magestore.app.pos.model.customer.PosComplain;
+import com.magestore.app.pos.model.magento.customer.PosComplain;
 
 /**
  * Created by Mike on 1/19/2017.

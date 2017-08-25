@@ -1,8 +1,7 @@
 package com.magestore.app.lib.model.sales;
 
 import com.magestore.app.lib.model.Model;
-import com.magestore.app.pos.model.checkout.cart.PosCartItem;
-import com.magestore.app.pos.model.sales.PosOrderCustomSalesInfo;
+import com.magestore.app.pos.model.magento.checkout.cart.PosCartItem;
 
 import java.util.List;
 

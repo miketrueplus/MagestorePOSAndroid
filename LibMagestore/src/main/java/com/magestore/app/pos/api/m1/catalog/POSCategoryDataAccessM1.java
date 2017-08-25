@@ -13,7 +13,7 @@ import com.magestore.app.lib.resourcemodel.catalog.CategoryDataAccess;
 import com.magestore.app.pos.api.m1.POSAPIM1;
 import com.magestore.app.pos.api.m1.POSDataAccessSessionM1;
 import com.magestore.app.pos.api.m1.POSAbstractDataAccessM1;
-import com.magestore.app.pos.model.catalog.PosCategory;
+import com.magestore.app.pos.model.magento.catalog.PosCategory;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListCategory;
 
 import java.io.IOException;

@@ -1,9 +1,7 @@
 package com.magestore.app.lib.model.config;
 
 import com.magestore.app.lib.model.Model;
-import com.magestore.app.pos.model.config.PosConfigRegion;
 
-import java.util.List;
 import java.util.Map;
 
 /**

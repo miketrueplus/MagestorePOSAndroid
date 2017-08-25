@@ -13,7 +13,7 @@ import com.magestore.app.lib.resourcemodel.customer.CustomerDataAccess;
 import com.magestore.app.pos.api.m1.POSAPIM1;
 import com.magestore.app.pos.api.m1.POSDataAccessSessionM1;
 import com.magestore.app.pos.api.m1.POSAbstractDataAccessM1;
-import com.magestore.app.pos.model.customer.PosCustomer;
+import com.magestore.app.pos.model.magento.customer.PosCustomer;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListCustomer;
 
 import java.io.IOException;

@@ -1,8 +1,8 @@
 package com.magestore.app.pos.parse.gson2pos;
 
 import com.magestore.app.lib.parse.ParseModel;
-import com.magestore.app.pos.model.catalog.PosProductOption;
-import com.magestore.app.pos.model.catalog.PosProductOptionJsonConfig;
+import com.magestore.app.pos.model.magento.catalog.PosProductOption;
+import com.magestore.app.pos.model.magento.catalog.PosProductOptionJsonConfig;
 
 import java.util.List;
 

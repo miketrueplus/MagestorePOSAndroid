@@ -3,13 +3,11 @@ package com.magestore.app.pos.service.catalog;
 import android.graphics.Bitmap;
 
 import com.magestore.app.lib.model.catalog.Product;
-import com.magestore.app.lib.model.catalog.ProductOption;
 import com.magestore.app.lib.resourcemodel.DataAccessFactory;
 import com.magestore.app.lib.resourcemodel.catalog.ProductDataAccess;
 import com.magestore.app.lib.service.catalog.ProductService;
-import com.magestore.app.pos.model.catalog.PosProduct;
+import com.magestore.app.pos.model.magento.catalog.PosProduct;
 import com.magestore.app.pos.service.AbstractService;
-import com.magestore.app.util.ImageUtil;
 
 import java.io.IOException;
 import java.text.ParseException;

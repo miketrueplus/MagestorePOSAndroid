@@ -4,10 +4,8 @@ import com.magestore.app.lib.model.customer.Complain;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.resourcemodel.DataAccessFactory;
 import com.magestore.app.lib.resourcemodel.customer.CustomerComplainDataAccess;
-import com.magestore.app.lib.resourcemodel.customer.CustomerDataAccess;
 import com.magestore.app.lib.service.customer.CustomerComplainService;
-import com.magestore.app.pos.api.m2.POSAbstractDataAccess;
-import com.magestore.app.pos.model.customer.PosComplain;
+import com.magestore.app.pos.model.magento.customer.PosComplain;
 import com.magestore.app.pos.service.AbstractService;
 
 import java.io.IOException;

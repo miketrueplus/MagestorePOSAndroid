@@ -2,7 +2,7 @@ package com.magestore.app.lib.model.checkout;
 
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
-import com.magestore.app.pos.model.checkout.cart.PosCartItem;
+import com.magestore.app.pos.model.magento.checkout.cart.PosCartItem;
 
 import java.util.List;
 

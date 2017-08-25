@@ -3,9 +3,9 @@ package com.magestore.app.lib.model.sales;
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
-import com.magestore.app.pos.model.sales.PosOrderAttributes;
-import com.magestore.app.pos.model.sales.PosOrderBillingAddress;
-import com.magestore.app.pos.model.sales.PosOrderPayment;
+import com.magestore.app.pos.model.magento.sales.PosOrderAttributes;
+import com.magestore.app.pos.model.magento.sales.PosOrderBillingAddress;
+import com.magestore.app.pos.model.magento.sales.PosOrderPayment;
 
 import java.util.List;
 

@@ -1,7 +1,5 @@
 package com.magestore.app.pos.service.order;
 
-import android.text.TextUtils;
-
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.lib.model.checkout.PaymentMethodDataParam;
@@ -24,21 +22,21 @@ import com.magestore.app.lib.model.sales.OrderWebposPayment;
 import com.magestore.app.lib.resourcemodel.DataAccessFactory;
 import com.magestore.app.lib.resourcemodel.sales.OrderDataAccess;
 import com.magestore.app.lib.service.order.OrderHistoryService;
-import com.magestore.app.pos.model.checkout.PosPaymentMethodDataParam;
-import com.magestore.app.pos.model.sales.PosOrder;
-import com.magestore.app.pos.model.sales.PosOrderCommentParams;
-import com.magestore.app.pos.model.sales.PosOrderInvoiceParams;
-import com.magestore.app.pos.model.sales.PosOrderItemParams;
-import com.magestore.app.pos.model.sales.PosOrderItemUpdateQtyParam;
-import com.magestore.app.pos.model.sales.PosOrderRefundCreditParams;
-import com.magestore.app.pos.model.sales.PosOrderRefundGiftCard;
-import com.magestore.app.pos.model.sales.PosOrderRefundParams;
-import com.magestore.app.pos.model.sales.PosOrderShipmentParams;
-import com.magestore.app.pos.model.sales.PosOrderShipmentTrackParams;
-import com.magestore.app.pos.model.sales.PosOrderStatus;
-import com.magestore.app.pos.model.sales.PosOrderTakePaymentParam;
-import com.magestore.app.pos.model.sales.PosOrderUpdateQtyParam;
-import com.magestore.app.pos.model.sales.PosOrderWebposPayment;
+import com.magestore.app.pos.model.magento.checkout.PosPaymentMethodDataParam;
+import com.magestore.app.pos.model.magento.sales.PosOrder;
+import com.magestore.app.pos.model.magento.sales.PosOrderCommentParams;
+import com.magestore.app.pos.model.magento.sales.PosOrderInvoiceParams;
+import com.magestore.app.pos.model.magento.sales.PosOrderItemParams;
+import com.magestore.app.pos.model.magento.sales.PosOrderItemUpdateQtyParam;
+import com.magestore.app.pos.model.magento.sales.PosOrderRefundCreditParams;
+import com.magestore.app.pos.model.magento.sales.PosOrderRefundGiftCard;
+import com.magestore.app.pos.model.magento.sales.PosOrderRefundParams;
+import com.magestore.app.pos.model.magento.sales.PosOrderShipmentParams;
+import com.magestore.app.pos.model.magento.sales.PosOrderShipmentTrackParams;
+import com.magestore.app.pos.model.magento.sales.PosOrderStatus;
+import com.magestore.app.pos.model.magento.sales.PosOrderTakePaymentParam;
+import com.magestore.app.pos.model.magento.sales.PosOrderUpdateQtyParam;
+import com.magestore.app.pos.model.magento.sales.PosOrderWebposPayment;
 import com.magestore.app.pos.service.AbstractService;
 import com.magestore.app.util.ConfigUtil;
 

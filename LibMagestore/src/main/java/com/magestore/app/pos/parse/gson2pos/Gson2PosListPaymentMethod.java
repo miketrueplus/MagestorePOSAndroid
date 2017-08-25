@@ -1,6 +1,6 @@
 package com.magestore.app.pos.parse.gson2pos;
 
-import com.magestore.app.pos.model.checkout.PosCheckoutPayment;
+import com.magestore.app.pos.model.magento.checkout.PosCheckoutPayment;
 
 /**
  * Created by Johan on 3/31/17.

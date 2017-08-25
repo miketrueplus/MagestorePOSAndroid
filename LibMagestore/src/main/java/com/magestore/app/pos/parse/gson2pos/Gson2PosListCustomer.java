@@ -1,6 +1,6 @@
 package com.magestore.app.pos.parse.gson2pos;
 
-import com.magestore.app.pos.model.customer.PosCustomer;
+import com.magestore.app.pos.model.magento.customer.PosCustomer;
 
 /**
  * Cấu trúc list của customer, convert từ gson thành

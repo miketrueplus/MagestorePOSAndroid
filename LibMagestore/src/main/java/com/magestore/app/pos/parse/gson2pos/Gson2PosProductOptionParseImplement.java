@@ -6,15 +6,13 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
-import com.magestore.app.pos.model.catalog.PosProductOptionConfigOption;
-import com.magestore.app.pos.model.catalog.PosProductOptionJsonConfigOptionPrice;
+import com.magestore.app.pos.model.magento.catalog.PosProductOptionConfigOption;
+import com.magestore.app.pos.model.magento.catalog.PosProductOptionJsonConfigOptionPrice;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-
-import static com.magestore.app.pos.model.catalog.PosProduct.*;
 
 /**
  * Created by Mike on 2/16/2017.

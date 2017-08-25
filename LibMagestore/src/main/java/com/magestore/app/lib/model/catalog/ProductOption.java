@@ -1,12 +1,12 @@
 package com.magestore.app.lib.model.catalog;
 
 import com.magestore.app.lib.model.Model;
-import com.magestore.app.pos.model.catalog.PosProductOptionBundle;
-import com.magestore.app.pos.model.catalog.PosProductOptionConfigOption;
-import com.magestore.app.pos.model.catalog.PosProductOptionCustom;
-import com.magestore.app.pos.model.catalog.PosProductOptionGrouped;
-import com.magestore.app.pos.model.catalog.PosProductOptionJsonConfig;
-import com.magestore.app.pos.model.catalog.PosProductOptionPriceConfig;
+import com.magestore.app.pos.model.magento.catalog.PosProductOptionBundle;
+import com.magestore.app.pos.model.magento.catalog.PosProductOptionConfigOption;
+import com.magestore.app.pos.model.magento.catalog.PosProductOptionCustom;
+import com.magestore.app.pos.model.magento.catalog.PosProductOptionGrouped;
+import com.magestore.app.pos.model.magento.catalog.PosProductOptionJsonConfig;
+import com.magestore.app.pos.model.magento.catalog.PosProductOptionPriceConfig;
 
 import java.util.List;
 import java.util.Map;

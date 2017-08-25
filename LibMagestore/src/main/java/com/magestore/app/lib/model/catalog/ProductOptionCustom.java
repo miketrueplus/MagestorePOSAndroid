@@ -1,7 +1,7 @@
 package com.magestore.app.lib.model.catalog;
 
 import com.magestore.app.lib.model.Model;
-import com.magestore.app.pos.model.catalog.PosProductOptionCustomValue;
+import com.magestore.app.pos.model.magento.catalog.PosProductOptionCustomValue;
 
 import java.util.List;
 

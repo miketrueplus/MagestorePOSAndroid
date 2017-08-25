@@ -8,9 +8,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 import com.magestore.app.lib.model.config.ConfigOptionSwatch;
-import com.magestore.app.lib.model.config.ConfigProductOption;
-import com.magestore.app.pos.model.config.PosConfigOptionSwatch;
-import com.magestore.app.pos.model.config.PosConfigProductOption;
+import com.magestore.app.pos.model.magento.config.PosConfigOptionSwatch;
+import com.magestore.app.pos.model.magento.config.PosConfigProductOption;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;

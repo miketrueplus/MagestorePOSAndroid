@@ -1,6 +1,6 @@
 package com.magestore.app.pos.parse.gson2pos;
 
-import com.magestore.app.pos.model.sales.PosOrder;
+import com.magestore.app.pos.model.magento.sales.PosOrder;
 
 /**
  * Cấu trúc list của order, convert từ gson thành

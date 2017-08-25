@@ -1,7 +1,7 @@
 package com.magestore.app.lib.model.checkout;
 
 import com.magestore.app.lib.model.Model;
-import com.magestore.app.pos.model.checkout.PosPaymentMethodDataParam;
+import com.magestore.app.pos.model.magento.checkout.PosPaymentMethodDataParam;
 
 /**
  * Created by Johan on 2/17/17.

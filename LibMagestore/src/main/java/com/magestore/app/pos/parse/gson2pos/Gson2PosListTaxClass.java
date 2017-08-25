@@ -1,6 +1,6 @@
 package com.magestore.app.pos.parse.gson2pos;
 
-import com.magestore.app.pos.model.config.PosConfigTaxClass;
+import com.magestore.app.pos.model.magento.config.PosConfigTaxClass;
 
 /**
  * Created by Johan on 5/10/17.

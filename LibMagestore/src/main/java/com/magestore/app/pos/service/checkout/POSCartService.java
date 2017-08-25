@@ -1,11 +1,6 @@
 package com.magestore.app.pos.service.checkout;
 
-import android.util.ArraySet;
-
 import com.magestore.app.lib.model.catalog.Product;
-import com.magestore.app.lib.model.catalog.ProductOptionCustom;
-import com.magestore.app.lib.model.catalog.ProductOptionCustomValue;
-import com.magestore.app.lib.model.checkout.Cart;
 import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.sales.Order;
@@ -16,21 +11,15 @@ import com.magestore.app.lib.resourcemodel.catalog.ProductDataAccess;
 import com.magestore.app.lib.resourcemodel.sales.CartDataAccess;
 import com.magestore.app.lib.service.ServiceException;
 import com.magestore.app.lib.service.checkout.CartService;
-import com.magestore.app.pos.model.catalog.PosProduct;
-import com.magestore.app.pos.model.catalog.PosProductOptionConfigOption;
-import com.magestore.app.pos.model.catalog.PosProductOptionJsonConfigAttributes;
-import com.magestore.app.pos.model.checkout.cart.PosCartItem;
-import com.magestore.app.pos.model.sales.PosOrderCartItem;
-import com.magestore.app.pos.model.sales.PosOrderCustomSalesInfo;
+import com.magestore.app.pos.model.magento.catalog.PosProduct;
+import com.magestore.app.pos.model.magento.checkout.cart.PosCartItem;
 import com.magestore.app.pos.service.AbstractService;
-import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.StringUtil;
 
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Thực hiện các nghiệp vụ, service của cart

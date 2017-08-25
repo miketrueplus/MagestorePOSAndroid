@@ -1,7 +1,7 @@
 package com.magestore.app.lib.model.sales;
 
 import com.magestore.app.lib.model.Model;
-import com.magestore.app.pos.model.sales.PosOrderShippingAssignments;
+import com.magestore.app.pos.model.magento.sales.PosOrderShippingAssignments;
 
 import java.util.List;
 

@@ -1,16 +1,10 @@
 package com.magestore.app.pos.service.customer;
 
-import com.google.gson.Gson;
-import com.magestore.app.lib.connection.ConnectionException;
-import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.model.customer.Complain;
-import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.model.customer.Customer;
-import com.magestore.app.lib.resourcemodel.DataAccessException;
 import com.magestore.app.lib.resourcemodel.DataAccessFactory;
-import com.magestore.app.pos.model.customer.PosComplain;
-import com.magestore.app.pos.model.customer.PosCustomerAddress;
-import com.magestore.app.pos.model.customer.PosCustomer;
+import com.magestore.app.pos.model.magento.customer.PosComplain;
+import com.magestore.app.pos.model.magento.customer.PosCustomer;
 import com.magestore.app.lib.resourcemodel.customer.CustomerDataAccess;
 import com.magestore.app.lib.service.customer.CustomerService;
 import com.magestore.app.pos.service.AbstractService;

@@ -1,28 +1,18 @@
 package com.magestore.app.lib;
 
-import android.util.Log;
-
 import com.magestore.app.lib.context.MagestoreContext;
 import com.magestore.app.lib.model.catalog.Category;
 import com.magestore.app.lib.model.catalog.ProductOption;
-import com.magestore.app.lib.model.config.Config;
-import com.magestore.app.lib.model.customer.Complain;
-import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.catalog.Product;
-import com.magestore.app.lib.model.registershift.RegisterShift;
-import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.model.user.User;
 import com.magestore.app.lib.resourcemodel.catalog.CategoryDataAccess;
-import com.magestore.app.lib.resourcemodel.config.ConfigDataAccess;
-import com.magestore.app.lib.resourcemodel.customer.CustomerDataAccess;
 import com.magestore.app.lib.resourcemodel.DataAccessFactory;
 import com.magestore.app.lib.resourcemodel.catalog.ProductDataAccess;
 import com.magestore.app.lib.resourcemodel.registershift.RegisterShiftDataAccess;
 import com.magestore.app.lib.resourcemodel.sales.OrderDataAccess;
 import com.magestore.app.lib.resourcemodel.user.UserDataAccess;
 import com.magestore.app.pos.api.m2.POSDataAccessSession;
-import com.magestore.app.pos.model.catalog.PosProduct;
-import com.magestore.app.pos.model.user.PosUser;
+import com.magestore.app.pos.model.magento.user.PosUser;
 import com.magestore.app.pos.service.user.POSUserService;
 
 import org.junit.Test;

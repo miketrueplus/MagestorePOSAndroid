@@ -16,7 +16,7 @@ import com.magestore.app.lib.resourcemodel.registershift.RegisterShiftDataAccess
 import com.magestore.app.pos.api.m2.POSAPI;
 import com.magestore.app.pos.api.m2.POSAbstractDataAccess;
 import com.magestore.app.pos.api.m2.POSDataAccessSession;
-import com.magestore.app.pos.model.registershift.PosRegisterShift;
+import com.magestore.app.pos.model.magento.registershift.PosRegisterShift;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListRegisterShift;
 import com.magestore.app.util.ConfigUtil;
 

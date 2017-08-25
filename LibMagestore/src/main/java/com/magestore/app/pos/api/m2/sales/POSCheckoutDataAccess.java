@@ -1,7 +1,5 @@
 package com.magestore.app.pos.api.m2.sales;
 
-import android.util.Log;
-
 import com.google.gson.Gson;
 import com.magestore.app.lib.connection.Connection;
 import com.magestore.app.lib.connection.ConnectionException;
@@ -17,7 +15,6 @@ import com.magestore.app.lib.model.checkout.Quote;
 import com.magestore.app.lib.model.checkout.QuoteAddCouponParam;
 import com.magestore.app.lib.model.checkout.SaveQuoteParam;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
-import com.magestore.app.lib.model.checkout.payment.Authorizenet;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.parse.ParseException;
 import com.magestore.app.lib.resourcemodel.DataAccessException;
@@ -25,11 +22,8 @@ import com.magestore.app.lib.resourcemodel.sales.CheckoutDataAccess;
 import com.magestore.app.pos.api.m2.POSAPI;
 import com.magestore.app.pos.api.m2.POSAbstractDataAccess;
 import com.magestore.app.pos.api.m2.POSDataAccessSession;
-import com.magestore.app.pos.model.checkout.PosCheckout;
-import com.magestore.app.pos.model.checkout.payment.PosAuthorizenet;
-import com.magestore.app.pos.model.sales.PosOrder;
-import com.magestore.app.pos.parse.gson2pos.Gson2PosAbstractParseImplement;
-import com.magestore.app.pos.parse.gson2pos.Gson2PosAuthorizenetParseModel;
+import com.magestore.app.pos.model.magento.checkout.PosCheckout;
+import com.magestore.app.pos.model.magento.sales.PosOrder;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosOrderParseModel;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.StringUtil;

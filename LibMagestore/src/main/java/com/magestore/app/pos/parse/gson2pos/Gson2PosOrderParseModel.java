@@ -8,11 +8,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
-import com.magestore.app.pos.model.checkout.cart.PosCartItem;
-import com.magestore.app.pos.model.sales.PosOrder;
+import com.magestore.app.pos.model.magento.sales.PosOrder;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Johan on 4/27/17.

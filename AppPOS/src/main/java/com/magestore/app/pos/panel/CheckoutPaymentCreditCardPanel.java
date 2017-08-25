@@ -2,7 +2,6 @@ package com.magestore.app.pos.panel;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.EditText;
 
 import com.magestore.app.lib.model.checkout.CheckoutPayment;
@@ -11,7 +10,7 @@ import com.magestore.app.lib.panel.AbstractDetailPanel;
 import com.magestore.app.lib.view.SimpleSpinner;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.CheckoutListController;
-import com.magestore.app.pos.model.checkout.PosCheckoutPayment;
+import com.magestore.app.pos.model.magento.checkout.PosCheckoutPayment;
 import com.magestore.app.pos.util.EditTextUtil;
 import com.magestore.app.util.DialogUtil;
 

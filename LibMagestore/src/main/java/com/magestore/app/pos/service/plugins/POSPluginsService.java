@@ -7,9 +7,9 @@ import com.magestore.app.lib.model.plugins.RewardPoint;
 import com.magestore.app.lib.resourcemodel.DataAccessFactory;
 import com.magestore.app.lib.resourcemodel.plugins.PluginsDataAccess;
 import com.magestore.app.lib.service.plugins.PluginsService;
-import com.magestore.app.pos.model.plugins.PosGiftCard;
-import com.magestore.app.pos.model.plugins.PosGiftCardRemoveParam;
-import com.magestore.app.pos.model.plugins.PosRewardPoint;
+import com.magestore.app.pos.model.magento.plugins.PosGiftCard;
+import com.magestore.app.pos.model.magento.plugins.PosGiftCardRemoveParam;
+import com.magestore.app.pos.model.magento.plugins.PosRewardPoint;
 import com.magestore.app.pos.service.AbstractService;
 
 import java.io.IOException;

@@ -7,6 +7,9 @@ package com.magestore.app.pos.api.odoo;
  */
 
 public class POSAPIOdoo {
+    // API get category
+    public static final String REST_GET_CATEGORY_LISTING = "api/pos-categories/";
+
     // API check platform
     public static final String REST_CHECK_PLATFORM = "webpos/index/platform/";
 

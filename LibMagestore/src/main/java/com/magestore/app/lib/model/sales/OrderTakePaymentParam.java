@@ -2,7 +2,7 @@ package com.magestore.app.lib.model.sales;
 
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.checkout.PaymentMethodDataParam;
-import com.magestore.app.pos.model.sales.PosOrderTakePaymentParam;
+import com.magestore.app.pos.model.magento.sales.PosOrderTakePaymentParam;
 
 import java.util.List;
 

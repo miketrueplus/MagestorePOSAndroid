@@ -2,22 +2,13 @@ package com.magestore.app.pos.service.catalog;
 
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.model.catalog.ProductOption;
-import com.magestore.app.lib.model.customer.Customer;
-import com.magestore.app.lib.model.customer.CustomerAddress;
-import com.magestore.app.lib.model.directory.Region;
 import com.magestore.app.lib.resourcemodel.DataAccessFactory;
 import com.magestore.app.lib.resourcemodel.catalog.ProductDataAccess;
-import com.magestore.app.lib.resourcemodel.customer.CustomerAddressDataAccess;
 import com.magestore.app.lib.service.catalog.ProductOptionService;
-import com.magestore.app.lib.service.customer.CustomerAddressService;
-import com.magestore.app.pos.model.customer.PosCustomerAddress;
-import com.magestore.app.pos.model.directory.PosRegion;
 import com.magestore.app.pos.service.AbstractService;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Mike on 1/29/2017.

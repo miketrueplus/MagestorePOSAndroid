@@ -6,7 +6,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.EditText;
 
-import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.config.ConfigTaxClass;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
@@ -14,7 +13,7 @@ import com.magestore.app.lib.view.SimpleSpinner;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.CartItemListController;
 import com.magestore.app.pos.databinding.PanelCheckoutCustomSaleBinding;
-import com.magestore.app.pos.model.config.PosConfigTaxClass;
+import com.magestore.app.pos.model.magento.config.PosConfigTaxClass;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.StringUtil;
 import com.magestore.app.view.EditTextFloat;

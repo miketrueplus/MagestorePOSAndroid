@@ -1,7 +1,7 @@
 package com.magestore.app.lib.model.checkout;
 
 import com.magestore.app.lib.model.Model;
-import com.magestore.app.pos.model.checkout.PosPlaceOrderParams;
+import com.magestore.app.pos.model.magento.checkout.PosPlaceOrderParams;
 
 import java.util.List;
 

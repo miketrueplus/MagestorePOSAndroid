@@ -1,7 +1,7 @@
 package com.magestore.app.lib.model.checkout;
 
 import com.magestore.app.lib.model.Model;
-import com.magestore.app.pos.model.checkout.PosSaveQuoteParam;
+import com.magestore.app.pos.model.magento.checkout.PosSaveQuoteParam;
 
 /**
  * Created by Johan on 3/23/17.

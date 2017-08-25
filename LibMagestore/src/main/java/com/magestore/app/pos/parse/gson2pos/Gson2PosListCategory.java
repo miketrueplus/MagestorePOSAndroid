@@ -1,6 +1,6 @@
 package com.magestore.app.pos.parse.gson2pos;
 
-import com.magestore.app.pos.model.catalog.PosCategory;
+import com.magestore.app.pos.model.magento.catalog.PosCategory;
 
 /**
  * Created by Johan on 2/8/17.

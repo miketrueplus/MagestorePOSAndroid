@@ -15,10 +15,8 @@ import com.magestore.app.lib.resourcemodel.customer.CustomerAddressDataAccess;
 import com.magestore.app.pos.api.m2.POSAPI;
 import com.magestore.app.pos.api.m2.POSAbstractDataAccess;
 import com.magestore.app.pos.api.m2.POSDataAccessSession;
-import com.magestore.app.pos.model.customer.PosCustomer;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListAddress;
 import com.magestore.app.util.ConfigUtil;
-import com.magestore.app.util.StringUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;

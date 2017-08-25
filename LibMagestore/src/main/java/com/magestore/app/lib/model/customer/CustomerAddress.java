@@ -2,7 +2,6 @@ package com.magestore.app.lib.model.customer;
 
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.directory.Region;
-import com.magestore.app.pos.model.directory.PosRegion;
 
 import java.util.List;
 

@@ -3,12 +3,9 @@ package com.magestore.app.lib.model.catalog;
 import android.graphics.Bitmap;
 
 import com.magestore.app.lib.model.Model;
-import com.magestore.app.lib.model.inventory.Stock;
 import com.magestore.app.lib.parse.ParseModel;
-import com.magestore.app.pos.model.catalog.PosProductOption;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by Mike on 12/11/2016.

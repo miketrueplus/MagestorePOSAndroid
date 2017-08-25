@@ -26,11 +26,10 @@ import com.magestore.app.lib.resourcemodel.plugins.PluginsDataAccess;
 import com.magestore.app.pos.api.m1.POSAPIM1;
 import com.magestore.app.pos.api.m1.POSAbstractDataAccessM1;
 import com.magestore.app.pos.api.m1.POSDataAccessSessionM1;
-import com.magestore.app.pos.model.checkout.PosCheckout;
-import com.magestore.app.pos.model.checkout.PosDataCheckout;
-import com.magestore.app.pos.model.checkout.cart.PosCartItem;
-import com.magestore.app.pos.model.plugins.PosGiftCard;
-import com.magestore.app.pos.model.plugins.PosGiftCardRespone;
+import com.magestore.app.pos.model.magento.checkout.PosDataCheckout;
+import com.magestore.app.pos.model.magento.checkout.cart.PosCartItem;
+import com.magestore.app.pos.model.magento.plugins.PosGiftCard;
+import com.magestore.app.pos.model.magento.plugins.PosGiftCardRespone;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosAbstractParseImplement;
 import com.magestore.app.util.ConfigUtil;
 
