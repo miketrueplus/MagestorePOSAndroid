@@ -13,10 +13,12 @@ import com.magestore.app.lib.resourcemodel.DataAccessException;
 import com.magestore.app.lib.resourcemodel.user.UserDataAccess;
 import com.magestore.app.pos.api.odoo.POSAPIOdoo;
 import com.magestore.app.pos.api.odoo.POSAbstractDataAccessOdoo;
+import com.magestore.app.pos.model.registershift.PosPointOfSales;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosStoreParseImplement;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -131,7 +133,7 @@ public class POSUserDataAccessOdoo extends POSAbstractDataAccessOdoo implements 
 
     @Override
     public List<PointOfSales> retrievePos() throws ParseException, ConnectionException, DataAccessException, IOException {
-        return null;
+        return getPOSFake();
     }
 
     @Override
@@ -141,6 +143,19 @@ public class POSUserDataAccessOdoo extends POSAbstractDataAccessOdoo implements 
 
     @Override
     public boolean requestAssignPos(String pos_id) throws ParseException, ConnectionException, DataAccessException, IOException {
-        return false;
+        // TODO: fake assign pos success
+        return true;
+    }
+
+    // TODO fake data
+    private List<PointOfSales> getPOSFake(){
+        PointOfSales pointOfSales = new PosPointOfSales();
+        pointOfSales.setPosId("2");
+        pointOfSales.setPosName("Cash Drawer 02");
+        pointOfSales.setStoreId("1");
+        pointOfSales.setLocationId("1");
+        List<PointOfSales> list = new ArrayList<>();
+        list.add(pointOfSales);
+        return list;
     }
 }
