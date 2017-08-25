@@ -30,6 +30,19 @@ public class POSUserDataAccessOdoo extends POSAbstractDataAccessM1 implements Us
         String platform;
     }
 
+    private class Wrap {
+        UserEntity staff;
+    }
+
+    private class UserEntity {
+        String email;
+        String password;
+    }
+
+    private class LoginRespone {
+        String token;
+    }
+
     @Override
     public String checkPlatform(String domain, String username, String password) throws ParseException, ConnectionException, DataAccessException, IOException {
         Connection connection = null;
@@ -67,7 +80,43 @@ public class POSUserDataAccessOdoo extends POSAbstractDataAccessM1 implements Us
 
     @Override
     public String login(String domain, String proxyUser, String proxyPassword, User user) throws ParseException, ConnectionException, DataAccessException, IOException {
-        return null;
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        try {
+            // Khởi tạo connection
+            connection = ConnectionFactory.generateConnection(getContext(), domain, proxyUser, proxyPassword);
+//            connection = MagestoreConnection.getConnection(domain, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPIOdoo.REST_LOGIN);
+
+            Wrap wrap = new Wrap();
+            UserEntity userEntity = new UserEntity();
+            userEntity.email = user.getUserName();
+            userEntity.password = user.getPasswords();
+            wrap.staff = userEntity;
+
+            rp = statement.execute(wrap);
+            String respone = rp.readResult2String();
+            Gson2PosStoreParseImplement implement = new Gson2PosStoreParseImplement();
+            Gson gson = implement.createGson();
+            LoginRespone loginRespone = gson.fromJson(respone, LoginRespone.class);
+            return loginRespone.token;
+        } catch (Exception ex) {
+            throw new DataAccessException(ex);
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
     }
 
     @Override

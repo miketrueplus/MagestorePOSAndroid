@@ -8,5 +8,8 @@ package com.magestore.app.pos.api.odoo;
 
 public class POSAPIOdoo {
     // API check platform
-    public static final String REST_CHECK_PLATFORM = "webpos/index/platform";
+    public static final String REST_CHECK_PLATFORM = "webpos/index/platform/";
+
+    // API staff
+    public static final String REST_LOGIN = "api/login/";
 }

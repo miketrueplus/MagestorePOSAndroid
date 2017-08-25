@@ -15,6 +15,7 @@ import com.magestore.app.lib.resourcemodel.sales.OrderDataAccess;
 import com.magestore.app.lib.resourcemodel.user.UserDataAccess;
 import com.magestore.app.pos.api.m1.POSDataAccessFactoryM1;
 import com.magestore.app.pos.api.m2.POSDataAccessFactory;
+import com.magestore.app.pos.api.odoo.POSDataAccessFactoryOdoo;
 import com.magestore.app.util.ConfigUtil;
 
 /**
@@ -28,18 +29,28 @@ public abstract class DataAccessFactory {
     private MagestoreContext mContext;
 
     public abstract ProductDataAccess generateProductDataAccess();
+
     public abstract UserDataAccess generateUserDataAccess();
+
     public abstract OrderDataAccess generateOrderDataAccess();
 
     // factory khởi tạo customer data access
     public abstract CustomerDataAccess generateCustomerDataAccess();
+
     public abstract CustomerAddressDataAccess generateCustomerAddressDataAccess();
+
     public abstract CustomerComplainDataAccess generateCustomerComplainDataAccess();
+
     public abstract CategoryDataAccess generateCategoryDataAccess();
+
     public abstract CartDataAccess generateCartDataAccess();
+
     public abstract RegisterShiftDataAccess generateRegisterShiftDataAccess();
+
     public abstract ConfigDataAccess generateConfigDataAccess();
+
     public abstract PluginsDataAccess generatePluginsDataAccess();
+
     public abstract CheckoutDataAccess generateCheckoutDataAccess();
 
     public MagestoreContext getContext() {
@@ -48,6 +59,7 @@ public abstract class DataAccessFactory {
 
     /**
      * Khởi tạo DataAccess factory để kết nối, gọi các API đến DataAccessFactory
+     *
      * @param context ngữ cảnh xử lý
      * @return
      * @throws IllegalAccessException
@@ -59,6 +71,8 @@ public abstract class DataAccessFactory {
             dataAccessFactory = (DataAccessFactory) POSDataAccessFactory.class.newInstance();
         } else if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_1)) {
             dataAccessFactory = (DataAccessFactory) POSDataAccessFactoryM1.class.newInstance();
+        } else if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_ODOO)) {
+            dataAccessFactory = (DataAccessFactory) POSDataAccessFactoryOdoo.class.newInstance();
         } else {
             dataAccessFactory = (DataAccessFactory) POSDataAccessFactory.class.newInstance();
         }
@@ -68,7 +82,8 @@ public abstract class DataAccessFactory {
 
     /**
      * Khởi tạo DataAccess factory để kết nối, gọi các API đến DataAccessFactory
-     * @param context ngữ cảnh xử lý
+     *
+     * @param context             ngữ cảnh xử lý
      * @param gatewayFactoryClass class để sinh gateway
      * @return
      * @throws IllegalAccessException

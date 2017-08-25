@@ -327,6 +327,11 @@ public class MagestoreStatement implements Statement {
         mHttpConnection = magestoreConnection.openHTTPConnection(mstrExecuteQuery, mstrMethod);
         // set cookie to header
         setCookieToHeaderField();
+
+        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_ODOO)) {
+//            mHttpConnection.addRequestProperty("");
+        }
+
         mHttpConnection.setRequestProperty(ACCEPT, APPLICATION_RANGER);
         // đặt action method cho http connection
         if (mAction == MagestoreStatementAction.ACTION_DELETE)
