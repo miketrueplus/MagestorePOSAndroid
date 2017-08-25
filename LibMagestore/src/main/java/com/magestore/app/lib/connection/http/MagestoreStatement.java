@@ -65,6 +65,7 @@ public class MagestoreStatement implements Statement {
     StringBuilder mstrPreparedQuery;
     String mstrLastPreparedQuery;
     String mstrExecuteQuery;
+    String sessionHeader;
 
     // http header
     private static final String CONTENT_TYPE = "Content-Type";
@@ -296,6 +297,11 @@ public class MagestoreStatement implements Statement {
         return mCacheConnection;
     }
 
+    @Override
+    public void setSessionHeader(String session) {
+        sessionHeader = session;
+    }
+
     /**
      * Chuẩn bị HTTP connection với method post và object
      *
@@ -328,8 +334,8 @@ public class MagestoreStatement implements Statement {
         // set cookie to header
         setCookieToHeaderField();
 
-        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_ODOO)) {
-//            mHttpConnection.addRequestProperty("");
+        if (!StringUtil.isNullOrEmpty(sessionHeader)) {
+            mHttpConnection.addRequestProperty("Authorization", "Token " + sessionHeader);
         }
 
         mHttpConnection.setRequestProperty(ACCEPT, APPLICATION_RANGER);
@@ -374,7 +380,7 @@ public class MagestoreStatement implements Statement {
         int statusCode = mHttpConnection.getResponseCode();
         InputStream is = null;
 
-        if (statusCode == HTTP_CODE_RESPONSE_SUCCESS) {
+        if (statusCode == HTTP_CODE_RESPONSE_SUCCESS || statusCode == 202) {
             // save cookie
             saveCookie();
             // check erorr magento 1

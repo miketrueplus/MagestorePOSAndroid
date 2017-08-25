@@ -11,8 +11,8 @@ import com.magestore.app.lib.model.store.Store;
 import com.magestore.app.lib.model.user.User;
 import com.magestore.app.lib.resourcemodel.DataAccessException;
 import com.magestore.app.lib.resourcemodel.user.UserDataAccess;
-import com.magestore.app.pos.api.m1.POSAbstractDataAccessM1;
 import com.magestore.app.pos.api.odoo.POSAPIOdoo;
+import com.magestore.app.pos.api.odoo.POSAbstractDataAccessOdoo;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosStoreParseImplement;
 
 import java.io.IOException;
@@ -25,7 +25,7 @@ import java.util.List;
  * dong.le@trueplus.vn
  */
 
-public class POSUserDataAccessOdoo extends POSAbstractDataAccessM1 implements UserDataAccess {
+public class POSUserDataAccessOdoo extends POSAbstractDataAccessOdoo implements UserDataAccess {
     private class POSCheckPlatformDataAccess {
         String platform;
     }
@@ -40,7 +40,7 @@ public class POSUserDataAccessOdoo extends POSAbstractDataAccessM1 implements Us
     }
 
     private class LoginRespone {
-        String token;
+        String Token;
     }
 
     @Override
@@ -101,7 +101,7 @@ public class POSUserDataAccessOdoo extends POSAbstractDataAccessM1 implements Us
             Gson2PosStoreParseImplement implement = new Gson2PosStoreParseImplement();
             Gson gson = implement.createGson();
             LoginRespone loginRespone = gson.fromJson(respone, LoginRespone.class);
-            return loginRespone.token;
+            return loginRespone.Token;
         } catch (Exception ex) {
             throw new DataAccessException(ex);
         } finally {

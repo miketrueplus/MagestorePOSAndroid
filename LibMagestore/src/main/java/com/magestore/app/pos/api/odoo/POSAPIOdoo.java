@@ -12,4 +12,7 @@ public class POSAPIOdoo {
 
     // API staff
     public static final String REST_LOGIN = "api/login/";
+
+    // API config
+    public static final String REST_CONFIG_GET_LISTING = "api/pos-configs/";
 }

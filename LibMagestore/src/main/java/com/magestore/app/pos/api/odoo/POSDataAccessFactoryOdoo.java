@@ -13,6 +13,7 @@ import com.magestore.app.lib.resourcemodel.sales.CartDataAccess;
 import com.magestore.app.lib.resourcemodel.sales.CheckoutDataAccess;
 import com.magestore.app.lib.resourcemodel.sales.OrderDataAccess;
 import com.magestore.app.lib.resourcemodel.user.UserDataAccess;
+import com.magestore.app.pos.api.odoo.config.POSConfigDataAccessOdoo;
 import com.magestore.app.pos.api.odoo.user.POSUserDataAccessOdoo;
 
 /**
@@ -69,7 +70,7 @@ public class POSDataAccessFactoryOdoo extends DataAccessFactory {
 
     @Override
     public ConfigDataAccess generateConfigDataAccess() {
-        return null;
+        return new POSConfigDataAccessOdoo();
     }
 
     @Override
