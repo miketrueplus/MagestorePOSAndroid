@@ -84,7 +84,7 @@
                                 android:background="@drawable/login_form_border_edittext"
                                 android:ellipsize="end"
                                 android:hint="@string/login_domain"
-                                android:inputType="text"
+                                android:inputType="textWebEmailAddress"
                                 android:maxLines="1"
                                 android:padding="@dimen/login_edditext_padding_size" />
 

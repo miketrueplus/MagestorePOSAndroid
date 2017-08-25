@@ -313,7 +313,7 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         if (licenseDomain.contains("www.")) {
             licenseDomain = licenseDomain.replace("www.", "");
         }
-        
+
         if (domain.contains("https://")) {
             domain = domain.replace("https://", "");
         } else if (domain.contains("http://")) {
