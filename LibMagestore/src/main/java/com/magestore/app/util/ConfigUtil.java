@@ -38,6 +38,7 @@ public class ConfigUtil {
     private static String mPlatForm;
     public static String PLATFORM_MAGENTO_1 = "magento1";
     public static String PLATFORM_MAGENTO_2 = "magento2";
+    public static String PLATFORM_ODOO = "odoo";
 
     // public static Config mConfig;
     private static DecimalFormat mCurrencyFormat;
