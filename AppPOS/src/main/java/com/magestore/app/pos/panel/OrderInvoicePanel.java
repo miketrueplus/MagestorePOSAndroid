@@ -249,7 +249,7 @@ public class OrderInvoicePanel extends AbstractDetailPanel<Order> {
 
     public CartItem checkQtyInvoice(CartItem item) {
         if (item.getPriceInvoice() == 0) {
-            item.setPriceInvoice(item.getPriceInclTax());
+            item.setPriceInvoice(item.getBasePriceInclTax());
         }
         float total_paid = (mOrder.getBaseTotalPaid() - mOrder.getBaseTotalInvoiced() - mOrder.getWebposBaseChange() - mOrder.getBaseTotalRefunded());
         if (total_price < total_paid) {

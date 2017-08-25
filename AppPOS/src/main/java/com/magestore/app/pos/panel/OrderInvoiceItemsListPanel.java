@@ -76,7 +76,7 @@ public class OrderInvoiceItemsListPanel extends AbstractListPanel<CartItem> {
     @Override
     protected void bindItem(View view, CartItem item, int position) {
         if (item.getPriceInvoice() == 0) {
-            item.setPriceInvoice(item.getPriceInclTax());
+            item.setPriceInvoice(item.getBasePriceInclTax());
         }
         CardOrderInvoiceItemContentBinding mBinding = DataBindingUtil.bind(view);
         mBinding.setOrderItem(item);
@@ -141,7 +141,7 @@ public class OrderInvoiceItemsListPanel extends AbstractListPanel<CartItem> {
 
     public void checkQtyInvoice(CartItem item) {
         if (item.getPriceInvoice() == 0) {
-            item.setPriceInvoice(item.getPriceInclTax());
+            item.setPriceInvoice(item.getBasePriceInclTax());
         }
         float total_paid = (mOrder.getBaseTotalPaid() - mOrder.getBaseTotalInvoiced() - mOrder.getWebposBaseChange() - mOrder.getBaseTotalRefunded());
         if (total_price < total_paid) {
