@@ -5,14 +5,7 @@ import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.model.user.User;
-import com.magestore.app.lib.service.ServiceFactory;
-import com.magestore.app.lib.service.catalog.ProductService;
-import com.magestore.app.lib.service.checkout.CartService;
-import com.magestore.app.lib.service.config.ConfigService;
-import com.magestore.app.lib.service.customer.CustomerService;
-import com.magestore.app.lib.service.user.UserService;
-import com.magestore.app.pos.model.PosModelFactory;
-import com.magestore.app.pos.service.POSServiceFactory;
+import com.magestore.app.pos.model.magento.PosModelFactory;
 
 /**
  * Khởi tạo model factory để tạo ra các model

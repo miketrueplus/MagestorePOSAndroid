@@ -1,4 +1,4 @@
-package com.magestore.app.pos.model;
+package com.magestore.app.pos.model.magento;
 
 import com.magestore.app.lib.model.ModelFactory;
 import com.magestore.app.lib.model.catalog.Product;
