@@ -135,7 +135,7 @@ public class POSCartDataAccessM1 extends POSAbstractDataAccessM1 implements Cart
             cartEntity.item_id = cartItem.getItemId();
             cartEntity.currency_id = ConfigUtil.getCurrentCurrency().getCode();
             cartEntity.store_id = checkout.getStoreId();
-            cartEntity.till_id = ConfigUtil.getPointOfSales().getID();
+            cartEntity.till_id = ConfigUtil.getPointOfSales() != null ? ConfigUtil.getPointOfSales().getID() : ConfigUtil.getPosId();
             String customer_id = "";
             if (checkout.getCustomer() != null) {
                 if (StringUtil.isNullOrEmpty(checkout.getCustomerID())) {

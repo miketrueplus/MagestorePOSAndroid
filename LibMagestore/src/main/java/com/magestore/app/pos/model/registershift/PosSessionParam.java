@@ -39,8 +39,18 @@ public class PosSessionParam extends PosAbstractModel implements SessionParam {
     String pos_id;
 
     @Override
+    public float getBalance() {
+        return balance;
+    }
+
+    @Override
     public void setBalance(float fBalance) {
         balance = fBalance;
+    }
+
+    @Override
+    public float getBaseBalance() {
+        return base_balance;
     }
 
     @Override
@@ -49,8 +59,18 @@ public class PosSessionParam extends PosAbstractModel implements SessionParam {
     }
 
     @Override
+    public float getBaseCashAdded() {
+        return base_cash_added;
+    }
+
+    @Override
     public void setBaseCashAdded(float fBaseCashAdded) {
         base_cash_added = fBaseCashAdded;
+    }
+
+    @Override
+    public float getBaseCashLeft() {
+        return base_cash_left;
     }
 
     @Override
@@ -59,8 +79,18 @@ public class PosSessionParam extends PosAbstractModel implements SessionParam {
     }
 
     @Override
+    public float getBaseCashRemoved() {
+        return base_cash_removed;
+    }
+
+    @Override
     public void setBaseCashRemoved(float fBaseCashRemoved) {
         base_cash_removed = fBaseCashRemoved;
+    }
+
+    @Override
+    public float getBaseCashSale() {
+        return base_cash_sale;
     }
 
     @Override
@@ -69,8 +99,18 @@ public class PosSessionParam extends PosAbstractModel implements SessionParam {
     }
 
     @Override
+    public float getBaseClosedAmount() {
+        return base_closed_amount;
+    }
+
+    @Override
     public void setBaseClosedAmount(float fBaseClosedAmount) {
         base_closed_amount = fBaseClosedAmount;
+    }
+
+    @Override
+    public String getBaseCurrencyCode() {
+        return base_currency_code;
     }
 
     @Override
@@ -79,8 +119,18 @@ public class PosSessionParam extends PosAbstractModel implements SessionParam {
     }
 
     @Override
+    public float getBaseFloatAmount() {
+        return base_float_amount;
+    }
+
+    @Override
     public void setBaseFloatAmount(float fBaseFloatAmount) {
         base_float_amount = fBaseFloatAmount;
+    }
+
+    @Override
+    public float getBaseTotalSales() {
+        return base_total_sales;
     }
 
     @Override
@@ -89,8 +139,18 @@ public class PosSessionParam extends PosAbstractModel implements SessionParam {
     }
 
     @Override
+    public float getCashAdded() {
+        return cash_added;
+    }
+
+    @Override
     public void setCashAdded(float fCashAdded) {
         cash_added = fCashAdded;
+    }
+
+    @Override
+    public float getCashLeft() {
+        return cash_left;
     }
 
     @Override
@@ -99,8 +159,18 @@ public class PosSessionParam extends PosAbstractModel implements SessionParam {
     }
 
     @Override
+    public float getCashRemoved() {
+        return cash_removed;
+    }
+
+    @Override
     public void setCashRemoved(float fCashRemoved) {
         cash_removed = fCashRemoved;
+    }
+
+    @Override
+    public float getCashSale() {
+        return cash_sale;
     }
 
     @Override
@@ -109,8 +179,18 @@ public class PosSessionParam extends PosAbstractModel implements SessionParam {
     }
 
     @Override
+    public float getCloseAmount() {
+        return closed_amount;
+    }
+
+    @Override
     public void setCloseAmount(float fCloseAmount) {
         closed_amount = fCloseAmount;
+    }
+
+    @Override
+    public String getCloseAt() {
+        return closed_at;
     }
 
     @Override
@@ -119,8 +199,18 @@ public class PosSessionParam extends PosAbstractModel implements SessionParam {
     }
 
     @Override
+    public String getClosedNote() {
+        return closed_note;
+    }
+
+    @Override
     public void setClosedNote(String strClosedNote) {
         closed_note = strClosedNote;
+    }
+
+    @Override
+    public float getFloatAmount() {
+        return float_amount;
     }
 
     @Override
@@ -129,8 +219,18 @@ public class PosSessionParam extends PosAbstractModel implements SessionParam {
     }
 
     @Override
+    public String getLocationId() {
+        return location_id;
+    }
+
+    @Override
     public void setLocationId(String strLocationId) {
         location_id = strLocationId;
+    }
+
+    @Override
+    public String getOpenedAt() {
+        return opened_at;
     }
 
     @Override
@@ -139,8 +239,18 @@ public class PosSessionParam extends PosAbstractModel implements SessionParam {
     }
 
     @Override
+    public String getOpenedNote() {
+        return opened_note;
+    }
+
+    @Override
     public void setOpenedNote(String strOpenedNote) {
         opened_note = strOpenedNote;
+    }
+
+    @Override
+    public String getShiftCurrencyCode() {
+        return shift_currency_code;
     }
 
     @Override
@@ -149,8 +259,18 @@ public class PosSessionParam extends PosAbstractModel implements SessionParam {
     }
 
     @Override
+    public String getShiftId() {
+        return shift_id;
+    }
+
+    @Override
     public void setShiftId(String strShiftId) {
         shift_id = strShiftId;
+    }
+
+    @Override
+    public String getStaffId() {
+        return staff_id;
     }
 
     @Override
@@ -159,13 +279,28 @@ public class PosSessionParam extends PosAbstractModel implements SessionParam {
     }
 
     @Override
+    public String getStatus() {
+        return status;
+    }
+
+    @Override
     public void setStatus(String strStatus) {
         status = strStatus;
     }
 
     @Override
+    public float getTotalSales() {
+        return total_sales;
+    }
+
+    @Override
     public void setTotalSales(float fTotalSales) {
         total_sales = fTotalSales;
+    }
+
+    @Override
+    public String getPosId() {
+        return pos_id;
     }
 
     @Override

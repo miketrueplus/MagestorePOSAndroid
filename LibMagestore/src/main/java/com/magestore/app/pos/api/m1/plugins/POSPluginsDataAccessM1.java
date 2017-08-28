@@ -151,7 +151,7 @@ public class POSPluginsDataAccessM1 extends POSAbstractDataAccessM1 implements P
             rewardPointParams.currency_id = ConfigUtil.getCurrentCurrency().getCode();
             rewardPointParams.customer_id = rewardPoint.getCustomerId();
             rewardPointParams.store_id = checkout.getStoreId();
-            rewardPointParams.till_id = ConfigUtil.getPointOfSales().getID();
+            rewardPointParams.till_id = ConfigUtil.getPointOfSales() != null ? ConfigUtil.getPointOfSales().getID() : ConfigUtil.getPosId();
             rewardPointParams.quote_id = rewardPoint.getQuoteId();
             RewardData rewardData = new RewardData();
             rewardData.use_point = rewardPoint.getAmount();
@@ -208,7 +208,7 @@ public class POSPluginsDataAccessM1 extends POSAbstractDataAccessM1 implements P
             giftCardParams.customer_id = giftCard.getCustomerId();
             giftCardParams.store_id = checkout.getStoreId();
             giftCardParams.quote_id = giftCard.getQuoteId();
-            giftCardParams.till_id = ConfigUtil.getPointOfSales().getID();
+            giftCardParams.till_id = ConfigUtil.getPointOfSales() != null ? ConfigUtil.getPointOfSales().getID() : ConfigUtil.getPosId();
             giftCardParams.amount = giftCard.getAmount();
 
             // thực thi truy vấn và parse kết quả thành object
@@ -262,7 +262,7 @@ public class POSPluginsDataAccessM1 extends POSAbstractDataAccessM1 implements P
             giftCardParams.customer_id = giftCard.getCustomerId();
             giftCardParams.store_id = checkout.getStoreId();
             giftCardParams.quote_id = giftCard.getQuoteId();
-            giftCardParams.till_id = ConfigUtil.getPointOfSales().getID();
+            giftCardParams.till_id = ConfigUtil.getPointOfSales() != null ? ConfigUtil.getPointOfSales().getID() : ConfigUtil.getPosId();
 
             // thực thi truy vấn và parse kết quả thành object
             rp = statement.execute(giftCardParams);

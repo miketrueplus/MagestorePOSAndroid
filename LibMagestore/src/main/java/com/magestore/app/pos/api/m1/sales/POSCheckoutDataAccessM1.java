@@ -198,7 +198,7 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
             // set data
-            quote.setTillId(ConfigUtil.getPointOfSales().getID());
+            quote.setTillId(ConfigUtil.getPointOfSales() != null ? ConfigUtil.getPointOfSales().getID() : ConfigUtil.getPosId());
 
             rp = statement.execute(setQuoteParam(quote));
             rp.setParseImplement(new Gson2PosCartParseModel());
@@ -313,7 +313,7 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
             // set data
-            quoteParam.setTillId(ConfigUtil.getPointOfSales().getID());
+            quoteParam.setTillId(ConfigUtil.getPointOfSales() != null ? ConfigUtil.getPointOfSales().getID() : ConfigUtil.getPosId());
 
             rp = statement.execute(quoteParam);
             rp.setParseImplement(new Gson2PosCartParseModel());
@@ -358,7 +358,7 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
             // set data
             quoteAddCouponParam.setStoreId(checkout.getStoreId());
             quoteAddCouponParam.setCurrencyId(ConfigUtil.getCurrentCurrency().getCode());
-            quoteAddCouponParam.setTillId(ConfigUtil.getPointOfSales().getID());
+            quoteAddCouponParam.setTillId(ConfigUtil.getPointOfSales() != null ? ConfigUtil.getPointOfSales().getID() : ConfigUtil.getPosId());
 
             // Xây dựng tham số
             paramBuilder = statement.getParamBuilder()
@@ -413,7 +413,7 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
             checkoutEntity.shipping_method = shippingCode;
             checkoutEntity.currency_id = ConfigUtil.getCurrentCurrency().getCode();
             checkoutEntity.store_id = checkout.getStoreId();
-            checkoutEntity.till_id = ConfigUtil.getPointOfSales().getID();
+            checkoutEntity.till_id = ConfigUtil.getPointOfSales() != null ? ConfigUtil.getPointOfSales().getID() : ConfigUtil.getPosId();
             String customer_id = "";
             if (checkout.getCustomer() != null) {
                 if (StringUtil.isNullOrEmpty(checkout.getCustomerID())) {
@@ -502,7 +502,7 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
 
             // set data
             placeOrderParams.setStoreId(checkout.getStoreId());
-            placeOrderParams.setTillId(ConfigUtil.getPointOfSales().getID());
+            placeOrderParams.setTillId(ConfigUtil.getPointOfSales() != null ? ConfigUtil.getPointOfSales().getID() : ConfigUtil.getPosId());
             placeOrderParams.setCurrencyId(ConfigUtil.getCurrentCurrency().getCode());
 
             if (listCheckoutPayment != null && listCheckoutPayment.size() == 1) {

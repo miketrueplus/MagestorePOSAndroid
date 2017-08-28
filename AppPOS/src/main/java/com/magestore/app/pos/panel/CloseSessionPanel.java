@@ -178,6 +178,7 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
                     SessionParam param = ((RegisterShiftListController) getController()).createSessionParam();
                     float r_balance = et_r_close_balance.getValueFloat();
                     float base_r_balance = ConfigUtil.convertToBasePrice(r_balance);
+                    param.setID(item.getID());
                     param.setBalance(item.getBalance());
                     param.setBaseBalance(item.getBaseBalance());
                     param.setBaseCashAdded(item.getBaseCashAdded());
@@ -216,6 +217,7 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
                 if (different < 0) {
                     different = 0;
                 }
+                param.setID(item.getID());
                 param.setBalance(ConfigUtil.convertToPrice(different));
                 param.setBaseBalance(different);
                 param.setBaseCashAdded(item.getBaseCashAdded());
@@ -309,6 +311,7 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
 
     private SessionParam crateSessionParam(String type, RegisterShift item) {
         SessionParam param = ((RegisterShiftListController) getController()).createSessionParam();
+        param.setID(item.getID());
         param.setBalance(item.getBalance());
         param.setBaseBalance(item.getBaseBalance());
         param.setBaseCashAdded(item.getBaseCashAdded());

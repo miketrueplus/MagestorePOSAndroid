@@ -63,6 +63,7 @@ public class ConfigUtil {
     private static String mTypePrint;
     private static int mStarPrintArea;
     private static PointOfSales mPointOfSales;
+    private static String mPosId;
     private static String mShiftId;
     private static String mLocationId;
     private static ConfigPriceFormat mConfigPriceFormat;
@@ -810,6 +811,14 @@ public class ConfigUtil {
 
     public static void setPointOfSales(PointOfSales mPointOfSales) {
         ConfigUtil.mPointOfSales = mPointOfSales;
+    }
+
+    public static String getPosId() {
+        return mPosId;
+    }
+
+    public static void setPosId(String mPosId) {
+        ConfigUtil.mPosId = mPosId;
     }
 
     public static String getShiftId() {

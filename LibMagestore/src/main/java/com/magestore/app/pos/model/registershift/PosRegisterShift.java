@@ -7,6 +7,7 @@ import com.magestore.app.lib.model.registershift.ZreportSalesSummary;
 import com.magestore.app.pos.model.PosAbstractModel;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosExclude;
 import com.magestore.app.util.ConfigUtil;
+import com.magestore.app.util.StringUtil;
 
 import java.util.List;
 
@@ -55,6 +56,15 @@ public class PosRegisterShift extends PosAbstractModel implements RegisterShift 
     String store_id;
 
     @Gson2PosExclude
+    String till_id;
+    @Gson2PosExclude
+    float opening_amount;
+    @Gson2PosExclude
+    float base_opening_amount;
+    @Gson2PosExclude
+    String shift_code;
+
+    @Gson2PosExclude
     boolean last_seven_day;
     @Gson2PosExclude
     boolean less_seven_day;
@@ -62,12 +72,15 @@ public class PosRegisterShift extends PosAbstractModel implements RegisterShift 
     // param request add cash transaction
     PosCashTransaction param_cash;
 
-    public PosRegisterShift(){
+    public PosRegisterShift() {
 
     }
 
     @Override
     public String getID() {
+        if (StringUtil.isNullOrEmpty(entity_id)) {
+            return id;
+        }
         return entity_id;
     }
 
@@ -143,12 +156,20 @@ public class PosRegisterShift extends PosAbstractModel implements RegisterShift 
 
     @Override
     public float getFloatAmount() {
-        return float_amount;
+        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2)) {
+            return float_amount;
+        } else {
+            return opening_amount;
+        }
     }
 
     @Override
     public float getBaseFloatAmount() {
-        return base_float_amount;
+        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2)) {
+            return base_float_amount;
+        } else {
+            return base_opening_amount;
+        }
     }
 
     @Override
@@ -215,6 +236,9 @@ public class PosRegisterShift extends PosAbstractModel implements RegisterShift 
 
     @Override
     public String getShiftId() {
+        if (StringUtil.isNullOrEmpty(shift_id)) {
+            return shift_code;
+        }
         return shift_id;
     }
 
@@ -285,6 +309,9 @@ public class PosRegisterShift extends PosAbstractModel implements RegisterShift 
 
     @Override
     public String getPosId() {
+        if (StringUtil.isNullOrEmpty(pos_id)) {
+            return till_id;
+        }
         return pos_id;
     }
 

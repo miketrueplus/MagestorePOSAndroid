@@ -38,6 +38,12 @@ public class PosCashTransaction extends PosAbstractModel implements CashTransact
     float float_amount;
     @Gson2PosExclude
     float base_float_amount;
+    @Gson2PosExclude
+    String param_shift_id;
+    @Gson2PosExclude
+    float amount;
+    @Gson2PosExclude
+    float base_amount;
 
     @Override
     public String getID() {
@@ -110,6 +116,15 @@ public class PosCashTransaction extends PosAbstractModel implements CashTransact
     }
 
     @Override
+    public float getBaseValue() {
+        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2)) {
+            return base_value;
+        } else {
+            return base_amount;
+        }
+    }
+
+    @Override
     public void setBaseValue(float baseValue) {
         base_value = baseValue;
     }
@@ -136,12 +151,21 @@ public class PosCashTransaction extends PosAbstractModel implements CashTransact
 
     @Override
     public float getValue() {
-        return value;
+        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2)) {
+            return value;
+        } else {
+            return base_value;
+        }
     }
 
     @Override
     public void setValue(float value) {
         this.value = value;
+    }
+
+    @Override
+    public String getLocationId() {
+        return location_id;
     }
 
     @Override
@@ -155,8 +179,18 @@ public class PosCashTransaction extends PosAbstractModel implements CashTransact
     }
 
     @Override
+    public String getShiftId() {
+        return shift_id;
+    }
+
+    @Override
     public void setShiftId(String shiftId) {
         shift_id = shiftId;
+    }
+
+    @Override
+    public String getTransactionCurrencyCode() {
+        return transaction_currency_code;
     }
 
     @Override
@@ -175,6 +209,11 @@ public class PosCashTransaction extends PosAbstractModel implements CashTransact
     }
 
     @Override
+    public String getBaseCurrencyCode() {
+        return base_currency_code;
+    }
+
+    @Override
     public void setBaseCurrencyCode(String baseCurrencyCode) {
         base_currency_code = baseCurrencyCode;
     }
@@ -189,9 +228,27 @@ public class PosCashTransaction extends PosAbstractModel implements CashTransact
 
     @Override
     public String getCheckTypeValue() {
-        if (type.toLowerCase().equals("remove")) {
-            return "- " + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(base_value));
+        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2)) {
+            if (type.toLowerCase().equals("remove")) {
+                return "- " + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(base_value));
+            }
+            return "+ " + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(base_value));
+        } else {
+            if (base_amount >= 0) {
+                return "+ " + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(base_amount));
+            } else {
+                return "- " + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(0 - base_amount));
+            }
         }
-        return "+ " + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(base_value));
+    }
+
+    @Override
+    public String getParamShiftId() {
+        return param_shift_id;
+    }
+
+    @Override
+    public void setParamShiftId(String strParamShiftId) {
+        param_shift_id = strParamShiftId;
     }
 }

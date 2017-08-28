@@ -133,6 +133,7 @@ public class RegisterShiftMakeAdjustmentPanel extends AbstractDetailPanel<Regist
         cashTransaction.setCreateAt(ConfigUtil.getCurrentDateTime());
         cashTransaction.setBaseCurrencyCode(ConfigUtil.getBaseCurrencyCode());
         cashTransaction.setTransactionCurrencyCode(ConfigUtil.getCurrentCurrency().getCode());
+        cashTransaction.setParamShiftId(registerShift.getID());
         registerShift.setParamCash(cashTransaction);
         return registerShift;
     }

@@ -22,6 +22,7 @@ public interface CashTransaction extends Model {
     void setBalance(float balance);
     float getBaseBalance();
     void setBaseBalance(float baseBalance);
+    float getBaseValue();
     void setBaseValue(float baseValue);
     String getBalanceTitle();
     void setBalanceTitle(String strBalance);
@@ -29,13 +30,19 @@ public interface CashTransaction extends Model {
     void setCheckOpenShift(boolean checkOpenShift);
     float getValue();
     void setValue(float value);
+    String getLocationId();
     void setLocationId(String locationId);
     void setNote(String note);
+    String getShiftId();
     void setShiftId(String shiftId);
+    String getTransactionCurrencyCode();
     void setTransactionCurrencyCode(String transactionCurrencyCode);
     void setType(String type);
     String getType();
+    String getBaseCurrencyCode();
     void setBaseCurrencyCode(String baseCurrencyCode);
     boolean getCheckNote();
     String getCheckTypeValue();
+    String getParamShiftId();
+    void setParamShiftId(String strParamShiftId);
 }

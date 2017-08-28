@@ -139,6 +139,7 @@ public class RegisterShiftListController extends AbstractListController<Register
                     }
                     ConfigUtil.setShiftId(registerShift.getShiftId());
                     ConfigUtil.setLocationId(registerShift.getLocationId());
+                    ConfigUtil.setPosId(registerShift.getPosId());
 //                getMagestoreContext().getActivity().finish();
                     DataUtil.saveDataStringToPreferences(getMagestoreContext().getActivity(), DataUtil.STORE_ID, registerShift.getStoreId());
                     ((RegisterShiftListPanel) mView).isShowButtonOpenSession(false);

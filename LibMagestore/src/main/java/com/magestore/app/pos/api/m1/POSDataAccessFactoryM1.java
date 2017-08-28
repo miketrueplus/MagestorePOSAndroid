@@ -19,6 +19,7 @@ import com.magestore.app.pos.api.m1.config.POSConfigDataAccessM1;
 import com.magestore.app.pos.api.m1.customer.POSCustomerAddressDataAccessM1;
 import com.magestore.app.pos.api.m1.customer.POSCustomerDataAccessM1;
 import com.magestore.app.pos.api.m1.plugins.POSPluginsDataAccessM1;
+import com.magestore.app.pos.api.m1.registershift.POSRegisterShiftDataAccessM1;
 import com.magestore.app.pos.api.m1.sales.POSCartDataAccessM1;
 import com.magestore.app.pos.api.m1.sales.POSCheckoutDataAccessM1;
 import com.magestore.app.pos.api.m1.sales.POSOrderDataAccessM1;
@@ -73,7 +74,7 @@ public class POSDataAccessFactoryM1 extends DataAccessFactory {
 
     @Override
     public RegisterShiftDataAccess generateRegisterShiftDataAccess() {
-        return null;
+        return new POSRegisterShiftDataAccessM1();
     }
 
     @Override
