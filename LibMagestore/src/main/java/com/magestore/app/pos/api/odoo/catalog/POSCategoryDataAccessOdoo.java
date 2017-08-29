@@ -13,9 +13,11 @@ import com.magestore.app.lib.resourcemodel.catalog.CategoryDataAccess;
 import com.magestore.app.pos.api.odoo.POSAPIOdoo;
 import com.magestore.app.pos.api.odoo.POSAbstractDataAccessOdoo;
 import com.magestore.app.pos.api.odoo.POSDataAccessSessionOdoo;
+import com.magestore.app.pos.model.magento.catalog.PosCategory;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListCategory;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -111,6 +113,45 @@ public class POSCategoryDataAccessOdoo extends POSAbstractDataAccessOdoo impleme
 
     @Override
     public List<Category> getListCategory(Category category) throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
-        return null;
+        if (mListCategory == null) mListCategory = new ArrayList<Category>();
+        if (mListDefaultCategory == null) mListDefaultCategory = new ArrayList<Category>();
+        PosCategory cateFirst = new PosCategory();
+        cateFirst.setName("All Products");
+        mListDefaultCategory.add(cateFirst);
+        for (Category c : mListCategory) {
+            if (c.getParentID() == -1) {
+                mListDefaultCategory.add(c);
+                if (c.getChildren() != null) {
+                    for (String IdChild : c.getChildren()) {
+                        mListDefaultCategory = findChildLv2(mListDefaultCategory, IdChild, mListCategory, 2, c.getSubCategory());
+                    }
+                }
+            }
+        }
+        return mListDefaultCategory;
+    }
+
+    private List<Category> findChildLv2(List<Category> resultList, String idChild, List<Category> categories, int level, List<Category> sub_category) {
+        for (Category category : categories) {
+            if (category.getLevel() == level && category.getID().equals(idChild)) {
+                sub_category.add(category);
+                if (category.getChildren() != null) {
+                    for (int i = 0; i < category.getChildren().size(); i++) {
+                        category.setID(category.getChildren().get(i) + ",");
+                        if (i == category.getChildren().size() - 1) {
+                            category.setID(category.getChildren().get(i));
+                        }
+                    }
+                    resultList.add(category);
+                    level++;
+                    for (String idSubChild : category.getChildren()) {
+                        resultList = findChildLv2(resultList, idSubChild, categories, level, category.getSubCategory());
+                    }
+                } else {
+                    resultList.add(category);
+                }
+            }
+        }
+        return resultList;
     }
 }
