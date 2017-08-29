@@ -37,7 +37,7 @@
                 android:layout_weight="1"
                 android:fontFamily="monospace"
                 android:gravity="right"
-                android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(saleSummary.getBasepaymentAmount()))}"
+                android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(saleSummary.getBasePaymentAmount()))}"
                 android:textSize="@dimen/text_size_18"
                 android:textStyle="bold" />
         </LinearLayout>

@@ -972,6 +972,8 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
 
+            orderTakePaymentParam.setShiftId(null);
+
             rp = statement.execute(orderTakePaymentParam);
             rp.setParseImplement(getClassParseImplement());
             rp.setParseModel(PosOrder.class);

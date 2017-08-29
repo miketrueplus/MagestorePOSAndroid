@@ -12,5 +12,5 @@ public interface SaleSummary extends Model {
     String getPaymentMethod();
     String getMethodTitle();
     float getPaymentAmount();
-    float getBasepaymentAmount();
+    float getBasePaymentAmount();
 }

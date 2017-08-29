@@ -94,8 +94,18 @@ public class PosRegisterShift extends PosAbstractModel implements RegisterShift 
     }
 
     @Override
+    public void setTotalSales(float fTotalSales) {
+        total_sales = fTotalSales;
+    }
+
+    @Override
     public float getBaseTotalSales() {
         return base_total_sales;
+    }
+
+    @Override
+    public void setBaseTotalSales(float fBaseTotalSales) {
+        base_total_sales = fBaseTotalSales;
     }
 
     @Override
@@ -152,8 +162,18 @@ public class PosRegisterShift extends PosAbstractModel implements RegisterShift 
     }
 
     @Override
+    public void setBalance(float fBalance) {
+        balance = fBalance;
+    }
+
+    @Override
     public float getBaseBalance() {
         return base_balance;
+    }
+
+    @Override
+    public void setBaseBalance(float fBaseBalance) {
+        base_balance = fBaseBalance;
     }
 
     @Override

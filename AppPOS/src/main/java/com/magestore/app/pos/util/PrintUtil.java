@@ -352,7 +352,7 @@ public class PrintUtil {
             String tr_payment = "";
             for (SaleSummary sale : listPayment) {
                 String payment_name = sale.getMethodTitle();
-                tr_payment += "<tr>" + "<td style=\"border-bottom: 1px dashed #d0d0d0;\">" + "<h4 style=\"font-size: 13px; font-weight: 400; margin: 0;\">" + "<span>" + payment_name + "</span>" + "</h4>" + "</td>" + "<td style=\"border-bottom: 1px dashed #d0d0d0; text-align: right;\">" + "<span>" + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(sale.getBasepaymentAmount())) + "</span>" + "</td>" + "</tr>";
+                tr_payment += "<tr>" + "<td style=\"border-bottom: 1px dashed #d0d0d0;\">" + "<h4 style=\"font-size: 13px; font-weight: 400; margin: 0;\">" + "<span>" + payment_name + "</span>" + "</h4>" + "</td>" + "<td style=\"border-bottom: 1px dashed #d0d0d0; text-align: right;\">" + "<span>" + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(sale.getBasePaymentAmount())) + "</span>" + "</td>" + "</tr>";
             }
             list_payment = "<table style=\"width: 100%;\">" + "<tbody>" + tr_payment + "</tbody>" + "</table>";
         }

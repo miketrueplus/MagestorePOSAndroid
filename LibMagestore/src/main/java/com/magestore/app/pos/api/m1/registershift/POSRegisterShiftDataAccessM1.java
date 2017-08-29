@@ -10,6 +10,7 @@ import com.magestore.app.lib.connection.Statement;
 import com.magestore.app.lib.model.registershift.CashTransaction;
 import com.magestore.app.lib.model.registershift.DataRegisterShift;
 import com.magestore.app.lib.model.registershift.RegisterShift;
+import com.magestore.app.lib.model.registershift.SaleSummary;
 import com.magestore.app.lib.model.registershift.SessionParam;
 import com.magestore.app.lib.parse.ParseException;
 import com.magestore.app.lib.resourcemodel.DataAccessException;
@@ -37,12 +38,13 @@ import java.util.List;
  */
 
 public class POSRegisterShiftDataAccessM1 extends POSAbstractDataAccessM1 implements RegisterShiftDataAccess {
+    private static String ADD_MAKE_ADJUSTMENT = "add";
 
     private class RegisterShiftEntity {
         SessionDataParam data;
     }
 
-    private class MakeAdjusmentEntity{
+    private class MakeAdjusmentEntity {
         CashTransactionDataParam data;
     }
 
@@ -73,7 +75,7 @@ public class POSRegisterShiftDataAccessM1 extends POSAbstractDataAccessM1 implem
         String id;
     }
 
-    private class CashTransactionDataParam{
+    private class CashTransactionDataParam {
         String shift_id;
         String shift_code;
         String location_id;
@@ -167,7 +169,7 @@ public class POSRegisterShiftDataAccessM1 extends POSAbstractDataAccessM1 implem
             rp.setParseModel(Gson2PosListRegisterShift.class);
             Gson2PosListRegisterShift listRegisterShift = (Gson2PosListRegisterShift) rp.doParse();
             List<RegisterShift> list = (List<RegisterShift>) (List<?>) (listRegisterShift.items);
-            return list;
+            return sumBalance(list);
         } catch (ConnectionException ex) {
             throw ex;
         } catch (IOException ex) {
@@ -266,7 +268,7 @@ public class POSRegisterShiftDataAccessM1 extends POSAbstractDataAccessM1 implem
             List<RegisterShift> list = new ArrayList<>();
             DataRegisterShift dataRegisterShift = (PosDataRegisterShift) rp.doParse();
             list.add(dataRegisterShift.getRegisterShift());
-            return list;
+            return sumBalance(list);
         } catch (ConnectionException ex) {
             throw new DataAccessException(ex);
         } catch (IOException ex) {
@@ -312,8 +314,13 @@ public class POSRegisterShiftDataAccessM1 extends POSAbstractDataAccessM1 implem
             cashTransactionDataParam.shift_id = cashTransaction.getParamShiftId();
             cashTransactionDataParam.shift_code = cashTransaction.getShiftId();
             cashTransactionDataParam.location_id = cashTransaction.getLocationId();
-            cashTransactionDataParam.amount = cashTransaction.getValue();
-            cashTransactionDataParam.base_amount = cashTransaction.getBaseValue();
+            if (cashTransaction.getType().equals(ADD_MAKE_ADJUSTMENT)) {
+                cashTransactionDataParam.amount = cashTransaction.getValue();
+                cashTransactionDataParam.base_amount = cashTransaction.getBaseValue();
+            } else {
+                cashTransactionDataParam.amount = (0 - cashTransaction.getValue());
+                cashTransactionDataParam.base_amount = (0 - cashTransaction.getBaseValue());
+            }
             cashTransactionDataParam.balance = cashTransaction.getBalance();
             cashTransactionDataParam.base_balance = cashTransaction.getBaseBalance();
             cashTransactionDataParam.created_at = cashTransaction.getCreatedAt();
@@ -332,7 +339,7 @@ public class POSRegisterShiftDataAccessM1 extends POSAbstractDataAccessM1 implem
             List<RegisterShift> list = new ArrayList<>();
             DataRegisterShift dataRegisterShift = (PosDataRegisterShift) rp.doParse();
             list.add(dataRegisterShift.getRegisterShift());
-            return list;
+            return sumBalance(list);
         } catch (ConnectionException ex) {
             throw new DataAccessException(ex);
         } catch (IOException ex) {
@@ -407,7 +414,7 @@ public class POSRegisterShiftDataAccessM1 extends POSAbstractDataAccessM1 implem
             List<RegisterShift> list = new ArrayList<>();
             DataRegisterShift dataRegisterShift = (PosDataRegisterShift) rp.doParse();
             list.add(dataRegisterShift.getRegisterShift());
-            return list;
+            return sumBalance(list);
         } catch (ConnectionException ex) {
             throw new DataAccessException(ex);
         } catch (IOException ex) {
@@ -428,5 +435,35 @@ public class POSRegisterShiftDataAccessM1 extends POSAbstractDataAccessM1 implem
             if (connection != null) connection.close();
             connection = null;
         }
+    }
+
+    private List<RegisterShift> sumBalance(List<RegisterShift> shiftList) {
+        if (shiftList != null && shiftList.size() > 0) {
+            for (RegisterShift shift : shiftList) {
+                float total_base_balance = 0;
+                total_base_balance += shift.getBaseFloatAmount();
+                List<CashTransaction> listCash = shift.getCashTransaction();
+                if (listCash != null && listCash.size() > 0) {
+                    for (CashTransaction cash : listCash) {
+                        total_base_balance += cash.getBaseValue();
+                        cash.setBaseBalance(total_base_balance);
+                        cash.setBalance(ConfigUtil.convertToPrice(total_base_balance));
+                    }
+                }
+                shift.setBaseBalance(total_base_balance);
+                shift.setBalance(ConfigUtil.convertToPrice(total_base_balance));
+
+                float total_base_sales = 0;
+                List<SaleSummary> listSale = shift.getSalesSummary();
+                if (listSale != null && listSale.size() > 0) {
+                    for (SaleSummary sale : listSale) {
+                        total_base_sales += sale.getBasePaymentAmount();
+                    }
+                }
+                shift.setBaseTotalSales(total_base_sales);
+                shift.setTotalSales(ConfigUtil.convertToPrice(total_base_balance));
+            }
+        }
+        return shiftList;
     }
 }

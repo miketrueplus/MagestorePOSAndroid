@@ -18,6 +18,7 @@ public class PosOrderTakePaymentParam extends PosAbstractModel implements OrderT
     String order_id;
     PlaceOrderPaymentParam payment;
     String currency_id;
+    String shift_id;
 
     @Override
     public void setOrderIncrementId(String strOrderIncrementId) {
@@ -27,6 +28,11 @@ public class PosOrderTakePaymentParam extends PosAbstractModel implements OrderT
     @Override
     public void setOrderId(String strOrderId) {
         order_id = strOrderId;
+    }
+
+    @Override
+    public PlaceOrderPaymentParam getPayment() {
+        return payment;
     }
 
     @Override
@@ -52,6 +58,11 @@ public class PosOrderTakePaymentParam extends PosAbstractModel implements OrderT
     }
 
     @Override
+    public List<PaymentMethodDataParam> getMethodData() {
+        return payment.method_data;
+    }
+
+    @Override
     public void setMethodData(List<PaymentMethodDataParam> methodData) {
         payment.method_data = methodData;
     }
@@ -59,6 +70,11 @@ public class PosOrderTakePaymentParam extends PosAbstractModel implements OrderT
     @Override
     public void setCurrencyId(String strCurrencyId) {
         currency_id = strCurrencyId;
+    }
+
+    @Override
+    public void setShiftId(String strShiftId) {
+        shift_id = strShiftId;
     }
 
     public class PlaceOrderPaymentParam {

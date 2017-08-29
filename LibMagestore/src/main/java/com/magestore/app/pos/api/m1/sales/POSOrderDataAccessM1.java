@@ -17,6 +17,7 @@ import com.magestore.app.lib.connection.Statement;
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.model.checkout.CheckoutPayment;
+import com.magestore.app.lib.model.checkout.PaymentMethodDataParam;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.model.sales.OrderAttributes;
@@ -823,6 +824,15 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
             orderTakePaymentParam.setOrderIncrementId(order.getIncrementId());
             orderTakePaymentParam.setOrderId(orderID);
             orderTakePaymentParam.setCurrencyId(ConfigUtil.getCurrentCurrency().getCode());
+            orderTakePaymentParam.setShiftId(ConfigUtil.getRegisterShiftId());
+            if (orderTakePaymentParam.getPayment() != null) {
+                List<PaymentMethodDataParam> listPayment = orderTakePaymentParam.getMethodData();
+                if (listPayment != null && listPayment.size() > 0) {
+                    for (PaymentMethodDataParam payment : listPayment) {
+                        payment.setShiftId(ConfigUtil.getRegisterShiftId());
+                    }
+                }
+            }
 
             rp = statement.execute(orderTakePaymentParam);
             rp.setParseImplement(new Gson2PosOrderParseModel());

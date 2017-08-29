@@ -15,10 +15,13 @@ import java.util.List;
 public interface OrderTakePaymentParam extends Model {
     void setOrderIncrementId(String strOrderIncrementId);
     void setOrderId(String strOrderId);
+    PosOrderTakePaymentParam.PlaceOrderPaymentParam getPayment();
     void setPayment(PosOrderTakePaymentParam.PlaceOrderPaymentParam placeOrderPaymentParam);
     PosOrderTakePaymentParam.PlaceOrderPaymentParam createPlaceOrderPaymentParam();
     List<PaymentMethodDataParam> createPaymentMethodData();
     void setMethod(String strMethod);
+    List<PaymentMethodDataParam> getMethodData();
     void setMethodData(List<PaymentMethodDataParam> methodData);
     void setCurrencyId(String strCurrencyId);
+    void setShiftId(String strShiftId);
 }

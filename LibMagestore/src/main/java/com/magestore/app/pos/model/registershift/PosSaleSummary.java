@@ -31,7 +31,7 @@ public class PosSaleSummary extends PosAbstractModel implements SaleSummary {
     }
 
     @Override
-    public float getBasepaymentAmount() {
+    public float getBasePaymentAmount() {
         return base_payment_amount;
     }
 }

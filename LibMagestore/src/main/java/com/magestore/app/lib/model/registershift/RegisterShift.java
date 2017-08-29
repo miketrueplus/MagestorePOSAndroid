@@ -12,7 +12,9 @@ import java.util.List;
 
 public interface RegisterShift extends Model {
     float getTotalSales();
+    void setTotalSales(float fTotalSales);
     float getBaseTotalSales();
+    void setBaseTotalSales(float fBaseTotalSales);
     String getOpenedAt();
     String getClosedAt();
     String getUpdateAt();
@@ -23,7 +25,9 @@ public interface RegisterShift extends Model {
     String getOpenedNote();
     String getClosedNote();
     float getBalance();
+    void setBalance(float fBalance);
     float getBaseBalance();
+    void setBaseBalance(float fBaseBalance);
     String getStaffName();
     float getFloatAmount();
     float getBaseFloatAmount();

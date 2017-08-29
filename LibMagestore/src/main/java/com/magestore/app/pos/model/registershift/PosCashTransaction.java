@@ -126,7 +126,11 @@ public class PosCashTransaction extends PosAbstractModel implements CashTransact
 
     @Override
     public void setBaseValue(float baseValue) {
-        base_value = baseValue;
+        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2)) {
+            base_value = baseValue;
+        } else {
+            base_amount = baseValue;
+        }
     }
 
     @Override
@@ -154,13 +158,17 @@ public class PosCashTransaction extends PosAbstractModel implements CashTransact
         if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2)) {
             return value;
         } else {
-            return base_value;
+            return amount;
         }
     }
 
     @Override
     public void setValue(float value) {
-        this.value = value;
+        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2)) {
+            this.value = value;
+        } else {
+            this.amount = value;
+        }
     }
 
     @Override
