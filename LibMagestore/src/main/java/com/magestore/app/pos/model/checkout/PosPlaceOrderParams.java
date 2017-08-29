@@ -27,6 +27,7 @@ public class PosPlaceOrderParams extends PosAbstractModel implements PlaceOrderP
     String customer_id;
     String store_id;
     String till_id;
+    String shift_id;
 
     @Override
     public void setQuoteId(String strQuoteId) {
@@ -46,6 +47,11 @@ public class PosPlaceOrderParams extends PosAbstractModel implements PlaceOrderP
     @Override
     public void setQuoteData(PlaceOrderQuoteDataParam placeOrderQuoteDataParam) {
         quote_data = placeOrderQuoteDataParam;
+    }
+
+    @Override
+    public PlaceOrderPaymentParam getPayment() {
+        return payment;
     }
 
     @Override
@@ -81,6 +87,11 @@ public class PosPlaceOrderParams extends PosAbstractModel implements PlaceOrderP
     @Override
     public void setMethod(String strMethod) {
         payment.method = strMethod;
+    }
+
+    @Override
+    public List<PaymentMethodDataParam> getMethodData() {
+        return payment.method_data;
     }
 
     @Override
@@ -135,6 +146,11 @@ public class PosPlaceOrderParams extends PosAbstractModel implements PlaceOrderP
     @Override
     public void setTillId(String strTillId) {
         till_id = strTillId;
+    }
+
+    @Override
+    public void setShiftId(String strShiftId) {
+        shift_id = strShiftId;
     }
 
     public class PlaceOrderActionParam {

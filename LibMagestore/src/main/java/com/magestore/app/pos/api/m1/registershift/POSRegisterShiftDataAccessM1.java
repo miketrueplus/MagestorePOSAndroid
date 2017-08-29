@@ -239,7 +239,7 @@ public class POSRegisterShiftDataAccessM1 extends POSAbstractDataAccessM1 implem
             sessionDataParam.till_id = ConfigUtil.getPointOfSales() != null ? ConfigUtil.getPointOfSales().getID() : ConfigUtil.getPosId();
             sessionDataParam.staff_id = sessionParam.getStaffId();
             sessionDataParam.opened_at = sessionParam.getOpenedAt();
-            sessionDataParam.closed_at = sessionParam.getCloseAt();
+            sessionDataParam.closed_at = "";
             sessionDataParam.opening_amount = sessionParam.getFloatAmount();
             sessionDataParam.base_opening_amount = sessionParam.getBaseFloatAmount();
             sessionDataParam.closed_amount = sessionParam.getCloseAmount();
@@ -254,7 +254,7 @@ public class POSRegisterShiftDataAccessM1 extends POSAbstractDataAccessM1 implem
             sessionDataParam.base_cash_sale = sessionParam.getBaseCashSale();
             sessionDataParam.report_currency_code = sessionParam.getShiftCurrencyCode();
             sessionDataParam.base_currency_code = sessionParam.getBaseCurrencyCode();
-            sessionDataParam.note = sessionParam.getClosedNote();
+            sessionDataParam.note = sessionParam.getOpenedNote();
             sessionDataParam.status = sessionParam.getStatus();
             sessionDataParam.shift_code = ConfigUtil.getItemIdInCurrentTime() + "";
 

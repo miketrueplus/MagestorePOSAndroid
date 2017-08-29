@@ -56,6 +56,8 @@ public class PosRegisterShift extends PosAbstractModel implements RegisterShift 
     String store_id;
 
     @Gson2PosExclude
+    List<PosSaleSummary> sales_summary;
+    @Gson2PosExclude
     String till_id;
     @Gson2PosExclude
     float opening_amount;
@@ -63,6 +65,8 @@ public class PosRegisterShift extends PosAbstractModel implements RegisterShift 
     float base_opening_amount;
     @Gson2PosExclude
     String shift_code;
+    @Gson2PosExclude
+    String till_name;
 
     @Gson2PosExclude
     boolean last_seven_day;
@@ -116,6 +120,9 @@ public class PosRegisterShift extends PosAbstractModel implements RegisterShift 
 
     @Override
     public List<SaleSummary> getSalesSummary() {
+        if (sale_summary == null) {
+            return (List<SaleSummary>) (List<?>) sales_summary;
+        }
         return (List<SaleSummary>) (List<?>) sale_summary;
     }
 
@@ -180,6 +187,9 @@ public class PosRegisterShift extends PosAbstractModel implements RegisterShift 
     @Override
     public boolean checkSaleSummary() {
         if (sale_summary != null && sale_summary.size() > 0) {
+            return true;
+        }
+        if (sales_summary != null && sales_summary.size() > 0) {
             return true;
         }
         return false;
@@ -317,6 +327,9 @@ public class PosRegisterShift extends PosAbstractModel implements RegisterShift 
 
     @Override
     public String getPosName() {
+        if (StringUtil.isNullOrEmpty(pos_name)) {
+            return till_name;
+        }
         return pos_name;
     }
 

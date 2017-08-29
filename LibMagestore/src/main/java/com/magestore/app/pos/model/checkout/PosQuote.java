@@ -22,6 +22,7 @@ public class PosQuote extends PosAbstractModel implements Quote {
     List<QuoteItems> items;
     PosQuoteCustomer customer;
     String shipping_method;
+    String shift_id;
 
     @Override
     public String getID() {
@@ -96,5 +97,10 @@ public class PosQuote extends PosAbstractModel implements Quote {
     @Override
     public String getShippingMethod() {
         return shipping_method;
+    }
+
+    @Override
+    public void setShiftId(String strShiftId) {
+        shift_id = strShiftId;
     }
 }

@@ -24,4 +24,5 @@ public interface Quote extends Model {
     QuoteCustomer getCustomer();
     void setCustomer(QuoteCustomer customer);
     String getShippingMethod();
+    void setShiftId(String strShiftId);
 }

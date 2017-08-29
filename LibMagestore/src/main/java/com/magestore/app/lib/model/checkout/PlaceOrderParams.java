@@ -16,6 +16,7 @@ public interface PlaceOrderParams extends Model {
     void setIntegration(List<PlaceOrderIntegrationParam> placeOrderIntegration);
     void setActions(PosPlaceOrderParams.PlaceOrderActionParam placeOrderActionParam);
     void setQuoteData(PosPlaceOrderParams.PlaceOrderQuoteDataParam placeOrderQuoteDataParam);
+    PosPlaceOrderParams.PlaceOrderPaymentParam getPayment();
     void setPayment(PosPlaceOrderParams.PlaceOrderPaymentParam placeOrderPaymentParam);
     void setCreateInvoice(String strCreateInvoice);
     void setCreateShipment(String strCreateShipment);
@@ -23,6 +24,7 @@ public interface PlaceOrderParams extends Model {
     void setDeliveryTime(String strDeliveryTime);
     String getMethod();
     void setMethod(String strMethod);
+    List<PaymentMethodDataParam> getMethodData();
     void setMethodData(List<PaymentMethodDataParam> methodData);
     void setPlaceOrderExtensionData(List<PlaceOrderExtensionParam> listExtension);
     PosPlaceOrderParams.PlaceOrderActionParam createPlaceOrderActionParam();
@@ -33,4 +35,5 @@ public interface PlaceOrderParams extends Model {
     void setCustomerId(String strCustomerId);
     void setStoreId(String strStoreId);
     void setTillId(String strTillId);
+    void setShiftId(String strShiftId);
 }

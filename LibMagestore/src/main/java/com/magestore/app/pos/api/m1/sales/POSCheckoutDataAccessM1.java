@@ -20,6 +20,7 @@ import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.lib.model.checkout.DataCheckout;
 import com.magestore.app.lib.model.checkout.DataPlaceOrder;
+import com.magestore.app.lib.model.checkout.PaymentMethodDataParam;
 import com.magestore.app.lib.model.checkout.PlaceOrderParams;
 import com.magestore.app.lib.model.checkout.Quote;
 import com.magestore.app.lib.model.checkout.QuoteAddCouponParam;
@@ -81,6 +82,7 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
         String store_id = null;
         String till_id = null;
         String customer_id = null;
+        String shift_id = null;
     }
 
     private class SendEmailEntity {
@@ -199,6 +201,7 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
 
             // set data
             quote.setTillId(ConfigUtil.getPointOfSales() != null ? ConfigUtil.getPointOfSales().getID() : ConfigUtil.getPosId());
+            quote.setShiftId(ConfigUtil.getRegisterShiftId());
 
             rp = statement.execute(setQuoteParam(quote));
             rp.setParseImplement(new Gson2PosCartParseModel());
@@ -414,6 +417,7 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
             checkoutEntity.currency_id = ConfigUtil.getCurrentCurrency().getCode();
             checkoutEntity.store_id = checkout.getStoreId();
             checkoutEntity.till_id = ConfigUtil.getPointOfSales() != null ? ConfigUtil.getPointOfSales().getID() : ConfigUtil.getPosId();
+            checkoutEntity.shift_id = ConfigUtil.getRegisterShiftId();
             String customer_id = "";
             if (checkout.getCustomer() != null) {
                 if (StringUtil.isNullOrEmpty(checkout.getCustomerID())) {
@@ -501,6 +505,7 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
             statement.prepareQuery(POSAPIM1.REST_CHECK_OUT_PLACE_ORDER);
 
             // set data
+            placeOrderParams.setShiftId(ConfigUtil.getRegisterShiftId());
             placeOrderParams.setStoreId(checkout.getStoreId());
             placeOrderParams.setTillId(ConfigUtil.getPointOfSales() != null ? ConfigUtil.getPointOfSales().getID() : ConfigUtil.getPosId());
             placeOrderParams.setCurrencyId(ConfigUtil.getCurrentCurrency().getCode());
@@ -512,6 +517,15 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
                     placeOrderParams.setMethod("multipaymentforpos");
                 } else {
                     placeOrderParams.setMethod(paymentCode);
+                }
+            }
+
+            if (placeOrderParams.getPayment() != null) {
+                List<PaymentMethodDataParam> methodData = placeOrderParams.getMethodData();
+                if (methodData != null && methodData.size() > 0) {
+                    for (PaymentMethodDataParam payment: methodData) {
+                        payment.setShiftId(ConfigUtil.getRegisterShiftId());
+                    }
                 }
             }
 

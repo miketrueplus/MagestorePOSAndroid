@@ -66,6 +66,7 @@ public class ConfigUtil {
     private static String mPosId;
     private static String mShiftId;
     private static String mLocationId;
+    private static String mRegisterShiftId;
     private static ConfigPriceFormat mConfigPriceFormat;
 
     // permisson
@@ -819,6 +820,14 @@ public class ConfigUtil {
 
     public static void setPosId(String mPosId) {
         ConfigUtil.mPosId = mPosId;
+    }
+
+    public static String getRegisterShiftId() {
+        return mRegisterShiftId;
+    }
+
+    public static void setRegisterShiftId(String mRegisterShiftId) {
+        ConfigUtil.mRegisterShiftId = mRegisterShiftId;
     }
 
     public static String getShiftId() {

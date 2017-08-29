@@ -122,6 +122,7 @@ public class POSCheckoutDataAccess extends POSAbstractDataAccess implements Chec
             // set data
             quote.setCustomerId("");
             quote.setTillId("1");
+            quote.setShiftId(null);
 
             rp = statement.execute(quote);
             rp.setParseImplement(getClassParseImplement());
