@@ -249,6 +249,7 @@ public class RegisterShiftListController extends AbstractListController<Register
             ConfigUtil.setRegisterShiftId(listRegister.get(0).getID());
             LoginActivity.STORE_ID = listRegister.get(0).getStoreId();
             DataUtil.saveDataStringToPreferences(getMagestoreContext().getActivity(), DataUtil.STORE_ID, listRegister.get(0).getStoreId());
+            listRegister.get(0).setPosName(ConfigUtil.getPointOfSales().getPosName());
             mList.add(1, listRegister.get(0));
             for (RegisterShift shift : mList) {
                 if (shift.getLessSevenDay()) {

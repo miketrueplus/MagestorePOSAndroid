@@ -359,6 +359,12 @@ public class PosRegisterShift extends PosAbstractModel implements RegisterShift 
     }
 
     @Override
+    public void setPosName(String strPosName) {
+        pos_name = strPosName;
+        till_name = strPosName;
+    }
+
+    @Override
     public boolean getLastSevenDay() {
         return last_seven_day;
     }
