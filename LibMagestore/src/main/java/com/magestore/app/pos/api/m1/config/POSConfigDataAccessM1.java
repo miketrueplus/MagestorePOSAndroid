@@ -1021,7 +1021,7 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
             }
         }
 
-        return true;
+        return false;
     }
 
     @Override
