@@ -67,6 +67,8 @@ public class PosRegisterShift extends PosAbstractModel implements RegisterShift 
     String shift_code;
     @Gson2PosExclude
     String till_name;
+    @Gson2PosExclude
+    String note;
 
     @Gson2PosExclude
     boolean last_seven_day;
@@ -148,6 +150,9 @@ public class PosRegisterShift extends PosAbstractModel implements RegisterShift 
 
     @Override
     public String getOpenedNote() {
+        if (StringUtil.isNullOrEmpty(opened_note)) {
+            return note;
+        }
         return opened_note;
     }
 
