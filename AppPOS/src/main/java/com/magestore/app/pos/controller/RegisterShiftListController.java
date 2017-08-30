@@ -12,6 +12,7 @@ import com.magestore.app.lib.model.registershift.RegisterShift;
 import com.magestore.app.lib.model.registershift.SessionParam;
 import com.magestore.app.lib.service.registershift.RegisterShiftService;
 import com.magestore.app.lib.service.user.UserService;
+import com.magestore.app.pos.LoginActivity;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.panel.CloseSessionPanel;
 import com.magestore.app.pos.panel.OpenSessionListValuePanel;
@@ -141,6 +142,8 @@ public class RegisterShiftListController extends AbstractListController<Register
                     ConfigUtil.setLocationId(registerShift.getLocationId());
                     ConfigUtil.setPosId(registerShift.getPosId());
                     ConfigUtil.setRegisterShiftId(registerShift.getID());
+                    LoginActivity.STORE_ID = registerShift.getStoreId();
+                    DataUtil.saveDataStringToPreferences(getMagestoreContext().getActivity(), DataUtil.STORE_ID, registerShift.getStoreId());
 //                getMagestoreContext().getActivity().finish();
                     DataUtil.saveDataStringToPreferences(getMagestoreContext().getActivity(), DataUtil.STORE_ID, registerShift.getStoreId());
                     ((RegisterShiftListPanel) mView).isShowButtonOpenSession(false);
@@ -152,15 +155,13 @@ public class RegisterShiftListController extends AbstractListController<Register
                     intent.putExtra("is_show", false);
                     intent.setAction(SEND_NOTI_TO_REGISTER_ACTIVITY);
                     getMagestoreContext().getActivity().sendBroadcast(intent);
+                } else if (registerShift.getStatus().equals("2")) {
+                    ((RegisterShiftDetailPanel) mDetailView).showCloseShift(list.get(1));
                 } else {
                     Intent intent = new Intent();
                     intent.putExtra("is_show", true);
                     intent.setAction(SEND_NOTI_TO_REGISTER_ACTIVITY);
                     getMagestoreContext().getActivity().sendBroadcast(intent);
-                }
-
-                if (registerShift.getStatus().equals("2")) {
-                    ((RegisterShiftDetailPanel) mDetailView).showCloseShift(list.get(1));
                 }
             } else {
                 openSessionList();
@@ -246,6 +247,8 @@ public class RegisterShiftListController extends AbstractListController<Register
             ConfigUtil.setLocationId(listRegister.get(0).getLocationId());
             ConfigUtil.setPosId(listRegister.get(0).getPosId());
             ConfigUtil.setRegisterShiftId(listRegister.get(0).getID());
+            LoginActivity.STORE_ID = listRegister.get(0).getStoreId();
+            DataUtil.saveDataStringToPreferences(getMagestoreContext().getActivity(), DataUtil.STORE_ID, listRegister.get(0).getStoreId());
             mList.add(1, listRegister.get(0));
             for (RegisterShift shift : mList) {
                 if (shift.getLessSevenDay()) {
@@ -277,6 +280,7 @@ public class RegisterShiftListController extends AbstractListController<Register
             intent.putExtra("is_show", true);
             intent.setAction(SEND_NOTI_TO_REGISTER_ACTIVITY);
             getMagestoreContext().getActivity().sendBroadcast(intent);
+            ((RegisterShiftListPanel) mView).isShowButtonOpenSession(false);
             dismissDialogOpenSession();
             ((RegisterShiftListPanel) mView).showDialogContinueCheckout();
             ConfigUtil.setCheckFirstOpenSession(true);
