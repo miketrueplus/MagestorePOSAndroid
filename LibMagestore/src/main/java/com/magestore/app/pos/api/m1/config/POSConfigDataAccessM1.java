@@ -1046,9 +1046,9 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
     public void getConfigStaffPermisson(List<String> listPermisson) throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
         if (listPermisson.size() > 0) {
             ConfigUtil.setManageOrderByLocation(false);
+            ConfigUtil.setManagerShiftAdjustment(true);
             if (checkStaffPermiss(listPermisson, ALL_PERMISSON)) {
                 ConfigUtil.setCreateOrder(true);
-                ConfigUtil.setManagerShiftAdjustment(true);
                 ConfigUtil.setManagerAllOrder(true);
                 ConfigUtil.setDiscountPerCart(true);
                 ConfigUtil.setApplyCoupon(true);
@@ -1078,7 +1078,7 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
                     ConfigUtil.setDiscountPerItem(checkStaffPermiss(listPermisson, APPLY_DISCOUNT_PER_ITEM));
                     ConfigUtil.setApplyCustomPrice(checkStaffPermiss(listPermisson, APPLY_CUSTOM_PRICE));
                 }
-                ConfigUtil.setManagerShiftAdjustment(checkStaffPermiss(listPermisson, MANAGE_SHIFT_ADJUSTMENT));
+//                ConfigUtil.setManagerShiftAdjustment(checkStaffPermiss(listPermisson, MANAGE_SHIFT_ADJUSTMENT));
             }
         }
     }
