@@ -28,6 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/layout_margin_5"
+                android:textSize="@dimen/text_size"
                 android:text="@{orderWebposPayment.getMethodTitle()}"
                 android:textColor="@color/text_color" />
 
@@ -37,6 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderWebposPayment.getBasePaymentAmount()))}"
+                android:textSize="@dimen/text_size"
                 android:textColor="@color/text_color" />
         </RelativeLayout>
 
