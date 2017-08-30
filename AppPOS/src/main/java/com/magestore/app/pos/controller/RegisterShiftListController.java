@@ -210,6 +210,7 @@ public class RegisterShiftListController extends AbstractListController<Register
         if (success && actionType == ACTION_CODE_MAKE_ADJUSTMENT) {
             RegisterShift oldRegisterShift = ((RegisterShift) models[0]);
             List<RegisterShift> listRegister = (List<RegisterShift>) wraper.get("make_adjusment_respone");
+            listRegister.get(0).setPosName(oldRegisterShift.getPosName());
             ((RegisterShiftDetailPanel) mDetailView).bindItem(listRegister.get(0));
             setNewRegisterToList(oldRegisterShift, listRegister.get(0));
             setSelectedItem(listRegister.get(0));
