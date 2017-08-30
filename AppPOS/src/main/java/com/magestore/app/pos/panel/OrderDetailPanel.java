@@ -326,9 +326,13 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         String email = order.getCustomerEmail();
         String orderId = order.getID();
 
-        // TODO: thiếu check có phải là kiểu email hay không
         if (TextUtils.isEmpty(email)) {
             mOrderSendEmailPanel.showAlertEmail();
+            return;
+        }
+
+        if (StringUtil.checkEmail(email)) {
+            mOrderSendEmailPanel.showRequiedEmail();
             return;
         }
 

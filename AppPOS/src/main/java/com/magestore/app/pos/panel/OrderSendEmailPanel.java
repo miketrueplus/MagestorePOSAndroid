@@ -65,6 +65,10 @@ public class OrderSendEmailPanel extends AbstractDetailPanel<Order> {
         edt_email.setError(getContext().getString(R.string.err_field_required));
     }
 
+    public void showRequiedEmail() {
+        edt_email.setError(getContext().getString(R.string.err_field_email_required));
+    }
+
     public void showAlertRespone(boolean statusRespone, String respone) {
         String message = "";
         if (!StringUtil.isNullOrEmpty(respone)) {

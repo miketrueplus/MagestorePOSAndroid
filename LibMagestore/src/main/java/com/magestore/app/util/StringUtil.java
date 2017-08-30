@@ -1,5 +1,7 @@
 package com.magestore.app.util;
 
+import android.text.TextUtils;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -203,5 +205,25 @@ public class StringUtil {
         // Otherwise uppercase first letter, lowercase the rest.
         return inputVal.substring(0, 1).toUpperCase()
                 + inputVal.substring(1).toLowerCase();
+    }
+
+    /**
+     * Check requied email
+     * @param email
+     * @return
+     */
+    public static boolean checkEmail(String email) {
+        String email_validation_match = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
+        if (TextUtils.isEmpty(email)) {
+            return false;
+        }
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            return false;
+        } else {
+            if (!email.matches(email_validation_match)) {
+                return false;
+            }
+        }
+        return true;
     }
 }

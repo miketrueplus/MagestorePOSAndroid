@@ -33,7 +33,7 @@ import java.math.BigDecimal;
  */
 
 public class PaymentPayPalActivity extends AbstractActivity {
-    // TODO: Lấy từ config theo sanbox hay live, client_id là gì
+    // Lấy từ config theo sanbox hay live, client_id là gì
     private static String CONFIG_ENVIRONMENT = PayPalConfiguration.ENVIRONMENT_PRODUCTION;
     private static String CONFIG_CLIENT_ID = "";
     private static final int REQUEST_CODE_PAYMENT = 1;

@@ -60,7 +60,6 @@ public class OrderAddCommentPanel extends AbstractDetailPanel<Order> {
 
     @Override
     public Order bind2Item() {
-
         // TODO: thiếu setCreateAt() lấy theo h máy hiệnt tại
         String comment = edt_comment.getText().toString().trim();
         OrderStatus orderStatus = ((OrderHistoryListController) mController).createOrderStatus();

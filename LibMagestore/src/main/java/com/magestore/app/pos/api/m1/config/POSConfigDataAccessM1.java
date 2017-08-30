@@ -1009,17 +1009,17 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
     @Override
     public boolean getConfigSession() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
         if (mConfig == null) mConfig = new PosConfigDefault();
-//        if (mConfig.getValue("webpos/general/enable_session") == null) {
-//            return false;
-//        }
-//        String enable_session = (String) mConfig.getValue("webpos/general/enable_session");
-//        boolean isSession;
-//        if (!StringUtil.isNullOrEmpty(enable_session)) {
-//            if (enable_session.equals("1")) {
-//                isSession = true;
-//                return isSession;
-//            }
-//        }
+        if (mConfig.getValue("webpos/general/enable_session") == null) {
+            return false;
+        }
+        String enable_session = (String) mConfig.getValue("webpos/general/enable_session");
+        boolean isSession;
+        if (!StringUtil.isNullOrEmpty(enable_session)) {
+            if (enable_session.equals("1")) {
+                isSession = true;
+                return isSession;
+            }
+        }
 
         return true;
     }

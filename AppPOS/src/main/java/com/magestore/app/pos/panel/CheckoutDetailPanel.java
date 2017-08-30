@@ -124,22 +124,6 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
             }
         });
 
-//        cb_pick_at_store.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (!cb_pick_at_store.isChecked()) {
-//                    cb_pick_at_store.setChecked(false);
-//                    ll_shipping_address.setVisibility(GONE);
-//                } else {
-//                    cb_pick_at_store.setChecked(true);
-//                    ll_shipping_address.setVisibility(VISIBLE);
-//                }
-//                ((CheckoutListController) getController()).changeCustomerShippingAdrress(cb_pick_at_store.isChecked());
-//                ((CheckoutListController) getController()).getSelectedItem().setIsPickAtStore(cb_pick_at_store.isChecked());
-//                ((CheckoutListController) getController()).changePickAtStoreAndReloadShipping();
-//            }
-//        });
-
         cb_pick_at_store.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean check) {

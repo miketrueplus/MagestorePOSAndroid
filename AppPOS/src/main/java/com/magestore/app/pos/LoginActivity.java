@@ -595,8 +595,6 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
                         mStartButton.setText(getContext().getString(R.string.logout));
                     }
                 }
-                // TODO: Check config session
-//                navigationToSessionActivity();
                 showProgress(false);
             } else {
                 showProgress(false);
