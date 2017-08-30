@@ -142,8 +142,6 @@ public class RegisterShiftListController extends AbstractListController<Register
                     ConfigUtil.setLocationId(registerShift.getLocationId());
                     ConfigUtil.setPosId(registerShift.getPosId());
                     ConfigUtil.setRegisterShiftId(registerShift.getID());
-                    LoginActivity.STORE_ID = registerShift.getStoreId();
-                    DataUtil.saveDataStringToPreferences(getMagestoreContext().getActivity(), DataUtil.STORE_ID, registerShift.getStoreId());
 //                getMagestoreContext().getActivity().finish();
                     DataUtil.saveDataStringToPreferences(getMagestoreContext().getActivity(), DataUtil.STORE_ID, registerShift.getStoreId());
                     ((RegisterShiftListPanel) mView).isShowButtonOpenSession(false);
@@ -248,8 +246,6 @@ public class RegisterShiftListController extends AbstractListController<Register
             ConfigUtil.setLocationId(listRegister.get(0).getLocationId());
             ConfigUtil.setPosId(listRegister.get(0).getPosId());
             ConfigUtil.setRegisterShiftId(listRegister.get(0).getID());
-            LoginActivity.STORE_ID = listRegister.get(0).getStoreId();
-            DataUtil.saveDataStringToPreferences(getMagestoreContext().getActivity(), DataUtil.STORE_ID, listRegister.get(0).getStoreId());
             listRegister.get(0).setPosName(ConfigUtil.getPointOfSales().getPosName());
             mList.add(1, listRegister.get(0));
             for (RegisterShift shift : mList) {
