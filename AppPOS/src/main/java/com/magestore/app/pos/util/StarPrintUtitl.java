@@ -210,27 +210,28 @@ public class StarPrintUtitl {
         RasterDocument rasterDoc = new RasterDocument(RasterDocument.RasSpeed.Medium, RasterDocument.RasPageEndMode.FeedAndFullCut, RasterDocument.RasPageEndMode.FeedAndFullCut, RasterDocument.RasTopMargin.Standard, 0, 0, 0);
         StarBitmap starbitmap = new StarBitmap(source, false, maxWidth);
 
-        byte[] command = rasterDoc.BeginDocumentCommandData();
-        tempList = new Byte[command.length];
-        CopyArray(command, tempList);
-        commands.addAll(Arrays.asList(tempList));
-
-        command = starbitmap.getImageRasterDataForPrinting(compressionEnable);
-        tempList = new Byte[command.length];
-        CopyArray(command, tempList);
-        commands.addAll(Arrays.asList(tempList));
-
-        command = rasterDoc.EndDocumentCommandData();
-        tempList = new Byte[command.length];
-        CopyArray(command, tempList);
-        commands.addAll(Arrays.asList(tempList));
-
-        commands.addAll(Arrays.asList(new Byte[]{0x07}));                // Kick cash drawer
-
         int copy = Integer.parseInt(print_copy);
         for (int i = 0; i < copy; i++) {
-            sendCommand(context, portName, portSettings, commands);
+            byte[] command = rasterDoc.BeginDocumentCommandData();
+            tempList = new Byte[command.length];
+            CopyArray(command, tempList);
+            commands.addAll(Arrays.asList(tempList));
+
+            command = starbitmap.getImageRasterDataForPrinting(compressionEnable);
+            tempList = new Byte[command.length];
+            CopyArray(command, tempList);
+            commands.addAll(Arrays.asList(tempList));
+
+            command = rasterDoc.EndDocumentCommandData();
+            tempList = new Byte[command.length];
+            CopyArray(command, tempList);
+            commands.addAll(Arrays.asList(tempList));
         }
+        commands.addAll(Arrays.asList(new Byte[]{0x07}));                // Kick cash drawer
+
+
+        sendCommand(context, portName, portSettings, commands);
+
     }
 
     public static void OpenCashDrawer(Context context, String portName, String portSettings) {
