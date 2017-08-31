@@ -158,6 +158,7 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
         tv_t_close_balance.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(item.getBaseBalance())));
         float transaction = item.getBaseBalance() - item.getBaseFloatAmount();
         tv_transaction.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(transaction)));
+        tv_difference.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(item.getBaseBalance())));
         actionChangeBalance(item);
 
         bt_close.setOnClickListener(new OnClickListener() {
