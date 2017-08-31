@@ -294,6 +294,7 @@ public class EditTextFloat extends EditText {
         if (StringUtil.isNullOrEmpty(amount)) {
             amount = "0.00";
         }
+        amount = StringUtil.removeAllSymbol(amount);
         String decima_symbol = ConfigUtil.getConfigPriceFormat().getDecimalSymbol();
         String text_f = amount.substring(0, amount.length() - 2);
         String text_s = amount.substring(amount.length() - 2, amount.length());
