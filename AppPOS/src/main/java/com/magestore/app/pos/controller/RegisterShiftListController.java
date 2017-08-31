@@ -112,7 +112,7 @@ public class RegisterShiftListController extends AbstractListController<Register
                                 RegisterShift shift_title = mRegisterShiftService.create();
                                 shift_title.setLessSevenDay(true);
                                 if (list.size() == 1) {
-                                    list.add(shift_title);
+                                    list.add(0, shift_title);
                                 } else {
                                     list.add(list.indexOf(shift), shift_title);
                                 }
