@@ -233,7 +233,11 @@ public class RegisterShiftDetailPanel extends AbstractDetailPanel<RegisterShift>
         if (ConfigUtil.getTypePrint().equals(getContext().getString(R.string.print_type_star_print))) {
             dialogPrint.setContentView(R.layout.star_print_session_layout);
             ViewGroup.LayoutParams params = dialogPrint.getWindow().getAttributes();
-            params.width = ConfigUtil.getStarPrintArea() + 50;
+            if (ConfigUtil.getStarPrintArea() == 384) {
+                params.width = ConfigUtil.getStarPrintArea() + 150;
+            } else {
+                params.width = ConfigUtil.getStarPrintArea() + 50;
+            }
             dialogPrint.getWindow().setAttributes((WindowManager.LayoutParams) params);
         } else {
             dialogPrint.setContentView(R.layout.print_register_shift_preview);

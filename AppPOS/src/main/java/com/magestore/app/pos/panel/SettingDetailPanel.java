@@ -5,11 +5,14 @@ import android.content.Intent;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.Switch;
 
 import com.magestore.app.lib.model.directory.Currency;
@@ -48,7 +51,7 @@ public class SettingDetailPanel extends AbstractDetailPanel<Setting> {
     RelativeLayout setting_background_loading;
     boolean checkFirst;
     LinearLayout ll_print_area;
-    Switch sw_print_area;
+    Spinner sp_print_area;
 
     public SettingDetailPanel(Context context) {
         super(context);
@@ -76,7 +79,7 @@ public class SettingDetailPanel extends AbstractDetailPanel<Setting> {
         ll_setting_print = (LinearLayout) findViewById(R.id.ll_setting_print);
         sp_print = (SimpleSpinner) findViewById(R.id.sp_print);
         ll_print_area = (LinearLayout) findViewById(R.id.ll_print_area);
-        sw_print_area = (Switch) findViewById(R.id.sw_print_area);
+        sp_print_area = (Spinner) findViewById(R.id.sp_print_area);
         ll_setting_store = (LinearLayout) findViewById(R.id.ll_setting_store);
         btn_save = (Button) findViewById(R.id.btn_save);
         listLayout.add(ll_setting_account);
@@ -140,14 +143,24 @@ public class SettingDetailPanel extends AbstractDetailPanel<Setting> {
             }
         });
 
-        sw_print_area.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        SpinnerAdapter ad_print_area = new ArrayAdapter<String>(getContext(), R.layout.simple_textview_row1, new String[]{getContext().getResources().getString(R.string.printArea2inch), getContext().getResources().getString(R.string.printArea3inch), getContext().getResources().getString(R.string.printArea4inch)});
+        sp_print_area.setAdapter(ad_print_area);
+        sp_print_area.setSelection(1);
+        sp_print_area.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b) {
-                    ConfigUtil.setStarPrintArea(832);
-                } else {
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i == 0) {
+                    ConfigUtil.setStarPrintArea(384);
+                } else if (i == 1) {
                     ConfigUtil.setStarPrintArea(576);
+                } else {
+                    ConfigUtil.setStarPrintArea(832);
                 }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
             }
         });
     }

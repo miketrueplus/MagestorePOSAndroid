@@ -59,7 +59,7 @@ public class StarPrintUtitl {
                 dialogPrint.setFeatureDrawableAlpha(1, 1);
                 dialogPrint.setContentView(R.layout.popup_star_print_search);
                 ViewGroup.LayoutParams params = dialogPrint.getWindow().getAttributes();
-                params.width = ConfigUtil.getStarPrintArea();
+                params.width = 832;
                 dialogPrint.getWindow().setAttributes((WindowManager.LayoutParams) params);
                 final EditText edt_port = (EditText) dialogPrint.findViewById(R.id.edt_port);
                 SharedPreferences pref = context.getSharedPreferences("pref", context.MODE_PRIVATE);
@@ -106,18 +106,21 @@ public class StarPrintUtitl {
                 SpinnerAdapter ad_bluetooth_communication_type = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, new String[]{"SSP", "PIN Code"});
                 spinner_bluetooth_communication_type.setAdapter(ad_bluetooth_communication_type);
                 final String item_list[] = new String[]{
+                        context.getResources().getString(R.string.printArea2inch),
                         context.getResources().getString(R.string.printArea3inch),
                         context.getResources().getString(R.string.printArea4inch),
                 };
                 Spinner spinner_print_area = (Spinner) dialogPrint.findViewById(R.id.spinner_print_area);
                 spinner_print_area.setVisibility(View.GONE);
-                SpinnerAdapter ad_print_area = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, new String[]{context.getResources().getString(R.string.printArea3inch), context.getResources().getString(R.string.printArea4inch)});
+                SpinnerAdapter ad_print_area = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, new String[]{context.getResources().getString(R.string.printArea2inch), context.getResources().getString(R.string.printArea3inch), context.getResources().getString(R.string.printArea4inch)});
                 spinner_print_area.setAdapter(ad_print_area);
                 printArea = ConfigUtil.getStarPrintArea();
                 spinner_print_area.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                         if (i == 0) {
+                            printArea = 384;
+                        } else if (i == 1) {
                             printArea = 576;
                         } else {
                             printArea = 832;

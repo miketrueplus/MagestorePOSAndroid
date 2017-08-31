@@ -148,16 +148,17 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/layout_margin_10"
+                        android:layout_marginBottom="@dimen/layout_margin_10"
                         android:textColor="@color/text_color"
-                        android:textSize="@dimen/welcome_text_size" />
+                        android:textSize="@dimen/welcome_text_size"
+                        android:layout_marginRight="@dimen/layout_margin_10"
+                        android:text="Print Area: "/>
 
-                    <Switch
-                        android:id="@+id/sw_print_area"
+                    <Spinner
+                        android:id="@+id/sp_print_area"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/printArea3inch"
-                        android:textColor="@color/text_color"
+                        android:padding="@dimen/layout_margin_10"
                         android:textSize="@dimen/welcome_text_size" />
 
                     <TextView
@@ -166,6 +167,7 @@
                         android:layout_marginRight="@dimen/layout_margin_10"
                         android:text="@string/printArea4inch"
                         android:textColor="@color/text_color"
+                        android:visibility="gone"
                         android:textSize="@dimen/welcome_text_size" />
                 </LinearLayout>
             </RelativeLayout>

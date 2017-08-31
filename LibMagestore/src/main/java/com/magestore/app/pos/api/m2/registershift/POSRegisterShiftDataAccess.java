@@ -292,6 +292,7 @@ public class POSRegisterShiftDataAccess extends POSAbstractDataAccess implements
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
 
             // thực thi truy vấn và parse kết quả thành object
+            sessionParam.setID(null);
             RegisterShiftEntity registerShiftEntity = new RegisterShiftEntity();
             registerShiftEntity.shift = sessionParam;
 
