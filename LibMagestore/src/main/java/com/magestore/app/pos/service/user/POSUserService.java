@@ -11,6 +11,7 @@ import com.magestore.app.pos.api.m2.POSDataAccessSession;
 import com.magestore.app.lib.service.config.ConfigService;
 import com.magestore.app.lib.service.ServiceFactory;
 import com.magestore.app.lib.service.user.UserService;
+import com.magestore.app.pos.api.odoo.POSDataAccessSessionOdoo;
 import com.magestore.app.pos.model.registershift.PosPointOfSales;
 import com.magestore.app.pos.model.user.PosUser;
 import com.magestore.app.pos.service.AbstractService;
@@ -30,6 +31,7 @@ public class POSUserService extends AbstractService implements UserService {
     static final String strfalse = "false\n";
     public static POSDataAccessSession session;
     public static POSDataAccessSessionM1 sessionM1;
+    public static POSDataAccessSessionOdoo sessionOdoo;
 
     /**
      * Dựng base url từ domain do user nhập
@@ -80,6 +82,10 @@ public class POSUserService extends AbstractService implements UserService {
                 ConfigUtil.setPlatForm(ConfigUtil.PLATFORM_MAGENTO_2);
                 return true;
             }
+            if (str.equals("Odoo")) {
+                ConfigUtil.setPlatForm(ConfigUtil.PLATFORM_ODOO);
+                return true;
+            }
         }
         return false;
     }
@@ -119,11 +125,16 @@ public class POSUserService extends AbstractService implements UserService {
                 session.REST_BASE_URL = strBaseURL;
                 session.REST_USER_NAME = proxyUser;
                 session.REST_PASSWORD = proxyPass;
-            } else {
+            } else if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_1)) {
                 sessionM1.REST_SESSION_ID = str.trim().replace("\"", "");
                 sessionM1.REST_BASE_URL = strBaseURL;
                 sessionM1.REST_USER_NAME = proxyUser;
                 sessionM1.REST_PASSWORD = proxyPass;
+            } else if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_ODOO)) {
+                sessionOdoo.REST_SESSION_ID = str.trim().replace("\"", "");
+                sessionOdoo.REST_BASE_URL = strBaseURL;
+                sessionOdoo.REST_USER_NAME = proxyUser;
+                sessionOdoo.REST_PASSWORD = proxyPass;
             }
 
             // Lấy config hệ thống và lưu lại
@@ -142,8 +153,10 @@ public class POSUserService extends AbstractService implements UserService {
     public void doLogout() {
         if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2)) {
             session = null;
-        } else {
+        } else if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_1)) {
             sessionM1 = null;
+        } else if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_ODOO)) {
+            sessionOdoo = null;
         }
     }
 
@@ -155,9 +168,12 @@ public class POSUserService extends AbstractService implements UserService {
     public boolean isLogin() {
         if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2)) {
             return session != null;
-        } else {
+        } else if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_1)) {
             return sessionM1 != null;
+        } else if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_ODOO)) {
+            return sessionOdoo != null;
         }
+        return false;
     }
 
     @Override

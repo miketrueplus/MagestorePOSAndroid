@@ -148,4 +148,10 @@ public interface Statement {
      * @return
      */
     CacheConnection getCacheConnection();
+
+    /**
+     * add session to header;
+     * @param session
+     */
+    void setSessionHeader(String session);
 }

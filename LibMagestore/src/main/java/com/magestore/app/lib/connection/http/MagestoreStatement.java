@@ -87,6 +87,7 @@ public class MagestoreStatement implements Statement {
     private HttpURLConnection mHttpConnection = null;
 
     static final String COOKIES_HEADER = "Set-Cookie";
+    String sessionHeader;
 
     // Chuỗi truy vấn bao gồm base url
     // Ví dụ
@@ -296,6 +297,11 @@ public class MagestoreStatement implements Statement {
         return mCacheConnection;
     }
 
+    @Override
+    public void setSessionHeader(String session) {
+        sessionHeader = session;
+    }
+
     /**
      * Chuẩn bị HTTP connection với method post và object
      *
@@ -327,6 +333,11 @@ public class MagestoreStatement implements Statement {
         mHttpConnection = magestoreConnection.openHTTPConnection(mstrExecuteQuery, mstrMethod);
         // set cookie to header
         setCookieToHeaderField();
+
+        if (!StringUtil.isNullOrEmpty(sessionHeader)) {
+            mHttpConnection.addRequestProperty("Authorization", "Token " + sessionHeader);
+        }
+
         mHttpConnection.setRequestProperty(ACCEPT, APPLICATION_RANGER);
         // đặt action method cho http connection
         if (mAction == MagestoreStatementAction.ACTION_DELETE)

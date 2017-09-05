@@ -13,7 +13,9 @@ public interface PointOfSales extends Model {
     String getPosName();
     void setPosName(String strPosName);
     String getLocationId();
+    void setLocationId(String strLocationId);
     String getStoreId();
+    void setStoreId(String strStoreId);
     String getStaffId();
     String getStatus();
 }

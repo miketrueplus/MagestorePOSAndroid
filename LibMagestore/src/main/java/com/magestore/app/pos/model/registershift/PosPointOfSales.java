@@ -43,8 +43,18 @@ public class PosPointOfSales extends PosAbstractModel implements PointOfSales {
     }
 
     @Override
+    public void setLocationId(String strLocationId) {
+        location_id = strLocationId;
+    }
+
+    @Override
     public String getStoreId() {
         return store_id;
+    }
+
+    @Override
+    public void setStoreId(String strStoreId) {
+        store_id = strStoreId;
     }
 
     @Override
