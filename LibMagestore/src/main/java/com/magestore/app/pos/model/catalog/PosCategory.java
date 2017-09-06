@@ -27,8 +27,14 @@ public class PosCategory extends PosAbstractModel implements Category {
     @Expose(serialize = false, deserialize = false)
     List<Category> list_sub = new ArrayList<>();
 
+    @Override
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public void setId(String strId) {
+        id = strId;
     }
 
     @Override
@@ -52,8 +58,18 @@ public class PosCategory extends PosAbstractModel implements Category {
     }
 
     @Override
+    public void setLevel(int intLevel) {
+        level = intLevel;
+    }
+
+    @Override
     public int getParentID() {
         return parent_id;
+    }
+
+    @Override
+    public void setParentId(int intParentId) {
+        parent_id = intParentId;
     }
 
     @Override
@@ -64,6 +80,11 @@ public class PosCategory extends PosAbstractModel implements Category {
     @Override
     public List<String> getChildren() {
         return children;
+    }
+
+    @Override
+    public void setChildren(List<String> listChildren) {
+        children = listChildren;
     }
 
     @Override

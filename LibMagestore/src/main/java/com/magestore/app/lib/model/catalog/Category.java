@@ -12,13 +12,18 @@ import java.util.List;
  */
 
 public interface Category extends Model {
+    void setId(String strId);
     String getName();
+    void setName(String strName);
     String getImage();
     String getPosition();
     int getLevel();
+    void setLevel(int intLevel);
     int getParentID();
+    void setParentId(int intParentId);
     String getPath();
     List<String> getChildren();
+    void setChildren(List<String> listChildren);
     List<Category> getSubCategory();
     boolean checkListSubCategory();
 }

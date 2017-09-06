@@ -98,13 +98,19 @@ public class CategoryAdapter extends BaseAdapter {
 
         public void setItem(Category category) {
             switch (category.getLevel()) {
+                case 0:
+                    imgDropdownId.setVisibility(View.GONE);
+                    break;
+                case 1:
+                    imgDropdownId.setVisibility((category.getChildren() != null && category.getChildren().size() > 0) ? View.VISIBLE : View.GONE);
+                    break;
                 case 2:
                     tvTitle.setPadding(10, 0, 0, 0);
-                    imgDropdownId.setVisibility(category.getChildren().size() == 0 ? View.GONE : View.VISIBLE);
+                    imgDropdownId.setVisibility((category.getChildren() != null && category.getChildren().size() > 0) ? View.VISIBLE : View.GONE);
                     break;
                 case 3:
                     tvTitle.setPadding(40, 0, 0, 0);
-                    imgDropdownId.setVisibility(category.getChildren().size() == 0 ? View.GONE : View.VISIBLE);
+                    imgDropdownId.setVisibility((category.getChildren() != null && category.getChildren().size() > 0) ? View.VISIBLE : View.GONE);
                     break;
                 case 4:
                     tvTitle.setPadding(70, 0, 0, 0);
