@@ -482,11 +482,13 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
                     cartOld.getProduct().setIsSaveCart(true);
                     cartOld.setIsVirtual(cartNew.getIsVirtual());
                     cartOld.setQuantity(cartNew.getQuantity());
-                    if (cartOld.isCustomPrice()) {
-                        cartOld.setPriceShowView(ConfigUtil.convertToBasePrice(cartNew.getOriginalCustomPrice()));
-                    } else {
-                        cartOld.setPriceShowView(ConfigUtil.convertToBasePrice(cartNew.getOriginalPrice()));
-                    }
+                    float price = cartNew.getSubtotal() / cartNew.getQuantity();
+                    cartOld.setPriceShowView(ConfigUtil.convertToBasePrice(price));
+//                    if (cartOld.isCustomPrice()) {
+//                        cartOld.setPriceShowView(ConfigUtil.convertToBasePrice(cartNew.getOriginalCustomPrice()));
+//                    } else {
+//                        cartOld.setPriceShowView(ConfigUtil.convertToBasePrice(cartNew.getOriginalPrice()));
+//                    }
                 }
             }
         }
