@@ -423,7 +423,7 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
                             ((OrderHistoryListController) mController).doInputRefund(order);
                             dialog.dismiss();
                         } else {
-                            String message = getContext().getString(R.string.order_refund_limit, ConfigUtil.formatPrice(mOrder.getMaxRefunded()));
+                            String message = getContext().getString(R.string.order_refund_limit, ConfigUtil.formatPrice(ConfigUtil.convertToPrice(mOrder.getMaxRefunded())));
                             // Tạo dialog và hiển thị
                             com.magestore.app.util.DialogUtil.confirm(getContext(), message, R.string.done);
                         }
@@ -449,8 +449,19 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
                         ((OrderHistoryListController) mController).doInputRefund(order);
                     }
                 } else {
-                    ((OrderHistoryListController) mController).doInputRefund(order);
-                    dialog.dismiss();
+                    float total_price_qty_item = order.getTotalPriceChangeQtyRefund();
+                    float price_shipping = order.getRefundShipping();
+                    float adjust_refund = order.getAdjustRefund();
+                    float adjust_free = order.getAdjustFree();
+                    float max_store_credit = ((total_price_qty_item + price_shipping + adjust_refund) - (adjust_free + order.getMaxGiftCardRefund()));
+                    if (max_store_credit <= mOrder.getMaxRefunded()) {
+                        ((OrderHistoryListController) mController).doInputRefund(order);
+                        dialog.dismiss();
+                    } else {
+                        String message = getContext().getString(R.string.order_refund_limit, ConfigUtil.formatPrice(ConfigUtil.convertToPrice(mOrder.getMaxRefunded())));
+                        // Tạo dialog và hiển thị
+                        com.magestore.app.util.DialogUtil.confirm(getContext(), message, R.string.done);
+                    }
                 }
             }
         });

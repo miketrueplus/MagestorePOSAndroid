@@ -824,7 +824,7 @@ public class OrderHistoryListController extends AbstractListController<Order> {
         float price_shipping = order.getRefundShipping();
         float adjust_refund = order.getAdjustRefund();
         float adjust_free = order.getAdjustFree();
-        float max_store_credit = ((total_price_qty_item + price_shipping + adjust_refund) - adjust_free);
+        float max_store_credit = ((total_price_qty_item + price_shipping + adjust_refund) - (adjust_free + order.getMaxGiftCardRefund()));
         float max_refunded = order.getMaxRefunded();
         order.setMaxStoreCreditRefund(max_store_credit);
         if (max_store_credit <= max_refunded) {
