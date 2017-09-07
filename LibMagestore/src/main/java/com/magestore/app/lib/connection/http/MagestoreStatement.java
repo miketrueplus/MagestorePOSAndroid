@@ -155,6 +155,8 @@ public class MagestoreStatement implements Statement {
                 mValuesMap = new HashMap<String, String>();
             if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2)) {
                 mParambuilder = new MagestoreParamBuilder(this, mValuesMap);
+            } if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_ODOO)) {
+                mParambuilder = new MagestoreParamBuilderOdoo(this, mValuesMap);
             } else {
                 mParambuilder = new MagestoreParamBuilderM1(this, mValuesMap);
             }

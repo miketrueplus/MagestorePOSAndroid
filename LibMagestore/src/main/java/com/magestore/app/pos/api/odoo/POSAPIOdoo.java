@@ -7,6 +7,9 @@ package com.magestore.app.pos.api.odoo;
  */
 
 public class POSAPIOdoo {
+    // API get product
+    public static final String REST_PRODUCT_GET_LISTING = "api/pos-products/?";
+
     // API get category
     public static final String REST_GET_CATEGORY_LISTING = "api/pos-categories/";
 
