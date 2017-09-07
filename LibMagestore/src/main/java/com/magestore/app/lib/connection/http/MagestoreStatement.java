@@ -382,7 +382,7 @@ public class MagestoreStatement implements Statement {
         int statusCode = mHttpConnection.getResponseCode();
         InputStream is = null;
 
-        if (statusCode == HTTP_CODE_RESPONSE_SUCCESS  || statusCode == 202) {
+        if (statusCode == HTTP_CODE_RESPONSE_SUCCESS) {
             // save cookie
             saveCookie();
             // check erorr magento 1
