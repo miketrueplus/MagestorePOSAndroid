@@ -13,12 +13,12 @@ import java.util.List;
  */
 
 public class PosDataProduct extends PosAbstractModel implements DataProduct{
-    List<Product> items;
+    List<PosProduct> items;
     int total_count;
 
     @Override
     public List<Product> getItems() {
-        return items;
+        return (List<Product>) (List<?>) items;
     }
 
     @Override

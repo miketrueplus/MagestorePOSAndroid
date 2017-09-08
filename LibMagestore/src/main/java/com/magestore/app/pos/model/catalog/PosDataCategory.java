@@ -13,12 +13,12 @@ import java.util.List;
  */
 
 public class PosDataCategory extends PosAbstractModel implements DataCategory{
-    List<Category> items;
+    List<PosCategory> items;
     int total_count;
 
     @Override
     public List<Category> getItems() {
-        return items;
+        return (List<Category>) (List<?>)items;
     }
 
     @Override

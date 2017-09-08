@@ -51,9 +51,12 @@ public interface Product extends Model, ParseModel {
     String getSKU();
     void setSKU(String strSKU);
     float getPrice();
+    void setPrice(float fPrice);
     float getFinalPrice();
+    void setFinalPrice(float fFinalPrice);
     float getSpecialPrice();
     String getDescription();
+    void setDescription(String strDescription);
     String getStatus();
     Date getUpdateAt();
     String getExtensionAttributes();
@@ -85,5 +88,7 @@ public interface Product extends Model, ParseModel {
 
     boolean isDecimal();
 
+    List<String> getTaxId();
+    void setTaxId(List<String> listTaxId);
 //    List<Stock> getStock();
 }

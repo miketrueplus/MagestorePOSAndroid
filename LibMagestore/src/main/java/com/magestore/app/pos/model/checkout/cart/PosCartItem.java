@@ -751,7 +751,7 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
 
     @Override
     public String getItemDescription() {
-        return (item_description != null ? item_description : getSku());
+        return ((item_description != null && !item_description.equals("")) ? item_description : getSku());
     }
 
     @Override

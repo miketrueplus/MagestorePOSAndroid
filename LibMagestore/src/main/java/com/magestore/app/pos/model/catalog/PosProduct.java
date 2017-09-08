@@ -195,8 +195,18 @@ public class PosProduct extends PosAbstractModel implements Product {
     }
 
     @Override
+    public void setPrice(float fPrice) {
+        price = fPrice;
+    }
+
+    @Override
     public float getFinalPrice() {
         return final_price;
+    }
+
+    @Override
+    public void setFinalPrice(float fFinalPrice) {
+        final_price = fFinalPrice;
     }
 
     @Override
@@ -207,6 +217,11 @@ public class PosProduct extends PosAbstractModel implements Product {
     @Override
     public String getDescription() {
         return (description == null) ? "" : description;
+    }
+
+    @Override
+    public void setDescription(String strDescription) {
+        description = strDescription;
     }
 
     @Override
@@ -333,6 +348,16 @@ public class PosProduct extends PosAbstractModel implements Product {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public List<String> getTaxId() {
+        return null;
+    }
+
+    @Override
+    public void setTaxId(List<String> listTaxId) {
+
     }
 
 //    @Override

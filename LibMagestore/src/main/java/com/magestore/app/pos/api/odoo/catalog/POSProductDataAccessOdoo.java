@@ -17,6 +17,7 @@ import com.magestore.app.lib.connection.ConnectionFactory;
 import com.magestore.app.lib.connection.ParamBuilder;
 import com.magestore.app.lib.connection.ResultReading;
 import com.magestore.app.lib.connection.Statement;
+import com.magestore.app.lib.model.catalog.DataProduct;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.model.catalog.ProductOption;
 import com.magestore.app.lib.parse.ParseException;
@@ -25,7 +26,9 @@ import com.magestore.app.lib.resourcemodel.catalog.ProductDataAccess;
 import com.magestore.app.pos.api.odoo.POSAPIOdoo;
 import com.magestore.app.pos.api.odoo.POSAbstractDataAccessOdoo;
 import com.magestore.app.pos.api.odoo.POSDataAccessSessionOdoo;
+import com.magestore.app.pos.model.catalog.PosDataProduct;
 import com.magestore.app.pos.model.catalog.PosProduct;
+import com.magestore.app.pos.model.catalog.PosProductTaxOdoo;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosAbstractParseImplement;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListProduct;
 import com.magestore.app.util.StringUtil;
@@ -48,35 +51,68 @@ public class POSProductDataAccessOdoo extends POSAbstractDataAccessOdoo implemen
         protected Gson createGson() {
             GsonBuilder builder = new GsonBuilder();
             builder.enableComplexMapKeySerialization();
-            builder.registerTypeAdapter(new TypeToken<List<Product>>() {
+            builder.registerTypeAdapter(new TypeToken<List<PosProduct>>() {
             }
                     .getType(), new ConfigProductConverter());
             return builder.create();
         }
 
-        private String PRODUCT_ID = "product_id";
-        private String PRODUCT_NAME = "product_name";
+        private String PRODUCT_ID = "id";
+        private String PRODUCT_NAME = "name";
         private String PRODUCT_SKU = "default_code";
         private String PRODUCT_TYPE = "type";
-        public class ConfigProductConverter implements JsonDeserializer<List<Product>> {
+        private String PRODUCT_MAX_QUANTITY = "qty_available";
+        private String TYPE_PRODUCT = "product";
+        private String PRODUCT_DESCRIPTION = "description";
+        private String PRODUCT_IMAGE = "image";
+        private String PRODUCT_PRICE = "lst_price";
+        public class ConfigProductConverter implements JsonDeserializer<List<PosProduct>> {
             @Override
-            public List<Product> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-                List<Product> listProduct = new ArrayList<>();
+            public List<PosProduct> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+                List<PosProduct> listProduct = new ArrayList<>();
                 if (json.isJsonArray()) {
                     JsonArray arr_product = json.getAsJsonArray();
                     if (arr_product != null && arr_product.size() > 0) {
                         for (JsonElement el_product : arr_product) {
                             JsonObject obj_product = el_product.getAsJsonObject();
-                            Product product = new PosProduct();
+                            PosProductTaxOdoo product = new PosProductTaxOdoo();
                             String id = obj_product.remove(PRODUCT_ID).getAsString();
                             product.setID(id);
-                            String name = obj_product.remove(PRODUCT_NAME).getAsString();
-                            product.setName(name);
+                            if (obj_product.has(PRODUCT_NAME)) {
+                                String name = obj_product.remove(PRODUCT_NAME).getAsString();
+                                product.setName(StringUtil.checkJsonData(name) ? name : "");
+                            }
                             String default_code = obj_product.remove(PRODUCT_SKU).getAsString();
-                            product.setSKU(default_code);
+                            product.setSKU(StringUtil.checkJsonData(default_code) ? default_code : "");
                             String type = obj_product.remove(PRODUCT_TYPE).getAsString();
                             product.setTypeID(type);
-                            
+                            float max_qty = obj_product.remove(PRODUCT_MAX_QUANTITY).getAsFloat();
+                            if (product.getTypeID().equals(TYPE_PRODUCT)) {
+                                if (max_qty > 0) {
+                                    product.setInStock(true);
+                                } else {
+                                    product.setInStock(false);
+                                }
+                            } else {
+                                product.setInStock(true);
+                            }
+                            if (obj_product.has(PRODUCT_DESCRIPTION)) {
+                                String description = obj_product.remove(PRODUCT_DESCRIPTION).getAsString();
+                                product.setDescription(StringUtil.checkJsonData(description) ? description : "");
+                            }
+                            String image = obj_product.remove(PRODUCT_IMAGE).getAsString();
+                            product.setImage(image);
+
+                            // TODO:  hiện tại fix tạm giá sản phẩm
+                            float price = obj_product.remove(PRODUCT_PRICE).getAsFloat();
+                            product.setPrice(price);
+                            product.setFinalPrice(price);
+
+                            List<String> listTaxId = new ArrayList<>();
+                            listTaxId.add("1");
+                            product.setTaxId(listTaxId);
+
+                            listProduct.add(product);
                         }
                     }
                 }
@@ -106,12 +142,11 @@ public class POSProductDataAccessOdoo extends POSAbstractDataAccessOdoo implemen
 
             // thực thi truy vấn và parse kết quả thành object
             rp = statement.execute();
-            rp.setParseImplement(getClassParseImplement());
-            rp.setParseModel(Gson2PosListProduct.class);
-            Gson2PosListProduct listProduct = (Gson2PosListProduct) rp.doParse();
-
+            rp.setParseImplement(new Gson2PosProductParseModel());
+            rp.setParseModel(PosDataProduct.class);
+            DataProduct dataProduct = (DataProduct) rp.doParse();
             // return
-            return listProduct.total_count;
+            return dataProduct.getTotalCount();
         } catch (ConnectionException ex) {
             throw ex;
         } catch (IOException ex) {
@@ -161,10 +196,10 @@ public class POSProductDataAccessOdoo extends POSAbstractDataAccessOdoo implemen
 
             // thực thi truy vấn và parse kết quả thành object
             rp = statement.execute();
-            rp.setParseImplement(getClassParseImplement());
-            rp.setParseModel(Gson2PosListProduct.class);
-            Gson2PosListProduct listProduct = (Gson2PosListProduct) rp.doParse();
-            List<Product> list = (List<Product>) (List<?>) (listProduct.items);
+            rp.setParseImplement(new Gson2PosProductParseModel());
+            rp.setParseModel(PosDataProduct.class);
+            DataProduct dataProduct = (DataProduct) rp.doParse();
+            List<Product> list = dataProduct.getItems();
 
             // return
             return list;
@@ -215,10 +250,10 @@ public class POSProductDataAccessOdoo extends POSAbstractDataAccessOdoo implemen
 
             // thực thi truy vấn và parse kết quả thành object
             rp = statement.execute();
-            rp.setParseImplement(getClassParseImplement());
-            rp.setParseModel(Gson2PosListProduct.class);
-            Gson2PosListProduct listProduct = (Gson2PosListProduct) rp.doParse();
-            List<Product> list = (List<Product>) (List<?>) (listProduct.items);
+            rp.setParseImplement(new Gson2PosProductParseModel());
+            rp.setParseModel(PosDataProduct.class);
+            DataProduct dataProduct = (DataProduct) rp.doParse();
+            List<Product> list = dataProduct.getItems();
 
             // return
             return list;
@@ -304,10 +339,10 @@ public class POSProductDataAccessOdoo extends POSAbstractDataAccessOdoo implemen
 
             // thực thi truy vấn và parse kết quả thành object
             rp = statement.execute();
-            rp.setParseImplement(getClassParseImplement());
-            rp.setParseModel(Gson2PosListProduct.class);
-            Gson2PosListProduct listProduct = (Gson2PosListProduct) rp.doParse();
-            List<Product> list = (List<Product>) (List<?>) (listProduct.items);
+            rp.setParseImplement(new Gson2PosProductParseModel());
+            rp.setParseModel(PosDataProduct.class);
+            DataProduct dataProduct = (DataProduct) rp.doParse();
+            List<Product> list = dataProduct.getItems();
 
             // return
             return list;

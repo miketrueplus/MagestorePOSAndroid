@@ -226,4 +226,11 @@ public class StringUtil {
         }
         return true;
     }
+
+    public static boolean checkJsonData(String data){
+        if(StringUtil.isNullOrEmpty(data) || data.equals(STATUS_FALSE)){
+            return false;
+        }
+        return true;
+    }
 }

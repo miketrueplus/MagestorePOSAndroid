@@ -48,7 +48,7 @@ public class POSCategoryDataAccessOdoo extends POSAbstractDataAccessOdoo impleme
         protected Gson createGson() {
             GsonBuilder builder = new GsonBuilder();
             builder.enableComplexMapKeySerialization();
-            builder.registerTypeAdapter(new TypeToken<List<Category>>() {
+            builder.registerTypeAdapter(new TypeToken<List<PosCategory>>() {
             }
                     .getType(), new ConfigCategoryConverter());
             return builder.create();
@@ -59,16 +59,16 @@ public class POSCategoryDataAccessOdoo extends POSAbstractDataAccessOdoo impleme
         private String CATEGORY_PARENT_ID = "parent_id";
         private String CATEGORY_CHILD_ID = "child_id";
 
-        public class ConfigCategoryConverter implements JsonDeserializer<List<Category>> {
+        public class ConfigCategoryConverter implements JsonDeserializer<List<PosCategory>> {
             @Override
-            public List<Category> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-                List<Category> listCategory = new ArrayList<>();
+            public List<PosCategory> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+                List<PosCategory> listCategory = new ArrayList<>();
                 if (json.isJsonArray()) {
                     JsonArray arr_category = json.getAsJsonArray();
                     if (arr_category != null && arr_category.size() > 0) {
                         for (JsonElement el_category : arr_category) {
                             JsonObject obj_category = el_category.getAsJsonObject();
-                            Category category = new PosCategory();
+                            PosCategory category = new PosCategory();
                             String id = obj_category.remove(CATEGORY_ID).getAsString();
                             category.setId(id);
                             String name = obj_category.remove(CATEGORY_NAME).getAsString();
