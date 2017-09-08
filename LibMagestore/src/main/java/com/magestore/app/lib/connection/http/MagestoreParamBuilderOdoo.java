@@ -32,7 +32,7 @@ public class MagestoreParamBuilderOdoo implements ParamBuilder {
     private final static String SEARCH_DEFAULT_GROUP_NAME = "MAGESTORE";
     private final static String SEARCH_CRITERIA_FILTER = "filter";
     private final static String SEARCH_CRITERIA_FILTER_OR = "filter_or";
-    private final static String SEARCH_CRITERIA_FIELD = "[attribute]";
+    private final static String SEARCH_CRITERIA_FIELD = "[attr]";
     private final static String SEARCH_CRITERIA_CONDITION_TYPE = "[condition_type]";
 
     // Danhf cho sắp xếp

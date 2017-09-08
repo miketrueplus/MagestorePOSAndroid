@@ -175,8 +175,18 @@ public class PosProduct extends PosAbstractModel implements Product {
     }
 
     @Override
+    public void setTypeID(String strTypeID) {
+        type_id = strTypeID;
+    }
+
+    @Override
     public String getSKU() {
         return sku;
+    }
+
+    @Override
+    public void setSKU(String strSKU) {
+        sku = strSKU;
     }
 
     @Override

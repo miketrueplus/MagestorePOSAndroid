@@ -47,7 +47,9 @@ public interface Product extends Model, ParseModel {
 //    boolean haveProductionOption();
 
     String getTypeID();
+    void setTypeID(String strTypeID);
     String getSKU();
+    void setSKU(String strSKU);
     float getPrice();
     float getFinalPrice();
     float getSpecialPrice();

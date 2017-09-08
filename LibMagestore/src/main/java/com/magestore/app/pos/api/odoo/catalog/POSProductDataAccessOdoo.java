@@ -2,6 +2,15 @@ package com.magestore.app.pos.api.odoo.catalog;
 
 import android.graphics.Bitmap;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.reflect.TypeToken;
 import com.magestore.app.lib.connection.Connection;
 import com.magestore.app.lib.connection.ConnectionException;
 import com.magestore.app.lib.connection.ConnectionFactory;
@@ -16,10 +25,14 @@ import com.magestore.app.lib.resourcemodel.catalog.ProductDataAccess;
 import com.magestore.app.pos.api.odoo.POSAPIOdoo;
 import com.magestore.app.pos.api.odoo.POSAbstractDataAccessOdoo;
 import com.magestore.app.pos.api.odoo.POSDataAccessSessionOdoo;
+import com.magestore.app.pos.model.catalog.PosProduct;
+import com.magestore.app.pos.parse.gson2pos.Gson2PosAbstractParseImplement;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListProduct;
 import com.magestore.app.util.StringUtil;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,7 +41,50 @@ import java.util.List;
  * dong.le@trueplus.vn
  */
 
-public class POSProductDataAccessOdoo extends POSAbstractDataAccessOdoo implements ProductDataAccess{
+public class POSProductDataAccessOdoo extends POSAbstractDataAccessOdoo implements ProductDataAccess {
+
+    public class Gson2PosProductParseModel extends Gson2PosAbstractParseImplement {
+        @Override
+        protected Gson createGson() {
+            GsonBuilder builder = new GsonBuilder();
+            builder.enableComplexMapKeySerialization();
+            builder.registerTypeAdapter(new TypeToken<List<Product>>() {
+            }
+                    .getType(), new ConfigProductConverter());
+            return builder.create();
+        }
+
+        private String PRODUCT_ID = "product_id";
+        private String PRODUCT_NAME = "product_name";
+        private String PRODUCT_SKU = "default_code";
+        private String PRODUCT_TYPE = "type";
+        public class ConfigProductConverter implements JsonDeserializer<List<Product>> {
+            @Override
+            public List<Product> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+                List<Product> listProduct = new ArrayList<>();
+                if (json.isJsonArray()) {
+                    JsonArray arr_product = json.getAsJsonArray();
+                    if (arr_product != null && arr_product.size() > 0) {
+                        for (JsonElement el_product : arr_product) {
+                            JsonObject obj_product = el_product.getAsJsonObject();
+                            Product product = new PosProduct();
+                            String id = obj_product.remove(PRODUCT_ID).getAsString();
+                            product.setID(id);
+                            String name = obj_product.remove(PRODUCT_NAME).getAsString();
+                            product.setName(name);
+                            String default_code = obj_product.remove(PRODUCT_SKU).getAsString();
+                            product.setSKU(default_code);
+                            String type = obj_product.remove(PRODUCT_TYPE).getAsString();
+                            product.setTypeID(type);
+                            
+                        }
+                    }
+                }
+                return listProduct;
+            }
+        }
+    }
+
     @Override
     public int count() throws ParseException, InstantiationException, IllegalAccessException, IOException {
         Connection connection = null;
@@ -239,7 +295,7 @@ public class POSProductDataAccessOdoo extends POSAbstractDataAccessOdoo implemen
                 statement.getParamBuilder().setFilterOrLike("default_code", finalSearchString);
             } else {
                 // TODO: tạm thời để search all
-                statement.getParamBuilder().setFilterEqual("categ_id", categoryId);
+                statement.getParamBuilder().setFilterOrEqual("pos_categ_id", categoryId);
             }
             paramBuilder = statement.getParamBuilder()
                     .setPage(currentPage)
