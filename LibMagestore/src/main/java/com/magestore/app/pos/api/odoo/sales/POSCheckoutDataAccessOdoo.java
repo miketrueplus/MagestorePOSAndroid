@@ -111,8 +111,19 @@ public class POSCheckoutDataAccessOdoo extends POSAbstractDataAccessOdoo impleme
     }
 
     @Override
-    public Checkout saveQuote(SaveQuoteParam quoteParam) throws ParseException, InstantiationException, IllegalAccessException, IOException {
-        return null;
+    public Checkout saveQuote(Checkout checkout, SaveQuoteParam quoteParam) throws ParseException, InstantiationException, IllegalAccessException, IOException {
+        float discount_percent;
+        float discount_amount;
+        if (quoteParam.getDiscountType().equals("%")) {
+            discount_percent = quoteParam.getDiscountValue();
+            discount_amount = (checkout.getGrandTotal() * quoteParam.getDiscountValue()) / 100;
+        } else {
+            discount_percent = (checkout.getGrandTotal() / quoteParam.getDiscountValue()) * 100;
+            discount_amount = quoteParam.getDiscountValue();
+        }
+        checkout.setDiscountOffline(0 - discount_percent);
+        checkout.setDiscountTotal(0 - discount_amount);
+        return checkout;
     }
 
     @Override

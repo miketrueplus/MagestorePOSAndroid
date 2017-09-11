@@ -300,7 +300,7 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
     }
 
     @Override
-    public Checkout saveQuote(SaveQuoteParam quoteParam) throws ParseException, InstantiationException, IllegalAccessException, IOException {
+    public Checkout saveQuote(Checkout checkout, SaveQuoteParam quoteParam) throws ParseException, InstantiationException, IllegalAccessException, IOException {
         Connection connection = null;
         Statement statement = null;
         ResultReading rp = null;
@@ -322,8 +322,8 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
             rp.setParseImplement(new Gson2PosCartParseModel());
             rp.setParseModel(PosDataCheckout.class);
             DataCheckout dataCheckout = (DataCheckout) rp.doParse();
-            Checkout checkout = dataCheckout.getCheckout();
-            return checkout;
+            Checkout ck = dataCheckout.getCheckout();
+            return ck;
         } catch (ConnectionException ex) {
             throw ex;
         } catch (IOException ex) {

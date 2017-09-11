@@ -133,7 +133,7 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         }
         quoteParam.setCurrencyId(ConfigUtil.getCurrentCurrency().getCode());
 
-        return checkoutDataAccess.saveQuote(quoteParam);
+        return checkoutDataAccess.saveQuote(checkout, quoteParam);
     }
 
     @Override

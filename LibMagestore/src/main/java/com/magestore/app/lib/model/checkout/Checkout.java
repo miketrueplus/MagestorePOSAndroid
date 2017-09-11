@@ -140,4 +140,7 @@ public interface Checkout extends Model {
 
     List<GiftCard> getListGiftCardUse();
     void setListGiftCardUse(List<GiftCard> listListGiftCardUse);
+
+    float getDiscountOffline();
+    void setDiscountOffline(float fDiscountOffline);
 }

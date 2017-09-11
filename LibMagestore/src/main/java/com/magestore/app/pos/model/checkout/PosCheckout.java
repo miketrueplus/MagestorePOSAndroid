@@ -133,6 +133,9 @@ public class PosCheckout extends PosAbstractModel implements Checkout {
     @Gson2PosExclude
     PosStoreCredit storecredit;
 
+    @Gson2PosExclude
+    float discount_offline;
+
     @Override
     public String getCustomerID() {
         return customer_id;
@@ -539,5 +542,15 @@ public class PosCheckout extends PosAbstractModel implements Checkout {
     @Override
     public void setListGiftCardUse(List<GiftCard> listListGiftCardUse) {
         list_gift_card_use = listListGiftCardUse;
+    }
+
+    @Override
+    public float getDiscountOffline() {
+        return discount_offline;
+    }
+
+    @Override
+    public void setDiscountOffline(float fDiscountOffline) {
+        discount_offline = fDiscountOffline;
     }
 }
