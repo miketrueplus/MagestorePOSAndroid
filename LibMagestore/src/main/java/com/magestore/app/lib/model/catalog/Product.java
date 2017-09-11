@@ -88,7 +88,11 @@ public interface Product extends Model, ParseModel {
 
     boolean isDecimal();
 
+    // product tax in odoo
     List<String> getTaxId();
     void setTaxId(List<String> listTaxId);
+
+    List<ProductTaxDetailOdoo> getTaxDetail();
+    void setTaxDetail(List<ProductTaxDetailOdoo> listTaxDetail);
 //    List<Stock> getStock();
 }

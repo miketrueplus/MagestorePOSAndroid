@@ -10,4 +10,26 @@ import com.magestore.app.pos.model.PosAbstractModel;
  */
 
 public class PosProductTaxDetailOdoo extends PosAbstractModel implements ProductTaxDetailOdoo {
+    String name;
+    float amount;
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public void setName(String strName) {
+        name = strName;
+    }
+
+    @Override
+    public float getAmount() {
+        return amount;
+    }
+
+    @Override
+    public void setAmount(float fAmount) {
+        amount = fAmount;
+    }
 }

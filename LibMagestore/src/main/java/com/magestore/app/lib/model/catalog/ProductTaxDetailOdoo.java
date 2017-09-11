@@ -8,5 +8,9 @@ import com.magestore.app.lib.model.Model;
  * dong.le@trueplus.vn
  */
 
-public interface ProductTaxDetailOdoo extends Model{
+public interface ProductTaxDetailOdoo extends Model {
+    String getName();
+    void setName(String strName);
+    float getAmount();
+    void setAmount(float fAmount);
 }

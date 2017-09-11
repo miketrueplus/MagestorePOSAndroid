@@ -113,7 +113,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         sp_shipping_method.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if(currentSelectShipping == i){
+                if (currentSelectShipping == i) {
                     getShippingMethod();
                 }
             }
@@ -183,6 +183,10 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
                 });
             }
         });
+
+        // check permisson need to ship, mark as ship
+        cb_pick_at_store.setVisibility(ConfigUtil.isNeedToShip() ? VISIBLE : GONE);
+        create_ship.setVisibility(ConfigUtil.isMarkAsShip() ? VISIBLE : GONE);
     }
 
     @Override
@@ -240,7 +244,11 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
     }
 
     public void isEnableCreatShip(boolean enable) {
-        create_ship.setVisibility(enable ? VISIBLE : GONE);
+        if (ConfigUtil.isMarkAsShip()) {
+            create_ship.setVisibility(enable ? VISIBLE : GONE);
+        } else {
+            create_ship.setVisibility(GONE);
+        }
     }
 
     public void isEnableCreateInvoice(boolean enable) {
@@ -267,7 +275,11 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
     }
 
     public void showPickAtStore(boolean isShow) {
-        cb_pick_at_store.setVisibility(isShow ? VISIBLE : GONE);
+        if (ConfigUtil.isNeedToShip()) {
+            cb_pick_at_store.setVisibility(isShow ? VISIBLE : GONE);
+        } else {
+            cb_pick_at_store.setVisibility(GONE);
+        }
     }
 
     public void showNotifiAddItems() {
@@ -420,7 +432,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         com.magestore.app.util.DialogUtil.confirm(getContext(), message, R.string.ok);
     }
 
-    public void resetCurrentSelectShipping(){
+    public void resetCurrentSelectShipping() {
         currentSelectShipping = -1;
     }
 }

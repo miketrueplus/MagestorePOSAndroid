@@ -1172,6 +1172,8 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
             ConfigUtil.setCreateOrder(true);
             ConfigUtil.setManageOrderOtherStaff(false);
             ConfigUtil.setCanUseRefund(true);
+            ConfigUtil.setNeedToShip(true);
+            ConfigUtil.setMarkAsShip(true);
             if (checkStaffPermiss(listPermisson, ALL_PERMISSON)) {
                 ConfigUtil.setManagerShiftAdjustment(true);
                 ConfigUtil.setManageOrderByMe(true);

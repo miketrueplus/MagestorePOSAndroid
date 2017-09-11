@@ -20,6 +20,7 @@ import com.magestore.app.lib.connection.Statement;
 import com.magestore.app.lib.model.catalog.DataProduct;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.model.catalog.ProductOption;
+import com.magestore.app.lib.model.catalog.ProductTaxDetailOdoo;
 import com.magestore.app.lib.parse.ParseException;
 import com.magestore.app.lib.resourcemodel.DataAccessException;
 import com.magestore.app.lib.resourcemodel.catalog.ProductDataAccess;
@@ -28,9 +29,8 @@ import com.magestore.app.pos.api.odoo.POSAbstractDataAccessOdoo;
 import com.magestore.app.pos.api.odoo.POSDataAccessSessionOdoo;
 import com.magestore.app.pos.model.catalog.PosDataProduct;
 import com.magestore.app.pos.model.catalog.PosProduct;
-import com.magestore.app.pos.model.catalog.PosProductTaxOdoo;
+import com.magestore.app.pos.model.catalog.PosProductTaxDetailOdoo;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosAbstractParseImplement;
-import com.magestore.app.pos.parse.gson2pos.Gson2PosListProduct;
 import com.magestore.app.util.StringUtil;
 
 import java.io.IOException;
@@ -66,6 +66,12 @@ public class POSProductDataAccessOdoo extends POSAbstractDataAccessOdoo implemen
         private String PRODUCT_DESCRIPTION = "description";
         private String PRODUCT_IMAGE = "image";
         private String PRODUCT_PRICE = "lst_price";
+        private String PRODUCT_TAX_ID = "taxes_id";
+        private String PRODUCT_TAX_DETAIL = "taxes_detail";
+        private String PRODUCT_TAX_DETAIL_ID = "id";
+        private String PRODUCT_TAX_DETAIL_NAME = "name";
+        private String PRODUCT_TAX_DETAIL_AMOUNT = "amount";
+
         public class ConfigProductConverter implements JsonDeserializer<List<PosProduct>> {
             @Override
             public List<PosProduct> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
@@ -75,7 +81,7 @@ public class POSProductDataAccessOdoo extends POSAbstractDataAccessOdoo implemen
                     if (arr_product != null && arr_product.size() > 0) {
                         for (JsonElement el_product : arr_product) {
                             JsonObject obj_product = el_product.getAsJsonObject();
-                            PosProductTaxOdoo product = new PosProductTaxOdoo();
+                            PosProduct product = new PosProduct();
                             String id = obj_product.remove(PRODUCT_ID).getAsString();
                             product.setID(id);
                             if (obj_product.has(PRODUCT_NAME)) {
@@ -109,8 +115,31 @@ public class POSProductDataAccessOdoo extends POSAbstractDataAccessOdoo implemen
                             product.setFinalPrice(price);
 
                             List<String> listTaxId = new ArrayList<>();
-                            listTaxId.add("1");
+                            JsonArray arr_tax_id = obj_product.getAsJsonArray(PRODUCT_TAX_ID);
+                            if (arr_tax_id != null && arr_tax_id.size() > 0) {
+                                for (JsonElement el_tax_id : arr_tax_id) {
+                                    String tax_id = el_tax_id.getAsString();
+                                    listTaxId.add(tax_id);
+                                }
+                            }
                             product.setTaxId(listTaxId);
+
+                            if (obj_product.has(PRODUCT_TAX_DETAIL)) {
+                                List<ProductTaxDetailOdoo> listTaxDetail = new ArrayList<>();
+                                JsonArray arr_tax_detail = obj_product.getAsJsonArray(PRODUCT_TAX_DETAIL);
+                                for (JsonElement el_tax_detail : arr_tax_detail) {
+                                    JsonObject obj_tax_detail = el_tax_detail.getAsJsonObject();
+                                    ProductTaxDetailOdoo taxDetailOdoo = new PosProductTaxDetailOdoo();
+                                    String tax_detail_id = obj_tax_detail.remove(PRODUCT_TAX_DETAIL_ID).getAsString();
+                                    taxDetailOdoo.setID(tax_detail_id);
+                                    String tax_detail_name = obj_tax_detail.remove(PRODUCT_TAX_DETAIL_NAME).getAsString();
+                                    taxDetailOdoo.setName(StringUtil.checkJsonData(tax_detail_name) ? tax_detail_name : "");
+                                    float tax_detail_amount = obj_tax_detail.remove(PRODUCT_TAX_DETAIL_AMOUNT).getAsFloat();
+                                    taxDetailOdoo.setAmount(tax_detail_amount);
+                                    listTaxDetail.add(taxDetailOdoo);
+                                }
+                                product.setTaxDetail(listTaxDetail);
+                            }
 
                             listProduct.add(product);
                         }

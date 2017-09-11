@@ -1047,6 +1047,8 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
         if (listPermisson.size() > 0) {
             ConfigUtil.setManageOrderByLocation(false);
             ConfigUtil.setManagerShiftAdjustment(true);
+            ConfigUtil.setNeedToShip(true);
+            ConfigUtil.setMarkAsShip(true);
             if (checkStaffPermiss(listPermisson, ALL_PERMISSON)) {
                 ConfigUtil.setCreateOrder(true);
                 ConfigUtil.setManagerAllOrder(true);

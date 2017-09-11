@@ -522,6 +522,11 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     }
 
     @Override
+    public void setRowTotal(float fRowTotal) {
+        row_total = fRowTotal;
+    }
+
+    @Override
     public void setType(String type) {
         this.type = type;
     }

@@ -107,7 +107,7 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         CheckoutDataAccess checkoutDataAccess = factory.generateCheckoutDataAccess();
 
-        return checkoutDataAccess.saveCart(quote);
+        return checkoutDataAccess.saveCart(checkout, quote);
     }
 
     @Override

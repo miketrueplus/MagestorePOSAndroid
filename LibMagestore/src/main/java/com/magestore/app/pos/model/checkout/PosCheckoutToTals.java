@@ -20,12 +20,27 @@ public class PosCheckoutToTals extends PosAbstractModel implements CheckoutTotal
     }
 
     @Override
+    public void setCode(String strCode) {
+        code = strCode;
+    }
+
+    @Override
     public String getTitle() {
         return title;
     }
 
     @Override
+    public void setTitle(String strTitle) {
+        title = strTitle;
+    }
+
+    @Override
     public float getValue() {
         return value;
+    }
+
+    @Override
+    public void setValue(float fValue) {
+        value = fValue;
     }
 }

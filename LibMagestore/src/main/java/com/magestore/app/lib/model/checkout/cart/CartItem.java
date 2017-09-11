@@ -135,6 +135,8 @@ public interface CartItem extends Model {
     String getProductId();
     String getType();
 
+    void setRowTotal(float fRowTotal);
+
     void setType(String type);
 
     void setTypeNormal();

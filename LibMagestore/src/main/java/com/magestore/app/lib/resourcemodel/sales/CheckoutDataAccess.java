@@ -22,7 +22,7 @@ import java.util.List;
 public interface CheckoutDataAccess extends DataAccess {
     boolean insert(Checkout... models) throws ParseException, InstantiationException, IllegalAccessException, IOException;
 
-    Checkout saveCart(Quote quote) throws ParseException, InstantiationException, IllegalAccessException, IOException;
+    Checkout saveCart(Checkout checkout, Quote quote) throws ParseException, InstantiationException, IllegalAccessException, IOException;
 
     Checkout saveQuote(SaveQuoteParam quoteParam) throws ParseException, InstantiationException, IllegalAccessException, IOException;
 

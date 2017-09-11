@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.model.catalog.ProductOption;
+import com.magestore.app.lib.model.catalog.ProductTaxDetailOdoo;
 import com.magestore.app.lib.model.inventory.Stock;
 import com.magestore.app.pos.model.PosAbstractModel;
 import com.magestore.app.pos.model.inventory.PosStock;
@@ -56,6 +57,9 @@ public class PosProduct extends PosAbstractModel implements Product {
     private String is_qty_decimal;
     @Gson2PosExclude
     private boolean isDecimal;
+
+    private List<String> taxes_id;
+    private List<ProductTaxDetailOdoo> taxes_detail;
 
     @Override
     public boolean isInStock() {
@@ -352,12 +356,22 @@ public class PosProduct extends PosAbstractModel implements Product {
 
     @Override
     public List<String> getTaxId() {
-        return null;
+        return taxes_id;
     }
 
     @Override
     public void setTaxId(List<String> listTaxId) {
+        taxes_id = listTaxId;
+    }
 
+    @Override
+    public List<ProductTaxDetailOdoo> getTaxDetail() {
+        return taxes_detail;
+    }
+
+    @Override
+    public void setTaxDetail(List<ProductTaxDetailOdoo> listTaxDetail) {
+        taxes_detail = listTaxDetail;
     }
 
 //    @Override

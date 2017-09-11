@@ -83,6 +83,8 @@ public class ConfigUtil {
     private static boolean mDiscountPerItem;
     private static boolean mApplyCustomPrice;
     private static boolean mManageShiftAdjustment;
+    private static boolean mNeedToShip;
+    private static boolean mMarkAsShip;
 
     // color Swatch
     private static List<ConfigProductOption> mColorSwatch;
@@ -958,6 +960,22 @@ public class ConfigUtil {
 
     public static void setManagerShiftAdjustment(boolean mManageShiftAdjustment) {
         ConfigUtil.mManageShiftAdjustment = mManageShiftAdjustment;
+    }
+
+    public static boolean isNeedToShip() {
+        return mNeedToShip;
+    }
+
+    public static void setNeedToShip(boolean mNeedToShip) {
+        ConfigUtil.mNeedToShip = mNeedToShip;
+    }
+
+    public static boolean isMarkAsShip() {
+        return mMarkAsShip;
+    }
+
+    public static void setMarkAsShip(boolean mMarkAsShip) {
+        ConfigUtil.mMarkAsShip = mMarkAsShip;
     }
 
     public static void setColorSwatch(List<ConfigProductOption> mColorSwatch) {

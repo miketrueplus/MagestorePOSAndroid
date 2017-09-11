@@ -10,6 +10,9 @@ import com.magestore.app.lib.model.Model;
 
 public interface CheckoutTotals extends Model {
     String getCode();
+    void setCode(String strCode);
     String getTitle();
+    void setTitle(String strTitle);
     float getValue();
+    void setValue(float fValue);
 }

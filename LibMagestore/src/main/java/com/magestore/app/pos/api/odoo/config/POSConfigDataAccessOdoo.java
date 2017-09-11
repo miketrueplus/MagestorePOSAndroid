@@ -1,6 +1,7 @@
 package com.magestore.app.pos.api.odoo.config;
 
 import com.google.gson.Gson;
+import com.google.gson.internal.LinkedTreeMap;
 import com.magestore.app.lib.connection.Connection;
 import com.magestore.app.lib.connection.ConnectionException;
 import com.magestore.app.lib.connection.ConnectionFactory;
@@ -19,6 +20,7 @@ import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.model.directory.Currency;
 import com.magestore.app.lib.model.directory.Region;
 import com.magestore.app.lib.model.setting.ChangeCurrency;
+import com.magestore.app.lib.model.staff.Location;
 import com.magestore.app.lib.model.staff.Staff;
 import com.magestore.app.lib.model.staff.StaffPermisson;
 import com.magestore.app.lib.parse.ParseException;
@@ -34,6 +36,8 @@ import com.magestore.app.pos.model.customer.PosCustomer;
 import com.magestore.app.pos.model.customer.PosCustomerAddress;
 import com.magestore.app.pos.model.directory.PosCurrency;
 import com.magestore.app.pos.model.directory.PosRegion;
+import com.magestore.app.pos.model.staff.PosLocation;
+import com.magestore.app.pos.model.staff.PosStaff;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosConfigParseImplement;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.StringUtil;
@@ -53,6 +57,7 @@ import java.util.Map;
 
 public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implements ConfigDataAccess {
     private static Config mConfig;
+    private static Staff mStaff;
     // all permission
     private static String ALL_PERMISSON = "Magestore_Webpos::all";
     // create order
@@ -147,12 +152,13 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
 
     @Override
     public Staff getStaff() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
-        return null;
+        mStaff = getStaffFake();
+        return mStaff;
     }
 
     @Override
     public void setStaff(Staff staff) throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
-
+        mStaff = staff;
     }
 
     @Override
@@ -207,17 +213,17 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
 
     @Override
     public Map<String, String> getConfigCCTypes() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
-        return null;
+        return getCCTypeFake();
     }
 
     @Override
     public List<String> getConfigMonths() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
-        return null;
+        return getConfigMonthFake();
     }
 
     @Override
     public Map<String, String> getConfigCCYears() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
-        return null;
+        return getConfigYearFake();
     }
 
     @Override
@@ -242,7 +248,8 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
 
     @Override
     public float getConfigMaximumDiscount() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
-        return 0;
+        // default maxmimum discount = 100%
+        return 100;
     }
 
     @Override
@@ -280,6 +287,8 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
         if (listPermisson.size() > 0) {
             ConfigUtil.setManageOrderByLocation(false);
             ConfigUtil.setManagerShiftAdjustment(true);
+            ConfigUtil.setNeedToShip(false);
+            ConfigUtil.setMarkAsShip(false);
             if (checkStaffPermiss(listPermisson, ALL_PERMISSON)) {
                 ConfigUtil.setCreateOrder(true);
                 ConfigUtil.setManagerAllOrder(true);
@@ -314,6 +323,18 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
 //                ConfigUtil.setManagerShiftAdjustment(checkStaffPermiss(listPermisson, MANAGE_SHIFT_ADJUSTMENT));
             }
         }
+    }
+
+    private Staff getStaffFake(){
+        Staff staff = new PosStaff();
+        staff.setStaffId("4");
+        staff.setStaffName("jessie");
+        Location location = new PosLocation();
+        location.setLocationId("1");
+        location.setLocationName("Default Location");
+        location.setLocationAddress("Default Location Address");
+        staff.setStaffLocation(location);
+        return staff;
     }
 
     private boolean checkStaffPermiss(List<String> listPermisson, String permisson) {
@@ -406,7 +427,7 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
     }
 
     private Customer getCustomerGuestFake() {
-        String customer_id = "185";
+        String customer_id = "11";
         String email = "guest@example.com";
         String first_name = "Guest";
         String last_name = "POS";
@@ -453,5 +474,26 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
         List<String> listPermisson = new ArrayList<>();
         listPermisson.add(ALL_PERMISSON);
         return listPermisson;
+    }
+
+    private Map<String, String> getConfigYearFake(){
+        Map<String, String> listCCYears = new LinkedTreeMap<>();
+        listCCYears.put("2017", "2017");
+        listCCYears.put("2018", "2018");
+        listCCYears.put("2019", "2019");
+        return listCCYears;
+    }
+
+    private List<String> getConfigMonthFake(){
+        List<String> listMonth = new ArrayList<>();
+        listMonth.add("01 - January");
+        listMonth.add("02 - February");
+        return listMonth;
+    }
+
+    private Map<String, String> getCCTypeFake(){
+        Map<String, String> listCC = new LinkedTreeMap<>();
+        listCC.put("VI", "Visa");
+        return listCC;
     }
 }
