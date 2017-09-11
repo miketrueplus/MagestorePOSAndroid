@@ -21,6 +21,7 @@ import com.magestore.app.lib.resourcemodel.sales.CheckoutDataAccess;
 import com.magestore.app.pos.api.odoo.POSAPIOdoo;
 import com.magestore.app.pos.api.odoo.POSAbstractDataAccessOdoo;
 import com.magestore.app.pos.api.odoo.POSDataAccessSessionOdoo;
+import com.magestore.app.pos.model.catalog.PosProduct;
 import com.magestore.app.pos.model.checkout.PosCheckoutPayment;
 import com.magestore.app.util.ConfigUtil;
 
@@ -196,10 +197,19 @@ public class POSCheckoutDataAccessOdoo extends POSAbstractDataAccessOdoo impleme
                 productEntity.tax_ids = product.getTaxId();
                 if (cartItem.isCustomPrice()) {
                     productEntity.price_unit = cartItem.getCustomPrice();
+                    productEntity.discount = (cartItem.getCustomPrice() / cartItem.getDiscountAmount()) * 100;
                 } else {
                     productEntity.price_unit = product.getFinalPrice();
                 }
                 listProductEntity.add(productEntity);
+            }
+            if (checkout.getDiscountTotal() > 0) {
+                ProductEntity productDiscount = new ProductEntity();
+                // TODO: fake data phải lấy discount_product_id theo pos
+                productDiscount.product_id = "26";
+                productDiscount.qty = 1;
+                productDiscount.price_unit = checkout.getDiscountTotal();
+                listProductEntity.add(productDiscount);
             }
             placeOrderEntity.partner_id = checkout.getCustomerID();
             placeOrderEntity.lines = listProductEntity;
