@@ -156,6 +156,7 @@ public interface CartItem extends Model {
 
     // Order history
     String getName();
+    void setName(String strName);
     String getSku();
     float getSubtotal();
     float getRowTotal();

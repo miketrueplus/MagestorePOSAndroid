@@ -25,8 +25,10 @@ public interface Order extends Model {
     OrderItemsInfoBuy getItemsInfoBuy();
 
     float getWebposChange();
+    void setWebposChange(float fWebposChange);
 
     float getWebposBaseChange();
+    void setWebposBaseChange(float fWebposBaseChange);
 
     float getGiftVoucherDiscount();
 
@@ -111,6 +113,7 @@ public interface Order extends Model {
     String getInvoiceId();
 
     String getIncrementId();
+    void setIncrementId(String strIncrementId);
 
     String getCustomerFirstname();
 
@@ -129,8 +132,13 @@ public interface Order extends Model {
     void setCustomerEmail(String strEmail);
 
     String getStatus();
+    void setStatus(String strStatus);
+
+    String getWebposStaffId();
+    void setWebposStaffId(String strWebposStaffId);
 
     String getWebposStaffName();
+    void setWebposStaffName(String strWebposStaffName);
 
     String getWebposDeliveryDate();
 
@@ -169,8 +177,10 @@ public interface Order extends Model {
     float getBaseTotalInvoiced();
 
     float getTotalPaid();
+    void setTotalPaid(float fTotalPaid);
 
     float getBaseTotalPaid();
+    void setBaseTotalPaid(float fBaseTotalPaid);
 
     float getTotalRefunded();
 

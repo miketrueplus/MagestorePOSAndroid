@@ -21,10 +21,8 @@ import com.magestore.app.lib.resourcemodel.sales.CheckoutDataAccess;
 import com.magestore.app.pos.api.odoo.POSAPIOdoo;
 import com.magestore.app.pos.api.odoo.POSAbstractDataAccessOdoo;
 import com.magestore.app.pos.api.odoo.POSDataAccessSessionOdoo;
-import com.magestore.app.pos.model.catalog.PosProduct;
 import com.magestore.app.pos.model.checkout.PosCheckoutPayment;
 import com.magestore.app.util.ConfigUtil;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +44,7 @@ public class POSCheckoutDataAccessOdoo extends POSAbstractDataAccessOdoo impleme
         List<ProductEntity> lines;
         float amount_tax;
         float amount_return;
-        boolean is_create_invoice;
+        boolean to_invoice;
     }
 
     private class PaymentEntity {
@@ -163,6 +161,7 @@ public class POSCheckoutDataAccessOdoo extends POSAbstractDataAccessOdoo impleme
             // set data
             List<PaymentEntity> listPaymentEntity = new ArrayList<>();
             List<ProductEntity> listProductEntity = new ArrayList<>();
+            List<SerialNumberEntity> listSerialNumber = new ArrayList<>();
             PlaceOrderEntity placeOrderEntity = new PlaceOrderEntity();
             float amount_paid;
             float amount_return;
@@ -201,6 +200,7 @@ public class POSCheckoutDataAccessOdoo extends POSAbstractDataAccessOdoo impleme
                 } else {
                     productEntity.price_unit = product.getFinalPrice();
                 }
+                productEntity.pack_lot_ids = listSerialNumber;
                 listProductEntity.add(productEntity);
             }
             if (checkout.getDiscountTotal() > 0) {
@@ -209,13 +209,14 @@ public class POSCheckoutDataAccessOdoo extends POSAbstractDataAccessOdoo impleme
                 productDiscount.product_id = "26";
                 productDiscount.qty = 1;
                 productDiscount.price_unit = checkout.getDiscountTotal();
+                productDiscount.pack_lot_ids = listSerialNumber;
                 listProductEntity.add(productDiscount);
             }
             placeOrderEntity.partner_id = checkout.getCustomerID();
             placeOrderEntity.lines = listProductEntity;
             placeOrderEntity.amount_tax = checkout.getTaxTotal();
             placeOrderEntity.amount_return = amount_return;
-            placeOrderEntity.is_create_invoice = checkout.getCreateInvoice().equals("1") ? true : false;
+            placeOrderEntity.to_invoice = checkout.getCreateInvoice().equals("1") ? true : false;
 
             // TODO: fake pos_id = 144 open
             placeOrderEntity.pos_session_id = "144";

@@ -578,6 +578,11 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     }
 
     @Override
+    public void setName(String strName) {
+        name = strName;
+    }
+
+    @Override
     public String getSku() {
         return (sku != null ? sku : (getProduct() != null ? getProduct().getSKU() : StringUtil.STRING_EMPTY));
     }

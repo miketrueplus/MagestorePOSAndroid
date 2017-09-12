@@ -185,6 +185,12 @@ public class PosOrder extends PosAbstractModel implements Order {
     }
 
     @Override
+    public void setID(String id) {
+        super.setID(id);
+        entity_id = id;
+    }
+
+    @Override
     public Order newInstance() {
         return new PosOrder();
     }
@@ -210,8 +216,18 @@ public class PosOrder extends PosAbstractModel implements Order {
     }
 
     @Override
+    public void setWebposChange(float fWebposChange) {
+        webpos_base_change = fWebposChange;
+    }
+
+    @Override
     public float getWebposBaseChange() {
         return webpos_base_change;
+    }
+
+    @Override
+    public void setWebposBaseChange(float fWebposBaseChange) {
+        webpos_base_change = fWebposBaseChange;
     }
 
     @Override
@@ -465,6 +481,11 @@ public class PosOrder extends PosAbstractModel implements Order {
     }
 
     @Override
+    public void setIncrementId(String strIncrementId) {
+        increment_id = strIncrementId;
+    }
+
+    @Override
     public String getCustomerFirstname() {
         return customer_firstname;
     }
@@ -515,8 +536,28 @@ public class PosOrder extends PosAbstractModel implements Order {
     }
 
     @Override
+    public void setStatus(String strStatus) {
+        status = strStatus;
+    }
+
+    @Override
+    public String getWebposStaffId() {
+        return webpos_staff_id;
+    }
+
+    @Override
+    public void setWebposStaffId(String strWebposStaffId) {
+        webpos_staff_id = strWebposStaffId;
+    }
+
+    @Override
     public String getWebposStaffName() {
         return webpos_staff_name;
+    }
+
+    @Override
+    public void setWebposStaffName(String strWebposStaffName) {
+        webpos_staff_name = strWebposStaffName;
     }
 
     @Override
@@ -666,8 +707,18 @@ public class PosOrder extends PosAbstractModel implements Order {
     }
 
     @Override
+    public void setTotalPaid(float fTotalPaid) {
+        total_paid = fTotalPaid;
+    }
+
+    @Override
     public float getBaseTotalPaid() {
         return base_total_paid;
+    }
+
+    @Override
+    public void setBaseTotalPaid(float fBaseTotalPaid) {
+        base_total_paid = fBaseTotalPaid;
     }
 
     @Override

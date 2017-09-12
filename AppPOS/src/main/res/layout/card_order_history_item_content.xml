@@ -7,6 +7,8 @@
 
         <import type="com.magestore.app.util.ConfigUtil" />
 
+        <import type="com.magestore.app.util.StringUtil" />
+
         <variable
             name="orderItem"
             type="com.magestore.app.lib.model.checkout.cart.CartItem" />
@@ -56,6 +58,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@{orderItem.getSku()}"
+                        android:visibility="@{StringUtil.isNullOrEmpty(orderItem.getSku()) ? View.GONE : View.VISIBLE}"
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/order_content_table_text_size"
                         android:textStyle="italic" />
