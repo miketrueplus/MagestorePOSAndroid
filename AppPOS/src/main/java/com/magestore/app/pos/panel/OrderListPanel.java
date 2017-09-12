@@ -309,9 +309,9 @@ public class OrderListPanel extends AbstractListPanel<Order> implements View.OnC
             ll_status_complete.setVisibility(VISIBLE);
             String name = listStatus.get("complete");
             if (name.equals("invoiced")) {
-                tv_status_complete.setText(getContext().getText(R.string.order_status_complete));
-            } else {
                 tv_status_complete.setText(getContext().getText(R.string.order_status_invoiced));
+            } else {
+                tv_status_complete.setText(getContext().getText(R.string.order_status_complete));
             }
         } else {
             ll_status_complete.setVisibility(GONE);
