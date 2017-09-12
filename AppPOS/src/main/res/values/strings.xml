@@ -164,6 +164,9 @@
     <string name="order_cancel_comment_title">Reason to cancel order</string>
     <string name="order_cancel_success">The order has been canceled successfully.</string>
     <string name="order_status_pending">Pending</string>
+    <string name="order_status_paid">Paid</string>
+    <string name="order_status_invoiced">Invoiced</string>
+    <string name="order_status_done">Posted</string>
     <string name="order_status_processing">Processing</string>
     <string name="order_status_complete">Complete</string>
     <string name="order_status_cancelled">Cancelled</string>

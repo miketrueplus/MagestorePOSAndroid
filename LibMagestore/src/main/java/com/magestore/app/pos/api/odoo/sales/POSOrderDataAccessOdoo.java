@@ -103,7 +103,17 @@ public class POSOrderDataAccessOdoo extends POSAbstractDataAccessOdoo implements
                             String create_at = obj_order.remove(ORDER_CREATE_AT).getAsString();
                             order.setCreateAt(create_at);
                             String status = obj_order.remove(ORDER_STATUS).getAsString();
-                            order.setStatus(status);
+                            String order_status = "";
+                            if (status.equals("paid")) {
+                                order_status = "pending";
+                            } else if (status.equals("invoiced")) {
+                                order_status = "complete";
+                            } else if (status.equals("cancel")) {
+                                order_status = "canceled";
+                            } else if (status.equals("done")) {
+                                order_status = "closed";
+                            }
+                            order.setStatus(order_status);
                             float grand_total = obj_order.remove(ORDER_GRAND_TOTAL).getAsFloat();
                             order.setGrandTotal(grand_total);
                             order.setBaseGrandTotal(ConfigUtil.convertToBasePrice(grand_total));

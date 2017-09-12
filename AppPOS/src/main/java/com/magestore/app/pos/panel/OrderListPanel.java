@@ -18,6 +18,7 @@ import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.StringUtil;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Panel hiển thị danh sách đơn hàng chi tiết
@@ -107,6 +108,7 @@ public class OrderListPanel extends AbstractListPanel<Order> implements View.OnC
         ll_status_cancelled.setOnClickListener(this);
         ll_status_closed.setOnClickListener(this);
         ll_status_not_sync.setOnClickListener(this);
+        setDataStatus();
     }
 
     @Override
@@ -288,5 +290,75 @@ public class OrderListPanel extends AbstractListPanel<Order> implements View.OnC
     public void setSelectPosition() {
         setMintSelectedPos(1);
         notifyDataSetChanged();
+    }
+
+    private void setDataStatus() {
+        Map<String, String> listStatus = ConfigUtil.getListOrderStatus();
+        if (listStatus.get("pending") != null) {
+            ll_status_pending.setVisibility(VISIBLE);
+            String name = listStatus.get("pending");
+            if (name.equals("paid")) {
+                tv_status_pending.setText(getContext().getText(R.string.order_status_paid));
+            } else {
+                tv_status_pending.setText(getContext().getText(R.string.order_status_pending));
+            }
+        } else {
+            ll_status_pending.setVisibility(GONE);
+        }
+        if (listStatus.get("complete") != null) {
+            ll_status_complete.setVisibility(VISIBLE);
+            String name = listStatus.get("complete");
+            if (name.equals("invoiced")) {
+                tv_status_complete.setText(getContext().getText(R.string.order_status_complete));
+            } else {
+                tv_status_complete.setText(getContext().getText(R.string.order_status_invoiced));
+            }
+        } else {
+            ll_status_complete.setVisibility(GONE);
+        }
+        if (listStatus.get("canceled") != null) {
+            ll_status_cancelled.setVisibility(VISIBLE);
+            String name = listStatus.get("canceled");
+            if (name.equals("cancel")) {
+                tv_status_cancelled.setText(getContext().getText(R.string.order_status_cancelled));
+            } else {
+                tv_status_cancelled.setText(getContext().getText(R.string.order_status_cancelled));
+            }
+        } else {
+            ll_status_cancelled.setVisibility(GONE);
+        }
+        if (listStatus.get("closed") != null) {
+            ll_status_closed.setVisibility(VISIBLE);
+            String name = listStatus.get("closed");
+            if (name.equals("closed")) {
+                tv_status_closed.setText(getContext().getText(R.string.order_status_done));
+            } else {
+                tv_status_closed.setText(getContext().getText(R.string.order_status_closed));
+            }
+        } else {
+            ll_status_closed.setVisibility(GONE);
+        }
+        if (listStatus.get("processing") != null) {
+            ll_status_processing.setVisibility(VISIBLE);
+            String name = listStatus.get("processing");
+            if (name.equals("processing")) {
+                tv_status_processing.setText(getContext().getText(R.string.order_status_processing));
+            } else {
+                tv_status_processing.setText(getContext().getText(R.string.order_status_processing));
+            }
+        } else {
+            ll_status_processing.setVisibility(GONE);
+        }
+        if (listStatus.get("not_sync") != null) {
+            ll_status_not_sync.setVisibility(VISIBLE);
+            String name = listStatus.get("not_sync");
+            if (name.equals("not_sync")) {
+                tv_status_not_sync.setText(getContext().getText(R.string.order_status_not_sync));
+            } else {
+                tv_status_not_sync.setText(getContext().getText(R.string.order_status_not_sync));
+            }
+        } else {
+            ll_status_not_sync.setVisibility(GONE);
+        }
     }
 }

@@ -3,6 +3,7 @@ package com.magestore.app.pos.api.m1.config;
 import android.util.Base64;
 
 import com.google.gson.Gson;
+import com.google.gson.internal.LinkedHashTreeMap;
 import com.google.gson.internal.LinkedTreeMap;
 import com.magestore.app.lib.connection.Connection;
 import com.magestore.app.lib.connection.ConnectionException;
@@ -1083,6 +1084,18 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
 //                ConfigUtil.setManagerShiftAdjustment(checkStaffPermiss(listPermisson, MANAGE_SHIFT_ADJUSTMENT));
             }
         }
+    }
+
+    @Override
+    public Map<String, String> getConfigStatusOrder() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException{
+        Map<String, String> listStatus = new LinkedHashTreeMap<>();
+        listStatus.put("pending", "pending");
+        listStatus.put("processing", "processing");
+        listStatus.put("complete", "complete");
+        listStatus.put("canceled", "canceled");
+        listStatus.put("closed", "closed");
+        listStatus.put("not_sync", "not_sync");
+        return listStatus;
     }
 
     private boolean checkStaffPermiss(List<String> listPermisson, String permisson) {

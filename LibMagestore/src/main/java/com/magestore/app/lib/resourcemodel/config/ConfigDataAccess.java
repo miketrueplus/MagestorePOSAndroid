@@ -61,4 +61,5 @@ public interface ConfigDataAccess extends DataAccess {
     boolean getConfigSession() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     boolean getConfigDeleteOrder() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     void getConfigStaffPermisson(List<String> listPermisson) throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
+    Map<String, String> getConfigStatusOrder() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
 }

@@ -86,6 +86,7 @@ public class POSConfigService extends AbstractService implements ConfigService {
             ConfigUtil.setEnableStoreCredit(getConfigStoreCredit());
             ConfigUtil.setEnableRewardPoint(getConfigRewardPoint());
         }
+        ConfigUtil.setListOrderStatus(getListOrderStatus());
         ConfigUtil.setEnableSession(getConfigSession());
         ConfigUtil.setEnableDeleteOrder(getConfigDeleteOrder());
         if (!StringUtil.isNullOrEmpty(getCurrentCurrencyCode())) {
@@ -329,7 +330,7 @@ public class POSConfigService extends AbstractService implements ConfigService {
     }
 
     @Override
-    public void getConfigStaffPermisson(List<String> listPermisson) throws InstantiationException, IllegalAccessException, IOException, ParseException{
+    public void getConfigStaffPermisson(List<String> listPermisson) throws InstantiationException, IllegalAccessException, IOException, ParseException {
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
         configDataAccess.getConfigStaffPermisson(listPermisson);
@@ -561,5 +562,11 @@ public class POSConfigService extends AbstractService implements ConfigService {
         checkoutPaymentList.add(payment);
         return checkoutPaymentList;
 
+    }
+
+    public Map<String, String> getListOrderStatus() throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
+        return configDataAccess.getConfigStatusOrder();
     }
 }

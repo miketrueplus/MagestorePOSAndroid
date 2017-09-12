@@ -1,6 +1,7 @@
 package com.magestore.app.pos.api.odoo.config;
 
 import com.google.gson.Gson;
+import com.google.gson.internal.LinkedHashTreeMap;
 import com.google.gson.internal.LinkedTreeMap;
 import com.magestore.app.lib.connection.Connection;
 import com.magestore.app.lib.connection.ConnectionException;
@@ -323,6 +324,16 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
 //                ConfigUtil.setManagerShiftAdjustment(checkStaffPermiss(listPermisson, MANAGE_SHIFT_ADJUSTMENT));
             }
         }
+    }
+
+    @Override
+    public Map<String, String> getConfigStatusOrder() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException{
+        Map<String, String> listStatus = new LinkedHashTreeMap<>();
+        listStatus.put("canceled", "cancel");
+        listStatus.put("pending", "paid");
+        listStatus.put("complete", "invoiced");
+        listStatus.put("closed", "done");
+        return listStatus;
     }
 
     private Staff getStaffFake(){

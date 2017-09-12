@@ -24,6 +24,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 
 /**
@@ -85,6 +86,9 @@ public class ConfigUtil {
     private static boolean mManageShiftAdjustment;
     private static boolean mNeedToShip;
     private static boolean mMarkAsShip;
+
+    // order status
+    private static Map<String, String> mListOrderStatus;
 
     // color Swatch
     private static List<ConfigProductOption> mColorSwatch;
@@ -976,6 +980,14 @@ public class ConfigUtil {
 
     public static void setMarkAsShip(boolean mMarkAsShip) {
         ConfigUtil.mMarkAsShip = mMarkAsShip;
+    }
+
+    public static void setListOrderStatus(Map<String, String> mListOrderStatus) {
+        ConfigUtil.mListOrderStatus = mListOrderStatus;
+    }
+
+    public static Map<String, String> getListOrderStatus() {
+        return mListOrderStatus;
     }
 
     public static void setColorSwatch(List<ConfigProductOption> mColorSwatch) {
