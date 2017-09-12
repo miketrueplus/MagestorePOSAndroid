@@ -94,5 +94,8 @@ public interface Product extends Model, ParseModel {
 
     List<ProductTaxDetailOdoo> getTaxDetail();
     void setTaxDetail(List<ProductTaxDetailOdoo> listTaxDetail);
+
+    float getTotalTax();
+    void setTotalTax(float fTotalTax);
 //    List<Stock> getStock();
 }

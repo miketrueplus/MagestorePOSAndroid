@@ -20,7 +20,7 @@ public class POSAPIOdoo {
     public static final String REST_LOGIN = "api/login/";
 
     // API order
-    public static final String REST_ORDER_GET_LISTING = "api/pos-orders/";
+    public static final String REST_ORDER_GET_LISTING = "api/pos-orders/?";
 
     // API Checkout
     public static final String REST_CHECK_OUT_PLACE_ORDER = "api/pos-create-order/";

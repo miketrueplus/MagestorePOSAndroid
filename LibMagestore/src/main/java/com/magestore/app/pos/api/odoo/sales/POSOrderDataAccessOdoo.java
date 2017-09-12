@@ -39,8 +39,6 @@ import com.magestore.app.pos.model.checkout.cart.PosCartItem;
 import com.magestore.app.pos.model.sales.PosDataOrder;
 import com.magestore.app.pos.model.sales.PosOrder;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosAbstractParseImplement;
-import com.magestore.app.pos.parse.gson2pos.Gson2PosListOrder;
-import com.magestore.app.pos.parse.gson2pos.Gson2PosOrderParseModel;
 import com.magestore.app.util.ConfigUtil;
 
 import java.io.IOException;
@@ -80,6 +78,11 @@ public class POSOrderDataAccessOdoo extends POSAbstractDataAccessOdoo implements
         private String ORDER_ITEMS = "lines";
         private String PRODUCT_ID = "product_id";
         private String PRODUCT_NAME = "product_name";
+        private String PRODUC_UNIT_PRICE = "price_unit";
+        private String PRODUCT_SUBTOTAL = "price_subtotal";
+        private String PRODUCT_SUTOTAL_INCl = "price_subtotal_incl";
+        private String PRODUCT_DISCOUNT = "discount";
+        private String PRODUCT_QTY = "qty";
 
         public class OrderConverter implements JsonDeserializer<List<PosOrder>> {
             @Override
@@ -88,6 +91,8 @@ public class POSOrderDataAccessOdoo extends POSAbstractDataAccessOdoo implements
                 if (json.isJsonArray()) {
                     JsonArray arr_order = json.getAsJsonArray();
                     if (arr_order != null && arr_order.size() > 0) {
+                        float total_subtotal = 0;
+                        float total_discount = 0;
                         for (JsonElement el_order : arr_order) {
                             JsonObject obj_order = el_order.getAsJsonObject();
                             PosOrder order = new PosOrder();
@@ -120,19 +125,45 @@ public class POSOrderDataAccessOdoo extends POSAbstractDataAccessOdoo implements
                             if (arr_item != null && arr_item.size() > 0) {
                                 for (JsonElement el_item : arr_item) {
                                     JsonObject obj_item = el_item.getAsJsonObject();
-                                    PosCartItem cartItem = new PosCartItem();
-                                    if (obj_item.has(PRODUCT_ID)) {
-                                        String item_id = obj_item.remove(PRODUCT_ID).getAsString();
-                                        cartItem.setID(item_id);
+                                    float unit_price = obj_item.remove(PRODUC_UNIT_PRICE).getAsFloat();
+                                    if (unit_price > 0) {
+                                        PosCartItem cartItem = new PosCartItem();
+                                        if (obj_item.has(PRODUCT_ID)) {
+                                            String item_id = obj_item.remove(PRODUCT_ID).getAsString();
+                                            cartItem.setID(item_id);
+                                        }
+                                        if (obj_item.has(PRODUCT_NAME)) {
+                                            String item_name = obj_item.remove(PRODUCT_NAME).getAsString();
+                                            cartItem.setName(item_name);
+                                        }
+                                        float qty = obj_item.remove(PRODUCT_QTY).getAsFloat();
+                                        cartItem.setQuantity(qty);
+                                        cartItem.setQtyOrdered(qty);
+                                        cartItem.setOriginalPrice(unit_price);
+                                        // TODO: thiếu + tax
+                                        cartItem.setBasePriceInclTax(ConfigUtil.convertToBasePrice(unit_price));
+                                        float product_subtotal = obj_item.remove(PRODUCT_SUBTOTAL).getAsFloat();
+                                        cartItem.setBaseSubtotal(ConfigUtil.convertToBasePrice(product_subtotal));
+                                        float product_subtotal_incl = obj_item.remove(PRODUCT_SUTOTAL_INCl).getAsFloat();
+                                        cartItem.setRowTotal(product_subtotal_incl);
+                                        cartItem.setBaseRowTotalInclTax(ConfigUtil.convertToBasePrice(product_subtotal_incl));
+                                        float product_discount_percent = obj_item.remove(PRODUCT_DISCOUNT).getAsFloat();
+                                        // TODO: thiếu + tax của từng sản phẩm
+                                        float product_discount = ((unit_price * qty) * product_discount_percent) / 100;
+                                        cartItem.setBaseDiscountAmount(ConfigUtil.convertToBasePrice(product_discount));
+                                        cartItem.setDiscountAmount(product_discount);
+                                        total_subtotal += product_subtotal;
+                                        listItem.add(cartItem);
+                                    } else {
+                                        total_discount = unit_price;
                                     }
-                                    if (obj_item.has(PRODUCT_NAME)) {
-                                        String item_name = obj_item.remove(PRODUCT_NAME).getAsString();
-                                        cartItem.setName(item_name);
-                                    }
-                                    listItem.add(cartItem);
                                 }
                             }
+                            order.setDiscountAmount(total_discount);
+                            order.setBaseDiscountAmount(ConfigUtil.convertToBasePrice(total_discount));
+                            order.setBaseSubtotal(ConfigUtil.convertToBasePrice(total_subtotal));
                             order.setOrderItem(listItem);
+                            listOrder.add(order);
                         }
                     }
                 }

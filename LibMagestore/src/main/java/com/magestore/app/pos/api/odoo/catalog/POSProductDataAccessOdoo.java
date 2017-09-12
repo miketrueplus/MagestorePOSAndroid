@@ -127,6 +127,7 @@ public class POSProductDataAccessOdoo extends POSAbstractDataAccessOdoo implemen
                             if (obj_product.has(PRODUCT_TAX_DETAIL)) {
                                 List<ProductTaxDetailOdoo> listTaxDetail = new ArrayList<>();
                                 JsonArray arr_tax_detail = obj_product.getAsJsonArray(PRODUCT_TAX_DETAIL);
+                                float total_tax = 0;
                                 for (JsonElement el_tax_detail : arr_tax_detail) {
                                     JsonObject obj_tax_detail = el_tax_detail.getAsJsonObject();
                                     ProductTaxDetailOdoo taxDetailOdoo = new PosProductTaxDetailOdoo();
@@ -136,8 +137,10 @@ public class POSProductDataAccessOdoo extends POSAbstractDataAccessOdoo implemen
                                     taxDetailOdoo.setName(StringUtil.checkJsonData(tax_detail_name) ? tax_detail_name : "");
                                     float tax_detail_amount = obj_tax_detail.remove(PRODUCT_TAX_DETAIL_AMOUNT).getAsFloat();
                                     taxDetailOdoo.setAmount(tax_detail_amount);
+                                    total_tax += tax_detail_amount;
                                     listTaxDetail.add(taxDetailOdoo);
                                 }
+                                product.setTotalTax(total_tax);
                                 product.setTaxDetail(listTaxDetail);
                             }
 

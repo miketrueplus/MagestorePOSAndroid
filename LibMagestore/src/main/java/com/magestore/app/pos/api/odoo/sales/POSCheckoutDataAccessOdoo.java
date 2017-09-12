@@ -196,7 +196,7 @@ public class POSCheckoutDataAccessOdoo extends POSAbstractDataAccessOdoo impleme
                 productEntity.tax_ids = product.getTaxId();
                 if (cartItem.isCustomPrice()) {
                     productEntity.price_unit = cartItem.getCustomPrice();
-                    productEntity.discount = (cartItem.getCustomPrice() / cartItem.getDiscountAmount()) * 100;
+                    productEntity.discount = (((cartItem.getCustomPrice() + product.getTotalTax()) * cartItem.getQuantity()) / cartItem.getDiscountAmount()) * 100;
                 } else {
                     productEntity.price_unit = product.getFinalPrice();
                 }
@@ -218,8 +218,8 @@ public class POSCheckoutDataAccessOdoo extends POSAbstractDataAccessOdoo impleme
             placeOrderEntity.amount_return = amount_return;
             placeOrderEntity.to_invoice = checkout.getCreateInvoice().equals("1") ? true : false;
 
-            // TODO: fake pos_id = 144 open
-            placeOrderEntity.pos_session_id = "144";
+            // TODO: fake pos_session_id = 157 open
+            placeOrderEntity.pos_session_id = "157";
 
             rp = statement.execute(placeOrderEntity);
             String data = rp.readResult2String();

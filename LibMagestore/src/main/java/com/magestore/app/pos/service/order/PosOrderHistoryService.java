@@ -242,10 +242,12 @@ public class PosOrderHistoryService extends AbstractService implements OrderHist
         OrderDataAccess orderDataAccess = factory.generateOrderDataAccess();
         List<CheckoutPayment> nListPayment = new ArrayList<>();
         List<CheckoutPayment> listPayment = orderDataAccess.retrievePaymentMethod();
-        if (listPayment.size() > 0) {
-            for (CheckoutPayment payment : listPayment) {
-                if (!payment.getType().equals("1")) {
-                    nListPayment.add(payment);
+        if(listPayment != null && listPayment.size() > 0){
+            if (listPayment.size() > 0) {
+                for (CheckoutPayment payment : listPayment) {
+                    if (!payment.getType().equals("1")) {
+                        nListPayment.add(payment);
+                    }
                 }
             }
         }

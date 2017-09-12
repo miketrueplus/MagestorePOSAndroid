@@ -60,6 +60,7 @@ public class PosProduct extends PosAbstractModel implements Product {
 
     private List<String> taxes_id;
     private List<ProductTaxDetailOdoo> taxes_detail;
+    private float total_tax;
 
     @Override
     public boolean isInStock() {
@@ -372,6 +373,16 @@ public class PosProduct extends PosAbstractModel implements Product {
     @Override
     public void setTaxDetail(List<ProductTaxDetailOdoo> listTaxDetail) {
         taxes_detail = listTaxDetail;
+    }
+
+    @Override
+    public float getTotalTax() {
+        return total_tax;
+    }
+
+    @Override
+    public void setTotalTax(float fTotalTax) {
+        total_tax = fTotalTax;
     }
 
 //    @Override

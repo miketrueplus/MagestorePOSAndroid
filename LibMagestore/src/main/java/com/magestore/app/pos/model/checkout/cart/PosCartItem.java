@@ -457,6 +457,11 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     }
 
     @Override
+    public void setBaseSubtotal(float fBaseSubTotal) {
+        base_row_total = fBaseSubTotal;
+    }
+
+    @Override
     public float getPriceInclTax() {
         return price_incl_tax;
     }
@@ -474,6 +479,11 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     @Override
     public float getBasePriceInclTax() {
         return base_price_incl_tax;
+    }
+
+    @Override
+    public void setBasePriceInclTax(float fBasePriceInclTax) {
+        base_price_incl_tax = fBasePriceInclTax;
     }
 
     @Override
@@ -613,6 +623,11 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     }
 
     @Override
+    public void setBaseRowTotalInclTax(float fBaseRowTotalInclTax) {
+        base_row_total_incl_tax = fBaseRowTotalInclTax;
+    }
+
+    @Override
     public float getDiscountAmount() {
         return discount_amount;
     }
@@ -623,6 +638,11 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     }
 
     @Override
+    public void setBaseDiscountAmount(float fBaseDiscountAmount) {
+        base_discount_amount = fBaseDiscountAmount;
+    }
+
+    @Override
     public void setDiscountAmount(float discount_amount) {
         this.discount_amount = discount_amount;
     }
@@ -630,6 +650,11 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     @Override
     public float getQtyOrdered() {
         return qty_ordered;
+    }
+
+    @Override
+    public void setQtyOrdered(float fQtyOrdered) {
+        qty_ordered = fQtyOrdered;
     }
 
     @Override
