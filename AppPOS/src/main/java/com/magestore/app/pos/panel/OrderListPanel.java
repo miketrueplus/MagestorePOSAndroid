@@ -330,7 +330,7 @@ public class OrderListPanel extends AbstractListPanel<Order> implements View.OnC
         if (listStatus.get("closed") != null) {
             ll_status_closed.setVisibility(VISIBLE);
             String name = listStatus.get("closed");
-            if (name.equals("closed")) {
+            if (name.equals("done")) {
                 tv_status_closed.setText(getContext().getText(R.string.order_status_done));
             } else {
                 tv_status_closed.setText(getContext().getText(R.string.order_status_closed));
