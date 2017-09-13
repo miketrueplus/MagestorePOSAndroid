@@ -176,6 +176,7 @@ public interface CartItem extends Model {
     void setQtyOrdered(float fQtyOrdered);
     float getQtyCanceled();
     float getQtyInvoiced();
+    void setQtyInvoiced(float fQtyInvoiced);
     float getQtyRefunded();
     float getQtyShipped();
     float QtyShip();

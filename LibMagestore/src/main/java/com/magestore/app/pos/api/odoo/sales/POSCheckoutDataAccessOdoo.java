@@ -97,7 +97,7 @@ public class POSCheckoutDataAccessOdoo extends POSAbstractDataAccessOdoo impleme
         // TODO: fake payment
         List<CheckoutPayment> listPayment = new ArrayList<>();
         CheckoutPayment payment = new PosCheckoutPayment();
-        payment.setID("61");
+        payment.setID("9");
         payment.setType("0");
         payment.setTitle("TH-Cash (VND)");
         payment.setIsDefault("1");
@@ -218,8 +218,8 @@ public class POSCheckoutDataAccessOdoo extends POSAbstractDataAccessOdoo impleme
             placeOrderEntity.amount_return = amount_return;
             placeOrderEntity.to_invoice = checkout.getCreateInvoice().equals("1") ? true : false;
 
-            // TODO: fake pos_session_id = 157 open
-            placeOrderEntity.pos_session_id = "157";
+            // TODO: fake pos_session_id = 1 open
+            placeOrderEntity.pos_session_id = "1";
 
             rp = statement.execute(placeOrderEntity);
             String data = rp.readResult2String();

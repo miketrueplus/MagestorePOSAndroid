@@ -668,6 +668,11 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     }
 
     @Override
+    public void setQtyInvoiced(float fQtyInvoiced) {
+        qty_invoiced = fQtyInvoiced;
+    }
+
+    @Override
     public float getQtyRefunded() {
         return qty_refunded;
     }

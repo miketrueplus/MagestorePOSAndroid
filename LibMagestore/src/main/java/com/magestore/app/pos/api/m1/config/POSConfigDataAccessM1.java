@@ -1050,6 +1050,12 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
             ConfigUtil.setManagerShiftAdjustment(true);
             ConfigUtil.setNeedToShip(true);
             ConfigUtil.setMarkAsShip(true);
+            ConfigUtil.setSendEmail(true);
+            ConfigUtil.setShip(true);
+            ConfigUtil.setCancel(true);
+            ConfigUtil.setAddComment(true);
+            ConfigUtil.setReOder(true);
+            ConfigUtil.setPartialInvoice(true);
             if (checkStaffPermiss(listPermisson, ALL_PERMISSON)) {
                 ConfigUtil.setCreateOrder(true);
                 ConfigUtil.setManagerAllOrder(true);

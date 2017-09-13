@@ -136,22 +136,22 @@ public class OrderListPanel extends AbstractListPanel<Order> implements View.OnC
 
     private void changeColorStatusOrder(String status, ImageView im_status) {
         switch (status) {
-            case "pending":
+            case StringUtil.STATUS_PENDING:
                 im_status.setColorFilter(ContextCompat.getColor(getContext(), R.color.order_status_pending));
                 break;
-            case "processing":
+            case StringUtil.STATUS_PROCESSING:
                 im_status.setColorFilter(ContextCompat.getColor(getContext(), R.color.order_status_processing));
                 break;
-            case "complete":
+            case StringUtil.STATUS_COMPLETE:
                 im_status.setColorFilter(ContextCompat.getColor(getContext(), R.color.order_status_complete));
                 break;
-            case "canceled":
+            case StringUtil.STATUS_CANCELLED:
                 im_status.setColorFilter(ContextCompat.getColor(getContext(), R.color.order_status_cancelled));
                 break;
-            case "closed":
+            case StringUtil.STATUS_CLOSED:
                 im_status.setColorFilter(ContextCompat.getColor(getContext(), R.color.order_status_closed));
                 break;
-            case "not_sync":
+            case StringUtil.STATUS_NOT_SYNC:
                 im_status.setColorFilter(ContextCompat.getColor(getContext(), R.color.order_status_notsync));
                 break;
         }
@@ -274,17 +274,16 @@ public class OrderListPanel extends AbstractListPanel<Order> implements View.OnC
                 break;
         }
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder = StringUtil.addStringElement(stringBuilder, isPending, StringUtil.STATUS_PENDING);
-        stringBuilder = StringUtil.addStringElement(stringBuilder, isProcessing, StringUtil.STATUS_PROCESSING);
-        stringBuilder = StringUtil.addStringElement(stringBuilder, isComplete, StringUtil.STATUS_COMPLETE);
-        stringBuilder = StringUtil.addStringElement(stringBuilder, isCancelled, StringUtil.STATUS_CANCELLED);
-        stringBuilder = StringUtil.addStringElement(stringBuilder, isClosed, StringUtil.STATUS_CLOSED);
+        stringBuilder = StringUtil.addStringElement(stringBuilder, isPending, mappingStatusFilter(StringUtil.STATUS_PENDING));
+        stringBuilder = StringUtil.addStringElement(stringBuilder, isProcessing, mappingStatusFilter(StringUtil.STATUS_PROCESSING));
+        stringBuilder = StringUtil.addStringElement(stringBuilder, isComplete, mappingStatusFilter(StringUtil.STATUS_COMPLETE));
+        stringBuilder = StringUtil.addStringElement(stringBuilder, isCancelled, mappingStatusFilter(StringUtil.STATUS_CANCELLED));
+        stringBuilder = StringUtil.addStringElement(stringBuilder, isClosed, mappingStatusFilter(StringUtil.STATUS_CLOSED));
         String status = stringBuilder.toString();
         if (getController() instanceof OrderHistoryListController) {
             ((OrderHistoryListController) getController()).doSearchStatus(status);
         }
 //        stringBuilder = StringUtil.addStringElement(stringBuilder, isNotSync, StringUtil.STATUS_PENDING);
-
     }
 
     public void setSelectPosition() {
@@ -294,10 +293,10 @@ public class OrderListPanel extends AbstractListPanel<Order> implements View.OnC
 
     private void setDataStatus() {
         Map<String, String> listStatus = ConfigUtil.getListOrderStatus();
-        if (listStatus.get("pending") != null) {
+        if (listStatus.get(StringUtil.STATUS_PENDING) != null) {
             ll_status_pending.setVisibility(VISIBLE);
-            String name = listStatus.get("pending");
-            if (name.equals("paid")) {
+            String name = listStatus.get(StringUtil.STATUS_PENDING);
+            if (name.equals(StringUtil.STATUS_PAID)) {
                 tv_status_pending.setText(getContext().getText(R.string.order_status_paid));
             } else {
                 tv_status_pending.setText(getContext().getText(R.string.order_status_pending));
@@ -305,10 +304,10 @@ public class OrderListPanel extends AbstractListPanel<Order> implements View.OnC
         } else {
             ll_status_pending.setVisibility(GONE);
         }
-        if (listStatus.get("complete") != null) {
+        if (listStatus.get(StringUtil.STATUS_COMPLETE) != null) {
             ll_status_complete.setVisibility(VISIBLE);
-            String name = listStatus.get("complete");
-            if (name.equals("invoiced")) {
+            String name = listStatus.get(StringUtil.STATUS_COMPLETE);
+            if (name.equals(StringUtil.STATUS_INVOICED)) {
                 tv_status_complete.setText(getContext().getText(R.string.order_status_invoiced));
             } else {
                 tv_status_complete.setText(getContext().getText(R.string.order_status_complete));
@@ -316,10 +315,10 @@ public class OrderListPanel extends AbstractListPanel<Order> implements View.OnC
         } else {
             ll_status_complete.setVisibility(GONE);
         }
-        if (listStatus.get("canceled") != null) {
+        if (listStatus.get(StringUtil.STATUS_CANCELLED) != null) {
             ll_status_cancelled.setVisibility(VISIBLE);
-            String name = listStatus.get("canceled");
-            if (name.equals("cancel")) {
+            String name = listStatus.get(StringUtil.STATUS_CANCELLED);
+            if (name.equals(StringUtil.STATUS_CANCEL)) {
                 tv_status_cancelled.setText(getContext().getText(R.string.order_status_cancelled));
             } else {
                 tv_status_cancelled.setText(getContext().getText(R.string.order_status_cancelled));
@@ -327,10 +326,10 @@ public class OrderListPanel extends AbstractListPanel<Order> implements View.OnC
         } else {
             ll_status_cancelled.setVisibility(GONE);
         }
-        if (listStatus.get("closed") != null) {
+        if (listStatus.get(StringUtil.STATUS_CLOSED) != null) {
             ll_status_closed.setVisibility(VISIBLE);
-            String name = listStatus.get("closed");
-            if (name.equals("done")) {
+            String name = listStatus.get(StringUtil.STATUS_CLOSED);
+            if (name.equals(StringUtil.STATUS_DONE)) {
                 tv_status_closed.setText(getContext().getText(R.string.order_status_done));
             } else {
                 tv_status_closed.setText(getContext().getText(R.string.order_status_closed));
@@ -338,10 +337,10 @@ public class OrderListPanel extends AbstractListPanel<Order> implements View.OnC
         } else {
             ll_status_closed.setVisibility(GONE);
         }
-        if (listStatus.get("processing") != null) {
+        if (listStatus.get(StringUtil.STATUS_PROCESSING) != null) {
             ll_status_processing.setVisibility(VISIBLE);
-            String name = listStatus.get("processing");
-            if (name.equals("processing")) {
+            String name = listStatus.get(StringUtil.STATUS_PROCESSING);
+            if (name.equals(StringUtil.STATUS_PROCESSING)) {
                 tv_status_processing.setText(getContext().getText(R.string.order_status_processing));
             } else {
                 tv_status_processing.setText(getContext().getText(R.string.order_status_processing));
@@ -349,10 +348,10 @@ public class OrderListPanel extends AbstractListPanel<Order> implements View.OnC
         } else {
             ll_status_processing.setVisibility(GONE);
         }
-        if (listStatus.get("not_sync") != null) {
+        if (listStatus.get(StringUtil.STATUS_NOT_SYNC) != null) {
             ll_status_not_sync.setVisibility(VISIBLE);
-            String name = listStatus.get("not_sync");
-            if (name.equals("not_sync")) {
+            String name = listStatus.get(StringUtil.STATUS_NOT_SYNC);
+            if (name.equals(StringUtil.STATUS_NOT_SYNC)) {
                 tv_status_not_sync.setText(getContext().getText(R.string.order_status_not_sync));
             } else {
                 tv_status_not_sync.setText(getContext().getText(R.string.order_status_not_sync));
@@ -360,5 +359,10 @@ public class OrderListPanel extends AbstractListPanel<Order> implements View.OnC
         } else {
             ll_status_not_sync.setVisibility(GONE);
         }
+    }
+
+    private String mappingStatusFilter(String status) {
+        Map<String, String> listStatus = ConfigUtil.getListOrderStatus();
+        return listStatus.get(status);
     }
 }

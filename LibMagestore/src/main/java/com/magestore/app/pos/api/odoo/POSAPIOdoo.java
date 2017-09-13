@@ -21,6 +21,8 @@ public class POSAPIOdoo {
 
     // API order
     public static final String REST_ORDER_GET_LISTING = "api/pos-orders/?";
+    public static final String REST_ORDER_COMMENTS = "api/pos-add-note-order/";
+    public static final String REST_ORDER_INVOICE = "api/pos-create-invoice/";
 
     // API Checkout
     public static final String REST_CHECK_OUT_PLACE_ORDER = "api/pos-create-order/";

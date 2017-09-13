@@ -290,13 +290,20 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
             ConfigUtil.setManagerShiftAdjustment(true);
             ConfigUtil.setNeedToShip(false);
             ConfigUtil.setMarkAsShip(false);
+            ConfigUtil.setCanUseRefund(false);
+            ConfigUtil.setSendEmail(false);
+            ConfigUtil.setShip(false);
+            ConfigUtil.setCancel(false);
+            ConfigUtil.setAddComment(true);
+            ConfigUtil.setReOder(true);
+            ConfigUtil.setPartialInvoice(false);
             if (checkStaffPermiss(listPermisson, ALL_PERMISSON)) {
                 ConfigUtil.setCreateOrder(true);
                 ConfigUtil.setManagerAllOrder(true);
                 ConfigUtil.setDiscountPerCart(true);
                 ConfigUtil.setApplyCoupon(true);
                 ConfigUtil.setDiscountPerItem(true);
-                ConfigUtil.setCanUseRefund(true);
+//                ConfigUtil.setCanUseRefund(true);
                 ConfigUtil.setApplyCustomPrice(true);
             } else {
                 ConfigUtil.setManagerAllOrder(checkStaffPermiss(listPermisson, MANAGE_ALL_ORDER));
@@ -438,7 +445,7 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
     }
 
     private Customer getCustomerGuestFake() {
-        String customer_id = "11";
+        String customer_id = "47";
         String email = "guest@example.com";
         String first_name = "Guest";
         String last_name = "POS";

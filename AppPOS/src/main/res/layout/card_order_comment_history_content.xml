@@ -5,6 +5,10 @@
 
         <import type="com.magestore.app.util.ConfigUtil" />
 
+        <import type="com.magestore.app.util.StringUtil" />
+
+        <import type="android.view.View" />
+
         <variable
             name="orderStatus"
             type="com.magestore.app.lib.model.sales.OrderStatus" />
@@ -28,6 +32,7 @@
                 android:layout_marginRight="@dimen/layout_margin_10"
                 android:text="@{ConfigUtil.formatDateTime(orderStatus.getCreatedAt())}"
                 android:textColor="@color/text_color"
+                android:visibility="@{StringUtil.isNullOrEmpty(orderStatus.getCreatedAt()) ? View.GONE : View.VISIBLE}"
                 android:textSize="@dimen/order_content_comment_text_size" />
 
             <TextView

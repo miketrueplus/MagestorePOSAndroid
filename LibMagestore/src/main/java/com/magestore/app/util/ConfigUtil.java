@@ -71,19 +71,28 @@ public class ConfigUtil {
     private static String mRegisterShiftId;
     private static ConfigPriceFormat mConfigPriceFormat;
 
-    // permisson
+    // permisson order
     private static boolean mCreateOrder;
     private static boolean mManageAllOrder;
     private static boolean mManageOrderByMe;
     private static boolean mManageOrderByLocation;
     private static boolean mManageOrderOtherStaff;
     private static boolean mCanUseRefund;
+    private static boolean mSendEmail;
+    private static boolean mShip;
+    private static boolean mCancel;
+    private static boolean mAddComment;
+    private static boolean mReOder;
+    private static boolean mPartialInvoice;
+    // permisson discount
     private static boolean mManageAllDiscount;
     private static boolean mDiscountPerCart;
     private static boolean mApplyCoupon;
     private static boolean mDiscountPerItem;
     private static boolean mApplyCustomPrice;
+    // permisson session
     private static boolean mManageShiftAdjustment;
+    // permisson checkout
     private static boolean mNeedToShip;
     private static boolean mMarkAsShip;
 
@@ -916,6 +925,54 @@ public class ConfigUtil {
 
     public static void setCanUseRefund(boolean mCanUseRefund) {
         ConfigUtil.mCanUseRefund = mCanUseRefund;
+    }
+
+    public static boolean isSendEmail() {
+        return mSendEmail;
+    }
+
+    public static void setSendEmail(boolean mSendEmail) {
+        ConfigUtil.mSendEmail = mSendEmail;
+    }
+
+    public static boolean isShip() {
+        return mShip;
+    }
+
+    public static void setShip(boolean mShip) {
+        ConfigUtil.mShip = mShip;
+    }
+
+    public static boolean isCancel() {
+        return mCancel;
+    }
+
+    public static void setCancel(boolean mCancel) {
+        ConfigUtil.mCancel = mCancel;
+    }
+
+    public static boolean isAddComment() {
+        return mAddComment;
+    }
+
+    public static void setAddComment(boolean mAddComment) {
+        ConfigUtil.mAddComment = mAddComment;
+    }
+
+    public static boolean isReOder() {
+        return mReOder;
+    }
+
+    public static void setReOder(boolean mReOder) {
+        ConfigUtil.mReOder = mReOder;
+    }
+
+    public static boolean isPartialInvoice() {
+        return mPartialInvoice;
+    }
+
+    public static void setPartialInvoice(boolean mPartialInvoice) {
+        ConfigUtil.mPartialInvoice = mPartialInvoice;
     }
 
     public static boolean isManageAllDiscount() {

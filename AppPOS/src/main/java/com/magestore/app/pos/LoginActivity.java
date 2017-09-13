@@ -303,8 +303,8 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
 //            mUserNameView.setText("admin");
 //            mPasswordView.setText("admin123@");
             mDomainView.setText("192.168.1.79:8000");
-            mUserNameView.setText("admin");
-            mPasswordView.setText("admin");
+            mUserNameView.setText("johan");
+            mPasswordView.setText("johan");
             String domain = mDomainView.getText().toString().trim();
             String username = mUserNameView.getText().toString().trim();
             String password = mPasswordView.getText().toString().trim();

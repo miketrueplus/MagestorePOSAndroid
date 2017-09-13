@@ -160,6 +160,8 @@ public interface Order extends Model {
 
     List<OrderStatus> getOrderStatus();
 
+    void setOrderStatus(List<OrderStatus> listStatus);
+
     boolean checkComment();
 
     float getTaxAmount();

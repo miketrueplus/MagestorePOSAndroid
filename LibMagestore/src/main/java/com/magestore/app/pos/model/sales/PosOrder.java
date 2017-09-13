@@ -640,6 +640,11 @@ public class PosOrder extends PosAbstractModel implements Order {
     }
 
     @Override
+    public void setOrderStatus(List<OrderStatus> listStatus) {
+        status_histories = (List<PosOrderStatus>) (List<?>) listStatus;
+    }
+
+    @Override
     public boolean checkComment() {
         String mStatus = "";
         if (status_histories != null && status_histories.size() > 0) {

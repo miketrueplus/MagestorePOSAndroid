@@ -85,11 +85,15 @@ public class StringUtil {
 
     // các kiểu status
     public static final String STATUS_PENDING = "pending";
+    public static final String STATUS_PAID = "paid";
+    public static final String STATUS_INVOICED = "invoiced";
     public static final String STATUS_COMPLETE = "complete";
     public static final String STATUS_DONE = "done";
     public static final String STATUS_PROCESSING = "processing";
     public static final String STATUS_CLOSED = "closed";
     public static final String STATUS_CANCELLED = "canceled";
+    public static final String STATUS_CANCEL = "cancel";
+    public static final String STATUS_NOT_SYNC = "not_sync";
     public static final String STATUS_ACTIVE = "active";
     public static final String STATUS_INACTIVE = "inactive";
     public static final String STATUS_ENABLE = "enable";

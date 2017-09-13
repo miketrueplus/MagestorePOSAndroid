@@ -180,11 +180,7 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
             @TargetApi(Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View view) {
-//                if (!ConfigUtil.getTypePrint().equals(getContext().getString(R.string.print_type_star_print))) {
                 actionPrint();
-//                } else {
-//                    StarPrintUtitl.showSearchPrint(getContext(), ((OrderHistoryListController) mController).getMagestoreContext().getActivity(), mOrder);
-//                }
             }
         });
     }
@@ -280,11 +276,31 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
     }
 
     private void checkShowItemMenu(Order order, String status, PopupMenu popupMenu) {
-        checkVisibleItemMenu(popupMenu, R.id.action_send_email, "pending".equals(status) | "processing".equals(status) | "complete".equals(status) | "not_sync".equals(status));
-        checkVisibleItemMenu(popupMenu, R.id.action_ship, ((OrderHistoryListController) mController).checkCanShip(order));
-        checkVisibleItemMenu(popupMenu, R.id.action_cancel, ((OrderHistoryListController) mController).checkCanCancel(order));
-        checkVisibleItemMenu(popupMenu, R.id.action_add_comment, "pending".equals(status) | "processing".equals(status) | "complete".equals(status) | "canceled".equals(status) | "not_sync".equals(status));
-        checkVisibleItemMenu(popupMenu, R.id.action_re_order, "pending".equals(status) | "processing".equals(status) | "complete".equals(status) | "canceled".equals(status) | "closed".equals(status) | "not_sync".equals(status));
+        if (ConfigUtil.isSendEmail()) {
+            checkVisibleItemMenu(popupMenu, R.id.action_send_email, "pending".equals(status) | "processing".equals(status) | "complete".equals(status) | "not_sync".equals(status));
+        } else {
+            checkVisibleItemMenu(popupMenu, R.id.action_send_email, false);
+        }
+        if (ConfigUtil.isShip()) {
+            checkVisibleItemMenu(popupMenu, R.id.action_ship, ((OrderHistoryListController) mController).checkCanShip(order));
+        } else {
+            checkVisibleItemMenu(popupMenu, R.id.action_ship, false);
+        }
+        if (ConfigUtil.isCancel()) {
+            checkVisibleItemMenu(popupMenu, R.id.action_cancel, ((OrderHistoryListController) mController).checkCanCancel(order));
+        } else {
+            checkVisibleItemMenu(popupMenu, R.id.action_cancel, false);
+        }
+        if (ConfigUtil.isAddComment()) {
+            checkVisibleItemMenu(popupMenu, R.id.action_add_comment, "pending".equals(status) | "processing".equals(status) | "complete".equals(status) | "canceled".equals(status) | "not_sync".equals(status));
+        } else {
+            checkVisibleItemMenu(popupMenu, R.id.action_add_comment, false);
+        }
+        if (ConfigUtil.isReOder()) {
+            checkVisibleItemMenu(popupMenu, R.id.action_re_order, "pending".equals(status) | "processing".equals(status) | "complete".equals(status) | "canceled".equals(status) | "closed".equals(status) | "not_sync".equals(status));
+        } else {
+            checkVisibleItemMenu(popupMenu, R.id.action_re_order, false);
+        }
         if (ConfigUtil.isCanUseRefund()) {
             checkVisibleItemMenu(popupMenu, R.id.action_refund, ((OrderHistoryListController) mController).checkCanRefund(order));
         } else {
