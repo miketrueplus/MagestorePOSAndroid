@@ -5,6 +5,8 @@
 
         <import type="com.magestore.app.util.ConfigUtil" />
 
+        <import type="com.magestore.app.util.StringUtil" />
+
         <variable
             name="order"
             type="com.magestore.app.lib.model.sales.Order" />
@@ -92,7 +94,7 @@
                         android:id="@+id/name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text='@{order.getCustomerFirstname() != null ? order.getCustomerFirstname() + " " + order.getCustomerLastname() : order.getCustomerEmail()}'
+                        android:text='@{order.getCustomerFirstname() != null ? order.getCustomerFirstname() + " " + (StringUtil.isNullOrEmpty(order.getCustomerLastname()) ? "" : order.getCustomerLastname()) : order.getCustomerEmail()}'
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/text_size" />
                 </LinearLayout>

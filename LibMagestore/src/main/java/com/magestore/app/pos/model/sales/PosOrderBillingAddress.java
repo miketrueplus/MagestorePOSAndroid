@@ -29,6 +29,7 @@ public class PosOrderBillingAddress extends PosAbstractModel implements OrderBil
     String region_code;
     String region_id;
     String company;
+    String vat_id;
 
     @Override
     public String getID() {
@@ -130,6 +131,11 @@ public class PosOrderBillingAddress extends PosAbstractModel implements OrderBil
     }
 
     @Override
+    public void setStreet(List<String> listStreet) {
+        street = listStreet;
+    }
+
+    @Override
     public String getRegion() {
         return region;
     }
@@ -177,5 +183,15 @@ public class PosOrderBillingAddress extends PosAbstractModel implements OrderBil
     @Override
     public void setCompany(String strCompany) {
         company = strCompany;
+    }
+
+    @Override
+    public String getVat() {
+        return vat_id;
+    }
+
+    @Override
+    public void setVat(String strVat) {
+        vat_id = strVat;
     }
 }

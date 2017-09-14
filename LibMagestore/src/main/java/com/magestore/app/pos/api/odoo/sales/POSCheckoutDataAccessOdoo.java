@@ -16,12 +16,15 @@ import com.magestore.app.lib.model.checkout.Quote;
 import com.magestore.app.lib.model.checkout.QuoteAddCouponParam;
 import com.magestore.app.lib.model.checkout.SaveQuoteParam;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
+import com.magestore.app.lib.model.sales.DataOrder;
 import com.magestore.app.lib.parse.ParseException;
 import com.magestore.app.lib.resourcemodel.sales.CheckoutDataAccess;
 import com.magestore.app.pos.api.odoo.POSAPIOdoo;
 import com.magestore.app.pos.api.odoo.POSAbstractDataAccessOdoo;
 import com.magestore.app.pos.api.odoo.POSDataAccessSessionOdoo;
 import com.magestore.app.pos.model.checkout.PosCheckoutPayment;
+import com.magestore.app.pos.model.sales.PosDataOrder;
+import com.magestore.app.pos.parse.gson2pos.Gson2PosListOrderParseModelOdoo;
 import com.magestore.app.util.ConfigUtil;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -222,8 +225,10 @@ public class POSCheckoutDataAccessOdoo extends POSAbstractDataAccessOdoo impleme
             placeOrderEntity.pos_session_id = "1";
 
             rp = statement.execute(placeOrderEntity);
-            String data = rp.readResult2String();
-            return null;
+            rp.setParseImplement(new Gson2PosListOrderParseModelOdoo());
+            rp.setParseModel(PosDataOrder.class);
+            DataOrder listOrder = (DataOrder) rp.doParse();
+            return listOrder.getItems().get(0);
         } catch (ConnectionException ex) {
             throw ex;
         } catch (IOException ex) {

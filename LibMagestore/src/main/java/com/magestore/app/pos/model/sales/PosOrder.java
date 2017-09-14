@@ -3,6 +3,7 @@ package com.magestore.app.pos.model.sales;
 import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.sales.Order;
+import com.magestore.app.lib.model.sales.OrderBillingAddress;
 import com.magestore.app.lib.model.sales.OrderCommentParams;
 import com.magestore.app.lib.model.sales.OrderInvoiceParams;
 import com.magestore.app.lib.model.sales.OrderItemsInfoBuy;
@@ -463,6 +464,11 @@ public class PosOrder extends PosAbstractModel implements Order {
     @Override
     public PosOrderBillingAddress getBillingAddress() {
         return billing_address;
+    }
+
+    @Override
+    public void setBillingAddress(OrderBillingAddress orderBillingAddress) {
+        billing_address = (PosOrderBillingAddress) orderBillingAddress;
     }
 
     @Override

@@ -36,6 +36,7 @@ public interface OrderBillingAddress extends Model {
     void setCity(String strCity);
 
     List<String> getStreet();
+    void setStreet(List<String> listStreet);
 
     String getRegion();
     void setRegion(String strRegion);
@@ -51,4 +52,7 @@ public interface OrderBillingAddress extends Model {
 
     String getCompany();
     void setCompany(String strCompany);
+
+    String getVat();
+    void setVat(String strVat);
 }

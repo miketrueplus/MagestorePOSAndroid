@@ -107,6 +107,7 @@ public interface Order extends Model {
     PosOrderAttributes getExtensionAttributes();
 
     PosOrderBillingAddress getBillingAddress();
+    void setBillingAddress(OrderBillingAddress orderBillingAddress);
 
     PosOrderPayment getPayment();
 
