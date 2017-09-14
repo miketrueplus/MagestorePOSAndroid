@@ -26,6 +26,12 @@ public class PosOrderWebposPayment extends PosAbstractModel implements OrderWebp
     }
 
     @Override
+    public void setID(String id) {
+        super.setID(id);
+        payment_id = id;
+    }
+
+    @Override
     public float getBasePaymentAmount() {
         return base_payment_amount;
     }

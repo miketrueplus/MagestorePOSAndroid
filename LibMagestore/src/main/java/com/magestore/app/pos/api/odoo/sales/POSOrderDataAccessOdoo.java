@@ -29,6 +29,7 @@ import com.magestore.app.lib.model.sales.OrderShipmentParams;
 import com.magestore.app.lib.model.sales.OrderStatus;
 import com.magestore.app.lib.model.sales.OrderTakePaymentParam;
 import com.magestore.app.lib.model.sales.OrderUpdateQtyParam;
+import com.magestore.app.lib.model.sales.OrderWebposPayment;
 import com.magestore.app.lib.parse.ParseException;
 import com.magestore.app.lib.resourcemodel.DataAccessException;
 import com.magestore.app.lib.resourcemodel.sales.OrderDataAccess;
@@ -38,7 +39,9 @@ import com.magestore.app.pos.api.odoo.POSDataAccessSessionOdoo;
 import com.magestore.app.pos.model.checkout.cart.PosCartItem;
 import com.magestore.app.pos.model.sales.PosDataOrder;
 import com.magestore.app.pos.model.sales.PosOrder;
+import com.magestore.app.pos.model.sales.PosOrderBillingAddress;
 import com.magestore.app.pos.model.sales.PosOrderStatus;
+import com.magestore.app.pos.model.sales.PosOrderWebposPayment;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosAbstractParseImplement;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.StringUtil;
@@ -100,6 +103,10 @@ public class POSOrderDataAccessOdoo extends POSAbstractDataAccessOdoo implements
     private String ORDER_STAFF_NAME = "create_name";
     private String ORDER_STAFF_ID = "create_uid";
     private String ORDER_ITEMS = "lines";
+    private String PAYMENT_DETAIL = "statement_detail";
+    private String PAYMENT_ID = "journal_id";
+    private String PAYMENT_NAME = "journal_name";
+    private String PAYMENT_AMOUNT = "amount";
     private String PRODUCT_ID = "product_id";
     private String PRODUCT_NAME = "product_name";
     private String PRODUC_UNIT_PRICE = "price_unit";
@@ -107,7 +114,19 @@ public class POSOrderDataAccessOdoo extends POSAbstractDataAccessOdoo implements
     private String PRODUCT_SUTOTAL_INCl = "price_subtotal_incl";
     private String PRODUCT_DISCOUNT = "discount";
     private String PRODUCT_QTY = "qty";
-
+    private String CUSTOMER_DETAIL = "partner_id";
+    private String CUSTOMER_ID = "id";
+    private String CUSTOMER_EMAIL = "email";
+    private String CUSTOMER_NAME = "name";
+    private String CUSTOMER_PHONE = "phone";
+    private String CUSTOMER_STATE_ID = "state_id";
+    private String CUSTOMER_STATE_NAME = "state_name";
+    private String CUSTOMER_STATE_CODE = "state_code";
+    private String CUSTOMER_COMPANY = "company_name";
+    private String CUSTOMER_POSCODE = "zip";
+    private String CUSTOMER_COUNTRY_ID = "country_id";
+    private String CUSTOMER_STREET = "street";
+    private String CUSTOMER_STREET2 = "street2";
     private PosOrder mappingOrder(PosOrder order, float total_subtotal, float total_discount, JsonObject obj_order) {
         String id = obj_order.remove(ORDER_ID).getAsString();
         order.setID(id);
@@ -147,6 +166,47 @@ public class POSOrderDataAccessOdoo extends POSAbstractDataAccessOdoo implements
             String staff_id = obj_order.remove(ORDER_STAFF_ID).getAsString();
             order.setWebposStaffId(staff_id);
         }
+        List<OrderWebposPayment> listPayment = new ArrayList<>();
+        JsonArray arr_payment = obj_order.getAsJsonArray(PAYMENT_DETAIL);
+        if (arr_payment != null && arr_payment.size() > 0) {
+            for (JsonElement el_payment : arr_payment) {
+                JsonObject obj_payment = el_payment.getAsJsonObject();
+                PosOrderWebposPayment payment = new PosOrderWebposPayment();
+                String payment_id = obj_payment.remove(PAYMENT_ID).getAsString();
+                String payment_name = obj_payment.remove(PAYMENT_NAME).getAsString();
+                float payment_amount = obj_payment.remove(PAYMENT_AMOUNT).getAsFloat();
+                payment.setID(payment_id);
+                payment.setMethodTitle(StringUtil.checkJsonData(payment_name) ? payment_name : "");
+                payment.setBasePaymentAmount(ConfigUtil.convertToBasePrice(payment_amount));
+                listPayment.add(payment);
+            }
+        }
+        if (obj_order.get(CUSTOMER_DETAIL).isJsonObject()) {
+            JsonObject obj_customer = obj_order.get(CUSTOMER_DETAIL).getAsJsonObject();
+            String customer_id = obj_customer.remove(CUSTOMER_ID).getAsString();
+            String customer_email = obj_customer.remove(CUSTOMER_EMAIL).getAsString();
+            String customer_name = obj_customer.remove(CUSTOMER_NAME).getAsString();
+            String customer_phone = obj_customer.remove(CUSTOMER_PHONE).getAsString();
+            String state_id = obj_customer.remove(CUSTOMER_STATE_ID).getAsString();
+            String state_name = obj_customer.remove(CUSTOMER_STATE_NAME).getAsString();
+            String state_code = obj_customer.remove(CUSTOMER_STATE_CODE).getAsString();
+            String company = obj_customer.remove(CUSTOMER_COMPANY).getAsString();
+            String poscode = obj_customer.remove(CUSTOMER_POSCODE).getAsString();
+            order.setCustomerId(customer_id);
+            order.setCustomerEmail(StringUtil.checkJsonData(customer_email) ? customer_email : "");
+            order.setCustomerFirstName(StringUtil.checkJsonData(customer_name) ? customer_name : "");
+            PosOrderBillingAddress billingAddress = new PosOrderBillingAddress();
+            billingAddress.setID(customer_id);
+            billingAddress.setEmail(StringUtil.checkJsonData(customer_email) ? customer_email : "");
+            billingAddress.setFirstName(StringUtil.checkJsonData(customer_name) ? customer_name : "");
+            billingAddress.setTelephone(StringUtil.checkJsonData(customer_phone) ? customer_phone : "");
+            billingAddress.setRegion(StringUtil.checkJsonData(state_name) ? state_name : "");
+            billingAddress.setRegionCode(StringUtil.checkJsonData(state_code) ? state_code : "");
+            billingAddress.setRegionId(StringUtil.checkJsonData(state_id) ? state_id : "");
+            billingAddress.setCompany(StringUtil.checkJsonData(company) ? company : "");
+            billingAddress.setPostCode(StringUtil.checkJsonData(poscode) ? poscode : "");
+        }
+        order.setWebposOrderPayments(listPayment);
         String note = obj_order.remove(ORDER_NOTE).getAsString();
         List<OrderStatus> listComment = new ArrayList<>();
         PosOrderStatus comment = new PosOrderStatus();
@@ -279,7 +339,7 @@ public class POSOrderDataAccessOdoo extends POSAbstractDataAccessOdoo implements
             paramBuilder = statement.getParamBuilder()
                     .setPage(page)
                     .setPageSize(pageSize)
-                    .setSortOrderDESC("created_at");
+                    .setSortOrderDESC("create_date");
 
             // thực thi truy vấn và parse kết quả thành object
             rp = statement.execute();
@@ -332,7 +392,7 @@ public class POSOrderDataAccessOdoo extends POSAbstractDataAccessOdoo implements
                     .setFilterOrLike("partner_id", finalSearchString)
                     .setFilterOrLike("user_id", finalSearchString)
                     .setFilterOrLike("state", finalSearchString)
-                    .setSortOrderDESC("created_at");
+                    .setSortOrderDESC("create_date");
 
             // thực thi truy vấn và parse kết quả thành object
             rp = statement.execute();
@@ -400,7 +460,7 @@ public class POSOrderDataAccessOdoo extends POSAbstractDataAccessOdoo implements
             paramBuilder = statement.getParamBuilder()
                     .setPage(page)
                     .setPageSize(pageSize)
-                    .setSortOrderDESC("created_at");
+                    .setSortOrderDESC("create_date");
 
             if (!StringUtil.isNullOrEmpty(status))
                 paramBuilder.setFilterIn("state", status);
@@ -456,7 +516,7 @@ public class POSOrderDataAccessOdoo extends POSAbstractDataAccessOdoo implements
                     .setFilterOrLike("partner_id", finalSearchString)
                     .setFilterOrLike("user_id", finalSearchString)
                     .setFilterOrLike("state", finalSearchString)
-                    .setSortOrderDESC("created_at");
+                    .setSortOrderDESC("create_date");
 
             if (!StringUtil.isNullOrEmpty(status))
                 paramBuilder.setFilterIn("state", status);

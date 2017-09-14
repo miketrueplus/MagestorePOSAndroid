@@ -18,4 +18,6 @@ public interface PointOfSales extends Model {
     void setStoreId(String strStoreId);
     String getStaffId();
     String getStatus();
+    boolean getCashControl();
+    void setCashControl(boolean bCashControl);
 }

@@ -27,6 +27,9 @@ public class POSAPIOdoo {
     // API Checkout
     public static final String REST_CHECK_OUT_PLACE_ORDER = "api/pos-create-order/";
 
+    // API register shifts
+    public static final String REST_REGISTER_SHIFTS_GET_LISTING_POS = "api/pos/?";
+
     // API config
     public static final String REST_CONFIG_GET_LISTING = "api/pos-configs/";
 }

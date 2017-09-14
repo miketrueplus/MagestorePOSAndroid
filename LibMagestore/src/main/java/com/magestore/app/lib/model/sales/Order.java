@@ -116,10 +116,13 @@ public interface Order extends Model {
     void setIncrementId(String strIncrementId);
 
     String getCustomerFirstname();
+    void setCustomerFirstName(String strCustomerFirstname);
 
     String getCustomerLastname();
+    void setCustomerLastName(String strCustomerLastName);
 
     String getCustomerId();
+    void setCustomerId(String strCustomerId);
 
     float getGrandTotal();
     void setGrandTotal(float fGrandTotal);
@@ -157,6 +160,7 @@ public interface Order extends Model {
     String getShippingDescription();
 
     List<OrderWebposPayment> getWebposOrderPayments();
+    void setWebposOrderPayments(List<OrderWebposPayment> listPayment);
 
     List<OrderStatus> getOrderStatus();
 

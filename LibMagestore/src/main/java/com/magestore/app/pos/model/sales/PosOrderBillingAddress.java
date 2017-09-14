@@ -28,10 +28,17 @@ public class PosOrderBillingAddress extends PosAbstractModel implements OrderBil
     String region;
     String region_code;
     String region_id;
+    String company;
 
     @Override
     public String getID() {
         return entity_id;
+    }
+
+    @Override
+    public void setID(String id) {
+        super.setID(id);
+        entity_id = id;
     }
 
     @Override
@@ -42,6 +49,11 @@ public class PosOrderBillingAddress extends PosAbstractModel implements OrderBil
     @Override
     public String getEmail() {
         return email;
+    }
+
+    @Override
+    public void setEmail(String strEmail) {
+        email = strEmail;
     }
 
     @Override
@@ -123,13 +135,28 @@ public class PosOrderBillingAddress extends PosAbstractModel implements OrderBil
     }
 
     @Override
+    public void setRegion(String strRegion) {
+        region = strRegion;
+    }
+
+    @Override
     public String getRegionId() {
         return region_id;
     }
 
     @Override
+    public void setRegionId(String strRegionId) {
+        region_id = strRegionId;
+    }
+
+    @Override
     public String getRegionCode() {
         return region_code;
+    }
+
+    @Override
+    public void setRegionCode(String strRegionCode) {
+        region_code = strRegionCode;
     }
 
     @Override
@@ -140,5 +167,15 @@ public class PosOrderBillingAddress extends PosAbstractModel implements OrderBil
     @Override
     public void setTelephone(String strTelephone) {
         telephone = strTelephone;
+    }
+
+    @Override
+    public String getCompany() {
+        return company;
+    }
+
+    @Override
+    public void setCompany(String strCompany) {
+        company = strCompany;
     }
 }

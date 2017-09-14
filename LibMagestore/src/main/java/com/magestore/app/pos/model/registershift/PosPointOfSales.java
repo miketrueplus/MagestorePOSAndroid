@@ -17,6 +17,19 @@ public class PosPointOfSales extends PosAbstractModel implements PointOfSales {
     String store_id;
     String status;
 
+    // Odoo
+    String pos_session_username;
+    String iface_tax_included;
+    String receipt_header;
+    boolean cash_control;
+    String tip_product_id;
+    String current_session_state;
+    String create_date;
+    String iface_print_auto;
+    String iface_invoicing;
+    String receipt_footer;
+    String iface_cashdrawer;
+
     @Override
     public String getID() {
         return pos_id;
@@ -65,6 +78,16 @@ public class PosPointOfSales extends PosAbstractModel implements PointOfSales {
     @Override
     public String getStatus() {
         return status;
+    }
+
+    @Override
+    public boolean getCashControl() {
+        return cash_control;
+    }
+
+    @Override
+    public void setCashControl(boolean bCashControl) {
+        cash_control = bCashControl;
     }
 
     @Override

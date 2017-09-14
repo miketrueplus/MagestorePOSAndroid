@@ -491,13 +491,28 @@ public class PosOrder extends PosAbstractModel implements Order {
     }
 
     @Override
+    public void setCustomerFirstName(String strCustomerFirstname) {
+        customer_firstname = strCustomerFirstname;
+    }
+
+    @Override
     public String getCustomerLastname() {
         return customer_lastname;
     }
 
     @Override
+    public void setCustomerLastName(String strCustomerLastName) {
+        customer_lastname = strCustomerLastName;
+    }
+
+    @Override
     public String getCustomerId() {
         return customer_id;
+    }
+
+    @Override
+    public void setCustomerId(String strCustomerId) {
+        customer_id = strCustomerId;
     }
 
     @Override
@@ -624,6 +639,11 @@ public class PosOrder extends PosAbstractModel implements Order {
     @Override
     public List<OrderWebposPayment> getWebposOrderPayments() {
         return (List<OrderWebposPayment>) (List<?>) webpos_order_payments;
+    }
+
+    @Override
+    public void setWebposOrderPayments(List<OrderWebposPayment> listPayment) {
+        webpos_order_payments = (List<PosOrderWebposPayment>) (List<?>) listPayment;
     }
 
     @Override

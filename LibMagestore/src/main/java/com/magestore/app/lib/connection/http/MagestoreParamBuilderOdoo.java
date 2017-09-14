@@ -45,7 +45,7 @@ public class MagestoreParamBuilderOdoo implements ParamBuilder {
     private final static String PAGE_SIZE = "magestore_pageSize";
 
     // sắp xếp
-    private final static String SEARCH_SORT_ORDER = "order";
+    private final static String SEARCH_SORT_ORDER = "sort";
 
     // session
     private final static String SESSION_PARAM = "session=${magestore_sessionID}";

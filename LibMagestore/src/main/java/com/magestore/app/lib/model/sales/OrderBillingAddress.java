@@ -14,6 +14,7 @@ public interface OrderBillingAddress extends Model {
     String getAddressType();
 
     String getEmail();
+    void setEmail(String strEmail);
 
     String getFirstName();
     void setFirstName(String strFirstName);
@@ -37,11 +38,17 @@ public interface OrderBillingAddress extends Model {
     List<String> getStreet();
 
     String getRegion();
+    void setRegion(String strRegion);
 
     String getRegionId();
+    void setRegionId(String strRegionId);
 
     String getRegionCode();
+    void setRegionCode(String strRegionCode);
 
     String getTelephone();
     void setTelephone(String strTelephone);
+
+    String getCompany();
+    void setCompany(String strCompany);
 }

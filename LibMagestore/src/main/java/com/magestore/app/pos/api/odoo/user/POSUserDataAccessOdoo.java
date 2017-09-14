@@ -1,11 +1,21 @@
 package com.magestore.app.pos.api.odoo.user;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.reflect.TypeToken;
 import com.magestore.app.lib.connection.Connection;
 import com.magestore.app.lib.connection.ConnectionException;
 import com.magestore.app.lib.connection.ConnectionFactory;
+import com.magestore.app.lib.connection.ParamBuilder;
 import com.magestore.app.lib.connection.ResultReading;
 import com.magestore.app.lib.connection.Statement;
+import com.magestore.app.lib.model.registershift.DataPointOfSales;
 import com.magestore.app.lib.model.registershift.PointOfSales;
 import com.magestore.app.lib.model.store.Store;
 import com.magestore.app.lib.model.user.User;
@@ -13,10 +23,14 @@ import com.magestore.app.lib.resourcemodel.DataAccessException;
 import com.magestore.app.lib.resourcemodel.user.UserDataAccess;
 import com.magestore.app.pos.api.odoo.POSAPIOdoo;
 import com.magestore.app.pos.api.odoo.POSAbstractDataAccessOdoo;
+import com.magestore.app.pos.api.odoo.POSDataAccessSessionOdoo;
+import com.magestore.app.pos.model.registershift.PosDataPointOfSales;
 import com.magestore.app.pos.model.registershift.PosPointOfSales;
+import com.magestore.app.pos.parse.gson2pos.Gson2PosAbstractParseImplement;
+import com.magestore.app.pos.parse.gson2pos.Gson2PosListPointOfSales;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosStoreParseImplement;
-
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +57,55 @@ public class POSUserDataAccessOdoo extends POSAbstractDataAccessOdoo implements 
 
     private class LoginRespone {
         String Token;
+    }
+
+    public class Gson2PosParseModel extends Gson2PosAbstractParseImplement{
+        @Override
+        protected Gson createGson() {
+            GsonBuilder builder = new GsonBuilder();
+            builder.enableComplexMapKeySerialization();
+            builder.registerTypeAdapter(new TypeToken<List<PosPointOfSales>>() {
+            }
+                    .getType(), new PosConverter());
+            return builder.create();
+        }
+
+        private String POS_ID = "id";
+        private String POS_NAME = "name";
+        private String POS_SESSION_USENAME = "pos_session_username";
+        private String POS_TAX_INCL = "iface_tax_included";
+        private String POS_RECEIPT_HEADER = "receipt_header";
+        private String POS_CASH_CONTROL = "cash_control";
+        private String POS_TIP_PRODUCT_ID = "tip_product_id";
+        private String POS_CURRENT_SESSION_STATE = "current_session_state";
+        private String POS_CREATE_DATE = "create_date";
+        private String POS_PRINT_AUTO = "iface_print_auto";
+        private String POS_INVOICE = "iface_invoicing";
+        private String POS_RECEIPT_FOOTER = "receipt_footer";
+        private String POS_CASH_DRAWER = "iface_cashdrawer";
+        public class PosConverter implements JsonDeserializer<List<PosPointOfSales>>{
+            @Override
+            public List<PosPointOfSales> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+                List<PosPointOfSales> listPos = new ArrayList<>();
+                if (json.isJsonArray()) {
+                    JsonArray arr_pos = json.getAsJsonArray();
+                    if (arr_pos != null && arr_pos.size() > 0) {
+                        for (JsonElement el_pos : arr_pos) {
+                            JsonObject obj_pos = el_pos.getAsJsonObject();
+                            PosPointOfSales pos = new PosPointOfSales();
+                            String id = obj_pos.remove(POS_ID).getAsString();
+                            pos.setPosId(id);
+                            String name = obj_pos.remove(POS_NAME).getAsString();
+                            pos.setPosName(name);
+                            boolean cash_control = obj_pos.remove(POS_CASH_CONTROL).getAsBoolean();
+                            pos.setCashControl(cash_control);
+                            listPos.add(pos);
+                        }
+                    }
+                }
+                return listPos;
+            }
+        }
     }
 
     @Override
@@ -133,7 +196,44 @@ public class POSUserDataAccessOdoo extends POSAbstractDataAccessOdoo implements 
 
     @Override
     public List<PointOfSales> retrievePos() throws ParseException, ConnectionException, DataAccessException, IOException {
-        return getPOSFake();
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+
+        try {
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSessionOdoo.REST_BASE_URL, POSDataAccessSessionOdoo.REST_USER_NAME, POSDataAccessSessionOdoo.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPIOdoo.REST_REGISTER_SHIFTS_GET_LISTING_POS);
+            statement.setSessionHeader(POSDataAccessSessionOdoo.REST_SESSION_ID);
+
+            paramBuilder = statement.getParamBuilder()
+                    .setSortOrderASC("name");
+
+            rp = statement.execute();
+            rp.setParseImplement(new Gson2PosParseModel());
+            rp.setParseModel(PosDataPointOfSales.class);
+            DataPointOfSales listPos = (DataPointOfSales) rp.doParse();
+            List<PointOfSales> mListPos = listPos.getItems();
+            return mListPos;
+        } catch (Exception ex) {
+            throw new DataAccessException(ex);
+        } finally {
+//            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
     }
 
     @Override

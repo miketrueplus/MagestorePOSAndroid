@@ -140,10 +140,10 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
             @Override
             public void onClick(View view) {
                 mCheckLoginDemo = false;
-//                checkPlatForm();
+                checkPlatForm();
                 hiddenKeyboard(mPasswordView);
                 // TODO: Tạm thời bỏ check platform để dev
-                attemptLogin();
+//                attemptLogin();
             }
         });
 
