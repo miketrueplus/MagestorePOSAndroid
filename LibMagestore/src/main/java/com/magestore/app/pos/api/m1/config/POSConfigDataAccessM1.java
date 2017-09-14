@@ -579,7 +579,13 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
         customerAddress.setPostCode(zip_code);
         customerAddress.setCountry(country_id);
         customerAddress.setStreet1(street);
-        customerAddress.setRegionID(region_id);
+        int id;
+        try {
+            id = Integer.parseInt(region_id);
+        } catch (Exception e) {
+            id = 0;
+        }
+        customerAddress.setRegionID(String.valueOf(id));
         Region region = new PosRegion();
         try {
             region.setRegionID(Integer.parseInt(region_id));

@@ -1,6 +1,7 @@
 package com.magestore.app.lib.model.checkout;
 
 import com.magestore.app.lib.model.Model;
+import com.magestore.app.lib.model.directory.Region;
 
 import java.util.List;
 
@@ -46,4 +47,7 @@ public interface QuoteCustomerAddress extends Model {
     String getEmail();
 
     void setEmail(String strEmail);
+
+    Region getRegion();
+    void setRegion(Region strRegion);
 }

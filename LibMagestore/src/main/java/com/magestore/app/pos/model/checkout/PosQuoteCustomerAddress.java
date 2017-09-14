@@ -1,7 +1,9 @@
 package com.magestore.app.pos.model.checkout;
 
 import com.magestore.app.lib.model.checkout.QuoteCustomerAddress;
+import com.magestore.app.lib.model.directory.Region;
 import com.magestore.app.pos.model.PosAbstractModel;
+import com.magestore.app.pos.model.directory.PosRegion;
 
 import java.util.List;
 
@@ -14,6 +16,7 @@ import java.util.List;
 public class PosQuoteCustomerAddress extends PosAbstractModel implements QuoteCustomerAddress {
     String country_id;
     int region_id;
+    PosRegion region;
     String postcode;
     List<String> street;
     String telephone;
@@ -110,5 +113,15 @@ public class PosQuoteCustomerAddress extends PosAbstractModel implements QuoteCu
     @Override
     public void setEmail(String strEmail) {
         email = strEmail;
+    }
+
+    @Override
+    public Region getRegion() {
+        return region;
+    }
+
+    @Override
+    public void setRegion(Region strRegion) {
+        region = (PosRegion) strRegion;
     }
 }
