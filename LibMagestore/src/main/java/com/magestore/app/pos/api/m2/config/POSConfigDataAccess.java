@@ -693,12 +693,19 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         customerAddress.setPostCode(zip_code);
         customerAddress.setCountry(country_id);
         customerAddress.setStreet1(street);
-        customerAddress.setRegionID(region_id);
+        int id;
+        try {
+            id = Integer.parseInt(region_id);
+        } catch (Exception e) {
+            id = 0;
+        }
+        customerAddress.setRegionID(String.valueOf(id));
         Region region = new PosRegion();
         try {
             region.setRegionID(Integer.parseInt(region_id));
         } catch (Exception e) {
             region.setRegionID(0);
+            region.setRegionName(region_id);
         }
         customerAddress.setRegion(region);
         listAddress.add(customerAddress);

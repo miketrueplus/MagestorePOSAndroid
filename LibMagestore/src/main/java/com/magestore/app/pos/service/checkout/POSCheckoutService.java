@@ -887,6 +887,7 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
             QuoteCustomerAddress customerAddress = createCustomerAddress();
             customerAddress.setCountryId(address.getCountry());
             customerAddress.setRegionId(address.getRegion().getRegionID());
+            customerAddress.setRegion(address.getRegion());
             customerAddress.setPostcode(address.getPostCode());
             customerAddress.setStreet(address.getStreet());
             customerAddress.setTelephone(address.getTelephone());
@@ -902,6 +903,7 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
                         QuoteCustomerAddress customerBillingAddress = createCustomerAddress();
                         customerBillingAddress.setCountryId(billing_address.getCountry());
                         customerBillingAddress.setRegionId(billing_address.getRegion().getRegionID());
+                        customerAddress.setRegion(address.getRegion());
                         customerBillingAddress.setPostcode(billing_address.getPostCode());
                         customerBillingAddress.setStreet(billing_address.getStreet());
                         customerBillingAddress.setTelephone(billing_address.getTelephone());
@@ -939,6 +941,7 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         QuoteCustomerAddress customerAddress = createCustomerAddress();
         customerAddress.setCountryId(address.getCountry());
         customerAddress.setRegionId(address.getRegion().getRegionID());
+        customerAddress.setRegion(address.getRegion());
         customerAddress.setPostcode(address.getPostCode());
         customerAddress.setStreet(address.getStreet());
         customerAddress.setTelephone(address.getTelephone());
@@ -955,6 +958,7 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         QuoteCustomerAddress customerShippingAddress = createCustomerAddress();
         customerShippingAddress.setCountryId(shippingAddress.getCountry());
         customerShippingAddress.setRegionId(shippingAddress.getRegion().getRegionID());
+        customerShippingAddress.setRegion(shippingAddress.getRegion());
         customerShippingAddress.setPostcode(shippingAddress.getPostCode());
         customerShippingAddress.setStreet(shippingAddress.getStreet());
         customerShippingAddress.setTelephone(shippingAddress.getTelephone());
@@ -975,6 +979,7 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         QuoteCustomerAddress customerBillingAddress = createCustomerAddress();
         customerBillingAddress.setCountryId(billingAddress.getCountry());
         customerBillingAddress.setRegionId(billingAddress.getRegion().getRegionID());
+        customerBillingAddress.setRegion(billingAddress.getRegion());
         customerBillingAddress.setPostcode(billingAddress.getPostCode());
         customerBillingAddress.setStreet(billingAddress.getStreet());
         customerBillingAddress.setTelephone(billingAddress.getTelephone());
