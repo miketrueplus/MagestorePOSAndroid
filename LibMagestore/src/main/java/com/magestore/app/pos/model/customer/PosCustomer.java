@@ -186,4 +186,14 @@ public class PosCustomer extends PosAbstractModel implements Customer {
     public String getEntityId() {
         return entity_id;
     }
+
+    @Override
+    public String getCreateAt() {
+        return created_at;
+    }
+
+    @Override
+    public void setCreateAt(String strCreateAt) {
+        created_at = strCreateAt;
+    }
 }

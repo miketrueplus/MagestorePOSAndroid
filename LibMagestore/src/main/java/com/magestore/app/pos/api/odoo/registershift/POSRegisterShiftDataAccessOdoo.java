@@ -353,7 +353,7 @@ public class POSRegisterShiftDataAccessOdoo extends POSAbstractDataAccessOdoo im
             statement.setSessionHeader(POSDataAccessSessionOdoo.REST_SESSION_ID);
 
             OpenSessionEntity openSessionEntity = new OpenSessionEntity();
-            openSessionEntity.cash_control = ConfigUtil.isCashControl();
+            openSessionEntity.cash_control = ConfigUtil.getPointOfSales().getCashControl();
             openSessionEntity.config_id = sessionParam.getPosId();
 
             List<CashBoxEntity> listCashBox = new ArrayList<>();

@@ -148,7 +148,7 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
 
     @Override
     public Map<String, String> getCustomerGroup() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
-        return null;
+        return getCustomerGroupFake();
     }
 
     @Override
@@ -288,7 +288,6 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
     public void getConfigStaffPermisson(List<String> listPermisson) throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
         if (listPermisson.size() > 0) {
             ConfigUtil.setManageOrderByLocation(false);
-            ConfigUtil.setManagerShiftAdjustment(true);
             ConfigUtil.setNeedToShip(false);
             ConfigUtil.setMarkAsShip(false);
             ConfigUtil.setCanUseRefund(false);
@@ -339,7 +338,7 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
     }
 
     @Override
-    public Map<String, String> getConfigStatusOrder() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException{
+    public Map<String, String> getConfigStatusOrder() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
         Map<String, String> listStatus = new LinkedHashTreeMap<>();
         listStatus.put("canceled", "cancel");
         listStatus.put("pending", "paid");
@@ -348,7 +347,7 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
         return listStatus;
     }
 
-    private Staff getStaffFake(){
+    private Staff getStaffFake() {
         Staff staff = new PosStaff();
         staff.setStaffId("4");
         staff.setStaffName("jessie");
@@ -493,13 +492,13 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
         return guest;
     }
 
-    private List<String> getPermissonFake(){
+    private List<String> getPermissonFake() {
         List<String> listPermisson = new ArrayList<>();
         listPermisson.add(ALL_PERMISSON);
         return listPermisson;
     }
 
-    private Map<String, String> getConfigYearFake(){
+    private Map<String, String> getConfigYearFake() {
         Map<String, String> listCCYears = new LinkedTreeMap<>();
         listCCYears.put("2017", "2017");
         listCCYears.put("2018", "2018");
@@ -507,16 +506,23 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
         return listCCYears;
     }
 
-    private List<String> getConfigMonthFake(){
+    private List<String> getConfigMonthFake() {
         List<String> listMonth = new ArrayList<>();
         listMonth.add("01 - January");
         listMonth.add("02 - February");
         return listMonth;
     }
 
-    private Map<String, String> getCCTypeFake(){
+    private Map<String, String> getCCTypeFake() {
         Map<String, String> listCC = new LinkedTreeMap<>();
         listCC.put("VI", "Visa");
         return listCC;
+    }
+
+    private Map<String, String> getCustomerGroupFake() {
+        Map<String, String> listCustomerGroup = new LinkedTreeMap<>();
+        listCustomerGroup.put("1", "person");
+        listCustomerGroup.put("2", "company");
+        return listCustomerGroup;
     }
 }

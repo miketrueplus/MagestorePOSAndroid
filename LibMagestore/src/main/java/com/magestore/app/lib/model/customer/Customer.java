@@ -34,4 +34,6 @@ public interface Customer extends Model {
     void setAddressPosition(int intAddressPosition);
     void setEntityId(String strEntityId);
     String getEntityId();
+    String getCreateAt();
+    void setCreateAt(String strCreateAt);
 }

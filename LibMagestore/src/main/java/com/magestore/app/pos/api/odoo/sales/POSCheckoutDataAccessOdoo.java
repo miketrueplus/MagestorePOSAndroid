@@ -215,7 +215,7 @@ public class POSCheckoutDataAccessOdoo extends POSAbstractDataAccessOdoo impleme
                 productDiscount.pack_lot_ids = listSerialNumber;
                 listProductEntity.add(productDiscount);
             }
-            placeOrderEntity.partner_id = checkout.getCustomerID();
+            placeOrderEntity.partner_id = placeOrderParams.getCustomerId();
             placeOrderEntity.lines = listProductEntity;
             placeOrderEntity.amount_tax = checkout.getTaxTotal();
             placeOrderEntity.amount_return = amount_return;

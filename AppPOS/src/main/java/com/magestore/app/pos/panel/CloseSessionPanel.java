@@ -162,6 +162,9 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
         et_r_close_balance.setEnabled(item.getStatus().equals(CLOSE_SESSION) ? false : true);
         et_r_close_balance.setEnabled(ConfigUtil.isEnableCloseAmount() ? true : false);
         et_note.setEnabled(item.getStatus().equals(CLOSE_SESSION) ? false : true);
+        if (item.getPosConfig() != null) {
+            bt_adjustment.setVisibility(item.getPosConfig().getCashControl() ? VISIBLE : GONE);
+        }
         ll_note.setVisibility(ConfigUtil.isShiftCloseNote() ? VISIBLE : GONE);
         tv_open_session_balance.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(item.getBaseFloatAmount())));
         tv_t_close_balance.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(item.getBaseBalance())));

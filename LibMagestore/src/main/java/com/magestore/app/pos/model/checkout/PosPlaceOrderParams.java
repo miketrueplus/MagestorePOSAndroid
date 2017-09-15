@@ -134,6 +134,11 @@ public class PosPlaceOrderParams extends PosAbstractModel implements PlaceOrderP
     }
 
     @Override
+    public String getCustomerId() {
+        return customer_id;
+    }
+
+    @Override
     public void setCustomerId(String strCustomerId) {
         customer_id = strCustomerId;
     }

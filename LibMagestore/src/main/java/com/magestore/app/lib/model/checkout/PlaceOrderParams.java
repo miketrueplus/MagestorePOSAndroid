@@ -32,6 +32,7 @@ public interface PlaceOrderParams extends Model {
     PosPlaceOrderParams.PlaceOrderPaymentParam createPlaceOrderPaymentParam();
     List<PaymentMethodDataParam> createPaymentMethodData();
     void setCurrencyId(String strCurrencyId);
+    String getCustomerId();
     void setCustomerId(String strCustomerId);
     void setStoreId(String strStoreId);
     void setTillId(String strTillId);
