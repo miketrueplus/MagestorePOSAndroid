@@ -69,6 +69,7 @@ public class ConfigUtil {
     private static String mShiftId;
     private static String mLocationId;
     private static String mRegisterShiftId;
+    private static boolean mCashControl = true;
     private static ConfigPriceFormat mConfigPriceFormat;
 
     // permisson order
@@ -94,6 +95,8 @@ public class ConfigUtil {
     private static boolean mManageShiftAdjustment;
     private static boolean mShiftOpenNote;
     private static boolean mEnableOpenFloatAmount;
+    private static boolean mShiftCloseNote;
+    private static boolean mEnableCloseAmount;
     // permisson checkout
     private static boolean mNeedToShip;
     private static boolean mMarkAsShip;
@@ -848,6 +851,14 @@ public class ConfigUtil {
         ConfigUtil.mRegisterShiftId = mRegisterShiftId;
     }
 
+    public static boolean isCashControl() {
+        return mCashControl;
+    }
+
+    public static void setCashControl(boolean mCashControl) {
+        ConfigUtil.mCashControl = mCashControl;
+    }
+
     public static String getShiftId() {
         return mShiftId;
     }
@@ -1039,6 +1050,22 @@ public class ConfigUtil {
 
     public static void setEnableOpenFloatAmount(boolean mEnableOpenFloatAmount) {
         ConfigUtil.mEnableOpenFloatAmount = mEnableOpenFloatAmount;
+    }
+
+    public static boolean isShiftCloseNote() {
+        return mShiftCloseNote;
+    }
+
+    public static void setShiftCloseNote(boolean mShiftCloseNote) {
+        ConfigUtil.mShiftCloseNote = mShiftCloseNote;
+    }
+
+    public static boolean isEnableCloseAmount() {
+        return mEnableCloseAmount;
+    }
+
+    public static void setEnableCloseAmount(boolean mEnableCloseAmount) {
+        ConfigUtil.mEnableCloseAmount = mEnableCloseAmount;
     }
 
     public static boolean isNeedToShip() {

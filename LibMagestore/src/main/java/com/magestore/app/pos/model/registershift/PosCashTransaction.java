@@ -236,9 +236,14 @@ public class PosCashTransaction extends PosAbstractModel implements CashTransact
 
     @Override
     public String getCheckTypeValue() {
-        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2) || ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_ODOO)) {
+        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2)) {
             if (type.toLowerCase().equals("remove")) {
                 return "- " + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(base_value));
+            }
+            return "+ " + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(base_value));
+        } else if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_ODOO)) {
+            if (type.toLowerCase().equals("remove")) {
+                return "- " + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(0 - base_value));
             }
             return "+ " + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(base_value));
         } else {

@@ -221,8 +221,7 @@ public class POSCheckoutDataAccessOdoo extends POSAbstractDataAccessOdoo impleme
             placeOrderEntity.amount_return = amount_return;
             placeOrderEntity.to_invoice = checkout.getCreateInvoice().equals("1") ? true : false;
 
-            // TODO: fake pos_session_id = 1 open
-            placeOrderEntity.pos_session_id = "1";
+            placeOrderEntity.pos_session_id = ConfigUtil.getRegisterShiftId();
 
             rp = statement.execute(placeOrderEntity);
             rp.setParseImplement(new Gson2PosListOrderParseModelOdoo());

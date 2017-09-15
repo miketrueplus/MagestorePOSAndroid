@@ -300,6 +300,8 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
             ConfigUtil.setPartialInvoice(false);
             ConfigUtil.setShiftOpenNote(false);
             ConfigUtil.setEnableOpenFloatAmount(false);
+            ConfigUtil.setShiftCloseNote(false);
+            ConfigUtil.setEnableCloseAmount(false);
             if (checkStaffPermiss(listPermisson, ALL_PERMISSON)) {
                 ConfigUtil.setCreateOrder(true);
                 ConfigUtil.setManagerAllOrder(true);

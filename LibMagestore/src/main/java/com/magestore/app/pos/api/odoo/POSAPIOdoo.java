@@ -19,6 +19,9 @@ public class POSAPIOdoo {
     // API staff
     public static final String REST_LOGIN = "api/login/";
 
+    // API customer
+    public static final String REST_CUSOMTER_GET_LISTING = "api/pos-customers/?";
+
     // API order
     public static final String REST_ORDER_GET_LISTING = "api/pos-orders/?";
     public static final String REST_ORDER_COMMENTS = "api/pos-add-note-order/";

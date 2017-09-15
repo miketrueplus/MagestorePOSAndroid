@@ -30,6 +30,7 @@ import com.magestore.app.pos.api.odoo.POSAbstractDataAccessOdoo;
 import com.magestore.app.pos.api.odoo.POSDataAccessSessionOdoo;
 import com.magestore.app.pos.model.registershift.PosCashTransaction;
 import com.magestore.app.pos.model.registershift.PosDataListRegisterShift;
+import com.magestore.app.pos.model.registershift.PosPointOfSales;
 import com.magestore.app.pos.model.registershift.PosRegisterShift;
 import com.magestore.app.pos.model.registershift.PosSaleSummary;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosAbstractParseImplement;
@@ -81,6 +82,21 @@ public class POSRegisterShiftDataAccessOdoo extends POSAbstractDataAccessOdoo im
         private String PAYMENT_AMOUNT = "base_payment_amount";
         private String PAYMENT_REFERENCE = "reference";
         private String PAYMENT_DIFFERENCE_ZERO = "is_difference_zero";
+        private String POS_CONFIG = "pos_config";
+        private String POS_SESSION_USENAME = "pos_session_username";
+        private String POS_TAX_INCL = "iface_tax_included";
+        private String POS_RECEIPT_HEADER = "receipt_header";
+        private String POS_CASH_CONTROL = "cash_control";
+        private String POS_TIP_PRODUCT_ID = "tip_product_id";
+        private String POS_CURRENT_SESSION_STATE = "current_session_state";
+        private String POS_CREATE_DATE = "create_date";
+        private String POS_PRINT_AUTO = "iface_print_auto";
+        private String POS_INVOICE = "iface_invoicing";
+        private String POS_RECEIPT_FOOTER = "receipt_footer";
+        private String POS_CASH_DRAWER = "iface_cashdrawer";
+        private String POS_DISCOUNT = "iface_discount";
+        private String POS_DISCOUNT_PC = "discount_pc";
+        private String POS_DISCOUNT_PRODUCT_ID = "discount_product_id";
 
         public class RegisterShiftConverter implements JsonDeserializer<List<PosRegisterShift>> {
             @Override
@@ -150,6 +166,25 @@ public class POSRegisterShiftDataAccessOdoo extends POSAbstractDataAccessOdoo im
                                 }
                             }
                             shift.setSalesSummary(listSaleSummary);
+                            if (obj_shift.has(POS_CONFIG) && obj_shift.get(POS_CONFIG).isJsonObject()) {
+                                JsonObject obj_pos = obj_shift.get(POS_CONFIG).getAsJsonObject();
+                                PosPointOfSales pos = new PosPointOfSales();
+                                boolean cash_control = obj_pos.remove(POS_CASH_CONTROL).getAsBoolean();
+                                pos.setCashControl(cash_control);
+                                if (obj_pos.has(POS_DISCOUNT)) {
+                                    boolean pos_discount = obj_pos.remove(POS_DISCOUNT).getAsBoolean();
+                                    pos.setIfaceDiscount(pos_discount);
+                                }
+                                if (obj_pos.has(POS_DISCOUNT_PC)) {
+                                    float pos_discount_pc = obj_pos.remove(POS_DISCOUNT_PC).getAsFloat();
+                                    pos.setDiscountPC(pos_discount_pc);
+                                }
+                                if (obj_pos.has(POS_DISCOUNT_PRODUCT_ID)) {
+                                    String pos_discount_product_id = obj_pos.remove(POS_DISCOUNT_PRODUCT_ID).getAsString();
+                                    pos.setDiscountProductId(pos_discount_product_id);
+                                }
+                                shift.setPosConfig(pos);
+                            }
                             listRegisterShift.add(shift);
                         }
                     }
@@ -174,6 +209,12 @@ public class POSRegisterShiftDataAccessOdoo extends POSAbstractDataAccessOdoo im
     private class CashBoxEntity {
         int number;
         float coin_value;
+    }
+
+    private class CloseSessionEntity {
+        String session_id;
+        boolean cash_control;
+        List<CashBoxEntity> cashbox_lines_ids;
     }
 
     @Override
@@ -312,7 +353,7 @@ public class POSRegisterShiftDataAccessOdoo extends POSAbstractDataAccessOdoo im
             statement.setSessionHeader(POSDataAccessSessionOdoo.REST_SESSION_ID);
 
             OpenSessionEntity openSessionEntity = new OpenSessionEntity();
-            openSessionEntity.cash_control = ConfigUtil.getPointOfSales().getCashControl();
+            openSessionEntity.cash_control = ConfigUtil.isCashControl();
             openSessionEntity.config_id = sessionParam.getPosId();
 
             List<CashBoxEntity> listCashBox = new ArrayList<>();
@@ -407,7 +448,59 @@ public class POSRegisterShiftDataAccessOdoo extends POSAbstractDataAccessOdoo im
 
     @Override
     public List<RegisterShift> closeSession(SessionParam sessionParam) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
-        return null;
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+        try {
+            // Khởi tạo connection và khởi tạo truy vấn
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSessionOdoo.REST_BASE_URL, POSDataAccessSessionOdoo.REST_USER_NAME, POSDataAccessSessionOdoo.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPIOdoo.REST_REGISTER_SHIFTS_CLOSE_SESSION);
+            statement.setSessionHeader(POSDataAccessSessionOdoo.REST_SESSION_ID);
+
+            CloseSessionEntity closeSessionEntity = new CloseSessionEntity();
+            closeSessionEntity.cash_control = ConfigUtil.isCashControl();
+            closeSessionEntity.session_id = sessionParam.getID();
+
+            List<CashBoxEntity> listCashBox = new ArrayList<>();
+            HashMap<OpenSessionValue, CashBox> mCashBox = sessionParam.getCashBox();
+            if (mCashBox != null && mCashBox.size() > 0) {
+                for (CashBox cashBox : mCashBox.values()) {
+                    CashBoxEntity cashBoxEntity = new CashBoxEntity();
+                    cashBoxEntity.number = cashBox.getQty();
+                    cashBoxEntity.coin_value = cashBox.getValue();
+                    listCashBox.add(cashBoxEntity);
+                }
+            }
+            closeSessionEntity.cashbox_lines_ids = listCashBox;
+
+            // thực thi truy vấn và parse kết quả thành object
+            rp = statement.execute(closeSessionEntity);
+            rp.setParseImplement(new Gson2PosListOrderParseModelOdoo());
+            rp.setParseModel(PosDataListRegisterShift.class);
+            DataListRegisterShift listRegisterShift = (DataListRegisterShift) rp.doParse();
+            return sumBalance(listRegisterShift.getItems());
+        } catch (ConnectionException ex) {
+            throw ex;
+        } catch (IOException ex) {
+            throw ex;
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
     }
 
     private List<RegisterShift> sumBalance(List<RegisterShift> shiftList) {

@@ -66,6 +66,9 @@ public interface RegisterShift extends Model {
     String getPosName();
     void setPosName(String strPosName);
 
+    PointOfSales getPosConfig();
+    void setPosConfig(PointOfSales posConfig);
+
     boolean getLastSevenDay();
     void setLastSevenDay(boolean bLessSevenDay);
 

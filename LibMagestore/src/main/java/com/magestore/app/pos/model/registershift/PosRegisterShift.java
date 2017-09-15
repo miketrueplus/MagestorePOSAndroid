@@ -1,6 +1,7 @@
 package com.magestore.app.pos.model.registershift;
 
 import com.magestore.app.lib.model.registershift.CashTransaction;
+import com.magestore.app.lib.model.registershift.PointOfSales;
 import com.magestore.app.lib.model.registershift.RegisterShift;
 import com.magestore.app.lib.model.registershift.SaleSummary;
 import com.magestore.app.lib.model.registershift.ZreportSalesSummary;
@@ -74,6 +75,9 @@ public class PosRegisterShift extends PosAbstractModel implements RegisterShift 
     boolean last_seven_day;
     @Gson2PosExclude
     boolean less_seven_day;
+
+    @Gson2PosExclude
+    PosPointOfSales pos_config;
 
     // param request add cash transaction
     PosCashTransaction param_cash;
@@ -417,6 +421,16 @@ public class PosRegisterShift extends PosAbstractModel implements RegisterShift 
     public void setPosName(String strPosName) {
         pos_name = strPosName;
         till_name = strPosName;
+    }
+
+    @Override
+    public PointOfSales getPosConfig() {
+        return pos_config;
+    }
+
+    @Override
+    public void setPosConfig(PointOfSales posConfig) {
+        pos_config = (PosPointOfSales) posConfig;
     }
 
     @Override

@@ -24,6 +24,7 @@ import com.magestore.app.pos.controller.CloseSessionSaleListController;
 import com.magestore.app.pos.controller.RegisterShiftListController;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.DataUtil;
+import com.magestore.app.util.StringUtil;
 import com.magestore.app.view.EditTextFloat;
 
 import java.util.HashMap;
@@ -49,7 +50,8 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
     View line;
     RegisterShiftSaleListPanel mRegisterShiftSaleListPanel;
     CloseSessionSaleListController mCloseSessionSaleListController;
-    LinearLayout ll_sale_summary;
+    LinearLayout ll_sale_summary, ll_note;
+    HashMap<OpenSessionValue, CashBox> mCashBox;
 
     public CloseSessionPanel(Context context) {
         super(context);
@@ -84,6 +86,7 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
         tv_difference = (TextView) view.findViewById(R.id.tv_difference);
         rl_set_value = (RelativeLayout) view.findViewById(R.id.rl_set_value);
         rl_content = (RelativeLayout) view.findViewById(R.id.rl_content);
+        ll_note = (LinearLayout) view.findViewById(R.id.ll_note);
         et_note = (EditText) view.findViewById(R.id.et_note);
         bt_close = (Button) view.findViewById(R.id.bt_close);
         bt_cancel = (Button) view.findViewById(R.id.bt_cancel);
@@ -129,7 +132,7 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
     @Override
     public void bindItem(final RegisterShift item) {
         super.bindItem(item);
-        tv_session_title.setText(getContext().getString(R.string.close_session_id_title, item.getShiftId()));
+        tv_session_title.setText(getContext().getString(R.string.close_session_id_title, StringUtil.isNullOrEmpty(item.getShiftId()) ? item.getPosName() : item.getShiftId()));
         txt_staff_login.setText(ConfigUtil.getStaff().getStaffName());
         txt_pos.setText(item.getPosName());
         txt_open_date.setText(ConfigUtil.formatDateTime(item.getOpenedAt()));
@@ -157,7 +160,9 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
 
         ((RegisterShiftListController) getController()).bindListValueClose();
         et_r_close_balance.setEnabled(item.getStatus().equals(CLOSE_SESSION) ? false : true);
+        et_r_close_balance.setEnabled(ConfigUtil.isEnableCloseAmount() ? true : false);
         et_note.setEnabled(item.getStatus().equals(CLOSE_SESSION) ? false : true);
+        ll_note.setVisibility(ConfigUtil.isShiftCloseNote() ? VISIBLE : GONE);
         tv_open_session_balance.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(item.getBaseFloatAmount())));
         tv_t_close_balance.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(item.getBaseBalance())));
         float transaction = item.getBaseBalance() - item.getBaseFloatAmount();
@@ -208,6 +213,7 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
                     param.setCloseAt(ConfigUtil.getCurrentDateTime());
                     param.setShiftId(item.getShiftId());
                     param.setPosId(item.getPosId());
+                    param.setCashBox(mCashBox);
                     param.setStatus(VALIDATE);
                     ((RegisterShiftListController) getController()).doInputValidateSession(item, param);
                 }
@@ -247,6 +253,7 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
                 param.setCloseAt(ConfigUtil.getCurrentDateTime());
                 param.setShiftId(item.getShiftId());
                 param.setPosId(item.getPosId());
+                param.setCashBox(mCashBox);
                 param.setStatus(VALIDATE);
                 ((RegisterShiftListController) getController()).doInputValidateSession(item, param);
             }
@@ -285,6 +292,7 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
                     line.setVisibility(VISIBLE);
                     tv_session_title.setText(getContext().getString(R.string.close_session_id_title, item.getShiftId()));
                     total_balance_value.setVisibility(GONE);
+                    ll_note.setVisibility(ConfigUtil.isShiftCloseNote() ? VISIBLE : GONE);
                 } else {
                     bt_adjustment.setText(getContext().getString(R.string.cancel));
                     bt_adjustment.setTextColor(ContextCompat.getColor(getContext(), R.color.text_color));
@@ -295,6 +303,7 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
                     line.setVisibility(GONE);
                     tv_session_title.setText(getContext().getString(R.string.open_session_set_balance_value));
                     total_balance_value.setVisibility(VISIBLE);
+                    ll_note.setVisibility(GONE);
                 }
             }
         });
@@ -341,7 +350,7 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
         param.setShiftId(item.getShiftId());
         param.setPosId(item.getPosId());
         param.setStatus(type);
-
+        param.setCashBox(mCashBox);
         return param;
     }
 
@@ -388,7 +397,7 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
     }
 
     public void updateCashBoxClose(HashMap<OpenSessionValue, CashBox> mCashBox) {
-
+        this.mCashBox = mCashBox;
     }
 
     public void backToLoginActivity() {
