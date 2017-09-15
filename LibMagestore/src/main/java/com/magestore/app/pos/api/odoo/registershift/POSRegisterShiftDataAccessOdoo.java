@@ -328,7 +328,7 @@ public class POSRegisterShiftDataAccessOdoo extends POSAbstractDataAccessOdoo im
             openSessionEntity.cashbox_lines_ids = listCashBox;
 
             // thực thi truy vấn và parse kết quả thành object
-            rp = statement.execute();
+            rp = statement.execute(openSessionEntity);
             rp.setParseImplement(new Gson2PosListOrderParseModelOdoo());
             rp.setParseModel(PosDataListRegisterShift.class);
             DataListRegisterShift listRegisterShift = (DataListRegisterShift) rp.doParse();

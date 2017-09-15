@@ -402,6 +402,57 @@ public class POSProductDataAccessOdoo extends POSAbstractDataAccessOdoo implemen
 
     @Override
     public List<Product> retrieve(List<String> Ids) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
-        return null;
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+
+        try {
+            // Khởi tạo connection và khởi tạo truy vấn
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSessionOdoo.REST_BASE_URL, POSDataAccessSessionOdoo.REST_USER_NAME, POSDataAccessSessionOdoo.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPIOdoo.REST_PRODUCT_GET_LISTING);
+            statement.setSessionHeader(POSDataAccessSessionOdoo.REST_SESSION_ID);
+
+            // Xây dựng tham số
+            String listProductId = "";
+            for (String id : Ids) {
+                listProductId += id + ",";
+            }
+            if (listProductId.length() > 0) {
+                listProductId = listProductId.substring(0, listProductId.length() - 1);
+            }
+            paramBuilder = statement.getParamBuilder()
+                    .setFilterIn("id", listProductId);
+
+            // thực thi truy vấn và parse kết quả thành object
+            rp = statement.execute();
+            rp.setParseImplement(new Gson2PosProductParseModel());
+            rp.setParseModel(PosDataProduct.class);
+            DataProduct dataProduct = (DataProduct) rp.doParse();
+            List<Product> list = dataProduct.getItems();
+
+            // return
+            return list;
+        } catch (ConnectionException ex) {
+            throw ex;
+        } catch (IOException ex) {
+            throw ex;
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
     }
 }

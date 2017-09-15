@@ -877,7 +877,9 @@ public class POSCartService extends AbstractService implements CartService {
                     }
                 }
                 if (product != null) {
-                    product.setProductOption(productDataAccess.loadProductOption(product));
+                    if (product.haveProductOption()) {
+                        product.setProductOption(productDataAccess.loadProductOption(product));
+                    }
                     if (product.isInStock()) {
                         // tạo item theo product truy xuất được
                         CartItem newItem = create(product, orderitem.getQty(), orderitem.getUnitPrice());

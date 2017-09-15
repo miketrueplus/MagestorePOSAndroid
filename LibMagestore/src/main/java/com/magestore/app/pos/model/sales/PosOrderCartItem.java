@@ -70,9 +70,19 @@ public class PosOrderCartItem extends PosAbstractModel implements OrderCartItem 
     }
 
     @Override
+    public void setQty(String iQty) {
+        qty = iQty;
+    }
+
+    @Override
     public float getUnitPrice() {
         if (StringUtil.isNullOrEmpty(unit_price)) return 0.0f;
         return Float.parseFloat(unit_price);
+    }
+
+    @Override
+    public void setUnitPrice(String fUnitPrice) {
+        unit_price = fUnitPrice;
     }
 
     @Override
@@ -82,15 +92,30 @@ public class PosOrderCartItem extends PosAbstractModel implements OrderCartItem 
     }
 
     @Override
+    public void setBaseUnitPrice(String fBaseUnitPrice) {
+        base_unit_price = fBaseUnitPrice;
+    }
+
+    @Override
     public float getOriginalPrice() {
         if (StringUtil.isNullOrEmpty(original_price)) return 0.0f;
         return Float.parseFloat(original_price);
     }
 
     @Override
+    public void setOriginalPrice(String fOriginalPrice) {
+        original_price = fOriginalPrice;
+    }
+
+    @Override
     public float getBaseOriginalPrice() {
         if (StringUtil.isNullOrEmpty(base_original_price)) return 0.0f;
         return Float.parseFloat(base_original_price);
+    }
+
+    @Override
+    public void setBaseOriginalPrice(String fBaseOriginalPrice) {
+        base_original_price = fBaseOriginalPrice;
     }
 
     @Override

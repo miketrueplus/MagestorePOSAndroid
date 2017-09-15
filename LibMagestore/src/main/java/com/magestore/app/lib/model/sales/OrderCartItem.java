@@ -25,14 +25,19 @@ public interface OrderCartItem extends Model {
     String getChildId();
 
     int getQty();
+    void setQty(String iQty);
 
     float getUnitPrice();
+    void setUnitPrice(String fUnitPrice);
 
     float getBaseUnitPrice();
+    void setBaseUnitPrice(String fBaseUnitPrice);
 
     float getOriginalPrice();
+    void setOriginalPrice(String fOriginalPrice);
 
     float getBaseOriginalPrice();
+    void setBaseOriginalPrice(String fBaseOriginalPrice);
 
     String getOptionsLabel();
 

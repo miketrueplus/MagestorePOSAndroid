@@ -120,7 +120,7 @@ public class RegisterOpenSessionPanel extends AbstractDetailPanel<RegisterShift>
                     tv_session_title.setText(getContext().getString(R.string.open_session_title));
                     tv_session_back.setVisibility(VISIBLE);
                     line.setVisibility(VISIBLE);
-                    ll_note.setVisibility(VISIBLE);
+                    ll_note.setVisibility(ConfigUtil.isShiftOpenNote() ? VISIBLE : GONE);
                     total_balance_value.setVisibility(GONE);
                     bt_open_balance.setText(getContext().getString(R.string.open_session_open_balance));
                     bt_open_balance.setTextColor(ContextCompat.getColor(getContext(), R.color.app_color));
@@ -170,7 +170,7 @@ public class RegisterOpenSessionPanel extends AbstractDetailPanel<RegisterShift>
                     tv_session_title.setText(getContext().getString(R.string.open_session_title));
                     tv_session_back.setVisibility(VISIBLE);
                     line.setVisibility(VISIBLE);
-                    ll_note.setVisibility(VISIBLE);
+                    ll_note.setVisibility(ConfigUtil.isShiftOpenNote() ? VISIBLE : GONE);
                     total_balance_value.setVisibility(GONE);
                     bt_open_balance.setText(getContext().getString(R.string.open_session_open_balance));
                     bt_open_balance.setTextColor(ContextCompat.getColor(getContext(), R.color.app_color));
@@ -228,7 +228,7 @@ public class RegisterOpenSessionPanel extends AbstractDetailPanel<RegisterShift>
                     LoginActivity.STORE_ID = pos.getStoreId();
                     DataUtil.saveDataStringToPreferences(getContext(), DataUtil.STORE_ID, pos.getStoreId());
                     ConfigUtil.setPointOfSales(pos);
-                    bt_open_balance.setVisibility(pos.getCashControl() ? GONE : VISIBLE);
+                    bt_open_balance.setVisibility(pos.getCashControl() ? VISIBLE : GONE);
                 }
 
                 @Override

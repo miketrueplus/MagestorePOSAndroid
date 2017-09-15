@@ -243,12 +243,13 @@ public class RegisterShiftListController extends AbstractListController<Register
             if (openSessionPanel != null)
                 openSessionPanel.setEnableBtOpen(true);
             List<RegisterShift> listRegister = (List<RegisterShift>) wraper.get("open_session_respone");
-            ConfigUtil.setShiftId(listRegister.get(0).getShiftId());
-            ConfigUtil.setLocationId(listRegister.get(0).getLocationId());
-            ConfigUtil.setPosId(listRegister.get(0).getPosId());
-            ConfigUtil.setRegisterShiftId(listRegister.get(0).getID());
-            listRegister.get(0).setPosName(ConfigUtil.getPointOfSales().getPosName());
-            mList.add(1, listRegister.get(0));
+            RegisterShift registerShift = listRegister.get(0);
+            ConfigUtil.setShiftId(registerShift.getShiftId());
+            ConfigUtil.setLocationId(registerShift.getLocationId());
+            ConfigUtil.setPosId(registerShift.getPosId());
+            ConfigUtil.setRegisterShiftId(registerShift.getID());
+            registerShift.setPosName(ConfigUtil.getPointOfSales().getPosName());
+            mList.add(1, registerShift);
             for (RegisterShift shift : mList) {
                 if (shift.getLessSevenDay()) {
                     mList.remove(shift);

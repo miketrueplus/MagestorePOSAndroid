@@ -10,11 +10,14 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
+import com.magestore.app.lib.model.sales.OrderCartItem;
 import com.magestore.app.lib.model.sales.OrderStatus;
 import com.magestore.app.lib.model.sales.OrderWebposPayment;
 import com.magestore.app.pos.model.checkout.cart.PosCartItem;
 import com.magestore.app.pos.model.sales.PosOrder;
 import com.magestore.app.pos.model.sales.PosOrderBillingAddress;
+import com.magestore.app.pos.model.sales.PosOrderCartItem;
+import com.magestore.app.pos.model.sales.PosOrderItemsInfoBuy;
 import com.magestore.app.pos.model.sales.PosOrderStatus;
 import com.magestore.app.pos.model.sales.PosOrderWebposPayment;
 import com.magestore.app.util.ConfigUtil;
@@ -221,6 +224,7 @@ public class Gson2PosListOrderParseModelOdoo extends Gson2PosAbstractParseImplem
                         listComment.add(comment);
                         order.setOrderStatus(listComment);
                         List<CartItem> listItem = new ArrayList<>();
+                        List<OrderCartItem> listOrderCartItem = new ArrayList<>();
                         JsonArray arr_item = obj_order.getAsJsonArray(ORDER_ITEMS);
                         if (arr_item != null && arr_item.size() > 0) {
                             for (JsonElement el_item : arr_item) {
@@ -228,9 +232,11 @@ public class Gson2PosListOrderParseModelOdoo extends Gson2PosAbstractParseImplem
                                 float unit_price = obj_item.remove(PRODUC_UNIT_PRICE).getAsFloat();
                                 if (unit_price > 0) {
                                     PosCartItem cartItem = new PosCartItem();
+                                    PosOrderCartItem orderCartItem = new PosOrderCartItem();
                                     if (obj_item.has(PRODUCT_ID)) {
                                         String item_id = obj_item.remove(PRODUCT_ID).getAsString();
                                         cartItem.setID(item_id);
+                                        orderCartItem.setID(item_id);
                                     }
                                     if (obj_item.has(PRODUCT_NAME)) {
                                         String item_name = obj_item.remove(PRODUCT_NAME).getAsString();
@@ -238,6 +244,7 @@ public class Gson2PosListOrderParseModelOdoo extends Gson2PosAbstractParseImplem
                                     }
                                     float qty = obj_item.remove(PRODUCT_QTY).getAsFloat();
                                     cartItem.setQuantity(qty);
+                                    orderCartItem.setQty(String.valueOf(qty));
                                     cartItem.setQtyOrdered(qty);
                                     if (order.getStatus().equals(StringUtil.STATUS_COMPLETE)) {
                                         cartItem.setQtyInvoiced(qty);
@@ -254,7 +261,10 @@ public class Gson2PosListOrderParseModelOdoo extends Gson2PosAbstractParseImplem
                                             }
                                         }
                                     }
-
+                                    orderCartItem.setUnitPrice(String.valueOf(unit_price));
+                                    orderCartItem.setBaseUnitPrice(String.valueOf(ConfigUtil.convertToBasePrice(unit_price)));
+                                    orderCartItem.setOriginalPrice(String.valueOf(unit_price));
+                                    orderCartItem.setBaseOriginalPrice(String.valueOf(ConfigUtil.convertToBasePrice(unit_price)));
                                     cartItem.setBasePriceInclTax(ConfigUtil.convertToBasePrice(unit_price + total_tax_item));
                                     float product_subtotal = obj_item.remove(PRODUCT_SUBTOTAL).getAsFloat();
                                     cartItem.setBaseSubtotal(ConfigUtil.convertToBasePrice(product_subtotal));
@@ -268,6 +278,7 @@ public class Gson2PosListOrderParseModelOdoo extends Gson2PosAbstractParseImplem
                                     total_tax += total_tax_item;
                                     total_subtotal += product_subtotal;
                                     listItem.add(cartItem);
+                                    listOrderCartItem.add(orderCartItem);
                                 } else {
                                     total_discount = unit_price;
                                 }
@@ -279,6 +290,9 @@ public class Gson2PosListOrderParseModelOdoo extends Gson2PosAbstractParseImplem
                         order.setBaseDiscountAmount(ConfigUtil.convertToBasePrice(total_discount));
                         order.setBaseSubtotal(ConfigUtil.convertToBasePrice(total_subtotal));
                         order.setOrderItem(listItem);
+                        PosOrderItemsInfoBuy itemsInfoBuy = new PosOrderItemsInfoBuy();
+                        itemsInfoBuy.setListOrderCartItems(listOrderCartItem);
+                        order.setItemsInfoBuy(itemsInfoBuy);
                         listOrder.add(order);
                     }
                 }

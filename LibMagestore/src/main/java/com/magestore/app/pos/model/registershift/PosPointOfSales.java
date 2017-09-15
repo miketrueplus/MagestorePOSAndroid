@@ -21,7 +21,7 @@ public class PosPointOfSales extends PosAbstractModel implements PointOfSales {
     String pos_session_username;
     String iface_tax_included;
     String receipt_header;
-    boolean cash_control;
+    boolean cash_control = true;
     String tip_product_id;
     String current_session_state;
     String create_date;
