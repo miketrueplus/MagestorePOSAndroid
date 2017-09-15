@@ -12,6 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.magestore.app.lib.model.registershift.CashBox;
+import com.magestore.app.lib.model.registershift.OpenSessionValue;
 import com.magestore.app.lib.model.registershift.PointOfSales;
 import com.magestore.app.lib.model.registershift.RegisterShift;
 import com.magestore.app.lib.model.registershift.SessionParam;
@@ -26,6 +28,7 @@ import com.magestore.app.util.DataUtil;
 import com.magestore.app.util.DialogUtil;
 import com.magestore.app.view.EditTextFloat;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -38,7 +41,7 @@ public class RegisterOpenSessionPanel extends AbstractDetailPanel<RegisterShift>
     static String OPEN_SESSION = "0";
     Button bt_open, bt_open_balance;
     RelativeLayout rl_add_value, rl_set_balance, rl_loading;
-    LinearLayout ll_open_balance, ll_note;
+    LinearLayout ll_open_balance, ll_note, ll_float_amount;
     TextView txt_staff_login, tv_session_back, error_pos, tv_session_title, total_balance_value;
     View line;
     EditTextFloat et_float_amount;
@@ -47,6 +50,7 @@ public class RegisterOpenSessionPanel extends AbstractDetailPanel<RegisterShift>
     RegisterShiftListController mRegisterShiftListController;
     OpenSessionListValuePanel openSessionListValuePanel;
     float total_value = 0;
+    HashMap<OpenSessionValue, CashBox> mCashBox;
 
     public void setRegisterShiftListController(RegisterShiftListController mRegisterShiftListController) {
         this.mRegisterShiftListController = mRegisterShiftListController;
@@ -76,6 +80,7 @@ public class RegisterOpenSessionPanel extends AbstractDetailPanel<RegisterShift>
         ll_open_balance = (LinearLayout) view.findViewById(R.id.ll_open_balance);
         sp_pos = (SimpleSpinner) view.findViewById(R.id.sp_pos);
         error_pos = (TextView) view.findViewById(R.id.error_pos);
+        ll_float_amount = (LinearLayout) view.findViewById(R.id.ll_float_amount);
         et_float_amount = (EditTextFloat) view.findViewById(R.id.et_float_amount);
         et_float_amount.setPriceFormat(true);
         bt_open = (Button) view.findViewById(R.id.bt_open);
@@ -92,6 +97,8 @@ public class RegisterOpenSessionPanel extends AbstractDetailPanel<RegisterShift>
 
     @Override
     public void initValue() {
+        ll_note.setVisibility(ConfigUtil.isShiftOpenNote() ? VISIBLE : GONE);
+        et_float_amount.setEnabled(ConfigUtil.isEnableOpenFloatAmount() ? true : false);
         et_float_amount.setText(ConfigUtil.formatPrice(0));
 
         rl_add_value.setOnClickListener(new OnClickListener() {
@@ -141,6 +148,7 @@ public class RegisterOpenSessionPanel extends AbstractDetailPanel<RegisterShift>
                             // tự sinh id shift khi open
                             param.setShiftId("off_id_auto_shift_" + ConfigUtil.getItemIdInCurrentTime());
                             param.setPosId(sp_pos.getSelection());
+                            param.setCashBox(mCashBox);
                             param.setStatus(OPEN_SESSION);
                             mRegisterShiftListController.doInputOpenSession(param);
                         } else {
@@ -220,6 +228,7 @@ public class RegisterOpenSessionPanel extends AbstractDetailPanel<RegisterShift>
                     LoginActivity.STORE_ID = pos.getStoreId();
                     DataUtil.saveDataStringToPreferences(getContext(), DataUtil.STORE_ID, pos.getStoreId());
                     ConfigUtil.setPointOfSales(pos);
+                    bt_open_balance.setVisibility(pos.getCashControl() ? GONE : VISIBLE);
                 }
 
                 @Override
@@ -249,6 +258,10 @@ public class RegisterOpenSessionPanel extends AbstractDetailPanel<RegisterShift>
     public void updateFloatAmount(float total) {
         total_value = total;
         total_balance_value.setText(ConfigUtil.formatPrice(total));
+    }
+
+    public void updateCashBoxOpen(HashMap<OpenSessionValue, CashBox> mCashBox) {
+        this.mCashBox = mCashBox;
     }
 
     public void setEnableBtOpen(boolean isEnable) {

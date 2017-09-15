@@ -5,6 +5,7 @@ import android.content.Intent;
 import com.magestore.app.lib.controller.AbstractListController;
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.customer.Customer;
+import com.magestore.app.lib.model.registershift.CashBox;
 import com.magestore.app.lib.model.registershift.CashTransaction;
 import com.magestore.app.lib.model.registershift.OpenSessionValue;
 import com.magestore.app.lib.model.registershift.PointOfSales;
@@ -436,8 +437,16 @@ public class RegisterShiftListController extends AbstractListController<Register
         ((RegisterShiftDetailPanel) mDetailView).updateFloatAmount(total);
     }
 
+    public void updateCashBoxClose(HashMap<OpenSessionValue, CashBox> mCashBox) {
+        ((RegisterShiftDetailPanel) mDetailView).updateCashBoxClose(mCashBox);
+    }
+
     public void updateFloatAmountOpen(float total) {
         ((RegisterShiftListPanel) mView).updateFloatAmount(total);
+    }
+
+    public void updateCashBoxOpen(HashMap<OpenSessionValue, CashBox> mCashBox) {
+        ((RegisterShiftListPanel) mView).updateCashBoxOpen(mCashBox);
     }
 
     public void isShowLoadingDetail(boolean isShow) {
@@ -450,6 +459,10 @@ public class RegisterShiftListController extends AbstractListController<Register
 
     public SessionParam createSessionParam() {
         return mRegisterShiftService.createSessionParam();
+    }
+
+    public CashBox createCashBox() {
+        return mRegisterShiftService.createCashBox();
     }
 
     public void dismissDialogCloseSession() {

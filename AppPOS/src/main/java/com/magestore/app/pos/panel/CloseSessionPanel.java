@@ -13,6 +13,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.magestore.app.lib.model.registershift.CashBox;
+import com.magestore.app.lib.model.registershift.OpenSessionValue;
 import com.magestore.app.lib.model.registershift.RegisterShift;
 import com.magestore.app.lib.model.registershift.SessionParam;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
@@ -23,6 +25,8 @@ import com.magestore.app.pos.controller.RegisterShiftListController;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.DataUtil;
 import com.magestore.app.view.EditTextFloat;
+
+import java.util.HashMap;
 
 /**
  * Created by Johan on 6/5/17.
@@ -381,6 +385,10 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
 //        et_r_close_balance.setText(ConfigUtil.formatNumber(total));
         total_value = total;
         total_balance_value.setText(ConfigUtil.formatPrice(total));
+    }
+
+    public void updateCashBoxClose(HashMap<OpenSessionValue, CashBox> mCashBox) {
+
     }
 
     public void backToLoginActivity() {

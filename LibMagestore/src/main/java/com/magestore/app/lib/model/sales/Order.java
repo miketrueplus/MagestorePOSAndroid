@@ -23,6 +23,7 @@ public interface Order extends Model {
     void setOrderItem(List<CartItem> listTtem);
 
     OrderItemsInfoBuy getItemsInfoBuy();
+    void setItemsInfoBuy(OrderItemsInfoBuy itemsInfoBuy);
 
     float getWebposChange();
     void setWebposChange(float fWebposChange);

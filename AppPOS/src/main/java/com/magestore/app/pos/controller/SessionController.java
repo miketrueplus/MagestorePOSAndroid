@@ -4,6 +4,7 @@ import android.content.Intent;
 
 import com.magestore.app.lib.controller.AbstractListController;
 import com.magestore.app.lib.model.Model;
+import com.magestore.app.lib.model.registershift.CashBox;
 import com.magestore.app.lib.model.registershift.OpenSessionValue;
 import com.magestore.app.lib.model.registershift.PointOfSales;
 import com.magestore.app.lib.model.registershift.RegisterShift;
@@ -100,6 +101,10 @@ public class SessionController extends AbstractListController<RegisterShift> {
 
     public void updateFloatAmount(float total) {
         ((OpenSessionDetailPanel) mDetailView).updateFloatAmount(total);
+    }
+
+    public void updateCashBoxOpen(HashMap<OpenSessionValue, CashBox> mCashBox) {
+        ((OpenSessionDetailPanel) mDetailView).updateCashBoxOpen(mCashBox);
     }
 
     public void removeValue(OpenSessionValue value) {

@@ -2,6 +2,8 @@ package com.magestore.app.lib.model.registershift;
 
 import com.magestore.app.lib.model.Model;
 
+import java.util.HashMap;
+
 /**
  * Created by Johan on 5/31/17.
  * Magestore
@@ -63,4 +65,6 @@ public interface SessionParam extends Model {
     void setTotalSales(float fTotalSales);
     String getPosId();
     void setPosId(String strPosId);
+    HashMap<OpenSessionValue, CashBox> getCashBox();
+    void setCashBox(HashMap<OpenSessionValue, CashBox> mCashBox);
 }

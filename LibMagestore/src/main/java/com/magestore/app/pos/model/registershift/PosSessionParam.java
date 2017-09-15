@@ -1,7 +1,12 @@
 package com.magestore.app.pos.model.registershift;
 
+import com.magestore.app.lib.model.registershift.CashBox;
+import com.magestore.app.lib.model.registershift.OpenSessionValue;
 import com.magestore.app.lib.model.registershift.SessionParam;
 import com.magestore.app.pos.model.PosAbstractModel;
+import com.magestore.app.pos.parse.gson2pos.Gson2PosExclude;
+
+import java.util.HashMap;
 
 /**
  * Created by Johan on 5/31/17.
@@ -37,6 +42,9 @@ public class PosSessionParam extends PosAbstractModel implements SessionParam {
     String status;
     float total_sales;
     String pos_id;
+
+    @Gson2PosExclude
+    HashMap<OpenSessionValue, CashBox> mCashBox;
 
     @Override
     public float getBalance() {
@@ -306,5 +314,15 @@ public class PosSessionParam extends PosAbstractModel implements SessionParam {
     @Override
     public void setPosId(String strPosId) {
         pos_id = strPosId;
+    }
+
+    @Override
+    public HashMap<OpenSessionValue, CashBox> getCashBox() {
+        return mCashBox;
+    }
+
+    @Override
+    public void setCashBox(HashMap<OpenSessionValue, CashBox> mCashBox) {
+        this.mCashBox = mCashBox;
     }
 }

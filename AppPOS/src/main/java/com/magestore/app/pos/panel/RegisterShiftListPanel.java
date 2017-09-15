@@ -13,6 +13,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.magestore.app.lib.model.registershift.CashBox;
+import com.magestore.app.lib.model.registershift.OpenSessionValue;
 import com.magestore.app.lib.model.registershift.RegisterShift;
 import com.magestore.app.lib.panel.AbstractListPanel;
 import com.magestore.app.pos.R;
@@ -20,6 +22,8 @@ import com.magestore.app.pos.controller.RegisterShiftListController;
 import com.magestore.app.pos.databinding.CardRegisterShiftListContentBinding;
 import com.magestore.app.pos.util.DialogUtil;
 import com.magestore.app.pos.view.MagestoreDialog;
+
+import java.util.HashMap;
 
 /**
  * Created by Johan on 1/18/17.
@@ -115,6 +119,10 @@ public class RegisterShiftListPanel extends AbstractListPanel<RegisterShift> {
 
     public void updateFloatAmount(float total) {
         openSessionPanel.updateFloatAmount(total);
+    }
+
+    public void updateCashBoxOpen(HashMap<OpenSessionValue, CashBox> mCashBox) {
+        openSessionPanel.updateCashBoxOpen(mCashBox);
     }
 
     public void showDialogContinueCheckout() {

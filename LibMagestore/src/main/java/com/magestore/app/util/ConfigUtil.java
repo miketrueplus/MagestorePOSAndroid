@@ -92,6 +92,8 @@ public class ConfigUtil {
     private static boolean mApplyCustomPrice;
     // permisson session
     private static boolean mManageShiftAdjustment;
+    private static boolean mShiftOpenNote;
+    private static boolean mEnableOpenFloatAmount;
     // permisson checkout
     private static boolean mNeedToShip;
     private static boolean mMarkAsShip;
@@ -1021,6 +1023,22 @@ public class ConfigUtil {
 
     public static void setManagerShiftAdjustment(boolean mManageShiftAdjustment) {
         ConfigUtil.mManageShiftAdjustment = mManageShiftAdjustment;
+    }
+
+    public static boolean isShiftOpenNote() {
+        return mShiftOpenNote;
+    }
+
+    public static void setShiftOpenNote(boolean mShiftOpenNote) {
+        ConfigUtil.mShiftOpenNote = mShiftOpenNote;
+    }
+
+    public static boolean isEnableOpenFloatAmount() {
+        return mEnableOpenFloatAmount;
+    }
+
+    public static void setEnableOpenFloatAmount(boolean mEnableOpenFloatAmount) {
+        ConfigUtil.mEnableOpenFloatAmount = mEnableOpenFloatAmount;
     }
 
     public static boolean isNeedToShip() {

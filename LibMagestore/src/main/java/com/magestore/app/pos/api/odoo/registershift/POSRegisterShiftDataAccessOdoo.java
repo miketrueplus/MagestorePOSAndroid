@@ -15,8 +15,10 @@ import com.magestore.app.lib.connection.ConnectionFactory;
 import com.magestore.app.lib.connection.ParamBuilder;
 import com.magestore.app.lib.connection.ResultReading;
 import com.magestore.app.lib.connection.Statement;
+import com.magestore.app.lib.model.registershift.CashBox;
 import com.magestore.app.lib.model.registershift.CashTransaction;
 import com.magestore.app.lib.model.registershift.DataListRegisterShift;
+import com.magestore.app.lib.model.registershift.OpenSessionValue;
 import com.magestore.app.lib.model.registershift.RegisterShift;
 import com.magestore.app.lib.model.registershift.SaleSummary;
 import com.magestore.app.lib.model.registershift.SessionParam;
@@ -37,6 +39,7 @@ import com.magestore.app.util.StringUtil;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -46,6 +49,7 @@ import java.util.List;
  */
 
 public class POSRegisterShiftDataAccessOdoo extends POSAbstractDataAccessOdoo implements RegisterShiftDataAccess {
+    private static String ADD_MAKE_ADJUSTMENT = "add";
 
     public class Gson2PosListOrderParseModelOdoo extends Gson2PosAbstractParseImplement {
         @Override
@@ -103,7 +107,7 @@ public class POSRegisterShiftDataAccessOdoo extends POSAbstractDataAccessOdoo im
                             shift.setPosName(StringUtil.checkJsonData(pos_name) ? pos_name : "");
                             shift.setOpenedAt(StringUtil.checkJsonData(create_at) ? create_at : "");
                             shift.setClosedAt(StringUtil.checkJsonData(close_at) ? close_at : "");
-                            shift.setStatus(status.equals(SHIFT_OPEN) ? "1" : "0");
+                            shift.setStatus(status.equals(SHIFT_OPEN) ? "0" : "1");
                             shift.setFloatAmount(open_amount);
                             shift.setBaseFloatAmount(ConfigUtil.convertToBasePrice(open_amount));
                             shift.setClosedAmount(close_amount);
@@ -139,7 +143,9 @@ public class POSRegisterShiftDataAccessOdoo extends POSAbstractDataAccessOdoo im
                                         saleSummary.setPaymentMethod(payment_type);
                                         saleSummary.setMethodTitle(payment_name);
                                         saleSummary.setBasePaymentAmount(payment_amount);
-                                        listSaleSummary.add(saleSummary);
+                                        if (payment_amount > 0) {
+                                            listSaleSummary.add(saleSummary);
+                                        }
                                     }
                                 }
                             }
@@ -151,6 +157,23 @@ public class POSRegisterShiftDataAccessOdoo extends POSAbstractDataAccessOdoo im
                 return listRegisterShift;
             }
         }
+    }
+
+    private class CashTransactionEntity {
+        String session_id;
+        float amount;
+        String reason;
+    }
+
+    private class OpenSessionEntity {
+        String config_id;
+        boolean cash_control;
+        List<CashBoxEntity> cashbox_lines_ids;
+    }
+
+    private class CashBoxEntity {
+        int number;
+        float coin_value;
     }
 
     @Override
@@ -277,12 +300,109 @@ public class POSRegisterShiftDataAccessOdoo extends POSAbstractDataAccessOdoo im
 
     @Override
     public List<RegisterShift> openSession(SessionParam sessionParam) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
-        return null;
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+        try {
+            // Khởi tạo connection và khởi tạo truy vấn
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSessionOdoo.REST_BASE_URL, POSDataAccessSessionOdoo.REST_USER_NAME, POSDataAccessSessionOdoo.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPIOdoo.REST_REGISTER_SHIFTS_OPEN_SESSION);
+            statement.setSessionHeader(POSDataAccessSessionOdoo.REST_SESSION_ID);
+
+            OpenSessionEntity openSessionEntity = new OpenSessionEntity();
+            openSessionEntity.cash_control = ConfigUtil.getPointOfSales().getCashControl();
+            openSessionEntity.config_id = sessionParam.getPosId();
+
+            List<CashBoxEntity> listCashBox = new ArrayList<>();
+            HashMap<OpenSessionValue, CashBox> mCashBox = sessionParam.getCashBox();
+            if (mCashBox != null && mCashBox.size() > 0) {
+                for (CashBox cashBox : mCashBox.values()) {
+                    CashBoxEntity cashBoxEntity = new CashBoxEntity();
+                    cashBoxEntity.number = cashBox.getQty();
+                    cashBoxEntity.coin_value = cashBox.getValue();
+                    listCashBox.add(cashBoxEntity);
+                }
+            }
+            openSessionEntity.cashbox_lines_ids = listCashBox;
+
+            // thực thi truy vấn và parse kết quả thành object
+            rp = statement.execute();
+            rp.setParseImplement(new Gson2PosListOrderParseModelOdoo());
+            rp.setParseModel(PosDataListRegisterShift.class);
+            DataListRegisterShift listRegisterShift = (DataListRegisterShift) rp.doParse();
+            return sumBalance(listRegisterShift.getItems());
+        } catch (ConnectionException ex) {
+            throw ex;
+        } catch (IOException ex) {
+            throw ex;
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
     }
 
     @Override
     public List<RegisterShift> insertMakeAdjustment(CashTransaction cashTransaction) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
-        return null;
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+        try {
+            // Khởi tạo connection và khởi tạo truy vấn
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSessionOdoo.REST_BASE_URL, POSDataAccessSessionOdoo.REST_USER_NAME, POSDataAccessSessionOdoo.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPIOdoo.REST_REGISTER_SHIFTS_MAKE_ADJUSTMENT);
+            statement.setSessionHeader(POSDataAccessSessionOdoo.REST_SESSION_ID);
+
+            CashTransactionEntity cashTransactionEntity = new CashTransactionEntity();
+            cashTransactionEntity.session_id = cashTransaction.getParamShiftId();
+            if (cashTransaction.getType().equals(ADD_MAKE_ADJUSTMENT)) {
+                cashTransactionEntity.amount = cashTransaction.getValue();
+            } else {
+                cashTransactionEntity.amount = (0 - cashTransaction.getValue());
+            }
+            cashTransactionEntity.reason = cashTransaction.getNote();
+
+            // thực thi truy vấn và parse kết quả thành object
+            rp = statement.execute(cashTransactionEntity);
+            rp.setParseImplement(new Gson2PosListOrderParseModelOdoo());
+            rp.setParseModel(PosDataListRegisterShift.class);
+            DataListRegisterShift listRegisterShift = (DataListRegisterShift) rp.doParse();
+            return sumBalance(listRegisterShift.getItems());
+        } catch (ConnectionException ex) {
+            throw ex;
+        } catch (IOException ex) {
+            throw ex;
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
     }
 
     @Override

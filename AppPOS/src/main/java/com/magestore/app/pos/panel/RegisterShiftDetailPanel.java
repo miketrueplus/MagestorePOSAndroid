@@ -19,6 +19,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.magestore.app.lib.controller.Controller;
+import com.magestore.app.lib.model.registershift.CashBox;
+import com.magestore.app.lib.model.registershift.OpenSessionValue;
 import com.magestore.app.lib.model.registershift.RegisterShift;
 import com.magestore.app.lib.model.registershift.SaleSummary;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
@@ -35,6 +37,7 @@ import com.magestore.app.pos.view.MagestoreDialog;
 import com.magestore.app.util.ConfigUtil;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -213,6 +216,10 @@ public class RegisterShiftDetailPanel extends AbstractDetailPanel<RegisterShift>
 
     public void updateFloatAmount(float total) {
         panelCloseSessionPanel.updateFloatAmount(total);
+    }
+
+    public void updateCashBoxClose(HashMap<OpenSessionValue, CashBox> mCashBox) {
+        panelCloseSessionPanel.updateCashBoxClose(mCashBox);
     }
 
     public void isShowLoadingDetail(boolean isShow) {

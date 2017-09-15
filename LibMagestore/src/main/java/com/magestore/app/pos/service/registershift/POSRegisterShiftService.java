@@ -1,5 +1,6 @@
 package com.magestore.app.pos.service.registershift;
 
+import com.magestore.app.lib.model.registershift.CashBox;
 import com.magestore.app.lib.model.registershift.CashTransaction;
 import com.magestore.app.lib.model.registershift.OpenSessionValue;
 import com.magestore.app.lib.model.registershift.RegisterShift;
@@ -7,6 +8,7 @@ import com.magestore.app.lib.model.registershift.SessionParam;
 import com.magestore.app.lib.resourcemodel.DataAccessFactory;
 import com.magestore.app.lib.resourcemodel.registershift.RegisterShiftDataAccess;
 import com.magestore.app.lib.service.registershift.RegisterShiftService;
+import com.magestore.app.pos.model.registershift.PosCashBox;
 import com.magestore.app.pos.model.registershift.PosCashTransaction;
 import com.magestore.app.pos.model.registershift.PosOpenSessionValue;
 import com.magestore.app.pos.model.registershift.PosRegisterShift;
@@ -123,6 +125,11 @@ public class POSRegisterShiftService extends AbstractService implements Register
     @Override
     public SessionParam createSessionParam() {
         return new PosSessionParam();
+    }
+
+    @Override
+    public CashBox createCashBox() {
+        return new PosCashBox();
     }
 
     @Override

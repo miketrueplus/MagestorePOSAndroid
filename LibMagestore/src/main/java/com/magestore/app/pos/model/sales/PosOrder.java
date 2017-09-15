@@ -212,6 +212,11 @@ public class PosOrder extends PosAbstractModel implements Order {
     }
 
     @Override
+    public void setItemsInfoBuy(OrderItemsInfoBuy itemsInfoBuy) {
+        items_info_buy = (PosOrderItemsInfoBuy) itemsInfoBuy;
+    }
+
+    @Override
     public float getWebposChange() {
         return webpos_change;
     }

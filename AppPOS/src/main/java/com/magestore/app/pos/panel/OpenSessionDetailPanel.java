@@ -9,6 +9,8 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.magestore.app.lib.model.registershift.CashBox;
+import com.magestore.app.lib.model.registershift.OpenSessionValue;
 import com.magestore.app.lib.model.registershift.PointOfSales;
 import com.magestore.app.lib.model.registershift.RegisterShift;
 import com.magestore.app.lib.model.registershift.SessionParam;
@@ -22,6 +24,7 @@ import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.DataUtil;
 import com.magestore.app.view.EditTextFloat;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -141,5 +144,9 @@ public class OpenSessionDetailPanel extends AbstractDetailPanel<RegisterShift> {
 
     public void updateFloatAmount(float total) {
         et_float_amount.setText(ConfigUtil.formatNumber(total));
+    }
+
+    public void updateCashBoxOpen(HashMap<OpenSessionValue, CashBox> mCashBox) {
+
     }
 }

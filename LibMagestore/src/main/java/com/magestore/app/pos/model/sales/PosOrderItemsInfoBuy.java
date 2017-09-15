@@ -22,4 +22,9 @@ public class PosOrderItemsInfoBuy extends PosAbstractModel implements OrderItems
     public List<OrderCartItem> getListOrderCartItems() {
         return (List<OrderCartItem>) (List<?>) items;
     }
+
+    @Override
+    public void setListOrderCartItems(List<OrderCartItem> listItems) {
+        items = (List<PosOrderCartItem>) (List<?>) listItems;
+    }
 }

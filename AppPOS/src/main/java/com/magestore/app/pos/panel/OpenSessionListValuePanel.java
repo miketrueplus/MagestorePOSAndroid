@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.magestore.app.lib.model.registershift.CashBox;
 import com.magestore.app.lib.model.registershift.OpenSessionValue;
 import com.magestore.app.lib.view.AbstractSimpleRecycleView;
 import com.magestore.app.pos.R;
@@ -35,6 +36,7 @@ public class OpenSessionListValuePanel extends AbstractSimpleRecycleView<OpenSes
     HashMap<OpenSessionValue, EditTextQuantity> mapAmount;
     HashMap<OpenSessionValue, TextView> mapSubtotal;
     HashMap<OpenSessionValue, Float> mapTotal;
+    HashMap<OpenSessionValue, CashBox> mCashBox;
     SessionController mSessionController;
     RegisterShiftListController mRegisterShiftListController;
     int type;
@@ -74,6 +76,7 @@ public class OpenSessionListValuePanel extends AbstractSimpleRecycleView<OpenSes
         mapAmount = new HashMap<>();
         mapSubtotal = new HashMap<>();
         mapTotal = new HashMap<>();
+        mCashBox = new HashMap<>();
         getRecycleViewLayoutManager().setReverseLayout(true);
     }
 
@@ -102,7 +105,7 @@ public class OpenSessionListValuePanel extends AbstractSimpleRecycleView<OpenSes
             im_remove_value.setVisibility(GONE);
         }
 
-        if(mList.indexOf(item) == (mList.size() - 1)){
+        if (mList.indexOf(item) == (mList.size() - 1)) {
             et_value.requestFocus();
         }
     }
@@ -115,7 +118,7 @@ public class OpenSessionListValuePanel extends AbstractSimpleRecycleView<OpenSes
                 mapAmount.remove(item);
                 mapSubtotal.remove(item);
                 mapTotal.remove(item);
-                updateFloatAmount();
+                updateFloatAmount(item);
                 if (type == TYPE_CLOSE_SESSION) {
                     mRegisterShiftListController.removeValueClose(item);
                 } else if (type == TYPE_OPEN_SESSION_IN_REGISTER) {
@@ -156,7 +159,7 @@ public class OpenSessionListValuePanel extends AbstractSimpleRecycleView<OpenSes
                 item.setValue(value);
                 item.setAmount(amount);
                 item.setSubtotal(subtotal);
-                updateFloatAmount();
+                updateFloatAmount(item);
             }
 
             @Override
@@ -190,7 +193,7 @@ public class OpenSessionListValuePanel extends AbstractSimpleRecycleView<OpenSes
                 item.setValue(value);
                 item.setAmount(amount);
                 item.setSubtotal(subtotal);
-                updateFloatAmount();
+                updateFloatAmount(item);
             }
 
             @Override
@@ -200,21 +203,38 @@ public class OpenSessionListValuePanel extends AbstractSimpleRecycleView<OpenSes
         });
     }
 
-    public void updateFloatAmount() {
+    public void updateFloatAmount(OpenSessionValue item) {
         float total = 0;
         for (float subtotal : mapTotal.values()) {
             total += subtotal;
         }
+        CashBox cashBox = mRegisterShiftListController.createCashBox();
+        EditTextQuantity et_amount = mapAmount.get(item);
+        int qty_item = 0;
+        if (et_amount != null) {
+            qty_item = et_amount.getValueInteger();
+        }
+        cashBox.setQty(qty_item);
+        EditTextFloat et_value = mapValue.get(item);
+        float value_item = 0;
+        if (et_value != null) {
+            value_item = et_value.getValueFloat();
+        }
+        cashBox.setValue(value_item);
+        mCashBox.put(item, cashBox);
         if (type == TYPE_CLOSE_SESSION) {
             mRegisterShiftListController.updateFloatAmountClose(total);
+            mRegisterShiftListController.updateCashBoxClose(mCashBox);
         } else if (type == TYPE_OPEN_SESSION_IN_REGISTER) {
             mRegisterShiftListController.updateFloatAmountOpen(total);
+            mRegisterShiftListController.updateCashBoxOpen(mCashBox);
         } else {
             mSessionController.updateFloatAmount(total);
+            mSessionController.updateCashBoxOpen(mCashBox);
         }
     }
 
-    public void focusEditText(){
+    public void focusEditText() {
         EditTextFloat et_value = mapValue.get(mList.get(0));
 
     }

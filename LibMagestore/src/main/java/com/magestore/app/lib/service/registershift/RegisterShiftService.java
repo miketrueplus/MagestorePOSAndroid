@@ -1,5 +1,6 @@
 package com.magestore.app.lib.service.registershift;
 
+import com.magestore.app.lib.model.registershift.CashBox;
 import com.magestore.app.lib.model.registershift.CashTransaction;
 import com.magestore.app.lib.model.registershift.OpenSessionValue;
 import com.magestore.app.lib.model.registershift.RegisterShift;
@@ -25,4 +26,5 @@ public interface RegisterShiftService extends Service , ListService<RegisterShif
     CashTransaction createCashTransaction();
     OpenSessionValue createOpenSessionValue();
     SessionParam createSessionParam();
+    CashBox createCashBox();
 }
