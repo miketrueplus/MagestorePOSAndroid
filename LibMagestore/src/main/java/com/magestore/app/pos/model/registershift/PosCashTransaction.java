@@ -117,7 +117,7 @@ public class PosCashTransaction extends PosAbstractModel implements CashTransact
 
     @Override
     public float getBaseValue() {
-        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2)) {
+        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2) || ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_ODOO)) {
             return base_value;
         } else {
             return base_amount;
@@ -126,7 +126,7 @@ public class PosCashTransaction extends PosAbstractModel implements CashTransact
 
     @Override
     public void setBaseValue(float baseValue) {
-        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2)) {
+        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2) || ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_ODOO)) {
             base_value = baseValue;
         } else {
             base_amount = baseValue;
@@ -236,7 +236,7 @@ public class PosCashTransaction extends PosAbstractModel implements CashTransact
 
     @Override
     public String getCheckTypeValue() {
-        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2)) {
+        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2) || ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_ODOO)) {
             if (type.toLowerCase().equals("remove")) {
                 return "- " + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(base_value));
             }

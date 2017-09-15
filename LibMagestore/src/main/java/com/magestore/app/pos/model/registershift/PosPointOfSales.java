@@ -29,6 +29,9 @@ public class PosPointOfSales extends PosAbstractModel implements PointOfSales {
     String iface_invoicing;
     String receipt_footer;
     String iface_cashdrawer;
+    boolean iface_discount;
+    float discount_pc;
+    String discount_product_id;
 
     @Override
     public String getID() {
@@ -88,6 +91,36 @@ public class PosPointOfSales extends PosAbstractModel implements PointOfSales {
     @Override
     public void setCashControl(boolean bCashControl) {
         cash_control = bCashControl;
+    }
+
+    @Override
+    public boolean getIfaceDiscount() {
+        return iface_discount;
+    }
+
+    @Override
+    public void setIfaceDiscount(boolean bIfaceDiscount) {
+        iface_discount = bIfaceDiscount;
+    }
+
+    @Override
+    public float getDiscountPC() {
+        return discount_pc;
+    }
+
+    @Override
+    public void setDiscountPC(float fDiscountPC) {
+        discount_pc = fDiscountPC;
+    }
+
+    @Override
+    public String getDiscountProductId() {
+        return discount_product_id;
+    }
+
+    @Override
+    public void setDiscountProductId(String strDiscountProductId) {
+        discount_product_id = strDiscountProductId;
     }
 
     @Override

@@ -275,11 +275,12 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
 
     @Override
     public boolean getConfigSession() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
-        return false;
+        return true;
     }
 
     @Override
     public boolean getConfigDeleteOrder() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        // default open session
         return false;
     }
 

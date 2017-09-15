@@ -20,4 +20,10 @@ public interface PointOfSales extends Model {
     String getStatus();
     boolean getCashControl();
     void setCashControl(boolean bCashControl);
+    boolean getIfaceDiscount();
+    void setIfaceDiscount(boolean bIfaceDiscount);
+    float getDiscountPC();
+    void setDiscountPC(float fDiscountPC);
+    String getDiscountProductId();
+    void setDiscountProductId(String strDiscountProductId);
 }

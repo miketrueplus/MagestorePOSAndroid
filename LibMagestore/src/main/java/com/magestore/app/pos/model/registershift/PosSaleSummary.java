@@ -21,8 +21,18 @@ public class PosSaleSummary extends PosAbstractModel implements SaleSummary {
     }
 
     @Override
+    public void setPaymentMethod(String strPaymentMethod) {
+        payment_method = strPaymentMethod;
+    }
+
+    @Override
     public String getMethodTitle() {
         return method_title;
+    }
+
+    @Override
+    public void setMethodTitle(String strMethodTitle) {
+        method_title = strMethodTitle;
     }
 
     @Override
@@ -33,5 +43,10 @@ public class PosSaleSummary extends PosAbstractModel implements SaleSummary {
     @Override
     public float getBasePaymentAmount() {
         return base_payment_amount;
+    }
+
+    @Override
+    public void setBasePaymentAmount(float fBasePaymentAmount) {
+        base_payment_amount = fBasePaymentAmount;
     }
 }

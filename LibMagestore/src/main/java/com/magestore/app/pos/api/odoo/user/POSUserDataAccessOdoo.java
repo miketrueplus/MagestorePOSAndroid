@@ -29,6 +29,7 @@ import com.magestore.app.pos.model.registershift.PosPointOfSales;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosAbstractParseImplement;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListPointOfSales;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosStoreParseImplement;
+
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.text.ParseException;
@@ -59,7 +60,7 @@ public class POSUserDataAccessOdoo extends POSAbstractDataAccessOdoo implements 
         String Token;
     }
 
-    public class Gson2PosParseModel extends Gson2PosAbstractParseImplement{
+    public class Gson2PosParseModel extends Gson2PosAbstractParseImplement {
         @Override
         protected Gson createGson() {
             GsonBuilder builder = new GsonBuilder();
@@ -83,7 +84,11 @@ public class POSUserDataAccessOdoo extends POSAbstractDataAccessOdoo implements 
         private String POS_INVOICE = "iface_invoicing";
         private String POS_RECEIPT_FOOTER = "receipt_footer";
         private String POS_CASH_DRAWER = "iface_cashdrawer";
-        public class PosConverter implements JsonDeserializer<List<PosPointOfSales>>{
+        private String POS_DISCOUNT = "iface_discount";
+        private String POS_DISCOUNT_PC = "discount_pc";
+        private String POS_DISCOUNT_PRODUCT_ID = "discount_product_id";
+
+        public class PosConverter implements JsonDeserializer<List<PosPointOfSales>> {
             @Override
             public List<PosPointOfSales> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
                 List<PosPointOfSales> listPos = new ArrayList<>();
@@ -99,6 +104,18 @@ public class POSUserDataAccessOdoo extends POSAbstractDataAccessOdoo implements 
                             pos.setPosName(name);
                             boolean cash_control = obj_pos.remove(POS_CASH_CONTROL).getAsBoolean();
                             pos.setCashControl(cash_control);
+                            if (obj_pos.has(POS_DISCOUNT)) {
+                                boolean pos_discount = obj_pos.remove(POS_DISCOUNT).getAsBoolean();
+                                pos.setIfaceDiscount(pos_discount);
+                            }
+                            if (obj_pos.has(POS_DISCOUNT_PC)) {
+                                float pos_discount_pc = obj_pos.remove(POS_DISCOUNT_PC).getAsFloat();
+                                pos.setDiscountPC(pos_discount_pc);
+                            }
+                            if (obj_pos.has(POS_DISCOUNT_PRODUCT_ID)) {
+                                String pos_discount_product_id = obj_pos.remove(POS_DISCOUNT_PRODUCT_ID).getAsString();
+                                pos.setDiscountProductId(pos_discount_product_id);
+                            }
                             listPos.add(pos);
                         }
                     }
@@ -248,7 +265,7 @@ public class POSUserDataAccessOdoo extends POSAbstractDataAccessOdoo implements 
     }
 
     // TODO fake data
-    private List<PointOfSales> getPOSFake(){
+    private List<PointOfSales> getPOSFake() {
         PointOfSales pointOfSales = new PosPointOfSales();
         pointOfSales.setPosId("2");
         pointOfSales.setPosName("Cash Drawer 02");

@@ -2,6 +2,7 @@ package com.magestore.app.pos.model.sales;
 
 import com.magestore.app.lib.model.sales.OrderBillingAddress;
 import com.magestore.app.pos.model.PosAbstractModel;
+import com.magestore.app.util.StringUtil;
 
 import java.util.List;
 
@@ -95,13 +96,21 @@ public class PosOrderBillingAddress extends PosAbstractModel implements OrderBil
     @Override
     public String getFullAddress() {
         StringBuilder builder = new StringBuilder();
-        builder.append(city);
-        builder.append(", ");
-        builder.append(region);
-        builder.append(", ");
-        builder.append(postcode);
-        builder.append(", ");
-        builder.append(country_id);
+        if (!StringUtil.isNullOrEmpty(city)) {
+            builder.append(city);
+            builder.append(", ");
+        }
+        if (!StringUtil.isNullOrEmpty(region)) {
+            builder.append(region);
+            builder.append(", ");
+        }
+        if (!StringUtil.isNullOrEmpty(postcode)) {
+            builder.append(postcode);
+            builder.append(", ");
+        }
+        if (!StringUtil.isNullOrEmpty(country_id)) {
+            builder.append(country_id);
+        }
         return builder.toString();
     }
 

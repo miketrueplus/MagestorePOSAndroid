@@ -116,8 +116,18 @@ public class PosRegisterShift extends PosAbstractModel implements RegisterShift 
     }
 
     @Override
+    public void setOpenedAt(String strOpenedAt) {
+        opened_at = strOpenedAt;
+    }
+
+    @Override
     public String getClosedAt() {
         return closed_at;
+    }
+
+    @Override
+    public void setClosedAt(String strCloseAt) {
+        closed_at = strCloseAt;
     }
 
     @Override
@@ -139,8 +149,18 @@ public class PosRegisterShift extends PosAbstractModel implements RegisterShift 
     }
 
     @Override
+    public void setSalesSummary(List<SaleSummary> listSaleSummary) {
+        sale_summary = (List<PosSaleSummary>) (List<?>) listSaleSummary;
+    }
+
+    @Override
     public List<CashTransaction> getCashTransaction() {
         return (List<CashTransaction>) (List<?>) cash_transaction;
+    }
+
+    @Override
+    public void setCashTransaction(List<CashTransaction> listCashTransaction) {
+        cash_transaction = (List<PosCashTransaction>) (List<?>) listCashTransaction;
     }
 
     @Override
@@ -196,12 +216,22 @@ public class PosRegisterShift extends PosAbstractModel implements RegisterShift 
     }
 
     @Override
+    public void setFloatAmount(float fFloatAmount) {
+        float_amount = fFloatAmount;
+    }
+
+    @Override
     public float getBaseFloatAmount() {
         if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2)) {
             return base_float_amount;
         } else {
             return base_opening_amount;
         }
+    }
+
+    @Override
+    public void setBaseFloatAmount(float fBaseFloatAmount) {
+        base_float_amount = fBaseFloatAmount;
     }
 
     @Override
@@ -313,8 +343,18 @@ public class PosRegisterShift extends PosAbstractModel implements RegisterShift 
     }
 
     @Override
+    public void setClosedAmount(float fClosedAmount) {
+        closed_amount = fClosedAmount;
+    }
+
+    @Override
     public float getBaseClosedAmount() {
         return base_closed_amount;
+    }
+
+    @Override
+    public void setBaseClosedAmount(float fBaseClosedAmount) {
+        base_closed_amount = fBaseClosedAmount;
     }
 
     @Override
@@ -325,6 +365,11 @@ public class PosRegisterShift extends PosAbstractModel implements RegisterShift 
     @Override
     public float getBaseCashSales() {
         return base_cash_sale;
+    }
+
+    @Override
+    public void setBaseCashSales(float fBaseCashSales) {
+        base_cash_sale = fBaseCashSales;
     }
 
     @Override
@@ -343,11 +388,21 @@ public class PosRegisterShift extends PosAbstractModel implements RegisterShift 
     }
 
     @Override
+    public void setStatus(String strStatus) {
+        status = strStatus;
+    }
+
+    @Override
     public String getPosId() {
         if (StringUtil.isNullOrEmpty(pos_id)) {
             return till_id;
         }
         return pos_id;
+    }
+
+    @Override
+    public void setPosId(String strPosId) {
+        pos_id = strPosId;
     }
 
     @Override

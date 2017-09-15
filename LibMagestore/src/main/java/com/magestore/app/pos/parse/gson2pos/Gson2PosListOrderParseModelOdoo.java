@@ -79,6 +79,8 @@ public class Gson2PosListOrderParseModelOdoo extends Gson2PosAbstractParseImplem
     private String CUSTOMER_STREET2 = "street2";
     private String CUSTOMER_VAT = "vat";
     private String CUSTOMER_CITY = "city";
+    private String TAX_DETAIL = "taxes_detail";
+    private String TAX_AMOUNT = "amount";
 
     public class OrderConverter implements JsonDeserializer<List<PosOrder>> {
         @Override
@@ -89,6 +91,7 @@ public class Gson2PosListOrderParseModelOdoo extends Gson2PosAbstractParseImplem
                 if (arr_order != null && arr_order.size() > 0) {
                     float total_subtotal = 0;
                     float total_discount = 0;
+                    float total_tax = 0;
                     for (JsonElement el_order : arr_order) {
                         JsonObject obj_order = el_order.getAsJsonObject();
                         PosOrder order = new PosOrder();
@@ -240,18 +243,29 @@ public class Gson2PosListOrderParseModelOdoo extends Gson2PosAbstractParseImplem
                                         cartItem.setQtyInvoiced(qty);
                                     }
                                     cartItem.setOriginalPrice(unit_price);
-                                    // TODO: thiếu + tax
-                                    cartItem.setBasePriceInclTax(ConfigUtil.convertToBasePrice(unit_price));
+                                    float total_tax_item = 0;
+                                    if (obj_item.has(TAX_DETAIL)) {
+                                        JsonArray arr_tax = obj_item.getAsJsonArray(TAX_DETAIL);
+                                        if (arr_tax != null & arr_tax.size() > 0) {
+                                            for (JsonElement el_tax : arr_tax) {
+                                                JsonObject obj_tax = el_tax.getAsJsonObject();
+                                                float amount = obj_tax.remove(TAX_AMOUNT).getAsFloat();
+                                                total_tax_item += amount;
+                                            }
+                                        }
+                                    }
+
+                                    cartItem.setBasePriceInclTax(ConfigUtil.convertToBasePrice(unit_price + total_tax_item));
                                     float product_subtotal = obj_item.remove(PRODUCT_SUBTOTAL).getAsFloat();
                                     cartItem.setBaseSubtotal(ConfigUtil.convertToBasePrice(product_subtotal));
                                     float product_subtotal_incl = obj_item.remove(PRODUCT_SUTOTAL_INCl).getAsFloat();
                                     cartItem.setRowTotal(product_subtotal_incl);
                                     cartItem.setBaseRowTotalInclTax(ConfigUtil.convertToBasePrice(product_subtotal_incl));
                                     float product_discount_percent = obj_item.remove(PRODUCT_DISCOUNT).getAsFloat();
-                                    // TODO: thiếu + tax của từng sản phẩm
-                                    float product_discount = ((unit_price * qty) * product_discount_percent) / 100;
+                                    float product_discount = (((unit_price + total_tax_item) * qty) * product_discount_percent) / 100;
                                     cartItem.setBaseDiscountAmount(ConfigUtil.convertToBasePrice(product_discount));
                                     cartItem.setDiscountAmount(product_discount);
+                                    total_tax += total_tax_item;
                                     total_subtotal += product_subtotal;
                                     listItem.add(cartItem);
                                 } else {
@@ -259,6 +273,8 @@ public class Gson2PosListOrderParseModelOdoo extends Gson2PosAbstractParseImplem
                                 }
                             }
                         }
+                        order.setTaxAmount(total_tax);
+                        order.setBaseTaxAmount(ConfigUtil.convertToBasePrice(total_tax));
                         order.setDiscountAmount(total_discount);
                         order.setBaseDiscountAmount(ConfigUtil.convertToBasePrice(total_discount));
                         order.setBaseSubtotal(ConfigUtil.convertToBasePrice(total_subtotal));
