@@ -29,7 +29,7 @@ import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.CheckoutListController;
 import com.magestore.app.pos.controller.OrderHistoryListController;
 import com.magestore.app.pos.util.PrintUtil;
-import com.magestore.app.pos.util.StarPrintUtitl;
+import com.magestore.app.pos.util.StarPrintExtUtil;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.DialogUtil;
 import com.magestore.app.util.StringUtil;
@@ -119,7 +119,7 @@ public class CheckoutSuccessPanel extends AbstractDetailPanel<Order> {
         });
     }
 
-    private void actionPrint(Order mOrder) {
+    private void actionPrint(final Order mOrder) {
         final Dialog dialogPrint = new Dialog(getContext());
         dialogPrint.setCancelable(true);
         dialogPrint.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -127,11 +127,7 @@ public class CheckoutSuccessPanel extends AbstractDetailPanel<Order> {
         if (ConfigUtil.getTypePrint().equals(getContext().getString(R.string.print_type_star_print))) {
             dialogPrint.setContentView(R.layout.star_print_order_layout);
             ViewGroup.LayoutParams params = dialogPrint.getWindow().getAttributes();
-            if (ConfigUtil.getStarPrintArea() == 384) {
-                params.width = ConfigUtil.getStarPrintArea() + 300;
-            } else {
-                params.width = ConfigUtil.getStarPrintArea() + 50;
-            }
+            params.width = ConfigUtil.getStarPrintArea() + 300;
             dialogPrint.getWindow().setAttributes((WindowManager.LayoutParams) params);
         } else {
             dialogPrint.setContentView(R.layout.print_preview);
@@ -321,7 +317,7 @@ public class CheckoutSuccessPanel extends AbstractDetailPanel<Order> {
                 @Override
                 public void onClick(View view) {
                     Bitmap bitmap = rl.getDrawingCache();
-                    StarPrintUtitl.showSearchPrint(getContext(), ((OrderHistoryListController) mController).getMagestoreContext().getActivity(), bitmap);
+                    StarPrintExtUtil.showSearchPrint(getContext(), ((OrderHistoryListController) mController).getMagestoreContext().getActivity(), bitmap, mOrder);
                 }
             });
         }

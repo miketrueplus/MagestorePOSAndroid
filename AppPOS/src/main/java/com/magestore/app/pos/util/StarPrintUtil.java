@@ -32,6 +32,7 @@ import com.starmicronics.stario.PortInfo;
 import com.starmicronics.stario.StarIOPort;
 import com.starmicronics.stario.StarIOPortException;
 import com.starmicronics.stario.StarPrinterStatus;
+import com.starmicronics.starioextension.StarIoExt;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,11 +44,23 @@ import java.util.List;
  * dong.le@trueplus.vn
  */
 
-public class StarPrintUtitl {
+public class StarPrintUtil {
     private static int printArea;
     private static String print_copy;
-
+    static String mPortName;
+    static String mPortSettings;
+    static String mMacAddress;
+    static String mModelName;
+    static StarIoExt.Emulation mEmulation;
+    static Boolean mDrawerOpenStatus;
     public static void showSearchPrint(final Context context, final Activity activity, final Bitmap bitmap) {
+        PrinterSetting setting = new PrinterSetting(context);
+        mPortName = setting.getPortName();
+        mPortSettings = setting.getPortSettings();
+        mMacAddress = setting.getMacAddress();
+        mModelName = setting.getModelName();
+        mEmulation = setting.getEmulation();
+        mDrawerOpenStatus = setting.getCashDrawerOpenActiveHigh();
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         activity.runOnUiThread(new Runnable() {
@@ -62,8 +75,7 @@ public class StarPrintUtitl {
                 params.width = 832;
                 dialogPrint.getWindow().setAttributes((WindowManager.LayoutParams) params);
                 final EditText edt_port = (EditText) dialogPrint.findViewById(R.id.edt_port);
-                SharedPreferences pref = context.getSharedPreferences("pref", context.MODE_PRIVATE);
-                edt_port.setText(pref.getString("portName", ""));
+                edt_port.setText(mPortName);
                 Button bt_search = (Button) dialogPrint.findViewById(R.id.bt_search);
                 Button bt_print = (Button) dialogPrint.findViewById(R.id.bt_print);
                 Button bt_open_cash_drawer = (Button) dialogPrint.findViewById(R.id.bt_open_cash_drawer);
@@ -79,6 +91,7 @@ public class StarPrintUtitl {
                 Spinner spinner_copy = (Spinner) dialogPrint.findViewById(R.id.spinner_copy);
                 SpinnerAdapter ad_copy = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, new String[]{"1", "2", "3"});
                 spinner_copy.setAdapter(ad_copy);
+                SharedPreferences pref = context.getSharedPreferences("pref", context.MODE_PRIVATE);
                 print_copy = pref.getString("copy", "1");
                 spinner_copy.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
@@ -142,20 +155,44 @@ public class StarPrintUtitl {
                             StarPrintAdapter mAdapter = new StarPrintAdapter(context, arrayDiscovery);
                             ll_device.setVisibility(View.VISIBLE);
                             sp_device.setAdapter(mAdapter);
-                            edt_port.setText(arrayDiscovery.get(0).getPortName());
-                            SharedPreferences pref = context.getSharedPreferences("pref", context.MODE_WORLD_READABLE | context.MODE_WORLD_WRITEABLE);
-                            SharedPreferences.Editor editor = pref.edit();
-                            editor.putString("portName", edt_port.getText().toString());
-                            editor.commit();
+                            PortInfo portFirst = arrayDiscovery.get(0);
+                            if (portFirst.getPortName().startsWith(PrinterSetting.IF_TYPE_BLUETOOTH)) {
+                                mModelName = portFirst.getPortName().substring(PrinterSetting.IF_TYPE_BLUETOOTH.length());
+                                mPortName = PrinterSetting.IF_TYPE_BLUETOOTH + portFirst.getMacAddress();
+                                mMacAddress = portFirst.getMacAddress();
+                            } else {
+                                mModelName = portFirst.getModelName();
+                                mPortName = portFirst.getPortName();
+                                mMacAddress = portFirst.getMacAddress();
+                            }
+
+                            int model = ModelCapability.getModel(mModelName);
+                            mPortSettings = ModelCapability.getPortSettings(model);
+                            mEmulation = ModelCapability.getEmulation(model);
+                            mDrawerOpenStatus = true;
+                            registerPrinter(context);
+                            edt_port.setText(portFirst.getPortName());
 
                             sp_device.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                 @Override
                                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                                     edt_port.setText(arrayDiscovery.get(i).getPortName());
-                                    SharedPreferences pref = context.getSharedPreferences("pref", context.MODE_WORLD_READABLE | context.MODE_WORLD_WRITEABLE);
-                                    SharedPreferences.Editor editor = pref.edit();
-                                    editor.putString("portName", edt_port.getText().toString());
-                                    editor.commit();
+                                    PortInfo portFirst = arrayDiscovery.get(i);
+                                    if (portFirst.getPortName().startsWith(PrinterSetting.IF_TYPE_BLUETOOTH)) {
+                                        mModelName = portFirst.getPortName().substring(PrinterSetting.IF_TYPE_BLUETOOTH.length());
+                                        mPortName = PrinterSetting.IF_TYPE_BLUETOOTH + portFirst.getMacAddress();
+                                        mMacAddress = portFirst.getMacAddress();
+                                    } else {
+                                        mModelName = portFirst.getModelName();
+                                        mPortName = portFirst.getPortName();
+                                        mMacAddress = portFirst.getMacAddress();
+                                    }
+
+                                    int model = ModelCapability.getModel(mModelName);
+                                    mPortSettings = ModelCapability.getPortSettings(model);
+                                    mEmulation = ModelCapability.getEmulation(model);
+                                    mDrawerOpenStatus = true;
+                                    registerPrinter(context);
                                 }
 
                                 @Override
@@ -204,6 +241,11 @@ public class StarPrintUtitl {
                 dialogPrint.show();
             }
         });
+    }
+
+    private static void registerPrinter(Context context) {
+        PrinterSetting setting = new PrinterSetting(context);
+        setting.write(mModelName, mPortName, mMacAddress, mPortSettings, mEmulation, mDrawerOpenStatus);
     }
 
     public static void PrintBitmap(Context context, String portName, String portSettings, Bitmap source, int maxWidth, boolean compressionEnable) {

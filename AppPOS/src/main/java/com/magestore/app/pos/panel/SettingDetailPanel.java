@@ -52,6 +52,7 @@ public class SettingDetailPanel extends AbstractDetailPanel<Setting> {
     boolean checkFirst;
     LinearLayout ll_print_area;
     Spinner sp_print_area;
+    Switch sw_open_cash;
 
     public SettingDetailPanel(Context context) {
         super(context);
@@ -79,6 +80,7 @@ public class SettingDetailPanel extends AbstractDetailPanel<Setting> {
         ll_setting_print = (LinearLayout) findViewById(R.id.ll_setting_print);
         sp_print = (SimpleSpinner) findViewById(R.id.sp_print);
         ll_print_area = (LinearLayout) findViewById(R.id.ll_print_area);
+        sw_open_cash = (Switch) findViewById(R.id.sw_open_cash);
         sp_print_area = (Spinner) findViewById(R.id.sp_print_area);
         ll_setting_store = (LinearLayout) findViewById(R.id.ll_setting_store);
         btn_save = (Button) findViewById(R.id.btn_save);
@@ -132,8 +134,10 @@ public class SettingDetailPanel extends AbstractDetailPanel<Setting> {
                 ConfigUtil.setTypePrint(sp_print.getSelection());
                 if (sp_print.getSelection().equals(getContext().getString(R.string.print_type_star_print))) {
                     ll_print_area.setVisibility(VISIBLE);
+                    sw_open_cash.setVisibility(VISIBLE);
                 } else {
                     ll_print_area.setVisibility(GONE);
+                    sw_open_cash.setVisibility(GONE);
                 }
             }
 
@@ -161,6 +165,13 @@ public class SettingDetailPanel extends AbstractDetailPanel<Setting> {
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
+            }
+        });
+
+        sw_open_cash.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                ConfigUtil.setOpenCashAfterPrint(b);
             }
         });
     }
