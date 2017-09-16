@@ -30,7 +30,7 @@ import com.magestore.app.pos.controller.RegisterShiftSaleListController;
 import com.magestore.app.pos.databinding.PanelRegisterShiftDetailBinding;
 import com.magestore.app.pos.util.DialogUtil;
 import com.magestore.app.pos.util.PrintUtil;
-import com.magestore.app.pos.util.StarPrintUtitl;
+import com.magestore.app.pos.util.StarPrintUtil;
 import com.magestore.app.pos.view.MagestoreDialog;
 import com.magestore.app.util.ConfigUtil;
 
@@ -344,7 +344,7 @@ public class RegisterShiftDetailPanel extends AbstractDetailPanel<RegisterShift>
                 @Override
                 public void onClick(View view) {
                     Bitmap bitmap = rl.getDrawingCache();
-                    StarPrintUtitl.showSearchPrint(getContext(), ((RegisterShiftListController) mController).getMagestoreContext().getActivity(), bitmap);
+                    StarPrintUtil.showSearchPrint(getContext(), ((RegisterShiftListController) mController).getMagestoreContext().getActivity(), bitmap);
                 }
             });
         }

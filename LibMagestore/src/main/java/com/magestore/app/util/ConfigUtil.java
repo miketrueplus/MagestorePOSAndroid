@@ -91,6 +91,9 @@ public class ConfigUtil {
     private static ActiveKey mActiveKey;
     private static boolean isDevLicense;
 
+    // Print
+    private static boolean mOpenCashAfterPrint;
+
     /**
      * @param format
      */
@@ -1007,6 +1010,14 @@ public class ConfigUtil {
             }
         }
         return null;
+    }
+
+    public static boolean isOpenCashAfterPrint() {
+        return mOpenCashAfterPrint;
+    }
+
+    public static void setOpenCashAfterPrint(boolean mOpenCashAfterPrint) {
+        ConfigUtil.mOpenCashAfterPrint = mOpenCashAfterPrint;
     }
 }
 

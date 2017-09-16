@@ -149,10 +149,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/layout_margin_10"
-                        android:textColor="@color/text_color"
-                        android:textSize="@dimen/welcome_text_size"
                         android:layout_marginRight="@dimen/layout_margin_10"
-                        android:text="Print Area: "/>
+                        android:text="Print Area: "
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/welcome_text_size" />
 
                     <Spinner
                         android:id="@+id/sp_print_area"
@@ -167,9 +167,18 @@
                         android:layout_marginRight="@dimen/layout_margin_10"
                         android:text="@string/printArea4inch"
                         android:textColor="@color/text_color"
-                        android:visibility="gone"
-                        android:textSize="@dimen/welcome_text_size" />
+                        android:textSize="@dimen/welcome_text_size"
+                        android:visibility="gone" />
                 </LinearLayout>
+
+                <Switch
+                    android:id="@+id/sw_open_cash"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/ll_print_area"
+                    android:layout_marginTop="@dimen/layout_margin_10"
+                    android:text="@string/open_cash_after_print"
+                    android:visibility="gone" />
             </RelativeLayout>
         </LinearLayout>
 
