@@ -112,6 +112,13 @@ public class StarPrintExtUtil {
                 spinner_copy.setAdapter(ad_copy);
                 SharedPreferences pref = context.getSharedPreferences("pref", context.MODE_PRIVATE);
                 print_copy = pref.getString("copy", "1");
+                if (print_copy.equals("1")) {
+                    spinner_copy.setSelection(0);
+                } else if (print_copy.equals("2")) {
+                    spinner_copy.setSelection(1);
+                } else {
+                    spinner_copy.setSelection(2);
+                }
                 spinner_copy.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -234,7 +241,7 @@ public class StarPrintExtUtil {
                         Thread thread = new Thread(new Runnable() {
                             @Override
                             public void run() {
-                                getPortDiscovery(context, "All", edt_port, sp_device, ll_device, mHandler);
+                                getPortDiscovery(context, "All", mHandler);
                             }
                         });
                         thread.start();
@@ -256,6 +263,9 @@ public class StarPrintExtUtil {
                 bt_open_cash_drawer.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        PrinterSetting setting = new PrinterSetting(context);
+                        mStarIoExtManager = new StarIoExtManager(StarIoExtManager.Type.Standard, mPortName, mPortSettings, 10000, context);     // 10000mS!!!
+                        mStarIoExtManager.setCashDrawerOpenActiveHigh(setting.getCashDrawerOpenActiveHigh());
                         OpenCashTask openCashTask = new OpenCashTask();
                         openCashTask.execute();
                     }
@@ -263,6 +273,74 @@ public class StarPrintExtUtil {
                 dialogPrint.show();
             }
         });
+    }
+
+    public static void autoPrint(final Context context, final Activity activity, Order order) {
+        mActivity = activity;
+        mOrder = order;
+        PrinterSetting setting = new PrinterSetting(context);
+        mPortName = setting.getPortName();
+        mPortSettings = setting.getPortSettings();
+        mMacAddress = setting.getMacAddress();
+        mModelName = setting.getModelName();
+        mEmulation = setting.getEmulation();
+        mDrawerOpenStatus = setting.getCashDrawerOpenActiveHigh();
+        SharedPreferences pref = context.getSharedPreferences("pref", context.MODE_PRIVATE);
+        print_copy = pref.getString("copy", "1");
+        printArea = ConfigUtil.getStarPrintArea();
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
+        if (!StringUtil.isNullOrEmpty(mPortName)) {
+            mStarIoExtManager = new StarIoExtManager(StarIoExtManager.Type.Standard, mPortName, mPortSettings, 10000, context);     // 10000mS!!!
+            mStarIoExtManager.setCashDrawerOpenActiveHigh(setting.getCashDrawerOpenActiveHigh());
+            PrintTask printTask = new PrintTask();
+            printTask.execute();
+        } else {
+            final Handler mHandler = new Handler() {
+                @Override
+                public void handleMessage(Message msg) {
+                    if (arrayDiscovery.size() > 0) {
+                        PortInfo portFirst = arrayDiscovery.get(0);
+                        if (portFirst.getPortName().startsWith(PrinterSetting.IF_TYPE_BLUETOOTH)) {
+                            mModelName = portFirst.getPortName().substring(PrinterSetting.IF_TYPE_BLUETOOTH.length());
+                            mPortName = PrinterSetting.IF_TYPE_BLUETOOTH + portFirst.getMacAddress();
+                            mMacAddress = portFirst.getMacAddress();
+                        } else {
+                            mModelName = portFirst.getModelName();
+                            mPortName = portFirst.getPortName();
+                            mMacAddress = portFirst.getMacAddress();
+                        }
+
+                        int model = ModelCapability.getModel(mModelName);
+                        mPortSettings = ModelCapability.getPortSettings(model);
+                        mEmulation = ModelCapability.getEmulation(model);
+                        mDrawerOpenStatus = true;
+                        registerPrinter(context);
+
+                        mStarIoExtManager = new StarIoExtManager(StarIoExtManager.Type.Standard, mPortName, mPortSettings, 10000, context);     // 10000mS!!!
+                        mStarIoExtManager.setCashDrawerOpenActiveHigh(mDrawerOpenStatus);
+                        PrintTask printTask = new PrintTask();
+                        printTask.execute();
+                    } else {
+                        AlertDialog.Builder dialog = new AlertDialog.Builder(mActivity);
+                        dialog.setNegativeButton(mActivity.getString(R.string.ok), null);
+                        AlertDialog alert = dialog.create();
+                        alert.setMessage(context.getString(R.string.print_error_search));
+                        alert.setCancelable(false);
+                        alert.show();
+                    }
+                }
+            };
+
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    getPortDiscovery(context, "All", mHandler);
+                }
+            });
+            thread.start();
+        }
     }
 
     private static void registerPrinter(Context context) {
@@ -392,7 +470,7 @@ public class StarPrintExtUtil {
 
     static ArrayList<PortInfo> arrayDiscovery;
 
-    private static void getPortDiscovery(final Context context, String interfaceName, final EditText edt_port, Spinner sp_device, LinearLayout ll_device, Handler mHandler) {
+    private static void getPortDiscovery(final Context context, String interfaceName, Handler mHandler) {
         List<PortInfo> BTPortList;
         List<PortInfo> TCPPortList;
         List<PortInfo> USBPortList;

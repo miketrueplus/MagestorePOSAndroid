@@ -77,6 +77,7 @@ import com.magestore.app.pos.panel.SpinnerListPanel;
 import com.magestore.app.pos.sdk.MultiReaderConnectionActivity;
 import com.magestore.app.pos.sdk.PayPalHereSDKWrapper;
 import com.magestore.app.pos.ui.AbstractActivity;
+import com.magestore.app.pos.util.PrinterSetting;
 import com.magestore.app.util.AnimationView;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.DataUtil;
@@ -251,7 +252,17 @@ public class SalesActivity extends AbstractActivity
         mPluginStoreCreditPanel = (PluginStoreCreditPanel) mCheckoutDetailPanel.findViewById(R.id.rl_store_credit);
         // config print
         ConfigUtil.setTypePrint(getString(R.string.print_type_star_print));
-        ConfigUtil.setStarPrintArea(576);
+        PrinterSetting printerSetting = new PrinterSetting(getContext());
+        int print_type = printerSetting.getPrintArea();
+        if (print_type == 0) {
+            ConfigUtil.setStarPrintArea(384);
+        } else if (print_type == 1) {
+            ConfigUtil.setStarPrintArea(576);
+        } else {
+            ConfigUtil.setStarPrintArea(832);
+        }
+        ConfigUtil.setOpenCash(printerSetting.getOpenCashAfterPrint());
+        ConfigUtil.setAutoPrint(printerSetting.getAutoPrint());
 
         // keyboard
         ll_custom_keyboard = (LinearLayout) findViewById(R.id.ll_custom_keyboard);
@@ -747,7 +758,7 @@ public class SalesActivity extends AbstractActivity
         return ll_custom_keyboard.getVisibility() == View.VISIBLE;
     }
 
-    private void checkDevLicense(){
+    private void checkDevLicense() {
         dev_license.setVisibility(ConfigUtil.isDevLicense() ? View.VISIBLE : View.GONE);
     }
 }

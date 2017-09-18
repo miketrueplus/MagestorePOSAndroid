@@ -111,10 +111,17 @@ public class CheckoutSuccessPanel extends AbstractDetailPanel<Order> {
     public void bindItem(final Order item) {
         super.bindItem(item);
         txt_order_id.setText(getContext().getString(R.string.checkout_order_id, item.getIncrementId()));
+        if (ConfigUtil.isAutoPrint()) {
+            StarPrintExtUtil.autoPrint(getContext(), mCheckoutListController.getMagestoreContext().getActivity(), item);
+        }
         btn_print.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                actionPrint(item);
+                if (ConfigUtil.isAutoPrint()) {
+                    StarPrintExtUtil.autoPrint(getContext(), mCheckoutListController.getMagestoreContext().getActivity(), item);
+                } else {
+                    actionPrint(item);
+                }
             }
         });
     }
@@ -317,7 +324,7 @@ public class CheckoutSuccessPanel extends AbstractDetailPanel<Order> {
                 @Override
                 public void onClick(View view) {
                     Bitmap bitmap = rl.getDrawingCache();
-                    StarPrintExtUtil.showSearchPrint(getContext(), ((OrderHistoryListController) mController).getMagestoreContext().getActivity(), bitmap, mOrder);
+                    StarPrintExtUtil.showSearchPrint(getContext(), mCheckoutListController.getMagestoreContext().getActivity(), bitmap, mOrder);
                 }
             });
         }

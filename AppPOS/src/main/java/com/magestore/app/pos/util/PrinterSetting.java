@@ -16,18 +16,21 @@ import static com.starmicronics.starioextension.StarIoExt.Emulation;
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class PrinterSetting {
 
-    public static final String IF_TYPE_ETHERNET  = "TCP:";
+    public static final String IF_TYPE_ETHERNET = "TCP:";
     public static final String IF_TYPE_BLUETOOTH = "BT:";
-    public static final String IF_TYPE_USB       = "USB:";
-    public static final String IF_TYPE_MANUAL    = "Manual:";
+    public static final String IF_TYPE_USB = "USB:";
+    public static final String IF_TYPE_MANUAL = "Manual:";
 
     public static final String PREF_KEY_PORT_NAME = "pref_key_port_name";
     public static final String PREF_KEY_MODEL_NAME = "pref_key_model_name";
-    public static final String PREF_KEY_MAC_ADDRESS  = "pref_key_mac_address";
-    public static final String PREF_KEY_PORT_SETTINGS  = "pref_key_port_settings";
-    public static final String PREF_KEY_EMULATION  = "pref_key_emulation";
-    public static final String PREF_KEY_ALLRECEIPTS_SETTINGS  = "pref_key_allreceipts_settings";
-    public static final String PREF_KEY_DRAWER_OPEN_STATUS    = "pref_key_drawer_open_status";
+    public static final String PREF_KEY_MAC_ADDRESS = "pref_key_mac_address";
+    public static final String PREF_KEY_PORT_SETTINGS = "pref_key_port_settings";
+    public static final String PREF_KEY_EMULATION = "pref_key_emulation";
+    public static final String PREF_KEY_ALLRECEIPTS_SETTINGS = "pref_key_allreceipts_settings";
+    public static final String PREF_KEY_DRAWER_OPEN_STATUS = "pref_key_drawer_open_status";
+    public static final String PREF_KEY_OPEN_CASH_AFTER_PRINT = "pref_key_open_cash_after_print";
+    public static final String PREF_KEY_PRINT_AREA = "pref_key_print_area";
+    public static final String PREF_KEY_AUTO_PRINT = "pref_key_auto_print";
 
     public static final int LANGUAGE_ENGLISH = 0;
     public static final int LANGUAGE_JAPANESE = 1;
@@ -49,17 +52,17 @@ public class PrinterSetting {
 
     private static final List<Pair<Emulation, Integer>> mEmulationList = new ArrayList<Pair<Emulation, Integer>>() {
         {
-            add(new Pair<>(Emulation.StarPRNT,      0));
-            add(new Pair<>(Emulation.StarLine,      1));
-            add(new Pair<>(Emulation.StarGraphic,   2));
+            add(new Pair<>(Emulation.StarPRNT, 0));
+            add(new Pair<>(Emulation.StarLine, 1));
+            add(new Pair<>(Emulation.StarGraphic, 2));
             add(new Pair<>(Emulation.StarDotImpact, 3));
-            add(new Pair<>(Emulation.EscPos,        4));
-            add(new Pair<>(Emulation.EscPosMobile,  5));
-            add(new Pair<>(Emulation.None,          6));
+            add(new Pair<>(Emulation.EscPos, 4));
+            add(new Pair<>(Emulation.EscPosMobile, 5));
+            add(new Pair<>(Emulation.None, 6));
         }
     };
 
-    PrinterSetting(Context context) {
+    public PrinterSetting(Context context) {
         mContext = context;
     }
 
@@ -85,12 +88,47 @@ public class PrinterSetting {
                 .apply();
     }
 
+    public void writeAutoPrint(boolean autoPrint) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+
+        prefs.edit().putBoolean(PREF_KEY_AUTO_PRINT, autoPrint).apply();
+    }
+
+    public void writePrintArea(int iPrintArea) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+
+        prefs.edit().putInt(PREF_KEY_PRINT_AREA, iPrintArea).apply();
+    }
+
+    public void writeOpenCashAfterPrint(boolean isOpenCashAfterPrint) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+
+        prefs.edit()
+                .putBoolean(PREF_KEY_OPEN_CASH_AFTER_PRINT, isOpenCashAfterPrint)
+                .apply();
+    }
+
     public void write(int allReceiptSettings) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
 
         prefs.edit()
-             .putInt(PREF_KEY_ALLRECEIPTS_SETTINGS, allReceiptSettings)
-             .apply();
+                .putInt(PREF_KEY_ALLRECEIPTS_SETTINGS, allReceiptSettings)
+                .apply();
+    }
+
+    public boolean getAutoPrint() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+        return prefs.getBoolean(PREF_KEY_AUTO_PRINT, false);
+    }
+
+    public int getPrintArea() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+        return prefs.getInt(PREF_KEY_PRINT_AREA, 1);
+    }
+
+    public boolean getOpenCashAfterPrint() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+        return prefs.getBoolean(PREF_KEY_OPEN_CASH_AFTER_PRINT, true);
     }
 
     public String getPortName() {
@@ -127,7 +165,7 @@ public class PrinterSetting {
                 return emulationPair.first;
             }
         }
-        
+
         return Emulation.None;
     }
 

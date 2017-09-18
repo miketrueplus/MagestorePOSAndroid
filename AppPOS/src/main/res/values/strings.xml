@@ -275,11 +275,13 @@
     <string name="printArea2inch" translatable="false">2inch (58mm)</string>
     <string name="printArea3inch" translatable="false">3inch (78mm)</string>
     <string name='printArea4inch' translatable="false">4inch (112mm)</string>
-    <string name="open_cash_after_print">Open Cash Drawer after print</string>
+    <string name="open_cash_after_print">Open Cash Drawer</string>
+    <string name="open_auto_print">Auto Print</string>
     <string name="print_select_ip">Please Select IP Address or Input Port Name:</string>
     <string name="print_bluetooth">Bluetooth:</string>
     <string name="print_port_number">PortNumber:</string>
-    <string name="print_copy">Copies:</string>
+    <string name="print_copy">Copies: </string>
+    <string name="print_area">Print Area: </string>
     <string name="print_search">Searching...</string>
     <string name="print_error_search">Can\'t find port</string>
     <string name="print_hint_port">Port Name (TCP:192.168.31.240)</string>
