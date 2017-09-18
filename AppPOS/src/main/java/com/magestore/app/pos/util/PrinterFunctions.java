@@ -20,7 +20,7 @@ public class PrinterFunctions {
 
         builder.beginDocument();
 
-        if (!ConfigUtil.isOpenCashAfterPrint()) {
+        if (ConfigUtil.isOpenCash()) {
             byte openCashDrawer = 0x07;
             builder.append(openCashDrawer);
         }
@@ -30,11 +30,6 @@ public class PrinterFunctions {
             localizeReceipts.appendTextReceiptData(builder, utf8);
 
             builder.appendCutPaper(CutPaperAction.PartialCutWithFeed);
-        }
-
-        if (ConfigUtil.isOpenCashAfterPrint()) {
-            byte openCashDrawer = 0x07;
-            builder.append(openCashDrawer);
         }
 
         builder.endDocument();

@@ -93,6 +93,13 @@ public class StarPrintUtil {
                 spinner_copy.setAdapter(ad_copy);
                 SharedPreferences pref = context.getSharedPreferences("pref", context.MODE_PRIVATE);
                 print_copy = pref.getString("copy", "1");
+                if (print_copy.equals("1")) {
+                    spinner_copy.setSelection(0);
+                } else if (print_copy.equals("2")) {
+                    spinner_copy.setSelection(1);
+                } else {
+                    spinner_copy.setSelection(2);
+                }
                 spinner_copy.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {

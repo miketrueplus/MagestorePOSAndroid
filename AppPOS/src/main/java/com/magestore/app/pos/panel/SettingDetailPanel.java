@@ -2,6 +2,7 @@ package com.magestore.app.pos.panel;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.AdapterView;
@@ -24,6 +25,7 @@ import com.magestore.app.pos.LoginActivity;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.SettingListController;
 import com.magestore.app.pos.util.EditTextUtil;
+import com.magestore.app.pos.util.PrinterSetting;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.DataUtil;
 import com.magestore.app.util.DialogUtil;
@@ -50,9 +52,9 @@ public class SettingDetailPanel extends AbstractDetailPanel<Setting> {
     Button btn_save;
     RelativeLayout setting_background_loading;
     boolean checkFirst;
-    LinearLayout ll_print_area;
-    Spinner sp_print_area;
-    Switch sw_open_cash;
+    LinearLayout ll_print_area, ll_print_copy;
+    Spinner sp_print_area, sp_print_copy;
+    Switch sw_open_cash, sw_auto_print;
 
     public SettingDetailPanel(Context context) {
         super(context);
@@ -81,7 +83,10 @@ public class SettingDetailPanel extends AbstractDetailPanel<Setting> {
         sp_print = (SimpleSpinner) findViewById(R.id.sp_print);
         ll_print_area = (LinearLayout) findViewById(R.id.ll_print_area);
         sw_open_cash = (Switch) findViewById(R.id.sw_open_cash);
+        sw_auto_print = (Switch) findViewById(R.id.sw_auto_print);
         sp_print_area = (Spinner) findViewById(R.id.sp_print_area);
+        ll_print_copy = (LinearLayout) findViewById(R.id.ll_print_copy);
+        sp_print_copy = (Spinner) findViewById(R.id.sp_print_copy);
         ll_setting_store = (LinearLayout) findViewById(R.id.ll_setting_store);
         btn_save = (Button) findViewById(R.id.btn_save);
         listLayout.add(ll_setting_account);
@@ -135,9 +140,13 @@ public class SettingDetailPanel extends AbstractDetailPanel<Setting> {
                 if (sp_print.getSelection().equals(getContext().getString(R.string.print_type_star_print))) {
                     ll_print_area.setVisibility(VISIBLE);
                     sw_open_cash.setVisibility(VISIBLE);
+                    sw_auto_print.setVisibility(VISIBLE);
+                    ll_print_copy.setVisibility(VISIBLE);
                 } else {
                     ll_print_area.setVisibility(GONE);
                     sw_open_cash.setVisibility(GONE);
+                    sw_auto_print.setVisibility(GONE);
+                    ll_print_copy.setVisibility(GONE);
                 }
             }
 
@@ -148,11 +157,13 @@ public class SettingDetailPanel extends AbstractDetailPanel<Setting> {
         });
 
         SpinnerAdapter ad_print_area = new ArrayAdapter<String>(getContext(), R.layout.simple_textview_row1, new String[]{getContext().getResources().getString(R.string.printArea2inch), getContext().getResources().getString(R.string.printArea3inch), getContext().getResources().getString(R.string.printArea4inch)});
+        final PrinterSetting printerSetting = new PrinterSetting(getContext());
         sp_print_area.setAdapter(ad_print_area);
-        sp_print_area.setSelection(1);
+        sp_print_area.setSelection(printerSetting.getPrintArea());
         sp_print_area.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                printerSetting.writePrintArea(i);
                 if (i == 0) {
                     ConfigUtil.setStarPrintArea(384);
                 } else if (i == 1) {
@@ -168,10 +179,54 @@ public class SettingDetailPanel extends AbstractDetailPanel<Setting> {
             }
         });
 
+        SpinnerAdapter ad_print_copy = new ArrayAdapter<String>(getContext(), R.layout.simple_textview_row1, new String[]{"1", "2", "3"});
+        sp_print_copy.setAdapter(ad_print_copy);
+        final SharedPreferences pref = getContext().getSharedPreferences("pref", getContext().MODE_PRIVATE);
+        String print_copy = pref.getString("copy", "1");
+        if (print_copy.equals("1")) {
+            sp_print_copy.setSelection(0);
+        } else if (print_copy.equals("2")) {
+            sp_print_copy.setSelection(1);
+        } else {
+            sp_print_copy.setSelection(2);
+        }
+        sp_print_copy.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String copy;
+                if (i == 0) {
+                    copy = "1";
+                } else if (i == 1) {
+                    copy = "2";
+                } else {
+                    copy = "3";
+                }
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putString("copy", copy);
+                editor.commit();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        sw_open_cash.setChecked(printerSetting.getOpenCashAfterPrint());
         sw_open_cash.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                ConfigUtil.setOpenCashAfterPrint(b);
+                ConfigUtil.setOpenCash(b);
+                printerSetting.writeOpenCashAfterPrint(b);
+            }
+        });
+
+        sw_auto_print.setChecked(printerSetting.getAutoPrint());
+        sw_auto_print.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                ConfigUtil.setAutoPrint(b);
+                printerSetting.writeAutoPrint(b);
             }
         });
     }

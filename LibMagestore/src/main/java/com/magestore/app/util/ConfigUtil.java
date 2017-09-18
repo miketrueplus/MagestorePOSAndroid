@@ -92,7 +92,8 @@ public class ConfigUtil {
     private static boolean isDevLicense;
 
     // Print
-    private static boolean mOpenCashAfterPrint;
+    private static boolean mOpenCash;
+    private static boolean mAutoPrint;
 
     /**
      * @param format
@@ -1012,12 +1013,20 @@ public class ConfigUtil {
         return null;
     }
 
-    public static boolean isOpenCashAfterPrint() {
-        return mOpenCashAfterPrint;
+    public static boolean isOpenCash() {
+        return mOpenCash;
     }
 
-    public static void setOpenCashAfterPrint(boolean mOpenCashAfterPrint) {
-        ConfigUtil.mOpenCashAfterPrint = mOpenCashAfterPrint;
+    public static void setOpenCash(boolean mOpenCash) {
+        ConfigUtil.mOpenCash = mOpenCash;
+    }
+
+    public static boolean isAutoPrint() {
+        return mAutoPrint;
+    }
+
+    public static void setAutoPrint(boolean mAutoPrint) {
+        ConfigUtil.mAutoPrint = mAutoPrint;
     }
 }
 

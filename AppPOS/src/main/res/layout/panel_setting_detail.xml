@@ -150,7 +150,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/layout_margin_10"
                         android:layout_marginRight="@dimen/layout_margin_10"
-                        android:text="Print Area: "
+                        android:text="@string/print_area"
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/welcome_text_size" />
 
@@ -171,13 +171,50 @@
                         android:visibility="gone" />
                 </LinearLayout>
 
-                <Switch
-                    android:id="@+id/sw_open_cash"
+                <LinearLayout
+                    android:id="@+id/ll_print_copy"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/ll_print_area"
                     android:layout_marginTop="@dimen/layout_margin_10"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/layout_margin_10"
+                        android:layout_marginRight="@dimen/layout_margin_10"
+                        android:text="@string/print_copy"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/welcome_text_size" />
+
+                    <Spinner
+                        android:id="@+id/sp_print_copy"
+                        android:layout_width="@dimen/layout_margin_130"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/layout_margin_10"
+                        android:textSize="@dimen/welcome_text_size" />
+                </LinearLayout>
+
+                <Switch
+                    android:id="@+id/sw_open_cash"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/ll_print_copy"
+                    android:layout_marginTop="@dimen/layout_margin_10"
                     android:text="@string/open_cash_after_print"
+                    android:textSize="@dimen/welcome_text_size"
+                    android:visibility="gone" />
+
+                <Switch
+                    android:id="@+id/sw_auto_print"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/sw_open_cash"
+                    android:layout_marginTop="@dimen/layout_margin_10"
+                    android:text="@string/open_auto_print"
+                    android:textSize="@dimen/welcome_text_size"
                     android:visibility="gone" />
             </RelativeLayout>
         </LinearLayout>
