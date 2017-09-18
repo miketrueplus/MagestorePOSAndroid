@@ -100,6 +100,11 @@ public class ConfigUtil {
     // permisson checkout
     private static boolean mNeedToShip;
     private static boolean mMarkAsShip;
+    // customer
+    private static boolean mShippingAddress;
+    private static boolean mAddAddress;
+    private static boolean mLastName;
+    private static boolean mSubscribe;
 
     // order status
     private static Map<String, String> mListOrderStatus;
@@ -1086,6 +1091,38 @@ public class ConfigUtil {
 
     public static void setMarkAsShip(boolean mMarkAsShip) {
         ConfigUtil.mMarkAsShip = mMarkAsShip;
+    }
+
+    public static boolean isShippingAddress() {
+        return mShippingAddress;
+    }
+
+    public static void setShippingAddress(boolean mShippingAddress) {
+        ConfigUtil.mShippingAddress = mShippingAddress;
+    }
+
+    public static boolean isAddAddress() {
+        return mAddAddress;
+    }
+
+    public static void setAddAddress(boolean mAddAddress) {
+        ConfigUtil.mAddAddress = mAddAddress;
+    }
+
+    public static boolean isLastName() {
+        return mLastName;
+    }
+
+    public static void setLastName(boolean mLastName) {
+        ConfigUtil.mLastName = mLastName;
+    }
+
+    public static boolean isSubscribe() {
+        return mSubscribe;
+    }
+
+    public static void setSubscribe(boolean mSubscribe) {
+        ConfigUtil.mSubscribe = mSubscribe;
     }
 
     public static void setListOrderStatus(Map<String, String> mListOrderStatus) {

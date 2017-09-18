@@ -67,6 +67,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
     public static int CREATE_NEW_ADDRESS = 2;
     public static int CHECKOUT_ADD_NEW_ADDRESS = 3;
     int typeCustomer, other_type;
+    View line_address;
 
     public CheckoutListPanel(Context context) {
         super(context);
@@ -393,16 +394,16 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
                 ll_add_new_address.setVisibility(GONE);
             } else {
                 mCustomerAddNewPanel.bindItem(mCustomer);
-                ll_add_new_address.setVisibility(VISIBLE);
+                ll_add_new_address.setVisibility(ConfigUtil.isAddAddress() ? VISIBLE : GONE);
             }
         } else {
             if (mCustomer != null) {
                 if (type == CHANGE_CUSTOMER) {
                     mCustomerAddNewPanel.bindItem(null);
-                    ll_add_new_address.setVisibility(VISIBLE);
+                    ll_add_new_address.setVisibility(ConfigUtil.isAddAddress() ? VISIBLE : GONE);
                 } else {
                     mCustomerAddNewPanel.bindItem(mCustomer);
-                    ll_add_new_address.setVisibility(VISIBLE);
+                    ll_add_new_address.setVisibility(ConfigUtil.isAddAddress() ? VISIBLE : GONE);
                 }
             } else {
                 ll_add_new_address.setVisibility(GONE);
@@ -463,6 +464,9 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
         btn_shipping_address_delete = (ImageButton) mCheckoutAddCustomerPanel.findViewById(R.id.btn_shipping_address_delete);
         btn_billing_address_delete = (ImageButton) mCheckoutAddCustomerPanel.findViewById(R.id.btn_billing_address_delete);
         ll_add_new_address = (LinearLayout) mCheckoutAddCustomerPanel.findViewById(R.id.ll_add_new_address);
+        line_address = (View) mCheckoutAddCustomerPanel.findViewById(R.id.line_address);
+        ll_shipping_address.setVisibility(ConfigUtil.isShippingAddress() ? VISIBLE : GONE);
+        line_address.setVisibility(ConfigUtil.isShippingAddress() ? VISIBLE : GONE);
     }
 
     private void actionPanel() {

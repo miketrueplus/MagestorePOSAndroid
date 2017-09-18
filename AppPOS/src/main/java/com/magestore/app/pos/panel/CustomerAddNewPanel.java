@@ -25,6 +25,7 @@ import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.CustomerListController;
 import com.magestore.app.pos.databinding.PanelCustomerAddNewBinding;
 import com.magestore.app.pos.util.EditTextUtil;
+import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.StringUtil;
 
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
     SimpleSpinner s_spinner_country, b_spinner_country, s_spinner_state, b_spinner_state, s_shipping_address, s_billing_address;
     LinearLayout ll_add_new_customer, ll_short_shipping_address, ll_short_billing_address;
     LinearLayout ll_shipping_address, ll_billing_address, ll_s_shipping_address, ll_s_billing_address;
-    LinearLayout ll_new_shipping_address;
+    LinearLayout ll_new_shipping_address, ll_last_name;
     LinearLayout ll_new_billing_address;
     EditText s_state, b_state, s_first_name, b_first_name, s_last_name, b_last_name, s_street1, b_street1, s_street2, b_street2, s_vat, b_vat;
     EditText first_name, last_name, email, s_company, b_company, s_phone, b_phone, s_city, b_city, s_zipcode, b_zipcode;
@@ -87,6 +88,7 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
         s_state = (EditText) findViewById(R.id.s_state);
         b_state = (EditText) findViewById(R.id.b_state);
         first_name = (EditText) findViewById(R.id.first_name);
+        ll_last_name = (LinearLayout) findViewById(R.id.ll_last_name);
         last_name = (EditText) findViewById(R.id.last_name);
         email = (EditText) findViewById(R.id.email);
         subscribe = (Switch) findViewById(R.id.subscribe);
@@ -118,6 +120,9 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
         ll_s_shipping_address = (LinearLayout) findViewById(R.id.ll_s_shipping_address);
         ll_s_billing_address = (LinearLayout) findViewById(R.id.ll_s_billing_address);
         mBinding = DataBindingUtil.bind(view);
+
+        subscribe.setVisibility(ConfigUtil.isSubscribe() ? VISIBLE : GONE);
+        ll_last_name.setVisibility(ConfigUtil.isLastName() ? VISIBLE : GONE);
     }
 
     @Override
