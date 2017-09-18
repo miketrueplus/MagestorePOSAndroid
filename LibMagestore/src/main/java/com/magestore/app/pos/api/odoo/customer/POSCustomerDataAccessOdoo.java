@@ -26,6 +26,7 @@ import com.magestore.app.pos.api.odoo.POSDataAccessSessionOdoo;
 import com.magestore.app.pos.model.customer.PosCustomer;
 import com.magestore.app.pos.model.customer.PosCustomerAddress;
 import com.magestore.app.pos.model.customer.PosDataCustomer;
+import com.magestore.app.pos.model.directory.PosRegion;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosAbstractParseImplement;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListCustomer;
 import com.magestore.app.util.StringUtil;
@@ -130,17 +131,17 @@ public class POSCustomerDataAccessOdoo extends POSAbstractDataAccessOdoo impleme
                             if (StringUtil.checkJsonData(street2)) {
                                 listStreet.add(street2);
                             }
-                            customer.setEmail(customer_email);
-                            customer.setFirstName(customer_name);
+                            customer.setEmail(StringUtil.checkJsonData(customer_email) ? customer_email : "");
+                            customer.setFirstName(StringUtil.checkJsonData(customer_name) ? customer_name : "");
                             customer.setLastName("");
-                            customer.setTelephone(customer_phone);
+                            customer.setTelephone(StringUtil.checkJsonData(customer_phone) ? customer_phone : "");
                             customer.setGroupID(company_type);
                             PosCustomerAddress customerAddress = new PosCustomerAddress();
                             customerAddress.setCustomer(id);
-                            customerAddress.setFirstName(customer_name);
+                            customerAddress.setFirstName(StringUtil.checkJsonData(customer_name) ? customer_name : "");
                             customerAddress.setLastName("");
-                            customerAddress.setRegionID(state_id);
-                            customerAddress.setCountry(country_id);
+                            customerAddress.setRegionID(StringUtil.checkJsonData(state_id) ? state_id : "");
+                            customerAddress.setCountry(StringUtil.checkJsonData(country_id) ? country_id : "");
                             customerAddress.setStreet1(street);
                             customerAddress.setStreet1(street2);
                             customerAddress.setTelephone(customer_phone);
@@ -148,7 +149,18 @@ public class POSCustomerDataAccessOdoo extends POSAbstractDataAccessOdoo impleme
                             customerAddress.setCity(city);
                             customerAddress.setVAT(vat);
                             customerAddress.setCompany(company_name);
-                            customerAddress.setDefaultBilling("true");
+                            customerAddress.setDefaultBilling("1");
+                            PosRegion region = new PosRegion();
+                            int stateId;
+                            try {
+                                stateId = Integer.parseInt(state_id);
+                            } catch (Exception e) {
+                                stateId = 0;
+                            }
+                            region.setRegionID(stateId);
+                            region.setRegionName(state_name);
+                            region.setRegionCode(state_code);
+                            customerAddress.setRegion(region);
                             List<CustomerAddress> listCustomerAddress = new ArrayList<>();
                             listCustomerAddress.add(customerAddress);
                             customer.setAddressList(listCustomerAddress);
