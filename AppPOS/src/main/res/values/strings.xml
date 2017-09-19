@@ -72,7 +72,11 @@
     <string name="customer_edit_billing_address">Edit Billing Address</string>
     <string name="customer_add_new_success">The customer is saved successfully.</string>
     <string name="customer_add_new_address">Add Address</string>
+    <string name="customer_phone_optional">Phone (Optional)</string>
     <string name="customer_company_optional">Company (Optional)</string>
+    <string name="customer_street1_optional">Street1 (Optional)</string>
+    <string name="customer_city_optional">City (Optional)</string>
+    <string name="customer_zipcode_optional">Zip Code (Optional)</string>
     <string name="customer_street_optional">Street2 (Optional)</string>
     <string name="customer_state_or_province_optional">State or Province (Optional)</string>
     <string name="customer_vat_optional">VAT (Optional)</string>

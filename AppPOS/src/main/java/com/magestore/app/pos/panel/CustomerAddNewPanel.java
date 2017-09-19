@@ -101,7 +101,7 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
         s_last_name = (EditText) findViewById(R.id.s_last_name);
         b_last_name = (EditText) findViewById(R.id.b_last_name);
         ll_s_company = (LinearLayout) findViewById(R.id.ll_s_company);
-        ll_b_company = (LinearLayout) findViewById(R.id.ll_s_company);
+        ll_b_company = (LinearLayout) findViewById(R.id.ll_b_company);
         s_company = (EditText) findViewById(R.id.s_company);
         b_company = (EditText) findViewById(R.id.b_company);
         s_phone = (EditText) findViewById(R.id.s_phone);
@@ -135,6 +135,15 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
         ll_b_state.setVisibility(ConfigUtil.isEditState() ? VISIBLE : GONE);
         ll_s_company.setVisibility(ConfigUtil.isCompany() ? VISIBLE : GONE);
         ll_b_company.setVisibility(ConfigUtil.isCompany() ? VISIBLE : GONE);
+
+        s_phone.setHint(ConfigUtil.isRequiedPhone() ? getContext().getString(R.string.phone) : getContext().getString(R.string.customer_phone_optional));
+        b_phone.setHint(ConfigUtil.isRequiedPhone() ? getContext().getString(R.string.phone) : getContext().getString(R.string.customer_phone_optional));
+        s_street1.setHint(ConfigUtil.isRequiedStreet1() ? getContext().getString(R.string.street) : getContext().getString(R.string.customer_street1_optional));
+        b_street1.setHint(ConfigUtil.isRequiedStreet1() ? getContext().getString(R.string.street) : getContext().getString(R.string.customer_street1_optional));
+        s_city.setHint(ConfigUtil.isRequiedStreet1() ? getContext().getString(R.string.city) : getContext().getString(R.string.customer_city_optional));
+        b_city.setHint(ConfigUtil.isRequiedStreet1() ? getContext().getString(R.string.city) : getContext().getString(R.string.customer_city_optional));
+        s_zipcode.setHint(ConfigUtil.isRequiedStreet1() ? getContext().getString(R.string.zip_code) : getContext().getString(R.string.customer_zipcode_optional));
+        b_zipcode.setHint(ConfigUtil.isRequiedStreet1() ? getContext().getString(R.string.zip_code) : getContext().getString(R.string.customer_zipcode_optional));
     }
 
     @Override
