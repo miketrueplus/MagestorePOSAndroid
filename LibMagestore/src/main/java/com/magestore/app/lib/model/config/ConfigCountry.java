@@ -19,4 +19,6 @@ public interface ConfigCountry extends Model {
     void setCountryName(String strCountryName);
     Map<String, ConfigRegion> getRegions();
     void setRegions(Map<String, ConfigRegion> regions);
+    String getKey();
+    void setKey(String strKey);
 }

@@ -18,6 +18,7 @@ import com.magestore.app.pos.controller.CustomerAddressListController;
 import com.magestore.app.pos.databinding.PanelCustomerAddressDetailBinding;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.util.EditTextUtil;
+import com.magestore.app.util.ConfigUtil;
 
 import java.util.List;
 import java.util.Map;
@@ -76,6 +77,7 @@ public class CustomerAddressDetailPanel extends AbstractDetailPanel<CustomerAddr
         s_spinner_country = (SimpleSpinner) findViewById(R.id.s_spinner_country);
         s_spinner_state = (SimpleSpinner) findViewById(R.id.s_spinner_state);
         state = (EditText) findViewById(R.id.state);
+        state.setVisibility(ConfigUtil.isEditState() ? VISIBLE : GONE);
     }
 
     @Override
@@ -114,7 +116,7 @@ public class CustomerAddressDetailPanel extends AbstractDetailPanel<CustomerAddr
                     s_spinner_state.setVisibility(VISIBLE);
                     s_spinner_state.bindModelMap((Map<String, Model>) (Map<?, ?>) listRegion);
                 } else {
-                    state.setVisibility(VISIBLE);
+                    state.setVisibility(ConfigUtil.isEditState() ? VISIBLE : GONE);
                     s_spinner_state.setVisibility(GONE);
                 }
             }

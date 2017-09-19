@@ -17,6 +17,7 @@ public class PosConfigCountry extends PosAbstractModel implements ConfigCountry 
     String country_id;
     String country_name;
     Map<String, ConfigRegion> regions;
+    String id;
 
     @Override
     public String getID() {
@@ -51,6 +52,16 @@ public class PosConfigCountry extends PosAbstractModel implements ConfigCountry 
     @Override
     public void setRegions(Map<String, ConfigRegion> regions) {
         this.regions = regions;
+    }
+
+    @Override
+    public String getKey() {
+        return id;
+    }
+
+    @Override
+    public void setKey(String strKey) {
+        id = strKey;
     }
 
     @Override

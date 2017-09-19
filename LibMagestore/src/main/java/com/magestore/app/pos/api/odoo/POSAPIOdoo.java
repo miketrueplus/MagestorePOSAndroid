@@ -40,5 +40,5 @@ public class POSAPIOdoo {
     public static final String REST_REGISTER_SHIFTS_GET_LISTING_POS = "api/pos/?";
 
     // API config
-    public static final String REST_CONFIG_GET_LISTING = "api/pos-configs/";
+    public static final String REST_CONFIG_GET_LISTING = "api/system-config/";
 }

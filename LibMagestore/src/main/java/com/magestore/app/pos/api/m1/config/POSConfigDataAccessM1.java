@@ -1070,6 +1070,14 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
             ConfigUtil.setAddAddress(true);
             ConfigUtil.setLastName(true);
             ConfigUtil.setSubscribe(true);
+            ConfigUtil.setEditState(true);
+            ConfigUtil.setRequiedFirstName(true);
+            ConfigUtil.setRequiedLastName(true);
+            ConfigUtil.setRequiedEmail(true);
+            ConfigUtil.setRequiedPhone(true);
+            ConfigUtil.setRequiedStreet1(true);
+            ConfigUtil.setRequiedCity(true);
+            ConfigUtil.setRequiedZipCode(true);
             if (checkStaffPermiss(listPermisson, ALL_PERMISSON)) {
                 ConfigUtil.setCreateOrder(true);
                 ConfigUtil.setManagerAllOrder(true);

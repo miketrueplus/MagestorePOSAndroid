@@ -105,6 +105,14 @@ public class ConfigUtil {
     private static boolean mAddAddress;
     private static boolean mLastName;
     private static boolean mSubscribe;
+    private static boolean mEditState;
+    private static boolean mRequiedFirstName;
+    private static boolean mRequiedLastName;
+    private static boolean mRequiedEmail;
+    private static boolean mRequiedPhone;
+    private static boolean mRequiedStreet1;
+    private static boolean mRequiedCity;
+    private static boolean mRequiedZipCode;
 
     // order status
     private static Map<String, String> mListOrderStatus;
@@ -1123,6 +1131,70 @@ public class ConfigUtil {
 
     public static void setSubscribe(boolean mSubscribe) {
         ConfigUtil.mSubscribe = mSubscribe;
+    }
+
+    public static boolean isEditState() {
+        return mEditState;
+    }
+
+    public static void setEditState(boolean mEditState) {
+        ConfigUtil.mEditState = mEditState;
+    }
+
+    public static boolean isRequiedFirstName() {
+        return mRequiedFirstName;
+    }
+
+    public static void setRequiedFirstName(boolean mRequiedFirstName) {
+        ConfigUtil.mRequiedFirstName = mRequiedFirstName;
+    }
+
+    public static boolean isRequiedLastName() {
+        return mRequiedLastName;
+    }
+
+    public static void setRequiedLastName(boolean mRequiedLastName) {
+        ConfigUtil.mRequiedLastName = mRequiedLastName;
+    }
+
+    public static boolean isRequiedEmail() {
+        return mRequiedEmail;
+    }
+
+    public static void setRequiedEmail(boolean mRequiedEmail) {
+        ConfigUtil.mRequiedEmail = mRequiedEmail;
+    }
+
+    public static boolean isRequiedPhone() {
+        return mRequiedPhone;
+    }
+
+    public static void setRequiedPhone(boolean mRequiedPhone) {
+        ConfigUtil.mRequiedPhone = mRequiedPhone;
+    }
+
+    public static boolean isRequiedStreet1() {
+        return mRequiedStreet1;
+    }
+
+    public static void setRequiedStreet1(boolean mRequiedStreet1) {
+        ConfigUtil.mRequiedStreet1 = mRequiedStreet1;
+    }
+
+    public static boolean isRequiedCity() {
+        return mRequiedCity;
+    }
+
+    public static void setRequiedCity(boolean mRequiedCity) {
+        ConfigUtil.mRequiedCity = mRequiedCity;
+    }
+
+    public static boolean isRequiedZipCode() {
+        return mRequiedZipCode;
+    }
+
+    public static void setRequiedZipCode(boolean mRequiedZipCode) {
+        ConfigUtil.mRequiedZipCode = mRequiedZipCode;
     }
 
     public static void setListOrderStatus(Map<String, String> mListOrderStatus) {

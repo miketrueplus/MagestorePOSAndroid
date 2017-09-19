@@ -1,8 +1,16 @@
 package com.magestore.app.pos.api.odoo.config;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import com.google.gson.internal.LinkedHashTreeMap;
 import com.google.gson.internal.LinkedTreeMap;
+import com.google.gson.reflect.TypeToken;
 import com.magestore.app.lib.connection.Connection;
 import com.magestore.app.lib.connection.ConnectionException;
 import com.magestore.app.lib.connection.ConnectionFactory;
@@ -11,11 +19,14 @@ import com.magestore.app.lib.connection.ResultReading;
 import com.magestore.app.lib.connection.Statement;
 import com.magestore.app.lib.model.config.Config;
 import com.magestore.app.lib.model.config.ConfigCountry;
+import com.magestore.app.lib.model.config.ConfigOdoo;
 import com.magestore.app.lib.model.config.ConfigOption;
 import com.magestore.app.lib.model.config.ConfigPriceFormat;
 import com.magestore.app.lib.model.config.ConfigPrint;
 import com.magestore.app.lib.model.config.ConfigQuantityFormat;
+import com.magestore.app.lib.model.config.ConfigRegion;
 import com.magestore.app.lib.model.config.ConfigTaxClass;
+import com.magestore.app.lib.model.config.DataConfig;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.model.directory.Currency;
@@ -31,21 +42,26 @@ import com.magestore.app.pos.api.odoo.POSAPIOdoo;
 import com.magestore.app.pos.api.odoo.POSAbstractDataAccessOdoo;
 import com.magestore.app.pos.api.odoo.POSDataAccessSessionOdoo;
 import com.magestore.app.pos.model.config.PosConfig;
+import com.magestore.app.pos.model.config.PosConfigCountry;
+import com.magestore.app.pos.model.config.PosConfigOdoo;
 import com.magestore.app.pos.model.config.PosConfigPriceFormat;
 import com.magestore.app.pos.model.config.PosConfigQuantityFormat;
+import com.magestore.app.pos.model.config.PosConfigRegion;
+import com.magestore.app.pos.model.config.PosDataConfig;
 import com.magestore.app.pos.model.customer.PosCustomer;
 import com.magestore.app.pos.model.customer.PosCustomerAddress;
 import com.magestore.app.pos.model.directory.PosCurrency;
 import com.magestore.app.pos.model.directory.PosRegion;
 import com.magestore.app.pos.model.staff.PosLocation;
 import com.magestore.app.pos.model.staff.PosStaff;
+import com.magestore.app.pos.parse.gson2pos.Gson2PosAbstractParseImplement;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosConfigParseImplement;
 import com.magestore.app.util.ConfigUtil;
-import com.magestore.app.util.StringUtil;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -59,6 +75,7 @@ import java.util.Map;
 public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implements ConfigDataAccess {
     private static Config mConfig;
     private static Staff mStaff;
+    private static ConfigOdoo mConfigOdoo;
     // all permission
     private static String ALL_PERMISSON = "Magestore_Webpos::all";
     // create order
@@ -76,6 +93,82 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
     private static String APPLY_CUSTOM_PRICE = "Magestore_Webpos::apply_custom_price";
     // Session
     private static String MANAGE_SHIFT_ADJUSTMENT = "Magestore_Webpos::manage_shift_adjustment";
+
+
+    public class Gson2PosConfigParseModel extends Gson2PosAbstractParseImplement {
+        @Override
+        protected Gson createGson() {
+            GsonBuilder builder = new GsonBuilder();
+            builder.enableComplexMapKeySerialization();
+            builder.registerTypeAdapter(new TypeToken<List<PosConfigOdoo>>() {
+            }
+                    .getType(), new ConfigConverter());
+            return builder.create();
+        }
+
+        private String COUNTRY = "country";
+        private String COUNTRY_ID = "id";
+        private String COUNTRY_NAME = "name";
+        private String COUNTRY_CODE = "code";
+        private String STATE = "state";
+        private String STATE_ID = "id";
+        private String STATE_NAME = "name";
+        private String STATE_CODE = "code";
+
+        public class ConfigConverter implements JsonDeserializer<List<PosConfigOdoo>> {
+            @Override
+            public List<PosConfigOdoo> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+                List<PosConfigOdoo> listConfig = new ArrayList<>();
+                if (json.isJsonArray()) {
+                    JsonArray arr_config = json.getAsJsonArray();
+                    if (arr_config != null && arr_config.size() > 0) {
+                        Map<String, ConfigCountry> mConfigContry = new LinkedTreeMap<>();
+                        for (JsonElement el_config : arr_config) {
+                            JsonObject obj_config = el_config.getAsJsonObject();
+                            PosConfigOdoo configOdoo = new PosConfigOdoo();
+                            if (obj_config.get(COUNTRY).isJsonArray()) {
+                                JsonArray arr_country = obj_config.getAsJsonArray(COUNTRY);
+                                if (arr_country != null && arr_country.size() > 0) {
+                                    for (JsonElement el_country : arr_country) {
+                                        JsonObject obj_country = el_country.getAsJsonObject();
+                                        PosConfigCountry configCountry = new PosConfigCountry();
+                                        String country_id = obj_country.remove(COUNTRY_ID).getAsString();
+                                        String country_name = obj_country.remove(COUNTRY_NAME).getAsString();
+                                        String country_code = obj_country.remove(COUNTRY_CODE).getAsString();
+                                        configCountry.setCountryID(country_code);
+                                        configCountry.setKey(country_id);
+                                        configCountry.setCountryName(country_name);
+                                        if (obj_country.has(STATE)) {
+                                            JsonArray arr_state = obj_country.getAsJsonArray(STATE);
+                                            if (arr_state != null && arr_state.size() > 0) {
+                                                Map<String, ConfigRegion> mConfigRegion = new LinkedTreeMap<>();
+                                                for (JsonElement el_state : arr_state) {
+                                                    JsonObject obj_state = el_state.getAsJsonObject();
+                                                    PosConfigRegion configRegion = new PosConfigRegion();
+                                                    String state_id = obj_state.remove(STATE_ID).getAsString();
+                                                    String state_code = obj_state.remove(STATE_CODE).getAsString();
+                                                    String state_name = obj_state.remove(STATE_NAME).getAsString();
+                                                    configRegion.setID(state_id);
+                                                    configRegion.setCode(state_code);
+                                                    configRegion.setName(state_name);
+                                                    mConfigRegion.put(state_id, configRegion);
+                                                }
+                                                configCountry.setRegions(mConfigRegion);
+                                            }
+                                        }
+                                        mConfigContry.put(country_code, configCountry);
+                                        configOdoo.setCountry(mConfigContry);
+                                        listConfig.add(configOdoo);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                return listConfig;
+            }
+        }
+    }
 
     @Override
     public Config retrieveConfig() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
@@ -97,10 +190,10 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
 
             // thực hiện truy vấn
             rp = statement.execute();
-            String json = StringUtil.truncateJson(rp.readResult2String());
-            Gson2PosConfigParseImplement implement = new Gson2PosConfigParseImplement();
-            Gson gson = implement.createGson();
-            mConfig = gson.fromJson(json, PosConfig.class);
+            rp.setParseImplement(new Gson2PosConfigParseModel());
+            rp.setParseModel(PosDataConfig.class);
+            DataConfig dataConfig = (DataConfig) rp.doParse();
+            mConfigOdoo = dataConfig.getItems().get(0);
             return mConfig;
         } catch (ConnectionException ex) {
 //            statement.getCacheConnection().deleteCache();
@@ -169,7 +262,7 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
 
     @Override
     public Map<String, ConfigCountry> getCountryGroup() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
-        return null;
+        return mConfigOdoo.getCountry();
     }
 
     @Override
@@ -305,6 +398,14 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
             ConfigUtil.setAddAddress(false);
             ConfigUtil.setLastName(false);
             ConfigUtil.setSubscribe(false);
+            ConfigUtil.setEditState(false);
+            ConfigUtil.setRequiedFirstName(true);
+            ConfigUtil.setRequiedLastName(false);
+            ConfigUtil.setRequiedEmail(false);
+            ConfigUtil.setRequiedPhone(false);
+            ConfigUtil.setRequiedStreet1(false);
+            ConfigUtil.setRequiedCity(false);
+            ConfigUtil.setRequiedZipCode(false);
             if (checkStaffPermiss(listPermisson, ALL_PERMISSON)) {
                 ConfigUtil.setCreateOrder(true);
                 ConfigUtil.setManagerAllOrder(true);

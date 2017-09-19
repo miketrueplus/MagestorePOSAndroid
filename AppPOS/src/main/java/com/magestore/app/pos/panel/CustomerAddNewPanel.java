@@ -43,8 +43,8 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
     SimpleSpinner s_spinner_country, b_spinner_country, s_spinner_state, b_spinner_state, s_shipping_address, s_billing_address;
     LinearLayout ll_add_new_customer, ll_short_shipping_address, ll_short_billing_address;
     LinearLayout ll_shipping_address, ll_billing_address, ll_s_shipping_address, ll_s_billing_address;
-    LinearLayout ll_new_shipping_address, ll_last_name;
-    LinearLayout ll_new_billing_address;
+    LinearLayout ll_new_shipping_address, ll_last_name, ll_b_state, ll_b_last_name;
+    LinearLayout ll_new_billing_address, ll_s_state, ll_s_last_name;
     EditText s_state, b_state, s_first_name, b_first_name, s_last_name, b_last_name, s_street1, b_street1, s_street2, b_street2, s_vat, b_vat;
     EditText first_name, last_name, email, s_company, b_company, s_phone, b_phone, s_city, b_city, s_zipcode, b_zipcode;
     Switch subscribe;
@@ -85,6 +85,10 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
         b_spinner_state = (SimpleSpinner) findViewById(R.id.b_spinner_state);
         s_shipping_address = (SimpleSpinner) findViewById(R.id.s_shipping_address);
         s_billing_address = (SimpleSpinner) findViewById(R.id.s_billing_address);
+        ll_s_state = (LinearLayout) findViewById(R.id.ll_s_state);
+        ll_b_state = (LinearLayout) findViewById(R.id.ll_b_state);
+        ll_s_last_name = (LinearLayout) findViewById(R.id.ll_s_last_name);
+        ll_b_last_name = (LinearLayout) findViewById(R.id.ll_b_last_name);
         s_state = (EditText) findViewById(R.id.s_state);
         b_state = (EditText) findViewById(R.id.b_state);
         first_name = (EditText) findViewById(R.id.first_name);
@@ -123,6 +127,10 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
 
         subscribe.setVisibility(ConfigUtil.isSubscribe() ? VISIBLE : GONE);
         ll_last_name.setVisibility(ConfigUtil.isLastName() ? VISIBLE : GONE);
+        ll_s_last_name.setVisibility(ConfigUtil.isLastName() ? VISIBLE : GONE);
+        ll_b_last_name.setVisibility(ConfigUtil.isLastName() ? VISIBLE : GONE);
+        ll_s_state.setVisibility(ConfigUtil.isEditState() ? VISIBLE : GONE);
+        ll_b_state.setVisibility(ConfigUtil.isEditState() ? VISIBLE : GONE);
     }
 
     @Override
@@ -194,9 +202,11 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
                 if (listRegion != null && listRegion.size() > 0) {
                     s_state.setVisibility(GONE);
                     s_spinner_state.setVisibility(VISIBLE);
+                    ll_s_state.setVisibility(VISIBLE);
                     s_spinner_state.bindModelMap((Map<String, Model>) (Map<?, ?>) listRegion);
                 } else {
-                    s_state.setVisibility(VISIBLE);
+                    ll_s_state.setVisibility(ConfigUtil.isEditState() ? VISIBLE : GONE);
+                    s_state.setVisibility(ConfigUtil.isEditState() ? VISIBLE : GONE);
                     s_spinner_state.setVisibility(GONE);
                 }
             }
@@ -213,10 +223,12 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
                 Map<String, ConfigRegion> listRegion = countryDataSet.get(b_spinner_country.getSelection()).getRegions();
                 if (listRegion != null && listRegion.size() > 0) {
                     b_state.setVisibility(GONE);
+                    ll_b_state.setVisibility(VISIBLE);
                     b_spinner_state.setVisibility(VISIBLE);
                     b_spinner_state.bindModelMap((Map<String, Model>) (Map<?, ?>) listRegion);
                 } else {
-                    b_state.setVisibility(VISIBLE);
+                    ll_b_state.setVisibility(ConfigUtil.isEditState() ? VISIBLE : GONE);
+                    b_state.setVisibility(ConfigUtil.isEditState() ? VISIBLE : GONE);
                     b_spinner_state.setVisibility(GONE);
                 }
             }
@@ -413,12 +425,14 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
         s_zipcode.setText(shippingAddress.getPostCode());
         s_spinner_country.setSelection(shippingAddress.getCountry());
         if (shippingAddress.getRegion().getRegionID() == 0) {
-            s_state.setVisibility(VISIBLE);
+            s_state.setVisibility(ConfigUtil.isEditState() ? VISIBLE : GONE);
+            ll_s_state.setVisibility(ConfigUtil.isEditState() ? VISIBLE : GONE);
             s_spinner_state.setVisibility(GONE);
             s_state.setText(shippingAddress.getRegion().getRegionName());
         } else {
             s_state.setVisibility(GONE);
             s_spinner_state.setVisibility(VISIBLE);
+            ll_s_state.setVisibility(VISIBLE);
             s_spinner_state.setSelection(shippingAddress.getRegion().getRegionCode());
         }
     }
@@ -435,12 +449,14 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
         b_zipcode.setText(billingAddress.getPostCode());
         b_spinner_country.setSelection(billingAddress.getCountry());
         if (billingAddress.getRegion().getRegionID() == 0) {
-            b_state.setVisibility(VISIBLE);
+            b_state.setVisibility(ConfigUtil.isEditState() ? VISIBLE : GONE);
+            ll_b_state.setVisibility(ConfigUtil.isEditState() ? VISIBLE : GONE);
             b_spinner_state.setVisibility(GONE);
             b_state.setText(billingAddress.getRegion().getRegionName());
         } else {
             b_state.setVisibility(GONE);
             b_spinner_state.setVisibility(VISIBLE);
+            ll_b_state.setVisibility(VISIBLE);
             b_spinner_state.setSelection(billingAddress.getRegion().getRegionCode());
         }
     }
@@ -512,11 +528,13 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
             b_zipcode.setText(billingAddress.getPostCode());
             b_spinner_country.setSelection(billingAddress.getCountry());
             if (billingAddress.getRegion().getRegionID() == 0) {
-                b_state.setVisibility(VISIBLE);
+                b_state.setVisibility(ConfigUtil.isEditState() ? VISIBLE : GONE);
                 b_spinner_state.setVisibility(GONE);
+                ll_b_state.setVisibility(ConfigUtil.isEditState() ? VISIBLE : GONE);
                 b_state.setText(billingAddress.getRegion().getRegionName());
             } else {
                 b_state.setVisibility(GONE);
+                ll_b_state.setVisibility(VISIBLE);
                 b_spinner_state.setVisibility(VISIBLE);
                 b_spinner_state.setSelection(billingAddress.getRegion().getRegionCode());
             }
@@ -631,14 +649,20 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
      * @return boolean
      */
     public boolean checkRequiedCustomer() {
-        if (!isRequied(first_name)) {
-            return false;
+        if (ConfigUtil.isRequiedFirstName()) {
+            if (!isRequied(first_name)) {
+                return false;
+            }
         }
-        if (!isRequied(last_name)) {
-            return false;
+        if (ConfigUtil.isRequiedLastName()) {
+            if (!isRequied(last_name)) {
+                return false;
+            }
         }
-        if (!isRequied(email) || !isRequiedEmail(email)) {
-            return false;
+        if (ConfigUtil.isRequiedEmail()) {
+            if (!isRequied(email) || !isRequiedEmail(email)) {
+                return false;
+            }
         }
         return true;
     }
@@ -649,23 +673,35 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
      * @return boolean
      */
     public boolean checkRequiedShippingAddress() {
-        if (!isRequied(s_first_name)) {
-            return false;
+        if (ConfigUtil.isRequiedFirstName()) {
+            if (!isRequied(s_first_name)) {
+                return false;
+            }
         }
-        if (!isRequied(s_last_name)) {
-            return false;
+        if (ConfigUtil.isRequiedLastName()) {
+            if (!isRequied(s_last_name)) {
+                return false;
+            }
         }
-        if (!isRequied(s_phone)) {
-            return false;
+        if (ConfigUtil.isRequiedPhone()) {
+            if (!isRequied(s_phone)) {
+                return false;
+            }
         }
-        if (!isRequied(s_street1)) {
-            return false;
+        if (ConfigUtil.isRequiedStreet1()) {
+            if (!isRequied(s_street1)) {
+                return false;
+            }
         }
-        if (!isRequied(s_city)) {
-            return false;
+        if (ConfigUtil.isRequiedCity()) {
+            if (!isRequied(s_city)) {
+                return false;
+            }
         }
-        if (!isRequied(s_zipcode)) {
-            return false;
+        if (ConfigUtil.isRequiedZipCode()) {
+            if (!isRequied(s_zipcode)) {
+                return false;
+            }
         }
         return true;
     }
@@ -676,23 +712,35 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
      * @return boolean
      */
     public boolean checkRequiedBillingAddress() {
-        if (!isRequied(b_first_name)) {
-            return false;
+        if (ConfigUtil.isRequiedFirstName()) {
+            if (!isRequied(b_first_name)) {
+                return false;
+            }
         }
-        if (!isRequied(b_last_name)) {
-            return false;
+        if (ConfigUtil.isRequiedLastName()) {
+            if (!isRequied(b_last_name)) {
+                return false;
+            }
         }
-        if (!isRequied(b_phone)) {
-            return false;
+        if (ConfigUtil.isRequiedPhone()) {
+            if (!isRequied(b_phone)) {
+                return false;
+            }
         }
-        if (!isRequied(b_street1)) {
-            return false;
+        if (ConfigUtil.isRequiedStreet1()) {
+            if (!isRequied(b_street1)) {
+                return false;
+            }
         }
-        if (!isRequied(b_city)) {
-            return false;
+        if (ConfigUtil.isRequiedCity()) {
+            if (!isRequied(b_city)) {
+                return false;
+            }
         }
-        if (!isRequied(b_zipcode)) {
-            return false;
+        if (ConfigUtil.isRequiedZipCode()) {
+            if (!isRequied(b_zipcode)) {
+                return false;
+            }
         }
         return true;
     }
