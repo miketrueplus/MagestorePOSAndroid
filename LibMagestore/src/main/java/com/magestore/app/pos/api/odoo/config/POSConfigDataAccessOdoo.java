@@ -117,6 +117,12 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
         private String CUSTOMER_GROUP = "customer_group";
         private String CUSTOMER_GROUP_ID = "id";
         private String CUSTOMER_GROUP_CODE = "code";
+        private String PRICE_FORMAT = "price_format";
+        private String POSITION = "position";
+        private String GROUP_SYMBOL = "thousands_sep";
+        private String PRECISION = "precision";
+        private String GROUP_LENGTH = "grouping";
+        private String DECIMAL_SYMBOL = "decimal_point";
 
         public class ConfigConverter implements JsonDeserializer<List<PosConfigOdoo>> {
             @Override
@@ -178,6 +184,40 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
                                 }
                             }
                             configOdoo.setCustomerGroup(mCustomerGroup);
+
+                            if (obj_config.has(PRICE_FORMAT)) {
+                                JsonObject obj_price = obj_config.getAsJsonObject(PRICE_FORMAT);
+                                PosConfigPriceFormat priceFormat = new PosConfigPriceFormat();
+                                PosConfigQuantityFormat quantityFormat = new PosConfigQuantityFormat();
+                                String position = obj_price.get(POSITION).getAsString();
+                                String group_symbol = obj_price.get(GROUP_SYMBOL).getAsString();
+                                int precision = obj_price.get(PRECISION).getAsInt();
+                                int group_length = obj_price.get(GROUP_LENGTH).getAsInt();
+                                String decimal_symbol = obj_price.get(DECIMAL_SYMBOL).getAsString();
+                                int integerRequiredPrice = 1;
+                                int integerRequiredQuantity = 0;
+
+                                // TODO: fake symbol
+                                priceFormat.setCurrencySymbol("$");
+                                priceFormat.setPattern(position.equals("before") ? "$%s" : "%s$");
+                                priceFormat.setGroupSymbol(group_symbol);
+                                priceFormat.setPrecision(precision);
+                                priceFormat.setRequirePrecision(precision);
+                                priceFormat.setGroupLength(group_length);
+                                priceFormat.setDecimalSymbol(decimal_symbol);
+                                priceFormat.setIntegerRequied(integerRequiredPrice);
+
+                                quantityFormat.setPattern(position.equals("before") ? "$%s" : "%s$");
+                                quantityFormat.setGroupSymbol(group_symbol);
+                                quantityFormat.setPrecision(precision);
+                                quantityFormat.setRequirePrecision(precision);
+                                quantityFormat.setGroupLength(group_length);
+                                quantityFormat.setDecimalSymbol(decimal_symbol);
+                                quantityFormat.setIntegerRequied(integerRequiredQuantity);
+
+                                configOdoo.setPriceFormat(priceFormat);
+                                configOdoo.setQuantityFormat(quantityFormat);
+                            }
 
                             listConfig.add(configOdoo);
                         }
@@ -300,17 +340,17 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
 
     @Override
     public ConfigPriceFormat getPriceFormat() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
-        return getPriceFormatFake();
+        return mConfigOdoo.getPriceFormat();
     }
 
     @Override
     public ConfigQuantityFormat getQuantityFormat() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
-        return getQuantityFormatFake();
+        return mConfigOdoo.getQuantityFormat();
     }
 
     @Override
     public ConfigPriceFormat getBasePriceFomat() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
-        return getPriceFormatFake();
+        return mConfigOdoo.getPriceFormat();
     }
 
     @Override

@@ -217,7 +217,7 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
                     param.setShiftId(item.getShiftId());
                     param.setPosId(item.getPosId());
                     param.setCashBox(mCashBox);
-                    param.setStatus(VALIDATE);
+                    param.setStatus(CLOSE_SESSION);
                     ((RegisterShiftListController) getController()).doInputValidateSession(item, param);
                 }
             }

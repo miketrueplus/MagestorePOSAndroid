@@ -27,6 +27,7 @@ import com.magestore.app.pos.api.odoo.POSAbstractDataAccessOdoo;
 import com.magestore.app.pos.api.odoo.POSDataAccessSessionOdoo;
 import com.magestore.app.pos.model.sales.PosDataOrder;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListOrderParseModelOdoo;
+import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.StringUtil;
 import java.io.IOException;
 import java.util.List;
@@ -460,7 +461,7 @@ public class POSOrderDataAccessOdoo extends POSAbstractDataAccessOdoo implements
 
     @Override
     public List<CheckoutPayment> retrievePaymentMethod() throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
-        return null;
+        return ConfigUtil.getListPayment();
     }
 
     @Override

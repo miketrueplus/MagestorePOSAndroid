@@ -108,6 +108,7 @@ public class POSCustomerAddressDataAccessOdoo extends POSAbstractDataAccessOdoo 
             rp.setParseModel(PosDataCustomer.class);
             DataCustomer listCustomer = (DataCustomer) rp.doParse();
             Customer customer_respone = listCustomer.getItems().get(0);
+            newChild = customer_respone.getAddress().get(0);
             customer.setFirstName(customer_respone.getFirstName());
             // return
             return true;

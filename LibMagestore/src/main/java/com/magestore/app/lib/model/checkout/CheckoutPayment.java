@@ -106,6 +106,9 @@ public interface CheckoutPayment extends Model {
     boolean IsNotEnableEditValue();
     void setIsNotEnableEditValue(boolean bIsNotEnableValue);
 
+    boolean getDifferenceZero();
+    void setDifferenceZero(boolean bDifferenceZero);
+
     // paypal
     String getClientId();
     void setClientId(String strClientId);

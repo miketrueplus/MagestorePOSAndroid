@@ -27,6 +27,8 @@ public class PosCheckoutPayment extends PosAbstractModel implements CheckoutPaym
 
     @Gson2PosExclude
     String reference_number;
+    @Gson2PosExclude
+    boolean difference_zero;
 
     public class AdditionalData {
         String cc_owner;
@@ -336,6 +338,16 @@ public class PosCheckoutPayment extends PosAbstractModel implements CheckoutPaym
     @Override
     public void setIsNotEnableEditValue(boolean bIsNotEnableValue) {
         is_not_enable_edit_value = bIsNotEnableValue;
+    }
+
+    @Override
+    public boolean getDifferenceZero() {
+        return difference_zero;
+    }
+
+    @Override
+    public void setDifferenceZero(boolean bDifferenceZero) {
+        difference_zero = bDifferenceZero;
     }
 
     @Override

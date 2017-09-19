@@ -15,4 +15,8 @@ public interface ConfigOdoo extends Model {
     void setCountry(Map<String, ConfigCountry> mCountry);
     Map<String, String> getCustomerGroup();
     void setCustomerGroup(Map<String, String> mCustomerGroup);
+    ConfigPriceFormat getPriceFormat();
+    void setPriceFormat(ConfigPriceFormat mConfigPriceFormat);
+    ConfigQuantityFormat getQuantityFormat();
+    void setQuantityFormat(ConfigQuantityFormat mQuantityFormat);
 }

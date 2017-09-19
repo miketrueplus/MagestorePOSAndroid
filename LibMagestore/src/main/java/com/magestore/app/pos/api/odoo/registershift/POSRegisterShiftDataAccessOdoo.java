@@ -15,6 +15,7 @@ import com.magestore.app.lib.connection.ConnectionFactory;
 import com.magestore.app.lib.connection.ParamBuilder;
 import com.magestore.app.lib.connection.ResultReading;
 import com.magestore.app.lib.connection.Statement;
+import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.lib.model.registershift.CashBox;
 import com.magestore.app.lib.model.registershift.CashTransaction;
 import com.magestore.app.lib.model.registershift.DataListRegisterShift;
@@ -28,6 +29,7 @@ import com.magestore.app.lib.resourcemodel.registershift.RegisterShiftDataAccess
 import com.magestore.app.pos.api.odoo.POSAPIOdoo;
 import com.magestore.app.pos.api.odoo.POSAbstractDataAccessOdoo;
 import com.magestore.app.pos.api.odoo.POSDataAccessSessionOdoo;
+import com.magestore.app.pos.model.checkout.PosCheckoutPayment;
 import com.magestore.app.pos.model.registershift.PosCashTransaction;
 import com.magestore.app.pos.model.registershift.PosDataListRegisterShift;
 import com.magestore.app.pos.model.registershift.PosPointOfSales;
@@ -143,18 +145,31 @@ public class POSRegisterShiftDataAccessOdoo extends POSAbstractDataAccessOdoo im
                             }
                             shift.setCashTransaction(listTransaction);
                             List<SaleSummary> listSaleSummary = new ArrayList<>();
+                            List<CheckoutPayment> listPayment = new ArrayList<>();
                             if (obj_shift.has(PAYMENT_DETAIL) && obj_shift.get(PAYMENT_DETAIL).isJsonArray()) {
                                 JsonArray arr_payment = obj_shift.getAsJsonArray(PAYMENT_DETAIL);
                                 if (arr_payment != null && arr_payment.size() > 0) {
                                     for (JsonElement el_payment : arr_payment) {
                                         JsonObject obj_payment = el_payment.getAsJsonObject();
                                         PosSaleSummary saleSummary = new PosSaleSummary();
+                                        PosCheckoutPayment payment = new PosCheckoutPayment();
                                         String payment_id = obj_payment.remove(PAYMENT_ID).getAsString();
                                         String payment_name = obj_payment.remove(PAYMENT_NAME).getAsString();
                                         String payment_type = obj_payment.remove(PAYMENT_TYPE).getAsString();
                                         float payment_amount = obj_payment.remove(PAYMENT_AMOUNT).getAsFloat();
                                         boolean payment_reference = obj_payment.remove(PAYMENT_REFERENCE).getAsBoolean();
                                         boolean payment_difference_zero = obj_payment.remove(PAYMENT_DIFFERENCE_ZERO).getAsBoolean();
+                                        payment.setID(payment_id);
+                                        payment.setIsReferenceNumber(payment_reference ? "1" : "0");
+                                        // TODO: Tạm thời fix type = 0, vì không có payment online
+                                        payment.setType("0");
+                                        payment.setTitle(payment_name);
+                                        payment.setCode(payment_type);
+                                        // TODO: Tạm thời để bằng 0 vì không có COD
+                                        payment.setPaylater("0");
+                                        payment.setDifferenceZero(payment_difference_zero);
+                                        listPayment.add(payment);
+
                                         saleSummary.setID(payment_id);
                                         saleSummary.setPaymentMethod(payment_type);
                                         saleSummary.setMethodTitle(payment_name);
@@ -165,6 +180,7 @@ public class POSRegisterShiftDataAccessOdoo extends POSAbstractDataAccessOdoo im
                                     }
                                 }
                             }
+                            ConfigUtil.setListPayment(listPayment);
                             shift.setSalesSummary(listSaleSummary);
                             if (obj_shift.has(POS_CONFIG) && obj_shift.get(POS_CONFIG).isJsonObject()) {
                                 JsonObject obj_pos = obj_shift.get(POS_CONFIG).getAsJsonObject();

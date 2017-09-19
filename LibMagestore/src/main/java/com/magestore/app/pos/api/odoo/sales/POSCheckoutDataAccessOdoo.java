@@ -98,17 +98,17 @@ public class POSCheckoutDataAccessOdoo extends POSAbstractDataAccessOdoo impleme
         checkout.setQuote(quote);
 
         // TODO: fake payment
-        List<CheckoutPayment> listPayment = new ArrayList<>();
-        CheckoutPayment payment = new PosCheckoutPayment();
-        payment.setID("9");
-        payment.setType("0");
-        payment.setTitle("TH-Cash (VND)");
-        payment.setIsDefault("1");
-        payment.setCode("cashforpos");
-        payment.setPaylater("0");
-        payment.setIsReferenceNumber("1");
-        listPayment.add(payment);
-        checkout.setCheckoutPayment(listPayment);
+//        List<CheckoutPayment> listPayment = new ArrayList<>();
+//        CheckoutPayment payment = new PosCheckoutPayment();
+//        payment.setID("9");
+//        payment.setType("0");
+//        payment.setTitle("TH-Cash (VND)");
+//        payment.setIsDefault("1");
+//        payment.setCode("cashforpos");
+//        payment.setPaylater("0");
+//        payment.setIsReferenceNumber("1");
+//        listPayment.add(payment);
+        checkout.setCheckoutPayment(ConfigUtil.getListPayment());
         return checkout;
     }
 
