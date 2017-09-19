@@ -31,6 +31,7 @@ public class ModelCapability {
     public static final int SM_S230I_StarPRNT = 16;
     public static final int SM_T300I_T300_StarPRNT = 17;
     public static final int SM_T400I_StarPRNT = 18;
+    public static final int DEFAULT = -1;
 
     // V5.3.0
     public static final int SM_L300 = 19;
@@ -82,6 +83,7 @@ public class ModelCapability {
             put(SM_S230I_StarPRNT, Emulation.StarPRNT);
             put(SM_T300I_T300_StarPRNT, Emulation.StarPRNT);
             put(SM_T400I_StarPRNT, Emulation.StarPRNT);
+            put(DEFAULT, Emulation.StarLine);
         }
     };
 
@@ -107,6 +109,7 @@ public class ModelCapability {
             put(SM_S230I_StarPRNT, "Portable");
             put(SM_T300I_T300_StarPRNT, "Portable");
             put(SM_T400I_StarPRNT, "Portable");
+            put(DEFAULT, "");
         }
     };
 
