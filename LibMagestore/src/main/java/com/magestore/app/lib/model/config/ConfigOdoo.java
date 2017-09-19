@@ -13,4 +13,6 @@ import java.util.Map;
 public interface ConfigOdoo extends Model {
     Map<String, ConfigCountry> getCountry();
     void setCountry(Map<String, ConfigCountry> mCountry);
+    Map<String, String> getCustomerGroup();
+    void setCustomerGroup(Map<String, String> mCustomerGroup);
 }

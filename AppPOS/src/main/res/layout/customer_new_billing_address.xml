@@ -53,6 +53,7 @@
         android:orientation="horizontal">
 
         <LinearLayout
+            android:id="@+id/ll_b_company"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/layout_margin_5"

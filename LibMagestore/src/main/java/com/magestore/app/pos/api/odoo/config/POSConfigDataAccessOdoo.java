@@ -114,6 +114,9 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
         private String STATE_ID = "id";
         private String STATE_NAME = "name";
         private String STATE_CODE = "code";
+        private String CUSTOMER_GROUP = "customer_group";
+        private String CUSTOMER_GROUP_ID = "id";
+        private String CUSTOMER_GROUP_CODE = "code";
 
         public class ConfigConverter implements JsonDeserializer<List<PosConfigOdoo>> {
             @Override
@@ -123,6 +126,7 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
                     JsonArray arr_config = json.getAsJsonArray();
                     if (arr_config != null && arr_config.size() > 0) {
                         Map<String, ConfigCountry> mConfigContry = new LinkedTreeMap<>();
+                        Map<String, String> mCustomerGroup = new LinkedTreeMap<>();
                         for (JsonElement el_config : arr_config) {
                             JsonObject obj_config = el_config.getAsJsonObject();
                             PosConfigOdoo configOdoo = new PosConfigOdoo();
@@ -157,11 +161,25 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
                                             }
                                         }
                                         mConfigContry.put(country_code, configCountry);
-                                        configOdoo.setCountry(mConfigContry);
-                                        listConfig.add(configOdoo);
                                     }
                                 }
                             }
+                            configOdoo.setCountry(mConfigContry);
+
+                            if (obj_config.get(CUSTOMER_GROUP).isJsonArray()) {
+                                JsonArray arr_customerg = obj_config.getAsJsonArray(CUSTOMER_GROUP);
+                                if (arr_customerg != null && arr_customerg.size() > 0) {
+                                    for (JsonElement el_customerg : arr_customerg) {
+                                        JsonObject obj_customerg = el_customerg.getAsJsonObject();
+                                        String id = obj_customerg.remove(CUSTOMER_GROUP_ID).getAsString();
+                                        String code = obj_customerg.remove(CUSTOMER_GROUP_CODE).getAsString();
+                                        mCustomerGroup.put(id, code);
+                                    }
+                                }
+                            }
+                            configOdoo.setCustomerGroup(mCustomerGroup);
+
+                            listConfig.add(configOdoo);
                         }
                     }
                 }
@@ -241,7 +259,7 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
 
     @Override
     public Map<String, String> getCustomerGroup() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
-        return getCustomerGroupFake();
+        return mConfigOdoo.getCustomerGroup();
     }
 
     @Override
@@ -397,6 +415,7 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
             ConfigUtil.setShippingAddress(false);
             ConfigUtil.setAddAddress(false);
             ConfigUtil.setLastName(false);
+            ConfigUtil.setCompany(false);
             ConfigUtil.setSubscribe(false);
             ConfigUtil.setEditState(false);
             ConfigUtil.setRequiedFirstName(true);
@@ -406,6 +425,7 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
             ConfigUtil.setRequiedStreet1(false);
             ConfigUtil.setRequiedCity(false);
             ConfigUtil.setRequiedZipCode(false);
+            ConfigUtil.setAddAddressDefault(false);
             if (checkStaffPermiss(listPermisson, ALL_PERMISSON)) {
                 ConfigUtil.setCreateOrder(true);
                 ConfigUtil.setManagerAllOrder(true);
@@ -622,12 +642,5 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
         Map<String, String> listCC = new LinkedTreeMap<>();
         listCC.put("VI", "Visa");
         return listCC;
-    }
-
-    private Map<String, String> getCustomerGroupFake() {
-        Map<String, String> listCustomerGroup = new LinkedTreeMap<>();
-        listCustomerGroup.put("1", "person");
-        listCustomerGroup.put("2", "company");
-        return listCustomerGroup;
     }
 }

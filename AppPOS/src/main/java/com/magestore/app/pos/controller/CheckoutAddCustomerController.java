@@ -4,6 +4,7 @@ import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.panel.CheckoutAddCustomerPanel;
 import com.magestore.app.pos.panel.CheckoutListPanel;
+import com.magestore.app.util.ConfigUtil;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -48,22 +49,26 @@ public class CheckoutAddCustomerController extends CustomerListController {
     }
 
     public Customer addAddressDefaultToCustomer(Customer item) {
-        Customer newCustomer = item;
-        Customer guest_customer = null;
-        String userAddressDefault = getMagestoreContext().getActivity().getString(R.string.customer_default_address);
-        try {
-            guest_customer = mConfigService.getGuestCheckout();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
+        if (ConfigUtil.isAddAddressDefault()) {
+            Customer newCustomer = item;
+            Customer guest_customer = null;
+            String userAddressDefault = getMagestoreContext().getActivity().getString(R.string.customer_default_address);
+            try {
+                guest_customer = mConfigService.getGuestCheckout();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            mCustomerAddressService.addAddressDefaultToCustomer(newCustomer, guest_customer, userAddressDefault);
+            return newCustomer;
+        } else {
+            return item;
         }
-        mCustomerAddressService.addAddressDefaultToCustomer(newCustomer, guest_customer, userAddressDefault);
-        return newCustomer;
     }
 
     @Override

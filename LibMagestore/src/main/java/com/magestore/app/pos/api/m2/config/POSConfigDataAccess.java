@@ -1195,6 +1195,7 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
             ConfigUtil.setShippingAddress(true);
             ConfigUtil.setAddAddress(true);
             ConfigUtil.setLastName(true);
+            ConfigUtil.setCompany(true);
             ConfigUtil.setSubscribe(true);
             ConfigUtil.setEditState(true);
             ConfigUtil.setRequiedFirstName(true);
@@ -1204,6 +1205,7 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
             ConfigUtil.setRequiedStreet1(true);
             ConfigUtil.setRequiedCity(true);
             ConfigUtil.setRequiedZipCode(true);
+            ConfigUtil.setAddAddressDefault(true);
             if (checkStaffPermiss(listPermisson, ALL_PERMISSON)) {
                 ConfigUtil.setManagerShiftAdjustment(true);
                 ConfigUtil.setManageOrderByMe(true);

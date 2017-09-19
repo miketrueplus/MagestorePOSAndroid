@@ -1069,6 +1069,7 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
             ConfigUtil.setShippingAddress(true);
             ConfigUtil.setAddAddress(true);
             ConfigUtil.setLastName(true);
+            ConfigUtil.setCompany(true);
             ConfigUtil.setSubscribe(true);
             ConfigUtil.setEditState(true);
             ConfigUtil.setRequiedFirstName(true);
@@ -1078,6 +1079,7 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
             ConfigUtil.setRequiedStreet1(true);
             ConfigUtil.setRequiedCity(true);
             ConfigUtil.setRequiedZipCode(true);
+            ConfigUtil.setAddAddressDefault(true);
             if (checkStaffPermiss(listPermisson, ALL_PERMISSON)) {
                 ConfigUtil.setCreateOrder(true);
                 ConfigUtil.setManagerAllOrder(true);

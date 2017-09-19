@@ -86,6 +86,8 @@ public class POSConfigService extends AbstractService implements ConfigService {
             ConfigUtil.setEnableStoreCredit(getConfigStoreCredit());
             ConfigUtil.setEnableRewardPoint(getConfigRewardPoint());
         }
+        ConfigUtil.setListCountry(getCountry());
+        ConfigUtil.setListCustomerGroup(getCustomerGroup());
         ConfigUtil.setListOrderStatus(getListOrderStatus());
         ConfigUtil.setEnableSession(getConfigSession());
         ConfigUtil.setEnableDeleteOrder(getConfigDeleteOrder());

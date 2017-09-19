@@ -21,6 +21,8 @@ public class POSAPIOdoo {
 
     // API customer
     public static final String REST_CUSOMTER_GET_LISTING = "api/pos-customers/?";
+    public static final String REST_CUSOMTER_CREATE_CUSTOMER = "api/pos-create-customer/";
+    public static final String REST_CUSOMTER_UPDATE = "api/pos-update-customer/";
 
     // API order
     public static final String REST_ORDER_GET_LISTING = "api/pos-orders/?";

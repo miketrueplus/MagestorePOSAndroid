@@ -4,6 +4,7 @@ import android.text.format.Time;
 
 import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.lib.model.config.ActiveKey;
+import com.magestore.app.lib.model.config.ConfigCountry;
 import com.magestore.app.lib.model.config.ConfigOptionSwatch;
 import com.magestore.app.lib.model.config.ConfigPriceFormat;
 import com.magestore.app.lib.model.config.ConfigPrint;
@@ -101,9 +102,11 @@ public class ConfigUtil {
     private static boolean mNeedToShip;
     private static boolean mMarkAsShip;
     // customer
+    private static boolean mAddAddressDefault;
     private static boolean mShippingAddress;
     private static boolean mAddAddress;
     private static boolean mLastName;
+    private static boolean mCompany;
     private static boolean mSubscribe;
     private static boolean mEditState;
     private static boolean mRequiedFirstName;
@@ -113,6 +116,8 @@ public class ConfigUtil {
     private static boolean mRequiedStreet1;
     private static boolean mRequiedCity;
     private static boolean mRequiedZipCode;
+    private static Map<String, ConfigCountry> mListCountry;
+    private static Map<String, String> mListCustomerGroup;
 
     // order status
     private static Map<String, String> mListOrderStatus;
@@ -1101,6 +1106,14 @@ public class ConfigUtil {
         ConfigUtil.mMarkAsShip = mMarkAsShip;
     }
 
+    public static boolean isAddAddressDefault() {
+        return mAddAddressDefault;
+    }
+
+    public static void setAddAddressDefault(boolean mAddAddressDefault) {
+        ConfigUtil.mAddAddressDefault = mAddAddressDefault;
+    }
+
     public static boolean isShippingAddress() {
         return mShippingAddress;
     }
@@ -1123,6 +1136,14 @@ public class ConfigUtil {
 
     public static void setLastName(boolean mLastName) {
         ConfigUtil.mLastName = mLastName;
+    }
+
+    public static boolean isCompany() {
+        return mCompany;
+    }
+
+    public static void setCompany(boolean mCompany) {
+        ConfigUtil.mCompany = mCompany;
     }
 
     public static boolean isSubscribe() {
@@ -1195,6 +1216,22 @@ public class ConfigUtil {
 
     public static void setRequiedZipCode(boolean mRequiedZipCode) {
         ConfigUtil.mRequiedZipCode = mRequiedZipCode;
+    }
+
+    public static Map<String, ConfigCountry> getListCountry() {
+        return mListCountry;
+    }
+
+    public static void setListCountry(Map<String, ConfigCountry> mListCountry) {
+        ConfigUtil.mListCountry = mListCountry;
+    }
+
+    public static Map<String, String> getListCustomerGroup() {
+        return mListCustomerGroup;
+    }
+
+    public static void setListCustomerGroup(Map<String, String> mListCustomerGroup) {
+        ConfigUtil.mListCustomerGroup = mListCustomerGroup;
     }
 
     public static void setListOrderStatus(Map<String, String> mListOrderStatus) {

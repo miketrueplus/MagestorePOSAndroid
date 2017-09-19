@@ -14,6 +14,7 @@ import java.util.Map;
 
 public class PosConfigOdoo extends PosAbstractModel implements ConfigOdoo {
     Map<String, ConfigCountry> country;
+    Map<String, String> customer_group;
 
     @Override
     public Map<String, ConfigCountry> getCountry() {
@@ -23,5 +24,15 @@ public class PosConfigOdoo extends PosAbstractModel implements ConfigOdoo {
     @Override
     public void setCountry(Map<String, ConfigCountry> mCountry) {
         country = mCountry;
+    }
+
+    @Override
+    public Map<String, String> getCustomerGroup() {
+        return customer_group;
+    }
+
+    @Override
+    public void setCustomerGroup(Map<String, String> mCustomerGroup) {
+        customer_group = mCustomerGroup;
     }
 }
