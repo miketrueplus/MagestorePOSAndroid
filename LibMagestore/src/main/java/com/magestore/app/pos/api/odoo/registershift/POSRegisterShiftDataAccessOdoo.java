@@ -462,6 +462,8 @@ public class POSRegisterShiftDataAccessOdoo extends POSAbstractDataAccessOdoo im
         }
     }
 
+    private static String VALIDATE = "1";
+
     @Override
     public List<RegisterShift> closeSession(SessionParam sessionParam) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
         Connection connection = null;
@@ -472,24 +474,30 @@ public class POSRegisterShiftDataAccessOdoo extends POSAbstractDataAccessOdoo im
             // Khởi tạo connection và khởi tạo truy vấn
             connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSessionOdoo.REST_BASE_URL, POSDataAccessSessionOdoo.REST_USER_NAME, POSDataAccessSessionOdoo.REST_PASSWORD);
             statement = connection.createStatement();
-            statement.prepareQuery(POSAPIOdoo.REST_REGISTER_SHIFTS_CLOSE_SESSION);
+            if (sessionParam.getStatus().equals(VALIDATE)) {
+                statement.prepareQuery(POSAPIOdoo.REST_REGISTER_SHIFTS_VALIDATE_SESSION);
+            } else {
+                statement.prepareQuery(POSAPIOdoo.REST_REGISTER_SHIFTS_CLOSE_SESSION);
+            }
             statement.setSessionHeader(POSDataAccessSessionOdoo.REST_SESSION_ID);
 
             CloseSessionEntity closeSessionEntity = new CloseSessionEntity();
-            closeSessionEntity.cash_control = ConfigUtil.isCashControl();
             closeSessionEntity.session_id = sessionParam.getID();
+            if (!sessionParam.getStatus().equals(VALIDATE)) {
+                closeSessionEntity.cash_control = ConfigUtil.isCashControl();
 
-            List<CashBoxEntity> listCashBox = new ArrayList<>();
-            HashMap<OpenSessionValue, CashBox> mCashBox = sessionParam.getCashBox();
-            if (mCashBox != null && mCashBox.size() > 0) {
-                for (CashBox cashBox : mCashBox.values()) {
-                    CashBoxEntity cashBoxEntity = new CashBoxEntity();
-                    cashBoxEntity.number = cashBox.getQty();
-                    cashBoxEntity.coin_value = cashBox.getValue();
-                    listCashBox.add(cashBoxEntity);
+                List<CashBoxEntity> listCashBox = new ArrayList<>();
+                HashMap<OpenSessionValue, CashBox> mCashBox = sessionParam.getCashBox();
+                if (mCashBox != null && mCashBox.size() > 0) {
+                    for (CashBox cashBox : mCashBox.values()) {
+                        CashBoxEntity cashBoxEntity = new CashBoxEntity();
+                        cashBoxEntity.number = cashBox.getQty();
+                        cashBoxEntity.coin_value = cashBox.getValue();
+                        listCashBox.add(cashBoxEntity);
+                    }
                 }
+                closeSessionEntity.cashbox_lines_ids = listCashBox;
             }
-            closeSessionEntity.cashbox_lines_ids = listCashBox;
 
             // thực thi truy vấn và parse kết quả thành object
             rp = statement.execute(closeSessionEntity);

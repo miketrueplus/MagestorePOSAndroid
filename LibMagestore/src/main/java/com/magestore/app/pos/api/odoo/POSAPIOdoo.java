@@ -36,6 +36,7 @@ public class POSAPIOdoo {
     public static final String REST_REGISTER_SHIFTS_GET_LISTING = "api/pos-sessions/?";
     public static final String REST_REGISTER_SHIFTS_OPEN_SESSION = "api/pos-create-session/";
     public static final String REST_REGISTER_SHIFTS_CLOSE_SESSION = "api/pos-close-session/";
+    public static final String REST_REGISTER_SHIFTS_VALIDATE_SESSION = "api/pos-validate-session/";
     public static final String REST_REGISTER_SHIFTS_MAKE_ADJUSTMENT = "api/pos-take-money-in-out/";
 
     // API register shifts
