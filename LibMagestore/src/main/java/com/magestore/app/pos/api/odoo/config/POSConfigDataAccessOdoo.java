@@ -418,6 +418,7 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
             ConfigUtil.setCompany(false);
             ConfigUtil.setSubscribe(false);
             ConfigUtil.setEditState(false);
+            ConfigUtil.setSameAddress(false);
             ConfigUtil.setRequiedFirstName(true);
             ConfigUtil.setRequiedLastName(false);
             ConfigUtil.setRequiedEmail(false);

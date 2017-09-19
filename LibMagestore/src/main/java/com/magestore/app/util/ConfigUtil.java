@@ -109,6 +109,7 @@ public class ConfigUtil {
     private static boolean mCompany;
     private static boolean mSubscribe;
     private static boolean mEditState;
+    private static boolean mSameAddress;
     private static boolean mRequiedFirstName;
     private static boolean mRequiedLastName;
     private static boolean mRequiedEmail;
@@ -1160,6 +1161,14 @@ public class ConfigUtil {
 
     public static void setEditState(boolean mEditState) {
         ConfigUtil.mEditState = mEditState;
+    }
+
+    public static boolean isSameAddress() {
+        return mSameAddress;
+    }
+
+    public static void setSameAddress(boolean mSameAddress) {
+        ConfigUtil.mSameAddress = mSameAddress;
     }
 
     public static boolean isRequiedFirstName() {

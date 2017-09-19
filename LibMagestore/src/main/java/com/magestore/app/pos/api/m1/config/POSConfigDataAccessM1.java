@@ -1072,6 +1072,7 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
             ConfigUtil.setCompany(true);
             ConfigUtil.setSubscribe(true);
             ConfigUtil.setEditState(true);
+            ConfigUtil.setSameAddress(true);
             ConfigUtil.setRequiedFirstName(true);
             ConfigUtil.setRequiedLastName(true);
             ConfigUtil.setRequiedEmail(true);

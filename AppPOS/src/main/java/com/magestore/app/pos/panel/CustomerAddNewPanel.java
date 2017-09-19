@@ -336,7 +336,11 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
             }
         }
         if (billingAddress != null) {
-            if (!cb_same_billing_and_shipping.isChecked()) {
+            if (ConfigUtil.isSameAddress()) {
+                if (!cb_same_billing_and_shipping.isChecked()) {
+                    listCustomerAddress.add(billingAddress);
+                }
+            } else {
                 listCustomerAddress.add(billingAddress);
             }
         }
