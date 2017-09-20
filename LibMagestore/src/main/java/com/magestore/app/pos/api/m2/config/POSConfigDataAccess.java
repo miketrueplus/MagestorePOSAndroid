@@ -1192,6 +1192,7 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
             ConfigUtil.setEnableOpenFloatAmount(true);
             ConfigUtil.setShiftCloseNote(true);
             ConfigUtil.setEnableCloseAmount(true);
+            ConfigUtil.setCancelCloseSession(true);
             ConfigUtil.setShippingAddress(true);
             ConfigUtil.setAddAddress(true);
             ConfigUtil.setLastName(true);

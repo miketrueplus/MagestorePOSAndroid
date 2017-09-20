@@ -246,7 +246,15 @@ public class EditTextFloat extends EditText {
         public void onClick(View view) {
             int id = view.getId();
             if (!checkAmount) {
-                setText(isPriceFormat ? ConfigUtil.formatPrice("0.00") : "0.00");
+                if (ConfigUtil.getConfigPriceFormat() != null) {
+                    String patten = "0.";
+                    for (int i = 0; i < ConfigUtil.getConfigPriceFormat().getPrecision(); i++) {
+                        patten += "0";
+                    }
+                    setText(isPriceFormat ? ConfigUtil.formatPrice(patten) : patten);
+                } else {
+                    setText(isPriceFormat ? ConfigUtil.formatPrice("0.00") : "0.00");
+                }
             }
             if (id == R.id.rl_number_00) {
                 actionCharacterKeyboard(getContext().getString(R.string.number_keyboard_00));
@@ -292,12 +300,20 @@ public class EditTextFloat extends EditText {
 
     private float convertToPrice(String amount) {
         if (StringUtil.isNullOrEmpty(amount)) {
-            amount = "0.00";
+            if (ConfigUtil.getConfigPriceFormat() != null) {
+                String patten = "0.";
+                for (int i = 0; i < ConfigUtil.getConfigPriceFormat().getPrecision(); i++) {
+                    patten += "0";
+                }
+                amount = patten;
+            } else {
+                amount = "0.00";
+            }
         }
         amount = StringUtil.removeAllSymbol(amount);
         String decima_symbol = ConfigUtil.getConfigPriceFormat().getDecimalSymbol();
-        String text_f = amount.substring(0, amount.length() - 2);
-        String text_s = amount.substring(amount.length() - 2, amount.length());
+        String text_f = amount.substring(0, amount.length() - ConfigUtil.getConfigPriceFormat().getPrecision());
+        String text_s = amount.substring(amount.length() - ConfigUtil.getConfigPriceFormat().getPrecision(), amount.length());
         return ConfigUtil.parseFloat(text_f + decima_symbol + text_s);
     }
 
@@ -306,8 +322,8 @@ public class EditTextFloat extends EditText {
         inputMethodManager.hideSoftInputFromWindow(this.getWindowToken(), 0);
     }
 
-    public void dismisPopup(){
-        if(exampleCardPopup != null){
+    public void dismisPopup() {
+        if (exampleCardPopup != null) {
             exampleCardPopup.dismiss();
         }
     }

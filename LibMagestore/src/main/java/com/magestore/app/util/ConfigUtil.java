@@ -98,6 +98,7 @@ public class ConfigUtil {
     private static boolean mEnableOpenFloatAmount;
     private static boolean mShiftCloseNote;
     private static boolean mEnableCloseAmount;
+    private static boolean mCancelCloseSession;
     // permisson checkout
     private static boolean mNeedToShip;
     private static boolean mMarkAsShip;
@@ -1089,6 +1090,14 @@ public class ConfigUtil {
 
     public static void setEnableCloseAmount(boolean mEnableCloseAmount) {
         ConfigUtil.mEnableCloseAmount = mEnableCloseAmount;
+    }
+
+    public static boolean isCancelCloseSession() {
+        return mCancelCloseSession;
+    }
+
+    public static void setCancelCloseSession(boolean mCancelCloseSession) {
+        ConfigUtil.mCancelCloseSession = mCancelCloseSession;
     }
 
     public static boolean isNeedToShip() {

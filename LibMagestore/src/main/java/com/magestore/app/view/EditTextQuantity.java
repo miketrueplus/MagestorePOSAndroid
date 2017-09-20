@@ -314,7 +314,15 @@ public class EditTextQuantity extends EditText {
         public void onClick(View view) {
             int id = view.getId();
             if (!checkQuantity) {
-                setText(isDecimal ? "0.00" : "0");
+                if (ConfigUtil.getConfigPriceFormat() != null) {
+                    String patten = "0.";
+                    for (int i = 0; i < ConfigUtil.getConfigPriceFormat().getPrecision(); i++) {
+                        patten += "0";
+                    }
+                    setText(isDecimal ? patten : "0");
+                } else {
+                    setText(isDecimal ? "0.00" : "0");
+                }
             }
             if (id == R.id.rl_number_00) {
                 actionCharacterKeyboard(getContext().getString(R.string.number_keyboard_00));
@@ -407,8 +415,8 @@ public class EditTextQuantity extends EditText {
     private float convertToPrice(String amount) {
         amount = StringUtil.removeAllSymbol(amount);
         String decima_symbol = ConfigUtil.getConfigPriceFormat().getDecimalSymbol();
-        String text_f = amount.substring(0, amount.length() - 2);
-        String text_s = amount.substring(amount.length() - 2, amount.length());
+        String text_f = amount.substring(0, amount.length() - ConfigUtil.getConfigPriceFormat().getPrecision());
+        String text_s = amount.substring(amount.length() - ConfigUtil.getConfigPriceFormat().getPrecision(), amount.length());
         return ConfigUtil.parseFloat(text_f + decima_symbol + text_s);
     }
 

@@ -1066,6 +1066,7 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
             ConfigUtil.setEnableOpenFloatAmount(true);
             ConfigUtil.setShiftCloseNote(true);
             ConfigUtil.setEnableCloseAmount(true);
+            ConfigUtil.setCancelCloseSession(true);
             ConfigUtil.setShippingAddress(true);
             ConfigUtil.setAddAddress(true);
             ConfigUtil.setLastName(true);

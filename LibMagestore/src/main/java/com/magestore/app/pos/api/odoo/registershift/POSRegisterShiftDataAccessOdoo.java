@@ -72,6 +72,8 @@ public class POSRegisterShiftDataAccessOdoo extends POSAbstractDataAccessOdoo im
         private String SHIFT_CLOSE_AT = "stop_at";
         private String SHIFT_STATUS = "state";
         private String SHIFT_OPEN = "opened";
+        private String SHIFT_VALIDATE = "closing_control";
+        private String SHIFT_CLOSE = "closed";
         private String OPEN_AMOUNT = "cash_register_balance_start";
         private String CLOSE_AMOUNT = "cash_register_balance_end_real";
         private String CASH_SALE = "base_cash_sale";
@@ -125,7 +127,13 @@ public class POSRegisterShiftDataAccessOdoo extends POSAbstractDataAccessOdoo im
                             shift.setPosName(StringUtil.checkJsonData(pos_name) ? pos_name : "");
                             shift.setOpenedAt(StringUtil.checkJsonData(create_at) ? create_at : "");
                             shift.setClosedAt(StringUtil.checkJsonData(close_at) ? close_at : "");
-                            shift.setStatus(status.equals(SHIFT_OPEN) ? "0" : "1");
+                            if (status.equals(SHIFT_OPEN)) {
+                                shift.setStatus("0");
+                            } else if (status.equals(SHIFT_VALIDATE)) {
+                                shift.setStatus("2");
+                            } else {
+                                shift.setStatus("1");
+                            }
                             shift.setFloatAmount(open_amount);
                             shift.setBaseFloatAmount(ConfigUtil.convertToBasePrice(open_amount));
                             shift.setClosedAmount(close_amount);

@@ -141,7 +141,7 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
         if (item.getStatus().equals(CLOSE_SESSION)) {
             et_r_close_balance.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(item.getBaseClosedAmount())));
             et_note.setText(item.getClosedNote());
-            bt_cancel.setVisibility(VISIBLE);
+            bt_cancel.setVisibility(ConfigUtil.isCancelCloseSession() ? VISIBLE : GONE);
             bt_adjustment.setVisibility(GONE);
             make_adjustment_put_money.setVisibility(GONE);
             make_adjustment_take_money.setVisibility(GONE);
@@ -151,6 +151,9 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
         } else {
             bt_cancel.setVisibility(GONE);
             bt_adjustment.setVisibility(VISIBLE);
+            if (item.getPosConfig() != null) {
+                bt_adjustment.setVisibility(item.getPosConfig().getCashControl() ? VISIBLE : GONE);
+            }
             bt_close.setVisibility(VISIBLE);
             bt_validate.setVisibility(GONE);
             close_session_list_panel.setEnableAction(true);
@@ -162,9 +165,6 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
         et_r_close_balance.setEnabled(item.getStatus().equals(CLOSE_SESSION) ? false : true);
         et_r_close_balance.setEnabled(ConfigUtil.isEnableCloseAmount() ? true : false);
         et_note.setEnabled(item.getStatus().equals(CLOSE_SESSION) ? false : true);
-        if (item.getPosConfig() != null) {
-            bt_adjustment.setVisibility(item.getPosConfig().getCashControl() ? VISIBLE : GONE);
-        }
         ll_note.setVisibility(ConfigUtil.isShiftCloseNote() ? VISIBLE : GONE);
         tv_open_session_balance.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(item.getBaseFloatAmount())));
         tv_t_close_balance.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(item.getBaseBalance())));
@@ -218,7 +218,7 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
                     param.setPosId(item.getPosId());
                     param.setCashBox(mCashBox);
                     param.setStatus(CLOSE_SESSION);
-                    ((RegisterShiftListController) getController()).doInputValidateSession(item, param);
+                    ((RegisterShiftListController) getController()).doInputCloseSession(item, param);
                 }
             }
         });
