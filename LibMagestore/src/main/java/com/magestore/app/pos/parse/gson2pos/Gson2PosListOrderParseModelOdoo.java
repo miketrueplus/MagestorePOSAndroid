@@ -265,14 +265,14 @@ public class Gson2PosListOrderParseModelOdoo extends Gson2PosAbstractParseImplem
                                     orderCartItem.setBaseUnitPrice(String.valueOf(ConfigUtil.convertToBasePrice(unit_price)));
                                     orderCartItem.setOriginalPrice(String.valueOf(unit_price));
                                     orderCartItem.setBaseOriginalPrice(String.valueOf(ConfigUtil.convertToBasePrice(unit_price)));
-                                    cartItem.setBasePriceInclTax(ConfigUtil.convertToBasePrice(unit_price + total_tax_item));
+                                    cartItem.setBasePriceInclTax(ConfigUtil.convertToBasePrice(unit_price + ((unit_price * total_tax_item) / 100)));
                                     float product_subtotal = obj_item.remove(PRODUCT_SUBTOTAL).getAsFloat();
                                     cartItem.setBaseSubtotal(ConfigUtil.convertToBasePrice(product_subtotal));
                                     float product_subtotal_incl = obj_item.remove(PRODUCT_SUTOTAL_INCl).getAsFloat();
                                     cartItem.setRowTotal(product_subtotal_incl);
                                     cartItem.setBaseRowTotalInclTax(ConfigUtil.convertToBasePrice(product_subtotal_incl));
                                     float product_discount_percent = obj_item.remove(PRODUCT_DISCOUNT).getAsFloat();
-                                    float product_discount = (((unit_price + total_tax_item) * qty) * product_discount_percent) / 100;
+                                    float product_discount = (((unit_price + ((unit_price * total_tax_item) / 100)) * qty) * product_discount_percent) / 100;
                                     cartItem.setBaseDiscountAmount(ConfigUtil.convertToBasePrice(product_discount));
                                     cartItem.setDiscountAmount(product_discount);
                                     total_tax += total_tax_item;
@@ -284,8 +284,8 @@ public class Gson2PosListOrderParseModelOdoo extends Gson2PosAbstractParseImplem
                                 }
                             }
                         }
-                        order.setTaxAmount(total_tax);
-                        order.setBaseTaxAmount(ConfigUtil.convertToBasePrice(total_tax));
+                        order.setTaxAmount((total_subtotal * total_tax) / 100);
+                        order.setBaseTaxAmount(ConfigUtil.convertToBasePrice((total_subtotal * total_tax) / 100));
                         order.setDiscountAmount(total_discount);
                         order.setBaseDiscountAmount(ConfigUtil.convertToBasePrice(total_discount));
                         order.setBaseSubtotal(ConfigUtil.convertToBasePrice(total_subtotal));

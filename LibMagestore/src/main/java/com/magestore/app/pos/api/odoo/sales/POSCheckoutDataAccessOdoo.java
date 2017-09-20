@@ -26,6 +26,7 @@ import com.magestore.app.pos.model.checkout.PosCheckoutPayment;
 import com.magestore.app.pos.model.sales.PosDataOrder;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListOrderParseModelOdoo;
 import com.magestore.app.util.ConfigUtil;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -90,9 +91,9 @@ public class POSCheckoutDataAccessOdoo extends POSAbstractDataAccessOdoo impleme
             }
             total_tax += tax;
         }
-        checkout.setTaxTotal(ConfigUtil.convertToBasePrice(total_tax));
+        checkout.setTaxTotal(ConfigUtil.convertToBasePrice((checkout.getSubTotal() * total_tax) / 100));
         checkout.setSubTotalView(ConfigUtil.convertToBasePrice(checkout.getSubTotal()));
-        grand_total = checkout.getSubTotal() + total_tax - checkout.getDiscountTotal();
+        grand_total = checkout.getSubTotal() + (checkout.getSubTotal() * total_tax) / 100 - checkout.getDiscountTotal();
         checkout.setGrandTotal(ConfigUtil.convertToBasePrice(grand_total));
         quote.setID(String.valueOf(ConfigUtil.getItemIdInCurrentTime()));
         checkout.setQuote(quote);
@@ -199,7 +200,7 @@ public class POSCheckoutDataAccessOdoo extends POSAbstractDataAccessOdoo impleme
                 productEntity.tax_ids = product.getTaxId();
                 if (cartItem.isCustomPrice()) {
                     productEntity.price_unit = cartItem.getCustomPrice();
-                    productEntity.discount = (((cartItem.getCustomPrice() + product.getTotalTax()) * cartItem.getQuantity()) / cartItem.getDiscountAmount()) * 100;
+                    productEntity.discount = (((cartItem.getCustomPrice() + ((cartItem.getCustomPrice() * product.getTotalTax()) / 100)) * cartItem.getQuantity()) / cartItem.getDiscountAmount()) * 100;
                 } else {
                     productEntity.price_unit = product.getFinalPrice();
                 }
