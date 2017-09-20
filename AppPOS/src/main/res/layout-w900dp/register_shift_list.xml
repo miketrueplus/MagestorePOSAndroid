@@ -64,7 +64,7 @@
                     magestore_view:layout_progress="@+id/progress_register_shift_list"
                     magestore_view:layout_progress_bottom="@+id/progress_register_shift_list_bottom"
                     magestore_view:page_first="1"
-                    magestore_view:page_size="20"
+                    magestore_view:page_size="10"
                     magestore_view:page_size_max="500" />
 
             </LinearLayout>
