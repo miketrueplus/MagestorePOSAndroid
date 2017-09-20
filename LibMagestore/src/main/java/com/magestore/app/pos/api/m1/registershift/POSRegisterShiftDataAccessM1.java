@@ -69,6 +69,7 @@ public class POSRegisterShiftDataAccessM1 extends POSAbstractDataAccessM1 implem
         String base_currency_code;
         String sale_by_payments;
         String sales_summary;
+        String opened_note;
         String note;
         String status;
         String shift_code;
@@ -256,7 +257,7 @@ public class POSRegisterShiftDataAccessM1 extends POSAbstractDataAccessM1 implem
             sessionDataParam.base_cash_sale = sessionParam.getBaseCashSale();
             sessionDataParam.report_currency_code = sessionParam.getShiftCurrencyCode();
             sessionDataParam.base_currency_code = sessionParam.getBaseCurrencyCode();
-            sessionDataParam.note = sessionParam.getOpenedNote();
+            sessionDataParam.opened_note = sessionParam.getOpenedNote();
             sessionDataParam.status = sessionParam.getStatus();
             sessionDataParam.shift_code = ConfigUtil.getItemIdInCurrentTime() + "";
 
@@ -402,6 +403,7 @@ public class POSRegisterShiftDataAccessM1 extends POSAbstractDataAccessM1 implem
             sessionDataParam.base_cash_sale = sessionParam.getBaseCashSale();
             sessionDataParam.report_currency_code = sessionParam.getShiftCurrencyCode();
             sessionDataParam.base_currency_code = sessionParam.getBaseCurrencyCode();
+            sessionDataParam.opened_note = sessionParam.getOpenedNote();
             sessionDataParam.note = sessionParam.getClosedNote();
             sessionDataParam.status = sessionParam.getStatus();
             sessionDataParam.shift_code = sessionParam.getShiftId();

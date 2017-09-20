@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -642,7 +643,7 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
             final LinearLayout rl = (LinearLayout) dialogPrint.findViewById(R.id.ll_content);
             rl.setDrawingCacheEnabled(true);
 
-            ImageView im_logo = (ImageView) dialogPrint.findViewById(R.id.im_logo);
+            final ImageView im_logo = (ImageView) dialogPrint.findViewById(R.id.im_logo);
             if (!StringUtil.isNullOrEmpty(ConfigUtil.getConfigPrint().getShowReceiptLogo())) {
                 if (ConfigUtil.getConfigPrint().getShowReceiptLogo().equals("1") && !StringUtil.isNullOrEmpty(ConfigUtil.getConfigPrint().getPathLogo())) {
                     im_logo.setVisibility(VISIBLE);
@@ -803,8 +804,9 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
             bt_print.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Bitmap bitmap = rl.getDrawingCache();
-                    StarPrintExtUtil.showSearchPrint(getContext(), ((OrderHistoryListController) mController).getMagestoreContext().getActivity(), bitmap, mOrder);
+//                    Bitmap bitmap = rl.getDrawingCache();
+                    Bitmap mBitmap = ((BitmapDrawable)im_logo.getDrawable()).getBitmap();
+                    StarPrintExtUtil.showSearchPrint(getContext(), ((OrderHistoryListController) mController).getMagestoreContext().getActivity(), mBitmap, mOrder);
                 }
             });
         }

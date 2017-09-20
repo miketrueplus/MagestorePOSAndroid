@@ -150,14 +150,14 @@ public class PosRegisterShift extends PosAbstractModel implements RegisterShift 
 
     @Override
     public String getOpenedNote() {
-        if (StringUtil.isNullOrEmpty(opened_note)) {
-            return note;
-        }
         return opened_note;
     }
 
     @Override
     public String getClosedNote() {
+        if (StringUtil.isNullOrEmpty(closed_note)) {
+            return note;
+        }
         return closed_note;
     }
 

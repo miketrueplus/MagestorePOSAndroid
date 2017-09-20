@@ -8,6 +8,8 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
@@ -20,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
@@ -30,6 +33,8 @@ import com.magestore.app.pos.R;
 import com.magestore.app.pos.adapter.StarPrintAdapter;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.StringUtil;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 import com.starmicronics.stario.PortInfo;
 import com.starmicronics.stario.StarIOPort;
 import com.starmicronics.stario.StarIOPortException;
@@ -61,6 +66,7 @@ public class StarPrintExtUtil {
     private static StarIoExtManager mStarIoExtManager;
     private static Activity mActivity;
     private static Order mOrder;
+    private static Bitmap mBitmap = null;
 
     public static void showSearchPrint(final Context context, final Activity activity, final Bitmap bitmap, Order order) {
         mActivity = activity;
@@ -72,6 +78,7 @@ public class StarPrintExtUtil {
         mModelName = setting.getModelName();
         mEmulation = setting.getEmulation();
         mDrawerOpenStatus = setting.getCashDrawerOpenActiveHigh();
+        mBitmap = bitmap;
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         activity.runOnUiThread(new Runnable() {
@@ -360,7 +367,7 @@ public class StarPrintExtUtil {
             PrinterSetting setting = new PrinterSetting(mActivity);
             StarIoExt.Emulation emulation = setting.getEmulation();
 
-            ILocalizeReceipts localizeReceipts = ILocalizeReceipts.createLocalizeReceipts(0, printArea, mOrder, mActivity);
+            ILocalizeReceipts localizeReceipts = ILocalizeReceipts.createLocalizeReceipts(0, printArea, mOrder, mActivity, mBitmap);
 
             data = PrinterFunctions.createTextReceiptData(emulation, localizeReceipts, true, print_copy);
 

@@ -676,7 +676,7 @@ public class ConfigUtil {
     }
 
     public static long getItemIdInCurrentTime() {
-        long time = System.currentTimeMillis();
+        long time = System.currentTimeMillis() / 1000;
         return time;
     }
 

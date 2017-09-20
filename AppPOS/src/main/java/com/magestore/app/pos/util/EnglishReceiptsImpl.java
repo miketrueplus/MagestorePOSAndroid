@@ -33,9 +33,14 @@ public class EnglishReceiptsImpl extends ILocalizeReceipts {
     }
 
     @Override
-    public void appendTextCustomReceiptData(ICommandBuilder builder, boolean utf8, Context context, Order mOrder, int length) {
+    public void appendTextCustomReceiptData(ICommandBuilder builder, boolean utf8, Context context, Order mOrder, int length, Bitmap bitmap, int mPaperSize) {
         Charset encoding;
-
+        // Image
+        if (ConfigUtil.getConfigPrint().getShowReceiptLogo() != null && ConfigUtil.getConfigPrint().getShowReceiptLogo().equals("1")) {
+            if (bitmap != null) {
+                builder.appendBitmap(bitmap, false, mPaperSize, true);
+            }
+        }
         if (utf8) {
             encoding = Charset.forName("UTF-8");
             builder.appendCodePage(CodePageType.UTF8);

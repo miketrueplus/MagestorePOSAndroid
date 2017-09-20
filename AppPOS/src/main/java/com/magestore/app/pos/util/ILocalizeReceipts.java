@@ -21,13 +21,14 @@ public abstract class ILocalizeReceipts {
     private int mLanguage;
     private Order mOrder;
     private Context mContext;
+    private Bitmap mBitmap;
 
     protected String mLanguageCode;
     private String mPaperSizeStr;
     private String mScalePaperSizeStr;
     protected CharacterCode mCharacterCode;
 
-    public static ILocalizeReceipts createLocalizeReceipts(int language, int paperSize, Order order, Context context) {
+    public static ILocalizeReceipts createLocalizeReceipts(int language, int paperSize, Order order, Context context, Bitmap bitmap) {
         ILocalizeReceipts localizeReceipts = null;
 
         switch (language) {
@@ -60,6 +61,7 @@ public abstract class ILocalizeReceipts {
         localizeReceipts.setPaperSize(paperSize);
         localizeReceipts.setOrder(order);
         localizeReceipts.setContext(context);
+        localizeReceipts.setBitmap(bitmap);
         return localizeReceipts;
     }
 
@@ -79,7 +81,7 @@ public abstract class ILocalizeReceipts {
                 length = 48;
                 break;
         }
-        appendTextCustomReceiptData(builder, utf8, mContext, mOrder, length);
+        appendTextCustomReceiptData(builder, utf8, mContext, mOrder, length, mBitmap, mPaperSize);
     }
 
     public Bitmap createRasterReceiptImage(Resources resources) {
@@ -170,11 +172,15 @@ public abstract class ILocalizeReceipts {
         mScalePaperSizeStr = scalePaperSizeStr;
     }
 
+    public void setBitmap(Bitmap mBitmap) {
+        this.mBitmap = mBitmap;
+    }
+
     public CharacterCode getCharacterCode() {
         return mCharacterCode;
     }
 
-    public abstract void appendTextCustomReceiptData(ICommandBuilder builder, boolean utf8, Context context, Order oder, int papeSize);
+    public abstract void appendTextCustomReceiptData(ICommandBuilder builder, boolean utf8, Context context, Order oder, int papeSize, Bitmap bitmap, int paperSize);
 
     public abstract void append2inchTextReceiptData(ICommandBuilder builder, boolean utf8);
 

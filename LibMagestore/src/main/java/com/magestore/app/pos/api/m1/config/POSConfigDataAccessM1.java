@@ -809,14 +809,14 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
     public ConfigPrint getConfigPrint() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
         if (mConfig == null) mConfig = new PosConfigDefault();
 
-        String auto_print = (String) mConfig.getValue("webpos/receipt/general/auto_print");
-        String font_type = (String) mConfig.getValue("webpos/receipt/content/font_type");
-        String header_text = (String) mConfig.getValue("webpos/receipt/content/header_text");
-        String footer_text = (String) mConfig.getValue("webpos/receipt/content/footer_text");
-        String show_receipt_logo = (String) mConfig.getValue("webpos/receipt/optional/show_receipt_logo");
+        String auto_print = (String) mConfig.getValue("webpos/receipt/auto_print");
+        String font_type = (String) mConfig.getValue("webpos/receipt/font_type");
+        String header_text = (String) mConfig.getValue("webpos/receipt/header_text");
+        String footer_text = (String) mConfig.getValue("webpos/receipt/footer_text");
+        String show_receipt_logo = (String) mConfig.getValue("webpos/receipt/show_receipt_logo");
         String path_logo = (String) mConfig.getValue("webpos/general/webpos_logo_url");
-        String show_cashier_name = (String) mConfig.getValue("webpos/receipt/optional/show_cashier_name");
-        String show_comment = (String) mConfig.getValue("webpos/receipt/optional/show_comment");
+        String show_cashier_name = (String) mConfig.getValue("webpos/receipt/show_cashier_name");
+        String show_comment = (String) mConfig.getValue("webpos/receipt/show_comment");
 
         ConfigPrint configPrint = new PosConfigPrint();
         configPrint.setAutoPrint(auto_print);
