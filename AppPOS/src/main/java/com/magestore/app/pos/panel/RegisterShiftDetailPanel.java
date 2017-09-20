@@ -148,6 +148,7 @@ public class RegisterShiftDetailPanel extends AbstractDetailPanel<RegisterShift>
             }
         });
 
+        ((Button) v.findViewById(R.id.print)).setVisibility(ConfigUtil.isPrintSession() ? VISIBLE : GONE);
         ((Button) v.findViewById(R.id.print)).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {

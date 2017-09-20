@@ -104,8 +104,6 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
 
         tv_information = (TextView) v.findViewById(R.id.tv_information);
 
-        btn_print.setVisibility(ConfigUtil.isPrintSession() ? VISIBLE : GONE);
-
         mBinding = DataBindingUtil.bind(v);
     }
 
@@ -163,7 +161,6 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         changeStatusTopOrder(item_status);
         changeColorStatusOrder(item_status);
 
-        btn_print.setVisibility(ConfigUtil.isPrintSession() ? VISIBLE : GONE);
         rl_take_payment.setVisibility(checkCanTakePayment(mOrder) ? VISIBLE : GONE);
 
         btn_invoice.setOnClickListener(new OnClickListener() {

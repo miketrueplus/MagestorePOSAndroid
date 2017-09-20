@@ -166,6 +166,8 @@ public class Gson2PosListSessionParseModelOdoo extends Gson2PosAbstractParseImpl
                                     payment.setCode(payment_type);
                                     // TODO: Tạm thời để bằng 0 vì không có COD
                                     payment.setPaylater("0");
+                                    // TODO: Tạm thời để bằng 0 vì không có default
+                                    payment.setIsDefault("0");
                                     payment.setDifferenceZero(payment_difference_zero);
                                     listPayment.add(payment);
 

@@ -191,17 +191,27 @@ public class POSCategoryDataAccessOdoo extends POSAbstractDataAccessOdoo impleme
     public List<Category> getListCategory(Category category) throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
         if (mListCategory == null) mListCategory = new ArrayList<Category>();
         if (mListDefaultCategory == null) mListDefaultCategory = new ArrayList<Category>();
-        PosCategory cateFirst = new PosCategory();
-        cateFirst.setName("All Products");
-        cateFirst.setLevel(0);
-        mListDefaultCategory.add(cateFirst);
-        for (Category c : mListCategory) {
-            if (c.getParentID() == -1) {
-                c.setLevel(1);
-                mListDefaultCategory.add(c);
-                if (c.getChildren() != null) {
-                    for (String IdChild : c.getChildren()) {
-                        mListDefaultCategory = findChildLv2(mListDefaultCategory, IdChild, mListCategory, 2, c.getSubCategory());
+        boolean checkData = false;
+        if (mListDefaultCategory.size() > 0) {
+            for (Category cate : mListDefaultCategory) {
+                if (cate.getLevel() == 0) {
+                    checkData = true;
+                }
+            }
+        }
+        if (!checkData) {
+            PosCategory cateFirst = new PosCategory();
+            cateFirst.setName("All Products");
+            cateFirst.setLevel(0);
+            mListDefaultCategory.add(cateFirst);
+            for (Category c : mListCategory) {
+                if (c.getParentID() == -1) {
+                    c.setLevel(1);
+                    mListDefaultCategory.add(c);
+                    if (c.getChildren() != null) {
+                        for (String IdChild : c.getChildren()) {
+                            mListDefaultCategory = findChildLv2(mListDefaultCategory, IdChild, mListCategory, 2, c.getSubCategory());
+                        }
                     }
                 }
             }
