@@ -208,8 +208,7 @@ public class POSCheckoutDataAccessOdoo extends POSAbstractDataAccessOdoo impleme
             }
             if (checkout.getDiscountTotal() > 0) {
                 ProductEntity productDiscount = new ProductEntity();
-                // TODO: fake data phải lấy discount_product_id theo pos
-                productDiscount.product_id = "26";
+                productDiscount.product_id = ConfigUtil.getDiscountProductId();
                 productDiscount.qty = 1;
                 productDiscount.price_unit = checkout.getDiscountTotal();
                 productDiscount.pack_lot_ids = listSerialNumber;

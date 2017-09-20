@@ -468,11 +468,12 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
             ConfigUtil.setRequiedCity(false);
             ConfigUtil.setRequiedZipCode(false);
             ConfigUtil.setAddAddressDefault(false);
+            ConfigUtil.setApplyCoupon(false);
             if (checkStaffPermiss(listPermisson, ALL_PERMISSON)) {
                 ConfigUtil.setCreateOrder(true);
                 ConfigUtil.setManagerAllOrder(true);
-                ConfigUtil.setDiscountPerCart(true);
-                ConfigUtil.setApplyCoupon(true);
+//                ConfigUtil.setDiscountPerCart(true);
+//                ConfigUtil.setApplyCoupon(true);
                 ConfigUtil.setDiscountPerItem(true);
 //                ConfigUtil.setCanUseRefund(true);
                 ConfigUtil.setApplyCustomPrice(true);
@@ -487,15 +488,15 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
                     ConfigUtil.setManageOrderOtherStaff(checkStaffPermiss(listPermisson, MANAGE_ORDER_OTHER_STAFF));
                     ConfigUtil.setCanUseRefund(checkStaffPermiss(listPermisson, CAN_USE_REFUND));
                 }
-                ConfigUtil.setManageAllDiscount(checkStaffPermiss(listPermisson, MANAGE_ALL_DISCOUNT));
+                ConfigUtil.setManageAllDiscount(false);
                 if (ConfigUtil.isManageAllDiscount()) {
                     ConfigUtil.setDiscountPerCart(true);
                     ConfigUtil.setApplyCoupon(true);
                     ConfigUtil.setDiscountPerItem(true);
                     ConfigUtil.setApplyCustomPrice(true);
                 } else {
-                    ConfigUtil.setDiscountPerCart(checkStaffPermiss(listPermisson, APPLY_DISCOUNT_PER_CART));
-                    ConfigUtil.setApplyCoupon(checkStaffPermiss(listPermisson, APPLY_COUPON));
+//                    ConfigUtil.setDiscountPerCart(checkStaffPermiss(listPermisson, APPLY_DISCOUNT_PER_CART));
+//                    ConfigUtil.setApplyCoupon(checkStaffPermiss(listPermisson, APPLY_COUPON));
                     ConfigUtil.setDiscountPerItem(checkStaffPermiss(listPermisson, APPLY_DISCOUNT_PER_ITEM));
                     ConfigUtil.setApplyCustomPrice(checkStaffPermiss(listPermisson, APPLY_CUSTOM_PRICE));
                 }
@@ -662,6 +663,8 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
     private List<String> getPermissonFake() {
         List<String> listPermisson = new ArrayList<>();
         listPermisson.add(ALL_PERMISSON);
+        listPermisson.add(APPLY_DISCOUNT_PER_ITEM);
+        listPermisson.add(APPLY_CUSTOM_PRICE);
         return listPermisson;
     }
 

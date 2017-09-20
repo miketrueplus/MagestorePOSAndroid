@@ -146,6 +146,8 @@ public class RegisterShiftListController extends AbstractListController<Register
                     if (registerShift.getPosConfig() != null) {
                         ConfigUtil.setCashControl(registerShift.getPosConfig().getCashControl());
                         ConfigUtil.setManagerShiftAdjustment(registerShift.getPosConfig().getCashControl());
+                        ConfigUtil.setDiscountPerCart(registerShift.getPosConfig().getIfaceDiscount() ? true : false);
+                        ConfigUtil.setDiscountProductId(registerShift.getPosConfig().getDiscountProductId());
                     }
 //                getMagestoreContext().getActivity().finish();
                     DataUtil.saveDataStringToPreferences(getMagestoreContext().getActivity(), DataUtil.STORE_ID, registerShift.getStoreId());

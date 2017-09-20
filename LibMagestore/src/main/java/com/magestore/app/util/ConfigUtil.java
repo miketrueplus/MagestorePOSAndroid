@@ -92,6 +92,7 @@ public class ConfigUtil {
     private static boolean mApplyCoupon;
     private static boolean mDiscountPerItem;
     private static boolean mApplyCustomPrice;
+    private static String mDiscountProductId;
     // permisson session
     private static boolean mManageShiftAdjustment;
     private static boolean mShiftOpenNote;
@@ -1050,6 +1051,14 @@ public class ConfigUtil {
 
     public static void setApplyCustomPrice(boolean mApplyCustomPrice) {
         ConfigUtil.mApplyCustomPrice = mApplyCustomPrice;
+    }
+
+    public static String getDiscountProductId() {
+        return mDiscountProductId;
+    }
+
+    public static void setDiscountProductId(String mDiscountProductId) {
+        ConfigUtil.mDiscountProductId = mDiscountProductId;
     }
 
     public static boolean isManagerShiftAdjustment() {
