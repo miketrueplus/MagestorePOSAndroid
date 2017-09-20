@@ -182,7 +182,14 @@ public class EnglishReceiptsImpl extends ILocalizeReceipts {
                 builder.append((line_total + "\n").getBytes(encoding));
 
                 for (OrderStatus status : listComment) {
-                    String comment = !StringUtil.isNullOrEmpty(status.getComment()) ? !StringUtil.isNullOrEmpty(status.getCreatedAt()) ? (status.getCreatedAt() + ": ") : "" + status.getComment() : "";
+                    String comment = "";
+                    if (!StringUtil.isNullOrEmpty(status.getComment())) {
+                        if (!StringUtil.isNullOrEmpty(status.getCreatedAt())) {
+                            comment = status.getCreatedAt() + ": " + status.getComment();
+                        } else {
+                            comment = status.getComment();
+                        }
+                    }
                     if (!StringUtil.isNullOrEmpty(comment)) {
                         String commentFinal = lineCommentWith(comment, length);
                         builder.append((commentFinal).getBytes(encoding));
