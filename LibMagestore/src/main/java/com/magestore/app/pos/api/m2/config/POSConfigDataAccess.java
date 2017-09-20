@@ -1208,6 +1208,7 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
             ConfigUtil.setRequiedCity(true);
             ConfigUtil.setRequiedZipCode(true);
             ConfigUtil.setAddAddressDefault(true);
+            ConfigUtil.setPrintSession(true);
             if (checkStaffPermiss(listPermisson, ALL_PERMISSON)) {
                 ConfigUtil.setManagerShiftAdjustment(true);
                 ConfigUtil.setManageOrderByMe(true);

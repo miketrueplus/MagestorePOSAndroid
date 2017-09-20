@@ -100,6 +100,7 @@ public class ConfigUtil {
     private static boolean mShiftCloseNote;
     private static boolean mEnableCloseAmount;
     private static boolean mCancelCloseSession;
+    private static boolean mPrintSession;
     // permisson checkout
     private static boolean mNeedToShip;
     private static boolean mMarkAsShip;
@@ -1107,6 +1108,14 @@ public class ConfigUtil {
 
     public static void setCancelCloseSession(boolean mCancelCloseSession) {
         ConfigUtil.mCancelCloseSession = mCancelCloseSession;
+    }
+
+    public static boolean isPrintSession() {
+        return mPrintSession;
+    }
+
+    public static void setPrintSession(boolean mPrintSession) {
+        ConfigUtil.mPrintSession = mPrintSession;
     }
 
     public static boolean isNeedToShip() {

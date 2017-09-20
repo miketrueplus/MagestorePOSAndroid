@@ -320,6 +320,7 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
             ConfigUtil.setShiftCloseNote(false);
             ConfigUtil.setEnableCloseAmount(false);
             ConfigUtil.setCancelCloseSession(false);
+            ConfigUtil.setPrintSession(false);
             ConfigUtil.setShippingAddress(false);
             ConfigUtil.setAddAddress(false);
             ConfigUtil.setLastName(false);

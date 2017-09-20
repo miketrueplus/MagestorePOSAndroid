@@ -1082,6 +1082,7 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
             ConfigUtil.setRequiedCity(true);
             ConfigUtil.setRequiedZipCode(true);
             ConfigUtil.setAddAddressDefault(true);
+            ConfigUtil.setPrintSession(true);
             if (checkStaffPermiss(listPermisson, ALL_PERMISSON)) {
                 ConfigUtil.setCreateOrder(true);
                 ConfigUtil.setManagerAllOrder(true);
