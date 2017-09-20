@@ -29,6 +29,7 @@ import com.magestore.app.pos.model.registershift.PosPointOfSales;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosAbstractParseImplement;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListPointOfSales;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosStoreParseImplement;
+import com.magestore.app.util.StringUtil;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -114,7 +115,9 @@ public class POSUserDataAccessOdoo extends POSAbstractDataAccessOdoo implements 
                             }
                             if (obj_pos.has(POS_DISCOUNT_PRODUCT_ID)) {
                                 String pos_discount_product_id = obj_pos.remove(POS_DISCOUNT_PRODUCT_ID).getAsString();
-                                pos.setDiscountProductId(pos_discount_product_id);
+                                if (!StringUtil.checkJsonData(pos_discount_product_id)) {
+                                    pos.setDiscountProductId(pos_discount_product_id);
+                                }
                             }
                             listPos.add(pos);
                         }

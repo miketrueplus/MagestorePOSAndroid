@@ -1,6 +1,8 @@
 package com.magestore.app.lib.model.registershift;
 
 import com.magestore.app.lib.model.Model;
+import com.magestore.app.lib.model.config.ConfigPriceFormat;
+import com.magestore.app.lib.model.directory.Currency;
 
 /**
  * Created by Johan on 6/2/17.
@@ -26,4 +28,8 @@ public interface PointOfSales extends Model {
     void setDiscountPC(float fDiscountPC);
     String getDiscountProductId();
     void setDiscountProductId(String strDiscountProductId);
+    Currency getCurrency();
+    void setCurrency(Currency mCurrency);
+    ConfigPriceFormat getPriceFormat();
+    void setPriceFormat(ConfigPriceFormat mPriceFormat);
 }

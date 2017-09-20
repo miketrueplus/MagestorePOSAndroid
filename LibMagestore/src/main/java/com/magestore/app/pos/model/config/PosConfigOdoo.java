@@ -4,7 +4,9 @@ import com.magestore.app.lib.model.config.ConfigCountry;
 import com.magestore.app.lib.model.config.ConfigOdoo;
 import com.magestore.app.lib.model.config.ConfigPriceFormat;
 import com.magestore.app.lib.model.config.ConfigQuantityFormat;
+import com.magestore.app.lib.model.directory.Currency;
 import com.magestore.app.pos.model.PosAbstractModel;
+import com.magestore.app.pos.model.directory.PosCurrency;
 
 import java.util.Map;
 
@@ -19,6 +21,7 @@ public class PosConfigOdoo extends PosAbstractModel implements ConfigOdoo {
     Map<String, String> customer_group;
     PosConfigPriceFormat priceFormat;
     PosConfigQuantityFormat quantityFormat;
+    PosCurrency default_currency;
 
     @Override
     public Map<String, ConfigCountry> getCountry() {
@@ -58,5 +61,15 @@ public class PosConfigOdoo extends PosAbstractModel implements ConfigOdoo {
     @Override
     public void setQuantityFormat(ConfigQuantityFormat mQuantityFormat) {
         quantityFormat = (PosConfigQuantityFormat) mQuantityFormat;
+    }
+
+    @Override
+    public Currency getDefaultCurrency() {
+        return default_currency;
+    }
+
+    @Override
+    public void setDefaultCurrency(Currency mDefaultCurrency) {
+        default_currency = (PosCurrency) mDefaultCurrency;
     }
 }

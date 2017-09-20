@@ -51,6 +51,11 @@ public interface ConfigService extends Service {
 
     DecimalFormat getQuantityFormat() throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
+    DecimalFormat currencyFormat(ConfigPriceFormat priceFormat);
+    DecimalFormat currencyNosymbolFormat(ConfigPriceFormat priceFormat);
+    DecimalFormat floatFormat(ConfigPriceFormat priceFormat);
+    DecimalFormat integetFormat(ConfigPriceFormat priceFormat);
+
     /**
      * Trả về CustomerGroup
      * @return

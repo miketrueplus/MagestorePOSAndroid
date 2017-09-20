@@ -4,13 +4,16 @@ import android.content.Intent;
 
 import com.magestore.app.lib.controller.AbstractListController;
 import com.magestore.app.lib.model.Model;
+import com.magestore.app.lib.model.config.ConfigPriceFormat;
 import com.magestore.app.lib.model.customer.Customer;
+import com.magestore.app.lib.model.directory.Currency;
 import com.magestore.app.lib.model.registershift.CashBox;
 import com.magestore.app.lib.model.registershift.CashTransaction;
 import com.magestore.app.lib.model.registershift.OpenSessionValue;
 import com.magestore.app.lib.model.registershift.PointOfSales;
 import com.magestore.app.lib.model.registershift.RegisterShift;
 import com.magestore.app.lib.model.registershift.SessionParam;
+import com.magestore.app.lib.service.config.ConfigService;
 import com.magestore.app.lib.service.registershift.RegisterShiftService;
 import com.magestore.app.lib.service.user.UserService;
 import com.magestore.app.pos.LoginActivity;
@@ -143,11 +146,22 @@ public class RegisterShiftListController extends AbstractListController<Register
                     ConfigUtil.setLocationId(registerShift.getLocationId());
                     ConfigUtil.setPosId(registerShift.getPosId());
                     ConfigUtil.setRegisterShiftId(registerShift.getID());
-                    if (registerShift.getPosConfig() != null) {
-                        ConfigUtil.setCashControl(registerShift.getPosConfig().getCashControl());
-                        ConfigUtil.setManagerShiftAdjustment(registerShift.getPosConfig().getCashControl());
-                        ConfigUtil.setDiscountPerCart(registerShift.getPosConfig().getIfaceDiscount() ? true : false);
-                        ConfigUtil.setDiscountProductId(registerShift.getPosConfig().getDiscountProductId());
+                    PointOfSales pos = registerShift.getPosConfig();
+                    if (pos != null) {
+                        ConfigUtil.setCashControl(pos.getCashControl());
+                        ConfigUtil.setManagerShiftAdjustment(pos.getCashControl());
+                        ConfigUtil.setDiscountPerCart(pos.getIfaceDiscount() ? true : false);
+                        ConfigUtil.setDiscountProductId(pos.getDiscountProductId());
+
+                        ConfigPriceFormat configPriceFormat = pos.getPriceFormat();
+                        Currency currency = pos.getCurrency();
+                        configPriceFormat.setCurrencySymbol(currency.getCurrencySymbol());
+                        ConfigUtil.setConfigPriceFormat(configPriceFormat);
+                        ConfigUtil.setCurrencyFormat(getConfigService().currencyFormat(configPriceFormat));
+                        ConfigUtil.setCurrencyNoSymbolFormat(getConfigService().currencyNosymbolFormat(configPriceFormat));
+                        ConfigUtil.setFloatFormat(getConfigService().floatFormat(configPriceFormat));
+                        ConfigUtil.setIntegerFormat(getConfigService().integetFormat(configPriceFormat));
+                        ConfigUtil.setCurrentCurrency(currency);
                     }
 //                getMagestoreContext().getActivity().finish();
                     DataUtil.saveDataStringToPreferences(getMagestoreContext().getActivity(), DataUtil.STORE_ID, registerShift.getStoreId());
@@ -254,8 +268,22 @@ public class RegisterShiftListController extends AbstractListController<Register
             ConfigUtil.setLocationId(registerShift.getLocationId());
             ConfigUtil.setPosId(registerShift.getPosId());
             ConfigUtil.setRegisterShiftId(registerShift.getID());
-            if(registerShift.getPosConfig() != null){
-                ConfigUtil.setCashControl(registerShift.getPosConfig().getCashControl());
+            PointOfSales pos = registerShift.getPosConfig();
+            if (pos != null) {
+                ConfigUtil.setCashControl(pos.getCashControl());
+                ConfigUtil.setManagerShiftAdjustment(pos.getCashControl());
+                ConfigUtil.setDiscountPerCart(pos.getIfaceDiscount() ? true : false);
+                ConfigUtil.setDiscountProductId(pos.getDiscountProductId());
+
+                ConfigPriceFormat configPriceFormat = pos.getPriceFormat();
+                Currency currency = pos.getCurrency();
+                configPriceFormat.setCurrencySymbol(currency.getCurrencySymbol());
+                ConfigUtil.setConfigPriceFormat(configPriceFormat);
+                ConfigUtil.setCurrencyFormat(getConfigService().currencyFormat(configPriceFormat));
+                ConfigUtil.setCurrencyNoSymbolFormat(getConfigService().currencyNosymbolFormat(configPriceFormat));
+                ConfigUtil.setFloatFormat(getConfigService().floatFormat(configPriceFormat));
+                ConfigUtil.setIntegerFormat(getConfigService().integetFormat(configPriceFormat));
+                ConfigUtil.setCurrentCurrency(currency);
             }
             registerShift.setPosName(ConfigUtil.getPointOfSales().getPosName());
             mList.add(1, registerShift);

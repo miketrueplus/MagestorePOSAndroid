@@ -29,9 +29,6 @@ public class PosConfigPriceFormat extends PosAbstractModel implements ConfigPric
         this.currencySymbol = currencySymbol;
     }
 
-
-
-
     @Override
     public String getPattern() {
         return pattern;

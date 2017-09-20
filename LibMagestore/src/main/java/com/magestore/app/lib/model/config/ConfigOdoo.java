@@ -1,6 +1,7 @@
 package com.magestore.app.lib.model.config;
 
 import com.magestore.app.lib.model.Model;
+import com.magestore.app.lib.model.directory.Currency;
 
 import java.util.Map;
 
@@ -19,4 +20,6 @@ public interface ConfigOdoo extends Model {
     void setPriceFormat(ConfigPriceFormat mConfigPriceFormat);
     ConfigQuantityFormat getQuantityFormat();
     void setQuantityFormat(ConfigQuantityFormat mQuantityFormat);
+    Currency getDefaultCurrency();
+    void setDefaultCurrency(Currency mDefaultCurrency);
 }

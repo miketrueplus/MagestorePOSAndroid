@@ -123,6 +123,11 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
         private String PRECISION = "precision";
         private String GROUP_LENGTH = "grouping";
         private String DECIMAL_SYMBOL = "decimal_point";
+        private String COMPANY_CURRENCY = "company_currency";
+        private String RATE = "rate";
+        private String NAME = "name";
+        private String CURRENCY_ID = "id";
+        private String SYMBOL = "symbol";
 
         public class ConfigConverter implements JsonDeserializer<List<PosConfigOdoo>> {
             @Override
@@ -185,6 +190,24 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
                             }
                             configOdoo.setCustomerGroup(mCustomerGroup);
 
+                            String currencySymbol = "$";
+                            if (obj_config.has(COMPANY_CURRENCY)) {
+                                JsonObject obj_currency = obj_config.getAsJsonObject(COMPANY_CURRENCY);
+                                PosCurrency currency = new PosCurrency();
+                                String id = obj_currency.get(CURRENCY_ID).getAsString();
+                                float rate = obj_currency.get(RATE).getAsFloat();
+                                String code = obj_currency.get(NAME).getAsString();
+                                String symbol = obj_currency.get(SYMBOL).getAsString();
+                                currency.setCurrencyRate(rate);
+                                currency.setCode(code);
+                                currency.setCurrenyName(code);
+                                currency.setCurrencySymbol(symbol);
+                                currency.setIsDefault("1");
+                                currency.setID(id);
+                                currencySymbol = symbol;
+                                configOdoo.setDefaultCurrency(currency);
+                            }
+
                             if (obj_config.has(PRICE_FORMAT)) {
                                 JsonObject obj_price = obj_config.getAsJsonObject(PRICE_FORMAT);
                                 PosConfigPriceFormat priceFormat = new PosConfigPriceFormat();
@@ -197,8 +220,22 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
                                 int integerRequiredPrice = 1;
                                 int integerRequiredQuantity = 0;
 
-                                // TODO: fake symbol
-                                priceFormat.setCurrencySymbol("$");
+                                String currency_symbol = "";
+                                if (currencySymbol.length() > 0) {
+                                    String sSymbol = currencySymbol.substring(0, 1);
+                                    if (sSymbol.equals("u")) {
+                                        currency_symbol = StringEscapeUtils.unescapeJava("\\" + currencySymbol);
+                                    } else if (sSymbol.equals("\\")) {
+                                        currency_symbol = StringEscapeUtils.unescapeJava(currencySymbol);
+                                    } else if (currencySymbol.contains("\\u")) {
+                                        currency_symbol = StringEscapeUtils.unescapeJava(currencySymbol);
+                                    } else {
+                                        currency_symbol = StringEscapeUtils.unescapeJava(currencySymbol);
+                                    }
+                                } else {
+                                    currency_symbol = currencySymbol;
+                                }
+                                priceFormat.setCurrencySymbol(currency_symbol);
                                 priceFormat.setPattern(position.equals("before") ? "$%s" : "%s$");
                                 priceFormat.setGroupSymbol(group_symbol);
                                 priceFormat.setPrecision(precision);
@@ -335,7 +372,7 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
 
     @Override
     public Currency getDefaultCurrency() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
-        return getDefaultCurrencyFake();
+        return mConfigOdoo.getDefaultCurrency();
     }
 
     @Override
@@ -390,12 +427,12 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
 
     @Override
     public String getBaseCurrencyCode() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
-        return null;
+        return mConfigOdoo.getDefaultCurrency().getCode();
     }
 
     @Override
     public String getCurrentCurrencyCode() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
-        return null;
+        return mConfigOdoo.getDefaultCurrency().getCode();
     }
 
     @Override
@@ -536,66 +573,6 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
             }
         }
         return checkPermisson;
-    }
-
-    // TODO giả data config
-    private ConfigPriceFormat getPriceFormatFake() {
-        String currencySymbol = "$";
-        String currency_symbol = "";
-        if (currencySymbol.length() > 0) {
-            String sSymbol = currencySymbol.substring(0, 1);
-            if (sSymbol.equals("u")) {
-                currency_symbol = StringEscapeUtils.unescapeJava("\\" + currencySymbol);
-            } else if (sSymbol.equals("\\")) {
-                currency_symbol = StringEscapeUtils.unescapeJava(currencySymbol);
-            } else if (currencySymbol.contains("\\u")) {
-                currency_symbol = StringEscapeUtils.unescapeJava(currencySymbol);
-            } else {
-                currency_symbol = StringEscapeUtils.unescapeJava(currencySymbol);
-            }
-        }
-        String pattern = "$%s";
-        int precision = 2;
-        int requiredPrecision = 2;
-        String decimalSymbol = ".";
-        String groupSymbol = ",";
-        int groupLength = 3;
-        int integerRequired = 1;
-
-        ConfigPriceFormat configPriceFormat = new PosConfigPriceFormat();
-        configPriceFormat.setPattern(pattern);
-        configPriceFormat.setPrecision(precision);
-        configPriceFormat.setRequirePrecision(requiredPrecision);
-        configPriceFormat.setDecimalSymbol(decimalSymbol);
-        configPriceFormat.setGroupSymbol(groupSymbol);
-        configPriceFormat.setGroupLength(groupLength);
-        configPriceFormat.setIntegerRequied(integerRequired);
-        configPriceFormat.setCurrencySymbol(currency_symbol);
-
-        return configPriceFormat;
-    }
-
-    private ConfigQuantityFormat getQuantityFormatFake() {
-        String currencySymbol = "$";
-        String pattern = "$%s";
-        int precision = 2;
-        int requiredPrecision = 2;
-        String decimalSymbol = ".";
-        String groupSymbol = ",";
-        int groupLength = 3;
-        int integerRequired = 1;
-
-        ConfigQuantityFormat configQuantityFormat = new PosConfigQuantityFormat();
-        configQuantityFormat.setPattern(pattern);
-        configQuantityFormat.setPrecision(precision);
-        configQuantityFormat.setRequirePrecision(requiredPrecision);
-        configQuantityFormat.setDecimalSymbol(decimalSymbol);
-        configQuantityFormat.setGroupSymbol(groupSymbol);
-        configQuantityFormat.setGroupLength(groupLength);
-        configQuantityFormat.setIntegerRequied(integerRequired);
-//        configQuantityFormat.setCurrencySymbol(currencySymbol);
-
-        return configQuantityFormat;
     }
 
     private Currency getDefaultCurrencyFake() {

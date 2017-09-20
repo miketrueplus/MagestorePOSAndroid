@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.magestore.app.lib.context.MagestoreContext;
 import com.magestore.app.lib.service.ServiceFactory;
+import com.magestore.app.lib.service.config.ConfigService;
 import com.magestore.app.lib.service.registershift.RegisterShiftService;
 import com.magestore.app.lib.service.user.UserService;
 import com.magestore.app.pos.controller.RegisterShiftListController;
@@ -83,10 +84,12 @@ public class RegisterShiftActivity extends AbstractActivity {
         ServiceFactory factory;
         RegisterShiftService service = null;
         UserService userService = null;
+        ConfigService configService = null;
         try {
             factory = ServiceFactory.getFactory(magestoreContext);
             service = factory.generateRegisterShiftService();
             userService = factory.generateUserService();
+            configService = factory.generateConfigService();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InstantiationException e) {
@@ -95,6 +98,7 @@ public class RegisterShiftActivity extends AbstractActivity {
 
         mRegisterShiftListController = new RegisterShiftListController();
         mRegisterShiftListController.setMagestoreContext(magestoreContext);
+        mRegisterShiftListController.setConfigService(configService);
         mRegisterShiftListController.setRegisterShiftService(service);
         mRegisterShiftListController.setUserService(userService);
         mRegisterShiftListController.setListPanel(mRegisterShiftListPanel);

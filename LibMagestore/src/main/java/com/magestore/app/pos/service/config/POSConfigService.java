@@ -137,7 +137,8 @@ public class POSConfigService extends AbstractService implements ConfigService {
         return currencyFormat(priceFormat);
     }
 
-    private DecimalFormat currencyFormat(ConfigPriceFormat priceFormat) {
+    @Override
+    public DecimalFormat currencyFormat(ConfigPriceFormat priceFormat) {
         // khởi tạo currency format
         String pattern = "###,###.##";
         DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.getDefault());
@@ -162,7 +163,8 @@ public class POSConfigService extends AbstractService implements ConfigService {
         return currencyNosymbolFormat(priceFormat);
     }
 
-    private DecimalFormat currencyNosymbolFormat(ConfigPriceFormat priceFormat) {
+    @Override
+    public DecimalFormat currencyNosymbolFormat(ConfigPriceFormat priceFormat) {
         // khởi tạo currency format
         String pattern = "###,###.##";
         DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.getDefault());
@@ -187,7 +189,8 @@ public class POSConfigService extends AbstractService implements ConfigService {
         return floatFormat(priceFormat);
     }
 
-    private DecimalFormat floatFormat(ConfigPriceFormat priceFormat) {
+    @Override
+    public DecimalFormat floatFormat(ConfigPriceFormat priceFormat) {
         // khởi tạo float format
         String pattern = "###,###.##";
         DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.getDefault());
@@ -223,7 +226,8 @@ public class POSConfigService extends AbstractService implements ConfigService {
         return quantityFormat(quantityFormat);
     }
 
-    private DecimalFormat integetFormat(ConfigPriceFormat priceFormat) {
+    @Override
+    public DecimalFormat integetFormat(ConfigPriceFormat priceFormat) {
         // khởi tạo interger format
         String pattern = "###,###";
         Locale locale = new Locale("vi", "VN");

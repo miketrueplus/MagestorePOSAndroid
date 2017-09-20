@@ -30,6 +30,8 @@ import com.magestore.app.pos.api.odoo.POSAPIOdoo;
 import com.magestore.app.pos.api.odoo.POSAbstractDataAccessOdoo;
 import com.magestore.app.pos.api.odoo.POSDataAccessSessionOdoo;
 import com.magestore.app.pos.model.checkout.PosCheckoutPayment;
+import com.magestore.app.pos.model.config.PosConfigPriceFormat;
+import com.magestore.app.pos.model.directory.PosCurrency;
 import com.magestore.app.pos.model.registershift.PosCashTransaction;
 import com.magestore.app.pos.model.registershift.PosDataListRegisterShift;
 import com.magestore.app.pos.model.registershift.PosPointOfSales;
@@ -38,6 +40,8 @@ import com.magestore.app.pos.model.registershift.PosSaleSummary;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosAbstractParseImplement;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.StringUtil;
+
+import org.apache.commons.lang3.StringEscapeUtils;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -101,6 +105,17 @@ public class POSRegisterShiftDataAccessOdoo extends POSAbstractDataAccessOdoo im
         private String POS_DISCOUNT = "iface_discount";
         private String POS_DISCOUNT_PC = "discount_pc";
         private String POS_DISCOUNT_PRODUCT_ID = "discount_product_id";
+        private String CURRENCY_INFO = "currency_info";
+        private String POSITION = "position";
+        private String RATE = "rate";
+        private String NAME = "name";
+        private String CURRENCY_ID = "id";
+        private String SYMBOL = "symbol";
+        private String PRICE_FORMAT = "price_format";
+        private String GROUP_SYMBOL = "thousands_sep";
+        private String PRECISION = "precision";
+        private String GROUP_LENGTH = "grouping";
+        private String DECIMAL_SYMBOL = "decimal_point";
 
         public class RegisterShiftConverter implements JsonDeserializer<List<PosRegisterShift>> {
             @Override
@@ -205,8 +220,65 @@ public class POSRegisterShiftDataAccessOdoo extends POSAbstractDataAccessOdoo im
                                 }
                                 if (obj_pos.has(POS_DISCOUNT_PRODUCT_ID)) {
                                     String pos_discount_product_id = obj_pos.remove(POS_DISCOUNT_PRODUCT_ID).getAsString();
-                                    pos.setDiscountProductId(pos_discount_product_id);
+                                    if (!StringUtil.checkJsonData(pos_discount_product_id)) {
+                                        pos.setDiscountProductId(pos_discount_product_id);
+                                    }
                                 }
+                                String currencySymbol = ConfigUtil.getCurrentCurrency().getCurrencySymbol();
+                                String price_position = "";
+                                if (obj_pos.has(CURRENCY_INFO) && obj_pos.get(CURRENCY_INFO).isJsonObject()) {
+                                    JsonObject obj_currency = obj_pos.get(CURRENCY_INFO).getAsJsonObject();
+                                    PosCurrency currency = new PosCurrency();
+                                    String currency_id = obj_currency.get(CURRENCY_ID).getAsString();
+                                    String cyrrency_symbol = obj_currency.get(SYMBOL).getAsString();
+                                    String position = obj_currency.get(POSITION).getAsString();
+                                    String code = obj_currency.get(NAME).getAsString();
+                                    float rate = obj_currency.get(RATE).getAsFloat();
+                                    currency.setIsDefault("0");
+                                    currency.setID(currency_id);
+                                    currency.setCurrencySymbol(cyrrency_symbol);
+                                    currency.setCode(code);
+                                    currency.setCurrenyName(code);
+                                    currency.setCurrencyRate(rate);
+                                    pos.setCurrency(currency);
+                                    price_position = position;
+                                }
+                                if (obj_pos.has(PRICE_FORMAT) && obj_pos.get(PRICE_FORMAT).isJsonObject()) {
+                                    JsonObject obj_price = obj_pos.get(PRICE_FORMAT).getAsJsonObject();
+                                    PosConfigPriceFormat priceFormat = new PosConfigPriceFormat();
+                                    price_position = !StringUtil.isNullOrEmpty(price_position) ? price_position : obj_price.get(POSITION).getAsString();
+                                    String group_symbol = obj_price.get(GROUP_SYMBOL).getAsString();
+                                    int precision = obj_price.get(PRECISION).getAsInt();
+                                    int group_length = obj_price.get(GROUP_LENGTH).getAsInt();
+                                    String decimal_symbol = obj_price.get(DECIMAL_SYMBOL).getAsString();
+                                    int integerRequiredPrice = 1;
+                                    String currency_symbol = "";
+                                    if (currencySymbol.length() > 0) {
+                                        String sSymbol = currencySymbol.substring(0, 1);
+                                        if (sSymbol.equals("u")) {
+                                            currency_symbol = StringEscapeUtils.unescapeJava("\\" + currencySymbol);
+                                        } else if (sSymbol.equals("\\")) {
+                                            currency_symbol = StringEscapeUtils.unescapeJava(currencySymbol);
+                                        } else if (currencySymbol.contains("\\u")) {
+                                            currency_symbol = StringEscapeUtils.unescapeJava(currencySymbol);
+                                        } else {
+                                            currency_symbol = StringEscapeUtils.unescapeJava(currencySymbol);
+                                        }
+                                    } else {
+                                        currency_symbol = currencySymbol;
+                                    }
+
+                                    priceFormat.setCurrencySymbol(currency_symbol);
+                                    priceFormat.setPattern(price_position.equals("before") ? "$%s" : "%s$");
+                                    priceFormat.setGroupSymbol(group_symbol);
+                                    priceFormat.setPrecision(precision);
+                                    priceFormat.setRequirePrecision(precision);
+                                    priceFormat.setGroupLength(group_length);
+                                    priceFormat.setDecimalSymbol(decimal_symbol);
+                                    priceFormat.setIntegerRequied(integerRequiredPrice);
+                                    pos.setPriceFormat(priceFormat);
+                                }
+
                                 shift.setPosConfig(pos);
                             }
                             listRegisterShift.add(shift);

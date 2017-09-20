@@ -1,7 +1,11 @@
 package com.magestore.app.pos.model.registershift;
 
+import com.magestore.app.lib.model.config.ConfigPriceFormat;
+import com.magestore.app.lib.model.directory.Currency;
 import com.magestore.app.lib.model.registershift.PointOfSales;
 import com.magestore.app.pos.model.PosAbstractModel;
+import com.magestore.app.pos.model.config.PosConfigPriceFormat;
+import com.magestore.app.pos.model.directory.PosCurrency;
 
 /**
  * Created by Johan on 6/2/17.
@@ -32,6 +36,8 @@ public class PosPointOfSales extends PosAbstractModel implements PointOfSales {
     boolean iface_discount;
     float discount_pc;
     String discount_product_id;
+    PosCurrency currency;
+    PosConfigPriceFormat priceFormat;
 
     @Override
     public String getID() {
@@ -121,6 +127,26 @@ public class PosPointOfSales extends PosAbstractModel implements PointOfSales {
     @Override
     public void setDiscountProductId(String strDiscountProductId) {
         discount_product_id = strDiscountProductId;
+    }
+
+    @Override
+    public Currency getCurrency() {
+        return currency;
+    }
+
+    @Override
+    public void setCurrency(Currency mCurrency) {
+        currency = (PosCurrency) mCurrency;
+    }
+
+    @Override
+    public ConfigPriceFormat getPriceFormat() {
+        return priceFormat;
+    }
+
+    @Override
+    public void setPriceFormat(ConfigPriceFormat mPriceFormat) {
+        priceFormat = (PosConfigPriceFormat) mPriceFormat;
     }
 
     @Override
