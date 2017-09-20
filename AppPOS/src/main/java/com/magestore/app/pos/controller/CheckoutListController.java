@@ -1776,6 +1776,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         checkout.setCustomerID(guest_checkout.getID());
         checkout.setCustomer(guest_checkout);
         checkout.setStatus(STATUS_CHECKOUT_ADD_ITEM);
+        setSelectedItem(checkout);
         getSelectedItems().add(index, checkout);
     }
 
