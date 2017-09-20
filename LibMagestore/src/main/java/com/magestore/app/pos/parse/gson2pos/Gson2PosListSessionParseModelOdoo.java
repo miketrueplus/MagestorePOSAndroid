@@ -188,6 +188,14 @@ public class Gson2PosListSessionParseModelOdoo extends Gson2PosAbstractParseImpl
                             PosPointOfSales pos = new PosPointOfSales();
                             boolean cash_control = obj_pos.remove(POS_CASH_CONTROL).getAsBoolean();
                             pos.setCashControl(cash_control);
+                            if (obj_pos.has(POS_RECEIPT_HEADER)) {
+                                String header = obj_pos.get(POS_RECEIPT_HEADER).getAsString();
+                                pos.setReceiptHeader(header);
+                            }
+                            if (obj_pos.has(POS_RECEIPT_FOOTER)) {
+                                String footer = obj_pos.get(POS_RECEIPT_FOOTER).getAsString();
+                                pos.setReceiptFooter(footer);
+                            }
                             if (obj_pos.has(POS_DISCOUNT)) {
                                 boolean pos_discount = obj_pos.remove(POS_DISCOUNT).getAsBoolean();
                                 pos.setIfaceDiscount(pos_discount);

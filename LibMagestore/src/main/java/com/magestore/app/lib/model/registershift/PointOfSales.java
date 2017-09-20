@@ -32,4 +32,8 @@ public interface PointOfSales extends Model {
     void setCurrency(Currency mCurrency);
     ConfigPriceFormat getPriceFormat();
     void setPriceFormat(ConfigPriceFormat mPriceFormat);
+    String getReceiptHeader();
+    void setReceiptHeader(String strReceiptHeader);
+    String getReceiptFooter();
+    void setReceiptFooter(String strReceiptFooter);
 }

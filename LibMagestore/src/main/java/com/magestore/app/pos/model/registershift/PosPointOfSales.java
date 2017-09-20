@@ -150,6 +150,26 @@ public class PosPointOfSales extends PosAbstractModel implements PointOfSales {
     }
 
     @Override
+    public String getReceiptHeader() {
+        return receipt_header;
+    }
+
+    @Override
+    public void setReceiptHeader(String strReceiptHeader) {
+        receipt_header = strReceiptHeader;
+    }
+
+    @Override
+    public String getReceiptFooter() {
+        return receipt_footer;
+    }
+
+    @Override
+    public void setReceiptFooter(String strReceiptFooter) {
+        receipt_footer = strReceiptFooter;
+    }
+
+    @Override
     public String getDisplayContent() {
         return pos_name;
     }

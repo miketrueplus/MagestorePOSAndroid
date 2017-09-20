@@ -5,6 +5,7 @@ import android.content.Intent;
 import com.magestore.app.lib.controller.AbstractListController;
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.config.ConfigPriceFormat;
+import com.magestore.app.lib.model.config.ConfigPrint;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.directory.Currency;
 import com.magestore.app.lib.model.registershift.CashBox;
@@ -18,6 +19,7 @@ import com.magestore.app.lib.service.registershift.RegisterShiftService;
 import com.magestore.app.lib.service.user.UserService;
 import com.magestore.app.pos.LoginActivity;
 import com.magestore.app.pos.R;
+import com.magestore.app.pos.model.config.PosConfigPrint;
 import com.magestore.app.pos.panel.CloseSessionPanel;
 import com.magestore.app.pos.panel.OpenSessionListValuePanel;
 import com.magestore.app.pos.panel.RegisterOpenSessionPanel;
@@ -25,6 +27,7 @@ import com.magestore.app.pos.panel.RegisterShiftDetailPanel;
 import com.magestore.app.pos.panel.RegisterShiftListPanel;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.DataUtil;
+import com.magestore.app.util.StringUtil;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -162,6 +165,18 @@ public class RegisterShiftListController extends AbstractListController<Register
                         ConfigUtil.setFloatFormat(getConfigService().floatFormat(configPriceFormat));
                         ConfigUtil.setIntegerFormat(getConfigService().integetFormat(configPriceFormat));
                         ConfigUtil.setCurrentCurrency(currency);
+
+                        ConfigPrint configPrint = new PosConfigPrint();
+                        if(!StringUtil.isNullOrEmpty(pos.getReceiptHeader())){
+                            configPrint.setHeaderText(pos.getReceiptHeader());
+                        }
+                        if(!StringUtil.isNullOrEmpty(pos.getReceiptFooter())){
+                            configPrint.setFooterText(pos.getReceiptFooter());
+                        }
+                        configPrint.setAutoPrint("1");
+                        configPrint.setShowCashierName("1");
+                        configPrint.setShowComment("1");
+                        configPrint.setShowReceiptLogo("0");
                     }
 //                getMagestoreContext().getActivity().finish();
                     DataUtil.saveDataStringToPreferences(getMagestoreContext().getActivity(), DataUtil.STORE_ID, registerShift.getStoreId());
@@ -284,6 +299,18 @@ public class RegisterShiftListController extends AbstractListController<Register
                 ConfigUtil.setFloatFormat(getConfigService().floatFormat(configPriceFormat));
                 ConfigUtil.setIntegerFormat(getConfigService().integetFormat(configPriceFormat));
                 ConfigUtil.setCurrentCurrency(currency);
+
+                ConfigPrint configPrint = new PosConfigPrint();
+                if(!StringUtil.isNullOrEmpty(pos.getReceiptHeader())){
+                    configPrint.setHeaderText(pos.getReceiptHeader());
+                }
+                if(!StringUtil.isNullOrEmpty(pos.getReceiptFooter())){
+                    configPrint.setFooterText(pos.getReceiptFooter());
+                }
+                configPrint.setAutoPrint("1");
+                configPrint.setShowCashierName("1");
+                configPrint.setShowComment("1");
+                configPrint.setShowReceiptLogo("0");
             }
             registerShift.setPosName(ConfigUtil.getPointOfSales().getPosName());
             mList.add(1, registerShift);
