@@ -140,7 +140,10 @@ public class POSConfigService extends AbstractService implements ConfigService {
     @Override
     public DecimalFormat currencyFormat(ConfigPriceFormat priceFormat) {
         // khởi tạo currency format
-        String pattern = "###,###.##";
+        String pattern = "###,###.";
+        for (int i = 0; i < priceFormat.getPrecision(); i++) {
+            pattern += "#";
+        }
         DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.getDefault());
         symbols.setDecimalSeparator('.');
         symbols.setGroupingSeparator('.');
@@ -166,7 +169,10 @@ public class POSConfigService extends AbstractService implements ConfigService {
     @Override
     public DecimalFormat currencyNosymbolFormat(ConfigPriceFormat priceFormat) {
         // khởi tạo currency format
-        String pattern = "###,###.##";
+        String pattern = "###,###.";
+        for (int i = 0; i < priceFormat.getPrecision(); i++) {
+            pattern += "#";
+        }
         DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.getDefault());
         symbols.setDecimalSeparator(priceFormat.getDecimalSymbol().charAt(0));
         symbols.setGroupingSeparator(priceFormat.getGroupSymbol().charAt(0));
@@ -192,7 +198,10 @@ public class POSConfigService extends AbstractService implements ConfigService {
     @Override
     public DecimalFormat floatFormat(ConfigPriceFormat priceFormat) {
         // khởi tạo float format
-        String pattern = "###,###.##";
+        String pattern = "###,###.";
+        for (int i = 0; i < priceFormat.getPrecision(); i++) {
+            pattern += "#";
+        }
         DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.getDefault());
         symbols.setDecimalSeparator(priceFormat.getDecimalSymbol().charAt(0));
         symbols.setGroupingSeparator(priceFormat.getGroupSymbol().charAt(0));
@@ -241,7 +250,10 @@ public class POSConfigService extends AbstractService implements ConfigService {
     private DecimalFormat quantityFormat(ConfigQuantityFormat quantityFormat) {
         // khởi tạo interger format
         // khởi tạo float format
-        String pattern = "###,###.##";
+        String pattern = "###,###.";
+        for (int i = 0; i < quantityFormat.getPrecision(); i++) {
+            pattern += "#";
+        }
         DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.getDefault());
         symbols.setDecimalSeparator(quantityFormat.getDecimalSymbol().charAt(0));
         symbols.setGroupingSeparator(quantityFormat.getGroupSymbol().charAt(0));

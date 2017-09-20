@@ -272,14 +272,14 @@ public class ConfigUtil {
      */
     private static String formatCurrency(float number) {
         String price_format = getPriceFormat().format(number);
-        String decima_symbol = ConfigUtil.getConfigPriceFormat().getDecimalSymbol();
+        String decima_symbol = getConfigPriceFormat().getDecimalSymbol();
         boolean isDiscount = false;
         if (price_format.contains("-")) {
             isDiscount = true;
         }
         String price_r = StringUtil.removeAllSymbol(price_format);
-        String text_f = price_r.substring(0, price_r.length() - 2);
-        String text_s = price_r.substring(price_r.length() - 2, price_r.length());
+        String text_f = price_r.substring(0, price_r.length() - getConfigPriceFormat().getPrecision());
+        String text_s = price_r.substring(price_r.length() - getConfigPriceFormat().getPrecision(), price_r.length());
         float amount = ConfigUtil.parseFloat(text_f + decima_symbol + text_s);
         String s_amount = ConfigUtil.formatNumber(amount);
         if ((getConfigPriceFormat().getPattern().indexOf(StringUtil.STRING_CURRENCY) == 0)) {
@@ -292,14 +292,14 @@ public class ConfigUtil {
 
     public static String formatDecimalQuantity(float number) {
         String price_format = getPriceFormat().format(number);
-        String decima_symbol = ConfigUtil.getConfigPriceFormat().getDecimalSymbol();
+        String decima_symbol = getConfigPriceFormat().getDecimalSymbol();
         boolean isDiscount = false;
         if (price_format.contains("-")) {
             isDiscount = true;
         }
         String price_r = StringUtil.removeAllSymbol(price_format);
-        String text_f = price_r.substring(0, price_r.length() - 2);
-        String text_s = price_r.substring(price_r.length() - 2, price_r.length());
+        String text_f = price_r.substring(0, price_r.length() - getConfigPriceFormat().getPrecision());
+        String text_s = price_r.substring(price_r.length() - getConfigPriceFormat().getPrecision(), price_r.length());
         float amount = ConfigUtil.parseFloat(text_f + decima_symbol + text_s);
         String s_amount = (isDiscount ? "-" : "") + ConfigUtil.formatNumber(amount);
         return s_amount;

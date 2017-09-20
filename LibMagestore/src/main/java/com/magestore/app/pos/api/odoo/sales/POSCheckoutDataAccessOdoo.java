@@ -81,7 +81,13 @@ public class POSCheckoutDataAccessOdoo extends POSAbstractDataAccessOdoo impleme
         float grand_total = 0;
         List<CartItem> listCartItem = checkout.getCartItem();
         for (CartItem cartItem : listCartItem) {
-            cartItem.setRowTotal(cartItem.getProduct().getFinalPrice());
+            float price_item;
+            if (cartItem.isCustomPrice()) {
+                price_item = cartItem.getCustomPrice();
+            } else {
+                price_item = cartItem.getProduct().getFinalPrice();
+            }
+            cartItem.setRowTotal(price_item);
             float tax = 0;
             List<ProductTaxDetailOdoo> listTaxDetail = cartItem.getProduct().getTaxDetail();
             if (listTaxDetail != null && listTaxDetail.size() > 0) {
@@ -89,11 +95,11 @@ public class POSCheckoutDataAccessOdoo extends POSAbstractDataAccessOdoo impleme
                     tax += taxDetail.getAmount();
                 }
             }
-            total_tax += tax;
+            total_tax += (price_item * tax) / 100;
         }
-        checkout.setTaxTotal(ConfigUtil.convertToBasePrice((checkout.getSubTotal() * total_tax) / 100));
+        checkout.setTaxTotal(ConfigUtil.convertToBasePrice(total_tax));
         checkout.setSubTotalView(ConfigUtil.convertToBasePrice(checkout.getSubTotal()));
-        grand_total = checkout.getSubTotal() + (checkout.getSubTotal() * total_tax) / 100 - checkout.getDiscountTotal();
+        grand_total = checkout.getSubTotal() + total_tax - checkout.getDiscountTotal();
         checkout.setGrandTotal(ConfigUtil.convertToBasePrice(grand_total));
         quote.setID(String.valueOf(ConfigUtil.getItemIdInCurrentTime()));
         checkout.setQuote(quote);

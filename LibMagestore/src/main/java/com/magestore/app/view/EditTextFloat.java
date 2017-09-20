@@ -6,10 +6,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
-import android.text.Editable;
 import android.text.InputType;
-import android.text.method.DigitsKeyListener;
-import android.text.method.MetaKeyKeyListener;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -17,10 +14,8 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
-
 import com.labo.kaji.relativepopupwindow.RelativePopupWindow;
 import com.magestore.app.lib.R;
 import com.magestore.app.util.ConfigUtil;
@@ -137,21 +132,6 @@ public class EditTextFloat extends EditText {
      * Chuẩn bị các sự kiện
      */
     protected void initEvent() {
-//        setOnFocusChangeListener(new OnFocusChangeListener() {
-//            @Override
-//            public void onFocusChange(View v, boolean hasFocus) {
-//                if (!hasFocus) {
-//                    // lấy giá trị trong ô text,
-////                    getItem().setUnitPrice(ConfigUtil.parseFloatCurrencyFromEdit(DecimalEditText.super.getText().toString().replaceAll("[^" + ConfigUtil.getPriceDigit() + "]", "")));
-//                    setText(ConfigUtil.formatFloat(ConfigUtil.truncateFloatDigit(getText().toString())));
-//                    clearFocus();
-//                } else {
-//                    // fill giá trị vào, nguyên số để edit, bỏ ký tự tiền
-//                    selectAll();
-//                }
-//            }
-//        });
-
         setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
