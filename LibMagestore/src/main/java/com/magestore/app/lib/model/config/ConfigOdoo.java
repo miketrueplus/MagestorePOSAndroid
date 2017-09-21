@@ -28,4 +28,6 @@ public interface ConfigOdoo extends Model {
     void setStaff(Staff mStaff);
     Customer getGuestCustomer();
     void setGuestCustomer(Customer mGuestCustomer);
+    String getActiveKey();
+    void setActiveKey(String strActiveKey);
 }

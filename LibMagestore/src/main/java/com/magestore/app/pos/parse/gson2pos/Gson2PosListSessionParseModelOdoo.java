@@ -56,14 +56,14 @@ public class Gson2PosListSessionParseModelOdoo extends Gson2PosAbstractParseImpl
     private String SHIFT_CLOSE = "closed";
     private String OPEN_AMOUNT = "cash_register_balance_start";
     private String CLOSE_AMOUNT = "cash_register_balance_end_real";
-    private String CASH_SALE = "base_cash_sale";
-    private String TOTAL_SALE = "base_total_sales";
+    private String CASH_SALE = "cash_sale";
+    private String TOTAL_SALE = "total_sales";
     private String CASH_TRANSACTION = "cash_transaction";
     private String PAYMENT_DETAIL = "statement_detail";
     private String PAYMENT_NAME = "journal_name";
     private String PAYMENT_ID = "journal_id";
     private String PAYMENT_TYPE = "journal_type";
-    private String PAYMENT_AMOUNT = "base_payment_amount";
+    private String PAYMENT_AMOUNT = "payment_amount";
     private String PAYMENT_REFERENCE = "reference";
     private String PAYMENT_DIFFERENCE_ZERO = "is_difference_zero";
     private String POS_CONFIG = "pos_config";
@@ -103,86 +103,7 @@ public class Gson2PosListSessionParseModelOdoo extends Gson2PosAbstractParseImpl
                     for (JsonElement el_shift : arr_shift) {
                         JsonObject obj_shift = el_shift.getAsJsonObject();
                         PosRegisterShift shift = new PosRegisterShift();
-                        String id = obj_shift.remove(SHIFT_ID).getAsString();
-                        String pos_id = obj_shift.remove(POS_ID).getAsString();
-                        String pos_name = obj_shift.remove(POS_NAME).getAsString();
-                        String create_at = obj_shift.remove(SHIFT_OPEN_AT).getAsString();
-                        String close_at = obj_shift.remove(SHIFT_CLOSE_AT).getAsString();
-                        String status = obj_shift.remove(SHIFT_STATUS).getAsString();
-                        float open_amount = obj_shift.remove(OPEN_AMOUNT).getAsFloat();
-                        float close_amount = obj_shift.remove(CLOSE_AMOUNT).getAsFloat();
-                        float cash_sale = obj_shift.remove(CASH_SALE).getAsFloat();
-                        float total_sale = obj_shift.remove(TOTAL_SALE).getAsFloat();
-                        shift.setID(id);
-                        shift.setPosId(pos_id);
-                        shift.setPosName(StringUtil.checkJsonData(pos_name) ? pos_name : "");
-                        shift.setOpenedAt(StringUtil.checkJsonData(create_at) ? create_at : "");
-                        shift.setClosedAt(StringUtil.checkJsonData(close_at) ? close_at : "");
-                        if (status.equals(SHIFT_OPEN)) {
-                            shift.setStatus("0");
-                        } else if (status.equals(SHIFT_VALIDATE)) {
-                            shift.setStatus("2");
-                        } else {
-                            shift.setStatus("1");
-                        }
-                        shift.setFloatAmount(open_amount);
-                        shift.setBaseFloatAmount(ConfigUtil.convertToBasePrice(open_amount));
-                        shift.setClosedAmount(close_amount);
-                        shift.setBaseClosedAmount(ConfigUtil.convertToBasePrice(close_amount));
-                        shift.setBaseCashSales(cash_sale);
-                        shift.setBaseTotalSales(total_sale);
-                        List<CashTransaction> listTransaction = new ArrayList<>();
-                        if (obj_shift.has(CASH_TRANSACTION) && obj_shift.get(CASH_TRANSACTION).isJsonArray()) {
-                            JsonArray arr_transaction = obj_shift.getAsJsonArray(CASH_TRANSACTION);
-                            if (arr_transaction != null && arr_transaction.size() > 0) {
-                                for (JsonElement el_transation : arr_transaction) {
-                                    JsonObject obj_transaction = el_transation.getAsJsonObject();
-                                    PosCashTransaction transaction = new Gson().fromJson(obj_transaction, PosCashTransaction.class);
-                                    listTransaction.add(transaction);
-                                }
-                            }
-                        }
-                        shift.setCashTransaction(listTransaction);
-                        List<SaleSummary> listSaleSummary = new ArrayList<>();
-                        List<CheckoutPayment> listPayment = new ArrayList<>();
-                        if (obj_shift.has(PAYMENT_DETAIL) && obj_shift.get(PAYMENT_DETAIL).isJsonArray()) {
-                            JsonArray arr_payment = obj_shift.getAsJsonArray(PAYMENT_DETAIL);
-                            if (arr_payment != null && arr_payment.size() > 0) {
-                                for (JsonElement el_payment : arr_payment) {
-                                    JsonObject obj_payment = el_payment.getAsJsonObject();
-                                    PosSaleSummary saleSummary = new PosSaleSummary();
-                                    PosCheckoutPayment payment = new PosCheckoutPayment();
-                                    String payment_id = obj_payment.remove(PAYMENT_ID).getAsString();
-                                    String payment_name = obj_payment.remove(PAYMENT_NAME).getAsString();
-                                    String payment_type = obj_payment.remove(PAYMENT_TYPE).getAsString();
-                                    float payment_amount = obj_payment.remove(PAYMENT_AMOUNT).getAsFloat();
-                                    boolean payment_reference = obj_payment.remove(PAYMENT_REFERENCE).getAsBoolean();
-                                    boolean payment_difference_zero = obj_payment.remove(PAYMENT_DIFFERENCE_ZERO).getAsBoolean();
-                                    payment.setID(payment_id);
-                                    payment.setIsReferenceNumber(payment_reference ? "1" : "0");
-                                    // TODO: Tạm thời fix type = 0, vì không có payment online
-                                    payment.setType("0");
-                                    payment.setTitle(payment_name);
-                                    payment.setCode(payment_type);
-                                    // TODO: Tạm thời để bằng 0 vì không có COD
-                                    payment.setPaylater("0");
-                                    // TODO: Tạm thời để bằng 0 vì không có default
-                                    payment.setIsDefault("0");
-                                    payment.setDifferenceZero(payment_difference_zero);
-                                    listPayment.add(payment);
-
-                                    saleSummary.setID(payment_id);
-                                    saleSummary.setPaymentMethod(payment_type);
-                                    saleSummary.setMethodTitle(payment_name);
-                                    saleSummary.setBasePaymentAmount(payment_amount);
-                                    if (payment_amount > 0) {
-                                        listSaleSummary.add(saleSummary);
-                                    }
-                                }
-                            }
-                            ConfigUtil.setListPayment(listPayment);
-                        }
-                        shift.setSalesSummary(listSaleSummary);
+                        float current_rate = (float) ConfigUtil.getCurrentCurrency().getCurrencyRate();
                         if (obj_shift.has(POS_CONFIG) && obj_shift.get(POS_CONFIG).isJsonObject()) {
                             JsonObject obj_pos = obj_shift.get(POS_CONFIG).getAsJsonObject();
                             PosPointOfSales pos = new PosPointOfSales();
@@ -220,6 +141,7 @@ public class Gson2PosListSessionParseModelOdoo extends Gson2PosAbstractParseImpl
                                 String position = obj_currency.get(POSITION).getAsString();
                                 String code = obj_currency.get(NAME).getAsString();
                                 float rate = obj_currency.get(RATE).getAsFloat();
+                                current_rate = rate;
                                 currency.setIsDefault("0");
                                 currency.setID(currency_id);
                                 currency.setCurrencySymbol(cyrrency_symbol);
@@ -267,11 +189,99 @@ public class Gson2PosListSessionParseModelOdoo extends Gson2PosAbstractParseImpl
 
                             shift.setPosConfig(pos);
                         }
+                        
+                        String id = obj_shift.remove(SHIFT_ID).getAsString();
+                        String pos_id = obj_shift.remove(POS_ID).getAsString();
+                        String pos_name = obj_shift.remove(POS_NAME).getAsString();
+                        String create_at = obj_shift.remove(SHIFT_OPEN_AT).getAsString();
+                        String close_at = obj_shift.remove(SHIFT_CLOSE_AT).getAsString();
+                        String status = obj_shift.remove(SHIFT_STATUS).getAsString();
+                        float open_amount = obj_shift.remove(OPEN_AMOUNT).getAsFloat();
+                        float close_amount = obj_shift.remove(CLOSE_AMOUNT).getAsFloat();
+                        float cash_sale = obj_shift.remove(CASH_SALE).getAsFloat();
+                        float total_sale = obj_shift.remove(TOTAL_SALE).getAsFloat();
+                        shift.setID(id);
+                        shift.setPosId(pos_id);
+                        shift.setPosName(StringUtil.checkJsonData(pos_name) ? pos_name : "");
+                        shift.setOpenedAt(StringUtil.checkJsonData(create_at) ? create_at : "");
+                        shift.setClosedAt(StringUtil.checkJsonData(close_at) ? close_at : "");
+                        if (status.equals(SHIFT_OPEN)) {
+                            shift.setStatus("0");
+                        } else if (status.equals(SHIFT_VALIDATE)) {
+                            shift.setStatus("2");
+                        } else {
+                            shift.setStatus("1");
+                        }
+                        shift.setFloatAmount(open_amount);
+                        shift.setBaseFloatAmount(convertToBasePrice(open_amount, current_rate));
+                        shift.setClosedAmount(close_amount);
+                        shift.setBaseClosedAmount(convertToBasePrice(close_amount, current_rate));
+                        shift.setBaseCashSales(convertToBasePrice(cash_sale, current_rate));
+                        shift.setBaseTotalSales(convertToBasePrice(total_sale, current_rate));
+                        List<CashTransaction> listTransaction = new ArrayList<>();
+                        if (obj_shift.has(CASH_TRANSACTION) && obj_shift.get(CASH_TRANSACTION).isJsonArray()) {
+                            JsonArray arr_transaction = obj_shift.getAsJsonArray(CASH_TRANSACTION);
+                            if (arr_transaction != null && arr_transaction.size() > 0) {
+                                for (JsonElement el_transation : arr_transaction) {
+                                    JsonObject obj_transaction = el_transation.getAsJsonObject();
+                                    PosCashTransaction transaction = new Gson().fromJson(obj_transaction, PosCashTransaction.class);
+                                    transaction.setBaseValue(convertToBasePrice(transaction.getValue(), current_rate));
+                                    listTransaction.add(transaction);
+                                }
+                            }
+                        }
+                        shift.setCashTransaction(listTransaction);
+                        List<SaleSummary> listSaleSummary = new ArrayList<>();
+                        List<CheckoutPayment> listPayment = new ArrayList<>();
+                        if (obj_shift.has(PAYMENT_DETAIL) && obj_shift.get(PAYMENT_DETAIL).isJsonArray()) {
+                            JsonArray arr_payment = obj_shift.getAsJsonArray(PAYMENT_DETAIL);
+                            if (arr_payment != null && arr_payment.size() > 0) {
+                                for (JsonElement el_payment : arr_payment) {
+                                    JsonObject obj_payment = el_payment.getAsJsonObject();
+                                    PosSaleSummary saleSummary = new PosSaleSummary();
+                                    PosCheckoutPayment payment = new PosCheckoutPayment();
+                                    String payment_id = obj_payment.remove(PAYMENT_ID).getAsString();
+                                    String payment_name = obj_payment.remove(PAYMENT_NAME).getAsString();
+                                    String payment_type = obj_payment.remove(PAYMENT_TYPE).getAsString();
+                                    float payment_amount = obj_payment.remove(PAYMENT_AMOUNT).getAsFloat();
+                                    boolean payment_reference = obj_payment.remove(PAYMENT_REFERENCE).getAsBoolean();
+                                    boolean payment_difference_zero = obj_payment.remove(PAYMENT_DIFFERENCE_ZERO).getAsBoolean();
+                                    payment.setID(payment_id);
+                                    payment.setIsReferenceNumber(payment_reference ? "1" : "0");
+                                    // TODO: Tạm thời fix type = 0, vì không có payment online
+                                    payment.setType("0");
+                                    payment.setTitle(payment_name);
+                                    payment.setCode(payment_type);
+                                    // TODO: Tạm thời để bằng 0 vì không có COD
+                                    payment.setPaylater("0");
+                                    // TODO: Tạm thời để bằng 0 vì không có default
+                                    payment.setIsDefault("0");
+                                    payment.setDifferenceZero(payment_difference_zero);
+                                    listPayment.add(payment);
+
+                                    saleSummary.setID(payment_id);
+                                    saleSummary.setPaymentMethod(payment_type);
+                                    saleSummary.setMethodTitle(payment_name);
+                                    saleSummary.setBasePaymentAmount(convertToBasePrice(payment_amount, current_rate));
+                                    if (payment_amount > 0) {
+                                        listSaleSummary.add(saleSummary);
+                                    }
+                                }
+                            }
+                            ConfigUtil.setListPayment(listPayment);
+                        }
+                        shift.setSalesSummary(listSaleSummary);
+                        
                         listRegisterShift.add(shift);
                     }
                 }
             }
             return listRegisterShift;
         }
+    }
+    
+    private float convertToBasePrice(float number, float rate){
+        number = number / ((float) rate);
+        return number;
     }
 }

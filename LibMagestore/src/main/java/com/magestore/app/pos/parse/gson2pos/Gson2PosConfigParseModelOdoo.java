@@ -20,6 +20,7 @@ import com.magestore.app.pos.model.config.PosConfigRegion;
 import com.magestore.app.pos.model.customer.PosCustomer;
 import com.magestore.app.pos.model.directory.PosCurrency;
 import com.magestore.app.pos.model.staff.PosStaff;
+import com.magestore.app.util.StringUtil;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 
@@ -73,6 +74,7 @@ public class Gson2PosConfigParseModelOdoo extends Gson2PosAbstractParseImplement
     private String GUEST_CUSTOMER = "guest_customer";
     private String GUEST_NAME = "guest_checkout_name";
     private String GUEST_ID = "guest_checkout_id";
+    private String ACTIVE_KEY = "active_key";
 
     public class ConfigConverter implements JsonDeserializer<List<PosConfigOdoo>> {
         @Override
@@ -86,6 +88,12 @@ public class Gson2PosConfigParseModelOdoo extends Gson2PosAbstractParseImplement
                     for (JsonElement el_config : arr_config) {
                         JsonObject obj_config = el_config.getAsJsonObject();
                         PosConfigOdoo configOdoo = new PosConfigOdoo();
+
+                        if (obj_config.has(ACTIVE_KEY)) {
+                            String active_key = obj_config.get(ACTIVE_KEY).getAsString();
+                            configOdoo.setActiveKey(StringUtil.checkJsonData(active_key) ? active_key : "");
+                        }
+
                         if (obj_config.get(COUNTRY).isJsonArray()) {
                             JsonArray arr_country = obj_config.getAsJsonArray(COUNTRY);
                             if (arr_country != null && arr_country.size() > 0) {

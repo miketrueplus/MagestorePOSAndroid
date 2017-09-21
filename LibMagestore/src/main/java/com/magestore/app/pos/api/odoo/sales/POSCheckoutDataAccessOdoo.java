@@ -294,4 +294,13 @@ public class POSCheckoutDataAccessOdoo extends POSAbstractDataAccessOdoo impleme
     public String getAccessTokenPaypalHere() throws ParseException, InstantiationException, IllegalAccessException, IOException {
         return null;
     }
+
+    @Override
+    public boolean checkCreateInvoice(Checkout checkout) throws ParseException, InstantiationException, IllegalAccessException, IOException {
+        String customer_id = checkout.getCustomerID();
+        if (customer_id.equals(ConfigUtil.getCustomerGuest().getID())) {
+            return false;
+        }
+        return true;
+    }
 }

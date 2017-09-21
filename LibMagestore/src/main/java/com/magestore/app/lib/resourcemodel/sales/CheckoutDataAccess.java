@@ -55,4 +55,6 @@ public interface CheckoutDataAccess extends DataAccess {
     String approvedStripe(String token, float amount) throws ParseException, InstantiationException, IllegalAccessException, IOException;
 
     String getAccessTokenPaypalHere() throws ParseException, InstantiationException, IllegalAccessException, IOException;
+
+    boolean checkCreateInvoice(Checkout checkout) throws ParseException, InstantiationException, IllegalAccessException, IOException;
 }

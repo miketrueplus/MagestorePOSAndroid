@@ -2283,6 +2283,20 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         }
     }
 
+    public boolean checkCreateInvoice() {
+        try {
+            return ((CheckoutService) getListService()).checkCreateInvoice(getSelectedItem());
+        } catch (IOException e) {
+            return false;
+        } catch (InstantiationException e) {
+            return false;
+        } catch (ParseException e) {
+            return false;
+        } catch (IllegalAccessException e) {
+            return false;
+        }
+    }
+
     public void setEnableBtCheckout(boolean isEnable) {
         ((CheckoutListPanel) mView).setEnableBtCheckout(isEnable ? true : false);
     }

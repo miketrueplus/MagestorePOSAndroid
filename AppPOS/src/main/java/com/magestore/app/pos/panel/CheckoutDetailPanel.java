@@ -252,7 +252,12 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
     }
 
     public void isEnableCreateInvoice(boolean enable) {
-        create_invoice.setVisibility(enable ? VISIBLE : GONE);
+        if (((CheckoutListController) getController()).checkCreateInvoice()) {
+            create_invoice.setVisibility(enable ? VISIBLE : GONE);
+        } else {
+            isCheckCreateInvoice(false);
+            create_invoice.setVisibility(GONE);
+        }
     }
 
     public void isShowPaymentMethod(boolean isShow) {

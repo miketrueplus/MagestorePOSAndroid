@@ -74,6 +74,8 @@ public interface CheckoutService extends ListService<Checkout> {
 
     String getAccessTokenPaypalHere() throws IOException, InstantiationException, ParseException, IllegalAccessException;
 
+    boolean checkCreateInvoice(Checkout checkout) throws IOException, InstantiationException, ParseException, IllegalAccessException;
+
     Checkout updateTotal(Checkout checkout);
 
     Checkout create();

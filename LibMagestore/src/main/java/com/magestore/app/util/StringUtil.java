@@ -1,11 +1,18 @@
 package com.magestore.app.util;
 
 import android.text.TextUtils;
+import android.util.Base64;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URL;
+import java.security.KeyFactory;
+import java.security.PublicKey;
+import java.security.spec.X509EncodedKeySpec;
+
+import javax.crypto.Cipher;
 
 /**
  * Tiện ích xử lý chuỗi
@@ -236,5 +243,86 @@ public class StringUtil {
             return false;
         }
         return true;
+    }
+
+    public static String getHostUrl(String url) {
+        if (StringUtil.isNullOrEmpty(url)) {
+            return "";
+        }
+        try {
+            URL host = new URL(url);
+            return host.getHost();
+        } catch (Exception e) {
+            return url;
+        }
+    }
+
+    // so sánh domain
+    public static boolean checkSameDomain(String domain, String licenseDomain) {
+        if (domain.contains("www.")) {
+            domain = domain.replace("www.", "");
+        }
+        if (licenseDomain.contains("www.")) {
+            licenseDomain = licenseDomain.replace("www.", "");
+        }
+
+        if (domain.contains("https://")) {
+            domain = domain.replace("https://", "");
+        } else if (domain.contains("http://")) {
+            domain = domain.replace("http://", "");
+        }
+
+        if (domain.length() > 36) {
+            domain = domain.substring(0, 36);
+        }
+
+        String checkdomain = domain.substring(domain.length() - 1, domain.length());
+        if (checkdomain.equals("/")) {
+            domain = domain.substring(0, (domain.length() - 1));
+        }
+
+        if (licenseDomain.contains("https://")) {
+            licenseDomain = licenseDomain.replace("https://", "");
+        } else if (licenseDomain.contains("http://")) {
+            licenseDomain = licenseDomain.replace("http://", "");
+        }
+
+        String checklicenseDomain = licenseDomain.substring(licenseDomain.length() - 1, licenseDomain.length());
+        if (checklicenseDomain.equals("/")) {
+            licenseDomain = licenseDomain.substring(0, (licenseDomain.length() - 1));
+        }
+
+        if (domain.equals(licenseDomain)) return true;
+
+        return false;
+    }
+
+    // giải mã với public key
+    public static String decryptRSAToString(String encryptedBase64, String privateKey) {
+        String decryptedString = "";
+        try {
+            String rStart = privateKey.replace("-----BEGIN PUBLIC KEY-----", "");
+            String rEnd = rStart.replace("-----END PUBLIC KEY-----", "");
+            rEnd = rEnd.replaceAll("\r", "");
+            rEnd = rEnd.replaceAll("\n", "");
+            rEnd = rEnd.replaceAll("\t", "");
+            rEnd = rEnd.replaceAll(" ", "");
+            KeyFactory keyFac = KeyFactory.getInstance("RSA");
+
+            PublicKey publicKey = keyFac.generatePublic(new X509EncodedKeySpec(Base64.decode(rEnd.toString(), Base64.DEFAULT)));
+
+            // get an RSA cipher object and print the provider
+            final Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding", "BC");
+            // encrypt the plain text using the public key
+            cipher.init(Cipher.DECRYPT_MODE, publicKey);
+
+            byte[] encryptedBytes = Base64.decode(encryptedBase64, Base64.DEFAULT);
+            byte[] decryptedBytes = cipher.doFinal(encryptedBytes);
+            decryptedString = new String(decryptedBytes);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return decryptedString;
     }
 }

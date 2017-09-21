@@ -918,6 +918,11 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
         }
     }
 
+    @Override
+    public boolean checkCreateInvoice(Checkout checkout) throws ParseException, InstantiationException, IllegalAccessException, IOException {
+        return true;
+    }
+
     private boolean checkCustomerID(Customer customer, Customer guest_customer) {
         if (getCustomerId(customer).equals(getCustomerId(guest_customer))) {
             return false;

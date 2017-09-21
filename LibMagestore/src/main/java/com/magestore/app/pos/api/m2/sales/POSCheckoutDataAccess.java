@@ -683,6 +683,11 @@ public class POSCheckoutDataAccess extends POSAbstractDataAccess implements Chec
     }
 
     @Override
+    public boolean checkCreateInvoice(Checkout checkout) throws ParseException, InstantiationException, IllegalAccessException, IOException {
+        return true;
+    }
+
+    @Override
     public boolean invoicesPaymentAuthozire(String orderID) throws ParseException, InstantiationException, IllegalAccessException, IOException {
         Connection connection = null;
         Statement statement = null;

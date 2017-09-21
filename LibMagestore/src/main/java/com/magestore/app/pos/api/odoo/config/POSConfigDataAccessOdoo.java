@@ -17,6 +17,7 @@ import com.magestore.app.lib.connection.ConnectionFactory;
 import com.magestore.app.lib.connection.ParamBuilder;
 import com.magestore.app.lib.connection.ResultReading;
 import com.magestore.app.lib.connection.Statement;
+import com.magestore.app.lib.model.config.ActiveKey;
 import com.magestore.app.lib.model.config.Config;
 import com.magestore.app.lib.model.config.ConfigCountry;
 import com.magestore.app.lib.model.config.ConfigOdoo;
@@ -41,6 +42,7 @@ import com.magestore.app.lib.resourcemodel.config.ConfigDataAccess;
 import com.magestore.app.pos.api.odoo.POSAPIOdoo;
 import com.magestore.app.pos.api.odoo.POSAbstractDataAccessOdoo;
 import com.magestore.app.pos.api.odoo.POSDataAccessSessionOdoo;
+import com.magestore.app.pos.model.config.PosActiveKey;
 import com.magestore.app.pos.model.config.PosConfig;
 import com.magestore.app.pos.model.config.PosConfigCountry;
 import com.magestore.app.pos.model.config.PosConfigOdoo;
@@ -58,6 +60,7 @@ import com.magestore.app.pos.parse.gson2pos.Gson2PosAbstractParseImplement;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosConfigParseImplement;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosConfigParseModelOdoo;
 import com.magestore.app.util.ConfigUtil;
+import com.magestore.app.util.EncryptUntil;
 import com.magestore.app.util.StringUtil;
 
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -66,9 +69,12 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.CRC32;
 
 /**
  * Created by Johan on 8/25/17.
@@ -130,32 +136,101 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
             mConfigOdoo = dataConfig.getItems().get(0);
             return mConfig;
         } catch (ConnectionException ex) {
-//            statement.getCacheConnection().deleteCache();
-//            throw ex;
         } catch (IOException ex) {
-//            statement.getCacheConnection().deleteCache();
-//            throw ex;
         } finally {
-//            if (thread != null)
-//                thread.start();
-            // đóng param builder
-//            if (paramBuilder != null) paramBuilder.clear();
-//            paramBuilder = null;
-
-            // đóng statement
-//            if (statement != null)statement.close();
-//            statement = null;
-
-            // đóng connection
-//            if (connection != null) connection.close();
-//            connection = null;
         }
         return null;
     }
 
     @Override
     public boolean checkLicenseKey() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
-        return false;
+        ActiveKey activeKey = new PosActiveKey();
+        if (mConfigOdoo.getActiveKey() == null) return false;
+        String baseUrl = StringUtil.getHostUrl(POSDataAccessSessionOdoo.REST_BASE_URL);
+        String extensionName = POSDataAccessSessionOdoo.REST_EXTENSION_NAME;
+        String licensekey = mConfigOdoo.getActiveKey();
+        if (licensekey.length() < 68) return false;
+        CRC32 crc = new CRC32();
+        String strExtensionName = licensekey.substring(0, 10) + extensionName;
+        crc.update(strExtensionName.getBytes());
+        int strDataCrc32 = (int) crc.getValue();
+        int crc32Pos = (strDataCrc32 & 0x7FFFFFFF % 51) + 10;
+        int md5Length = 32;
+        String md5String = licensekey.substring(crc32Pos, (crc32Pos + md5Length));
+        int md5StringLength = md5String.length();
+        String key = licensekey.substring(0, crc32Pos) + licensekey.substring((crc32Pos + md5StringLength + 3), licensekey.length());
+        try {
+            while ((key.length() % 4) != 0) {
+                key += "=";
+            }
+            String licenseString = StringUtil.decryptRSAToString(key, POSDataAccessSessionOdoo.REST_PUBLIC_KEY);
+            if (StringUtil.isNullOrEmpty(licenseString)) return false;
+
+            String strlicenseString = licenseString.substring(0, 3);
+            String strlicensekey = licensekey.substring((crc32Pos + md5StringLength), (crc32Pos + md5StringLength + 3));
+            if (!strlicenseString.equals(strlicensekey)) return false;
+
+            String type = licenseString.substring(0, 1);
+            String strexpiredTime = licenseString.substring(1, 3);
+            int expiredTime = Integer.parseInt(String.valueOf(strexpiredTime), 16);
+            long extensionHash = -1;
+            try {
+                extensionHash = Long.parseLong(licenseString.substring(3, 13));
+            } catch (Exception e) {
+            }
+            CRC32 crcExtensionName = new CRC32();
+            crcExtensionName.update(extensionName.getBytes());
+            long crc32ExtensionName = crcExtensionName.getValue();
+            if (extensionHash != crc32ExtensionName) return false;
+
+            String licenseDomain = licenseString.substring(17, licenseString.length()).replaceAll(" ", "");
+            String checkCRc32 = licensekey.substring(0, crc32Pos) + licensekey.substring((crc32Pos + md5StringLength), (crc32Pos + md5StringLength) + (licensekey.length() - crc32Pos - md5StringLength)) + extensionName + licenseDomain;
+            String md5Check = EncryptUntil.HashMD5(checkCRc32);
+            if (!md5Check.equals(md5String))
+                return false;
+
+            String strDate = licenseString.substring(11, 15);
+            int resultDate = Integer.parseInt(String.valueOf(strDate), 16);
+            String DATE_FORMAT = "yyyy-MM-dd";
+            SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+            String createdDate = sdf.format(new Date(resultDate * 24 * 3600 * 1000L));
+            if (!StringUtil.checkSameDomain(baseUrl, licenseDomain)) return false;
+
+            activeKey.setType(type);
+            activeKey.setExpiredTime(expiredTime);
+            activeKey.setCreatedDate(createdDate);
+            activeKey.setLicenseDomain(licenseDomain);
+            ConfigUtil.setActiveKey(activeKey);
+            ConfigUtil.setIsDevLicense(type.equals("D") ? true : false);
+            return true;
+        } catch (Exception e) {
+            String licenseDomain = "";
+            if (baseUrl.contains("https://")) {
+                baseUrl = baseUrl.replace("https://", "");
+            } else if (baseUrl.contains("http://")) {
+                baseUrl = baseUrl.replace("http://", "");
+            }
+            if (baseUrl.length() > 36) {
+                licenseDomain = baseUrl.substring(0, 36);
+            } else {
+                licenseDomain = baseUrl;
+            }
+            String checkCRc32 = licensekey.substring(0, crc32Pos) + licensekey.substring((crc32Pos + md5StringLength), (crc32Pos + md5StringLength) + (licensekey.length() - crc32Pos - md5StringLength)) + extensionName + licenseDomain;
+            String md5Check = EncryptUntil.HashMD5(checkCRc32);
+            if (!md5Check.equals(md5String))
+                return false;
+            String type = licensekey.substring(crc32Pos + md5StringLength, crc32Pos + md5StringLength + 1);
+            String strexpiredTime = licensekey.substring(crc32Pos + md5StringLength + 1, crc32Pos + md5StringLength + 1 + 2);
+            int expiredTime = Integer.parseInt(String.valueOf(strexpiredTime), 16);
+            if (!StringUtil.checkSameDomain(baseUrl, licenseDomain))
+                return false;
+            activeKey.setType(type);
+            activeKey.setExpiredTime(expiredTime);
+            activeKey.setLicenseDomain(licenseDomain);
+            ConfigUtil.setActiveKey(activeKey);
+            ConfigUtil.setIsDevLicense(type.equals("D") ? true : false);
+            return true;
+        }
     }
 
     @Override

@@ -28,6 +28,7 @@ public class PosConfigOdoo extends PosAbstractModel implements ConfigOdoo {
     PosCurrency default_currency;
     PosStaff staff;
     PosCustomer guest_customer;
+    String active_key;
 
     @Override
     public Map<String, ConfigCountry> getCountry() {
@@ -97,5 +98,15 @@ public class PosConfigOdoo extends PosAbstractModel implements ConfigOdoo {
     @Override
     public void setGuestCustomer(Customer mGuestCustomer) {
         guest_customer = (PosCustomer) mGuestCustomer;
+    }
+
+    @Override
+    public String getActiveKey() {
+        return active_key;
+    }
+
+    @Override
+    public void setActiveKey(String strActiveKey) {
+        active_key = strActiveKey;
     }
 }

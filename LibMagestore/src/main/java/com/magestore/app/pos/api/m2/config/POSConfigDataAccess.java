@@ -193,7 +193,7 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         ActiveKey activeKey = new PosActiveKey();
         if (mConfig.getValue("webpos/general/active_key") == null) return false;
 
-        String baseUrl = getHostUrl(POSDataAccessSession.REST_BASE_URL);
+        String baseUrl = StringUtil.getHostUrl(POSDataAccessSession.REST_BASE_URL);
         String extensionName = POSDataAccessSession.REST_EXTENSION_NAME;
         String licensekey = (String) mConfig.getValue("webpos/general/active_key");
         if (licensekey.length() < 68) return false;
@@ -210,7 +210,7 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
             while ((key.length() % 4) != 0) {
                 key += "=";
             }
-            String licenseString = decryptRSAToString(key, POSDataAccessSession.REST_PUBLIC_KEY);
+            String licenseString = StringUtil.decryptRSAToString(key, POSDataAccessSession.REST_PUBLIC_KEY);
             if (StringUtil.isNullOrEmpty(licenseString)) return false;
 
             String strlicenseString = licenseString.substring(0, 3);
@@ -248,7 +248,7 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
             String DATE_FORMAT = "yyyy-MM-dd";
             SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
             String createdDate = sdf.format(new Date(resultDate * 24 * 3600 * 1000L));
-            if (!checkSameDomain(baseUrl, licenseDomain)) return false;
+            if (!StringUtil.checkSameDomain(baseUrl, licenseDomain)) return false;
 
             activeKey.setType(type);
             activeKey.setExpiredTime(expiredTime);
@@ -283,7 +283,7 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
             String type = licensekey.substring(crc32Pos + md5StringLength, crc32Pos + md5StringLength + 1);
             String strexpiredTime = licensekey.substring(crc32Pos + md5StringLength + 1, crc32Pos + md5StringLength + 1 + 2);
             int expiredTime = Integer.parseInt(String.valueOf(strexpiredTime), 16);
-            if (!checkSameDomain(baseUrl, licenseDomain))
+            if (!StringUtil.checkSameDomain(baseUrl, licenseDomain))
                 return false;
             activeKey.setType(type);
             activeKey.setExpiredTime(expiredTime);
@@ -292,87 +292,6 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
             ConfigUtil.setIsDevLicense(type.equals("D") ? true : false);
             return true;
         }
-    }
-
-    private String getHostUrl(String url) {
-        if (StringUtil.isNullOrEmpty(url)) {
-            return "";
-        }
-        try {
-            URL host = new URL(url);
-            return host.getHost();
-        } catch (Exception e) {
-            return url;
-        }
-    }
-
-    // so sánh domain
-    private boolean checkSameDomain(String domain, String licenseDomain) {
-        if (domain.contains("www.")) {
-            domain = domain.replace("www.", "");
-        }
-        if (licenseDomain.contains("www.")) {
-            licenseDomain = licenseDomain.replace("www.", "");
-        }
-
-        if (domain.contains("https://")) {
-            domain = domain.replace("https://", "");
-        } else if (domain.contains("http://")) {
-            domain = domain.replace("http://", "");
-        }
-
-        if (domain.length() > 36) {
-            domain = domain.substring(0, 36);
-        }
-
-        String checkdomain = domain.substring(domain.length() - 1, domain.length());
-        if (checkdomain.equals("/")) {
-            domain = domain.substring(0, (domain.length() - 1));
-        }
-
-        if (licenseDomain.contains("https://")) {
-            licenseDomain = licenseDomain.replace("https://", "");
-        } else if (licenseDomain.contains("http://")) {
-            licenseDomain = licenseDomain.replace("http://", "");
-        }
-
-        String checklicenseDomain = licenseDomain.substring(licenseDomain.length() - 1, licenseDomain.length());
-        if (checklicenseDomain.equals("/")) {
-            licenseDomain = licenseDomain.substring(0, (licenseDomain.length() - 1));
-        }
-
-        if (domain.equals(licenseDomain)) return true;
-
-        return false;
-    }
-
-    // giải mã với public key
-    private String decryptRSAToString(String encryptedBase64, String privateKey) {
-        String decryptedString = "";
-        try {
-            String rStart = privateKey.replace("-----BEGIN PUBLIC KEY-----", "");
-            String rEnd = rStart.replace("-----END PUBLIC KEY-----", "");
-            rEnd = rEnd.replaceAll("\r", "");
-            rEnd = rEnd.replaceAll("\n", "");
-            rEnd = rEnd.replaceAll("\t", "");
-            rEnd = rEnd.replaceAll(" ", "");
-            KeyFactory keyFac = KeyFactory.getInstance("RSA");
-
-            PublicKey publicKey = keyFac.generatePublic(new X509EncodedKeySpec(Base64.decode(rEnd.toString(), Base64.DEFAULT)));
-
-            // get an RSA cipher object and print the provider
-            final Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding", "BC");
-            // encrypt the plain text using the public key
-            cipher.init(Cipher.DECRYPT_MODE, publicKey);
-
-            byte[] encryptedBytes = Base64.decode(encryptedBase64, Base64.DEFAULT);
-            byte[] decryptedBytes = cipher.doFinal(encryptedBytes);
-            decryptedString = new String(decryptedBytes);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return decryptedString;
     }
 
     @Override

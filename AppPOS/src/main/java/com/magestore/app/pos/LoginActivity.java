@@ -299,12 +299,12 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
         if (mCheckLoginDemo) {
             // Hiện progress bar
             showProgress(true);
-//            mDomainView.setText("http://ec2-18-220-34-129.us-east-2.compute.amazonaws.com:4001");
-//            mUserNameView.setText("admin");
-//            mPasswordView.setText("admin123@");
-            mDomainView.setText("192.168.1.11:8000");
-            mUserNameView.setText("johan");
-            mPasswordView.setText("johan");
+            mDomainView.setText("http://ec2-18-220-34-129.us-east-2.compute.amazonaws.com:4001");
+            mUserNameView.setText("daisy");
+            mPasswordView.setText("daisy");
+//            mDomainView.setText("192.168.1.11:8000");
+//            mUserNameView.setText("johan");
+//            mPasswordView.setText("johan");
             String domain = mDomainView.getText().toString().trim();
             String username = mUserNameView.getText().toString().trim();
             String password = mPasswordView.getText().toString().trim();
