@@ -38,7 +38,7 @@ public class EnglishReceiptsImpl extends ILocalizeReceipts {
         // Image
         if (ConfigUtil.getConfigPrint().getShowReceiptLogo() != null && ConfigUtil.getConfigPrint().getShowReceiptLogo().equals("1")) {
             if (bitmap != null) {
-                builder.appendBitmap(bitmap, false, mPaperSize, true);
+                builder.appendBitmapCompressionWithAlignment(bitmap, true, mPaperSize * 2 / 3, false, AlignmentPosition.Center);
             }
         }
         if (utf8) {
