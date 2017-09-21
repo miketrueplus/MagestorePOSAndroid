@@ -1,7 +1,9 @@
 package com.magestore.app.lib.model.config;
 
 import com.magestore.app.lib.model.Model;
+import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.directory.Currency;
+import com.magestore.app.lib.model.staff.Staff;
 
 import java.util.Map;
 
@@ -22,4 +24,8 @@ public interface ConfigOdoo extends Model {
     void setQuantityFormat(ConfigQuantityFormat mQuantityFormat);
     Currency getDefaultCurrency();
     void setDefaultCurrency(Currency mDefaultCurrency);
+    Staff getStaff();
+    void setStaff(Staff mStaff);
+    Customer getGuestCustomer();
+    void setGuestCustomer(Customer mGuestCustomer);
 }

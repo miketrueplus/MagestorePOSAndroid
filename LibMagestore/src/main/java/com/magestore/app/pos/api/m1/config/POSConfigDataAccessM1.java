@@ -1052,6 +1052,7 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
     @Override
     public void getConfigStaffPermisson(List<String> listPermisson) throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
         if (listPermisson.size() > 0) {
+            ConfigUtil.setChangeStaff(true);
             ConfigUtil.setManageOrderByLocation(false);
             ConfigUtil.setManagerShiftAdjustment(true);
             ConfigUtil.setNeedToShip(true);

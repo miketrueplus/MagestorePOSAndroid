@@ -4,9 +4,13 @@ import com.magestore.app.lib.model.config.ConfigCountry;
 import com.magestore.app.lib.model.config.ConfigOdoo;
 import com.magestore.app.lib.model.config.ConfigPriceFormat;
 import com.magestore.app.lib.model.config.ConfigQuantityFormat;
+import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.directory.Currency;
+import com.magestore.app.lib.model.staff.Staff;
 import com.magestore.app.pos.model.PosAbstractModel;
+import com.magestore.app.pos.model.customer.PosCustomer;
 import com.magestore.app.pos.model.directory.PosCurrency;
+import com.magestore.app.pos.model.staff.PosStaff;
 
 import java.util.Map;
 
@@ -22,6 +26,8 @@ public class PosConfigOdoo extends PosAbstractModel implements ConfigOdoo {
     PosConfigPriceFormat priceFormat;
     PosConfigQuantityFormat quantityFormat;
     PosCurrency default_currency;
+    PosStaff staff;
+    PosCustomer guest_customer;
 
     @Override
     public Map<String, ConfigCountry> getCountry() {
@@ -71,5 +77,25 @@ public class PosConfigOdoo extends PosAbstractModel implements ConfigOdoo {
     @Override
     public void setDefaultCurrency(Currency mDefaultCurrency) {
         default_currency = (PosCurrency) mDefaultCurrency;
+    }
+
+    @Override
+    public Staff getStaff() {
+        return staff;
+    }
+
+    @Override
+    public void setStaff(Staff mStaff) {
+        staff = (PosStaff) mStaff;
+    }
+
+    @Override
+    public Customer getGuestCustomer() {
+        return guest_customer;
+    }
+
+    @Override
+    public void setGuestCustomer(Customer mGuestCustomer) {
+        guest_customer = (PosCustomer) mGuestCustomer;
     }
 }

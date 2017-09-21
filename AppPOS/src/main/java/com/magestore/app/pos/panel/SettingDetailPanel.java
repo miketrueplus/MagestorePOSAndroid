@@ -246,8 +246,13 @@ public class SettingDetailPanel extends AbstractDetailPanel<Setting> {
     }
 
     public void setCurrencyDataSet(List<Currency> currencyList) {
-        sp_currency.bind(currencyList.toArray(new Currency[0]));
-        sp_currency.setSelection(ConfigUtil.getCurrentCurrency().getCode());
+        if (currencyList != null && currencyList.size() > 0) {
+            sp_currency.bind(currencyList.toArray(new Currency[0]));
+            sp_currency.setSelection(ConfigUtil.getCurrentCurrency().getCode());
+            ll_setting_currency.setVisibility(VISIBLE);
+        } else {
+            ll_setting_currency.setVisibility(GONE);
+        }
     }
 
     public void setPrintDataSet() {

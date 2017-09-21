@@ -130,6 +130,7 @@ public abstract class AbstractActivity
         staff_name = (TextView) header_layout.findViewById(R.id.staff_name);
         staff_location = (TextView) header_layout.findViewById(R.id.staff_location);
         im_change = (RelativeLayout) header_layout.findViewById(R.id.im_change);
+        im_change.setVisibility(ConfigUtil.isChangeStaff() ? View.VISIBLE : View.GONE);
         mapImage.put(this, im_change);
         if (ConfigUtil.getStaff() != null) {
             if (mCurrentStaff != null) {

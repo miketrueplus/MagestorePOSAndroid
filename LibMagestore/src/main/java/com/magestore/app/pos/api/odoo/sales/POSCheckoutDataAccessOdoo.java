@@ -85,7 +85,7 @@ public class POSCheckoutDataAccessOdoo extends POSAbstractDataAccessOdoo impleme
             if (cartItem.isCustomPrice()) {
                 price_item = cartItem.getCustomPrice();
             } else {
-                price_item = cartItem.getProduct().getFinalPrice();
+                price_item = ConfigUtil.convertToPrice(cartItem.getProduct().getFinalPrice());
             }
             cartItem.setRowTotal(price_item);
             float tax = 0;
@@ -97,24 +97,12 @@ public class POSCheckoutDataAccessOdoo extends POSAbstractDataAccessOdoo impleme
             }
             total_tax += (price_item * tax) / 100;
         }
-        checkout.setTaxTotal(ConfigUtil.convertToBasePrice(total_tax));
-        checkout.setSubTotalView(ConfigUtil.convertToBasePrice(checkout.getSubTotal()));
+        checkout.setTaxTotal(total_tax);
+        checkout.setSubTotalView(checkout.getSubTotal());
         grand_total = checkout.getSubTotal() + total_tax - checkout.getDiscountTotal();
-        checkout.setGrandTotal(ConfigUtil.convertToBasePrice(grand_total));
+        checkout.setGrandTotal(grand_total);
         quote.setID(String.valueOf(ConfigUtil.getItemIdInCurrentTime()));
         checkout.setQuote(quote);
-
-        // TODO: fake payment
-//        List<CheckoutPayment> listPayment = new ArrayList<>();
-//        CheckoutPayment payment = new PosCheckoutPayment();
-//        payment.setID("9");
-//        payment.setType("0");
-//        payment.setTitle("TH-Cash (VND)");
-//        payment.setIsDefault("1");
-//        payment.setCode("cashforpos");
-//        payment.setPaylater("0");
-//        payment.setIsReferenceNumber("1");
-//        listPayment.add(payment);
         checkout.setCheckoutPayment(ConfigUtil.getListPayment());
         return checkout;
     }
@@ -208,7 +196,7 @@ public class POSCheckoutDataAccessOdoo extends POSAbstractDataAccessOdoo impleme
                     productEntity.price_unit = cartItem.getCustomPrice();
                     productEntity.discount = (((cartItem.getCustomPrice() + ((cartItem.getCustomPrice() * product.getTotalTax()) / 100)) * cartItem.getQuantity()) / cartItem.getDiscountAmount()) * 100;
                 } else {
-                    productEntity.price_unit = product.getFinalPrice();
+                    productEntity.price_unit = ConfigUtil.convertToPrice(product.getFinalPrice());
                 }
                 productEntity.pack_lot_ids = listSerialNumber;
                 listProductEntity.add(productEntity);

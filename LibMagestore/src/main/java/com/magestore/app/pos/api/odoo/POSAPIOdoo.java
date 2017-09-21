@@ -44,4 +44,7 @@ public class POSAPIOdoo {
 
     // API config
     public static final String REST_CONFIG_GET_LISTING = "api/system-config/";
+
+    // API Account
+    public static final String REST_SETTING_ACCOUNT = "api/change-staff-info/";
 }

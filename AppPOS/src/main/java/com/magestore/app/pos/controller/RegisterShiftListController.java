@@ -150,34 +150,7 @@ public class RegisterShiftListController extends AbstractListController<Register
                     ConfigUtil.setPosId(registerShift.getPosId());
                     ConfigUtil.setRegisterShiftId(registerShift.getID());
                     PointOfSales pos = registerShift.getPosConfig();
-                    if (pos != null) {
-                        ConfigUtil.setCashControl(pos.getCashControl());
-                        ConfigUtil.setManagerShiftAdjustment(pos.getCashControl());
-                        ConfigUtil.setDiscountPerCart(pos.getIfaceDiscount() ? true : false);
-                        ConfigUtil.setDiscountProductId(pos.getDiscountProductId());
-
-                        ConfigPriceFormat configPriceFormat = pos.getPriceFormat();
-                        Currency currency = pos.getCurrency();
-                        configPriceFormat.setCurrencySymbol(currency.getCurrencySymbol());
-                        ConfigUtil.setConfigPriceFormat(configPriceFormat);
-                        ConfigUtil.setCurrencyFormat(getConfigService().currencyFormat(configPriceFormat));
-                        ConfigUtil.setCurrencyNoSymbolFormat(getConfigService().currencyNosymbolFormat(configPriceFormat));
-                        ConfigUtil.setFloatFormat(getConfigService().floatFormat(configPriceFormat));
-                        ConfigUtil.setIntegerFormat(getConfigService().integetFormat(configPriceFormat));
-                        ConfigUtil.setCurrentCurrency(currency);
-
-                        ConfigPrint configPrint = new PosConfigPrint();
-                        if(!StringUtil.isNullOrEmpty(pos.getReceiptHeader())){
-                            configPrint.setHeaderText(pos.getReceiptHeader());
-                        }
-                        if(!StringUtil.isNullOrEmpty(pos.getReceiptFooter())){
-                            configPrint.setFooterText(pos.getReceiptFooter());
-                        }
-                        configPrint.setAutoPrint("1");
-                        configPrint.setShowCashierName("1");
-                        configPrint.setShowComment("1");
-                        configPrint.setShowReceiptLogo("0");
-                    }
+                    settingConfigWithPos(pos);
 //                getMagestoreContext().getActivity().finish();
                     DataUtil.saveDataStringToPreferences(getMagestoreContext().getActivity(), DataUtil.STORE_ID, registerShift.getStoreId());
                     ((RegisterShiftListPanel) mView).isShowButtonOpenSession(false);
@@ -284,34 +257,7 @@ public class RegisterShiftListController extends AbstractListController<Register
             ConfigUtil.setPosId(registerShift.getPosId());
             ConfigUtil.setRegisterShiftId(registerShift.getID());
             PointOfSales pos = registerShift.getPosConfig();
-            if (pos != null) {
-                ConfigUtil.setCashControl(pos.getCashControl());
-                ConfigUtil.setManagerShiftAdjustment(pos.getCashControl());
-                ConfigUtil.setDiscountPerCart(pos.getIfaceDiscount() ? true : false);
-                ConfigUtil.setDiscountProductId(pos.getDiscountProductId());
-
-                ConfigPriceFormat configPriceFormat = pos.getPriceFormat();
-                Currency currency = pos.getCurrency();
-                configPriceFormat.setCurrencySymbol(currency.getCurrencySymbol());
-                ConfigUtil.setConfigPriceFormat(configPriceFormat);
-                ConfigUtil.setCurrencyFormat(getConfigService().currencyFormat(configPriceFormat));
-                ConfigUtil.setCurrencyNoSymbolFormat(getConfigService().currencyNosymbolFormat(configPriceFormat));
-                ConfigUtil.setFloatFormat(getConfigService().floatFormat(configPriceFormat));
-                ConfigUtil.setIntegerFormat(getConfigService().integetFormat(configPriceFormat));
-                ConfigUtil.setCurrentCurrency(currency);
-
-                ConfigPrint configPrint = new PosConfigPrint();
-                if(!StringUtil.isNullOrEmpty(pos.getReceiptHeader())){
-                    configPrint.setHeaderText(pos.getReceiptHeader());
-                }
-                if(!StringUtil.isNullOrEmpty(pos.getReceiptFooter())){
-                    configPrint.setFooterText(pos.getReceiptFooter());
-                }
-                configPrint.setAutoPrint("1");
-                configPrint.setShowCashierName("1");
-                configPrint.setShowComment("1");
-                configPrint.setShowReceiptLogo("0");
-            }
+            settingConfigWithPos(pos);
             registerShift.setPosName(ConfigUtil.getPointOfSales().getPosName());
             mList.add(1, registerShift);
             for (RegisterShift shift : mList) {
@@ -555,32 +501,6 @@ public class RegisterShiftListController extends AbstractListController<Register
     }
 
     public List<PointOfSales> getListPos() {
-//        try {
-//            List<PointOfSales> listPos = userService.getListPos();
-//            if (listPos != null) {
-//                if (listPos.size() > 0) {
-//                    PointOfSales pointOfSales = userService.createPointOfSales();
-//                    pointOfSales.setPosId("");
-//                    pointOfSales.setPosName(getMagestoreContext().getActivity().getString(R.string.select_pos));
-//                    if (!checkPos(listPos)) {
-//                        listPos.add(0, pointOfSales);
-//                    }
-//                    return listPos;
-//                } else {
-//                    return userService.getListPos();
-//                }
-//            } else {
-//                return userService.getListPos();
-//            }
-//        } catch (InstantiationException e) {
-//            e.printStackTrace();
-//        } catch (IllegalAccessException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
         return listPos;
     }
 
@@ -592,5 +512,41 @@ public class RegisterShiftListController extends AbstractListController<Register
             }
         }
         return isContains;
+    }
+
+    private void settingConfigWithPos(PointOfSales pos) {
+        if (pos != null) {
+            ConfigUtil.setCashControl(pos.getCashControl());
+            ConfigUtil.setManagerShiftAdjustment(pos.getCashControl());
+            ConfigUtil.setDiscountPerCart(pos.getIfaceDiscount() ? true : false);
+            ConfigUtil.setDiscountProductId(pos.getDiscountProductId());
+
+            ConfigPriceFormat configPriceFormat = pos.getPriceFormat();
+            Currency currency = pos.getCurrency();
+            configPriceFormat.setCurrencySymbol(currency.getCurrencySymbol());
+            ConfigUtil.setConfigPriceFormat(configPriceFormat);
+            ConfigUtil.setCurrencyFormat(getConfigService().currencyFormat(configPriceFormat));
+            ConfigUtil.setCurrencyNoSymbolFormat(getConfigService().currencyNosymbolFormat(configPriceFormat));
+            ConfigUtil.setFloatFormat(getConfigService().floatFormat(configPriceFormat));
+            ConfigUtil.setIntegerFormat(getConfigService().integetFormat(configPriceFormat));
+            ConfigUtil.setCurrentCurrency(currency);
+
+            ConfigPrint configPrint = new PosConfigPrint();
+            if (!StringUtil.isNullOrEmpty(pos.getReceiptHeader())) {
+                configPrint.setHeaderText(pos.getReceiptHeader());
+            }
+            if (!StringUtil.isNullOrEmpty(pos.getReceiptFooter())) {
+                configPrint.setFooterText(pos.getReceiptFooter());
+            }
+            configPrint.setAutoPrint("1");
+            configPrint.setShowCashierName("1");
+            configPrint.setShowComment("1");
+            configPrint.setShowReceiptLogo("0");
+
+            Intent i = new Intent();
+            i.setAction(SettingListController.RESET_DATA_TO_SALE_ACTIVITY);
+            getMagestoreContext().getActivity().sendBroadcast(i);
+            getMagestoreContext().getActivity().finish();
+        }
     }
 }

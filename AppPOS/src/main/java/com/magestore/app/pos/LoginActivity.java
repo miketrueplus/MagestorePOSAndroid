@@ -499,6 +499,9 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
             mAuthTask = null;
             if (success) {
                 if (mCheckLoginDemo) {
+                    mDomainView.setText("");
+                    mUserNameView.setText("");
+                    mPasswordView.setText("");
                     ConfigUtil.setIsDevLicense(false);
                     if (ConfigUtil.isEnableSession()) {
                         navigationToSalesActivity();

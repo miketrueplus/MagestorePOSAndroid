@@ -1177,6 +1177,7 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
     @Override
     public void getConfigStaffPermisson(List<String> listPermisson) throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
         if (listPermisson.size() > 0) {
+            ConfigUtil.setChangeStaff(true);
             ConfigUtil.setCreateOrder(true);
             ConfigUtil.setManageOrderOtherStaff(false);
             ConfigUtil.setCanUseRefund(true);

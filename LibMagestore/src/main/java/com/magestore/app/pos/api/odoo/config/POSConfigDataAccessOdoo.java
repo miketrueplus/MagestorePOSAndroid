@@ -58,8 +58,11 @@ import com.magestore.app.pos.parse.gson2pos.Gson2PosAbstractParseImplement;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosConfigParseImplement;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosConfigParseModelOdoo;
 import com.magestore.app.util.ConfigUtil;
+import com.magestore.app.util.StringUtil;
 
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -94,6 +97,12 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
     private static String APPLY_CUSTOM_PRICE = "Magestore_Webpos::apply_custom_price";
     // Session
     private static String MANAGE_SHIFT_ADJUSTMENT = "Magestore_Webpos::manage_shift_adjustment";
+
+    private class StaffEntity {
+        String name;
+        String old_password;
+        String new_password;
+    }
 
     @Override
     public Config retrieveConfig() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
@@ -171,7 +180,10 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
 
     @Override
     public Staff getStaff() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
-        mStaff = getStaffFake();
+        Location location = new PosLocation();
+        Staff staff = mConfigOdoo.getStaff();
+        staff.setStaffLocation(location);
+        mStaff = staff;
         return mStaff;
     }
 
@@ -182,6 +194,54 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
 
     @Override
     public Staff changeInformationStaff(Staff staff) throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+        try {
+            // Khởi tạo connection và khởi tạo truy vấn
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSessionOdoo.REST_BASE_URL, POSDataAccessSessionOdoo.REST_USER_NAME, POSDataAccessSessionOdoo.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPIOdoo.REST_SETTING_ACCOUNT);
+            statement.setSessionHeader(POSDataAccessSessionOdoo.REST_SESSION_ID);
+
+            StaffEntity staffEntity = new StaffEntity();
+            staffEntity.name = staff.getStaffName();
+            staffEntity.old_password = staff.getCurrentPassword();
+            staffEntity.new_password = staff.getNewPassword();
+
+            rp = statement.execute(staffEntity);
+
+            String reponse = StringUtil.truncateJson(rp.readResult2String());
+
+            JSONObject jsonObject = new JSONObject(reponse);
+            String message = jsonObject.getString("message");
+
+            staff.setResponeType(true);
+            staff.setErrorMessage(message);
+            return staff;
+        } catch (ConnectionException ex) {
+            throw ex;
+        } catch (IOException ex) {
+            throw ex;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
         return null;
     }
 
@@ -305,6 +365,7 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
     @Override
     public void getConfigStaffPermisson(List<String> listPermisson) throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
         if (listPermisson.size() > 0) {
+            ConfigUtil.setChangeStaff(false);
             ConfigUtil.setManageOrderByLocation(false);
             ConfigUtil.setNeedToShip(false);
             ConfigUtil.setMarkAsShip(false);
@@ -383,18 +444,6 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
         return listStatus;
     }
 
-    private Staff getStaffFake() {
-        Staff staff = new PosStaff();
-        staff.setStaffId("4");
-        staff.setStaffName("jessie");
-        Location location = new PosLocation();
-        location.setLocationId("1");
-        location.setLocationName("Default Location");
-        location.setLocationAddress("Default Location Address");
-        staff.setStaffLocation(location);
-        return staff;
-    }
-
     private boolean checkStaffPermiss(List<String> listPermisson, String permisson) {
         boolean checkPermisson = false;
         for (String _permisson : listPermisson) {
@@ -407,10 +456,10 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
     }
 
     private Customer getCustomerGuestFake() {
-        String customer_id = "47";
+        String customer_id = "";
         String email = "guest@example.com";
         String first_name = "Guest";
-        String last_name = "POS";
+        String last_name = "";
         String full_name = first_name + " " + last_name;
         String street = "Street";
         String country_id = "US";
@@ -418,6 +467,13 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
         String region_id = "12";
         String zip_code = "90034";
         String telephone = "12345678";
+
+        if (!StringUtil.isNullOrEmpty(mConfigOdoo.getGuestCustomer().getID())) {
+            customer_id = mConfigOdoo.getGuestCustomer().getID();
+        }
+        if (!StringUtil.isNullOrEmpty(mConfigOdoo.getGuestCustomer().getFirstName())) {
+            first_name = mConfigOdoo.getGuestCustomer().getFirstName();
+        }
 
         Customer guest = new PosCustomer();
         guest.setID(customer_id);

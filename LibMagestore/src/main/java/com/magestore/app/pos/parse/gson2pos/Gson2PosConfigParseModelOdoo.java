@@ -17,7 +17,9 @@ import com.magestore.app.pos.model.config.PosConfigOdoo;
 import com.magestore.app.pos.model.config.PosConfigPriceFormat;
 import com.magestore.app.pos.model.config.PosConfigQuantityFormat;
 import com.magestore.app.pos.model.config.PosConfigRegion;
+import com.magestore.app.pos.model.customer.PosCustomer;
 import com.magestore.app.pos.model.directory.PosCurrency;
+import com.magestore.app.pos.model.staff.PosStaff;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 
@@ -65,6 +67,12 @@ public class Gson2PosConfigParseModelOdoo extends Gson2PosAbstractParseImplement
     private String NAME = "name";
     private String CURRENCY_ID = "id";
     private String SYMBOL = "symbol";
+    private String STAFF = "staff";
+    private String STAFF_ID = "staff_id";
+    private String STAFF_NAME = "staff_name";
+    private String GUEST_CUSTOMER = "guest_customer";
+    private String GUEST_NAME = "guest_checkout_name";
+    private String GUEST_ID = "guest_checkout_id";
 
     public class ConfigConverter implements JsonDeserializer<List<PosConfigOdoo>> {
         @Override
@@ -128,7 +136,7 @@ public class Gson2PosConfigParseModelOdoo extends Gson2PosAbstractParseImplement
                         configOdoo.setCustomerGroup(mCustomerGroup);
 
                         String currencySymbol = "$";
-                        if (obj_config.has(COMPANY_CURRENCY)) {
+                        if (obj_config.has(COMPANY_CURRENCY) && obj_config.get(COMPANY_CURRENCY).isJsonObject()) {
                             JsonObject obj_currency = obj_config.getAsJsonObject(COMPANY_CURRENCY);
                             PosCurrency currency = new PosCurrency();
                             String id = obj_currency.get(CURRENCY_ID).getAsString();
@@ -145,7 +153,7 @@ public class Gson2PosConfigParseModelOdoo extends Gson2PosAbstractParseImplement
                             configOdoo.setDefaultCurrency(currency);
                         }
 
-                        if (obj_config.has(PRICE_FORMAT)) {
+                        if (obj_config.has(PRICE_FORMAT) && obj_config.get(PRICE_FORMAT).isJsonObject()) {
                             JsonObject obj_price = obj_config.getAsJsonObject(PRICE_FORMAT);
                             PosConfigPriceFormat priceFormat = new PosConfigPriceFormat();
                             PosConfigQuantityFormat quantityFormat = new PosConfigQuantityFormat();
@@ -192,6 +200,27 @@ public class Gson2PosConfigParseModelOdoo extends Gson2PosAbstractParseImplement
                             configOdoo.setPriceFormat(priceFormat);
                             configOdoo.setQuantityFormat(quantityFormat);
                         }
+
+                        PosStaff staff = new PosStaff();
+                        if (obj_config.has(STAFF) && obj_config.get(STAFF).isJsonObject()) {
+                            JsonObject obj_staff = obj_config.get(STAFF).getAsJsonObject();
+                            String staff_id = obj_staff.get(STAFF_ID).getAsString();
+                            String staff_name = obj_staff.get(STAFF_NAME).getAsString();
+                            staff.setStaffId(staff_id);
+                            staff.setStaffName(staff_name);
+                        }
+                        configOdoo.setStaff(staff);
+
+                        PosCustomer customer = new PosCustomer();
+                        if (obj_config.has(GUEST_CUSTOMER) && obj_config.get(GUEST_CUSTOMER).isJsonObject()) {
+                            JsonObject obj_guest = obj_config.get(GUEST_CUSTOMER).getAsJsonObject();
+                            String guest_id = obj_guest.get(GUEST_ID).getAsString();
+                            String guest_name = obj_guest.get(GUEST_NAME).getAsString();
+                            customer.setID(guest_id);
+                            customer.setFirstName(guest_name);
+                            customer.setLastName("");
+                        }
+                        configOdoo.setGuestCustomer(customer);
 
                         listConfig.add(configOdoo);
                     }

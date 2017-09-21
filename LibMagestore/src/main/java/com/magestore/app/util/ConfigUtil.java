@@ -74,6 +74,7 @@ public class ConfigUtil {
     private static ConfigPriceFormat mConfigPriceFormat;
 
     // permisson order
+    private static boolean mChangeStaff;
     private static boolean mCreateOrder;
     private static boolean mManageAllOrder;
     private static boolean mManageOrderByMe;
@@ -918,6 +919,14 @@ public class ConfigUtil {
     }
 
     // permisson
+    public static boolean isChangeStaff() {
+        return mChangeStaff;
+    }
+
+    public static void setChangeStaff(boolean mChangeStaff) {
+        ConfigUtil.mChangeStaff = mChangeStaff;
+    }
+
     public static boolean isCreateOrder() {
         return mCreateOrder;
     }
