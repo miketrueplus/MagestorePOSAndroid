@@ -194,6 +194,10 @@ public class CheckoutListController extends AbstractListController<Checkout> {
      */
     public void doInputSaveCart() {
         Checkout checkout = getSelectedItem();
+        // reset remain, exchangeMoney money
+        checkout.setRemainMoney(0);
+        checkout.setExchangeMoney(0);
+
         if (checkout.getCartItem().size() > 0) {
             checkout.setStatus(STATUS_CHECKOUT_PROCESSING);
             isShowLoadingDetail(true);

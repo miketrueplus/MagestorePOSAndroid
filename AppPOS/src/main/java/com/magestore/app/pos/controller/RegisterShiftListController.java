@@ -546,7 +546,6 @@ public class RegisterShiftListController extends AbstractListController<Register
             Intent i = new Intent();
             i.setAction(SettingListController.RESET_DATA_TO_SALE_ACTIVITY);
             getMagestoreContext().getActivity().sendBroadcast(i);
-            getMagestoreContext().getActivity().finish();
         }
     }
 }

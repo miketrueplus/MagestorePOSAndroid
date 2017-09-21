@@ -215,7 +215,7 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
             String reponse = StringUtil.truncateJson(rp.readResult2String());
 
             JSONObject jsonObject = new JSONObject(reponse);
-            String message = jsonObject.getString("message");
+            String message = jsonObject.getString("messages");
 
             staff.setResponeType(true);
             staff.setErrorMessage(message);
@@ -468,11 +468,13 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
         String zip_code = "90034";
         String telephone = "12345678";
 
-        if (!StringUtil.isNullOrEmpty(mConfigOdoo.getGuestCustomer().getID())) {
-            customer_id = mConfigOdoo.getGuestCustomer().getID();
-        }
-        if (!StringUtil.isNullOrEmpty(mConfigOdoo.getGuestCustomer().getFirstName())) {
-            first_name = mConfigOdoo.getGuestCustomer().getFirstName();
+        if (mConfigOdoo.getGuestCustomer() != null) {
+            if (!StringUtil.isNullOrEmpty(mConfigOdoo.getGuestCustomer().getID())) {
+                customer_id = mConfigOdoo.getGuestCustomer().getID();
+            }
+            if (!StringUtil.isNullOrEmpty(mConfigOdoo.getGuestCustomer().getFirstName())) {
+                first_name = mConfigOdoo.getGuestCustomer().getFirstName();
+            }
         }
 
         Customer guest = new PosCustomer();

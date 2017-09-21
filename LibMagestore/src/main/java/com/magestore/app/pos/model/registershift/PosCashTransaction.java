@@ -244,8 +244,13 @@ public class PosCashTransaction extends PosAbstractModel implements CashTransact
         } else if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_ODOO)) {
             if (type.toLowerCase().equals("remove")) {
                 return "- " + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(0 - base_value));
+            } else {
+                if (base_value < 0) {
+                    return "- " + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(0 - base_value));
+                } else {
+                    return "+ " + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(base_value));
+                }
             }
-            return "+ " + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(base_value));
         } else {
             if (base_amount >= 0) {
                 return "+ " + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(base_amount));

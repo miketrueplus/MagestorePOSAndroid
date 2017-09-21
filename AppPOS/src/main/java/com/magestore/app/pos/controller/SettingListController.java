@@ -126,6 +126,12 @@ public class SettingListController extends AbstractListController<Setting> {
     }
 
     @Override
+    public void onCancelledBackground(Exception exp, int actionType, String actionCode, Map<String, Object> wraper, Model... models) {
+        super.onCancelledBackground(exp, actionType, actionCode, wraper, models);
+        ((SettingDetailPanel) mDetailView).isShowLoading(false);
+    }
+
+    @Override
     public void bindItem(Setting item) {
         super.bindItem(item);
         ((SettingDetailPanel) mDetailView).bindItem(item);

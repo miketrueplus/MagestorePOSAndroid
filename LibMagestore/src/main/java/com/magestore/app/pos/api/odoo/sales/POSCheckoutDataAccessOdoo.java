@@ -85,7 +85,7 @@ public class POSCheckoutDataAccessOdoo extends POSAbstractDataAccessOdoo impleme
             if (cartItem.isCustomPrice()) {
                 price_item = cartItem.getCustomPrice();
             } else {
-                price_item = ConfigUtil.convertToPrice(cartItem.getProduct().getFinalPrice());
+                price_item = cartItem.getProduct().getFinalPrice();
             }
             cartItem.setRowTotal(price_item);
             float tax = 0;
@@ -99,8 +99,9 @@ public class POSCheckoutDataAccessOdoo extends POSAbstractDataAccessOdoo impleme
         }
         checkout.setTaxTotal(total_tax);
         checkout.setSubTotalView(checkout.getSubTotal());
-        grand_total = checkout.getSubTotal() + total_tax - checkout.getDiscountTotal();
-        checkout.setGrandTotal(grand_total);
+        grand_total = checkout.getSubTotal() + total_tax + checkout.getDiscountTotal();
+        checkout.setGrandTotal(ConfigUtil.convertToPrice(grand_total));
+        checkout.setGrandTotalView(grand_total);
         quote.setID(String.valueOf(ConfigUtil.getItemIdInCurrentTime()));
         checkout.setQuote(quote);
         checkout.setCheckoutPayment(ConfigUtil.getListPayment());
@@ -211,7 +212,7 @@ public class POSCheckoutDataAccessOdoo extends POSAbstractDataAccessOdoo impleme
             }
             placeOrderEntity.partner_id = placeOrderParams.getCustomerId();
             placeOrderEntity.lines = listProductEntity;
-            placeOrderEntity.amount_tax = checkout.getTaxTotal();
+            placeOrderEntity.amount_tax = ConfigUtil.convertToPrice(checkout.getTaxTotal());
             placeOrderEntity.amount_return = amount_return;
             placeOrderEntity.to_invoice = checkout.getCreateInvoice().equals("1") ? true : false;
 

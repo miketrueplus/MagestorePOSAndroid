@@ -81,7 +81,7 @@ public class Gson2PosListSessionParseModelOdoo extends Gson2PosAbstractParseImpl
     private String POS_DISCOUNT = "iface_discount";
     private String POS_DISCOUNT_PC = "discount_pc";
     private String POS_DISCOUNT_PRODUCT_ID = "discount_product_id";
-    private String CURRENCY_INFO = "currency_info";
+    private String CURRENCY_INFO = "currency";
     private String POSITION = "position";
     private String RATE = "rate";
     private String NAME = "name";
