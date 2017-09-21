@@ -128,7 +128,7 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         mOrder = item;
         mBinding.setOrderDetail(item);
         if (checkCanInvoice(mOrder)) {
-            btn_invoice.setVisibility(VISIBLE);
+            btn_invoice.setVisibility(!StringUtil.isNullOrEmpty(item.getCustomerId()) ? VISIBLE: GONE);
             fr_detail_bottom_right.setVisibility(GONE);
             fr_detail_bottom_left.setVisibility(GONE);
         } else {

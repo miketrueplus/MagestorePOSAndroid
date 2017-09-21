@@ -84,4 +84,9 @@ public class POSCartDataAccess extends POSAbstractDataAccess implements CartData
             connection = null;
         }
     }
+
+    @Override
+    public void changeTax(Checkout checkout) throws ParseException, InstantiationException, IllegalAccessException, IOException {
+
+    }
 }

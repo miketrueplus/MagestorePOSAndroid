@@ -188,6 +188,11 @@ public class POSCartDataAccessM1 extends POSAbstractDataAccessM1 implements Cart
         }
     }
 
+    @Override
+    public void changeTax(Checkout checkout) throws ParseException, InstantiationException, IllegalAccessException, IOException {
+
+    }
+
     private boolean checkCustomerID(Customer customer, Customer guest_customer) {
         if (getCustomerId(customer).equals(getCustomerId(guest_customer))) {
             return false;

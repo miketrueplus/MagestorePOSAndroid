@@ -194,6 +194,17 @@ public class CartItemListController extends AbstractChildListController<Checkout
      */
     public void updateTotalPrice() {
         Checkout checkout = getParent();
+        try {
+            mCartService.changeTax(checkout);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
         mCartService.calculateLastTotal(checkout);
         checkout.setGrandTotalView(checkout.getGrandTotal());
         checkout.setSubTotalView(checkout.getSubTotal());

@@ -915,6 +915,13 @@ public class POSCartService extends AbstractService implements CartService {
         return checkout.getCartItem();
     }
 
+    @Override
+    public void changeTax(Checkout checkout) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        CartDataAccess cartDataAccess = factory.generateCartDataAccess();
+        cartDataAccess.changeTax(checkout);
+    }
+
     /**
      * Map ID sang Code đối với mỗi option value khi re order
      *
@@ -928,4 +935,6 @@ public class POSCartService extends AbstractService implements CartService {
         }
         return options;
     }
+
+
 }

@@ -302,7 +302,7 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
             mDomainView.setText("http://ec2-18-220-34-129.us-east-2.compute.amazonaws.com:4001");
             mUserNameView.setText("daisy");
             mPasswordView.setText("daisy");
-//            mDomainView.setText("192.168.1.11:8000");
+//            mDomainView.setText("192.168.1.11:8899");
 //            mUserNameView.setText("johan");
 //            mPasswordView.setText("johan");
             String domain = mDomainView.getText().toString().trim();

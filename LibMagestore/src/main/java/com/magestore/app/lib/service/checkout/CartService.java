@@ -79,4 +79,6 @@ public interface CartService extends ChildListService<Checkout, CartItem> {
     float calculateValidStock(Checkout checkout, Product product, float quantity) throws ServiceException;
 
     List<CartItem> reOrder(Checkout checkout, Order order) throws IOException, InstantiationException, ParseException, IllegalAccessException;
+
+    void changeTax(Checkout checkout) throws IOException, InstantiationException, ParseException, IllegalAccessException;
 }

@@ -119,8 +119,8 @@ public class POSCheckoutDataAccessOdoo extends POSAbstractDataAccessOdoo impleme
             discount_percent = (checkout.getGrandTotal() / quoteParam.getDiscountValue()) * 100;
             discount_amount = quoteParam.getDiscountValue();
         }
-        checkout.setDiscountOffline(0 - discount_percent);
-        checkout.setDiscountTotal(0 - discount_amount);
+        checkout.setDiscountOffline(0 - ConfigUtil.convertToBasePrice(discount_percent));
+        checkout.setDiscountTotal(0 - ConfigUtil.convertToBasePrice(discount_amount));
         return checkout;
     }
 
@@ -202,12 +202,14 @@ public class POSCheckoutDataAccessOdoo extends POSAbstractDataAccessOdoo impleme
                 productEntity.pack_lot_ids = listSerialNumber;
                 listProductEntity.add(productEntity);
             }
-            if (checkout.getDiscountTotal() > 0) {
+            if (checkout.getDiscountTotal() != 0) {
                 ProductEntity productDiscount = new ProductEntity();
                 productDiscount.product_id = ConfigUtil.getDiscountProductId();
                 productDiscount.qty = 1;
-                productDiscount.price_unit = checkout.getDiscountTotal();
+                productDiscount.price_unit = ConfigUtil.convertToPrice(checkout.getDiscountTotal());
                 productDiscount.pack_lot_ids = listSerialNumber;
+                List<String> listTaxDiscount = new ArrayList<>();
+                productDiscount.tax_ids = listTaxDiscount;
                 listProductEntity.add(productDiscount);
             }
             placeOrderEntity.partner_id = placeOrderParams.getCustomerId();

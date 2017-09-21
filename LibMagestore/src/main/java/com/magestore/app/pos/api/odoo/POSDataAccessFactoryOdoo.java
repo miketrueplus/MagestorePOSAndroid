@@ -19,6 +19,7 @@ import com.magestore.app.pos.api.odoo.config.POSConfigDataAccessOdoo;
 import com.magestore.app.pos.api.odoo.customer.POSCustomerAddressDataAccessOdoo;
 import com.magestore.app.pos.api.odoo.customer.POSCustomerDataAccessOdoo;
 import com.magestore.app.pos.api.odoo.registershift.POSRegisterShiftDataAccessOdoo;
+import com.magestore.app.pos.api.odoo.sales.POSCartDataAccessOdoo;
 import com.magestore.app.pos.api.odoo.sales.POSCheckoutDataAccessOdoo;
 import com.magestore.app.pos.api.odoo.sales.POSOrderDataAccessOdoo;
 import com.magestore.app.pos.api.odoo.user.POSUserDataAccessOdoo;
@@ -67,7 +68,7 @@ public class POSDataAccessFactoryOdoo extends DataAccessFactory {
 
     @Override
     public CartDataAccess generateCartDataAccess() {
-        return null;
+        return new POSCartDataAccessOdoo();
     }
 
     @Override

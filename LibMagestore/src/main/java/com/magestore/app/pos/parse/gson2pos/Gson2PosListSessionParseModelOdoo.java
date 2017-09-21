@@ -127,7 +127,7 @@ public class Gson2PosListSessionParseModelOdoo extends Gson2PosAbstractParseImpl
                             }
                             if (obj_pos.has(POS_DISCOUNT_PRODUCT_ID)) {
                                 String pos_discount_product_id = obj_pos.remove(POS_DISCOUNT_PRODUCT_ID).getAsString();
-                                if (!StringUtil.checkJsonData(pos_discount_product_id)) {
+                                if (StringUtil.checkJsonData(pos_discount_product_id)) {
                                     pos.setDiscountProductId(pos_discount_product_id);
                                 }
                             }

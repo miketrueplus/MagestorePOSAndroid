@@ -211,6 +211,7 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
             if (totalValue >= grand_total) {
                 float money = totalValue - grand_total;
                 mCheckout.setExchangeMoney(money);
+                mCheckout.setRemainMoney(0);
                 mCheckoutListController.updateMoneyTotal(true, money);
                 mCheckoutListController.updateMaxAmountStoreCredit(grand_total);
                 // disable add payment
@@ -220,6 +221,7 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
             } else {
                 float money = grand_total - totalValue;
                 mCheckout.setRemainMoney(money);
+                mCheckout.setExchangeMoney(0);
                 mCheckoutListController.updateMoneyTotal(false, money);
                 mCheckoutListController.updateMaxAmountStoreCredit(money);
                 if (listPayment.size() == 1) {
