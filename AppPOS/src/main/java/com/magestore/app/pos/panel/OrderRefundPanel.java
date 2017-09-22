@@ -179,7 +179,7 @@ public class OrderRefundPanel extends AbstractDetailPanel<Order> {
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 float adjustFee = adjust_fee.getValueFloat();
                 order.setAdjustFree(adjustFee);
-                ((OrderHistoryListController) getController()).chaneMaxStoreCreditRefund();
+                ((OrderHistoryListController) getController()).chaneMaxAdjustFeeRefund();
             }
 
             @Override
@@ -303,6 +303,20 @@ public class OrderRefundPanel extends AbstractDetailPanel<Order> {
 
     public void updateTotalStoreCredit(float total) {
         store_credit.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(total)));
+    }
+
+    public void updateTotalAdjustFee(float total) {
+        adjust_fee.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(total)));
+        String message = getContext().getString(R.string.order_refund_limit, ConfigUtil.formatPrice(ConfigUtil.convertToPrice(mOrder.getMaxRefunded())));
+        // Tạo dialog và hiển thị
+        com.magestore.app.util.DialogUtil.confirm(getContext(), message, R.string.done);
+    }
+
+    public void updateGiftCard(float total) {
+        gift_card.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(total)));
+        String message = getContext().getString(R.string.order_refund_limit, ConfigUtil.formatPrice(ConfigUtil.convertToPrice(mOrder.getMaxRefunded())));
+        // Tạo dialog và hiển thị
+        com.magestore.app.util.DialogUtil.confirm(getContext(), message, R.string.done);
     }
 
     public void updateTotalGiftCard(float total) {
