@@ -272,9 +272,12 @@ public class POSCustomerDataAccessM1 extends POSAbstractDataAccessM1 implements 
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
+            Customer customer = customers[0];
+            customer.setID("notsync_" + customer.getID());
+
             // thực thi truy vấn và parse kết quả thành object
             Wrap wrapCustomer = new Wrap();
-            wrapCustomer.customer = customers[0];
+            wrapCustomer.customer = customer;
 
             rp = statement.execute(wrapCustomer);
             rp.setParseImplement(getClassParseImplement());

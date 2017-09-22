@@ -330,9 +330,12 @@ public class POSCustomerDataAccess
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
 
+            Customer customer = customers[0];
+            customer.setID("0");
+
             // thực thi truy vấn và parse kết quả thành object
             Wrap wrapCustomer = new Wrap();
-            wrapCustomer.customer = customers[0];
+            wrapCustomer.customer = customer;
 
             rp = statement.execute(wrapCustomer);
             rp.setParseImplement(getClassParseImplement());
