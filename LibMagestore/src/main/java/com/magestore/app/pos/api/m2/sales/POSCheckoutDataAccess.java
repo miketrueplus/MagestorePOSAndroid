@@ -120,7 +120,9 @@ public class POSCheckoutDataAccess extends POSAbstractDataAccess implements Chec
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
 
             // set data
-//            quote.setCustomerId("");
+            if (quote.getCustomerId() == null) {
+                quote.setCustomerId("");
+            }
             quote.setTillId("1");
             quote.setShiftId(null);
 
@@ -169,7 +171,9 @@ public class POSCheckoutDataAccess extends POSAbstractDataAccess implements Chec
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
 
             // set data
-            quoteParam.setCustomerId("");
+            if (quoteParam.getCustomerId() == null) {
+                quoteParam.setCustomerId("");
+            }
             quoteParam.setTillId("1");
 
             rp = statement.execute(quoteParam);
