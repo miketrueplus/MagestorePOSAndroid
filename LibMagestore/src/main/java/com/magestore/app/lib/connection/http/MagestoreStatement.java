@@ -471,7 +471,7 @@ public class MagestoreStatement implements Statement {
             if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_ODOO)) {
                 rp.setParseModel(PosMessageException.class);
                 PosMessageException messageException = ((PosMessageException) rp.doParse());
-                throw new ConnectionException(messageException.getCode(), messageException.getMessage());
+                throw new ConnectionException(String.valueOf(statusCode), messageException.getMessage());
             } else {
                 if (statusCode == 500) {
                     rp.setParseModel(PosMessageException500.class);
