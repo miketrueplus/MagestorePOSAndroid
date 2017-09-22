@@ -172,6 +172,11 @@ public class RegisterShiftListController extends AbstractListController<Register
                 }
             } else {
                 openSessionList();
+                ((RegisterShiftListPanel) mView).isShowButtonOpenSession(true);
+                Intent intent = new Intent();
+                intent.putExtra("is_show", false);
+                intent.setAction(SEND_NOTI_TO_REGISTER_ACTIVITY);
+                getMagestoreContext().getActivity().sendBroadcast(intent);
             }
             first_check = true;
         }
