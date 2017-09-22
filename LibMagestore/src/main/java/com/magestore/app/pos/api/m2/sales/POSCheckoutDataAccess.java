@@ -120,7 +120,7 @@ public class POSCheckoutDataAccess extends POSAbstractDataAccess implements Chec
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
 
             // set data
-            quote.setCustomerId("");
+//            quote.setCustomerId("");
             quote.setTillId("1");
             quote.setShiftId(null);
 
