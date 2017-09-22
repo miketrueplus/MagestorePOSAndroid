@@ -264,6 +264,7 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
         if (totalValue >= grand_total) {
             float money = totalValue - grand_total;
             mCheckout.setExchangeMoney(money);
+            mCheckout.setRemainMoney(0);
             mCheckoutListController.updateMoneyTotal(true, money);
             mCheckoutListController.updateMaxAmountStoreCredit(grand_total);
             // disable add payment
@@ -273,6 +274,7 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
         } else {
             float money = grand_total - totalValue;
             mCheckout.setRemainMoney(money);
+            mCheckout.setExchangeMoney(0);
             mCheckoutListController.updateMoneyTotal(false, money);
             mCheckoutListController.updateMaxAmountStoreCredit(money);
             mCheckoutListController.isEnableButtonAddPayment(totalValue > 0 ? true : false);
@@ -350,6 +352,7 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
 
                     float money = totalValue - grand_total;
                     mCheckout.setExchangeMoney(money);
+                    mCheckout.setRemainMoney(0);
                     mCheckoutListController.updateMoneyTotal(true, money);
 
                     float remain_money = grand_total - totalNotExchange;
@@ -364,6 +367,7 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
                 } else {
                     float money = grand_total - totalValue;
                     mCheckout.setRemainMoney(money);
+                    mCheckout.setExchangeMoney(0);
                     mCheckoutListController.updateMoneyTotal(false, money);
                     checkoutPayment.setAmount(currentValue);
                     checkoutPayment.setBaseAmount(currentValue);
@@ -507,7 +511,17 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
                 checkAmount = true;
             }
             if (!checkAmount) {
-                edittext.setText(ConfigUtil.formatNumber(0.00));
+                String amount;
+                if (ConfigUtil.getConfigPriceFormat() != null) {
+                    String patten = "0.";
+                    for (int i = 0; i < ConfigUtil.getConfigPriceFormat().getPrecision(); i++) {
+                        patten += "0";
+                    }
+                    amount = patten;
+                } else {
+                    amount = "0.00";
+                }
+                edittext.setText(convertStringNumber(amount));
             }
             if (id == R.id.rl_keyboard_place_order) {
                 hideCustomKeyboard();
@@ -657,8 +671,15 @@ public class CheckoutPaymentListPanel extends AbstractSimpleRecycleView<Checkout
 
     private float convertToPrice(String amount) {
         String decima_symbol = ConfigUtil.getConfigPriceFormat().getDecimalSymbol();
-        String text_f = amount.substring(0, amount.length() - 2);
-        String text_s = amount.substring(amount.length() - 2, amount.length());
+        String text_f = amount.substring(0, amount.length() - ConfigUtil.getConfigPriceFormat().getPrecision());
+        String text_s = amount.substring(amount.length() - ConfigUtil.getConfigPriceFormat().getPrecision(), amount.length());
         return ConfigUtil.parseFloat(text_f + decima_symbol + text_s);
+    }
+
+    private String convertStringNumber(String amount) {
+        String decima_symbol = ConfigUtil.getConfigPriceFormat().getDecimalSymbol();
+        String text_f = amount.substring(0, amount.length() - ConfigUtil.getConfigPriceFormat().getPrecision());
+        String text_s = amount.substring(amount.length() - ConfigUtil.getConfigPriceFormat().getPrecision(), amount.length());
+        return text_f + decima_symbol + text_s;
     }
 }

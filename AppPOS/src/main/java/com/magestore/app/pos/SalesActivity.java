@@ -51,6 +51,7 @@ import com.magestore.app.pos.controller.CheckoutListController;
 import com.magestore.app.pos.controller.OrderHistoryListController;
 import com.magestore.app.pos.controller.PluginGiftCardController;
 import com.magestore.app.pos.controller.ProductListController;
+import com.magestore.app.pos.controller.RegisterShiftListController;
 import com.magestore.app.pos.controller.SettingListController;
 import com.magestore.app.pos.panel.CartItemDetailPanel;
 import com.magestore.app.pos.panel.CartItemListPanel;
@@ -540,12 +541,14 @@ public class SalesActivity extends AbstractActivity
         IntentFilter filter_error_paypal = new IntentFilter(PaymentPayPalActivity.SEND_ERROR_TO_SALE_ACTIVITY);
         IntentFilter filter_staff_permisson = new IntentFilter(RETRIEVE_STAFF_PERMISSON_TO_SALE_ACTIVITY);
         IntentFilter filter_change_staff_permisson = new IntentFilter(CHANGE_STAFF_PERMISSON_TO_SALE_ACTIVITY);
+        IntentFilter filter_load_view = new IntentFilter(RegisterShiftListController.LOAD_VIEW_TO_ACTIVITY);
         registerReceiver(receiver_data_setting, filter_setting);
         registerReceiver(receiver_data_order, filter_order);
         registerReceiver(receiver_data_payment_paypal, filter_payment_id);
         registerReceiver(receiver_data_error_paypal, filter_error_paypal);
         registerReceiver(receiver_staff_permisson, filter_staff_permisson);
         registerReceiver(change_staff_permisson, filter_change_staff_permisson);
+        registerReceiver(receiver_reload_view, filter_load_view);
     }
 
     @Override
@@ -646,6 +649,17 @@ public class SalesActivity extends AbstractActivity
             mCheckoutListController.getView().notifyDataSetChanged();
             mCheckoutListController.updateTotal();
 //            mProductListPanel.notifyDataSetChanged();
+            mCartItemListPanel.notifyDataSetChanged();
+            mCheckoutListPanel.notifyDataSetChanged();
+        }
+    };
+
+    BroadcastReceiver receiver_reload_view = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            mProductListPanel.notifyDataSetChanged();
+            mCheckoutListController.getView().notifyDataSetChanged();
+            mCheckoutListController.updateTotal();
             mCartItemListPanel.notifyDataSetChanged();
             mCheckoutListPanel.notifyDataSetChanged();
         }

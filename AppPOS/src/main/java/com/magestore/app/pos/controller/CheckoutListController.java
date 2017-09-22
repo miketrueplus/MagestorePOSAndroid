@@ -695,6 +695,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 // auto select shipping method
                 autoSelectShipping(listShipping);
             } else {
+                wraper.remove("save_shipping");
                 List<CheckoutPayment> listChoosePayment = (List<CheckoutPayment>) wraper.get("list_payment");
                 if (listChoosePayment != null) {
                     listChoosePayment = new ArrayList<>();
@@ -708,6 +709,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 mCheckoutPaymentListPanel.bindList(listChoosePayment);
                 ((CheckoutDetailPanel) mDetailView).showPanelCheckoutPaymentCreditCard(false);
                 ((CheckoutDetailPanel) mDetailView).showPanelPaymentMethod();
+                wraper.put("save_cart", checkout);
                 mCheckoutPaymentListPanel.setCheckout(checkout);
                 mCheckoutPaymentListPanel.resetListPayment();
                 mPluginGiftCardPanel.resetListGiftCard();
@@ -793,6 +795,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                     ((CheckoutDetailPanel) mDetailView).showPanelCheckoutPaymentCreditCard(false);
                     ((CheckoutDetailPanel) mDetailView).showPanelPaymentMethod();
                     wraper.put("save_quote", checkout);
+                    wraper.put("save_cart", checkout);
                     mCheckoutPaymentListPanel.resetListPayment();
                     mPluginGiftCardPanel.resetListGiftCard();
                     // plugins
@@ -892,6 +895,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                     ((CheckoutDetailPanel) mDetailView).showPanelCheckoutPaymentCreditCard(false);
                     ((CheckoutDetailPanel) mDetailView).showPanelPaymentMethod();
                     wraper.put("save_quote", checkout);
+                    wraper.put("save_cart", checkout);
                     mCheckoutPaymentListPanel.resetListPayment();
                     mPluginGiftCardPanel.resetListGiftCard();
                     // plugins
@@ -1780,7 +1784,6 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         checkout.setCustomerID(guest_checkout.getID());
         checkout.setCustomer(guest_checkout);
         checkout.setStatus(STATUS_CHECKOUT_ADD_ITEM);
-        setSelectedItem(checkout);
         getSelectedItems().add(index, checkout);
     }
 

@@ -102,9 +102,19 @@ public class POSCheckoutDataAccessOdoo extends POSAbstractDataAccessOdoo impleme
         grand_total = checkout.getSubTotal() + total_tax + checkout.getDiscountTotal();
         checkout.setGrandTotal(ConfigUtil.convertToPrice(grand_total));
         checkout.setGrandTotalView(grand_total);
+        checkout.setRemainMoney(0);
+        checkout.setExchangeMoney(0);
         quote.setID(String.valueOf(ConfigUtil.getItemIdInCurrentTime()));
         checkout.setQuote(quote);
-        checkout.setCheckoutPayment(ConfigUtil.getListPayment());
+        List<CheckoutPayment> listPayment = new ArrayList<>();
+        for (CheckoutPayment checkoutPayment : ConfigUtil.getListPayment()) {
+            checkoutPayment.setAmount(0);
+            checkoutPayment.setBaseAmount(0);
+            checkoutPayment.setRealAmount(0);
+            checkoutPayment.setBaseRealAmount(0);
+            listPayment.add(checkoutPayment);
+        }
+        checkout.setCheckoutPayment(listPayment);
         return checkout;
     }
 

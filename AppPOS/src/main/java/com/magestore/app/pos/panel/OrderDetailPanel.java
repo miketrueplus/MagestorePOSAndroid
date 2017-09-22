@@ -129,8 +129,8 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         mBinding.setOrderDetail(item);
         if (checkCanInvoice(mOrder)) {
             btn_invoice.setVisibility(!StringUtil.isNullOrEmpty(item.getCustomerId()) ? VISIBLE: GONE);
-            fr_detail_bottom_right.setVisibility(GONE);
-            fr_detail_bottom_left.setVisibility(GONE);
+            fr_detail_bottom_right.setVisibility(!StringUtil.isNullOrEmpty(item.getCustomerId()) ? GONE : VISIBLE);
+            fr_detail_bottom_left.setVisibility(!StringUtil.isNullOrEmpty(item.getCustomerId()) ? GONE : VISIBLE);
         } else {
             btn_invoice.setVisibility(GONE);
             fr_detail_bottom_right.setVisibility(VISIBLE);
@@ -224,9 +224,9 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
     public void bindDataRespone(Order order) {
         mBinding.setOrderDetail(order);
         if (checkCanInvoice(order)) {
-            btn_invoice.setVisibility(VISIBLE);
-            fr_detail_bottom_right.setVisibility(GONE);
-            fr_detail_bottom_left.setVisibility(GONE);
+            btn_invoice.setVisibility(!StringUtil.isNullOrEmpty(order.getCustomerId()) ? VISIBLE : GONE);
+            fr_detail_bottom_right.setVisibility(!StringUtil.isNullOrEmpty(order.getCustomerId()) ? GONE : VISIBLE);
+            fr_detail_bottom_left.setVisibility(!StringUtil.isNullOrEmpty(order.getCustomerId()) ? GONE : VISIBLE);
         } else {
             btn_invoice.setVisibility(GONE);
             fr_detail_bottom_right.setVisibility(VISIBLE);

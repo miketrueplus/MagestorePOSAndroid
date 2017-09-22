@@ -54,6 +54,7 @@ public class RegisterShiftListController extends AbstractListController<Register
     List<OpenSessionValue> listValueOpen;
     Map<String, Object> wraper;
     public static String SEND_NOTI_TO_REGISTER_ACTIVITY = "com.magestore.app.pos.controller.register.controller";
+    public static String LOAD_VIEW_TO_ACTIVITY = "com.magestore.app.pos.controller.register.controller.reload.view";
     UserService userService;
     boolean first_add;
     boolean first_check;
@@ -549,7 +550,7 @@ public class RegisterShiftListController extends AbstractListController<Register
             configPrint.setShowReceiptLogo("0");
 
             Intent i = new Intent();
-            i.setAction(SettingListController.RESET_DATA_TO_SALE_ACTIVITY);
+            i.setAction(LOAD_VIEW_TO_ACTIVITY);
             getMagestoreContext().getActivity().sendBroadcast(i);
         }
     }

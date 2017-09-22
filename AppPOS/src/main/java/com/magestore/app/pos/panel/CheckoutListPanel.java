@@ -124,6 +124,8 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
 
     @Override
     public void initValue() {
+        bt_custom_sales.setVisibility(ConfigUtil.isCustomSales() ? VISIBLE : GONE);
+
         ll_action_checkout.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -315,7 +317,11 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
     }
 
     public void showSalesMenuToCheckout(boolean isShow) {
-        bt_custom_sales.setVisibility(isShow ? VISIBLE : GONE);
+        if (ConfigUtil.isCustomSales()) {
+            bt_custom_sales.setVisibility(isShow ? VISIBLE : GONE);
+        } else {
+            bt_custom_sales.setVisibility(GONE);
+        }
         if (checkShowButtonDiscount()) {
             bt_sales_discount.setVisibility(((CheckoutListController) mController).checkListCartItem() ? VISIBLE : GONE);
         } else {
@@ -324,7 +330,11 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
     }
 
     public void showButtonCustomSales(boolean isShow) {
-        bt_custom_sales.setVisibility(isShow ? VISIBLE : GONE);
+        if (ConfigUtil.isCustomSales()) {
+            bt_custom_sales.setVisibility(isShow ? VISIBLE : GONE);
+        } else {
+            bt_custom_sales.setVisibility(GONE);
+        }
     }
 
     public void showButtonDiscount(boolean isShow) {

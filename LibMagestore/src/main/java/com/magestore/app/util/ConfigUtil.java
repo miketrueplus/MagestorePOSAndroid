@@ -88,6 +88,7 @@ public class ConfigUtil {
     private static boolean mReOder;
     private static boolean mPartialInvoice;
     // permisson discount
+    private static boolean mCustomSales;
     private static boolean mManageAllDiscount;
     private static boolean mDiscountPerCart;
     private static boolean mApplyCoupon;
@@ -1021,6 +1022,14 @@ public class ConfigUtil {
 
     public static void setPartialInvoice(boolean mPartialInvoice) {
         ConfigUtil.mPartialInvoice = mPartialInvoice;
+    }
+
+    public static boolean isCustomSales() {
+        return mCustomSales;
+    }
+
+    public static void setCustomSales(boolean mCustomSales) {
+        ConfigUtil.mCustomSales = mCustomSales;
     }
 
     public static boolean isManageAllDiscount() {

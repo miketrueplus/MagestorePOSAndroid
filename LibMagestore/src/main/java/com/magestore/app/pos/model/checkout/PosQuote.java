@@ -30,6 +30,12 @@ public class PosQuote extends PosAbstractModel implements Quote {
     }
 
     @Override
+    public void setID(String id) {
+        super.setID(id);
+        quote_id = id;
+    }
+
+    @Override
     public void setQuoteId(String strId) {
         quote_id = strId;
     }
