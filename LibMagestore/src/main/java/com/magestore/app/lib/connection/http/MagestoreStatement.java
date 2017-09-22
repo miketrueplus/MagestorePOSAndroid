@@ -468,24 +468,30 @@ public class MagestoreStatement implements Statement {
             // có lỗi, ném ra exception
             MagestoreResultReadingException rp = new MagestoreResultReadingException(mHttpConnection.getErrorStream(), statusCode);
             rp.setParseImplement(Gson2PosMesssageExceptionImplement.class);
-            if (statusCode == 500) {
-                rp.setParseModel(PosMessageException500.class);
-                PosMessageException500 messageException500 = ((PosMessageException500) rp.doParse());
-                throw new ConnectionException(messageException500.getCode(), messageException500.getMessage());
-            } else if (statusCode == 404) {
-                rp.setParseModel(PosMessageException.class);
-//                PosMessageException messageException = ((PosMessageException) rp.doParse());
-                throw new ConnectionException(ConnectionException.EXCEPTION_PAGE_NOT_FOUND);
-            } else if (statusCode == 400) {
-                rp.setParseModel(PosMessageException400.class);
-                PosMessageException400 messageException = ((PosMessageException400) rp.doParse());
-                throw new ConnectionException(messageException.getCode(), messageException.getMessage());
-            } else {
+            if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_ODOO)) {
                 rp.setParseModel(PosMessageException.class);
                 PosMessageException messageException = ((PosMessageException) rp.doParse());
                 throw new ConnectionException(messageException.getCode(), messageException.getMessage());
+            } else {
+                if (statusCode == 500) {
+                    rp.setParseModel(PosMessageException500.class);
+                    PosMessageException500 messageException500 = ((PosMessageException500) rp.doParse());
+                    throw new ConnectionException(messageException500.getCode(), messageException500.getMessage());
+                } else if (statusCode == 404) {
+                    rp.setParseModel(PosMessageException.class);
+//                PosMessageException messageException = ((PosMessageException) rp.doParse());
+                    throw new ConnectionException(ConnectionException.EXCEPTION_PAGE_NOT_FOUND);
+                } else if (statusCode == 400) {
+                    rp.setParseModel(PosMessageException400.class);
+                    PosMessageException400 messageException = ((PosMessageException400) rp.doParse());
+                    throw new ConnectionException(messageException.getCode(), messageException.getMessage());
+                } else {
+                    rp.setParseModel(PosMessageException.class);
+                    PosMessageException messageException = ((PosMessageException) rp.doParse());
+                    throw new ConnectionException(messageException.getCode(), messageException.getMessage());
 //                rp.setParseModel(PosMessageException.class);
 //                throw new ConnectionException(Integer.toString(statusCode), "");
+                }
             }
         }
     }
