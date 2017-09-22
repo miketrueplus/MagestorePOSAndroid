@@ -826,14 +826,45 @@ public class OrderHistoryListController extends AbstractListController<Order> {
         float adjust_free = order.getAdjustFree();
         float max_store_credit = ((total_price_qty_item + price_shipping + adjust_refund) - (adjust_free + order.getMaxGiftCardRefund()));
         float max_refunded = order.getMaxRefunded();
-        order.setMaxStoreCreditRefund(max_store_credit);
-        if (max_store_credit <= max_refunded) {
-            mOrderRefundPanel.updateTotalStoreCredit(max_store_credit);
-            order.setStoreCreditRefund(max_store_credit);
+        if (max_store_credit >= 0) {
+            if (max_store_credit <= max_refunded) {
+                order.setStoreCreditRefund(max_store_credit);
+                mOrderRefundPanel.updateTotalStoreCredit(max_store_credit);
+            } else {
+                order.setStoreCreditRefund(max_refunded);
+                order.setMaxStoreCreditRefund(max_refunded);
+                mOrderRefundPanel.updateTotalStoreCredit(max_refunded);
+            }
         } else {
-            mOrderRefundPanel.updateTotalStoreCredit(order.getMaxRefunded());
-            order.setStoreCreditRefund(order.getMaxRefunded());
-            order.setMaxStoreCreditRefund(order.getMaxRefunded());
+            order.setStoreCreditRefund(max_refunded);
+            order.setMaxStoreCreditRefund(max_refunded);
+            mOrderRefundPanel.updateTotalStoreCredit(max_refunded);
+            mOrderRefundPanel.updateGiftCard(0);
+        }
+    }
+
+    public void chaneMaxAdjustFeeRefund() {
+        Order order = ((OrderDetailPanel) mDetailView).getOrder();
+        float total_price_qty_item = order.getTotalPriceChangeQtyRefund();
+        float price_shipping = order.getRefundShipping();
+        float adjust_refund = order.getAdjustRefund();
+        float adjust_free = order.getAdjustFree();
+        float max_store_credit = ((total_price_qty_item + price_shipping + adjust_refund) - (adjust_free + order.getMaxGiftCardRefund()));
+        float max_refunded = order.getMaxRefunded();
+        if (max_store_credit >= 0) {
+            if (max_store_credit <= max_refunded) {
+                order.setStoreCreditRefund(max_store_credit);
+                mOrderRefundPanel.updateTotalStoreCredit(max_store_credit);
+            } else {
+                order.setStoreCreditRefund(max_refunded);
+                order.setMaxStoreCreditRefund(max_refunded);
+                mOrderRefundPanel.updateTotalStoreCredit(max_refunded);
+            }
+        } else {
+            order.setStoreCreditRefund(max_refunded);
+            order.setMaxStoreCreditRefund(max_refunded);
+            mOrderRefundPanel.updateTotalStoreCredit(max_refunded);
+            mOrderRefundPanel.updateTotalAdjustFee(0);
         }
     }
 
