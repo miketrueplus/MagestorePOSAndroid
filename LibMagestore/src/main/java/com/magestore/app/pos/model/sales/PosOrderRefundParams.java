@@ -39,8 +39,18 @@ public class PosOrderRefundParams extends PosAbstractModel implements OrderRefun
     }
 
     @Override
+    public float getAdjustmentNegative() {
+        return adjustmentNegative;
+    }
+
+    @Override
     public void setAdjustmentNegative(float adjustmentNegative) {
         this.adjustmentNegative = adjustmentNegative;
+    }
+
+    @Override
+    public float getAdjustmentPositive() {
+        return adjustmentPositive;
     }
 
     @Override
@@ -49,13 +59,28 @@ public class PosOrderRefundParams extends PosAbstractModel implements OrderRefun
     }
 
     @Override
+    public String getBaseCurrencyCode() {
+        return baseCurrencyCode;
+    }
+
+    @Override
     public void setBaseCurrencyCode(String baseCurrencyCode) {
         this.baseCurrencyCode = baseCurrencyCode;
     }
 
     @Override
+    public float getShippingAmount() {
+        return shippingAmount;
+    }
+
+    @Override
     public void setShippingAmount(float shippingAmount) {
         this.shippingAmount = shippingAmount;
+    }
+
+    @Override
+    public String getStoreCurrencyCode() {
+        return storeCurrencyCode;
     }
 
     @Override
