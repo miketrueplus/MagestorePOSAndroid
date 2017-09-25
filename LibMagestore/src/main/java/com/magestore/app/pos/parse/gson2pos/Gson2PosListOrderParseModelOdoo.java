@@ -284,8 +284,8 @@ public class Gson2PosListOrderParseModelOdoo extends Gson2PosAbstractParseImplem
                                 }
                             }
                         }
-                        order.setTaxAmount((total_subtotal * total_tax) / 100);
-                        order.setBaseTaxAmount(ConfigUtil.convertToBasePrice((total_subtotal * total_tax) / 100));
+//                        order.setTaxAmount((total_subtotal * total_tax) / 100);
+//                        order.setBaseTaxAmount(ConfigUtil.convertToBasePrice((total_subtotal * total_tax) / 100));
                         order.setDiscountAmount(total_discount);
                         order.setBaseDiscountAmount(ConfigUtil.convertToBasePrice(total_discount));
                         order.setBaseSubtotal(ConfigUtil.convertToBasePrice(total_subtotal));
