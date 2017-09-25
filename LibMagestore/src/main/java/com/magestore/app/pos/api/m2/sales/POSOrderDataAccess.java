@@ -22,6 +22,7 @@ import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.model.sales.OrderCartItem;
 import com.magestore.app.lib.model.sales.OrderCommentParams;
+import com.magestore.app.lib.model.sales.OrderItemParams;
 import com.magestore.app.lib.model.sales.OrderRefundCreditParams;
 import com.magestore.app.lib.model.sales.OrderInvoiceParams;
 import com.magestore.app.lib.model.sales.OrderRefundGiftCard;
@@ -38,6 +39,7 @@ import com.magestore.app.pos.api.m2.POSAbstractDataAccess;
 import com.magestore.app.pos.api.m2.POSDataAccessSession;
 import com.magestore.app.pos.model.checkout.cart.PosCartItem;
 import com.magestore.app.pos.model.sales.PosOrder;
+import com.magestore.app.pos.model.sales.PosOrderAttributes;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosAbstractParseImplement;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListOrder;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListPaymentMethod;
@@ -109,6 +111,32 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
         Model entity;
 
         OrderCommentParams comment;
+    }
+
+    private class OrderRefundEntity {
+        OrderRefundParam entity;
+    }
+
+    private class OrderRefundParam {
+        List<OrderRefundItemParam> items;
+        String order_id;
+        String base_currency_code;
+        String store_currency_code;
+        float adjustment_positive;
+        float shipping_amount;
+        float adjustment_negative;
+        String email_sent;
+        List<OrderRefundComment> comments;
+    }
+
+    private class OrderRefundItemParam {
+        float qty;
+        String order_item_id;
+        String additional_data;
+    }
+
+    private class OrderRefundComment {
+        String comment;
     }
 
     @Override
@@ -701,10 +729,40 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
             refundParams.setIncrementId(null);
             refundParams.setInvoiceId(null);
 
-            OrderEntity orderEntity = new OrderEntity();
-            orderEntity.entity = refundParams;
+            OrderRefundEntity orderRefundEntity = new OrderRefundEntity();
+            OrderRefundParam orderRefundParam = new OrderRefundParam();
+            orderRefundParam.adjustment_negative = refundParams.getAdjustmentNegative();
+            orderRefundParam.adjustment_positive = refundParams.getAdjustmentPositive();
+            orderRefundParam.base_currency_code = refundParams.getBaseCurrencyCode();
+            orderRefundParam.store_currency_code = refundParams.getStoreCurrencyCode();
+            orderRefundParam.order_id = refundParams.getOrderId();
+            orderRefundParam.shipping_amount = refundParams.getShippingAmount();
+            orderRefundParam.email_sent = refundParams.getEmailSent();
+            List<OrderRefundItemParam> listOrderRefundItemParams = new ArrayList<>();
+            if (refundParams.getItems() != null && refundParams.getItems().size() > 0) {
+                for (OrderItemParams item: refundParams.getItems()) {
+                    OrderRefundItemParam itemRefund = new OrderRefundItemParam();
+                    itemRefund.qty = item.getQty();
+                    itemRefund.order_item_id = item.getOrderItemId();
+                    itemRefund.additional_data = item.getAdditionalData();
+                    listOrderRefundItemParams.add(itemRefund);
+                }
+            }
+            orderRefundParam.items = listOrderRefundItemParams;
 
-            rp = statement.execute(orderEntity);
+            List<OrderRefundComment> listOrderRefundComments = new ArrayList<>();
+            if (refundParams.getComments() != null && refundParams.getComments().size() > 0) {
+                for (OrderCommentParams comment: refundParams.getComments()) {
+                    OrderRefundComment commentRefund = new OrderRefundComment();
+                    commentRefund.comment = comment.getComment();
+                    listOrderRefundComments.add(commentRefund);
+                }
+            }
+            orderRefundParam.comments = listOrderRefundComments;
+
+            orderRefundEntity.entity = orderRefundParam;
+
+            rp = statement.execute(orderRefundEntity);
             rp.setParseImplement(getClassParseImplement());
             rp.setParseModel(PosOrder.class);
             return (Order) rp.doParse();

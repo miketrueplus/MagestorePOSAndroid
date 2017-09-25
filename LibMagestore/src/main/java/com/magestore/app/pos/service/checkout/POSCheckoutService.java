@@ -686,7 +686,7 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
     @Override
     public Checkout create() {
         Checkout checkout = new PosCheckout();
-        checkout.setCreateAt(ConfigUtil.getCurrentTime());
+        checkout.setCreateAt(ConfigUtil.getCurrentTimeNow());
         List<CartItem> cartItemList = new ArrayList<CartItem>();
         checkout.setCartItem(cartItemList);
         return checkout;

@@ -15,14 +15,19 @@ public interface OrderRefundParams extends Model {
 
     String getOrderId();
 
+    float getAdjustmentNegative();
     void setAdjustmentNegative(float adjustmentNegative);
 
+    float getAdjustmentPositive();
     void setAdjustmentPositive(float adjustmentPositive);
 
+    String getBaseCurrencyCode();
     void setBaseCurrencyCode(String baseCurrencyCode);
 
+    float getShippingAmount();
     void setShippingAmount(float shippingAmount);
 
+    String getStoreCurrencyCode();
     void setStoreCurrencyCode(String strStoreCurrencyCode);
 
     void setEmailSent(String strEmailSent);

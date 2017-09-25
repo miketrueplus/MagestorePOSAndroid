@@ -660,6 +660,13 @@ public class ConfigUtil {
         return date;
     }
 
+    public static String getCurrentTimeNow() {
+        DateFormat df = new SimpleDateFormat("kk:mm");
+        Calendar calendar = Calendar.getInstance();
+        String date = df.format(calendar.getTimeInMillis());
+        return date;
+    }
+
     public static String getCurrentDateTime() {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         Calendar calendar = Calendar.getInstance();
