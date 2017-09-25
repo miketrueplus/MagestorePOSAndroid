@@ -1176,6 +1176,15 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         return listStatus;
     }
 
+    @Override
+    public List<String> getConfigSetting() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        List<String> listSetting = new ArrayList<>();
+        listSetting.add("0");
+        listSetting.add("1");
+        listSetting.add("2");
+        return listSetting;
+    }
+
     private boolean checkStaffPermiss(List<String> listPermisson, String permisson) {
         boolean checkPermisson = false;
         for (String _permisson : listPermisson) {

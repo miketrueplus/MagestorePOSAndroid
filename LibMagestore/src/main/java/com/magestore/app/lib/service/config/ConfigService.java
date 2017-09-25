@@ -84,12 +84,6 @@ public interface ConfigService extends Service {
 
     Map<String, ConfigCountry> getCountry() throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
-    List<PaymentMethod> getPaymentMethodList() throws InstantiationException, IllegalAccessException, IOException, ParseException;
-
-    List<ShippingMethod> getShippingMethodList() throws InstantiationException, IllegalAccessException, IOException, ParseException;
-
-    List<CheckoutPayment> getCheckoutPaymentList() throws InstantiationException, IllegalAccessException, IOException, ParseException;
-
     Customer getGuestCheckout() throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
     List<Currency> getCurrencies() throws InstantiationException, IllegalAccessException, IOException, ParseException;
@@ -130,5 +124,7 @@ public interface ConfigService extends Service {
 
     boolean getConfigDeleteOrder() throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
-    List<Setting> getListSetting();
+    List<String> getConfigSetting() throws InstantiationException, IllegalAccessException, IOException, ParseException;
+
+    List<Setting> getListSetting(Map<String, String> listTitle);
 }

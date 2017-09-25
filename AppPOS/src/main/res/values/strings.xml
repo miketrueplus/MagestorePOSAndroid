@@ -244,6 +244,10 @@
     <string name="setting_account_title_current_password">Current Password - Optional</string>
     <string name="setting_account_title_new_password">New Password</string>
     <string name="setting_account_title_confirm_password">Confirm Password</string>
+    <string name="setting_account">My Account</string>
+    <string name="setting_print">Print</string>
+    <string name="setting_currency">Currency</string>
+    <string name="setting_store">Store</string>
 
     <!--Strings related to plugins-->
     <string name="plugin_store_credit">Customer Credit</string>

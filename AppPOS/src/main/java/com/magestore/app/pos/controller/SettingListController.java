@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 
+import com.google.gson.internal.LinkedTreeMap;
 import com.magestore.app.lib.controller.AbstractListController;
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.directory.Currency;
@@ -54,7 +55,12 @@ public class SettingListController extends AbstractListController<Setting> {
     public List<Setting> onRetrieveBackground(int page, int pageSize) throws Exception {
         currencyList = mConfigService.getCurrencies();
         mStaff = mConfigService.getStaff();
-        return mConfigService.getListSetting();
+        Map<String, String> listTitleConfig = new LinkedTreeMap<>();
+        listTitleConfig.put("0", getMagestoreContext().getActivity().getString(R.string.setting_account));
+        listTitleConfig.put("1", getMagestoreContext().getActivity().getString(R.string.setting_print));
+        listTitleConfig.put("2", getMagestoreContext().getActivity().getString(R.string.setting_currency));
+        listTitleConfig.put("3", getMagestoreContext().getActivity().getString(R.string.setting_store));
+        return mConfigService.getListSetting(listTitleConfig);
     }
 
     @Override

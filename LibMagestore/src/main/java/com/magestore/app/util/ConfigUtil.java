@@ -124,6 +124,8 @@ public class ConfigUtil {
     private static boolean mRequiedZipCode;
     private static Map<String, ConfigCountry> mListCountry;
     private static Map<String, String> mListCustomerGroup;
+    // setting
+    private static Map<String, String> mListSetting;
 
     // order status
     private static Map<String, String> mListOrderStatus;
@@ -1286,6 +1288,14 @@ public class ConfigUtil {
 
     public static void setListCustomerGroup(Map<String, String> mListCustomerGroup) {
         ConfigUtil.mListCustomerGroup = mListCustomerGroup;
+    }
+
+    public static Map<String, String> getListSetting() {
+        return mListSetting;
+    }
+
+    public static void setListSetting(Map<String, String> mListSetting) {
+        ConfigUtil.mListSetting = mListSetting;
     }
 
     public static void setListOrderStatus(Map<String, String> mListOrderStatus) {

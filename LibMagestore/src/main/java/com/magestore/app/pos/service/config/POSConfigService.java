@@ -469,117 +469,54 @@ public class POSConfigService extends AbstractService implements ConfigService {
         return configDataAccess.getConfigDeleteOrder();
     }
 
-    public static String SETTING_ACCOUNT = "My Account";
-    public static String SETTING_PRINT = "Print";
-    public static String SETTING_CURRENCY = "Currency";
-    public static String SETTING_STORE = "Store";
+    @Override
+    public List<String> getConfigSetting() throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
+        return configDataAccess.getConfigSetting();
+    }
 
     @Override
-    public List<Setting> getListSetting() {
+    public List<Setting> getListSetting(Map<String, String> listTitle) {
         List<Setting> settingList = new ArrayList<>();
+        List<String> listConfig = null;
+        try {
+            listConfig = getConfigSetting();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
-        Setting accountSetting = new PosSetting();
-        accountSetting.setName(SETTING_ACCOUNT);
-        accountSetting.setType(0);
-        settingList.add(accountSetting);
-
-        Setting printSetting = new PosSetting();
-        printSetting.setName(SETTING_PRINT);
-        printSetting.setType(1);
-        settingList.add(printSetting);
-
-        Setting currencySetting = new PosSetting();
-        currencySetting.setName(SETTING_CURRENCY);
-        currencySetting.setType(2);
-        settingList.add(currencySetting);
-
-//        Setting storeSetting = new PosSetting();
-//        storeSetting.setName(SETTING_STORE);
-//        storeSetting.setType(3);
-//        settingList.add(storeSetting);
+        for (String key : listConfig) {
+            if (key.equals("0")) {
+                Setting accountSetting = new PosSetting();
+                accountSetting.setName(listTitle.get(key));
+                accountSetting.setType(0);
+                settingList.add(accountSetting);
+            } else if (key.equals("1")) {
+                Setting printSetting = new PosSetting();
+                printSetting.setName(listTitle.get(key));
+                printSetting.setType(1);
+                settingList.add(printSetting);
+            } else if (key.equals("2")) {
+                Setting currencySetting = new PosSetting();
+                currencySetting.setName(listTitle.get(key));
+                currencySetting.setType(2);
+                settingList.add(currencySetting);
+            } else if (key.equals("3")) {
+                Setting storeSetting = new PosSetting();
+                storeSetting.setName(listTitle.get(key));
+                storeSetting.setType(3);
+                settingList.add(storeSetting);
+            }
+        }
 
         return settingList;
-    }
-
-    public static String PAYMENT_METHOD_CC_DIRECT_POST = "CC_DIRECT";
-    public static String PAYMENT_METHOD_CASH_IN = "CASH_IN";
-    public static String PAYMENT_METHOD_CC_CARD = "CC_CARDN";
-    public static String PAYMENT_METHOD_CASH_COD = "CASH_ON_DELIVERY";
-    public static String PAYMENT_METHOD_CUSTOM_PAYMENT1 = "CUSTOM_PAYMENT1";
-    public static String PAYMENT_METHOD_CUSTOM_PAYMENT2 = "CUSTOM_PAYMENT2";
-
-    @Override
-    public List<PaymentMethod> getPaymentMethodList() throws InstantiationException, IllegalAccessException, IOException, ParseException {
-        List<PaymentMethod> paymentMethodList = new ArrayList<PaymentMethod>();
-
-        PaymentMethod method = new PosPaymentMethod();
-        method.setName("Credit Card Direct Post (Authorize.net)");
-        method.setCreditCardDirect();
-        paymentMethodList.add(method);
-
-        method = new PosPaymentMethod();
-        method.setName("Direct cash in");
-        method.setCashIn();
-        paymentMethodList.add(method);
-
-        method = new PosPaymentMethod();
-        method.setName("Credit direct");
-        method.setCreditCardIn();
-        paymentMethodList.add(method);
-
-        method = new PosPaymentMethod();
-        method.setName("Cash on delivery");
-        method.setCashOnDelivery();
-        paymentMethodList.add(method);
-
-        method = new PosPaymentMethod();
-        method.setName("Custom payment 1");
-        method.setCustomerPayment();
-        paymentMethodList.add(method);
-
-        method = new PosPaymentMethod();
-        method.setName("Custom payment 2");
-        method.setCustomerPayment();
-        paymentMethodList.add(method);
-
-        return paymentMethodList;
-    }
-
-    public static String SHIPPING_METHOD_FLAT_RATE = "SHIPPING_METHOD_FLAT_RATE";
-    public static String PAYMENT_METHOD_FREE_SHIPPING = "PAYMENT_METHOD_FREE_SHIPPING";
-    public static String PAYMENT_METHOD_STORE_PICKUP = "PAYMENT_METHOD_STORE_PICKUP";
-
-    @Override
-    public List<ShippingMethod> getShippingMethodList() throws InstantiationException, IllegalAccessException, IOException, ParseException {
-        List<ShippingMethod> shippingMethodList = new ArrayList<ShippingMethod>();
-
-        ShippingMethod method = new PosShippingMethod();
-        method.setName("Flat Rate - Fixed");
-        method.setFixedRate(10);
-        shippingMethodList.add(method);
-
-        method = new PosShippingMethod();
-        method.setName("Free CheckoutShipping - Free");
-        method.setFreeRate();
-        shippingMethodList.add(method);
-
-        method = new PosShippingMethod();
-        method.setName("POS CheckoutShipping - Store Pickup");
-        method.setFreeRate();
-        shippingMethodList.add(method);
-
-        return shippingMethodList;
-    }
-
-    @Override
-    public List<CheckoutPayment> getCheckoutPaymentList() throws InstantiationException, IllegalAccessException, IOException, ParseException {
-        List<CheckoutPayment> checkoutPaymentList = new ArrayList<CheckoutPayment>();
-        CheckoutPayment payment = new PosCheckoutPayment();
-        payment.setTitle("Cash In");
-        payment.setBaseAmount(10.0f);
-        checkoutPaymentList.add(payment);
-        return checkoutPaymentList;
-
     }
 
     public Map<String, String> getListOrderStatus() throws InstantiationException, IllegalAccessException, IOException, ParseException {
