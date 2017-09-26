@@ -832,9 +832,20 @@ public class OrderHistoryListController extends AbstractListController<Order> {
                 order.setMaxStoreCreditRefund(max_refunded);
                 mOrderRefundPanel.updateTotalStoreCredit(max_store_credit);
             } else {
-                order.setStoreCreditRefund(max_refunded);
-                order.setMaxStoreCreditRefund(max_refunded);
-                mOrderRefundPanel.updateTotalStoreCredit(max_refunded);
+                if (adjust_refund == max_refunded) {
+                    order.setStoreCreditRefund(0);
+                    order.setMaxStoreCreditRefund(max_refunded);
+                    mOrderRefundPanel.updateTotalStoreCredit(0);
+                } else if (adjust_refund > max_refunded) {
+                    order.setStoreCreditRefund(max_refunded);
+                    order.setMaxStoreCreditRefund(max_refunded);
+                    mOrderRefundPanel.updateTotalStoreCredit(max_refunded);
+                    mOrderRefundPanel.updateTotalAdjustRefund(0);
+                } else {
+                    order.setStoreCreditRefund(max_refunded);
+                    order.setMaxStoreCreditRefund(max_refunded);
+                    mOrderRefundPanel.updateTotalStoreCredit(max_refunded);
+                }
             }
         } else {
             order.setStoreCreditRefund(max_refunded);
@@ -855,11 +866,23 @@ public class OrderHistoryListController extends AbstractListController<Order> {
         if (max_store_credit >= 0) {
             if (max_store_credit <= max_refunded) {
                 order.setStoreCreditRefund(max_store_credit);
+                order.setMaxStoreCreditRefund(max_refunded);
                 mOrderRefundPanel.updateTotalStoreCredit(max_store_credit);
             } else {
-                order.setStoreCreditRefund(max_refunded);
-                order.setMaxStoreCreditRefund(max_refunded);
-                mOrderRefundPanel.updateTotalStoreCredit(max_refunded);
+                if (adjust_refund == max_refunded) {
+                    order.setStoreCreditRefund(0);
+                    order.setMaxStoreCreditRefund(max_refunded);
+                    mOrderRefundPanel.updateTotalStoreCredit(0);
+                } else if (adjust_refund > max_refunded) {
+                    order.setStoreCreditRefund(max_refunded);
+                    order.setMaxStoreCreditRefund(max_refunded);
+                    mOrderRefundPanel.updateTotalStoreCredit(max_refunded);
+                    mOrderRefundPanel.updateTotalAdjustRefund(0);
+                } else {
+                    order.setStoreCreditRefund(max_refunded);
+                    order.setMaxStoreCreditRefund(max_refunded);
+                    mOrderRefundPanel.updateTotalStoreCredit(max_refunded);
+                }
             }
         } else {
             order.setStoreCreditRefund(max_refunded);

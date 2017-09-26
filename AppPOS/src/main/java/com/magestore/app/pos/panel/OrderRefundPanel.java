@@ -305,6 +305,10 @@ public class OrderRefundPanel extends AbstractDetailPanel<Order> {
         store_credit.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(total)));
     }
 
+    public void updateTotalAdjustRefund(float total) {
+        adjust_refund.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(total)));
+    }
+
     public void updateTotalAdjustFee(float total) {
         adjust_fee.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(total)));
         String message = getContext().getString(R.string.order_refund_limit, ConfigUtil.formatPrice(ConfigUtil.convertToPrice(mOrder.getMaxRefunded())));
