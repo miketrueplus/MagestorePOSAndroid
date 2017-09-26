@@ -9,6 +9,7 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
 import com.magestore.app.lib.connection.Connection;
 import com.magestore.app.lib.connection.ConnectionException;
@@ -114,19 +115,7 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
     }
 
     private class OrderRefundEntity {
-        OrderRefundParam entity;
-    }
-
-    private class OrderRefundParam {
-        List<OrderRefundItemParam> items;
-        String order_id;
-        String base_currency_code;
-        String store_currency_code;
-        float adjustment_positive;
-        float shipping_amount;
-        float adjustment_negative;
-        String email_sent;
-        List<OrderRefundComment> comments;
+        LinkedTreeMap entity;
     }
 
     private class OrderRefundItemParam {
@@ -730,14 +719,6 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
             refundParams.setInvoiceId(null);
 
             OrderRefundEntity orderRefundEntity = new OrderRefundEntity();
-            OrderRefundParam orderRefundParam = new OrderRefundParam();
-            orderRefundParam.adjustment_negative = refundParams.getAdjustmentNegative();
-            orderRefundParam.adjustment_positive = refundParams.getAdjustmentPositive();
-            orderRefundParam.base_currency_code = refundParams.getBaseCurrencyCode();
-            orderRefundParam.store_currency_code = refundParams.getStoreCurrencyCode();
-            orderRefundParam.order_id = refundParams.getOrderId();
-            orderRefundParam.shipping_amount = refundParams.getShippingAmount();
-            orderRefundParam.email_sent = refundParams.getEmailSent();
             List<OrderRefundItemParam> listOrderRefundItemParams = new ArrayList<>();
             if (refundParams.getItems() != null && refundParams.getItems().size() > 0) {
                 for (OrderItemParams item: refundParams.getItems()) {
@@ -748,8 +729,6 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
                     listOrderRefundItemParams.add(itemRefund);
                 }
             }
-            orderRefundParam.items = listOrderRefundItemParams;
-
             List<OrderRefundComment> listOrderRefundComments = new ArrayList<>();
             if (refundParams.getComments() != null && refundParams.getComments().size() > 0) {
                 for (OrderCommentParams comment: refundParams.getComments()) {
@@ -758,9 +737,18 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
                     listOrderRefundComments.add(commentRefund);
                 }
             }
-            orderRefundParam.comments = listOrderRefundComments;
 
-            orderRefundEntity.entity = orderRefundParam;
+            LinkedTreeMap data = new LinkedTreeMap();
+            data.put("order_id", refundParams.getOrderId());
+            data.put("base_currency_code", refundParams.getBaseCurrencyCode());
+            data.put("store_currency_code", refundParams.getStoreCurrencyCode());
+            data.put("shipping_amount", refundParams.getShippingAmount());
+            data.put("email_sent", refundParams.getEmailSent());
+            data.put("items", listOrderRefundItemParams);
+            data.put("comments", listOrderRefundComments);
+            data.put("adjustment_negative", refundParams.getAdjustmentNegative());
+            data.put("adjustment_positive", refundParams.getAdjustmentPositive());
+            orderRefundEntity.entity = data;
 
             rp = statement.execute(orderRefundEntity);
             rp.setParseImplement(getClassParseImplement());
