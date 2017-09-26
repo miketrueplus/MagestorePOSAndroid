@@ -1048,7 +1048,7 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
         listStatus.put("complete", "complete");
         listStatus.put("canceled", "canceled");
         listStatus.put("closed", "closed");
-        listStatus.put("not_sync", "not_sync");
+//        listStatus.put("not_sync", "not_sync");
         return listStatus;
     }
 
