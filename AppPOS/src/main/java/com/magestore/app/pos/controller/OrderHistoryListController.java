@@ -829,6 +829,7 @@ public class OrderHistoryListController extends AbstractListController<Order> {
         if (max_store_credit >= 0) {
             if (max_store_credit <= max_refunded) {
                 order.setStoreCreditRefund(max_store_credit);
+                order.setMaxStoreCreditRefund(max_refunded);
                 mOrderRefundPanel.updateTotalStoreCredit(max_store_credit);
             } else {
                 order.setStoreCreditRefund(max_refunded);

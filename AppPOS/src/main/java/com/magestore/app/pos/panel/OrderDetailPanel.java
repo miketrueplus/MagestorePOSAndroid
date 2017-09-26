@@ -421,6 +421,7 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         dialog = DialogUtil.dialog(getContext(), getContext().getString(R.string.order_refund_title), mOrderRefundPanel);
         dialog.setDialogWidth(getContext().getResources().getDimensionPixelSize(R.dimen.order_dialog_refund_width));
         dialog.setDialogSave(getContext().getString(R.string.order_refund_btn_save));
+        dialog.setGoneButtonSave(true);
         dialog.show();
         Button btn_submit_refund = (Button) dialog.findViewById(R.id.btn_submit_refund);
         btn_submit_refund.setOnClickListener(new OnClickListener() {
