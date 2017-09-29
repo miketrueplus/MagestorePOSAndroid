@@ -4,8 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/AppPOS/AppPOS.iml" filepath="$PROJECT_DIR$/AppPOS/AppPOS.iml" />
       <module fileurl="file://$PROJECT_DIR$/LibMagestore/LibMagestore.iml" filepath="$PROJECT_DIR$/LibMagestore/LibMagestore.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Magestore Project.iml" filepath="$PROJECT_DIR$/Magestore Project.iml" />
-      <module fileurl="file://$PROJECT_DIR$/POSAndroid.iml" filepath="$PROJECT_DIR$/POSAndroid.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MagestorePOSAndroid.iml" filepath="$PROJECT_DIR$/MagestorePOSAndroid.iml" />
     </modules>
   </component>
 </project>
