@@ -42,6 +42,9 @@ public class ConfigUtil {
     public static String PLATFORM_MAGENTO_2 = "magento2";
     public static String PLATFORM_ODOO = "Odoo";
 
+    // check tablet or mobile
+    private static boolean mTablet;
+
     // public static Config mConfig;
     private static DecimalFormat mCurrencyFormat;
     private static DecimalFormat mCurrencyNoSymbolFormat;
@@ -750,6 +753,14 @@ public class ConfigUtil {
     public static float convertToPrice(float number) {
         number = number * ((float) currentCurrency.getCurrencyRate());
         return number;
+    }
+
+    public static boolean isTablet() {
+        return mTablet;
+    }
+
+    public static void setTablet(boolean mTablet) {
+        ConfigUtil.mTablet = mTablet;
     }
 
     public static void setPlatForm(String mPlatForm) {

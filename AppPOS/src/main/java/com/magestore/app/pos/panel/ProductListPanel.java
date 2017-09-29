@@ -91,43 +91,45 @@ public class ProductListPanel extends AbstractListPanel<Product> {
     @Override
     public void initLayout() {
         super.initLayout();
-        v_reload_product = (RelativeLayout) findViewById(R.id.v_reload_product);
-        // Chuẩn bị list danh sách khách hàng
-        fr_category = (FrameLayout) findViewById(R.id.fr_category);
-        toolbar_category = (Toolbar) findViewById(R.id.toolbar_category);
-        im_category_arrow = (ImageView) findViewById(R.id.im_category_arrow);
+        if (ConfigUtil.isTablet()) {
+            v_reload_product = (RelativeLayout) findViewById(R.id.v_reload_product);
+            // Chuẩn bị list danh sách khách hàng
+            fr_category = (FrameLayout) findViewById(R.id.fr_category);
+            toolbar_category = (Toolbar) findViewById(R.id.toolbar_category);
+            im_category_arrow = (ImageView) findViewById(R.id.im_category_arrow);
 
-        mSearchAutoCompletePanel = (SearchAutoCompletePanel) findViewById(R.id.panel_search_product);
-        toolbar_barcode = (Toolbar) findViewById(R.id.toolbar_barcode);
+            mSearchAutoCompletePanel = (SearchAutoCompletePanel) findViewById(R.id.panel_search_product);
+            toolbar_barcode = (Toolbar) findViewById(R.id.toolbar_barcode);
 
-        toolbar_category.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (fr_category.getVisibility() == VISIBLE) {
-                    im_category_arrow.setRotation(0);
-                    fr_category.setVisibility(GONE);
+            toolbar_category.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (fr_category.getVisibility() == VISIBLE) {
+                        im_category_arrow.setRotation(0);
+                        fr_category.setVisibility(GONE);
 //                    mController.doRetrieve();
-                    ((ProductListController) mController).bindCategory((Category) null);
-                } else {
-                    im_category_arrow.setRotation(180);
-                    fr_category.setVisibility(VISIBLE);
+                        ((ProductListController) mController).bindCategory((Category) null);
+                    } else {
+                        im_category_arrow.setRotation(180);
+                        fr_category.setVisibility(VISIBLE);
+                    }
                 }
-            }
-        });
+            });
 
-        toolbar_barcode.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startScan();
-            }
-        });
+            toolbar_barcode.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startScan();
+                }
+            });
 
-        v_reload_product.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ((ProductListController) mController).reload();
-            }
-        });
+            v_reload_product.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ((ProductListController) mController).reload();
+                }
+            });
+        }
     }
 
     private void startScan() {
