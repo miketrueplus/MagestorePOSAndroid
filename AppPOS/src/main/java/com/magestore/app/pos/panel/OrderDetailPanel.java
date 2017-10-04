@@ -729,7 +729,7 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
 
             LinearLayout ll_subtotal = (LinearLayout) dialogPrint.findViewById(R.id.ll_subtotal);
             TextView tv_price_subtotal = (TextView) dialogPrint.findViewById(R.id.tv_price_subtotal);
-            ll_subtotal.setVisibility(mOrder.getBaseSubtotalInclTax() > 0 ? VISIBLE : GONE);
+            ll_subtotal.setVisibility(mOrder.getBaseSubtotal() != 0 ? VISIBLE : GONE);
             tv_price_subtotal.setText(ConfigUtil.formatDecimalQuantity(ConfigUtil.convertToPrice(mOrder.getBaseSubtotalInclTax())));
 
             LinearLayout ll_earn_point = (LinearLayout) dialogPrint.findViewById(R.id.ll_earn_point);
@@ -744,27 +744,27 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
 
             LinearLayout ll_shipping = (LinearLayout) dialogPrint.findViewById(R.id.ll_shipping);
             TextView tv_price_shipping = (TextView) dialogPrint.findViewById(R.id.tv_price_shipping);
-            ll_shipping.setVisibility(mOrder.getBaseShippingInclTax() > 0 ? VISIBLE : GONE);
+            ll_shipping.setVisibility(mOrder.getBaseShippingAmount() != 0 ? VISIBLE : GONE);
             tv_price_shipping.setText(ConfigUtil.formatDecimalQuantity(ConfigUtil.convertToPrice(mOrder.getBaseShippingInclTax())));
 
             LinearLayout ll_tax = (LinearLayout) dialogPrint.findViewById(R.id.ll_tax);
             TextView tv_price_tax = (TextView) dialogPrint.findViewById(R.id.tv_price_tax);
-            ll_tax.setVisibility(mOrder.getBaseTaxAmount() > 0 ? VISIBLE : GONE);
+            ll_tax.setVisibility(mOrder.getBaseTaxAmount() != 0 ? VISIBLE : GONE);
             tv_price_tax.setText(ConfigUtil.convertToPrice(mOrder.getBaseTaxAmount()) + "");
 
             LinearLayout ll_discount = (LinearLayout) dialogPrint.findViewById(R.id.ll_discount);
             TextView tv_price_discount = (TextView) dialogPrint.findViewById(R.id.tv_price_discount);
-            ll_discount.setVisibility(mOrder.getBaseDiscountAmount() > 0 ? VISIBLE : GONE);
+            ll_discount.setVisibility(mOrder.getBaseDiscountAmount() != 0 ? VISIBLE : GONE);
             tv_price_discount.setText(ConfigUtil.formatDecimalQuantity(ConfigUtil.convertToPrice(mOrder.getBaseDiscountAmount())));
 
             LinearLayout ll_gift_voucher = (LinearLayout) dialogPrint.findViewById(R.id.ll_gift_voucher);
             TextView tv_price_gift_voucher_discount = (TextView) dialogPrint.findViewById(R.id.tv_price_gift_voucher_discount);
-            ll_gift_voucher.setVisibility(mOrder.getBaseGiftVoucherDiscount() > 0 ? VISIBLE : GONE);
+            ll_gift_voucher.setVisibility(mOrder.getBaseGiftVoucherDiscount() != 0 ? VISIBLE : GONE);
             tv_price_gift_voucher_discount.setText(ConfigUtil.formatDecimalQuantity(ConfigUtil.convertToPrice(mOrder.getBaseGiftVoucherDiscount())));
 
             LinearLayout ll_reward_point = (LinearLayout) dialogPrint.findViewById(R.id.ll_reward_point);
             TextView tv_price_reward_point_discount = (TextView) dialogPrint.findViewById(R.id.tv_price_reward_point_discount);
-            ll_reward_point.setVisibility(mOrder.getRewardPointsBaseDiscount() > 0 ? VISIBLE : GONE);
+            ll_reward_point.setVisibility(mOrder.getRewardPointsBaseDiscount() != 0 ? VISIBLE : GONE);
             tv_price_reward_point_discount.setText(ConfigUtil.formatDecimalQuantity(ConfigUtil.convertToPrice(mOrder.getRewardPointsBaseDiscount())));
 
             TextView tv_price_grand_total = (TextView) dialogPrint.findViewById(R.id.tv_price_grand_total);
@@ -781,17 +781,17 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
 
             LinearLayout ll_change = (LinearLayout) dialogPrint.findViewById(R.id.ll_change);
             TextView tv_price_change = (TextView) dialogPrint.findViewById(R.id.tv_price_change);
-            ll_change.setVisibility(mOrder.getWebposBaseChange() > 0 ? VISIBLE : GONE);
+            ll_change.setVisibility(mOrder.getWebposBaseChange() != 0 ? VISIBLE : GONE);
             tv_price_change.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(mOrder.getWebposBaseChange())));
 
             LinearLayout ll_paid = (LinearLayout) dialogPrint.findViewById(R.id.ll_paid);
             TextView tv_price_paid = (TextView) dialogPrint.findViewById(R.id.tv_price_paid);
-            ll_paid.setVisibility(mOrder.getBaseTotalPaid() > 0 ? VISIBLE : GONE);
+            ll_paid.setVisibility(mOrder.getBaseTotalPaid() != 0 ? VISIBLE : GONE);
             tv_price_paid.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(mOrder.getBaseTotalPaid())));
 
             LinearLayout ll_due = (LinearLayout) dialogPrint.findViewById(R.id.ll_due);
             TextView tv_price_due = (TextView) dialogPrint.findViewById(R.id.tv_price_due);
-            ll_due.setVisibility(mOrder.getBaseTotalDue() > 0 ? VISIBLE : GONE);
+            ll_due.setVisibility(mOrder.getBaseTotalDue() != 0 ? VISIBLE : GONE);
             tv_price_due.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(mOrder.getBaseTotalDue())));
 
             TextView tv_comment_title = (TextView) dialogPrint.findViewById(R.id.tv_comment_title);
