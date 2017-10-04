@@ -233,7 +233,7 @@ public class CheckoutSuccessPanel extends AbstractDetailPanel<Order> {
             LinearLayout ll_subtotal = (LinearLayout) dialogPrint.findViewById(R.id.ll_subtotal);
             TextView tv_price_subtotal = (TextView) dialogPrint.findViewById(R.id.tv_price_subtotal);
             ll_subtotal.setVisibility(mOrder.getSubTotal() != 0 ? VISIBLE : GONE);
-            tv_price_subtotal.setText(ConfigUtil.formatDecimalQuantity(ConfigUtil.convertToPrice(mOrder.getBaseSubtotalInclTax())));
+            tv_price_subtotal.setText(ConfigUtil.formatDecimalQuantity(ConfigUtil.convertToPrice(mOrder.getSubTotal())));
 
             LinearLayout ll_earn_point = (LinearLayout) dialogPrint.findViewById(R.id.ll_earn_point);
             TextView tv_price_earn_point = (TextView) dialogPrint.findViewById(R.id.tv_price_earn_point);
@@ -248,7 +248,7 @@ public class CheckoutSuccessPanel extends AbstractDetailPanel<Order> {
             LinearLayout ll_shipping = (LinearLayout) dialogPrint.findViewById(R.id.ll_shipping);
             TextView tv_price_shipping = (TextView) dialogPrint.findViewById(R.id.tv_price_shipping);
             ll_shipping.setVisibility(mOrder.getBaseShippingAmount() != 0 ? VISIBLE : GONE);
-            tv_price_shipping.setText(ConfigUtil.formatDecimalQuantity(ConfigUtil.convertToPrice(mOrder.getBaseShippingInclTax())));
+            tv_price_shipping.setText(ConfigUtil.formatDecimalQuantity(ConfigUtil.convertToPrice(mOrder.getBaseShippingAmount())));
 
             LinearLayout ll_tax = (LinearLayout) dialogPrint.findViewById(R.id.ll_tax);
             TextView tv_price_tax = (TextView) dialogPrint.findViewById(R.id.tv_price_tax);
