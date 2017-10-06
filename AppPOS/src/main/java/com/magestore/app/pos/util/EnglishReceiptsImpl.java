@@ -35,18 +35,19 @@ public class EnglishReceiptsImpl extends ILocalizeReceipts {
     @Override
     public void appendTextCustomReceiptData(ICommandBuilder builder, boolean utf8, Context context, Order mOrder, int length, Bitmap bitmap, int mPaperSize) {
         Charset encoding;
-        // Image
-        if (ConfigUtil.getConfigPrint().getShowReceiptLogo() != null && ConfigUtil.getConfigPrint().getShowReceiptLogo().equals("1")) {
-            if (bitmap != null) {
-                builder.appendBitmapCompressionWithAlignment(bitmap, true, mPaperSize * 2 / 3, false, AlignmentPosition.Center);
-            }
-        }
         if (utf8) {
             encoding = Charset.forName("UTF-8");
             builder.appendCodePage(CodePageType.UTF8);
         } else {
             encoding = Charset.forName("US-ASCII");
             builder.appendCodePage(CodePageType.CP998);
+        }
+        // Image
+        if (ConfigUtil.getConfigPrint().getShowReceiptLogo() != null && ConfigUtil.getConfigPrint().getShowReceiptLogo().equals("1")) {
+            if (bitmap != null) {
+                builder.appendBitmapCompressionWithAlignment(bitmap, true, mPaperSize * 2 / 3, false, AlignmentPosition.Center);
+                builder.append(("\n").getBytes(encoding));
+            }
         }
         builder.appendInternational(InternationalType.USA);
         builder.appendCharacterSpace(0);

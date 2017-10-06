@@ -128,7 +128,7 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
         mOrder = item;
         mBinding.setOrderDetail(item);
         if (checkCanInvoice(mOrder)) {
-            btn_invoice.setVisibility(!StringUtil.isNullOrEmpty(item.getCustomerId()) ? VISIBLE: GONE);
+            btn_invoice.setVisibility(!StringUtil.isNullOrEmpty(item.getCustomerId()) ? VISIBLE : GONE);
             fr_detail_bottom_right.setVisibility(!StringUtil.isNullOrEmpty(item.getCustomerId()) ? GONE : VISIBLE);
             fr_detail_bottom_left.setVisibility(!StringUtil.isNullOrEmpty(item.getCustomerId()) ? GONE : VISIBLE);
         } else {
@@ -822,7 +822,12 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
                 @Override
                 public void onClick(View view) {
 //                    Bitmap bitmap = rl.getDrawingCache();
-                    Bitmap mBitmap = ((BitmapDrawable)im_logo.getDrawable()).getBitmap();
+                    Bitmap mBitmap = null;
+                    if (im_logo.getDrawable() != null) {
+                        if (((BitmapDrawable) im_logo.getDrawable()).getBitmap() != null) {
+                            mBitmap = ((BitmapDrawable) im_logo.getDrawable()).getBitmap();
+                        }
+                    }
                     StarPrintExtUtil.showSearchPrint(getContext(), ((OrderHistoryListController) mController).getMagestoreContext().getActivity(), mBitmap, mOrder);
                 }
             });
