@@ -822,7 +822,12 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
                 @Override
                 public void onClick(View view) {
 //                    Bitmap bitmap = rl.getDrawingCache();
-                    Bitmap mBitmap = ((BitmapDrawable)im_logo.getDrawable()).getBitmap();
+                    Bitmap mBitmap = null;
+                    if (im_logo.getDrawable() != null) {
+                        if (((BitmapDrawable) im_logo.getDrawable()).getBitmap() != null) {
+                            mBitmap = ((BitmapDrawable) im_logo.getDrawable()).getBitmap();
+                        }
+                    }
                     StarPrintExtUtil.showSearchPrint(getContext(), ((OrderHistoryListController) mController).getMagestoreContext().getActivity(), mBitmap, mOrder);
                 }
             });
