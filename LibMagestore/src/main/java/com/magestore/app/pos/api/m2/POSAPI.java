@@ -38,7 +38,7 @@ public class POSAPI {
     public static final String REST_STAFF_GET_LISTING = "/V1/webpos/staffs?";
 
     // API store
-    public static final String REST_STORE_GET_LISTING = "rest/default/V1/webpos/storeInformation?";
+    public static final String REST_STORE_GET_LISTING = "/V1/webpos/storeInformation?";
 
     // API order
     public static final String REST_ORDER_GET_DETAIL = "/V1/webpos/orders/${orderID}?";
