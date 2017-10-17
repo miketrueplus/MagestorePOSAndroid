@@ -15,8 +15,8 @@ android {
         applicationId "com.magestore.app.pos"
         minSdkVersion 16
         targetSdkVersion 19
-        versionCode 15
-        versionName "1.9.4"
+        versionCode 16
+        versionName "1.9.5"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -28,6 +28,7 @@ android {
             buildConfigField "String", "REST_USER_NAME", '""'
             buildConfigField "String", "REST_PASSWORD", '""'
             buildConfigField "String", "REST_BASE_PAGE", '""'
+            buildConfigField "String", "REST_BASE_STORE_PATH", '"rest/default/"'
             buildConfigField "String", "REST_PUBLIC_KEY", '"-----BEGIN PUBLIC KEY-----MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJ8EDi+a0lilUChsDba33FrcHLZZZIMxT7XhyEP3J3llQXNJkflG+5GzBvFTd+B1pvpc45WOktNReyPDZ/OMNukCAwEAAQ==-----END PUBLIC KEY-----"'
             buildConfigField "String", "REST_EXTENSION_NAME", '"retailer-pos"'
             signingConfig signingConfigs.config
@@ -37,6 +38,7 @@ android {
             buildConfigField "String", "REST_USER_NAME", '""'
             buildConfigField "String", "REST_PASSWORD", '""'
             buildConfigField "String", "REST_BASE_PAGE", '""'
+            buildConfigField "String", "REST_BASE_STORE_PATH", '"rest/default/"'
             buildConfigField "String", "REST_PUBLIC_KEY", '"-----BEGIN PUBLIC KEY-----MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJ8EDi+a0lilUChsDba33FrcHLZZZIMxT7XhyEP3J3llQXNJkflG+5GzBvFTd+B1pvpc45WOktNReyPDZ/OMNukCAwEAAQ==-----END PUBLIC KEY-----"'
             buildConfigField "String", "REST_EXTENSION_NAME", '"retailer-pos"'
             signingConfig signingConfigs.config

@@ -39,7 +39,7 @@ public class POSUserService extends AbstractService implements UserService {
      * @param strDomain
      * @return
      */
-    public String buildPOSBaseURL(String strDomain) {
+    public String buildPOSBaseURL(String strDomain, boolean isLogin) {
         StringBuilder stringBuilder = new StringBuilder();
         String strFinalDomain = strDomain;
         if (strFinalDomain == null || strFinalDomain.trim().equals(""))
@@ -64,14 +64,27 @@ public class POSUserService extends AbstractService implements UserService {
             if (lastIndexOfApp == strFinalDomain.length() - 1)
                 stringBuilder.append(BuildConfig.DEFAULT_REST_BASE_PAGE);
         }
-        return stringBuilder.toString();
+
+        String mDomain = stringBuilder.toString();
+        if (isLogin) {
+            if (!mDomain.contains("rest")) {
+                stringBuilder.append(BuildConfig.DEFAULT_REST_STORE_PATH);
+            }
+            mDomain = stringBuilder.toString();
+        } else {
+            if (mDomain.contains("rest")) {
+                String[] mArrDomain = mDomain.split("/rest");
+                mDomain = mArrDomain[0];
+            }
+        }
+        return mDomain;
     }
 
     @Override
     public boolean checkPlatform(String domain, String username, String password) throws InstantiationException, IllegalAccessException, IOException, ParseException {
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         UserDataAccess userGateway = factory.generateUserDataAccess();
-        String strBaseURL = buildPOSBaseURL(domain);
+        String strBaseURL = buildPOSBaseURL(domain, false);
         String str = userGateway.checkPlatform(strBaseURL, username, password);
         if (!StringUtil.isNullOrEmpty(str)) {
             if (str.equals("Magento")) {
@@ -105,7 +118,7 @@ public class POSUserService extends AbstractService implements UserService {
         // Gọi user gateway
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         UserDataAccess userGateway = factory.generateUserDataAccess();
-        String strBaseURL = buildPOSBaseURL(domain);
+        String strBaseURL = buildPOSBaseURL(domain, true);
 
         // Thực hiện đăng nhập
         User user = new PosUser();
