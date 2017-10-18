@@ -67,10 +67,12 @@ public class POSUserService extends AbstractService implements UserService {
 
         String mDomain = stringBuilder.toString();
         if (isLogin) {
-            if (!mDomain.contains("rest")) {
-                stringBuilder.append(BuildConfig.DEFAULT_REST_STORE_PATH);
+            if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2)) {
+                if (!mDomain.contains("rest")) {
+                    stringBuilder.append(BuildConfig.DEFAULT_REST_STORE_PATH);
+                    mDomain = stringBuilder.toString();
+                }
             }
-            mDomain = stringBuilder.toString();
         } else {
             if (mDomain.contains("rest")) {
                 String[] mArrDomain = mDomain.split("/rest");
