@@ -72,7 +72,7 @@ public class Gson2PosColorSwatchParse extends Gson2PosAbstractParseImplement {
                         configOptionSwatch.setType(entry.getValue().getAsJsonObject().get(JSON_TYPE).getAsString());
                     }
                     if (!entry.getValue().getAsJsonObject().get(JSON_VALUE).isJsonNull()) {
-                        configOptionSwatch.setValue(entry.getValue().getAsJsonObject().get(JSON_VALUE).toString());
+                        configOptionSwatch.setValue(entry.getValue().getAsJsonObject().get(JSON_VALUE).getAsString());
                     }
                     mapConfigOptionSwatch.put(entry.getKey(), configOptionSwatch);
                 }
