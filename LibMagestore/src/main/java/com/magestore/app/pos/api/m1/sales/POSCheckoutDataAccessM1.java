@@ -113,10 +113,17 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
 
         List<QuoteItemExtension> extension_data;
 
-        List<PosCartItem.OptionsValue> options;
+        Object options;
         List<PosCartItem.OptionsValue> super_attribute;
         Map<String, Object> bundle_option;
         Map<String, String> bundle_option_qty;
+    }
+
+    private class CustomSaleEntity {
+        String is_virtual;
+        String name;
+        String price;
+        String tax_class_id;
     }
 
     public class Gson2PosCartParseModel extends Gson2PosAbstractParseImplement {
@@ -232,6 +239,11 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
         }
     }
 
+    private final String CUSTOM_SALE_NAME = "name";
+    private final String CUSTOM_SALE_IS_VIRTUAL = "is_virtual";
+    private final String CUSTOM_SALE_PRICE = "price";
+    private final String CUSTOM_SALE_TAX_CLASS = "tax_class_id";
+
     private QuoteParam setQuoteParam(Quote quote) {
         QuoteParam quoteParam = new QuoteParam();
         quoteParam.currency_id = quote.getCurrencyId();
@@ -258,7 +270,24 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
 
                 quoteItemParam.extension_data = item.getExtensionData();
 
-                quoteItemParam.options = item.getOptions();
+                if (item.getCustomSale().equals("1")) {
+                    CustomSaleEntity mCustomSaleEntity = new CustomSaleEntity();
+                    List<PosCartItem.OptionsValue> listOption = item.getOptions();
+                    for (PosCartItem.OptionsValue option : listOption) {
+                        if (option.code.equals(CUSTOM_SALE_NAME)) {
+                            mCustomSaleEntity.name = option.value;
+                        } else if (option.code.equals(CUSTOM_SALE_IS_VIRTUAL)) {
+                            mCustomSaleEntity.is_virtual = option.value;
+                        } else if (option.code.equals(CUSTOM_SALE_PRICE)) {
+                            mCustomSaleEntity.price = option.value;
+                        } else if (option.code.equals(CUSTOM_SALE_TAX_CLASS)) {
+                            mCustomSaleEntity.tax_class_id = option.value;
+                        }
+                    }
+                    quoteItemParam.options = mCustomSaleEntity;
+                } else {
+                    quoteItemParam.options = item.getOptions();
+                }
                 quoteItemParam.super_attribute = item.getSuperAttribute();
                 if (item.getBundleOption() != null && item.getBundleOption().size() > 0) {
                     Map<String, List<String>> mapBundleOption = new HashMap<>();
