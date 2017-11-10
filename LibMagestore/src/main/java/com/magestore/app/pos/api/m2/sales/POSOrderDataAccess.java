@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -41,6 +42,7 @@ import com.magestore.app.pos.api.m2.POSDataAccessSession;
 import com.magestore.app.pos.model.checkout.cart.PosCartItem;
 import com.magestore.app.pos.model.sales.PosOrder;
 import com.magestore.app.pos.model.sales.PosOrderAttributes;
+import com.magestore.app.pos.model.sales.PosOrderCustomSalesInfo;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosAbstractParseImplement;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListOrder;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListPaymentMethod;
@@ -68,10 +70,51 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
         public Gson createGson() {
             GsonBuilder builder = new GsonBuilder();
             builder.enableComplexMapKeySerialization();
+            builder.registerTypeAdapter(new TypeToken<List<PosOrderCustomSalesInfo>>() {
+            }
+                    .getType(), new CustomSaleParamsConverter());
             builder.registerTypeAdapter(new TypeToken<PosCartItem.OptionsValue>() {
             }
                     .getType(), new ReOrderParamsConverter());
             return builder.create();
+        }
+
+        public class CustomSaleParamsConverter implements JsonDeserializer<List<PosOrderCustomSalesInfo>> {
+
+            @Override
+            public List<PosOrderCustomSalesInfo> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+                GsonBuilder builder = new GsonBuilder();
+                Gson gson = builder.create();
+                if (!json.isJsonNull()) {
+                    if (json.isJsonArray()) {
+                        List<PosOrderCustomSalesInfo> mListCustom = new ArrayList<>();
+                        if (json.isJsonArray()) {
+                            JsonArray arr_item = json.getAsJsonArray();
+                            if (arr_item != null && arr_item.size() > 0) {
+                                for (JsonElement el_custom : arr_item) {
+                                    if (el_custom.isJsonObject()) {
+                                        JsonObject obj_custom = el_custom.getAsJsonObject();
+                                        PosOrderCustomSalesInfo posOrderCustomSalesInfo = gson.fromJson(obj_custom, PosOrderCustomSalesInfo.class);
+                                        mListCustom.add(posOrderCustomSalesInfo);
+                                    } else {
+                                        try {
+                                            String mData = StringUtil.truncateJson(el_custom.getAsString());
+                                            PosOrderCustomSalesInfo posOrderCustomSalesInfo = gson.fromJson(mData, PosOrderCustomSalesInfo.class);
+                                            mListCustom.add(posOrderCustomSalesInfo);
+                                        } catch (Exception e){
+
+                                        }
+                                    }
+                                }
+                            }
+                            return mListCustom;
+                        }
+                    } else {
+                        return null;
+                    }
+                }
+                return null;
+            }
         }
 
         public class ReOrderParamsConverter implements JsonDeserializer<PosCartItem.OptionsValue> {
@@ -721,7 +764,7 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
             OrderRefundEntity orderRefundEntity = new OrderRefundEntity();
             List<OrderRefundItemParam> listOrderRefundItemParams = new ArrayList<>();
             if (refundParams.getItems() != null && refundParams.getItems().size() > 0) {
-                for (OrderItemParams item: refundParams.getItems()) {
+                for (OrderItemParams item : refundParams.getItems()) {
                     OrderRefundItemParam itemRefund = new OrderRefundItemParam();
                     itemRefund.qty = item.getQty();
                     itemRefund.order_item_id = item.getOrderItemId();
@@ -731,7 +774,7 @@ public class POSOrderDataAccess extends POSAbstractDataAccess implements OrderDa
             }
             List<OrderRefundComment> listOrderRefundComments = new ArrayList<>();
             if (refundParams.getComments() != null && refundParams.getComments().size() > 0) {
-                for (OrderCommentParams comment: refundParams.getComments()) {
+                for (OrderCommentParams comment : refundParams.getComments()) {
                     OrderRefundComment commentRefund = new OrderRefundComment();
                     commentRefund.comment = comment.getComment();
                     listOrderRefundComments.add(commentRefund);
