@@ -5,6 +5,7 @@ import android.util.Base64;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedHashTreeMap;
 import com.google.gson.internal.LinkedTreeMap;
+import com.google.gson.reflect.TypeToken;
 import com.magestore.app.lib.connection.Connection;
 import com.magestore.app.lib.connection.ConnectionException;
 import com.magestore.app.lib.connection.ConnectionFactory;
@@ -141,10 +142,13 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
 
             // thực hiện truy vấn
             rp = statement.execute();
-            String json = StringUtil.truncateJson(rp.readResult2String());
-            Gson2PosConfigParseImplement implement = new Gson2PosConfigParseImplement();
-            Gson gson = implement.createGson();
-            mConfig = gson.fromJson(json, PosConfig.class);
+//            String json = StringUtil.truncateJson(rp.readResult2String());
+//            Gson2PosConfigParseImplement implement = new Gson2PosConfigParseImplement();
+//            Gson gson = implement.createGson();
+//            mConfig = gson.fromJson(json, PosConfig.class);
+            rp.setParseImplement(Gson2PosConfigParseImplement.class);
+            rp.setParseModel(PosConfig.class);
+            mConfig = (Config) rp.doParse();
             return mConfig;
         } catch (ConnectionException ex) {
 //            statement.getCacheConnection().deleteCache();
@@ -435,7 +439,13 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
     private Map<String, Map<String, ConfigRegion>> getRegionGroup() {
         // nếu chưa load config, cần khởi tạo chế độ default
         if (mConfig == null) mConfig = new PosConfigDefault();
-        Map<String, LinkedTreeMap> regionGroup = (Map) mConfig.getValue("regionJson");
+
+        Gson2PosConfigParseImplement implement = new Gson2PosConfigParseImplement();
+        Gson gson = implement.createGson();
+        String mRegion = (String) mConfig.getValue("regionJson");
+        Map<String, LinkedTreeMap> map = new HashMap<String, LinkedTreeMap>();
+
+        Map<String, LinkedTreeMap> regionGroup = (Map<String, LinkedTreeMap>) gson.fromJson(mRegion, map.getClass());
         Map<String, Map<String, ConfigRegion>> mapCountry = new HashMap<>();
 
         for (String key : regionGroup.keySet()) {
