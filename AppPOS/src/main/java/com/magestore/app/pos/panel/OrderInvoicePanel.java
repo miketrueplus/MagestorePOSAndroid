@@ -258,7 +258,7 @@ public class OrderInvoicePanel extends AbstractDetailPanel<Order> {
                 float total_invoice = 0;
 
                 for (int i = 0; i <= item.QtyInvoice(); i++) {
-                    total_invoice = qty * (item.getPriceInvoice() - ((item.getBaseDiscountAmount() + item.getBaseGiftVoucherDiscount() + item.getRewardpointsBaseDiscount()) / item.getQtyOrdered()));
+                    total_invoice = qty * (item.getPriceInvoice() - ((Math.abs(item.getBaseDiscountAmount()) + Math.abs((item.getBaseGiftVoucherDiscount()) + Math.abs(item.getRewardpointsBaseDiscount()))) / item.getQtyOrdered()));
                     float total_price_all = total_invoice + total_price;
                     if (total_price_all > total_paid) {
                         break;
@@ -268,7 +268,7 @@ public class OrderInvoicePanel extends AbstractDetailPanel<Order> {
                 item.setQtyInvoiceable(qty - 1);
                 item.setQuantity(qty - 1);
                 item.setQtyCurrent(qty - 1);
-                total_price += item.getQuantity() * (item.getPriceInvoice() - ((item.getBaseDiscountAmount() + item.getBaseGiftVoucherDiscount() + item.getRewardpointsBaseDiscount()) / item.getQtyOrdered()));
+                total_price += item.getQuantity() * (item.getPriceInvoice() - ((Math.abs(item.getBaseDiscountAmount()) + Math.abs(item.getBaseGiftVoucherDiscount()) + Math.abs(item.getRewardpointsBaseDiscount())) / item.getQtyOrdered()));
             }
         } else {
             item.setQtyCurrent(0);
