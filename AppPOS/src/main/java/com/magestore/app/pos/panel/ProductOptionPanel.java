@@ -5,13 +5,7 @@ import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
-import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
-import android.text.Editable;
-import android.text.Html;
-import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,11 +14,9 @@ import android.widget.BaseAdapter;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -33,24 +25,18 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
-import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.model.catalog.ProductOptionCustom;
 import com.magestore.app.lib.model.catalog.ProductOptionCustomValue;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
-import com.magestore.app.lib.model.config.Config;
+import com.magestore.app.lib.model.config.ConfigOptionSwatch;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
-import com.magestore.app.lib.service.checkout.CartService;
 import com.magestore.app.lib.view.ExpandableHeightGridView;
 import com.magestore.app.lib.view.item.GenericModelView;
-import com.magestore.app.lib.view.item.ModelView;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.CartItemListController;
 import com.magestore.app.pos.controller.CheckoutListController;
 import com.magestore.app.pos.databinding.PanelProductOptionListBinding;
-import com.magestore.app.pos.model.catalog.PosProduct;
-import com.magestore.app.pos.model.catalog.PosProductOption;
 import com.magestore.app.pos.model.catalog.PosProductOptionBundle;
 import com.magestore.app.pos.model.catalog.PosProductOptionBundleItem;
 import com.magestore.app.pos.model.catalog.PosProductOptionConfigOption;
@@ -59,18 +45,14 @@ import com.magestore.app.pos.model.catalog.PosProductOptionCustomValue;
 import com.magestore.app.pos.model.catalog.PosProductOptionGrouped;
 import com.magestore.app.pos.model.catalog.PosProductOptionJsonConfigAttributes;
 import com.magestore.app.pos.model.checkout.cart.PosCartItem;
-import com.magestore.app.pos.task.LoadProductImageTask;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.StringUtil;
-import com.magestore.app.view.EditTextDecimal;
 import com.magestore.app.view.EditTextQuantity;
 import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by Mike on 3/2/2017.
@@ -396,10 +378,10 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                 optionModelView.is_required = true;
                 optionModelView.option_type = ProductOptionCustom.OPTION_TYPE_CONFIG;
                 if (ConfigUtil.getColorSwatch() != null && ConfigUtil.getColorSwatch().size() > 0) {
-                    if (optionCode.equals("color")) {
+                    if (ConfigUtil.checkUseColorSwatch(optionCode)) {
                         optionModelView.input_type = ProductOptionCustom.TYPE_COLOR;
-                    } else if (optionCode.equals("size")) {
-                        optionModelView.input_type = ProductOptionCustom.TYPE_SIZE;
+                    } else {
+                        optionModelView.input_type = ProductOptionCustom.TYPE_RADIO;
                     }
                 } else {
                     optionModelView.input_type = ProductOptionCustom.TYPE_RADIO;
@@ -1420,10 +1402,15 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         public View view;
         public RelativeLayout mrlColor, rl_select_color, rl_select_size;
         public ImageView mImageColor, im_disable_color, im_disable_size;
+        public CircleImageView mImageUrlColor;
         public TextView mTextSize;
         public RelativeLayout ll_color;
     }
 
+    private final String SWATCH_TYPE_TEXT = "0";
+    private final String SWATCH_TYPE_COLOR = "1";
+    private final String SWATCH_TYPE_URL = "2";
+    private final String URL_COLOR = "/pub/media/attribute/swatch/swatch_image/30x20";
     private class CustomColorGridAdapter extends BaseAdapter {
         Context context;
         List<OptionValueModelView> optionValueModelViewList;
@@ -1471,8 +1458,11 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                 LayoutInflater layoutInflater = (LayoutInflater) this.context.
                         getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 mOptionColorViewHolder = new OptionColorViewHolder();
-                if (optionValueModelView.optionModelView.isTypeColor()) {
+                ConfigOptionSwatch configOptionSwatch = ConfigUtil.getValueColorSwatch(code, optionValueModelView.id);
+                String mType = configOptionSwatch.getType();
+                if (mType.equals(SWATCH_TYPE_COLOR) || mType.equals(SWATCH_TYPE_URL)) {
                     convertView = layoutInflater.inflate(R.layout.card_product_option_item_child_color, null);
+                    mOptionColorViewHolder.mImageUrlColor = (CircleImageView) convertView.findViewById(R.id.url_color);
                     mOptionColorViewHolder.mImageColor = (ImageView) convertView.findViewById(R.id.im_color);
                     mOptionColorViewHolder.rl_select_color = (RelativeLayout) convertView.findViewById(R.id.rl_select_color);
                     mOptionColorViewHolder.ll_color = (RelativeLayout) convertView.findViewById(R.id.ll_color);
@@ -1493,21 +1483,39 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
             }
 
             if (optionValueModelView.optionModelView.isTypeColor()) {
-                mOptionColorViewHolder.mImageColor.getDrawable().setColorFilter(Color.parseColor(ConfigUtil.getValueColorSwatch(code, optionValueModelView.id)), PorterDuff.Mode.MULTIPLY);
-                mOptionColorViewHolder.rl_select_color.setVisibility(optionValueModelView.choose ? VISIBLE : GONE);
-            }
-
-            if (optionValueModelView.optionModelView.isTypeSize()) {
-                mOptionColorViewHolder.mTextSize.setText(ConfigUtil.getValueColorSwatch(code, optionValueModelView.id));
-                mOptionColorViewHolder.rl_select_size.setBackground(optionValueModelView.choose ? getResources().getDrawable(R.drawable.border_select_size) : null);
+                ConfigOptionSwatch configOptionSwatch = ConfigUtil.getValueColorSwatch(code, optionValueModelView.id);
+                if(configOptionSwatch != null) {
+                    String mType = configOptionSwatch.getType();
+                    String mValue = configOptionSwatch.getValue();
+                    if (mType.equals(SWATCH_TYPE_COLOR)) {
+                        mOptionColorViewHolder.mImageColor.setVisibility(VISIBLE);
+                        mOptionColorViewHolder.mImageUrlColor.setVisibility(GONE);
+                        mOptionColorViewHolder.mImageColor.getDrawable().setColorFilter(Color.parseColor(mValue), PorterDuff.Mode.MULTIPLY);
+                        mOptionColorViewHolder.rl_select_color.setVisibility(optionValueModelView.choose ? VISIBLE : GONE);
+                    } else if (mType.equals(SWATCH_TYPE_URL)) {
+                        mOptionColorViewHolder.mImageColor.setVisibility(GONE);
+                        mOptionColorViewHolder.mImageUrlColor.setVisibility(VISIBLE);
+                        String mUrl = StringUtil.getDomain(ConfigUtil.getDomain()) + URL_COLOR + mValue;
+                        Glide.with(context).load(mUrl).fitCenter().into(mOptionColorViewHolder.mImageUrlColor);
+                        mOptionColorViewHolder.rl_select_color.setVisibility(optionValueModelView.choose ? VISIBLE : GONE);
+                    } else {
+                        mOptionColorViewHolder.mTextSize.setText(mValue);
+                        mOptionColorViewHolder.rl_select_size.setBackground(optionValueModelView.choose ? getResources().getDrawable(R.drawable.border_select_size) : null);
+                    }
+                }
             }
 
             if (optionValueModelView.optionModelView.isTypeColor()) {
-                mOptionColorViewHolder.im_disable_color.setVisibility(optionValueModelView.disable ? VISIBLE : GONE);
-            }
+                ConfigOptionSwatch configOptionSwatch = ConfigUtil.getValueColorSwatch(code, optionValueModelView.id);
+                if(configOptionSwatch != null) {
+                    String mType = configOptionSwatch.getType();
+                    if (mType.equals(SWATCH_TYPE_COLOR) || mType.equals(SWATCH_TYPE_URL)) {
+                        mOptionColorViewHolder.im_disable_color.setVisibility(optionValueModelView.disable ? VISIBLE : GONE);
+                    } else {
+                        mOptionColorViewHolder.im_disable_size.setVisibility(optionValueModelView.disable ? VISIBLE : GONE);
+                    }
+                }
 
-            if (optionValueModelView.optionModelView.isTypeSize()) {
-                mOptionColorViewHolder.im_disable_size.setVisibility(optionValueModelView.disable ? VISIBLE : GONE);
             }
 
             return convertView;
@@ -1541,11 +1549,15 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         List<String> listChoose = new ArrayList<>();
         List<String> listChooseCompare = new ArrayList<>();
         if (optionValueModelViewChoose.productList != null && optionValueModelViewChoose.productList.size() > 0) {
+            String currentCode = "";
             listChoose.addAll(optionValueModelViewChoose.productList);
             for (OptionModelView optionModelView : mModelViewList) {
+                if (StringUtil.isNullOrEmpty(currentCode)) {
+                    currentCode = optionModelView.code;
+                }
                 if (optionModelView.isConfigOption()) {
                     if (optionValueModelViewChoose.optionModelView.isTypeColor()) {
-                        if (optionModelView.isTypeSize()) {
+                        if (!currentCode.equals(optionModelView.code)) {
                             for (OptionValueModelView childSize : optionModelView.optionValueModelViewList) {
                                 if (childSize.productList != null && childSize.productList.size() > 0) {
                                     listChooseCompare.clear();
@@ -1561,41 +1573,24 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                                 }
                             }
                         }
-                    } else if (optionValueModelViewChoose.optionModelView.isTypeSize()) {
-                        if (optionModelView.isTypeColor()) {
-                            for (OptionValueModelView childColor : optionModelView.optionValueModelViewList) {
-                                if (childColor.productList != null && childColor.productList.size() > 0) {
-                                    listChooseCompare.clear();
-                                    listChooseCompare.addAll(listChoose);
-                                    listChooseCompare.retainAll(childColor.productList);
-                                    if (listChooseCompare.size() > 0) {
-                                        childColor.disable = false;
-                                    } else {
-                                        childColor.disable = true;
-                                    }
-                                } else {
-                                    childColor.disable = true;
-                                }
-                            }
-                        }
+                        currentCode = optionModelView.code;
                     }
                 }
             }
         } else {
+            String currentCode = "";
             for (OptionModelView optionModelView : mModelViewList) {
+                if (StringUtil.isNullOrEmpty(currentCode)) {
+                    currentCode = optionModelView.code;
+                }
                 if (optionModelView.isConfigOption()) {
                     if (optionValueModelViewChoose.optionModelView.isTypeColor()) {
-                        if (optionModelView.isTypeSize()) {
+                        if (!currentCode.equals(optionModelView.code)) {
                             for (OptionValueModelView childSize : optionModelView.optionValueModelViewList) {
                                 childSize.disable = true;
                             }
                         }
-                    } else if (optionValueModelViewChoose.optionModelView.isTypeSize()) {
-                        if (optionModelView.isTypeColor()) {
-                            for (OptionValueModelView childColor : optionModelView.optionValueModelViewList) {
-                                childColor.disable = true;
-                            }
-                        }
+                        currentCode = optionModelView.code;
                     }
                 }
             }

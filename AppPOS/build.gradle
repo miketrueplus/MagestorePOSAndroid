@@ -91,5 +91,6 @@ dependencies {
     compile files('libs/StarIOPort3.1.jar')
     compile files('libs/starioextension.jar')
     compile(name: 'smcloudservices', ext: 'aar')
+    compile 'de.hdodenhof:circleimageview:2.2.0'
     compile 'com.google.zxing:core:3.2.1'
 }

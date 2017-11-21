@@ -257,6 +257,19 @@ public class StringUtil {
         }
     }
 
+    public static String getDomain(String url) {
+        if (StringUtil.isNullOrEmpty(url)) {
+            return "";
+        }
+        try {
+            URL host = new URL(url);
+            String mDomain = host.getProtocol() + "://" + host.getHost();
+            return mDomain;
+        } catch (Exception e) {
+            return url;
+        }
+    }
+
     // so sánh domain
     public static boolean checkSameDomain(String domain, String licenseDomain) {
         if (domain.contains("www.")) {

@@ -42,6 +42,9 @@ public class ConfigUtil {
     public static String PLATFORM_MAGENTO_2 = "magento2";
     public static String PLATFORM_ODOO = "Odoo";
 
+    // domain
+    private static String mDomain;
+
     // public static Config mConfig;
     private static DecimalFormat mCurrencyFormat;
     private static DecimalFormat mCurrencyNoSymbolFormat;
@@ -760,6 +763,14 @@ public class ConfigUtil {
         return mPlatForm;
     }
 
+    public static void setDomain(String mDomain) {
+        ConfigUtil.mDomain = mDomain;
+    }
+
+    public static String getDomain() {
+        return mDomain;
+    }
+
     public static void setStaff(Staff staff) {
         mStaff = staff;
     }
@@ -1353,14 +1364,23 @@ public class ConfigUtil {
         return mEnableDeleteOrder;
     }
 
-    public static String getValueColorSwatch(String parent_code, String value_id) {
+    public static ConfigOptionSwatch getValueColorSwatch(String parent_code, String value_id) {
         for (ConfigProductOption productOption : mColorSwatch) {
             if (parent_code.equals(productOption.getAttributeCode())) {
                 ConfigOptionSwatch optionSwatch = productOption.getColorSwatch().get(value_id);
-                return optionSwatch.getValue();
+                return optionSwatch;
             }
         }
         return null;
+    }
+
+    public static boolean checkUseColorSwatch(String code) {
+        for (ConfigProductOption productOption : mColorSwatch) {
+            if(code.equals(productOption.getAttributeCode())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static boolean isOpenCash() {

@@ -74,7 +74,7 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        ConfigUtil.setPlatForm(ConfigUtil.PLATFORM_MAGENTO_1);
+        ConfigUtil.setPlatForm(ConfigUtil.PLATFORM_MAGENTO_2);
 
         STORE_ID = DataUtil.getDataStringToPreferences(getContext(), DataUtil.STORE_ID);
 
@@ -140,10 +140,10 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
             @Override
             public void onClick(View view) {
                 mCheckLoginDemo = false;
-                checkPlatForm();
+//                checkPlatForm();
                 hiddenKeyboard(mPasswordView);
                 // TODO: Tạm thời bỏ check platform để dev
-//                attemptLogin();
+                attemptLogin();
             }
         });
 
@@ -299,18 +299,21 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
         if (mCheckLoginDemo) {
             // Hiện progress bar
             showProgress(true);
-//            mDomainView.setText("demo-magento2.magestore.com/pos-app/03");
-//            mUserNameView.setText("ravi");
-//            mPasswordView.setText("ravi123");
+            mDomainView.setText("demo-magento2.magestore.com/pos-app/03");
+            mUserNameView.setText("ravi");
+            mPasswordView.setText("ravi123");
 //            mDomainView.setText("http://ec2-18-220-34-129.us-east-2.compute.amazonaws.com:4001");
 //            mUserNameView.setText("johan");
 //            mPasswordView.setText("johan");
 //            mDomainView.setText("192.168.1.11:8899");
 //            mUserNameView.setText("johan");
 //            mPasswordView.setText("johan");
-            mDomainView.setText("http://dev.cleancutgraphics.com/");
-            mUserNameView.setText("posstaff1");
-            mPasswordView.setText("admin123");
+//            mDomainView.setText("http://dev.cleancutgraphics.com/");
+//            mUserNameView.setText("posstaff1");
+//            mPasswordView.setText("admin123");
+//              mDomainView.setText("http://dev2m1.nhubinh.com");
+//              mUserNameView.setText("admin");
+//              mPasswordView.setText("admin123");
             String domain = mDomainView.getText().toString().trim();
             String username = mUserNameView.getText().toString().trim();
             String password = mPasswordView.getText().toString().trim();
@@ -353,6 +356,10 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
         if (mAuthTask != null) {
             return;
         }
+
+//        mDomainView.setText("dev2m1.nhubinh.com");
+//        mUserNameView.setText("admin");
+//        mPasswordView.setText("admin123");
 
         // Khởi tạo lại các thông báo lỗi
         mDomainView.setError(null);
