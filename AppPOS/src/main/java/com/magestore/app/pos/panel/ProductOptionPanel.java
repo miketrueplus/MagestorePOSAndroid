@@ -378,7 +378,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                 optionModelView.is_required = true;
                 optionModelView.option_type = ProductOptionCustom.OPTION_TYPE_CONFIG;
                 if (ConfigUtil.getColorSwatch() != null && ConfigUtil.getColorSwatch().size() > 0) {
-                    if (optionCode.equals("color") || optionCode.equals("color")) {
+                    if (optionCode.equals("color") || optionCode.equals("colour")) {
                         optionModelView.input_type = ProductOptionCustom.TYPE_COLOR;
                     } else if (optionCode.equals("size")) {
                         optionModelView.input_type = ProductOptionCustom.TYPE_SIZE;
