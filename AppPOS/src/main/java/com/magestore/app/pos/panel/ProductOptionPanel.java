@@ -378,8 +378,10 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                 optionModelView.is_required = true;
                 optionModelView.option_type = ProductOptionCustom.OPTION_TYPE_CONFIG;
                 if (ConfigUtil.getColorSwatch() != null && ConfigUtil.getColorSwatch().size() > 0) {
-                    if (ConfigUtil.checkUseColorSwatch(optionCode)) {
+                    if (optionCode.equals("color") || optionCode.equals("color")) {
                         optionModelView.input_type = ProductOptionCustom.TYPE_COLOR;
+                    } else if (optionCode.equals("size")) {
+                        optionModelView.input_type = ProductOptionCustom.TYPE_SIZE;
                     } else {
                         optionModelView.input_type = ProductOptionCustom.TYPE_RADIO;
                     }
@@ -1458,9 +1460,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                 LayoutInflater layoutInflater = (LayoutInflater) this.context.
                         getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 mOptionColorViewHolder = new OptionColorViewHolder();
-                ConfigOptionSwatch configOptionSwatch = ConfigUtil.getValueColorSwatch(code, optionValueModelView.id);
-                String mType = configOptionSwatch.getType();
-                if (mType.equals(SWATCH_TYPE_COLOR) || mType.equals(SWATCH_TYPE_URL)) {
+                if (optionValueModelView.optionModelView.isTypeColor()) {
                     convertView = layoutInflater.inflate(R.layout.card_product_option_item_child_color, null);
                     mOptionColorViewHolder.mImageUrlColor = (CircleImageView) convertView.findViewById(R.id.url_color);
                     mOptionColorViewHolder.mImageColor = (ImageView) convertView.findViewById(R.id.im_color);
@@ -1498,24 +1498,26 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                         String mUrl = StringUtil.getDomain(ConfigUtil.getDomain()) + URL_COLOR + mValue;
                         Glide.with(context).load(mUrl).fitCenter().into(mOptionColorViewHolder.mImageUrlColor);
                         mOptionColorViewHolder.rl_select_color.setVisibility(optionValueModelView.choose ? VISIBLE : GONE);
-                    } else {
-                        mOptionColorViewHolder.mTextSize.setText(mValue);
-                        mOptionColorViewHolder.rl_select_size.setBackground(optionValueModelView.choose ? getResources().getDrawable(R.drawable.border_select_size) : null);
                     }
                 }
             }
 
-            if (optionValueModelView.optionModelView.isTypeColor()) {
+            if (optionValueModelView.optionModelView.isTypeSize()) {
                 ConfigOptionSwatch configOptionSwatch = ConfigUtil.getValueColorSwatch(code, optionValueModelView.id);
                 if(configOptionSwatch != null) {
                     String mType = configOptionSwatch.getType();
-                    if (mType.equals(SWATCH_TYPE_COLOR) || mType.equals(SWATCH_TYPE_URL)) {
-                        mOptionColorViewHolder.im_disable_color.setVisibility(optionValueModelView.disable ? VISIBLE : GONE);
-                    } else {
-                        mOptionColorViewHolder.im_disable_size.setVisibility(optionValueModelView.disable ? VISIBLE : GONE);
-                    }
+                    String mValue = configOptionSwatch.getValue();
+                    mOptionColorViewHolder.mTextSize.setText(mValue);
+                    mOptionColorViewHolder.rl_select_size.setBackground(optionValueModelView.choose ? getResources().getDrawable(R.drawable.border_select_size) : null);
                 }
+            }
 
+            if (optionValueModelView.optionModelView.isTypeColor()) {
+                mOptionColorViewHolder.im_disable_color.setVisibility(optionValueModelView.disable ? VISIBLE : GONE);
+            }
+
+            if (optionValueModelView.optionModelView.isTypeSize()) {
+                mOptionColorViewHolder.im_disable_size.setVisibility(optionValueModelView.disable ? VISIBLE : GONE);
             }
 
             return convertView;
@@ -1544,20 +1546,17 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         mBinding.idTxtProductOptionCartItemPrice.setText(ConfigUtil.formatPriceProduct(getItem().getPrice()));
     }
 
+    // kiểm tra những size và color bị disable
     private void checkDisableColor(OptionValueModelView optionValueModelViewChoose) {
         if (getItem().getProduct().getProductOption().getJsonConfig() == null) return;
         List<String> listChoose = new ArrayList<>();
         List<String> listChooseCompare = new ArrayList<>();
         if (optionValueModelViewChoose.productList != null && optionValueModelViewChoose.productList.size() > 0) {
-            String currentCode = "";
             listChoose.addAll(optionValueModelViewChoose.productList);
             for (OptionModelView optionModelView : mModelViewList) {
-                if (StringUtil.isNullOrEmpty(currentCode)) {
-                    currentCode = optionModelView.code;
-                }
                 if (optionModelView.isConfigOption()) {
                     if (optionValueModelViewChoose.optionModelView.isTypeColor()) {
-                        if (!currentCode.equals(optionModelView.code)) {
+                        if (optionModelView.isTypeSize()) {
                             for (OptionValueModelView childSize : optionModelView.optionValueModelViewList) {
                                 if (childSize.productList != null && childSize.productList.size() > 0) {
                                     listChooseCompare.clear();
@@ -1573,24 +1572,41 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                                 }
                             }
                         }
-                        currentCode = optionModelView.code;
+                    } else if (optionValueModelViewChoose.optionModelView.isTypeSize()) {
+                        if (optionModelView.isTypeColor()) {
+                            for (OptionValueModelView childColor : optionModelView.optionValueModelViewList) {
+                                if (childColor.productList != null && childColor.productList.size() > 0) {
+                                    listChooseCompare.clear();
+                                    listChooseCompare.addAll(listChoose);
+                                    listChooseCompare.retainAll(childColor.productList);
+                                    if (listChooseCompare.size() > 0) {
+                                        childColor.disable = false;
+                                    } else {
+                                        childColor.disable = true;
+                                    }
+                                } else {
+                                    childColor.disable = true;
+                                }
+                            }
+                        }
                     }
                 }
             }
         } else {
-            String currentCode = "";
             for (OptionModelView optionModelView : mModelViewList) {
-                if (StringUtil.isNullOrEmpty(currentCode)) {
-                    currentCode = optionModelView.code;
-                }
                 if (optionModelView.isConfigOption()) {
                     if (optionValueModelViewChoose.optionModelView.isTypeColor()) {
-                        if (!currentCode.equals(optionModelView.code)) {
+                        if (optionModelView.isTypeSize()) {
                             for (OptionValueModelView childSize : optionModelView.optionValueModelViewList) {
                                 childSize.disable = true;
                             }
                         }
-                        currentCode = optionModelView.code;
+                    } else if (optionValueModelViewChoose.optionModelView.isTypeSize()) {
+                        if (optionModelView.isTypeColor()) {
+                            for (OptionValueModelView childColor : optionModelView.optionValueModelViewList) {
+                                childColor.disable = true;
+                            }
+                        }
                     }
                 }
             }

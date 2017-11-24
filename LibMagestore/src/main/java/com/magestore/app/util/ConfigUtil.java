@@ -1374,15 +1374,6 @@ public class ConfigUtil {
         return null;
     }
 
-    public static boolean checkUseColorSwatch(String code) {
-        for (ConfigProductOption productOption : mColorSwatch) {
-            if(code.equals(productOption.getAttributeCode())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public static boolean isOpenCash() {
         return mOpenCash;
     }
