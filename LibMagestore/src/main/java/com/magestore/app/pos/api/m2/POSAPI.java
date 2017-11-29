@@ -20,6 +20,7 @@ public class POSAPI {
 
     // API get product
     public static final String REST_PRODUCT_GET_LISTING = "/V1/webpos/productlist/?";
+    public static final String REST_PRODUCT_GET_AVAILABLE_QTY = "/V1/webpos/stockItems/?";
 //    public static final String REST_PRODUCT_GET_LISTING = "/V1/webpos/products/?";
 //    public static final String REST_PRODUCT_GET = "/V1/webpos/products/?";
     public static final String REST_PRODUCT_GET = "/V1/webpos/productlist/?";

@@ -20,11 +20,13 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
 import com.bumptech.glide.Glide;
 import com.magestore.app.lib.model.catalog.ProductOptionCustom;
 import com.magestore.app.lib.model.catalog.ProductOptionCustomValue;
@@ -49,9 +51,12 @@ import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.StringUtil;
 import com.magestore.app.view.EditTextQuantity;
 import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
@@ -82,11 +87,14 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
     // text box số lượng
     EditTextQuantity mtxtCartItemQuantity;
 
-    TextView mtxtSpecialPrice;
+    ProgressBar mProgAavailableQty;
+    TextView mtxtSpecialPrice, mTxtAvailableQty;
 
     LinearLayout ll_description, ll_sku;
     boolean isShowDetail;
     View viewQuantity;
+    List<OptionValueModelView> listSelectConfigOption;
+    List<String> listVadilateConfigOption;
 
     /**
      * Khởi tạo
@@ -151,6 +159,8 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
 
         if (item.getProduct() != null) {
             mtxtCartItemQuantity.setDecimal(item.getProduct().isDecimal());
+            String mQtyAvailable = getContext().getString(R.string.product_available_qty, ConfigUtil.formatQuantity(item.getProduct().getQty()));
+            mTxtAvailableQty.setText(mQtyAvailable);
         } else {
             mtxtCartItemQuantity.setDecimal(false);
         }
@@ -167,6 +177,9 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
             expandableListAdapter.setCartItem(item);
             expandableListAdapter.notifyDataSetChanged();
         }
+
+        listSelectConfigOption = new ArrayList<>();
+        listVadilateConfigOption = new ArrayList<>();
 
         // cập nhật lại giá
         updateCartItemPrice();
@@ -658,6 +671,10 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
 
         ll_sku = (LinearLayout) findViewById(R.id.ll_sku);
         ll_sku.setVisibility(isShowDetail ? VISIBLE : GONE);
+
+        mProgAavailableQty = (ProgressBar) findViewById(R.id.progress_available_qty);
+
+        mTxtAvailableQty = (TextView) findViewById(R.id.txt_available_qty);
 
         // imageview
         mImageProductDetail = (ImageView) findViewById(R.id.id_img_product_detail_image);
@@ -1413,6 +1430,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
     private final String SWATCH_TYPE_COLOR = "1";
     private final String SWATCH_TYPE_URL = "2";
     private final String URL_COLOR = "/pub/media/attribute/swatch/swatch_image/30x20";
+
     private class CustomColorGridAdapter extends BaseAdapter {
         Context context;
         List<OptionValueModelView> optionValueModelViewList;
@@ -1484,7 +1502,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
 
             if (optionValueModelView.optionModelView.isTypeColor()) {
                 ConfigOptionSwatch configOptionSwatch = ConfigUtil.getValueColorSwatch(code, optionValueModelView.id);
-                if(configOptionSwatch != null) {
+                if (configOptionSwatch != null) {
                     String mType = configOptionSwatch.getType();
                     String mValue = configOptionSwatch.getValue();
                     if (mType.equals(SWATCH_TYPE_COLOR)) {
@@ -1504,7 +1522,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
 
             if (optionValueModelView.optionModelView.isTypeSize()) {
                 ConfigOptionSwatch configOptionSwatch = ConfigUtil.getValueColorSwatch(code, optionValueModelView.id);
-                if(configOptionSwatch != null) {
+                if (configOptionSwatch != null) {
                     String mType = configOptionSwatch.getType();
                     String mValue = configOptionSwatch.getValue();
                     mOptionColorViewHolder.mTextSize.setText(mValue);
@@ -1537,6 +1555,8 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         // đảo lại giá trị được chọn
         optionValueModelView.choose = (!optionValueModelView.choose);
         checkDisableColor(optionValueModelView);
+        checkSelectConfigOption(optionValueModelView);
+        checkVadilateConfigOption();
         if (adapter != null)
             adapter.notifyDataSetChanged();
         expandableListAdapter.notifyDataSetChanged();
@@ -1544,6 +1564,69 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         // cập nhật lại giá
         updateCartItemPrice();
         mBinding.idTxtProductOptionCartItemPrice.setText(ConfigUtil.formatPriceProduct(getItem().getPrice()));
+    }
+
+    private void checkSelectConfigOption(OptionValueModelView optionValueModelView) {
+        if (listSelectConfigOption.size() > 0) {
+            boolean checkSameConfig = false;
+            for (OptionValueModelView model : listSelectConfigOption) {
+                if (model.optionModelView.input_type.equals(optionValueModelView.optionModelView.input_type)) {
+                    int index = listSelectConfigOption.indexOf(model);
+                    listSelectConfigOption.set(index, optionValueModelView);
+                    checkSameConfig = true;
+                }
+            }
+
+            if (!checkSameConfig) {
+                listSelectConfigOption.add(optionValueModelView);
+            }
+        } else {
+            listSelectConfigOption.add(optionValueModelView);
+        }
+    }
+
+    private void checkVadilateConfigOption() {
+        List<String> listChooseCompare = new ArrayList<>();
+        for (OptionValueModelView model : listSelectConfigOption) {
+            if (listChooseCompare.size() == 0) {
+                listChooseCompare.addAll(model.productList);
+            } else {
+                listChooseCompare.retainAll(model.productList);
+            }
+        }
+
+        if (listChooseCompare.size() == 1) {
+            String Id = listChooseCompare.get(0);
+            Map<String, Float> mapAvailable = getItem().getProduct().getAvailableQty();
+            if (mapAvailable != null) {
+                if (mapAvailable.containsKey(Id)) {
+                    float mQty = mapAvailable.get(Id);
+                    updateAvailableQty(Id, mQty);
+                } else {
+                    ((CartItemListController) getController()).doInputGetAvailableQty(Id);
+                }
+            } else {
+                ((CartItemListController) getController()).doInputGetAvailableQty(Id);
+            }
+        }
+    }
+
+    public void updateAvailableQty(String Id, float mQty) {
+        if (!StringUtil.isNullOrEmpty(Id)) {
+            Map<String, Float> mapAvailable = getItem().getProduct().getAvailableQty();
+            if (mapAvailable == null) {
+                mapAvailable = new HashMap<>();
+            }
+            mapAvailable.put(Id, mQty);
+            getItem().getProduct().setAvailableQty(mapAvailable);
+        }
+        String mQtyAvailable = getContext().getString(R.string.product_available_qty, ConfigUtil.formatQuantity(mQty));
+        mTxtAvailableQty.setText(mQtyAvailable);
+    }
+
+    public void showLoadingAvailableQty(boolean isShow) {
+        mProgAavailableQty.setVisibility(isShow ? VISIBLE : GONE);
+        mTxtAvailableQty.setVisibility(isShow ? GONE : VISIBLE);
     }
 
     // kiểm tra những size và color bị disable

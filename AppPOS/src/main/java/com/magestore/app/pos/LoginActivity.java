@@ -74,7 +74,7 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        ConfigUtil.setPlatForm(ConfigUtil.PLATFORM_MAGENTO_1);
+        ConfigUtil.setPlatForm(ConfigUtil.PLATFORM_MAGENTO_2);
 
         STORE_ID = DataUtil.getDataStringToPreferences(getContext(), DataUtil.STORE_ID);
 
@@ -398,6 +398,10 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
         if (mAuthTask != null) {
             return;
         }
+
+        mDomainView.setText("magento2.edenduong.com");
+        mUserNameView.setText("admin");
+        mPasswordView.setText("123.abc");
 
         // check login là demo thì không lại thông tin khách hàng nhập
         mCheckLoginDemo = true;

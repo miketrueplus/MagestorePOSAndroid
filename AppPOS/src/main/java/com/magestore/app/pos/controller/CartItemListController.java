@@ -61,6 +61,7 @@ public class CartItemListController extends AbstractChildListController<Checkout
 
     static final int ACTION_CART_DELETE_ITEM = 0;
     static final int ACTION_CART_REORDER = 1;
+    static final int ACTION_GET_AVAILABLE = 2;
 
     Map<String, Object> wraper;
 
@@ -141,11 +142,13 @@ public class CartItemListController extends AbstractChildListController<Checkout
             }
             wraper.put("cart_respone", mCartService.delete(getParent(), cartItem));
             return true;
-        }
-
-        if (actionType == ACTION_CART_REORDER) {
+        } else if (actionType == ACTION_CART_REORDER) {
             List<CartItem> list = mCartService.reOrder(getParent(), (Order) models[0]);
             wraper.put("cart_respone", list);
+            return true;
+        } else if (actionType == ACTION_GET_AVAILABLE) {
+            String Id = (String) wraper.get("product_id");
+            wraper.put("available_qty_respone", mProductOptionService.getAvailableQty(Id));
             return true;
         }
 
@@ -174,11 +177,27 @@ public class CartItemListController extends AbstractChildListController<Checkout
         }
 
         // với trường hợp re-order
-        if (success && actionType == ACTION_CART_REORDER) {
+        else if (success && actionType == ACTION_CART_REORDER) {
             List<CartItem> list = (List<CartItem>) wraper.get("cart_respone");
             onRetrievePostExecute(list);
             updateTotalPrice();
             mCheckoutListController.isShowLoadingList(false);
+            return;
+        }
+
+        // trường hợp get available qty
+        else if (success && actionType == ACTION_GET_AVAILABLE) {
+            String Id = (String) wraper.get("product_id");
+            List<Product> listProduct = (List<Product>) wraper.get("available_qty_respone");
+            if (listProduct != null && listProduct.size() > 0) {
+                Product mProduct = listProduct.get(0);
+                float mQty = mProduct.getQty();
+                mProductOptionPanel.updateAvailableQty(Id, mQty);
+                mProductOptionPanel.showLoadingAvailableQty(false);
+            } else {
+                mProductOptionPanel.updateAvailableQty("", 0);
+                mProductOptionPanel.showLoadingAvailableQty(false);
+            }
             return;
         }
     }
@@ -187,6 +206,8 @@ public class CartItemListController extends AbstractChildListController<Checkout
     public void onCancelledBackground(Exception exp, int actionType, String actionCode, Map<String, Object> wraper, Model... models) {
         super.onCancelledBackground(exp, actionType, actionCode, wraper, models);
         mCheckoutListController.isShowLoadingList(false);
+        mProductOptionPanel.updateAvailableQty("", 0);
+        mProductOptionPanel.showLoadingAvailableQty(false);
     }
 
     /**
@@ -233,6 +254,12 @@ public class CartItemListController extends AbstractChildListController<Checkout
             mCheckoutListController.isShowLoadingList(true);
         }
         doAction(ACTION_CART_DELETE_ITEM, null, wraper, cartItem);
+    }
+
+    public void doInputGetAvailableQty(String Id) {
+        mProductOptionPanel.showLoadingAvailableQty(true);
+        wraper.put("product_id", Id);
+        doAction(ACTION_GET_AVAILABLE, null, wraper, null);
     }
 
     /**

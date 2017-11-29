@@ -541,15 +541,24 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         Collections.sort(countryList, new Comparator<LinkedTreeMap>() {
             @Override
             public int compare(LinkedTreeMap linkedTreeMap, LinkedTreeMap linkedTreeMap1) {
-                String name = linkedTreeMap.get("country_name").toString();
-                String name1 = linkedTreeMap1.get("country_name").toString();
+                String name = "";
+                if(linkedTreeMap.get("country_name") != null){
+                    name = linkedTreeMap.get("country_name").toString();
+                }
+                String name1 = "";
+                if(linkedTreeMap1.get("country_name") != null){
+                    name1 = linkedTreeMap1.get("country_name").toString();
+                }
                 return name.compareToIgnoreCase(name1);
             }
         });
         for (LinkedTreeMap country : countryList) {
             ConfigCountry configCountry = new PosConfigCountry();
             String country_id = country.get("country_id").toString();
-            String country_name = country.get("country_name").toString();
+            String country_name = "";
+            if(country.get("country_name") != null){
+                country_name = country.get("country_name").toString();
+            }
             configCountry.setCountryID(country_id);
             configCountry.setCountryName(country_name);
             List<LinkedTreeMap> regionList = (ArrayList) country.get("regions");

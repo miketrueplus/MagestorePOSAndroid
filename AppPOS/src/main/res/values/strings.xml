@@ -13,6 +13,7 @@
     <string name="login_error_incorrect_password">This user name or password is incorrect</string>
 
     <!-- Strings related to product and checkout -->
+    <string name="product_available_qty">%1$s item(s)</string>
     <string name="sales_search_product_here">Search name, SKU, category</string>
     <string name="sales_title_sales_list">Items</string>
     <string name="sales_title_sales_detail">Sales Detail</string>

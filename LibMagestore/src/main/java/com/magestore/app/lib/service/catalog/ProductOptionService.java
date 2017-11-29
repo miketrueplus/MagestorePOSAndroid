@@ -8,6 +8,7 @@ import com.magestore.app.lib.service.Service;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.List;
 
 /**
  * Created by Mike on 3/1/2017.
@@ -17,4 +18,6 @@ import java.text.ParseException;
 
 public interface ProductOptionService extends Service {
     ProductOption retrieve(Product product) throws IOException, InstantiationException, ParseException, IllegalAccessException;
+
+    List<Product> getAvailableQty(String Id) throws IOException, InstantiationException, ParseException, IllegalAccessException;
 }

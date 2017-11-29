@@ -140,8 +140,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/product_detail_title_margin_size"
-                    android:orientation="horizontal"
-                    android:visibility="gone">
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="0dp"
@@ -152,13 +151,26 @@
                         android:textColor="@color/product_detail_title_text_color"
                         android:textSize="@dimen/product_detail_title_text_size" />
 
-                    <TextView
+                    <RelativeLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="3"
-                        android:text="@{product.getSKU()}"
-                        android:textColor="@color/text_color"
-                        android:textSize="@dimen/product_detail_content_text_size" />
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="3">
+
+                        <ProgressBar
+                            android:id="@+id/progress_available_qty"
+                            android:layout_width="@dimen/product_detail_available_qty_loading_size"
+                            android:layout_height="@dimen/product_detail_available_qty_loading_size"
+                            android:layout_centerVertical="true"
+                            android:visibility="gone" />
+
+                        <TextView
+                            android:id="@+id/txt_available_qty"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/product_detail_content_text_size" />
+                    </RelativeLayout>
                 </LinearLayout>
             </LinearLayout>
 
