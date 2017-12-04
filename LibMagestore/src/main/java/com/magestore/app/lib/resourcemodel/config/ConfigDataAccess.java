@@ -54,6 +54,7 @@ public interface ConfigDataAccess extends DataAccess {
     String getBaseCurrencyCode() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     String getCurrentCurrencyCode() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     float getConfigMaximumDiscount() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
+    String googleAPIKey() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     boolean getConfigDeliveryTime() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     boolean getConfigStoreCredit() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     boolean getConfigRewardPoint() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;

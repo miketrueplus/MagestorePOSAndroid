@@ -83,6 +83,7 @@ import com.magestore.app.util.AnimationView;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.DataUtil;
 import com.magestore.app.util.DialogUtil;
+import com.magestore.app.util.StringUtil;
 import com.magestore.app.view.EditTextFloat;
 import com.magestore.app.view.ui.PosUI;
 
@@ -264,7 +265,11 @@ public class SalesActivity extends AbstractActivity
         }
         ConfigUtil.setOpenCash(printerSetting.getOpenCashAfterPrint());
         ConfigUtil.setAutoPrint(printerSetting.getAutoPrint());
-        ConfigUtil.setPlaceAutoComplete(printerSetting.getPlaceAutoComplete());
+        if (!StringUtil.isNullOrEmpty(ConfigUtil.getGoogleKey())) {
+            ConfigUtil.setPlaceAutoComplete(printerSetting.getPlaceAutoComplete());
+        } else {
+            ConfigUtil.setPlaceAutoComplete(false);
+        }
 
         // keyboard
         ll_custom_keyboard = (LinearLayout) findViewById(R.id.ll_custom_keyboard);

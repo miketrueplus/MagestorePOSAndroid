@@ -93,7 +93,11 @@ public class SettingDetailPanel extends AbstractDetailPanel<Setting> {
         ll_setting_store = (LinearLayout) findViewById(R.id.ll_setting_store);
         btn_save = (Button) findViewById(R.id.btn_save);
         listLayout.add(ll_setting_account);
-        listLayout.add(ll_setting_checkout);
+        if (!StringUtil.isNullOrEmpty(ConfigUtil.getGoogleKey())) {
+            listLayout.add(ll_setting_checkout);
+        } else {
+            ll_setting_checkout.setVisibility(GONE);
+        }
         listLayout.add(ll_setting_print);
         listLayout.add(ll_setting_currency);
         listLayout.add(ll_setting_store);
@@ -234,6 +238,11 @@ public class SettingDetailPanel extends AbstractDetailPanel<Setting> {
             }
         });
 
+        if (StringUtil.isNullOrEmpty(ConfigUtil.getGoogleKey())) {
+            ConfigUtil.setPlaceAutoComplete(false);
+            printerSetting.writeAutoPlaceAutoComplete(false);
+        }
+
         sw_place_auto_complete.setChecked(printerSetting.getPlaceAutoComplete());
         sw_place_auto_complete.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -264,9 +273,9 @@ public class SettingDetailPanel extends AbstractDetailPanel<Setting> {
         if (currencyList != null && currencyList.size() > 0) {
             sp_currency.bind(currencyList.toArray(new Currency[0]));
             sp_currency.setSelection(ConfigUtil.getCurrentCurrency().getCode());
-            ll_setting_currency.setVisibility(VISIBLE);
+            sp_currency.setVisibility(VISIBLE);
         } else {
-            ll_setting_currency.setVisibility(GONE);
+            sp_currency.setVisibility(GONE);
         }
     }
 

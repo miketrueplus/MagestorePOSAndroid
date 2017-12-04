@@ -129,6 +129,7 @@ public class ConfigUtil {
     private static Map<String, String> mListCustomerGroup;
     // setting
     private static Map<String, String> mListSetting;
+    private static String mGoogleKey;
     private static boolean mPlaceAutoComplete;
 
     // order status
@@ -1389,6 +1390,14 @@ public class ConfigUtil {
 
     public static void setAutoPrint(boolean mAutoPrint) {
         ConfigUtil.mAutoPrint = mAutoPrint;
+    }
+
+    public static String getGoogleKey() {
+        return mGoogleKey;
+    }
+
+    public static void setGoogleKey(String mGoogleKey) {
+        ConfigUtil.mGoogleKey = mGoogleKey;
     }
 
     public static boolean isPlaceAutoComplete() {

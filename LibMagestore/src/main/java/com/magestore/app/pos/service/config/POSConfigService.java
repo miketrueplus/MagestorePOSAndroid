@@ -71,6 +71,7 @@ public class POSConfigService extends AbstractService implements ConfigService {
         boolean checkLicenseKey = configDataAccess.checkLicenseKey();
 
         // đặt config format tiền
+        ConfigUtil.setGoogleKey(configDataAccess.googleAPIKey());
         ConfigUtil.setCurrencyFormat(getPriceFormat());
         ConfigUtil.setCurrencyNoSymbolFormat(getPriceNosymbolFormat());
         ConfigUtil.setFloatFormat(getFloatFormat());

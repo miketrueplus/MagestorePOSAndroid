@@ -990,6 +990,16 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
     }
 
     @Override
+    public String googleAPIKey() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        if (mConfig == null) mConfig = new PosConfigDefault();
+        String google_key = "";
+        if (mConfig.getValue("webpos/general/google_api_key") != null) {
+            google_key = (String) mConfig.getValue("webpos/general/google_api_key");
+        }
+        return google_key;
+    }
+
+    @Override
     public boolean getConfigDeliveryTime() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
         if (mConfig == null) mConfig = new PosConfigDefault();
 
@@ -1194,7 +1204,9 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
     public List<String> getConfigSetting() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
         List<String> listSetting = new ArrayList<>();
         listSetting.add("0");
-        listSetting.add("1");
+        if (!StringUtil.isNullOrEmpty(ConfigUtil.getGoogleKey())) {
+            listSetting.add("1");
+        }
         listSetting.add("2");
         listSetting.add("3");
         return listSetting;

@@ -407,6 +407,11 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
     }
 
     @Override
+    public String googleAPIKey() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        return null;
+    }
+
+    @Override
     public boolean getConfigDeliveryTime() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
         return false;
     }
