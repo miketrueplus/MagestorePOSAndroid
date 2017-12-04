@@ -167,6 +167,9 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
         if (ConfigUtil.isPlaceAutoComplete()) {
             s_place_panel.setListController(mController, mCustomerService);
             b_place_panel.setListController(mController, mCustomerService);
+        } else {
+            s_place_panel.setListController(null, null);
+            b_place_panel.setListController(null, null);
         }
     }
 
