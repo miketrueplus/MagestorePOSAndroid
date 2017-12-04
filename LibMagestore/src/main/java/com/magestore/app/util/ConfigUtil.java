@@ -129,6 +129,7 @@ public class ConfigUtil {
     private static Map<String, String> mListCustomerGroup;
     // setting
     private static Map<String, String> mListSetting;
+    private static boolean mPlaceAutoComplete;
 
     // order status
     private static Map<String, String> mListOrderStatus;
@@ -1388,6 +1389,14 @@ public class ConfigUtil {
 
     public static void setAutoPrint(boolean mAutoPrint) {
         ConfigUtil.mAutoPrint = mAutoPrint;
+    }
+
+    public static boolean isPlaceAutoComplete() {
+        return mPlaceAutoComplete;
+    }
+
+    public static void setPlaceAutoComplete(boolean mPlaceAutoComplete) {
+        ConfigUtil.mPlaceAutoComplete = mPlaceAutoComplete;
     }
 }
 

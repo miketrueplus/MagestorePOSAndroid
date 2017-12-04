@@ -41,11 +41,12 @@ import java.util.List;
  */
 
 public class SettingDetailPanel extends AbstractDetailPanel<Setting> {
-    LinearLayout ll_setting_account, ll_setting_currency, ll_setting_store, ll_setting_print;
+    LinearLayout ll_setting_account, ll_setting_currency, ll_setting_store, ll_setting_print, ll_setting_checkout;
     static int TYPE_ACCOUNT = 0;
-    static int TYPE_PRINT = 1;
-    static int TYPE_CURRENCY = 2;
-    static int TYPE_STORE = 3;
+    static int TYPE_CHECKOUT = 1;
+    static int TYPE_PRINT = 2;
+    static int TYPE_CURRENCY = 3;
+    static int TYPE_STORE = 4;
     List<LinearLayout> listLayout;
     SimpleSpinner sp_currency, sp_print;
     EditText edt_name, edt_current_password, edt_new_password, edt_confirm_password;
@@ -54,7 +55,7 @@ public class SettingDetailPanel extends AbstractDetailPanel<Setting> {
     boolean checkFirst;
     LinearLayout ll_print_area, ll_print_copy;
     Spinner sp_print_area, sp_print_copy;
-    Switch sw_open_cash, sw_auto_print;
+    Switch sw_open_cash, sw_auto_print, sw_place_auto_complete;
 
     public SettingDetailPanel(Context context) {
         super(context);
@@ -79,6 +80,8 @@ public class SettingDetailPanel extends AbstractDetailPanel<Setting> {
         edt_confirm_password = (EditText) findViewById(R.id.edt_confirm_password);
         ll_setting_currency = (LinearLayout) findViewById(R.id.ll_setting_currency);
         sp_currency = (SimpleSpinner) findViewById(R.id.sp_currency);
+        ll_setting_checkout = (LinearLayout) findViewById(R.id.ll_setting_checkout);
+        sw_place_auto_complete = (Switch) findViewById(R.id.sw_place_auto_complete);
         ll_setting_print = (LinearLayout) findViewById(R.id.ll_setting_print);
         sp_print = (SimpleSpinner) findViewById(R.id.sp_print);
         ll_print_area = (LinearLayout) findViewById(R.id.ll_print_area);
@@ -90,6 +93,7 @@ public class SettingDetailPanel extends AbstractDetailPanel<Setting> {
         ll_setting_store = (LinearLayout) findViewById(R.id.ll_setting_store);
         btn_save = (Button) findViewById(R.id.btn_save);
         listLayout.add(ll_setting_account);
+        listLayout.add(ll_setting_checkout);
         listLayout.add(ll_setting_print);
         listLayout.add(ll_setting_currency);
         listLayout.add(ll_setting_store);
@@ -229,6 +233,15 @@ public class SettingDetailPanel extends AbstractDetailPanel<Setting> {
                 printerSetting.writeAutoPrint(b);
             }
         });
+
+        sw_place_auto_complete.setChecked(printerSetting.getPlaceAutoComplete());
+        sw_place_auto_complete.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                ConfigUtil.setPlaceAutoComplete(b);
+                printerSetting.writeAutoPlaceAutoComplete(b);
+            }
+        });
     }
 
     @Override
@@ -242,6 +255,8 @@ public class SettingDetailPanel extends AbstractDetailPanel<Setting> {
             ((SettingListController) getController()).backToLoginActivity();
         } else if (item.getType() == TYPE_PRINT) {
             selectLinearLayout(ll_setting_print, listLayout);
+        } else if (item.getType() == TYPE_CHECKOUT) {
+            selectLinearLayout(ll_setting_checkout, listLayout);
         }
     }
 

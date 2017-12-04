@@ -6,6 +6,8 @@ import com.magestore.app.lib.model.catalog.Product;
 import com.magestore.app.lib.model.customer.Complain;
 import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.model.customer.Customer;
+import com.magestore.app.lib.model.customer.PlaceAddressComponent;
+import com.magestore.app.lib.model.customer.PlaceAutoComplete;
 import com.magestore.app.lib.resourcemodel.DataAccessException;
 import com.magestore.app.lib.resourcemodel.DataAccessFactory;
 import com.magestore.app.pos.model.customer.PosComplain;
@@ -131,5 +133,19 @@ public class POSCustomerService extends AbstractService
     @Override
     public Customer retrieve(String strID) throws ParseException, InstantiationException, IllegalAccessException, IOException {
         return null;
+    }
+
+    @Override
+    public List<PlaceAutoComplete> placeAutoComplete(String input) throws ParseException, InstantiationException, IllegalAccessException, IOException {
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        CustomerDataAccess customerDataAccess = factory.generateCustomerDataAccess();
+        return customerDataAccess.placeAutoComplete(input);
+    }
+
+    @Override
+    public List<PlaceAddressComponent> placeDetail(String detailId) throws ParseException, InstantiationException, IllegalAccessException, IOException {
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        CustomerDataAccess customerDataAccess = factory.generateCustomerDataAccess();
+        return customerDataAccess.placeDetail(detailId);
     }
 }

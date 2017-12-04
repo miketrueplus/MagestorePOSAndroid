@@ -117,6 +117,18 @@ public class StringUtil {
     public static final String STATUS_DOWN = "down";
     public static final String STATUS_NaN = "nan";
 
+    // place auto complete
+    public static final String PLACE_STREET_NUMBER = "street_number";
+    public static final String PLACE_ROUTE = "route";
+    public static final String PLACE_NEIGHBORHOOD = "neighborhood";
+    public static final String PLACE_LOCALITY = "locality";
+    public static final String PLACE_SUBLOCALITY_LEVEL_1 = "sublocality_level_1";
+    public static final String PLACE_ADMINISTRATIVE_AREA_LEVEL_1 = "administrative_area_level_1";
+    public static final String PLACE_ADMINISTRATIVE_AREA_LEVEL_2 = "administrative_area_level_2";
+    public static final String PLACE_COUNTRY = "country";
+    public static final String PLACE_POSTAL_CODE = "postal_code";
+    public static final String PLACE_POSTAL_CODE_SUFFIX = "postal_code_suffix";
+
     /**
      * Thêm một element trong 1 chuỗi mảng
      *

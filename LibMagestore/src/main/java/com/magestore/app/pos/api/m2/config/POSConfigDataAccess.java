@@ -1196,6 +1196,7 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         listSetting.add("0");
         listSetting.add("1");
         listSetting.add("2");
+        listSetting.add("3");
         return listSetting;
     }
 

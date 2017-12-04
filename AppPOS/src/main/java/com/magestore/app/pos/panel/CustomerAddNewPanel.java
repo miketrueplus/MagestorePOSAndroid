@@ -2,7 +2,11 @@ package com.magestore.app.pos.panel;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.os.Handler;
+import android.os.Message;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
@@ -20,6 +24,9 @@ import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.model.directory.Region;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
+import com.magestore.app.lib.panel.SearchPlaceAutoCompletePanel;
+import com.magestore.app.lib.service.customer.CustomerService;
+import com.magestore.app.lib.view.SearchAutoCompleteTextView;
 import com.magestore.app.lib.view.SimpleSpinner;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.controller.CustomerListController;
@@ -45,7 +52,7 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
     LinearLayout ll_shipping_address, ll_billing_address, ll_s_shipping_address, ll_s_billing_address;
     LinearLayout ll_new_shipping_address, ll_last_name, ll_b_state, ll_b_last_name, ll_s_company;
     LinearLayout ll_new_billing_address, ll_s_state, ll_s_last_name, ll_b_company;
-    EditText s_state, b_state, s_first_name, b_first_name, s_last_name, b_last_name, s_street1, b_street1, s_street2, b_street2, s_vat, b_vat;
+    EditText s_state, b_state, s_first_name, b_first_name, s_last_name, b_last_name, s_street2, b_street2, s_vat, b_vat;
     EditText first_name, last_name, email, s_company, b_company, s_phone, b_phone, s_city, b_city, s_zipcode, b_zipcode;
     Switch subscribe;
     CheckBox cb_same_billing_and_shipping;
@@ -55,6 +62,9 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
     PanelCustomerAddNewBinding mBinding;
     ImageView btn_shipping_address, btn_billing_address;
     List<CustomerAddress> listAddress;
+    SearchPlaceAutoCompletePanel s_place_panel, b_place_panel;
+    SearchAutoCompleteTextView s_street1, b_street1;
+    CustomerService mCustomerService;
 
     public CustomerAddNewPanel(Context context) {
         super(context);
@@ -66,6 +76,10 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
 
     public CustomerAddNewPanel(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+    }
+
+    public void setCustomerService(CustomerService mCustomerService) {
+        this.mCustomerService = mCustomerService;
     }
 
     @Override
@@ -106,9 +120,11 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
         b_company = (EditText) findViewById(R.id.b_company);
         s_phone = (EditText) findViewById(R.id.s_phone);
         b_phone = (EditText) findViewById(R.id.b_phone);
-        s_street1 = (EditText) findViewById(R.id.s_street1);
+        s_place_panel = (SearchPlaceAutoCompletePanel) findViewById(R.id.s_search_place_panel);
+        s_street1 = (SearchAutoCompleteTextView) findViewById(R.id.s_street1);
         s_street2 = (EditText) findViewById(R.id.s_street2);
-        b_street1 = (EditText) findViewById(R.id.b_street1);
+        b_place_panel = (SearchPlaceAutoCompletePanel) findViewById(R.id.b_search_place_panel);
+        b_street1 = (SearchAutoCompleteTextView) findViewById(R.id.b_street1);
         b_street2 = (EditText) findViewById(R.id.b_street2);
         s_city = (EditText) findViewById(R.id.s_city);
         b_city = (EditText) findViewById(R.id.b_city);
@@ -144,6 +160,14 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
         b_city.setHint(ConfigUtil.isRequiedStreet1() ? getContext().getString(R.string.city) : getContext().getString(R.string.customer_city_optional));
         s_zipcode.setHint(ConfigUtil.isRequiedStreet1() ? getContext().getString(R.string.zip_code) : getContext().getString(R.string.customer_zipcode_optional));
         b_zipcode.setHint(ConfigUtil.isRequiedStreet1() ? getContext().getString(R.string.zip_code) : getContext().getString(R.string.customer_zipcode_optional));
+    }
+
+    @Override
+    public void initValue() {
+        if (ConfigUtil.isPlaceAutoComplete()) {
+            s_place_panel.setListController(mController, mCustomerService);
+            b_place_panel.setListController(mController, mCustomerService);
+        }
     }
 
     @Override
@@ -222,11 +246,20 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
                     s_state.setVisibility(ConfigUtil.isEditState() ? VISIBLE : GONE);
                     s_spinner_state.setVisibility(GONE);
                 }
+                updateState();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
+            }
+        });
+
+        s_spinner_country.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                isAutoComplete = false;
+                return false;
             }
         });
 
@@ -244,6 +277,7 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
                     b_state.setVisibility(ConfigUtil.isEditState() ? VISIBLE : GONE);
                     b_spinner_state.setVisibility(GONE);
                 }
+                updateState();
             }
 
             @Override
@@ -772,5 +806,87 @@ public class CustomerAddNewPanel extends AbstractDetailPanel<Customer> {
 
     public void clearText(EditText editText) {
         editText.setText("");
+    }
+
+    private Region mPlaceRegion = null;
+    private boolean isAutoComplete = false;
+
+    public void updatePlaceAutoComplete(CustomerAddress mCustomerAddress) {
+        mPlaceRegion = mCustomerAddress.getRegion();
+        isAutoComplete = true;
+        if (ll_new_shipping_address.getVisibility() == VISIBLE) {
+            s_street1.setText(mCustomerAddress.getStreet1());
+            s_street2.setText(mCustomerAddress.getStreet2());
+            s_city.setText(mCustomerAddress.getCity());
+            s_zipcode.setText(mCustomerAddress.getPostCode());
+            boolean isSameCountry = false;
+            if (s_spinner_country.getSelection().equals(mCustomerAddress.getCountry())) {
+                isSameCountry = true;
+            }
+            s_spinner_country.setSelection(mCustomerAddress.getCountry());
+            if (isSameCountry) {
+                if (s_state.getVisibility() == VISIBLE) {
+                    s_state.setText(mPlaceRegion.getRegionName());
+                } else {
+                    checkListState();
+                }
+            }
+        } else {
+            b_street1.setText(mCustomerAddress.getStreet1());
+            b_street2.setText(mCustomerAddress.getStreet2());
+            b_city.setText(mCustomerAddress.getCity());
+            b_zipcode.setText(mCustomerAddress.getPostCode());
+            boolean isSameCountry = false;
+            if (b_spinner_country.getSelection().equals(mCustomerAddress.getCountry())) {
+                isSameCountry = true;
+            }
+            b_spinner_country.setSelection(mCustomerAddress.getCountry());
+            if (isSameCountry) {
+                if (b_state.getVisibility() == VISIBLE) {
+                    b_state.setText(mPlaceRegion.getRegionName());
+                } else {
+                    checkListState();
+                }
+            }
+        }
+    }
+
+    private void updateState() {
+        if (isAutoComplete) {
+            if (mPlaceRegion != null) {
+                if (ll_new_shipping_address.getVisibility() == VISIBLE) {
+                    if (s_state.getVisibility() == VISIBLE) {
+                        s_state.setText(mPlaceRegion.getRegionName());
+                    } else {
+                        checkListState();
+                    }
+                } else {
+                    if (b_state.getVisibility() == VISIBLE) {
+                        b_state.setText(mPlaceRegion.getRegionName());
+                    } else {
+                        checkListState();
+                    }
+                }
+            }
+        }
+    }
+
+    private void checkListState() {
+        final Map<String, ConfigCountry> countryDataSet = ((CustomerListController) mController).getCountry();
+        if (ll_new_shipping_address.getVisibility() == VISIBLE) {
+            Map<String, ConfigRegion> listRegion = countryDataSet.get(s_spinner_country.getSelection()).getRegions();
+            for (ConfigRegion region : listRegion.values()) {
+                if (region.getCode().equals(mPlaceRegion.getRegionCode())) {
+                    s_spinner_state.setSelection(region.getID());
+                }
+            }
+        } else {
+            Map<String, ConfigRegion> listRegion = countryDataSet.get(b_spinner_country.getSelection()).getRegions();
+            for (ConfigRegion region : listRegion.values()) {
+                if (region.getCode().equals(mPlaceRegion.getRegionCode())) {
+                    b_spinner_state.setSelection(region.getID());
+                }
+            }
+        }
     }
 }

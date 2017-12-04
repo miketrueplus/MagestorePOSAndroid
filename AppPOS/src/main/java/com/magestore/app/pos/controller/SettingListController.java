@@ -57,9 +57,10 @@ public class SettingListController extends AbstractListController<Setting> {
         mStaff = mConfigService.getStaff();
         Map<String, String> listTitleConfig = new LinkedTreeMap<>();
         listTitleConfig.put("0", getMagestoreContext().getActivity().getString(R.string.setting_account));
-        listTitleConfig.put("1", getMagestoreContext().getActivity().getString(R.string.setting_print));
-        listTitleConfig.put("2", getMagestoreContext().getActivity().getString(R.string.setting_currency));
-        listTitleConfig.put("3", getMagestoreContext().getActivity().getString(R.string.setting_store));
+        listTitleConfig.put("1", getMagestoreContext().getActivity().getString(R.string.checkout));
+        listTitleConfig.put("2", getMagestoreContext().getActivity().getString(R.string.setting_print));
+        listTitleConfig.put("3", getMagestoreContext().getActivity().getString(R.string.setting_currency));
+        listTitleConfig.put("4", getMagestoreContext().getActivity().getString(R.string.setting_store));
         return mConfigService.getListSetting(listTitleConfig);
     }
 

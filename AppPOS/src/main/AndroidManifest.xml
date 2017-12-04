@@ -34,6 +34,11 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCnRmWlHJZKBwr2Gk3MKrTU63CPa0ZiA-8"/>
+
         <activity
             android:name=".LoginActivity"
             android:label="@string/app_name"

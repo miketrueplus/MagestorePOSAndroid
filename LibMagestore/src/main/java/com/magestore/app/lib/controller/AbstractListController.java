@@ -4,6 +4,7 @@ import android.view.View;
 
 import com.magestore.app.lib.model.Model;
 import com.magestore.app.lib.model.catalog.Product;
+import com.magestore.app.lib.model.customer.PlaceAutoComplete;
 import com.magestore.app.lib.observ.GenericState;
 import com.magestore.app.lib.observ.State;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
@@ -563,6 +564,11 @@ public class AbstractListController<TModel extends Model>
         List<TModel> listModel = new ArrayList<TModel>();
         listModel.add(model);
         getView().publishSearchList(listModel);
+    }
+
+    @Override
+    public void displayPlaceSearch(PlaceAutoComplete model) {
+
     }
 
     /**

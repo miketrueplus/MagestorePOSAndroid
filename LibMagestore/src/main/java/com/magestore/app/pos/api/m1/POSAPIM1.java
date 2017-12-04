@@ -40,6 +40,11 @@ public class POSAPIM1 {
     public static final String REST_ADDRESS_DELETE = "api/rest/webpos/customer/create?";
     public static final String REST_ADDRESS_ADD = "api/rest/webpos/customer/create?";
 
+    // API Place Auto Complete
+    public static final String REST_DOMAIN_GOOGLE_MAP_API = "https://maps.googleapis.com";
+    public static final String REST_PLACE_AUTO_COMPLETE = "/maps/api/place/autocomplete/json?";
+    public static final String REST_PLACE_DETAIL = "/maps/api/place/details/json?";
+
     // API order
     public static final String REST_ORDER_GET_LISTING = "api/rest/webpos/order/find?";
     public static final String REST_ORDER_CANCEL = "api/rest/webpos/order/cancel?";

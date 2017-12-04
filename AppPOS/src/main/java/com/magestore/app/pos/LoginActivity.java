@@ -5,9 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
-
 import android.os.AsyncTask;
-
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -22,8 +20,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.magestore.app.lib.*;
 import com.magestore.app.lib.model.registershift.PointOfSales;
 import com.magestore.app.lib.task.Task;
 import com.magestore.app.lib.task.TaskListener;
@@ -39,7 +35,6 @@ import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.DataUtil;
 import com.magestore.app.util.DialogUtil;
 import com.magestore.app.util.StringUtil;
-
 import java.util.List;
 
 /**
@@ -173,6 +168,7 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
                 LoginActivity.STORE_ID = pos.getStoreId();
                 DataUtil.saveDataStringToPreferences(getContext(), DataUtil.STORE_ID, pos.getStoreId());
                 ConfigUtil.setPointOfSales(pos);
+                ConfigUtil.setLocationId(pos.getLocationId());
             }
 
             @Override

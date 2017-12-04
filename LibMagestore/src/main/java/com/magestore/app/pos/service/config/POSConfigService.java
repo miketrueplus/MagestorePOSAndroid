@@ -499,19 +499,24 @@ public class POSConfigService extends AbstractService implements ConfigService {
                 accountSetting.setType(0);
                 settingList.add(accountSetting);
             } else if (key.equals("1")) {
+                Setting checkoutSetting = new PosSetting();
+                checkoutSetting.setName(listTitle.get(key));
+                checkoutSetting.setType(1);
+                settingList.add(checkoutSetting);
+            } else if (key.equals("2")) {
                 Setting printSetting = new PosSetting();
                 printSetting.setName(listTitle.get(key));
-                printSetting.setType(1);
+                printSetting.setType(2);
                 settingList.add(printSetting);
-            } else if (key.equals("2")) {
+            } else if (key.equals("3")) {
                 Setting currencySetting = new PosSetting();
                 currencySetting.setName(listTitle.get(key));
-                currencySetting.setType(2);
+                currencySetting.setType(3);
                 settingList.add(currencySetting);
-            } else if (key.equals("3")) {
+            } else if (key.equals("4")) {
                 Setting storeSetting = new PosSetting();
                 storeSetting.setName(listTitle.get(key));
-                storeSetting.setType(3);
+                storeSetting.setType(4);
                 settingList.add(storeSetting);
             }
         }

@@ -524,7 +524,7 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
     public List<String> getConfigSetting() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
         List<String> listSetting = new ArrayList<>();
         listSetting.add("0");
-        listSetting.add("1");
+        listSetting.add("2");
         return listSetting;
     }
 

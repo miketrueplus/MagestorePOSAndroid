@@ -264,6 +264,7 @@ public class SalesActivity extends AbstractActivity
         }
         ConfigUtil.setOpenCash(printerSetting.getOpenCashAfterPrint());
         ConfigUtil.setAutoPrint(printerSetting.getAutoPrint());
+        ConfigUtil.setPlaceAutoComplete(printerSetting.getPlaceAutoComplete());
 
         // keyboard
         ll_custom_keyboard = (LinearLayout) findViewById(R.id.ll_custom_keyboard);

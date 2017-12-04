@@ -74,6 +74,11 @@ public class POSAPI {
     public static final String REST_CUSOMTER_COMPLAIN_ADD = "/V1/webpos/customers/complain/?";
     public static final String PARAM_CUSTOMER_ID = "customerID";
 
+    // API Place Auto Complete
+    public static final String REST_DOMAIN_GOOGLE_MAP_API = "https://maps.googleapis.com";
+    public static final String REST_PLACE_AUTO_COMPLETE = "/maps/api/place/autocomplete/json?";
+    public static final String REST_PLACE_DETAIL = "/maps/api/place/details/json?";
+
     // API Cart
     public static final String REST_CART_DELETE_ITEM = "/V1/webpos/checkout/removeItem?quote_id=${quoteID}&item_id=${itemID}";
     public static final String CART_QUOTE_ID = "quoteID";

@@ -76,6 +76,9 @@ public class MagestoreParamBuilder implements ParamBuilder {
     // quản lý tham số để sắp xếp
     Map<String, String> mapSortOrder = new HashMap<String, String>();
 
+    // quản lý tham số params
+    Map<String, String> mapParams = new HashMap<String, String>();
+
     // Chứa key và value
     Statement mStatement;
     Map mMapKeyValue;
@@ -145,6 +148,7 @@ public class MagestoreParamBuilder implements ParamBuilder {
     public ParamBuilder setParam(String pstrName, String pstrValue) {
         try {
             mMapKeyValue.put(pstrName, URLEncoder.encode(pstrValue, "UTF-8"));
+            mapParams.put(pstrName, URLEncoder.encode(pstrValue, "UTF-8"));
         } catch (UnsupportedEncodingException e) {
             throw new ConnectionException(e.getMessage(), e);
         }
@@ -448,6 +452,14 @@ public class MagestoreParamBuilder implements ParamBuilder {
             mstrBuilderQuery.append(mapSortOrder.get(key));
 
             i++;
+        }
+
+        // quét phần params
+        for (String key : mapParams.keySet()) {
+            mstrBuilderQuery.append(AND_SYMBOL);
+            mstrBuilderQuery.append(key);
+            mstrBuilderQuery.append(EQUAL);
+            mstrBuilderQuery.append(mapParams.get(key));
         }
 
         // quét vần tham số tìm kiếm

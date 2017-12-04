@@ -397,7 +397,10 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
             mCheckoutAddCustomerPanel.initValue();
 
             mCustomerAddNewPanel = (CustomerAddNewPanel) mCheckoutAddCustomerPanel.findViewById(R.id.sales_new_customer);
+            mCustomerAddNewPanel.setCustomerService(mCustomerService);
             mCustomerAddNewPanel.setController(mCheckoutAddCustomerPanel.getCustomerListController());
+            mCustomerAddNewPanel.initValue();
+            mCheckoutAddCustomerPanel.getCustomerListController().setCustomerAddNewPanel(mCustomerAddNewPanel);
             initLayoutPanel();
             if (type == CHANGE_CUSTOMER) {
                 mCustomerAddNewPanel.bindItem(null);
