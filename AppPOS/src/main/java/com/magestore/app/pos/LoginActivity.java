@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.magestore.app.lib.model.registershift.PointOfSales;
 import com.magestore.app.lib.task.Task;
 import com.magestore.app.lib.task.TaskListener;
@@ -35,6 +36,7 @@ import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.DataUtil;
 import com.magestore.app.util.DialogUtil;
 import com.magestore.app.util.StringUtil;
+
 import java.util.List;
 
 /**
@@ -165,6 +167,7 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 PointOfSales pos = getPointOfSales(sp_pos.getSelection());
+                ConfigUtil.setPosId(pos.getPosId() != null ? pos.getPosId() : "");
                 LoginActivity.STORE_ID = pos.getStoreId();
                 DataUtil.saveDataStringToPreferences(getContext(), DataUtil.STORE_ID, pos.getStoreId());
                 ConfigUtil.setPointOfSales(pos);
@@ -184,7 +187,10 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
                 if (mStartButton.getText().toString().equals(getContext().getString(R.string.start))) {
                     if (!sp_pos.getSelection().equals("")) {
                         navigationToSalesActivity();
-                        assigPos(sp_pos.getSelection());
+                        PointOfSales pos = getPointOfSales(sp_pos.getSelection());
+                        assigPos(pos.getPosId() != null ? sp_pos.getSelection() : "");
+                        ConfigUtil.setPointOfSales(pos);
+                        ConfigUtil.setLocationId(pos.getLocationId());
                     } else {
                         DialogUtil.confirm(getContext(), getContext().getString(R.string.notify_select_pos), R.string.ok);
                     }
@@ -395,9 +401,9 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
             return;
         }
 
-        mDomainView.setText("magento2.edenduong.com");
-        mUserNameView.setText("admin");
-        mPasswordView.setText("123.abc");
+//        mDomainView.setText("magento2.edenduong.com");
+//        mUserNameView.setText("admin");
+//        mPasswordView.setText("123.abc");
 
         // check login là demo thì không lại thông tin khách hàng nhập
         mCheckLoginDemo = true;
@@ -516,10 +522,35 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
                     mUserNameView.setText("");
                     mPasswordView.setText("");
                     ConfigUtil.setIsDevLicense(false);
-                    if (ConfigUtil.isEnableSession()) {
-                        navigationToSalesActivity();
-                        showProgress(false);
-                    } else {
+//                    if (ConfigUtil.isEnableSession()) {
+//                        navigationToSalesActivity();
+//                        showProgress(false);
+//                    } else {
+                    if (mStoreTask != null) {
+                        return;
+                    }
+                    mStoreTask = new ListStoreTask(getContext(), new StoreListener());
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) // Above Api Level 13
+                    {
+                        mStoreTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                    } else // Below Api Level 13
+                    {
+                        mStoreTask.execute();
+                    }
+//                    }
+                } else {
+                    // check active key
+                    if (ConfigUtil.isCheckActiveKey()) {
+                        // Đăng nhập thành công, lưu domain lại để lần sau không phải nhập
+                        if (!mCheckLoginDemo) {
+                            saveSharedValue("login_activity_domain", mDomainView.getText().toString().trim());
+                            saveSharedValue("login_activity_username", mUserNameView.getText().toString().trim());
+//                            saveSharedValue("login_activity_password", mPasswordView.getText().toString().trim());
+                        }
+//                        if (ConfigUtil.isEnableSession()) {
+//                            navigationToSalesActivity();
+//                            showProgress(false);
+//                        } else {
                         if (mStoreTask != null) {
                             return;
                         }
@@ -531,32 +562,7 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
                         {
                             mStoreTask.execute();
                         }
-                    }
-                } else {
-                    // check active key
-                    if (ConfigUtil.isCheckActiveKey()) {
-                        // Đăng nhập thành công, lưu domain lại để lần sau không phải nhập
-                        if (!mCheckLoginDemo) {
-                            saveSharedValue("login_activity_domain", mDomainView.getText().toString().trim());
-                            saveSharedValue("login_activity_username", mUserNameView.getText().toString().trim());
-//                            saveSharedValue("login_activity_password", mPasswordView.getText().toString().trim());
-                        }
-                        if (ConfigUtil.isEnableSession()) {
-                            navigationToSalesActivity();
-                            showProgress(false);
-                        } else {
-                            if (mStoreTask != null) {
-                                return;
-                            }
-                            mStoreTask = new ListStoreTask(getContext(), new StoreListener());
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) // Above Api Level 13
-                            {
-                                mStoreTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                            } else // Below Api Level 13
-                            {
-                                mStoreTask.execute();
-                            }
-                        }
+//                        }
                     } else {
                         DialogUtil.confirm(getContext(), getString(R.string.err_active_key), R.string.ok);
                         showProgress(false);
@@ -595,11 +601,11 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
         public void onPostController(Task task, List<PointOfSales> listPos) {
             mStoreTask = null;
             if (listPos != null) {
-                if (ConfigUtil.isEnableSession()) {
-                    mListPos = listPos;
-                    sp_pos.bind(listPos.toArray(new PointOfSales[0]));
-                    navigationToSalesActivity();
-                } else {
+//                if (ConfigUtil.isEnableSession()) {
+//                    mListPos = listPos;
+//                    sp_pos.bind(listPos.toArray(new PointOfSales[0]));
+//                    navigationToSalesActivity();
+//                } else {
                     email_login_form.setVisibility(View.GONE);
                     point_of_sales_form.setVisibility(View.VISIBLE);
                     if (listPos.size() > 0) {
@@ -613,7 +619,7 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
                         sp_pos.setVisibility(View.GONE);
                         mStartButton.setText(getContext().getString(R.string.logout));
                     }
-                }
+//                }
                 showProgress(false);
             } else {
                 showProgress(false);

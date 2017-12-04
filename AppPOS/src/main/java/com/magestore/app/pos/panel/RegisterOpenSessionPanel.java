@@ -42,7 +42,7 @@ public class RegisterOpenSessionPanel extends AbstractDetailPanel<RegisterShift>
     Button bt_open, bt_open_balance;
     RelativeLayout rl_add_value, rl_set_balance, rl_loading;
     LinearLayout ll_open_balance, ll_note, ll_float_amount;
-    TextView txt_staff_login, tv_session_back, error_pos, tv_session_title, total_balance_value;
+    TextView txt_staff_login, tv_session_back, error_pos, tv_session_title, total_balance_value, lb_pos;
     View line;
     EditTextFloat et_float_amount;
     EditText et_note;
@@ -78,6 +78,8 @@ public class RegisterOpenSessionPanel extends AbstractDetailPanel<RegisterShift>
         line = (View) view.findViewById(R.id.line);
         rl_set_balance = (RelativeLayout) view.findViewById(R.id.rl_set_balance);
         ll_open_balance = (LinearLayout) view.findViewById(R.id.ll_open_balance);
+        lb_pos = (TextView) view.findViewById(R.id.lb_pos);
+        lb_pos.setVisibility(GONE);
         sp_pos = (SimpleSpinner) view.findViewById(R.id.sp_pos);
         error_pos = (TextView) view.findViewById(R.id.error_pos);
         ll_float_amount = (LinearLayout) view.findViewById(R.id.ll_float_amount);
@@ -127,8 +129,8 @@ public class RegisterOpenSessionPanel extends AbstractDetailPanel<RegisterShift>
                     bt_open.setText(getContext().getString(R.string.open_session));
                 } else {
                     List<PointOfSales> listPos = mRegisterShiftListController.getListPos();
-                    if (listPos != null && listPos.size() > 0) {
-                        if (!sp_pos.getSelection().equals("")) {
+//                    if (listPos != null && listPos.size() > 0) {
+//                        if (!sp_pos.getSelection().equals("")) {
                             SessionParam param = mRegisterShiftListController.createSessionParam();
                             float float_amount = et_float_amount.getValueFloat();
                             float base_float_amount = ConfigUtil.convertToBasePrice(float_amount);
@@ -147,16 +149,16 @@ public class RegisterOpenSessionPanel extends AbstractDetailPanel<RegisterShift>
                             param.setCloseAt(ConfigUtil.getCurrentDateTime());
                             // tự sinh id shift khi open
                             param.setShiftId("off_id_auto_shift_" + ConfigUtil.getItemIdInCurrentTime());
-                            param.setPosId(sp_pos.getSelection());
+                            param.setPosId(ConfigUtil.getPosId());
                             param.setCashBox(mCashBox);
                             param.setStatus(OPEN_SESSION);
                             mRegisterShiftListController.doInputOpenSession(param);
-                        } else {
-                            DialogUtil.confirm(getContext(), getContext().getString(R.string.notify_select_pos), R.string.ok);
-                        }
-                    } else {
-                        DialogUtil.confirm(getContext(), getContext().getString(R.string.notify_select_pos), R.string.ok);
-                    }
+//                        } else {
+//                            DialogUtil.confirm(getContext(), getContext().getString(R.string.notify_select_pos), R.string.ok);
+//                        }
+//                    } else {
+//                        DialogUtil.confirm(getContext(), getContext().getString(R.string.notify_select_pos), R.string.ok);
+//                    }
                 }
             }
         });
@@ -216,30 +218,30 @@ public class RegisterOpenSessionPanel extends AbstractDetailPanel<RegisterShift>
     }
 
     public void setDataPos(List<PointOfSales> listPos) {
-        if (listPos != null && listPos.size() > 0) {
+//        if (listPos != null && listPos.size() > 0) {
+//            error_pos.setVisibility(GONE);
+//            sp_pos.setVisibility(VISIBLE);
+//            sp_pos.bind(listPos.toArray(new PointOfSales[0]));
+//
+//            sp_pos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//                @Override
+//                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+//                    PointOfSales pos = getPointOfSales(sp_pos.getSelection());
+//                    LoginActivity.STORE_ID = pos.getStoreId();
+//                    DataUtil.saveDataStringToPreferences(getContext(), DataUtil.STORE_ID, pos.getStoreId());
+//                    ConfigUtil.setPointOfSales(pos);
+//                    bt_open_balance.setVisibility(pos.getCashControl() ? VISIBLE : GONE);
+//                }
+//
+//                @Override
+//                public void onNothingSelected(AdapterView<?> adapterView) {
+//
+//                }
+//            });
+//        } else {
             error_pos.setVisibility(GONE);
-            sp_pos.setVisibility(VISIBLE);
-            sp_pos.bind(listPos.toArray(new PointOfSales[0]));
-
-            sp_pos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    PointOfSales pos = getPointOfSales(sp_pos.getSelection());
-                    LoginActivity.STORE_ID = pos.getStoreId();
-                    DataUtil.saveDataStringToPreferences(getContext(), DataUtil.STORE_ID, pos.getStoreId());
-                    ConfigUtil.setPointOfSales(pos);
-                    bt_open_balance.setVisibility(pos.getCashControl() ? VISIBLE : GONE);
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> adapterView) {
-
-                }
-            });
-        } else {
-            error_pos.setVisibility(VISIBLE);
             sp_pos.setVisibility(GONE);
-        }
+//        }
     }
 
     private PointOfSales getPointOfSales(String posID) {

@@ -11,6 +11,7 @@ import com.magestore.app.lib.model.directory.Currency;
  */
 
 public interface PointOfSales extends Model {
+    String getPosId();
     void setPosId(String strPosId);
     String getPosName();
     void setPosName(String strPosName);
