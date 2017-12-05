@@ -250,6 +250,7 @@
     <string name="setting_currency">Currency</string>
     <string name="setting_store">Store</string>
     <string name="place_auto_complete">Enable suggesting address by Google</string>
+    <string name="setting_available_qty">Allow load available qty when select option</string>
 
     <!--Strings related to plugins-->
     <string name="plugin_store_credit">Customer Credit</string>

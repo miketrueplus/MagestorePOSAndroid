@@ -1369,6 +1369,14 @@ public class ConfigUtil {
         ConfigUtil.isDevLicense = isDevLicense;
     }
 
+    public static boolean isEnableAvailableQty() {
+        return mEnableAvailableQty;
+    }
+
+    public static void setEnableAvailableQty(boolean mEnableAvailableQty) {
+        ConfigUtil.mEnableAvailableQty = mEnableAvailableQty;
+    }
+
     public static void setEnableDeleteOrder(boolean mEnableDeleteOrder) {
         ConfigUtil.mEnableDeleteOrder = mEnableDeleteOrder;
     }

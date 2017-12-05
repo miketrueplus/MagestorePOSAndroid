@@ -121,10 +121,20 @@
             android:padding="@dimen/layout_margin_20">
 
             <Switch
+                android:id="@+id/sw_available_qty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/layout_margin_10"
+                android:layout_marginBottom="@dimen/layout_margin_10"
+                android:text="@string/setting_available_qty"
+                android:textSize="@dimen/welcome_text_size" />
+
+            <Switch
                 android:id="@+id/sw_place_auto_complete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/layout_margin_10"
+                android:layout_marginBottom="@dimen/layout_margin_10"
                 android:text="@string/place_auto_complete"
                 android:textSize="@dimen/welcome_text_size" />
 

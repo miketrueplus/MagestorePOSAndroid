@@ -1555,8 +1555,10 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         // đảo lại giá trị được chọn
         optionValueModelView.choose = (!optionValueModelView.choose);
         checkDisableColor(optionValueModelView);
-        checkSelectConfigOption(optionValueModelView);
-        checkVadilateConfigOption();
+        if (ConfigUtil.isEnableAvailableQty()) {
+            checkSelectConfigOption(optionValueModelView);
+            checkVadilateConfigOption();
+        }
         if (adapter != null)
             adapter.notifyDataSetChanged();
         expandableListAdapter.notifyDataSetChanged();
