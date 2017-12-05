@@ -148,6 +148,7 @@ public class ConfigUtil {
     // Print
     private static boolean mOpenCash;
     private static boolean mAutoPrint;
+    private static boolean mPrintUseSku;
 
     /**
      * @param format
@@ -1400,6 +1401,14 @@ public class ConfigUtil {
 
     public static void setAutoPrint(boolean mAutoPrint) {
         ConfigUtil.mAutoPrint = mAutoPrint;
+    }
+
+    public static boolean isPrintUseSku() {
+        return mPrintUseSku;
+    }
+
+    public static void setPrintUseSku(boolean mPrintUseSku) {
+        ConfigUtil.mPrintUseSku = mPrintUseSku;
     }
 
     public static String getGoogleKey() {

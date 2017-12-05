@@ -83,7 +83,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="@dimen/layout_margin_5"
                     android:fontFamily="monospace"
-                    android:text="@string/order_detail_bottom_btn_invoice"
+                    android:text="@string/receipt"
                     android:textAllCaps="true"
                     android:textSize="@dimen/text_size_25"
                     android:textStyle="bold" />

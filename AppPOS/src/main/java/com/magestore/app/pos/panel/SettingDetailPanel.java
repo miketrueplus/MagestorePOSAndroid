@@ -55,7 +55,7 @@ public class SettingDetailPanel extends AbstractDetailPanel<Setting> {
     boolean checkFirst;
     LinearLayout ll_print_area, ll_print_copy;
     Spinner sp_print_area, sp_print_copy;
-    Switch sw_open_cash, sw_auto_print, sw_place_auto_complete;
+    Switch sw_open_cash, sw_auto_print, sw_place_auto_complete, sw_print_use_sku;
 
     public SettingDetailPanel(Context context) {
         super(context);
@@ -87,6 +87,7 @@ public class SettingDetailPanel extends AbstractDetailPanel<Setting> {
         ll_print_area = (LinearLayout) findViewById(R.id.ll_print_area);
         sw_open_cash = (Switch) findViewById(R.id.sw_open_cash);
         sw_auto_print = (Switch) findViewById(R.id.sw_auto_print);
+        sw_print_use_sku = (Switch) findViewById(R.id.sw_print_use_sku);
         sp_print_area = (Spinner) findViewById(R.id.sp_print_area);
         ll_print_copy = (LinearLayout) findViewById(R.id.ll_print_copy);
         sp_print_copy = (Spinner) findViewById(R.id.sp_print_copy);
@@ -235,6 +236,15 @@ public class SettingDetailPanel extends AbstractDetailPanel<Setting> {
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 ConfigUtil.setAutoPrint(b);
                 printerSetting.writeAutoPrint(b);
+            }
+        });
+
+        sw_print_use_sku.setChecked(printerSetting.getPrintUseSku());
+        sw_print_use_sku.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                ConfigUtil.setPrintUseSku(b);
+                printerSetting.writePrintUseSku(b);
             }
         });
 

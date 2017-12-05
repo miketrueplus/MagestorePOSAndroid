@@ -233,6 +233,15 @@
                     android:text="@string/open_auto_print"
                     android:textSize="@dimen/welcome_text_size"
                     android:visibility="gone" />
+
+                <Switch
+                    android:id="@+id/sw_print_use_sku"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/sw_auto_print"
+                    android:layout_marginTop="@dimen/layout_margin_10"
+                    android:text="@string/print_use_sku"
+                    android:textSize="@dimen/welcome_text_size" />
             </RelativeLayout>
         </LinearLayout>
 

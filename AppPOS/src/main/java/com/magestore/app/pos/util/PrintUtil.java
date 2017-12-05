@@ -158,7 +158,7 @@ public class PrintUtil {
             }
         }
 
-        String title_invoice = context.getString(R.string.order_detail_bottom_btn_invoice);
+        String title_invoice = context.getString(R.string.receipt);
         String body_header_title = "<div align=\"center\" style=\"font-weight: bold; font-size: 30px; display: block; font-family: monospace;\">" + title_invoice + "</div>" + "<div align=\"center\" style=\"font-size: 16px; font-weight: 400; display: block; font-family: monospace;\">**** ****</div>";
         // header content
         String body_header_content = "";
@@ -197,7 +197,8 @@ public class PrintUtil {
         if (items != null && items.size() > 0) {
             for (CartItem item : items) {
                 if (item.getOrderParentItem() == null) {
-                    String body_content_item_name = "<td style=\"font-family: monospace; text-align: left; padding: 5px 0;\"><span style=\"font-family: monospace;\">" + item.getName() + "</span><span style=\"font-family: monospace; display: block;\">" + item.getSku() + "</span></td>";
+                    String product_name = ConfigUtil.isPrintUseSku() ? item.getSku() : item.getName();
+                    String body_content_item_name = "<td style=\"font-family: monospace; text-align: left; padding: 5px 0;\"><span style=\"font-family: monospace;\">" + product_name + "</span></td>";
                     String body_content_item_qty = "<td style=\"font-family: monospace; text-align: right; padding: 5px 0;\">" + item.getQtyOrdered() + "</td>";
                     String body_content_item_price = "<td style=\"font-family: monospace; text-align: right; padding: 5px 0;\">" + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(item.getBasePrice())) + "</td>";
                     String body_content_item_subtotal = "<td style=\"font-family: monospace; text-align: right; padding: 5px 0;\">" + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(item.getBaseSubTotal())) + "</td>";

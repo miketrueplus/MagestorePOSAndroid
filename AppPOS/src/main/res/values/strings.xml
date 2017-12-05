@@ -287,6 +287,7 @@
     <string name='printArea4inch' translatable="false">4inch (112mm)</string>
     <string name="open_cash_after_print">Open Cash Drawer</string>
     <string name="open_auto_print">Auto Print</string>
+    <string name="print_use_sku">Use SKU In Receipt</string>
     <string name="print_select_ip">Please Select IP Address or Input Port Name:</string>
     <string name="print_bluetooth">Bluetooth:</string>
     <string name="print_port_number">PortNumber:</string>
@@ -443,6 +444,7 @@
     <string name="province">Province</string>
     <string name="product_option">Product Option</string>
     <string name="quantity">Quantity</string>
+    <string name="receipt">Receipt</string>
     <string name="reference_number">Reference Number</string>
     <string name="register_shifts">Register Shifts</string>
     <string name="responsible">Responsible</string>
