@@ -362,7 +362,16 @@ public class POSCheckoutDataAccess extends POSAbstractDataAccess implements Chec
                     cartOld.getProduct().setIsSaveCart(true);
                     cartOld.setIsVirtual(cartNew.getIsVirtual());
                     cartOld.setQuantity(cartNew.getQuantity());
-                    float price = cartNew.getSubtotal() / cartNew.getQuantity();
+                    float unit_price;
+                    float price;
+                    if (ConfigUtil.isTaxCartDisplay()) {
+                        unit_price = cartNew.getRowTotal() / cartNew.getQuantity();
+                        price = cartNew.getRowTotal();
+                    } else {
+                        unit_price = cartNew.getSubtotal() / cartNew.getQuantity();
+                        price = cartNew.getSubtotal();
+                    }
+                    cartOld.setUnitPriceShowView(ConfigUtil.convertToBasePrice(unit_price));
                     cartOld.setPriceShowView(ConfigUtil.convertToBasePrice(price));
                 }
             }

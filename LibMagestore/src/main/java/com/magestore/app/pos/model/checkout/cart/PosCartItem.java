@@ -301,6 +301,8 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     float unit_price;
     @Gson2PosExclude
     float price_show_view;
+    @Gson2PosExclude
+    float unit_price_show_view;
 
 
     public static final String TYPE_NORMAL = "type_normal";
@@ -418,6 +420,7 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     public void setUnitPrice(float param_price) {
         this.unit_price = param_price;
         price = unit_price * Float.parseFloat(qty);
+        unit_price_show_view = unit_price;
     }
 
     @Override
@@ -519,6 +522,16 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     @Override
     public void setPriceShowView(float fPriceShowView) {
         price_show_view = fPriceShowView;
+    }
+
+    @Override
+    public float getUnitPriceShowView() {
+        return unit_price_show_view;
+    }
+
+    @Override
+    public void setUnitPriceShowView(float fUnitPriceShowView) {
+        unit_price_show_view = fUnitPriceShowView;
     }
 
     @Override

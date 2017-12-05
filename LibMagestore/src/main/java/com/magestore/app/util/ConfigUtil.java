@@ -57,6 +57,7 @@ public class ConfigUtil {
     private static String mBaseCurrencyCode;
     private static Staff mStaff;
     private static Customer mCustomerGuest;
+    private static boolean mTaxCartDisplay;
     private static boolean mShowDeliveryTime;
     private static boolean mEnableStoreCredit;
     private static boolean mEnableRewardPoint;
@@ -64,6 +65,7 @@ public class ConfigUtil {
     private static boolean mEnableSession;
     private static boolean mCheckFirstOpenSession;
     private static boolean mEnableDeleteOrder;
+    private static boolean mEnableAvailableQty;
     private static List<ConfigTaxClass> mConfigTaxClass;
     private static List<CheckoutPayment> mListPayment;
     private static String mTypePrint;
@@ -787,6 +789,14 @@ public class ConfigUtil {
 
     public static void setCustomerGuest(Customer customerGuest) {
         mCustomerGuest = customerGuest;
+    }
+
+    public static boolean isTaxCartDisplay() {
+        return mTaxCartDisplay;
+    }
+
+    public static void setTaxCartDisplay(boolean mTaxCartDisplay) {
+        ConfigUtil.mTaxCartDisplay = mTaxCartDisplay;
     }
 
     public static void setShowDeliveryTime(boolean showDeliveryTime) {

@@ -72,8 +72,8 @@ public class POSAPIM1 {
 
     // API register shifts
     public static final String REST_REGISTER_SHIFTS_GET_LISTING_POS = "api/rest/webpos/poslist?";
-    public static final String REST_REGISTER_SHIFTS_GET_LISTING = "api/rest/webpos/shifts?";
-    public static final String REST_REGISTER_SHIFTS_SAVE = "api/rest/webpos/shift/save?";
+    public static final String REST_REGISTER_SHIFTS_GET_LISTING = "api/rest/webpos/session/getlist?";
+    public static final String REST_REGISTER_SHIFTS_SAVE = "api/rest/webpos/session/save?";
     public static final String REST_REGISTER_SHIFTS_MAKE_ADJUSTMENT = "api/rest/webpos/cash_transaction/save?";
 
     // API plugins

@@ -876,6 +876,19 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
     }
 
     @Override
+    public boolean taxCartDisplay() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        if (mConfig == null) mConfig = new PosConfigDefault();
+        boolean tax_cart_display = false;
+        if (mConfig.getValue("tax/cart_display/price") != null) {
+            String tax_cart = (String) mConfig.getValue("tax/cart_display/price");
+            if (!tax_cart.equals("1")) {
+                tax_cart_display = true;
+            }
+        }
+        return tax_cart_display;
+    }
+
+    @Override
     public boolean getConfigDeliveryTime() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
         if (mConfig == null) mConfig = new PosConfigDefault();
 

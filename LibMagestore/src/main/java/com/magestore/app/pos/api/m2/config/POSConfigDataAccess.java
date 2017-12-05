@@ -542,11 +542,11 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
             @Override
             public int compare(LinkedTreeMap linkedTreeMap, LinkedTreeMap linkedTreeMap1) {
                 String name = "";
-                if(linkedTreeMap.get("country_name") != null){
+                if (linkedTreeMap.get("country_name") != null) {
                     name = linkedTreeMap.get("country_name").toString();
                 }
                 String name1 = "";
-                if(linkedTreeMap1.get("country_name") != null){
+                if (linkedTreeMap1.get("country_name") != null) {
                     name1 = linkedTreeMap1.get("country_name").toString();
                 }
                 return name.compareToIgnoreCase(name1);
@@ -556,7 +556,7 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
             ConfigCountry configCountry = new PosConfigCountry();
             String country_id = country.get("country_id").toString();
             String country_name = "";
-            if(country.get("country_name") != null){
+            if (country.get("country_name") != null) {
                 country_name = country.get("country_name").toString();
             }
             configCountry.setCountryID(country_id);
@@ -997,6 +997,19 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
             google_key = (String) mConfig.getValue("webpos/general/google_api_key");
         }
         return google_key;
+    }
+
+    @Override
+    public boolean taxCartDisplay() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        if (mConfig == null) mConfig = new PosConfigDefault();
+        boolean tax_cart_display = false;
+        if (mConfig.getValue("tax/cart_display/price") != null) {
+            String tax_cart = (String) mConfig.getValue("tax/cart_display/price");
+            if (!tax_cart.equals("1")) {
+                tax_cart_display = true;
+            }
+        }
+        return tax_cart_display;
     }
 
     @Override
