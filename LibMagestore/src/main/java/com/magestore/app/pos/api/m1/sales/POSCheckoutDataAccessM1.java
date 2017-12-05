@@ -549,6 +549,9 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
             placeOrderParams.setStoreId(checkout.getStoreId());
             placeOrderParams.setTillId(ConfigUtil.getPointOfSales() != null ? ConfigUtil.getPointOfSales().getID() : ConfigUtil.getPosId());
             placeOrderParams.setCurrencyId(ConfigUtil.getCurrentCurrency().getCode());
+            if (!StringUtil.isNullOrEmpty(checkout.getDeliveryDate())) {
+                placeOrderParams.setQuoteDeliveryDate(checkout.getDeliveryDate());
+            }
 
             if (listCheckoutPayment != null && listCheckoutPayment.size() == 1) {
                 String paymentCode = listCheckoutPayment.get(0).getCode();
@@ -563,7 +566,7 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
             if (placeOrderParams.getPayment() != null) {
                 List<PaymentMethodDataParam> methodData = placeOrderParams.getMethodData();
                 if (methodData != null && methodData.size() > 0) {
-                    for (PaymentMethodDataParam payment: methodData) {
+                    for (PaymentMethodDataParam payment : methodData) {
                         payment.setShiftId(ConfigUtil.getRegisterShiftId());
                     }
                 }

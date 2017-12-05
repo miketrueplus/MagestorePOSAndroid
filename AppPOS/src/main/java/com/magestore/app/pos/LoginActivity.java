@@ -71,7 +71,7 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        ConfigUtil.setPlatForm(ConfigUtil.PLATFORM_MAGENTO_1);
+        ConfigUtil.setPlatForm(ConfigUtil.PLATFORM_MAGENTO_2);
 
         STORE_ID = DataUtil.getDataStringToPreferences(getContext(), DataUtil.STORE_ID);
 
@@ -137,10 +137,10 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
             @Override
             public void onClick(View view) {
                 mCheckLoginDemo = false;
-//                checkPlatForm();
+                checkPlatForm();
                 hiddenKeyboard(mPasswordView);
                 // TODO: Tạm thời bỏ check platform để dev
-                attemptLogin();
+//                attemptLogin();
             }
         });
 
@@ -149,9 +149,9 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
             @Override
             public void onClick(View view) {
                 mCheckLoginDemo = true;
-//                checkPlatForm();
+                checkPlatForm();
                 hiddenKeyboard(mPasswordView);
-                attemptLoginDemo();
+//                attemptLoginDemo();
             }
         });
 

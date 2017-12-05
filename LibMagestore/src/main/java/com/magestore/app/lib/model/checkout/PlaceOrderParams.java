@@ -21,6 +21,7 @@ public interface PlaceOrderParams extends Model {
     void setCreateInvoice(String strCreateInvoice);
     void setCreateShipment(String strCreateShipment);
     void setCustomerNote(String strCustomerNote);
+    void setQuoteDeliveryDate(String strDeliveryDate);
     void setDeliveryTime(String strDeliveryTime);
     String getMethod();
     void setMethod(String strMethod);
@@ -30,6 +31,8 @@ public interface PlaceOrderParams extends Model {
     PosPlaceOrderParams.PlaceOrderActionParam createPlaceOrderActionParam();
     PosPlaceOrderParams.PlaceOrderQuoteDataParam createPlaceOrderQuoteDataParam();
     PosPlaceOrderParams.PlaceOrderPaymentParam createPlaceOrderPaymentParam();
+    PosPlaceOrderParams.PlaceOrderActionParam getActions();
+
     List<PaymentMethodDataParam> createPaymentMethodData();
     void setCurrencyId(String strCurrencyId);
     String getCustomerId();
