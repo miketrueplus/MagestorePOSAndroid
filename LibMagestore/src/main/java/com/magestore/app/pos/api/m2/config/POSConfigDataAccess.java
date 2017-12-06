@@ -1167,6 +1167,7 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
             ConfigUtil.setAddAddressDefault(true);
             ConfigUtil.setPrintSession(true);
             ConfigUtil.setCustomSales(true);
+            ConfigUtil.setShowAvailableQty(true);
             if (checkStaffPermiss(listPermisson, ALL_PERMISSON)) {
                 ConfigUtil.setManagerShiftAdjustment(true);
                 ConfigUtil.setManageOrderByMe(true);

@@ -606,16 +606,19 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
 //                    sp_pos.bind(listPos.toArray(new PointOfSales[0]));
 //                    navigationToSalesActivity();
 //                } else {
-                    email_login_form.setVisibility(View.GONE);
-                    point_of_sales_form.setVisibility(View.VISIBLE);
                     if (listPos.size() > 0) {
+                        email_login_form.setVisibility(View.GONE);
+                        point_of_sales_form.setVisibility(View.VISIBLE);
                         sp_pos.setVisibility(View.VISIBLE);
                         error_pos.setVisibility(View.GONE);
                         mStartButton.setText(getContext().getString(R.string.start));
                         mListPos = listPos;
                         sp_pos.bind(listPos.toArray(new PointOfSales[0]));
                     } else {
-                        error_pos.setVisibility(View.VISIBLE);
+                        DialogUtil.confirm(getContext(), getString(R.string.login_error_no_pos), R.string.ok);
+                        email_login_form.setVisibility(View.VISIBLE);
+                        point_of_sales_form.setVisibility(View.GONE);
+                        error_pos.setVisibility(View.GONE);
                         sp_pos.setVisibility(View.GONE);
                         mStartButton.setText(getContext().getString(R.string.logout));
                     }

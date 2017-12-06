@@ -91,6 +91,7 @@ public class ConfigUtil {
     private static boolean mCancel;
     private static boolean mAddComment;
     private static boolean mReOder;
+    private static boolean mShowAvailableQty;
     private static boolean mPartialInvoice;
     // permisson discount
     private static boolean mCustomSales;
@@ -1047,6 +1048,14 @@ public class ConfigUtil {
 
     public static void setReOder(boolean mReOder) {
         ConfigUtil.mReOder = mReOder;
+    }
+
+    public static boolean isShowAvailableQty() {
+        return mShowAvailableQty;
+    }
+
+    public static void setShowAvailableQty(boolean mShowAvailableQty) {
+        ConfigUtil.mShowAvailableQty = mShowAvailableQty;
     }
 
     public static boolean isPartialInvoice() {

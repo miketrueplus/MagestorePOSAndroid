@@ -74,7 +74,7 @@ public class POSCustomerDataAccessOdoo extends POSAbstractDataAccessOdoo impleme
             statement.setParam("input", input);
             statement.setParam("types", "geocode");
             statement.setParam("language", "us");
-            statement.setParam("key", "AIzaSyCnRmWlHJZKBwr2Gk3MKrTU63CPa0ZiA-8");
+            statement.setParam("key", ConfigUtil.getGoogleKey());
 
             rp = statement.execute();
             String json = rp.readResult2String();
@@ -113,7 +113,7 @@ public class POSCustomerDataAccessOdoo extends POSAbstractDataAccessOdoo impleme
 
             paramBuilder = statement.getParamBuilder().
                     setParam("placeid", detailId)
-                    .setParam("key", "AIzaSyCnRmWlHJZKBwr2Gk3MKrTU63CPa0ZiA-8");
+                    .setParam("key", ConfigUtil.getGoogleKey());
 
             rp = statement.execute();
             String json = rp.readResult2String();

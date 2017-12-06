@@ -1042,6 +1042,7 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
             ConfigUtil.setAddAddressDefault(true);
             ConfigUtil.setPrintSession(true);
             ConfigUtil.setCustomSales(true);
+            ConfigUtil.setShowAvailableQty(false);
             if (checkStaffPermiss(listPermisson, ALL_PERMISSON)) {
                 ConfigUtil.setCreateOrder(true);
                 ConfigUtil.setManagerAllOrder(true);
@@ -1094,9 +1095,7 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
     public List<String> getConfigSetting() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
         List<String> listSetting = new ArrayList<>();
         listSetting.add("0");
-        if (!StringUtil.isNullOrEmpty(ConfigUtil.getGoogleKey())) {
-            listSetting.add("1");
-        }
+        listSetting.add("1");
         listSetting.add("2");
         listSetting.add("3");
         return listSetting;

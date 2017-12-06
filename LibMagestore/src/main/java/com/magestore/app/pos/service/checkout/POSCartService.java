@@ -43,7 +43,7 @@ public class POSCartService extends AbstractService implements CartService {
     /**
      * Tính toán tổng giá trị sub total của đơn hàng
      *
-     * @return
+     * @return float
      */
     @Override
     public synchronized float calculateSubTotal(Checkout checkout) {
@@ -53,31 +53,43 @@ public class POSCartService extends AbstractService implements CartService {
         if (listItems == null) return 0;
 
         float total = 0;
+        float total_save_cart = 0;
         for (CartItem item : listItems) {
+            if (item.getIsSaveCart()) {
+                total_save_cart += (item.getPriceShowView() * item.getQuantity());
+            } else {
+                total_save_cart += item.getPrice();
+            }
             total += item.getPrice();
         }
-        checkout.setSubTotal(total);
+        checkout.setSubTotalSaveCart(total);
+        checkout.setSubTotal(total_save_cart);
         return total;
     }
 
     /**
      * Tính toán thuế
      *
-     * @return
+     * @return float
      */
     @Override
     public synchronized float calculateTaxTotal(Checkout checkout) {
         float sub_total = calculateSubTotal(checkout);
 //        float tax_total = sub_total * (float) 0.1;
         float tax_total = 0.0f;
-        checkout.setTaxTotal(checkout.getTaxTotal());
+        if (!ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_ODOO)) {
+            tax_total = checkout.getSubTotal() - checkout.getSubTotalSaveCart();
+            checkout.setTaxTotal(tax_total);
+        } else {
+            checkout.setTaxTotal(checkout.getTaxTotal());
+        }
         return checkout.getTaxTotal();
     }
 
     /**
      * Tính toán tổng discount
      *
-     * @return
+     * @return float
      */
     @Override
     public synchronized float calculateDiscountTotal(Checkout checkout) {
@@ -88,7 +100,7 @@ public class POSCartService extends AbstractService implements CartService {
     /**
      * Tính toán tổng giá trị cuối cùng của đơn hàng
      *
-     * @return
+     * @return float
      */
     @Override
     public synchronized float calculateLastTotal(Checkout checkout) {

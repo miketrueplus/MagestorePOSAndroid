@@ -84,6 +84,8 @@ public class PosCheckout extends PosAbstractModel implements Checkout {
     @Gson2PosExclude
     float sub_total_view;
     @Gson2PosExclude
+    float sub_total_save_cart;
+    @Gson2PosExclude
     String shipping_title;
     @Expose(serialize = false, deserialize = false)
     float shipping_total = 0;
@@ -212,6 +214,16 @@ public class PosCheckout extends PosAbstractModel implements Checkout {
     @Override
     public void setSubTotalView(float total) {
         sub_total_view = total;
+    }
+
+    @Override
+    public float getSubTotalSaveCart() {
+        return sub_total_save_cart;
+    }
+
+    @Override
+    public void setSubTotalSaveCart(float fSubTotalSaveCart) {
+        sub_total_save_cart = fSubTotalSaveCart;
     }
 
     @Override

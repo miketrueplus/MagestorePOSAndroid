@@ -95,11 +95,7 @@ public class SettingDetailPanel extends AbstractDetailPanel<Setting> {
         ll_setting_store = (LinearLayout) findViewById(R.id.ll_setting_store);
         btn_save = (Button) findViewById(R.id.btn_save);
         listLayout.add(ll_setting_account);
-        if (!StringUtil.isNullOrEmpty(ConfigUtil.getGoogleKey())) {
-            listLayout.add(ll_setting_checkout);
-        } else {
-            ll_setting_checkout.setVisibility(GONE);
-        }
+        listLayout.add(ll_setting_checkout);
         listLayout.add(ll_setting_print);
         listLayout.add(ll_setting_currency);
         listLayout.add(ll_setting_store);
@@ -111,6 +107,8 @@ public class SettingDetailPanel extends AbstractDetailPanel<Setting> {
 
     @Override
     public void initValue() {
+        sw_place_auto_complete.setVisibility(!StringUtil.isNullOrEmpty(ConfigUtil.getGoogleKey()) ? VISIBLE : GONE);
+        sw_available_qty.setVisibility(ConfigUtil.isShowAvailableQty() ? VISIBLE : GONE);
         btn_save.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {

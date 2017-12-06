@@ -40,6 +40,8 @@ public interface Checkout extends Model {
     void setSubTotal(float total);
     float getSubTotalView();
     void setSubTotalView(float total);
+    float getSubTotalSaveCart();
+    void setSubTotalSaveCart(float fSubTotalSaveCart);
 
     String getShippingTitle();
     void setShippingTitle(String strShippingTitle);

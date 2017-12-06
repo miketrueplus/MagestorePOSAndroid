@@ -266,7 +266,7 @@ public class SalesActivity extends AbstractActivity
         ConfigUtil.setOpenCash(printerSetting.getOpenCashAfterPrint());
         ConfigUtil.setAutoPrint(printerSetting.getAutoPrint());
         ConfigUtil.setPrintUseSku(printerSetting.getPrintUseSku());
-        ConfigUtil.setEnableAvailableQty(printerSetting.getAvailableQty());
+        ConfigUtil.setEnableAvailableQty(ConfigUtil.isShowAvailableQty() ? printerSetting.getAvailableQty() : false);
         if (!StringUtil.isNullOrEmpty(ConfigUtil.getGoogleKey())) {
             ConfigUtil.setPlaceAutoComplete(printerSetting.getPlaceAutoComplete());
         } else {

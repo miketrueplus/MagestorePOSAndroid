@@ -21,6 +21,7 @@ import com.magestore.app.pos.model.customer.PosCustomer;
 import com.magestore.app.pos.model.customer.PosPlaceDetail;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListCustomer;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosStoreParseImplement;
+import com.magestore.app.util.ConfigUtil;
 
 import java.io.IOException;
 import java.util.List;
@@ -61,7 +62,7 @@ public class POSCustomerDataAccessM1 extends POSAbstractDataAccessM1 implements 
             statement.setParam("input", input);
             statement.setParam("types", "geocode");
             statement.setParam("language", "us");
-            statement.setParam("key", "AIzaSyCnRmWlHJZKBwr2Gk3MKrTU63CPa0ZiA-8");
+            statement.setParam("key", ConfigUtil.getGoogleKey());
 
             rp = statement.execute();
             String json = rp.readResult2String();
@@ -100,7 +101,7 @@ public class POSCustomerDataAccessM1 extends POSAbstractDataAccessM1 implements 
 
             paramBuilder = statement.getParamBuilder().
                     setParam("placeid", detailId)
-                    .setParam("key", "AIzaSyCnRmWlHJZKBwr2Gk3MKrTU63CPa0ZiA-8");
+                    .setParam("key", ConfigUtil.getGoogleKey());
 
             rp = statement.execute();
             String json = rp.readResult2String();
