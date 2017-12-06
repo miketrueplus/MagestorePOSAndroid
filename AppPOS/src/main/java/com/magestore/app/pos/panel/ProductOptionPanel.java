@@ -1605,15 +1605,18 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                     float mQty = mapAvailable.get(Id);
                     updateAvailableQty(Id, mQty);
                 } else {
+                    enableButtonAddToCart(false);
                     ((CartItemListController) getController()).doInputGetAvailableQty(Id);
                 }
             } else {
+                enableButtonAddToCart(false);
                 ((CartItemListController) getController()).doInputGetAvailableQty(Id);
             }
         }
     }
 
     public void updateAvailableQty(String Id, float mQty) {
+        enableButtonAddToCart(true);
         if (!StringUtil.isNullOrEmpty(Id)) {
             Map<String, Float> mapAvailable = getItem().getProduct().getAvailableQty();
             if (mapAvailable == null) {
@@ -1629,6 +1632,10 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
     public void showLoadingAvailableQty(boolean isShow) {
         mProgAavailableQty.setVisibility(isShow ? VISIBLE : GONE);
         mTxtAvailableQty.setVisibility(isShow ? GONE : VISIBLE);
+    }
+
+    public void enableButtonAddToCart(boolean isEnable) {
+        mbtnAddToCart.setEnabled(isEnable ? true : false);
     }
 
     // kiểm tra những size và color bị disable
