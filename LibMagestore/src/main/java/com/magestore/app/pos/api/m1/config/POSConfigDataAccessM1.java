@@ -749,7 +749,13 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
         String header_text = (String) mConfig.getValue("webpos/receipt/header_text");
         String footer_text = (String) mConfig.getValue("webpos/receipt/footer_text");
         String show_receipt_logo = (String) mConfig.getValue("webpos/receipt/show_receipt_logo");
-        String path_logo = (String) mConfig.getValue("webpos/general/webpos_logo_url");
+        String path_logo = "";
+        if (mConfig.getValue("webpos/general/webpos_logo") != null) {
+            path_logo = (String) mConfig.getValue("webpos/general/webpos_logo");
+        }
+        if (mConfig.getValue("webpos/general/webpos_logo_url") != null) {
+            path_logo = (String) mConfig.getValue("webpos/general/webpos_logo_url");
+        }
         String show_cashier_name = (String) mConfig.getValue("webpos/receipt/show_cashier_name");
         String show_comment = (String) mConfig.getValue("webpos/receipt/show_comment");
 

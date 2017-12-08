@@ -402,9 +402,13 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
                 blnRight = false;
             }
 
-            if(quantity >  getItem().getProduct().getCurrentAvailableQty()){
-                mtxtQuantity.setError(String.format(getResources().getString(R.string.err_field_must_less_than), ConfigUtil.formatQuantity(getItem().getProduct().getCurrentAvailableQty())));
-                blnRight = false;
+            if (ConfigUtil.isEnableAvailableQty()) {
+                if (getItem().getProduct().getTypeID().equals("configurable")) {
+                    if (quantity > getItem().getProduct().getCurrentAvailableQty()) {
+                        mtxtQuantity.setError(String.format(getResources().getString(R.string.err_field_must_less_than), ConfigUtil.formatQuantity(getItem().getProduct().getCurrentAvailableQty())));
+                        blnRight = false;
+                    }
+                }
             }
         }
 

@@ -259,7 +259,9 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
      */
     public void onAddQuantity(View view) {
         mtxtCartItemQuantity.add(getItem().getProduct().getQuantityIncrement());
-        checkQuantityAvailable();
+        if (ConfigUtil.isEnableAvailableQty()) {
+            checkQuantityAvailable();
+        }
     }
 
     /**
@@ -269,7 +271,9 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
      */
     public void onSubstractQuantity(View view) {
         mtxtCartItemQuantity.substract(getItem().getProduct().getQuantityIncrement());
-        checkQuantityAvailable();
+        if (ConfigUtil.isEnableAvailableQty()) {
+            checkQuantityAvailable();
+        }
     }
 
     private void checkQuantityAvailable() {
