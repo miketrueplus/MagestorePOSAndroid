@@ -2,6 +2,8 @@ package com.magestore.app.lib.model.registershift;
 
 import com.magestore.app.lib.model.Model;
 
+import java.util.List;
+
 /**
  * Created by Johan on 8/28/17.
  * Magestore
@@ -9,5 +11,5 @@ import com.magestore.app.lib.model.Model;
  */
 
 public interface DataRegisterShift extends Model {
-    RegisterShift getRegisterShift();
+    List<RegisterShift> getListRegisterShift();
 }

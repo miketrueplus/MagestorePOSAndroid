@@ -114,6 +114,33 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_setting_checkout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/layout_margin_20">
+
+            <Switch
+                android:id="@+id/sw_available_qty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/layout_margin_10"
+                android:layout_marginBottom="@dimen/layout_margin_10"
+                android:text="@string/setting_available_qty"
+                android:textSize="@dimen/welcome_text_size" />
+
+            <Switch
+                android:id="@+id/sw_place_auto_complete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/layout_margin_10"
+                android:layout_marginBottom="@dimen/layout_margin_10"
+                android:text="@string/place_auto_complete"
+                android:textSize="@dimen/welcome_text_size" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/ll_setting_print"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -216,6 +243,15 @@
                     android:text="@string/open_auto_print"
                     android:textSize="@dimen/welcome_text_size"
                     android:visibility="gone" />
+
+                <Switch
+                    android:id="@+id/sw_print_use_sku"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/sw_auto_print"
+                    android:layout_marginTop="@dimen/layout_margin_10"
+                    android:text="@string/print_use_sku"
+                    android:textSize="@dimen/welcome_text_size" />
             </RelativeLayout>
         </LinearLayout>
 

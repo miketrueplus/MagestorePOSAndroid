@@ -333,4 +333,9 @@ public class POSProductDataAccessOdoo extends POSAbstractDataAccessOdoo implemen
             connection = null;
         }
     }
+
+    @Override
+    public List<Product> getAvailableQty(String Id) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
+        return null;
+    }
 }

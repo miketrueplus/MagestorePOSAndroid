@@ -57,6 +57,8 @@ public class POSUserDataAccess extends POSAbstractDataAccess implements UserData
     private class Pos {
         String pos_id;
         String staff_id;
+        String location_id;
+        String current_session_id;
     }
 
     private class POSCheckPlatformDataAccess {
@@ -270,6 +272,8 @@ public class POSUserDataAccess extends POSAbstractDataAccess implements UserData
             Pos posEntity = new Pos();
             posEntity.pos_id = pos_id;
             posEntity.staff_id = ConfigUtil.getStaff().getID();
+            posEntity.location_id = ConfigUtil.getLocationId();
+            posEntity.current_session_id = POSDataAccessSession.REST_SESSION_ID;
 
             rp = statement.execute(posEntity);
             return true;

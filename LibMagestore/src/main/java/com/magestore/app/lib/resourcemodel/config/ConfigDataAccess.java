@@ -54,12 +54,15 @@ public interface ConfigDataAccess extends DataAccess {
     String getBaseCurrencyCode() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     String getCurrentCurrencyCode() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     float getConfigMaximumDiscount() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
+    String googleAPIKey() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
+    boolean taxCartDisplay() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     boolean getConfigDeliveryTime() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     boolean getConfigStoreCredit() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     boolean getConfigRewardPoint() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     boolean getConfigGiftCard() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     boolean getConfigSession() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     boolean getConfigDeleteOrder() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
+    boolean getApplyAfterDiscount() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     void getConfigStaffPermisson(List<String> listPermisson) throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     Map<String, String> getConfigStatusOrder() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     List<String> getConfigSetting() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;

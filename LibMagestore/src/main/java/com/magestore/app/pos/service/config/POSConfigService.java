@@ -71,6 +71,7 @@ public class POSConfigService extends AbstractService implements ConfigService {
         boolean checkLicenseKey = configDataAccess.checkLicenseKey();
 
         // đặt config format tiền
+        ConfigUtil.setGoogleKey(configDataAccess.googleAPIKey());
         ConfigUtil.setCurrencyFormat(getPriceFormat());
         ConfigUtil.setCurrencyNoSymbolFormat(getPriceNosymbolFormat());
         ConfigUtil.setFloatFormat(getFloatFormat());
@@ -85,6 +86,8 @@ public class POSConfigService extends AbstractService implements ConfigService {
             ConfigUtil.setEnableGiftCard(getConfigGiftCard());
             ConfigUtil.setEnableStoreCredit(getConfigStoreCredit());
             ConfigUtil.setEnableRewardPoint(getConfigRewardPoint());
+            ConfigUtil.setTaxCartDisplay(taxCartDisplay());
+            ConfigUtil.setApplyAfterDiscount(getApplyAfterDiscount());
         }
         ConfigUtil.setListCountry(getCountry());
         ConfigUtil.setListCustomerGroup(getCustomerGroup());
@@ -428,6 +431,13 @@ public class POSConfigService extends AbstractService implements ConfigService {
     }
 
     @Override
+    public boolean taxCartDisplay() throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
+        return configDataAccess.taxCartDisplay();
+    }
+
+    @Override
     public boolean getConfigDeliveryTime() throws InstantiationException, IllegalAccessException, IOException, ParseException {
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
@@ -470,6 +480,13 @@ public class POSConfigService extends AbstractService implements ConfigService {
     }
 
     @Override
+    public boolean getApplyAfterDiscount() throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
+        return configDataAccess.getApplyAfterDiscount();
+    }
+
+    @Override
     public List<String> getConfigSetting() throws InstantiationException, IllegalAccessException, IOException, ParseException {
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
@@ -499,19 +516,24 @@ public class POSConfigService extends AbstractService implements ConfigService {
                 accountSetting.setType(0);
                 settingList.add(accountSetting);
             } else if (key.equals("1")) {
+                Setting checkoutSetting = new PosSetting();
+                checkoutSetting.setName(listTitle.get(key));
+                checkoutSetting.setType(1);
+                settingList.add(checkoutSetting);
+            } else if (key.equals("2")) {
                 Setting printSetting = new PosSetting();
                 printSetting.setName(listTitle.get(key));
-                printSetting.setType(1);
+                printSetting.setType(2);
                 settingList.add(printSetting);
-            } else if (key.equals("2")) {
+            } else if (key.equals("3")) {
                 Setting currencySetting = new PosSetting();
                 currencySetting.setName(listTitle.get(key));
-                currencySetting.setType(2);
+                currencySetting.setType(3);
                 settingList.add(currencySetting);
-            } else if (key.equals("3")) {
+            } else if (key.equals("4")) {
                 Setting storeSetting = new PosSetting();
                 storeSetting.setName(listTitle.get(key));
-                storeSetting.setType(3);
+                storeSetting.setType(4);
                 settingList.add(storeSetting);
             }
         }

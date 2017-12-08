@@ -23,7 +23,7 @@
             android:ellipsize="end"
             android:fontFamily="monospace"
             android:maxLines="2"
-            android:text="@{item.getName()}"
+            android:text="@{ConfigUtil.isPrintUseSku() ? item.getSku() : item.getName()}"
             android:textSize="@dimen/text_size"
             android:textStyle="bold" />
 

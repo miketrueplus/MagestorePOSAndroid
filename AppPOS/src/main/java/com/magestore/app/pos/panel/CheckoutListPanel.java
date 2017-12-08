@@ -397,7 +397,9 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
             mCheckoutAddCustomerPanel.initValue();
 
             mCustomerAddNewPanel = (CustomerAddNewPanel) mCheckoutAddCustomerPanel.findViewById(R.id.sales_new_customer);
+            mCustomerAddNewPanel.setCustomerService(mCustomerService);
             mCustomerAddNewPanel.setController(mCheckoutAddCustomerPanel.getCustomerListController());
+            mCheckoutAddCustomerPanel.getCustomerListController().setCustomerAddNewPanel(mCustomerAddNewPanel);
             initLayoutPanel();
             if (type == CHANGE_CUSTOMER) {
                 mCustomerAddNewPanel.bindItem(null);
@@ -419,6 +421,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
                 ll_add_new_address.setVisibility(GONE);
             }
         }
+        mCustomerAddNewPanel.initValue();
         mCheckoutAddCustomerPanel.scrollToTop();
 
         if (dialog == null) {

@@ -42,6 +42,8 @@ public class POSRegisterShiftDataAccessM1 extends POSAbstractDataAccessM1 implem
 
     private class RegisterShiftEntity {
         SessionDataParam data;
+        SessionParam shift;
+        CashTransaction cashTransaction;
     }
 
     private class MakeAdjusmentEntity {
@@ -109,6 +111,8 @@ public class POSRegisterShiftDataAccessM1 extends POSAbstractDataAccessM1 implem
             paramBuilder = statement.getParamBuilder()
                     .setPage(1)
                     .setPageSize(1)
+                    .setSortOrderDESC("id")
+                    .setFilterEqual("pos_id", ConfigUtil.getPointOfSales() != null ? ConfigUtil.getPointOfSales().getID() : ConfigUtil.getPosId())
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
             // thực thi truy vấn và parse kết quả thành object
@@ -161,7 +165,7 @@ public class POSRegisterShiftDataAccessM1 extends POSAbstractDataAccessM1 implem
                     .setPage(page)
                     .setPageSize(pageSize)
                     .setSortOrderDESC("id")
-                    .setFilterEqual("staff_id", ConfigUtil.getStaff().getID())
+                    .setFilterEqual("pos_id", ConfigUtil.getPointOfSales() != null ? ConfigUtil.getPointOfSales().getID() : ConfigUtil.getPosId())
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
             // thực thi truy vấn và parse kết quả thành object
@@ -170,7 +174,8 @@ public class POSRegisterShiftDataAccessM1 extends POSAbstractDataAccessM1 implem
             rp.setParseModel(Gson2PosListRegisterShift.class);
             Gson2PosListRegisterShift listRegisterShift = (Gson2PosListRegisterShift) rp.doParse();
             List<RegisterShift> list = (List<RegisterShift>) (List<?>) (listRegisterShift.items);
-            return sumBalance(list);
+//            return sumBalance(list);
+            return list;
         } catch (ConnectionException ex) {
             throw ex;
         } catch (IOException ex) {
@@ -235,41 +240,51 @@ public class POSRegisterShiftDataAccessM1 extends POSAbstractDataAccessM1 implem
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
+//            // thực thi truy vấn và parse kết quả thành object
+//            RegisterShiftEntity registerShiftEntity = new RegisterShiftEntity();
+//
+//            SessionDataParam sessionDataParam = new SessionDataParam();
+//            sessionDataParam.till_id = ConfigUtil.getPointOfSales() != null ? ConfigUtil.getPointOfSales().getID() : ConfigUtil.getPosId();
+//            sessionDataParam.staff_id = sessionParam.getStaffId();
+//            sessionDataParam.opened_at = sessionParam.getOpenedAt();
+//            sessionDataParam.closed_at = "";
+//            sessionDataParam.opening_amount = sessionParam.getFloatAmount();
+//            sessionDataParam.base_opening_amount = sessionParam.getBaseFloatAmount();
+//            sessionDataParam.closed_amount = sessionParam.getCloseAmount();
+//            sessionDataParam.base_closed_amount = sessionParam.getBaseClosedAmount();
+//            sessionDataParam.cash_left = sessionParam.getCashLeft();
+//            sessionDataParam.base_cash_left = sessionParam.getBaseCashLeft();
+//            sessionDataParam.cash_added = sessionParam.getCashAdded();
+//            sessionDataParam.base_cash_added = sessionParam.getBaseCashAdded();
+//            sessionDataParam.cash_removed = sessionParam.getCashRemoved();
+//            sessionDataParam.base_cash_removed = sessionParam.getBaseCashRemoved();
+//            sessionDataParam.cash_sale = sessionParam.getCashSale();
+//            sessionDataParam.base_cash_sale = sessionParam.getBaseCashSale();
+//            sessionDataParam.report_currency_code = sessionParam.getShiftCurrencyCode();
+//            sessionDataParam.base_currency_code = sessionParam.getBaseCurrencyCode();
+//            sessionDataParam.opened_note = sessionParam.getOpenedNote();
+//            sessionDataParam.status = sessionParam.getStatus();
+//            sessionDataParam.shift_code = ConfigUtil.getItemIdInCurrentTime() + "";
+//
+//            registerShiftEntity.data = sessionDataParam;
+//
+//            rp = statement.execute(registerShiftEntity);
+//            rp.setParseImplement(getClassParseImplement());
+//            rp.setParseModel(PosDataRegisterShift.class);
+//            List<RegisterShift> list = new ArrayList<>();
+//            DataRegisterShift dataRegisterShift = (PosDataRegisterShift) rp.doParse();
+//            list.add(dataRegisterShift.getRegisterShift());
+//            return sumBalance(list);
+
             // thực thi truy vấn và parse kết quả thành object
             RegisterShiftEntity registerShiftEntity = new RegisterShiftEntity();
-
-            SessionDataParam sessionDataParam = new SessionDataParam();
-            sessionDataParam.till_id = ConfigUtil.getPointOfSales() != null ? ConfigUtil.getPointOfSales().getID() : ConfigUtil.getPosId();
-            sessionDataParam.staff_id = sessionParam.getStaffId();
-            sessionDataParam.opened_at = sessionParam.getOpenedAt();
-            sessionDataParam.closed_at = "";
-            sessionDataParam.opening_amount = sessionParam.getFloatAmount();
-            sessionDataParam.base_opening_amount = sessionParam.getBaseFloatAmount();
-            sessionDataParam.closed_amount = sessionParam.getCloseAmount();
-            sessionDataParam.base_closed_amount = sessionParam.getBaseClosedAmount();
-            sessionDataParam.cash_left = sessionParam.getCashLeft();
-            sessionDataParam.base_cash_left = sessionParam.getBaseCashLeft();
-            sessionDataParam.cash_added = sessionParam.getCashAdded();
-            sessionDataParam.base_cash_added = sessionParam.getBaseCashAdded();
-            sessionDataParam.cash_removed = sessionParam.getCashRemoved();
-            sessionDataParam.base_cash_removed = sessionParam.getBaseCashRemoved();
-            sessionDataParam.cash_sale = sessionParam.getCashSale();
-            sessionDataParam.base_cash_sale = sessionParam.getBaseCashSale();
-            sessionDataParam.report_currency_code = sessionParam.getShiftCurrencyCode();
-            sessionDataParam.base_currency_code = sessionParam.getBaseCurrencyCode();
-            sessionDataParam.opened_note = sessionParam.getOpenedNote();
-            sessionDataParam.status = sessionParam.getStatus();
-            sessionDataParam.shift_code = ConfigUtil.getItemIdInCurrentTime() + "";
-
-            registerShiftEntity.data = sessionDataParam;
+            registerShiftEntity.shift = sessionParam;
 
             rp = statement.execute(registerShiftEntity);
             rp.setParseImplement(getClassParseImplement());
             rp.setParseModel(PosDataRegisterShift.class);
-            List<RegisterShift> list = new ArrayList<>();
             DataRegisterShift dataRegisterShift = (PosDataRegisterShift) rp.doParse();
-            list.add(dataRegisterShift.getRegisterShift());
-            return sumBalance(list);
+            return dataRegisterShift.getListRegisterShift();
         } catch (ConnectionException ex) {
             throw new DataAccessException(ex);
         } catch (IOException ex) {
@@ -310,37 +325,47 @@ public class POSRegisterShiftDataAccessM1 extends POSAbstractDataAccessM1 implem
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
             // thực thi truy vấn và parse kết quả thành object
-            MakeAdjusmentEntity makeAdjusmentEntity = new MakeAdjusmentEntity();
-            CashTransactionDataParam cashTransactionDataParam = new CashTransactionDataParam();
-            cashTransactionDataParam.shift_id = cashTransaction.getParamShiftId();
-            cashTransactionDataParam.shift_code = cashTransaction.getShiftId();
-            cashTransactionDataParam.location_id = cashTransaction.getLocationId();
-            if (cashTransaction.getType().equals(ADD_MAKE_ADJUSTMENT)) {
-                cashTransactionDataParam.amount = cashTransaction.getValue();
-                cashTransactionDataParam.base_amount = cashTransaction.getBaseValue();
-            } else {
-                cashTransactionDataParam.amount = (0 - cashTransaction.getValue());
-                cashTransactionDataParam.base_amount = (0 - cashTransaction.getBaseValue());
-            }
-            cashTransactionDataParam.balance = cashTransaction.getBalance();
-            cashTransactionDataParam.base_balance = cashTransaction.getBaseBalance();
-            cashTransactionDataParam.created_at = cashTransaction.getCreatedAt();
-            cashTransactionDataParam.note = cashTransaction.getNote();
-            cashTransactionDataParam.type = cashTransaction.getType();
-            cashTransactionDataParam.base_currency_code = cashTransaction.getBaseCurrencyCode();
-            cashTransactionDataParam.transaction_currency_code = cashTransaction.getTransactionCurrencyCode();
-            cashTransactionDataParam.open_shift_title = cashTransaction.getOpenShiftTitle();
-            cashTransactionDataParam.balance_title = cashTransaction.getBalanceTitle();
+//            MakeAdjusmentEntity makeAdjusmentEntity = new MakeAdjusmentEntity();
+//            CashTransactionDataParam cashTransactionDataParam = new CashTransactionDataParam();
+//            cashTransactionDataParam.shift_id = cashTransaction.getParamShiftId();
+//            cashTransactionDataParam.shift_code = cashTransaction.getShiftId();
+//            cashTransactionDataParam.location_id = cashTransaction.getLocationId();
+//            if (cashTransaction.getType().equals(ADD_MAKE_ADJUSTMENT)) {
+//                cashTransactionDataParam.amount = cashTransaction.getValue();
+//                cashTransactionDataParam.base_amount = cashTransaction.getBaseValue();
+//            } else {
+//                cashTransactionDataParam.amount = (0 - cashTransaction.getValue());
+//                cashTransactionDataParam.base_amount = (0 - cashTransaction.getBaseValue());
+//            }
+//            cashTransactionDataParam.balance = cashTransaction.getBalance();
+//            cashTransactionDataParam.base_balance = cashTransaction.getBaseBalance();
+//            cashTransactionDataParam.created_at = cashTransaction.getCreatedAt();
+//            cashTransactionDataParam.note = cashTransaction.getNote();
+//            cashTransactionDataParam.type = cashTransaction.getType();
+//            cashTransactionDataParam.base_currency_code = cashTransaction.getBaseCurrencyCode();
+//            cashTransactionDataParam.transaction_currency_code = cashTransaction.getTransactionCurrencyCode();
+//            cashTransactionDataParam.open_shift_title = cashTransaction.getOpenShiftTitle();
+//            cashTransactionDataParam.balance_title = cashTransaction.getBalanceTitle();
+//
+//            makeAdjusmentEntity.data = cashTransactionDataParam;
+//
+//            rp = statement.execute(makeAdjusmentEntity);
+//            rp.setParseImplement(getClassParseImplement());
+//            rp.setParseModel(PosDataRegisterShift.class);
+//            List<RegisterShift> list = new ArrayList<>();
+//            DataRegisterShift dataRegisterShift = (PosDataRegisterShift) rp.doParse();
+//            list.add(dataRegisterShift.getRegisterShift());
+//            return sumBalance(list);
 
-            makeAdjusmentEntity.data = cashTransactionDataParam;
+            // thực thi truy vấn và parse kết quả thành object
+            RegisterShiftEntity registerShiftEntity = new RegisterShiftEntity();
+            registerShiftEntity.cashTransaction = cashTransaction;
 
-            rp = statement.execute(makeAdjusmentEntity);
+            rp = statement.execute(registerShiftEntity);
             rp.setParseImplement(getClassParseImplement());
             rp.setParseModel(PosDataRegisterShift.class);
-            List<RegisterShift> list = new ArrayList<>();
             DataRegisterShift dataRegisterShift = (PosDataRegisterShift) rp.doParse();
-            list.add(dataRegisterShift.getRegisterShift());
-            return sumBalance(list);
+            return dataRegisterShift.getListRegisterShift();
         } catch (ConnectionException ex) {
             throw new DataAccessException(ex);
         } catch (IOException ex) {
@@ -380,43 +405,54 @@ public class POSRegisterShiftDataAccessM1 extends POSAbstractDataAccessM1 implem
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
+//            // thực thi truy vấn và parse kết quả thành object
+//            RegisterShiftEntity registerShiftEntity = new RegisterShiftEntity();
+//
+//            SessionDataParam sessionDataParam = new SessionDataParam();
+//            sessionDataParam.id = sessionParam.getID();
+//            sessionDataParam.till_id = ConfigUtil.getPointOfSales() != null ? ConfigUtil.getPointOfSales().getID() : ConfigUtil.getPosId();
+//            sessionDataParam.staff_id = sessionParam.getStaffId();
+//            sessionDataParam.opened_at = sessionParam.getOpenedAt();
+//            sessionDataParam.closed_at = sessionParam.getCloseAt();
+//            sessionDataParam.opening_amount = sessionParam.getFloatAmount();
+//            sessionDataParam.base_opening_amount = sessionParam.getBaseFloatAmount();
+//            sessionDataParam.closed_amount = sessionParam.getCloseAmount();
+//            sessionDataParam.base_closed_amount = sessionParam.getBaseClosedAmount();
+//            sessionDataParam.cash_left = sessionParam.getCashLeft();
+//            sessionDataParam.base_cash_left = sessionParam.getBaseCashLeft();
+//            sessionDataParam.cash_added = sessionParam.getCashAdded();
+//            sessionDataParam.base_cash_added = sessionParam.getBaseCashAdded();
+//            sessionDataParam.cash_removed = sessionParam.getCashRemoved();
+//            sessionDataParam.base_cash_removed = sessionParam.getBaseCashRemoved();
+//            sessionDataParam.cash_sale = sessionParam.getCashSale();
+//            sessionDataParam.base_cash_sale = sessionParam.getBaseCashSale();
+//            sessionDataParam.report_currency_code = sessionParam.getShiftCurrencyCode();
+//            sessionDataParam.base_currency_code = sessionParam.getBaseCurrencyCode();
+//            sessionDataParam.opened_note = sessionParam.getOpenedNote();
+//            sessionDataParam.note = sessionParam.getClosedNote();
+//            sessionDataParam.status = sessionParam.getStatus();
+//            sessionDataParam.shift_code = sessionParam.getShiftId();
+//
+//            registerShiftEntity.data = sessionDataParam;
+//
+//            rp = statement.execute(registerShiftEntity);
+//            rp.setParseImplement(getClassParseImplement());
+//            rp.setParseModel(PosDataRegisterShift.class);
+//            List<RegisterShift> list = new ArrayList<>();
+//            DataRegisterShift dataRegisterShift = (PosDataRegisterShift) rp.doParse();
+//            list.add(dataRegisterShift.getRegisterShift());
+//            return sumBalance(list);
+
             // thực thi truy vấn và parse kết quả thành object
+            sessionParam.setID(null);
             RegisterShiftEntity registerShiftEntity = new RegisterShiftEntity();
-
-            SessionDataParam sessionDataParam = new SessionDataParam();
-            sessionDataParam.id = sessionParam.getID();
-            sessionDataParam.till_id = ConfigUtil.getPointOfSales() != null ? ConfigUtil.getPointOfSales().getID() : ConfigUtil.getPosId();
-            sessionDataParam.staff_id = sessionParam.getStaffId();
-            sessionDataParam.opened_at = sessionParam.getOpenedAt();
-            sessionDataParam.closed_at = sessionParam.getCloseAt();
-            sessionDataParam.opening_amount = sessionParam.getFloatAmount();
-            sessionDataParam.base_opening_amount = sessionParam.getBaseFloatAmount();
-            sessionDataParam.closed_amount = sessionParam.getCloseAmount();
-            sessionDataParam.base_closed_amount = sessionParam.getBaseClosedAmount();
-            sessionDataParam.cash_left = sessionParam.getCashLeft();
-            sessionDataParam.base_cash_left = sessionParam.getBaseCashLeft();
-            sessionDataParam.cash_added = sessionParam.getCashAdded();
-            sessionDataParam.base_cash_added = sessionParam.getBaseCashAdded();
-            sessionDataParam.cash_removed = sessionParam.getCashRemoved();
-            sessionDataParam.base_cash_removed = sessionParam.getBaseCashRemoved();
-            sessionDataParam.cash_sale = sessionParam.getCashSale();
-            sessionDataParam.base_cash_sale = sessionParam.getBaseCashSale();
-            sessionDataParam.report_currency_code = sessionParam.getShiftCurrencyCode();
-            sessionDataParam.base_currency_code = sessionParam.getBaseCurrencyCode();
-            sessionDataParam.opened_note = sessionParam.getOpenedNote();
-            sessionDataParam.note = sessionParam.getClosedNote();
-            sessionDataParam.status = sessionParam.getStatus();
-            sessionDataParam.shift_code = sessionParam.getShiftId();
-
-            registerShiftEntity.data = sessionDataParam;
+            registerShiftEntity.shift = sessionParam;
 
             rp = statement.execute(registerShiftEntity);
             rp.setParseImplement(getClassParseImplement());
             rp.setParseModel(PosDataRegisterShift.class);
-            List<RegisterShift> list = new ArrayList<>();
             DataRegisterShift dataRegisterShift = (PosDataRegisterShift) rp.doParse();
-            list.add(dataRegisterShift.getRegisterShift());
-            return sumBalance(list);
+            return dataRegisterShift.getListRegisterShift();
         } catch (ConnectionException ex) {
             throw new DataAccessException(ex);
         } catch (IOException ex) {

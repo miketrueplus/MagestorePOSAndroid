@@ -437,7 +437,12 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
 
         String staff_id = (String) mConfig.getValue("staffId");
         String staff_name = (String) mConfig.getValue("staffName");
-        String location_id = (String) mConfig.getValue("locationId");
+        String location_id = "";
+        if (mConfig.getValue("locationId") instanceof Double) {
+            location_id = String.valueOf((double) mConfig.getValue("locationId"));
+        } else {
+            location_id = (String) mConfig.getValue("locationId");
+        }
         String location_name = (String) mConfig.getValue("location_name");
         String location_address = (String) mConfig.getValue("location_address");
 
@@ -536,15 +541,24 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         Collections.sort(countryList, new Comparator<LinkedTreeMap>() {
             @Override
             public int compare(LinkedTreeMap linkedTreeMap, LinkedTreeMap linkedTreeMap1) {
-                String name = linkedTreeMap.get("country_name").toString();
-                String name1 = linkedTreeMap1.get("country_name").toString();
+                String name = "";
+                if (linkedTreeMap.get("country_name") != null) {
+                    name = linkedTreeMap.get("country_name").toString();
+                }
+                String name1 = "";
+                if (linkedTreeMap1.get("country_name") != null) {
+                    name1 = linkedTreeMap1.get("country_name").toString();
+                }
                 return name.compareToIgnoreCase(name1);
             }
         });
         for (LinkedTreeMap country : countryList) {
             ConfigCountry configCountry = new PosConfigCountry();
             String country_id = country.get("country_id").toString();
-            String country_name = country.get("country_name").toString();
+            String country_name = "";
+            if (country.get("country_name") != null) {
+                country_name = country.get("country_name").toString();
+            }
             configCountry.setCountryID(country_id);
             configCountry.setCountryName(country_name);
             List<LinkedTreeMap> regionList = (ArrayList) country.get("regions");
@@ -976,6 +990,29 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
     }
 
     @Override
+    public String googleAPIKey() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        if (mConfig == null) mConfig = new PosConfigDefault();
+        String google_key = "";
+        if (mConfig.getValue("webpos/general/google_api_key") != null) {
+            google_key = (String) mConfig.getValue("webpos/general/google_api_key");
+        }
+        return google_key;
+    }
+
+    @Override
+    public boolean taxCartDisplay() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        if (mConfig == null) mConfig = new PosConfigDefault();
+        boolean tax_cart_display = false;
+        if (mConfig.getValue("tax/cart_display/price") != null) {
+            String tax_cart = (String) mConfig.getValue("tax/cart_display/price");
+            if (!tax_cart.equals("1")) {
+                tax_cart_display = true;
+            }
+        }
+        return tax_cart_display;
+    }
+
+    @Override
     public boolean getConfigDeliveryTime() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
         if (mConfig == null) mConfig = new PosConfigDefault();
 
@@ -1094,6 +1131,23 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
     }
 
     @Override
+    public boolean getApplyAfterDiscount() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        if (mConfig == null) mConfig = new PosConfigDefault();
+        if (mConfig.getValue("tax/calculation/apply_after_discount") == null) {
+            return false;
+        }
+        String enable_apply_after_discount = (String) mConfig.getValue("tax/calculation/apply_after_discount");
+        boolean isApplyDiscount;
+        if (!StringUtil.isNullOrEmpty(enable_apply_after_discount)) {
+            if (enable_apply_after_discount.equals("1")) {
+                isApplyDiscount = true;
+                return isApplyDiscount;
+            }
+        }
+        return false;
+    }
+
+    @Override
     public void getConfigStaffPermisson(List<String> listPermisson) throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
         if (listPermisson.size() > 0) {
             ConfigUtil.setChangeStaff(true);
@@ -1130,6 +1184,7 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
             ConfigUtil.setAddAddressDefault(true);
             ConfigUtil.setPrintSession(true);
             ConfigUtil.setCustomSales(true);
+            ConfigUtil.setShowAvailableQty(true);
             if (checkStaffPermiss(listPermisson, ALL_PERMISSON)) {
                 ConfigUtil.setManagerShiftAdjustment(true);
                 ConfigUtil.setManageOrderByMe(true);
@@ -1180,8 +1235,11 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
     public List<String> getConfigSetting() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
         List<String> listSetting = new ArrayList<>();
         listSetting.add("0");
-        listSetting.add("1");
+        if (!StringUtil.isNullOrEmpty(ConfigUtil.getGoogleKey())) {
+            listSetting.add("1");
+        }
         listSetting.add("2");
+        listSetting.add("3");
         return listSetting;
     }
 

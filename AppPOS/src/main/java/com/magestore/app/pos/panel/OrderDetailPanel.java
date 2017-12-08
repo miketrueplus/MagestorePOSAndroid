@@ -472,7 +472,7 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
                     float adjust_refund = order.getAdjustRefund();
                     float adjust_free = order.getAdjustFree();
                     float max_store_credit = ((total_price_qty_item + price_shipping + adjust_refund) - (adjust_free + order.getMaxGiftCardRefund()));
-                    if (max_store_credit <= mOrder.getMaxRefunded()) {
+                    if (ConfigUtil.parseFloat(ConfigUtil.formatNumber(max_store_credit)) <= mOrder.getMaxRefunded()) {
                         ((OrderHistoryListController) mController).doInputRefund(order);
                         dialog.dismiss();
                     } else {

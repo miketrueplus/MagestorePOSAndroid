@@ -27,6 +27,8 @@ public interface CartService extends ChildListService<Checkout, CartItem> {
 
     float calculateLastTotal(Checkout checkout);
 
+    CartItem createCartItem();
+
     CartItem create(Product product);
 
     CartItem create(Product product, float quantity, float price);

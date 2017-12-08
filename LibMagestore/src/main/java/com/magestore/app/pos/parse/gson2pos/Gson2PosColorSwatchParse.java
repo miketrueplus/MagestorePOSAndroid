@@ -30,7 +30,8 @@ public class Gson2PosColorSwatchParse extends Gson2PosAbstractParseImplement {
     public Gson createGson() {
         GsonBuilder builder = new GsonBuilder();
         builder.enableComplexMapKeySerialization();
-        builder.registerTypeAdapter(new TypeToken<List<PosConfigProductOption>>(){}
+        builder.registerTypeAdapter(new TypeToken<List<PosConfigProductOption>>() {
+        }
                 .getType(), new ColorSwatchConverter());
         return builder.create();
     }
@@ -44,6 +45,7 @@ public class Gson2PosColorSwatchParse extends Gson2PosAbstractParseImplement {
     private static final String JSON_STORE_ID = "store_id";
     private static final String JSON_TYPE = "type";
     private static final String JSON_VALUE = "value";
+
     public class ColorSwatchConverter implements JsonDeserializer<List<PosConfigProductOption>> {
         @Override
         public List<PosConfigProductOption> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
@@ -55,13 +57,23 @@ public class Gson2PosColorSwatchParse extends Gson2PosAbstractParseImplement {
                 configProductOption.setAttributeLabel(item.getAsJsonObject().remove(JSON_ATTRIBUTE_LABEL).getAsString());
                 Map<String, ConfigOptionSwatch> mapConfigOptionSwatch = new HashMap<>();
                 JsonElement swatches = item.getAsJsonObject().get(JSON_SWATCHES);
-                for (Map.Entry<String, JsonElement> entry: swatches.getAsJsonObject().entrySet()){
+                for (Map.Entry<String, JsonElement> entry : swatches.getAsJsonObject().entrySet()) {
                     ConfigOptionSwatch configOptionSwatch = new PosConfigOptionSwatch();
-                    configOptionSwatch.setSwatchId(entry.getValue().getAsJsonObject().remove(JSON_SWATCH_ID).getAsString());
-                    configOptionSwatch.setOptionId(entry.getValue().getAsJsonObject().remove(JSON_OPTION_ID).getAsString());
-                    configOptionSwatch.setStoreId(entry.getValue().getAsJsonObject().remove(JSON_STORE_ID).getAsString());
-                    configOptionSwatch.setType(entry.getValue().getAsJsonObject().remove(JSON_TYPE).getAsString());
-                    configOptionSwatch.setValue(entry.getValue().getAsJsonObject().remove(JSON_VALUE).getAsString());
+                    if (!entry.getValue().getAsJsonObject().get(JSON_SWATCH_ID).isJsonNull()) {
+                        configOptionSwatch.setSwatchId(entry.getValue().getAsJsonObject().get(JSON_SWATCH_ID).getAsString());
+                    }
+                    if (!entry.getValue().getAsJsonObject().get(JSON_OPTION_ID).isJsonNull()) {
+                        configOptionSwatch.setOptionId(entry.getValue().getAsJsonObject().get(JSON_OPTION_ID).getAsString());
+                    }
+                    if (!entry.getValue().getAsJsonObject().get(JSON_STORE_ID).isJsonNull()) {
+                        configOptionSwatch.setStoreId(entry.getValue().getAsJsonObject().get(JSON_STORE_ID).getAsString());
+                    }
+                    if (!entry.getValue().getAsJsonObject().get(JSON_TYPE).isJsonNull()) {
+                        configOptionSwatch.setType(entry.getValue().getAsJsonObject().get(JSON_TYPE).getAsString());
+                    }
+                    if (!entry.getValue().getAsJsonObject().get(JSON_VALUE).isJsonNull()) {
+                        configOptionSwatch.setValue(entry.getValue().getAsJsonObject().get(JSON_VALUE).getAsString());
+                    }
                     mapConfigOptionSwatch.put(entry.getKey(), configOptionSwatch);
                 }
                 configProductOption.setColorSwatch(mapConfigOptionSwatch);

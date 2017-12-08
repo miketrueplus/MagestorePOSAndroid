@@ -624,6 +624,11 @@ public class POSProductDataAccessM1 extends POSAbstractDataAccessM1 implements P
     }
 
     @Override
+    public List<Product> getAvailableQty(String Id) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
+        return null;
+    }
+
+    @Override
     public boolean update(Product oldModel, Product newModel) throws ParseException, InstantiationException, IllegalAccessException, IOException {
         return false;
     }

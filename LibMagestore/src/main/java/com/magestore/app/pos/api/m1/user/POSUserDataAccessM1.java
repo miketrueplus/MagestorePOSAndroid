@@ -38,6 +38,7 @@ import java.util.List;
 
 public class POSUserDataAccessM1 extends POSAbstractDataAccessM1 implements UserDataAccess {
     static final String strfalse = "false\n";
+
     private class Wrap {
         User staff;
     }
@@ -50,6 +51,8 @@ public class POSUserDataAccessM1 extends POSAbstractDataAccessM1 implements User
     private class Pos {
         String pos_id;
         String staff_id;
+        String location_id;
+        String current_session_id;
     }
 
     private class POSCheckPlatformDataAccess {
@@ -132,6 +135,25 @@ public class POSUserDataAccessM1 extends POSAbstractDataAccessM1 implements User
 
             if (json.has("webpos_config")) {
                 JSONObject webpos_config = json.getJSONObject("webpos_config");
+
+                if (webpos_config.has("tax/cart_display/price")) {
+                    String tax_cart = webpos_config.getString("tax/cart_display/price");
+                    boolean tax_cart_display = false;
+                    if (tax_cart.equals("1")) {
+                        tax_cart_display = true;
+                    }
+                    ConfigUtil.setTaxCartDisplay(tax_cart_display);
+                }
+
+                if (webpos_config.has("tax/calculation/apply_after_discount")) {
+                    String apply_after_discount = webpos_config.getString("tax/calculation/apply_after_discount");
+                    boolean after_discount = false;
+                    if (apply_after_discount.equals("1")) {
+                        after_discount = true;
+                    }
+                    ConfigUtil.setApplyAfterDiscount(after_discount);
+                }
+
                 if (webpos_config.has("plugins_config")) {
                     JSONObject json_plugins = webpos_config.getJSONObject("plugins_config");
                     if (json_plugins.has("os_store_credit")) {
@@ -264,6 +286,8 @@ public class POSUserDataAccessM1 extends POSAbstractDataAccessM1 implements User
             Pos posEntity = new Pos();
             posEntity.pos_id = pos_id;
             posEntity.staff_id = ConfigUtil.getStaff().getID();
+            posEntity.location_id = ConfigUtil.getLocationId();
+            posEntity.current_session_id = POSDataAccessSessionM1.REST_SESSION_ID;
 
             rp = statement.execute(posEntity);
             return true;

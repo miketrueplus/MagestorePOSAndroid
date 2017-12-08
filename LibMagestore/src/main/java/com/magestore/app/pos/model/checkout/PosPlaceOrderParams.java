@@ -75,6 +75,11 @@ public class PosPlaceOrderParams extends PosAbstractModel implements PlaceOrderP
     }
 
     @Override
+    public void setQuoteDeliveryDate(String strDeliveryDate) {
+        quote_data.webpos_delivery_date = strDeliveryDate;
+    }
+
+    @Override
     public void setDeliveryTime(String strDeliveryTime) {
         actions.delivery_time = strDeliveryTime;
     }
@@ -123,6 +128,11 @@ public class PosPlaceOrderParams extends PosAbstractModel implements PlaceOrderP
     }
 
     @Override
+    public PlaceOrderActionParam getActions() {
+        return actions;
+    }
+
+    @Override
     public List<PaymentMethodDataParam> createPaymentMethodData() {
         payment.method_data = new ArrayList<PaymentMethodDataParam>();
         return payment.method_data;
@@ -166,6 +176,7 @@ public class PosPlaceOrderParams extends PosAbstractModel implements PlaceOrderP
 
     public class PlaceOrderQuoteDataParam {
         String customer_note;
+        String webpos_delivery_date;
     }
 
     public class PlaceOrderPaymentParam {

@@ -42,6 +42,9 @@ public class ConfigUtil {
     public static String PLATFORM_MAGENTO_2 = "magento2";
     public static String PLATFORM_ODOO = "Odoo";
 
+    // domain
+    private static String mDomain;
+
     // public static Config mConfig;
     private static DecimalFormat mCurrencyFormat;
     private static DecimalFormat mCurrencyNoSymbolFormat;
@@ -54,6 +57,7 @@ public class ConfigUtil {
     private static String mBaseCurrencyCode;
     private static Staff mStaff;
     private static Customer mCustomerGuest;
+    private static boolean mTaxCartDisplay;
     private static boolean mShowDeliveryTime;
     private static boolean mEnableStoreCredit;
     private static boolean mEnableRewardPoint;
@@ -61,6 +65,8 @@ public class ConfigUtil {
     private static boolean mEnableSession;
     private static boolean mCheckFirstOpenSession;
     private static boolean mEnableDeleteOrder;
+    private static boolean mEnableAvailableQty;
+    private static boolean mApplyAfterDiscount;
     private static List<ConfigTaxClass> mConfigTaxClass;
     private static List<CheckoutPayment> mListPayment;
     private static String mTypePrint;
@@ -86,6 +92,7 @@ public class ConfigUtil {
     private static boolean mCancel;
     private static boolean mAddComment;
     private static boolean mReOder;
+    private static boolean mShowAvailableQty;
     private static boolean mPartialInvoice;
     // permisson discount
     private static boolean mCustomSales;
@@ -126,6 +133,8 @@ public class ConfigUtil {
     private static Map<String, String> mListCustomerGroup;
     // setting
     private static Map<String, String> mListSetting;
+    private static String mGoogleKey;
+    private static boolean mPlaceAutoComplete;
 
     // order status
     private static Map<String, String> mListOrderStatus;
@@ -141,6 +150,7 @@ public class ConfigUtil {
     // Print
     private static boolean mOpenCash;
     private static boolean mAutoPrint;
+    private static boolean mPrintUseSku;
 
     /**
      * @param format
@@ -760,6 +770,14 @@ public class ConfigUtil {
         return mPlatForm;
     }
 
+    public static void setDomain(String mDomain) {
+        ConfigUtil.mDomain = mDomain;
+    }
+
+    public static String getDomain() {
+        return mDomain;
+    }
+
     public static void setStaff(Staff staff) {
         mStaff = staff;
     }
@@ -774,6 +792,14 @@ public class ConfigUtil {
 
     public static void setCustomerGuest(Customer customerGuest) {
         mCustomerGuest = customerGuest;
+    }
+
+    public static boolean isTaxCartDisplay() {
+        return mTaxCartDisplay;
+    }
+
+    public static void setTaxCartDisplay(boolean mTaxCartDisplay) {
+        ConfigUtil.mTaxCartDisplay = mTaxCartDisplay;
     }
 
     public static void setShowDeliveryTime(boolean showDeliveryTime) {
@@ -1023,6 +1049,14 @@ public class ConfigUtil {
 
     public static void setReOder(boolean mReOder) {
         ConfigUtil.mReOder = mReOder;
+    }
+
+    public static boolean isShowAvailableQty() {
+        return mShowAvailableQty;
+    }
+
+    public static void setShowAvailableQty(boolean mShowAvailableQty) {
+        ConfigUtil.mShowAvailableQty = mShowAvailableQty;
     }
 
     public static boolean isPartialInvoice() {
@@ -1345,6 +1379,22 @@ public class ConfigUtil {
         ConfigUtil.isDevLicense = isDevLicense;
     }
 
+    public static boolean isEnableAvailableQty() {
+        return mEnableAvailableQty;
+    }
+
+    public static void setEnableAvailableQty(boolean mEnableAvailableQty) {
+        ConfigUtil.mEnableAvailableQty = mEnableAvailableQty;
+    }
+
+    public static boolean isApplyAfterDiscount() {
+        return mApplyAfterDiscount;
+    }
+
+    public static void setApplyAfterDiscount(boolean mApplyAfterDiscount) {
+        ConfigUtil.mApplyAfterDiscount = mApplyAfterDiscount;
+    }
+
     public static void setEnableDeleteOrder(boolean mEnableDeleteOrder) {
         ConfigUtil.mEnableDeleteOrder = mEnableDeleteOrder;
     }
@@ -1353,11 +1403,11 @@ public class ConfigUtil {
         return mEnableDeleteOrder;
     }
 
-    public static String getValueColorSwatch(String parent_code, String value_id) {
+    public static ConfigOptionSwatch getValueColorSwatch(String parent_code, String value_id) {
         for (ConfigProductOption productOption : mColorSwatch) {
             if (parent_code.equals(productOption.getAttributeCode())) {
                 ConfigOptionSwatch optionSwatch = productOption.getColorSwatch().get(value_id);
-                return optionSwatch.getValue();
+                return optionSwatch;
             }
         }
         return null;
@@ -1377,6 +1427,30 @@ public class ConfigUtil {
 
     public static void setAutoPrint(boolean mAutoPrint) {
         ConfigUtil.mAutoPrint = mAutoPrint;
+    }
+
+    public static boolean isPrintUseSku() {
+        return mPrintUseSku;
+    }
+
+    public static void setPrintUseSku(boolean mPrintUseSku) {
+        ConfigUtil.mPrintUseSku = mPrintUseSku;
+    }
+
+    public static String getGoogleKey() {
+        return mGoogleKey;
+    }
+
+    public static void setGoogleKey(String mGoogleKey) {
+        ConfigUtil.mGoogleKey = mGoogleKey;
+    }
+
+    public static boolean isPlaceAutoComplete() {
+        return mPlaceAutoComplete;
+    }
+
+    public static void setPlaceAutoComplete(boolean mPlaceAutoComplete) {
+        ConfigUtil.mPlaceAutoComplete = mPlaceAutoComplete;
     }
 }
 

@@ -1,25 +1,29 @@
 package com.magestore.app.pos.api.m2.customer;
 
+import com.google.gson.Gson;
 import com.magestore.app.lib.connection.Connection;
 import com.magestore.app.lib.connection.ConnectionException;
 import com.magestore.app.lib.connection.ConnectionFactory;
 import com.magestore.app.lib.connection.ParamBuilder;
 import com.magestore.app.lib.connection.ResultReading;
 import com.magestore.app.lib.connection.Statement;
-import com.magestore.app.lib.connection.http.MagestoreResultReadingException;
-import com.magestore.app.lib.connection.http.MagestoreStatementAction;
 import com.magestore.app.lib.model.customer.Complain;
 import com.magestore.app.lib.model.customer.Customer;
-import com.magestore.app.lib.model.customer.CustomerAddress;
-import com.magestore.app.lib.model.user.User;
+import com.magestore.app.lib.model.customer.PlaceAddressComponent;
+import com.magestore.app.lib.model.customer.PlaceAutoComplete;
 import com.magestore.app.lib.resourcemodel.customer.CustomerDataAccess;
 import com.magestore.app.lib.resourcemodel.DataAccessException;
 import com.magestore.app.lib.parse.ParseException;
 import com.magestore.app.pos.model.customer.PosCustomer;
+import com.magestore.app.pos.model.customer.PosPlaceAutoComplete;
+import com.magestore.app.pos.model.customer.PosPlaceDetail;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListCustomer;
 import com.magestore.app.pos.api.m2.POSAPI;
 import com.magestore.app.pos.api.m2.POSAbstractDataAccess;
 import com.magestore.app.pos.api.m2.POSDataAccessSession;
+import com.magestore.app.pos.parse.gson2pos.Gson2PosStoreParseImplement;
+import com.magestore.app.util.ConfigUtil;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -35,9 +39,108 @@ public class POSCustomerDataAccess
         implements CustomerDataAccess {
 
     // wrap object lại và chuyênr thành json
-    private class Wrap {Customer customer; Complain complain;};
+    private class Wrap {
+        Customer customer;
+        Complain complain;
+    }
+
+    private class POSListPlaceAutoComplete {
+        List<PosPlaceAutoComplete> predictions;
+    }
+
+    private class POSPlaceDetail {
+        PosPlaceDetail result;
+    }
+
+    @Override
+    public List<PlaceAutoComplete> placeAutoComplete(String input) throws DataAccessException, ConnectionException, ParseException, IOException, java.text.ParseException {
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+        try {
+            // Khởi tạo connection
+            connection = ConnectionFactory.generateConnection(getContext(), POSAPI.REST_DOMAIN_GOOGLE_MAP_API, "", "");
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPI.REST_PLACE_AUTO_COMPLETE);
+
+            paramBuilder = statement.getParamBuilder().
+                    setParam("input", input)
+                    .setParam("types", "geocode")
+                    .setParam("language", "us")
+                    .setParam("key", ConfigUtil.getGoogleKey());
+
+            rp = statement.execute();
+            String json = rp.readResult2String();
+            Gson2PosStoreParseImplement implement = new Gson2PosStoreParseImplement();
+            Gson gson = implement.createGson();
+            POSListPlaceAutoComplete place = gson.fromJson(json, POSListPlaceAutoComplete.class);
+            return (List<PlaceAutoComplete>) (List<?>) place.predictions;
+        } catch (Exception ex) {
+            throw new DataAccessException(ex);
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
+    }
+
+    @Override
+    public List<PlaceAddressComponent> placeDetail(String detailId) throws java.text.ParseException, InstantiationException, IllegalAccessException, IOException {
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+        try {
+            // Khởi tạo connection
+            connection = ConnectionFactory.generateConnection(getContext(), POSAPI.REST_DOMAIN_GOOGLE_MAP_API, "", "");
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPI.REST_PLACE_DETAIL);
+
+            paramBuilder = statement.getParamBuilder().
+                    setParam("placeid", detailId)
+                    .setParam("key", ConfigUtil.getGoogleKey());
+
+            rp = statement.execute();
+            String json = rp.readResult2String();
+            Gson2PosStoreParseImplement implement = new Gson2PosStoreParseImplement();
+            Gson gson = implement.createGson();
+            POSPlaceDetail place = gson.fromJson(json, POSPlaceDetail.class);
+            return place.result.getAddressComponents();
+        } catch (Exception ex) {
+            throw new DataAccessException(ex);
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
+    }
+
     /**
      * đếm số customer
+     *
      * @return
      * @throws java.text.ParseException
      * @throws InstantiationException
@@ -90,7 +193,8 @@ public class POSCustomerDataAccess
             // đóng connection
             if (connection != null) connection.close();
             connection = null;
-        }    }
+        }
+    }
 
     @Override
     public List<Customer> retrieve() throws ParseException, InstantiationException, IllegalAccessException, IOException {
@@ -258,7 +362,8 @@ public class POSCustomerDataAccess
             // đóng connection
             if (connection != null) connection.close();
             connection = null;
-        }    }
+        }
+    }
 
     @Override
     public boolean update(Customer oldCustomer, final Customer newCustomer) throws IOException, InstantiationException, ParseException, IllegalAccessException {

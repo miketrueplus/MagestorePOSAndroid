@@ -5,6 +5,7 @@ import android.util.Base64;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedHashTreeMap;
 import com.google.gson.internal.LinkedTreeMap;
+import com.google.gson.reflect.TypeToken;
 import com.magestore.app.lib.connection.Connection;
 import com.magestore.app.lib.connection.ConnectionException;
 import com.magestore.app.lib.connection.ConnectionFactory;
@@ -141,10 +142,13 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
 
             // thực hiện truy vấn
             rp = statement.execute();
-            String json = StringUtil.truncateJson(rp.readResult2String());
-            Gson2PosConfigParseImplement implement = new Gson2PosConfigParseImplement();
-            Gson gson = implement.createGson();
-            mConfig = gson.fromJson(json, PosConfig.class);
+//            String json = StringUtil.truncateJson(rp.readResult2String());
+//            Gson2PosConfigParseImplement implement = new Gson2PosConfigParseImplement();
+//            Gson gson = implement.createGson();
+//            mConfig = gson.fromJson(json, PosConfig.class);
+            rp.setParseImplement(Gson2PosConfigParseImplement.class);
+            rp.setParseModel(PosConfig.class);
+            mConfig = (Config) rp.doParse();
             return mConfig;
         } catch (ConnectionException ex) {
 //            statement.getCacheConnection().deleteCache();
@@ -318,7 +322,12 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
 
         String staff_id = (String) mConfig.getValue("staffId");
         String staff_name = (String) mConfig.getValue("staffName");
-        String location_id = (String) mConfig.getValue("locationId");
+        String location_id = "";
+        if (mConfig.getValue("locationId") instanceof Double) {
+            location_id = String.valueOf((double) mConfig.getValue("locationId"));
+        } else {
+            location_id = (String) mConfig.getValue("locationId");
+        }
         String location_name = (String) mConfig.getValue("location_name");
         String location_address = (String) mConfig.getValue("location_address");
 
@@ -430,7 +439,13 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
     private Map<String, Map<String, ConfigRegion>> getRegionGroup() {
         // nếu chưa load config, cần khởi tạo chế độ default
         if (mConfig == null) mConfig = new PosConfigDefault();
-        Map<String, LinkedTreeMap> regionGroup = (Map) mConfig.getValue("regionJson");
+
+        Gson2PosConfigParseImplement implement = new Gson2PosConfigParseImplement();
+        Gson gson = implement.createGson();
+        String mRegion = (String) mConfig.getValue("regionJson");
+        Map<String, LinkedTreeMap> map = new HashMap<String, LinkedTreeMap>();
+
+        Map<String, LinkedTreeMap> regionGroup = (Map<String, LinkedTreeMap>) gson.fromJson(mRegion, map.getClass());
         Map<String, Map<String, ConfigRegion>> mapCountry = new HashMap<>();
 
         for (String key : regionGroup.keySet()) {
@@ -734,7 +749,13 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
         String header_text = (String) mConfig.getValue("webpos/receipt/header_text");
         String footer_text = (String) mConfig.getValue("webpos/receipt/footer_text");
         String show_receipt_logo = (String) mConfig.getValue("webpos/receipt/show_receipt_logo");
-        String path_logo = (String) mConfig.getValue("webpos/general/webpos_logo_url");
+        String path_logo = "";
+        if (mConfig.getValue("webpos/general/webpos_logo") != null) {
+            path_logo = (String) mConfig.getValue("webpos/general/webpos_logo");
+        }
+        if (mConfig.getValue("webpos/general/webpos_logo_url") != null) {
+            path_logo = (String) mConfig.getValue("webpos/general/webpos_logo_url");
+        }
         String show_cashier_name = (String) mConfig.getValue("webpos/receipt/show_cashier_name");
         String show_comment = (String) mConfig.getValue("webpos/receipt/show_comment");
 
@@ -848,6 +869,29 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
         } else {
             return 100;
         }
+    }
+
+    @Override
+    public String googleAPIKey() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        if (mConfig == null) mConfig = new PosConfigDefault();
+        String google_key = "";
+        if (mConfig.getValue("webpos/general/google_api_key") != null) {
+            google_key = (String) mConfig.getValue("webpos/general/google_api_key");
+        }
+        return google_key;
+    }
+
+    @Override
+    public boolean taxCartDisplay() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        if (mConfig == null) mConfig = new PosConfigDefault();
+        boolean tax_cart_display = false;
+        if (mConfig.getValue("tax/cart_display/price") != null) {
+            String tax_cart = (String) mConfig.getValue("tax/cart_display/price");
+            if (!tax_cart.equals("1")) {
+                tax_cart_display = true;
+            }
+        }
+        return tax_cart_display;
     }
 
     @Override
@@ -969,6 +1013,23 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
     }
 
     @Override
+    public boolean getApplyAfterDiscount() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        if (mConfig == null) mConfig = new PosConfigDefault();
+        if (mConfig.getValue("tax/calculation/apply_after_discount") == null) {
+            return false;
+        }
+        String enable_apply_after_discount = (String) mConfig.getValue("tax/calculation/apply_after_discount");
+        boolean isApplyDiscount;
+        if (!StringUtil.isNullOrEmpty(enable_apply_after_discount)) {
+            if (enable_apply_after_discount.equals("1")) {
+                isApplyDiscount = true;
+                return isApplyDiscount;
+            }
+        }
+        return false;
+    }
+
+    @Override
     public void getConfigStaffPermisson(List<String> listPermisson) throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
         if (listPermisson.size() > 0) {
             ConfigUtil.setChangeStaff(true);
@@ -1004,6 +1065,7 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
             ConfigUtil.setAddAddressDefault(true);
             ConfigUtil.setPrintSession(true);
             ConfigUtil.setCustomSales(true);
+            ConfigUtil.setShowAvailableQty(false);
             if (checkStaffPermiss(listPermisson, ALL_PERMISSON)) {
                 ConfigUtil.setCreateOrder(true);
                 ConfigUtil.setManagerAllOrder(true);
@@ -1041,7 +1103,7 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
     }
 
     @Override
-    public Map<String, String> getConfigStatusOrder() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException{
+    public Map<String, String> getConfigStatusOrder() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
         Map<String, String> listStatus = new LinkedHashTreeMap<>();
         listStatus.put("pending", "pending");
         listStatus.put("processing", "processing");
@@ -1058,6 +1120,7 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
         listSetting.add("0");
         listSetting.add("1");
         listSetting.add("2");
+        listSetting.add("3");
         return listSetting;
     }
 

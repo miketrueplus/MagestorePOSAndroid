@@ -40,10 +40,11 @@ import java.util.Set;
  */
 
 public class POSCartService extends AbstractService implements CartService {
+
     /**
      * Tính toán tổng giá trị sub total của đơn hàng
      *
-     * @return
+     * @return float
      */
     @Override
     public synchronized float calculateSubTotal(Checkout checkout) {
@@ -52,32 +53,51 @@ public class POSCartService extends AbstractService implements CartService {
         List<CartItem> listItems = checkout.getCartItem();
         if (listItems == null) return 0;
 
-        float total = 0;
+        float tax_total = 0;
+        float row_total = 0;
+        float total_save_cart = 0;
         for (CartItem item : listItems) {
-            total += item.getPrice();
+            if (item.getIsSaveCart()) {
+                total_save_cart += (item.getPriceShowView() * item.getQuantity());
+                row_total = (item.getPriceShowView() * item.getQuantity());
+            } else {
+                total_save_cart += item.getPrice();
+                row_total = item.getPrice();
+            }
+            float tax_percent = item.getTaxPercent() / 100;
+            tax_total += row_total * tax_percent;
         }
-        checkout.setSubTotal(total);
-        return total;
+        if (!ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_ODOO)) {
+            checkout.setTaxTotal(tax_total);
+        }
+//        checkout.setSubTotalSaveCart(total);
+        checkout.setSubTotal(total_save_cart);
+        return total_save_cart;
     }
 
     /**
      * Tính toán thuế
      *
-     * @return
+     * @return float
      */
     @Override
     public synchronized float calculateTaxTotal(Checkout checkout) {
         float sub_total = calculateSubTotal(checkout);
 //        float tax_total = sub_total * (float) 0.1;
         float tax_total = 0.0f;
-        checkout.setTaxTotal(checkout.getTaxTotal());
+//        if (!ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_ODOO)) {
+//            tax_total = checkout.getSubTotal() - checkout.getSubTotalSaveCart();
+//            checkout.setTaxTotal(tax_total);
+//        } else {
+            checkout.setTaxTotal(checkout.getTaxTotal());
+//        }
         return checkout.getTaxTotal();
     }
 
     /**
      * Tính toán tổng discount
      *
-     * @return
+     * @return float
      */
     @Override
     public synchronized float calculateDiscountTotal(Checkout checkout) {
@@ -88,13 +108,18 @@ public class POSCartService extends AbstractService implements CartService {
     /**
      * Tính toán tổng giá trị cuối cùng của đơn hàng
      *
-     * @return
+     * @return float
      */
     @Override
     public synchronized float calculateLastTotal(Checkout checkout) {
         float last_total = calculateSubTotal(checkout) + calculateTaxTotal(checkout) + calculateDiscountTotal(checkout);
         checkout.setGrandTotal(last_total);
         return last_total;
+    }
+
+    @Override
+    public CartItem createCartItem() {
+        return new PosCartItem();
     }
 
     @Override

@@ -7,6 +7,8 @@ import com.magestore.app.lib.model.config.ConfigCountry;
 import com.magestore.app.lib.model.customer.Complain;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.customer.CustomerAddress;
+import com.magestore.app.lib.model.customer.PlaceAddressComponent;
+import com.magestore.app.lib.model.customer.PlaceAutoComplete;
 import com.magestore.app.lib.model.directory.Region;
 import com.magestore.app.lib.service.Service;
 import com.magestore.app.lib.service.ServiceFactory;
@@ -17,10 +19,12 @@ import com.magestore.app.lib.service.customer.CustomerService;
 import com.magestore.app.lib.task.GenericActionModelTask;
 import com.magestore.app.pos.model.customer.PosComplain;
 import com.magestore.app.pos.panel.CustomerDetailPanel;
+import com.magestore.app.util.StringUtil;
 
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,6 +38,7 @@ public class CustomerListController extends AbstractListController<Customer> {
     // đánh dấu action
     static final int ACTION_CODE_GET_COMPLAIN = 0;
     static final int ACTION_CODE_INPUT_COMPLAIN = 1;
+    static final int ACTION_CODE_PLACE_DETAIL = 2;
 
     public static final String STATE_CODE_ON_CLICK_NEW_ADDRESS = "STATE_CODE_ON_CLICK_NEW_ADDRESS";
 
@@ -44,6 +49,7 @@ public class CustomerListController extends AbstractListController<Customer> {
     CustomerComplainService mCustomerComplainService;
     CustomerAddressService mCustomerAddressService;
     ConfigService mConfigService;
+    Map<String, Object> wraper;
 
     /**
      * Chứa customer group
@@ -58,6 +64,8 @@ public class CustomerListController extends AbstractListController<Customer> {
     public void setCustomerService(CustomerService service) {
         setListService(service);
         mCustomerService = service;
+        if (wraper == null)
+            wraper = new HashMap<>();
         try {
             mConfigService = ServiceFactory.getFactory(getMagestoreContext()).generateConfigService();
             mCustomerComplainService = ServiceFactory.getFactory(getMagestoreContext()).generateCustomerComplainService();
@@ -129,6 +137,10 @@ public class CustomerListController extends AbstractListController<Customer> {
         doAction(ACTION_CODE_INPUT_COMPLAIN, null, null, mItem, complain);
     }
 
+    public void doInputPlaceDetail(PlaceAutoComplete mPlaceAutoComplete) {
+        doAction(ACTION_CODE_PLACE_DETAIL, null, wraper, mPlaceAutoComplete);
+    }
+
     /**
      * Thực hiện các action trên background
      *
@@ -147,6 +159,11 @@ public class CustomerListController extends AbstractListController<Customer> {
         }
         if (actionType == ACTION_CODE_INPUT_COMPLAIN) {
             mCustomerComplainService.insert((Customer) models[0], (Complain) models[1]);
+            return true;
+        }
+        if (actionType == ACTION_CODE_PLACE_DETAIL) {
+            PlaceAutoComplete mPlaceAutoComplete = (PlaceAutoComplete) models[0];
+            wrapper.put("place_detail_respone", mCustomerService.placeDetail(mPlaceAutoComplete.getPlaceId()));
             return true;
         }
         return false;
@@ -176,6 +193,11 @@ public class CustomerListController extends AbstractListController<Customer> {
             if (mDetailView instanceof CustomerDetailPanel) {
                 ((CustomerDetailPanel) mDetailView).bindComplain((Customer) models[0]);
             }
+        }
+
+        if (success && actionType == ACTION_CODE_PLACE_DETAIL) {
+            List<PlaceAddressComponent> mListAddressComponents = (List<PlaceAddressComponent>) wrapper.get("place_detail_respone");
+            convertDataPlaceDetail(mListAddressComponents);
         }
     }
 
@@ -256,5 +278,9 @@ public class CustomerListController extends AbstractListController<Customer> {
 
     public Region createRegion() {
         return mCustomerAddressService.createRegion();
+    }
+
+    public void convertDataPlaceDetail(List<PlaceAddressComponent> mListAddressComponent) {
+
     }
 }

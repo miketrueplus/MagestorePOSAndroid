@@ -112,6 +112,8 @@ public interface ConfigService extends Service {
 
     float getConfigMaximumDiscount() throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
+    boolean taxCartDisplay() throws InstantiationException, IllegalAccessException, IOException, ParseException;
+
     boolean getConfigDeliveryTime() throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
     boolean getConfigStoreCredit() throws InstantiationException, IllegalAccessException, IOException, ParseException;
@@ -123,6 +125,8 @@ public interface ConfigService extends Service {
     boolean getConfigSession() throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
     boolean getConfigDeleteOrder() throws InstantiationException, IllegalAccessException, IOException, ParseException;
+
+    boolean getApplyAfterDiscount() throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
     List<String> getConfigSetting() throws InstantiationException, IllegalAccessException, IOException, ParseException;
 

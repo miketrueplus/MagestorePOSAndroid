@@ -229,6 +229,9 @@ public class EnglishReceiptsImpl extends ILocalizeReceipts {
 
         StringBuilder strReturn = new StringBuilder();
 
+        int maxNumbLine = 2;
+        int numbLine = 0;
+
         if (item.length() >= lengthItem) {
             String[] arrayItem = item.split(" ");
             boolean haveFirstRow = false;
@@ -243,15 +246,22 @@ public class EnglishReceiptsImpl extends ILocalizeReceipts {
                 if (i != arrayItem.length - 1) {
                     if ((subName.length() + arrayItem[i + 1].length() + 1) >= lengthItem) {
                         if (haveFirstRow) {
-                            strReturn.append(" ").append(subName).append(stringSpaceWith(length - subName.length() - 1)).append("\n");
+                            if (numbLine < maxNumbLine) {
+                                strReturn.append(" ").append(subName).append(stringSpaceWith(length - subName.length() - 1)).append("\n");
+                                numbLine ++;
+                            }
                         } else {
                             strReturn.append(subName).append(stringSpaceWith(lengthItem - subName.length())).append(qty).append(stringSpaceWith(numSpace1)).append(price).append(stringSpaceWith(numSpace2)).append(subtotal).append("\n");
                             haveFirstRow = true;
+                            numbLine = 1;
                         }
                         subName = "";
                     }
                 } else {
-                    strReturn.append(" ").append(subName).append(stringSpaceWith(length - subName.length() - 1)).append("\n");
+                    if (numbLine < maxNumbLine) {
+                        strReturn.append(" ").append(subName).append(stringSpaceWith(length - subName.length() - 1)).append("\n");
+                        numbLine ++;
+                    }
                 }
             }
         } else {

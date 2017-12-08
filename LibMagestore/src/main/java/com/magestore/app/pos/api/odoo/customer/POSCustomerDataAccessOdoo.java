@@ -19,7 +19,10 @@ import com.magestore.app.lib.model.config.ConfigCountry;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.model.customer.DataCustomer;
+import com.magestore.app.lib.model.customer.PlaceAddressComponent;
+import com.magestore.app.lib.model.customer.PlaceAutoComplete;
 import com.magestore.app.lib.parse.ParseException;
+import com.magestore.app.lib.resourcemodel.DataAccessException;
 import com.magestore.app.lib.resourcemodel.customer.CustomerDataAccess;
 import com.magestore.app.pos.api.odoo.POSAPIOdoo;
 import com.magestore.app.pos.api.odoo.POSAbstractDataAccessOdoo;
@@ -27,10 +30,12 @@ import com.magestore.app.pos.api.odoo.POSDataAccessSessionOdoo;
 import com.magestore.app.pos.model.customer.PosCustomer;
 import com.magestore.app.pos.model.customer.PosCustomerAddress;
 import com.magestore.app.pos.model.customer.PosDataCustomer;
+import com.magestore.app.pos.model.customer.PosPlaceDetail;
 import com.magestore.app.pos.model.directory.PosRegion;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosAbstractParseImplement;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListCustomer;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListCustomerPaserModelOdoo;
+import com.magestore.app.pos.parse.gson2pos.Gson2PosStoreParseImplement;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.StringUtil;
 
@@ -46,6 +51,95 @@ import java.util.List;
  */
 
 public class POSCustomerDataAccessOdoo extends POSAbstractDataAccessOdoo implements CustomerDataAccess {
+
+    private class POSListPlaceAutoComplete {
+        List<PlaceAutoComplete> predictions;
+    }
+
+    private class POSPlaceDetail {
+        PosPlaceDetail result;
+    }
+
+    @Override
+    public List<PlaceAutoComplete> placeAutoComplete(String input) throws java.text.ParseException, InstantiationException, IllegalAccessException, IOException {
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        try {
+            // Khởi tạo connection
+            connection = ConnectionFactory.generateConnection(getContext(), POSAPIOdoo.REST_DOMAIN_GOOGLE_MAP_API, "", "");
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPIOdoo.REST_PLACE_AUTO_COMPLETE);
+
+            statement.setParam("input", input);
+            statement.setParam("types", "geocode");
+            statement.setParam("language", "us");
+            statement.setParam("key", ConfigUtil.getGoogleKey());
+
+            rp = statement.execute();
+            String json = rp.readResult2String();
+            Gson2PosStoreParseImplement implement = new Gson2PosStoreParseImplement();
+            Gson gson = implement.createGson();
+            POSListPlaceAutoComplete place = gson.fromJson(json, POSListPlaceAutoComplete.class);
+            return (List<PlaceAutoComplete>) (List<?>) place.predictions;
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
+    }
+
+    @Override
+    public List<PlaceAddressComponent> placeDetail(String detailId) throws java.text.ParseException, InstantiationException, IllegalAccessException, IOException {
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+        try {
+            // Khởi tạo connection
+            connection = ConnectionFactory.generateConnection(getContext(), POSAPIOdoo.REST_DOMAIN_GOOGLE_MAP_API, "", "");
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPIOdoo.REST_PLACE_DETAIL);
+
+            paramBuilder = statement.getParamBuilder().
+                    setParam("placeid", detailId)
+                    .setParam("key", ConfigUtil.getGoogleKey());
+
+            rp = statement.execute();
+            String json = rp.readResult2String();
+            Gson2PosStoreParseImplement implement = new Gson2PosStoreParseImplement();
+            Gson gson = implement.createGson();
+            POSPlaceDetail place = gson.fromJson(json, POSPlaceDetail.class);
+            return place.result.getAddressComponents();
+        } catch (Exception ex) {
+            throw new DataAccessException(ex);
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
+    }
 
     private class CustomerEntity {
         String id;

@@ -4,6 +4,8 @@ import com.magestore.app.lib.model.registershift.DataRegisterShift;
 import com.magestore.app.lib.model.registershift.RegisterShift;
 import com.magestore.app.pos.model.PosAbstractModel;
 
+import java.util.List;
+
 /**
  * Created by Johan on 8/28/17.
  * Magestore
@@ -11,10 +13,10 @@ import com.magestore.app.pos.model.PosAbstractModel;
  */
 
 public class PosDataRegisterShift extends PosAbstractModel implements DataRegisterShift {
-    PosRegisterShift data;
+    List<PosRegisterShift> data;
 
     @Override
-    public RegisterShift getRegisterShift() {
-        return data;
+    public List<RegisterShift> getListRegisterShift() {
+        return (List<RegisterShift>) (List<?>) data;
     }
 }

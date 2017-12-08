@@ -9,6 +9,7 @@ import com.magestore.app.pos.model.catalog.PosProductOption;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Mike on 12/11/2016.
@@ -87,6 +88,12 @@ public interface Product extends Model, ParseModel {
     void setItemId(String strItemId);
 
     boolean isDecimal();
+
+    Map<String, Float> getAvailableQty();
+    void setAvailableQty(Map<String, Float> mAvailableQty);
+
+    float getCurrentAvailableQty();
+    void setCurrentAvailableQty(float fCurrentAvailableQty);
 
     // product tax in odoo
     List<String> getTaxId();

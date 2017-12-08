@@ -24,6 +24,11 @@ public class POSAPIOdoo {
     public static final String REST_CUSOMTER_CREATE_CUSTOMER = "api/pos-create-customer/";
     public static final String REST_CUSOMTER_UPDATE = "api/pos-update-customer/";
 
+    // API Place Auto Complete
+    public static final String REST_DOMAIN_GOOGLE_MAP_API = "https://maps.googleapis.com";
+    public static final String REST_PLACE_AUTO_COMPLETE = "/maps/api/place/autocomplete/json?";
+    public static final String REST_PLACE_DETAIL = "/maps/api/place/details/json?";
+
     // API order
     public static final String REST_ORDER_GET_LISTING = "api/pos-orders/?";
     public static final String REST_ORDER_COMMENTS = "api/pos-add-note-order/";

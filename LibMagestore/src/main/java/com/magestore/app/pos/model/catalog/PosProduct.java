@@ -14,6 +14,7 @@ import com.magestore.app.util.StringUtil;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Mike on 12/15/2016.
@@ -57,6 +58,11 @@ public class PosProduct extends PosAbstractModel implements Product {
     private String is_qty_decimal;
     @Gson2PosExclude
     private boolean isDecimal;
+
+    @Gson2PosExclude
+    Map<String, Float> m_available_qty;
+    @Gson2PosExclude
+    float m_current_available_qty;
 
     private List<String> taxes_id;
     private List<ProductTaxDetailOdoo> taxes_detail;
@@ -353,6 +359,26 @@ public class PosProduct extends PosAbstractModel implements Product {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public Map<String, Float> getAvailableQty() {
+        return m_available_qty;
+    }
+
+    @Override
+    public void setAvailableQty(Map<String, Float> mAvailableQty) {
+        m_available_qty = mAvailableQty;
+    }
+
+    @Override
+    public float getCurrentAvailableQty() {
+        return m_current_available_qty;
+    }
+
+    @Override
+    public void setCurrentAvailableQty(float fCurrentAvailableQty) {
+        m_current_available_qty = fCurrentAvailableQty;
     }
 
     @Override

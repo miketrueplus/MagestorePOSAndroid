@@ -134,6 +134,8 @@ public interface CartItem extends Model {
 
     float getPriceShowView();
     void setPriceShowView(float fPriceShowView);
+    float getUnitPriceShowView();
+    void setUnitPriceShowView(float fUnitPriceShowView);
     String getProductId();
     String getType();
 
@@ -171,6 +173,9 @@ public interface CartItem extends Model {
     void setBaseDiscountAmount(float fBaseDiscountAmount);
 
     void setDiscountAmount(float discount_amount);
+
+    float getTaxPercent();
+    void setTaxPercent(float fTaxPercent);
 
     float getQtyOrdered();
     void setQtyOrdered(float fQtyOrdered);

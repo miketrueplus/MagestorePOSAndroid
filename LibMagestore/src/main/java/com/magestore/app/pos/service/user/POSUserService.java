@@ -152,6 +152,8 @@ public class POSUserService extends AbstractService implements UserService {
                 sessionOdoo.REST_PASSWORD = proxyPass;
             }
 
+            ConfigUtil.setDomain(strBaseURL);
+
             // Lấy config hệ thống và lưu lại
             ServiceFactory serviceFactory = ServiceFactory.getFactory(getContext());
             ConfigService configService = serviceFactory.generateConfigService();

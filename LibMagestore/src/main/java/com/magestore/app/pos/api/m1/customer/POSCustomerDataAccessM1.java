@@ -1,5 +1,6 @@
 package com.magestore.app.pos.api.m1.customer;
 
+import com.google.gson.Gson;
 import com.magestore.app.lib.connection.Connection;
 import com.magestore.app.lib.connection.ConnectionException;
 import com.magestore.app.lib.connection.ConnectionFactory;
@@ -8,13 +9,19 @@ import com.magestore.app.lib.connection.ResultReading;
 import com.magestore.app.lib.connection.Statement;
 import com.magestore.app.lib.model.customer.Complain;
 import com.magestore.app.lib.model.customer.Customer;
+import com.magestore.app.lib.model.customer.PlaceAddressComponent;
+import com.magestore.app.lib.model.customer.PlaceAutoComplete;
 import com.magestore.app.lib.parse.ParseException;
+import com.magestore.app.lib.resourcemodel.DataAccessException;
 import com.magestore.app.lib.resourcemodel.customer.CustomerDataAccess;
 import com.magestore.app.pos.api.m1.POSAPIM1;
 import com.magestore.app.pos.api.m1.POSDataAccessSessionM1;
 import com.magestore.app.pos.api.m1.POSAbstractDataAccessM1;
 import com.magestore.app.pos.model.customer.PosCustomer;
+import com.magestore.app.pos.model.customer.PosPlaceDetail;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListCustomer;
+import com.magestore.app.pos.parse.gson2pos.Gson2PosStoreParseImplement;
+import com.magestore.app.util.ConfigUtil;
 
 import java.io.IOException;
 import java.util.List;
@@ -26,10 +33,100 @@ import java.util.List;
  */
 
 public class POSCustomerDataAccessM1 extends POSAbstractDataAccessM1 implements CustomerDataAccess {
+
     // wrap object lại và chuyênr thành json
     private class Wrap {
         Customer customer;
         Complain complain;
+    }
+
+    private class POSListPlaceAutoComplete {
+        List<PlaceAutoComplete> predictions;
+    }
+
+    private class POSPlaceDetail {
+        PosPlaceDetail result;
+    }
+
+    @Override
+    public List<PlaceAutoComplete> placeAutoComplete(String input) throws java.text.ParseException, InstantiationException, IllegalAccessException, IOException {
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        try {
+            // Khởi tạo connection
+            connection = ConnectionFactory.generateConnection(getContext(), POSAPIM1.REST_DOMAIN_GOOGLE_MAP_API, "", "");
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPIM1.REST_PLACE_AUTO_COMPLETE);
+
+            statement.setParam("input", input);
+            statement.setParam("types", "geocode");
+            statement.setParam("language", "us");
+            statement.setParam("key", ConfigUtil.getGoogleKey());
+
+            rp = statement.execute();
+            String json = rp.readResult2String();
+            Gson2PosStoreParseImplement implement = new Gson2PosStoreParseImplement();
+            Gson gson = implement.createGson();
+            POSListPlaceAutoComplete place = gson.fromJson(json, POSListPlaceAutoComplete.class);
+            return (List<PlaceAutoComplete>) (List<?>) place.predictions;
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
+    }
+
+    @Override
+    public List<PlaceAddressComponent> placeDetail(String detailId) throws java.text.ParseException, InstantiationException, IllegalAccessException, IOException {
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+        try {
+            // Khởi tạo connection
+            connection = ConnectionFactory.generateConnection(getContext(), POSAPIM1.REST_DOMAIN_GOOGLE_MAP_API, "", "");
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPIM1.REST_PLACE_DETAIL);
+
+            paramBuilder = statement.getParamBuilder().
+                    setParam("placeid", detailId)
+                    .setParam("key", ConfigUtil.getGoogleKey());
+
+            rp = statement.execute();
+            String json = rp.readResult2String();
+            Gson2PosStoreParseImplement implement = new Gson2PosStoreParseImplement();
+            Gson gson = implement.createGson();
+            POSPlaceDetail place = gson.fromJson(json, POSPlaceDetail.class);
+            return place.result.getAddressComponents();
+        } catch (Exception ex) {
+            throw new DataAccessException(ex);
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
     }
 
     @Override

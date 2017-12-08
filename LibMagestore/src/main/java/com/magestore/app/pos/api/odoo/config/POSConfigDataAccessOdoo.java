@@ -407,6 +407,16 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
     }
 
     @Override
+    public String googleAPIKey() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        return null;
+    }
+
+    @Override
+    public boolean taxCartDisplay() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        return false;
+    }
+
+    @Override
     public boolean getConfigDeliveryTime() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
         return false;
     }
@@ -434,6 +444,11 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
     @Override
     public boolean getConfigDeleteOrder() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
         // default open session
+        return false;
+    }
+
+    @Override
+    public boolean getApplyAfterDiscount() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
         return false;
     }
 
@@ -474,6 +489,7 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
             ConfigUtil.setAddAddressDefault(false);
             ConfigUtil.setApplyCoupon(false);
             ConfigUtil.setCustomSales(false);
+            ConfigUtil.setShowAvailableQty(false);
             if (checkStaffPermiss(listPermisson, ALL_PERMISSON)) {
                 ConfigUtil.setCreateOrder(true);
                 ConfigUtil.setManagerAllOrder(true);
@@ -524,7 +540,7 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
     public List<String> getConfigSetting() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
         List<String> listSetting = new ArrayList<>();
         listSetting.add("0");
-        listSetting.add("1");
+        listSetting.add("2");
         return listSetting;
     }
 

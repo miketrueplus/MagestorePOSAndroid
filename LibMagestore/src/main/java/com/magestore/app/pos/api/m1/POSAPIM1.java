@@ -40,6 +40,11 @@ public class POSAPIM1 {
     public static final String REST_ADDRESS_DELETE = "api/rest/webpos/customer/create?";
     public static final String REST_ADDRESS_ADD = "api/rest/webpos/customer/create?";
 
+    // API Place Auto Complete
+    public static final String REST_DOMAIN_GOOGLE_MAP_API = "https://maps.googleapis.com";
+    public static final String REST_PLACE_AUTO_COMPLETE = "/maps/api/place/autocomplete/json?";
+    public static final String REST_PLACE_DETAIL = "/maps/api/place/details/json?";
+
     // API order
     public static final String REST_ORDER_GET_LISTING = "api/rest/webpos/order/find?";
     public static final String REST_ORDER_CANCEL = "api/rest/webpos/order/cancel?";
@@ -67,8 +72,8 @@ public class POSAPIM1 {
 
     // API register shifts
     public static final String REST_REGISTER_SHIFTS_GET_LISTING_POS = "api/rest/webpos/poslist?";
-    public static final String REST_REGISTER_SHIFTS_GET_LISTING = "api/rest/webpos/shifts?";
-    public static final String REST_REGISTER_SHIFTS_SAVE = "api/rest/webpos/shift/save?";
+    public static final String REST_REGISTER_SHIFTS_GET_LISTING = "api/rest/webpos/session/getlist?";
+    public static final String REST_REGISTER_SHIFTS_SAVE = "api/rest/webpos/session/save?";
     public static final String REST_REGISTER_SHIFTS_MAKE_ADJUSTMENT = "api/rest/webpos/cash_transaction/save?";
 
     // API plugins

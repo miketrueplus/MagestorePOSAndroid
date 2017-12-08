@@ -40,4 +40,14 @@ public class POSProductOptionService extends AbstractService implements ProductO
         // return
         return productOption;
     }
+
+    @Override
+    public List<Product> getAvailableQty(String Id) throws IOException, InstantiationException, ParseException, IllegalAccessException {
+
+        // Khởi tạo data access
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        ProductDataAccess productDataAccess = factory.generateProductDataAccess();
+
+        return productDataAccess.getAvailableQty(Id);
+    }
 }
