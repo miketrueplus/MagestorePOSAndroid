@@ -401,6 +401,11 @@ public class CartItemDetailPanel extends AbstractDetailPanel<CartItem> {
                 mtxtQuantity.setError(String.format(getResources().getString(R.string.err_field_must_less_than), ConfigUtil.formatQuantity(getItem().getProduct().getAllowMaxQty())));
                 blnRight = false;
             }
+
+            if(quantity >  getItem().getProduct().getCurrentAvailableQty()){
+                mtxtQuantity.setError(String.format(getResources().getString(R.string.err_field_must_less_than), ConfigUtil.formatQuantity(getItem().getProduct().getCurrentAvailableQty())));
+                blnRight = false;
+            }
         }
 
         // valid custom price
