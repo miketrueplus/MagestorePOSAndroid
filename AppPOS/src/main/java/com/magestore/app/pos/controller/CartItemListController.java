@@ -742,4 +742,12 @@ public class CartItemListController extends AbstractChildListController<Checkout
     public void showSalesMenuToggle(boolean isShow) {
         mCheckoutListController.isShowSalesMenuToggle(isShow);
     }
+
+    public CartItem createCartItem() {
+        return mCartService.createCartItem();
+    }
+
+    public CartItem findCartItem(Checkout checkout, CartItem findItem) {
+        return mCartService.findCartItem(checkout, findItem);
+    }
 }

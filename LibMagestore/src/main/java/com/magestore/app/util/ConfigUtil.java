@@ -66,6 +66,7 @@ public class ConfigUtil {
     private static boolean mCheckFirstOpenSession;
     private static boolean mEnableDeleteOrder;
     private static boolean mEnableAvailableQty;
+    private static boolean mApplyAfterDiscount;
     private static List<ConfigTaxClass> mConfigTaxClass;
     private static List<CheckoutPayment> mListPayment;
     private static String mTypePrint;
@@ -1384,6 +1385,14 @@ public class ConfigUtil {
 
     public static void setEnableAvailableQty(boolean mEnableAvailableQty) {
         ConfigUtil.mEnableAvailableQty = mEnableAvailableQty;
+    }
+
+    public static boolean isApplyAfterDiscount() {
+        return mApplyAfterDiscount;
+    }
+
+    public static void setApplyAfterDiscount(boolean mApplyAfterDiscount) {
+        ConfigUtil.mApplyAfterDiscount = mApplyAfterDiscount;
     }
 
     public static void setEnableDeleteOrder(boolean mEnableDeleteOrder) {

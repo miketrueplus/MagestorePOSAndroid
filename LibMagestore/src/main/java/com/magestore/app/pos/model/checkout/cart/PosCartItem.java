@@ -388,6 +388,8 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     boolean isDecimal;
     @Gson2PosExclude
     float qty_current;
+    @Gson2PosExclude
+    float tax_percent;
 
     @Override
     public void setQuantity(float param_quantity) {
@@ -658,6 +660,16 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     @Override
     public void setDiscountAmount(float discount_amount) {
         this.discount_amount = discount_amount;
+    }
+
+    @Override
+    public float getTaxPercent() {
+        return tax_percent;
+    }
+
+    @Override
+    public void setTaxPercent(float fTaxPercent) {
+        tax_percent = fTaxPercent;
     }
 
     @Override

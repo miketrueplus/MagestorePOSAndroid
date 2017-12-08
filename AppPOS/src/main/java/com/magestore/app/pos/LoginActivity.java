@@ -149,9 +149,9 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
             @Override
             public void onClick(View view) {
                 mCheckLoginDemo = true;
-//                checkPlatForm();
+                checkPlatForm();
                 hiddenKeyboard(mPasswordView);
-                attemptLoginDemo();
+//                attemptLoginDemo();
             }
         });
 
@@ -401,9 +401,15 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
             return;
         }
 
-        mDomainView.setText("magento2.edenduong.com");
-        mUserNameView.setText("admin");
-        mPasswordView.setText("123.abc");
+//        mDomainView.setText("magento2.edenduong.com");
+//        mUserNameView.setText("admin");
+//        mPasswordView.setText("123.abc");
+//        mDomainView.setText("http://45.76.150.205/m221");
+//        mUserNameView.setText("admin");
+//        mPasswordView.setText("admin123");
+//        mDomainView.setText("http://45.76.150.205/m221");
+//        mUserNameView.setText("admin");
+//        mPasswordView.setText("admin123");
 
         // check login là demo thì không lại thông tin khách hàng nhập
         mCheckLoginDemo = true;

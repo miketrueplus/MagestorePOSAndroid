@@ -126,6 +126,8 @@ public interface ConfigService extends Service {
 
     boolean getConfigDeleteOrder() throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
+    boolean getApplyAfterDiscount() throws InstantiationException, IllegalAccessException, IOException, ParseException;
+
     List<String> getConfigSetting() throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
     List<Setting> getListSetting(Map<String, String> listTitle);

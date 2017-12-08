@@ -5,7 +5,11 @@ import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
+import android.support.v4.content.ContextCompat;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +34,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.magestore.app.lib.model.catalog.ProductOptionCustom;
 import com.magestore.app.lib.model.catalog.ProductOptionCustomValue;
+import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.config.ConfigOptionSwatch;
 import com.magestore.app.lib.panel.AbstractDetailPanel;
@@ -202,6 +207,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         mBinding.setCartItem(item);
         mBinding.setProduct(item.getProduct());
 
+
         // nếu k0 có option, panel được mở trực tiếp từ long click product
         if (!item.getProduct().haveProductOption())
             super.bindItem(item);
@@ -253,6 +259,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
      */
     public void onAddQuantity(View view) {
         mtxtCartItemQuantity.add(getItem().getProduct().getQuantityIncrement());
+        checkQuantityAvailable();
     }
 
     /**
@@ -262,6 +269,61 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
      */
     public void onSubstractQuantity(View view) {
         mtxtCartItemQuantity.substract(getItem().getProduct().getQuantityIncrement());
+        checkQuantityAvailable();
+    }
+
+    private void checkQuantityAvailable() {
+        if (getItem().getProduct().getTypeID().equals("configurable")) {
+            CartItem item = ((CartItemListController) getController()).createCartItem();
+            item.setProduct(getItem().getProduct());
+            // duyệt tất cả các option để lấy option mà user đã chọn
+            for (OptionModelView optionModelView : mModelViewList) {
+                boolean firstOptionValue = true;
+                for (OptionValueModelView optionValueModelView : optionModelView.optionValueModelViewList) {
+                    // với các trường hợp là ô giả để nhập text
+                    if (optionValueModelView instanceof FakeValueModelView) {
+                        continue;
+                    }
+                    if (optionValueModelView.choose) {
+                        // chèn các option do user chọn vào cart item
+                        if (PosProductOptionCustom.OPTION_TYPE_CUSTOM.equals(optionModelView.option_type)) {
+                            item.insertOption(optionModelView.getModel().getID(), optionValueModelView.id);
+                        } else if (PosProductOptionCustom.OPTION_TYPE_CONFIG.equals(optionModelView.option_type))
+                            item.insertSuperAttribute(optionModelView.getModel().getID(), optionValueModelView.id);
+                        else if (PosProductOptionCustom.OPTION_TYPE_BUNDLE.equals(optionModelView.option_type)) {
+                            item.insertBundleOption(optionModelView.getModel().getID(), optionValueModelView.id);
+                        }
+                    }
+                }
+
+                // bổ sung số lượng
+                if (PosProductOptionCustom.OPTION_TYPE_BUNDLE.equals(optionModelView.option_type)) {
+                    item.insertBundleOptionQuantity(optionModelView.getModel().getID(), StringUtil.STRING_EMPTY + optionModelView.quantity);
+                }
+            }
+
+            float value = mtxtCartItemQuantity.getValueFloat();
+            if (value > getItem().getProduct().getCurrentAvailableQty()) {
+                mbtnAddToCart.setEnabled(false);
+                mbtnAddToCart.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.product_detail_border_button_disable));
+            } else {
+                Checkout mCheckout = ((CartItemListController) getController()).getParent();
+                CartItem mCartItem = ((CartItemListController) getController()).findCartItem(mCheckout, item);
+                if (mCartItem != null) {
+                    float total_quantity = value + mCartItem.getQuantity();
+                    if (total_quantity > getItem().getProduct().getCurrentAvailableQty()) {
+                        mbtnAddToCart.setEnabled(false);
+                        mbtnAddToCart.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.product_detail_border_button_disable));
+                    } else {
+                        mbtnAddToCart.setEnabled(true);
+                        mbtnAddToCart.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.product_detail_border_button));
+                    }
+                } else {
+                    mbtnAddToCart.setEnabled(true);
+                    mbtnAddToCart.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.product_detail_border_button));
+                }
+            }
+        }
     }
 
     public String getChooseValue(String code, List<PosCartItem.OptionsValue> optionsValueList) {
@@ -1624,9 +1686,26 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
             }
             mapAvailable.put(Id, mQty);
             getItem().getProduct().setAvailableQty(mapAvailable);
+            getItem().getProduct().setCurrentAvailableQty(mQty);
         }
         String mQtyAvailable = getContext().getString(R.string.product_available_qty, ConfigUtil.formatQuantity(mQty));
         mTxtAvailableQty.setText(mQtyAvailable);
+        mtxtCartItemQuantity.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                checkQuantityAvailable();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
     }
 
     public void showLoadingAvailableQty(boolean isShow) {

@@ -59,7 +59,10 @@ public class PosProduct extends PosAbstractModel implements Product {
     @Gson2PosExclude
     private boolean isDecimal;
 
+    @Gson2PosExclude
     Map<String, Float> m_available_qty;
+    @Gson2PosExclude
+    float m_current_available_qty;
 
     private List<String> taxes_id;
     private List<ProductTaxDetailOdoo> taxes_detail;
@@ -366,6 +369,16 @@ public class PosProduct extends PosAbstractModel implements Product {
     @Override
     public void setAvailableQty(Map<String, Float> mAvailableQty) {
         m_available_qty = mAvailableQty;
+    }
+
+    @Override
+    public float getCurrentAvailableQty() {
+        return m_current_available_qty;
+    }
+
+    @Override
+    public void setCurrentAvailableQty(float fCurrentAvailableQty) {
+        m_current_available_qty = fCurrentAvailableQty;
     }
 
     @Override

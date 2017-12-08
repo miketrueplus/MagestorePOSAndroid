@@ -92,6 +92,9 @@ public interface Product extends Model, ParseModel {
     Map<String, Float> getAvailableQty();
     void setAvailableQty(Map<String, Float> mAvailableQty);
 
+    float getCurrentAvailableQty();
+    void setCurrentAvailableQty(float fCurrentAvailableQty);
+
     // product tax in odoo
     List<String> getTaxId();
     void setTaxId(List<String> listTaxId);

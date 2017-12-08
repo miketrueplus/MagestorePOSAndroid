@@ -511,6 +511,7 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
                     cartOld.getProduct().setIsSaveCart(true);
                     cartOld.setIsVirtual(cartNew.getIsVirtual());
                     cartOld.setQuantity(cartNew.getQuantity());
+                    cartOld.setTaxPercent(cartNew.getTaxPercent());
                     float unit_price;
                     float price;
                     if (ConfigUtil.isTaxCartDisplay()) {

@@ -1007,6 +1007,23 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
     }
 
     @Override
+    public boolean getApplyAfterDiscount() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        if (mConfig == null) mConfig = new PosConfigDefault();
+        if (mConfig.getValue("tax/calculation/apply_after_discount") == null) {
+            return false;
+        }
+        String enable_apply_after_discount = (String) mConfig.getValue("tax/calculation/apply_after_discount");
+        boolean isApplyDiscount;
+        if (!StringUtil.isNullOrEmpty(enable_apply_after_discount)) {
+            if (enable_apply_after_discount.equals("1")) {
+                isApplyDiscount = true;
+                return isApplyDiscount;
+            }
+        }
+        return false;
+    }
+
+    @Override
     public void getConfigStaffPermisson(List<String> listPermisson) throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
         if (listPermisson.size() > 0) {
             ConfigUtil.setChangeStaff(true);

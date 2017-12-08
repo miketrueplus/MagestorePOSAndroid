@@ -87,6 +87,7 @@ public class POSConfigService extends AbstractService implements ConfigService {
             ConfigUtil.setEnableStoreCredit(getConfigStoreCredit());
             ConfigUtil.setEnableRewardPoint(getConfigRewardPoint());
             ConfigUtil.setTaxCartDisplay(taxCartDisplay());
+            ConfigUtil.setApplyAfterDiscount(getApplyAfterDiscount());
         }
         ConfigUtil.setListCountry(getCountry());
         ConfigUtil.setListCustomerGroup(getCustomerGroup());
@@ -476,6 +477,13 @@ public class POSConfigService extends AbstractService implements ConfigService {
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
         return configDataAccess.getConfigDeleteOrder();
+    }
+
+    @Override
+    public boolean getApplyAfterDiscount() throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
+        return configDataAccess.getApplyAfterDiscount();
     }
 
     @Override

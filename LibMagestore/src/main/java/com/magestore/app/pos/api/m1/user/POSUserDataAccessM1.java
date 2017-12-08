@@ -145,6 +145,15 @@ public class POSUserDataAccessM1 extends POSAbstractDataAccessM1 implements User
                     ConfigUtil.setTaxCartDisplay(tax_cart_display);
                 }
 
+                if (webpos_config.has("tax/calculation/apply_after_discount")) {
+                    String apply_after_discount = webpos_config.getString("tax/calculation/apply_after_discount");
+                    boolean after_discount = false;
+                    if (apply_after_discount.equals("1")) {
+                        after_discount = true;
+                    }
+                    ConfigUtil.setApplyAfterDiscount(after_discount);
+                }
+
                 if (webpos_config.has("plugins_config")) {
                     JSONObject json_plugins = webpos_config.getJSONObject("plugins_config");
                     if (json_plugins.has("os_store_credit")) {

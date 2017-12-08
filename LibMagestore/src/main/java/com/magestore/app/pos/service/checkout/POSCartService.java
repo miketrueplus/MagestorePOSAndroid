@@ -40,6 +40,7 @@ import java.util.Set;
  */
 
 public class POSCartService extends AbstractService implements CartService {
+
     /**
      * Tính toán tổng giá trị sub total của đơn hàng
      *
@@ -52,19 +53,26 @@ public class POSCartService extends AbstractService implements CartService {
         List<CartItem> listItems = checkout.getCartItem();
         if (listItems == null) return 0;
 
-        float total = 0;
+        float tax_total = 0;
+        float row_total = 0;
         float total_save_cart = 0;
         for (CartItem item : listItems) {
             if (item.getIsSaveCart()) {
                 total_save_cart += (item.getPriceShowView() * item.getQuantity());
+                row_total = (item.getPriceShowView() * item.getQuantity());
             } else {
                 total_save_cart += item.getPrice();
+                row_total = item.getPrice();
             }
-            total += item.getPrice();
+            float tax_percent = item.getTaxPercent() / 100;
+            tax_total += row_total * tax_percent;
         }
-        checkout.setSubTotalSaveCart(total);
+        if (!ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_ODOO)) {
+            checkout.setTaxTotal(tax_total);
+        }
+//        checkout.setSubTotalSaveCart(total);
         checkout.setSubTotal(total_save_cart);
-        return total;
+        return total_save_cart;
     }
 
     /**
@@ -77,12 +85,12 @@ public class POSCartService extends AbstractService implements CartService {
         float sub_total = calculateSubTotal(checkout);
 //        float tax_total = sub_total * (float) 0.1;
         float tax_total = 0.0f;
-        if (!ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_ODOO)) {
-            tax_total = checkout.getSubTotal() - checkout.getSubTotalSaveCart();
-            checkout.setTaxTotal(tax_total);
-        } else {
+//        if (!ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_ODOO)) {
+//            tax_total = checkout.getSubTotal() - checkout.getSubTotalSaveCart();
+//            checkout.setTaxTotal(tax_total);
+//        } else {
             checkout.setTaxTotal(checkout.getTaxTotal());
-        }
+//        }
         return checkout.getTaxTotal();
     }
 
@@ -107,6 +115,11 @@ public class POSCartService extends AbstractService implements CartService {
         float last_total = calculateSubTotal(checkout) + calculateTaxTotal(checkout) + calculateDiscountTotal(checkout);
         checkout.setGrandTotal(last_total);
         return last_total;
+    }
+
+    @Override
+    public CartItem createCartItem() {
+        return new PosCartItem();
     }
 
     @Override
