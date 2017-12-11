@@ -672,6 +672,9 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
                 im_logo.setVisibility(GONE);
             }
 
+            TextView tv_title = (TextView) dialogPrint.findViewById(R.id.tv_title);
+            tv_title.setText(StringUtil.isNullOrEmpty(ConfigUtil.getConfigPrint().getReceiptTitle()) ? getContext().getString(R.string.receipt) : ConfigUtil.getConfigPrint().getReceiptTitle());
+
             TextView tv_header = (TextView) dialogPrint.findViewById(R.id.tv_header);
             if (!StringUtil.isNullOrEmpty(ConfigUtil.getConfigPrint().getHeaderText())) {
                 tv_header.setVisibility(VISIBLE);
