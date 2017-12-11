@@ -158,7 +158,7 @@ public class PrintUtil {
             }
         }
 
-        String title_invoice = context.getString(R.string.receipt);
+        String title_invoice = StringUtil.isNullOrEmpty(ConfigUtil.getConfigPrint().getReceiptTitle()) ? context.getString(R.string.receipt).toUpperCase() : ConfigUtil.getConfigPrint().getReceiptTitle();;
         String body_header_title = "<div align=\"center\" style=\"font-weight: bold; font-size: 30px; display: block; font-family: monospace;\">" + title_invoice + "</div>" + "<div align=\"center\" style=\"font-size: 16px; font-weight: 400; display: block; font-family: monospace;\">**** ****</div>";
         // header content
         String body_header_content = "";

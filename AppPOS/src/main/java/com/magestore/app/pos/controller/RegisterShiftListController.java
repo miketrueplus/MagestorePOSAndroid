@@ -153,7 +153,7 @@ public class RegisterShiftListController extends AbstractListController<Register
                     PointOfSales pos = registerShift.getPosConfig();
                     settingConfigWithPos(pos);
 //                getMagestoreContext().getActivity().finish();
-                    DataUtil.saveDataStringToPreferences(getMagestoreContext().getActivity(), DataUtil.STORE_ID, registerShift.getStoreId());
+//                    DataUtil.saveDataStringToPreferences(getMagestoreContext().getActivity(), DataUtil.STORE_ID, registerShift.getStoreId());
                     ((RegisterShiftListPanel) mView).isShowButtonOpenSession(false);
                 }
                 if (registerShift.getStatus().equals("1")) {

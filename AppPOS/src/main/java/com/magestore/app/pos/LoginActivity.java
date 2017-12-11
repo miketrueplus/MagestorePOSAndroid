@@ -189,6 +189,8 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
                         navigationToSalesActivity();
                         PointOfSales pos = getPointOfSales(sp_pos.getSelection());
                         assigPos(pos.getPosId() != null ? sp_pos.getSelection() : "");
+                        LoginActivity.STORE_ID = pos.getStoreId();
+                        DataUtil.saveDataStringToPreferences(getContext(), DataUtil.STORE_ID, pos.getStoreId());
                         ConfigUtil.setPointOfSales(pos);
                         ConfigUtil.setLocationId(pos.getLocationId());
                     } else {

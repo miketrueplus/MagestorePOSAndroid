@@ -449,14 +449,21 @@ public class POSRegisterShiftDataAccessM1 extends POSAbstractDataAccessM1 implem
             registerShiftEntity.shift = sessionParam;
 
             rp = statement.execute(registerShiftEntity);
-            rp.setParseImplement(getClassParseImplement());
-            rp.setParseModel(PosDataRegisterShift.class);
-            DataRegisterShift dataRegisterShift = (PosDataRegisterShift) rp.doParse();
-            return dataRegisterShift.getListRegisterShift();
+            String json = rp.readResult2String();
+            Gson gson = new Gson();
+            List<RegisterShift> list = new ArrayList<>();
+            JSONArray arrShift = new JSONArray(json);
+            for (int i = 0; i < arrShift.length() ; i++) {
+                PosRegisterShift registerShift = gson.fromJson(arrShift.get(i).toString(), PosRegisterShift.class);
+                list.add((RegisterShift) registerShift);
+            }
+            return list;
         } catch (ConnectionException ex) {
             throw new DataAccessException(ex);
         } catch (IOException ex) {
             throw new DataAccessException(ex);
+        } catch (JSONException e) {
+            throw new DataAccessException(e);
         } finally {
             // đóng result reading
             if (rp != null) rp.close();

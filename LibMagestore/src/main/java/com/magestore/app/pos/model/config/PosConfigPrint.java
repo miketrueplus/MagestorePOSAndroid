@@ -18,6 +18,7 @@ public class PosConfigPrint extends PosAbstractModel implements ConfigPrint {
     String path_logo;
     String show_cashier_name;
     String show_comment;
+    String receipt_title;
 
     @Override
     public String getAutoPrint() {
@@ -97,5 +98,15 @@ public class PosConfigPrint extends PosAbstractModel implements ConfigPrint {
     @Override
     public void setShowComment(String strShowComment) {
         show_comment = strShowComment;
+    }
+
+    @Override
+    public String getReceiptTitle() {
+        return receipt_title;
+    }
+
+    @Override
+    public void setReceiptTitle(String strReceiptTitle) {
+        receipt_title = strReceiptTitle;
     }
 }

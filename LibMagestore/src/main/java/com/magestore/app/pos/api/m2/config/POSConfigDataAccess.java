@@ -874,6 +874,10 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         String footer_text = (String) mConfig.getValue("webpos/receipt/content/footer_text");
         String show_receipt_logo = (String) mConfig.getValue("webpos/receipt/optional/show_receipt_logo");
         String path_logo = (String) mConfig.getValue("webpos/general/webpos_logo_url");
+        String receipt_title = "";
+        if (mConfig.getValue("webpos/receipt/receipt_title") != null) {
+            receipt_title = (String) mConfig.getValue("webpos/receipt/receipt_title");
+        }
         String show_cashier_name = (String) mConfig.getValue("webpos/receipt/optional/show_cashier_name");
         String show_comment = (String) mConfig.getValue("webpos/receipt/optional/show_comment");
 
@@ -886,6 +890,7 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         configPrint.setPathLogo(path_logo);
         configPrint.setShowCashierName(show_cashier_name);
         configPrint.setShowComment(show_comment);
+        configPrint.setReceiptTitle(receipt_title);
 
         return configPrint;
     }

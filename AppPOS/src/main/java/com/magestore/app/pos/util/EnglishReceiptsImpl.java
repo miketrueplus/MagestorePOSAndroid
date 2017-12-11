@@ -54,7 +54,7 @@ public class EnglishReceiptsImpl extends ILocalizeReceipts {
         builder.appendAlignment(AlignmentPosition.Center);
 
         // Start Header
-        String invoice_title = context.getString(R.string.order_detail_bottom_btn_invoice).toUpperCase();
+        String invoice_title = StringUtil.isNullOrEmpty(ConfigUtil.getConfigPrint().getReceiptTitle()) ? context.getString(R.string.receipt).toUpperCase() : ConfigUtil.getConfigPrint().getReceiptTitle();
         builder.appendMultiple((invoice_title + "\n").getBytes(encoding), 2, 2);
         builder.appendMultiple(("**** ****\n").getBytes(encoding), 1, 1);
         if (!StringUtil.isNullOrEmpty(ConfigUtil.getConfigPrint().getHeaderText())) {

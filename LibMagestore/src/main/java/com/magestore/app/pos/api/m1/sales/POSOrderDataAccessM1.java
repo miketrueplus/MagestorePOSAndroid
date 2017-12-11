@@ -824,12 +824,12 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
             orderTakePaymentParam.setOrderIncrementId(order.getIncrementId());
             orderTakePaymentParam.setOrderId(orderID);
             orderTakePaymentParam.setCurrencyId(ConfigUtil.getCurrentCurrency().getCode());
-            orderTakePaymentParam.setShiftId(ConfigUtil.getRegisterShiftId());
+            orderTakePaymentParam.setShiftId(ConfigUtil.getShiftId());
             if (orderTakePaymentParam.getPayment() != null) {
                 List<PaymentMethodDataParam> listPayment = orderTakePaymentParam.getMethodData();
                 if (listPayment != null && listPayment.size() > 0) {
                     for (PaymentMethodDataParam payment : listPayment) {
-                        payment.setShiftId(ConfigUtil.getRegisterShiftId());
+                        payment.setShiftId(ConfigUtil.getShiftId());
                     }
                 }
             }

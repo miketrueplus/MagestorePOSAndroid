@@ -212,11 +212,11 @@ public class PosRegisterShift extends PosAbstractModel implements RegisterShift 
 
     @Override
     public float getFloatAmount() {
-        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2)) {
+//        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2)) {
             return float_amount;
-        } else {
-            return opening_amount;
-        }
+//        } else {
+//            return opening_amount;
+//        }
     }
 
     @Override
@@ -226,11 +226,11 @@ public class PosRegisterShift extends PosAbstractModel implements RegisterShift 
 
     @Override
     public float getBaseFloatAmount() {
-        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2) || ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_ODOO)) {
+//        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2) || ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_ODOO)) {
             return base_float_amount;
-        } else {
-            return base_opening_amount;
-        }
+//        } else {
+//            return base_opening_amount;
+//        }
     }
 
     @Override
