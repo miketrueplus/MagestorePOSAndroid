@@ -1035,6 +1035,45 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
     }
 
     @Override
+    public boolean getTaxSaleDisplayPrice() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        if (mConfig == null) mConfig = new PosConfigDefault();
+        boolean tax_sales_display = false;
+        if (mConfig.getValue("tax/sales_display/price") != null) {
+            String tax_sales = (String) mConfig.getValue("tax/sales_display/price");
+            if (!tax_sales.equals("1")) {
+                tax_sales_display = true;
+            }
+        }
+        return tax_sales_display;
+    }
+
+    @Override
+    public boolean getTaxSaleDisplayShipping() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        if (mConfig == null) mConfig = new PosConfigDefault();
+        boolean tax_sales_shipping = false;
+        if (mConfig.getValue("tax/sales_display/shipping") != null) {
+            String tax_shipping = (String) mConfig.getValue("tax/sales_display/shipping");
+            if (!tax_shipping.equals("1")) {
+                tax_sales_shipping = true;
+            }
+        }
+        return tax_sales_shipping;
+    }
+
+    @Override
+    public boolean getTaxSaleDisplaySubtotal() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        if (mConfig == null) mConfig = new PosConfigDefault();
+        boolean tax_sales_subtotal = false;
+        if (mConfig.getValue("tax/sales_display/subtotal") != null) {
+            String tax_subtotal = (String) mConfig.getValue("tax/sales_display/subtotal");
+            if (!tax_subtotal.equals("1")) {
+                tax_sales_subtotal = true;
+            }
+        }
+        return tax_sales_subtotal;
+    }
+
+    @Override
     public void getConfigStaffPermisson(List<String> listPermisson) throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
         if (listPermisson.size() > 0) {
             ConfigUtil.setChangeStaff(true);

@@ -95,7 +95,7 @@ public class EnglishReceiptsImpl extends ILocalizeReceipts {
             }
             if (listOrder != null && listOrder.size() > 0) {
                 for (CartItem item : listOrder) {
-                    String line_item = lineWith(item.getName(), ConfigUtil.formatQuantity(item.getQtyOrdered()), ConfigUtil.formatDecimalQuantity(ConfigUtil.convertToPrice(item.getBasePrice())), ConfigUtil.formatDecimalQuantity(ConfigUtil.convertToPrice(item.getBaseSubTotal())), length);
+                    String line_item = lineWith(item.getName(), ConfigUtil.formatQuantity(item.getQtyOrdered()), ConfigUtil.formatDecimalQuantity(ConfigUtil.isTaxSalesDisplayPrice() ? ConfigUtil.convertToPrice(item.getBasePriceInclTax()) : ConfigUtil.convertToPrice(item.getBasePrice())), ConfigUtil.formatDecimalQuantity(ConfigUtil.isTaxSalesDisplaySubtotal() ? ConfigUtil.convertToPrice(item.getBaseRowTotalInclTax()) : ConfigUtil.convertToPrice(item.getBaseSubTotal())), length);
                     builder.append((line_item).getBytes(encoding));
                 }
             }
@@ -105,7 +105,7 @@ public class EnglishReceiptsImpl extends ILocalizeReceipts {
 
         // Start Total
         if (mOrder.getBaseSubtotal() > 0) {
-            String subtotal = ConfigUtil.formatDecimalQuantity(ConfigUtil.convertToPrice(mOrder.getBaseSubtotal()));
+            String subtotal = ConfigUtil.formatDecimalQuantity(ConfigUtil.isTaxSalesDisplaySubtotal() ? ConfigUtil.convertToPrice(mOrder.getBaseSubtotalInclTax()) : ConfigUtil.convertToPrice(mOrder.getBaseSubtotal()));
             String title_subtotal = context.getString(R.string.order_detail_bottom_tb_subtotal);
             String space = stringSpaceWith(length - title_subtotal.length() - subtotal.length());
             builder.append((title_subtotal + space + subtotal + "\n").getBytes(encoding));
@@ -123,7 +123,7 @@ public class EnglishReceiptsImpl extends ILocalizeReceipts {
             builder.append((title_spent + space + reward_point_spent + "\n").getBytes(encoding));
         }
         if (mOrder.getBaseShippingAmount() != 0) {
-            String shipping = ConfigUtil.formatDecimalQuantity(ConfigUtil.convertToPrice(mOrder.getBaseShippingAmount()));
+            String shipping = ConfigUtil.formatDecimalQuantity(ConfigUtil.isTaxSalesDisplayShipping() ? ConfigUtil.convertToPrice(mOrder.getBaseShippingInclTax()) : ConfigUtil.convertToPrice(mOrder.getBaseShippingAmount()));
             String title_shipping = context.getString(R.string.order_detail_bottom_tb_shipping);
             String space = stringSpaceWith(length - title_shipping.length() - shipping.length());
             builder.append((title_shipping + space + shipping + "\n").getBytes(encoding));

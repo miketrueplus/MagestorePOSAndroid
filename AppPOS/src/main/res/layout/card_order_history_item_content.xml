@@ -80,7 +80,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="right"
-                    android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderItem.getBasePriceInclTax()))}"
+                    android:text="@{ConfigUtil.isTaxSalesDisplayPrice() ? ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderItem.getBasePriceInclTax())) : ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderItem.getBasePrice()))}"
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/order_content_table_text_size" />
 
@@ -136,7 +136,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="right"
-                    android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderItem.getBaseSubTotal()))}"
+                    android:text="@{ConfigUtil.isTaxSalesDisplaySubtotal() ? ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderItem.getBaseRowTotalInclTax())) : ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderItem.getBaseSubTotal()))}"
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/order_content_table_text_size" />
 

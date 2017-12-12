@@ -43,7 +43,7 @@
             android:layout_weight="1"
             android:fontFamily="monospace"
             android:gravity="center_horizontal"
-            android:text="@{ConfigUtil.formatDecimalQuantity(ConfigUtil.convertToPrice(item.getBasePrice()))}"
+            android:text="@{ConfigUtil.formatDecimalQuantity(ConfigUtil.isTaxSalesDisplayPrice() ? ConfigUtil.convertToPrice(item.getBasePriceInclTax()) : ConfigUtil.convertToPrice(item.getBasePrice()))}"
             android:textSize="@dimen/text_size"
             android:textStyle="bold" />
 
@@ -53,7 +53,7 @@
             android:layout_weight="1"
             android:fontFamily="monospace"
             android:gravity="right"
-            android:text="@{ConfigUtil.formatDecimalQuantity(ConfigUtil.convertToPrice(item.getBaseSubTotal()))}"
+            android:text="@{ConfigUtil.formatDecimalQuantity(ConfigUtil.isTaxSalesDisplaySubtotal() ? ConfigUtil.convertToPrice(item.getBaseRowTotalInclTax()) : ConfigUtil.convertToPrice(item.getBaseSubTotal()))}"
             android:textSize="@dimen/text_size"
             android:textStyle="bold" />
     </LinearLayout>

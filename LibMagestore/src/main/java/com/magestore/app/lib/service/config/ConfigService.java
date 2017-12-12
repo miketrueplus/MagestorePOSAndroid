@@ -128,6 +128,10 @@ public interface ConfigService extends Service {
 
     boolean getApplyAfterDiscount() throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
+    boolean getTaxSaleDisplayPrice() throws InstantiationException, IllegalAccessException, IOException, ParseException;
+    boolean getTaxSaleDisplayShipping() throws InstantiationException, IllegalAccessException, IOException, ParseException;
+    boolean getTaxSaleDisplaySubtotal() throws InstantiationException, IllegalAccessException, IOException, ParseException;
+
     List<String> getConfigSetting() throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
     List<Setting> getListSetting(Map<String, String> listTitle);

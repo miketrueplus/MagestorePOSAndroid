@@ -67,6 +67,9 @@ public class ConfigUtil {
     private static boolean mEnableDeleteOrder;
     private static boolean mEnableAvailableQty;
     private static boolean mApplyAfterDiscount;
+    private static boolean mTaxSalesDisplayPrice;
+    private static boolean mTaxSalesDisplayShipping;
+    private static boolean mTaxSalesDisplaySubtotal;
     private static List<ConfigTaxClass> mConfigTaxClass;
     private static List<CheckoutPayment> mListPayment;
     private static String mTypePrint;
@@ -1393,6 +1396,30 @@ public class ConfigUtil {
 
     public static void setApplyAfterDiscount(boolean mApplyAfterDiscount) {
         ConfigUtil.mApplyAfterDiscount = mApplyAfterDiscount;
+    }
+
+    public static boolean isTaxSalesDisplayPrice() {
+        return mTaxSalesDisplayPrice;
+    }
+
+    public static void setTaxSalesDisplayPrice(boolean mTaxSalesDisplayPrice) {
+        ConfigUtil.mTaxSalesDisplayPrice = mTaxSalesDisplayPrice;
+    }
+
+    public static boolean isTaxSalesDisplayShipping() {
+        return mTaxSalesDisplayShipping;
+    }
+
+    public static void setTaxSalesDisplayShipping(boolean mTaxSalesDisplayShipping) {
+        ConfigUtil.mTaxSalesDisplayShipping = mTaxSalesDisplayShipping;
+    }
+
+    public static boolean isTaxSalesDisplaySubtotal() {
+        return mTaxSalesDisplaySubtotal;
+    }
+
+    public static void setTaxSalesDisplaySubtotal(boolean mTaxSalesDisplaySubtotal) {
+        ConfigUtil.mTaxSalesDisplaySubtotal = mTaxSalesDisplaySubtotal;
     }
 
     public static void setEnableDeleteOrder(boolean mEnableDeleteOrder) {
