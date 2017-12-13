@@ -26,6 +26,7 @@ public class StringUtil {
     public static final String STRING_DIGIT = "0123456789";
     public static final String STRING_ZERO = "0";
     public static final String STRING_ONE = "1";
+    public static final String STRING_TWO = "2";
     public static final String STRING_FIVE = "5";
     public static final String STRING_NINE = "9";
     public static final String STRING_TEN = "10";

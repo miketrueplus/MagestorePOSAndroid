@@ -90,7 +90,7 @@ public class PosProduct extends PosAbstractModel implements Product {
 
     @Override
     public boolean isBackOrders() {
-        return StringUtil.STRING_ONE.equals(backorders);
+        return !StringUtil.STRING_ZERO.equals(backorders);
     }
 
     @Override
