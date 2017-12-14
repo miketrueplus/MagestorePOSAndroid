@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.text.Html;
 
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.sales.Order;
@@ -58,8 +59,10 @@ public class EnglishReceiptsImpl extends ILocalizeReceipts {
         builder.appendMultiple((invoice_title + "\n").getBytes(encoding), 2, 2);
         builder.appendMultiple(("**** ****\n").getBytes(encoding), 1, 1);
         if (!StringUtil.isNullOrEmpty(ConfigUtil.getConfigPrint().getHeaderText())) {
-            builder.append((ConfigUtil.getConfigPrint().getHeaderText() + "\n").getBytes(encoding));
+            builder.append((Html.fromHtml(ConfigUtil.getConfigPrint().getHeaderText()).toString() + "\n").getBytes(encoding));
         }
+
+
         String increment_id = context.getString(R.string.checkout_order_id, mOrder.getIncrementId());
         builder.append((increment_id + "\n").getBytes(encoding));
         String create_date = ConfigUtil.formatDateTime(mOrder.getCreatedAt());
@@ -209,7 +212,7 @@ public class EnglishReceiptsImpl extends ILocalizeReceipts {
         builder.appendAlignment(AlignmentPosition.Center);
         builder.append(("-------- **** --------\n").getBytes(encoding));
         if (!StringUtil.isNullOrEmpty(ConfigUtil.getConfigPrint().getFooterText())) {
-            builder.append((ConfigUtil.getConfigPrint().getFooterText()).getBytes(encoding));
+            builder.append((Html.fromHtml(ConfigUtil.getConfigPrint().getFooterText()).toString()).getBytes(encoding));
         } else {
             builder.append((context.getString(R.string.print_footer_default)).getBytes(encoding));
         }

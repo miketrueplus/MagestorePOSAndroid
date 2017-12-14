@@ -19,6 +19,7 @@ import com.magestore.app.pos.panel.SettingDetailPanel;
 import com.magestore.app.pos.ui.AbstractActivity;
 import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.DataUtil;
+import com.magestore.app.util.StringUtil;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -66,6 +67,16 @@ public class SettingListController extends AbstractListController<Setting> {
 
     @Override
     public synchronized void onRetrievePostExecute(List<Setting> list) {
+        if (StringUtil.isNullOrEmpty(ConfigUtil.getGoogleKey()) && !ConfigUtil.isShowAvailableQty()) {
+            if (list.size() > 0) {
+                for (Setting setting : list) {
+                    if (setting.getType() == 1) {
+                        list.remove(setting);
+                        break;
+                    }
+                }
+            }
+        }
         super.onRetrievePostExecute(list);
         ((SettingDetailPanel) mDetailView).setStaffDataSet(mStaff);
         ((SettingDetailPanel) mDetailView).setCurrencyDataSet(currencyList);
@@ -115,7 +126,7 @@ public class SettingListController extends AbstractListController<Setting> {
                 }
             }
             ((SettingDetailPanel) mDetailView).showAlertRespone(staff.getErrorMessage());
-        }else{
+        } else {
             Intent i = new Intent();
             i.setAction(RESET_DATA_TO_SALE_ACTIVITY);
             getMagestoreContext().getActivity().sendBroadcast(i);
