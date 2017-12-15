@@ -63,6 +63,7 @@ public class POSUserDataAccess extends POSAbstractDataAccess implements UserData
 
     private class POSCheckPlatformDataAccess {
         String platform;
+        String website_id;
     }
 
     @Override
@@ -82,6 +83,7 @@ public class POSUserDataAccess extends POSAbstractDataAccess implements UserData
             Gson2PosStoreParseImplement implement = new Gson2PosStoreParseImplement();
             Gson gson = implement.createGson();
             POSCheckPlatformDataAccess checkPlatformClass = gson.fromJson(respone, POSCheckPlatformDataAccess.class);
+            ConfigUtil.setWebSiteId(checkPlatformClass.website_id);
             return checkPlatformClass.platform;
         } catch (Exception ex) {
             throw new DataAccessException(ex);

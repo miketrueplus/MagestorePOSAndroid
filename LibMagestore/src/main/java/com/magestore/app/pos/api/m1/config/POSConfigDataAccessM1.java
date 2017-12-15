@@ -108,6 +108,8 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
     private static String APPLY_CUSTOM_PRICE = "Magestore_Webpos::apply_custom_price";
     // Session
     private static String MANAGE_SHIFT_ADJUSTMENT = "Magestore_Webpos::manage_shift_adjustment";
+    private static String OPEN_SHIFT = "Magestore_Webpos::open_shift";
+    private static String CLOSE_SHIFT = "Magestore_Webpos::close_shift";
 
     private class ConfigEntity {
         Staff staff;
@@ -139,6 +141,10 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
             // Xây dựng tham số
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
 
             // thực hiện truy vấn
             rp = statement.execute();
@@ -362,6 +368,10 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
 
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
 
             ConfigEntity configEntity = new ConfigEntity();
             configEntity.staff = staff;
@@ -655,6 +665,11 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
                     .setPageSize(100)
                     .setSortOrderASC("display_name")
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
+
             rp = statement.execute();
             rp.setParseImplement(getClassParseImplement());
             rp.setParseModel(Gson2PosListStaffPermisson.class);
@@ -791,6 +806,10 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
 
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
 
             ConfigEntity configEntity = new ConfigEntity();
             configEntity.currency = code;
@@ -1078,7 +1097,6 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
         if (listPermisson.size() > 0) {
             ConfigUtil.setChangeStaff(true);
             ConfigUtil.setManageOrderByLocation(false);
-            ConfigUtil.setManagerShiftAdjustment(true);
             ConfigUtil.setNeedToShip(true);
             ConfigUtil.setMarkAsShip(true);
             ConfigUtil.setSendEmail(true);
@@ -1141,7 +1159,9 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
                     ConfigUtil.setDiscountPerItem(checkStaffPermiss(listPermisson, APPLY_DISCOUNT_PER_ITEM));
                     ConfigUtil.setApplyCustomPrice(checkStaffPermiss(listPermisson, APPLY_CUSTOM_PRICE));
                 }
-//                ConfigUtil.setManagerShiftAdjustment(checkStaffPermiss(listPermisson, MANAGE_SHIFT_ADJUSTMENT));
+                ConfigUtil.setOpenShift(checkStaffPermiss(listPermisson, OPEN_SHIFT));
+                ConfigUtil.setCloseShift(checkStaffPermiss(listPermisson, CLOSE_SHIFT));
+                ConfigUtil.setManagerShiftAdjustment(checkStaffPermiss(listPermisson, MANAGE_SHIFT_ADJUSTMENT));
             }
         }
     }

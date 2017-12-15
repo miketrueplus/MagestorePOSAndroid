@@ -146,7 +146,7 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
             make_adjustment_put_money.setVisibility(GONE);
             make_adjustment_take_money.setVisibility(GONE);
             bt_close.setVisibility(GONE);
-            bt_validate.setVisibility(VISIBLE);
+            bt_validate.setVisibility(ConfigUtil.isCloseShift() ? VISIBLE : GONE);
             close_session_list_panel.setEnableAction(false);
         } else {
             bt_cancel.setVisibility(GONE);
@@ -154,7 +154,7 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
             if (item.getPosConfig() != null) {
                 bt_adjustment.setVisibility(item.getPosConfig().getCashControl() ? VISIBLE : GONE);
             }
-            bt_close.setVisibility(VISIBLE);
+            bt_close.setVisibility(ConfigUtil.isCloseShift() ? VISIBLE : GONE);
             bt_validate.setVisibility(GONE);
             close_session_list_panel.setEnableAction(true);
             make_adjustment_put_money.setVisibility(ConfigUtil.isManagerShiftAdjustment() ? VISIBLE : GONE);

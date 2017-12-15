@@ -505,6 +505,8 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
             ConfigUtil.setApplyCoupon(false);
             ConfigUtil.setCustomSales(false);
             ConfigUtil.setShowAvailableQty(false);
+            ConfigUtil.setOpenShift(true);
+            ConfigUtil.setCloseShift(true);
             if (checkStaffPermiss(listPermisson, ALL_PERMISSON)) {
                 ConfigUtil.setCreateOrder(true);
                 ConfigUtil.setManagerAllOrder(true);

@@ -130,6 +130,10 @@ public class POSCartDataAccessM1 extends POSAbstractDataAccessM1 implements Cart
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
+
             CartEntity cartEntity = new CartEntity();
             cartEntity.quote_id = checkout.getQuoteId();
             cartEntity.item_id = cartItem.getItemId();

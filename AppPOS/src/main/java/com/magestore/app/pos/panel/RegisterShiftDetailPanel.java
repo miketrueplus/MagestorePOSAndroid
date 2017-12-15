@@ -141,6 +141,7 @@ public class RegisterShiftDetailPanel extends AbstractDetailPanel<RegisterShift>
             }
         });
 
+        ((Button) v.findViewById(R.id.close_shift)).setVisibility(ConfigUtil.isCloseShift() ? VISIBLE : GONE);
         ((Button) v.findViewById(R.id.close_shift)).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {

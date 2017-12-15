@@ -57,6 +57,7 @@ public class POSUserDataAccessM1 extends POSAbstractDataAccessM1 implements User
 
     private class POSCheckPlatformDataAccess {
         String platform;
+        String website_id;
     }
 
     @Override
@@ -76,6 +77,7 @@ public class POSUserDataAccessM1 extends POSAbstractDataAccessM1 implements User
             Gson2PosStoreParseImplement implement = new Gson2PosStoreParseImplement();
             Gson gson = implement.createGson();
             POSCheckPlatformDataAccess checkPlatformClass = gson.fromJson(respone, POSCheckPlatformDataAccess.class);
+            ConfigUtil.setWebSiteId(checkPlatformClass.website_id);
             return checkPlatformClass.platform;
         } catch (Exception ex) {
             throw new DataAccessException(ex);
@@ -236,6 +238,10 @@ public class POSUserDataAccessM1 extends POSAbstractDataAccessM1 implements User
                     .setFilter("user_id", ConfigUtil.getStaff().getID())
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
+
             rp = statement.execute();
             rp.setParseImplement(getClassParseImplement());
             rp.setParseModel(Gson2PosListPointOfSales.class);
@@ -282,6 +288,10 @@ public class POSUserDataAccessM1 extends POSAbstractDataAccessM1 implements User
             // Xây dựng tham số
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
 
             Pos posEntity = new Pos();
             posEntity.pos_id = pos_id;

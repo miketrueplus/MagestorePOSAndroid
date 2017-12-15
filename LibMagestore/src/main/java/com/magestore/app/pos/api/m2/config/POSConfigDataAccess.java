@@ -111,6 +111,8 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
     private static String APPLY_CUSTOM_PRICE = "Magestore_Webpos::apply_custom_price";
     // Session
     private static String MANAGE_SHIFT_ADJUSTMENT = "Magestore_Webpos::manage_shift_adjustment";
+    private static String OPEN_SHIFT = "Magestore_Webpos::open_shift";
+    private static String CLOSE_SHIFT = "Magestore_Webpos::close_shift";
 
     private class ConfigEntity {
         Staff staff;
@@ -1231,6 +1233,8 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
             ConfigUtil.setShowAvailableQty(true);
             if (checkStaffPermiss(listPermisson, ALL_PERMISSON)) {
                 ConfigUtil.setManagerShiftAdjustment(true);
+                ConfigUtil.setOpenShift(true);
+                ConfigUtil.setCloseShift(true);
                 ConfigUtil.setManageOrderByMe(true);
                 ConfigUtil.setManageOrderByLocation(true);
                 ConfigUtil.setDiscountPerCart(true);
@@ -1258,6 +1262,8 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
                     ConfigUtil.setDiscountPerItem(checkStaffPermiss(listPermisson, APPLY_DISCOUNT_PER_ITEM));
                     ConfigUtil.setApplyCustomPrice(checkStaffPermiss(listPermisson, APPLY_CUSTOM_PRICE));
                 }
+                ConfigUtil.setOpenShift(checkStaffPermiss(listPermisson, OPEN_SHIFT));
+                ConfigUtil.setCloseShift(checkStaffPermiss(listPermisson, CLOSE_SHIFT));
                 ConfigUtil.setManagerShiftAdjustment(checkStaffPermiss(listPermisson, MANAGE_SHIFT_ADJUSTMENT));
             }
         }

@@ -22,6 +22,7 @@ import com.magestore.app.pos.model.customer.PosPlaceDetail;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListCustomer;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosStoreParseImplement;
 import com.magestore.app.util.ConfigUtil;
+import com.magestore.app.util.StringUtil;
 
 import java.io.IOException;
 import java.util.List;
@@ -148,6 +149,10 @@ public class POSCustomerDataAccessM1 extends POSAbstractDataAccessM1 implements 
                     .setPageSize(1)
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
+
             // thực thi truy vấn và parse kết quả thành object
             rp = statement.execute();
             rp.setParseImplement(getClassParseImplement());
@@ -203,6 +208,10 @@ public class POSCustomerDataAccessM1 extends POSAbstractDataAccessM1 implements 
                     .setSortOrderASC("full_name")
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
+
             // thực thi truy vấn và parse kết quả thành object
             rp = statement.execute();
             rp.setParseImplement(getClassParseImplement());
@@ -257,6 +266,10 @@ public class POSCustomerDataAccessM1 extends POSAbstractDataAccessM1 implements 
                     .setFilterOrLike("full_name", finalSearch)
                     .setFilterOrLike("telephone", finalSearch)
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
 
             // thực thi truy vấn và parse kết quả thành object
             rp = statement.execute();
@@ -319,6 +332,10 @@ public class POSCustomerDataAccessM1 extends POSAbstractDataAccessM1 implements 
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
+
             // thực thi truy vấn và parse kết quả thành object
             Wrap wrapCustomer = new Wrap();
             wrapCustomer.customer = newCustomer;
@@ -368,6 +385,10 @@ public class POSCustomerDataAccessM1 extends POSAbstractDataAccessM1 implements 
             // Xây dựng tham số
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
 
             Customer customer = customers[0];
             customer.setID("notsync_" + customer.getID());

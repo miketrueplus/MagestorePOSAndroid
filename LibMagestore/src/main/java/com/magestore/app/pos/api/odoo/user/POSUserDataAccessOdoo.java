@@ -29,6 +29,7 @@ import com.magestore.app.pos.model.registershift.PosPointOfSales;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosAbstractParseImplement;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListPointOfSales;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosStoreParseImplement;
+import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.StringUtil;
 
 import java.io.IOException;
@@ -46,6 +47,7 @@ import java.util.List;
 public class POSUserDataAccessOdoo extends POSAbstractDataAccessOdoo implements UserDataAccess {
     private class POSCheckPlatformDataAccess {
         String platform;
+        String website_id;
     }
 
     private class Wrap {
@@ -145,6 +147,7 @@ public class POSUserDataAccessOdoo extends POSAbstractDataAccessOdoo implements 
             Gson2PosStoreParseImplement implement = new Gson2PosStoreParseImplement();
             Gson gson = implement.createGson();
             POSCheckPlatformDataAccess checkPlatformClass = gson.fromJson(respone, POSCheckPlatformDataAccess.class);
+            ConfigUtil.setWebSiteId(checkPlatformClass.website_id);
             return checkPlatformClass.platform;
         } catch (Exception ex) {
             throw new DataAccessException(ex);

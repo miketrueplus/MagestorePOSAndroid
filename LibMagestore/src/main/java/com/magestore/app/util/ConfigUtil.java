@@ -81,6 +81,7 @@ public class ConfigUtil {
     private static String mRegisterShiftId;
     private static boolean mCashControl = true;
     private static ConfigPriceFormat mConfigPriceFormat;
+    private static String mWebSiteId;
 
     // permisson order
     private static boolean mChangeStaff;
@@ -106,6 +107,9 @@ public class ConfigUtil {
     private static boolean mApplyCustomPrice;
     private static String mDiscountProductId;
     // permisson session
+    private static boolean mManageAllShift;
+    private static boolean mOpenShift;
+    private static boolean mCloseShift;
     private static boolean mManageShiftAdjustment;
     private static boolean mShiftOpenNote;
     private static boolean mEnableOpenFloatAmount;
@@ -957,6 +961,14 @@ public class ConfigUtil {
         return mConfigPriceFormat;
     }
 
+    public static String getWebSiteId() {
+        return mWebSiteId;
+    }
+
+    public static void setWebSiteId(String mWebSiteId) {
+        ConfigUtil.mWebSiteId = mWebSiteId;
+    }
+
     // permisson
     public static boolean isChangeStaff() {
         return mChangeStaff;
@@ -1124,6 +1136,30 @@ public class ConfigUtil {
 
     public static void setDiscountProductId(String mDiscountProductId) {
         ConfigUtil.mDiscountProductId = mDiscountProductId;
+    }
+
+    public static boolean isManageAllShift() {
+        return mManageAllShift;
+    }
+
+    public static void setManageAllShift(boolean mManageAllShift) {
+        ConfigUtil.mManageAllShift = mManageAllShift;
+    }
+
+    public static boolean isOpenShift() {
+        return mOpenShift;
+    }
+
+    public static void setOpenShift(boolean mOpenShift) {
+        ConfigUtil.mOpenShift = mOpenShift;
+    }
+
+    public static boolean isCloseShift() {
+        return mCloseShift;
+    }
+
+    public static void setCloseShift(boolean mCloseShift) {
+        ConfigUtil.mCloseShift = mCloseShift;
     }
 
     public static boolean isManagerShiftAdjustment() {
