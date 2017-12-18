@@ -72,7 +72,7 @@ public class POSConfigService extends AbstractService implements ConfigService {
 
         // đặt config format tiền
         ConfigUtil.setGoogleKey(configDataAccess.googleAPIKey());
-        ConfigUtil.setTaxCartDisplay(taxCartDisplay());
+        ConfigUtil.setTaxCartDisplay(getTaxCartDisplayPrice());
         ConfigUtil.setApplyAfterDiscount(getApplyAfterDiscount());
         ConfigUtil.setTaxSalesDisplayPrice(getTaxSaleDisplayPrice());
         ConfigUtil.setTaxSalesDisplayShipping(getTaxSaleDisplayShipping());
@@ -434,10 +434,10 @@ public class POSConfigService extends AbstractService implements ConfigService {
     }
 
     @Override
-    public boolean taxCartDisplay() throws InstantiationException, IllegalAccessException, IOException, ParseException {
+    public boolean getTaxCartDisplayPrice() throws InstantiationException, IllegalAccessException, IOException, ParseException {
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
-        return configDataAccess.taxCartDisplay();
+        return configDataAccess.getTaxCartDisplayPrice();
     }
 
     @Override

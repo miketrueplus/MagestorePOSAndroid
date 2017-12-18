@@ -158,15 +158,19 @@ public class POSCustomerAddressService extends AbstractService implements Custom
                     customer.setUseOneAddress(true);
                     default_shipping = true;
                     default_billing = true;
+                    customer.setHasDefaultShipping(true);
+                    customer.setHasDefaultBilling(true);
                     break;
                 } else if (!StringUtil.isNullOrEmpty(address.isShipping()) && address.isShipping().equals("true")) {
                     listCustomerAddress.set(0, address);
                     default_shipping = true;
+                    customer.setHasDefaultShipping(true);
                 } else if (!StringUtil.isNullOrEmpty(address.isBilling()) && address.isBilling().equals("true")) {
-                    if(listCustomerAddress.size() >= 2){
+                    if (listCustomerAddress.size() >= 2) {
                         listCustomerAddress.set(1, address);
                     }
                     default_billing = true;
+                    customer.setHasDefaultBilling(true);
                 }
             }
 

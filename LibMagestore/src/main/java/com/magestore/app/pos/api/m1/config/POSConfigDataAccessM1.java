@@ -15,6 +15,7 @@ import com.magestore.app.lib.connection.Statement;
 import com.magestore.app.lib.model.config.ActiveKey;
 import com.magestore.app.lib.model.config.Config;
 import com.magestore.app.lib.model.config.ConfigCountry;
+import com.magestore.app.lib.model.config.ConfigCustomerGroup;
 import com.magestore.app.lib.model.config.ConfigOption;
 import com.magestore.app.lib.model.config.ConfigPriceFormat;
 import com.magestore.app.lib.model.config.ConfigPrint;
@@ -38,6 +39,7 @@ import com.magestore.app.pos.api.m1.POSDataAccessSessionM1;
 import com.magestore.app.pos.model.config.PosActiveKey;
 import com.magestore.app.pos.model.config.PosConfig;
 import com.magestore.app.pos.model.config.PosConfigCountry;
+import com.magestore.app.pos.model.config.PosConfigCustomerGroup;
 import com.magestore.app.pos.model.config.PosConfigDefault;
 import com.magestore.app.pos.model.config.PosConfigPriceFormat;
 import com.magestore.app.pos.model.config.PosConfigPrint;
@@ -314,10 +316,19 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
         // Chuyển đối customer
         List<LinkedTreeMap> customerGroupList = (ArrayList) mConfig.getValue("customerGroup");
         LinkedTreeMap<String, String> returnCustomerGroup = new LinkedTreeMap<String, String>();
+        List<ConfigCustomerGroup> mListCustomerGroup = new ArrayList<>();
         for (LinkedTreeMap customerGroup : customerGroupList) {
             Double id = (Double) customerGroup.get("id");
+            Double tax_class_id = (Double) customerGroup.get("tax_class_id");
             returnCustomerGroup.put(String.format("%.0f", id), customerGroup.get("code").toString());
+
+            ConfigCustomerGroup customer = new PosConfigCustomerGroup();
+            customer.setID(String.format("%.0f", id));
+            customer.setCode(customerGroup.get("code").toString());
+            customer.setTaxClassId(String.format("%.0f", tax_class_id));
+            mListCustomerGroup.add(customer);
         }
+        ConfigUtil.setConfigCustomerGroup(mListCustomerGroup);
         return returnCustomerGroup;
     }
 
@@ -906,11 +917,63 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
     }
 
     @Override
-    public boolean taxCartDisplay() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+    public boolean getTaxCartDisplayPrice() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
         if (mConfig == null) mConfig = new PosConfigDefault();
         boolean tax_cart_display = false;
         if (mConfig.getValue("tax/cart_display/price") != null) {
             String tax_cart = (String) mConfig.getValue("tax/cart_display/price");
+            if (!tax_cart.equals("1")) {
+                tax_cart_display = true;
+            }
+        }
+        return tax_cart_display;
+    }
+
+    @Override
+    public boolean getTaxCartDisplayShipping() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        if (mConfig == null) mConfig = new PosConfigDefault();
+        boolean tax_cart_display = false;
+        if (mConfig.getValue("tax/cart_display/shipping") != null) {
+            String tax_cart = (String) mConfig.getValue("tax/cart_display/shipping");
+            if (!tax_cart.equals("1")) {
+                tax_cart_display = true;
+            }
+        }
+        return tax_cart_display;
+    }
+
+    @Override
+    public boolean getTaxCartDisplaySubtotal() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        if (mConfig == null) mConfig = new PosConfigDefault();
+        boolean tax_cart_display = false;
+        if (mConfig.getValue("tax/cart_display/subtotal") != null) {
+            String tax_cart = (String) mConfig.getValue("tax/cart_display/subtotal");
+            if (!tax_cart.equals("1")) {
+                tax_cart_display = true;
+            }
+        }
+        return tax_cart_display;
+    }
+
+    @Override
+    public boolean getTaxDisplayType() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        if (mConfig == null) mConfig = new PosConfigDefault();
+        boolean tax_cart_display = false;
+        if (mConfig.getValue("tax/display/type") != null) {
+            String tax_cart = (String) mConfig.getValue("tax/display/type");
+            if (!tax_cart.equals("1")) {
+                tax_cart_display = true;
+            }
+        }
+        return tax_cart_display;
+    }
+
+    @Override
+    public boolean getTaxDisplayShipping() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        if (mConfig == null) mConfig = new PosConfigDefault();
+        boolean tax_cart_display = false;
+        if (mConfig.getValue("tax/display/shipping") != null) {
+            String tax_cart = (String) mConfig.getValue("tax/display/shipping");
             if (!tax_cart.equals("1")) {
                 tax_cart_display = true;
             }

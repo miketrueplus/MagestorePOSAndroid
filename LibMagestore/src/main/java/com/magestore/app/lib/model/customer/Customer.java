@@ -36,4 +36,9 @@ public interface Customer extends Model {
     String getEntityId();
     String getCreateAt();
     void setCreateAt(String strCreateAt);
+
+    boolean getHasDefaultShipping();
+    void setHasDefaultShipping(boolean bHasDefaultShipping);
+    boolean getHasDefaultBilling();
+    void setHasDefaultBilling(boolean bHasDefaultBilling);
 }

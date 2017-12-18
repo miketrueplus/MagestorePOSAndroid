@@ -5,12 +5,16 @@ import android.text.format.Time;
 import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.lib.model.config.ActiveKey;
 import com.magestore.app.lib.model.config.ConfigCountry;
+import com.magestore.app.lib.model.config.ConfigCustomerGroup;
 import com.magestore.app.lib.model.config.ConfigOptionSwatch;
 import com.magestore.app.lib.model.config.ConfigPriceFormat;
 import com.magestore.app.lib.model.config.ConfigPrint;
 import com.magestore.app.lib.model.config.ConfigProductOption;
 import com.magestore.app.lib.model.config.ConfigTaxClass;
+import com.magestore.app.lib.model.config.ConfigTaxRates;
+import com.magestore.app.lib.model.config.ConfigTaxRules;
 import com.magestore.app.lib.model.customer.Customer;
+import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.model.registershift.PointOfSales;
 import com.magestore.app.lib.model.staff.Staff;
 import com.magestore.app.lib.model.directory.Currency;
@@ -58,6 +62,8 @@ public class ConfigUtil {
     private static Staff mStaff;
     private static Customer mCustomerGuest;
     private static boolean mTaxCartDisplay;
+    private static boolean mTaxCalculationPriceIncludesTax;
+    private static String mTaxCalculationBasedOn;
     private static boolean mShowDeliveryTime;
     private static boolean mEnableStoreCredit;
     private static boolean mEnableRewardPoint;
@@ -70,8 +76,13 @@ public class ConfigUtil {
     private static boolean mTaxSalesDisplayPrice;
     private static boolean mTaxSalesDisplayShipping;
     private static boolean mTaxSalesDisplaySubtotal;
+    private static CustomerAddress mAddressOrigin;
     private static List<ConfigTaxClass> mConfigTaxClass;
     private static List<CheckoutPayment> mListPayment;
+    private static List<ConfigTaxRules> mConfigTaxRules;
+    private static List<ConfigTaxRates> mConfigTaxRates;
+    private static List<ConfigCustomerGroup> mConfigCustomerGroup;
+    private static String mDefaultCustomerGroup;
     private static String mTypePrint;
     private static int mStarPrintArea;
     private static PointOfSales mPointOfSales;
@@ -801,6 +812,22 @@ public class ConfigUtil {
         mCustomerGuest = customerGuest;
     }
 
+    public static boolean isTaxCalculationPriceIncludesTax() {
+        return mTaxCalculationPriceIncludesTax;
+    }
+
+    public static void setTaxCalculationPriceIncludesTax(boolean mTaxCalculationPriceIncludesTax) {
+        ConfigUtil.mTaxCalculationPriceIncludesTax = mTaxCalculationPriceIncludesTax;
+    }
+
+    public static String getTaxCalculationBasedOn() {
+        return mTaxCalculationBasedOn;
+    }
+
+    public static void setTaxCalculationBasedOn(String mTaxCalculationBasedOn) {
+        ConfigUtil.mTaxCalculationBasedOn = mTaxCalculationBasedOn;
+    }
+
     public static boolean isTaxCartDisplay() {
         return mTaxCartDisplay;
     }
@@ -879,6 +906,38 @@ public class ConfigUtil {
 
     public static List<CheckoutPayment> getListPayment() {
         return mListPayment;
+    }
+
+    public static List<ConfigTaxRules> getConfigTaxRules() {
+        return mConfigTaxRules;
+    }
+
+    public static void setConfigTaxRules(List<ConfigTaxRules> mConfigTaxRules) {
+        ConfigUtil.mConfigTaxRules = mConfigTaxRules;
+    }
+
+    public static List<ConfigTaxRates> getConfigTaxRates() {
+        return mConfigTaxRates;
+    }
+
+    public static void setConfigTaxRates(List<ConfigTaxRates> mConfigTaxRates) {
+        ConfigUtil.mConfigTaxRates = mConfigTaxRates;
+    }
+
+    public static List<ConfigCustomerGroup> getConfigCustomerGroup() {
+        return mConfigCustomerGroup;
+    }
+
+    public static void setConfigCustomerGroup(List<ConfigCustomerGroup> mConfigCustomerGroup) {
+        ConfigUtil.mConfigCustomerGroup = mConfigCustomerGroup;
+    }
+
+    public static String getDefaultCustomerGroup() {
+        return mDefaultCustomerGroup;
+    }
+
+    public static void setDefaultCustomerGroup(String mDefaultCustomerGroup) {
+        ConfigUtil.mDefaultCustomerGroup = mDefaultCustomerGroup;
     }
 
     public static void setConfigTaxClass(List<ConfigTaxClass> mConfigTaxClass) {
@@ -1456,6 +1515,14 @@ public class ConfigUtil {
 
     public static void setTaxSalesDisplaySubtotal(boolean mTaxSalesDisplaySubtotal) {
         ConfigUtil.mTaxSalesDisplaySubtotal = mTaxSalesDisplaySubtotal;
+    }
+
+    public static CustomerAddress getAddressOrigin() {
+        return mAddressOrigin;
+    }
+
+    public static void setAddressOrigin(CustomerAddress mAddressOrigin) {
+        ConfigUtil.mAddressOrigin = mAddressOrigin;
     }
 
     public static void setEnableDeleteOrder(boolean mEnableDeleteOrder) {

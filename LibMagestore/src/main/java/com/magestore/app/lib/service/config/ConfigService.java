@@ -112,7 +112,7 @@ public interface ConfigService extends Service {
 
     float getConfigMaximumDiscount() throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
-    boolean taxCartDisplay() throws InstantiationException, IllegalAccessException, IOException, ParseException;
+    boolean getTaxCartDisplayPrice() throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
     boolean getConfigDeliveryTime() throws InstantiationException, IllegalAccessException, IOException, ParseException;
 

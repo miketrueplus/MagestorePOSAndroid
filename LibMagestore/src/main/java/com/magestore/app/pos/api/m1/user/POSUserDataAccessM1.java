@@ -9,6 +9,9 @@ import com.magestore.app.lib.connection.ResultReading;
 import com.magestore.app.lib.connection.Statement;
 import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.lib.model.config.ConfigTaxClass;
+import com.magestore.app.lib.model.config.ConfigTaxRates;
+import com.magestore.app.lib.model.config.ConfigTaxRules;
+import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.model.registershift.PointOfSales;
 import com.magestore.app.lib.model.store.Store;
 import com.magestore.app.lib.model.user.User;
@@ -19,6 +22,9 @@ import com.magestore.app.pos.api.m1.POSAbstractDataAccessM1;
 import com.magestore.app.pos.api.m1.POSDataAccessSessionM1;
 import com.magestore.app.pos.model.checkout.PosCheckoutPayment;
 import com.magestore.app.pos.model.config.PosConfigTaxClass;
+import com.magestore.app.pos.model.config.PosConfigTaxRates;
+import com.magestore.app.pos.model.config.PosConfigTaxRules;
+import com.magestore.app.pos.model.customer.PosCustomerAddress;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListPointOfSales;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosStoreParseImplement;
 import com.magestore.app.util.ConfigUtil;
@@ -46,6 +52,8 @@ public class POSUserDataAccessM1 extends POSAbstractDataAccessM1 implements User
     private class POSListTaxClassDataAccess {
         List<PosConfigTaxClass> tax_class;
         List<PosCheckoutPayment> payment;
+        List<PosConfigTaxRates> tax_rates;
+        List<PosConfigTaxRules> tax_rules;
     }
 
     private class Pos {
@@ -133,28 +141,64 @@ public class POSUserDataAccessM1 extends POSAbstractDataAccessM1 implements User
                     List<CheckoutPayment> listPayment = (List<CheckoutPayment>) (List<?>) taxClass.payment;
                     ConfigUtil.setListPayment(listPayment);
                 }
+                if (taxClass.tax_rules != null && taxClass.tax_rules.size() > 0) {
+                    List<ConfigTaxRules> listTaxRules = (List<ConfigTaxRules>) (List<?>) taxClass.tax_rules;
+                    ConfigUtil.setConfigTaxRules(listTaxRules);
+                }
+
+                if (taxClass.tax_rates != null && taxClass.tax_rates.size() > 0) {
+                    List<ConfigTaxRates> listConfigTaxRates = (List<ConfigTaxRates>) (List<?>) taxClass.tax_rates;
+                    ConfigUtil.setConfigTaxRates(listConfigTaxRates);
+                }
             }
 
             if (json.has("webpos_config")) {
                 JSONObject webpos_config = json.getJSONObject("webpos_config");
 
-//                if (webpos_config.has("tax/cart_display/price")) {
-//                    String tax_cart = webpos_config.getString("tax/cart_display/price");
-//                    boolean tax_cart_display = false;
-//                    if (tax_cart.equals("1")) {
-//                        tax_cart_display = true;
-//                    }
-//                    ConfigUtil.setTaxCartDisplay(tax_cart_display);
-//                }
-//
-//                if (webpos_config.has("tax/calculation/apply_after_discount")) {
-//                    String apply_after_discount = webpos_config.getString("tax/calculation/apply_after_discount");
-//                    boolean after_discount = false;
-//                    if (apply_after_discount.equals("1")) {
-//                        after_discount = true;
-//                    }
-//                    ConfigUtil.setApplyAfterDiscount(after_discount);
-//                }
+                if (webpos_config.has("tax/calculation/price_includes_tax")) {
+                    String price_includes_tax = webpos_config.getString("tax/calculation/price_includes_tax");
+                    boolean includes_tax = false;
+                    if (price_includes_tax.equals("1")) {
+                        includes_tax = true;
+                    }
+                    ConfigUtil.setTaxCalculationPriceIncludesTax(includes_tax);
+                }
+
+                String tax_calculation_based_on = "";
+                if (webpos_config.has("tax/calculation/based_on")) {
+                    tax_calculation_based_on = webpos_config.getString("tax/calculation/based_on");
+                }
+                ConfigUtil.setTaxCalculationBasedOn(tax_calculation_based_on);
+
+                String shipping_origin_region_id = "";
+                if (webpos_config.has("shipping/origin/region_id")) {
+                    shipping_origin_region_id = webpos_config.getString("shipping/origin/region_id");
+                    if (StringUtil.isNullOrEmpty(shipping_origin_region_id)) {
+                        shipping_origin_region_id = "0";
+                    }
+                }
+
+                String shipping_origin_country_id = "";
+                if (webpos_config.has("shipping/origin/country_id")) {
+                    shipping_origin_country_id = webpos_config.getString("shipping/origin/country_id");
+                }
+
+                String shipping_origin_postcode = "";
+                if (webpos_config.has("shipping/origin/postcode")) {
+                    shipping_origin_postcode = webpos_config.getString("shipping/origin/postcode");
+                }
+
+                CustomerAddress mAddressOrigin = new PosCustomerAddress();
+                mAddressOrigin.setRegionID(shipping_origin_region_id);
+                mAddressOrigin.setCountry(shipping_origin_country_id);
+                mAddressOrigin.setPostCode(shipping_origin_postcode);
+                ConfigUtil.setAddressOrigin(mAddressOrigin);
+
+                String defaultCustomerGroup = "";
+                if (webpos_config.has("defaultCustomerGroup")) {
+                    defaultCustomerGroup = webpos_config.getString("defaultCustomerGroup");
+                }
+                ConfigUtil.setDefaultCustomerGroup(defaultCustomerGroup);
 
                 if (webpos_config.has("plugins_config")) {
                     JSONObject json_plugins = webpos_config.getJSONObject("plugins_config");

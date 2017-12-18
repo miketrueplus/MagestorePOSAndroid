@@ -8,6 +8,11 @@ import com.magestore.app.lib.model.catalog.ProductOptionCustomValue;
 import com.magestore.app.lib.model.checkout.Cart;
 import com.magestore.app.lib.model.checkout.Checkout;
 import com.magestore.app.lib.model.checkout.cart.CartItem;
+import com.magestore.app.lib.model.config.ConfigCustomerGroup;
+import com.magestore.app.lib.model.config.ConfigTaxRates;
+import com.magestore.app.lib.model.config.ConfigTaxRules;
+import com.magestore.app.lib.model.customer.Customer;
+import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.model.sales.Order;
 import com.magestore.app.lib.model.sales.OrderCartItem;
 import com.magestore.app.lib.model.sales.OrderCustomSalesInfo;
@@ -20,6 +25,7 @@ import com.magestore.app.pos.model.catalog.PosProduct;
 import com.magestore.app.pos.model.catalog.PosProductOptionConfigOption;
 import com.magestore.app.pos.model.catalog.PosProductOptionJsonConfigAttributes;
 import com.magestore.app.pos.model.checkout.cart.PosCartItem;
+import com.magestore.app.pos.model.customer.PosCustomerAddress;
 import com.magestore.app.pos.model.sales.PosOrderCartItem;
 import com.magestore.app.pos.model.sales.PosOrderCustomSalesInfo;
 import com.magestore.app.pos.service.AbstractService;
@@ -29,6 +35,8 @@ import com.magestore.app.util.StringUtil;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
@@ -89,7 +97,7 @@ public class POSCartService extends AbstractService implements CartService {
 //            tax_total = checkout.getSubTotal() - checkout.getSubTotalSaveCart();
 //            checkout.setTaxTotal(tax_total);
 //        } else {
-            checkout.setTaxTotal(checkout.getTaxTotal());
+        checkout.setTaxTotal(checkout.getTaxTotal());
 //        }
         return checkout.getTaxTotal();
     }
@@ -961,5 +969,202 @@ public class POSCartService extends AbstractService implements CartService {
         return options;
     }
 
+    private float getTaxPercentWithProduct(Product mProduct, Checkout mCheckout) {
+        String taxClassId = mProduct.getTaxClassId();
+        List<StoreTaxRate> store_tax_rates = getProductTaxRate(taxClassId, ConfigUtil.getDefaultCustomerGroup(), ConfigUtil.getAddressOrigin());
+        CustomerAddress addressCalTax = new PosCustomerAddress();
+        String calculateTaxBaseOn = ConfigUtil.getTaxCalculationBasedOn();
 
+        Customer guestCustomer = ConfigUtil.getCustomerGuest();
+        List<CustomerAddress> customerAddressList = mCheckout.getCustomer().getAddress();
+
+        CustomerAddress shippingAddress;
+        CustomerAddress billingAddress;
+        if (mCheckout.getCustomer().getUseOneAddress()) {
+            shippingAddress = customerAddressList.get(0);
+            billingAddress = customerAddressList.get(0);
+        } else {
+            shippingAddress = customerAddressList.get(0);
+            billingAddress = customerAddressList.get(1);
+        }
+
+        if (calculateTaxBaseOn.equals("shipping")) {
+            addressCalTax.setCountry(shippingAddress.getCountry());
+            addressCalTax.setRegionID(shippingAddress.getRegionID());
+            addressCalTax.setPostCode(shippingAddress.getPostCode());
+        } else if (calculateTaxBaseOn.equals("billing")) {
+            addressCalTax.setCountry(billingAddress.getCountry());
+            addressCalTax.setRegionID(billingAddress.getRegionID());
+            addressCalTax.setPostCode(billingAddress.getPostCode());
+        }
+
+        List<StoreTaxRate> taxRates = getProductTaxRate(taxClassId, ConfigUtil.getDefaultCustomerGroup(), addressCalTax);
+        float taxPercent = 0;
+        for (StoreTaxRate taxRate: taxRates) {
+            taxPercent += taxRate.rate;
+        }
+        return taxPercent;
+    }
+
+    private List<StoreTaxRate> getProductTaxRate(String tax_class_id, String group_id, CustomerAddress address) {
+        String customerTaxClassId = getCustomerTaxClassId(group_id);
+        List<StoreTaxRate> rate = getRateWithTaxClassId(tax_class_id, customerTaxClassId, address);
+        return rate;
+    }
+
+    private String getCustomerTaxClassId(String group_id) {
+        String customerTaxClassId = "";
+        if (!StringUtil.isNullOrEmpty(group_id) && ConfigUtil.getConfigCustomerGroup() != null && ConfigUtil.getConfigCustomerGroup().size() > 0) {
+            for (ConfigCustomerGroup customerGroup : ConfigUtil.getConfigCustomerGroup()) {
+                if (customerGroup.getID().equals(group_id)) {
+                    customerTaxClassId = customerGroup.getTaxClassId();
+                }
+            }
+        }
+        return customerTaxClassId;
+    }
+
+    private List<StoreTaxRate> getRateWithTaxClassId(String productTaxClassId, String customerTaxClassId, CustomerAddress address) {
+        List<String> rateIds = new ArrayList<>();
+        List<StoreTaxRate> rates = new ArrayList<>();
+        List<StoreTaxRate> tempRates = new ArrayList<>();
+        List<ConfigTaxRules> rules = ConfigUtil.getConfigTaxRules();
+
+        if (!StringUtil.isNullOrEmpty(customerTaxClassId)) {
+            if (rules != null && rules.size() > 0) {
+                for (ConfigTaxRules rule : rules) {
+                    List<String> customerTcIds = rule.getCustomerTcIds();
+                    List<String> productTcIds = rule.getProductTcIds();
+                    int customerIndex = customerTcIds.indexOf(customerTaxClassId);
+                    int productIndex = productTcIds.indexOf(productTaxClassId);
+                    if (customerIndex != -1 && productIndex != -1) {
+                        rateIds = new ArrayList<>();
+                        rateIds.addAll(rule.getRatesIds());
+
+                        float tempRate = getRateValueWithRateIds(rateIds, address);
+                        if (tempRate > 0) {
+                            String priority = "";
+                            if (!StringUtil.isNullOrEmpty(rule.getPriority())) {
+                                priority = rule.getPriority();
+                            }
+                            boolean isNew = true;
+
+                            if (tempRates.size() > 0) {
+                                for (StoreTaxRate rate : tempRates) {
+                                    String ratePriority = "";
+                                    if (!StringUtil.isNullOrEmpty(rate.priority)) {
+                                        ratePriority = rate.priority;
+                                    }
+                                    if (priority.equals(ratePriority)) {
+                                        isNew = false;
+                                        float newRate = rate.rate + tempRate;
+                                        rate.rate = newRate;
+                                    }
+                                }
+                            }
+
+                            if (isNew) {
+                                StoreTaxRate rate = new StoreTaxRate();
+                                rate.priority = priority;
+                                rate.rate = tempRate;
+                                tempRates.add(rate);
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+            if (rules != null && rules.size() > 0) {
+                for (ConfigTaxRules rule : rules) {
+                    List<String> productTcIds = rule.getProductTcIds();
+                    int productIndex = productTcIds.indexOf(productTaxClassId);
+                    if (productIndex != -1) {
+                        rateIds = new ArrayList<>();
+                        rateIds.addAll(rule.getRatesIds());
+
+                        float tempRate = getRateValueWithRateIds(rateIds, address);
+                        if (tempRate > 0) {
+                            String priority = "";
+                            if (!StringUtil.isNullOrEmpty(rule.getPriority())) {
+                                priority = rule.getPriority();
+                            }
+                            boolean isNew = true;
+
+                            if (tempRates.size() > 0) {
+                                for (StoreTaxRate rate : tempRates) {
+                                    String ratePriority = "";
+                                    if (!StringUtil.isNullOrEmpty(rate.priority)) {
+                                        ratePriority = rate.priority;
+                                    }
+                                    if (priority.equals(ratePriority)) {
+                                        isNew = false;
+                                        float newRate = rate.rate + tempRate;
+                                        rate.rate = newRate;
+                                    }
+                                }
+                            }
+
+                            if (isNew) {
+                                StoreTaxRate rate = new StoreTaxRate();
+                                rate.priority = priority;
+                                rate.rate = tempRate;
+                                tempRates.add(rate);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        Collections.sort(tempRates, new Comparator<StoreTaxRate>() {
+            @Override
+            public int compare(StoreTaxRate storeTaxRate, StoreTaxRate t1) {
+                return storeTaxRate.priority.compareToIgnoreCase(t1.priority);
+            }
+        });
+        rates.addAll(tempRates);
+        return rates;
+    }
+
+    private float getRateValueWithRateIds(List<String> rateIds, CustomerAddress address) {
+        float rate = 0;
+
+        for (String rateId : rateIds) {
+            List<ConfigTaxRates> taxRates = ConfigUtil.getConfigTaxRates();
+            for (ConfigTaxRates taxRate : taxRates) {
+                String taxRateId = vadilateString(taxRate.getID());
+                if (taxRateId.equals(rateId)) {
+                    String taxRateCountry = vadilateString(taxRate.getCountry());
+                    String taxRateRegionId = vadilateString(taxRate.getRegionId());
+                    String taxRatePostCode = vadilateString(taxRate.getPostCode());
+
+                    String addressCountry = vadilateString(address.getCountry());
+                    String addressRegionId = vadilateString(address.getRegionID());
+                    String addressPostCode = vadilateString(address.getPostCode());
+
+                    if ((taxRateCountry.equals("*") || taxRateCountry.equals(addressCountry))
+                            && (taxRateRegionId.equals("*") || taxRateRegionId.equals(addressRegionId) || taxRateRegionId.equals("0"))
+                            && (taxRatePostCode.equals("*") || taxRatePostCode.equals(addressPostCode))) {
+                        if (taxRate.getRate() > rate) {
+                            rate = taxRate.getRate();
+                        }
+                    }
+                }
+            }
+        }
+
+        return rate;
+    }
+
+    private String vadilateString(String data) {
+        if (!StringUtil.isNullOrEmpty(data)) {
+            return data;
+        }
+        return "";
+    }
+
+    private class StoreTaxRate {
+        public String priority;
+        public float rate;
+    }
 }

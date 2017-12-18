@@ -43,6 +43,9 @@ public class PosCustomer extends PosAbstractModel implements Customer {
     @Gson2PosExclude
     boolean use_one_address;
 
+    boolean has_default_shipping;
+    boolean has_default_billing;
+
     @Override
     public String getID() {
         return id;
@@ -195,5 +198,25 @@ public class PosCustomer extends PosAbstractModel implements Customer {
     @Override
     public void setCreateAt(String strCreateAt) {
         created_at = strCreateAt;
+    }
+
+    @Override
+    public boolean getHasDefaultShipping() {
+        return has_default_shipping;
+    }
+
+    @Override
+    public void setHasDefaultShipping(boolean bHasDefaultShipping) {
+        has_default_shipping = bHasDefaultShipping;
+    }
+
+    @Override
+    public boolean getHasDefaultBilling() {
+        return has_default_billing;
+    }
+
+    @Override
+    public void setHasDefaultBilling(boolean bHasDefaultBilling) {
+        has_default_billing = bHasDefaultBilling;
     }
 }
