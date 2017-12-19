@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.BaseExpandableListAdapter;
@@ -93,7 +94,8 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
     EditTextQuantity mtxtCartItemQuantity;
 
     ProgressBar mProgAavailableQty;
-    TextView mtxtSpecialPrice, mTxtAvailableQty;
+    TextView mtxtSpecialPrice, mTxtAvailableQty, txt_description;
+    WebView webview_description;
 
     LinearLayout ll_description, ll_sku;
     boolean isShowDetail;
@@ -166,6 +168,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
             mtxtCartItemQuantity.setDecimal(item.getProduct().isDecimal());
             String mQtyAvailable = getContext().getString(R.string.product_available_qty, ConfigUtil.formatQuantity(item.getProduct().getQty()));
             mTxtAvailableQty.setText(mQtyAvailable);
+            checkDescription(item.getProduct().getDescription());
         } else {
             mtxtCartItemQuantity.setDecimal(false);
         }
@@ -212,6 +215,8 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         if (!item.getProduct().haveProductOption())
             super.bindItem(item);
 
+        checkDescription(item.getProduct().getDescription());
+
         // hiển thị ảnh product
         Picasso.with(getContext()).load(item.getProduct().getImage()).centerInside().resizeDimen(R.dimen.product_image_detail_width, R.dimen.product_image_detail_height).into(mImageProductDetail);
 //        Glide.with(getContext()).load(item.getProduct().getImage()).centerCrop().into(mImageProductDetail);
@@ -221,6 +226,17 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
 
 //        if (item.getProduct().getBitmap() != null)
 //            mImageProductDetail.setImageBitmap(item.getProduct().getBitmap());
+    }
+
+    private void checkDescription(String content) {
+        if (content.contains("<img")) {
+            webview_description.setVisibility(VISIBLE);
+            txt_description.setVisibility(GONE);
+            webview_description.loadData(content, "text/html", "UTF-8");
+        } else {
+            webview_description.setVisibility(GONE);
+            txt_description.setVisibility(VISIBLE);
+        }
     }
 
     /**
@@ -734,6 +750,9 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
 
         ll_description = (LinearLayout) findViewById(R.id.ll_description);
         ll_description.setVisibility(isShowDetail ? VISIBLE : GONE);
+        txt_description = (TextView) findViewById(R.id.txt_description);
+        webview_description = (WebView) findViewById(R.id.webview_description);
+        webview_description.getSettings().setJavaScriptEnabled(true);
 
         ll_sku = (LinearLayout) findViewById(R.id.ll_sku);
         ll_sku.setVisibility(isShowDetail ? VISIBLE : GONE);

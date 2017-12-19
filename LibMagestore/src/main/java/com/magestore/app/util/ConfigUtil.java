@@ -5,12 +5,16 @@ import android.text.format.Time;
 import com.magestore.app.lib.model.checkout.CheckoutPayment;
 import com.magestore.app.lib.model.config.ActiveKey;
 import com.magestore.app.lib.model.config.ConfigCountry;
+import com.magestore.app.lib.model.config.ConfigCustomerGroup;
 import com.magestore.app.lib.model.config.ConfigOptionSwatch;
 import com.magestore.app.lib.model.config.ConfigPriceFormat;
 import com.magestore.app.lib.model.config.ConfigPrint;
 import com.magestore.app.lib.model.config.ConfigProductOption;
 import com.magestore.app.lib.model.config.ConfigTaxClass;
+import com.magestore.app.lib.model.config.ConfigTaxRates;
+import com.magestore.app.lib.model.config.ConfigTaxRules;
 import com.magestore.app.lib.model.customer.Customer;
+import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.model.registershift.PointOfSales;
 import com.magestore.app.lib.model.staff.Staff;
 import com.magestore.app.lib.model.directory.Currency;
@@ -58,6 +62,8 @@ public class ConfigUtil {
     private static Staff mStaff;
     private static Customer mCustomerGuest;
     private static boolean mTaxCartDisplay;
+    private static boolean mTaxCalculationPriceIncludesTax;
+    private static String mTaxCalculationBasedOn;
     private static boolean mShowDeliveryTime;
     private static boolean mEnableStoreCredit;
     private static boolean mEnableRewardPoint;
@@ -67,8 +73,17 @@ public class ConfigUtil {
     private static boolean mEnableDeleteOrder;
     private static boolean mEnableAvailableQty;
     private static boolean mApplyAfterDiscount;
+    private static boolean mTaxSalesDisplayPrice;
+    private static boolean mTaxSalesDisplayShipping;
+    private static boolean mTaxSalesDisplaySubtotal;
+    private static CustomerAddress mAddressOrigin;
     private static List<ConfigTaxClass> mConfigTaxClass;
     private static List<CheckoutPayment> mListPayment;
+    private static List<ConfigTaxRules> mConfigTaxRules;
+    private static List<ConfigTaxRates> mConfigTaxRates;
+    private static List<ConfigCustomerGroup> mConfigCustomerGroup;
+    private static List<String> mProductAttribute;
+    private static String mDefaultCustomerGroup;
     private static String mTypePrint;
     private static int mStarPrintArea;
     private static PointOfSales mPointOfSales;
@@ -78,6 +93,7 @@ public class ConfigUtil {
     private static String mRegisterShiftId;
     private static boolean mCashControl = true;
     private static ConfigPriceFormat mConfigPriceFormat;
+    private static String mWebSiteId;
 
     // permisson order
     private static boolean mChangeStaff;
@@ -103,6 +119,9 @@ public class ConfigUtil {
     private static boolean mApplyCustomPrice;
     private static String mDiscountProductId;
     // permisson session
+    private static boolean mManageAllShift;
+    private static boolean mOpenShift;
+    private static boolean mCloseShift;
     private static boolean mManageShiftAdjustment;
     private static boolean mShiftOpenNote;
     private static boolean mEnableOpenFloatAmount;
@@ -794,6 +813,22 @@ public class ConfigUtil {
         mCustomerGuest = customerGuest;
     }
 
+    public static boolean isTaxCalculationPriceIncludesTax() {
+        return mTaxCalculationPriceIncludesTax;
+    }
+
+    public static void setTaxCalculationPriceIncludesTax(boolean mTaxCalculationPriceIncludesTax) {
+        ConfigUtil.mTaxCalculationPriceIncludesTax = mTaxCalculationPriceIncludesTax;
+    }
+
+    public static String getTaxCalculationBasedOn() {
+        return mTaxCalculationBasedOn;
+    }
+
+    public static void setTaxCalculationBasedOn(String mTaxCalculationBasedOn) {
+        ConfigUtil.mTaxCalculationBasedOn = mTaxCalculationBasedOn;
+    }
+
     public static boolean isTaxCartDisplay() {
         return mTaxCartDisplay;
     }
@@ -874,6 +909,46 @@ public class ConfigUtil {
         return mListPayment;
     }
 
+    public static List<ConfigTaxRules> getConfigTaxRules() {
+        return mConfigTaxRules;
+    }
+
+    public static void setConfigTaxRules(List<ConfigTaxRules> mConfigTaxRules) {
+        ConfigUtil.mConfigTaxRules = mConfigTaxRules;
+    }
+
+    public static List<ConfigTaxRates> getConfigTaxRates() {
+        return mConfigTaxRates;
+    }
+
+    public static void setConfigTaxRates(List<ConfigTaxRates> mConfigTaxRates) {
+        ConfigUtil.mConfigTaxRates = mConfigTaxRates;
+    }
+
+    public static List<ConfigCustomerGroup> getConfigCustomerGroup() {
+        return mConfigCustomerGroup;
+    }
+
+    public static void setConfigCustomerGroup(List<ConfigCustomerGroup> mConfigCustomerGroup) {
+        ConfigUtil.mConfigCustomerGroup = mConfigCustomerGroup;
+    }
+
+    public static List<String> getProductAttribute() {
+        return mProductAttribute;
+    }
+
+    public static void setProductAttribute(List<String> mProductAttribute) {
+        ConfigUtil.mProductAttribute = mProductAttribute;
+    }
+
+    public static String getDefaultCustomerGroup() {
+        return mDefaultCustomerGroup;
+    }
+
+    public static void setDefaultCustomerGroup(String mDefaultCustomerGroup) {
+        ConfigUtil.mDefaultCustomerGroup = mDefaultCustomerGroup;
+    }
+
     public static void setConfigTaxClass(List<ConfigTaxClass> mConfigTaxClass) {
         ConfigUtil.mConfigTaxClass = mConfigTaxClass;
     }
@@ -952,6 +1027,14 @@ public class ConfigUtil {
 
     public static ConfigPriceFormat getConfigPriceFormat() {
         return mConfigPriceFormat;
+    }
+
+    public static String getWebSiteId() {
+        return mWebSiteId;
+    }
+
+    public static void setWebSiteId(String mWebSiteId) {
+        ConfigUtil.mWebSiteId = mWebSiteId;
     }
 
     // permisson
@@ -1121,6 +1204,30 @@ public class ConfigUtil {
 
     public static void setDiscountProductId(String mDiscountProductId) {
         ConfigUtil.mDiscountProductId = mDiscountProductId;
+    }
+
+    public static boolean isManageAllShift() {
+        return mManageAllShift;
+    }
+
+    public static void setManageAllShift(boolean mManageAllShift) {
+        ConfigUtil.mManageAllShift = mManageAllShift;
+    }
+
+    public static boolean isOpenShift() {
+        return mOpenShift;
+    }
+
+    public static void setOpenShift(boolean mOpenShift) {
+        ConfigUtil.mOpenShift = mOpenShift;
+    }
+
+    public static boolean isCloseShift() {
+        return mCloseShift;
+    }
+
+    public static void setCloseShift(boolean mCloseShift) {
+        ConfigUtil.mCloseShift = mCloseShift;
     }
 
     public static boolean isManagerShiftAdjustment() {
@@ -1393,6 +1500,38 @@ public class ConfigUtil {
 
     public static void setApplyAfterDiscount(boolean mApplyAfterDiscount) {
         ConfigUtil.mApplyAfterDiscount = mApplyAfterDiscount;
+    }
+
+    public static boolean isTaxSalesDisplayPrice() {
+        return mTaxSalesDisplayPrice;
+    }
+
+    public static void setTaxSalesDisplayPrice(boolean mTaxSalesDisplayPrice) {
+        ConfigUtil.mTaxSalesDisplayPrice = mTaxSalesDisplayPrice;
+    }
+
+    public static boolean isTaxSalesDisplayShipping() {
+        return mTaxSalesDisplayShipping;
+    }
+
+    public static void setTaxSalesDisplayShipping(boolean mTaxSalesDisplayShipping) {
+        ConfigUtil.mTaxSalesDisplayShipping = mTaxSalesDisplayShipping;
+    }
+
+    public static boolean isTaxSalesDisplaySubtotal() {
+        return mTaxSalesDisplaySubtotal;
+    }
+
+    public static void setTaxSalesDisplaySubtotal(boolean mTaxSalesDisplaySubtotal) {
+        ConfigUtil.mTaxSalesDisplaySubtotal = mTaxSalesDisplaySubtotal;
+    }
+
+    public static CustomerAddress getAddressOrigin() {
+        return mAddressOrigin;
+    }
+
+    public static void setAddressOrigin(CustomerAddress mAddressOrigin) {
+        ConfigUtil.mAddressOrigin = mAddressOrigin;
     }
 
     public static void setEnableDeleteOrder(boolean mEnableDeleteOrder) {

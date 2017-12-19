@@ -15,6 +15,7 @@ import com.magestore.app.lib.connection.Statement;
 import com.magestore.app.lib.model.config.ActiveKey;
 import com.magestore.app.lib.model.config.Config;
 import com.magestore.app.lib.model.config.ConfigCountry;
+import com.magestore.app.lib.model.config.ConfigCustomerGroup;
 import com.magestore.app.lib.model.config.ConfigOption;
 import com.magestore.app.lib.model.config.ConfigPriceFormat;
 import com.magestore.app.lib.model.config.ConfigPrint;
@@ -38,6 +39,7 @@ import com.magestore.app.pos.api.m1.POSDataAccessSessionM1;
 import com.magestore.app.pos.model.config.PosActiveKey;
 import com.magestore.app.pos.model.config.PosConfig;
 import com.magestore.app.pos.model.config.PosConfigCountry;
+import com.magestore.app.pos.model.config.PosConfigCustomerGroup;
 import com.magestore.app.pos.model.config.PosConfigDefault;
 import com.magestore.app.pos.model.config.PosConfigPriceFormat;
 import com.magestore.app.pos.model.config.PosConfigPrint;
@@ -108,6 +110,8 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
     private static String APPLY_CUSTOM_PRICE = "Magestore_Webpos::apply_custom_price";
     // Session
     private static String MANAGE_SHIFT_ADJUSTMENT = "Magestore_Webpos::manage_shift_adjustment";
+    private static String OPEN_SHIFT = "Magestore_Webpos::open_shift";
+    private static String CLOSE_SHIFT = "Magestore_Webpos::close_shift";
 
     private class ConfigEntity {
         Staff staff;
@@ -139,6 +143,10 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
             // Xây dựng tham số
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
 
             // thực hiện truy vấn
             rp = statement.execute();
@@ -308,10 +316,19 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
         // Chuyển đối customer
         List<LinkedTreeMap> customerGroupList = (ArrayList) mConfig.getValue("customerGroup");
         LinkedTreeMap<String, String> returnCustomerGroup = new LinkedTreeMap<String, String>();
+        List<ConfigCustomerGroup> mListCustomerGroup = new ArrayList<>();
         for (LinkedTreeMap customerGroup : customerGroupList) {
             Double id = (Double) customerGroup.get("id");
+            Double tax_class_id = (Double) customerGroup.get("tax_class_id");
             returnCustomerGroup.put(String.format("%.0f", id), customerGroup.get("code").toString());
+
+            ConfigCustomerGroup customer = new PosConfigCustomerGroup();
+            customer.setID(String.format("%.0f", id));
+            customer.setCode(customerGroup.get("code").toString());
+            customer.setTaxClassId(String.format("%.0f", tax_class_id));
+            mListCustomerGroup.add(customer);
         }
+        ConfigUtil.setConfigCustomerGroup(mListCustomerGroup);
         return returnCustomerGroup;
     }
 
@@ -362,6 +379,10 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
 
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
 
             ConfigEntity configEntity = new ConfigEntity();
             configEntity.staff = staff;
@@ -655,6 +676,11 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
                     .setPageSize(100)
                     .setSortOrderASC("display_name")
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
+
             rp = statement.execute();
             rp.setParseImplement(getClassParseImplement());
             rp.setParseModel(Gson2PosListStaffPermisson.class);
@@ -722,6 +748,26 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
     }
 
     @Override
+    public List<String> getProductAttribute() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        if (mConfig == null) mConfig = new PosConfigDefault();
+        List<String> mListProductAttribute = new ArrayList<>();
+        if (mConfig.getValue("webpos/product_search/product_attribute") != null) {
+            String product_attribute = (String) mConfig.getValue("webpos/product_search/product_attribute");
+            if (!StringUtil.isNullOrEmpty(product_attribute)) {
+                if (product_attribute.contains(",")) {
+                    String[] array_attribute = product_attribute.split(",");
+                    for (String attribute : array_attribute) {
+                        mListProductAttribute.add(attribute);
+                    }
+                } else {
+                    mListProductAttribute.add(product_attribute);
+                }
+            }
+        }
+        return mListProductAttribute;
+    }
+
+    @Override
     public Map<String, String> getConfigCCYears() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
         if (mConfig == null) mConfig = new PosConfigDefault();
 
@@ -756,6 +802,10 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
         if (mConfig.getValue("webpos/general/webpos_logo_url") != null) {
             path_logo = (String) mConfig.getValue("webpos/general/webpos_logo_url");
         }
+        String receipt_title = "";
+        if (mConfig.getValue("webpos/receipt/receipt_title") != null) {
+            receipt_title = (String) mConfig.getValue("webpos/receipt/receipt_title");
+        }
         String show_cashier_name = (String) mConfig.getValue("webpos/receipt/show_cashier_name");
         String show_comment = (String) mConfig.getValue("webpos/receipt/show_comment");
 
@@ -768,6 +818,7 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
         configPrint.setPathLogo(path_logo);
         configPrint.setShowCashierName(show_cashier_name);
         configPrint.setShowComment(show_comment);
+        configPrint.setReceiptTitle(receipt_title);
 
         return configPrint;
     }
@@ -786,6 +837,10 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
 
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
 
             ConfigEntity configEntity = new ConfigEntity();
             configEntity.currency = code;
@@ -882,11 +937,63 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
     }
 
     @Override
-    public boolean taxCartDisplay() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+    public boolean getTaxCartDisplayPrice() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
         if (mConfig == null) mConfig = new PosConfigDefault();
         boolean tax_cart_display = false;
         if (mConfig.getValue("tax/cart_display/price") != null) {
             String tax_cart = (String) mConfig.getValue("tax/cart_display/price");
+            if (!tax_cart.equals("1")) {
+                tax_cart_display = true;
+            }
+        }
+        return tax_cart_display;
+    }
+
+    @Override
+    public boolean getTaxCartDisplayShipping() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        if (mConfig == null) mConfig = new PosConfigDefault();
+        boolean tax_cart_display = false;
+        if (mConfig.getValue("tax/cart_display/shipping") != null) {
+            String tax_cart = (String) mConfig.getValue("tax/cart_display/shipping");
+            if (!tax_cart.equals("1")) {
+                tax_cart_display = true;
+            }
+        }
+        return tax_cart_display;
+    }
+
+    @Override
+    public boolean getTaxCartDisplaySubtotal() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        if (mConfig == null) mConfig = new PosConfigDefault();
+        boolean tax_cart_display = false;
+        if (mConfig.getValue("tax/cart_display/subtotal") != null) {
+            String tax_cart = (String) mConfig.getValue("tax/cart_display/subtotal");
+            if (!tax_cart.equals("1")) {
+                tax_cart_display = true;
+            }
+        }
+        return tax_cart_display;
+    }
+
+    @Override
+    public boolean getTaxDisplayType() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        if (mConfig == null) mConfig = new PosConfigDefault();
+        boolean tax_cart_display = false;
+        if (mConfig.getValue("tax/display/type") != null) {
+            String tax_cart = (String) mConfig.getValue("tax/display/type");
+            if (!tax_cart.equals("1")) {
+                tax_cart_display = true;
+            }
+        }
+        return tax_cart_display;
+    }
+
+    @Override
+    public boolean getTaxDisplayShipping() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        if (mConfig == null) mConfig = new PosConfigDefault();
+        boolean tax_cart_display = false;
+        if (mConfig.getValue("tax/display/shipping") != null) {
+            String tax_cart = (String) mConfig.getValue("tax/display/shipping");
             if (!tax_cart.equals("1")) {
                 tax_cart_display = true;
             }
@@ -1030,11 +1137,49 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
     }
 
     @Override
+    public boolean getTaxSaleDisplayPrice() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        if (mConfig == null) mConfig = new PosConfigDefault();
+        boolean tax_sales_display = false;
+        if (mConfig.getValue("tax/sales_display/price") != null) {
+            String tax_sales = (String) mConfig.getValue("tax/sales_display/price");
+            if (!tax_sales.equals("1")) {
+                tax_sales_display = true;
+            }
+        }
+        return tax_sales_display;
+    }
+
+    @Override
+    public boolean getTaxSaleDisplayShipping() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        if (mConfig == null) mConfig = new PosConfigDefault();
+        boolean tax_sales_shipping = false;
+        if (mConfig.getValue("tax/sales_display/shipping") != null) {
+            String tax_shipping = (String) mConfig.getValue("tax/sales_display/shipping");
+            if (!tax_shipping.equals("1")) {
+                tax_sales_shipping = true;
+            }
+        }
+        return tax_sales_shipping;
+    }
+
+    @Override
+    public boolean getTaxSaleDisplaySubtotal() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        if (mConfig == null) mConfig = new PosConfigDefault();
+        boolean tax_sales_subtotal = false;
+        if (mConfig.getValue("tax/sales_display/subtotal") != null) {
+            String tax_subtotal = (String) mConfig.getValue("tax/sales_display/subtotal");
+            if (!tax_subtotal.equals("1")) {
+                tax_sales_subtotal = true;
+            }
+        }
+        return tax_sales_subtotal;
+    }
+
+    @Override
     public void getConfigStaffPermisson(List<String> listPermisson) throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
         if (listPermisson.size() > 0) {
             ConfigUtil.setChangeStaff(true);
             ConfigUtil.setManageOrderByLocation(false);
-            ConfigUtil.setManagerShiftAdjustment(true);
             ConfigUtil.setNeedToShip(true);
             ConfigUtil.setMarkAsShip(true);
             ConfigUtil.setSendEmail(true);
@@ -1097,7 +1242,9 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
                     ConfigUtil.setDiscountPerItem(checkStaffPermiss(listPermisson, APPLY_DISCOUNT_PER_ITEM));
                     ConfigUtil.setApplyCustomPrice(checkStaffPermiss(listPermisson, APPLY_CUSTOM_PRICE));
                 }
-//                ConfigUtil.setManagerShiftAdjustment(checkStaffPermiss(listPermisson, MANAGE_SHIFT_ADJUSTMENT));
+                ConfigUtil.setOpenShift(checkStaffPermiss(listPermisson, OPEN_SHIFT));
+                ConfigUtil.setCloseShift(checkStaffPermiss(listPermisson, CLOSE_SHIFT));
+                ConfigUtil.setManagerShiftAdjustment(checkStaffPermiss(listPermisson, MANAGE_SHIFT_ADJUSTMENT));
             }
         }
     }
@@ -1122,6 +1269,11 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
         listSetting.add("2");
         listSetting.add("3");
         return listSetting;
+    }
+
+    @Override
+    public void getConfigTax() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+
     }
 
     private boolean checkStaffPermiss(List<String> listPermisson, String permisson) {

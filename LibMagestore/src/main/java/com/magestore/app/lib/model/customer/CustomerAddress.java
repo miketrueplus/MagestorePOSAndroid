@@ -68,6 +68,7 @@ public interface CustomerAddress extends Model {
 
     Region getRegion();
     String getRegionCode();
+    String getRegionID();
     void setRegionID(String strRegionID);
     void setRegion(Region region);
 

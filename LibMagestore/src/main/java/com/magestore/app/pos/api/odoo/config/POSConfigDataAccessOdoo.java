@@ -376,6 +376,11 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
     }
 
     @Override
+    public List<String> getProductAttribute() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        return null;
+    }
+
+    @Override
     public Map<String, String> getConfigCCYears() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
         return getConfigYearFake();
     }
@@ -412,7 +417,27 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
     }
 
     @Override
-    public boolean taxCartDisplay() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+    public boolean getTaxCartDisplayPrice() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        return false;
+    }
+
+    @Override
+    public boolean getTaxCartDisplayShipping() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        return false;
+    }
+
+    @Override
+    public boolean getTaxCartDisplaySubtotal() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        return false;
+    }
+
+    @Override
+    public boolean getTaxDisplayType() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        return false;
+    }
+
+    @Override
+    public boolean getTaxDisplayShipping() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
         return false;
     }
 
@@ -449,6 +474,21 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
 
     @Override
     public boolean getApplyAfterDiscount() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        return false;
+    }
+
+    @Override
+    public boolean getTaxSaleDisplayPrice() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        return false;
+    }
+
+    @Override
+    public boolean getTaxSaleDisplayShipping() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        return false;
+    }
+
+    @Override
+    public boolean getTaxSaleDisplaySubtotal() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
         return false;
     }
 
@@ -490,6 +530,8 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
             ConfigUtil.setApplyCoupon(false);
             ConfigUtil.setCustomSales(false);
             ConfigUtil.setShowAvailableQty(false);
+            ConfigUtil.setOpenShift(true);
+            ConfigUtil.setCloseShift(true);
             if (checkStaffPermiss(listPermisson, ALL_PERMISSON)) {
                 ConfigUtil.setCreateOrder(true);
                 ConfigUtil.setManagerAllOrder(true);
@@ -542,6 +584,11 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
         listSetting.add("0");
         listSetting.add("2");
         return listSetting;
+    }
+
+    @Override
+    public void getConfigTax() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+
     }
 
     private boolean checkStaffPermiss(List<String> listPermisson, String permisson) {

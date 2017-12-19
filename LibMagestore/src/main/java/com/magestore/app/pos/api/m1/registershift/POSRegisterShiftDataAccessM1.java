@@ -115,6 +115,10 @@ public class POSRegisterShiftDataAccessM1 extends POSAbstractDataAccessM1 implem
                     .setFilterEqual("pos_id", ConfigUtil.getPointOfSales() != null ? ConfigUtil.getPointOfSales().getID() : ConfigUtil.getPosId())
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
+
             // thực thi truy vấn và parse kết quả thành object
             rp = statement.execute();
             rp.setParseImplement(getClassParseImplement());
@@ -167,6 +171,10 @@ public class POSRegisterShiftDataAccessM1 extends POSAbstractDataAccessM1 implem
                     .setSortOrderDESC("id")
                     .setFilterEqual("pos_id", ConfigUtil.getPointOfSales() != null ? ConfigUtil.getPointOfSales().getID() : ConfigUtil.getPosId())
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
 
             // thực thi truy vấn và parse kết quả thành object
             rp = statement.execute();
@@ -239,6 +247,10 @@ public class POSRegisterShiftDataAccessM1 extends POSAbstractDataAccessM1 implem
             // Xây dựng tham số
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
 
 //            // thực thi truy vấn và parse kết quả thành object
 //            RegisterShiftEntity registerShiftEntity = new RegisterShiftEntity();
@@ -324,6 +336,10 @@ public class POSRegisterShiftDataAccessM1 extends POSAbstractDataAccessM1 implem
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
+
             // thực thi truy vấn và parse kết quả thành object
 //            MakeAdjusmentEntity makeAdjusmentEntity = new MakeAdjusmentEntity();
 //            CashTransactionDataParam cashTransactionDataParam = new CashTransactionDataParam();
@@ -362,14 +378,21 @@ public class POSRegisterShiftDataAccessM1 extends POSAbstractDataAccessM1 implem
             registerShiftEntity.cashTransaction = cashTransaction;
 
             rp = statement.execute(registerShiftEntity);
-            rp.setParseImplement(getClassParseImplement());
-            rp.setParseModel(PosDataRegisterShift.class);
-            DataRegisterShift dataRegisterShift = (PosDataRegisterShift) rp.doParse();
-            return dataRegisterShift.getListRegisterShift();
+            String json = rp.readResult2String();
+            Gson gson = new Gson();
+            List<RegisterShift> list = new ArrayList<>();
+            JSONArray arrShift = new JSONArray(json);
+            for (int i = 0; i < arrShift.length() ; i++) {
+                PosRegisterShift registerShift = gson.fromJson(arrShift.get(i).toString(), PosRegisterShift.class);
+                list.add((RegisterShift) registerShift);
+            }
+            return list;
         } catch (ConnectionException ex) {
             throw new DataAccessException(ex);
         } catch (IOException ex) {
             throw new DataAccessException(ex);
+        } catch (JSONException e) {
+            throw new DataAccessException(e);
         } finally {
             // đóng result reading
             if (rp != null) rp.close();
@@ -404,6 +427,10 @@ public class POSRegisterShiftDataAccessM1 extends POSAbstractDataAccessM1 implem
             // Xây dựng tham số
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
 
 //            // thực thi truy vấn và parse kết quả thành object
 //            RegisterShiftEntity registerShiftEntity = new RegisterShiftEntity();

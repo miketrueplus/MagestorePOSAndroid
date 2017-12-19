@@ -158,7 +158,7 @@ public class PrintUtil {
             }
         }
 
-        String title_invoice = context.getString(R.string.receipt);
+        String title_invoice = StringUtil.isNullOrEmpty(ConfigUtil.getConfigPrint().getReceiptTitle()) ? context.getString(R.string.receipt).toUpperCase() : ConfigUtil.getConfigPrint().getReceiptTitle();;
         String body_header_title = "<div align=\"center\" style=\"font-weight: bold; font-size: 30px; display: block; font-family: monospace;\">" + title_invoice + "</div>" + "<div align=\"center\" style=\"font-size: 16px; font-weight: 400; display: block; font-family: monospace;\">**** ****</div>";
         // header content
         String body_header_content = "";
@@ -200,8 +200,8 @@ public class PrintUtil {
                     String product_name = ConfigUtil.isPrintUseSku() ? item.getSku() : item.getName();
                     String body_content_item_name = "<td style=\"font-family: monospace; text-align: left; padding: 5px 0;\"><span style=\"font-family: monospace;\">" + product_name + "</span></td>";
                     String body_content_item_qty = "<td style=\"font-family: monospace; text-align: right; padding: 5px 0;\">" + item.getQtyOrdered() + "</td>";
-                    String body_content_item_price = "<td style=\"font-family: monospace; text-align: right; padding: 5px 0;\">" + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(item.getBasePrice())) + "</td>";
-                    String body_content_item_subtotal = "<td style=\"font-family: monospace; text-align: right; padding: 5px 0;\">" + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(item.getBaseSubTotal())) + "</td>";
+                    String body_content_item_price = "<td style=\"font-family: monospace; text-align: right; padding: 5px 0;\">" + ConfigUtil.formatPrice(ConfigUtil.isTaxSalesDisplayPrice() ? ConfigUtil.convertToPrice(item.getBasePriceInclTax()) : ConfigUtil.convertToPrice(item.getBasePrice())) + "</td>";
+                    String body_content_item_subtotal = "<td style=\"font-family: monospace; text-align: right; padding: 5px 0;\">" + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(ConfigUtil.isTaxSalesDisplaySubtotal() ? ConfigUtil.convertToPrice(item.getBaseRowTotalInclTax()) :item.getBaseSubTotal())) + "</td>";
                     body_content_item += "<tr style=\"display: table-row;\">" + body_content_item_name + body_content_item_qty + body_content_item_price + body_content_item_subtotal + "</tr>";
                 }
             }
@@ -220,7 +220,7 @@ public class PrintUtil {
         String title_grandtotal = context.getString(R.string.order_detail_bottom_tb_grand_total).toUpperCase();
         String title_total_paid = context.getString(R.string.order_detail_bottom_tb_total_paid).toUpperCase();
         String title_total_due = context.getString(R.string.order_detail_bottom_tb_total_due).toUpperCase();
-        String body_content_total_subtotal = "<tr><td style=\"font-family: monospace;\">" + title_sutotal + "</td><td align=\"right\" style=\"font-family: monospace;\"><strong style=\"font-family: monospace;\">" + ConfigUtil.formatDecimalQuantity(ConfigUtil.convertToPrice(order.getBaseSubtotalInclTax())) + "</strong></td></tr>";
+        String body_content_total_subtotal = "<tr><td style=\"font-family: monospace;\">" + title_sutotal + "</td><td align=\"right\" style=\"font-family: monospace;\"><strong style=\"font-family: monospace;\">" + ConfigUtil.formatDecimalQuantity(ConfigUtil.isTaxSalesDisplaySubtotal() ? ConfigUtil.convertToPrice(order.getBaseSubtotalInclTax()) : ConfigUtil.convertToPrice(order.getBaseSubtotal())) + "</strong></td></tr>";
         String body_content_earn_point = "";
         if (order.getRewardPointsEarn() != 0) {
             body_content_earn_point = "<tr><td style=\"font-family: monospace;\">" + title_earn_point + "</td><td align=\"right\" style=\"font-family: monospace;\"><strong style=\"font-family: monospace;\">" + order.getRewardPointsEarn() + "</strong></td></tr>";
@@ -229,7 +229,7 @@ public class PrintUtil {
         if (order.getRewardPointsSpent() != 0) {
             body_content_spend_point = "<tr><td style=\"font-family: monospace;\">" + title_spent_point + "</td><td align=\"right\" style=\"font-family: monospace;\"><strong style=\"font-family: monospace;\">" + order.getRewardPointsSpent() + "</strong></td></tr>";
         }
-        String body_content_total_shipping = "<tr><td style=\"font-family: monospace;\">" + title_shipping + "</td><td align=\"right\" style=\"font-family: monospace;\"><strong style=\"font-family: monospace;\">" + ConfigUtil.formatDecimalQuantity(ConfigUtil.convertToPrice(order.getBaseShippingInclTax())) + "</strong></td></tr>";
+        String body_content_total_shipping = "<tr><td style=\"font-family: monospace;\">" + title_shipping + "</td><td align=\"right\" style=\"font-family: monospace;\"><strong style=\"font-family: monospace;\">" + ConfigUtil.formatDecimalQuantity(ConfigUtil.isTaxSalesDisplayShipping() ? ConfigUtil.convertToPrice(order.getBaseShippingInclTax()) : ConfigUtil.convertToPrice(order.getBaseShippingAmount())) + "</strong></td></tr>";
         String body_content_total_tax = "<tr><td style=\"font-family: monospace;\">" + title_tax + "</td><td align=\"right\" style=\"font-family: monospace;\"><strong style=\"font-family: monospace;\">" + ConfigUtil.formatDecimalQuantity(ConfigUtil.convertToPrice(order.getBaseTaxAmount())) + "</strong></td></tr>";
         String body_content_total_discount = "<tr><td style=\"font-family: monospace;\">" + title_discount + "</td><td align=\"right\" style=\"font-family: monospace;\"><strong style=\"font-family: monospace;\">" + ConfigUtil.formatDecimalQuantity(ConfigUtil.convertToPrice(order.getBaseDiscountAmount())) + "</strong></td></tr>";
         String body_content_giftcard_discount = "";

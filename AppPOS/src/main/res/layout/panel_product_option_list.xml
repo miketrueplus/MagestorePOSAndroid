@@ -34,7 +34,7 @@
 
         <LinearLayout
             android:id="@+id/ll_description"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/product_image_detail_height"
             android:layout_height="match_parent"
             android:layout_margin="@dimen/product_detail_margin_size"
             android:orientation="vertical">
@@ -45,7 +45,7 @@
                 android:layout_height="wrap_content" />
 
             <TextView
-                android:id="@+id/id_txt_product_option_cart_item_description"
+                android:id="@+id/txt_description"
                 android:layout_width="@dimen/product_image_detail_height"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.6"
@@ -53,6 +53,14 @@
                 android:text="@{Html.fromHtml(product.getDescription()).toString()}"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/product_detail_description_text_size" />
+
+            <WebView
+                android:id="@+id/webview_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.6"
+                android:visibility="gone"
+                android:scrollbars="vertical"/>
         </LinearLayout>
 
         <LinearLayout

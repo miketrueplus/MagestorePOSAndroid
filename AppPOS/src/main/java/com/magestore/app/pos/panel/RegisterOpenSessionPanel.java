@@ -99,6 +99,7 @@ public class RegisterOpenSessionPanel extends AbstractDetailPanel<RegisterShift>
 
     @Override
     public void initValue() {
+        bt_open.setVisibility(ConfigUtil.isOpenShift() ? VISIBLE : GONE);
         ll_note.setVisibility(ConfigUtil.isShiftOpenNote() ? VISIBLE : GONE);
         et_float_amount.setEnabled(ConfigUtil.isEnableOpenFloatAmount() ? true : false);
         et_float_amount.setText(ConfigUtil.formatPrice(0));

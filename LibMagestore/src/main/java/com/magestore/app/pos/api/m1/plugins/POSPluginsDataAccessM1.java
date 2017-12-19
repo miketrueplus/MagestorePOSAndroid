@@ -33,6 +33,7 @@ import com.magestore.app.pos.model.plugins.PosGiftCard;
 import com.magestore.app.pos.model.plugins.PosGiftCardRespone;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosAbstractParseImplement;
 import com.magestore.app.util.ConfigUtil;
+import com.magestore.app.util.StringUtil;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -147,6 +148,10 @@ public class POSPluginsDataAccessM1 extends POSAbstractDataAccessM1 implements P
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
+
             RewardPointParams rewardPointParams = new RewardPointParams();
             rewardPointParams.currency_id = ConfigUtil.getCurrentCurrency().getCode();
             rewardPointParams.customer_id = rewardPoint.getCustomerId();
@@ -202,6 +207,10 @@ public class POSPluginsDataAccessM1 extends POSAbstractDataAccessM1 implements P
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
+
             GiftCardParams giftCardParams = new GiftCardParams();
             giftCardParams.coupon_code = giftCard.getCouponCode();
             giftCardParams.currency_id = ConfigUtil.getCurrentCurrency().getCode();
@@ -255,6 +264,10 @@ public class POSPluginsDataAccessM1 extends POSAbstractDataAccessM1 implements P
             // Xây dựng tham số
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
 
             GiftCardParams giftCardParams = new GiftCardParams();
             giftCardParams.coupon_code = giftCard.getCode();

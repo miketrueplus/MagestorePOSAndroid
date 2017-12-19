@@ -117,20 +117,20 @@ public class PosCashTransaction extends PosAbstractModel implements CashTransact
 
     @Override
     public float getBaseValue() {
-        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2) || ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_ODOO)) {
+//        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2) || ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_ODOO)) {
             return base_value;
-        } else {
-            return base_amount;
-        }
+//        } else {
+//            return base_amount;
+//        }
     }
 
     @Override
     public void setBaseValue(float baseValue) {
-        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2) || ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_ODOO)) {
+//        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2) || ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_ODOO)) {
             base_value = baseValue;
-        } else {
-            base_amount = baseValue;
-        }
+//        } else {
+//            base_amount = baseValue;
+//        }
     }
 
     @Override
@@ -155,20 +155,20 @@ public class PosCashTransaction extends PosAbstractModel implements CashTransact
 
     @Override
     public float getValue() {
-        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2) || ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_ODOO)) {
+//        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2) || ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_ODOO)) {
             return value;
-        } else {
-            return amount;
-        }
+//        } else {
+//            return amount;
+//        }
     }
 
     @Override
     public void setValue(float value) {
-        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2) || ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_ODOO)) {
+//        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2) || ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_ODOO)) {
             this.value = value;
-        } else {
-            this.amount = value;
-        }
+//        } else {
+//            this.amount = value;
+//        }
     }
 
     @Override
@@ -236,7 +236,7 @@ public class PosCashTransaction extends PosAbstractModel implements CashTransact
 
     @Override
     public String getCheckTypeValue() {
-        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2)) {
+        if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2) || ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_1)) {
             if (type.toLowerCase().equals("remove")) {
                 return "- " + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(base_value));
             }
@@ -251,7 +251,8 @@ public class PosCashTransaction extends PosAbstractModel implements CashTransact
                     return "+ " + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(base_value));
                 }
             }
-        } else {
+        }
+        else {
             if (base_amount >= 0) {
                 return "+ " + ConfigUtil.formatPrice(ConfigUtil.convertToPrice(base_amount));
             } else {

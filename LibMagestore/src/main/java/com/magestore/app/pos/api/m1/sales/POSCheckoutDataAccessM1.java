@@ -206,9 +206,13 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
+
             // set data
             quote.setTillId(ConfigUtil.getPointOfSales() != null ? ConfigUtil.getPointOfSales().getID() : ConfigUtil.getPosId());
-            quote.setShiftId(ConfigUtil.getRegisterShiftId());
+            quote.setShiftId(ConfigUtil.getShiftId());
 
             rp = statement.execute(setQuoteParam(quote));
             rp.setParseImplement(new Gson2PosCartParseModel());
@@ -344,6 +348,10 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
+
             // set data
             quoteParam.setTillId(ConfigUtil.getPointOfSales() != null ? ConfigUtil.getPointOfSales().getID() : ConfigUtil.getPosId());
 
@@ -396,6 +404,10 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
+
             rp = statement.execute(quoteAddCouponParam);
             rp.setParseImplement(new Gson2PosCartParseModel());
             rp.setParseModel(PosDataCheckout.class);
@@ -440,13 +452,17 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
+
             CheckoutEntity checkoutEntity = new CheckoutEntity();
             checkoutEntity.quote_id = quoteId;
             checkoutEntity.shipping_method = shippingCode;
             checkoutEntity.currency_id = ConfigUtil.getCurrentCurrency().getCode();
             checkoutEntity.store_id = checkout.getStoreId();
             checkoutEntity.till_id = ConfigUtil.getPointOfSales() != null ? ConfigUtil.getPointOfSales().getID() : ConfigUtil.getPosId();
-            checkoutEntity.shift_id = ConfigUtil.getRegisterShiftId();
+            checkoutEntity.shift_id = ConfigUtil.getShiftId();
             String customer_id = "";
             if (checkout.getCustomer() != null) {
                 if (StringUtil.isNullOrEmpty(checkout.getCustomerID())) {
@@ -546,7 +562,7 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
             statement.prepareQuery(POSAPIM1.REST_CHECK_OUT_PLACE_ORDER);
 
             // set data
-            placeOrderParams.setShiftId(ConfigUtil.getRegisterShiftId());
+            placeOrderParams.setShiftId(null);
             placeOrderParams.setStoreId(checkout.getStoreId());
             placeOrderParams.setTillId(ConfigUtil.getPointOfSales() != null ? ConfigUtil.getPointOfSales().getID() : ConfigUtil.getPosId());
             placeOrderParams.setCurrencyId(ConfigUtil.getCurrentCurrency().getCode());
@@ -568,14 +584,21 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
                 List<PaymentMethodDataParam> methodData = placeOrderParams.getMethodData();
                 if (methodData != null && methodData.size() > 0) {
                     for (PaymentMethodDataParam payment : methodData) {
-                        payment.setShiftId(ConfigUtil.getRegisterShiftId());
+                        payment.setShiftId(ConfigUtil.getShiftId());
                     }
                 }
             }
 
+            placeOrderParams.setPlaceOrderExtensionData(null);
+            placeOrderParams.setIntegration(null);
+
             // Xây dựng tham số
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
 
             rp = statement.execute(placeOrderParams);
             rp.setParseImplement(new Gson2PosOrderParseModel());
@@ -630,6 +653,10 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
             // Xây dựng tham số
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
 
             CheckoutEntity checkoutEntity = new CheckoutEntity();
             checkoutEntity.email = email;
@@ -721,6 +748,10 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
+
             rp = statement.execute();
             rp.setParseImplement(getClassParseImplement());
             rp.setParseModel(PosOrder.class);
@@ -763,6 +794,10 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
+
             rp = statement.execute();
             rp.setParseImplement(getClassParseImplement());
             rp.setParseModel(PosOrder.class);
@@ -803,6 +838,10 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
             // Xây dựng tham số
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
 
             CheckoutEntity checkoutEntity = new CheckoutEntity();
             checkoutEntity.paymentId = payment_id;
@@ -846,6 +885,10 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
             // Xây dựng tham số
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
 
             CheckoutEntity checkoutEntity = new CheckoutEntity();
             checkoutEntity.quote_id = quote_id;
@@ -892,6 +935,10 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
+
             CheckoutEntity checkoutEntity = new CheckoutEntity();
             checkoutEntity.token = token;
             checkoutEntity.amount = amount;
@@ -935,6 +982,10 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
             // Xây dựng tham số
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
 
             rp = statement.execute();
             String transaction_id = rp.readResult2String().trim().replace("\"", "");

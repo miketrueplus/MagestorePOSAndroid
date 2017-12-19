@@ -175,6 +175,11 @@ public class PosCustomerAddress extends PosAbstractModel implements CustomerAddr
     }
 
     @Override
+    public String getRegionID() {
+        return region_id;
+    }
+
+    @Override
     public void setRegionID(String strRegionID) {
         region_id = strRegionID;
     }

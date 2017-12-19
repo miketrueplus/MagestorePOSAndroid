@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.text.Html;
 
 import com.magestore.app.lib.model.checkout.cart.CartItem;
 import com.magestore.app.lib.model.sales.Order;
@@ -54,12 +55,14 @@ public class EnglishReceiptsImpl extends ILocalizeReceipts {
         builder.appendAlignment(AlignmentPosition.Center);
 
         // Start Header
-        String invoice_title = context.getString(R.string.order_detail_bottom_btn_invoice).toUpperCase();
+        String invoice_title = StringUtil.isNullOrEmpty(ConfigUtil.getConfigPrint().getReceiptTitle()) ? context.getString(R.string.receipt).toUpperCase() : ConfigUtil.getConfigPrint().getReceiptTitle();
         builder.appendMultiple((invoice_title + "\n").getBytes(encoding), 2, 2);
         builder.appendMultiple(("**** ****\n").getBytes(encoding), 1, 1);
         if (!StringUtil.isNullOrEmpty(ConfigUtil.getConfigPrint().getHeaderText())) {
-            builder.append((ConfigUtil.getConfigPrint().getHeaderText() + "\n").getBytes(encoding));
+            builder.append((Html.fromHtml(ConfigUtil.getConfigPrint().getHeaderText()).toString() + "\n").getBytes(encoding));
         }
+
+
         String increment_id = context.getString(R.string.checkout_order_id, mOrder.getIncrementId());
         builder.append((increment_id + "\n").getBytes(encoding));
         String create_date = ConfigUtil.formatDateTime(mOrder.getCreatedAt());
@@ -95,7 +98,7 @@ public class EnglishReceiptsImpl extends ILocalizeReceipts {
             }
             if (listOrder != null && listOrder.size() > 0) {
                 for (CartItem item : listOrder) {
-                    String line_item = lineWith(item.getName(), ConfigUtil.formatQuantity(item.getQtyOrdered()), ConfigUtil.formatDecimalQuantity(ConfigUtil.convertToPrice(item.getBasePrice())), ConfigUtil.formatDecimalQuantity(ConfigUtil.convertToPrice(item.getBaseSubTotal())), length);
+                    String line_item = lineWith(item.getName(), ConfigUtil.formatQuantity(item.getQtyOrdered()), ConfigUtil.formatDecimalQuantity(ConfigUtil.isTaxSalesDisplayPrice() ? ConfigUtil.convertToPrice(item.getBasePriceInclTax()) : ConfigUtil.convertToPrice(item.getBasePrice())), ConfigUtil.formatDecimalQuantity(ConfigUtil.isTaxSalesDisplaySubtotal() ? ConfigUtil.convertToPrice(item.getBaseRowTotalInclTax()) : ConfigUtil.convertToPrice(item.getBaseSubTotal())), length);
                     builder.append((line_item).getBytes(encoding));
                 }
             }
@@ -105,7 +108,7 @@ public class EnglishReceiptsImpl extends ILocalizeReceipts {
 
         // Start Total
         if (mOrder.getBaseSubtotal() > 0) {
-            String subtotal = ConfigUtil.formatDecimalQuantity(ConfigUtil.convertToPrice(mOrder.getBaseSubtotal()));
+            String subtotal = ConfigUtil.formatDecimalQuantity(ConfigUtil.isTaxSalesDisplaySubtotal() ? ConfigUtil.convertToPrice(mOrder.getBaseSubtotalInclTax()) : ConfigUtil.convertToPrice(mOrder.getBaseSubtotal()));
             String title_subtotal = context.getString(R.string.order_detail_bottom_tb_subtotal);
             String space = stringSpaceWith(length - title_subtotal.length() - subtotal.length());
             builder.append((title_subtotal + space + subtotal + "\n").getBytes(encoding));
@@ -123,7 +126,7 @@ public class EnglishReceiptsImpl extends ILocalizeReceipts {
             builder.append((title_spent + space + reward_point_spent + "\n").getBytes(encoding));
         }
         if (mOrder.getBaseShippingAmount() != 0) {
-            String shipping = ConfigUtil.formatDecimalQuantity(ConfigUtil.convertToPrice(mOrder.getBaseShippingAmount()));
+            String shipping = ConfigUtil.formatDecimalQuantity(ConfigUtil.isTaxSalesDisplayShipping() ? ConfigUtil.convertToPrice(mOrder.getBaseShippingInclTax()) : ConfigUtil.convertToPrice(mOrder.getBaseShippingAmount()));
             String title_shipping = context.getString(R.string.order_detail_bottom_tb_shipping);
             String space = stringSpaceWith(length - title_shipping.length() - shipping.length());
             builder.append((title_shipping + space + shipping + "\n").getBytes(encoding));
@@ -209,7 +212,7 @@ public class EnglishReceiptsImpl extends ILocalizeReceipts {
         builder.appendAlignment(AlignmentPosition.Center);
         builder.append(("-------- **** --------\n").getBytes(encoding));
         if (!StringUtil.isNullOrEmpty(ConfigUtil.getConfigPrint().getFooterText())) {
-            builder.append((ConfigUtil.getConfigPrint().getFooterText()).getBytes(encoding));
+            builder.append((Html.fromHtml(ConfigUtil.getConfigPrint().getFooterText()).toString()).getBytes(encoding));
         } else {
             builder.append((context.getString(R.string.print_footer_default)).getBytes(encoding));
         }

@@ -270,6 +270,10 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
                     .setSortOrderDESC("created_at")
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
+
             if (!ConfigUtil.isManagerAllOrder()) {
                 if (ConfigUtil.isManageOrderByMe() && !ConfigUtil.isManageOrderOtherStaff())
                     paramBuilder.setFilterEqual("webpos_staff_id", ConfigUtil.getStaff().getID());
@@ -335,6 +339,10 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
                     .setSortOrderDESC("created_at")
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
+
             if (!ConfigUtil.isManagerAllOrder()) {
                 if (ConfigUtil.isManageOrderByMe() && !ConfigUtil.isManageOrderOtherStaff())
                     paramBuilder.setFilterEqual("webpos_staff_id", ConfigUtil.getStaff().getID());
@@ -389,6 +397,10 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
+
             OrderEntity orderEntity = new OrderEntity();
             orderEntity.email = email;
             orderEntity.id = orderId;
@@ -442,6 +454,10 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
+
             OrderEntity orderEntity = new OrderEntity();
             orderEntity.statusHistory = orderStatus;
 
@@ -489,6 +505,10 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
+
             OrderEntity orderEntity = new OrderEntity();
             orderEntity.entity = shipmentParams;
 
@@ -532,6 +552,10 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
             // Xây dựng tham số
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
 
             RefundByCreditParam refundByCreditParam = new RefundByCreditParam();
             refundByCreditParam.amount = orderRefundCreditParams.getAmount();
@@ -591,6 +615,10 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
+
             rp = statement.execute(refundByGiftVoucherParam);
             if (StringUtil.isNullOrEmpty(rp.readResult2String())) {
                 return true;
@@ -636,6 +664,10 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
+
             setQtyAndStockRefund(refundParams);
             OrderEntity orderEntity = new OrderEntity();
             orderEntity.entity = refundParams;
@@ -680,6 +712,10 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
+
             rp = statement.execute(orderUpdateQtyParam);
             String json = StringUtil.truncateJson(rp.readResult2String());
             Gson2PosOrderParseModel implement = new Gson2PosOrderParseModel();
@@ -721,6 +757,10 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
             // Xây dựng tham số
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
 
             OrderInvoiceEntity orderEntity = new OrderInvoiceEntity();
             orderEntity.entity = setInvoiceParam(invoiceParams);
@@ -765,6 +805,9 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
 
             OrderEntity orderEntity = new OrderEntity();
             orderEntity.comment = cancelParams;
@@ -820,16 +863,20 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
+
             // set order to params
             orderTakePaymentParam.setOrderIncrementId(order.getIncrementId());
             orderTakePaymentParam.setOrderId(orderID);
             orderTakePaymentParam.setCurrencyId(ConfigUtil.getCurrentCurrency().getCode());
-            orderTakePaymentParam.setShiftId(ConfigUtil.getRegisterShiftId());
+            orderTakePaymentParam.setShiftId(ConfigUtil.getShiftId());
             if (orderTakePaymentParam.getPayment() != null) {
                 List<PaymentMethodDataParam> listPayment = orderTakePaymentParam.getMethodData();
                 if (listPayment != null && listPayment.size() > 0) {
                     for (PaymentMethodDataParam payment : listPayment) {
-                        payment.setShiftId(ConfigUtil.getRegisterShiftId());
+                        payment.setShiftId(ConfigUtil.getShiftId());
                     }
                 }
             }
@@ -876,6 +923,10 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
                     .setPageSize(1)
                     .setFilterNotEqual("status", "onhold")
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
 
             // thực thi truy vấn và parse kết quả thành object
             rp = statement.execute();
@@ -930,6 +981,10 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
                     .setSortOrderDESC("created_at")
                     .setFilterNotEqual("status", "onhold")
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
 
             if (!ConfigUtil.isManagerAllOrder()) {
                 if (ConfigUtil.isManageOrderByMe() && !ConfigUtil.isManageOrderOtherStaff())
@@ -991,6 +1046,10 @@ public class POSOrderDataAccessM1 extends POSAbstractDataAccessM1 implements Ord
                     .setFilterOrLike("customer_lastname", finalSearchString)
                     .setSortOrderDESC("created_at")
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
 
             if (!ConfigUtil.isManagerAllOrder()) {
                 if (ConfigUtil.isManageOrderByMe() && !ConfigUtil.isManageOrderOtherStaff())

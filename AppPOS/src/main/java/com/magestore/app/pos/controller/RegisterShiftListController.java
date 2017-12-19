@@ -153,12 +153,16 @@ public class RegisterShiftListController extends AbstractListController<Register
                     PointOfSales pos = registerShift.getPosConfig();
                     settingConfigWithPos(pos);
 //                getMagestoreContext().getActivity().finish();
-                    DataUtil.saveDataStringToPreferences(getMagestoreContext().getActivity(), DataUtil.STORE_ID, registerShift.getStoreId());
+//                    DataUtil.saveDataStringToPreferences(getMagestoreContext().getActivity(), DataUtil.STORE_ID, registerShift.getStoreId());
                     ((RegisterShiftListPanel) mView).isShowButtonOpenSession(false);
                 }
                 if (registerShift.getStatus().equals("1")) {
-                    openSessionList();
-                    ((RegisterShiftListPanel) mView).isShowButtonOpenSession(true);
+                    if (ConfigUtil.isOpenShift()) {
+                        openSessionList();
+                        ((RegisterShiftListPanel) mView).isShowButtonOpenSession(true);
+                    } else {
+                        ((RegisterShiftListPanel) mView).isShowButtonOpenSession(false);
+                    }
                     Intent intent = new Intent();
                     intent.putExtra("is_show", false);
                     intent.setAction(SEND_NOTI_TO_REGISTER_ACTIVITY);
@@ -172,8 +176,12 @@ public class RegisterShiftListController extends AbstractListController<Register
                     getMagestoreContext().getActivity().sendBroadcast(intent);
                 }
             } else {
-                openSessionList();
-                ((RegisterShiftListPanel) mView).isShowButtonOpenSession(true);
+                if (ConfigUtil.isOpenShift()) {
+                    openSessionList();
+                    ((RegisterShiftListPanel) mView).isShowButtonOpenSession(true);
+                } else {
+                    ((RegisterShiftListPanel) mView).isShowButtonOpenSession(false);
+                }
                 Intent intent = new Intent();
                 intent.putExtra("is_show", false);
                 intent.setAction(SEND_NOTI_TO_REGISTER_ACTIVITY);
@@ -247,7 +255,7 @@ public class RegisterShiftListController extends AbstractListController<Register
             setNewRegisterToList(oldRegisterShift, listRegister.get(0));
             setSelectedItem(listRegister.get(0));
             dismissDialogCloseSession();
-            ((RegisterShiftListPanel) mView).isShowButtonOpenSession(true);
+            ((RegisterShiftListPanel) mView).isShowButtonOpenSession(ConfigUtil.isOpenShift() ? true : false);
             Intent intent = new Intent();
             intent.putExtra("is_show", false);
             intent.setAction(SEND_NOTI_TO_REGISTER_ACTIVITY);

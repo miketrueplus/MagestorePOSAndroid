@@ -15,6 +15,7 @@ import com.magestore.app.pos.api.m1.POSAPIM1;
 import com.magestore.app.pos.api.m1.POSAbstractDataAccessM1;
 import com.magestore.app.pos.api.m1.POSDataAccessSessionM1;
 import com.magestore.app.util.ConfigUtil;
+import com.magestore.app.util.StringUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -88,6 +89,10 @@ public class POSCustomerAddressDataAccessM1 extends POSAbstractDataAccessM1 impl
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
+
             // thực thi truy vấn và parse kết quả thành object
             Wrap wrapCustomer = new Wrap();
             wrapCustomer.customer = removeAddressDefault(pcustomer);
@@ -159,6 +164,10 @@ public class POSCustomerAddressDataAccessM1 extends POSAbstractDataAccessM1 impl
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
+
             // thực thi truy vấn và parse kết quả thành object
             Wrap wrapCustomer = new Wrap();
             wrapCustomer.customer = removeAddressDefault(pcustomer);
@@ -225,6 +234,10 @@ public class POSCustomerAddressDataAccessM1 extends POSAbstractDataAccessM1 impl
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
             //.setParam(POSAPI.PARAM_CUSTOMER_ID, pcustomer.getID());
+
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
 
             // thực thi truy vấn và parse kết quả thành object
             Wrap wrapCustomer = new Wrap();

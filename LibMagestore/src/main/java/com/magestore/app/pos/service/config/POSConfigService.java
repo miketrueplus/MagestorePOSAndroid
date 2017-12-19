@@ -72,6 +72,11 @@ public class POSConfigService extends AbstractService implements ConfigService {
 
         // đặt config format tiền
         ConfigUtil.setGoogleKey(configDataAccess.googleAPIKey());
+        ConfigUtil.setTaxCartDisplay(getTaxCartDisplayPrice());
+        ConfigUtil.setApplyAfterDiscount(getApplyAfterDiscount());
+        ConfigUtil.setTaxSalesDisplayPrice(getTaxSaleDisplayPrice());
+        ConfigUtil.setTaxSalesDisplayShipping(getTaxSaleDisplayShipping());
+        ConfigUtil.setTaxSalesDisplaySubtotal(getTaxSaleDisplaySubtotal());
         ConfigUtil.setCurrencyFormat(getPriceFormat());
         ConfigUtil.setCurrencyNoSymbolFormat(getPriceNosymbolFormat());
         ConfigUtil.setFloatFormat(getFloatFormat());
@@ -86,8 +91,6 @@ public class POSConfigService extends AbstractService implements ConfigService {
             ConfigUtil.setEnableGiftCard(getConfigGiftCard());
             ConfigUtil.setEnableStoreCredit(getConfigStoreCredit());
             ConfigUtil.setEnableRewardPoint(getConfigRewardPoint());
-            ConfigUtil.setTaxCartDisplay(taxCartDisplay());
-            ConfigUtil.setApplyAfterDiscount(getApplyAfterDiscount());
         }
         ConfigUtil.setListCountry(getCountry());
         ConfigUtil.setListCustomerGroup(getCustomerGroup());
@@ -123,6 +126,10 @@ public class POSConfigService extends AbstractService implements ConfigService {
 
         // permisson
         getConfigStaffPermisson(getStaffPermisson());
+        // get config tax
+        getConfigTax();
+        //  get product attribute
+        ConfigUtil.setProductAttribute(getProductAttribute());
 
         // return config
         return config;
@@ -374,6 +381,14 @@ public class POSConfigService extends AbstractService implements ConfigService {
     }
 
     @Override
+    public List<String> getProductAttribute() throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        // Nếu chưa khởi tạo customer gateway factory
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
+        return configDataAccess.getProductAttribute();
+    }
+
+    @Override
     public Map<String, String> getConfigCCYears() throws InstantiationException, IllegalAccessException, IOException, ParseException {
         // Nếu chưa khởi tạo customer gateway factory
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
@@ -431,10 +446,10 @@ public class POSConfigService extends AbstractService implements ConfigService {
     }
 
     @Override
-    public boolean taxCartDisplay() throws InstantiationException, IllegalAccessException, IOException, ParseException {
+    public boolean getTaxCartDisplayPrice() throws InstantiationException, IllegalAccessException, IOException, ParseException {
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
-        return configDataAccess.taxCartDisplay();
+        return configDataAccess.getTaxCartDisplayPrice();
     }
 
     @Override
@@ -484,6 +499,34 @@ public class POSConfigService extends AbstractService implements ConfigService {
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
         return configDataAccess.getApplyAfterDiscount();
+    }
+
+    @Override
+    public boolean getTaxSaleDisplayPrice() throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
+        return configDataAccess.getTaxSaleDisplayPrice();
+    }
+
+    @Override
+    public boolean getTaxSaleDisplayShipping() throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
+        return configDataAccess.getTaxSaleDisplayShipping();
+    }
+
+    @Override
+    public boolean getTaxSaleDisplaySubtotal() throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
+        return configDataAccess.getTaxSaleDisplaySubtotal();
+    }
+
+    @Override
+    public void getConfigTax() throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
+        configDataAccess.getConfigTax();
     }
 
     @Override

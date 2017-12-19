@@ -71,6 +71,9 @@ public interface Product extends Model, ParseModel {
     Bitmap getBitmap();
     void setBitmap(Bitmap bmp);
 
+    String getTaxClassId();
+    void setTaxClassId(String strTaxClassId);
+
     int getQuantityIncrement();
 
     void setQuantityIncrement(int quantityIncrement);

@@ -9,5 +9,8 @@ import com.magestore.app.lib.model.Model;
  */
 
 public interface ConfigCustomerGroup extends Model {
-
+    String getCode();
+    void setCode(String strCode);
+    String getTaxClassId();
+    void setTaxClassId(String strTaxClassId);
 }

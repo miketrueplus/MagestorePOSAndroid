@@ -25,4 +25,6 @@ public interface ConfigPrint extends Model {
     void setShowCashierName(String strShowCashierName);
     String getShowComment();
     void setShowComment(String strShowComment);
+    String getReceiptTitle();
+    void setReceiptTitle(String strReceiptTitle);
 }

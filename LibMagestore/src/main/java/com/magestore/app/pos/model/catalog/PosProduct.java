@@ -46,7 +46,7 @@ public class PosProduct extends PosAbstractModel implements Product {
     private float price_increment = 0.1f;
     private ProductOption productOption;
     private int options;
-
+    private String tax_class_id;
     private String is_in_stock;
 
     private String backorders = StringUtil.STRING_ONE;
@@ -59,6 +59,8 @@ public class PosProduct extends PosAbstractModel implements Product {
     @Gson2PosExclude
     private boolean isDecimal;
 
+    private String is_salable;
+
     @Gson2PosExclude
     Map<String, Float> m_available_qty;
     @Gson2PosExclude
@@ -70,11 +72,17 @@ public class PosProduct extends PosAbstractModel implements Product {
 
     @Override
     public boolean isInStock() {
-        if (StringUtil.isNullOrEmpty(is_in_stock)) {
-            return false;
-        }
-        if (StringUtil.STRING_ONE.equals(is_in_stock) || StringUtil.STRING_TRUE.equals(is_in_stock)) {
-            return true;
+        if (!StringUtil.isNullOrEmpty(is_salable)) {
+            if (StringUtil.STRING_ONE.equals(is_salable) || StringUtil.STRING_TRUE.equals(is_salable)) {
+                return true;
+            }
+        } else {
+            if (StringUtil.isNullOrEmpty(is_in_stock)) {
+                return false;
+            }
+            if (StringUtil.STRING_ONE.equals(is_in_stock) || StringUtil.STRING_TRUE.equals(is_in_stock)) {
+                return true;
+            }
         }
         return false;
     }
@@ -82,15 +90,15 @@ public class PosProduct extends PosAbstractModel implements Product {
     @Override
     public void setInStock(boolean bInStock) {
         if (bInStock) {
-            is_in_stock = "1";
+            is_salable = "1";
         } else {
-            is_in_stock = "0";
+            is_salable = "0";
         }
     }
 
     @Override
     public boolean isBackOrders() {
-        return StringUtil.STRING_ONE.equals(backorders);
+        return !StringUtil.STRING_ZERO.equals(backorders);
     }
 
     @Override
@@ -288,6 +296,16 @@ public class PosProduct extends PosAbstractModel implements Product {
     @Override
     public void setBitmap(Bitmap bmp) {
         bitmap = bmp;
+    }
+
+    @Override
+    public String getTaxClassId() {
+        return tax_class_id;
+    }
+
+    @Override
+    public void setTaxClassId(String strTaxClassId) {
+        tax_class_id = strTaxClassId;
     }
 
     @Override

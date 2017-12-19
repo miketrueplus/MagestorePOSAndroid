@@ -62,7 +62,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="right"
-                            android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderDetail.getBaseSubtotal()))}"
+                            android:text="@{ConfigUtil.isTaxSalesDisplaySubtotal() ? ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderDetail.getBaseSubtotalInclTax())) : ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderDetail.getBaseSubtotal()))}"
                             android:textColor="@color/text_color"
                             android:textSize="@dimen/order_bottom_text_size"
                             android:textStyle="bold" />
@@ -122,7 +122,7 @@
                         android:id="@+id/table_row_shipping"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="@{orderDetail.getBaseShippingInclTax() != 0 ? View.VISIBLE : View.GONE}">
+                        android:visibility="@{orderDetail.getBaseShippingAmount() != 0 ? View.VISIBLE : View.GONE}">
 
                         <TextView
                             android:layout_width="0dp"
@@ -137,7 +137,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="right"
-                            android:text="@{ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderDetail.getBaseShippingInclTax()))}"
+                            android:text="@{ConfigUtil.isTaxSalesDisplayShipping() ? ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderDetail.getBaseShippingInclTax())) : ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderDetail.getBaseShippingAmount()))}"
                             android:textColor="@color/text_color"
                             android:textSize="@dimen/order_bottom_text_size"
                             android:textStyle="bold" />

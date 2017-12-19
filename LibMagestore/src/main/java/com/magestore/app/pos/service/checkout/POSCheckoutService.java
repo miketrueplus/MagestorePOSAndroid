@@ -881,10 +881,53 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
             quoteItems.convertProductOption(item);
 
             List<QuoteItemExtension> quoteItemExtension = createQuoteItemExtension();
+            addExtensionDataToQuote(item, quoteItemExtension);
             quoteItems.setExtensionData(quoteItemExtension);
             listQuoteItem.add(quoteItems);
         }
         return listQuoteItem;
+    }
+
+    private void addExtensionDataToQuote(CartItem item, List<QuoteItemExtension> quoteItemExtension) {
+        float basePrice = item.getUnitPrice();
+        float price = ConfigUtil.convertToPrice(basePrice);
+        float basePriceInclTax = item.getPriceInclTax();
+        float priceInclTax = ConfigUtil.convertToBasePrice(basePriceInclTax);
+        float qty = item.getQuantity();
+        float rowTotal = price * qty;
+        float baseRowTotal = basePrice * qty;
+        float rowTotalInclTax = priceInclTax * qty;
+        float baseRowTotalInclTax = basePriceInclTax * qty;
+        float discountAmount = item.getDiscountAmount();
+        float baseDiscountAmount = item.getBaseDiscountAmount();
+
+        float taxPercent = item.getTaxPercent();
+        float unitTaxAmount = price * taxPercent / 100;
+        float baseUnitTaxAmount = basePrice * taxPercent / 100;
+        float taxAmount = unitTaxAmount * qty;
+        float baseTaxAmount = baseUnitTaxAmount * qty;
+
+        String customTaxClassId = item.getProduct().getTaxClassId();
+        addKeyToExtensionData("row_total", String.valueOf(rowTotal), quoteItemExtension);
+        addKeyToExtensionData("base_row_total", String.valueOf(baseRowTotal), quoteItemExtension);
+        addKeyToExtensionData("row_total_incl_tax", String.valueOf(rowTotalInclTax), quoteItemExtension);
+        addKeyToExtensionData("base_row_total_incl_tax", String.valueOf(baseRowTotalInclTax), quoteItemExtension);
+        addKeyToExtensionData("price", String.valueOf(price), quoteItemExtension);
+        addKeyToExtensionData("base_price", String.valueOf(basePrice), quoteItemExtension);
+        addKeyToExtensionData("price_incl_tax", String.valueOf(priceInclTax), quoteItemExtension);
+        addKeyToExtensionData("base_price_incl_tax", String.valueOf(basePriceInclTax), quoteItemExtension);
+        addKeyToExtensionData("discount_amount", String.valueOf(discountAmount), quoteItemExtension);
+        addKeyToExtensionData("base_discount_amount", String.valueOf(baseDiscountAmount), quoteItemExtension);
+        addKeyToExtensionData("tax_amount", String.valueOf(taxAmount), quoteItemExtension);
+        addKeyToExtensionData("base_tax_amount", String.valueOf(baseTaxAmount), quoteItemExtension);
+        addKeyToExtensionData("custom_tax_class_id", String.valueOf(customTaxClassId), quoteItemExtension);
+    }
+
+    private void addKeyToExtensionData(String key, String value, List<QuoteItemExtension> quoteItemExtension) {
+        QuoteItemExtension item = new PosQuoteItemExtension();
+        item.setKey(key);
+        item.setValue(value);
+        quoteItemExtension.add(item);
     }
 
     private void addCustomerAddressToQuote(Checkout checkout, QuoteCustomer quoteCustomer) {

@@ -35,6 +35,7 @@ import com.magestore.app.pos.model.catalog.PosProductOptionJsonConfigOptionPrice
 import com.magestore.app.pos.model.inventory.PosStock;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosAbstractParseImplement;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListProduct;
+import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.ImageUtil;
 import com.magestore.app.util.SecurityUtil;
 import com.magestore.app.util.StringUtil;
@@ -253,6 +254,10 @@ public class POSProductDataAccessM1 extends POSAbstractDataAccessM1 implements P
                     .setParam("id", product.getID())
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
+
             // thực thi truy vấn và parse kết quả thành json
             rp = statement.execute();
             String json = rp.readResult2String();
@@ -303,8 +308,14 @@ public class POSProductDataAccessM1 extends POSAbstractDataAccessM1 implements P
 
             if (!StringUtil.isNullOrEmpty(searchString)) {
                 String finalSearchString = "%" + searchString + "%";
-                statement.getParamBuilder().setFilterOrLike("name", finalSearchString);
-                statement.getParamBuilder().setFilterOrLike("sku", finalSearchString);
+                if (ConfigUtil.getProductAttribute() != null && ConfigUtil.getProductAttribute().size() > 0) {
+                    for (String attribute : ConfigUtil.getProductAttribute()) {
+                        paramBuilder.setFilterLike(attribute, finalSearchString);
+                    }
+                } else {
+                    paramBuilder.setFilterLike("name", finalSearchString);
+                    paramBuilder.setFilterLike("sku", finalSearchString);
+                }
             } else {
                 // TODO: tạm thời để search all
                 statement.getParamBuilder().setFilterEqual("category_ids", categoryId);
@@ -315,6 +326,10 @@ public class POSProductDataAccessM1 extends POSAbstractDataAccessM1 implements P
                     .setSortOrderASC("name")
                     .setParam("show_out_stock", "1")
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
 
             // thực thi truy vấn và parse kết quả thành object
             rp = statement.execute();
@@ -365,6 +380,10 @@ public class POSProductDataAccessM1 extends POSAbstractDataAccessM1 implements P
                     .setPage(1)
                     .setPageSize(1)
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
 
             // thực thi truy vấn và parse kết quả thành object
             rp = statement.execute();
@@ -422,6 +441,10 @@ public class POSProductDataAccessM1 extends POSAbstractDataAccessM1 implements P
                     .setParam("show_out_stock", "1")
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
 
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
+
             // thực thi truy vấn và parse kết quả thành object
             rp = statement.execute();
             rp.setParseImplement(getClassParseImplement());
@@ -474,11 +497,22 @@ public class POSProductDataAccessM1 extends POSAbstractDataAccessM1 implements P
             paramBuilder = statement.getParamBuilder()
                     .setPage(page)
                     .setPageSize(pageSize)
-                    .setFilterOrLike("name", finalSearchString)
-                    .setFilterOrLike("sku", finalSearchString)
                     .setSortOrderASC("name")
                     .setParam("show_out_stock", "1")
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+            if (ConfigUtil.getProductAttribute() != null && ConfigUtil.getProductAttribute().size() > 0) {
+                for (String attribute : ConfigUtil.getProductAttribute()) {
+                    paramBuilder.setFilterLike(attribute, finalSearchString);
+                }
+            } else {
+                paramBuilder.setFilterLike("name", finalSearchString);
+                paramBuilder.setFilterLike("sku", finalSearchString);
+            }
+
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
 
             // thực thi truy vấn và parse kết quả thành object
             rp = statement.execute();
@@ -535,6 +569,10 @@ public class POSProductDataAccessM1 extends POSAbstractDataAccessM1 implements P
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID)
                     .setFilterEqual("entity_id", strID);
 
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
+
             // thực thi truy vấn và parse kết quả thành object
             rp = statement.execute();
             rp.setParseImplement(getClassParseImplement());
@@ -586,6 +624,10 @@ public class POSProductDataAccessM1 extends POSAbstractDataAccessM1 implements P
             paramBuilder = statement.getParamBuilder()
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID)
                     .setParam("show_out_stock", "1");
+
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
 
             String listProductId = "";
             for (String id : Ids) {

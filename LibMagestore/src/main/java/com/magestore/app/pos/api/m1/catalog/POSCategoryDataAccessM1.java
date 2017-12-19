@@ -15,6 +15,8 @@ import com.magestore.app.pos.api.m1.POSDataAccessSessionM1;
 import com.magestore.app.pos.api.m1.POSAbstractDataAccessM1;
 import com.magestore.app.pos.model.catalog.PosCategory;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosListCategory;
+import com.magestore.app.util.ConfigUtil;
+import com.magestore.app.util.StringUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -86,6 +88,10 @@ public class POSCategoryDataAccessM1 extends POSAbstractDataAccessM1 implements 
                     .setPage(page)
                     .setPageSize(pageSize)
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+            if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
+                paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());
+            }
 
             // thực thi truy vấn và parse kết quả thành object
             rp = statement.execute();

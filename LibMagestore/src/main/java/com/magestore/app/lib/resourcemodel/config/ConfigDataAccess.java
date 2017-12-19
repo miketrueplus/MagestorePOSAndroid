@@ -48,6 +48,7 @@ public interface ConfigDataAccess extends DataAccess {
     List<StaffPermisson> retrieveStaff() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     Map<String, String> getConfigCCTypes() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     List<String> getConfigMonths() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
+    List<String> getProductAttribute() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     Map<String, String> getConfigCCYears() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     ConfigPrint getConfigPrint() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     ChangeCurrency changeCurrency(String code) throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
@@ -55,7 +56,11 @@ public interface ConfigDataAccess extends DataAccess {
     String getCurrentCurrencyCode() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     float getConfigMaximumDiscount() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     String googleAPIKey() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
-    boolean taxCartDisplay() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
+    boolean getTaxCartDisplayPrice() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
+    boolean getTaxCartDisplayShipping() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
+    boolean getTaxCartDisplaySubtotal() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
+    boolean getTaxDisplayType() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
+    boolean getTaxDisplayShipping() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     boolean getConfigDeliveryTime() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     boolean getConfigStoreCredit() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     boolean getConfigRewardPoint() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
@@ -63,7 +68,11 @@ public interface ConfigDataAccess extends DataAccess {
     boolean getConfigSession() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     boolean getConfigDeleteOrder() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     boolean getApplyAfterDiscount() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
+    boolean getTaxSaleDisplayPrice() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
+    boolean getTaxSaleDisplayShipping() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
+    boolean getTaxSaleDisplaySubtotal() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     void getConfigStaffPermisson(List<String> listPermisson) throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     Map<String, String> getConfigStatusOrder() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     List<String> getConfigSetting() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
+    void getConfigTax() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
 }
