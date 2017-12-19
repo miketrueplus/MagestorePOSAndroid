@@ -126,6 +126,8 @@ public class POSConfigService extends AbstractService implements ConfigService {
 
         // permisson
         getConfigStaffPermisson(getStaffPermisson());
+        // get config tax
+        getConfigTax();
 
         // return config
         return config;
@@ -508,6 +510,13 @@ public class POSConfigService extends AbstractService implements ConfigService {
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
         return configDataAccess.getTaxSaleDisplaySubtotal();
+    }
+
+    @Override
+    public void getConfigTax() throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
+        configDataAccess.getConfigTax();
     }
 
     @Override

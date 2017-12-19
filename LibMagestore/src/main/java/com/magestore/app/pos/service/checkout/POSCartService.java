@@ -965,24 +965,6 @@ public class POSCartService extends AbstractService implements CartService {
         if (mListCartItems != null && mListCartItems.size() > 0) {
             for (CartItem cartItem : mListCartItems) {
                 float taxPercent = getTaxPercentWithProduct(cartItem.getProduct(), checkout);
-                float qty = cartItem.getQuantity();
-                float basePrice = cartItem.getUnitPrice();
-                float price = ConfigUtil.convertToPrice(basePrice);
-
-                float unitTaxAmount = price * taxPercent / 100;
-                float baseUnitTaxAmount = basePrice * basePrice / 100;
-
-                float priceInclTax = price + unitTaxAmount;
-                float basePriceInclTax = basePrice + baseUnitTaxAmount;
-
-                float taxAmount = unitTaxAmount * qty;
-                float baseTaxAmount = baseUnitTaxAmount * qty;
-
-                cartItem.setBasePriceInclTax(basePriceInclTax);
-                cartItem.setUnitTaxAmount(unitTaxAmount);
-                cartItem.setBaseUnitTaxAmount(baseUnitTaxAmount);
-                cartItem.setTaxAmount(taxAmount);
-                cartItem.setBaseTaxAmount(baseTaxAmount);
                 cartItem.setTaxPercent(taxPercent);
             }
         }

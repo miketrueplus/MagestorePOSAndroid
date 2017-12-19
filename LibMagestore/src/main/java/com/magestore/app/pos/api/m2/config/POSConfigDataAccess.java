@@ -22,6 +22,8 @@ import com.magestore.app.lib.model.config.ConfigProductOption;
 import com.magestore.app.lib.model.config.ConfigQuantityFormat;
 import com.magestore.app.lib.model.config.ConfigRegion;
 import com.magestore.app.lib.model.config.ConfigTaxClass;
+import com.magestore.app.lib.model.config.ConfigTaxRates;
+import com.magestore.app.lib.model.config.ConfigTaxRules;
 import com.magestore.app.lib.model.customer.Customer;
 import com.magestore.app.lib.model.customer.CustomerAddress;
 import com.magestore.app.lib.model.directory.Currency;
@@ -46,6 +48,8 @@ import com.magestore.app.pos.model.config.PosConfigPriceFormat;
 import com.magestore.app.pos.model.config.PosConfigPrint;
 import com.magestore.app.pos.model.config.PosConfigQuantityFormat;
 import com.magestore.app.pos.model.config.PosConfigRegion;
+import com.magestore.app.pos.model.config.PosConfigTaxRates;
+import com.magestore.app.pos.model.config.PosConfigTaxRules;
 import com.magestore.app.pos.model.customer.PosCustomer;
 import com.magestore.app.pos.model.customer.PosCustomerAddress;
 import com.magestore.app.pos.model.directory.PosCurrency;
@@ -1354,6 +1358,95 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         listSetting.add("2");
         listSetting.add("3");
         return listSetting;
+    }
+
+    @Override
+    public void getConfigTax() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        if (mConfig == null) mConfig = new PosConfigDefault();
+        if (mConfig.getValue("tax/calculation/price_includes_tax") != null) {
+            String price_includes_tax = (String) mConfig.getValue("tax/calculation/price_includes_tax");
+            boolean includes_tax = false;
+            if (price_includes_tax.equals("1")) {
+                includes_tax = true;
+            }
+            ConfigUtil.setTaxCalculationPriceIncludesTax(includes_tax);
+        }
+
+        String tax_calculation_based_on = "";
+        if (mConfig.getValue("tax/calculation/based_on") != null) {
+            tax_calculation_based_on = (String) mConfig.getValue("tax/calculation/based_on");
+        }
+        ConfigUtil.setTaxCalculationBasedOn(tax_calculation_based_on);
+
+        String defaultCustomerGroup = "";
+        if (mConfig.getValue("defaultCustomerGroup") != null) {
+            defaultCustomerGroup = (String) mConfig.getValue("defaultCustomerGroup");
+        }
+        ConfigUtil.setDefaultCustomerGroup(defaultCustomerGroup);
+
+        String shipping_origin_region_id = "";
+        if (mConfig.getValue("shipping/origin/region_id") != null) {
+            shipping_origin_region_id = (String) mConfig.getValue("shipping/origin/region_id");
+            if (StringUtil.isNullOrEmpty(shipping_origin_region_id)) {
+                shipping_origin_region_id = "0";
+            }
+        }
+
+        String shipping_origin_country_id = "";
+        if (mConfig.getValue("shipping/origin/country_id") != null) {
+            shipping_origin_country_id = (String) mConfig.getValue("shipping/origin/country_id");
+        }
+
+        String shipping_origin_postcode = "";
+        if (mConfig.getValue("shipping/origin/postcode") != null) {
+            shipping_origin_postcode = (String) mConfig.getValue("shipping/origin/postcode");
+        }
+
+        CustomerAddress mAddressOrigin = new PosCustomerAddress();
+        mAddressOrigin.setRegionID(shipping_origin_region_id);
+        mAddressOrigin.setCountry(shipping_origin_country_id);
+        mAddressOrigin.setPostCode(shipping_origin_postcode);
+        ConfigUtil.setAddressOrigin(mAddressOrigin);
+
+        List<ConfigTaxRates> mListTaxRates = new ArrayList<>();
+        if (mConfig.getValue("tax_rates") != null) {
+            List<LinkedTreeMap> listTaxRates = (ArrayList) mConfig.getValue("tax_rates");
+            for (LinkedTreeMap tax_rate : listTaxRates) {
+                String id = tax_rate.get("id").toString();
+                String country = tax_rate.get("country").toString();
+                String region_id = tax_rate.get("region_id").toString();
+                String postcode = tax_rate.get("postcode").toString();
+                String rate = tax_rate.get("rate").toString();
+                ConfigTaxRates taxRate = new PosConfigTaxRates();
+                taxRate.setID(id);
+                taxRate.setCountry(country);
+                taxRate.setRegionId(region_id);
+                taxRate.setPostCode(postcode);
+                taxRate.setRate(rate);
+                mListTaxRates.add(taxRate);
+            }
+        }
+        ConfigUtil.setConfigTaxRates(mListTaxRates);
+
+        List<ConfigTaxRules> mListTaxRules = new ArrayList<>();
+        if (mConfig.getValue("tax_rules") != null) {
+            List<LinkedTreeMap> listTaxRules = (ArrayList) mConfig.getValue("tax_rules");
+            for (LinkedTreeMap tax_rule :listTaxRules) {
+                String id = tax_rule.get("id").toString();
+                List<String> customer_tc_ids = (List<String>) tax_rule.get("customer_tc_ids");
+                List<String> product_tc_ids = (List<String>) tax_rule.get("product_tc_ids");
+                List<String> rates_ids = (List<String>) tax_rule.get("rates_ids");
+                String priority = tax_rule.get("priority").toString();
+                ConfigTaxRules taxRule = new PosConfigTaxRules();
+                taxRule.setID(id);
+                taxRule.setCustomerTcIds(customer_tc_ids);
+                taxRule.setProductTcIds(product_tc_ids);
+                taxRule.setRatesIds(rates_ids);
+                taxRule.setPriority(priority);
+                mListTaxRules.add(taxRule);
+            }
+        }
+        ConfigUtil.setConfigTaxRules(mListTaxRules);
     }
 
     private boolean checkStaffPermiss(List<String> listPermisson, String permisson) {

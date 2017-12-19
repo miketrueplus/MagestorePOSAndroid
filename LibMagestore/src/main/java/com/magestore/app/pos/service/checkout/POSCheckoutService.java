@@ -900,8 +900,13 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         float baseRowTotalInclTax = basePriceInclTax * qty;
         float discountAmount = item.getDiscountAmount();
         float baseDiscountAmount = item.getBaseDiscountAmount();
-        float taxAmount = item.getTaxAmount();
-        float baseTaxAmount = item.getBaseTaxAmount();
+
+        float taxPercent = item.getTaxPercent();
+        float unitTaxAmount = price * taxPercent / 100;
+        float baseUnitTaxAmount = basePrice * taxPercent / 100;
+        float taxAmount = unitTaxAmount * qty;
+        float baseTaxAmount = baseUnitTaxAmount * qty;
+
         String customTaxClassId = item.getProduct().getTaxClassId();
         addKeyToExtensionData("row_total", String.valueOf(rowTotal), quoteItemExtension);
         addKeyToExtensionData("base_row_total", String.valueOf(baseRowTotal), quoteItemExtension);

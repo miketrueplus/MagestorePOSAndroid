@@ -1251,6 +1251,11 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
         return listSetting;
     }
 
+    @Override
+    public void getConfigTax() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+
+    }
+
     private boolean checkStaffPermiss(List<String> listPermisson, String permisson) {
         boolean checkPermisson = false;
         for (String _permisson : listPermisson) {

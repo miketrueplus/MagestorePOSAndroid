@@ -581,6 +581,11 @@ public class POSConfigDataAccessOdoo extends POSAbstractDataAccessOdoo implement
         return listSetting;
     }
 
+    @Override
+    public void getConfigTax() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+
+    }
+
     private boolean checkStaffPermiss(List<String> listPermisson, String permisson) {
         boolean checkPermisson = false;
         for (String _permisson : listPermisson) {
