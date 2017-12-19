@@ -302,6 +302,7 @@ public class POSCartService extends AbstractService implements CartService {
         cartItem.insertOption("is_virtual", cartItem.isShipable() ? StringUtil.STRING_ZERO : StringUtil.STRING_ONE);
         cartItem.insertOption("price", Float.toString(cartItem.getUnitPrice()));
         cartItem.insertOption("tax_class_id", cartItem.getTaxClassId());
+        cartItem.getProduct().setTaxClassId(cartItem.getTaxClassId());
         cartItem.getProduct().setID(cartItem.getProduct().getName() + "_" + Float.toString(cartItem.getUnitPrice()));
         return insertWithOption(checkout, cartItem);
     }
@@ -320,6 +321,7 @@ public class POSCartService extends AbstractService implements CartService {
 
         // nếu không trùng option
         if (itemInList == null) {
+            addTaxToCartItem(checkout, cartItem, false);
             // thêm cart item thẳng vào danh sách
             checkout.getCartItem().add(cartItem);
             return cartItem;
@@ -327,6 +329,7 @@ public class POSCartService extends AbstractService implements CartService {
         // nếu trùng option, chỉ cập nhật tăng thêm số lượng
         else {
             itemInList.setQuantity(itemInList.getQuantity() + cartItem.getQuantity());
+            addTaxToCartItem(checkout, itemInList, true);
             return itemInList;
         }
     }
@@ -557,7 +560,7 @@ public class POSCartService extends AbstractService implements CartService {
 
             // Khởi tạo product order item
             cartItem = create(product, quantity, price);
-
+            addTaxToCartItem(checkout, cartItem, false);
             // Thêm vào danh sách order cartItem
             insert(checkout, cartItem);
         }
@@ -577,6 +580,7 @@ public class POSCartService extends AbstractService implements CartService {
             float unitPrice = cartItem.getUnitPrice();
             float totalPrice = (unitPrice * cartItem.getQuantity());
             cartItem.setPrice(totalPrice);
+            addTaxToCartItem(checkout, cartItem, false);
         }
         return cartItem;
     }
@@ -955,6 +959,17 @@ public class POSCartService extends AbstractService implements CartService {
         cartDataAccess.changeTax(checkout);
     }
 
+    @Override
+    public void changeCustomerOffline(Checkout checkout) {
+        List<CartItem> mListCartItems = checkout.getCartItem();
+        if (mListCartItems != null && mListCartItems.size() > 0) {
+            for (CartItem cartItem : mListCartItems) {
+                float taxPercent = getTaxPercentWithProduct(cartItem.getProduct(), checkout);
+                cartItem.setTaxPercent(taxPercent);
+            }
+        }
+    }
+
     /**
      * Map ID sang Code đối với mỗi option value khi re order
      *
@@ -967,6 +982,38 @@ public class POSCartService extends AbstractService implements CartService {
             option.code = option.id;
         }
         return options;
+    }
+
+    private void addTaxToCartItem(Checkout checkout, CartItem cartItem, boolean isAddCart) {
+        if (isAddCart) {
+            cartItem.setTaxAmount(cartItem.getUnitTaxAmount() * cartItem.getQuantity());
+            cartItem.setBaseTaxAmount(cartItem.getBaseUnitTaxAmount() * cartItem.getQuantity());
+        } else {
+            float taxPercent = 0;
+            taxPercent = getTaxPercentWithProduct(cartItem.getProduct(), checkout);
+            float base_price = cartItem.getUnitPrice();
+            float price = ConfigUtil.convertToPrice(cartItem.getUnitPrice());
+            float unitTaxAmount = 0;
+            float baseUnitTaxAmount = 0;
+            if (ConfigUtil.isTaxCalculationPriceIncludesTax()) {
+                float basePriceExclTax = (base_price / (100 + taxPercent)) * 100;
+                float priceExclTax = ConfigUtil.convertToPrice(basePriceExclTax);
+                unitTaxAmount = price - priceExclTax;
+                baseUnitTaxAmount = base_price - basePriceExclTax;
+            } else {
+                float basePriceExclTax = base_price + base_price * taxPercent / 100;
+                float priceExclTax = ConfigUtil.convertToPrice(basePriceExclTax);
+                unitTaxAmount = priceExclTax - price;
+                baseUnitTaxAmount = basePriceExclTax - base_price;
+            }
+            float taxAmount = unitTaxAmount * cartItem.getQuantity();
+            float baseTaxAmount = unitTaxAmount * cartItem.getQuantity();
+            cartItem.setUnitTaxAmount(unitTaxAmount);
+            cartItem.setBaseUnitTaxAmount(baseUnitTaxAmount);
+            cartItem.setTaxAmount(taxAmount);
+            cartItem.setBaseTaxAmount(baseTaxAmount);
+            cartItem.setTaxPercent(taxPercent);
+        }
     }
 
     private float getTaxPercentWithProduct(Product mProduct, Checkout mCheckout) {
@@ -985,7 +1032,11 @@ public class POSCartService extends AbstractService implements CartService {
             billingAddress = customerAddressList.get(0);
         } else {
             shippingAddress = customerAddressList.get(0);
-            billingAddress = customerAddressList.get(1);
+            if (customerAddressList.size() == 1) {
+                billingAddress = customerAddressList.get(0);
+            } else {
+                billingAddress = customerAddressList.get(1);
+            }
         }
 
         if (calculateTaxBaseOn.equals("shipping")) {
@@ -1000,7 +1051,7 @@ public class POSCartService extends AbstractService implements CartService {
 
         List<StoreTaxRate> taxRates = getProductTaxRate(taxClassId, ConfigUtil.getDefaultCustomerGroup(), addressCalTax);
         float taxPercent = 0;
-        for (StoreTaxRate taxRate: taxRates) {
+        for (StoreTaxRate taxRate : taxRates) {
             taxPercent += taxRate.rate;
         }
         return taxPercent;

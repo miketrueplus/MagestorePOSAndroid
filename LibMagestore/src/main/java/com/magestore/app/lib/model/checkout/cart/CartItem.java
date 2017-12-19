@@ -165,12 +165,19 @@ public interface CartItem extends Model {
     float getSubtotal();
     float getRowTotal();
     float getBaseTaxAmount();
+    void setBaseTaxAmount(float fBaseTaxAmount);
     float getTaxAmount();
+    void setTaxAmount(float fTaxAmount);
     float getBaseRowTotalInclTax();
     void setBaseRowTotalInclTax(float fBaseRowTotalInclTax);
     float getDiscountAmount();
     float getBaseDiscountAmount();
     void setBaseDiscountAmount(float fBaseDiscountAmount);
+
+    float getUnitTaxAmount();
+    void setUnitTaxAmount(float fUnitTaxAmount);
+    float getBaseUnitTaxAmount();
+    void setBaseUnitTaxAmount(float fBaseUnitTaxAmount);
 
     void setDiscountAmount(float discount_amount);
 

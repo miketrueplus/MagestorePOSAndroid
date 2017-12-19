@@ -768,6 +768,7 @@ public class CheckoutListPanel extends AbstractListPanel<Checkout> {
                         mCustomer.getAddress().remove(billingAddress);
                         mCustomer.getAddress().add(1, billingAddress);
                     }
+                    ((CheckoutListController) getController()).changeBillingShippingOffline();
                     if (checkChangeCustomer(customer)) {
                         mCheckoutAddCustomerPanel.getCustomerListController().doUpdate(mCustomer, customer);
                     }

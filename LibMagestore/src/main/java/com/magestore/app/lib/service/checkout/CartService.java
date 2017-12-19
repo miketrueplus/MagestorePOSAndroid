@@ -83,4 +83,6 @@ public interface CartService extends ChildListService<Checkout, CartItem> {
     List<CartItem> reOrder(Checkout checkout, Order order) throws IOException, InstantiationException, ParseException, IllegalAccessException;
 
     void changeTax(Checkout checkout) throws IOException, InstantiationException, ParseException, IllegalAccessException;
+
+    void changeCustomerOffline(Checkout checkout);
 }

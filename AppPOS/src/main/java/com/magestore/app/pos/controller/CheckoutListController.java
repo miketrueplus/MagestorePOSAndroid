@@ -161,8 +161,14 @@ public class CheckoutListController extends AbstractListController<Checkout> {
             mCartOrderListPanel.notifyDataSetChanged();
             if (((CheckoutDetailPanel) mDetailView).getVisibility() == View.VISIBLE && getSelectedItem().getStatus() == STATUS_CHECKOUT_PROCESSING && getSelectedItem().getOrderSuccess() == null) {
                 doInputSaveCart();
+            } else {
+                mCartItemListController.changeCustomerOffline();
             }
         }
+    }
+
+    public void changeBillingShippingOffline() {
+        mCartItemListController.changeCustomerOffline();
     }
 
     public void binCartItem() {

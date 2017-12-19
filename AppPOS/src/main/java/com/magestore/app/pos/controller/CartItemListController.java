@@ -726,6 +726,11 @@ public class CartItemListController extends AbstractChildListController<Checkout
         mCustomeSaleDialog.show();
     }
 
+    public void changeCustomerOffline() {
+        mCartService.changeCustomerOffline(getParent());
+        updateTotalPrice();
+    }
+
     /**
      * Đặt product option panel
      */
