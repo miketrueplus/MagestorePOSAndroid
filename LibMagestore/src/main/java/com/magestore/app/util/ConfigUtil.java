@@ -82,6 +82,7 @@ public class ConfigUtil {
     private static List<ConfigTaxRules> mConfigTaxRules;
     private static List<ConfigTaxRates> mConfigTaxRates;
     private static List<ConfigCustomerGroup> mConfigCustomerGroup;
+    private static List<String> mProductAttribute;
     private static String mDefaultCustomerGroup;
     private static String mTypePrint;
     private static int mStarPrintArea;
@@ -930,6 +931,14 @@ public class ConfigUtil {
 
     public static void setConfigCustomerGroup(List<ConfigCustomerGroup> mConfigCustomerGroup) {
         ConfigUtil.mConfigCustomerGroup = mConfigCustomerGroup;
+    }
+
+    public static List<String> getProductAttribute() {
+        return mProductAttribute;
+    }
+
+    public static void setProductAttribute(List<String> mProductAttribute) {
+        ConfigUtil.mProductAttribute = mProductAttribute;
     }
 
     public static String getDefaultCustomerGroup() {

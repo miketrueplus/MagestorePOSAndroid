@@ -30,6 +30,7 @@ import com.magestore.app.pos.api.m2.POSAPI;
 import com.magestore.app.pos.api.m2.POSAbstractDataAccess;
 import com.magestore.app.pos.api.m2.POSDataAccessSession;
 import com.magestore.app.pos.parse.gson2pos.Gson2PosProductOptionParseImplement;
+import com.magestore.app.util.ConfigUtil;
 import com.magestore.app.util.ImageUtil;
 import com.magestore.app.util.SecurityUtil;
 import com.magestore.app.util.StringUtil;
@@ -307,10 +308,17 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
             paramBuilder = statement.getParamBuilder()
                     .setPage(page)
                     .setPageSize(pageSize)
-                    .setFilterLike("name", finalSearchString)
-                    .setFilterLike("sku", finalSearchString)
                     .setSortOrderASC("name")
                     .setSessionID(POSDataAccessSession.REST_SESSION_ID);
+
+            if (ConfigUtil.getProductAttribute() != null && ConfigUtil.getProductAttribute().size() > 0) {
+                for (String attribute : ConfigUtil.getProductAttribute()) {
+                    paramBuilder.setFilterLike(attribute, finalSearchString);
+                }
+            } else {
+                paramBuilder.setFilterLike("name", finalSearchString);
+                paramBuilder.setFilterLike("sku", finalSearchString);
+            }
 
             // thực thi truy vấn và parse kết quả thành object
             rp = statement.execute();
@@ -361,8 +369,14 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
 
             if (!StringUtil.isNullOrEmpty(searchString)) {
                 String finalSearchString = "%" + searchString + "%";
-                statement.getParamBuilder().setFilterLike("name", finalSearchString);
-                statement.getParamBuilder().setFilterLike("sku", finalSearchString);
+                if (ConfigUtil.getProductAttribute() != null && ConfigUtil.getProductAttribute().size() > 0) {
+                    for (String attribute : ConfigUtil.getProductAttribute()) {
+                        paramBuilder.setFilterLike(attribute, finalSearchString);
+                    }
+                } else {
+                    paramBuilder.setFilterLike("name", finalSearchString);
+                    paramBuilder.setFilterLike("sku", finalSearchString);
+                }
             } else {
                 // TODO: tạm thời để search all
                 statement.getParamBuilder().setFilterEqual("category_id", categoryId);

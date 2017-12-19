@@ -863,6 +863,26 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
     }
 
     @Override
+    public List<String> getProductAttribute() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        if (mConfig == null) mConfig = new PosConfigDefault();
+        List<String> mListProductAttribute = new ArrayList<>();
+        if (mConfig.getValue("webpos/product_search/product_attribute") != null) {
+            String product_attribute = (String) mConfig.getValue("webpos/product_search/product_attribute");
+            if (!StringUtil.isNullOrEmpty(product_attribute)) {
+                if (product_attribute.contains(",")) {
+                    String[] array_attribute = product_attribute.split(",");
+                    for (String attribute : array_attribute) {
+                        mListProductAttribute.add(attribute);
+                    }
+                } else {
+                    mListProductAttribute.add(product_attribute);
+                }
+            }
+        }
+        return mListProductAttribute;
+    }
+
+    @Override
     public Map<String, String> getConfigCCYears() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
         if (mConfig == null) mConfig = new PosConfigDefault();
 
@@ -1431,7 +1451,7 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         List<ConfigTaxRules> mListTaxRules = new ArrayList<>();
         if (mConfig.getValue("tax_rules") != null) {
             List<LinkedTreeMap> listTaxRules = (ArrayList) mConfig.getValue("tax_rules");
-            for (LinkedTreeMap tax_rule :listTaxRules) {
+            for (LinkedTreeMap tax_rule : listTaxRules) {
                 String id = tax_rule.get("id").toString();
                 List<String> customer_tc_ids = (List<String>) tax_rule.get("customer_tc_ids");
                 List<String> product_tc_ids = (List<String>) tax_rule.get("product_tc_ids");

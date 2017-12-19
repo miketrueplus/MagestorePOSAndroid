@@ -100,6 +100,8 @@ public interface ConfigService extends Service {
 
     List<String> getConfigMonths() throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
+    List<String> getProductAttribute() throws InstantiationException, IllegalAccessException, IOException, ParseException;
+
     Map<String, String> getConfigCCYears() throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
     ConfigPrint getConfigPrint() throws InstantiationException, IllegalAccessException, IOException, ParseException;

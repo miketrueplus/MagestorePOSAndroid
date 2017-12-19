@@ -748,6 +748,26 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
     }
 
     @Override
+    public List<String> getProductAttribute() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        if (mConfig == null) mConfig = new PosConfigDefault();
+        List<String> mListProductAttribute = new ArrayList<>();
+        if (mConfig.getValue("webpos/product_search/product_attribute") != null) {
+            String product_attribute = (String) mConfig.getValue("webpos/product_search/product_attribute");
+            if (!StringUtil.isNullOrEmpty(product_attribute)) {
+                if (product_attribute.contains(",")) {
+                    String[] array_attribute = product_attribute.split(",");
+                    for (String attribute : array_attribute) {
+                        mListProductAttribute.add(attribute);
+                    }
+                } else {
+                    mListProductAttribute.add(product_attribute);
+                }
+            }
+        }
+        return mListProductAttribute;
+    }
+
+    @Override
     public Map<String, String> getConfigCCYears() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
         if (mConfig == null) mConfig = new PosConfigDefault();
 

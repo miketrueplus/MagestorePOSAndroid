@@ -308,8 +308,14 @@ public class POSProductDataAccessM1 extends POSAbstractDataAccessM1 implements P
 
             if (!StringUtil.isNullOrEmpty(searchString)) {
                 String finalSearchString = "%" + searchString + "%";
-                statement.getParamBuilder().setFilterOrLike("name", finalSearchString);
-                statement.getParamBuilder().setFilterOrLike("sku", finalSearchString);
+                if (ConfigUtil.getProductAttribute() != null && ConfigUtil.getProductAttribute().size() > 0) {
+                    for (String attribute : ConfigUtil.getProductAttribute()) {
+                        paramBuilder.setFilterLike(attribute, finalSearchString);
+                    }
+                } else {
+                    paramBuilder.setFilterLike("name", finalSearchString);
+                    paramBuilder.setFilterLike("sku", finalSearchString);
+                }
             } else {
                 // TODO: tạm thời để search all
                 statement.getParamBuilder().setFilterEqual("category_ids", categoryId);
@@ -491,11 +497,18 @@ public class POSProductDataAccessM1 extends POSAbstractDataAccessM1 implements P
             paramBuilder = statement.getParamBuilder()
                     .setPage(page)
                     .setPageSize(pageSize)
-                    .setFilterOrLike("name", finalSearchString)
-                    .setFilterOrLike("sku", finalSearchString)
                     .setSortOrderASC("name")
                     .setParam("show_out_stock", "1")
                     .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+            if (ConfigUtil.getProductAttribute() != null && ConfigUtil.getProductAttribute().size() > 0) {
+                for (String attribute : ConfigUtil.getProductAttribute()) {
+                    paramBuilder.setFilterLike(attribute, finalSearchString);
+                }
+            } else {
+                paramBuilder.setFilterLike("name", finalSearchString);
+                paramBuilder.setFilterLike("sku", finalSearchString);
+            }
 
             if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {
                 paramBuilder.setParam("website_id", ConfigUtil.getWebSiteId());

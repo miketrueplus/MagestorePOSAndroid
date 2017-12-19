@@ -128,6 +128,8 @@ public class POSConfigService extends AbstractService implements ConfigService {
         getConfigStaffPermisson(getStaffPermisson());
         // get config tax
         getConfigTax();
+        //  get product attribute
+        ConfigUtil.setProductAttribute(getProductAttribute());
 
         // return config
         return config;
@@ -376,6 +378,14 @@ public class POSConfigService extends AbstractService implements ConfigService {
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
         return configDataAccess.getConfigMonths();
+    }
+
+    @Override
+    public List<String> getProductAttribute() throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        // Nếu chưa khởi tạo customer gateway factory
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
+        return configDataAccess.getProductAttribute();
     }
 
     @Override
