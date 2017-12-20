@@ -28,6 +28,7 @@ import com.magestore.app.lib.observ.State;
 import com.magestore.app.lib.service.checkout.CheckoutService;
 import com.magestore.app.lib.service.customer.CustomerAddressService;
 import com.magestore.app.lib.service.plugins.PluginsService;
+import com.magestore.app.lib.service.user.UserService;
 import com.magestore.app.pos.PaymentPayPalActivity;
 import com.magestore.app.pos.R;
 import com.magestore.app.pos.SalesActivity;
@@ -99,6 +100,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     static final int ACTION_TYPE_REFRESH_TOKEN_PAYPAL_HERE = 18;
     static final int ACTION_TYPE_CHECK_APPROVED_PAYMENT_AUTHORIZENET_INTERATION = 19;
     static final int ACTION_TYPE_RETRIEVE_STAFF_PERMISSON = 20;
+    static final int ACTION_TYPE_LOG_OUT = 21;
 
     static final int STATUS_CHECKOUT_ADD_ITEM = 0;
     public static final int STATUS_CHECKOUT_PROCESSING = 1;
@@ -130,6 +132,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     List<String> configMonths;
     Map<String, String> configCCYears;
     CustomerAddressService mCustomerAddressService;
+    UserService userService;
     // plugins
     PluginsService pluginsService;
     PluginRewardPointPanel mPluginRewardPointPanel;
@@ -340,6 +343,10 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
     public void doInputApprovedStripe(CheckoutPayment checkoutPayment) {
         doAction(ACTION_TYPE_CHECK_APPOVED_PAYMENT_STRIPE, null, wraper, checkoutPayment);
+    }
+
+    public void doInputLogout() {
+        doAction(ACTION_TYPE_LOG_OUT, null, wraper, null);
     }
 
     /**
@@ -620,6 +627,8 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         } else if (actionType == ACTION_TYPE_RETRIEVE_STAFF_PERMISSON) {
             wraper.put("list_staff_permisson", getConfigService().retrieveStaff());
             return true;
+        } else if (actionType == ACTION_TYPE_LOG_OUT) {
+            userService.doLogout();
         }
         return false;
     }
@@ -2416,6 +2425,10 @@ public class CheckoutListController extends AbstractListController<Checkout> {
 
     public void setPluginsService(PluginsService pluginsService) {
         this.pluginsService = pluginsService;
+    }
+
+    public void setUseService(UserService useService) {
+        this.userService = useService;
     }
 
     /**

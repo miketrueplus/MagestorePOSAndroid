@@ -67,6 +67,7 @@ public abstract class AbstractActivity
     public static String CHANGE_STAFF_PERMISSON_TO_SALE_ACTIVITY = "com.magestore.app.pos.ui.abstractactivity.changestaff";
     public static String CHANGE_PERMISSON_MENU_ORDER = "com.magestore.app.pos.saleactivity.menuorder";
     public static String BACK_TO_HOME = "com.magestore.app.pos.ui.abstractactivity.backtohome";
+    public static String LOGOUT = "com.magestore.app.pos.ui.abstractactivity.logout";
     public static List<StaffPermisson> listStaff;
     TextView staff_name, staff_location;
     RelativeLayout im_change;
@@ -326,6 +327,9 @@ public abstract class AbstractActivity
                         mSelectStaff = null;
                         DataUtil.saveDataBooleanToPreferences(getContext(), DataUtil.CHOOSE_STORE, false);
                         ConfigUtil.setCheckFirstOpenSession(false);
+                        Intent i = new Intent();
+                        i.setAction(LOGOUT);
+                        sendBroadcast(i);
                         Intent intent = new Intent(getContext(), LoginActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
@@ -703,6 +707,11 @@ public abstract class AbstractActivity
             }
         }
         staff_name.setText(ConfigUtil.getStaff().getStaffName() + " - " + mSelectStaff.getRole());
+    }
+
+    public void closeMenu() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer != null) drawer.closeDrawer(GravityCompat.START);
     }
 
     @Override

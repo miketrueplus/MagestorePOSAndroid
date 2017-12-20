@@ -208,6 +208,11 @@ public class POSUserDataAccessOdoo extends POSAbstractDataAccessOdoo implements 
     }
 
     @Override
+    public void doLogout() throws ParseException, ConnectionException, DataAccessException, IOException {
+
+    }
+
+    @Override
     public List<Store> retrieveStore() throws ParseException, ConnectionException, DataAccessException, IOException {
         return null;
     }

@@ -46,6 +46,10 @@ public class POSUserDataAccess extends POSAbstractDataAccess implements UserData
         User staff;
     }
 
+    private class Logout {
+
+    }
+
     public POSUserDataAccess() {
 
     }
@@ -138,6 +142,45 @@ public class POSUserDataAccess extends POSAbstractDataAccess implements UserData
             // đóng result reading
             if (rp != null) rp.close();
             rp = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
+    }
+
+    @Override
+    public void doLogout() throws ParseException, ConnectionException, DataAccessException, IOException {
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+
+        try {
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSession.REST_BASE_URL, POSDataAccessSession.REST_USER_NAME, POSDataAccessSession.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPI.REST_LOGOUT);
+
+            paramBuilder = statement.getParamBuilder()
+                    .setSessionID(POSDataAccessSession.REST_SESSION_ID);
+
+            Logout logout = new Logout();
+
+            rp = statement.execute();
+        } catch (Exception ex) {
+            statement.getCacheConnection().deleteCache();
+            throw new DataAccessException(ex);
+        } finally {
+            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
 
             // đóng statement
             if (statement != null) statement.close();

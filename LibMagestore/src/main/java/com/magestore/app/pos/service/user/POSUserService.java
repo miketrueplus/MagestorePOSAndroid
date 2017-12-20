@@ -167,7 +167,12 @@ public class POSUserService extends AbstractService implements UserService {
     /**
      * Logout khỏi user
      */
-    public void doLogout() {
+    @Override
+    public void doLogout() throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        UserDataAccess userGateway = factory.generateUserDataAccess();
+        userGateway.doLogout();
+
         if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_2)) {
             session = null;
         } else if (ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_MAGENTO_1)) {

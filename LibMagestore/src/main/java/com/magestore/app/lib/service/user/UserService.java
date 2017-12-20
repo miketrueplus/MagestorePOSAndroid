@@ -17,7 +17,7 @@ import java.util.List;
 public interface UserService extends Service {
     boolean checkPlatform(String domain, String username, String password) throws InstantiationException, IllegalAccessException, IOException, ParseException;
     boolean doLogin(String domain, String proxyUser, String proxyPass, String username, String password) throws InstantiationException, IllegalAccessException, IOException, ParseException;
-    void doLogout();
+    void doLogout() throws InstantiationException, IllegalAccessException, IOException, ParseException;
     boolean isLogin();
     boolean retrievePos() throws InstantiationException, IllegalAccessException, IOException, ParseException;
     List<PointOfSales> getListPos() throws InstantiationException, IllegalAccessException, IOException, ParseException;

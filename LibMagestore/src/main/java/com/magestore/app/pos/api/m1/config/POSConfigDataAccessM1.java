@@ -1178,6 +1178,7 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
     @Override
     public void getConfigStaffPermisson(List<String> listPermisson) throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
         if (listPermisson.size() > 0) {
+            ConfigUtil.setCreateOrder(true);
             ConfigUtil.setChangeStaff(true);
             ConfigUtil.setManageOrderByLocation(false);
             ConfigUtil.setNeedToShip(true);
@@ -1212,16 +1213,19 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
             ConfigUtil.setCustomSales(true);
             ConfigUtil.setShowAvailableQty(false);
             if (checkStaffPermiss(listPermisson, ALL_PERMISSON)) {
-                ConfigUtil.setCreateOrder(true);
+//                ConfigUtil.setCreateOrder(true);
                 ConfigUtil.setManagerAllOrder(true);
                 ConfigUtil.setDiscountPerCart(true);
                 ConfigUtil.setApplyCoupon(true);
                 ConfigUtil.setDiscountPerItem(true);
                 ConfigUtil.setCanUseRefund(true);
                 ConfigUtil.setApplyCustomPrice(true);
+                ConfigUtil.setOpenShift(true);
+                ConfigUtil.setCloseShift(true);
+                ConfigUtil.setManagerShiftAdjustment(true);
             } else {
                 ConfigUtil.setManagerAllOrder(checkStaffPermiss(listPermisson, MANAGE_ALL_ORDER));
-                ConfigUtil.setCreateOrder(checkStaffPermiss(listPermisson, CREATE_ORDER));
+//                ConfigUtil.setCreateOrder(checkStaffPermiss(listPermisson, CREATE_ORDER));
                 if (ConfigUtil.isManagerAllOrder()) {
                     ConfigUtil.setManageOrderByMe(true);
                     ConfigUtil.setManageOrderOtherStaff(true);

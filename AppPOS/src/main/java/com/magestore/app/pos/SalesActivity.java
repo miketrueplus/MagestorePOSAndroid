@@ -44,6 +44,7 @@ import com.magestore.app.lib.service.config.ConfigService;
 import com.magestore.app.lib.service.customer.CustomerAddressService;
 import com.magestore.app.lib.service.customer.CustomerService;
 import com.magestore.app.lib.service.plugins.PluginsService;
+import com.magestore.app.lib.service.user.UserService;
 import com.magestore.app.pos.controller.CartItemListController;
 import com.magestore.app.pos.controller.CategoryListController;
 import com.magestore.app.pos.controller.CheckoutAddPaymentListController;
@@ -306,6 +307,7 @@ public class SalesActivity extends AbstractActivity
         ProductOptionService productOptionService = null;
         CustomerAddressService customerAddressService = null;
         PluginsService pluginsService = null;
+        UserService userService = null;
         try {
             factory = ServiceFactory.getFactory(magestoreContext);
             productService = factory.generateProductService();
@@ -317,6 +319,7 @@ public class SalesActivity extends AbstractActivity
             productOptionService = factory.generateProductOptionService();
             customerAddressService = factory.generateCustomerAddressService();
             pluginsService = factory.generatePluginsService();
+            userService = factory.generateUserService();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InstantiationException e) {
@@ -356,6 +359,7 @@ public class SalesActivity extends AbstractActivity
         mCheckoutListController.setCheckoutPaymentCreditCardPanel(mCheckoutPaymentCreditCardPanel);
         mCheckoutListController.setCartItemDetailPanel(mCartItemDetailPanel);
         mCheckoutListController.setPluginsService(pluginsService);
+        mCheckoutListController.setUseService(userService);
         mCheckoutListController.setPluginRewardPointPanel(mPluginRewardPointPanel);
         mCheckoutListController.setPluginStoreCreditPanel(mPluginStoreCreditPanel);
         mCheckoutListController.setPluginGiftCardPanel(mPluginGiftCardPanel);
@@ -550,6 +554,7 @@ public class SalesActivity extends AbstractActivity
         IntentFilter filter_staff_permisson = new IntentFilter(RETRIEVE_STAFF_PERMISSON_TO_SALE_ACTIVITY);
         IntentFilter filter_change_staff_permisson = new IntentFilter(CHANGE_STAFF_PERMISSON_TO_SALE_ACTIVITY);
         IntentFilter filter_load_view = new IntentFilter(RegisterShiftListController.LOAD_VIEW_TO_ACTIVITY);
+        IntentFilter filter_logout = new IntentFilter(LOGOUT);
         registerReceiver(receiver_data_setting, filter_setting);
         registerReceiver(receiver_data_order, filter_order);
         registerReceiver(receiver_data_payment_paypal, filter_payment_id);
@@ -557,6 +562,7 @@ public class SalesActivity extends AbstractActivity
         registerReceiver(receiver_staff_permisson, filter_staff_permisson);
         registerReceiver(change_staff_permisson, filter_change_staff_permisson);
         registerReceiver(receiver_reload_view, filter_load_view);
+        registerReceiver(receiver_logout, filter_logout);
     }
 
     @Override
@@ -569,6 +575,7 @@ public class SalesActivity extends AbstractActivity
             unregisterReceiver(receiver_data_error_paypal);
             unregisterReceiver(receiver_staff_permisson);
             unregisterReceiver(change_staff_permisson);
+            unregisterReceiver(receiver_logout);
         } catch (Exception e) {
         }
     }
@@ -638,6 +645,7 @@ public class SalesActivity extends AbstractActivity
                             DataUtil.saveDataBooleanToPreferences(getContext(), DataUtil.CHOOSE_STORE, false);
                             ConfigUtil.setCheckFirstOpenSession(false);
                             finish();
+                            mCheckoutListController.doInputLogout();
                         }
 
                     })
@@ -726,6 +734,13 @@ public class SalesActivity extends AbstractActivity
                 mCheckoutListPanel.showDiscountWithPermisson();
                 mCheckoutListPanel.showCheckoutPermisson();
             }
+        }
+    };
+
+    BroadcastReceiver receiver_logout = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            mCheckoutListController.doInputLogout();
         }
     };
 

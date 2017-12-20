@@ -410,80 +410,81 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         placeOrderParams.setPlaceOrderExtensionData(listExtension);
 
         // add plugins
-        List<GiftCard> listGiftCard = checkout.getListGiftCardUse();
-        if (listGiftCard != null && listGiftCard.size() > 0) {
-            PlaceOrderIntegrationParam giftCardIntegration = createPlaceOrderIntegrationParam();
-            List<PlaceOrderIntegrationOrderData> listgiftCardOrderData = new ArrayList<>();
-            List<PlaceOrderIntegrationExtension> listgiftCardExtension = new ArrayList<>();
-            giftCardIntegration.setModule(GIFT_CARD_MODULE);
-            giftCardIntegration.setEventName(GIFT_CARD_EVENT);
+        if (ConfigUtil.PLATFORM_MAGENTO_2.equals(ConfigUtil.getPlatForm())) {
+            List<GiftCard> listGiftCard = checkout.getListGiftCardUse();
+            if (listGiftCard != null && listGiftCard.size() > 0) {
+                PlaceOrderIntegrationParam giftCardIntegration = createPlaceOrderIntegrationParam();
+                List<PlaceOrderIntegrationOrderData> listgiftCardOrderData = new ArrayList<>();
+                List<PlaceOrderIntegrationExtension> listgiftCardExtension = new ArrayList<>();
+                giftCardIntegration.setModule(GIFT_CARD_MODULE);
+                giftCardIntegration.setEventName(GIFT_CARD_EVENT);
 
-            float total_giftcard_discount = 0;
-            for (GiftCard giftCard : listGiftCard) {
-                total_giftcard_discount += giftCard.getAmount();
-                PlaceOrderIntegrationExtension giftCardExtension = createPlaceOrderIntegrationExtension();
-                giftCardExtension.setKey(giftCard.getCouponCode());
-                giftCardExtension.setValue(ConfigUtil.convertToBasePrice(giftCard.getAmount()));
-                listgiftCardExtension.add(giftCardExtension);
+                float total_giftcard_discount = 0;
+                for (GiftCard giftCard : listGiftCard) {
+                    total_giftcard_discount += giftCard.getAmount();
+                    PlaceOrderIntegrationExtension giftCardExtension = createPlaceOrderIntegrationExtension();
+                    giftCardExtension.setKey(giftCard.getCouponCode());
+                    giftCardExtension.setValue(ConfigUtil.convertToBasePrice(giftCard.getAmount()));
+                    listgiftCardExtension.add(giftCardExtension);
+                }
+
+                PlaceOrderIntegrationOrderData giftCardBaseDiscount = createPlaceOrderIntegrationOrderData();
+                giftCardBaseDiscount.setKey(GIFT_CARD_BASE_DISCOUNT);
+                giftCardBaseDiscount.setValue(ConfigUtil.convertToBasePrice(total_giftcard_discount));
+
+                PlaceOrderIntegrationOrderData giftCardDiscount = createPlaceOrderIntegrationOrderData();
+                giftCardDiscount.setKey(GIFT_CARD_DISCOUNT);
+                giftCardDiscount.setValue(total_giftcard_discount);
+                listgiftCardOrderData.add(giftCardBaseDiscount);
+                listgiftCardOrderData.add(giftCardDiscount);
+
+                giftCardIntegration.setOrderData(listgiftCardOrderData);
+                giftCardIntegration.setExtensionData(listgiftCardExtension);
+
+                listIntegration.add(giftCardIntegration);
             }
 
-            PlaceOrderIntegrationOrderData giftCardBaseDiscount = createPlaceOrderIntegrationOrderData();
-            giftCardBaseDiscount.setKey(GIFT_CARD_BASE_DISCOUNT);
-            giftCardBaseDiscount.setValue(ConfigUtil.convertToBasePrice(total_giftcard_discount));
+            if (checkout.getRewardPointUsePointValue() != 0) {
+                PlaceOrderIntegrationParam rewardIntegration = createPlaceOrderIntegrationParam();
+                List<PlaceOrderIntegrationOrderData> listrewardOrderData = new ArrayList<>();
+                List<PlaceOrderIntegrationExtension> listrewardExtension = new ArrayList<>();
+                rewardIntegration.setModule(REWARD_POINT_MODULE);
+                rewardIntegration.setEventName(REWARD_POINT_EVENT);
 
-            PlaceOrderIntegrationOrderData giftCardDiscount = createPlaceOrderIntegrationOrderData();
-            giftCardDiscount.setKey(GIFT_CARD_DISCOUNT);
-            giftCardDiscount.setValue(total_giftcard_discount);
-            listgiftCardOrderData.add(giftCardBaseDiscount);
-            listgiftCardOrderData.add(giftCardDiscount);
+                PlaceOrderIntegrationExtension rewardExtension = createPlaceOrderIntegrationExtension();
+                listrewardExtension.add(rewardExtension);
 
-            giftCardIntegration.setOrderData(listgiftCardOrderData);
-            giftCardIntegration.setExtensionData(listgiftCardExtension);
+                PlaceOrderIntegrationOrderData rewardSpent = createPlaceOrderIntegrationOrderData();
+                rewardSpent.setKey(REWARD_POINT_SPENT);
+                rewardSpent.setValue(checkout.getRewardPoint().getAmount());
 
-            listIntegration.add(giftCardIntegration);
+
+                PlaceOrderIntegrationOrderData rewardBaseDiscount = createPlaceOrderIntegrationOrderData();
+                rewardBaseDiscount.setKey(REWARD_POINT_BASE_DISCOUNT);
+                rewardBaseDiscount.setValue(ConfigUtil.convertToBasePrice(checkout.getRewardPointUsePointValue()));
+
+                PlaceOrderIntegrationOrderData rewardDiscount = createPlaceOrderIntegrationOrderData();
+                rewardDiscount.setKey(REWARD_POINT_DISCOUNT);
+                rewardDiscount.setValue(checkout.getRewardPointUsePointValue());
+
+                PlaceOrderIntegrationOrderData rewardBaseAmount = createPlaceOrderIntegrationOrderData();
+                rewardBaseAmount.setKey(REWARD_POINT_BASE_AMOUNT);
+                rewardBaseAmount.setValue(ConfigUtil.convertToBasePrice(checkout.getRewardPointUsePointValue()));
+
+                PlaceOrderIntegrationOrderData rewardAmount = createPlaceOrderIntegrationOrderData();
+                rewardAmount.setKey(REWARD_POINT_AMOUNT);
+                rewardAmount.setValue(checkout.getRewardPointUsePointValue());
+
+                listrewardOrderData.add(rewardSpent);
+                listrewardOrderData.add(rewardBaseDiscount);
+                listrewardOrderData.add(rewardDiscount);
+                listrewardOrderData.add(rewardBaseAmount);
+                listrewardOrderData.add(rewardAmount);
+
+                rewardIntegration.setOrderData(listrewardOrderData);
+                listIntegration.add(rewardIntegration);
+            }
         }
-
-        if (checkout.getRewardPointUsePointValue() != 0) {
-            PlaceOrderIntegrationParam rewardIntegration = createPlaceOrderIntegrationParam();
-            List<PlaceOrderIntegrationOrderData> listrewardOrderData = new ArrayList<>();
-            List<PlaceOrderIntegrationExtension> listrewardExtension = new ArrayList<>();
-            rewardIntegration.setModule(REWARD_POINT_MODULE);
-            rewardIntegration.setEventName(REWARD_POINT_EVENT);
-
-            PlaceOrderIntegrationExtension rewardExtension = createPlaceOrderIntegrationExtension();
-            listrewardExtension.add(rewardExtension);
-
-            PlaceOrderIntegrationOrderData rewardSpent = createPlaceOrderIntegrationOrderData();
-            rewardSpent.setKey(REWARD_POINT_SPENT);
-            rewardSpent.setValue(checkout.getRewardPoint().getAmount());
-
-
-            PlaceOrderIntegrationOrderData rewardBaseDiscount = createPlaceOrderIntegrationOrderData();
-            rewardBaseDiscount.setKey(REWARD_POINT_BASE_DISCOUNT);
-            rewardBaseDiscount.setValue(ConfigUtil.convertToBasePrice(checkout.getRewardPointUsePointValue()));
-
-            PlaceOrderIntegrationOrderData rewardDiscount = createPlaceOrderIntegrationOrderData();
-            rewardDiscount.setKey(REWARD_POINT_DISCOUNT);
-            rewardDiscount.setValue(checkout.getRewardPointUsePointValue());
-
-            PlaceOrderIntegrationOrderData rewardBaseAmount = createPlaceOrderIntegrationOrderData();
-            rewardBaseAmount.setKey(REWARD_POINT_BASE_AMOUNT);
-            rewardBaseAmount.setValue(ConfigUtil.convertToBasePrice(checkout.getRewardPointUsePointValue()));
-
-            PlaceOrderIntegrationOrderData rewardAmount = createPlaceOrderIntegrationOrderData();
-            rewardAmount.setKey(REWARD_POINT_AMOUNT);
-            rewardAmount.setValue(checkout.getRewardPointUsePointValue());
-
-            listrewardOrderData.add(rewardSpent);
-            listrewardOrderData.add(rewardBaseDiscount);
-            listrewardOrderData.add(rewardDiscount);
-            listrewardOrderData.add(rewardBaseAmount);
-            listrewardOrderData.add(rewardAmount);
-
-            rewardIntegration.setOrderData(listrewardOrderData);
-            listIntegration.add(rewardIntegration);
-        }
-
         placeOrderParams.setIntegration(listIntegration);
 
         // Khởi tạo customer gateway factory
