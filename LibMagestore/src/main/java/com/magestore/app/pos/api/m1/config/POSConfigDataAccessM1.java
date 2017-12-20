@@ -1176,6 +1176,19 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
     }
 
     @Override
+    public boolean getCalculateApplyTaxOnOriginal() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        if (mConfig == null) mConfig = new PosConfigDefault();
+        boolean tax_original = false;
+        if (mConfig.getValue("tax/calculation/apply_tax_on") != null) {
+            String apply_tax = (String) mConfig.getValue("tax/calculation/apply_tax_on");
+            if (apply_tax.equals("1")) {
+                tax_original = true;
+            }
+        }
+        return tax_original;
+    }
+
+    @Override
     public void getConfigStaffPermisson(List<String> listPermisson) throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
         if (listPermisson.size() > 0) {
             ConfigUtil.setCreateOrder(true);

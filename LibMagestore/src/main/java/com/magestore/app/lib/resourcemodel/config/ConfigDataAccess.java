@@ -71,6 +71,7 @@ public interface ConfigDataAccess extends DataAccess {
     boolean getTaxSaleDisplayPrice() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     boolean getTaxSaleDisplayShipping() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     boolean getTaxSaleDisplaySubtotal() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
+    boolean getCalculateApplyTaxOnOriginal() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     void getConfigStaffPermisson(List<String> listPermisson) throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     Map<String, String> getConfigStatusOrder() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;
     List<String> getConfigSetting() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException;

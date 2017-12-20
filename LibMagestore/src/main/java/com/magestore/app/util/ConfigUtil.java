@@ -76,6 +76,7 @@ public class ConfigUtil {
     private static boolean mTaxSalesDisplayPrice;
     private static boolean mTaxSalesDisplayShipping;
     private static boolean mTaxSalesDisplaySubtotal;
+    private static boolean mCalculateApplyTaxOnOriginal;
     private static CustomerAddress mAddressOrigin;
     private static List<ConfigTaxClass> mConfigTaxClass;
     private static List<CheckoutPayment> mListPayment;
@@ -1524,6 +1525,14 @@ public class ConfigUtil {
 
     public static void setTaxSalesDisplaySubtotal(boolean mTaxSalesDisplaySubtotal) {
         ConfigUtil.mTaxSalesDisplaySubtotal = mTaxSalesDisplaySubtotal;
+    }
+
+    public static boolean isCalculateApplyTaxOnOriginal() {
+        return mCalculateApplyTaxOnOriginal;
+    }
+
+    public static void setCalculateApplyTaxOnOriginal(boolean mCalculateApplyTaxOnOriginal) {
+        ConfigUtil.mCalculateApplyTaxOnOriginal = mCalculateApplyTaxOnOriginal;
     }
 
     public static CustomerAddress getAddressOrigin() {
