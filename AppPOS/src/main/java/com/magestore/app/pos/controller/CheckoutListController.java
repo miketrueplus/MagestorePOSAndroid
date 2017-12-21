@@ -1154,6 +1154,8 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         } else if (actionType == ACTION_TYPE_SAVE_CART) {
             super.onCancelledBackground(exp, actionType, actionCode, wraper, models);
             onBackTohome();
+        } else if (actionType == ACTION_TYPE_LOG_OUT) {
+            return;
         } else {
             super.onCancelledBackground(exp, actionType, actionCode, wraper, models);
         }
