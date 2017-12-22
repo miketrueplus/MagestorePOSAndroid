@@ -296,6 +296,8 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     @Gson2PosExclude
     float base_price_incl_tax;
     @Gson2PosExclude
+    float base_price_excl_tax;
+    @Gson2PosExclude
     String offline_item_id;
     @Gson2PosExclude
     float unit_price;
@@ -390,6 +392,8 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     float qty_current;
     @Gson2PosExclude
     float tax_percent;
+    @Gson2PosExclude
+    float store_tax_percent;
     @Gson2PosExclude
     float base_unit_tax_amount;
     @Gson2PosExclude
@@ -493,6 +497,16 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     @Override
     public void setBasePriceInclTax(float fBasePriceInclTax) {
         base_price_incl_tax = fBasePriceInclTax;
+    }
+
+    @Override
+    public float getBasePriceExclTax() {
+        return base_price_excl_tax;
+    }
+
+    @Override
+    public void setBasePriceExclTax(float fBasePriceExclTax) {
+        base_price_excl_tax = fBasePriceExclTax;
     }
 
     @Override
@@ -704,6 +718,16 @@ public class PosCartItem extends PosAbstractModel implements CartItem {
     @Override
     public void setTaxPercent(float fTaxPercent) {
         tax_percent = fTaxPercent;
+    }
+
+    @Override
+    public float getStoreTaxPercent() {
+        return store_tax_percent;
+    }
+
+    @Override
+    public void setStoreTaxPercent(float fStoreTaxPercent) {
+        store_tax_percent = fStoreTaxPercent;
     }
 
     @Override

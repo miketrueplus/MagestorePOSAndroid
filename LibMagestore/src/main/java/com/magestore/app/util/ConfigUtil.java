@@ -62,6 +62,7 @@ public class ConfigUtil {
     private static Staff mStaff;
     private static Customer mCustomerGuest;
     private static boolean mTaxCartDisplay;
+    private static boolean mTaxCartDisplaySubtotal;
     private static boolean mTaxCalculationPriceIncludesTax;
     private static String mTaxCalculationBasedOn;
     private static boolean mShowDeliveryTime;
@@ -836,6 +837,14 @@ public class ConfigUtil {
 
     public static void setTaxCartDisplay(boolean mTaxCartDisplay) {
         ConfigUtil.mTaxCartDisplay = mTaxCartDisplay;
+    }
+
+    public static boolean isTaxCartDisplaySubtotal() {
+        return mTaxCartDisplaySubtotal;
+    }
+
+    public static void setTaxCartDisplaySubtotal(boolean mTaxCartDisplaySubtotal) {
+        ConfigUtil.mTaxCartDisplaySubtotal = mTaxCartDisplaySubtotal;
     }
 
     public static void setShowDeliveryTime(boolean showDeliveryTime) {

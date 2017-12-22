@@ -286,6 +286,10 @@ public class OrderRefundPanel extends AbstractDetailPanel<Order> {
     }
 
     private void enableGiftCard(Order order) {
+        if (ConfigUtil.isEnableGiftCard()) {
+            ll_gift_card.setVisibility(GONE);
+            return;
+        }
         ll_gift_card.setVisibility(mOrderHistoryListController.checkCanRefundGiftcard(order) ? VISIBLE : GONE);
         if (order.getBaseGiftVoucherDiscount() > 0) {
             gift_card.setText(ConfigUtil.formatPrice((float) Math.sqrt(ConfigUtil.convertToPrice(order.getBaseGiftVoucherDiscount()))));
@@ -293,6 +297,10 @@ public class OrderRefundPanel extends AbstractDetailPanel<Order> {
     }
 
     private void enableStoreCredit(Order order) {
+        if (!ConfigUtil.isEnableStoreCredit()) {
+            ll_store_credit.setVisibility(GONE);
+            return;
+        }
         String customer_id = mOrder.getCustomerId();
         boolean checkCustomerGuest = false;
         if (!StringUtil.isNullOrEmpty(customer_id) && !customer_id.equals(ConfigUtil.getCustomerGuest().getID())) {

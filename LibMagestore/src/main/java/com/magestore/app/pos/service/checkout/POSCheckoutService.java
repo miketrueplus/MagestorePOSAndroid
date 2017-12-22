@@ -890,7 +890,7 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
     }
 
     private void addExtensionDataToQuote(CartItem item, List<QuoteItemExtension> quoteItemExtension) {
-        float basePrice = item.getUnitPrice();
+        float basePrice = item.getBasePriceExclTax();
         float price = ConfigUtil.convertToPrice(basePrice);
         float basePriceInclTax = item.getPriceInclTax();
         float priceInclTax = ConfigUtil.convertToBasePrice(basePriceInclTax);
