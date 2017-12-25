@@ -62,7 +62,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="right"
-                            android:text="@{ConfigUtil.isTaxSalesDisplaySubtotal() ? ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderDetail.getBaseSubtotalInclTax())) : ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderDetail.getBaseSubtotal()))}"
+                            android:text="@{ConfigUtil.isTaxSalesDisplaySubtotal() ? ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderDetail.getSubtotalInclTax())) : ConfigUtil.formatPrice(ConfigUtil.convertToPrice(orderDetail.getBaseSubtotal()))}"
                             android:textColor="@color/text_color"
                             android:textSize="@dimen/order_bottom_text_size"
                             android:textStyle="bold" />

@@ -170,7 +170,15 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
         tv_t_close_balance.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(item.getBaseBalance())));
         float transaction = item.getBaseBalance() - item.getBaseFloatAmount();
         tv_transaction.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(transaction)));
-        tv_difference.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(item.getBaseBalance())));
+        float different = ConfigUtil.convertToPrice(item.getBaseBalance()) - ConfigUtil.convertToPrice(item.getBaseClosedAmount());
+        if (different < 0) {
+            tv_difference.setText(ConfigUtil.formatPrice(0 - different));
+            balance_different = 0 - different;
+        } else {
+            tv_difference.setText(ConfigUtil.formatPrice(different));
+            balance_different = different;
+        }
+        tv_difference.setText(ConfigUtil.formatPrice(balance_different));
         actionChangeBalance(item);
 
         bt_close.setOnClickListener(new OnClickListener() {
@@ -227,13 +235,9 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
             @Override
             public void onClick(View view) {
                 SessionParam param = ((RegisterShiftListController) getController()).createSessionParam();
-                float different = item.getBaseBalance() - item.getBaseClosedAmount();
-                if (different < 0) {
-                    different = 0;
-                }
                 param.setID(item.getID());
-                param.setBalance(ConfigUtil.convertToPrice(different));
-                param.setBaseBalance(different);
+                param.setBalance(item.getBalance());
+                param.setBaseBalance(item.getBaseBalance());
                 param.setBaseCashAdded(item.getBaseCashAdded());
                 param.setBaseFloatAmount(item.getBaseFloatAmount());
                 param.setFloatAmount(item.getFloatAmount());
