@@ -108,7 +108,7 @@ public class EnglishReceiptsImpl extends ILocalizeReceipts {
 
         // Start Total
         if (mOrder.getBaseSubtotal() > 0) {
-            String subtotal = ConfigUtil.formatDecimalQuantity(ConfigUtil.isTaxSalesDisplaySubtotal() ? ConfigUtil.convertToPrice(mOrder.getBaseSubtotalInclTax()) : ConfigUtil.convertToPrice(mOrder.getBaseSubtotal()));
+            String subtotal = ConfigUtil.formatDecimalQuantity(ConfigUtil.isTaxSalesDisplaySubtotal() ? ConfigUtil.convertToPrice(mOrder.getSubtotalInclTax()) : ConfigUtil.convertToPrice(mOrder.getBaseSubtotal()));
             String title_subtotal = context.getString(R.string.order_detail_bottom_tb_subtotal);
             String space = stringSpaceWith(length - title_subtotal.length() - subtotal.length());
             builder.append((title_subtotal + space + subtotal + "\n").getBytes(encoding));

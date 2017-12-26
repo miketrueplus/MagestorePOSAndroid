@@ -220,7 +220,7 @@ public class PrintUtil {
         String title_grandtotal = context.getString(R.string.order_detail_bottom_tb_grand_total).toUpperCase();
         String title_total_paid = context.getString(R.string.order_detail_bottom_tb_total_paid).toUpperCase();
         String title_total_due = context.getString(R.string.order_detail_bottom_tb_total_due).toUpperCase();
-        String body_content_total_subtotal = "<tr><td style=\"font-family: monospace;\">" + title_sutotal + "</td><td align=\"right\" style=\"font-family: monospace;\"><strong style=\"font-family: monospace;\">" + ConfigUtil.formatDecimalQuantity(ConfigUtil.isTaxSalesDisplaySubtotal() ? ConfigUtil.convertToPrice(order.getBaseSubtotalInclTax()) : ConfigUtil.convertToPrice(order.getBaseSubtotal())) + "</strong></td></tr>";
+        String body_content_total_subtotal = "<tr><td style=\"font-family: monospace;\">" + title_sutotal + "</td><td align=\"right\" style=\"font-family: monospace;\"><strong style=\"font-family: monospace;\">" + ConfigUtil.formatDecimalQuantity(ConfigUtil.isTaxSalesDisplaySubtotal() ? ConfigUtil.convertToPrice(order.getSubtotalInclTax()) : ConfigUtil.convertToPrice(order.getBaseSubtotal())) + "</strong></td></tr>";
         String body_content_earn_point = "";
         if (order.getRewardPointsEarn() != 0) {
             body_content_earn_point = "<tr><td style=\"font-family: monospace;\">" + title_earn_point + "</td><td align=\"right\" style=\"font-family: monospace;\"><strong style=\"font-family: monospace;\">" + order.getRewardPointsEarn() + "</strong></td></tr>";

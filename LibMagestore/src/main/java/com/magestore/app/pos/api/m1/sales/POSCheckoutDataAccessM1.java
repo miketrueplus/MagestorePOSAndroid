@@ -590,7 +590,6 @@ public class POSCheckoutDataAccessM1 extends POSAbstractDataAccessM1 implements 
             }
 
             placeOrderParams.setPlaceOrderExtensionData(null);
-            placeOrderParams.setIntegration(null);
 
             // Xây dựng tham số
             paramBuilder = statement.getParamBuilder()

@@ -141,40 +141,7 @@ public class RegisterShiftListController extends AbstractListController<Register
 //                }
                 bindItem(registerShift);
                 ((RegisterShiftListPanel) mView).setSelectPosition();
-                if (registerShift.getStatus().equals("0")) {
-                    if (!ConfigUtil.isCheckFirstOpenSession()) {
-                        ((RegisterShiftListPanel) mView).showDialogContinueCheckout();
-                        ConfigUtil.setCheckFirstOpenSession(true);
-                    }
-                    ConfigUtil.setShiftId(registerShift.getShiftId());
-                    ConfigUtil.setLocationId(registerShift.getLocationId());
-                    ConfigUtil.setPosId(registerShift.getPosId());
-                    ConfigUtil.setRegisterShiftId(registerShift.getID());
-                    PointOfSales pos = registerShift.getPosConfig();
-                    settingConfigWithPos(pos);
-//                getMagestoreContext().getActivity().finish();
-//                    DataUtil.saveDataStringToPreferences(getMagestoreContext().getActivity(), DataUtil.STORE_ID, registerShift.getStoreId());
-                    ((RegisterShiftListPanel) mView).isShowButtonOpenSession(false);
-                }
-                if (registerShift.getStatus().equals("1")) {
-                    if (ConfigUtil.isOpenShift()) {
-                        openSessionList();
-                        ((RegisterShiftListPanel) mView).isShowButtonOpenSession(true);
-                    } else {
-                        ((RegisterShiftListPanel) mView).isShowButtonOpenSession(false);
-                    }
-                    Intent intent = new Intent();
-                    intent.putExtra("is_show", false);
-                    intent.setAction(SEND_NOTI_TO_REGISTER_ACTIVITY);
-                    getMagestoreContext().getActivity().sendBroadcast(intent);
-                } else if (registerShift.getStatus().equals("2")) {
-                    ((RegisterShiftDetailPanel) mDetailView).showCloseShift(list.get(1));
-                } else {
-                    Intent intent = new Intent();
-                    intent.putExtra("is_show", true);
-                    intent.setAction(SEND_NOTI_TO_REGISTER_ACTIVITY);
-                    getMagestoreContext().getActivity().sendBroadcast(intent);
-                }
+                checkListOpenShift(registerShift);
             } else {
                 if (ConfigUtil.isOpenShift()) {
                     openSessionList();
@@ -370,6 +337,56 @@ public class RegisterShiftListController extends AbstractListController<Register
                 panelCloseSessionPanel.setEnableBtValidate(true);
                 panelCloseSessionPanel.setEnableCancel(true);
             }
+        }
+    }
+
+    public void checkListOpenShift(RegisterShift registerShift) {
+        if (registerShift != null) {
+            if (registerShift.getStatus().equals("0")) {
+                if (!ConfigUtil.isCheckFirstOpenSession()) {
+                    ((RegisterShiftListPanel) mView).showDialogContinueCheckout();
+                    ConfigUtil.setCheckFirstOpenSession(true);
+                }
+                ConfigUtil.setShiftId(registerShift.getShiftId());
+                ConfigUtil.setLocationId(registerShift.getLocationId());
+                ConfigUtil.setPosId(registerShift.getPosId());
+                ConfigUtil.setRegisterShiftId(registerShift.getID());
+                PointOfSales pos = registerShift.getPosConfig();
+                settingConfigWithPos(pos);
+//                getMagestoreContext().getActivity().finish();
+//                    DataUtil.saveDataStringToPreferences(getMagestoreContext().getActivity(), DataUtil.STORE_ID, registerShift.getStoreId());
+                ((RegisterShiftListPanel) mView).isShowButtonOpenSession(false);
+            }
+            if (registerShift.getStatus().equals("1")) {
+                if (ConfigUtil.isOpenShift()) {
+                    openSessionList();
+                    ((RegisterShiftListPanel) mView).isShowButtonOpenSession(true);
+                } else {
+                    ((RegisterShiftListPanel) mView).isShowButtonOpenSession(false);
+                }
+                Intent intent = new Intent();
+                intent.putExtra("is_show", false);
+                intent.setAction(SEND_NOTI_TO_REGISTER_ACTIVITY);
+                getMagestoreContext().getActivity().sendBroadcast(intent);
+            } else if (registerShift.getStatus().equals("2")) {
+                ((RegisterShiftDetailPanel) mDetailView).showCloseShift(registerShift);
+            } else {
+                Intent intent = new Intent();
+                intent.putExtra("is_show", true);
+                intent.setAction(SEND_NOTI_TO_REGISTER_ACTIVITY);
+                getMagestoreContext().getActivity().sendBroadcast(intent);
+            }
+        } else {
+            if (ConfigUtil.isOpenShift()) {
+                openSessionList();
+                ((RegisterShiftListPanel) mView).isShowButtonOpenSession(true);
+            } else {
+                ((RegisterShiftListPanel) mView).isShowButtonOpenSession(false);
+            }
+            Intent intent = new Intent();
+            intent.putExtra("is_show", false);
+            intent.setAction(SEND_NOTI_TO_REGISTER_ACTIVITY);
+            getMagestoreContext().getActivity().sendBroadcast(intent);
         }
     }
 

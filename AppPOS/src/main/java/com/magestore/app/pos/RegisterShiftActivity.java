@@ -150,6 +150,8 @@ public class RegisterShiftActivity extends AbstractActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             changePermissonOrderMenu();
+            closeMenu();
+            mRegisterShiftListController.checkListOpenShift(mRegisterShiftListController.getSelectedItem());
             mRegisterShiftDetailPanel.bindItem(mRegisterShiftListController.getSelectedItem());
         }
     };
@@ -168,17 +170,18 @@ public class RegisterShiftActivity extends AbstractActivity {
             unregisterReceiver(receiver_data);
             unregisterReceiver(receiver_menu_order);
             unregisterReceiver(back_to_home);
-        }catch (Exception e){}
+        } catch (Exception e) {
+        }
     }
 
     @Override
     public void onBackPressed() {
-        if(isEnableAction){
+        if (isEnableAction) {
             super.onBackPressed();
         }
     }
 
-    private void checkDevLicense(){
+    private void checkDevLicense() {
         dev_license.setVisibility(ConfigUtil.isDevLicense() ? View.VISIBLE : View.GONE);
     }
 }

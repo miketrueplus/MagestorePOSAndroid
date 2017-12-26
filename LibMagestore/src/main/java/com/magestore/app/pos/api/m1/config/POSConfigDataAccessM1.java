@@ -340,13 +340,20 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
         String staff_id = (String) mConfig.getValue("staffId");
         String staff_name = (String) mConfig.getValue("staffName");
         String location_id = "";
-        if (mConfig.getValue("locationId") instanceof Double) {
-            location_id = String.valueOf((double) mConfig.getValue("locationId"));
-        } else {
-            location_id = (String) mConfig.getValue("locationId");
+        String location_name = "";
+        String location_address = "";
+        if (ConfigUtil.getPointOfSales() != null) {
+            location_id = ConfigUtil.getPointOfSales().getLocationId();
+            location_name = ConfigUtil.getPointOfSales().getLocationName();
+            location_address = ConfigUtil.getPointOfSales().getAddress();
         }
-        String location_name = (String) mConfig.getValue("location_name");
-        String location_address = (String) mConfig.getValue("location_address");
+//        if (mConfig.getValue("locationId") instanceof Double) {
+//            location_id = String.valueOf((double) mConfig.getValue("locationId"));
+//        } else {
+//            location_id = (String) mConfig.getValue("locationId");
+//        }
+//        String location_name = (String) mConfig.getValue("location_name");
+//        String location_address = (String) mConfig.getValue("location_address");
 
         Staff staff = new PosStaff();
         staff.setStaffId(staff_id);
@@ -1176,8 +1183,22 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
     }
 
     @Override
+    public boolean getCalculateApplyTaxOnOriginal() throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
+        if (mConfig == null) mConfig = new PosConfigDefault();
+        boolean tax_original = false;
+        if (mConfig.getValue("tax/calculation/apply_tax_on") != null) {
+            String apply_tax = (String) mConfig.getValue("tax/calculation/apply_tax_on");
+            if (apply_tax.equals("1")) {
+                tax_original = true;
+            }
+        }
+        return tax_original;
+    }
+
+    @Override
     public void getConfigStaffPermisson(List<String> listPermisson) throws DataAccessException, ConnectionException, ParseException, IOException, ParseException {
         if (listPermisson.size() > 0) {
+            ConfigUtil.setCreateOrder(true);
             ConfigUtil.setChangeStaff(true);
             ConfigUtil.setManageOrderByLocation(false);
             ConfigUtil.setNeedToShip(true);
@@ -1212,16 +1233,19 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
             ConfigUtil.setCustomSales(true);
             ConfigUtil.setShowAvailableQty(false);
             if (checkStaffPermiss(listPermisson, ALL_PERMISSON)) {
-                ConfigUtil.setCreateOrder(true);
+//                ConfigUtil.setCreateOrder(true);
                 ConfigUtil.setManagerAllOrder(true);
                 ConfigUtil.setDiscountPerCart(true);
                 ConfigUtil.setApplyCoupon(true);
                 ConfigUtil.setDiscountPerItem(true);
                 ConfigUtil.setCanUseRefund(true);
                 ConfigUtil.setApplyCustomPrice(true);
+                ConfigUtil.setOpenShift(true);
+                ConfigUtil.setCloseShift(true);
+                ConfigUtil.setManagerShiftAdjustment(true);
             } else {
                 ConfigUtil.setManagerAllOrder(checkStaffPermiss(listPermisson, MANAGE_ALL_ORDER));
-                ConfigUtil.setCreateOrder(checkStaffPermiss(listPermisson, CREATE_ORDER));
+//                ConfigUtil.setCreateOrder(checkStaffPermiss(listPermisson, CREATE_ORDER));
                 if (ConfigUtil.isManagerAllOrder()) {
                     ConfigUtil.setManageOrderByMe(true);
                     ConfigUtil.setManageOrderOtherStaff(true);

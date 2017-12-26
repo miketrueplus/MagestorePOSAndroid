@@ -114,6 +114,9 @@ public class RegisterShiftDetailPanel extends AbstractDetailPanel<RegisterShift>
     @Override
     public void bindItem(final RegisterShift item) {
         super.bindItem(item);
+        if (item == null) {
+            return;
+        }
         registerShift = item;
         mBinding.setRegisterShift(item);
         tv_staff_name.setText(ConfigUtil.getStaff().getStaffName());

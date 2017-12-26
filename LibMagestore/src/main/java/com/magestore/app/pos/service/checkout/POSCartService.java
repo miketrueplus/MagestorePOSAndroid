@@ -64,22 +64,28 @@ public class POSCartService extends AbstractService implements CartService {
         float tax_total = 0;
         float row_total = 0;
         float total_save_cart = 0;
+        float total_with_store_tax = 0;
         for (CartItem item : listItems) {
-            if (item.getIsSaveCart()) {
-                total_save_cart += (item.getPriceShowView() * item.getQuantity());
-                row_total = (item.getPriceShowView() * item.getQuantity());
-            } else {
-                total_save_cart += item.getPrice();
-                row_total = item.getPrice();
-            }
             float tax_percent = item.getTaxPercent() / 100;
-            tax_total += row_total * tax_percent;
+
+            float tax_amount = 0;
+            row_total = item.getBasePriceExclTax() * item.getQuantity();
+            tax_amount = row_total * tax_percent;
+
+            if (ConfigUtil.isTaxCartDisplaySubtotal()) {
+                total_with_store_tax += row_total + tax_amount;
+            } else {
+                total_with_store_tax += row_total;
+            }
+
+            total_save_cart += row_total;
+
+            tax_total += tax_amount;
         }
         if (!ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_ODOO)) {
             checkout.setTaxTotal(tax_total);
         }
-//        checkout.setSubTotalSaveCart(total);
-        checkout.setSubTotal(total_save_cart);
+        checkout.setSubTotal(total_with_store_tax);
         return total_save_cart;
     }
 
@@ -90,15 +96,6 @@ public class POSCartService extends AbstractService implements CartService {
      */
     @Override
     public synchronized float calculateTaxTotal(Checkout checkout) {
-        float sub_total = calculateSubTotal(checkout);
-//        float tax_total = sub_total * (float) 0.1;
-        float tax_total = 0.0f;
-//        if (!ConfigUtil.getPlatForm().equals(ConfigUtil.PLATFORM_ODOO)) {
-//            tax_total = checkout.getSubTotal() - checkout.getSubTotalSaveCart();
-//            checkout.setTaxTotal(tax_total);
-//        } else {
-        checkout.setTaxTotal(checkout.getTaxTotal());
-//        }
         return checkout.getTaxTotal();
     }
 
@@ -314,7 +311,10 @@ public class POSCartService extends AbstractService implements CartService {
 
         // tìm cart có rồi thì thôi, vì cart đã được ăn theo bind từ giao diện
         for (CartItem itemInList : checkout.getCartItem())
-            if (itemInList == cartItem) return itemInList;
+            if (itemInList == cartItem) {
+                addTaxToCartItem(checkout, itemInList, true);
+                return itemInList;
+            }
 
         // tìm xem có cart item trùng option không
         CartItem itemInList = findCartItem(checkout, cartItem);
@@ -966,6 +966,112 @@ public class POSCartService extends AbstractService implements CartService {
             for (CartItem cartItem : mListCartItems) {
                 float taxPercent = getTaxPercentWithProduct(cartItem.getProduct(), checkout);
                 cartItem.setTaxPercent(taxPercent);
+                float taxStore = getStoreTaxPercentWithProduct(cartItem.getProduct());
+                cartItem.setStoreTaxPercent(taxStore);
+                if (cartItem.isCustomPrice()) {
+                    float base_price = ConfigUtil.convertToBasePrice(cartItem.getUnitPrice());
+                    cartItem.setBasePriceExclTax(base_price);
+                    cartItem.setBasePriceInclTax(base_price);
+                    if (taxPercent == 0) {
+                        cartItem.setUnitTaxAmount(0);
+                        cartItem.setBaseUnitTaxAmount(0);
+                        if (taxStore == 0) {
+                            cartItem.setPriceShowView(base_price * cartItem.getQuantity());
+                            cartItem.setUnitPriceShowView(base_price);
+                        } else {
+                            if (ConfigUtil.isTaxCalculationPriceIncludesTax()) {
+                                float basePriceExclTax = (base_price / (100 + taxStore)) * 100;
+                                cartItem.setPriceShowView(basePriceExclTax * cartItem.getQuantity());
+                                cartItem.setUnitPriceShowView(basePriceExclTax);
+                                cartItem.setBasePriceExclTax(basePriceExclTax);
+                                cartItem.setBasePriceInclTax(basePriceExclTax);
+                            } else {
+                                cartItem.setPriceShowView(base_price * cartItem.getQuantity());
+                                cartItem.setUnitPriceShowView(base_price);
+                            }
+                        }
+                    } else {
+                        float customPrice = 0;
+                        if (ConfigUtil.isCalculateApplyTaxOnOriginal()) {
+                            customPrice = cartItem.getOriginalPrice();
+                        } else {
+                            customPrice = cartItem.getUnitPrice();
+                        }
+                        float baseCustomPrice = ConfigUtil.convertToBasePrice(customPrice);
+                        if (ConfigUtil.isTaxCalculationPriceIncludesTax()) {
+                            float unitTaxAmount = (customPrice / (100 + taxPercent)) * taxPercent;
+                            float baseUnitTaxAmount = (baseCustomPrice / (100 + taxPercent)) * taxPercent;
+                            float baseCustomPriceExclTax = baseCustomPrice - baseUnitTaxAmount;
+                            cartItem.setPriceShowView(ConfigUtil.isTaxCartDisplay() ? (baseCustomPrice * cartItem.getQuantity()) : (baseCustomPriceExclTax * cartItem.getQuantity()));
+                            cartItem.setUnitPriceShowView(ConfigUtil.isTaxCartDisplay() ? baseCustomPrice : baseCustomPriceExclTax);
+                            cartItem.setUnitTaxAmount(unitTaxAmount);
+                            cartItem.setBaseUnitTaxAmount(baseUnitTaxAmount);
+                            cartItem.setBasePriceExclTax(baseCustomPriceExclTax);
+                            cartItem.setBasePriceInclTax(baseCustomPrice);
+                        } else {
+                            float unitTaxAmount = customPrice * taxPercent / 100;
+                            float baseUnitTaxAmount = baseCustomPrice * taxPercent / 100;
+                            float baseCustomPriceInclTax = baseCustomPrice + baseUnitTaxAmount;
+                            cartItem.setPriceShowView(ConfigUtil.isTaxCartDisplay() ? (baseCustomPriceInclTax * cartItem.getQuantity()) : (baseCustomPrice * cartItem.getQuantity()));
+                            cartItem.setUnitPriceShowView(ConfigUtil.isTaxCartDisplay() ? baseCustomPriceInclTax : baseCustomPrice);
+                            cartItem.setUnitTaxAmount(unitTaxAmount);
+                            cartItem.setBaseUnitTaxAmount(baseUnitTaxAmount);
+                            cartItem.setBasePriceExclTax(baseCustomPrice);
+                            cartItem.setBasePriceInclTax(baseCustomPriceInclTax);
+                        }
+                    }
+                } else {
+                    float base_price = cartItem.getUnitPrice();
+                    float price = ConfigUtil.convertToPrice(cartItem.getUnitPrice());
+                    float unitTaxAmount = 0;
+                    float baseUnitTaxAmount = 0;
+                    if (cartItem.isCustomPrice()) {
+                        baseUnitTaxAmount = base_price - cartItem.getOriginalPrice();
+                        unitTaxAmount = price - ConfigUtil.convertToPrice(cartItem.getOriginalPrice());
+                    } else {
+                        if (taxPercent == 0) {
+                            if (taxStore == 0) {
+                                cartItem.setBasePriceInclTax(base_price);
+                                cartItem.setBasePriceExclTax(base_price);
+                            } else {
+                                if (ConfigUtil.isTaxCalculationPriceIncludesTax()) {
+                                    float basePriceExclTax = (base_price / (100 + taxStore)) * 100;
+                                    cartItem.setBasePriceInclTax(basePriceExclTax);
+                                    cartItem.setBasePriceExclTax(basePriceExclTax);
+                                } else {
+                                    cartItem.setBasePriceInclTax(base_price);
+                                    cartItem.setBasePriceExclTax(base_price);
+                                }
+                            }
+                            unitTaxAmount = 0;
+                            baseUnitTaxAmount = 0;
+                        } else {
+                            if (ConfigUtil.isTaxCalculationPriceIncludesTax()) {
+                                float basePriceExclTax = (base_price / (100 + taxPercent)) * 100;
+                                float priceExclTax = ConfigUtil.convertToPrice(basePriceExclTax);
+                                cartItem.setBasePriceInclTax(base_price);
+                                cartItem.setBasePriceExclTax(basePriceExclTax);
+                                unitTaxAmount = price - priceExclTax;
+                                baseUnitTaxAmount = base_price - basePriceExclTax;
+                            } else {
+                                float basePriceInclTax = base_price + base_price * taxPercent / 100;
+                                float priceInclTax = ConfigUtil.convertToPrice(basePriceInclTax);
+                                cartItem.setBasePriceExclTax(base_price);
+                                cartItem.setBasePriceInclTax(basePriceInclTax);
+                                unitTaxAmount = priceInclTax - price;
+                                baseUnitTaxAmount = basePriceInclTax - base_price;
+                            }
+                        }
+                    }
+                    cartItem.setPriceShowView(ConfigUtil.isTaxCartDisplay() ? (cartItem.getBasePriceInclTax() * cartItem.getQuantity()) : (cartItem.getBasePriceExclTax() * cartItem.getQuantity()));
+                    cartItem.setUnitPriceShowView(ConfigUtil.isTaxCartDisplay() ? cartItem.getBasePriceInclTax() : cartItem.getBasePriceExclTax());
+                    float taxAmount = unitTaxAmount * cartItem.getQuantity();
+                    float baseTaxAmount = unitTaxAmount * cartItem.getQuantity();
+                    cartItem.setUnitTaxAmount(unitTaxAmount);
+                    cartItem.setBaseUnitTaxAmount(baseUnitTaxAmount);
+                    cartItem.setTaxAmount(taxAmount);
+                    cartItem.setBaseTaxAmount(baseTaxAmount);
+                }
             }
         }
     }
@@ -986,41 +1092,138 @@ public class POSCartService extends AbstractService implements CartService {
 
     private void addTaxToCartItem(Checkout checkout, CartItem cartItem, boolean isAddCart) {
         if (isAddCart) {
-            cartItem.setTaxAmount(cartItem.getUnitTaxAmount() * cartItem.getQuantity());
-            cartItem.setBaseTaxAmount(cartItem.getBaseUnitTaxAmount() * cartItem.getQuantity());
+            if (cartItem.isCustomPrice()) {
+                float base_price = ConfigUtil.convertToBasePrice(cartItem.getUnitPrice());
+                float taxPercent = cartItem.getTaxPercent();
+                float taxStore = cartItem.getStoreTaxPercent();
+                cartItem.setBasePriceExclTax(base_price);
+                cartItem.setBasePriceInclTax(base_price);
+                if (taxPercent == 0) {
+                    cartItem.setUnitTaxAmount(0);
+                    cartItem.setBaseUnitTaxAmount(0);
+                    if (taxStore == 0) {
+                        cartItem.setPriceShowView(base_price * cartItem.getQuantity());
+                        cartItem.setUnitPriceShowView(base_price);
+                    } else {
+                        if (ConfigUtil.isTaxCalculationPriceIncludesTax()) {
+                            float basePriceExclTax = (base_price / (100 + taxStore)) * 100;
+                            cartItem.setPriceShowView(basePriceExclTax * cartItem.getQuantity());
+                            cartItem.setUnitPriceShowView(basePriceExclTax);
+                            cartItem.setBasePriceExclTax(basePriceExclTax);
+                            cartItem.setBasePriceInclTax(basePriceExclTax);
+                        } else {
+                            cartItem.setPriceShowView(base_price * cartItem.getQuantity());
+                            cartItem.setUnitPriceShowView(base_price);
+                        }
+                    }
+                } else {
+                    float customPrice = 0;
+                    if (ConfigUtil.isCalculateApplyTaxOnOriginal()) {
+                        customPrice = cartItem.getOriginalPrice();
+                    } else {
+                        customPrice = cartItem.getUnitPrice();
+                    }
+                    float baseCustomPrice = ConfigUtil.convertToBasePrice(customPrice);
+                    if (ConfigUtil.isTaxCalculationPriceIncludesTax()) {
+                        float unitTaxAmount = (customPrice / (100 + taxPercent)) * taxPercent;
+                        float baseUnitTaxAmount = (baseCustomPrice / (100 + taxPercent)) * taxPercent;
+                        float baseCustomPriceExclTax = baseCustomPrice - baseUnitTaxAmount;
+                        cartItem.setPriceShowView(ConfigUtil.isTaxCartDisplay() ? (baseCustomPrice * cartItem.getQuantity()) : (baseCustomPriceExclTax * cartItem.getQuantity()));
+                        cartItem.setUnitPriceShowView(ConfigUtil.isTaxCartDisplay() ? baseCustomPrice : baseCustomPriceExclTax);
+                        cartItem.setUnitTaxAmount(unitTaxAmount);
+                        cartItem.setBaseUnitTaxAmount(baseUnitTaxAmount);
+                        cartItem.setBasePriceExclTax(baseCustomPriceExclTax);
+                        cartItem.setBasePriceInclTax(baseCustomPrice);
+                    } else {
+                        float unitTaxAmount = customPrice * taxPercent / 100;
+                        float baseUnitTaxAmount = baseCustomPrice * taxPercent / 100;
+                        float baseCustomPriceInclTax = baseCustomPrice + baseUnitTaxAmount;
+                        cartItem.setPriceShowView(ConfigUtil.isTaxCartDisplay() ? (baseCustomPriceInclTax * cartItem.getQuantity()) : (baseCustomPrice * cartItem.getQuantity()));
+                        cartItem.setUnitPriceShowView(ConfigUtil.isTaxCartDisplay() ? baseCustomPriceInclTax : baseCustomPrice);
+                        cartItem.setUnitTaxAmount(unitTaxAmount);
+                        cartItem.setBaseUnitTaxAmount(baseUnitTaxAmount);
+                        cartItem.setBasePriceExclTax(baseCustomPrice);
+                        cartItem.setBasePriceInclTax(baseCustomPriceInclTax);
+                    }
+                }
+            } else {
+                cartItem.setTaxAmount(cartItem.getUnitTaxAmount() * cartItem.getQuantity());
+                cartItem.setBaseTaxAmount(cartItem.getBaseUnitTaxAmount() * cartItem.getQuantity());
+                cartItem.setPriceShowView(ConfigUtil.isTaxCartDisplay() ? (cartItem.getBasePriceInclTax() * cartItem.getQuantity()) : (cartItem.getBasePriceExclTax() * cartItem.getQuantity()));
+                cartItem.setUnitPriceShowView(ConfigUtil.isTaxCartDisplay() ? cartItem.getBasePriceInclTax() : cartItem.getBasePriceExclTax());
+            }
         } else {
             float taxPercent = 0;
+            float taxStore = 0;
             taxPercent = getTaxPercentWithProduct(cartItem.getProduct(), checkout);
+            cartItem.setTaxPercent(taxPercent);
+            taxStore = getStoreTaxPercentWithProduct(cartItem.getProduct());
+            cartItem.setStoreTaxPercent(taxStore);
             float base_price = cartItem.getUnitPrice();
             float price = ConfigUtil.convertToPrice(cartItem.getUnitPrice());
             float unitTaxAmount = 0;
             float baseUnitTaxAmount = 0;
-            if (ConfigUtil.isTaxCalculationPriceIncludesTax()) {
-                float basePriceExclTax = (base_price / (100 + taxPercent)) * 100;
-                float priceExclTax = ConfigUtil.convertToPrice(basePriceExclTax);
-                cartItem.setBasePriceInclTax(basePriceExclTax);
-                unitTaxAmount = price - priceExclTax;
-                baseUnitTaxAmount = base_price - basePriceExclTax;
+            if (cartItem.isCustomPrice()) {
+                baseUnitTaxAmount = base_price - cartItem.getOriginalPrice();
+                unitTaxAmount = price - ConfigUtil.convertToPrice(cartItem.getOriginalPrice());
             } else {
-                float basePriceExclTax = base_price + base_price * taxPercent / 100;
-                float priceExclTax = ConfigUtil.convertToPrice(basePriceExclTax);
-                cartItem.setBasePriceInclTax(basePriceExclTax);
-                unitTaxAmount = priceExclTax - price;
-                baseUnitTaxAmount = basePriceExclTax - base_price;
+                if (taxPercent == 0) {
+                    if (taxStore == 0) {
+                        cartItem.setBasePriceInclTax(base_price);
+                        cartItem.setBasePriceExclTax(base_price);
+                    } else {
+                        if (ConfigUtil.isTaxCalculationPriceIncludesTax()) {
+                            float basePriceExclTax = (base_price / (100 + taxStore)) * 100;
+                            cartItem.setBasePriceInclTax(basePriceExclTax);
+                            cartItem.setBasePriceExclTax(basePriceExclTax);
+                        } else {
+                            cartItem.setBasePriceInclTax(base_price);
+                            cartItem.setBasePriceExclTax(base_price);
+                        }
+                    }
+                    unitTaxAmount = 0;
+                    baseUnitTaxAmount = 0;
+                } else {
+                    if (ConfigUtil.isTaxCalculationPriceIncludesTax()) {
+                        float basePriceExclTax = (base_price / (100 + taxPercent)) * 100;
+                        float priceExclTax = ConfigUtil.convertToPrice(basePriceExclTax);
+                        cartItem.setBasePriceInclTax(base_price);
+                        cartItem.setBasePriceExclTax(basePriceExclTax);
+                        unitTaxAmount = price - priceExclTax;
+                        baseUnitTaxAmount = base_price - basePriceExclTax;
+                    } else {
+                        float basePriceInclTax = base_price + base_price * taxPercent / 100;
+                        float priceInclTax = ConfigUtil.convertToPrice(basePriceInclTax);
+                        cartItem.setBasePriceExclTax(base_price);
+                        cartItem.setBasePriceInclTax(basePriceInclTax);
+                        unitTaxAmount = priceInclTax - price;
+                        baseUnitTaxAmount = basePriceInclTax - base_price;
+                    }
+                }
             }
+            cartItem.setPriceShowView(ConfigUtil.isTaxCartDisplay() ? (cartItem.getBasePriceInclTax() * cartItem.getQuantity()) : (cartItem.getBasePriceExclTax() * cartItem.getQuantity()));
+            cartItem.setUnitPriceShowView(ConfigUtil.isTaxCartDisplay() ? cartItem.getBasePriceInclTax() : cartItem.getBasePriceExclTax());
             float taxAmount = unitTaxAmount * cartItem.getQuantity();
             float baseTaxAmount = unitTaxAmount * cartItem.getQuantity();
             cartItem.setUnitTaxAmount(unitTaxAmount);
             cartItem.setBaseUnitTaxAmount(baseUnitTaxAmount);
             cartItem.setTaxAmount(taxAmount);
             cartItem.setBaseTaxAmount(baseTaxAmount);
-            cartItem.setTaxPercent(taxPercent);
         }
+    }
+
+    private float getStoreTaxPercentWithProduct(Product mProduct) {
+        String taxClassId = mProduct.getTaxClassId();
+        List<StoreTaxRate> store_tax_rates = getProductTaxRate(taxClassId, ConfigUtil.getDefaultCustomerGroup(), ConfigUtil.getAddressOrigin());
+        float storeTaxPercent = 0;
+        for (StoreTaxRate taxRate : store_tax_rates) {
+            storeTaxPercent += taxRate.rate;
+        }
+        return storeTaxPercent;
     }
 
     private float getTaxPercentWithProduct(Product mProduct, Checkout mCheckout) {
         String taxClassId = mProduct.getTaxClassId();
-        List<StoreTaxRate> store_tax_rates = getProductTaxRate(taxClassId, ConfigUtil.getDefaultCustomerGroup(), ConfigUtil.getAddressOrigin());
         CustomerAddress addressCalTax = new PosCustomerAddress();
         String calculateTaxBaseOn = ConfigUtil.getTaxCalculationBasedOn();
 

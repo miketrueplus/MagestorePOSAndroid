@@ -310,11 +310,11 @@ public class POSProductDataAccessM1 extends POSAbstractDataAccessM1 implements P
                 String finalSearchString = "%" + searchString + "%";
                 if (ConfigUtil.getProductAttribute() != null && ConfigUtil.getProductAttribute().size() > 0) {
                     for (String attribute : ConfigUtil.getProductAttribute()) {
-                        paramBuilder.setFilterLike(attribute, finalSearchString);
+                        paramBuilder.setFilterOrLike(attribute, finalSearchString);
                     }
                 } else {
-                    paramBuilder.setFilterLike("name", finalSearchString);
-                    paramBuilder.setFilterLike("sku", finalSearchString);
+                    paramBuilder.setFilterOrLike("name", finalSearchString);
+                    paramBuilder.setFilterOrLike("sku", finalSearchString);
                 }
             } else {
                 // TODO: tạm thời để search all
@@ -503,11 +503,11 @@ public class POSProductDataAccessM1 extends POSAbstractDataAccessM1 implements P
 
             if (ConfigUtil.getProductAttribute() != null && ConfigUtil.getProductAttribute().size() > 0) {
                 for (String attribute : ConfigUtil.getProductAttribute()) {
-                    paramBuilder.setFilterLike(attribute, finalSearchString);
+                    paramBuilder.setFilterOrLike(attribute, finalSearchString);
                 }
             } else {
-                paramBuilder.setFilterLike("name", finalSearchString);
-                paramBuilder.setFilterLike("sku", finalSearchString);
+                paramBuilder.setFilterOrLike("name", finalSearchString);
+                paramBuilder.setFilterOrLike("sku", finalSearchString);
             }
 
             if (!StringUtil.isNullOrEmpty(ConfigUtil.getWebSiteId())) {

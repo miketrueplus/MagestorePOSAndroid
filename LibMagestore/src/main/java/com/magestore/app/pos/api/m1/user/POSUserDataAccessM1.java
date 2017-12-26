@@ -49,6 +49,10 @@ public class POSUserDataAccessM1 extends POSAbstractDataAccessM1 implements User
         User staff;
     }
 
+    private class Logout {
+
+    }
+
     private class POSListTaxClassDataAccess {
         List<PosConfigTaxClass> tax_class;
         List<PosCheckoutPayment> payment;
@@ -245,6 +249,43 @@ public class POSUserDataAccessM1 extends POSAbstractDataAccessM1 implements User
             // đóng result reading
             if (rp != null) rp.close();
             rp = null;
+
+            // đóng statement
+            if (statement != null) statement.close();
+            statement = null;
+
+            // đóng connection
+            if (connection != null) connection.close();
+            connection = null;
+        }
+    }
+
+    @Override
+    public void doLogout() throws ParseException, ConnectionException, DataAccessException, IOException {
+        Connection connection = null;
+        Statement statement = null;
+        ResultReading rp = null;
+        ParamBuilder paramBuilder = null;
+
+        try {
+            connection = ConnectionFactory.generateConnection(getContext(), POSDataAccessSessionM1.REST_BASE_URL, POSDataAccessSessionM1.REST_USER_NAME, POSDataAccessSessionM1.REST_PASSWORD);
+            statement = connection.createStatement();
+            statement.prepareQuery(POSAPIM1.REST_LOGOUT);
+            paramBuilder = statement.getParamBuilder()
+                    .setSessionID(POSDataAccessSessionM1.REST_SESSION_ID);
+
+            Logout logout = new Logout();
+
+            rp = statement.execute(logout);
+        } catch (Exception ex) {
+
+        } finally {
+//            // đóng result reading
+            if (rp != null) rp.close();
+            rp = null;
+
+            if (paramBuilder != null) paramBuilder.clear();
+            paramBuilder = null;
 
             // đóng statement
             if (statement != null) statement.close();

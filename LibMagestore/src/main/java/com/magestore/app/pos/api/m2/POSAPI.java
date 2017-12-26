@@ -37,6 +37,7 @@ public class POSAPI {
     // API staff
     public static final String REST_LOGIN = "/V1/webpos/staff/login";
     public static final String REST_STAFF_GET_LISTING = "/V1/webpos/staffs?";
+    public static final String REST_LOGOUT = "/V1/webpos/staff/logout?";
 
     // API store
     public static final String REST_STORE_GET_LISTING = "/V1/webpos/storeInformation?";

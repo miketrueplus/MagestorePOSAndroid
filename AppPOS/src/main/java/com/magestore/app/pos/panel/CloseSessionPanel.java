@@ -138,8 +138,8 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
         txt_open_date.setText(ConfigUtil.formatDateTime(item.getOpenedAt()));
         ll_sale_summary.setVisibility(item.checkSaleSummary() ? VISIBLE : GONE);
         mCloseSessionSaleListController.doSelectRegisterShift(item);
+        et_r_close_balance.setEnabled(item.getStatus().equals(CLOSE_SESSION) ? false : true);
         if (item.getStatus().equals(CLOSE_SESSION)) {
-            et_r_close_balance.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(item.getBaseClosedAmount())));
             et_note.setText(item.getClosedNote());
             bt_cancel.setVisibility(ConfigUtil.isCancelCloseSession() ? VISIBLE : GONE);
             bt_adjustment.setVisibility(GONE);
@@ -148,7 +148,9 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
             bt_close.setVisibility(GONE);
             bt_validate.setVisibility(ConfigUtil.isCloseShift() ? VISIBLE : GONE);
             close_session_list_panel.setEnableAction(false);
+            et_r_close_balance.setEnabled(false);
         } else {
+            et_r_close_balance.setEnabled(ConfigUtil.isEnableCloseAmount() ? true : false);
             bt_cancel.setVisibility(GONE);
             bt_adjustment.setVisibility(VISIBLE);
             if (item.getPosConfig() != null) {
@@ -160,18 +162,15 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
             make_adjustment_put_money.setVisibility(ConfigUtil.isManagerShiftAdjustment() ? VISIBLE : GONE);
             make_adjustment_take_money.setVisibility(ConfigUtil.isManagerShiftAdjustment() ? VISIBLE : GONE);
         }
-
         ((RegisterShiftListController) getController()).bindListValueClose();
-        et_r_close_balance.setEnabled(item.getStatus().equals(CLOSE_SESSION) ? false : true);
-        et_r_close_balance.setEnabled(ConfigUtil.isEnableCloseAmount() ? true : false);
         et_note.setEnabled(item.getStatus().equals(CLOSE_SESSION) ? false : true);
         ll_note.setVisibility(ConfigUtil.isShiftCloseNote() ? VISIBLE : GONE);
         tv_open_session_balance.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(item.getBaseFloatAmount())));
         tv_t_close_balance.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(item.getBaseBalance())));
         float transaction = item.getBaseBalance() - item.getBaseFloatAmount();
         tv_transaction.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(transaction)));
-        tv_difference.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(item.getBaseBalance())));
         actionChangeBalance(item);
+        et_r_close_balance.setText(ConfigUtil.formatPrice(ConfigUtil.convertToPrice(item.getBaseClosedAmount())));
 
         bt_close.setOnClickListener(new OnClickListener() {
             @Override
@@ -227,13 +226,9 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
             @Override
             public void onClick(View view) {
                 SessionParam param = ((RegisterShiftListController) getController()).createSessionParam();
-                float different = item.getBaseBalance() - item.getBaseClosedAmount();
-                if (different < 0) {
-                    different = 0;
-                }
                 param.setID(item.getID());
-                param.setBalance(ConfigUtil.convertToPrice(different));
-                param.setBaseBalance(different);
+                param.setBalance(item.getBalance());
+                param.setBaseBalance(item.getBaseBalance());
                 param.setBaseCashAdded(item.getBaseCashAdded());
                 param.setBaseFloatAmount(item.getBaseFloatAmount());
                 param.setFloatAmount(item.getFloatAmount());
@@ -367,14 +362,14 @@ public class CloseSessionPanel extends AbstractDetailPanel<RegisterShift> {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 float balance = et_r_close_balance.getValueFloat();
-                float different = ConfigUtil.convertToPrice(item.getBaseBalance()) - balance;
-                if (different < 0) {
-                    tv_difference.setText(ConfigUtil.formatPrice(0 - different));
-                    balance_different = 0 - different;
-                } else {
-                    tv_difference.setText(ConfigUtil.formatPrice(different));
-                    balance_different = different;
-                }
+                float different = balance - ConfigUtil.convertToPrice(item.getBaseBalance());
+//                if (different < 0) {
+//                    tv_difference.setText(ConfigUtil.formatPrice(0 - different));
+//                    balance_different = 0 - different;
+//                } else {
+                tv_difference.setText(ConfigUtil.formatPrice(different));
+                balance_different = different;
+//                }
             }
 
             @Override

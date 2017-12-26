@@ -126,6 +126,8 @@ public interface CartItem extends Model {
     void setPriceInvoice(float fPriceInvoice);
     float getBasePriceInclTax();
     void setBasePriceInclTax(float fBasePriceInclTax);
+    float getBasePriceExclTax();
+    void setBasePriceExclTax(float fBasePriceExclTax);
     float getOriginalPrice();
     float getOriginalCustomPrice();
     String getItemId();
@@ -183,6 +185,8 @@ public interface CartItem extends Model {
 
     float getTaxPercent();
     void setTaxPercent(float fTaxPercent);
+    float getStoreTaxPercent();
+    void setStoreTaxPercent(float fStoreTaxPercent);
 
     float getQtyOrdered();
     void setQtyOrdered(float fQtyOrdered);
