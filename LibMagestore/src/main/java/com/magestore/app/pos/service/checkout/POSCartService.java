@@ -1149,6 +1149,8 @@ public class POSCartService extends AbstractService implements CartService {
             } else {
                 cartItem.setTaxAmount(cartItem.getUnitTaxAmount() * cartItem.getQuantity());
                 cartItem.setBaseTaxAmount(cartItem.getBaseUnitTaxAmount() * cartItem.getQuantity());
+                cartItem.setPriceShowView(ConfigUtil.isTaxCartDisplay() ? (cartItem.getBasePriceInclTax() * cartItem.getQuantity()) : (cartItem.getBasePriceExclTax() * cartItem.getQuantity()));
+                cartItem.setUnitPriceShowView(ConfigUtil.isTaxCartDisplay() ? cartItem.getBasePriceInclTax() : cartItem.getBasePriceExclTax());
             }
         } else {
             float taxPercent = 0;
