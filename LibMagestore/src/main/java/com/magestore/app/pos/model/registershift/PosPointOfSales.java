@@ -20,6 +20,8 @@ public class PosPointOfSales extends PosAbstractModel implements PointOfSales {
     String staff_id;
     String store_id;
     String status;
+    String location_name;
+    String address;
 
     // Odoo
     String pos_session_username;
@@ -75,6 +77,26 @@ public class PosPointOfSales extends PosAbstractModel implements PointOfSales {
     @Override
     public void setLocationId(String strLocationId) {
         location_id = strLocationId;
+    }
+
+    @Override
+    public String getLocationName() {
+        return location_name;
+    }
+
+    @Override
+    public void setLocationName(String strLocationName) {
+        location_name = strLocationName;
+    }
+
+    @Override
+    public String getAddress() {
+        return address;
+    }
+
+    @Override
+    public void setAddress(String strAddress) {
+        address = strAddress;
     }
 
     @Override

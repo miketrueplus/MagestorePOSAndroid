@@ -455,13 +455,22 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
         String staff_id = (String) mConfig.getValue("staffId");
         String staff_name = (String) mConfig.getValue("staffName");
         String location_id = "";
-        if (mConfig.getValue("locationId") instanceof Double) {
-            location_id = String.valueOf((double) mConfig.getValue("locationId"));
-        } else {
-            location_id = (String) mConfig.getValue("locationId");
+        String location_name = "";
+        String location_address = "";
+        if (ConfigUtil.getPointOfSales() != null) {
+            location_id = ConfigUtil.getPointOfSales().getLocationId();
+            location_name = ConfigUtil.getPointOfSales().getLocationName();
+            location_address = ConfigUtil.getPointOfSales().getAddress();
         }
-        String location_name = (String) mConfig.getValue("location_name");
-        String location_address = (String) mConfig.getValue("location_address");
+
+//        String location_id = "";
+//        if (mConfig.getValue("locationId") instanceof Double) {
+//            location_id = String.valueOf((double) mConfig.getValue("locationId"));
+//        } else {
+//            location_id = (String) mConfig.getValue("locationId");
+//        }
+//        String location_name = (String) mConfig.getValue("location_name");
+//        String location_address = (String) mConfig.getValue("location_address");
 
         Staff staff = new PosStaff();
         staff.setStaffId(staff_id);

@@ -2,6 +2,7 @@ package com.magestore.app.pos.panel;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -61,6 +62,8 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         super(context, attrs, defStyleAttr);
     }
 
+    boolean select_shipping = false;
+
     @Override
     protected void initLayout() {
         super.initLayout();
@@ -113,7 +116,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         sp_shipping_method.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (currentSelectShipping == i) {
+                if (select_shipping) {
                     getShippingMethod();
                 }
             }
@@ -124,15 +127,24 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
             }
         });
 
+        sp_shipping_method.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                select_shipping = true;
+                return false;
+            }
+        });
+
         cb_pick_at_store.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean check) {
                 if (!check) {
                     ll_shipping_address.setVisibility(GONE);
-                    resetCurrentSelectShipping();
+                    select_shipping = false;
                 } else {
                     ll_shipping_address.setVisibility(VISIBLE);
                 }
+                select_shipping = false;
 
                 if (!checkSwitch) {
                     ((CheckoutListController) getController()).changeCustomerShippingAdrress(check);
@@ -435,9 +447,5 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
 
     public void showDialogError(String message) {
         com.magestore.app.util.DialogUtil.confirm(getContext(), message, R.string.ok);
-    }
-
-    public void resetCurrentSelectShipping() {
-        currentSelectShipping = -1;
     }
 }

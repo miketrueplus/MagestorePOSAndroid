@@ -733,7 +733,7 @@ public class OrderDetailPanel extends AbstractDetailPanel<Order> {
             LinearLayout ll_subtotal = (LinearLayout) dialogPrint.findViewById(R.id.ll_subtotal);
             TextView tv_price_subtotal = (TextView) dialogPrint.findViewById(R.id.tv_price_subtotal);
             ll_subtotal.setVisibility(mOrder.getBaseSubtotal() != 0 ? VISIBLE : GONE);
-            tv_price_subtotal.setText(ConfigUtil.formatDecimalQuantity(ConfigUtil.isTaxSalesDisplaySubtotal() ? mOrder.getSubtotalInclTax() : ConfigUtil.convertToPrice(mOrder.getSubTotal())));
+            tv_price_subtotal.setText(ConfigUtil.formatDecimalQuantity(ConfigUtil.isTaxSalesDisplaySubtotal() ? mOrder.getSubtotalInclTax() : ConfigUtil.convertToPrice(mOrder.getBaseSubtotal())));
 
             LinearLayout ll_earn_point = (LinearLayout) dialogPrint.findViewById(R.id.ll_earn_point);
             TextView tv_price_earn_point = (TextView) dialogPrint.findViewById(R.id.tv_price_earn_point);

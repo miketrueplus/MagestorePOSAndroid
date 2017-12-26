@@ -172,6 +172,12 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
                 DataUtil.saveDataStringToPreferences(getContext(), DataUtil.STORE_ID, pos.getStoreId());
                 ConfigUtil.setPointOfSales(pos);
                 ConfigUtil.setLocationId(pos.getLocationId());
+                String location_id = pos.getLocationId();
+                String location_name = pos.getLocationName();
+                String location_address = pos.getAddress();
+                ConfigUtil.getStaff().getStaffLocation().setLocationId(!StringUtil.isNullOrEmpty(location_id) ? location_id : "");
+                ConfigUtil.getStaff().getStaffLocation().setLocationName(!StringUtil.isNullOrEmpty(location_name) ? location_name : "");
+                ConfigUtil.getStaff().getStaffLocation().setLocationAddress(!StringUtil.isNullOrEmpty(location_address) ? location_address : "");
             }
 
             @Override
@@ -193,6 +199,12 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
                         DataUtil.saveDataStringToPreferences(getContext(), DataUtil.STORE_ID, pos.getStoreId());
                         ConfigUtil.setPointOfSales(pos);
                         ConfigUtil.setLocationId(pos.getLocationId());
+                        String location_id = pos.getLocationId();
+                        String location_name = pos.getLocationName();
+                        String location_address = pos.getAddress();
+                        ConfigUtil.getStaff().getStaffLocation().setLocationId(!StringUtil.isNullOrEmpty(location_id) ? location_id : "");
+                        ConfigUtil.getStaff().getStaffLocation().setLocationName(!StringUtil.isNullOrEmpty(location_name) ? location_name : "");
+                        ConfigUtil.getStaff().getStaffLocation().setLocationAddress(!StringUtil.isNullOrEmpty(location_address) ? location_address : "");
                     } else {
                         DialogUtil.confirm(getContext(), getContext().getString(R.string.notify_select_pos), R.string.ok);
                     }
