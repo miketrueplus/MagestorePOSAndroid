@@ -310,6 +310,9 @@ public class POSProductDataAccessM1 extends POSAbstractDataAccessM1 implements P
                 String finalSearchString = "%" + searchString + "%";
                 if (ConfigUtil.getProductAttribute() != null && ConfigUtil.getProductAttribute().size() > 0) {
                     for (String attribute : ConfigUtil.getProductAttribute()) {
+                        if (attribute.equals("category_ids")) {
+                            attribute = "category_id";
+                        }
                         paramBuilder.setFilterOrLike(attribute, finalSearchString);
                     }
                 } else {
@@ -503,6 +506,9 @@ public class POSProductDataAccessM1 extends POSAbstractDataAccessM1 implements P
 
             if (ConfigUtil.getProductAttribute() != null && ConfigUtil.getProductAttribute().size() > 0) {
                 for (String attribute : ConfigUtil.getProductAttribute()) {
+                    if (attribute.equals("category_ids")) {
+                        attribute = "category_id";
+                    }
                     paramBuilder.setFilterOrLike(attribute, finalSearchString);
                 }
             } else {
