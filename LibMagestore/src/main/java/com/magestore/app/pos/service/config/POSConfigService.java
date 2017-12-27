@@ -79,6 +79,7 @@ public class POSConfigService extends AbstractService implements ConfigService {
         ConfigUtil.setTaxSalesDisplayShipping(getTaxSaleDisplayShipping());
         ConfigUtil.setTaxSalesDisplaySubtotal(getTaxSaleDisplaySubtotal());
         ConfigUtil.setCalculateApplyTaxOnOriginal(getCalculateApplyTaxOnOriginal());
+        ConfigUtil.setTaxDisplayType(getTaxDisplayType());
         ConfigUtil.setCurrencyFormat(getPriceFormat());
         ConfigUtil.setCurrencyNoSymbolFormat(getPriceNosymbolFormat());
         ConfigUtil.setFloatFormat(getFloatFormat());
@@ -536,6 +537,13 @@ public class POSConfigService extends AbstractService implements ConfigService {
         DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
         ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
         return configDataAccess.getCalculateApplyTaxOnOriginal();
+    }
+
+    @Override
+    public boolean getTaxDisplayType() throws InstantiationException, IllegalAccessException, IOException, ParseException {
+        DataAccessFactory factory = DataAccessFactory.getFactory(getContext());
+        ConfigDataAccess configDataAccess = factory.generateConfigDataAccess();
+        return configDataAccess.getTaxDisplayType();
     }
 
     @Override
