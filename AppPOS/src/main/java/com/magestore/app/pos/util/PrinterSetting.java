@@ -32,6 +32,8 @@ public class PrinterSetting {
     public static final String PREF_KEY_PRINT_AREA = "pref_key_print_area";
     public static final String PREF_KEY_AUTO_PRINT = "pref_key_auto_print";
     public static final String PREF_KEY_PRINT_USE_SKU = "pref_key_print_use_sku";
+    public static final String PREF_KEY_CREATE_INVOICE = "pref_key_create_invoice";
+    public static final String PREF_KEY_CREATE_SHIPMENT = "pref_key_create_shipment";
     public static final String PREF_KEY_AVAILABLE_QTY = "pref_key_available_qty";
     public static final String PREF_KEY_PlACE_AUTO_COMPLETE = "pref_key_place_auto_complete";
 
@@ -103,6 +105,18 @@ public class PrinterSetting {
         prefs.edit().putBoolean(PREF_KEY_PRINT_USE_SKU, printUseSku).apply();
     }
 
+    public void writeCreateInvoice(boolean createInvoice) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+
+        prefs.edit().putBoolean(PREF_KEY_CREATE_INVOICE, createInvoice).apply();
+    }
+
+    public void writeCreateShipment(boolean createShipment) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+
+        prefs.edit().putBoolean(PREF_KEY_CREATE_SHIPMENT, createShipment).apply();
+    }
+
     public void writeAvailableQty(boolean avaiableQty) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
 
@@ -145,6 +159,16 @@ public class PrinterSetting {
     public boolean getPrintUseSku() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
         return prefs.getBoolean(PREF_KEY_PRINT_USE_SKU, false);
+    }
+
+    public boolean getCreateInvoice() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+        return prefs.getBoolean(PREF_KEY_CREATE_INVOICE, false);
+    }
+
+    public boolean getCreateShipment() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+        return prefs.getBoolean(PREF_KEY_CREATE_SHIPMENT, false);
     }
 
     public boolean getAvailableQty() {

@@ -268,6 +268,8 @@ public class SalesActivity extends AbstractActivity
         ConfigUtil.setAutoPrint(printerSetting.getAutoPrint());
         ConfigUtil.setPrintUseSku(printerSetting.getPrintUseSku());
         ConfigUtil.setEnableAvailableQty(ConfigUtil.isShowAvailableQty() ? printerSetting.getAvailableQty() : false);
+        ConfigUtil.setCreateInvoice(printerSetting.getCreateInvoice());
+        ConfigUtil.setCreateShipment(printerSetting.getCreateShipment());
         if (!StringUtil.isNullOrEmpty(ConfigUtil.getGoogleKey())) {
             ConfigUtil.setPlaceAutoComplete(printerSetting.getPlaceAutoComplete());
         } else {

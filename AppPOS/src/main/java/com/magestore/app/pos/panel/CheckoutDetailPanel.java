@@ -199,6 +199,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
         // check permisson need to ship, mark as ship
         cb_pick_at_store.setVisibility(ConfigUtil.isNeedToShip() ? VISIBLE : GONE);
         create_ship.setVisibility(ConfigUtil.isMarkAsShip() ? VISIBLE : GONE);
+        create_ship.setChecked(ConfigUtil.isCreateShipment() ? true : false);
     }
 
     @Override
@@ -207,6 +208,7 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
             return;
         }
         super.bindItem(item);
+        create_ship.setChecked(ConfigUtil.isCreateShipment() ? true : false);
     }
 
     void onClickBack() {
@@ -408,7 +410,8 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
     }
 
     public void showPanelCheckoutPaymentCreditCard(boolean isShow) {
-        rl_content_payment_method.setVisibility(isShow ? GONE : VISIBLE);
+//        rl_content_payment_method.setVisibility(GONE);
+//        mCheckoutPaymentListPanel.setVisibility(VISIBLE);
         ll_payment_credit_card.setVisibility(isShow ? VISIBLE : GONE);
     }
 

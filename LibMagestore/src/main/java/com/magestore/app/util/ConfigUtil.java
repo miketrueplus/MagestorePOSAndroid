@@ -73,6 +73,8 @@ public class ConfigUtil {
     private static boolean mCheckFirstOpenSession;
     private static boolean mEnableDeleteOrder;
     private static boolean mEnableAvailableQty;
+    private static boolean mCreateInvoice;
+    private static boolean mCreateShipment;
     private static boolean mApplyAfterDiscount;
     private static boolean mTaxSalesDisplayPrice;
     private static boolean mTaxSalesDisplayShipping;
@@ -1503,6 +1505,22 @@ public class ConfigUtil {
 
     public static void setEnableAvailableQty(boolean mEnableAvailableQty) {
         ConfigUtil.mEnableAvailableQty = mEnableAvailableQty;
+    }
+
+    public static boolean isCreateInvoice() {
+        return mCreateInvoice;
+    }
+
+    public static void setCreateInvoice(boolean mCreateInvoice) {
+        ConfigUtil.mCreateInvoice = mCreateInvoice;
+    }
+
+    public static boolean isCreateShipment() {
+        return mCreateShipment;
+    }
+
+    public static void setCreateShipment(boolean mCreateShipment) {
+        ConfigUtil.mCreateShipment = mCreateShipment;
     }
 
     public static boolean isApplyAfterDiscount() {

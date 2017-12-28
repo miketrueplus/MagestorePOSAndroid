@@ -71,7 +71,7 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        ConfigUtil.setPlatForm(ConfigUtil.PLATFORM_MAGENTO_2);
+        ConfigUtil.setPlatForm(ConfigUtil.PLATFORM_MAGENTO_1);
 
         STORE_ID = DataUtil.getDataStringToPreferences(getContext(), DataUtil.STORE_ID);
 
@@ -149,9 +149,9 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
             @Override
             public void onClick(View view) {
                 mCheckLoginDemo = true;
-                checkPlatForm();
+//                checkPlatForm();
                 hiddenKeyboard(mPasswordView);
-//                attemptLoginDemo();
+                attemptLoginDemo();
             }
         });
 
@@ -421,9 +421,9 @@ public class LoginActivity extends AbstractActivity implements LoginUI {
 //        mDomainView.setText("http://45.76.150.205/m221");
 //        mUserNameView.setText("admin");
 //        mPasswordView.setText("admin123");
-//        mDomainView.setText("http://35.187.246.124:8081");
-//        mUserNameView.setText("admin");
-//        mPasswordView.setText("admin123");
+        mDomainView.setText("http://35.187.246.124");
+        mUserNameView.setText("admin");
+        mPasswordView.setText("admin123");
 
         // check login là demo thì không lại thông tin khách hàng nhập
         mCheckLoginDemo = true;

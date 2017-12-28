@@ -55,7 +55,7 @@ public class SettingDetailPanel extends AbstractDetailPanel<Setting> {
     boolean checkFirst;
     LinearLayout ll_print_area, ll_print_copy;
     Spinner sp_print_area, sp_print_copy;
-    Switch sw_open_cash, sw_auto_print, sw_place_auto_complete, sw_print_use_sku, sw_available_qty;
+    Switch sw_open_cash, sw_auto_print, sw_place_auto_complete, sw_create_invoice, sw_create_shipment, sw_print_use_sku, sw_available_qty;
 
     public SettingDetailPanel(Context context) {
         super(context);
@@ -81,6 +81,8 @@ public class SettingDetailPanel extends AbstractDetailPanel<Setting> {
         ll_setting_currency = (LinearLayout) findViewById(R.id.ll_setting_currency);
         sp_currency = (SimpleSpinner) findViewById(R.id.sp_currency);
         ll_setting_checkout = (LinearLayout) findViewById(R.id.ll_setting_checkout);
+        sw_create_invoice = (Switch) findViewById(R.id.sw_create_invoice);
+        sw_create_shipment = (Switch) findViewById(R.id.sw_create_shipment);
         sw_available_qty = (Switch) findViewById(R.id.sw_available_qty);
         sw_place_auto_complete = (Switch) findViewById(R.id.sw_place_auto_complete);
         ll_setting_print = (LinearLayout) findViewById(R.id.ll_setting_print);
@@ -244,6 +246,24 @@ public class SettingDetailPanel extends AbstractDetailPanel<Setting> {
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 ConfigUtil.setPrintUseSku(b);
                 printerSetting.writePrintUseSku(b);
+            }
+        });
+
+        sw_create_invoice.setChecked(printerSetting.getCreateInvoice());
+        sw_create_invoice.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                ConfigUtil.setCreateInvoice(b);
+                printerSetting.writeCreateInvoice(b);
+            }
+        });
+
+        sw_create_shipment.setChecked(printerSetting.getCreateShipment());
+        sw_create_shipment.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                ConfigUtil.setCreateShipment(b);
+                printerSetting.writeCreateShipment(b);
             }
         });
 

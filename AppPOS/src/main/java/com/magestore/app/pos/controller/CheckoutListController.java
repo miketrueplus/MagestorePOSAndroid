@@ -375,8 +375,8 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         // Check payment khác null hay ko
         List<CheckoutPayment> listCheckoutPayment = (List<CheckoutPayment>) wraper.get("list_payment");
         if (listCheckoutPayment != null && listCheckoutPayment.size() > 0) {
-            if (listCheckoutPayment.size() == 1 && listCheckoutPayment.get(0).getType().equals("1")) {
-                CheckoutPayment paymentCreditCard = listCheckoutPayment.get(0);
+            CheckoutPayment paymentCreditCard = checkListPaymentUseCredit(listCheckoutPayment);
+            if (paymentCreditCard != null) {
                 boolean requied_cvv = true;
                 if (!StringUtil.isNullOrEmpty(paymentCreditCard.getUserCVV())) {
                     if (paymentCreditCard.getUserCVV().equals("1")) {
@@ -1116,7 +1116,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         } else if (success && actionType == ACTION_TYPE_CHECK_APPROVED_PAYMENT_AUTHORIZENET_INTERATION) {
             String transaction_id = (String) wraper.get("authorize_transaction_id");
             List<CheckoutPayment> listCheckoutPayment = (List<CheckoutPayment>) wraper.get("list_payment");
-            CheckoutPayment paymentAuthorize = listCheckoutPayment.get(0);
+            CheckoutPayment paymentAuthorize = checkListPaymentUseCredit(listCheckoutPayment);
             removeDataCreditCard(paymentAuthorize);
             paymentAuthorize.setReferenceNumber(transaction_id.trim());
             wraper.put("list_payment", listCheckoutPayment);
@@ -1124,7 +1124,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         } else if (success && actionType == ACTION_TYPE_CHECK_APPOVED_PAYMENT_STRIPE) {
             String transaction_id = (String) wraper.get("stripe_transaction_id");
             List<CheckoutPayment> listCheckoutPayment = (List<CheckoutPayment>) wraper.get("list_payment");
-            CheckoutPayment paymentStripe = listCheckoutPayment.get(0);
+            CheckoutPayment paymentStripe = checkListPaymentUseCredit(listCheckoutPayment);
             removeDataCreditCard(paymentStripe);
             paymentStripe.setReferenceNumber(transaction_id.trim());
             wraper.put("list_payment", listCheckoutPayment);
@@ -1374,7 +1374,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 ((CheckoutDetailPanel) mDetailView).setPickAtStoreDefault();
                 ((CheckoutDetailPanel) mDetailView).isEnableButtonAddPayment(false);
                 ((CheckoutDetailPanel) mDetailView).isCheckCreateInvoice(false);
-                ((CheckoutDetailPanel) mDetailView).isCheckCreateShip(false);
+                ((CheckoutDetailPanel) mDetailView).isCheckCreateShip(ConfigUtil.isCreateShipment() ? true : false);
                 ((CheckoutDetailPanel) mDetailView).isEnableCreateInvoice(false);
 //                doInputSaveCart();
             }
@@ -1570,7 +1570,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     public void onAddPaymentMethod(CheckoutPayment method) {
         List<CheckoutPayment> listPayment = (List<CheckoutPayment>) wraper.get("list_payment");
         Checkout checkout = checkDataCheckout((Checkout) wraper.get("save_shipping"));
-        if (method.getType().equals("1")) {
+        if (method.getType().equals("-1")) {
             if (listPayment != null) {
                 listPayment = new ArrayList<>();
                 wraper.put("list_payment", listPayment);
@@ -1589,6 +1589,13 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 listPayment = new ArrayList<>();
             }
 
+            isShowPluginStoreCredit(false);
+            if (method.getCode().equals("authorizenet_directpost")) {
+                isEnableCreateInvoice(false);
+            } else {
+                isEnableCreateInvoice(true);
+            }
+
             listPayment.add(method);
             wraper.put("list_payment", listPayment);
             isShowPluginStoreCredit(false);
@@ -1600,7 +1607,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 isEnableCreateInvoice(true);
             }
             //End Felix edit 03/05/2017
-            ((CheckoutDetailPanel) mDetailView).showPanelCheckoutPaymentCreditCard(true);
+
         } else {
             checkIsPayLater(method, listPayment);
             float total = 0;
@@ -1660,16 +1667,38 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                 listPayment.add(method);
             }
             isEnableCreateInvoice(true);
+            if (listPayment.size() == 1) {
+                ((CheckoutDetailPanel) mDetailView).isCheckCreateInvoice(ConfigUtil.isCreateInvoice() ? true : false);
+            }
             wraper.put("list_payment", listPayment);
+            sortPaymentCreditCard(listPayment);
             mCheckoutPaymentListPanel.bindList(listPayment);
             mCheckoutPaymentListPanel.updateTotal(listPayment);
             if (method.getCode().equals(PluginStoreCreditPanel.STORE_CREDIT_PAYMENT_CODE)) {
                 isShowPluginStoreCredit(false);
             }
+            if (method.getType().equals("1")) {
+                ((CheckoutDetailPanel) mDetailView).showPanelCheckoutPaymentCreditCard(true);
+                mCheckoutPaymentCreditCardPanel.setCardTypeDataSet(configCCTypes);
+                mCheckoutPaymentCreditCardPanel.setCardMonthDataSet(configMonths);
+                mCheckoutPaymentCreditCardPanel.setCardYearDataSet(configCCYears);
+            }
             ((CheckoutDetailPanel) mDetailView).showPanelCheckoutPayment();
         }
 
         ((CheckoutDetailPanel) mDetailView).hideCheckPaymenrRequired();
+    }
+
+    private void sortPaymentCreditCard(List<CheckoutPayment> listPayment) {
+        if (listPayment.size() > 1) {
+            for (CheckoutPayment payment : listPayment) {
+                if (payment.getType().equals("1") || payment.getType().equals("2")) {
+                    listPayment.remove(payment);
+                    listPayment.add(listPayment.size(), payment);
+                    break;
+                }
+            }
+        }
     }
 
     /**
@@ -1679,11 +1708,17 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         List<CheckoutPayment> listPayment = (List<CheckoutPayment>) wraper.get("list_payment");
         Checkout checkout = checkDataCheckout((Checkout) wraper.get("save_shipping"));
         if (listPayment.size() == 0) {
+            ((CheckoutDetailPanel) mDetailView).showPanelCheckoutPaymentCreditCard(false);
             ((CheckoutDetailPanel) mDetailView).showPanelPaymentMethod();
             ((CheckoutDetailPanel) mDetailView).bindTotalPrice(checkout.getGrandTotal());
             isEnableButtonAddPayment(false);
             isShowPluginStoreCredit(true);
             ((CheckoutDetailPanel) mDetailView).isEnableCreateInvoice(false);
+        } else {
+            boolean isPaymentOnline = checkPaymentOnline(listPayment);
+            if (!isPaymentOnline) {
+                ((CheckoutDetailPanel) mDetailView).showPanelCheckoutPaymentCreditCard(false);
+            }
         }
     }
 
@@ -1780,7 +1815,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         ((CheckoutDetailPanel) mDetailView).isEnableButtonAddPayment(false);
         ((CheckoutDetailPanel) mDetailView).isEnableCreateInvoice(false);
         ((CheckoutDetailPanel) mDetailView).isCheckCreateInvoice(false);
-        ((CheckoutDetailPanel) mDetailView).isCheckCreateShip(false);
+        ((CheckoutDetailPanel) mDetailView).isCheckCreateShip(ConfigUtil.isCreateShipment() ? true : false);
         ((CheckoutDetailPanel) mDetailView).showPanelPaymentMethod();
         ((CheckoutDetailPanel) mDetailView).showPanelCheckoutPaymentCreditCard(false);
         showSaleMenu(true);
@@ -1865,13 +1900,10 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         List<CheckoutPayment> listAllPayment = checkout.getCheckoutPayment();
         List<CheckoutPayment> listPaymentDialog = new ArrayList<>();
         listPaymentDialog.addAll(listAllPayment);
-        boolean isPaymentSDK = checkPaymentSDK(listPayment);
+        boolean isPaymentOnline = checkPaymentOnline(listPayment);
         for (CheckoutPayment checkoutPayment : listAllPayment) {
-            if (checkoutPayment.getType().equals("1")) {
-                listPaymentDialog.remove(checkoutPayment);
-            }
-            if (isPaymentSDK) {
-                if (checkoutPayment.getType().equals("2")) {
+            if (isPaymentOnline) {
+                if (checkoutPayment.getType().equals("2") || checkoutPayment.getType().equals("1")) {
                     listPaymentDialog.remove(checkoutPayment);
                 }
             }
@@ -1888,14 +1920,14 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         return false;
     }
 
-    private boolean checkPaymentSDK(List<CheckoutPayment> listPayment) {
-        boolean isPaymentSDK = false;
+    private boolean checkPaymentOnline(List<CheckoutPayment> listPayment) {
+        boolean isPaymentOnline = false;
         for (CheckoutPayment payment : listPayment) {
-            if (payment.getType().equals("2")) {
-                isPaymentSDK = true;
+            if (payment.getType().equals("2") || payment.getType().equals("1")) {
+                isPaymentOnline = true;
             }
         }
-        return isPaymentSDK;
+        return isPaymentOnline;
     }
 
     /**
@@ -1936,14 +1968,14 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     }
 
     /**
-     * nếu grand total = 0 chọn payment type = 0 add list
+     * nếu list payment có payment type = 1 thì return
      *
      * @param listPayment
      * @return
      */
-    public CheckoutPayment checkListPaymentNoInformation(List<CheckoutPayment> listPayment) {
+    public CheckoutPayment checkListPaymentUseCredit(List<CheckoutPayment> listPayment) {
         for (CheckoutPayment payment : listPayment) {
-            if (payment.getType().equals("0")) {
+            if (payment.getType().equals("1")) {
                 return payment;
             }
         }
