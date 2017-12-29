@@ -127,6 +127,7 @@
     <dimen name="customer_address_item_width">250dp</dimen>
     <dimen name="customer_address_item_text_size">13sp</dimen>
     <dimen name="customer_complain_item_text_size">13sp</dimen>
+    <dimen name="customer_suggest_address_with">550dp</dimen>
 
     <!--Order History-->
     <dimen name="order_top_price_text_size">24sp</dimen>

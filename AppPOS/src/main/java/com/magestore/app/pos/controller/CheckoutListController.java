@@ -138,6 +138,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
     PluginRewardPointPanel mPluginRewardPointPanel;
     PluginStoreCreditPanel mPluginStoreCreditPanel;
     PluginGiftCardPanel mPluginGiftCardPanel;
+    boolean isFirstCreateInvoice = false;
 
     @Override
     public List<Checkout> onRetrieveBackground(int page, int pageSize) throws Exception {
@@ -206,7 +207,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         // reset remain, exchangeMoney money
         checkout.setRemainMoney(0);
         checkout.setExchangeMoney(0);
-
+        ((CheckoutDetailPanel) mDetailView).isCheckCreateShip(ConfigUtil.isCreateShipment() ? true : false);
         if (checkout.getCartItem().size() > 0) {
             checkout.setStatus(STATUS_CHECKOUT_PROCESSING);
             isShowLoadingDetail(true);
@@ -1794,7 +1795,12 @@ public class CheckoutListController extends AbstractListController<Checkout> {
      * @param enable
      */
     public void isEnableCreateInvoice(boolean enable) {
-        ((CheckoutDetailPanel) mDetailView).isCheckCreateInvoice(enable);
+        if (!isFirstCreateInvoice) {
+            ((CheckoutDetailPanel) mDetailView).isCheckCreateInvoice(ConfigUtil.isCreateInvoice() ? true : false);
+            isFirstCreateInvoice = false;
+        } else {
+            ((CheckoutDetailPanel) mDetailView).isCheckCreateInvoice(enable);
+        }
         ((CheckoutDetailPanel) mDetailView).isEnableCreateInvoice(enable);
     }
 
@@ -1869,6 +1875,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
         ((CheckoutDetailPanel) mDetailView).showShippingAdrress(false);
         ((CheckoutDetailPanel) mDetailView).clearNote();
         mPluginGiftCardPanel.resetListGiftCard();
+        isFirstCreateInvoice = false;
         showSaleMenu(true);
         showSalesShipping();
         showActionButtonCheckout();

@@ -13,7 +13,7 @@
         android:background="@color/white"
         android:inputType="text"
         android:maxLines="1"
-        android:dropDownWidth="match_parent"
+        android:dropDownWidth="@dimen/customer_suggest_address_with"
         android:textColor="@color/text_color"
         android:theme="@style/Autocomplete" />
 </LinearLayout>

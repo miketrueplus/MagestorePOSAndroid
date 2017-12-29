@@ -208,7 +208,6 @@ public class CheckoutDetailPanel extends AbstractDetailPanel<Checkout> {
             return;
         }
         super.bindItem(item);
-        create_ship.setChecked(ConfigUtil.isCreateShipment() ? true : false);
     }
 
     void onClickBack() {
