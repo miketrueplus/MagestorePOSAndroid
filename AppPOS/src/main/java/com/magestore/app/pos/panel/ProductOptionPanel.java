@@ -1697,11 +1697,14 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
                 enableButtonAddToCart(false);
                 ((CartItemListController) getController()).doInputGetAvailableQty(Id);
             }
+        } else {
+            // update khi chưa chọn sản phẩm config hoặc sản phẩm hết quantity
+            updateAvailableQty("", 0);
         }
     }
 
     public void updateAvailableQty(String Id, float mQty) {
-        enableButtonAddToCart(true);
+//        enableButtonAddToCart(mQty > 0 ? true : false);
         if (!StringUtil.isNullOrEmpty(Id)) {
             Map<String, Float> mapAvailable = getItem().getProduct().getAvailableQty();
             if (mapAvailable == null) {
@@ -1713,6 +1716,7 @@ public class ProductOptionPanel extends AbstractDetailPanel<CartItem> {
         }
         String mQtyAvailable = getContext().getString(R.string.product_available_qty, ConfigUtil.formatQuantity(mQty));
         mTxtAvailableQty.setText(mQtyAvailable);
+        checkQuantityAvailable();
         mtxtCartItemQuantity.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {

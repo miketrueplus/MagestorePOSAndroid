@@ -313,6 +313,9 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
 
             if (ConfigUtil.getProductAttribute() != null && ConfigUtil.getProductAttribute().size() > 0) {
                 for (String attribute : ConfigUtil.getProductAttribute()) {
+                    if (attribute.equals("category_ids")) {
+                        attribute = "category_id";
+                    }
                     paramBuilder.setFilterLike(attribute, finalSearchString);
                 }
             } else {
@@ -371,6 +374,9 @@ public class POSProductDataAccess extends POSAbstractDataAccess implements Produ
                 String finalSearchString = "%" + searchString + "%";
                 if (ConfigUtil.getProductAttribute() != null && ConfigUtil.getProductAttribute().size() > 0) {
                     for (String attribute : ConfigUtil.getProductAttribute()) {
+                        if (attribute.equals("category_ids")) {
+                            attribute = "category_id";
+                        }
                         paramBuilder.setFilterLike(attribute, finalSearchString);
                     }
                 } else {

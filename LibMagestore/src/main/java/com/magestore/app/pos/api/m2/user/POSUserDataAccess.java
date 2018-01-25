@@ -170,7 +170,7 @@ public class POSUserDataAccess extends POSAbstractDataAccess implements UserData
 
             Logout logout = new Logout();
 
-            rp = statement.execute();
+            rp = statement.execute(logout);
         } catch (Exception ex) {
             statement.getCacheConnection().deleteCache();
             throw new DataAccessException(ex);

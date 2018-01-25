@@ -73,11 +73,14 @@ public class ConfigUtil {
     private static boolean mCheckFirstOpenSession;
     private static boolean mEnableDeleteOrder;
     private static boolean mEnableAvailableQty;
+    private static boolean mCreateInvoice;
+    private static boolean mCreateShipment;
     private static boolean mApplyAfterDiscount;
     private static boolean mTaxSalesDisplayPrice;
     private static boolean mTaxSalesDisplayShipping;
     private static boolean mTaxSalesDisplaySubtotal;
     private static boolean mCalculateApplyTaxOnOriginal;
+    private static boolean mTaxDisplayType;
     private static CustomerAddress mAddressOrigin;
     private static List<ConfigTaxClass> mConfigTaxClass;
     private static List<CheckoutPayment> mListPayment;
@@ -1504,6 +1507,22 @@ public class ConfigUtil {
         ConfigUtil.mEnableAvailableQty = mEnableAvailableQty;
     }
 
+    public static boolean isCreateInvoice() {
+        return mCreateInvoice;
+    }
+
+    public static void setCreateInvoice(boolean mCreateInvoice) {
+        ConfigUtil.mCreateInvoice = mCreateInvoice;
+    }
+
+    public static boolean isCreateShipment() {
+        return mCreateShipment;
+    }
+
+    public static void setCreateShipment(boolean mCreateShipment) {
+        ConfigUtil.mCreateShipment = mCreateShipment;
+    }
+
     public static boolean isApplyAfterDiscount() {
         return mApplyAfterDiscount;
     }
@@ -1542,6 +1561,14 @@ public class ConfigUtil {
 
     public static void setCalculateApplyTaxOnOriginal(boolean mCalculateApplyTaxOnOriginal) {
         ConfigUtil.mCalculateApplyTaxOnOriginal = mCalculateApplyTaxOnOriginal;
+    }
+
+    public static boolean isTaxDisplayType() {
+        return mTaxDisplayType;
+    }
+
+    public static void setTaxDisplayType(boolean mTaxDisplayType) {
+        ConfigUtil.mTaxDisplayType = mTaxDisplayType;
     }
 
     public static CustomerAddress getAddressOrigin() {

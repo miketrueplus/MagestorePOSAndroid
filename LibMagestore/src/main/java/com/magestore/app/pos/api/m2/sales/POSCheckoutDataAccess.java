@@ -124,6 +124,7 @@ public class POSCheckoutDataAccess extends POSAbstractDataAccess implements Chec
                 quote.setCustomerId("");
             }
             quote.setTillId("1");
+            quote.setLocationId(ConfigUtil.getPointOfSales() != null ? ConfigUtil.getPointOfSales().getLocationId() : null);
             quote.setShiftId(null);
 
             rp = statement.execute(quote);

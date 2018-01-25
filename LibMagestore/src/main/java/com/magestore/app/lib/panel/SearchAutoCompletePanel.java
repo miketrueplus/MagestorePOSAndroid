@@ -154,17 +154,20 @@ public class SearchAutoCompletePanel extends FrameLayout {
                     boolean handled = true;
                     if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                         applySearch();
+                        mAutoTextView.selectAll();
                         mintMode = MODE_FILTER;
                         return handled;
                     }
                     if (actionId == EditorInfo.IME_ACTION_DONE) {
                         //value form keyboard
                         actionSearch();
+                        mAutoTextView.selectAll();
                         return handled;
                     }
                     if (actionId == EditorInfo.IME_ACTION_UNSPECIFIED) {
                         //value form barcode scanner
                         String valueFromKeyboard = mAutoTextView.getText().toString();
+                        mAutoTextView.selectAll();
                         actionSearch();
                         return false;
                     }

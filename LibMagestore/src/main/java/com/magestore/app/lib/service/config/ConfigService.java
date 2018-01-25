@@ -135,6 +135,8 @@ public interface ConfigService extends Service {
     boolean getTaxSaleDisplayShipping() throws InstantiationException, IllegalAccessException, IOException, ParseException;
     boolean getTaxSaleDisplaySubtotal() throws InstantiationException, IllegalAccessException, IOException, ParseException;
     boolean getCalculateApplyTaxOnOriginal() throws InstantiationException, IllegalAccessException, IOException, ParseException;
+    boolean getTaxDisplayType() throws InstantiationException, IllegalAccessException, IOException, ParseException;
+
     void getConfigTax() throws InstantiationException, IllegalAccessException, IOException, ParseException;
 
     List<String> getConfigSetting() throws InstantiationException, IllegalAccessException, IOException, ParseException;

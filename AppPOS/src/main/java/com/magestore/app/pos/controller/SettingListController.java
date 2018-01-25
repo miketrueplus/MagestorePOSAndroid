@@ -67,16 +67,16 @@ public class SettingListController extends AbstractListController<Setting> {
 
     @Override
     public synchronized void onRetrievePostExecute(List<Setting> list) {
-        if (StringUtil.isNullOrEmpty(ConfigUtil.getGoogleKey()) && !ConfigUtil.isShowAvailableQty()) {
-            if (list.size() > 0) {
-                for (Setting setting : list) {
-                    if (setting.getType() == 1) {
-                        list.remove(setting);
-                        break;
-                    }
-                }
-            }
-        }
+//        if (StringUtil.isNullOrEmpty(ConfigUtil.getGoogleKey()) && !ConfigUtil.isShowAvailableQty()) {
+//            if (list.size() > 0) {
+//                for (Setting setting : list) {
+//                    if (setting.getType() == 1) {
+//                        list.remove(setting);
+//                        break;
+//                    }
+//                }
+//            }
+//        }
         super.onRetrievePostExecute(list);
         ((SettingDetailPanel) mDetailView).setStaffDataSet(mStaff);
         ((SettingDetailPanel) mDetailView).setCurrencyDataSet(currencyList);

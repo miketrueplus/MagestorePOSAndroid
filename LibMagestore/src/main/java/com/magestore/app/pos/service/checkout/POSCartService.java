@@ -1035,9 +1035,16 @@ public class POSCartService extends AbstractService implements CartService {
                                 cartItem.setBasePriceExclTax(base_price);
                             } else {
                                 if (ConfigUtil.isTaxCalculationPriceIncludesTax()) {
-                                    float basePriceExclTax = (base_price / (100 + taxStore)) * 100;
-                                    cartItem.setBasePriceInclTax(basePriceExclTax);
-                                    cartItem.setBasePriceExclTax(basePriceExclTax);
+                                    if (ConfigUtil.isTaxDisplayType()) {
+                                        float basePriceExclTax = (base_price / (100 + taxStore)) * 100;
+                                        cartItem.setBasePriceInclTax(basePriceExclTax);
+                                        cartItem.setBasePriceExclTax(basePriceExclTax);
+                                    } else {
+                                        float base_price_incl = base_price + base_price * taxPercent / 100;
+                                        float basePriceExclTax = (base_price / (100 + taxStore)) * 100;
+                                        cartItem.setBasePriceInclTax(base_price_incl);
+                                        cartItem.setBasePriceExclTax(basePriceExclTax);
+                                    }
                                 } else {
                                     cartItem.setBasePriceInclTax(base_price);
                                     cartItem.setBasePriceExclTax(base_price);
@@ -1047,12 +1054,22 @@ public class POSCartService extends AbstractService implements CartService {
                             baseUnitTaxAmount = 0;
                         } else {
                             if (ConfigUtil.isTaxCalculationPriceIncludesTax()) {
-                                float basePriceExclTax = (base_price / (100 + taxPercent)) * 100;
-                                float priceExclTax = ConfigUtil.convertToPrice(basePriceExclTax);
-                                cartItem.setBasePriceInclTax(base_price);
-                                cartItem.setBasePriceExclTax(basePriceExclTax);
-                                unitTaxAmount = price - priceExclTax;
-                                baseUnitTaxAmount = base_price - basePriceExclTax;
+                                if (ConfigUtil.isTaxDisplayType()) {
+                                    float basePriceExclTax = (base_price / (100 + taxPercent)) * 100;
+                                    float priceExclTax = ConfigUtil.convertToPrice(basePriceExclTax);
+                                    cartItem.setBasePriceInclTax(base_price);
+                                    cartItem.setBasePriceExclTax(basePriceExclTax);
+                                    unitTaxAmount = price - priceExclTax;
+                                    baseUnitTaxAmount = base_price - basePriceExclTax;
+                                } else {
+                                    float base_price_incl = base_price + base_price * taxPercent / 100;
+                                    float basePriceExclTax = base_price;
+                                    float priceExclTax = ConfigUtil.convertToPrice(basePriceExclTax);
+                                    cartItem.setBasePriceInclTax(base_price_incl);
+                                    cartItem.setBasePriceExclTax(basePriceExclTax);
+                                    unitTaxAmount = price - priceExclTax;
+                                    baseUnitTaxAmount = base_price - basePriceExclTax;
+                                }
                             } else {
                                 float basePriceInclTax = base_price + base_price * taxPercent / 100;
                                 float priceInclTax = ConfigUtil.convertToPrice(basePriceInclTax);
@@ -1173,9 +1190,16 @@ public class POSCartService extends AbstractService implements CartService {
                         cartItem.setBasePriceExclTax(base_price);
                     } else {
                         if (ConfigUtil.isTaxCalculationPriceIncludesTax()) {
-                            float basePriceExclTax = (base_price / (100 + taxStore)) * 100;
-                            cartItem.setBasePriceInclTax(basePriceExclTax);
-                            cartItem.setBasePriceExclTax(basePriceExclTax);
+                            if (ConfigUtil.isTaxDisplayType()) {
+                                float basePriceExclTax = (base_price / (100 + taxStore)) * 100;
+                                cartItem.setBasePriceInclTax(basePriceExclTax);
+                                cartItem.setBasePriceExclTax(basePriceExclTax);
+                            } else {
+                                float base_price_incl = base_price + base_price * taxPercent / 100;
+                                float basePriceExclTax = (base_price / (100 + taxStore)) * 100;
+                                cartItem.setBasePriceInclTax(base_price_incl);
+                                cartItem.setBasePriceExclTax(basePriceExclTax);
+                            }
                         } else {
                             cartItem.setBasePriceInclTax(base_price);
                             cartItem.setBasePriceExclTax(base_price);
@@ -1185,12 +1209,22 @@ public class POSCartService extends AbstractService implements CartService {
                     baseUnitTaxAmount = 0;
                 } else {
                     if (ConfigUtil.isTaxCalculationPriceIncludesTax()) {
-                        float basePriceExclTax = (base_price / (100 + taxPercent)) * 100;
-                        float priceExclTax = ConfigUtil.convertToPrice(basePriceExclTax);
-                        cartItem.setBasePriceInclTax(base_price);
-                        cartItem.setBasePriceExclTax(basePriceExclTax);
-                        unitTaxAmount = price - priceExclTax;
-                        baseUnitTaxAmount = base_price - basePriceExclTax;
+                        if (ConfigUtil.isTaxDisplayType()) {
+                            float basePriceExclTax = (base_price / (100 + taxPercent)) * 100;
+                            float priceExclTax = ConfigUtil.convertToPrice(basePriceExclTax);
+                            cartItem.setBasePriceInclTax(base_price);
+                            cartItem.setBasePriceExclTax(basePriceExclTax);
+                            unitTaxAmount = price - priceExclTax;
+                            baseUnitTaxAmount = base_price - basePriceExclTax;
+                        } else {
+                            float base_price_incl = base_price + base_price * taxPercent / 100;
+                            float basePriceExclTax = base_price;
+                            float priceExclTax = ConfigUtil.convertToPrice(basePriceExclTax);
+                            cartItem.setBasePriceInclTax(base_price_incl);
+                            cartItem.setBasePriceExclTax(basePriceExclTax);
+                            unitTaxAmount = price - priceExclTax;
+                            baseUnitTaxAmount = base_price - basePriceExclTax;
+                        }
                     } else {
                         float basePriceInclTax = base_price + base_price * taxPercent / 100;
                         float priceInclTax = ConfigUtil.convertToPrice(basePriceInclTax);

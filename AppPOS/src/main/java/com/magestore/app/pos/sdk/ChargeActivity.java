@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.magestore.app.pos.R;
 import com.magestore.app.util.ConfigUtil;
+import com.magestore.app.util.StringUtil;
 import com.paypal.merchant.sdk.TransactionManager;
 import com.paypal.merchant.sdk.domain.DomainFactory;
 import com.paypal.merchant.sdk.domain.Invoice;
@@ -90,7 +91,7 @@ public class ChargeActivity extends ActionBarActivity {
 
     }
 
-    public void inVoiceTakePayment(){
+    public void inVoiceTakePayment() {
         Log.d(LOG_TAG, "takePayment");
 
         Invoice invoice = DomainFactory.newEmptyInvoice();
@@ -231,10 +232,25 @@ public class ChargeActivity extends ActionBarActivity {
                 Log.d(LOG_TAG, "takePayment onPaymentSuccess");
                 mIsInMiddleOfTakingPayment = false;
                 mTransactionRecord = responseObject.getTransactionRecord();
-                Log.d(LOG_TAG, "TransactionID: " + mTransactionRecord.getTransactionId());
-                Invoice newInv = PayPalHereSDKWrapper.getInstance().beginPayment(BigDecimal.ZERO);
-                newInv.recalculate();
-                goToSalesActivity(TYPE_SUCCESS, mTransactionRecord.getTransactionId());
+                if (mTransactionRecord != null) {
+                    if (!StringUtil.isNullOrEmpty(mTransactionRecord.getTransactionId())) {
+                        Invoice newInv = PayPalHereSDKWrapper.getInstance().beginPayment(BigDecimal.ZERO);
+                        newInv.recalculate();
+                        goToSalesActivity(TYPE_SUCCESS, mTransactionRecord.getTransactionId());
+                    } else if (!StringUtil.isNullOrEmpty(mTransactionRecord.getPayPalInvoiceId())) {
+                        Invoice newInv = PayPalHereSDKWrapper.getInstance().beginPayment(BigDecimal.ZERO);
+                        newInv.recalculate();
+                        goToSalesActivity(TYPE_SUCCESS, mTransactionRecord.getPayPalInvoiceId());
+                    } else {
+                        Invoice newInv = PayPalHereSDKWrapper.getInstance().beginPayment(BigDecimal.ZERO);
+                        newInv.recalculate();
+                        goToSalesActivity(TYPE_SUCCESS, "");
+                    }
+                } else {
+                    Invoice newInv = PayPalHereSDKWrapper.getInstance().beginPayment(BigDecimal.ZERO);
+                    newInv.recalculate();
+                    goToSalesActivity(TYPE_SUCCESS, "");
+                }
             }
         });
     }
