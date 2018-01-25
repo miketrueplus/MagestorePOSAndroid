@@ -410,7 +410,7 @@ public class POSCheckoutService extends AbstractService implements CheckoutServi
         placeOrderParams.setPlaceOrderExtensionData(listExtension);
 
         // add plugins
-        if (ConfigUtil.PLATFORM_MAGENTO_2.equals(ConfigUtil.getPlatForm())) {
+        if (ConfigUtil.PLATFORM_MAGENTO_2.equals("-1")) {
             List<GiftCard> listGiftCard = checkout.getListGiftCardUse();
             if (listGiftCard != null && listGiftCard.size() > 0) {
                 PlaceOrderIntegrationParam giftCardIntegration = createPlaceOrderIntegrationParam();

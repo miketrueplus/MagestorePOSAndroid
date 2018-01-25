@@ -2060,6 +2060,7 @@ public class CheckoutListController extends AbstractListController<Checkout> {
      * @param paymentPayPalHere
      */
     public void actionPaypalHere(final CheckoutPayment paymentPayPalHere) {
+        ((CheckoutListPanel) mView).setEnableBtCheckout(false);
         String enviroment = PayPalHereSDK.Live;
         if (paymentPayPalHere.getIsSandbox().equals("1")) {
             enviroment = PayPalHereSDK.Sandbox;
@@ -2098,11 +2099,26 @@ public class CheckoutListController extends AbstractListController<Checkout> {
                     readerConnectionIntent.putExtra("amount", paymentPayPalHere.getBaseAmount());
                     readerConnectionIntent.putExtra("quote_id", getSelectedItem().getQuoteId());
                     getMagestoreContext().getActivity().startActivityForResult(readerConnectionIntent, START_ACTIVITY_MUTIREADER);
+                    ((CheckoutListPanel) mView).setEnableBtCheckout(true);
                 }
 
                 @Override
                 public void onErrorAccessToken() {
-                    doInputRefreshTokenPaypalHere(paymentPayPalHere);
+                    new AlertDialog.Builder(getMagestoreContext().getActivity())
+                            .setMessage(R.string.paypal_here_init_error)
+                            .setPositiveButton(R.string.paypal_here_try_again, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    doInputRefreshTokenPaypalHere(paymentPayPalHere);
+                                }
+                            })
+                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    ((CheckoutListPanel) mView).setEnableBtCheckout(true);
+                                }
+                            })
+                            .show();
                 }
             });
         }
