@@ -1344,17 +1344,18 @@ public class POSConfigDataAccess extends POSAbstractDataAccess implements Config
                 ConfigUtil.setManagerShiftAdjustment(true);
                 ConfigUtil.setOpenShift(true);
                 ConfigUtil.setCloseShift(true);
-                ConfigUtil.setManageOrderByMe(true);
-                ConfigUtil.setManageOrderByLocation(true);
+                ConfigUtil.setManageOrderByMe(false);
+                ConfigUtil.setManageOrderByLocation(false);
                 ConfigUtil.setDiscountPerCart(true);
                 ConfigUtil.setApplyCoupon(true);
                 ConfigUtil.setDiscountPerItem(true);
                 ConfigUtil.setApplyCustomPrice(true);
+                ConfigUtil.setManagerAllOrder(true);
             } else {
                 ConfigUtil.setManagerAllOrder(checkStaffPermiss(listPermisson, MANAGE_ALL_ORDER));
                 if (ConfigUtil.isManagerAllOrder()) {
-                    ConfigUtil.setManageOrderByMe(true);
-                    ConfigUtil.setManageOrderByLocation(true);
+                    ConfigUtil.setManageOrderByMe(false);
+                    ConfigUtil.setManageOrderByLocation(false);
                 } else {
                     ConfigUtil.setManageOrderByMe(checkStaffPermiss(listPermisson, MANAGE_ORDER_ME));
                     ConfigUtil.setManageOrderByLocation(checkStaffPermiss(listPermisson, MANAGE_ORDER_LOCATION));
