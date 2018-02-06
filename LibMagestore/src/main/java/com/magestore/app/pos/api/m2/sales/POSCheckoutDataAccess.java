@@ -141,7 +141,7 @@ public class POSCheckoutDataAccess extends POSAbstractDataAccess implements Chec
             // đóng result reading
             if (rp != null) rp.close();
             rp = null;
-
+ 
             if (paramBuilder != null) paramBuilder.clear();
             paramBuilder = null;
 

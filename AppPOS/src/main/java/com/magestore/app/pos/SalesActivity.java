@@ -763,6 +763,7 @@ public class SalesActivity extends AbstractActivity
                 String message = getString(R.string.payment_error);
                 DialogUtil.confirm(getContext(), message, R.string.done);
             }
+            mCheckoutListPanel.setEnableBtCheckout(true);
         }
     }
 

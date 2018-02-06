@@ -1247,8 +1247,8 @@ public class POSConfigDataAccessM1 extends POSAbstractDataAccessM1 implements Co
                 ConfigUtil.setManagerAllOrder(checkStaffPermiss(listPermisson, MANAGE_ALL_ORDER));
 //                ConfigUtil.setCreateOrder(checkStaffPermiss(listPermisson, CREATE_ORDER));
                 if (ConfigUtil.isManagerAllOrder()) {
-                    ConfigUtil.setManageOrderByMe(true);
-                    ConfigUtil.setManageOrderOtherStaff(true);
+                    ConfigUtil.setManageOrderByMe(false);
+                    ConfigUtil.setManageOrderOtherStaff(false);
                 } else {
                     ConfigUtil.setManageOrderByMe(checkStaffPermiss(listPermisson, MANAGE_ORDER_ME));
                     ConfigUtil.setManageOrderOtherStaff(checkStaffPermiss(listPermisson, MANAGE_ORDER_OTHER_STAFF));

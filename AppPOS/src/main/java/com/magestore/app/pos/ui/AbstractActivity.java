@@ -414,7 +414,7 @@ public abstract class AbstractActivity
         if (ConfigUtil.isManagerAllOrder()) {
             nav_order_history.setVisibility(View.VISIBLE);
         } else {
-            if (ConfigUtil.isManageOrderByMe() || ConfigUtil.isManageOrderByLocation() || ConfigUtil.isManageOrderOtherStaff()) {
+            if (ConfigUtil.isManageOrderByMe() || ConfigUtil.isManageOrderByLocation() || ConfigUtil.isManageOrderOtherStaff() || ConfigUtil.isManagerAllOrder()) {
                 nav_order_history.setVisibility(View.VISIBLE);
             } else {
                 nav_order_history.setVisibility(View.GONE);
