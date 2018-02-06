@@ -1,1 +1,1 @@
-include ':AppPOS', ':LibMagestore', ':paypal-here-sdk'
+include ':AppPOS', ':LibMagestore', ':paypal-here-sdk', ':materialbarcodescanner'
